@@ -9,7 +9,7 @@ class ReferenceDataPublisherSpec extends ObjectBehavior
 {
     function it_is_a_publisher()
     {
-        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface');
+        $this->shouldBeAnInstanceOf('PimEnterprise\Component\Workflow\Publisher\PublisherInterface');
     }
 
     function it_supports_reference_data(ReferenceDataInterface $referenceData)

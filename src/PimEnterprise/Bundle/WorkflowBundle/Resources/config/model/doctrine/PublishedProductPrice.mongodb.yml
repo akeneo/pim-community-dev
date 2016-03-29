@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice:
+PimEnterprise\Component\Workflow\Model\PublishedProductPrice:
     type: embeddedDocument
     fields:
         id:

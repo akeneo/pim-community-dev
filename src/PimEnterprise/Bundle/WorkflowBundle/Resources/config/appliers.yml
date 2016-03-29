@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.applier.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplier
+    pimee_workflow.applier.product_draft.class: PimEnterprise\Component\Workflow\Applier\ProductDraftApplier
 
 services:
     pimee_workflow.applier.product_draft:

@@ -14,9 +14,9 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Oro\Bundle\UserBundle\Entity\Group as UserGroup;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Filter;
 
 use Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter as BaseProductEditFilter;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 
 /**
  * Enterprise override to add product ownership check for product classification

@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\ReferenceDataBundle\Publisher;
 
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
+use PimEnterprise\Component\Workflow\Publisher\PublisherInterface;
 
 /**
  * Reference data publisher

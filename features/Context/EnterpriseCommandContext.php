@@ -13,7 +13,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Command\CreateDraftCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\PublishProductCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\QueryPublishedProductCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\SendDraftForApprovalCommand;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 

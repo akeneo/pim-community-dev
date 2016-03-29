@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\InstallerBundle\Command;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

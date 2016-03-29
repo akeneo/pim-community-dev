@@ -37,7 +37,7 @@ class PimEnterpriseCatalogBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $productMappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Bundle\CatalogBundle\Model'
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Component\Catalog\Model'
         ];
 
         $container->addCompilerPass(

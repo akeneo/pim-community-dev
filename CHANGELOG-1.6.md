@@ -49,3 +49,19 @@
 - `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetCategoryRepository` now implements `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
 - `PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository` now implements `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
+- Move `PimEnterprise\Bundle\WorkflowBundle\Model` to `PimEnterprise\Component\Workflow\Model`.
+- Move `PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface` to `PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface`.
+- Move `PimEnterprise\Bundle\WorkflowBundle\Event` to `PimEnterprise\Component\Workflow\Event`.
+- Move `PimEnterprise\Bundle\WorkflowBundle\Exception` to `PimEnterprise\Component\Workflow\Exception`.
+- Move `PimEnterprise\Bundle\WorkflowBundle\Factory` to `PimEnterprise\Component\Workflow\Factory`.
+- Remove class `PimEnterprise\Bundle\WorkflowBundle\Factory\UploadedFileFactory`.
+- Move `PimEnterprise\Bundle\WorkflowBundle\Normalizer` to `PimEnterprise\Component\Workflow\Normalizer`.
+- Move `PimEnterprise\Bundle\WorkflowBundle\Applier` to `PimEnterprise\Component\Workflow\Applier`.
+- Move `PimEnterprise\Bundle\WorkflowBundle\Repository` to `PimEnterprise\Component\Workflow\Repository`.
+- Move `PimEnterprise\Bundle\WorkflowBundle\PimEnterprise\Helper\SortProductValuesHelper` to `PimEnterprise\Bundle\WorkflowBundle\Twig\SortProductValuesHelper`.
+- Move `PimEnterprise\Bundle\WorkflowBundle\Publisher` to `PimEnterprise\Component\Workflow\Publisher`.
+- Move `PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet` to `PimEnterprise\Component\Workflow\Connector\Tasklet`.
+- Move `PimEnterprise\Bundle\CatalogBundle\Model` to `PimEnterprise\Component\Catalog\Model`.
+- Move `PimEnterprise\Bundle\SecurityBundle\Attributes` to `PimEnterprise\Component\Security\Attributes`.
+- Remove parameter `pimee_workflow.publisher.product_media.class` because class was removed in 1.4.
+- Rename and move `PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\FilePublisher` to `PimEnterprise\Component\Workflow\Publisher\Product\FileInfoPublisher`.

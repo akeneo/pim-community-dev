@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
+PimEnterprise\Component\Workflow\Model\PublishedProduct:
     type: document
     changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepository
@@ -65,15 +65,15 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
         associations:
             embedded: true
             type: many
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociationInterface
+            targetDocument: PimEnterprise\Component\Workflow\Model\PublishedProductAssociationInterface
         completenesses:
             embedded: true
             type: many
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompletenessInterface
+            targetDocument: PimEnterprise\Component\Workflow\Model\PublishedProductCompletenessInterface
         values:
             embedded: true
             type: many
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface
+            targetDocument: PimEnterprise\Component\Workflow\Model\PublishedProductValueInterface
             mappedBy: entity
         originalProduct:
             reference: true

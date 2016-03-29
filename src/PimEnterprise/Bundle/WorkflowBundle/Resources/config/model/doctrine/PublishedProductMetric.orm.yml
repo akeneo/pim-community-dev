@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric:
+PimEnterprise\Component\Workflow\Model\PublishedProductMetric:
     type: entity
     table: pimee_workflow_published_product_metric
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -36,7 +36,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric:
             column: family
     oneToOne:
         value:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface
+            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductValueInterface
             mappedBy: metric
             joinColumns:
                 value_id:

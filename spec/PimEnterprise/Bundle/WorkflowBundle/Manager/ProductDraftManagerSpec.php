@@ -7,17 +7,14 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
+use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -53,7 +50,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $draft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
-        $this->shouldThrow('PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException')->during('approveChange', [$draft, $attribute]);
+        $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('approveChange', [$draft, $attribute]);
     }
 
     function it_approves_a_change(
@@ -105,7 +102,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $draft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
-        $this->shouldThrow('PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException')->during('refuseChange', [$draft, $attribute]);
+        $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('refuseChange', [$draft, $attribute]);
     }
 
     function it_refuses_a_change(
@@ -142,7 +139,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
     function it_throws_an_exception_when_trying_to_approve_a_whole_non_ready_draft(ProductDraftInterface $draft)
     {
         $draft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
-        $this->shouldThrow('PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException')->during('approve', [$draft]);
+        $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('approve', [$draft]);
     }
 
     function it_approves_a_whole_draft_with_all_changes_approvable(
@@ -252,7 +249,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
     function it_throws_an_exception_when_trying_to_refuse_a_whole_non_ready_draft(ProductDraftInterface $draft)
     {
         $draft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
-        $this->shouldThrow('PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException')->during('refuse', [$draft]);
+        $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('refuse', [$draft]);
     }
 
     function it_refuses_a_whole_draft(
@@ -439,7 +436,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
 
         $remover->remove($productDraft)->shouldNotBeCalled();
-        $this->shouldThrow('PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException')->during('remove', [$productDraft]);
+        $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('remove', [$productDraft]);
     }
 
     function it_throws_an_exception_when_trying_to_approve_a_single_change_without_permission(
@@ -459,7 +456,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             ]
         ], 'pim.internal_api.attribute.edit')->willReturn([]);
 
-        $this->shouldThrow('PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException')->during('approveChange', [
+        $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('approveChange', [
             $productDraft,
             $attribute,
             $locale,
@@ -484,7 +481,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             ]
         ], 'pim.internal_api.attribute.edit')->willReturn([]);
 
-        $this->shouldThrow('PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException')->during('refuseChange', [
+        $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('refuseChange', [
             $productDraft,
             $attribute,
             $locale,

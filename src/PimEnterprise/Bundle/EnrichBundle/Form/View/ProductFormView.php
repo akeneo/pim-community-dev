@@ -15,7 +15,7 @@ use Pim\Bundle\EnrichBundle\Form\View\ProductFormView as BaseProductFormView;
 use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

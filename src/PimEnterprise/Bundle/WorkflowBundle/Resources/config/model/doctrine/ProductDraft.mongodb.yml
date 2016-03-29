@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft:
+PimEnterprise\Component\Workflow\Model\ProductDraft:
     type: document
     collection: pimee_workflow_product_draft
     changeTrackingPolicy: DEFERRED_EXPLICIT

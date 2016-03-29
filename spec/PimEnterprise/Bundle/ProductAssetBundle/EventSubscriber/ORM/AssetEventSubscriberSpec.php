@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
+use PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

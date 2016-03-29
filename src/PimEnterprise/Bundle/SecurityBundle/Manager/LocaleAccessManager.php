@@ -16,9 +16,9 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 
 /**
  * Locale access manager

@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductHist
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**

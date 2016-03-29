@@ -1,17 +1,16 @@
 parameters:
-    pimee_workflow.publisher.chained.class:                     PimEnterprise\Bundle\WorkflowBundle\Publisher\ChainedPublisher
-    pimee_workflow.publisher.product.class:                     PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\ProductPublisher
-    pimee_workflow.publisher.product_value.class:               PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\ValuePublisher
-    pimee_workflow.publisher.product_association.class:         PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\AssociationPublisher
-    pimee_workflow.publisher.product_completeness.class:        PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\CompletenessPublisher
-    pimee_workflow.publisher.product_metric.class:              PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\MetricPublisher
-    pimee_workflow.publisher.product_media.class:               PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\MediaPublisher
-    pimee_workflow.publisher.product_file.class:                PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\FilePublisher
-    pimee_workflow.publisher.product_price.class:               PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\PricePublisher
-    pimee_workflow.publisher.datetime.class:                    PimEnterprise\Bundle\WorkflowBundle\Publisher\DateTimePublisher
-    pimee_workflow.publisher.attribute_option.class:            PimEnterprise\Bundle\WorkflowBundle\Publisher\AttributeOptionPublisher
-    pimee_workflow.publisher.product_related_association.class: PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\RelatedAssociationPublisher
-    pimee_workflow.unpublisher.product.class:                   PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\ProductUnpublisher
+    pimee_workflow.publisher.chained.class:                     PimEnterprise\Component\Workflow\Publisher\ChainedPublisher
+    pimee_workflow.publisher.product.class:                     PimEnterprise\Component\Workflow\Publisher\Product\ProductPublisher
+    pimee_workflow.publisher.product_value.class:               PimEnterprise\Component\Workflow\Publisher\Product\ValuePublisher
+    pimee_workflow.publisher.product_association.class:         PimEnterprise\Component\Workflow\Publisher\Product\AssociationPublisher
+    pimee_workflow.publisher.product_completeness.class:        PimEnterprise\Component\Workflow\Publisher\Product\CompletenessPublisher
+    pimee_workflow.publisher.product_metric.class:              PimEnterprise\Component\Workflow\Publisher\Product\MetricPublisher
+    pimee_workflow.publisher.product_file.class:                PimEnterprise\Component\Workflow\Publisher\Product\FileInfoPublisher
+    pimee_workflow.publisher.product_price.class:               PimEnterprise\Component\Workflow\Publisher\Product\PricePublisher
+    pimee_workflow.publisher.datetime.class:                    PimEnterprise\Component\Workflow\Publisher\DateTimePublisher
+    pimee_workflow.publisher.attribute_option.class:            PimEnterprise\Component\Workflow\Publisher\AttributeOptionPublisher
+    pimee_workflow.publisher.product_related_association.class: PimEnterprise\Component\Workflow\Publisher\Product\RelatedAssociationPublisher
+    pimee_workflow.unpublisher.product.class:                   PimEnterprise\Component\Workflow\Publisher\Product\ProductUnpublisher
 
 services:
     pimee_workflow.publisher.chained:

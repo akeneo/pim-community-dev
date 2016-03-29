@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

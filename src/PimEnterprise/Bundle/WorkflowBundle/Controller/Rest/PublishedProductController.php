@@ -13,9 +13,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
+use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

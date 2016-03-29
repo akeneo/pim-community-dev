@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Provider;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 
 /**
  * Class OwnerGroupsProvider

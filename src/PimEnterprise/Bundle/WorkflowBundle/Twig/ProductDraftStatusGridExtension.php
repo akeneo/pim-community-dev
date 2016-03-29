@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 
 /**
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>

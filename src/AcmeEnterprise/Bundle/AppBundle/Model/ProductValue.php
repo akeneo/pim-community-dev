@@ -14,7 +14,7 @@ namespace AcmeEnterprise\Bundle\AppBundle\Model;
 use AcmeEnterprise\Bundle\AppBundle\Entity\Color;
 use AcmeEnterprise\Bundle\AppBundle\Entity\Fabric;
 use Doctrine\Common\Collections\ArrayCollection;
-use PimEnterprise\Bundle\CatalogBundle\Model\ProductValue as PimProductValue;
+use PimEnterprise\Component\Catalog\Model\ProductValue as PimProductValue;
 
 /**
  * Acme override of the product value/ In this example:

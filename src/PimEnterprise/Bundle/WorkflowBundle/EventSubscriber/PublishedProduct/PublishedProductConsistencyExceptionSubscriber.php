@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
-use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
+use PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;

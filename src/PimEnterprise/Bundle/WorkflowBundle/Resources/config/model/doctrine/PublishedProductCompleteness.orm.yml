@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness:
+PimEnterprise\Component\Workflow\Model\PublishedProductCompleteness:
     type: entity
     table: pimee_workflow_published_product_completeness
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -42,7 +42,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness:
                     onDelete: CASCADE
                     nullable: false
         product:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductInterface
             inversedBy: completenesses
             joinColumns:
                 product_id:

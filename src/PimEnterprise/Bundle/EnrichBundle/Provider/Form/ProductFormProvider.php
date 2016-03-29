@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Provider\Form;
 
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
