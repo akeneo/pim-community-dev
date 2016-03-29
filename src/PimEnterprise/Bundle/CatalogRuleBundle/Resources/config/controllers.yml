@@ -8,3 +8,7 @@ services:
         arguments:
             - '@akeneo_rule_engine.repository.rule_definition'
             - '@akeneo_rule_engine.remover.rule_definition'
+            - '@security.token_storage'
+            - '@pim_connector.launcher.simple_job_launcher'
+            - '@pim_import_export.repository.job_instance'
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'

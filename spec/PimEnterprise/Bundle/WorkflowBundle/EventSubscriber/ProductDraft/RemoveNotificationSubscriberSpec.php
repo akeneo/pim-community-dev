@@ -2,10 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -19,12 +20,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class RemoveNotificationSubscriberSpec extends ObjectBehavior
 {
     function let(
-        NotificationManager $notifier,
+        NotifierInterface $notifier,
         UserContext $context,
         UserRepositoryInterface $userRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        SimpleFactoryInterface $notificationFactory
     ) {
-        $this->beConstructedWith($notifier, $context, $userRepository, $attributeRepository);
+        $this->beConstructedWith($notifier, $context, $userRepository, $attributeRepository, $notificationFactory);
     }
 
     function it_is_initializable()
@@ -110,12 +112,13 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $notifier,
         $context,
         $userRepository,
+        $notificationFactory,
         GenericEvent $event,
         UserInterface $owner,
         UserInterface $author,
         ProductDraftInterface $draft,
         ProductInterface $product,
-        ProductValueInterface $identifier
+        NotificationInterface $notification
     ) {
         $context->getCurrentLocaleCode()->willReturn(Argument::any());
         $values = [
@@ -145,20 +148,20 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
         $product->getLabel(Argument::any())->willReturn('T-Shirt');
 
-        $notifier->notify(
-            ['author'],
-            'pimee_workflow.product_draft.notification.remove',
-            'error',
+        $notificationFactory->create()->willReturn($notification);
+        $notification->setType('error')->willReturn($notification);
+        $notification->setMessage('pimee_workflow.product_draft.notification.remove')->willReturn($notification);
+        $notification->setMessageParams(['%product%' => 'T-Shirt', '%owner%' => 'John Doe'])->willReturn($notification);
+        $notification->setRoute('pim_enrich_product_edit')->willReturn($notification);
+        $notification->setRouteParams(['id' => 42])->willReturn($notification);
+        $notification->setContext(
             [
-                'route'         => 'pim_enrich_product_edit',
-                'routeParams'   => ['id' => 42],
-                'messageParams' => ['%product%' => 'T-Shirt', '%owner%' => 'John Doe'],
-                'context'       => [
-                    'actionType'       => 'pimee_workflow_product_draft_notification_remove',
-                    'showReportButton' => false
-                ]
+                'actionType'       => 'pimee_workflow_product_draft_notification_remove',
+                'showReportButton' => false
             ]
-        )->shouldBeCalled();
+        )->willReturn($notification);
+
+        $notifier->notify($notification, ['author'])->shouldBeCalled();
 
         $this->sendNotificationForRemoval($event);
     }
@@ -167,12 +170,13 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $notifier,
         $context,
         $userRepository,
+        $notificationFactory,
         GenericEvent $event,
         UserInterface $owner,
         UserInterface $author,
         ProductDraftInterface $draft,
         ProductInterface $product,
-        ProductValueInterface $identifier
+        NotificationInterface $notification
     ) {
         $event->getSubject()->willReturn($draft);
         $context->getCurrentLocaleCode()->willReturn(Argument::any());
@@ -201,21 +205,22 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
         $product->getLabel(Argument::any())->willReturn('T-Shirt');
 
-        $notifier->notify(
-            ['author'],
-            'pimee_workflow.product_draft.notification.remove',
-            'error',
+        $notificationFactory->create()->willReturn($notification);
+        $notification->setType('error')->willReturn($notification);
+        $notification->setMessage('pimee_workflow.product_draft.notification.remove')->willReturn($notification);
+        $notification->setMessage('pimee_workflow.product_draft.notification.remove')->willReturn($notification);
+        $notification->setMessageParams(['%product%' => 'T-Shirt', '%owner%' => 'John Doe'])->willReturn($notification);
+        $notification->setRoute('pim_enrich_product_edit')->willReturn($notification);
+        $notification->setRouteParams(['id' => 42])->willReturn($notification);
+        $notification->setComment('Nope Mary.')->willReturn($notification);
+        $notification->setContext(
             [
-                'route'         => 'pim_enrich_product_edit',
-                'routeParams'   => ['id' => 42],
-                'messageParams' => ['%product%' => 'T-Shirt', '%owner%' => 'John Doe'],
-                'context'       => [
-                    'actionType' => 'pimee_workflow_product_draft_notification_remove',
-                    'showReportButton' => false,
-                ],
-                'comment'    => 'Nope Mary.',
+                'actionType'       => 'pimee_workflow_product_draft_notification_remove',
+                'showReportButton' => false
             ]
-        )->shouldBeCalled();
+        )->willReturn($notification);
+
+        $notifier->notify($notification, ['author'])->shouldBeCalled();
 
         $this->sendNotificationForRemoval($event);
     }

@@ -100,3 +100,8 @@ jobs:
         configuration:
             withHeader: true
             filePath:   /tmp/published_products_export_%locale%_%scope%_%datetime%.xlsx
+    rule_impacted_product_count:
+        connector: Akeneo Rule Engine Connector
+        alias:     rule_impacted_product_count
+        label:     Calculation the matching products for the rules
+        type:      mass_edit_rule

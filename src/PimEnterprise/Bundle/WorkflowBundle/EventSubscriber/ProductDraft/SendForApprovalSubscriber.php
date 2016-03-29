@@ -11,7 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
@@ -29,8 +30,8 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
 {
     const NOTIFICATION_TYPE = 'pimee_workflow_product_draft_notification_new_proposal';
 
-    /** @var NotificationManager */
-    protected $notificationManager;
+    /** @var NotifierInterface */
+    protected $notifier;
 
     /** @var UserRepositoryInterface */
     protected $userRepository;
@@ -41,22 +42,28 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
     /** @var UsersToNotifyProvider */
     protected $usersProvider;
 
+    /** @var SimpleFactoryInterface */
+    protected $notificationFactory;
+
     /**
-     * @param NotificationManager     $notificationManager
+     * @param NotifierInterface       $notifier
      * @param UserRepositoryInterface $userRepository
      * @param OwnerGroupsProvider     $ownerGroupsProvider
      * @param UsersToNotifyProvider   $usersProvider
+     * @param SimpleFactoryInterface  $notificationFactory
      */
     public function __construct(
-        NotificationManager $notificationManager,
+        NotifierInterface $notifier,
         UserRepositoryInterface $userRepository,
         OwnerGroupsProvider $ownerGroupsProvider,
-        UsersToNotifyProvider $usersProvider
+        UsersToNotifyProvider $usersProvider,
+        SimpleFactoryInterface $notificationFactory
     ) {
-        $this->notificationManager = $notificationManager;
+        $this->notifier            = $notifier;
         $this->userRepository      = $userRepository;
         $this->ownerGroupsProvider = $ownerGroupsProvider;
         $this->usersProvider       = $usersProvider;
+        $this->notificationFactory = $notificationFactory;
     }
 
     /**
@@ -77,49 +84,52 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
     public function sendNotificationToOwners(GenericEvent $event)
     {
         $productDraft  = $event->getSubject();
-        $comment       = $event->getArgument('comment');
         $product       = $productDraft->getProduct();
-        $author        = $this->userRepository->findOneBy(['username' => $productDraft->getAuthor()]);
 
         $usersToNotify = $this->usersProvider->getUsersToNotify(
             $this->ownerGroupsProvider->getOwnerGroupIds($product)
         );
 
-        $gridParameters = [
-            'f' => [
-                'author' => [
-                    'value' => [
-                        $author->getUsername()
+        if (!empty($usersToNotify)) {
+            $author = $this->userRepository->findOneBy(['username' => $productDraft->getAuthor()]);
+
+            $gridParameters = [
+                'f' => [
+                    'author' => [
+                        'value' => [
+                            $author->getUsername()
+                        ]
+                    ],
+                    'product' => [
+                        'value' => [
+                            $product->getId()
+                        ]
                     ]
                 ],
-                'product' => [
-                    'value' => [
-                        $product->getId()
-                    ]
-                ]
-            ],
-        ];
+            ];
 
-        if (!empty($usersToNotify)) {
-            $this->notificationManager->notify(
-                $usersToNotify,
-                'pimee_workflow.proposal.to_review',
-                'add',
-                [
-                    'route'         => 'pimee_workflow_proposal_index',
-                    'comment'       => $comment,
-                    'messageParams' => [
+            $notification = $this->notificationFactory->create();
+            $notification
+                ->setMessage('pimee_workflow.proposal.to_review')
+                ->setMessageParams(
+                    [
                         '%product.label%'    => $product->getLabel(),
                         '%author.firstname%' => $author->getFirstName(),
                         '%author.lastname%'  => $author->getLastName()
-                    ],
-                    'context'       => [
+                    ]
+                )
+                ->setType('add')
+                ->setRoute('pimee_workflow_proposal_index')
+                ->setComment($event->getArgument('comment'))
+                ->setContext(
+                    [
                         'actionType'       => static::NOTIFICATION_TYPE,
                         'showReportButton' => false,
                         'gridParameters'   => http_build_query($gridParameters, 'flags_')
                     ]
-                ]
-            );
+                );
+
+            $this->notifier->notify($notification, $usersToNotify);
         }
     }
 }

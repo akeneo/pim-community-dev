@@ -37,5 +37,4 @@ services:
         class: %pimee_product_asset.mass_upload.tasklet.class%
         arguments:
             - '@pimee_product_asset.mass_upload_processor'
-            - '@pim_notification.manager.notification'
             - '%tmp_storage_dir%'

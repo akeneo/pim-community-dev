@@ -5,9 +5,11 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Import;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
@@ -21,28 +23,30 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class ImportProposalsSubscriberSpec extends ObjectBehavior
 {
     function let(
-        NotificationManager $notificationManager,
+        NotifierInterface $notifier,
         UserRepositoryInterface $userRepository,
         OwnerGroupsProvider $ownerGroupsProvider,
         UsersToNotifyProvider $usersProvider,
-        ObjectRepository $jobRepository
-
+        ObjectRepository $jobRepository,
+        SimpleFactoryInterface $notificationFactory
     ) {
         $this->beConstructedWith(
-            $notificationManager,
+            $notifier,
             $userRepository,
             $ownerGroupsProvider,
             $usersProvider,
-            $jobRepository
+            $jobRepository,
+            $notificationFactory
         );
     }
 
     function it_should_notify_author_and_owners(
-        $notificationManager,
+        $notifier,
         $userRepository,
         $ownerGroupsProvider,
         $usersProvider,
         $jobRepository,
+        $notificationFactory,
         GenericEvent $event,
         ProductDraftInterface $productDraft,
         ProductInterface $product,
@@ -50,7 +54,8 @@ class ImportProposalsSubscriberSpec extends ObjectBehavior
         UserInterface $author,
         UserInterface $owner,
         JobExecution $jobExecution,
-        JobInstance $jobInstance
+        JobInstance $jobInstance,
+        NotificationInterface $notification
     ) {
         $event->getSubject()->willReturn($productDraft);
         $productDraft->getProduct()->willReturn($product);
@@ -83,33 +88,30 @@ class ImportProposalsSubscriberSpec extends ObjectBehavior
                 ]
             ],
         ];
-        $parameters = [
-            'route'   => 'pimee_workflow_proposal_index',
-            'context' => [
+
+        $notificationFactory->create()->willReturn($notification);
+        $notification->setType('add')->willReturn($notification);
+        $notification->setMessage('pimee_workflow.proposal.generic_import')->willReturn($notification);
+        $notification->setRoute('pimee_workflow_proposal_index')->willReturn($notification);
+        $notification->setComment('Nope Mary.')->willReturn($notification);
+        $notification->setContext(
+            [
                 'actionType'       => 'pimee_workflow_import_notification_new_proposals',
                 'showReportButton' => false,
                 'gridParameters'   => http_build_query($gridParameters, 'flags_')
             ]
-        ];
+        )->willReturn($notification);
 
-        $notificationManager->notify(
-            [$author],
-            'pimee_workflow.proposal.generic_import',
-            'add',
-            $parameters
-        )->shouldBeCalled();
+        $notifier->notify($notification, [$author])->shouldBeCalled();
 
-        $parameters['messageParams'] = [
-            '%author.firstname%' => 'firstname',
-            '%author.lastname%'  => 'lastname'
-        ];
-
-        $notificationManager->notify(
-            [1 => $owner],
-            'pimee_workflow.proposal.individual_import',
-            'add',
-            $parameters
-        )->shouldBeCalled();
+        $notification->setMessage('pimee_workflow.proposal.individual_import')->willReturn($notification);
+        $notification->setMessageParams(
+            [
+                '%author.firstname%' => 'firstname',
+                '%author.lastname%'  => 'lastname'
+            ]
+        )->willReturn($notification);
+        $notifier->notify($notification, [1 => $owner])->shouldBeCalled();
 
         $this->notifyUsers($jobExecutionEvent);
     }

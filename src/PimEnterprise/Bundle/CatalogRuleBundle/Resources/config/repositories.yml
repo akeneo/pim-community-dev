@@ -1,0 +1,6 @@
+parameters:
+    pimee_catalog_rule.repository.rule_definition_mass_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleDefinitionMassEditRepository
+
+services:
+    pimee_catalog_rule.repository.rule_definition_mass_action:
+        class: %pimee_catalog_rule.repository.rule_definition_mass_action.class%

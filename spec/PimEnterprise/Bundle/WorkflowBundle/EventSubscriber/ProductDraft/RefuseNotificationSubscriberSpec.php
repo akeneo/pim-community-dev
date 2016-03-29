@@ -2,11 +2,13 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -19,12 +21,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class RefuseNotificationSubscriberSpec extends ObjectBehavior
 {
     function let(
-        NotificationManager $notifier,
+        NotifierInterface $notifier,
         UserContext $context,
         UserRepositoryInterface $userRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        SimpleFactoryInterface $notificationFactory
     ) {
-        $this->beConstructedWith($notifier, $context, $userRepository, $attributeRepository);
+        $this->beConstructedWith($notifier, $context, $userRepository, $attributeRepository, $notificationFactory);
     }
 
     function it_is_initializable()
@@ -112,11 +115,14 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         $notifier,
         $context,
         $userRepository,
+        $notificationFactory,
         GenericEvent $event,
         UserInterface $owner,
         UserInterface $author,
         ProductDraftInterface $draft,
         ProductInterface $product,
+        ProductValueInterface $identifier,
+        NotificationInterface $notification,
         ProductValueInterface $identifier
     ) {
         $context->getCurrentLocaleCode()->willReturn(Argument::any());
@@ -149,23 +155,21 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
 
         $identifier->getData()->willReturn('tshirt');
 
-        $notifier->notify(
-            ['author'],
-            'pimee_workflow.product_draft.notification.refuse',
-            'error',
+        $notificationFactory->create()->willReturn($notification);
+        $notification->setType('error')->willReturn($notification);
+        $notification->setMessage('pimee_workflow.product_draft.notification.refuse')->willReturn($notification);
+        $notification->setMessageParams(['%product%' => 'T-Shirt', '%owner%' => 'John Doe'])->willReturn($notification);
+        $notification->setRoute('pim_enrich_product_edit')->willReturn($notification);
+        $notification->setRouteParams(['id' => 42])->willReturn($notification);
+        $notification->setComment('a comment')->willReturn($notification);
+        $notification->setContext(
             [
-                'route'         => 'pim_enrich_product_edit',
-                'routeParams'   => ['id' => 42],
-                'messageParams' => [
-                    '%product%'    => 'T-Shirt',
-                    '%owner%'      => 'John Doe'
-                ],
-                'context'       => [
-                    'actionType'       => 'pimee_workflow_product_draft_notification_refuse',
-                    'showReportButton' => false
-                ]
+                'actionType'       => 'pimee_workflow_product_draft_notification_refuse',
+                'showReportButton' => false
             ]
-        )->shouldBeCalled();
+        )->willReturn($notification);
+
+        $notifier->notify($notification, ['author'])->shouldBeCalled();
 
         $this->sendNotificationForRefusal($event);
     }
@@ -175,13 +179,15 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         $attributeRepository,
         $context,
         $userRepository,
+        $notificationFactory,
         GenericEvent $event,
         UserInterface $owner,
         UserInterface $author,
         ProductDraftInterface $draft,
         ProductInterface $product,
         ProductValueInterface $identifier,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        NotificationInterface $notification
     ) {
         $attribute->setLocale(Argument::any())->willReturn();
         $attribute->getLabel()->willReturn(Argument::any());
@@ -223,25 +229,28 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
 
         $identifier->getData()->willReturn('tshirt');
 
-        $notifier->notify(
-            ['author'],
-            'a message',
-            'error',
+        $notificationFactory->create()->willReturn($notification);
+        $notification->setType('error')->willReturn($notification);
+        $notification->setMessage('pimee_workflow.product_draft.notification.refuse')->willReturn($notification);
+        $notification->setMessage('a message')->willReturn($notification);
+        $notification->setMessageParams(
             [
-                'route'         => 'pim_enrich_product_edit',
-                'routeParams'   => ['id' => 42],
-                'messageParams' => [
-                    '%product%'    => 'T-Shirt',
-                    '%owner%'      => 'Joe Doe',
-                    '%attributes%' => 'Name'
-                ],
-                'context' => [
-                    'actionType'       => 'pimee_workflow_product_draft_notification_partial_reject',
-                    'showReportButton' => false
-                ],
-                'comment' => 'a comment'
+                '%product%'    => 'T-Shirt',
+                '%owner%'      => 'Joe Doe',
+                '%attributes%' => 'Name'
             ]
-        )->shouldBeCalled();
+        )->willReturn($notification);
+        $notification->setRoute('pim_enrich_product_edit')->willReturn($notification);
+        $notification->setRouteParams(['id' => 42])->willReturn($notification);
+        $notification->setComment('a comment')->willReturn($notification);
+        $notification->setContext(
+            [
+                'actionType'       => 'pimee_workflow_product_draft_notification_partial_reject',
+                'showReportButton' => false
+            ]
+        )->willReturn($notification);
+
+        $notifier->notify($notification, ['author'])->shouldBeCalled();
 
         $this->sendNotificationForRefusal($event);
     }

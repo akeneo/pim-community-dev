@@ -45,11 +45,12 @@ services:
     pimee_workflow.event_subscriber.import.new_proposals:
         class: %pimee_workflow.event_subscriber.import.new_proposals.class%
         arguments:
-            - '@pim_notification.manager.notification'
+            - '@pim_notification.notifier'
             - '@pim_user.repository.user'
             - '@pimee_workflow.provider.owner_groups'
             - '@pimee_workflow.provider.users_to_notify'
             - '@pim_import_export.repository.job_instance'
+            - '@pim_notification.factory.notification'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -67,40 +68,44 @@ services:
     pimee_workflow.event_subscriber.product_draft.approve_notification:
         class: %pimee_workflow.event_subscriber.product_draft.approve_notification.class%
         arguments:
-            - '@pim_notification.manager.notification'
+            - '@pim_notification.notifier'
             - '@pim_user.context.user'
             - '@pim_user.repository.user'
             - '@pim_catalog.repository.attribute'
+            - '@pim_notification.factory.notification'
         tags:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.event_subscriber.product_draft.refuse_notification:
         class: %pimee_workflow.event_subscriber.product_draft.refuse_notification.class%
         arguments:
-            - '@pim_notification.manager.notification'
+            - '@pim_notification.notifier'
             - '@pim_user.context.user'
             - '@pim_user.repository.user'
             - '@pim_catalog.repository.attribute'
+            - '@pim_notification.factory.notification'
         tags:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.event_subscriber.product_draft.remove_notification:
         class: %pimee_workflow.event_subscriber.product_draft.remove_notification.class%
         arguments:
-            - '@pim_notification.manager.notification'
+            - '@pim_notification.notifier'
             - '@pim_user.context.user'
             - '@pim_user.repository.user'
             - '@pim_catalog.repository.attribute'
+            - '@pim_notification.factory.notification'
         tags:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.event_subscriber.product_draft.send_for_approval:
         class: %pimee_workflow.event_subscriber.product_draft.send_for_approval.class%
         arguments:
-            - '@pim_notification.manager.notification'
+            - '@pim_notification.notifier'
             - '@pim_user.repository.user'
             - '@pimee_workflow.provider.owner_groups'
             - '@pimee_workflow.provider.users_to_notify'
+            - '@pim_notification.factory.notification'
         tags:
             - { name: kernel.event_subscriber }
 

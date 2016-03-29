@@ -11,7 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -27,7 +28,7 @@ abstract class AbstractProposalStateNotificationSubscriber
 {
     const NOTIFICATION_MAX_ATTRIBUTES = 3;
 
-    /** @var NotificationManager */
+    /** @var NotifierInterface */
     protected $notifier;
 
     /** @var UserContext */
@@ -39,22 +40,28 @@ abstract class AbstractProposalStateNotificationSubscriber
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var SimpleFactoryInterface */
+    protected $notificationFactory;
+
     /**
-     * @param NotificationManager          $notifier
+     * @param NotifierInterface            $notifier
      * @param UserContext                  $userContext
      * @param UserRepositoryInterface      $userRepository
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param SimpleFactoryInterface       $notificationFactory
      */
     public function __construct(
-        NotificationManager $notifier,
+        NotifierInterface $notifier,
         UserContext $userContext,
         UserRepositoryInterface $userRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        SimpleFactoryInterface $notificationFactory
     ) {
         $this->notifier            = $notifier;
         $this->userContext         = $userContext;
         $this->userRepository      = $userRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->notificationFactory = $notificationFactory;
     }
 
     /**
@@ -114,10 +121,8 @@ abstract class AbstractProposalStateNotificationSubscriber
 
         $messageInfos = [
             'message' => sprintf('pimee_workflow.product_draft.notification.%s', $type),
-            'options' => [
-                'context' => [
-                    'actionType' => sprintf('pimee_workflow_product_draft_notification_%s', $type)
-                ]
+            'context' => [
+                'actionType' => sprintf('pimee_workflow_product_draft_notification_%s', $type)
             ]
         ];
 
@@ -126,8 +131,8 @@ abstract class AbstractProposalStateNotificationSubscriber
         }
 
         if (count($updatedValues) > self::NOTIFICATION_MAX_ATTRIBUTES) {
-            $messageInfos['message'] = sprintf('pimee_workflow.product_draft.notification.%s_number', $type);
-            $messageInfos['options']['messageParams'] = ['%attributes_count%' => count($updatedValues)];
+            $messageInfos['message']       = sprintf('pimee_workflow.product_draft.notification.%s_number', $type);
+            $messageInfos['messageParams'] = ['%attributes_count%' => count($updatedValues)];
 
             return $messageInfos;
         }
@@ -139,8 +144,8 @@ abstract class AbstractProposalStateNotificationSubscriber
             return $attribute->getLabel();
         }, array_keys($updatedValues));
 
-        $messageInfos['message'] = sprintf('pimee_workflow.product_draft.notification.%s', $type);
-        $messageInfos['options']['messageParams'] = ['%attributes%' => implode(', ', $attributeLabels)];
+        $messageInfos['message']       = sprintf('pimee_workflow.product_draft.notification.%s', $type);
+        $messageInfos['messageParams'] = ['%attributes%' => implode(', ', $attributeLabels)];
 
         return $messageInfos;
     }

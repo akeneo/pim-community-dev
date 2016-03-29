@@ -20,6 +20,11 @@ datagrid:
                 template: PimEnterpriseCatalogRuleBundle:Rule:_actions.html.twig
                 frontend_type: html
                 data_name: content
+            impactedSubjectCount:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.impacted_product_count.label
+                type: twig
+                template: PimEnterpriseCatalogRuleBundle:Rule:_impacted_product_count.html.twig
+                frontend_type: html
         properties:
             id: ~
             delete_link:
@@ -43,5 +48,19 @@ datagrid:
             columns:
                 code:
                     data_name: r.code
+                impactedSubjectCount:
+                    data_name: r.impactedSubjectCount
             default:
                 code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        mass_actions:
+            impacted_product_count:
+                type: ajax
+                acl_resource: pimee_catalog_rule_rule_impacted_product_count_permissions
+                handler: rule_impacted_product_count
+                label: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.impacted_product_count
+                route: pimee_catalog_rule_rule_mass_impacted_product_count
+                icon: undo
+                messages:
+                    confirm_title: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.confirm_title
+                    confirm_content: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.confirm_content
+                    confirm_ok: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.confirm_ok

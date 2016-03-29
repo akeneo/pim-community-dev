@@ -45,3 +45,4 @@ xlsx_product_export;IT support,Manager,Redactor;IT support,Manager
 xlsx_published_product_export;IT support,Manager,Redactor;IT support,Manager
 xlsx_product_quick_export;All;
 xlsx_published_product_quick_export;All;
+rule_impacted_product_count;All;

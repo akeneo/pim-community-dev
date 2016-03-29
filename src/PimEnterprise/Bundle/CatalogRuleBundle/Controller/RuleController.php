@@ -11,12 +11,18 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
+use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Rule controller
@@ -25,22 +31,48 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class RuleController
 {
+    const MASS_RULE_IMPACTED_PRODUCTS = 'rule_impacted_product_count';
+
     /** @var RuleDefinitionRepositoryInterface */
     protected $repository;
 
     /** @var RemoverInterface */
     protected $remover;
 
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var JobLauncherInterface */
+    protected $simpleJobLauncher;
+
+    /** @var JobInstanceRepository */
+    protected $jobInstanceRepo;
+
+    /** @var OroToPimGridFilterAdapter */
+    protected $gridFilterAdapter;
+
     /**
-     * Constructor
-     *
      * @param RuleDefinitionRepositoryInterface $repository
      * @param RemoverInterface                  $remover
+     * @param TokenStorageInterface             $tokenStorage
+     * @param JobLauncherInterface              $simpleJobLauncher
+     * @param JobInstanceRepository             $jobInstanceRepo
+     * @param OroToPimGridFilterAdapter         $gridFilterAdapter
      */
-    public function __construct(RuleDefinitionRepositoryInterface $repository, RemoverInterface $remover)
-    {
-        $this->repository = $repository;
-        $this->remover    = $remover;
+    public function __construct(
+        RuleDefinitionRepositoryInterface $repository,
+        RemoverInterface $remover,
+        TokenStorageInterface $tokenStorage,
+        JobLauncherInterface $simpleJobLauncher,
+        JobInstanceRepository $jobInstanceRepo,
+        OroToPimGridFilterAdapter $gridFilterAdapter
+    ) {
+        $this->repository        = $repository;
+        $this->remover           = $remover;
+        $this->tokenStorage      = $tokenStorage;
+        $this->simpleJobLauncher = $simpleJobLauncher;
+        $this->jobInstanceRepo   = $jobInstanceRepo;
+        $this->gridFilterAdapter = $gridFilterAdapter;
     }
 
     /**
@@ -80,5 +112,31 @@ class RuleController
         $this->remover->remove($rule);
 
         return new JsonResponse();
+    }
+
+    /**
+     * Launch the mass calculation of products impacted by rules
+     *
+     * @AclAncestor("pimee_catalog_rule_rule_impacted_product_count_permissions")
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function massImpactedProductCountAction(Request $request)
+    {
+        $request->request->add(['actionName' => 'massImpactedProductCount']);
+        $params           = $this->gridFilterAdapter->adapt($request);
+        $jobInstance      = $this->jobInstanceRepo->findOneByIdentifier(self::MASS_RULE_IMPACTED_PRODUCTS);
+        $rawConfiguration = addslashes(json_encode(['ruleIds' => $params['values']]));
+
+        $this->simpleJobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $rawConfiguration);
+
+        return new JsonResponse(
+            [
+                'message'    => 'flash.rule.impacted_product_count',
+                'successful' => true
+            ]
+        );
     }
 }

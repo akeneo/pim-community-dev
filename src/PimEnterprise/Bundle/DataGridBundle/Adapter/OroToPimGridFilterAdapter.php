@@ -26,6 +26,8 @@ class OroToPimGridFilterAdapter extends BaseAdapter
 
     const PUBLISHED_PRODUCT_GRID_NAME = 'published-product-grid';
 
+    const RULE_GRID_NAME = 'rule-grid';
+
     /**
      * @param MassActionDispatcher $massActionDispatcher
      */
@@ -41,7 +43,7 @@ class OroToPimGridFilterAdapter extends BaseAdapter
     {
         if (in_array($request->get('gridName'), [self::PRODUCT_GRID_NAME, self::PUBLISHED_PRODUCT_GRID_NAME])) {
             $filters = $this->massActionDispatcher->getRawFilters($request);
-        } elseif ($request->get('gridName') === self::APPROVE_GRID_NAME) {
+        } elseif (in_array($request->get('gridName'), [self::APPROVE_GRID_NAME, self::RULE_GRID_NAME])) {
             return ['values' => $this->massActionDispatcher->dispatch($request)];
         } else {
             $items =  $this->massActionDispatcher->dispatch($request);

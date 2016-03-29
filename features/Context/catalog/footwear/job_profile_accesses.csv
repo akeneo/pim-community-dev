@@ -29,3 +29,4 @@ csv_published_product_quick_export;IT support,Manager,Redactor;
 edit_common_attributes_with_permission;IT support,Manager,Redactor;
 xlsx_product_quick_export;IT support,Manager,Redactor;
 xlsx_published_product_quick_export;IT support,Manager,Redactor;
+rule_impacted_product_count;All;

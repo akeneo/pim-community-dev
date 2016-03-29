@@ -28,7 +28,7 @@ class RuleDefinitionRepository extends EntityRepository implements RuleDefinitio
     public function createDatagridQueryBuilder()
     {
         $qb = new RuleQueryBuilder($this->_em);
-        $qb->select('r.id, r.code, r.content');
+        $qb->select('r.id, r.code, r.content, r.impactedSubjectCount');
         $qb->from($this->_entityName, 'r');
 
         return $qb;
