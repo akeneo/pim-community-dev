@@ -1,5 +1,4 @@
 "oro_datagrid.no_data_hint %entityHint%": 'No existe %entityHint% .'
-oro_datagrid.not_found_hint: No se encontraron resultados. Intentar cambiar tu criterio de búsqueda.
 oro_datagrid.label_add_filter: Administrar filtros
 oro_datagrid.label_loading_mask: Cargando...
 oro.grid.mass_action.selected_rows: Filas seleccionadas
@@ -15,11 +14,10 @@ oro.grid.datagrid.page_size.all: Todos
 oro.grid.mass_action.delete.success_message: '{0} Ninguna entidad fue  eliminada|{1} Una entidad eliminada|]1, Inf [%count% entidades fueron eliminadas'
 datagrid_view:
   views: Vistas
-  default: Vista por defecto
   create: Crear vista
   placeholder: Nombre de la nueva vista
   remove: Eliminar esta vista
-  save_changes: Guardar esta vista
+  save_changes: Actualizar
   choose_label: Elija una etiqueta para la vista
   columns:
     min_message: Debe seleccionar al menos una columna de datagrid para mostrar
@@ -32,7 +30,3 @@ flash.datagrid view:
   updated: Vista de grilla de datos actualizada correctamente
   removed: Vista de grilla de datos eliminada correctamente
   not removable: No tienes los derechos para eliminar este punto de vista
-quick_export: Exportación rápida
-import: Importación
-export: Exportación
-mass_edit: Edición en masa
