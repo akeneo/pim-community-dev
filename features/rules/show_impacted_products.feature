@@ -64,27 +64,27 @@ Feature: Browse products selected in rules datagrid
             locale: en_US
       """
 
-  Scenario: Successfully display the number of products selected by the rule conditions
+  Scenario: Successfully display the number of matching products by the rule conditions
     Given I am on the rules page
     When I select rows rule_sku, rule_weight and rule_size
-    And I press the "Calculate selected products by rule" button
+    And I press the "Calculate the matching products for the rules" button
     Then I should see the text "Calculation confirmation"
     When I confirm the execution
     And I wait for the "rule_impacted_product_count" quick export to finish
     Then I should see the text "Number of rules 3"
     When I am on the rules page
     Then I should see notification:
-      | type    | message                                                               |
-      | success | Calculation of the numbers of products selected by the rules finished |
+      | type    | message                                                     |
+      | success | Calculation of the matching products for the rules finished |
     And the row "rule_sku" should contain:
       | column             | value               |
-      | Selected products  | 2 selected products |
+      | Matching products  | 2 matching products |
     And the row "rule_weight" should contain:
       | column             | value               |
-      | Selected products  | 1 selected product  |
+      | Matching products  | 1 matching product  |
     And the row "rule_size" should contain:
       | column             | value               |
-      | Selected products  | 0 selected product  |
+      | Matching products  | 0 matching product  |
     And the row "rule_big_size" should contain:
       | column             | value               |
-      | Selected products  | Not yet calculated  |
+      | Matching products  | Not yet calculated  |

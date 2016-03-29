@@ -45,5 +45,5 @@ jobs:
     rule_impacted_product_count:
         connector: Akeneo Rule Engine Connector
         alias:     rule_impacted_product_count
-        label:     Calculation of the numbers of products selected by the rules
+        label:     Calculation the matching products for the rules
         type:      mass_edit_rule

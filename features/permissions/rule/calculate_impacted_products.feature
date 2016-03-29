@@ -24,12 +24,12 @@ Feature: Manage permissions to calculate impacted product by a rule
             locale: en_US
       """
     When I am on the rules page
-    Then I should see the text "Calculate selected products by rule"
+    Then I should see the text "Calculate the matching products for the rules"
     When I am on the "Administrator" userRole page
     And I visit the "Permissions" tab
     And I click on the "Rules" ACL group
-    And I click on the "Calculate the number of products selected by a rule" ACL role
+    And I click on the "Calculate the matching products for the rules" ACL role
     And I save the userRole
     When I am on the rules page
-    Then I should not see the text "Calculate selected products by rule"
+    Then I should not see the text "Calculate the matching products for the rules"
     And I reset the "Administrator" rights
