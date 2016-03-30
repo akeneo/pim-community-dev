@@ -43,6 +43,13 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     /** @var JobConfigurationRepositoryInterface */
     protected $jobConfigurationRepo;
 
+    protected $filters;
+
+    public function setFilters($filters)
+    {
+        $this->filters = $filters;
+    }
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param JobRepositoryInterface              $jobRepository
@@ -146,7 +153,7 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
      */
     public function getConfigurationFields()
     {
-        return [];
+        return ['filters' => []];
     }
 
     /**
@@ -176,16 +183,6 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
      */
     protected function getJobConfiguration()
     {
-        $jobExecution    = $this->stepExecution->getJobExecution();
-        $massEditJobConf = $this->jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution]);
-
-        if (null === $massEditJobConf) {
-            throw new EntityNotFoundException(sprintf(
-                'No JobConfiguration found for jobExecution with id %s',
-                $jobExecution->getId()
-            ));
-        }
-
-        return json_decode(stripcslashes($massEditJobConf->getConfiguration()), true);
+        return $this->getConfiguration();
     }
 }

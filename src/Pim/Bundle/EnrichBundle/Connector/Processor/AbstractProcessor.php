@@ -28,6 +28,13 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     /** @var JobConfigurationRepositoryInterface */
     protected $jobConfigurationRepo;
 
+    protected $actions;
+
+    public function setActions($actions)
+    {
+        $this->actions = $actions;
+    }
+
     /**
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      */
@@ -51,7 +58,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      */
     public function getConfigurationFields()
     {
-        return [];
+        return ['actions' => [],];
     }
 
     /**
@@ -91,9 +98,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      */
     protected function getJobConfiguration()
     {
-        $jobExecution    = $this->stepExecution->getJobExecution();
-        $massEditJobConf = $this->jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution]);
-
-        return json_decode(stripcslashes($massEditJobConf->getConfiguration()), true);
+        return $this->getConfiguration();
     }
 }

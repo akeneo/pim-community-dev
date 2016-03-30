@@ -46,7 +46,6 @@ class AddProductValueProcessor extends AbstractProcessor
     public function process($product)
     {
         $configuration = $this->getJobConfiguration();
-
         if (!array_key_exists('actions', $configuration)) {
             throw new InvalidArgumentException('Missing configuration for \'actions\'.');
         }
