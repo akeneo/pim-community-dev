@@ -188,7 +188,7 @@ class VariantGroupController
     {
         $locale         = $this->userContext->getUiLocale()->getCode();
         $data['values'] = $this->attributeConverter
-            ->convertLocalizedToDefaultValues($data['values'], ['locale' => $locale]);
+            ->convertToDefaultFormats($data['values'], ['locale' => $locale]);
 
         return $data;
     }

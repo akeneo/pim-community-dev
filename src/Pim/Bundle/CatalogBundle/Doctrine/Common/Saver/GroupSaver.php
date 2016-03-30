@@ -178,18 +178,21 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     {
         $newProducts = $group->getProducts();
         $pqb         = $this->productQueryBuilderFactory->create();
-        $oldProducts = $pqb->addFilter('groups.id', 'IN', [$group->getId()])->execute();
-        foreach ($oldProducts as $oldProduct) {
-            if ($newProducts->contains($oldProduct)) {
-                $oldProduct->addGroup($group);
-            } else {
-                $oldProduct->removeGroup($group);
-            }
 
-            $this->productSaver->save(
-                $oldProduct,
-                ['recalculate' => false, 'schedule' => false]
-            );
+        if (null !== $group->getId()) {
+            $oldProducts = $pqb->addFilter('groups.id', 'IN', [$group->getId()])->execute();
+            foreach ($oldProducts as $oldProduct) {
+                if ($newProducts->contains($oldProduct)) {
+                    $oldProduct->addGroup($group);
+                } else {
+                    $oldProduct->removeGroup($group);
+                }
+
+                $this->productSaver->save(
+                    $oldProduct,
+                    ['recalculate' => false, 'schedule' => false]
+                );
+            }
         }
 
         foreach ($newProducts as $newProduct) {
