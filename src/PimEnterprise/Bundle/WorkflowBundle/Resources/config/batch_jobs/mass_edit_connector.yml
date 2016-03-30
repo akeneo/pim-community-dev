@@ -1,0 +1,21 @@
+connector:
+    name: Akeneo Mass Edit Connector
+    jobs:
+        approve_product_draft:
+            title: pimee_workflow.jobs.approve_product_draft.title
+            type:  mass_edit
+            steps:
+                perform:
+                    title: pimee_workflow.jobs.approve_product_draft.perform.title
+                    class: "%pim_connector.step.tasklet.class%"
+                    services:
+                        tasklet: pimee_workflow.mass_review_tasklet.approve_draft
+        refuse_product_draft:
+            title: pimee_workflow.jobs.refuse_product_draft.title
+            type:  mass_edit
+            steps:
+                perform:
+                    title: pimee_workflow.jobs.refuse_product_draft.perform.title
+                    class: "%pim_connector.step.tasklet.class%"
+                    services:
+                        tasklet: pimee_workflow.mass_review_tasklet.refuse_draft
