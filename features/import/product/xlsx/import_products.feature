@@ -43,3 +43,17 @@ Feature: Import XLSX products
     And I wait for the "xlsx_footwear_product_import" job to finish
     Then there should be 1 products
     And the english tablet description of "SKU-001" should be "dictum magna.|NL||NL|Lorem ispum|NL|Est"
+
+  Scenario: Successfully import a XLSX file of products with count columns less than count headers
+    Given the following XLSX file to import:
+      """
+      sku;family;groups;categories;name-en_US;description-en_US-tablet
+      SKU-001;boots
+      SKU-002;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+      """
+    And the following job "xlsx_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "xlsx_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "xlsx_footwear_product_import" job to finish
+    Then there should be 2 products

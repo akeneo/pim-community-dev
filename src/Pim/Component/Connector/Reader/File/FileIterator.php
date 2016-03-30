@@ -80,6 +80,7 @@ class FileIterator implements FileIteratorInterface
      * {@inheritdoc}
      *
      * @throws FileIteratorException
+     * @throws InvalidItemException
      */
     public function current()
     {
@@ -95,19 +96,24 @@ class FileIterator implements FileIteratorInterface
             return null;
         }
 
-        if (count($this->headers) < count($data)) {
+        $countHeaders = count($this->headers);
+        $countData    = count($data);
+
+        if ($countHeaders < $countData) {
             throw new InvalidItemException(
                 'pim_connector.steps.file_reader.invalid_item_columns_count',
                 $data,
                 [
-                    '%totalColumnsCount%' => count($this->headers),
-                    '%itemColumnsCount%'  => count($data),
+                    '%totalColumnsCount%' => $countHeaders,
+                    '%itemColumnsCount%'  => $countData,
                     '%filePath%'          => $this->filePath,
                     '%lineno%'            => $this->rows->key()
                 ]
             );
-        } elseif (count($this->headers) > count($data)) {
-            $missingValuesCount = count($this->headers) - count($data);
+        }
+
+        if ($countHeaders > $countData) {
+            $missingValuesCount = $countHeaders - $countData;
             $missingValues = array_fill(0, $missingValuesCount, '');
             $data = array_merge($data, $missingValues);
         }
@@ -172,11 +178,12 @@ class FileIterator implements FileIteratorInterface
      */
     public function reset()
     {
-        $this->rows        = null;
-        $this->headers     = null;
-        $this->fileInfo    = null;
-        $this->filePath    = null;
-        $this->archivePath = null;
+        $this->reader->close();
+
+        $this->rows     = null;
+        $this->headers  = null;
+        $this->fileInfo = null;
+        $this->filePath = null;
     }
 
     /**
@@ -227,12 +234,12 @@ class FileIterator implements FileIteratorInterface
      */
     public function __destruct()
     {
-        $this->reader->close();
         $this->reset();
 
         if ($this->archivePath) {
             $fileSystem = new Filesystem();
             $fileSystem->remove($this->archivePath);
+            $this->archivePath = null;
         }
     }
 
@@ -273,6 +280,9 @@ class FileIterator implements FileIteratorInterface
             );
         }
 
-        $this->filePath = $files->getIterator()->getRealpath();
+        $filesIterator = $files->getIterator();
+        $filesIterator->rewind();
+
+        $this->filePath = $filesIterator->current()->getPathname();
     }
 }
