@@ -26,6 +26,7 @@ parameters:
     pim_connector.array_converter.flat.product.value_converter.multiselect.class:     Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\MultiSelectConverter
     pim_connector.array_converter.flat.product.value_converter.simpleselect.class:    Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\SimpleSelectConverter
     pim_connector.array_converter.flat.product.value_converter.media.class:           Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\MediaConverter
+    pim_connector.array_converter.flat.product.value_converter.text.class:            Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\TextConverter
     pim_connector.array_converter.flat.product.value_converter.scalar.class:          Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ScalarConverter
 
     pim_connector.array_converter.flat.product.field_converter.class:                 Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter
@@ -198,11 +199,19 @@ services:
         tags:
             - { name: 'pim_connector.array_converter.flat.product.value_converter' }
 
+    pim_connector.array_converter.flat.product.value_converter.text:
+        class: %pim_connector.array_converter.flat.product.value_converter.text.class%
+        parent: pim_connector.array_converter.flat.product.value_converter.abstract
+        arguments:
+            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea']
+        tags:
+            - { name: 'pim_connector.array_converter.flat.product.value_converter' }
+
     pim_connector.array_converter.flat.product.value_converter.scalar:
         class: %pim_connector.array_converter.flat.product.value_converter.scalar.class%
         parent: pim_connector.array_converter.flat.product.value_converter.abstract
         arguments:
-            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_date', 'pim_catalog_boolean', 'pim_catalog_number']
+            - ['pim_catalog_date', 'pim_catalog_boolean', 'pim_catalog_number']
         tags:
             - { name: 'pim_connector.array_converter.flat.product.value_converter' }
 

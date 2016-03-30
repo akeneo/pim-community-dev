@@ -121,24 +121,4 @@ class ProductAssociationFilterSpec extends ObjectBehavior
 
         $this->filter($product, $newValues)->shouldReturn([]);
     }
-
-    function it_throws_an_exception_if_new_values_contain_other_than_associations(
-        $normalizer,
-        ProductInterface $product
-    ) {
-        $originalValues = $newValues = [
-            'family' => [],
-            'associations' => ['groups' => [1]],
-        ];
-
-        $normalizer->normalize($product, 'json', ['only_associations' => true])
-            ->willReturn($originalValues);
-
-        $this
-            ->shouldThrow('LogicException')
-            ->during(
-                'filter',
-                [$product, $newValues]
-            );
-    }
 }

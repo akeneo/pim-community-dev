@@ -2,7 +2,7 @@
 Feature: Execute a job
   In order to use existing product information
   As a product manager
-  I need to be able to import products
+  I need to be able to import products with associations
 
   Background:
     Given the "footwear" catalog configuration
