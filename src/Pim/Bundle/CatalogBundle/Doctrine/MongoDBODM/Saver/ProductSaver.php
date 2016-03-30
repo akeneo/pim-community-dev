@@ -118,10 +118,8 @@ class ProductSaver extends BaseProductSaver
             $this->updateDocuments($updateDocs);
         }
         
-        if (true === $options['recalculate']) {
-            foreach ($products as $product) {
-                $this->completenessManager->generateMissingForProduct($product);
-            }
+        foreach ($products as $product) {
+            $this->completenessManager->generateMissingForProduct($product);
         }
 
         $versions = $this->bulkVersionBuilder->buildVersions($products);

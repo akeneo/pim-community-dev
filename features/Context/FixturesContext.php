@@ -92,7 +92,7 @@ class FixturesContext extends BaseFixturesContext
 
         // use the processor part of the import system
         $product = $this->loadFixture('products', $data);
-        $this->getProductSaver()->save($product, ['recalculate' => false]);
+        $this->getProductSaver()->save($product);
 
         // reset the unique value set to allow to update product values
         $uniqueValueSet = $this->getContainer()->get('pim_catalog.validator.unique_value_set');
@@ -1373,7 +1373,7 @@ class FixturesContext extends BaseFixturesContext
     {
         $product->setUpdated(new \DateTime($expected));
 
-        $this->getProductSaver()->save($product, ['recalculate' => false]);
+        $this->getProductSaver()->save($product);
     }
 
     /**
@@ -1419,7 +1419,7 @@ class FixturesContext extends BaseFixturesContext
             $association->addProduct($this->getProduct($row['product']));
         }
 
-        $this->getProductSaver()->save($owner, ['recalculate' => false]);
+        $this->getProductSaver()->save($owner);
     }
 
     /**

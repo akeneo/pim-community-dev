@@ -160,7 +160,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      */
     protected function addProducts(array $products)
     {
-        $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => false]);
+        $this->productSaver->saveAll($products);
     }
 
     /**
@@ -168,7 +168,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      */
     protected function removeProducts(array $products)
     {
-        $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => false]);
+        $this->productSaver->saveAll($products);
     }
 
     /**

@@ -98,9 +98,7 @@ class GroupSaverSpec extends ObjectBehavior
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $productSaver
-            ->saveAll([$addedProduct], ['recalculate' => false, 'schedule' => false])
-            ->shouldBeCalled();
+        $productSaver->saveAll([$addedProduct])->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
@@ -132,7 +130,7 @@ class GroupSaverSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
 
         $productSaver
-            ->saveAll([$removedProduct], ['recalculate' => false, 'schedule' => false])
+            ->saveAll([$removedProduct])
             ->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();

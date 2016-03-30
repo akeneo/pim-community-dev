@@ -260,7 +260,7 @@ class ProductController
         }
 
         $this->productBuilder->removeAttributeFromProduct($product, $attribute);
-        $this->productSaver->save($product, ['recalculate' => false, 'schedule' => false]);
+        $this->productSaver->save($product);
 
         return new JsonResponse();
     }
