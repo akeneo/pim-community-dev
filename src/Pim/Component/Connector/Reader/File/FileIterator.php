@@ -95,7 +95,7 @@ class FileIterator implements FileIteratorInterface
             return null;
         }
 
-        if (count($this->headers) !== count($data)) {
+        if (count($this->headers) < count($data)) {
             throw new InvalidItemException(
                 'pim_connector.steps.file_reader.invalid_item_columns_count',
                 $data,
@@ -106,6 +106,10 @@ class FileIterator implements FileIteratorInterface
                     '%lineno%'            => $this->rows->key()
                 ]
             );
+        } elseif (count($this->headers) > count($data)) {
+            $missingValuesCount = count($this->headers) - count($data);
+            $missingValues = array_fill(0, $missingValuesCount, '');
+            $data = array_merge($data, $missingValues);
         }
 
         $data = array_combine($this->headers, $data);
