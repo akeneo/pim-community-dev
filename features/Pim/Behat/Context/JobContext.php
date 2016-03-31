@@ -96,23 +96,12 @@ class JobContext extends PimContext
      */
     public function getJobInstancePath($code)
     {
-        $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
-        $configuration = $this->getFixturesContext()->findEntity('JobConfiguration', [
-            'jobExecution' => $jobInstance->getJobExecutions()->first()
-        ]);
+        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+        $jobExecution = $jobInstance->getJobExecutions()->first();
+        $archiver = $this->getMainContext()->getContainer()->get('pim_base_connector.archiver.file_writer_archiver');
+        $archives = $archiver->getArchives($jobExecution);
+        $archive = key($archives);
 
-        $step = $this->getMainContext()
-            ->getContainer()
-            ->get('akeneo_batch.connectors')
-            ->getJob($jobInstance)
-            ->getSteps()[0];
-
-        $context = json_decode(stripcslashes($configuration->getConfiguration()), true);
-
-        if (null !== $context) {
-            $step->setConfiguration($context);
-        }
-
-        return $step->getWriter()->getPath();
+        return DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$archive;
     }
 }
