@@ -43,12 +43,8 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     /** @var JobConfigurationRepositoryInterface */
     protected $jobConfigurationRepo;
 
+    /** @var array */
     protected $filters;
-
-    public function setFilters($filters)
-    {
-        $this->filters = $filters;
-    }
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
@@ -72,8 +68,7 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
      */
     public function read()
     {
-        $configuration = $this->getJobConfiguration();
-
+        $configuration = $this->getConfiguration();
         if (null === $configuration) {
             return null;
         }
@@ -157,6 +152,14 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     }
 
     /**
+     * @param array $filters
+     */
+    public function setFilters($filters)
+    {
+        $this->filters = $filters;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setChannel($channel)
@@ -172,17 +175,5 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     public function getChannel()
     {
         return $this->channel;
-    }
-
-    /**
-     * Return the job configuration
-     *
-     * @throws EntityNotFoundException
-     *
-     * @return array
-     */
-    protected function getJobConfiguration()
-    {
-        return $this->getConfiguration();
     }
 }
