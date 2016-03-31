@@ -8,7 +8,6 @@ use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
-use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 
 /**
  * Archive files written by job execution to provide them through a download button
@@ -61,7 +60,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      */
     protected function isUsableWriter(ItemWriterInterface $writer)
     {
-        return $writer instanceof FileWriter && is_file($writer->getPath());
+        return ($writer instanceof FileWriter || $writer instanceof AbstractFileWriter) && is_file($writer->getPath());
     }
 
     /**
