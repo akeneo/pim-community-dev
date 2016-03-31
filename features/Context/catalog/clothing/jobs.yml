@@ -154,7 +154,7 @@ jobs:
     clothing_product_proposal_import:
         connector: Akeneo Native Connector
         alias:     csv_product_proposal_import
-        label:     Demo product draft import
+        label:     CSV Demo product draft import
         type:      import
         configuration:
             uploadAllowed:    true
@@ -164,7 +164,18 @@ jobs:
             escape:           '\'
             enabled:          true
             decimalSeparator: .
-            dateFormat:       mm/dd/yyyy
+            dateFormat:       MM/dd/yyyy
+    xlsx_clothing_product_proposal_import:
+        connector: Akeneo Native Connector
+        alias:     xlsx_product_proposal_import
+        label:     XLSX Demo product draft import
+        type:      import
+        configuration:
+            uploadAllowed:    true
+            multiple:         false
+            enabled:          true
+            decimalSeparator: .
+            dateFormat:       MM/dd/yyyy
     add_product_value_with_permission:
         connector: Akeneo Mass Edit Connector
         alias:     add_product_value_with_permission

@@ -36,3 +36,4 @@ edit_common_attributes_with_permission;IT support,Manager,Redactor;
 approve_product_draft;IT support,Manager;
 refuse_product_draft;IT support,Manager;
 apply_assets_mass_upload;IT support,Manager;
+xlsx_clothing_product_proposal_import;IT support,Manager,Redactor;IT support
