@@ -31,6 +31,18 @@ connector:
                         writer:    pim_base_connector.writer.doctrine.product_draft
                     parameters:
                         batch_size: 10
+        xlsx_product_proposal_import:
+            title: pimee_workflow.jobs.xlsx_product_proposal_import.title
+            type:  import
+            steps:
+                import:
+                    title:     pimee_workflow.jobs.xlsx_product_proposal_import.import.title
+                    services:
+                        reader:    pimee_workflow.reader.file.xlsx_product_draft
+                        processor: pimee_workflow.processor.denormalization.product_draft.flat
+                        writer:    pim_base_connector.writer.doctrine.product_draft
+                    parameters:
+                        batch_size: 10
         xlsx_published_product_export:
             title: pimee_workflow.jobs.xlsx_published_product_export.title
             type:  export

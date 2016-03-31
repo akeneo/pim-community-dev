@@ -34,7 +34,7 @@ Feature: Create product drafts for new attributes added to the product
       | filePath | %file to import% |
     When I am on the "clothing_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     And I am on the "bullet_proof_vest" product page
     And I save the product
     Then I should not see the text "Send for approval"

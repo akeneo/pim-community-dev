@@ -185,7 +185,7 @@ jobs:
     csv_product_proposal_import:
         connector: Akeneo Native Connector
         alias:     csv_product_proposal_import
-        label:     Demo product draft import
+        label:     CSV Demo product draft import
         type:      import
         configuration:
             filePath:           /tmp/product_draft.csv
@@ -407,3 +407,28 @@ jobs:
         alias:     rule_impacted_product_count
         label:     Calculation of the matching products for the rules
         type:      mass_edit_rule
+    xlsx_product_import:
+        connector: Akeneo Native Connector
+        alias:     xlsx_product_import
+        label:     XLSX Demo product import
+        type:      import
+        configuration:
+            filePath:           /tmp/product.xlsx
+            uploadAllowed:      true
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
+    xlsx_product_proposal_import:
+        connector: Akeneo Native Connector
+        alias:     xlsx_product_proposal_import
+        label:     XLSX Demo product draft import
+        type:      import
+        configuration:
+            filePath:      /tmp/product_draft.xlsx
+            uploadAllowed: true
+            multiple:      false
+            enabled:       true

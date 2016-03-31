@@ -47,4 +47,4 @@ Feature: Display proposals after import
     And I should see notifications:
       | type    | message                                                                |
       | add     | New proposals from import You have proposals to review from job import |
-      | success | Import Import Demo product draft import finished                       |
+      | success | Import Import CSV Demo product draft import finished                   |
