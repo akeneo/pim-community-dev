@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Datasource\ResultRecord\MongoDbOdm\Product;
 
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Transform reference data
@@ -40,7 +40,7 @@ class ReferenceDataTransformer
             $backendType = $attribute['backendType'];
             $references = isset($normalizedData[$fieldCode]) ? $normalizedData[$fieldCode] : [];
 
-            if (AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTION === $backendType) {
+            if (AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION === $backendType) {
                 $references = $this->filterOptionValues($references, $locale);
             } else {
                 foreach ($references as $indexReference => $reference) {

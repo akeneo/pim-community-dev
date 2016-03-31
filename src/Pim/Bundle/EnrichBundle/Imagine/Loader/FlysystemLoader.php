@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Imagine\Loader;
 
-use League\Flysystem\MountManager;
+use Akeneo\Component\FileStorage\FilesystemProvider;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Model\Binary;
@@ -17,20 +17,20 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
  */
 class FlysystemLoader implements LoaderInterface
 {
-    /** @var MountManager */
-    protected $mountManager;
+    /** @var FilesystemProvider */
+    protected $filesystemProvider;
 
     /** @var string */
     protected $filesystemAliases;
 
     /**
-     * @param MountManager $mountManager
-     * @param array        $filesystemAliases
+     * @param FilesystemProvider $filesystemProvider
+     * @param array              $filesystemAliases
      */
-    public function __construct(MountManager $mountManager, array $filesystemAliases)
+    public function __construct(FilesystemProvider $filesystemProvider, array $filesystemAliases)
     {
-        $this->mountManager      = $mountManager;
-        $this->filesystemAliases = $filesystemAliases;
+        $this->filesystemProvider = $filesystemProvider;
+        $this->filesystemAliases  = $filesystemAliases;
     }
 
     /**
@@ -67,7 +67,7 @@ class FlysystemLoader implements LoaderInterface
         $mimeType = null;
 
         foreach ($this->filesystemAliases as $alias) {
-            $fs = $this->mountManager->getFilesystem($alias);
+            $fs = $this->filesystemProvider->getFilesystem($alias);
             if ($fs->has($path)) {
                 //TODO: we should use readStream, the problem is that
                 // \Liip\ImagineBundle\Model\Binary expects the full content...
