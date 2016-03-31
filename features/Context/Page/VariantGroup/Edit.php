@@ -2,6 +2,7 @@
 
 namespace Context\Page\VariantGroup;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Form as Form;
 
@@ -34,6 +35,24 @@ class Edit extends Form
                     'decorators' => [
                         'Pim\Behat\Decorator\ContextSwitcherDecorator'
                     ]
+                ],
+                'Add attributes button' => [
+                    'css' => '.add-attribute',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\Attribute\AttributeAdderDecorator'
+                    ]
+                ],
+                'Attribute inputs' => [
+                    'css' => '.tab-pane.product-values',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\InputDecorator'
+                    ]
+                ],
+                'Navbar buttons' => [
+                    'css' => 'header .actions',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\Navbar\ButtonDecorator'
+                    ]
                 ]
             ]
         );
@@ -48,32 +67,7 @@ class Edit extends Form
      */
     public function findField($name)
     {
-        $currency = null;
-        if (1 === preg_match('/in (.{1,3})$/', $name)) {
-            // Price in EUR
-            list($name, $currency) = explode(' in ', $name);
-
-            return $this->findPriceField($name, $currency);
-        } elseif (1 < str_word_count($name)) {
-            // mobile Description
-            $words = explode(' ', $name);
-            $scope = array_shift($words);
-            $name = implode(' ', $words);
-            // Check that it is really a scoped field, not a field with a two word label
-            if (strtolower($scope) === $scope) {
-                return $this->findScopedField($name, $scope);
-            }
-        }
-        $label = $this->find('css', sprintf('label:contains("%s")', $name));
-        if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-        }
-        $field = $label->getParent()->find('css', 'input,textarea');
-        if (!$field) {
-            throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
-        }
-
-        return $field;
+        return $this->getElement('Attribute inputs')->findField($name);
     }
 
     /**
@@ -100,6 +94,14 @@ class Edit extends Form
     public function getRemoveLinkFor($field)
     {
         return $this->find('css', sprintf('.control-group:contains("%s") .remove-attribute', $field));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function save()
+    {
+        $this->getElement('Navbar buttons')->asynchronousSave('Save');
     }
 
     /**

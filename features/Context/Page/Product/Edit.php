@@ -77,6 +77,12 @@ class Edit extends ProductEditForm
                     'decorators' => [
                         'Pim\Behat\Decorator\ContextSwitcherDecorator'
                     ]
+                ],
+                'Add attributes button' => [
+                    'css' => '.add-attribute',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\Attribute\AttributeAdderDecorator'
+                    ]
                 ]
             ]
         );
