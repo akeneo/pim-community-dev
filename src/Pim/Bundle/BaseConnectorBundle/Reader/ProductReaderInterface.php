@@ -18,13 +18,15 @@ interface ProductReaderInterface extends ItemReaderInterface, StepExecutionAware
      * Set channel
      *
      * @param string $channel
-     */
+     *
     public function setChannel($channel);
+     */
 
     /**
      * Get channel
      *
      * @return string
-     */
+     *
     public function getChannel();
+     */
 }

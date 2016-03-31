@@ -2,6 +2,8 @@
 
 namespace Akeneo\Component\Batch\Item;
 
+use Akeneo\Component\Batch\Model\ConfigurableInterface;
+use Akeneo\Component\Batch\Model\Configuration;
 use Doctrine\Common\Util\Inflector;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -10,8 +12,11 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  *
  * @abstract
  */
-abstract class AbstractConfigurableStepElement
+abstract class AbstractConfigurableStepElement implements ConfigurableInterface
 {
+    /** @var Configuration */
+    protected $configuration;
+
     /**
      * Return an array of fields for the configuration form
      *
@@ -44,28 +49,41 @@ abstract class AbstractConfigurableStepElement
      */
     public function getConfiguration()
     {
+        return $this->configuration;
+
+        /*
         $result = array();
         foreach (array_keys($this->getConfigurationFields()) as $field) {
             $result[$field] = $this->$field;
         }
 
         return $result;
+        */
     }
 
-    /**
-     * Set the step element configuration
-     *
-     * @param array $config
-     */
-    public function setConfiguration(array $config)
-    {
-        $accessor = PropertyAccess::createPropertyAccessor();
 
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(Configuration $configuration)
+    {
+        $this->configuration = $configuration;
+        /*
+        $accessor = PropertyAccess::createPropertyAccessor();
         foreach ($config as $key => $value) {
             if (array_key_exists($key, $this->getConfigurationFields())) {
                 $accessor->setValue($this, $key, $value);
             }
-        }
+        }*/
+    }
+
+    /**
+     * @deprecated will be removed in 1.7, please use ConfigurableInterface::configure
+     */
+    public function setConfiguration(array $config)
+    {
+        $configuration = new Configuration($config);
+        $this->configure($configuration);
     }
 
     /**

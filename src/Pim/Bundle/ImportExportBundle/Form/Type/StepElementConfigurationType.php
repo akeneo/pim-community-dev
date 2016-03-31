@@ -31,6 +31,7 @@ class StepElementConfigurationType extends AbstractType
                 $stepElement = $event->getData();
 
                 foreach ($stepElement->getConfigurationFields() as $field => $config) {
+
                     if (isset($config['system']) && true === $config['system']) {
                         continue;
                     }

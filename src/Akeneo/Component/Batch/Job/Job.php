@@ -4,6 +4,8 @@ namespace Akeneo\Component\Batch\Job;
 
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Model\ConfigurableInterface;
+use Akeneo\Component\Batch\Model\Configuration;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepInterface;
@@ -33,7 +35,7 @@ class Job implements JobInterface
     /* @var JobRepositoryInterface */
     protected $jobRepository;
 
-    /** @var array */
+    /** @var StepInterface[] */
     protected $steps;
 
     /** @var string */
@@ -80,6 +82,16 @@ class Job implements JobInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function configure(Configuration $configuration)
+    {
+        foreach ($this->steps as $step) {
+            $step->configure($configuration);
+        }
+    }
+
+    /**
      * Set the event dispatcher
      *
      * @param EventDispatcherInterface $eventDispatcher
@@ -96,7 +108,7 @@ class Job implements JobInterface
     /**
      * Return all the steps
      *
-     * @return array steps
+     * @return StepInterface[]
      */
     public function getSteps()
     {
@@ -104,10 +116,9 @@ class Job implements JobInterface
     }
 
     /**
-     * Public setter for the steps in this job. Overrides any calls to
-     * addStep(Step).
+     * Public setter for the steps in this job. Overrides any calls to addStep(Step).
      *
-     * @param array $steps the steps to execute
+     * @param StepInterface[] the steps to execute
      *
      * @return Job
      */
@@ -210,12 +221,13 @@ class Job implements JobInterface
      * Set the steps configuration
      *
      * @param array $config
+     *
+     * @deprecated will be removed in 1.7, please use ConfigurableInterface::configure
      */
     public function setConfiguration(array $config)
     {
-        foreach ($this->steps as $step) {
-            $step->setConfiguration($config);
-        }
+        $configuration = new Configuration($config);
+        $this->configure($configuration);
     }
 
     /**

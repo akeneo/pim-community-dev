@@ -5,6 +5,7 @@ namespace Akeneo\Component\Batch\Step;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\InvalidItemEvent;
 use Akeneo\Component\Batch\Event\StepExecutionEvent;
+use Akeneo\Component\Batch\Model\Configuration;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\JobInterruptedException;
@@ -267,5 +268,13 @@ abstract class AbstractStep implements StepInterface
     private function dispatch($eventName, Event $event)
     {
         $this->eventDispatcher->dispatch($eventName, $event);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(Configuration $configuration)
+    {
+        // TODO useless?
     }
 }
