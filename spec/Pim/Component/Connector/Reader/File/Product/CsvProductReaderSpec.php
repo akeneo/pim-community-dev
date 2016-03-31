@@ -4,14 +4,16 @@ namespace spec\Pim\Component\Connector\Reader\File\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Reader\File\FileIterator;
+use Pim\Component\Connector\Reader\File\FileIteratorFactory;
+use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Pim\Component\Connector\Reader\File\Product\MediaPathTransformer;
 use Prophecy\Argument;
 
 class CsvProductReaderSpec extends ObjectBehavior
 {
-    function let(FileIterator $fileIterator, MediaPathTransformer $mediaPath)
+    function let(FileIteratorFactory $fileIteratorFactory, MediaPathTransformer $mediaPath)
     {
-        $this->beConstructedWith($fileIterator, $mediaPath, ['.', ','], ['Y-m-d', 'd-m-Y']);
+        $this->beConstructedWith($fileIteratorFactory, $mediaPath, ['.', ','], ['Y-m-d', 'd-m-Y']);
     }
 
     function it_is_initializable()
@@ -24,8 +26,11 @@ class CsvProductReaderSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Connector\Reader\File\CsvReader');
     }
 
-    function it_transforms_media_paths_to_absolute_paths($fileIterator, $mediaPath)
-    {
+    function it_transforms_media_paths_to_absolute_paths(
+        $fileIteratorFactory,
+        FileIteratorInterface $fileIterator,
+        $mediaPath
+    ) {
         $data = [
             'sku'          => 'SKU-001',
             'name'         => 'door',
@@ -33,21 +38,17 @@ class CsvProductReaderSpec extends ObjectBehavior
             'manual-fr_FR' => 'fixtures/sku-001.txt',
         ];
 
-        $fileIterator->setReaderOptions(
-            [
-                'fieldDelimiter' => ';',
-                'fieldEnclosure' => '"',
-            ]
-        )->willReturn($fileIterator);
-        $fileIterator->reset()->shouldBeCalled();
-        $fileIterator->isInitialized()->willReturn(false);
+        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
+        $this->setFilePath($filePath);
+        $fileIteratorFactory->create($filePath, [
+            'fieldDelimiter' => ';',
+            'fieldEnclosure' => '"',
+        ])->willReturn($fileIterator);
+
         $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->current()->willReturn($data);
-
-        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
-        $this->setFilePath($filePath);
-        $fileIterator->setFilePath($filePath)->willReturn($fileIterator);
+        $fileIterator->valid()->willReturn(true);
 
         $absolutePath = [
             'sku'          => 'SKU-001',

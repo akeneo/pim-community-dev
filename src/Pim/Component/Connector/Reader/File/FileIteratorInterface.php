@@ -12,38 +12,6 @@ namespace Pim\Component\Connector\Reader\File;
 interface FileIteratorInterface extends \Iterator
 {
     /**
-     * Iterator has been initialized ?
-     *
-     * @return bool
-     */
-    public function isInitialized();
-
-    /**
-     * Reset iterator when there is multi import
-     *
-     * @return FileIteratorInterface
-     */
-    public function reset();
-
-    /**
-     * Set reader options
-     *
-     * @param array $options
-     *
-     * @return FileIteratorInterface
-     */
-    public function setReaderOptions(array $options = []);
-
-    /**
-     * Set file path
-     *
-     * @param string $filePath
-     *
-     * @return FileIteratorInterface
-     */
-    public function setFilePath($filePath);
-
-    /**
      * Get directory path. Can be the path of extracted zip archive or directory file path
      *
      * @return string

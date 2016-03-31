@@ -9,43 +9,70 @@ class FileIteratorSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('csv');
+        $this->beConstructedWith('csv', $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv', [
+            'fieldDelimiter' => ';'
+        ]);
     }
 
     function it_gets_current_row()
     {
-        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
-        $this->setFilePath($filePath);
-
         $this->rewind();
         $this->next();
         $this->current()->shouldReturn(
             [
-                'sku;name;view;manual-fr_FR' => 'SKU-001;door;sku-001.jpg;sku-001.txt'
+                'sku'          => 'SKU-001',
+                'name'         => 'door',
+                'view'         => 'sku-001.jpg',
+                'manual-fr_FR' => 'sku-001.txt'
             ]
         );
     }
 
-    function it_gets_current_row_from_an_archive()
+    function it_gets_current_row_from_xlsx()
     {
-        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/caterpillar_import.zip';
-        $this->setFilePath($filePath);
+        $this->beConstructedWith('xlsx', $this->getPath() . DIRECTORY_SEPARATOR  . 'product_with_carriage_return.xlsx');
 
         $this->rewind();
         $this->next();
         $this->current()->shouldReturn(
             [
-                'sku;family;groups;categories;name-en_US;description-en_US-mobile;side_view;color;size' =>
-                    'CAT-001;boots;caterpillar_boots;winter_collection;Caterpillar 1;Model 1 boots;cat_001.png;black;37'
+                'sku' => 'SKU-001',
+                'family' => 'boots',
+                'groups' => 'CROSS',
+                'categories' => 'winter_boots',
+                'name-en_US' => 'Donec',
+                'description-en_US-tablet' => 'dictum magna.
+
+Lorem ispum
+Est'
+            ]
+        );
+    }
+    function it_gets_current_row_from_an_archive()
+    {
+        $this->beConstructedWith('csv', $this->getPath() . DIRECTORY_SEPARATOR  . 'caterpillar_import.zip', [
+            'fieldDelimiter' => ';'
+        ]);
+
+        $this->rewind();
+        $this->next();
+        $this->current()->shouldReturn(
+            [
+                'sku' => 'CAT-001',
+                'family' => 'boots',
+                'groups' => 'caterpillar_boots',
+                'categories' => 'winter_collection',
+                'name-en_US' => 'Caterpillar 1',
+                'description-en_US-mobile' => 'Model 1 boots',
+                'side_view' => 'cat_001.png',
+                'color' => 'black',
+                'size' => '37',
             ]
         );
     }
 
     function it_returns_null_at_the_end_of_file()
     {
-        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
-        $this->setFilePath($filePath);
-
         $this->rewind();
         $this->next();
         $this->next();
@@ -54,27 +81,20 @@ class FileIteratorSpec extends ObjectBehavior
 
     function it_returns_directory_from_filepath()
     {
-        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
-        $this->setFilePath($filePath);
         $this->rewind();
-
-        $this->getDirectoryPath()->shouldReturn(__DIR__ . '/../../../../../../features/Context/fixtures');
+        $this->getDirectoryPath()->shouldReturn($this->getPath());
     }
 
     function it_returns_directory_created_for_archive()
     {
-        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/caterpillar_import.zip';
-        $this->setFilePath($filePath);
-        $this->rewind();
+        $this->beConstructedWith('csv', $this->getPath() . DIRECTORY_SEPARATOR  . 'caterpillar_import.zip');
 
-        $this->getDirectoryPath()->shouldReturn(__DIR__ . '/../../../../../../features/Context/fixtures/caterpillar_import');
+        $this->rewind();
+        $this->getDirectoryPath()->shouldReturn($this->getPath() . DIRECTORY_SEPARATOR  . 'caterpillar_import');
     }
 
     function it_returns_key()
     {
-        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
-        $this->setFilePath($filePath);
-
         $this->rewind();
         $this->next();
         $this->key()->shouldReturn(2);
@@ -82,9 +102,6 @@ class FileIteratorSpec extends ObjectBehavior
 
     function it_returns_true_if_current_position_is_valid()
     {
-        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
-        $this->setFilePath($filePath);
-
         $this->rewind();
         $this->next();
         $this->valid()->shouldReturn(true);
@@ -92,12 +109,22 @@ class FileIteratorSpec extends ObjectBehavior
 
     function it_returns_false_if_current_position_is_not_valid()
     {
-        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
-        $this->setFilePath($filePath);
-
         $this->rewind();
         $this->next();
         $this->next();
         $this->valid()->shouldReturn(false);
+    }
+
+    private function getPath()
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . '..' .
+               DIRECTORY_SEPARATOR  . '..' .
+               DIRECTORY_SEPARATOR  . '..'.
+               DIRECTORY_SEPARATOR  . '..'.
+               DIRECTORY_SEPARATOR  . '..'.
+               DIRECTORY_SEPARATOR  . '..' .
+               DIRECTORY_SEPARATOR  . 'features' .
+               DIRECTORY_SEPARATOR  . 'Context' .
+               DIRECTORY_SEPARATOR  . 'fixtures';
     }
 }

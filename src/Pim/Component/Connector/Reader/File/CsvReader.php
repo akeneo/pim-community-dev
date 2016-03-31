@@ -23,6 +23,9 @@ class CsvReader extends AbstractConfigurableStepElement implements
     UploadedFileAwareInterface,
     StepExecutionAwareInterface
 {
+    /** @var FileIteratorFactory */
+    protected $fileIteratorFactory;
+
     /** @var FileIteratorInterface */
     protected $fileIterator;
 
@@ -45,11 +48,11 @@ class CsvReader extends AbstractConfigurableStepElement implements
     protected $stepExecution;
 
     /**
-     * @param FileIteratorInterface $fileIterator
+     * @param FileIteratorFactory $fileIteratorFactory
      */
-    public function __construct(FileIteratorInterface $fileIterator)
+    public function __construct(FileIteratorFactory $fileIteratorFactory)
     {
-        $this->fileIterator = $fileIterator;
+        $this->fileIteratorFactory = $fileIteratorFactory;
     }
 
     /**
@@ -57,25 +60,21 @@ class CsvReader extends AbstractConfigurableStepElement implements
      */
     public function read()
     {
-        if (!$this->fileIterator->isInitialized()) {
-            $this->fileIterator
-                ->setReaderOptions([
-                    'fieldDelimiter' => $this->delimiter,
-                    'fieldEnclosure' => $this->enclosure
-                ])
-                ->setFilePath($this->filePath)
-                ->rewind();
+        if (null === $this->fileIterator) {
+            $this->fileIterator = $this->fileIteratorFactory->create($this->filePath, [
+                'fieldDelimiter' => $this->delimiter,
+                'fieldEnclosure' => $this->enclosure
+            ]);
+            $this->fileIterator->rewind();
         }
 
         $this->fileIterator->next();
 
-        $data = $this->fileIterator->current();
-
-        if (null !== $data && null !== $this->stepExecution) {
+        if ($this->fileIterator->valid() && null !== $this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('read_lines');
         }
 
-        return $data;
+        return $this->fileIterator->current();
     }
 
     /**
@@ -104,8 +103,8 @@ class CsvReader extends AbstractConfigurableStepElement implements
      */
     public function setUploadedFile(File $uploadedFile)
     {
-        $this->filePath = $uploadedFile->getRealPath();
-        $this->fileIterator->reset();
+        $this->filePath     = $uploadedFile->getRealPath();
+        $this->fileIterator = null;
 
         return $this;
     }
@@ -119,8 +118,8 @@ class CsvReader extends AbstractConfigurableStepElement implements
      */
     public function setFilePath($filePath)
     {
-        $this->filePath = $filePath;
-        $this->fileIterator->reset();
+        $this->filePath     = $filePath;
+        $this->fileIterator = null;
 
         return $this;
     }

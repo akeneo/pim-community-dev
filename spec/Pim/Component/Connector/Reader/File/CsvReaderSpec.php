@@ -3,13 +3,15 @@
 namespace spec\Pim\Component\Connector\Reader\File;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
+use Prophecy\Argument;
 
 class CsvReaderSpec extends ObjectBehavior
 {
-    function let(FileIteratorInterface $fileIterator)
+    function let(FileIteratorFactory $fileIteratorFactory)
     {
-        $this->beConstructedWith($fileIterator);
+        $this->beConstructedWith($fileIteratorFactory);
     }
 
     function it_is_configurable()
@@ -64,29 +66,39 @@ class CsvReaderSpec extends ObjectBehavior
         ]);
     }
 
-    function it_reads_csv_file($fileIterator)
+    function it_reads_csv_file($fileIteratorFactory, FileIteratorInterface $fileIterator)
     {
         $data = [
             'sku'  => 'SKU-001',
             'name' => 'door',
         ];
 
-        $fileIterator->setReaderOptions(
-            [
-                'fieldDelimiter' => ';',
-                'fieldEnclosure' => '"',
-            ]
-        )->willReturn($fileIterator);
-        $fileIterator->reset()->shouldBeCalled();
-        $fileIterator->isInitialized()->willReturn(false);
+        $filePath = $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv';
+        $this->setFilePath($filePath);
+
+        $fileIteratorFactory->create($filePath, [
+            'fieldDelimiter' => ';',
+            'fieldEnclosure' => '"',
+        ])->willReturn($fileIterator);
+
         $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
+        $fileIterator->valid()->willReturn(true);
         $fileIterator->current()->willReturn($data);
 
-        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
-        $this->setFilePath($filePath);
-        $fileIterator->setFilePath($filePath)->willReturn($fileIterator);
-
         $this->read()->shouldReturn($data);
+    }
+
+    private function getPath()
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . '..' .
+               DIRECTORY_SEPARATOR  . '..' .
+               DIRECTORY_SEPARATOR  . '..'.
+               DIRECTORY_SEPARATOR  . '..'.
+               DIRECTORY_SEPARATOR  . '..'.
+               DIRECTORY_SEPARATOR  . '..' .
+               DIRECTORY_SEPARATOR  . 'features' .
+               DIRECTORY_SEPARATOR  . 'Context' .
+               DIRECTORY_SEPARATOR  . 'fixtures';
     }
 }

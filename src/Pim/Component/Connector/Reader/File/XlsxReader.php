@@ -23,6 +23,9 @@ class XlsxReader extends AbstractConfigurableStepElement implements
     UploadedFileAwareInterface,
     StepExecutionAwareInterface
 {
+    /** @var FileIteratorFactory */
+    protected $fileIteratorFactory;
+
     /** @var FileIteratorInterface */
     protected $fileIterator;
 
@@ -36,11 +39,11 @@ class XlsxReader extends AbstractConfigurableStepElement implements
     protected $stepExecution;
 
     /**
-     * @param FileIteratorInterface $fileIterator
+     * @param FileIteratorFactory $fileIteratorFactory
      */
-    public function __construct(FileIteratorInterface $fileIterator)
+    public function __construct(FileIteratorFactory $fileIteratorFactory)
     {
-        $this->fileIterator = $fileIterator;
+        $this->fileIteratorFactory = $fileIteratorFactory;
     }
 
     /**
@@ -48,21 +51,18 @@ class XlsxReader extends AbstractConfigurableStepElement implements
      */
     public function read()
     {
-        if (!$this->fileIterator->isInitialized()) {
-            $this->fileIterator
-                ->setFilePath($this->filePath)
-                ->rewind();
+        if (null === $this->fileIterator) {
+            $this->fileIterator = $this->fileIteratorFactory->create($this->filePath);
+            $this->fileIterator->rewind();
         }
 
         $this->fileIterator->next();
 
-        $data = $this->fileIterator->current();
-
-        if (null !== $data && null !== $this->stepExecution) {
+        if ($this->fileIterator->valid() && null !== $this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('read_lines');
         }
 
-        return $data;
+        return $this->fileIterator->current();
     }
 
     /**
@@ -91,7 +91,8 @@ class XlsxReader extends AbstractConfigurableStepElement implements
      */
     public function setUploadedFile(File $uploadedFile)
     {
-        $this->filePath = $uploadedFile->getRealPath();
+        $this->filePath     = $uploadedFile->getRealPath();
+        $this->fileIterator = null;
 
         return $this;
     }
@@ -105,7 +106,8 @@ class XlsxReader extends AbstractConfigurableStepElement implements
      */
     public function setFilePath($filePath)
     {
-        $this->filePath = $filePath;
+        $this->filePath     = $filePath;
+        $this->fileIterator = null;
 
         return $this;
     }

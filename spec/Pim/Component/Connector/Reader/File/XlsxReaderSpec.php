@@ -2,15 +2,15 @@
 
 namespace spec\Pim\Component\Connector\Reader\File;
 
-use Box\Spout\Reader\ReaderInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 
 class XlsxReaderSpec extends ObjectBehavior
 {
-    function let(FileIteratorInterface $fileIterator)
+    function let(FileIteratorFactory $fileIteratorFactory)
     {
-        $this->beConstructedWith($fileIterator);
+        $this->beConstructedWith($fileIteratorFactory);
     }
 
     function it_is_configurable()
@@ -41,17 +41,12 @@ class XlsxReaderSpec extends ObjectBehavior
         ]);
     }
 
-    function it_read_csv_file($fileIterator, ReaderInterface $reader)
+    function it_read_csv_file($fileIteratorFactory, FileIteratorInterface $fileIterator)
     {
         $data = [
             'sku'  => 'SKU-001',
             'name' => 'door',
         ];
-
-        $fileIterator->isInitialized()->willReturn(false);
-        $fileIterator->rewind()->shouldBeCalled();
-        $fileIterator->next()->shouldBeCalled();
-        $fileIterator->current()->willReturn($data);
 
         $filePath = __DIR__ . DIRECTORY_SEPARATOR . '..' .
                     DIRECTORY_SEPARATOR . '..' .
@@ -62,9 +57,15 @@ class XlsxReaderSpec extends ObjectBehavior
                     DIRECTORY_SEPARATOR . 'features' .
                     DIRECTORY_SEPARATOR . 'Context' .
                     DIRECTORY_SEPARATOR . 'fixtures' .
-                    DIRECTORY_SEPARATOR . 'with_media.csv';
+                    DIRECTORY_SEPARATOR . 'product_with_carriage_return.xlsx';
         $this->setFilePath($filePath);
-        $fileIterator->setFilePath($filePath)->willReturn($fileIterator);
+
+        $fileIteratorFactory->create($filePath)->willReturn($fileIterator);
+
+        $fileIterator->rewind()->shouldBeCalled();
+        $fileIterator->next()->shouldBeCalled();
+        $fileIterator->valid()->willReturn(true);
+        $fileIterator->current()->willReturn($data);
 
         $this->read()->shouldReturn($data);
     }

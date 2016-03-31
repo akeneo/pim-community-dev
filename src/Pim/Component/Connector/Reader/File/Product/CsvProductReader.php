@@ -4,7 +4,7 @@ namespace Pim\Component\Connector\Reader\File\Product;
 
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Connector\Reader\File\CsvReader;
-use Pim\Component\Connector\Reader\File\FileIteratorInterface;
+use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 
 /**
  * Product csv reader
@@ -34,18 +34,18 @@ class CsvProductReader extends CsvReader
     protected $dateFormats;
 
     /**
-     * @param FileIteratorInterface $fileIterator
-     * @param MediaPathTransformer  $mediaPathTransformer
-     * @param array                 $decimalSeparators
-     * @param array                 $dateFormats
+     * @param FileIteratorFactory  $fileIteratorFactory,
+     * @param MediaPathTransformer $mediaPathTransformer
+     * @param array                $decimalSeparators
+     * @param array                $dateFormats
      */
     public function __construct(
-        FileIteratorInterface $fileIterator,
+        FileIteratorFactory $fileIteratorFactory,
         MediaPathTransformer $mediaPathTransformer,
         array $decimalSeparators,
         array $dateFormats
     ) {
-        parent::__construct($fileIterator);
+        parent::__construct($fileIteratorFactory);
 
         $this->mediaPathTransformer = $mediaPathTransformer;
         $this->decimalSeparators    = $decimalSeparators;

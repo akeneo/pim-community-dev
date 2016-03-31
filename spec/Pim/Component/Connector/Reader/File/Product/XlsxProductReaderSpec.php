@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Connector\Reader\File\Product;
 
-use Box\Spout\Reader\ReaderInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Reader\File\FileIterator;
+use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Pim\Component\Connector\Reader\File\Product\MediaPathTransformer;
 use Prophecy\Argument;
 
@@ -25,8 +25,11 @@ class CsvProductReaderSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Connector\Reader\File\XlsxReader');
     }
 
-    function it_transforms_media_paths_to_absolute_paths($fileIterator, $mediaPath, ReaderInterface $reader)
-    {
+    function it_transforms_media_paths_to_absolute_paths(
+        $fileIteratorFactory,
+        FileIteratorInterface $fileIterator,
+        $mediaPath
+    ) {
         $data = [
             'sku'          => 'SKU-001',
             'name'         => 'door',
@@ -34,15 +37,17 @@ class CsvProductReaderSpec extends ObjectBehavior
             'manual-fr_FR' => 'fixtures/sku-001.txt',
         ];
 
-        $fileIterator->getReader()->willReturn($reader);
-        $fileIterator->reset()->shouldBeCalled();
-        $fileIterator->isInitialized()->willReturn(false);
-        $fileIterator->rewind()->shouldBeCalled();
-        $fileIterator->next()->willReturn($data);
-
         $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
         $this->setFilePath($filePath);
-        $fileIterator->setFilePath($filePath)->willReturn($fileIterator);
+        $fileIteratorFactory->create($filePath, [
+            'fieldDelimiter' => ';',
+            'fieldEnclosure' => '"',
+        ])->willReturn($fileIterator);
+
+        $fileIterator->rewind()->shouldBeCalled();
+        $fileIterator->next()->shouldBeCalled();
+        $fileIterator->current()->willReturn($data);
+        $fileIterator->valid()->willReturn(true);
 
         $absolutePath = [
             'sku'          => 'SKU-001',
