@@ -12,13 +12,13 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Csv reader
+ * Xlsx Reader
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CsvReader extends AbstractConfigurableStepElement implements
+class XlsxReader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
     UploadedFileAwareInterface,
     StepExecutionAwareInterface
@@ -31,15 +31,6 @@ class CsvReader extends AbstractConfigurableStepElement implements
 
     /** @var string */
     protected $filePath;
-
-    /** @var string */
-    protected $delimiter = ';';
-
-    /** @var string */
-    protected $enclosure = '"';
-
-    /** @var string */
-    protected $escape = '\\';
 
     /** @var bool */
     protected $uploadAllowed = false;
@@ -61,10 +52,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
     public function read()
     {
         if (null === $this->fileIterator) {
-            $this->fileIterator = $this->fileIteratorFactory->create($this->filePath, [
-                'fieldDelimiter' => $this->delimiter,
-                'fieldEnclosure' => $this->enclosure
-            ]);
+            $this->fileIterator = $this->fileIteratorFactory->create($this->filePath);
             $this->fileIterator->rewind();
         }
 
@@ -88,7 +76,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
             new Assert\NotBlank(),
             new AssertFile(
                 [
-                    'allowedExtensions' => ['csv', 'zip']
+                    'allowedExtensions' => ['xlsx', 'zip']
                 ]
             )
         ];
@@ -135,78 +123,6 @@ class CsvReader extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * Set delimiter
-     *
-     * @param string $delimiter
-     *
-     * @return CsvReader
-     */
-    public function setDelimiter($delimiter)
-    {
-        $this->delimiter = $delimiter;
-
-        return $this;
-    }
-
-    /**
-     * Get delimiter
-     *
-     * @return string $delimiter
-     */
-    public function getDelimiter()
-    {
-        return $this->delimiter;
-    }
-
-    /**
-     * Set enclosure
-     *
-     * @param string $enclosure
-     *
-     * @return CsvReader
-     */
-    public function setEnclosure($enclosure)
-    {
-        $this->enclosure = $enclosure;
-
-        return $this;
-    }
-
-    /**
-     * Get enclosure
-     *
-     * @return string $enclosure
-     */
-    public function getEnclosure()
-    {
-        return $this->enclosure;
-    }
-
-    /**
-     * Set escape
-     *
-     * @param string $escape
-     *
-     * @return CsvReader
-     */
-    public function setEscape($escape)
-    {
-        $this->escape = $escape;
-
-        return $this;
-    }
-
-    /**
-     * Get escape
-     *
-     * @return string $escape
-     */
-    public function getEscape()
-    {
-        return $this->escape;
-    }
-
-    /**
      * Set the uploadAllowed property
      *
      * @param bool $uploadAllowed
@@ -247,24 +163,6 @@ class CsvReader extends AbstractConfigurableStepElement implements
                 'options' => [
                     'label' => 'pim_connector.import.uploadAllowed.label',
                     'help'  => 'pim_connector.import.uploadAllowed.help'
-                ]
-            ],
-            'delimiter' => [
-                'options' => [
-                    'label' => 'pim_connector.import.delimiter.label',
-                    'help'  => 'pim_connector.import.delimiter.help'
-                ]
-            ],
-            'enclosure' => [
-                'options' => [
-                    'label' => 'pim_connector.import.enclosure.label',
-                    'help'  => 'pim_connector.import.enclosure.help'
-                ]
-            ],
-            'escape' => [
-                'options' => [
-                    'label' => 'pim_connector.import.escape.label',
-                    'help'  => 'pim_connector.import.escape.help'
                 ]
             ],
         ];

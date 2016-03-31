@@ -18,6 +18,9 @@
 
 ## BC breaks
 
+- Change constructor of `Pim\Component\Connector\Reader\File\CsvReader`. Add `Pim\Component\Connector\Reader\File\FileIteratorFactory`.
+- Move `Pim\Component\Connector\Reader\File\CsvProductReader` to `Pim\Component\Connector\Reader\File\Product\CsvProductReader`
+- Change constructor of `Pim\Component\Connector\Reader\File\Product\CsvProductReader`. Remove `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`. Add `Pim\Component\Connector\Reader\File\FileIteratorFactory` and `Pim\Component\Connector\Reader\File\Product\MediaPathTransformer` 
 - Change constructor of `Pim\Bundle\NotificationBundle\Controller\NotificationController`. Remove deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and add `Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface` and `Akeneo\Component\StorageUtils\Remover\RemoverInterface`.
 - Change constructor of `Pim\Bundle\NotificationBundle\EventSubscriber\JobExecutionNotifier`. Remove deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and add `Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry` and `Pim\Bundle\NotificationBundle\NotifierInterface`.
 - Change constructor of `Pim\Bundle\NotificationBundle\Twig\NotificationExtension`. Replace deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` by `Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface`.

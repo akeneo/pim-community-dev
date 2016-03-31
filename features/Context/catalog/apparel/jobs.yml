@@ -2,13 +2,26 @@ jobs:
     product_import:
         connector: Akeneo Native Connector
         alias:     csv_product_import
-        label:     Product import
+        label:     CSV Product import
         type:      import
         configuration:
             uploadAllowed:     true
             delimiter:         ;
             enclosure:         '"'
             escape:            '\'
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator:   .
+    xlsx_product_import:
+        connector: Akeneo Native Connector
+        alias:     xlsx_product_import
+        label:     XLSX product import
+        type:      import
+        configuration:
+            uploadAllowed:      true
             enabled:            true
             categoriesColumn:   categories
             familyColumn:       family

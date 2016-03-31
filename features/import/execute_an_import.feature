@@ -9,6 +9,6 @@ Feature: Execute a job
     And I am logged in as "Julia"
 
   Scenario: Fail to see the import button of a job with validation errors
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     Then I should not see the "Import now" link
 

@@ -1,24 +1,25 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\File;
+namespace Pim\Component\Connector\Reader\File\Product;
 
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Connector\Reader\File\FileIteratorFactory;
+use Pim\Component\Connector\Reader\File\XlsxReader;
 
 /**
- * Product csv reader
+ * Product XLSX reader
  *
- * This specialized csv reader exists to replace relative media path to absolute path, in order for later process to
+ * This specialized XLSX reader exists to replace relative media path to absolute path, in order for later process to
  * know where to find the files.
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CsvProductReader extends CsvReader
+class XlsxProductReader extends XlsxReader
 {
-    /** @var string[] Media attribute codes */
-    protected $mediaAttributes;
+    /** @var MediaPathTransformer */
+    protected $mediaPathTransformer;
 
     /** @var string */
     protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
@@ -32,50 +33,23 @@ class CsvProductReader extends CsvReader
     /** @var array */
     protected $dateFormats;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /**
-     * @param AttributeRepositoryInterface $attributeRepository attribute repository
-     * @param array                        $decimalSeparators   decimal separators defined in config
-     * @param array                        $dateFormats         format dates defined in config
+     * @param FileIteratorFactory  $fileIteratorFactory
+     * @param MediaPathTransformer $mediaPathTransformer
+     * @param array                $decimalSeparators
+     * @param array                $dateFormats
      */
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
+        FileIteratorFactory $fileIteratorFactory,
+        MediaPathTransformer $mediaPathTransformer,
         array $decimalSeparators,
         array $dateFormats
     ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->decimalSeparators   = $decimalSeparators;
-        $this->dateFormats         = $dateFormats;
-    }
+        parent::__construct($fileIteratorFactory);
 
-    /**
-     * Set the media attributes
-     *
-     * @param array|null $mediaAttributes
-     *
-     * @return CsvProductReader
-     */
-    public function setMediaAttributes($mediaAttributes)
-    {
-        $this->mediaAttributes = $mediaAttributes;
-
-        return $this;
-    }
-
-    /**
-     * Get the media attributes
-     *
-     * @return string[]
-     */
-    public function getMediaAttributes()
-    {
-        if (null === $this->mediaAttributes) {
-            $this->mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
-        }
-
-        return $this->mediaAttributes;
+        $this->mediaPathTransformer = $mediaPathTransformer;
+        $this->decimalSeparators    = $decimalSeparators;
+        $this->dateFormats          = $dateFormats;
     }
 
     /**
@@ -126,9 +100,6 @@ class CsvProductReader extends CsvReader
         return array_merge(
             parent::getConfigurationFields(),
             [
-                'mediaAttributes' => [
-                    'system' => true
-                ],
                 'decimalSeparator' => [
                     'type'    => 'choice',
                     'options' => [
@@ -151,6 +122,7 @@ class CsvProductReader extends CsvReader
         );
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -162,26 +134,6 @@ class CsvProductReader extends CsvReader
             return $data;
         }
 
-        return $this->transformMediaPathToAbsolute($data);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function transformMediaPathToAbsolute(array $data)
-    {
-        foreach ($data as $code => $value) {
-            $pos = strpos($code, '-');
-            $attributeCode = false !== $pos ? substr($code, 0, $pos) : $code;
-            $value = trim($value);
-
-            if (in_array($attributeCode, $this->getMediaAttributes()) && !empty($value)) {
-                $data[$code] = dirname($this->filePath) . DIRECTORY_SEPARATOR . $value;
-            }
-        }
-
-        return $data;
+        return $this->mediaPathTransformer->transform($data, $this->fileIterator->getDirectoryPath());
     }
 }

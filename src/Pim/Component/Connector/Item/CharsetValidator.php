@@ -36,7 +36,7 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
      * @param string $charset
      * @param int    $maxErrors
      */
-    public function __construct(array $whiteListExtension = ['xls', 'xslx', 'zip'], $charset = 'UTF-8', $maxErrors = 10)
+    public function __construct(array $whiteListExtension = ['xls', 'xlsx', 'zip'], $charset = 'UTF-8', $maxErrors = 10)
     {
         $this->charset = $charset;
         $this->maxErrors = $maxErrors;

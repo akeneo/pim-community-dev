@@ -21,9 +21,9 @@ Feature: Validate values for unique attributes when importing products
       SKU-001;2014-01-01
       SKU-002;2014-01-01
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "product_import" job to finish
     Then I should see "The value 2014-01-01 is already set on another product for the unique attribute date"
@@ -36,9 +36,9 @@ Feature: Validate values for unique attributes when importing products
       SKU-001;123
       SKU-002;123
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "product_import" job to finish
     Then I should see "The value 123 is already set on another product for the unique attribute number"
@@ -51,9 +51,9 @@ Feature: Validate values for unique attributes when importing products
       SKU-001;foo
       SKU-002;foo
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "product_import" job to finish
     Then I should see "The value foo is already set on another product for the unique attribute text"
@@ -73,11 +73,11 @@ Feature: Validate values for unique attributes when importing products
       AKNTS_BPXL;1200000011a
       AKNTS_BPXXL;1200000011a
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "The value 1200000011a is already set on another product for the unique attribute test_unique_attribute"
     And I am on the products page
     When I show the filter "test_unique_attribute"
@@ -99,11 +99,11 @@ Feature: Validate values for unique attributes when importing products
     And the following products:
       | sku      |
       | 17727158 |
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     And I am on the products page
     And I filter by "SKU" with value "17727158"
     And I should see products 17727158
