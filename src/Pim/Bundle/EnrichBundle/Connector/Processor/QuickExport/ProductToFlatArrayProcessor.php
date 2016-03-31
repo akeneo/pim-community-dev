@@ -50,6 +50,9 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var  ObjectDetacherInterface */
     protected $objectDetacher;
 
+    /** @var array */
+    protected $mainContext;
+
     /**
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
@@ -152,6 +155,22 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return ['mainContext' => [],];
+    }
+
+    /**
+     * @param array $context
+     */
+    public function setMainContext($context)
+    {
+        $this->mainContext = $context;
+    }
+
+    /**
      * @return array
      */
     protected function getNormalizerContext()
@@ -205,7 +224,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      */
     protected function setChannelCodeFromJobConfiguration()
     {
-        $configuration = $this->getJobConfiguration();
+        $configuration = $this->getConfiguration();
 
         if (!isset($configuration['mainContext']['scope'])) {
             throw new InvalidArgumentException('No channel found');
