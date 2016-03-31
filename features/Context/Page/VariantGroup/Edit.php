@@ -2,8 +2,10 @@
 
 namespace Context\Page\VariantGroup;
 
+use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\Form as Form;
 
 /**
@@ -31,7 +33,7 @@ class Edit extends Form
             $this->elements,
             [
                 'Main context selector' => [
-                    'css'        => '#attribute-buttons',
+                    'css'        => '.tab-container .product-attributes .attribute-edit-actions .context-selectors',
                     'decorators' => [
                         'Pim\Behat\Decorator\ContextSwitcherDecorator'
                     ]
@@ -87,6 +89,18 @@ class Edit extends Form
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function fillField($field, $value, Element $element = null)
+    {
+        try {
+            $this->getElement('Attribute inputs')->fillField($field, $value, $element);
+        } catch (ElementNotFoundException $e) {
+            parent::fillField($field, $value, $element);
+        }
+    }
+
+    /**
      * @param string $field
      *
      * @return NodeElement
@@ -102,6 +116,16 @@ class Edit extends Form
     public function save()
     {
         $this->getElement('Navbar buttons')->asynchronousSave('Save');
+    }
+
+    /**
+     * @param string $inputLabel
+     *
+     * @return mixed
+     */
+    public function getInputValue($inputLabel)
+    {
+        return $this->getElement('Attribute inputs')->getInputValue($inputLabel);
     }
 
     /**

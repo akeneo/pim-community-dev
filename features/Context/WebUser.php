@@ -639,6 +639,34 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $inputLabel
+     * @param string $expectedValue
+     *
+     * @Then /^the variant group ([^"]*) should be empty$/
+     * @Then /^the variant group ([^"]*) should be "([^"]*)"$/
+     *
+     * @throws \LogicException
+     * @throws ExpectationException
+     */
+    public function theVariantGroupInputValueShouldBe($inputLabel, $expectedValue = '')
+    {
+        $inputValue = $this->spin(function () use ($inputLabel, $expectedValue) {
+            return $this->getCurrentPage()->getInputValue($inputLabel, $expectedValue);
+        });
+
+        if ($expectedValue != $inputValue) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expected variant group input "%s" to contain "%s", but got "%s".',
+                    $inputLabel,
+                    $expectedValue,
+                    $inputValue
+                )
+            );
+        }
+    }
+
+    /**
      * @param string $label
      * @param string $expected
      *
