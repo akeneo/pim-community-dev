@@ -844,7 +844,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $not
+     * @param string $shouldNotSee
      * @param string $attributes
      * @param string $group
      *
@@ -852,32 +852,22 @@ class WebUser extends RawMinkContext
      *
      * @throws ExpectationException
      */
-    public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
+    public function iShouldSeeAvailableAttributesInGroup($shouldNotSee, $attributes, $group)
     {
         foreach ($this->listToArray($attributes) as $attribute) {
             $element = $this->getCurrentPage()
                 ->getElement('Add attributes button')
                 ->findAvailableAttributeInGroup($attribute, $group);
-            if (!$not) {
-                if (!$element) {
-                    throw $this->createExpectationException(
-                        sprintf(
-                            'Expecting to see attribute %s under group %s, but was not present.',
-                            $attribute,
-                            $group
-                        )
-                    );
-                }
-            } else {
-                if ($element) {
-                    throw $this->createExpectationException(
-                        sprintf(
-                            'Expecting not to see attribute %s under group %s, but was present.',
-                            $attribute,
-                            $group
-                        )
-                    );
-                }
+
+            if (!$shouldNotSee && !$element || $shouldNotSee && $element) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expecting %sto see attribute "%s" under group "%s"',
+                        !$shouldNotSee ? '' : 'not ',
+                        $attribute,
+                        $group
+                    )
+                );
             }
         }
     }
