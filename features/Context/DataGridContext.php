@@ -605,12 +605,12 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->datagrid->sortBy($columnName, $order);
 
-        $loadlingMask = $this->datagrid
+        $loadingMask = $this->datagrid
             ->getElement('Grid container')
             ->find('css', '.loading-mask .loading-mask');
 
-        $this->spin(function () use ($loadlingMask) {
-            return !$loadlingMask->isVisible();
+        $this->spin(function () use ($loadingMask) {
+            return !$loadingMask->isVisible();
         });
     }
 

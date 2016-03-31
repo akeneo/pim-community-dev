@@ -855,7 +855,9 @@ class WebUser extends RawMinkContext
     public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
     {
         foreach ($this->listToArray($attributes) as $attribute) {
-            $element = $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
+            $element = $this->getCurrentPage()
+                ->getElement('Add attributes button')
+                ->findAvailableAttributeInGroup($attribute, $group);
             if (!$not) {
                 if (!$element) {
                     throw $this->createExpectationException(
@@ -887,7 +889,9 @@ class WebUser extends RawMinkContext
      */
     public function iAddAvailableAttributes($attributes)
     {
-        $this->getCurrentPage()->addAvailableAttributes($this->listToArray($attributes));
+        $this->getCurrentPage()
+            ->getElement('Add attributes button')
+            ->addAvailableAttributes($this->listToArray($attributes));
         $this->wait();
     }
 
