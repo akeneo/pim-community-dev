@@ -2,8 +2,10 @@
 
 namespace Pim\Behat\Decorator\Attribute;
 
+use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use Pim\Behat\Decorator\ElementDecorator;
 
 /**
@@ -24,31 +26,17 @@ class AttributeAdderDecorator extends ElementDecorator
     ];
 
     /**
-     * @param string $attribute
+     * @param string $label
      * @param string $group
      *
      * @return NodeElement|null
      */
-    public function findAvailableAttributeInGroup($attribute, $group)
+    public function findAvailableAttributeInGroup($label, $group)
     {
-        $searchSelector = $this->selectors['Available attributes search']['css'];
+        $this->openSelector();
+        $list = $this->findAttributeList();
 
-        $selector = $this->spin(function () {
-            return $this->find('css', $this->selectors['Available attributes button']['css']);
-        }, sprintf('Cannot find element "%s"', $this->selectors['Available attributes button']['css']));
-
-        // Open select2
-        $selector->click();
-
-        $list = $this->spin(function () {
-            return $this->find('css', $this->selectors['Available attributes list']['css']);
-        }, 'Cannot find the attribute list element');
-
-        // We NEED to fill the search field with jQuery to avoid the TAB key press (because of mink),
-        // because select2 selects the first element on TAB key press.
-        $this->getSession()->evaluateScript(
-            "jQuery('" . $searchSelector . "').val('" . $attribute . "').trigger('input');"
-        );
+        $this->searchAttribute($label);
 
         $groupLabels = $this->spin(function () use ($list, $group) {
             return $list->findAll('css', sprintf('li .group-label:contains("%s"), li.select2-no-results', $group));
@@ -68,52 +56,90 @@ class AttributeAdderDecorator extends ElementDecorator
 
         // Close select2
         $this->getSession()->evaluateScript(
-            "jQuery('" . $this->selectors['Select2 dropmask']['css'] . "').click();"
+            sprintf("jQuery('%s').click();", $this->selectors['Select2 dropmask']['css'])
         );
 
-        return isset($results[$attribute]) ? $results[$attribute] : null;
+        return isset($results[$label]) ? $results[$label] : null;
     }
 
     /**
-     * {@inheritdoc}
+     * @param array $attributes
      *
-     * TODO: Used with the new 'add-attributes' module. The method should be in the Form parent
-     * when legacy stuff is removed.
+     * @throws TimeoutException
      */
     public function addAvailableAttributes(array $attributes = [])
     {
-        $searchSelector = $this->selectors['Available attributes search']['css'];
+        $this->openSelector();
+        $list = $this->findAttributeList();
 
-        $selector = $this->spin(function () {
-            return $this->find('css', $this->selectors['Available attributes button']['css']);
-        }, sprintf('Cannot find element "%s"', $this->selectors['Available attributes button']['css']));
+        foreach ($attributes as $label) {
+            $attributeCssSelector = sprintf('li .attribute-label:contains("%s")', $label);
 
-        // Open select2
-        $selector->click();
-
-        $list = $this->spin(function () {
-            return $this->find('css', $this->selectors['Available attributes list']['css']);
-        }, sprintf('Cannot find the attribute list element'));
-
-        foreach ($attributes as $attributeLabel) {
-            // We NEED to fill the search field with jQuery to avoid the TAB key press (because of mink),
-            // because select2 selects the first element on TAB key press.
-            $this->getSession()->evaluateScript(
-                sprintf("jQuery('%s').val('%s').trigger('input');", $searchSelector, $attributeLabel)
-            );
-
-            $selector = sprintf('li .attribute-label:contains("%s")', $attributeLabel);
+            $this->searchAttribute($label);
 
             $label = $this->spin(
-                function () use ($list, $attributeLabel, $selector) {
-                    return $list->find('css', $selector);
+                function () use ($list, $label, $attributeCssSelector) {
+                    return $list->find('css', $attributeCssSelector);
                 },
-                sprintf('Could not find available attribute "%s" (%s)', $attributeLabel, $selector)
+                sprintf('Could not find available attribute "%s" (%s)', $label, $attributeCssSelector)
             );
 
             $label->click();
         }
 
         $this->find('css', $this->selectors['Available attributes add button']['css'])->press();
+    }
+
+    /**
+     * @return Element
+     *
+     * @throws TimeoutException
+     */
+    protected function openSelector()
+    {
+        $selector = $this->spin(
+            function () {
+                return $this->find('css', $this->selectors['Available attributes button']['css']);
+            },
+            sprintf('Cannot find the attribute selector "%s"', $this->selectors['Available attributes button']['css'])
+        );
+
+        $selector->click();
+
+        return $selector;
+    }
+
+    /**
+     * Fill the search field with jQuery to avoid the TAB key press (because of mink),
+     * because select2 selects the first element on TAB key press.
+     *
+     * @param string $label
+     */
+    protected function searchAttribute($label)
+    {
+        $this->getSession()->evaluateScript(
+            sprintf(
+                "jQuery('%s').val('%s').trigger('input');",
+                $this->selectors['Available attributes search']['css'],
+                $label
+            )
+        );
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws TimeoutException
+     */
+    protected function findAttributeList()
+    {
+        $list = $this->spin(
+            function () {
+                return $this->find('css', $this->selectors['Available attributes list']['css']);
+            },
+            sprintf('Cannot find the attribute list element "%s"', $this->selectors['Available attributes list']['css'])
+        );
+
+        return $list;
     }
 }
