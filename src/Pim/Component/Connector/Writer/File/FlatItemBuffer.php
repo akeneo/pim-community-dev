@@ -20,6 +20,9 @@ class FlatItemBuffer
     /** @var array */
     protected $headers = [];
 
+    /**
+     * @param BufferFactory $bufferFactory
+     */
     public function __construct(BufferFactory $bufferFactory)
     {
         $this->buffer = $bufferFactory->create();

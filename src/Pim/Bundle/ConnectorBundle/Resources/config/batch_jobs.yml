@@ -157,14 +157,38 @@ connector:
                         processor: pim_connector.processor.denormalization.family.flat
                         writer:    pim_connector.writer.doctrine.family
         xlsx_product_export:
-             title: pim_connector.jobs.xlsx_product_export.title
-             type:  export
-             steps:
-                 export:
-                     title: pim_connector.jobs.xlsx_product_export.export.title
-                     services:
-                         reader:    pim_base_connector.reader.doctrine.product
-                         processor: pim_base_connector.processor.product_to_flat_array
-                         writer:    pim_connector.writer.file.xlsx_product
-                     parameters:
-                         batch_size: 10
+            title: pim_connector.jobs.xlsx_product_export.title
+            type:  export
+            steps:
+                export:
+                    title: pim_connector.jobs.xlsx_product_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.doctrine.product
+                        processor: pim_base_connector.processor.product_to_flat_array
+                        writer:    pim_connector.writer.file.xlsx_product
+                    parameters:
+                        batch_size: 10
+        xlsx_group_export:
+            title: pim_connector.jobs.xlsx_group_export.title
+            type:  export
+            steps:
+                export:
+                    title: pim_connector.jobs.xlsx_group_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.repository.group
+                        processor: pim_connector.processor.normalization.group.flat
+                        writer:    pim_connector.writer.file.xlsx_group
+                    parameters:
+                        batch_size: 10
+        xlsx_variant_group_export:
+            title: pim_connector.jobs.xlsx_variant_group_export.title
+            type:  export
+            steps:
+                export:
+                    title: pim_connector.jobs.xlsx_variant_group_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.repository.variant_group
+                        processor: pim_connector.processor.normalization.variant_group.flat
+                        writer:    pim_connector.writer.file.xlsx_variant_group
+                    parameters:
+                        batch_size: 10

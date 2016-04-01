@@ -221,6 +221,22 @@ jobs:
         configuration:
             withHeader: true
             filePath:   /tmp/product.xlsx
+    xlsx_group_export:
+        connector: Akeneo Native Connector
+        alias:     xlsx_group_export
+        label:     Demo xlsx group export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/group.xlsx
+    xlsx_variant_group_export:
+        connector: Akeneo Native Connector
+        alias:     xlsx_variant_group_export
+        label:     Demo xlsx variant group export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/variant_group.xlsx
     xlsx_product_quick_export:
         connector: Akeneo Mass Edit Connector
         alias: xlsx_product_quick_export

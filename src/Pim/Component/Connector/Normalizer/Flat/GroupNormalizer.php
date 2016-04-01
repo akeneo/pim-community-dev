@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Normalizer\Structured\GroupNormalizer as BaseNormalize
 class GroupNormalizer extends BaseNormalizer
 {
     /** @var string[] */
-    protected $supportedFormats = ['csv'];
+    protected $supportedFormats = ['csv', 'flat'];
 
     /**
      * {@inheritdoc}
