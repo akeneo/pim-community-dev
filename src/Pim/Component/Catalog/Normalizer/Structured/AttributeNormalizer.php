@@ -59,6 +59,11 @@ class AttributeNormalizer implements NormalizerInterface
                 'metric_family'           => $object->getMetricFamily(),
                 'default_metric_unit'     => $object->getDefaultMetricUnit(),
                 'reference_data_name'     => $object->getReferenceDataName(),
+                'wysiwyg_enabled'         => (string) $object->isWysiwygEnabled(),
+                'number_min'              => (string) $object->getNumberMin(),
+                'number_max'              => (string) $object->getNumberMax(),
+                'decimals_allowed'        => (string) $object->isDecimalsAllowed(),
+                'negative_allowed'        => (string) $object->isNegativeAllowed(),
             ]
         );
         if (isset($context['versioning'])) {
