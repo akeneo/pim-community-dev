@@ -135,11 +135,11 @@ class ExportProfilesContext extends PimContext
     }
 
     /**
-     * @Then /^the path of the exported file of "([^"]+)" should be "([^"]+)"$/
+     * @Then /^the name of the exported file of "([^"]+)" should be "([^"]+)"$/
      */
-    public function thePathOfTheExportedFileOfShouldBe($code, $path)
+    public function theNameOfTheExportedFileOfShouldBe($code, $path)
     {
-        $executionPath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+        $executionPath = $this->getMainContext()->getSubcontext('job')->getJobInstanceFilename($code);
 
         if ($path !== $executionPath) {
             throw $this->getMainContext()->createExpectationException(

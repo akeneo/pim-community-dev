@@ -96,12 +96,38 @@ class JobContext extends PimContext
      */
     public function getJobInstancePath($code)
     {
+        $archives = $this->getJobInstanceArchives($code);
+        $filePath = current($archives);
+        $archivePath = $this->getMainContext()->getContainer()->getParameter('archive_dir');
+
+        return sprintf('%s%s%s', $archivePath, DIRECTORY_SEPARATOR, $filePath);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getJobInstanceFilename($code)
+    {
+        $archives = $this->getJobInstanceArchives($code);
+        $filename = key($archives);
+
+        return $filename;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return array
+     */
+    protected function getJobInstanceArchives($code)
+    {
         $jobInstance = $this->getFixturesContext()->getJobInstance($code);
         $jobExecution = $jobInstance->getJobExecutions()->first();
         $archiver = $this->getMainContext()->getContainer()->get('pim_base_connector.archiver.file_writer_archiver');
         $archives = $archiver->getArchives($jobExecution);
-        $archive = key($archives);
 
-        return DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$archive;
+        return $archives;
     }
 }
