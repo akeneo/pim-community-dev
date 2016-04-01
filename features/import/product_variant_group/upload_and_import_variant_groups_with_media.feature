@@ -10,9 +10,9 @@ Feature: Upload and import variant groups with media
       | code       | type | label-en_US | allowed_extensions |
       | attachment | file | Attachment  | txt                |
     And I am logged in as "Julia"
-    And I am on the "footwear_variant_group_import" import job page
+    And I am on the "csv_footwear_variant_group_import" import job page
     When I upload and import the file "caterpillar_variant_import.zip"
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then I should see "Created 1"
     And I should see "Processed 1"
     When I am on the "caterpillar_boots" variant group page

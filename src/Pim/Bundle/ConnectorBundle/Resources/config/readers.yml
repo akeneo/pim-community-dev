@@ -103,3 +103,9 @@ services:
 
     pim_connector.reader.file.xlsx_association:
         alias: pim_connector.reader.file.xlsx
+
+    pim_connector.reader.file.xlsx_group:
+        alias: pim_connector.reader.file.xlsx
+
+    pim_connector.reader.file.xlsx_variant_group:
+        alias: pim_connector.reader.file.xlsx_product

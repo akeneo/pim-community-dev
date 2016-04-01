@@ -70,6 +70,14 @@ pim_connector:
         xlsx_variant_group_export:
             title: Variant group export in XLSX
             export.title: Variant group export
+        xlsx_group_import:
+            title: Group import in XLSX
+            validation.title: File validation
+            import.title: Group import
+        xlsx_variant_group_import:
+            title: Variant group import in XLSX
+            validation.title: File validation
+            import.title: Variant Group import
     steps:
 
         dummy_reader.title:                  Dummy reader

@@ -42,11 +42,11 @@ Feature: Execute an import with valid data
       code;type;name-en_US;description-en_US-tablet
       SANDAL;VARIANT;My sandal;My sandal description for locale en_US and channel tablet
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "read lines 1"
     And I should see "Processed 1"
@@ -62,11 +62,11 @@ Feature: Execute an import with valid data
       code;type;number_in_stock
       SANDAL;VARIANT;44
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "read lines 1"
     And I should see "Processed 1"
@@ -82,11 +82,11 @@ Feature: Execute an import with valid data
       code;type;manufacturer
       SANDAL;VARIANT;Converse
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "read lines 1"
     And I should see "Processed 1"
@@ -102,11 +102,11 @@ Feature: Execute an import with valid data
       code;type;weather_conditions
       SANDAL;VARIANT;dry,wet
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "read lines 1"
     And I should see "Processed 1"
@@ -122,11 +122,11 @@ Feature: Execute an import with valid data
       code;type;destocking_date
       SANDAL;VARIANT;2015-12-14
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "read lines 1"
     And I should see "Processed 1"
@@ -142,11 +142,11 @@ Feature: Execute an import with valid data
       code;type;handmade
       SANDAL;VARIANT;1
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "read lines 1"
     And I should see "Processed 1"
@@ -162,11 +162,11 @@ Feature: Execute an import with valid data
       code;type;handmade
       SANDAL;VARIANT;0
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "read lines 1"
     And I should see "Processed 1"
@@ -182,11 +182,11 @@ Feature: Execute an import with valid data
       code;type;price-EUR;price-USD
       SANDAL;VARIANT;100;90
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "read lines 1"
     And I should see "Processed 1"
@@ -202,11 +202,11 @@ Feature: Execute an import with valid data
       code;type;price
       SANDAL;VARIANT;100 EUR, 90 USD
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "read lines 1"
     And I should see "Processed 1"
@@ -222,11 +222,11 @@ Feature: Execute an import with valid data
       code;type;length;length-unit
       SANDAL;VARIANT;4000;CENTIMETER
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "read lines 1"
     And I should see "Processed 1"
@@ -242,11 +242,11 @@ Feature: Execute an import with valid data
       code;type;length
       SANDAL;VARIANT;4000 CENTIMETER
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "read lines 1"
     And I should see "Processed 1"
@@ -266,14 +266,14 @@ Feature: Execute an import with valid data
       code;type;frontView;name-en_US;userManual
       SANDAL;VARIANT;bic-core-148.gif;"Bic Core 148";bic-core-148.txt
       """
-    And the following job "footwear_variant_group_import" configuration:
+    And the following job "csv_footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    And import directory of "footwear_variant_group_import" contains the following media:
+    And import directory of "csv_footwear_variant_group_import" contains the following media:
       | bic-core-148.gif |
       | bic-core-148.txt |
-    When I am on the "footwear_variant_group_import" import job page
+    When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_import" job to finish
+    And I wait for the "csv_footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "read lines 1"
     And I should see "Processed 1"
