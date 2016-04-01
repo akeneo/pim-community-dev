@@ -37,7 +37,6 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->isNegativeAllowed()->willReturn(false);
         $attribute->getNumberMin()->willReturn('');
         $attribute->getNumberMax()->willReturn('');
-
         $attribute->getLocaleSpecificCodes()->willReturn(['en_US', 'fr_FR']);
         $attribute->getMaxCharacters()->willReturn(null);
         $attribute->getValidationRule()->willReturn(null);
@@ -142,15 +141,15 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'metric_family'          => 'Length',
                 'default_metric_unit'    => 'Centimenter',
                 'reference_data_name'    => 'color',
-                'available_locales'      => 'en_US,fr_FR',
-                'max_characters'         => '',
-                'validation_rule'        => '',
-                'validation_regexp'      => '',
                 'wysiwyg_enabled'        => '',
                 'number_min'             => '1',
                 'number_max'             => '10',
                 'decimals_allowed'       => '',
                 'negative_allowed'       => '',
+                'available_locales'      => 'en_US,fr_FR',
+                'max_characters'         => '',
+                'validation_rule'        => '',
+                'validation_regexp'      => '',
                 'date_min'               => '',
                 'date_max'               => '',
                 'max_file_size'          => '0',
