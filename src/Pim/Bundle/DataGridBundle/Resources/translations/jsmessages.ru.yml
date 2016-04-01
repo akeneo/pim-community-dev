@@ -63,7 +63,6 @@ pim_datagrid:
       confirm_ok: Подтвердить
       empty_selection: Не выбрано ни одного продукта
 pim.grid.mass_action.quick_export.title: Быстрый экспорт
-pim.grid.mass_action.quick_export.launched: Экспорт запущен
 pim.grid.action.launch.title: Запуск
 pim.grid.action.show.title: Показать
 Please select view: Пожалуйста выберите вид

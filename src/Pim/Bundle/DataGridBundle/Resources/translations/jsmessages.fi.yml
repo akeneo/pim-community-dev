@@ -63,9 +63,7 @@ pim_datagrid:
       confirm_ok: OK
       empty_selection: Tuotetta ei ole valittu.
 pim.grid.mass_action.quick_export.title: Nopea vienti
-pim.grid.mass_action.quick_export.launched: Nopea vienti on käynnistetty
 pim.grid.action.launch.title: Käynnistä
 pim.grid.action.show.title: Näytä
 Please select view: Valitse näkymä
 Loading...: Ladataan...
-View: Näytä

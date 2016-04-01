@@ -65,7 +65,6 @@ pim_base_connector:
     variant_group_processor.title: Создание / обновление группы вариантов
     category_processor.title: Создание категории
     association_processor.title: Создание ассоциации
-    product_association_processor.title: Создание ассоциации
     group_processor.title: Создание группы
     attribute_processor.title: Создание атрибутов
     attribute_option_processor.title: Создание выборов атрибутов
