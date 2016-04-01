@@ -291,38 +291,6 @@ class Edit extends ProductEditForm
     }
 
     /**
-     * @param string $field
-     *
-     * @return NodeElement
-     */
-    public function getRemoveLinkFor($field)
-    {
-        $link = $this->spin(function () use ($field) {
-            $link = $this->find(
-                'css',
-                sprintf(
-                    '.control-group:contains("%s") .remove-attribute',
-                    $field
-                )
-            );
-
-            if (!$link) {
-                $link = $this->find(
-                    'css',
-                    sprintf(
-                        '.field-container:contains("%s") .remove-attribute',
-                        $field
-                    )
-                );
-            }
-
-            return $link;
-        }, "Spining to get remove link on product edit form for field $field");
-
-        return $link;
-    }
-
-    /**
      * Get the "remove file" button for a media file (trash icon)
      *
      * @param $field
