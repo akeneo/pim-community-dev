@@ -31,6 +31,23 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
             $channelRepository,
             $factory
         );
+        $this->setConfiguration(
+            [
+                'filters' => [],
+                'actions' => [
+                    [
+                        'attribute_code' => 'color',
+                        'channel_code'   => 'mobile',
+                        'is_required'    => true
+                    ],
+                    [
+                        'attribute_code' => 'color',
+                        'channel_code'   => 'ecommerce',
+                        'is_required'    => false
+                    ]
+                ]
+            ]
+        );
     }
 
     function it_is_a_processor_and_a_step_element()
@@ -40,7 +57,6 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
     }
 
     function it_processes_a_family(
-        $jobConfigurationRepo,
         $attributeRepository,
         $channelRepository,
         $factory,
@@ -48,25 +64,13 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         ValidatorInterface $validator,
         FamilyInterface $family,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration,
         AttributeInterface $attributeColor,
         ChannelInterface $channelMobile,
         ChannelInterface $channelEcommerce,
         AttributeRequirementInterface $attrReqColorMobile,
         AttributeRequirementInterface $attrReqColorEcom
     ) {
-        $actions = [
-            [
-                'attribute_code' => 'color',
-                'channel_code'   => 'mobile',
-                'is_required'    => true
-            ],
-            [
-                'attribute_code' => 'color',
-                'channel_code'   => 'ecommerce',
-                'is_required'    => false
-            ]
-        ];
+
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($family)->willReturn($violations);
@@ -76,11 +80,6 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('color')->willReturn($attributeColor);
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channelMobile);
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($channelEcommerce);
-
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'actions' => $actions])
-        );
 
         $factory->createAttributeRequirement($attributeColor, $channelMobile, true)->willReturn($attrReqColorMobile);
         $factory->createAttributeRequirement($attributeColor, $channelEcommerce, false)->willReturn($attrReqColorEcom);

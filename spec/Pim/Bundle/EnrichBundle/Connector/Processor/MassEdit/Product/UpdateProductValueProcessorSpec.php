@@ -34,22 +34,15 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration
+        JobExecution $jobExecution
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(
-                [
-                    'filters' => [],
-                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
-                ]
-            )
-        );
+        $configuration = [
+            'filters' => [],
+            'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
+        ];
+        $this->setConfiguration($configuration);
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
@@ -66,21 +59,14 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         StepExecution $stepExecution,
         ConstraintViolationListInterface $violations,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration
+        JobExecution $jobExecution
     ) {
+        $configuration = [
+            'filters' => [],
+            'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
+        ];
+        $this->setConfiguration($configuration);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(
-                [
-                    'filters' => [],
-                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
-                ]
-            )
-        );
         $validator->validate($product)->willReturn($violations);
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
         $violations = new ConstraintViolationList([$violation, $violation]);
@@ -96,7 +82,7 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
 
     function it_returns_the_configuration_fields()
     {
-        $this->getConfigurationFields()->shouldReturn([]);
+        $this->getConfigurationFields()->shouldReturn(['actions' => []]);
     }
 
     function it_sets_the_step_execution(StepExecution $stepExecution)

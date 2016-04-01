@@ -26,6 +26,9 @@ class AddProductValueProcessorSpec extends ObjectBehavior
             $validator,
             $jobConfigurationRepo
         );
+        $this->setConfiguration(
+            ['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]]
+        );
     }
 
     function it_adds_values_to_product(
@@ -33,20 +36,12 @@ class AddProductValueProcessorSpec extends ObjectBehavior
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration
+        JobExecution $jobExecution
     ) {
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
-        );
-
         $propertyAdder->addData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
@@ -59,21 +54,13 @@ class AddProductValueProcessorSpec extends ObjectBehavior
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration
+        JobExecution $jobExecution
     ) {
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
         $violations = new ConstraintViolationList([$violation, $violation]);
         $validator->validate($product)->willReturn($violations);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
-        );
-
         $propertyAdder->addData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
@@ -85,7 +72,7 @@ class AddProductValueProcessorSpec extends ObjectBehavior
 
     function it_returns_the_configuration_fields()
     {
-        $this->getConfigurationFields()->shouldReturn([]);
+        $this->getConfigurationFields()->shouldReturn(['actions' => []]);
     }
 
     function it_sets_the_step_execution(StepExecution $stepExecution)

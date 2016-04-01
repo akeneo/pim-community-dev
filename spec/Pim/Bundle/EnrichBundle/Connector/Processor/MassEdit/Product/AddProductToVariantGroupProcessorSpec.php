@@ -40,22 +40,14 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         GroupInterface $variantGroup,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration,
         ProductTemplateInterface $productTemplate
     ) {
+        $configuration = ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']];
+        $this->setConfiguration($configuration);
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
-
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(
-                ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']]
-            )
-        );
 
         $groupRepository->findOneByIdentifier('variant_group_code')->willReturn($variantGroup);
         $product->getVariantGroup()->willReturn(null);
@@ -75,23 +67,17 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         GroupInterface $variantGroup,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration,
         ProductTemplateInterface $productTemplate
     ) {
+        $configuration = ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']];
+        $this->setConfiguration($configuration);
+
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
         $violations = new ConstraintViolationList([$violation, $violation]);
         $validator->validate($product)->willReturn($violations);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(
-                ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']]
-            )
-        );
 
         $groupRepository->findOneByIdentifier('variant_group_code')->willReturn($variantGroup);
         $product->getVariantGroup()->willReturn(null);
