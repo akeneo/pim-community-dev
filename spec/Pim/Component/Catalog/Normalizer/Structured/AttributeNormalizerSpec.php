@@ -31,6 +31,11 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getReferenceDataName()->willReturn('color');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(false);
+        $attribute->isWysiwygEnabled()->willReturn(false);
+        $attribute->getNumberMin()->willReturn('');
+        $attribute->getNumberMax()->willReturn('');
+        $attribute->isDecimalsAllowed()->willReturn(false);
+        $attribute->isNegativeAllowed()->willReturn(false);
     }
 
     function it_is_initializable()
@@ -63,8 +68,13 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'metric_family'          => 'Length',
                 'default_metric_unit'    => 'Centimenter',
                 'reference_data_name'    => 'color',
+                'wysiwyg_enabled'        => '',
+                'number_min'             => '',
+                'number_max'             => '',
+                'decimals_allowed'       => '',
+                'negative_allowed'       => '',
                 'localizable'            => 1,
-                'scopable'               => 0
+                'scopable'               => 0,
             ]
         );
     }
@@ -109,6 +119,11 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'metric_family'          => 'Length',
                 'default_metric_unit'    => 'Centimenter',
                 'reference_data_name'    => 'color',
+                'wysiwyg_enabled'        => '',
+                'number_min'             => '1',
+                'number_max'             => '10',
+                'decimals_allowed'       => '',
+                'negative_allowed'       => '',
                 'available_locales'      => ['en_US', 'fr_FR'],
                 'localizable'            => true,
                 'scope'                  => 'Channel',
@@ -123,11 +138,6 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'max_characters'         => '',
                 'validation_rule'        => '',
                 'validation_regexp'      => '',
-                'wysiwyg_enabled'        => '',
-                'number_min'             => '1',
-                'number_max'             => '10',
-                'decimals_allowed'       => '',
-                'negative_allowed'       => '',
                 'date_min'               => '',
                 'date_max'               => '',
                 'metric_family'          => 'Length',
