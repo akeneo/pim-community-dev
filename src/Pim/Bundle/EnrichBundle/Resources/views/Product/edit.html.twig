@@ -53,9 +53,11 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation'],
-                            function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog, mediator, Error, Navigation) {
+                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation', 'oro/loading-mask'],
+                            function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog, mediator, Error, Navigation, LoadingMask) {
                                 $(function() {
+                                    var loadingMask = new LoadingMask();
+                                    loadingMask.render().$el.appendTo($('#container')).show();
                                     FetcherRegistry.initialize().done(function () {
                                         ProductManager.get('{{ productId }}')
                                             .then(function (product) {
@@ -76,8 +78,10 @@
                                                         mediator.trigger('pim_enrich:form:entity:post_fetch', product);
 
                                                         form.setElement('#product-edit-form').render();
+                                                        loadingMask.remove();
                                                     });
                                             }).fail(function(response, textStatus, errorThrown) {
+                                                loadingMask.remove();
                                                 var errorView = new Error(response.responseJSON.message, response.status);
                                                 errorView.setElement('#product-edit-form').render();
                                             });
