@@ -57,10 +57,10 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         UserInterface $userJulia,
-        ProductInterface $product,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        JobConfigurationInterface $jobConfiguration
+        ProductInterface $product
     ) {
+        $configuration = ['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]];
+        $this->setConfiguration($configuration);
         $this->setStepExecution($stepExecution);
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
@@ -74,11 +74,6 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
 
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
 
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
-        );
-
         $this->process($product)->shouldReturn($product);
     }
 
@@ -89,10 +84,12 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         UserInterface $userJulia,
-        ProductInterface $product,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        JobConfigurationInterface $jobConfiguration
+        ProductInterface $product
     ) {
+        $configuration  = [
+            'filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]
+        ];
+        $this->setConfiguration($configuration);
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
@@ -110,11 +107,6 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $userJulia->getRoles()->willReturn(['ProductOwner']);
 
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
-
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
-        );
 
         $this->process($product)->shouldReturn(null);
     }
