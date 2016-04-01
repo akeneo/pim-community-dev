@@ -2,7 +2,7 @@
 Feature: Execute a job
   In order to use existing product information
   As a product manager
-  I need to be able to import products
+  I need to be able to import products with associations
 
   Background:
     Given the "footwear" catalog configuration
@@ -130,3 +130,20 @@ Feature: Execute a job
     And I visit the "Associations" tab
     And I visit the "Cross sell" group
     Then I should see "0 products and 0 groups"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5696
+  Scenario: Successfully import products with associations and numeric value as SKU
+    Given the following XLSX file to import:
+    """
+      sku;family;groups;X_SELL-groups
+      123;boots;CROSS;CROSS
+      """
+    And the following job "xlsx_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    And I am on the "xlsx_footwear_product_import" import job page
+    When I launch the import job
+    And I wait for the "xlsx_footwear_product_import" job to finish
+    And I edit the "123" product
+    And I visit the "Associations" tab
+    And I visit the "Cross sell" group
+    Then I should see "0 products and 1 groups"

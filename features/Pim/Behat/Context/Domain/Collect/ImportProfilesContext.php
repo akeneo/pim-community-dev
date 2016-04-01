@@ -37,7 +37,14 @@ class ImportProfilesContext extends PimContext
             $writer = WriterFactory::create($extension);
             $writer->openToFile($filename);
             foreach (explode(PHP_EOL, $string) as $row) {
-                $writer->addRow(explode(";", $row));
+                $rowCells = explode(";", $row);
+                foreach ($rowCells as &$cell) {
+                    if (is_numeric($cell)) {
+                        $cell = false === strpos($cell, '.') ? (int) $cell : (float) $cell;
+                    }
+                }
+
+                $writer->addRow($rowCells);
             }
             $writer->close();
         } else {

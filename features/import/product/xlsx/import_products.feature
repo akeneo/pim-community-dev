@@ -57,3 +57,20 @@ Feature: Import XLSX products
     And I launch the import job
     And I wait for the "xlsx_footwear_product_import" job to finish
     Then there should be 2 products
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5696
+  Scenario: Successfully import products with numeric values in text attributes
+    Given the following XLSX file to import:
+      """
+      sku;family;groups;name-en_US;description-en_US-tablet
+      123;boots;CROSS;456;7890
+      """
+    And the following job "xlsx_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "xlsx_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "xlsx_footwear_product_import" job to finish
+    Then there should be 1 product
+    And the english tablet name of "123" should be "456"
+    And the english tablet description of "123" should be "7890"
+

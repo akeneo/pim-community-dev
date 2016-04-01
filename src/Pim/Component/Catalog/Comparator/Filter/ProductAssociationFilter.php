@@ -47,18 +47,12 @@ class ProductAssociationFilter implements ProductFilterInterface
         }
 
         $result = [];
-        foreach ($newValues as $code => $associations) {
-            if (self::ASSOCIATIONS_FIELD !== $code) {
-                throw new \LogicException(sprintf('Only "%s" field can be compared.', self::ASSOCIATIONS_FIELD));
-            }
+        foreach ($newValues[self::ASSOCIATIONS_FIELD] as $type => $field) {
+            foreach ($field as $key => $association) {
+                $data = $this->compareAssociation($originalAssociations, $association, $type, $key);
 
-            foreach ($associations as $type => $field) {
-                foreach ($field as $key => $association) {
-                    $data = $this->compareAssociation($originalAssociations, $association, $type, $key);
-
-                    if (null !== $data) {
-                        $result[self::ASSOCIATIONS_FIELD][$type][$key] = $data;
-                    }
+                if (null !== $data) {
+                    $result[self::ASSOCIATIONS_FIELD][$type][$key] = $data;
                 }
             }
         }
