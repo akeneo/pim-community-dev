@@ -1,0 +1,27 @@
+connector:
+    name: Akeneo XLSX Connector
+    jobs:
+        xlsx_published_product_export:
+            title: pimee_workflow.jobs.xlsx_published_product_export.title
+            type:  export
+            steps:
+                export:
+                    title: pimee_workflow.jobs.xlsx_published_product_export.export.title
+                    services:
+                        reader:    pimee_workflow.reader.doctrine.published_product
+                        processor: pim_base_connector.processor.product_to_flat_array
+                        writer:    pim_connector.writer.file.xlsx_product
+                    parameters:
+                        batch_size: 10
+        xlsx_product_proposal_import:
+            title: pimee_workflow.jobs.xlsx_product_proposal_import.title
+            type:  import
+            steps:
+                import:
+                    title:     pimee_workflow.jobs.xlsx_product_proposal_import.import.title
+                    services:
+                        reader:    pimee_workflow.reader.file.xlsx_product_draft
+                        processor: pimee_workflow.processor.denormalization.product_draft.flat
+                        writer:    pim_base_connector.writer.doctrine.product_draft
+                    parameters:
+                        batch_size: 10

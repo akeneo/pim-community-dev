@@ -7,6 +7,7 @@
 ## Technical improvements
 
 - PIM-5589: introduce a channels, attribute groups, group types, currencies, locale accesses, asset category accesses, product category accesses, attribute group accesses and job profile accesses import using the new import system introduced in v1.4
+- PIM-5645: introduces the new Akeneo XLSX Connector
 
 ## BC breaks
 

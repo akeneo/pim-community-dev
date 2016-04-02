@@ -70,12 +70,12 @@ jobs:
             withHeader: true
             filePath:   /tmp/published_products_export_%locale%_%scope%_%datetime%.csv
     approve_product_draft:
-        connector: Akeneo Native Connector
+        connector: Akeneo Mass Edit Connector
         alias:     approve_product_draft
         label:     Mass approve product drafts
         type:      mass_edit
     refuse_product_draft:
-        connector: Akeneo Native Connector
+        connector: Akeneo Mass Edit Connector
         alias:     refuse_product_draft
         label:     Mass reject product drafts
         type:      mass_edit
@@ -106,7 +106,7 @@ jobs:
         label:     Calculation the matching products for the rules
         type:      mass_edit_rule
     xlsx_group_export:
-        connector: Akeneo Native Connector
+        connector: Akeneo XLSX Connector
         alias:     xlsx_group_export
         label:     Demo xlsx group export
         type:      export
@@ -114,7 +114,7 @@ jobs:
             withHeader: true
             filePath:   /tmp/group.xlsx
     xlsx_variant_group_export:
-        connector: Akeneo Native Connector
+        connector: Akeneo XLSX Connector
         alias:     xlsx_variant_group_export
         label:     Demo xlsx variant group export
         type:      export
