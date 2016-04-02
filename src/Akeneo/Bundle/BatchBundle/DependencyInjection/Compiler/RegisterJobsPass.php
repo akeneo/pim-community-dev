@@ -10,10 +10,11 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Parser as YamlParser;
 
 /**
- * Read the batch_jobs.yml file of the connectors to register the jobs
+ * Read the batch_jobs.yml file or batch_jobs folder of the connectors to register the jobs
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -45,13 +46,31 @@ class RegisterJobsPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $registry = $container->getDefinition('akeneo_batch.connectors');
+        $configFileDir =
+            DIRECTORY_SEPARATOR . 'Resources' .
+            DIRECTORY_SEPARATOR . 'config' .
+            DIRECTORY_SEPARATOR . 'batch_jobs';
+
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflClass = new \ReflectionClass($bundle);
             if (false === $bundleDir = dirname($reflClass->getFileName())) {
                 continue;
             }
-            if (is_file($configFile = $bundleDir.'/Resources/config/batch_jobs.yml')) {
+
+            $configFiles = [];
+            if (is_dir($configDir = $bundleDir . $configFileDir)) {
+                $finder = Finder::create()->files()->in($configDir);
+                foreach ($finder as $file) {
+                    if (is_file($file->getPathname())) {
+                        $configFiles[] = $file->getPathname();
+                    }
+                }
+            } elseif (is_file($configFile = $bundleDir . $configFileDir . '.yml')) {
+                $configFiles[] = $configFile;
+            }
+
+            foreach ($configFiles as $configFile) {
                 $container->addResource(new FileResource($configFile));
                 $this->registerJobs($registry, $configFile);
             }

@@ -1,5 +1,5 @@
 connector:
-    name: Akeneo Native Connector
+    name: Akeneo CSV Connector
     jobs:
         csv_product_import:
             title: pim_connector.jobs.csv_product_import.title
@@ -20,29 +20,6 @@ connector:
                     title:         pim_connector.jobs.csv_product_import.import_associations.title
                     services:
                         reader:    pim_connector.reader.file.csv_association
-                        processor: pim_connector.processor.denormalization.product_association.flat
-                        writer:    pim_connector.writer.doctrine.product_association
-                    parameters:
-                        batch_size: 1
-        xlsx_product_import:
-            title: pim_connector.jobs.xlsx_product_import.title
-            type:  import
-            steps:
-                validation:
-                    title: pim_connector.jobs.xlsx_product_import.validation.title
-                    class: %pim_connector.step.validator.class%
-                    services:
-                        charsetValidator: pim_connector.validator.item.charset_validator
-                import:
-                    title:         pim_connector.jobs.xlsx_product_import.import.title
-                    services:
-                        reader:    pim_connector.reader.file.xlsx_product
-                        processor: pim_connector.processor.denormalization.product.flat
-                        writer:    pim_connector.writer.doctrine.product
-                import_associations:
-                    title:         pim_connector.jobs.xlsx_product_import.import_associations.title
-                    services:
-                        reader:    pim_connector.reader.file.xlsx_association
                         processor: pim_connector.processor.denormalization.product_association.flat
                         writer:    pim_connector.writer.doctrine.product_association
                     parameters:
@@ -156,39 +133,85 @@ connector:
                         reader:    pim_connector.reader.file.csv_family
                         processor: pim_connector.processor.denormalization.family.flat
                         writer:    pim_connector.writer.doctrine.family
-        xlsx_product_export:
-            title: pim_connector.jobs.xlsx_product_export.title
+        csv_product_export:
+            title: pim_base_connector.jobs.csv_product_export.title
             type:  export
             steps:
                 export:
-                    title: pim_connector.jobs.xlsx_product_export.export.title
+                    title:     pim_base_connector.jobs.csv_product_export.export.title
                     services:
                         reader:    pim_base_connector.reader.doctrine.product
                         processor: pim_base_connector.processor.product_to_flat_array
-                        writer:    pim_connector.writer.file.xlsx_product
+                        writer:    pim_connector.writer.file.csv_product
                     parameters:
                         batch_size: 10
-        xlsx_group_export:
-            title: pim_connector.jobs.xlsx_group_export.title
+        csv_category_export:
+            title: pim_base_connector.jobs.csv_category_export.title
             type:  export
             steps:
                 export:
-                    title: pim_connector.jobs.xlsx_group_export.export.title
+                    title:     pim_base_connector.jobs.csv_category_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.orm.category
+                        processor: pim_base_connector.processor.csv_serializer.homogeneous
+                        writer:    pim_connector.writer.file.simple_file
+        csv_attribute_export:
+            title: pim_base_connector.jobs.csv_attribute_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_attribute_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.orm.attribute
+                        processor: pim_base_connector.processor.csv_serializer.homogeneous
+                        writer:    pim_connector.writer.file.simple_file
+        csv_attribute_option_export:
+            title: pim_base_connector.jobs.csv_attribute_option_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_attribute_option_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.orm.attribute_option
+                        processor: pim_base_connector.processor.csv_serializer.homogeneous
+                        writer:    pim_connector.writer.file.simple_file
+        csv_association_type_export:
+            title: pim_base_connector.jobs.csv_association_type_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_association_type_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.orm.association_type
+                        processor: pim_base_connector.processor.csv_serializer.homogeneous
+                        writer:    pim_connector.writer.file.simple_file
+        csv_group_export:
+            title: pim_base_connector.jobs.csv_group_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_group_export.export.title
                     services:
                         reader:    pim_base_connector.reader.repository.group
-                        processor: pim_connector.processor.normalization.group.flat
-                        writer:    pim_connector.writer.file.xlsx_group
-                    parameters:
-                        batch_size: 10
-        xlsx_variant_group_export:
-            title: pim_connector.jobs.xlsx_variant_group_export.title
+                        processor: pim_base_connector.processor.normalization.csv_group
+                        writer:    pim_connector.writer.file.simple_file
+        csv_variant_group_export:
+            title: pim_base_connector.jobs.csv_variant_group_export.title
             type:  export
             steps:
                 export:
-                    title: pim_connector.jobs.xlsx_variant_group_export.export.title
+                    title:     pim_base_connector.jobs.csv_variant_group_export.export.title
                     services:
                         reader:    pim_base_connector.reader.repository.variant_group
-                        processor: pim_connector.processor.normalization.variant_group.flat
-                        writer:    pim_connector.writer.file.xlsx_variant_group
-                    parameters:
-                        batch_size: 10
+                        processor: pim_base_connector.processor.normalization.csv_variant_group
+                        writer:    pim_base_connector.writer.file.csv_variant_group
+        csv_family_export:
+            title: pim_base_connector.jobs.csv_family_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_family_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.orm.family
+                        processor: pim_base_connector.processor.normalization.family.flat
+                        writer:    pim_connector.writer.file.simple_file
