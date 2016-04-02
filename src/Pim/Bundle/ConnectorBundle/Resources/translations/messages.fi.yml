@@ -56,6 +56,10 @@ pim_connector:
       import.title: Muuttujaryhmien tuonti
     xlsx_product_export:
       export.title: Tuotteiden vienti
+    xlsx_product_import:
+      validation.title: Tiedostojen tarkistaminen
+      import.title: Tuotteiden tuonti
+      import_associations.title: Liitännäisten tuonti
   steps:
     dummy_reader.title: Mallilukija
     product_reader.title: Tuotteen poisto
