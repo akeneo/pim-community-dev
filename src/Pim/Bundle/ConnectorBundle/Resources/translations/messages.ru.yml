@@ -56,6 +56,10 @@ pim_connector:
       import.title: Импорт групп вариантов
     xlsx_product_export:
       export.title: Экспорт продуктов
+    xlsx_product_import:
+      validation.title: Подтверждение файла
+      import.title: Импорт продуктов
+      import_associations.title: Импорт ассоциаций
   steps:
     dummy_reader.title: Заглушка
     product_reader.title: Извелечение продуктов

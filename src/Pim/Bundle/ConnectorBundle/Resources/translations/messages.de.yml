@@ -57,6 +57,10 @@ pim_connector:
     xlsx_product_export:
       title: Produkt-Export als XLSX
       export.title: Produkt-Export
+    xlsx_product_import:
+      validation.title: Dateivalidierung
+      import.title: Produkt import
+      import_associations.title: Produktverbindungen-Import
   steps:
     dummy_reader.title: Dummy-Leser
     product_reader.title: Produktextraktion
