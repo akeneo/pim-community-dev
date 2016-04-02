@@ -59,7 +59,7 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
         $this->pqbFactory           = $pqbFactory;
         $this->jobRepository        = $jobRepository;
         $this->jobConfigurationRepo = $jobConfigurationRepo;
-
+        $this->filters = [];
         $this->isExecuted = false;
     }
 
@@ -69,7 +69,7 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     public function read()
     {
         $configuration = $this->getConfiguration();
-        if (null === $configuration) {
+        if (null === $configuration['filters']) {
             return null;
         }
 
@@ -154,7 +154,7 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     /**
      * @param array $filters
      */
-    public function setFilters($filters)
+    public function setFilters(array $filters)
     {
         $this->filters = $filters;
     }

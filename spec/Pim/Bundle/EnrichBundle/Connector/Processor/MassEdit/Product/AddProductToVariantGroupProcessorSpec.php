@@ -95,7 +95,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
 
     function it_returns_the_configuration_fields()
     {
-        $this->getConfigurationFields()->shouldReturn([]);
+        $this->getConfigurationFields()->shouldReturn(['actions' => []]);
     }
 
     function it_sets_the_step_execution(StepExecution $stepExecution)

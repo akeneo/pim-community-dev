@@ -30,31 +30,25 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PaginatorFactoryInterface $paginatorFactory,
         ObjectDetacherInterface $objectDetacher,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         IdentifiableObjectRepositoryInterface $groupRepository,
         ProductRepositoryInterface $productRepository,
-        TranslatorInterface $translator,
-        SaverInterface $saver
+        TranslatorInterface $translator
     ) {
         $this->beConstructedWith(
             $pqbFactory,
             $paginatorFactory,
             $objectDetacher,
-            $jobConfigurationRepo,
             $groupRepository,
             $productRepository,
-            $translator,
-            $saver
+            $translator
         );
     }
 
     function it_cleans_products_that_are_not_eligible(
         $groupRepository,
         $productRepository,
-        $jobConfigurationRepo,
         $paginatorFactory,
         $pqbFactory,
-        $saver,
         GroupInterface $variantGroup,
         ProductQueryBuilderInterface $productQueryBuilder,
         StepExecution $stepExecution,
@@ -67,7 +61,6 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2
     ) {
-        $this->setStepExecution($stepExecution);
         $configuration = [
             'filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [1, 2], 'context' => []]],
             'actions' => ['value' => 'variant_group_code'],
@@ -85,9 +78,6 @@ class VariantGroupCleanerSpec extends ObjectBehavior
 
         $productRepository->getEligibleProductIdsForVariantGroup(42)->willReturn([5, 6, 7]);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-
-        $jobConfiguration->setConfiguration(json_encode(null))->shouldBeCalled();
 
         $pqbFactory->create()->willReturn($productQueryBuilder);
 
@@ -107,8 +97,6 @@ class VariantGroupCleanerSpec extends ObjectBehavior
             Argument::any()
         )->shouldBeCalledTimes(2);
 
-        $saver->save($jobConfiguration)->shouldBeCalled();
-
         $paginatorFactory->createPaginator($cursor)->willReturn($paginator);
         $paginator->rewind()->willReturn();
         $paginator->count()->willReturn(1);
@@ -116,14 +104,12 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         $paginator->next()->willReturn();
         $paginator->current()->willReturn([$product1, $product2]);
 
-        $this->execute($configuration);
+        $this->clean($configuration, $stepExecution);
     }
 
     function it_checks_if_products_have_duplicated_axis(
         $groupRepository,
         $productRepository,
-        $jobConfigurationRepo,
-        $saver,
         $paginatorFactory,
         $pqbFactory,
         GroupInterface $variantGroup,
@@ -132,7 +118,6 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         CursorInterface $cursor,
         JobExecution $jobExecution,
         PaginatorInterface $paginator,
-        JobConfigurationInterface $jobConfiguration,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
@@ -147,7 +132,6 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         AttributeOptionInterface $attributeOption3,
         AttributeOptionInterface $attributeOption4
     ) {
-        $this->setStepExecution($stepExecution);
         $configuration = [
             'filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [1, 2, 3, 4], 'context' => []]],
             'actions' => ['value' => 'variant_group_code'],
@@ -189,19 +173,10 @@ class VariantGroupCleanerSpec extends ObjectBehavior
 
         $productRepository->getEligibleProductIdsForVariantGroup(42)->willReturn([1, 2, 3, 4]);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-
         $pqbFactory->create()->willReturn($productQueryBuilder);
 
         $productQueryBuilder->addFilter('id', 'IN', [1, 2, 3, 4], [])->shouldBeCalled();
         $productQueryBuilder->execute()->willReturn($cursor);
-
-        $saver->save($jobConfiguration)->shouldBeCalled();
-
-        $jobConfiguration->setConfiguration(json_encode([
-            'filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [1, 2, 3, 4]]],
-            'actions' => ['value'  => 'variant_group_code']
-        ]))->shouldBeCalled();
 
         $productPage = [$product1, $product2, $product3, $product4];
 
@@ -212,14 +187,17 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         $paginator->next()->willReturn();
         $paginator->current()->willReturn($productPage);
 
-        $this->execute($configuration);
+        $this->clean($configuration, $stepExecution)->shouldReturn(
+            [
+                'filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [1, 2, 3, 4]]],
+                'actions' => ['value'  => 'variant_group_code']
+            ]
+        );
     }
 
     function it_cleans_products_with_duplicated_axis(
         $groupRepository,
         $productRepository,
-        $jobConfigurationRepo,
-        $saver,
         $paginatorFactory,
         $pqbFactory,
         GroupInterface $variantGroup,
@@ -230,7 +208,6 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         PaginatorInterface $paginator1,
         PaginatorInterface $paginator2,
         TranslatorInterface $translator,
-        JobConfigurationInterface $jobConfiguration,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
@@ -245,7 +222,6 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         AttributeOptionInterface $attributeOption3,
         AttributeOptionInterface $attributeOption4
     ) {
-        $this->setStepExecution($stepExecution);
         $configuration = [
             'filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [1, 2, 3, 4], 'context' => []]],
             'actions' => ['value' => 'variant_group_code'],
@@ -282,7 +258,6 @@ class VariantGroupCleanerSpec extends ObjectBehavior
 
         $productRepository->getEligibleProductIdsForVariantGroup(42)->willReturn([1, 2, 3, 4]);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
 
         $pqbFactory->create()->willReturn($productQueryBuilder);
 
@@ -319,13 +294,11 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         $productQueryBuilder->addFilter('id', 'IN', [1, 2], ['locale' => null, 'scope' => null])->shouldBeCalledTimes(1);
         $productQueryBuilder->execute()->willReturn($cursor);
 
-        $saver->save($jobConfiguration)->shouldBeCalled();
-
-        $jobConfiguration->setConfiguration(json_encode([
-            'filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [2 => 3, 3 => 4]]],
-            'actions' => ['value'  => 'variant_group_code']
-        ]))->shouldBeCalled();
-
-        $this->execute($configuration);
+        $this->clean($configuration, $stepExecution)->shouldReturn(
+            [
+                'filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [2 => 3, 3 => 4]]],
+                'actions' => ['value'  => 'variant_group_code']
+            ]
+        );
     }
 }

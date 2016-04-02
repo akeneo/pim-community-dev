@@ -1,6 +1,7 @@
 parameters:
-    pim_enrich.connector.reader.mass_edit.product.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader
-    pim_enrich.connector.reader.mass_edit.family.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredFamilyReader
+    pim_enrich.connector.reader.mass_edit.product.class:               Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader
+    pim_enrich.connector.reader.mass_edit.family.class:                Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredFamilyReader
+    pim_enrich.connector.reader.mass_edit.variant_group_product.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredVariantGroupProductReader
 
 services:
     pim_enrich.connector.reader.mass_edit.product:
@@ -15,3 +16,9 @@ services:
         arguments:
             - '@pim_connector.repository.job_configuration'
             - '@pim_catalog.repository.family'
+
+    pim_enrich.connector.reader.mass_edit.variant_group_product:
+        class: %pim_enrich.connector.reader.mass_edit.variant_group_product.class%
+        arguments:
+            - '@pim_enrich.connector.reader.mass_edit.product'
+            - '@pim_enrich.connector.item.mass_edit.variant_group_cleaner'
