@@ -1,4 +1,5 @@
-View the product: Посмотреть продукт
+View the product: Посмотр продукта
+pimee_enrich.product_history.action.revert: Вернуть к данной версии
 pimee_enrich:
   entity:
     product:
@@ -18,6 +19,9 @@ pimee_enrich:
               success: Предложение было успешно применено.
             reject:
               success: Это предложение было отклонено.
+      confirmation:
+        revert:
+          content: Вы уверены, что хотите вернуть товар к данной версии?
       copy:
         source:
           working_copy: Рабочая копия

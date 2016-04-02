@@ -1,0 +1,5 @@
+user:
+  email:
+    notifications: Уведомления по эл. почте
+  asset_delay_reminder: Напоминание о задержке активов (в днях)
+Default asset tree: Дерево активов по умолчанию
