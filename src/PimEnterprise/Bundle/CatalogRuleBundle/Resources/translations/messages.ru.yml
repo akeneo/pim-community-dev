@@ -1,5 +1,7 @@
 pimee_catalog_rule:
   attribute:
+    tab:
+      rule.title: Правила
     grid:
       is_smart.label: Smart
   product:

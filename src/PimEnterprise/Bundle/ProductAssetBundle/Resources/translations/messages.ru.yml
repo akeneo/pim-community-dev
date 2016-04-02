@@ -1,9 +1,17 @@
 pimee_product_asset:
+  acl:
+    asset:
+      index: Дополнить активы
   enrich_asset:
     button:
+      upload: Загрузить
       delete: Удалить
+      download: Скачать
+      reset_variations: Сбросить вариации
     view:
       code: Код
+      download: Скачать
+      tag: Теги
   popin.create:
     is_localized: Локализуемые
   code:

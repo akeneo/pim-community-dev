@@ -15,6 +15,7 @@ pimee_workflow:
       can_not_be_deleted: Не может быть удален
     action:
       approve: Одобрить
+      refuse: Отклонить
       remove: Удалить
     mass_review_action:
       approve: Одобрить выделенное
