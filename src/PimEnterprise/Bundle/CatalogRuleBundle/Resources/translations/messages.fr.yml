@@ -8,6 +8,12 @@ pimee_catalog_rule:
         code: Code
         conditions: Condition
         actions: Action
+        impacted_product_count:
+          label: Produits impactés
+          count: '{0,1}%count% produit impacté|]1,Inf[%count% produits impactés'
+          no_yet_calculated: Pas encore calculé
+      mass_edit_action:
+        impacted_product_count: Calculer les produits impactés par les règles
   actions:
     type:
       copy: 'Alors %from_field% est copié dans %to_field%'
@@ -33,6 +39,7 @@ pimee_catalog_rule:
       BETWEEN: est entre
       NOT BETWEEN: "n'est pas entre"
       =: égale
+      !=: différent de
       >: est supérieur à
       >=: est supérieur ou égal à
       <: est inférieur à
@@ -43,6 +50,7 @@ pimee_catalog_rule:
     rule:
       view_permissions: Voir les règles
       delete_permissions: Supprimer les règles
+      impacted_product_count_permissions: Calculer les produits impactés par les règles
   attribute:
     tab:
       rule.title: Règles
@@ -66,7 +74,14 @@ pimee_catalog_rule:
     yml_rule_export:
       title: Export des règles en YAML
       export.title: Export des règles
+    impacted_product_count:
+      title: Produits impactés par les règles
   steps:
     product_rule_definition_reader.title: "Lecteur de règles d'import produits"
     rule_definition_processor.title: "Processeur de règles d'import produits"
     product_rule_definition_writer.title: "Ecriture des règles d'import produits"
+  notification:
+    mass_edit_rule:
+      success: Calcul des produits impactés par les règles terminé
+mass_edit_rule: Paramètres des règles
+job_execution.summary.rule_calculated: Nombre de règles

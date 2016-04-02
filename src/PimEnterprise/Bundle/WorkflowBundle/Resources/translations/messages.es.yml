@@ -62,6 +62,9 @@ pimee_workflow:
       edit: Editar
       view: Vista
   jobs:
+    csv_published_product_export:
+      title: Exportación en CSV de productos publicados
+      export.title: Exportación de productos publicados
     csv_product_proposal_import:
       title: Importación de propuesta de producto en CSV
       import.title: Importación de propuesta de producto
