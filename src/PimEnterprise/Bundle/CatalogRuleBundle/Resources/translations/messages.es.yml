@@ -8,6 +8,8 @@ pimee_catalog_rule:
         code: Código
         conditions: Condición
         actions: Acción
+        impacted_product_count:
+          no_yet_calculated: Aún no calculados
   actions:
     type:
       copy: 'Entonces %from_field% es copiado en %to_field%'

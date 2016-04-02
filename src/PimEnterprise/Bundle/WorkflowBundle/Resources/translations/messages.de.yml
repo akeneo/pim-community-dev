@@ -62,6 +62,9 @@ pimee_workflow:
       edit: Bearbeiten
       view: Ansehen
   jobs:
+    csv_published_product_export:
+      title: Export veröffentlichter Produkte als CSV
+      export.title: Export veröffentlichter Produkte
     csv_product_proposal_import:
       title: Produktvorschläge in CSV-Datei importieren
       import.title: Produktvorschlag-Import

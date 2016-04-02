@@ -15,6 +15,10 @@ pimee_catalog_rule:
       set.label: wird gesetzt in
       copy.label: wird kopiert nach
       add.label: wird hinzugefügt zu
+  datagrid:
+    rule-grid:
+      mass_edit_action:
+        confirm_ok: OK
 confirmation:
   remove:
     rule: Sind Sie sicher, dass Sie diese Regel löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden

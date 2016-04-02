@@ -8,6 +8,8 @@ pimee_catalog_rule:
         code: Code
         conditions: Bedingung
         actions: Aktion
+        impacted_product_count:
+          no_yet_calculated: Noch nicht berechnet
   actions:
     type:
       copy: 'Dann wird %from_field% in %to_field% kopiert.'

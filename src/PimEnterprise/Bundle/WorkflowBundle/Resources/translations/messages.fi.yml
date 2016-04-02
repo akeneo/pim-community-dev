@@ -44,6 +44,9 @@ pimee_workflow:
       edit: Muokkaa
       view: Näytä
   jobs:
+    csv_published_product_export:
+      title: Julkaistun tuotteen vienti CSV-muodossa
+      export.title: Julkaistun tuotteen vienti
     csv_product_proposal_import:
       title: Tuote-ehdotuksen tuonti CSV-muodossa
       import.title: Tuote-ehdotuksen tuonti

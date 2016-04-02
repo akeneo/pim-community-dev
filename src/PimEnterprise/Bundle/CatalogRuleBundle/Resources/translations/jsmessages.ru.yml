@@ -1,0 +1,5 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      mass_edit_action:
+        confirm_ok: Подтвердить
