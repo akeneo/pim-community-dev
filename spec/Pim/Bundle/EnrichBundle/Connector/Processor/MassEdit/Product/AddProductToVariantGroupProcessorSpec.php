@@ -10,8 +10,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -20,13 +18,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
 {
     function let(
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ValidatorInterface $validator,
         GroupRepositoryInterface $groupRepository,
         ProductTemplateUpdaterInterface $templateUpdater
     ) {
         $this->beConstructedWith(
-            $jobConfigurationRepo,
             $validator,
             $groupRepository,
             $templateUpdater

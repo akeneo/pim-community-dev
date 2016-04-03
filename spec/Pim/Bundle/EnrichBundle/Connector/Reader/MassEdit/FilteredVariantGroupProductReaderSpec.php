@@ -13,11 +13,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\VariantGroupCleaner;
 use Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilder;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 
 class FilteredVariantGroupProductReaderSpec extends ObjectBehavior
 {

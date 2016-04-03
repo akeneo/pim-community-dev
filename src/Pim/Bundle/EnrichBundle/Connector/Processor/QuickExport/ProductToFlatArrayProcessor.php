@@ -11,7 +11,6 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -54,7 +53,6 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     protected $mainContext;
 
     /**
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
      * @param ChannelRepositoryInterface          $channelRepository
      * @param ProductBuilderInterface             $productBuilder
@@ -62,15 +60,12 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      * @param string                              $uploadDirectory
      */
     public function __construct(
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
         ChannelRepositoryInterface $channelRepository,
         ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $objectDetacher,
         $uploadDirectory
     ) {
-        parent::__construct($jobConfigurationRepo);
-
         $this->serializer        = $serializer;
         $this->channelRepository = $channelRepository;
         $this->uploadDirectory   = $uploadDirectory;

@@ -7,7 +7,6 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -25,20 +24,8 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var JobConfigurationRepositoryInterface */
-    protected $jobConfigurationRepo;
-
     /** @var array */
-    protected $actions;
-
-    /**
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
-     */
-    public function __construct(JobConfigurationRepositoryInterface $jobConfigurationRepo)
-    {
-        $this->jobConfigurationRepo = $jobConfigurationRepo;
-        $this->actions = [];
-    }
+    protected $actions = [];
 
     /**
      * {@inheritdoc}

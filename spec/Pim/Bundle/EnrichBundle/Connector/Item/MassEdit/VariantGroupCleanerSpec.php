@@ -20,7 +20,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 

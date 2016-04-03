@@ -9,7 +9,6 @@ use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -37,16 +36,11 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
     protected $filters;
 
     /**
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
-     * @param FamilyRepositoryInterface           $familyRepository
+     * @param FamilyRepositoryInterface $familyRepository
      */
-    public function __construct(
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        FamilyRepositoryInterface $familyRepository
-    ) {
-        $this->jobConfigurationRepo = $jobConfigurationRepo;
-        $this->familyRepository     = $familyRepository;
-
+    public function __construct(FamilyRepositoryInterface $familyRepository)
+    {
+        $this->familyRepository = $familyRepository;
         $this->isExecuted = false;
     }
 

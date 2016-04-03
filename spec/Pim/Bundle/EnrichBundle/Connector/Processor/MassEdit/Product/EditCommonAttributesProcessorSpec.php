@@ -9,8 +9,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -23,13 +21,11 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
     function let(
         ValidatorInterface $validator,
         AttributeRepositoryInterface $attributeRepository,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ObjectUpdaterInterface $productUpdater
     ) {
         $this->beConstructedWith(
             $validator,
             $attributeRepository,
-            $jobConfigurationRepo,
             $productUpdater
         );
     }

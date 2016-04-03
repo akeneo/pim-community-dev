@@ -6,7 +6,6 @@ use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -27,15 +26,9 @@ class AddProductValueProcessor extends AbstractProcessor
     /**
      * @param PropertyAdderInterface              $propertyAdder
      * @param ValidatorInterface                  $validator
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      */
-    public function __construct(
-        PropertyAdderInterface $propertyAdder,
-        ValidatorInterface $validator,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo
-    ) {
-        parent::__construct($jobConfigurationRepo);
-
+    public function __construct(PropertyAdderInterface $propertyAdder, ValidatorInterface $validator)
+    {
         $this->propertyAdder = $propertyAdder;
         $this->validator      = $validator;
     }

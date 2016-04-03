@@ -7,8 +7,6 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -19,13 +17,11 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
 {
     function let(
         PropertySetterInterface $propertySetter,
-        ValidatorInterface $validator,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo
+        ValidatorInterface $validator
     ) {
         $this->beConstructedWith(
             $propertySetter,
-            $validator,
-            $jobConfigurationRepo
+            $validator
         );
     }
 

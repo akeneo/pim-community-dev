@@ -16,6 +16,7 @@
 - PIM-5589: Introduce a SimpleFactoryInterface to create simple entities
 - PIM-5594: Panel state is now stored in the session storage
 - PIM-5645: Bath jobs configuration files can now also be loaded when contained in a folder named 'batch_jobs'. Introduces the new Akeneo XLSX Connector
+- TIP-342: be able to launch mass edit processes without having to previously store a JobConfiguration and only rely on dynamic configuration
 
 ## BC breaks
 
@@ -144,3 +145,13 @@
 - Change constructor of `Pim\Component\Catalog\Updater\GroupUpdater` and `Pim\Component\Catalog\Updater\VariantGroupUpdater`, add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
 - Change constructor of `Akeneo\Bundle\BatchBundle\Job\Pim\Bundle\TransformBundle\Normalizer\Structured\FamilyNormalizer` to inject two more dependendies `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` and `Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface`
 - Move class `Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor` to `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor`
+- Remove parameter `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface` from constructors of 
+    `Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor`
+    `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements`
+    `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor`
+    `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor`
+    `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor`
+    `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor`
+    `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`
+    `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredFamilyReader`
+    `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader`

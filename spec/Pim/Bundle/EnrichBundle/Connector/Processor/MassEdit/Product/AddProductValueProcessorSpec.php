@@ -7,8 +7,6 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -18,13 +16,11 @@ class AddProductValueProcessorSpec extends ObjectBehavior
 {
     function let(
         PropertyAdderInterface $propertyAdder,
-        ValidatorInterface $validator,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo
+        ValidatorInterface $validator
     ) {
         $this->beConstructedWith(
             $propertyAdder,
-            $validator,
-            $jobConfigurationRepo
+            $validator
         );
         $this->setConfiguration(
             ['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]]

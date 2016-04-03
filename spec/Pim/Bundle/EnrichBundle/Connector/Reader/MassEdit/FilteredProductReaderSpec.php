@@ -14,20 +14,16 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilder;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 
 class FilteredProductReaderSpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        DoctrineJobRepository $jobRepository,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo
+        DoctrineJobRepository $jobRepository
     ) {
         $this->beConstructedWith(
             $pqbFactory,
             $jobRepository,
-            $jobConfigurationRepo,
             'update_product_value'
         );
         $this->setConfiguration(['filters' => [], 'actions' => []]);

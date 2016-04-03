@@ -8,13 +8,12 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 
 class FilteredFamilyReaderSpec extends ObjectBehavior
 {
-    function let(JobConfigurationRepositoryInterface $jobConfigurationRepo, FamilyRepositoryInterface $familyRepository)
+    function let(FamilyRepositoryInterface $familyRepository)
     {
-        $this->beConstructedWith($jobConfigurationRepo, $familyRepository);
+        $this->beConstructedWith($familyRepository);
         $this->setConfiguration(
             [
                 'filters' => [

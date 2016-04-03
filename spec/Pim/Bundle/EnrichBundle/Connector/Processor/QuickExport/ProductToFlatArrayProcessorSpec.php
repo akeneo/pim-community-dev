@@ -18,8 +18,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Serializer;
@@ -27,7 +25,6 @@ use Symfony\Component\Serializer\Serializer;
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
     function let(
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         Serializer $serializer,
         ChannelRepositoryInterface $channelRepository,
         StepExecution $stepExecution,
@@ -35,7 +32,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ObjectDetacherInterface $objectDetacher
     ) {
         $this->beConstructedWith(
-            $jobConfigurationRepo,
             $serializer,
             $channelRepository,
             $productBuilder,

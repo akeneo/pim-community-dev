@@ -12,21 +12,17 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SetAttributeRequirementsSpec extends ObjectBehavior
 {
     function let(
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $factory
     ) {
         $this->beConstructedWith(
-            $jobConfigurationRepo,
             $attributeRepository,
             $channelRepository,
             $factory
