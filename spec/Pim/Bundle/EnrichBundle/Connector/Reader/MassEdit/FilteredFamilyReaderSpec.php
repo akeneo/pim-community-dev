@@ -7,7 +7,6 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
 
 class FilteredFamilyReaderSpec extends ObjectBehavior
 {
@@ -31,7 +30,6 @@ class FilteredFamilyReaderSpec extends ObjectBehavior
         $familyRepository,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration,
         FamilyInterface $pantFamily,
         FamilyInterface $sockFamily
     ) {

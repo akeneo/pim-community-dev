@@ -157,3 +157,6 @@
     `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredFamilyReader`
     `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader`
 - Remove class `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface`
+- Remove class `Pim\Component\Connector\Factory\JobConfigurationFactory`
+- Remove class `Pim\Component\Connector\Model\JobConfiguration`
+- Remove class `Pim\Component\Connector\Model\JobConfigurationInterface`

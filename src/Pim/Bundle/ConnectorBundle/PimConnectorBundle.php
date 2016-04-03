@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ConnectorBundle;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterConverterPass;
 use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -24,15 +23,5 @@ class PimConnectorBundle extends Bundle
     {
         $container
             ->addCompilerPass(new RegisterConverterPass());
-
-        $mappings = [realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Component\Connector\Model'];
-
-        $container->addCompilerPass(
-            DoctrineOrmMappingsPass::createYamlMappingDriver(
-                $mappings,
-                ['doctrine.orm.entity_manager'],
-                false
-            )
-        );
     }
 }

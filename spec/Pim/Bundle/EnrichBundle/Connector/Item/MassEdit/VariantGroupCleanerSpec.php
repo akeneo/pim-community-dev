@@ -19,7 +19,6 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -55,7 +54,6 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         CursorInterface $cursor,
         JobExecution $jobExecution,
         TranslatorInterface $translator,
-        JobConfigurationInterface $jobConfiguration,
         AttributeInterface $attribute1,
         ProductInterface $product1,
         ProductInterface $product2
