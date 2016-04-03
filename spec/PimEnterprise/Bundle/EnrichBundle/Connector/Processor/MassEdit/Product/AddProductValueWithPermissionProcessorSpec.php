@@ -8,8 +8,6 @@ use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -23,7 +21,6 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
     function let(
         PropertyAdderInterface $productFieldUpdater,
         ValidatorInterface $validator,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         UserManager $userManager,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage
@@ -31,7 +28,6 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $this->beConstructedWith(
             $productFieldUpdater,
             $validator,
-            $jobConfigurationRepo,
             $userManager,
             $authorizationChecker,
             $tokenStorage

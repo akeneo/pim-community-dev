@@ -8,6 +8,7 @@
 
 - PIM-5589: introduce a channels, attribute groups, group types, currencies, locale accesses, asset category accesses, product category accesses, attribute group accesses and job profile accesses import using the new import system introduced in v1.4
 - PIM-5645: introduces the new Akeneo XLSX Connector
+- TIP-342: be able to launch mass edit processes without having to previously store a JobConfiguration and only rely on dynamic configuration
 
 ## BC breaks
 
@@ -80,3 +81,16 @@
 - Remove class `PimEnterprise\Bundle\BaseConnectorBundle\Processor\CategoryAccessProcessor`
 - Remove class `PimEnterprise\Bundle\BaseConnectorBundle\Processor\JobProfileAccessProcessor`
 - Remove class `PimEnterprise\Bundle\BaseConnectorBundle\Processor\LocaleAccessProcessor`
+- Remove parameter `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface` from constructors of 
+    `Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor`
+    `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements`
+    `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor`
+    `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor`
+    `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor`
+    `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor`
+    `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`
+    `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredFamilyReader`
+    `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader`
+    `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueWithPermissionProcessor`
+    `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor`
+    `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueWithPermissionProcessor`

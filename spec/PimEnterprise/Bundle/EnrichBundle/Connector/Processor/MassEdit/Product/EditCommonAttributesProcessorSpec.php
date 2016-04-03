@@ -10,8 +10,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use Prophecy\Argument;
@@ -25,7 +23,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
     function let(
         ValidatorInterface $validator,
         AttributeRepositoryInterface $attributeRepository,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ObjectUpdaterInterface $productUpdater,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
@@ -34,7 +31,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $this->beConstructedWith(
             $validator,
             $attributeRepository,
-            $jobConfigurationRepo,
             $productUpdater,
             $userManager,
             $tokenStorage,
