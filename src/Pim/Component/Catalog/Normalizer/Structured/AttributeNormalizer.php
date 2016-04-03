@@ -165,15 +165,15 @@ class AttributeNormalizer implements NormalizerInterface
     }
 
     /**
-     * Normilize date option
+     * Normilize date property
      * 
      * @param \DateTime|null when null returns '' (empty string)
      * 
-     * @return  string 
+     * @return string 
      */
     protected function normalizeDate($date = null)
     {
-        if (!is_null($date) && $date instanceof  \DateTime) {
+        if (!is_null($date) && $date instanceof \DateTime) {
             return $date->format(\DateTime::ISO8601);
         }
 

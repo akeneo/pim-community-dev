@@ -32,12 +32,6 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getReferenceDataName()->willReturn('color');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(false);
-        $attribute->isWysiwygEnabled()->willReturn(false);
-        $attribute->isDecimalsAllowed()->willReturn(false);
-        $attribute->isNegativeAllowed()->willReturn(false);
-        $attribute->getNumberMin()->willReturn('');
-        $attribute->getNumberMax()->willReturn('');
-
         $attribute->getLocaleSpecificCodes()->willReturn(['en_US', 'fr_FR']);
         $attribute->getMaxCharacters()->willReturn(null);
         $attribute->getValidationRule()->willReturn(null);
