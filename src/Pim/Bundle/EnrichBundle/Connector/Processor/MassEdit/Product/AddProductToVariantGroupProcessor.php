@@ -7,7 +7,6 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -30,18 +29,14 @@ class AddProductToVariantGroupProcessor extends AbstractProcessor
 
     /**
      * @param ValidatorInterface                  $validator
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param GroupRepositoryInterface            $groupRepository
      * @param ProductTemplateUpdaterInterface     $templateUpdater
      */
     public function __construct(
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ValidatorInterface $validator,
         GroupRepositoryInterface $groupRepository,
         ProductTemplateUpdaterInterface $templateUpdater
     ) {
-        parent::__construct($jobConfigurationRepo);
-
         $this->validator       = $validator;
         $this->groupRepository = $groupRepository;
         $this->templateUpdater = $templateUpdater;

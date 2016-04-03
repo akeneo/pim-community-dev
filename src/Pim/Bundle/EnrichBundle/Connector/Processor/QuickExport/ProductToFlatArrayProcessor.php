@@ -11,7 +11,6 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -50,8 +49,10 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var  ObjectDetacherInterface */
     protected $objectDetacher;
 
+    /** @var array */
+    protected $mainContext;
+
     /**
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
      * @param ChannelRepositoryInterface          $channelRepository
      * @param ProductBuilderInterface             $productBuilder
@@ -59,15 +60,12 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      * @param string                              $uploadDirectory
      */
     public function __construct(
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
         ChannelRepositoryInterface $channelRepository,
         ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $objectDetacher,
         $uploadDirectory
     ) {
-        parent::__construct($jobConfigurationRepo);
-
         $this->serializer        = $serializer;
         $this->channelRepository = $channelRepository;
         $this->uploadDirectory   = $uploadDirectory;
@@ -152,6 +150,22 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return ['mainContext' => [],];
+    }
+
+    /**
+     * @param array $context
+     */
+    public function setMainContext($context)
+    {
+        $this->mainContext = $context;
+    }
+
+    /**
      * @return array
      */
     protected function getNormalizerContext()
@@ -205,7 +219,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      */
     protected function setChannelCodeFromJobConfiguration()
     {
-        $configuration = $this->getJobConfiguration();
+        $configuration = $this->getConfiguration();
 
         if (!isset($configuration['mainContext']['scope'])) {
             throw new InvalidArgumentException('No channel found');

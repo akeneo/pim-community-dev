@@ -7,7 +7,6 @@ use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 
 /**
  * Applies modifications on families to add attribute requirements.
@@ -29,19 +28,15 @@ class SetAttributeRequirements extends AbstractProcessor
     protected $factory;
 
     /**
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param AttributeRepositoryInterface        $attributeRepository
      * @param ChannelRepositoryInterface          $channelRepository
      * @param AttributeRequirementFactory         $factory
      */
     public function __construct(
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $factory
     ) {
-        parent::__construct($jobConfigurationRepo);
-
         $this->attributeRepository = $attributeRepository;
         $this->channelRepository   = $channelRepository;
         $this->factory             = $factory;

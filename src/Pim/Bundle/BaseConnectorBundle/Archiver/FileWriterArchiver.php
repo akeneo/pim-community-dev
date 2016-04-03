@@ -61,7 +61,10 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      */
     protected function isUsableWriter(ItemWriterInterface $writer)
     {
-        return $writer instanceof FileWriter && is_file($writer->getPath());
+        $isDeprecatedWriter = ($writer instanceof FileWriter);
+        $isNewWriter = ($writer instanceof AbstractFileWriter);
+
+        return ($isDeprecatedWriter || $isNewWriter) && is_file($writer->getPath());
     }
 
     /**

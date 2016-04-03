@@ -7,7 +7,6 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -25,16 +24,8 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var JobConfigurationRepositoryInterface */
-    protected $jobConfigurationRepo;
-
-    /**
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
-     */
-    public function __construct(JobConfigurationRepositoryInterface $jobConfigurationRepo)
-    {
-        $this->jobConfigurationRepo = $jobConfigurationRepo;
-    }
+    /** @var array */
+    protected $actions = [];
 
     /**
      * {@inheritdoc}
@@ -51,7 +42,15 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      */
     public function getConfigurationFields()
     {
-        return [];
+        return ['actions' => [],];
+    }
+
+    /**
+     * @param array $actions
+     */
+    public function setActions(array $actions)
+    {
+        $this->actions = $actions;
     }
 
     /**
@@ -91,9 +90,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      */
     protected function getJobConfiguration()
     {
-        $jobExecution    = $this->stepExecution->getJobExecution();
-        $massEditJobConf = $this->jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution]);
-
-        return json_decode(stripcslashes($massEditJobConf->getConfiguration()), true);
+        return $this->getConfiguration();
     }
 }

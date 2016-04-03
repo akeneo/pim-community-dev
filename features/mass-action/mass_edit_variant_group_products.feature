@@ -29,6 +29,8 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I should see notification:
       | type    | message                                               |
       | success | Mass edit Mass add products to variant group finished |
+    And I am on the "caterpillar_boots" variant group page
+    And I should see "Products: 4"
 
   Scenario: Add products to a variant group with invalid axis
     Given the following families:
@@ -46,7 +48,8 @@ Feature: Apply restrictions when mass editing products with variant groups
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
     And I wait for the "add-to-variant-group" mass-edit job to finish
-    Then I should have 1 new notification
+    Then "caterpillar_boots" group should contain "boots, moon_boots"
+    And I should have 1 new notification
     And I should see notification:
       | type    | message                                                                  |
       | warning | Mass edit Mass add products to variant group finished with some warnings |
@@ -55,6 +58,8 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I should see "first warnings displayed 2/2"
     And I should see "EXCLUDED PRODUCT"
     And I should see "You cannot group the following product because it is already in a variant group or doesn't have the group axis."
+    And I am on the "caterpillar_boots" variant group page
+    And I should see "Products: 2"
 
   Scenario: Add products to a variant group with duplicated variant axis values in selection (and not yet in variant group)
     And I am logged in as "Julia"
@@ -64,7 +69,8 @@ Feature: Apply restrictions when mass editing products with variant groups
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
     And I wait for the "add-to-variant-group" mass-edit job to finish
-    Then I should have 1 new notification
+    Then "caterpillar_boots" group should contain "boots, moon_boots"
+    And I should have 1 new notification
     And I should see notification:
       | type    | message                                                                  |
       | warning | Mass edit Mass add products to variant group finished with some warnings |
@@ -73,3 +79,5 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I should see "first warnings displayed 2/2"
     And I should see "DUPLICATED AXIS"
     And I should see "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"
+    And I am on the "caterpillar_boots" variant group page
+    And I should see "Products: 2"

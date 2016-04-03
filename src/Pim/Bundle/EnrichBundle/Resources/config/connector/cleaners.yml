@@ -17,8 +17,6 @@ services:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_enrich.product.paginator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@pim_connector.repository.job_configuration'
             - '@pim_catalog.repository.group'
             - '@pim_catalog.repository.product'
             - '@translator'
-            - '@pim_connector.saver.job_configuration'

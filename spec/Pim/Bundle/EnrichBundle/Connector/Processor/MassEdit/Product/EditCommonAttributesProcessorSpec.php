@@ -9,8 +9,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -23,20 +21,18 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
     function let(
         ValidatorInterface $validator,
         AttributeRepositoryInterface $attributeRepository,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ObjectUpdaterInterface $productUpdater
     ) {
         $this->beConstructedWith(
             $validator,
             $attributeRepository,
-            $jobConfigurationRepo,
             $productUpdater
         );
     }
 
     function it_returns_the_configuration_fields()
     {
-        $this->getConfigurationFields()->shouldReturn([]);
+        $this->getConfigurationFields()->shouldReturn(['actions' => []]);
     }
 
     function it_sets_the_step_execution(StepExecution $stepExecution)
@@ -51,10 +47,30 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration
+        JobExecution $jobExecution
     ) {
+        $normalizedValues = json_encode(
+            [
+                'categories' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => ['office', 'bedroom']
+                    ]
+                ]
+            ]
+        );
+        $configuration = [
+            'filters' => [],
+            'actions' => [
+                'normalized_values' => $normalizedValues,
+                'ui_locale'         => 'en_US',
+                'attribute_locale'  => 'en_US',
+                'attribute_channel' => null,
+            ]
+        ];
+        $this->setConfiguration($configuration);
+
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->incrementSummaryInfo("skipped_products")->shouldBeCalled();
@@ -64,32 +80,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
             [],
             $product
         )->shouldBeCalled();
-
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-
-        $normalizedValues = addslashes(json_encode([
-            'categories' => [
-                [
-                    'scope' => null,
-                    'locale' => null,
-                    'data' => ['office', 'bedroom']
-                ]
-            ]
-        ]));
-
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(
-                [
-                    'filters' => [],
-                    'actions' => [
-                        'normalized_values' => $normalizedValues,
-                        'ui_locale'         => 'en_US',
-                        'attribute_locale'  => 'en_US',
-                        'attribute_channel' => null,
-                    ]
-                ]
-            )
-        );
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
@@ -108,16 +98,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration,
         LocalizerInterface $localizer
     ) {
-        $this->setStepExecution($stepExecution);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-
         $values = [
             'number' => [
                 [
@@ -127,22 +110,20 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $normalizedValues = addslashes(json_encode($values));
+        $normalizedValues = json_encode($values);
+        $configuration = [
+            'filters' => [],
+            'actions' => [
+                'normalized_values' => $normalizedValues,
+                'ui_locale'         => 'fr_FR',
+                'attribute_locale'  => 'en_US',
+                'attribute_channel' => null,
+            ]
+        ];
+        $this->setConfiguration($configuration);
 
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(
-                [
-                    'filters' => [],
-                    'actions' => [
-                        'normalized_values' => $normalizedValues,
-                        'ui_locale'         => 'fr_FR',
-                        'attribute_locale'  => 'en_US',
-                        'attribute_channel' => null,
-                    ]
-                ]
-            )
-        );
-
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
@@ -164,14 +145,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         ConstraintViolationListInterface $violations,
         StepExecution $stepExecution,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration
+        JobExecution $jobExecution
     ) {
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-
         $values = [
             'categories' => [
                 [
@@ -181,22 +156,19 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $normalizedValues = addslashes(json_encode($values));
+        $normalizedValues = json_encode($values);
+        $configuration = [
+            'filters' => [],
+            'actions' => [
+                'normalized_values' => $normalizedValues,
+                'ui_locale'         => 'fr_FR',
+                'attribute_locale'  => 'en_US',
+                'attribute_channel' => null,
+            ]
+        ];
+        $this->setConfiguration($configuration);
 
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(
-                [
-                    'filters' => [],
-                    'actions' => [
-                        'normalized_values' => $normalizedValues,
-                        'ui_locale'         => 'fr_FR',
-                        'attribute_locale'  => 'en_US',
-                        'attribute_channel' => null,
-                    ]
-                ]
-            )
-        );
-
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $validator->validate($product)->willReturn($violations);
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
         $violations = new ConstraintViolationList([$violation, $violation]);

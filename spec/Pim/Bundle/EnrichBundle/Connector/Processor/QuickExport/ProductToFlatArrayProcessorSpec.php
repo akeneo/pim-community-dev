@@ -18,8 +18,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Serializer;
@@ -27,7 +25,6 @@ use Symfony\Component\Serializer\Serializer;
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
     function let(
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         Serializer $serializer,
         ChannelRepositoryInterface $channelRepository,
         StepExecution $stepExecution,
@@ -35,7 +32,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ObjectDetacherInterface $objectDetacher
     ) {
         $this->beConstructedWith(
-            $jobConfigurationRepo,
             $serializer,
             $channelRepository,
             $productBuilder,
@@ -57,19 +53,13 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
     function it_is_configurable(
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration,
-        $stepExecution,
-        $jobConfigurationRepo
+        $stepExecution
     ) {
+        $this->setConfiguration(['filters' => [], 'mainContext' => ['scope' => 'ecommerce', 'ui_locale' => 'en_US']]);
         $this->getChannelCode()->shouldReturn(null);
         $this->setChannelCode('print');
         $this->getChannelCode()->shouldReturn('print');
-
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'mainContext' => ['scope' => 'ecommerce', 'ui_locale' => 'en_US']])
-        );
 
         $this->initialize();
         $this->getChannelCode()->shouldReturn('ecommerce');
@@ -77,35 +67,27 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
     function it_returns_the_configuration_fields()
     {
-        $this->getConfigurationFields()->shouldReturn([]);
+        $this->getConfigurationFields()->shouldReturn(['mainContext' => []]);
     }
 
     function it_throw_an_exception_if_there_is_no_channel(
         $stepExecution,
-        $jobConfigurationRepo,
-        JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration
+        JobExecution $jobExecution
     ) {
+        $configuration = ['filters' => [], 'mainContext' => ['scope' => null]];
+        $this->setConfiguration($configuration);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'mainContext' => ['scope' => null]])
-        );
 
         $this->shouldThrow(new InvalidArgumentException('No channel found'))->duringInitialize();
     }
 
     function it_throw_an_exception_if_there_is_no_ui_locale(
         $stepExecution,
-        $jobConfigurationRepo,
-        JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration
+        JobExecution $jobExecution
     ) {
+        $configuration = ['filters' => [], 'mainContext' => ['scope' => 'ecommerce']];
+        $this->setConfiguration($configuration);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'mainContext' => ['scope' => 'ecommerce']])
-        );
 
         $this->shouldThrow(new InvalidArgumentException('No UI locale found'))->duringInitialize();
     }
@@ -152,12 +134,12 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
         $this->setChannelCode('mobile');
         $objectDetacher->detach($product)->shouldBeCalled();
-    $this->process($product)->shouldReturn(
-        [
-            'media'   => ['normalized_media1', 'normalized_media2'],
-            'product' => ['normalized_product']
-        ]
-    );
+        $this->process($product)->shouldReturn(
+            [
+                'media'   => ['normalized_media1', 'normalized_media2'],
+                'product' => ['normalized_product']
+            ]
+        );
     }
 
     function it_returns_flat_data_without_media(
