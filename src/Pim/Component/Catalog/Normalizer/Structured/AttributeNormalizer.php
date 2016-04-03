@@ -165,7 +165,7 @@ class AttributeNormalizer implements NormalizerInterface
     }
 
     /**
-     * Normilize date property
+     * Normalize date property
      * 
      * @param \DateTime|null when null returns '' (empty string)
      * 
