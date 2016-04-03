@@ -14,7 +14,7 @@ Feature: Export attributes
     And I wait for the "footwear_attribute_export" job to finish
     Then exported file of "footwear_attribute_export" should contain:
     """
-    type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable
+    type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;available_locales;max_characters;validation_rule;validation_regexp;wysiwyg_enabled;number_min;number_max;decimals_allowed;negative_allowed;date_min;date_max;max_file_size;minimum_input_length;localizable;scopable
     pim_catalog_identifier;sku;SKU;info;1;1;;;;;0;0
     pim_catalog_text;name;Name;info;0;1;;;;;1;0
     pim_catalog_simpleselect;manufacturer;Manufacturer;info;0;1;;;;;0;0
@@ -54,7 +54,7 @@ Feature: Export attributes
     And I wait for the "footwear_attribute_export" job to finish
     Then exported file of "footwear_attribute_export" should contain:
     """
-    type;code;label-en_US;label-fr_BE;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable
+    type;code;label-en_US;label-fr_BE;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;available_locales;max_characters;validation_rule;validation_regexp;wysiwyg_enabled;number_min;number_max;decimals_allowed;negative_allowed;date_min;date_max;max_file_size;minimum_input_length;localizable;scopable
     pim_catalog_identifier;sku;SKU;;info;1;1;;;;;0;0
     pim_catalog_text;name;Name;;info;0;1;;;;;1;0
     pim_catalog_simpleselect;manufacturer;Manufacturer;;info;0;1;;;;;0;0

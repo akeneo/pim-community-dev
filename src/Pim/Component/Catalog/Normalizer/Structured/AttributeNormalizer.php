@@ -59,6 +59,19 @@ class AttributeNormalizer implements NormalizerInterface
                 'metric_family'           => $object->getMetricFamily(),
                 'default_metric_unit'     => $object->getDefaultMetricUnit(),
                 'reference_data_name'     => $object->getReferenceDataName(),
+                'available_locales'       => $this->normalizeAvailableLocales($object),
+                'max_characters'          => (string) $object->getMaxCharacters(),
+                'validation_rule'         => (string) $object->getValidationRule(),
+                'validation_regexp'       => (string) $object->getValidationRegexp(),
+                'wysiwyg_enabled'         => (string) $object->isWysiwygEnabled(),
+                'number_min'              => (string) $object->getNumberMin(),
+                'number_max'              => (string) $object->getNumberMax(),
+                'decimals_allowed'        => (string) $object->isDecimalsAllowed(),
+                'negative_allowed'        => (string) $object->isNegativeAllowed(),
+                'date_min'                => $this->normalizeDate($object->getDateMin()),
+                'date_max'                => $this->normalizeDate($object->getDateMax()),
+                'max_file_size'           => (string) $object->getMaxFileSize(),
+                'minimum_input_length'    => (string) $object->getMinimumInputLength(),
             ]
         );
         if (isset($context['versioning'])) {
@@ -93,9 +106,6 @@ class AttributeNormalizer implements NormalizerInterface
      */
     protected function getVersionedData(AttributeInterface $attribute)
     {
-        $dateMin = (is_null($attribute->getDateMin())) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
-        $dateMax = (is_null($attribute->getDateMax())) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
-
         return [
             'available_locales'   => $this->normalizeAvailableLocales($attribute),
             'localizable'         => $attribute->isLocalizable(),
@@ -111,8 +121,8 @@ class AttributeNormalizer implements NormalizerInterface
             'number_max'          => (string) $attribute->getNumberMax(),
             'decimals_allowed'    => (string) $attribute->isDecimalsAllowed(),
             'negative_allowed'    => (string) $attribute->isNegativeAllowed(),
-            'date_min'            => $dateMin,
-            'date_max'            => $dateMax,
+            'date_min'            => $this->normalizeDate($attribute->getDateMin()),
+            'date_max'            => $this->normalizeDate($attribute->getDateMax()),
             'metric_family'       => (string) $attribute->getMetricFamily(),
             'default_metric_unit' => (string) $attribute->getDefaultMetricUnit(),
             'max_file_size'       => (string) $attribute->getMaxFileSize(),
@@ -152,5 +162,21 @@ class AttributeNormalizer implements NormalizerInterface
         }
 
         return $data;
+    }
+
+    /**
+     * Normilize date property
+     * 
+     * @param \DateTime|null when null returns '' (empty string)
+     * 
+     * @return string 
+     */
+    protected function normalizeDate($date = null)
+    {
+        if (!is_null($date) && $date instanceof \DateTime) {
+            return $date->format(\DateTime::ISO8601);
+        }
+
+        return '';
     }
 }

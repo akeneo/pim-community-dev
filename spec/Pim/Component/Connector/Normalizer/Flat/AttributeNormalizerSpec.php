@@ -32,6 +32,19 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getReferenceDataName()->willReturn('color');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(false);
+        $attribute->getLocaleSpecificCodes()->willReturn(['en_US', 'fr_FR']);
+        $attribute->getMaxCharacters()->willReturn(null);
+        $attribute->getValidationRule()->willReturn(null);
+        $attribute->getValidationRegexp()->willReturn(null);
+        $attribute->isWysiwygEnabled()->willReturn(false);
+        $attribute->getNumberMin()->willReturn('');
+        $attribute->getNumberMax()->willReturn('');
+        $attribute->isDecimalsAllowed()->willReturn(false);
+        $attribute->isNegativeAllowed()->willReturn(false);
+        $attribute->getDateMin()->willReturn(null);
+        $attribute->getDateMax()->willReturn(null);
+        $attribute->getMaxFileSize()->willReturn(null);
+        $attribute->getMinimumInputLength()->willReturn(null);
     }
 
     function it_is_initializable()
@@ -64,6 +77,19 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'metric_family'          => 'Length',
                 'default_metric_unit'    => 'Centimenter',
                 'reference_data_name'    => 'color',
+                'available_locales'      => 'en_US,fr_FR',
+                'max_characters'         => '',
+                'validation_rule'        => '',
+                'validation_regexp'      => '',
+                'wysiwyg_enabled'        => '',
+                'number_min'             => '',
+                'number_max'             => '',
+                'decimals_allowed'       => '',
+                'negative_allowed'       => '',
+                'date_min'               => '',
+                'date_max'               => '',
+                'max_file_size'          => '',
+                'minimum_input_length'   => '',
                 'localizable'            => 1,
                 'scopable'               => 0
             ]
@@ -111,11 +137,6 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'default_metric_unit'    => 'Centimenter',
                 'reference_data_name'    => 'color',
                 'available_locales'      => 'en_US,fr_FR',
-                'localizable'            => true,
-                'scope'                  => 'Channel',
-                'options'                => 'Code:size,en_US:big,fr_FR:grand',
-                'sort_order'             => 1,
-                'required'               => 0,
                 'max_characters'         => '',
                 'validation_rule'        => '',
                 'validation_regexp'      => '',
@@ -126,9 +147,15 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'negative_allowed'       => '',
                 'date_min'               => '',
                 'date_max'               => '',
+                'max_file_size'          => '0',
+                'minimum_input_length'   => '',
+                'localizable'            => true,
+                'scope'                  => 'Channel',
+                'options'                => 'Code:size,en_US:big,fr_FR:grand',
+                'sort_order'             => 1,
+                'required'               => 0,
                 'metric_family'          => 'Length',
                 'default_metric_unit'    => 'Centimenter',
-                'max_file_size'          => '0'
             ]
         );
     }
