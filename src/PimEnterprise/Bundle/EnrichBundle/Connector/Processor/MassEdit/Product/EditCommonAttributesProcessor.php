@@ -8,7 +8,6 @@ use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor as BaseProcessor;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -35,7 +34,6 @@ class EditCommonAttributesProcessor extends BaseProcessor
     /**
      * @param ValidatorInterface                  $validator
      * @param AttributeRepositoryInterface        $attributeRepository
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param ObjectUpdaterInterface              $productUpdater
      * @param UserManager                         $userManager
      * @param TokenStorageInterface               $tokenStorage
@@ -44,16 +42,14 @@ class EditCommonAttributesProcessor extends BaseProcessor
     public function __construct(
         ValidatorInterface $validator,
         AttributeRepositoryInterface $attributeRepository,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ObjectUpdaterInterface $productUpdater,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        BaseProcessor::__construct(
+        parent::__construct(
             $validator,
             $attributeRepository,
-            $jobConfigurationRepo,
             $productUpdater
         );
 

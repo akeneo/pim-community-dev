@@ -10,7 +10,6 @@ services:
         arguments:
             - '@pim_catalog.validator.product'
             - '@pim_catalog.repository.attribute'
-            - '@pim_connector.repository.job_configuration'
             - '@pim_catalog.updater.product'
             - '@oro_user.manager'
             - '@security.token_storage'
@@ -21,7 +20,6 @@ services:
         arguments:
             - '@pim_catalog.updater.product_property_adder'
             - '@pim_catalog.validator.product'
-            - '@pim_connector.repository.job_configuration'
             - '@oro_user.manager'
             - '@security.authorization_checker'
             - '@security.token_storage'
@@ -31,7 +29,6 @@ services:
         arguments:
             - '@pim_catalog.updater.product_property_setter'
             - '@pim_catalog.validator.product'
-            - '@pim_connector.repository.job_configuration'
             - '@oro_user.manager'
             - '@security.authorization_checker'
             - '@security.token_storage'

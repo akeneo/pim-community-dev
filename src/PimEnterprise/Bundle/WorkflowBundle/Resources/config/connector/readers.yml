@@ -12,4 +12,3 @@ services:
         arguments:
             - '@pimee_workflow.doctrine.query.published_product_query_factory'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.repository.job_configuration'

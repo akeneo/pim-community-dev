@@ -10,8 +10,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use Prophecy\Argument;
@@ -25,7 +23,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
     function let(
         ValidatorInterface $validator,
         AttributeRepositoryInterface $attributeRepository,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ObjectUpdaterInterface $productUpdater,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
@@ -34,7 +31,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $this->beConstructedWith(
             $validator,
             $attributeRepository,
-            $jobConfigurationRepo,
             $productUpdater,
             $userManager,
             $tokenStorage,
@@ -51,19 +47,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration,
         UserInterface $owner
     ) {
-        $this->setStepExecution($stepExecution);
-        $jobExecution->getUser()->willReturn('owner');
-        $userManager->findUserByUsername('owner')->willReturn($owner);
-        $owner->getRoles()->willReturn([]);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-
         $values = [
             'categories' => [
                 [
@@ -73,20 +59,24 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $normalizedValues = addslashes(json_encode($values));
+        $normalizedValues = json_encode($values);
 
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(
-                [
-                    'filters' => [],
-                    'actions' => [
-                        'normalized_values' => $normalizedValues,
-                        'ui_locale'         => 'fr_FR',
-                        'attribute_locale'  => 'en_US'
-                    ]
-                ]
-            )
-        );
+        $configuration = [
+            'filters' => [],
+            'actions' => [
+                'normalized_values' => $normalizedValues,
+                'ui_locale'         => 'fr_FR',
+                'attribute_locale'  => 'en_US'
+            ]
+        ];
+        $this->setConfiguration($configuration);
+
+        $this->setStepExecution($stepExecution);
+        $jobExecution->getUser()->willReturn('owner');
+        $userManager->findUserByUsername('owner')->willReturn($owner);
+        $owner->getRoles()->willReturn([]);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
@@ -107,20 +97,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration,
         UserInterface $editor
     ) {
-        $this->setStepExecution($stepExecution);
-        $jobExecution->getUser()->willReturn('editor');
-        $userManager->findUserByUsername('editor')->willReturn($editor);
-        $editor->getRoles()->willReturn([]);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-
         $values = [
             'categories' => [
                 [
@@ -130,20 +109,25 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $normalizedValues = addslashes(json_encode($values));
+        $normalizedValues = json_encode($values);
 
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(
-                [
-                    'filters' => [],
-                    'actions' => [
-                        'normalized_values' => $normalizedValues,
-                        'ui_locale'         => 'fr_FR',
-                        'attribute_locale'  => 'en_US'
-                    ]
-                ]
-            )
-        );
+        $configuration = [
+            'filters' => [],
+            'actions' => [
+                'normalized_values' => $normalizedValues,
+                'ui_locale'         => 'fr_FR',
+                'attribute_locale'  => 'en_US'
+            ]
+        ];
+        $this->setConfiguration($configuration);
+
+        $this->setStepExecution($stepExecution);
+        $jobExecution->getUser()->willReturn('editor');
+        $userManager->findUserByUsername('editor')->willReturn($editor);
+        $editor->getRoles()->willReturn([]);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
@@ -161,20 +145,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $authorizationChecker,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration,
         UserInterface $anon
     ) {
-        $this->setStepExecution($stepExecution);
-        $jobExecution->getUser()->willReturn('anon');
-        $userManager->findUserByUsername('anon')->willReturn($anon);
-        $anon->getRoles()->willReturn([]);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->incrementSummaryInfo("skipped_products")->shouldBeCalled();
-        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(false);
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $values = [
             'categories' => [
                 [
@@ -184,20 +157,23 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $normalizedValues = addslashes(json_encode($values));
-
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(
-                [
-                    'filters' => [],
-                    'actions' => [
-                        'normalized_values' => $normalizedValues,
-                        'current_locale'    => 'en_US'
-                    ]
-                ]
-            )
-        );
-
+        $normalizedValues = json_encode($values);
+        $configuration = [
+            'filters' => [],
+            'actions' => [
+                'normalized_values' => $normalizedValues,
+                'current_locale'    => 'en_US'
+            ]
+        ];
+        $this->setConfiguration($configuration);
+        $this->setStepExecution($stepExecution);
+        $jobExecution->getUser()->willReturn('anon');
+        $userManager->findUserByUsername('anon')->willReturn($anon);
+        $anon->getRoles()->willReturn([]);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->incrementSummaryInfo("skipped_products")->shouldBeCalled();
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(false);
         $productUpdater->update($product, Argument::any())->shouldNotBeCalled();
 
         $this->process($product);
