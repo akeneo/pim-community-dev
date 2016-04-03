@@ -96,3 +96,6 @@
     `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor`
     `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueWithPermissionProcessor`
 - Remove class `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface`
+- Remove class `Pim\Component\Connector\Factory\JobConfigurationFactory`
+- Remove class `Pim\Component\Connector\Model\JobConfiguration`
+- Remove class `Pim\Component\Connector\Model\JobConfigurationInterface`

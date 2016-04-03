@@ -19,7 +19,7 @@ use Doctrine\DBAL\Schema\Schema;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class Version20160316125753 extends AbstractMigration
+class Version_1_6_20160316125753_rule_definition extends AbstractMigration
 {
     /**
      * @param Schema $schema
