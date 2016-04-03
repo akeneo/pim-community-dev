@@ -23,7 +23,6 @@ class PimConnectorBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new ResolveDoctrineTargetModelPass())
             ->addCompilerPass(new RegisterConverterPass());
 
         $mappings = [realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Component\Connector\Model'];
