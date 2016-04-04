@@ -71,7 +71,7 @@ define(
                             _.__(this.config.trans.deleteSuccessFul)
                         );
                         navigation.setLocation(Routing.generate('pim_enrich_product_index'));
-                    })
+                    }.bind(this))
                     .fail(function (xhr) {
                         var message = xhr.responseJSON && xhr.responseJSON.message ?
                             xhr.responseJSON.message :
