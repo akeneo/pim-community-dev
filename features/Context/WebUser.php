@@ -620,38 +620,23 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $fieldName
-     * @param string $expected
-     *
-     * @Then /^the product ([^"]*) should be empty$/
-     * @Then /^the product ([^"]*) should be "([^"]*)"$/
-     *
-     * @throws \LogicException
-     * @throws ExpectationException
-     */
-    public function theProductFieldValueShouldBe($fieldName, $expected = '')
-    {
-        $this->spin(function () use ($fieldName, $expected) {
-            $this->getCurrentPage()->compareFieldValue($fieldName, $expected);
-
-            return true;
-        });
-    }
-
-    /**
      * @param string $inputLabel
      * @param string $expectedValue
      *
+     * @Then /^the product ([^"]*) should be empty$/
+     * @Then /^the product ([^"]*) should be "([^"]*)"$/
      * @Then /^the variant group ([^"]*) should be empty$/
      * @Then /^the variant group ([^"]*) should be "([^"]*)"$/
      *
      * @throws \LogicException
      * @throws ExpectationException
      */
-    public function theVariantGroupInputValueShouldBe($inputLabel, $expectedValue = '')
+    public function theProductFieldValueShouldBe($inputLabel, $expectedValue = '')
     {
         $inputValue = $this->spin(function () use ($inputLabel, $expectedValue) {
-            return $this->getCurrentPage()->getInputValue($inputLabel, $expectedValue);
+            return $this->getCurrentPage()
+                ->getElement('Attribute inputs')
+                ->getInputValue($inputLabel, $expectedValue);
         });
 
         if ($expectedValue != $inputValue) {
