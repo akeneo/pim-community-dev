@@ -10,6 +10,8 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Box\Spout\Common\Type;
+use Box\Spout\Reader\ReaderFactory;
 use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -532,6 +534,32 @@ class AssertionContext extends RawMinkContext
             $rowCount++;
         }
         fclose($file);
+
+        assertEquals($rows, $rowCount, sprintf('Expecting file to contain %d rows, found %d.', $rows, $rowCount));
+    }
+
+    /**
+     * @param string $fileName
+     * @param int    $rows
+     *
+     * @Given /^xlsx file "([^"]*)" should contain (\d+) rows$/
+     *
+     * @throws ExpectationException
+     */
+    public function xlsxFileShouldContainRows($fileName, $rows)
+    {
+        $fileName = $this->replacePlaceholders($fileName);
+        if (!file_exists($fileName)) {
+            throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
+        }
+
+        $reader = ReaderFactory::create(Type::XLSX);
+        $reader->open($fileName);
+        $sheet = current(iterator_to_array($reader->getSheetIterator()));
+        $actualLines = iterator_to_array($sheet->getRowIterator());
+        $reader->close();
+
+        $rowCount = count($actualLines);
 
         assertEquals($rows, $rowCount, sprintf('Expecting file to contain %d rows, found %d.', $rows, $rowCount));
     }

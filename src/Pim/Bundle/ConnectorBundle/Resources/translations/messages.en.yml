@@ -78,6 +78,22 @@ pim_connector:
             title: Variant group import in XLSX
             validation.title: File validation
             import.title: Variant Group import
+        xlsx_family_export:
+            title: Family export in XLSX
+            export.title: Family export
+        xlsx_category_export:
+            title: Category export in XLSX
+            export.title: Category export
+        xlsx_attribute_export:
+            title: Attribute export in XLSX
+            export.title: Attribute export in XLSX
+        xlsx_attribute_option_export:
+            title: Attribute option export in XLSX
+            export.title: Attribute option export in XLSX
+        xlsx_association_type_export:
+            title: Association type export in XLSX
+            export.title: Association type export in XLSX
+
     steps:
 
         dummy_reader.title:                  Dummy reader

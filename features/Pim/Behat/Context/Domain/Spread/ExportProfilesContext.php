@@ -110,7 +110,7 @@ class ExportProfilesContext extends PimContext
      * @throws ExpectationException
      * @throws \Exception
      */
-    public function exportedXlsxFileOfShouldContain($code, TableNode $exectedLines)
+    public function exportedXlsxFileOfShouldContain($code, TableNode $expectedLines)
     {
         $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
 
@@ -120,7 +120,7 @@ class ExportProfilesContext extends PimContext
         $actualLines = iterator_to_array($sheet->getRowIterator());
         $reader->close();
 
-        $this->compareFile(array_values($exectedLines->getRows()), array_values($actualLines), $path);
+        $this->compareFile(array_values($expectedLines->getRows()), array_values($actualLines), $path);
     }
 
     /**

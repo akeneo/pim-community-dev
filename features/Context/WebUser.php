@@ -12,6 +12,8 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Box\Spout\Common\Type;
+use Box\Spout\Reader\ReaderFactory;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
@@ -1823,6 +1825,36 @@ class WebUser extends RawMinkContext
 
         fclose($file);
     }
+
+    /**
+     * @Given /^the category order in the xlsx file "([^"]*)" should be following:$/
+     */
+    public function theCategoryOrderInTheXlsxFileShouldBeFollowing($fileName, TableNode $table)
+    {
+        $fileName = $this->replacePlaceholders($fileName);
+        if (!file_exists($fileName)) {
+            throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
+        }
+
+        $categories = [];
+        foreach (array_keys($table->getRowsHash()) as $category) {
+            $categories[] = $category;
+        }
+
+        $reader = ReaderFactory::create(Type::XLSX);
+        $reader->open($fileName);
+
+        $sheet = current(iterator_to_array($reader->getSheetIterator()));
+        $actualLines = iterator_to_array($sheet->getRowIterator());
+        array_shift($actualLines);
+        $reader->close();
+
+        foreach ($actualLines as $row) {
+            $category = array_shift($categories);
+            assertSame($category, $row[0], sprintf('Expecting category "%s", saw "%s"', $category, $row[0]));
+        }
+    }
+
 
     /**
      * @param string $original
