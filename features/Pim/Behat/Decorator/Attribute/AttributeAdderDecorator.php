@@ -88,6 +88,9 @@ class AttributeAdderDecorator extends ElementDecorator
         }
 
         $this->find('css', $this->selectors['Available attributes add button']['css'])->press();
+
+        // Clean extra select2-drop in the DOM
+        $this->getSession()->evaluateScript("jQuery('.select2-drop:hidden').remove();");
     }
 
     /**
