@@ -60,7 +60,7 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
      */
     public function getDelimiter()
     {
-        return $this->configuration->getData('delimiter');
+        return $this->configuration->getParameter('delimiter');
         //return $this->delimiter;
     }
 
@@ -81,7 +81,7 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
      */
     public function getEnclosure()
     {
-        return $this->configuration->getData('enclosure');
+        return $this->configuration->getParameter('enclosure');
         //return $this->enclosure;
     }
 
@@ -102,7 +102,7 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
      */
     public function isWithHeader()
     {
-        return $this->configuration->getData('withHeader');
+        return $this->configuration->getParameter('withHeader');
         //return $this->withHeader;
     }
 

@@ -204,7 +204,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
      */
     public function getChannel()
     {
-        return $this->configuration->getData('channel');
+        return $this->configuration->getParameter('channel');
 
         //return $this->channel;
     }
@@ -237,7 +237,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     protected function getIds()
     {
         if (!is_object($this->channel)) {
-            $channelCode = $this->configuration->getData('channel');
+            $channelCode = $this->configuration->getParameter('channel');
             $this->channel = $this->channelRepository->findOneByIdentifier($channelCode);
         }
 

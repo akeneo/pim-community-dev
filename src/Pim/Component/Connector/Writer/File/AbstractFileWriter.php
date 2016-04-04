@@ -72,7 +72,7 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
      */
     public function getFilePath()
     {
-        return $this->configuration->getData('filePath');
+        return $this->configuration->getParameter('filePath');
         //return $this->filePath;
     }
 
@@ -84,7 +84,7 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     public function getPath()
     {
         if (null === $this->resolvedFilePath) {
-            $filePath = $this->configuration->getData('filePath');
+            $filePath = $this->configuration->getParameter('filePath');
             $this->resolvedFilePath = $this->filePathResolver->resolve($filePath, $this->filePathResolverOptions);
         }
 

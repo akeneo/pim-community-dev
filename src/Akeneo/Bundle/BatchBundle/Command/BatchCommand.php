@@ -76,7 +76,6 @@ class BatchCommand extends ContainerAwareCommand
         $job = $this->getConnectorRegistry()->getJob($jobInstance);
         $jobInstance->setJob($job);
 
-        // Override job configuration
         if ($config = $input->getOption('config')) {
             $job->setConfiguration(
                 $this->decodeConfiguration($config)

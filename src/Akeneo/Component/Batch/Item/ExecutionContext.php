@@ -4,6 +4,7 @@ namespace Akeneo\Component\Batch\Item;
 
 /**
  * Object representing a context for an {@link ItemStream}.
+ *
  * It also allows for dirty checking by setting a 'dirty' flag whenever any put is called.
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>

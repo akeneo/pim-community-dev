@@ -23,12 +23,26 @@ class Configuration
     }
 
     /**
-     * @param $parameter
+     * @param string $parameter
      *
      * @return mixed
+     *
+     * @throws \UndefinedParameterException
      */
-    public function getData($parameter)
+    public function getParameter($parameter)
     {
+        if (!isset($this->parameters[$parameter])) {
+            throw new \UndefinedParameterException(sprintf('The parameter "%s" is undefined', $parameter));
+        }
+
         return $this->parameters[$parameter];
+    }
+
+    /**
+     * @return array
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
     }
 }
