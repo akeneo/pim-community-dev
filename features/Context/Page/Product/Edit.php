@@ -83,7 +83,13 @@ class Edit extends ProductEditForm
                     'decorators' => [
                         'Pim\Behat\Decorator\Attribute\AttributeAdderDecorator'
                     ]
-                ]
+                ],
+                'Attribute inputs' => [
+                    'css' => '.tab-pane.product-values',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\InputDecorator'
+                    ]
+                ],
             ]
         );
     }
@@ -936,5 +942,17 @@ class Edit extends ProductEditForm
         return $this->spin(function () use ($dropdownMenu) {
             return $dropdownMenu->find('css', '.save-product-and-back');
         }, '"Save and back" button not found');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fillField($field, $value, Element $element = null)
+    {
+        try {
+            $this->getElement('Attribute inputs')->fillField($field, $value, $element);
+        } catch (ElementNotFoundException $e) {
+            parent::fillField($field, $value, $element);
+        }
     }
 }

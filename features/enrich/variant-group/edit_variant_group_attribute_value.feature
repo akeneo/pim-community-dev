@@ -72,7 +72,7 @@ Feature: Editing attribute values of a variant group also updates products
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
-      | weather_conditions | [wet], [cold] |
+      | weather_conditions | Wet, Cold |
 
   Scenario: Change a pim_catalog_number attribute of a variant group
     When I visit the "Other" group
@@ -84,7 +84,7 @@ Feature: Editing attribute values of a variant group also updates products
 
   Scenario: Change a pim_catalog_price_collection attribute of a variant group
     When I visit the "Marketing" group
-    And I change the "€ Price" to "89"
+    And I change the "Price" to "89 EUR"
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:

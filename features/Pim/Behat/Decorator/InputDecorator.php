@@ -303,7 +303,6 @@ class InputDecorator extends ElementDecorator
      */
     protected function fillMultiSelectField(NodeElement $fieldContainer, $values)
     {
-        echo 'OUI OUI !' . PHP_EOL;
         $field = $fieldContainer->find('css', '.form-field');
 
         // clear multi select first
@@ -324,10 +323,12 @@ class InputDecorator extends ElementDecorator
         foreach ($this->listToArray($values) as $value) {
             $link->click();
             $item = $this->spin(function () use ($value) {
-                return $this->find(
-                    'css',
-                    sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $value)
-                );
+                return $this->getSession()
+                    ->getPage()
+                    ->find(
+                        'css',
+                        sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $value)
+                    );
             });
 
             // Select the value in the displayed dropdown

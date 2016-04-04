@@ -38,19 +38,17 @@ Feature: Edit attributes of a variant group
     And I fill in the following information:
       | Manufacturer | Lacoste |
     And I press the "Save" button
+    And I reload the page
     Then the field Manufacturer should contain "Lacoste"
 
   Scenario: Successfully edit a localizable attribute of a variant group
     Given I am on the "tshirts" variant group page
     And I visit the "Attributes" tab
-    Given I switch the locale to "fr_FR"
-    And I fill in the following information:
-      | Nom | French name |
+    And I change the Nom for scope ecommerce and locale fr_FR to "French name"
     And I press the "Save" button
-    And I switch the locale to "en_US"
-    And I fill in the following information:
-      | Name | English name |
+    And I change the Name for scope ecommerce and locale en_US to "English name"
     And I press the "Save" button
+    And I reload the page
     When I switch the locale to "fr_FR"
     Then the field Nom should contain "French name"
     When I switch the locale to "en_US"
