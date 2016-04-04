@@ -276,8 +276,10 @@ class InputDecorator extends ElementDecorator
                 $link->click();
 
                 $item = $this->spin(function () use ($select) {
-                    return $this->find('css', sprintf('#select2-drop li:contains("%s")', $select));
-                });
+                    return $this->getSession()
+                        ->getPage()
+                        ->find('css', sprintf('#select2-drop li:contains("%s")', $select));
+                }, sprintf('Could not find option "%".', $select));
             }
 
             if (!$item) {
