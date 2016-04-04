@@ -5,6 +5,7 @@
 - PIM-5697: Fix import form when a file extension is not allowed
 - PIM-5695: Do not format price with currency if data is null
 - PIM-5643: Fix default system locale
+- PIM-5728: Fix bug in price and metric datagrid filters
 
 # 1.5.1 (2016-03-09)
 
