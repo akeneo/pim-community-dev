@@ -21,17 +21,25 @@ define(
              * @see Oro.Filter.SelectFilter
              */
             contextSearch: false,
+            catalogScope: null,
 
             initialize: function() {
                 SelectFilter.prototype.initialize.apply(this, arguments);
+                this.catalogScope = UserContext.get('catalogScope');
 
                 mediator.once('datagrid_filters:rendered', this.moveFilter.bind(this));
+                mediator.once('datagrid_filters:rendered', this.resetValue.bind(this));
 
                 mediator.bind('grid_load:complete', function(collection) {
                     $('#grid-' + collection.inputName).find('div.toolbar').show();
                 });
             },
 
+            /**
+             * Move the filter to its proper position
+             *
+             * @param {Array} collection
+             */
             moveFilter: function (collection) {
                 var $grid = $('#grid-' + collection.inputName);
                 this.$el.addClass('pull-right').insertBefore($grid.find('.actions-panel'));
@@ -40,6 +48,15 @@ define(
                 $filterChoices.find('option[value="scope"]').remove();
                 $filterChoices.multiselect('refresh');
 
+                this.selectWidget.multiselect('refresh');
+            },
+
+            /**
+             * Update the current filter value using the UserContext.
+             */
+            resetValue: function () {
+                this.setValue({value: this.catalogScope});
+                UserContext.set('catalogScope', this.catalogScope);
                 this.selectWidget.multiselect('refresh');
             },
 
