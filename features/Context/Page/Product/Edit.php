@@ -9,6 +9,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\ProductEditForm;
 use Context\Page\Category\CategoryView;
+use Context\Spin\TimeoutException;
 
 /**
  * Product edit page
@@ -951,8 +952,28 @@ class Edit extends ProductEditForm
     {
         try {
             $this->getElement('Attribute inputs')->fillField($field, $value, $element);
+        } catch (TimeoutException $e) {
+            parent::fillField($field, $value, $element);
         } catch (ElementNotFoundException $e) {
             parent::fillField($field, $value, $element);
+        }
+    }
+
+    /**
+     * @param string $name
+     *
+     * @throws ElementNotFoundException
+     *
+     * @return NodeElement
+     */
+    public function findField($name)
+    {
+        try {
+            return $this->getElement('Attribute inputs')->findField($name);
+        } catch (TimeoutException $e) {
+            return parent::findField($name);
+        } catch (ElementNotFoundException $e) {
+            return parent::findField($name);
         }
     }
 }
