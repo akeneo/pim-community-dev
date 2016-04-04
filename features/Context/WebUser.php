@@ -970,7 +970,9 @@ class WebUser extends RawMinkContext
     public function iShouldSeeARemoveLinkNextToTheField($not, $field)
     {
         try {
-            $removeLink = $this->getPage('Product edit')->getRemoveLinkFor($field);
+            $removeLink = $this->getCurrentPage()
+                ->getElement('Attribute inputs')
+                ->getRemoveLinkFor($field);
         } catch (TimeoutException $te) {
             $removeLink = null;
         }
@@ -1024,7 +1026,11 @@ class WebUser extends RawMinkContext
      */
     public function iRemoveTheAttribute($field)
     {
-        if (null === $link = $this->getCurrentPage()->getRemoveLinkFor($field)) {
+        $removeLink = $this->getCurrentPage()
+            ->getElement('Attribute inputs')
+            ->getRemoveLinkFor($field);
+
+        if (null === $removeLink) {
             throw $this->createExpectationException(
                 sprintf(
                     'Remove link on field "%s" should be displayed.',
@@ -1033,7 +1039,7 @@ class WebUser extends RawMinkContext
             );
         }
 
-        $link->click();
+        $removeLink->click();
         $this->wait();
     }
 
