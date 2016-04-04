@@ -29,3 +29,15 @@ Feature: Products back to the grid
     And I should see "SKU: contains \"sneakers_1\""
     And I should see product sneakers_1
     And I should not see product boots_1
+
+  Scenario: Successfully restore the scope dropdown
+    Given I filter by "SKU" with value "sneakers_1"
+    And the grid should contain 1 element
+    And I should see the text "E-Commerce"
+    And I should not see the text "Mobile"
+    And I click on the "sneakers_1" row
+    And I switch the scope to "mobile"
+    And I click back to grid
+    Then the grid should contain 1 element
+    And I should see the text "Mobile"
+    And I should not see the text "E-Commerce"

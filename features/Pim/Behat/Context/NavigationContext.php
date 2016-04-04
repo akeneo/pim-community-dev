@@ -366,6 +366,10 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
             $filteredUrl = $urlWithoutGrid;
         }
 
+        if ((strlen($filteredUrl) - 1) === strpos($filteredUrl, '#')) {
+            $filteredUrl = strstr($filteredUrl, '#', true);
+        }
+
         return $filteredUrl;
     }
 
