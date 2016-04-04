@@ -142,3 +142,41 @@ Feature: Edit common attributes of many products at once
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the metric "heel_height" of products highheels, blue_highheels should be "12"
     And the metric "heel_height" of products sandals should be "3"
+
+  Scenario: Successfully mass edit products and the completeness should be computed
+    Given I am on the "sneakers" product page
+    When I open the "Completeness" panel
+    Then I should see the completeness:
+      | channel | locale | state   | missing_values                                                        | ratio |
+      | mobile  | en_US  | warning | name price size color                                                 | 20%   |
+      | tablet  | en_US  | warning | name description weather_conditions price rating side_view size color | 11%   |
+    And I am on the "sandals" product page
+    When I open the "Completeness" panel
+    Then I should see the completeness:
+      | channel | locale | state   | missing_values                                     | ratio |
+      | mobile  | en_US  | warning | name price size color                              | 20%   |
+      | tablet  | en_US  | warning | name description price rating side_view size color | 13%   |
+    Then I am on the products page
+    And I mass-edit products sandals, sneakers
+    And I choose the "Edit common attributes" operation
+    And I display the Name, Price and Size attribute
+    And I change the "Name" to "boots"
+    Then I visit the "Marketing" group
+    And I change the "Price" to "100 USD"
+    And I change the "Price" to "150 EUR"
+    Then I visit the "Sizes" group
+    And I change the "Size" to "37"
+    And I move on to the next step
+    And I wait for the "edit-common-attributes" mass-edit job to finish
+    Then I am on the "sneakers" product page
+    When I open the "Completeness" panel
+    And I should see the completeness:
+      | channel | locale | state   | missing_values                     | ratio |
+      | mobile  | en_US  | warning | color                              | 80%   |
+      | tablet  | en_US  | warning | description rating side_view color | 44%   |
+    And I am on the "sandals" product page
+    When I open the "Completeness" panel
+    And I should see the completeness:
+      | channel | locale | state   | missing_values                     | ratio |
+      | mobile  | en_US  | warning | color                              | 80%   |
+      | tablet  | en_US  | warning | description rating side_view color | 50%   |

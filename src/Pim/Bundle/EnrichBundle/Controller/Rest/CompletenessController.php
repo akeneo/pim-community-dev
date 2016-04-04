@@ -64,7 +64,7 @@ class CompletenessController
     /**
      * Get completeness for a product
      *
-     * @param int $id
+     * @param int|string $id
      *
      * @return JSONResponse
      */

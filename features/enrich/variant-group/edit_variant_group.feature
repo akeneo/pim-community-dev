@@ -31,3 +31,24 @@ Feature: Edit a variant group
     Given I fill in the following information:
       | English (United States) | My boots |
     Then I should see "There are unsaved changes."
+
+  @javascript
+  Scenario: Successfully edit a variant group and the completeness should be computed
+    Given I add the "french" locale to the "tablet" channel
+    And I add the "french" locale to the "mobile" channel
+    And the following products:
+      | sku      | family   | manufacturer | weather_conditions | color | name-en_US | name-fr_FR  | price          | rating | size | lace_color  |
+      | sneakers | sneakers | Converse     | hot                | blue  | Sneakers   | Espadrilles | 69 EUR, 99 USD | 4      | 43   | laces_white |
+    And the following product values:
+      | product  | attribute   | value                 | locale | scope  |
+      | sneakers | description | Great sneakers        | en_US  | mobile |
+      | sneakers | description | Really great sneakers | en_US  | tablet |
+      | sneakers | description | Grandes espadrilles   | fr_FR  | mobile |
+    And I visit the "Attributes" tab
+    When I add available attributes Description
+    And I visit the "Products" tab
+    And I press the "Save" button
+    And I should see the text "89%"
+    And I check the row "sneakers"
+    And I press the "Save" button
+    Then I should see the text "78%"
