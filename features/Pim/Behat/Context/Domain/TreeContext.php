@@ -107,7 +107,9 @@ class TreeContext extends PimContext
         } else {
             try {
                 $checkbox = $this->spin(function () use ($node) {
-                    return $node->find('css', '.jstree-checkbox');
+                    $checkbox = $node->find('css', '.jstree-checkbox');
+
+                    return $checkbox->isVisible() ? $checkbox : false;
                 });
             } catch (\Exception $e) {
                 $checkbox = null;
