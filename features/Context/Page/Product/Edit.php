@@ -976,4 +976,12 @@ class Edit extends ProductEditForm
             return parent::findField($name);
         }
     }
+
+    /**
+     * @param array $attributes
+     */
+    public function addAvailableAttributes(array $attributes = [])
+    {
+        $this->getElement('Add attributes button')->addAvailableAttributes($attributes);
+    }
 }
