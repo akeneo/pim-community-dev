@@ -98,6 +98,8 @@ class FixturesContext extends BaseFixturesContext
         $uniqueValueSet = $this->getContainer()->get('pim_catalog.validator.unique_value_set');
         $uniqueValueSet->reset();
 
+        $this->refresh($product);
+
         return $product;
     }
 
