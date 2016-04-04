@@ -31,7 +31,3 @@ flash.datagrid view:
   updated: Datagrid-näkymä päivitetty
   removed: Datagrid-näkymä poistettu
   not removable: Sinulla ei ole oikeuksia poistaa tätä näkymää
-quick_export: Nopea vienti
-import: Tuonti
-export: Vienti
-mass_edit: Massaedit
