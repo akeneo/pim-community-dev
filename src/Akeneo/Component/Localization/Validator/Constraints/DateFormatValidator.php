@@ -47,7 +47,7 @@ class DateFormatValidator extends ConstraintValidator
     }
 
     /**
-     * As IntlDateFormmatter::parse() checks only values and not separators,
+     * As IntlDateFormatter::parse() checks only values and not separators,
      * we check if separators of $date match with separators of $pattern
      *
      * @param string $date

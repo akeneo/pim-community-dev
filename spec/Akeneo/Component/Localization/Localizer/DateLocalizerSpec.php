@@ -27,7 +27,7 @@ class DateLocalizerSpec extends ObjectBehavior
         $this->supports('pim_catalog_number')->shouldReturn(false);
     }
 
-    function it_valids_the_format()
+    function it_validates_the_format()
     {
         $this->validate('28/10/2015', 'date', ['date_format' => 'd/m/Y'])->shouldReturn(null);
         $this->validate('01/10/2015', 'date', ['date_format' => 'd/m/Y'])->shouldReturn(null);
@@ -37,6 +37,7 @@ class DateLocalizerSpec extends ObjectBehavior
         $this->validate('2015-10-01', 'date', ['date_format' => 'Y-m-d'])->shouldReturn(null);
         $this->validate('', 'date', ['date_format' => 'Y-m-d'])->shouldReturn(null);
         $this->validate(null, 'date', ['date_format' => 'Y-m-d'])->shouldReturn(null);
+        $this->validate(new \DateTime(), 'date', ['date_format' => 'Y-m-d'])->shouldReturn(null);
     }
 
     function it_returns_a_constraint_if_the_format_is_not_valid(
@@ -64,14 +65,13 @@ class DateLocalizerSpec extends ObjectBehavior
         $this->validate('28-10-2015', 'date', ['locale' => 'fr_FR'])->shouldReturn($constraints);
     }
 
-    function it_delocalize_with_date_format_option($dateFactory, \IntlDateFormatter $dateFormatter)
+    function it_delocalizes_with_date_format_option($dateFactory, \IntlDateFormatter $dateFormatter)
     {
         $dateFactory->create(['date_format' => 'dd/MM/yyyy'])->willReturn($dateFormatter);
-        $dateFormatter->getPattern()->willReturn('dd/MM/yyyy');
         $dateFormatter->setLenient(false)->shouldBeCalled();
-        $dateFormatter->parse('28/10/2015')->willReturn(23456789);
+        $dateFormatter->parse('28/10/2015')->willReturn(1445986800);
         $dateFormatter->setPattern('yyyy-MM-dd')->shouldBeCalled();
-        $dateFormatter->format(23456789)->willReturn('2015-10-28');
+        $dateFormatter->format(1445986800)->willReturn('2015-10-28');
 
         $this->delocalize('28/10/2015', ['date_format' => 'dd/MM/yyyy'])->shouldReturn('2015-10-28');
     }
