@@ -25,20 +25,4 @@ interface JobLauncherInterface
      * @return JobExecution
      */
     public function launch(JobInstance $jobInstance, UserInterface $user, $rawConfiguration = null);
-
-    /**
-     * Set config
-     *
-     * @param array $config
-     *
-     * @return JobLauncherInterface
-     */
-    public function setConfig(array $config);
-
-    /**
-     * Get config
-     *
-     * @return array
-     */
-    public function getConfig();
 }
