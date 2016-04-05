@@ -10,7 +10,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 
 /**
- * Class peristing JobExecution and StepExecution states.
+ * Class persisting JobExecution and StepExecution states.
  * This class instantiates a specific EntityManager to avoid
  * polluting the transactional state of data coming through the
  * batch.
