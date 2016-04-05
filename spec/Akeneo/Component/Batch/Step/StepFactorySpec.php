@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Bundle\BatchBundle\Step;
+namespace spec\Akeneo\Component\Batch\Step;
 
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;

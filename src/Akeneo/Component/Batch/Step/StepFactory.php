@@ -1,21 +1,24 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Job;
+namespace Akeneo\Component\Batch\Step;
 
-use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
+use Doctrine\Common\Util\Inflector;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * A job instance factory
+ * Step factory
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class JobFactory
+class StepFactory
 {
-    /* @var JobRepositoryInterface */
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
+    /** @var JobRepositoryInterface */
     protected $jobRepository;
 
     /**
@@ -30,16 +33,27 @@ class JobFactory
     }
 
     /**
-     * Create a job object
+     * @param string $name
+     * @param string $class
+     * @param array  $services
+     * @param array  $parameters
      *
-     * @param string $name Name of the Job Object
-     *
-     * @return Job $job The created job
+     * @return StepInterface
      */
-    public function createJob($name)
+    public function createStep($name, $class, array $services, array $parameters)
     {
-        $job = new Job($name, $this->jobRepository, $this->eventDispatcher);
+        $step = new $class($name, $this->jobRepository, $this->eventDispatcher);
 
-        return $job;
+        foreach ($services as $setter => $service) {
+            $method = 'set'.Inflector::camelize($setter);
+            $step->$method($service);
+        }
+
+        foreach ($parameters as $setter => $param) {
+            $method = 'set'.Inflector::camelize($setter);
+            $step->$method($param);
+        }
+
+        return $step;
     }
 }

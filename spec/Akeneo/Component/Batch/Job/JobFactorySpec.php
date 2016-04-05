@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Bundle\BatchBundle\Job;
+namespace spec\Akeneo\Component\Batch\Job;
 
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
