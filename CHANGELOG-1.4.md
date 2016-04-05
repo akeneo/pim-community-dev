@@ -1,3 +1,9 @@
+# 1.4.x
+
+## Bug fixes
+
+- PIM-5699: Fix 'is equal to' operator in export / import history grid filter
+
 # 1.4.22 (2016-03-23)
 
 ## Improvements
