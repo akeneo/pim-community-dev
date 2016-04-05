@@ -12,6 +12,7 @@
 - PIM-5697: Fix import form when a file extension is not allowed
 - PIM-5695: Do not format price with currency if data is null
 - PIM-5643: Fix default system locale
+- PIM-5666: Fix product value saving with value '0'
 
 # 1.5.1 (2016-03-09)
 
