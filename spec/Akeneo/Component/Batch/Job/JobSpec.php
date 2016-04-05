@@ -13,19 +13,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class JobSpec extends ObjectBehavior
 {
-    function let()
+    function let(EventDispatcherInterface $dispatcher, JobRepositoryInterface $jobRepository)
     {
-        $this->beConstructedWith('myname');
+        $this->beConstructedWith('myname', $dispatcher, $jobRepository);
     }
 
     function it_provides_its_name()
     {
         $this->getName()->shouldReturn('myname');
-    }
-
-    function it_sets_event_dispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->setEventDispatcher($eventDispatcher)->shouldReturn($this);
     }
 
     function it_has_no_steps_by_default()
@@ -64,13 +59,6 @@ class JobSpec extends ObjectBehavior
         $this->getSteps()->shouldReturn([$stepOne, $stepTwo]);
     }
 
-    function it_sets_a_job_repository(JobRepositoryInterface $jobRepository)
-    {
-        $this->getJobRepository()->shouldReturn(null);
-        $this->setJobRepository($jobRepository);
-        $this->getJobRepository()->shouldReturn($jobRepository);
-    }
-
     function it_aggregates_the_steps_configuration(StepInterface $stepOne, StepInterface $stepTwo)
     {
         $this->setSteps([$stepOne, $stepTwo]);
@@ -103,13 +91,11 @@ class JobSpec extends ObjectBehavior
     }
 
     function it_executes(
+        $dispatcher,
+        $jobRepository,
         JobExecution $jobExecution,
-        JobRepositoryInterface $jobRepository,
-        EventDispatcherInterface $dispatcher,
         BatchStatus $status
     ) {
-        $this->setEventDispatcher($dispatcher);
-        $this->setJobRepository($jobRepository);
         $jobExecution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::UNKNOWN);
 
@@ -118,6 +104,7 @@ class JobSpec extends ObjectBehavior
         $jobExecution->setStatus(Argument::any())->shouldBeCalled();
         $dispatcher->dispatch(EventInterface::AFTER_JOB_EXECUTION, Argument::any())->shouldBeCalled();
         $jobExecution->setEndTime(Argument::any())->shouldBeCalled();
+        $jobRepository->updateJobExecution($jobExecution)->shouldBeCalled();
 
         $this->execute($jobExecution);
     }

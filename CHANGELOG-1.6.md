@@ -165,3 +165,5 @@
 - Remove methods `setConfig` and `getConfig` from `Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface`
 - Remove deprecated method `setName` from `Akeneo\Component\Batch\Job\Job`
 - Remove deprecated classes `Pim\Bundle\BaseConnectorBundle\Step\ValidatorStep` and `Pim\Bundle\BaseConnectorBundle\Validator\Step\CharsetValidator`
+- Remove methods `setEventDispatcher` and `setJobRepository` from `Akeneo\Component\Batch\Job\Job`
+- Add mandatory arguments `Akeneo\Component\Batch\Job\JobRepositoryInterface` and `Symfony\Component\EventDispatcher\EventDispatcherInterface` in constructor of `Akeneo\Component\Batch\Job\Job`

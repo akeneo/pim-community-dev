@@ -20,7 +20,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  * TODO: templates should be extracted, we mix concerns here
- * TODO: JobRepository and EventDispatcher should be injected in the constructor
  */
 class Job implements JobInterface
 {
@@ -43,14 +42,19 @@ class Job implements JobInterface
     protected $editTemplate;
 
     /**
-     * Convenience constructor to immediately add name (which is mandatory)
-     *
-     * @param string $name
+     * @param string                   $name
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param JobRepositoryInterface   $jobRepository
      */
-    public function __construct($name)
-    {
-        $this->name   = $name;
-        $this->steps  = array();
+    public function __construct(
+        $name,
+        EventDispatcherInterface $eventDispatcher,
+        JobRepositoryInterface $jobRepository
+    ) {
+        $this->name = $name;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->jobRepository = $jobRepository;
+        $this->steps = [];
     }
 
     /**
@@ -61,20 +65,6 @@ class Job implements JobInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set the event dispatcher
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @return Job
-     */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-
-        return $this;
     }
 
     /**
@@ -145,18 +135,6 @@ class Job implements JobInterface
     public function addStep($stepName, StepInterface $step)
     {
         $this->steps[] = $step;
-    }
-
-    /**
-     * Public setter for the {@link JobRepositoryInterface} that is needed to manage the
-     * state of the batch meta domain (jobs, steps, executions) during the life
-     * of a job.
-     *
-     * @param JobRepositoryInterface $jobRepository
-     */
-    public function setJobRepository(JobRepositoryInterface $jobRepository)
-    {
-        $this->jobRepository = $jobRepository;
     }
 
     /**
@@ -427,8 +405,6 @@ class Job implements JobInterface
      */
     private function getDefaultExitStatusForFailure(\Exception $e)
     {
-        $exitStatus = new ExitStatus();
-
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
             $exitStatus->addExitDescription(get_class(new JobInterruptedException()));
