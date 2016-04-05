@@ -132,17 +132,7 @@ class VariantGroupController
             throw new NotFoundHttpException(sprintf('Variant group with id "%s" not found', $id));
         }
 
-        // if ($this->objectFilter->filterObject($variantGroup, 'pim.internal_api.product.edit')) {
-        //     throw new AccessDeniedHttpException();
-        // }
-
         $data = json_decode($request->getContent(), true);
-        // try {
-        //     $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $product]);
-        // } catch (ObjectNotFoundException $e) {
-        //     throw new BadRequestHttpException();
-        // }
-
         $data = $this->convertLocalizedAttributes($data);
 
         $this->variantGroupUpdater->update($variantGroup, $data);
@@ -151,20 +141,7 @@ class VariantGroupController
         $violations->addAll($this->validator->validate($variantGroup->getProductTemplate()));
         $violations->addAll($this->attributeConverter->getViolations());
 
-        if (0 === $violations->count()) {
-            $this->variantGroupSaver->save($variantGroup, ['flush' => true]);
-
-            // $normalizationContext = $this->userContext->toArray() + [
-            //     'filter_type'                => 'pim.internal_api.product_value.view',
-            //     'disable_grouping_separator' => true
-            // ];
-
-            return new JsonResponse($this->normalizer->normalize(
-                $variantGroup,
-                'internal_api',
-                ['with_variant_group_values' => true]
-            ));
-        } else {
+        if (0 < $violations->count()) {
             $errors = [
                 'values' => $this->normalizer->normalize(
                     $violations,
@@ -175,6 +152,14 @@ class VariantGroupController
 
             return new JsonResponse($errors, 400);
         }
+
+        $this->variantGroupSaver->save($variantGroup, ['flush' => true]);
+
+        return new JsonResponse($this->normalizer->normalize(
+            $variantGroup,
+            'internal_api',
+            ['with_variant_group_values' => true]
+        ));
     }
 
     /**

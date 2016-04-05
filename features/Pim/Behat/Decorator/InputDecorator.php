@@ -137,6 +137,8 @@ class InputDecorator extends ElementDecorator
      *
      * @param NodeElement $fieldContainerOrLabel
      * @param string      $value
+     *
+     * @throws ElementNotFoundException
      */
     protected function fillTextField(NodeElement $fieldContainerOrLabel, $value)
     {
@@ -500,7 +502,6 @@ class InputDecorator extends ElementDecorator
             return 'switch';
         } else {
             return '';
-//            return parent::getFieldType($fieldContainer);
         }
     }
 
@@ -545,6 +546,26 @@ class InputDecorator extends ElementDecorator
         }
 
         return $actual;
+    }
+
+
+    /**
+     * Get remove link for attribute
+     *
+     * @param string $field
+     *
+     * @return NodeElement
+     */
+    public function getRemoveLinkFor($field)
+    {
+        return $this->spin(function () use ($field) {
+            $link = $this->find('css', sprintf('.control-group:contains("%s") .remove-attribute', $field));
+            if (!$link) {
+                $link = $this->find('css', sprintf('.field-container:contains("%s") .remove-attribute', $field));
+            }
+
+            return $link;
+        }, sprintf('Can not find remove link for attribute "%s".', $field));
     }
 
     /**
@@ -663,24 +684,5 @@ class InputDecorator extends ElementDecorator
         }
 
         throw new \LogicException(sprintf('Switch "%s" is in an undefined state', $fieldContainer->name));
-    }
-
-    /**
-     * Get remove link for attribute
-     *
-     * @param string $field
-     *
-     * @return NodeElement
-     */
-    public function getRemoveLinkFor($field)
-    {
-        return $this->spin(function () use ($field) {
-            $link = $this->find('css', sprintf('.control-group:contains("%s") .remove-attribute', $field));
-            if (!$link) {
-                $link = $this->find('css', sprintf('.field-container:contains("%s") .remove-attribute', $field));
-            }
-
-            return $link;
-        }, sprintf('Can not find remove link for attribute "%s".', $field));
     }
 }

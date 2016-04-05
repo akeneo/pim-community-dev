@@ -73,7 +73,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
         $productClassName,
-        ProductQueryBuilderFactoryInterface$productQueryBuilderFactory
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
     ) {
         $this->objectManager              = $objectManager;
         $this->productSaver               = $productSaver;

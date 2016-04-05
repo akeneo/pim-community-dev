@@ -5,7 +5,6 @@ namespace Context\Page\VariantGroup;
 use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
-use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\Form as Form;
 use Context\Spin\TimeoutException;
 
@@ -77,26 +76,6 @@ class Edit extends Form
         } catch (ElementNotFoundException $e) {
             return $this->deprecatedFindField($name);
         }
-    }
-
-    /**
-     * Used for old variant group fields (not attribute related)
-     *
-     * @param string $name
-     *
-     * @return NodeElement|mixed|null
-     */
-    protected function deprecatedFindField($name)
-    {
-        $label = $this->spin(function () use ($name) {
-            return $this->find('css', sprintf('label:contains("%s")', $name));
-        }, sprintf('Label "%s" not found', $name));
-
-        $field = $this->spin(function () use ($label) {
-            return $label->getParent()->find('css', 'input,textarea');
-        }, sprintf('Form field with label "%s" not found', $name));
-
-        return $field;
     }
 
     /**
@@ -179,5 +158,25 @@ class Edit extends Form
         }
 
         return $this->find('css', sprintf('#%s', $scopeLabel->getAttribute('for')));
+    }
+
+    /**
+     * Used for old variant group fields (not attribute related)
+     *
+     * @param string $name
+     *
+     * @return NodeElement|mixed|null
+     */
+    protected function deprecatedFindField($name)
+    {
+        $label = $this->spin(function () use ($name) {
+            return $this->find('css', sprintf('label:contains("%s")', $name));
+        }, sprintf('Label "%s" not found', $name));
+
+        $field = $this->spin(function () use ($label) {
+            return $label->getParent()->find('css', 'input,textarea');
+        }, sprintf('Form field with label "%s" not found', $name));
+
+        return $field;
     }
 }
