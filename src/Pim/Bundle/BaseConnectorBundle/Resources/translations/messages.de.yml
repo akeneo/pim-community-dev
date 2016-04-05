@@ -65,6 +65,7 @@ pim_base_connector:
     variant_group_processor.title: Variantengruppen Anlage / Aktualisierung
     category_processor.title: Kategorieanlage
     association_processor.title: Zuweisungserstellung
+    product_association_processor.title: Zuweisungserstellung
     group_processor.title: Gruppenerstellung
     attribute_processor.title: Attributerstellung
     attribute_option_processor.title: Attribut-Optionserstellung

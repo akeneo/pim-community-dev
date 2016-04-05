@@ -39,5 +39,8 @@ Currency: Valuutta
 jstree:
   all: Kaikki tuotteet
   unclassified: Luokittelemattomat tuotteet
+  product:
+    all: Kaikki tuotteet
+    unclassified: Luokittelemattomat tuotteet
   no_tree: Ei puuta käytettävissä
   include_sub: Sisällytä alakategoriat
