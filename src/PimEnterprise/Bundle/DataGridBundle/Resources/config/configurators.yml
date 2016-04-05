@@ -12,8 +12,9 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@oro_datagrid.datagrid.request_params'
             - '@pim_user.context.user'
-            - '@pimee_security.repository.attribute_group_access'
             - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.repository.group'
+            - '@pimee_security.repository.attribute_group_access'
         calls:
             - [setRequest, ['@?request=']]
 

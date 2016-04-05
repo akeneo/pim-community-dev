@@ -9,7 +9,7 @@ define(
     [
         'underscore',
         'pim/form',
-        'text!pim/template/product/back-to-grid',
+        'text!pim/template/form/back-to-grid',
         'routing',
         'pim/user-context',
         'oro/navigation'

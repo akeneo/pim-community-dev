@@ -5,7 +5,7 @@ define([
         'module',
         'routing',
         'oro/mediator',
-        'pim/product-edit-form/cache-invalidator',
+        'pim/cache-invalidator',
         'pim/product-manager'
     ], function (
         $,

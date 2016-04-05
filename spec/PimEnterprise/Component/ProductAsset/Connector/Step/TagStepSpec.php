@@ -13,9 +13,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TagStepSpec extends ObjectBehavior
 {
-    function let(JobRepositoryInterface $jobRepository, EventDispatcherInterface $dispatcher)
-    {
-        $this->beConstructedWith('aName', $dispatcher, $jobRepository);
+    function let(
+        EventDispatcherInterface $eventDispatcher,
+        JobRepositoryInterface $jobRepository
+    ) {
+        $this->beConstructedWith('aName', $eventDispatcher, $jobRepository);
     }
 
     function it_is_initializable()
@@ -30,6 +32,7 @@ class TagStepSpec extends ObjectBehavior
     }
 
     function it_executes(
+        $jobRepository,
         StepExecution $stepExecution,
         BaseWriter $writer,
         TagProcessor $tagProcessor,

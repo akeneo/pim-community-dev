@@ -208,9 +208,8 @@ class EnterpriseFeatureContext extends FeatureContext
         }, sprintf('Cannot find product version "%s"', $version));
 
         $button->click();
-        $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
 
-        $this->wait();
+        $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
     }
 
     /**
