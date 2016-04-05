@@ -163,3 +163,4 @@
 - Remove class `Pim\Component\Connector\Model\JobConfigurationInterface`
 - Removed the `recalculate` and `schedule` option from the `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver` and `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver`
 - Remove methods `setConfig` and `getConfig` from `Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface`
+- Remove deprecated method `setName` from `Akeneo\Component\Batch\Job\Job`
