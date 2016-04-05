@@ -20,7 +20,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @license   http://opensource.org/licenses/MIT MIT
  *
  * TODO: templates should be extracted, we mix concerns here
- * TODO: JobRepository and EventDispatcher should be injected in the constructor
  */
 class Job implements JobInterface
 {
