@@ -7,3 +7,6 @@ pimee_dashboard:
       product: Tuote
       review: Tarkastus
       empty: Ei tuoteluonnoksia tarkastettavaksi
+  version:
+    community_edition: CE (Yhteisöversio)
+    enterprise_edition: EE (Kaupallinen versio)

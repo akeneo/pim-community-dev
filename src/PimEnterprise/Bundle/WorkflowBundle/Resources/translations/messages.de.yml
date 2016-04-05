@@ -13,8 +13,12 @@ pimee_workflow:
       ready: Auf Genehmigung warten
       can_not_be_approved: Kann nicht überprüft werden
       can_not_be_deleted: Kann nicht gelöscht werden
+    status_message:
+      can_not_be_approved: Sie können diesen Vorschlag nicht genehmigen oder ablehnen da er Änderungen an Werten enthält, die Sie nicht bearbeiten dürfen. Bitte kontaktieren Sie Ihren Administrator damit Ihre Rechte angepasst werden können.
+      can_not_be_deleted: Sie können diesen Vorschlag nicht löschen, da er Änderungen an Werten enthält, die Sie nicht bearbeiten dürfen. Bitte kontaktieren Sie Ihren Administrator damit Ihre Rechte angepasst werden können.
     action:
       approve: Genehmigen
+      refuse: Ablehnen
       remove: Entfernen
     mass_review_action:
       approve: Ausgewählte freigeben
