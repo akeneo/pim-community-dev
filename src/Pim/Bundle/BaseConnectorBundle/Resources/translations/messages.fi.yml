@@ -65,6 +65,7 @@ pim_base_connector:
     variant_group_processor.title: Malliryhmän luonti / päivitys
     category_processor.title: Kategorian luominen
     association_processor.title: Assosiaation luominen
+    product_association_processor.title: Assosiaation luominen
     group_processor.title: Ryhmän perustaminen
     attribute_processor.title: Attribuutin luominen
     attribute_option_processor.title: Attribuutin vaihtoehdon luominen

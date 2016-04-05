@@ -10,3 +10,5 @@ pim_dashboard:
       job_type:
         import: Importar
         export: Exportar
+        mass_edit: Edición en masa
+        quick_export: Exportación rápida

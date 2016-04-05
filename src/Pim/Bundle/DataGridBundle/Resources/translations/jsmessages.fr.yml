@@ -63,10 +63,9 @@ pim_datagrid:
       confirm_ok: OK
       empty_selection: Aucun produit sélectionné.
 pim.grid.mass_action.quick_export.title: Export rapide
+pim.grid.mass_action.quick_export.launched: Export rapide a été lancé
 pim.grid.action.launch.title: Démarrer
 pim.grid.action.show.title: Afficher
 Please select view: Veuillez sélectionner une vue
 Loading...: Chargement en cours...
 View: Voir
-from: à partir de
-to: "jusqu'à"
