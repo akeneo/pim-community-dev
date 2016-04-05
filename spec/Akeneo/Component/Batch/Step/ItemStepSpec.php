@@ -17,9 +17,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ItemStepSpec extends ObjectBehavior
 {
-    function let(ItemReaderInterface $reader, ItemProcessorInterface $processor, ItemWriterInterface $writer)
-    {
-        $this->beConstructedWith('myname');
+    function let(
+        EventDispatcherInterface $dispatcher,
+        JobRepositoryInterface $repository,
+        ItemReaderInterface $reader,
+        ItemProcessorInterface $processor,
+        ItemWriterInterface $writer
+    ) {
+        $this->beConstructedWith('myname', $repository, $dispatcher);
         $this->setReader($reader);
         $this->setProcessor($processor);
         $this->setWriter($writer);
@@ -41,14 +46,12 @@ class ItemStepSpec extends ObjectBehavior
         $processor,
         $writer,
         StepExecution $execution,
-        EventDispatcherInterface $dispatcher,
-        JobRepositoryInterface $repository,
+        $dispatcher,
+        $repository,
         BatchStatus $status,
         ExitStatus $exitStatus
     ) {
         $this->setBatchSize(3);
-        $this->setEventDispatcher($dispatcher);
-        $this->setJobRepository($repository);
 
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
@@ -88,14 +91,12 @@ class ItemStepSpec extends ObjectBehavior
         $processor,
         $writer,
         StepExecution $execution,
-        EventDispatcherInterface $dispatcher,
-        JobRepositoryInterface $repository,
+        $dispatcher,
+        $repository,
         BatchStatus $status,
         ExitStatus $exitStatus
     ) {
         $this->setBatchSize(3);
-        $this->setEventDispatcher($dispatcher);
-        $this->setJobRepository($repository);
 
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);

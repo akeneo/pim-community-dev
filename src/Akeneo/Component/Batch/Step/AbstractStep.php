@@ -25,55 +25,28 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 abstract class AbstractStep implements StepInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $name;
 
-    /**
-     * @var EventDispatcherInterface
-     */
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /**
-     * @var JobRepositoryInterface
-     */
+    /** @var JobRepositoryInterface */
     protected $jobRepository;
 
     /**
-     * @param string $name
-     */
-    public function __construct($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * Set the event dispatcher
-     *
+     * @param string                   $name
+     * @param JobRepositoryInterface   $jobRepository
      * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @return AbstractStep
      */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-
-        return $this;
-    }
-
-    /**
-     * Public setter for {@link JobRepositoryInterface}.
-     *
-     * @param JobRepositoryInterface $jobRepository jobRepository is a mandatory dependence (no default).
-     *
-     * @return AbstractStep
-     */
-    public function setJobRepository(JobRepositoryInterface $jobRepository)
-    {
+    public function __construct(
+        $name,
+        JobRepositoryInterface $jobRepository,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->name = $name;
         $this->jobRepository = $jobRepository;
-
-        return $this;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -90,20 +63,6 @@ abstract class AbstractStep implements StepInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set the name property
-     *
-     * @param string $name
-     *
-     * @return AbstractStep
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     /**
