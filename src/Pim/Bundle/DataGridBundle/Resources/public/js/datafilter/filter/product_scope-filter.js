@@ -27,8 +27,8 @@ define(
                 SelectFilter.prototype.initialize.apply(this, arguments);
                 this.catalogScope = UserContext.get('catalogScope');
 
-                mediator.once('datagrid_filters:rendered', this.moveFilter.bind(this));
                 mediator.once('datagrid_filters:rendered', this.resetValue.bind(this));
+                mediator.once('datagrid_filters:rendered', this.moveFilter.bind(this));
 
                 mediator.bind('grid_load:complete', function(collection) {
                     $('#grid-' + collection.inputName).find('div.toolbar').show();

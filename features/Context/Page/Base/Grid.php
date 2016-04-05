@@ -185,7 +185,7 @@ class Grid extends Index
                 foreach ($values as $value) {
                     $driver->executeScript(
                         sprintf(
-                            "$('.ui-multiselect-menu:visible input[title=\"%s\"]').click().trigger('click');",
+                            "$('.ui-multiselect-menu:visible input[title=\"%s\"]').attr('checked', true).trigger('click');",
                             $value
                         )
                     );
