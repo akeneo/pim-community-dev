@@ -13,6 +13,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class JobFactory
 {
+    /* @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /* @var JobRepositoryInterface */
     protected $jobRepository;
 
