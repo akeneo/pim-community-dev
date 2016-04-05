@@ -67,7 +67,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     {
         $this->generate($product);
 
-        $this->documentManager->refresh($product);
+        if ($this->documentManager->contains($product)) {
+            $this->documentManager->refresh($product);
+        }
     }
 
     /**
