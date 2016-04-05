@@ -4,7 +4,7 @@
 
 touch app/config/parameters_test.yml
 
-bin/phpspec run $@ spec/Akeneo/Component/Batch
+bin/phpspec run $@ spec/Akeneo/Bundle/BatchBundle
 
 PHPSPEC_CODE=$?
 
