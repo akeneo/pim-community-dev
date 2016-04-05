@@ -10,8 +10,10 @@ footwear_family_export;IT support,Manager,Redactor;IT support,Manager,Redactor
 footwear_association_type_import;IT support,Manager,Redactor;IT support,Manager,Redactor
 footwear_attribute_import;IT support,Manager,Redactor;IT support,Manager,Redactor
 footwear_category_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-footwear_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-footwear_variant_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor
+csv_footwear_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor
+xlsx_footwear_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor
+csv_footwear_variant_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor
+xlsx_footwear_variant_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor
 footwear_option_import;IT support,Manager,Redactor;IT support,Manager,Redactor
 csv_footwear_product_import;IT support,Manager,Redactor;IT support,Manager,Redactor
 xlsx_footwear_product_import;IT support,Manager,Redactor;IT support,Manager,Redactor
