@@ -9,12 +9,13 @@ use Pim\Component\Connector\Reader\File\CsvReader;
 use Pim\Component\Connector\Writer\Doctrine\BaseWriter;
 use PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\TagProcessor;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TagStepSpec extends ObjectBehavior
 {
-    function let()
+    function let(JobRepositoryInterface $jobRepository, EventDispatcherInterface $dispatcher)
     {
-        $this->beConstructedWith('aName');
+        $this->beConstructedWith('aName', $dispatcher, $jobRepository);
     }
 
     function it_is_initializable()
@@ -34,7 +35,7 @@ class TagStepSpec extends ObjectBehavior
         TagProcessor $tagProcessor,
         CsvReader $csvReader,
         TagInterface $tag,
-        JobRepositoryInterface $jobRepository
+        $jobRepository
     ) {
         $value = [
             'code' => 'mycode',
@@ -65,7 +66,6 @@ class TagStepSpec extends ObjectBehavior
         $this->setReader($csvReader);
         $this->setProcessor($tagProcessor);
         $this->setWriter($writer);
-        $this->setJobRepository($jobRepository);
 
         $this->doExecute($stepExecution);
     }
