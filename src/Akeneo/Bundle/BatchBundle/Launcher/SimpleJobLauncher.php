@@ -24,9 +24,6 @@ class SimpleJobLauncher implements JobLauncherInterface
     /** @var string */
     protected $environment;
 
-    /** @var array */
-    protected $config = [];
-
     /**
      * Constructor
      *
@@ -50,9 +47,8 @@ class SimpleJobLauncher implements JobLauncherInterface
         $executionId  = $jobExecution->getId();
         $pathFinder   = new PhpExecutableFinder();
 
-        //TODO we should not rely on such test
         $emailParameter = '';
-        if ($this->isConfigTrue('email') && method_exists($user, 'getEmail')) {
+        if (isset($rawConfiguration['send_email']) && method_exists($user, 'getEmail')) {
             $emailParameter = sprintf('--email="%s"', $user->getEmail());
         }
 
@@ -71,36 +67,6 @@ class SimpleJobLauncher implements JobLauncherInterface
         $this->launchInBackground($cmd);
 
         return $jobExecution;
-    }
-
-    /**
-     * {@inheridoc}
-     */
-    public function setConfig(array $config)
-    {
-        $this->config = $config;
-
-        return $this;
-    }
-
-    /**
-     * {@inheridoc}
-     */
-    public function getConfig()
-    {
-        return $this->config;
-    }
-
-    /**
-     * Is key true in configuration
-     *
-     * @param string $key
-     *
-     * @return bool
-     */
-    protected function isConfigTrue($key)
-    {
-        return isset($this->config[$key]) && true === $this->config[$key];
     }
 
     /**
