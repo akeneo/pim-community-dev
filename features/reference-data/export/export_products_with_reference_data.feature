@@ -6,7 +6,7 @@ Feature: Export products
 
   Scenario: Export products with reference data
     Given a "footwear" catalog configuration
-    And the following job "footwear_product_export" configuration:
+    And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
     And I am logged in as "Julia"
     And the following "sole_color" attribute reference data: Red, Blue and Green
@@ -22,10 +22,10 @@ Feature: Export products
       | SNKRS-1R | sole_fabric | Neoprene, Silk |
       | SNKRS-1R | sole_color  | Red            |
     And I launched the completeness calculator
-    When I am on the "footwear_product_export" export job page
+    When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
-    And I wait for the "footwear_product_export" job to finish
-    Then exported file of "footwear_product_export" should contain:
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
     """
     sku;categories;color;description-en_US-mobile;enabled;family;groups;heel_color;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;sole_color;sole_fabric;top_view;weather_conditions
     SNKRS-1B;summer_collection;black;;1;sneakers;;;;;"Model 1";50.00;70.00;;;45;;;;

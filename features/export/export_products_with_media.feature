@@ -6,7 +6,7 @@ Feature: Export products with media
 
   Background:
     Given a "footwear" catalog configuration
-    And the following job "footwear_product_export" configuration:
+    And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
     And I am logged in as "Julia"
 
@@ -22,17 +22,17 @@ Feature: Export products with media
       | SNKRS-1C | side_view | %fixtures%/SNKRS-1C-s.png |
       | SNKRS-1C | top_view  | %fixtures%/SNKRS-1C-t.png |
     And I launched the completeness calculator
-    And I am on the "footwear_product_export" export job page
+    And I am on the "csv_footwear_product_export" export job page
     When I launch the export job
-    And I wait for the "footwear_product_export" job to finish
-    Then exported file of "footwear_product_export" should contain:
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
     """
     sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
     SNKRS-1B;summer_collection;black;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
     SNKRS-1R;summer_collection;red;;1;sneakers;;;;"Model 1";50.00;70.00;;files/SNKRS-1R/side_view/SNKRS-1R.png;45;;
     SNKRS-1C;summer_collection;charcoal;;1;sneakers;;;;"Model 1";55.00;75.00;;files/SNKRS-1C/side_view/SNKRS-1C-s.png;45;files/SNKRS-1C/top_view/SNKRS-1C-t.png;
     """
-    And export directory of "footwear_product_export" should contain the following media:
+    And export directory of "csv_footwear_product_export" should contain the following media:
       | files/SNKRS-1R/side_view/SNKRS-1R.png   |
       | files/SNKRS-1C/side_view/SNKRS-1C-s.png |
       | files/SNKRS-1C/top_view/SNKRS-1C-t.png  |
@@ -66,15 +66,15 @@ Feature: Export products with media
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     And I launched the completeness calculator
-    And I am on the "footwear_product_export" export job page
+    And I am on the "csv_footwear_product_export" export job page
     When I launch the export job
-    And I wait for the "footwear_product_export" job to finish
-    Then exported file of "footwear_product_export" should contain:
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
     """
     sku;categories;color;enabled;family;groups;name-en_US;picture;price-EUR;price-USD;size
     FLIPFLOP-1R;summer_collection;red;1;flipflop;;"Model 1";files/FLIPFLOP-1R/picture/akeneo.jpg;50.00;70.00;45
     FLIPFLOP-1C;summer_collection;charcoal;1;flipflop;;"Model 1";;55.00;75.00;45
     FLIPFLOP-1B;summer_collection;black;1;flipflop;;"Model 1";;50.00;70.00;45
     """
-    And export directory of "footwear_product_export" should contain the following media:
+    And export directory of "csv_footwear_product_export" should contain the following media:
       | files/FLIPFLOP-1R/picture/akeneo.jpg |

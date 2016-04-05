@@ -2,7 +2,7 @@ jobs:
     csv_footwear_product_import:
         connector: Akeneo CSV Connector
         alias:     csv_product_import
-        label:     Footwear csv product import
+        label:     CSV Footwear product import
         type:      import
         configuration:
             filePath:           ''
@@ -16,10 +16,10 @@ jobs:
             groupsColumn:       groups
             realTimeVersioning: true
             decimalSeparator:   .
-    footwear_product_export:
+    csv_footwear_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
-        label:     Footwear product export
+        label:     CSV Footwear product export
         type:      export
         configuration:
             channel:    mobile
@@ -27,10 +27,10 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/products.csv
-    footwear_category_import:
+    csv_footwear_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
-        label:     Footwear category import
+        label:     CSV Footwear category import
         type:      import
         configuration:
             uploadAllowed:       true
@@ -41,17 +41,17 @@ jobs:
     csv_footwear_category_export:
         connector: Akeneo CSV Connector
         alias:     csv_category_export
-        label:     Footwear csv category export
+        label:     CSV Footwear category export
         type:      export
         configuration:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/category.csv
-    footwear_association_type_import:
+    csv_footwear_association_type_import:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_import
-        label:     Footwear association type import
+        label:     CSV Footwear association type import
         type:      import
         configuration:
             uploadAllowed: true
@@ -61,7 +61,7 @@ jobs:
     csv_footwear_association_type_export:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_export
-        label:     Footwear csv association type export
+        label:     CSV Footwear association type export
         type:      export
         configuration:
             delimiter:  ;
@@ -71,7 +71,7 @@ jobs:
     csv_footwear_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_import
-        label:     CSV footwear group import
+        label:     CSV Footwear group import
         type:      import
         configuration:
             uploadAllowed: true
@@ -81,35 +81,35 @@ jobs:
     xlsx_footwear_group_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_group_import
-        label:     XLSX footwear group import
+        label:     XLSX Footwear group import
         type:      import
         configuration:
             uploadAllowed: true
             filePath:      /tmp/group.xlsx
-    footwear_group_export:
+    csv_footwear_group_export:
         connector: Akeneo CSV Connector
         alias:     csv_group_export
-        label:     Footwear group export
+        label:     CSV Footwear group export
         type:      export
         configuration:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/group.csv
-    footwear_variant_group_export:
+    csv_footwear_variant_group_export:
         connector: Akeneo CSV Connector
         alias:     csv_variant_group_export
-        label:     Footwear variant group export
+        label:     CSV Footwear variant group export
         type:      export
         configuration:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/variant_group.csv
-    footwear_attribute_import:
+    csv_footwear_attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
-        label:     Footwear attribute import
+        label:     CSV Footwear attribute import
         type:      import
         configuration:
             uploadAllowed: true
@@ -119,7 +119,7 @@ jobs:
     csv_footwear_attribute_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_export
-        label:     Footwear csv attribute export
+        label:     CSV Footwear attribute export
         type:      export
         configuration:
             delimiter:  ;
@@ -129,7 +129,7 @@ jobs:
     csv_footwear_option_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_import
-        label:     Footwear csv option import
+        label:     CSV Footwear option import
         type:      import
         configuration:
             uploadAllowed: true
@@ -139,7 +139,7 @@ jobs:
     csv_footwear_option_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_export
-        label:     Footwear csv option export
+        label:     CSV Footwear option export
         type:      export
         configuration:
             delimiter:  ;
@@ -149,7 +149,7 @@ jobs:
     csv_footwear_family_export:
         connector: Akeneo CSV Connector
         alias:     csv_family_export
-        label:     Footwear csv family export
+        label:     CSV Footwear family export
         type:      export
         configuration:
             delimiter:  ;
@@ -159,7 +159,7 @@ jobs:
     csv_footwear_variant_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_variant_group_import
-        label:     CSV footwear variant group import
+        label:     CSV Footwear variant group import
         type:      import
         configuration:
             uploadAllowed: true
@@ -175,10 +175,10 @@ jobs:
         configuration:
             uploadAllowed: true
             filePath:      /tmp/variant_group.xlsx
-    footwear_family_import:
+    csv_footwear_family_import:
         connector: Akeneo CSV Connector
         alias:     csv_family_import
-        label:     Footwear family import
+        label:     CSV Footwear family import
         type:      import
         configuration:
             uploadAllowed: true
@@ -257,7 +257,7 @@ jobs:
     xlsx_footwear_family_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_family_export
-        label:     Footwear xlsx family export
+        label:     XLSX Footwear family export
         type:      export
         configuration:
             withHeader: true
@@ -265,7 +265,7 @@ jobs:
     xlsx_footwear_category_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_category_export
-        label:     Footwear xlsx category export
+        label:     XLSX Footwear category export
         type:      export
         configuration:
             withHeader: true
@@ -273,7 +273,7 @@ jobs:
     xlsx_footwear_attribute_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_attribute_export
-        label:     Footwear xlsx attribute export
+        label:     XLSX Footwear attribute export
         type:      export
         configuration:
             withHeader: true
@@ -281,7 +281,7 @@ jobs:
     xlsx_footwear_option_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_attribute_option_export
-        label:     Footwear xlsx option export
+        label:     XLSX Footwear option export
         type:      export
         configuration:
             withHeader: true
@@ -289,7 +289,7 @@ jobs:
     xlsx_footwear_association_type_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_association_type_export
-        label:     Footwear xlsx association type export
+        label:     XLSX Footwear association type export
         type:      export
         configuration:
             withHeader: true

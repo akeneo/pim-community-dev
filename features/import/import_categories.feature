@@ -16,11 +16,11 @@ Feature: Import categories
       hard_drives;laptops;Hard drives
       pc;computers;PC
       """
-    And the following job "footwear_category_import" configuration:
+    And the following job "csv_footwear_category_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_category_import" import job page
+    When I am on the "csv_footwear_category_import" import job page
     And I launch the import job
-    And I wait for the "footwear_category_import" job to finish
+    And I wait for the "csv_footwear_category_import" job to finish
     Then there should be the following categories:
       | code        | label       | parent    |
       | computers   | Computers   |           |
@@ -42,11 +42,11 @@ Feature: Import categories
       printed_tshirts;tshirts;Printed T-shirts
       pc;computers;PC
       """
-    And the following job "footwear_category_import" configuration:
+    And the following job "csv_footwear_category_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_category_import" import job page
+    When I am on the "csv_footwear_category_import" import job page
     And I launch the import job
-    And I wait for the "footwear_category_import" job to finish
+    And I wait for the "csv_footwear_category_import" job to finish
     Then I should see "The parent category \"clothes\" does not exist"
     And I should see "The parent category \"clothes\" does not exist"
     And there should be the following categories:
@@ -67,9 +67,9 @@ Feature: Import categories
       code;parent;label-en_US
       ;;label US
       """
-    And the following job "footwear_category_import" configuration:
+    And the following job "csv_footwear_category_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_category_import" import job page
+    When I am on the "csv_footwear_category_import" import job page
     And I launch the import job
-    And I wait for the "footwear_category_import" job to finish
+    And I wait for the "csv_footwear_category_import" job to finish
     And I should see "Field \"code\" must be filled"
