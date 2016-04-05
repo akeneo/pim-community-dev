@@ -64,22 +64,6 @@ class Job implements JobInterface
     }
 
     /**
-     * Set the name property
-     *
-     * @deprecated will be removed in 1.6
-     *
-     * @param string $name
-     *
-     * @return Job
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
      * Set the event dispatcher
      *
      * @param EventDispatcherInterface $eventDispatcher

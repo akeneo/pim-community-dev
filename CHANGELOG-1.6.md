@@ -160,3 +160,5 @@
 - Remove class `Pim\Component\Connector\Factory\JobConfigurationFactory`
 - Remove class `Pim\Component\Connector\Model\JobConfiguration`
 - Remove class `Pim\Component\Connector\Model\JobConfigurationInterface`
+- Remove methods `setConfig` and `getConfig` from `Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface`
+- Remove deprecated method `setName` from `Akeneo\Component\Batch\Job\Job`

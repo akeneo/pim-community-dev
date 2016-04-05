@@ -23,12 +23,6 @@ class JobSpec extends ObjectBehavior
         $this->getName()->shouldReturn('myname');
     }
 
-    function it_changes_its_name()
-    {
-        $this->setName('mynewname');
-        $this->getName()->shouldReturn('mynewname');
-    }
-
     function it_sets_event_dispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->setEventDispatcher($eventDispatcher)->shouldReturn($this);
