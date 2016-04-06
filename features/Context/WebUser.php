@@ -633,11 +633,17 @@ class WebUser extends RawMinkContext
      */
     public function theProductFieldValueShouldBe($inputLabel, $expectedValue = '')
     {
-        $inputValue = $this->spin(function () use ($inputLabel, $expectedValue) {
-            return $this->getCurrentPage()
-                ->getElement('Attribute inputs')
-                ->getInputValue($inputLabel, $expectedValue);
-        });
+        try {
+            $inputValue = $this->spin(function () use ($inputLabel, $expectedValue) {
+                return $this->getCurrentPage()
+                    ->getElement('Attribute inputs')
+                    ->getInputValue($inputLabel, $expectedValue);
+            }, sprintf('Cannot find value for label "%s"', $inputLabel));
+        } catch (TimeoutException $e) {
+            $this->getCurrentPage()->compareFieldValue($inputLabel, $expectedValue);
+
+            return;
+        }
 
         if ($expectedValue != $inputValue) {
             throw $this->createExpectationException(
