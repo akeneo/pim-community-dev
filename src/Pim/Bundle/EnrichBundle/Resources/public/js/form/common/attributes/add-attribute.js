@@ -11,11 +11,12 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'pim/form',
         'pim/attribute-manager',
-        'text!pim/template/product/tab/attribute/add-attribute',
-        'pim/attribute/add-attribute-line',
-        'pim/attribute/add-attribute-footer',
+        'text!pim/template/form/attribute/add-attribute',
+        'pim/common/add-attribute-line',
+        'pim/common/add-attribute-footer',
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/formatter/choices/base',
@@ -25,6 +26,7 @@ define(
     function (
         $,
         _,
+        __,
         BaseForm,
         AttributeManager,
         template,
@@ -40,7 +42,7 @@ define(
             tagName: 'div',
             className: 'add-attribute',
             template: _.template(template),
-            defaultOptions: {},
+            config: {},
             resultsPerPage: 20,
             selection: [],
             attributeViews: [],
@@ -50,17 +52,26 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function () {
-                this.defaultOptions = {
-                    placeholder: _.__('pim_enrich.form.product.tab.attributes.btn.add_attributes'),
-                    title: _.__('pim_enrich.form.product.tab.attributes.info.search_attributes'),
-                    buttonTitle: _.__('pim_enrich.form.product.tab.attributes.btn.add'),
-                    emptyText: _.__('pim_enrich.form.product.tab.attributes.info.no_available_attributes'),
-                    classes: 'pim-add-attributes-multiselect',
-                    minimumInputLength: 0,
-                    dropdownCssClass: 'add-attribute',
-                    closeOnSelect: false
-                };
+            initialize: function (meta) {
+                this.config = _.extend({}, {
+                    select2: {
+                        placeholder: 'pim_enrich.form.common.tab.attributes.btn.add_attributes',
+                        title: 'pim_enrich.form.common.tab.attributes.info.search_attributes',
+                        buttonTitle: 'pim_enrich.form.common.tab.attributes.btn.add',
+                        emptyText: 'pim_enrich.form.common.tab.attributes.info.no_available_attributes',
+                        classes: 'pim-add-attributes-multiselect',
+                        minimumInputLength: 0,
+                        dropdownCssClass: 'add-attribute',
+                        closeOnSelect: false
+                    },
+                    resultsPerPage: 20,
+                    searchParameters: {}
+                }, meta.config);
+
+                this.config.select2.placeholder = __(this.config.select2.placeholder)
+                this.config.select2.title       = __(this.config.select2.placeholder)
+                this.config.select2.buttonTitle = __(this.config.select2.placeholder)
+                this.config.select2.emptyText   = __(this.config.select2.placeholder)
             },
 
             /**
@@ -110,7 +121,7 @@ define(
                     /**
                      * The query function called by select2 when searching for attributes.
                      *
-                     * We prepare the query (ask for server to exlude product attributes), and
+                     * We prepare the query (ask for server to exlude already added attributes), and
                      * handles its response with ChoicesFormatter (for i18n label translation)
                      */
                     query: function (options) {
@@ -122,9 +133,9 @@ define(
                             }
                             var searchParameters = this.getSelectSearchParameters(options.term, page);
 
-                            AttributeManager.getAttributesForProduct(this.getFormData())
-                                .then(function (productAttributes) {
-                                    searchParameters.options.excluded_identifiers = productAttributes;
+                            AttributeManager.getAttributes(this.getFormData())
+                                .then(function (excludeAttributes) {
+                                    searchParameters.options.excluded_identifiers = excludeAttributes;
 
                                     return FetcherRegistry.getFetcher('attribute').search(searchParameters);
                                 })
@@ -151,7 +162,7 @@ define(
                     }.bind(this)
                 };
 
-                opts = $.extend(true, this.defaultOptions, opts);
+                opts = $.extend(true, this.config.select2, opts);
                 $select = initSelect2.init($select, opts);
 
                 // Close & destroy select2 DOM on change page via hash-navigation
@@ -187,7 +198,7 @@ define(
                 var $menu = this.$('.select2-drop');
 
                 this.footerView = new AttributeFooter({
-                    buttonTitle: this.defaultOptions.buttonTitle
+                    buttonTitle: this.config.select2.buttonTitle
                 });
 
                 this.footerView.on('add-attributes', function () {
@@ -201,7 +212,7 @@ define(
             },
 
             /**
-             * Add the saved attributes selection to the product
+             * Trigger an event to expose the selected attributes
              */
             addAttributes: function () {
                 this.trigger('add-attribute:add', { codes: this.selection });
@@ -223,14 +234,14 @@ define(
              * @return {Object}
              */
             getSelectSearchParameters: function (term, page) {
-                return {
+                return $.extend(true, {}, this.config.searchParameters, {
                     search: term,
                     options: {
                         limit: this.resultsPerPage,
                         page: page,
                         locale: UserContext.get('catalogLocale')
                     }
-                };
+                });
             }
         });
     }

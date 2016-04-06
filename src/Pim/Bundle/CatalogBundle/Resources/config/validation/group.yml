@@ -29,3 +29,9 @@ Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
         label:
             - Length:
                 max: 100
+
+Pim\Bundle\CatalogBundle\Entity\ProductTemplate:
+    getters:
+        values:
+            - Symfony\Component\Validator\Constraints\Valid:
+                traverse: true

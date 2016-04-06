@@ -354,10 +354,9 @@ define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro
 
                 this.collection.on('remove', this._onRemove, this);
 
-                var self = this;
                 this.collection.on('change', function (model) {
-                    self.$el.trigger('datagrid:change:' + self.name, model);
-                });
+                    this.$el.trigger('datagrid:change:' + this.name, model);
+                }.bind(this));
             },
 
             /**

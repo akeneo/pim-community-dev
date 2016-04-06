@@ -8,7 +8,7 @@ define([
         'routing',
         'pim/attribute-manager',
         'pim/fetcher-registry',
-        'pim/product-edit-form/cache-invalidator'
+        'pim/cache-invalidator'
     ], function (
         $,
         _,
@@ -57,7 +57,7 @@ define([
                 });
             },
             getValues: function (product) {
-                return AttributeManager.getAttributesForProduct(product).then(function (attributes) {
+                return AttributeManager.getAttributes(product).then(function (attributes) {
                     _.each(attributes, function (attributeCode) {
                         if (!product.values[attributeCode]) {
                             product.values[attributeCode] = [];
@@ -68,7 +68,7 @@ define([
                 });
             },
             doGenerateMissing: function (product) {
-                return AttributeManager.getAttributesForProduct(product)
+                return AttributeManager.getAttributes(product)
                     .then(function (productAttributeCodes) {
                         return $.when(
                             FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(productAttributeCodes),
