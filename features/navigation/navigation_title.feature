@@ -33,8 +33,8 @@ Feature: Well display navigation titles
       | group types                                   | Group types                                         |
       | "RELATED" group type                          | Group types [RELATED] \| Edit                       |
       | exports                                       | Export profiles management                          |
-      | "csv_footwear_product_export" export job      | Export profiles CSV Footwear product export \| Show |
-      | "csv_footwear_product_export" export job edit | Export profiles CSV Footwear product export \| Edit |
+      | "csv_footwear_product_export" export job      | Export profiles CSV footwear product export \| Show |
+      | "csv_footwear_product_export" export job edit | Export profiles CSV footwear product export \| Edit |
       | imports                                       | Import profiles management                          |
       | "csv_footwear_product_import" import job      | Import profiles CSV footwear product import \| Show |
       | "csv_footwear_product_import" import job edit | Import profiles CSV footwear product import \| Edit |

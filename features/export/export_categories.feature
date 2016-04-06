@@ -149,7 +149,7 @@ Feature: Export categories
       | winter_collection |
       | winter_boots      |
 
-  Scenario: Successfully export large number of categories with a correct written number at the end of the export in XLSX
+  Scenario: Successfully export a hundred categories with a correct written number at the end of the export in XLSX
     Given the "footwear" catalog configuration
     And the following category:
       | code    | label-en_US | parent            |
