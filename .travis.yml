@@ -1,10 +1,6 @@
 language: php
 php:
-    - "5.4"
-    - "5.5"
-    - "5.6"
     - "7.0"
-    - "hhvm"
 
 # Allow to use container infrastructure
 sudo: false
@@ -29,15 +25,10 @@ install:
     - composer update --prefer-dist --no-interaction
     - ./app/console oro:requirejs:generate-config
     - ./app/console assets:install
-    - npm install -g grunt-cli
-    - npm install
-    - curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
 
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
     - ./phpspec-fix
-    - php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php
-    - grunt travis
 
 notifications:
   slack: akeneo:fDZaQeRRj1gVtXCW3f2kQAxo
