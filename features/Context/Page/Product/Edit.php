@@ -984,4 +984,14 @@ class Edit extends ProductEditForm
     {
         $this->getElement('Add attributes button')->addAvailableAttributes($attributes);
     }
+
+    /**
+     * @param string $field
+     *
+     * @return NodeElement
+     */
+    public function getRemoveLinkFor($field)
+    {
+        return $this->getElement('Attribute inputs')->getRemoveLinkFor($field);
+    }
 }
