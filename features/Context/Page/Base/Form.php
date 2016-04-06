@@ -41,7 +41,7 @@ class Form extends Base
                 'Available attributes list'       => ['css' => '.pimmultiselect .ui-multiselect-checkboxes'],
                 'Available attributes search'     => ['css' => '.pimmultiselect input[type="search"]'],
                 'Available attributes add button' => ['css' => '.pimmultiselect a.btn:contains("Add")'],
-                'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid'],
+                'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid,.tab-container .history'],
                 'Save'                            => ['css' => 'button.btn-submit'],
                 'Panel sidebar'                   => [
                     'css'        => '.edit-form > .content',
