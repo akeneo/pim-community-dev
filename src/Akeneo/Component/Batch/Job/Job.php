@@ -43,13 +43,18 @@ class Job implements JobInterface
     protected $editTemplate;
 
     /**
-     * Convenience constructor to immediately add name (which is mandatory)
-     *
-     * @param string $name
+     * @param string                   $name
+     * @param JobRepositoryInterface   $jobRepository
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct($name)
-    {
-        $this->name   = $name;
+    public function __construct(
+        $name,
+        JobRepositoryInterface $jobRepository,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->name = $name;
+        $this->jobRepository = $jobRepository;
+        $this->eventDispatcher = $eventDispatcher;
         $this->steps  = array();
     }
 
@@ -61,36 +66,6 @@ class Job implements JobInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set the name property
-     *
-     * @deprecated will be removed in 1.6
-     *
-     * @param string $name
-     *
-     * @return Job
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Set the event dispatcher
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @return Job
-     */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-
-        return $this;
     }
 
     /**
@@ -161,18 +136,6 @@ class Job implements JobInterface
     public function addStep($stepName, StepInterface $step)
     {
         $this->steps[] = $step;
-    }
-
-    /**
-     * Public setter for the {@link JobRepositoryInterface} that is needed to manage the
-     * state of the batch meta domain (jobs, steps, executions) during the life
-     * of a job.
-     *
-     * @param JobRepositoryInterface $jobRepository
-     */
-    public function setJobRepository(JobRepositoryInterface $jobRepository)
-    {
-        $this->jobRepository = $jobRepository;
     }
 
     /**

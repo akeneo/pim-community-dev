@@ -15,6 +15,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class JobFactory
 {
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /* @var JobRepositoryInterface */
     protected $jobRepository;
 
@@ -32,15 +35,13 @@ class JobFactory
     /**
      * Create a job object
      *
-     * @param string $title Title of the Job Object
+     * @param string $name Name of the Job Object
      *
      * @return Job $job The created job
      */
-    public function createJob($title)
+    public function createJob($name)
     {
-        $job = new Job($title);
-        $job->setJobRepository($this->jobRepository);
-        $job->setEventDispatcher($this->eventDispatcher);
+        $job = new Job($name, $this->jobRepository, $this->eventDispatcher);
 
         return $job;
     }
