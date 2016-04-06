@@ -6,6 +6,7 @@ use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\TimeoutException;
 
 /**
  * Product Edit Form
@@ -34,8 +35,28 @@ class ProductEditForm extends Form
                 'Available attributes list'       => ['css' => '.add-attribute .select2-results'],
                 'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
                 'Available attributes add button' => ['css' => '.add-attribute .ui-multiselect-footer button'],
+                'Attribute inputs' => [
+                    'css' => '.tab-pane.product-values',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\InputDecorator'
+                    ]
+                ],
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fillField($field, $value, Element $element = null)
+    {
+        try {
+            $this->getElement('Attribute inputs')->fillField($field, $value, $element);
+        } catch (TimeoutException $e) {
+            parent::fillField($field, $value, $element);
+        } catch (ElementNotFoundException $e) {
+            parent::fillField($field, $value, $element);
+        }
     }
 
     /**

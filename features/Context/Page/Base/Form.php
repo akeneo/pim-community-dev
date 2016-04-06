@@ -45,7 +45,13 @@ class Form extends Base
                 'Panel sidebar'                   => [
                     'css'        => '.edit-form > .content',
                     'decorators' => ['Pim\Behat\Decorator\PageDecorator\PanelableDecorator']
-                ]
+                ],
+                'Add attributes button' => [
+                    'css' => '.add-attribute',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\Attribute\AttributeAdderDecorator'
+                    ]
+                ],
             ],
             $this->elements
         );
@@ -270,29 +276,7 @@ class Form extends Base
      */
     public function addAvailableAttributes(array $attributes = [])
     {
-        $this->spin(function () {
-            return $this->find('css', $this->elements['Available attributes button']['css']);
-        }, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
-
-        $list = $this->getElement('Available attributes list');
-        if (!$list->isVisible()) {
-            $this->openAvailableAttributesMenu();
-        }
-
-        $search = $this->getElement('Available attributes search');
-        foreach ($attributes as $attributeLabel) {
-            $search->setValue($attributeLabel);
-            $label = $this->spin(
-                function () use ($list, $attributeLabel) {
-                    return $list->find('css', sprintf('li label:contains("%s")', $attributeLabel));
-                },
-                sprintf('Could not find available attribute "%s".', $attributeLabel)
-            );
-
-            $label->click();
-        }
-
-        $this->getElement('Available attributes add button')->press();
+        $this->getElement('Add attributes button')->addAvailableAttributes($attributes);
     }
 
     /**
