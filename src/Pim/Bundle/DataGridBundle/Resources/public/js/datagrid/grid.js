@@ -292,6 +292,7 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                         }
                     });
 
+                    mediator.off('datagrid:doRefresh:' + grid.name);
                     mediator.on('datagrid:doRefresh:' + grid.name, function () {
                         grid.refreshAction.execute();
                     });

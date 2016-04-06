@@ -4,6 +4,7 @@
 
 - PIM-5725: Fix reference data name of the attribute in case this attribute is not a reference data
 - PIM-5699: Fix 'is equal to' operator in export / import history grid filter
+- PIM-5650: Fix events binding on PEF grid refresh.
 
 # 1.4.22 (2016-03-23)
 
