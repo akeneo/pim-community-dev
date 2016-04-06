@@ -84,8 +84,9 @@ define(
                                 search: term,
                                 options: {
                                     limit: 20,
-                                    page: page
-                                }
+                                    page: page,
+                                    locale: UserContext.get('catalogLocale')
+                                },
                             };
                         },
                         results: function (families) {
