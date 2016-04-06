@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-5697: Fix import form when a file extension is not allowed
 - PIM-5695: Do not format price with currency if data is null
 - PIM-5643: Fix default system locale
 
