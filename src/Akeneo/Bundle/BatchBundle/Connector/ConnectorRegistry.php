@@ -2,11 +2,11 @@
 
 namespace Akeneo\Bundle\BatchBundle\Connector;
 
-use Akeneo\Bundle\BatchBundle\Step\StepFactory;
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobFactory;
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Batch\Step\StepFactory;
 
 /**
  * Aims to register all connectors
