@@ -892,9 +892,7 @@ class WebUser extends RawMinkContext
      */
     public function iAddAvailableAttributes($attributes)
     {
-        $this->getCurrentPage()
-            ->getElement('Add attributes button')
-            ->addAvailableAttributes($this->listToArray($attributes));
+        $this->getCurrentPage()->addAvailableAttributes($this->listToArray($attributes));
         $this->wait();
     }
 
@@ -1011,9 +1009,7 @@ class WebUser extends RawMinkContext
      */
     public function iRemoveTheAttribute($field)
     {
-        $removeLink = $this->getCurrentPage()
-            ->getElement('Attribute inputs')
-            ->getRemoveLinkFor($field);
+        $removeLink = $this->getCurrentPage()->getRemoveLinkFor($field);
 
         if (null === $removeLink) {
             throw $this->createExpectationException(

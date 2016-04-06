@@ -7,6 +7,7 @@ use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\TimeoutException;
 
 /**
  * Basic form page
@@ -269,6 +270,11 @@ class Form extends Base
         $this->getElement('Available attributes button')->click();
     }
 
+    public function iRemoveTheAttribute($field)
+    {
+        $this->getElement('Attribute inputs')->getRemoveLinkFor($field);
+    }
+
     /**
      * Add available attributes
      *
@@ -276,7 +282,33 @@ class Form extends Base
      */
     public function addAvailableAttributes(array $attributes = [])
     {
-        $this->getElement('Add attributes button')->addAvailableAttributes($attributes);
+        try {
+            $this->getElement('Add attributes button')->addAvailableAttributes($attributes);
+        } catch (TimeoutException $e) {
+            $this->spin(function () {
+                return $this->find('css', $this->elements['Available attributes button']['css']);
+            }, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
+
+            $list = $this->getElement('Available attributes list');
+            if (!$list->isVisible()) {
+                $this->openAvailableAttributesMenu();
+            }
+
+            $search = $this->getElement('Available attributes search');
+            foreach ($attributes as $attributeLabel) {
+                $search->setValue($attributeLabel);
+                $label = $this->spin(
+                    function () use ($list, $attributeLabel) {
+                        return $list->find('css', sprintf('li label:contains("%s")', $attributeLabel));
+                    },
+                    sprintf('Could not find available attribute "%s".', $attributeLabel)
+                );
+
+                $label->click();
+            }
+
+            $this->getElement('Available attributes add button')->press();
+        }
     }
 
     /**
