@@ -2,6 +2,7 @@
 
 ## Improvements
 - Update akeneo/measure-bundle dependency to version 0.4.1.
+- Add doctrine migration to fix product and job instance history issues
 
 ## Bug fixes
 - PIM-5656: Category Tree does not load when 0 category selected
