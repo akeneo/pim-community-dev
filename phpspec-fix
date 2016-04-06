@@ -4,7 +4,7 @@
 
 touch app/config/parameters_test.yml
 
-bin/phpspec run $@ spec/Pim/Bundle/LocalizationBundle
+bin/phpspec run $@ spec/Pim/Bundle/NotificationBundle
 
 PHPSPEC_CODE=$?
 
