@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Job;
+namespace Akeneo\Component\Batch\Job;
 
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
@@ -15,6 +15,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class JobFactory
 {
+    /* @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /* @var JobRepositoryInterface */
     protected $jobRepository;
 
