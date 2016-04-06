@@ -54,7 +54,7 @@ class Job implements JobInterface
         $this->name = $name;
         $this->jobRepository = $jobRepository;
         $this->eventDispatcher = $eventDispatcher;
-        $this->steps  = array();
+        $this->steps  = [];
     }
 
     /**
@@ -70,7 +70,7 @@ class Job implements JobInterface
     /**
      * Return all the steps
      *
-     * @return array steps
+     * @return StepInterface[] steps
      */
     public function getSteps()
     {
@@ -81,7 +81,7 @@ class Job implements JobInterface
      * Public setter for the steps in this job. Overrides any calls to
      * addStep(Step).
      *
-     * @param array $steps the steps to execute
+     * @param StepInterface[] $steps the steps to execute
      *
      * @return Job
      */
@@ -404,8 +404,6 @@ class Job implements JobInterface
      */
     private function getDefaultExitStatusForFailure(\Exception $e)
     {
-        $exitStatus = new ExitStatus();
-
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
             $exitStatus->addExitDescription(get_class(new JobInterruptedException()));
