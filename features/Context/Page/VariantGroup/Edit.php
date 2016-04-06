@@ -44,10 +44,10 @@ class Edit extends Form
                         'Pim\Behat\Decorator\Attribute\AttributeAdderDecorator'
                     ]
                 ],
-                'Attribute inputs' => [
+                'Attributes form' => [
                     'css' => '.tab-pane.product-values',
                     'decorators' => [
-                        'Pim\Behat\Decorator\InputDecorator'
+                        'Pim\Behat\Decorator\FormDecorator'
                     ]
                 ],
                 'Navbar buttons' => [
@@ -70,7 +70,7 @@ class Edit extends Form
     public function findField($name)
     {
         try {
-            return $this->getElement('Attribute inputs')->findField($name);
+            return $this->getElement('Attributes form')->findAttribute($name);
         } catch (TimeoutException $e) {
             return $this->deprecatedFindField($name);
         } catch (ElementNotFoundException $e) {
@@ -100,7 +100,7 @@ class Edit extends Form
     public function fillField($field, $value, Element $element = null)
     {
         try {
-            $this->getElement('Attribute inputs')->fillField($field, $value, $element);
+            $this->getElement('Attributes form')->fillAttribute($field, $value, $element);
         } catch (TimeoutException $e) {
             parent::fillField($field, $value, $element);
         } catch (ElementNotFoundException $e) {
@@ -115,7 +115,7 @@ class Edit extends Form
      */
     public function getRemoveLinkFor($field)
     {
-        return $this->getElement('Attribute inputs')->getRemoveLinkFor($field);
+        return $this->getElement('Attributes form')->getRemoveLinkFor($field);
     }
 
     /**
@@ -123,7 +123,14 @@ class Edit extends Form
      */
     public function save()
     {
-        $this->getElement('Navbar buttons')->asynchronousSave('Save');
+        $this->getElement('Navbar buttons')->clickButton('Save');
+
+        $this->spin(function () {
+            return null === $this->getSession()->getPage()->find(
+                'css',
+                '*:not(.hash-loading-mask):not(.grid-container):not(.loading-mask) > .loading-mask'
+            );
+        });
     }
 
     /**
@@ -133,7 +140,7 @@ class Edit extends Form
      */
     public function getInputValue($inputLabel)
     {
-        return $this->getElement('Attribute inputs')->getInputValue($inputLabel);
+        return $this->getElement('Attributes form')->getInputValue($inputLabel);
     }
 
     /**
@@ -166,6 +173,9 @@ class Edit extends Form
      * @param string $name
      *
      * @return NodeElement|mixed|null
+     *
+     * @deprecated Please use $this->getElement('Attributes form')->findAttribute($name); if the field
+     *             is inside an Attribute Form. This method is used for old forms.
      */
     protected function deprecatedFindField($name)
     {

@@ -23,8 +23,6 @@ Feature: Remove an attribute from a variant group
     Then I should see the Comment field
     And the field Comment should be disabled
     When I am on the "caterpillar_boots" variant group page
-    #TODO This line should not be here, I should be on the Attributes tab.
-    And I visit the "Attributes" tab
     And I remove the "Comment" attribute
     And I confirm the deletion
     Then I should see the flash message "Attribute successfully removed from the variant group"

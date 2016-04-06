@@ -639,7 +639,7 @@ class WebUser extends RawMinkContext
                 ->getInputValue($inputLabel, $expectedValue);
         });
 
-        if ($expectedValue != $inputValue) {
+        if ($expectedValue !== $inputValue) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expected variant group input "%s" to contain "%s", but got "%s".',
@@ -872,7 +872,7 @@ class WebUser extends RawMinkContext
                 ->getElement('Add attributes button')
                 ->findAvailableAttributeInGroup($attribute, $group);
 
-            if (!$shouldNotSee && !$element || $shouldNotSee && $element) {
+            if (!$shouldNotSee && null === $element || $shouldNotSee && $element) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Expecting %sto see attribute "%s" under group "%s"',

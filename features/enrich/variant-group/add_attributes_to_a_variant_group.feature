@@ -66,7 +66,7 @@ Feature: Add attributes to a variant group
       | boot | caterpillar_boots | black | 39   |
     And I am on the "caterpillar_boots" variant group page
     When I visit the "Attributes" tab
-    And I add available attribute Name, Description
+    And I add available attributes Name, Description
     And I save the variant group
     Then I am on the attributes page
     When I filter by "Label" with value "Name"

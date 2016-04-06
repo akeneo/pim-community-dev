@@ -8,6 +8,8 @@ use Context\Spin\TimeoutException;
 use Pim\Behat\Decorator\ElementDecorator;
 
 /**
+ * Decorator for NavBar buttons, ie: Save, Delete, Publish...
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -17,37 +19,28 @@ class ButtonDecorator extends ElementDecorator
     use SpinCapableTrait;
 
     protected $selectors = [
-        'Button' => ['css' => 'button:contains("%s")'],
+        'Button' => 'button:contains("%s")',
     ];
 
     /**
+     * Click the button in the NavBar with the given $label
+     *
      * @param string $label
      */
     public function clickButton($label)
     {
         $button = $this->getButton($label);
+
+        $this->spin(function () use ($button) {
+            return $button->isVisible();
+        }, 'Waiting for save button to be visible');
+
         $button->press();
     }
 
     /**
-     * @param string $label
+     * Get the button in the NavBar with the given $label
      *
-     * @throws TimeoutException
-     */
-    public function asynchronousSave($label)
-    {
-        $button = $this->getButton($label);
-        $button->press();
-
-        $this->spin(function () {
-            return null === $this->getSession()->getPage()->find(
-                'css',
-                '*:not(.hash-loading-mask):not(.grid-container):not(.loading-mask) > .loading-mask'
-            );
-        });
-    }
-
-    /**
      * @param string $label
      *
      * @return Element
@@ -56,11 +49,11 @@ class ButtonDecorator extends ElementDecorator
      */
     protected function getButton($label)
     {
-        $selector = sprintf($this->selectors['Button']['css'], $label);
+        $selector = sprintf($this->selectors['Button'], $label);
 
         $button = $this->spin(function () use ($label, $selector) {
             return $this->find('css', $selector);
-        }, sprintf('Cannot find the button with label %s (%s)', $label, $selector));
+        }, sprintf('Cannot find the button with label %s', $label));
 
         return $button;
     }

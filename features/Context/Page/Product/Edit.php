@@ -88,7 +88,7 @@ class Edit extends ProductEditForm
                 'Attribute inputs' => [
                     'css' => '.tab-pane.product-values',
                     'decorators' => [
-                        'Pim\Behat\Decorator\InputDecorator'
+                        'Pim\Behat\Decorator\FormDecorator'
                     ]
                 ],
             ]
@@ -100,16 +100,10 @@ class Edit extends ProductEditForm
      */
     public function save()
     {
-        $element = $this->getElement('Save');
-
-        $this->spin(function () use ($element) {
-            return $element->isVisible();
-        }, "Waiting for save button to be visible");
-
-        $element->click();
+        $this->getElement('Navbar buttons')->clickButton('Save');
 
         $this->spin(function () {
-            return null === $this->find(
+            return null === $this->getSession()->getPage()->find(
                 'css',
                 '*:not(.hash-loading-mask):not(.grid-container):not(.loading-mask) > .loading-mask'
             );
@@ -951,7 +945,7 @@ class Edit extends ProductEditForm
     public function fillField($field, $value, Element $element = null)
     {
         try {
-            $this->getElement('Attribute inputs')->fillField($field, $value, $element);
+            $this->getElement('Attribute inputs')->fillAttribute($field, $value, $element);
         } catch (TimeoutException $e) {
             parent::fillField($field, $value, $element);
         } catch (ElementNotFoundException $e) {
@@ -969,7 +963,7 @@ class Edit extends ProductEditForm
     public function findField($name)
     {
         try {
-            return $this->getElement('Attribute inputs')->findField($name);
+            return $this->getElement('Attribute inputs')->findAttribute($name);
         } catch (TimeoutException $e) {
             return parent::findField($name);
         } catch (ElementNotFoundException $e) {
