@@ -4,7 +4,7 @@
 
 touch app/config/parameters_test.yml
 
-bin/phpspec run $@ spec/Pim/Bundle/CatalogBundle
+bin/phpspec run $@ spec/Pim/Bundle/ImportExportBundle
 
 PHPSPEC_CODE=$?
 
