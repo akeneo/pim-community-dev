@@ -593,6 +593,7 @@ Feature: Read a single product by applying rules
       | weather_conditions       | Dry, Wet, Hot, Cold |
     And the category of "my-jacket" should be "jackets, tshirts"
 
+  @javascript
   Scenario: Successfully execute a rule with an "equals" condition
     Given the following products:
       | sku       | family  |
