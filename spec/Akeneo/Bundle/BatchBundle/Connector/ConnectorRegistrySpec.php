@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Bundle\BatchBundle\Connector;
 
-use Akeneo\Bundle\BatchBundle\Job\JobFactory;
-use Akeneo\Bundle\BatchBundle\Step\StepFactory;
+use Akeneo\Component\Batch\Job\JobFactory;
+use Akeneo\Component\Batch\Step\StepFactory;
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Step\ItemStep;

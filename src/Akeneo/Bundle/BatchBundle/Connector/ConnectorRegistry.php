@@ -2,8 +2,8 @@
 
 namespace Akeneo\Bundle\BatchBundle\Connector;
 
-use Akeneo\Bundle\BatchBundle\Job\JobFactory;
-use Akeneo\Bundle\BatchBundle\Step\StepFactory;
+use Akeneo\Component\Batch\Job\JobFactory;
+use Akeneo\Component\Batch\Step\StepFactory;
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -17,12 +17,16 @@ use Akeneo\Component\Batch\Model\JobInstance;
  */
 class ConnectorRegistry
 {
-    protected $jobs = array();
+    /** @var array */
+    protected $jobs = [];
+
+    /** @var JobFactory */
     protected $jobFactory;
+
+    /** @var StepFactory */
     protected $stepFactory;
 
     /**
-     * Constructor
      * @param JobFactory  $jobFactory
      * @param StepFactory $stepFactory
      */
@@ -56,11 +60,10 @@ class ConnectorRegistry
 
     /**
      * Get the list of jobs
+     *
      * @param string $type
      *
      * @return JobInterface[]
-     *
-     * TODO : Rather return an array of array of JobInterface ?
      */
     public function getJobs($type)
     {
@@ -68,7 +71,7 @@ class ConnectorRegistry
     }
 
     /**
-     * Add a step to an existig job (or create it)
+     * Add a step to an existing job (or create it)
      *
      * @param string $jobConnector
      * @param string $jobType

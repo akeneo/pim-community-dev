@@ -5,12 +5,15 @@ namespace spec\Pim\Component\Connector\Step;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Item\CharsetValidator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ValidatorStepSpec extends ObjectBehavior
 {
-    function let()
-    {
-        $this->beConstructedWith('aName');
+    function let(
+        EventDispatcherInterface $dispatcher,
+        JobRepositoryInterface $jobRepository
+    ) {
+        $this->beConstructedWith('aName', $jobRepository, $dispatcher);
     }
 
     function it_is_initializable()
@@ -25,10 +28,9 @@ class ValidatorStepSpec extends ObjectBehavior
     }
 
     function it_is_configurable(
-        JobRepositoryInterface $jobRepository,
+        $jobRepository,
         CharsetValidator $charsetValidator
     ) {
-        $this->setJobRepository($jobRepository);
         $this->setCharsetValidator($charsetValidator);
 
         $this->getJobRepository()->shouldReturn($jobRepository);
