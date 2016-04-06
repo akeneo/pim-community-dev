@@ -9,6 +9,8 @@ use Context\Spin\TimeoutException;
 use Pim\Behat\Decorator\ElementDecorator;
 
 /**
+ * Decorator for the Add Attributes element into forms
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -18,14 +20,16 @@ class AttributeAdderDecorator extends ElementDecorator
     use SpinCapableTrait;
 
     protected $selectors = [
-        'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
-        'Available attributes list'       => ['css' => '.add-attribute .select2-results'],
-        'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
-        'Available attributes add button' => ['css' => '.add-attribute .ui-multiselect-footer button'],
-        'Select2 dropmask'                => ['css' => '.select2-drop-mask']
+        'Available attributes button'     => 'a.select2-choice',
+        'Available attributes list'       => '.select2-results',
+        'Available attributes search'     => '.select2-search input[type="text"]',
+        'Available attributes add button' => '.ui-multiselect-footer button',
+        'Select2 dropmask'                => '.select2-drop-mask',
     ];
 
     /**
+     * In the attribute list, find the attribute with the given $label in the given attribute $group
+     *
      * @param string $label
      * @param string $group
      *
@@ -40,7 +44,7 @@ class AttributeAdderDecorator extends ElementDecorator
 
         $groupLabels = $this->spin(function () use ($list, $group) {
             return $list->findAll('css', sprintf('li .group-label:contains("%s"), li.select2-no-results', $group));
-        }, 'Cannot find element in the attribute list');
+        }, sprintf('Cannot find element "%s" in the attributes list', $label));
 
         // Maybe a "No matches found"
         $firstResult = $groupLabels[0];
@@ -56,13 +60,15 @@ class AttributeAdderDecorator extends ElementDecorator
 
         // Close select2
         $this->getSession()->evaluateScript(
-            sprintf("jQuery('%s').click();", $this->selectors['Select2 dropmask']['css'])
+            sprintf("jQuery('%s').click();", $this->selectors['Select2 dropmask'])
         );
 
         return isset($results[$label]) ? $results[$label] : null;
     }
 
     /**
+     * Add all the $attributes to the form
+     *
      * @param array $attributes
      *
      * @throws TimeoutException
@@ -81,19 +87,21 @@ class AttributeAdderDecorator extends ElementDecorator
                 function () use ($list, $label, $attributeCssSelector) {
                     return $list->find('css', $attributeCssSelector);
                 },
-                sprintf('Could not find available attribute "%s" (%s)', $label, $attributeCssSelector)
+                sprintf('Could not find available attribute "%s"', $label)
             );
 
             $label->click();
         }
 
-        $this->find('css', $this->selectors['Available attributes add button']['css'])->press();
+        $this->find('css', $this->selectors['Available attributes add button'])->press();
 
         // Clean extra select2-drop in the DOM
         $this->getSession()->evaluateScript("jQuery('.select2-drop:hidden').remove();");
     }
 
     /**
+     * Open Select2 to search for attributes
+     *
      * @return Element
      *
      * @throws TimeoutException
@@ -102,9 +110,9 @@ class AttributeAdderDecorator extends ElementDecorator
     {
         $selector = $this->spin(
             function () {
-                return $this->find('css', $this->selectors['Available attributes button']['css']);
+                return $this->find('css', $this->selectors['Available attributes button']);
             },
-            sprintf('Cannot find the attribute selector "%s"', $this->selectors['Available attributes button']['css'])
+            sprintf('Cannot find the attribute selector "%s"', $this->selectors['Available attributes button'])
         );
 
         $selector->click();
@@ -123,13 +131,15 @@ class AttributeAdderDecorator extends ElementDecorator
         $this->getSession()->evaluateScript(
             sprintf(
                 "jQuery('%s').val('%s').trigger('input');",
-                $this->selectors['Available attributes search']['css'],
+                $this->selectors['Available attributes search'],
                 $label
             )
         );
     }
 
     /**
+     * Find the Select2 result list for attributes
+     *
      * @return mixed
      *
      * @throws TimeoutException
@@ -138,9 +148,9 @@ class AttributeAdderDecorator extends ElementDecorator
     {
         $list = $this->spin(
             function () {
-                return $this->find('css', $this->selectors['Available attributes list']['css']);
+                return $this->find('css', $this->selectors['Available attributes list']);
             },
-            sprintf('Cannot find the attribute list element "%s"', $this->selectors['Available attributes list']['css'])
+            sprintf('Cannot find the attribute list element "%s"', $this->selectors['Available attributes list'])
         );
 
         return $list;
