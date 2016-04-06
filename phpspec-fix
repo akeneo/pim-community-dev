@@ -4,7 +4,7 @@
 
 touch app/config/parameters_test.yml
 
-bin/phpspec run $@ spec/Pim/Bundle/WebServiceBundle
+bin/phpspec run $@ spec/Pim/Bundle
 
 PHPSPEC_CODE=$?
 
