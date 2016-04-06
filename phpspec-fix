@@ -4,7 +4,7 @@
 
 touch app/config/parameters_test.yml
 
-bin/phpspec run $@ spec/Pim/Bundle/DataGridBundle
+bin/phpspec run $@ spec/Pim/Bundle/FilterBundle
 
 PHPSPEC_CODE=$?
 
