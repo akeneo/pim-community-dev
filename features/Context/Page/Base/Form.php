@@ -319,14 +319,21 @@ class Form extends Base
      */
     public function findAvailableAttributeInGroup($attribute, $group)
     {
-        return $this->getElement('Available attributes form')->find(
-            'css',
-            sprintf(
-                'optgroup[label="%s"] option:contains("%s")',
-                $group,
-                $attribute
-            )
-        );
+        try {
+            $element = $this->getElement('Add attributes button')
+                ->findAvailableAttributeInGroup($attribute, $group);
+        } catch (TimeoutException $e) {
+            $element = $this->getElement('Available attributes form')->find(
+                'css',
+                sprintf(
+                    'optgroup[label="%s"] option:contains("%s")',
+                    $group,
+                    $attribute
+                )
+            );
+        }
+
+        return $element;
     }
 
     /**
