@@ -40,7 +40,7 @@ class AttributeAdderDecorator extends ElementDecorator
 
         $groupLabels = $this->spin(function () use ($list, $group) {
             return $list->findAll('css', sprintf('li .group-label:contains("%s"), li.select2-no-results', $group));
-        }, 'Cannot find element in the attribute list');
+        }, sprintf('Cannot find element "%s" in the attributes list', $label));
 
         // Maybe a "No matches found"
         $firstResult = $groupLabels[0];
@@ -77,12 +77,9 @@ class AttributeAdderDecorator extends ElementDecorator
 
             $this->searchAttribute($label);
 
-            $label = $this->spin(
-                function () use ($list, $label, $attributeCssSelector) {
-                    return $list->find('css', $attributeCssSelector);
-                },
-                sprintf('Could not find available attribute "%s" (%s)', $label, $attributeCssSelector)
-            );
+            $label = $this->spin(function () use ($list, $label, $attributeCssSelector) {
+                return $list->find('css', $attributeCssSelector);
+            }, sprintf('Could not find available attribute "%s"', $label));
 
             $label->click();
         }

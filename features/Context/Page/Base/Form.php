@@ -271,11 +271,6 @@ class Form extends Base
         $this->getElement('Available attributes button')->click();
     }
 
-    public function iRemoveTheAttribute($field)
-    {
-        $this->getElement('Attribute inputs')->getRemoveLinkFor($field);
-    }
-
     /**
      * Add available attributes
      *
