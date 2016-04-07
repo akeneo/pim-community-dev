@@ -101,7 +101,10 @@ class AddToGroupsSpec extends ObjectBehavior
         ]);
 
         $this->getBatchConfig()->shouldReturn(
-            '{\"filters\":[[\"id\",\"IN\",[\"22\",\"7\"]]],\"actions\":[{\"field\":\"groups\",\"value\":[\"office_room\",\"bedroom\"]}]}'
+            [
+                'filters' => [['id', 'IN', ['22', '7']]],
+                'actions' => [['field' => 'groups', 'value' => ['office_room', 'bedroom']]]
+            ]
         );
     }
 }

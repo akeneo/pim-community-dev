@@ -41,17 +41,19 @@ class SimpleJobLauncher implements JobLauncherInterface
     /**
      * {@inheritdoc}
      */
-    public function launch(JobInstance $jobInstance, UserInterface $user, $rawConfiguration = null)
+    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = [])
     {
         $jobExecution = $this->createJobExecution($jobInstance, $user);
         $executionId  = $jobExecution->getId();
         $pathFinder   = new PhpExecutableFinder();
 
         $emailParameter = '';
-        if (isset($rawConfiguration['send_email']) && method_exists($user, 'getEmail')) {
+        if (isset($configuration['send_email']) && method_exists($user, 'getEmail')) {
             $emailParameter = sprintf('--email="%s"', $user->getEmail());
+            unset($configuration['send_email']);
         }
 
+        $encodedConfiguration = addslashes(json_encode($configuration));
         $cmd = sprintf(
             '%s %s/console akeneo:batch:job --env=%s %s %s %s %s >> %s/logs/batch_execute.log 2>&1',
             $pathFinder->find(),
@@ -60,7 +62,7 @@ class SimpleJobLauncher implements JobLauncherInterface
             $emailParameter,
             $jobInstance->getCode(),
             $executionId,
-            !empty($rawConfiguration) ? sprintf('--config="%s"', $rawConfiguration) : '',
+            !empty($configuration) ? sprintf('--config="%s"', $encodedConfiguration) : '',
             $this->rootDir
         );
 

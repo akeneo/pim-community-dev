@@ -74,7 +74,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
     function it_gets_configuration($userContext, LocaleInterface $locale)
     {
         $locale->getCode()->willReturn('fr_FR');
-        $expected = addslashes(json_encode([
+        $expected = [
             'filters' => null,
             'actions' => [
                 'normalized_values' => '',
@@ -82,7 +82,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
                 'attribute_locale'  => null,
                 'attribute_channel' => null,
             ]
-        ]));
+        ];
 
         $userContext->getUiLocale()->willReturn($locale);
         $this->getBatchConfig()->shouldReturn($expected);

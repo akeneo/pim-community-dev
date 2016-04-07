@@ -20,9 +20,9 @@ interface JobLauncherInterface
      *
      * @param JobInstance   $jobInstance
      * @param UserInterface $user
-     * @param string        $rawConfiguration
+     * @param array         $configuration
      *
      * @return JobExecution
      */
-    public function launch(JobInstance $jobInstance, UserInterface $user, $rawConfiguration = null);
+    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []);
 }
