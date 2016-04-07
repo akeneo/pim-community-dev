@@ -73,6 +73,10 @@ services:
     akeneo_batch.logger.batch_log_handler:
         class: %akeneo_batch.logger.batch_log_handler.class%
         arguments:
+            - 100
+            - true
+            - null
+            - false
             - %kernel.logs_dir%/batch
 
     akeneo_batch.set_job_execution_log_file_subscriber:
