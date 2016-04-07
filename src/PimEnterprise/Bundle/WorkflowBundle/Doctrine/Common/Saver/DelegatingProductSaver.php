@@ -125,11 +125,9 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         }
 
         $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
 
         foreach ($products as $product) {
-            $this->save($product, $itemOptions);
+            $this->save($product, $allOptions);
         }
 
         if (true === $allOptions['flush']) {

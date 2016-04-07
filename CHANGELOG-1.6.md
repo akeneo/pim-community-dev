@@ -9,6 +9,7 @@
 - PIM-5589: introduce a channels, attribute groups, group types, currencies, locale accesses, asset category accesses, product category accesses, attribute group accesses and job profile accesses import using the new import system introduced in v1.4
 - PIM-5645: introduces the new Akeneo XLSX Connector
 - TIP-342: be able to launch mass edit processes without having to previously store a JobConfiguration and only rely on dynamic configuration
+- PIM-5577: The completeness is now calculated every time a product is saved, ie during mass edit, rule execution, product import and on edit/save of variant groups.
 
 ## BC breaks
 
@@ -99,3 +100,4 @@
 - Remove class `Pim\Component\Connector\Factory\JobConfigurationFactory`
 - Remove class `Pim\Component\Connector\Model\JobConfiguration`
 - Remove class `Pim\Component\Connector\Model\JobConfigurationInterface`
+- Removed the `recalculate` and `schedule` option from the `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver` and `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver`

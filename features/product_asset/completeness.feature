@@ -49,6 +49,7 @@ Feature: Display the completeness of a product with assets
     And I check the row "paint"
     And I confirm the asset modification
     And I save the product
+    When I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
       | channel | locale | state   | missing_values            | ratio |

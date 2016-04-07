@@ -83,7 +83,7 @@ class ProductWriterSpec extends ObjectBehavior
         $product2->getId()->willReturn(null);
 
         $this->setStepExecution($stepExecution);
-        $productSaver->saveAll($items, ['recalculate' => false])->shouldBeCalled();
+        $productSaver->saveAll($items)->shouldBeCalled();
         $this->write($items);
     }
 

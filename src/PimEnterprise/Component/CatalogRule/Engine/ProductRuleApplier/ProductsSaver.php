@@ -70,7 +70,7 @@ class ProductsSaver
         $versioningState = $this->versionManager->isRealTimeVersioning();
         $this->versionContext->addContextInfo($savingContext);
         $this->versionManager->setRealTimeVersioning(false);
-        $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => true]);
+        $this->productSaver->saveAll($products);
         $this->versionManager->setRealTimeVersioning($versioningState);
     }
 }
