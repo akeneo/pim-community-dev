@@ -32,7 +32,10 @@ class Form extends Base
                 'Dialog'                          => ['css' => 'div.modal'],
                 'Form tabs'                       => ['css' => '.nav-tabs.form-tabs'],
                 'Associations list'               => ['css' => '.associations-list'],
-                'Active tab'                      => ['css' => '.form-horizontal .tab-pane.active'],
+                'Active tab'                      => [
+                    'css'        => '.form-horizontal .tab-pane.active',
+                    'decorators' => ['Pim\Behat\Decorator\InputDecorator'],
+                ],
                 'Groups'                          => ['css' => '.tab-groups'],
                 'Form Groups'                     => ['css' => '.group-selector'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
@@ -214,33 +217,31 @@ class Form extends Base
      */
     public function findField($name)
     {
-        if ($tab = $this->find('css', $this->elements['Active tab']['css'])) {
-            return $tab->findField($name);
+        try {
+            return $this->getElement('Active tab')->findField($name);
+        } catch (TimeoutException $exception) {
+            return parent::findField($name);
+        } catch (ElementNotFoundException $e) {
+            return parent::findField($name);
         }
-
-        return parent::findField($name);
     }
 
     /**
      * Find field container
      *
-     * @param string $label
-     *
-     * @throws ElementNotFoundException
+     * @param string $name
      *
      * @return NodeElement
      */
     public function findFieldContainer($name)
     {
-        $label = $this->find('css', sprintf('label:contains("%s")', $name));
-        if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-        }
+        $label = $this->spin(function () use ($name) {
+            return $this->find('css', sprintf('label:contains("%s")', $name));
+        }, sprintf('Label containing text "%s" not found'), $name);
 
-        $field = $label->getParent()->find('css', 'input,textarea');
-        if (!$field) {
-            throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
-        }
+        $field = $this->spin(function () use ($label) {
+            return $label->getParent()->find('css', 'input,textarea');
+        }, sprintf('Can not find any input or textearea sibling of "%s" label', $name));
 
         return $field->getParent();
     }

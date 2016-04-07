@@ -213,10 +213,9 @@ class AssertionContext extends RawMinkContext
     {
         $fields = $this->getMainContext()->listToArray($fields);
         foreach ($fields as $fieldName) {
-            $field = $this->getCurrentPage()->findField($fieldName);
-            if (!$field) {
-                throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $fieldName));
-            }
+            $field = $this->spin(function () use ($fieldName) {
+                return $this->getCurrentPage()->findField($fieldName);
+            }, sprintf('Expecting to see field "%s".', $fieldName));
             if (!$field->hasAttribute('disabled')) {
                 throw $this->createExpectationException(sprintf('Expecting field "%s" to be disabled.', $fieldName));
             }

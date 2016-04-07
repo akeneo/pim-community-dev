@@ -17,9 +17,14 @@ class InputDecorator extends ElementDecorator
 {
     use SpinCapableTrait;
 
+    /*
+     * The Text inputs selectors contains an EE selector.
+     * This should not be declared here, but we wait for the Decorators refactoring to choose where to declare it..
+     * TODO Move .asset-collection-picker into EE.
+     */
     protected $selectors = [
         'Input label' => ['css' => '.field-container header label:contains("%s")'],
-        'Text inputs' => ['css' => '.field-input input, .field-input textarea'],
+        'Text inputs' => ['css' => '.field-input input, .field-input textarea, .field-input .asset-collection-picker'],
     ];
 
     /**
