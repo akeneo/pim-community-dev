@@ -81,16 +81,24 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/association_type.csv
-    footwear_group_import:
+    csv_footwear_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_import
-        label:     Footwear group import
+        label:     CSV footwear group import
         type:      import
         configuration:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+    xlsx_footwear_group_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_import
+        label:     XLSX footwear group import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            filePath:      /tmp/group.xlsx
     footwear_group_export:
         connector: Akeneo CSV Connector
         alias:     csv_group_export
@@ -161,10 +169,10 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/family.csv
-    footwear_variant_group_import:
+    csv_footwear_variant_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_variant_group_import
-        label:     Footwear variant group import
+        label:     CSV footwear variant group import
         type:      import
         configuration:
             uploadAllowed: true
@@ -172,6 +180,14 @@ jobs:
             enclosure:     '"'
             escape:        '\'
             copyValues: true
+    xlsx_footwear_variant_group_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_variant_group_import
+        label:     XLSX footwear variant group import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            filePath:      /tmp/variant_group.xlsx
     footwear_family_import:
         connector: Akeneo CSV Connector
         alias:     csv_family_import

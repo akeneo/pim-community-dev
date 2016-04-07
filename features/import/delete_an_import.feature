@@ -9,16 +9,17 @@ Feature: Delete import
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
     And I am on the imports page
-    Then the grid should contain 9 elements
-    When I delete the "csv_footwear_product_import" job
+    And I change the page size to 25
 
-  Scenario: Successfully delete an import job
-    Given I confirm the deletion
+  Scenario: Successfully delete a CSV import job
+    Given I delete the "csv_footwear_product_import" job
+    When I confirm the deletion
     Then I should see flash message "Import profile successfully removed"
-    And the grid should contain 8 elements
+    And the grid should contain 10 elements
     And I should not see import profile "csv_footwear_product_import"
 
-  Scenario: Successfully cancel the deletion of an import job
-    Given I cancel the deletion
-    Then the grid should contain 9 elements
+  Scenario: Successfully cancel the deletion of a CSV import job
+    Given I delete the "csv_footwear_product_import" job
+    When I cancel the deletion
+    Then the grid should contain 11 elements
     And I should see import profile "csv_footwear_product_import"

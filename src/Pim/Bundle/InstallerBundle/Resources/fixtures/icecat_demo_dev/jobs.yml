@@ -260,3 +260,19 @@ jobs:
             realTimeVersioning: true
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
+    xlsx_group_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_import
+        label:     XLSX Demo group import
+        type:      import
+        configuration:
+            filePath:      /tmp/group.xlsx
+            uploadAllowed: true
+    xlsx_variant_group_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_variant_group_import
+        label:     XLSX Demo variant group import
+        type:      import
+        configuration:
+            filePath:      /tmp/variant_group.xlsx
+            uploadAllowed: true
