@@ -100,7 +100,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
             $this->incrementCount($item);
         }
 
-        $this->productSaver->saveAll($items, ['recalculate' => false]);
+        $this->productSaver->saveAll($items, ['recalculate' => true]);
         $this->detacher->detachAll($items);
     }
 

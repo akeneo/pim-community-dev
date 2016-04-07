@@ -57,7 +57,7 @@ class ProductTemplateApplier implements ProductTemplateApplierInterface
         $validProducts = $results['products'];
         $violations    = $results['violations'];
 
-        $this->productSaver->saveAll($validProducts);
+        $this->productSaver->saveAll($validProducts, ['recalculate' => true]);
 
         return $violations;
     }
