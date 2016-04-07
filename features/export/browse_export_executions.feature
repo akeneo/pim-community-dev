@@ -9,7 +9,7 @@ Feature: Browse export executions
     And I am logged in as "Julia"
     When I am on the exports page
     And I launch the "csv_footwear_product_export" export job
-    And I launch the "csv_footwear_category_import" export job
+    And I launch the "csv_footwear_category_export" export job
     And I launch the "csv_footwear_attribute_export" export job
     And I launch the "csv_footwear_product_export" export job
     Then I am on the export executions page

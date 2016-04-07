@@ -21,7 +21,7 @@ Feature: Display jobs execution in job tracker
     And I should see the "Reset" button
     And I should see the columns Type, Job, User, Status and Started at
     And the grid should contain 1 element
-    And I should see entity Footwear category export
+    And I should see entity CSV footwear category export
 
   Scenario: Display a mass edit in the job tracker
     And the following products:
@@ -67,4 +67,4 @@ Feature: Display jobs execution in job tracker
     And I should see the "Reset" button
     And I should see the columns Type, Job, User, Status and Started at
     And the grid should contain 1 element
-    And I should see entity Footwear category import
+    And I should see entity CSV footwear category import

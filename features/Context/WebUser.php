@@ -1827,36 +1827,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^the category order in the xlsx file "([^"]*)" should be following:$/
-     */
-    public function theCategoryOrderInTheXlsxFileShouldBeFollowing($fileName, TableNode $table)
-    {
-        $fileName = $this->replacePlaceholders($fileName);
-        if (!file_exists($fileName)) {
-            throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
-        }
-
-        $categories = [];
-        foreach (array_keys($table->getRowsHash()) as $category) {
-            $categories[] = $category;
-        }
-
-        $reader = ReaderFactory::create(Type::XLSX);
-        $reader->open($fileName);
-
-        $sheet = current(iterator_to_array($reader->getSheetIterator()));
-        $actualLines = iterator_to_array($sheet->getRowIterator());
-        array_shift($actualLines);
-        $reader->close();
-
-        foreach ($actualLines as $row) {
-            $category = array_shift($categories);
-            assertSame($category, $row[0], sprintf('Expecting category "%s", saw "%s"', $category, $row[0]));
-        }
-    }
-
-
-    /**
      * @param string $original
      * @param string $target
      *
