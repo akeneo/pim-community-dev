@@ -38,13 +38,15 @@ class PricesPresenterSpec extends ObjectBehavior
         Collection $collection,
         ProductPriceInterface $eur,
         ProductPriceInterface $usd,
-        ProductPriceInterface $gbp
+        ProductPriceInterface $gbp,
+        ProductPriceInterface $jpy
     ) {
         $value->getData()->willReturn($collection);
         $collection->getIterator()->willReturn(new \ArrayIterator([
             $eur->getWrappedObject(),
             $gbp->getWrappedObject(),
-            $usd->getWrappedObject()
+            $usd->getWrappedObject(),
+            $jpy->getWrappedObject()
         ]));
         $eur->getData()->willReturn(15.67);
         $eur->getCurrency()->willReturn('EUR');
@@ -52,24 +54,30 @@ class PricesPresenterSpec extends ObjectBehavior
         $usd->getCurrency()->willReturn('USD');
         $gbp->getData()->willReturn(null);
         $gbp->getCurrency()->willReturn('GBP');
+        $jpy->getData()->willReturn(150);
+        $jpy->getCurrency()->willReturn('JPY');
 
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $pricesPresenter->present(['data' => 15.67, 'currency' => 'EUR'], ['locale' => 'en_US'])->willReturn('€15.67');
         $pricesPresenter->present(['data' => 22.34, 'currency' => 'USD'], ['locale' => 'en_US'])->willReturn('$22.34');
+        $pricesPresenter->present(['data' => 150, 'currency' => 'JPY'], ['locale' => 'en_US'])->willReturn('¥150');
+
         $pricesPresenter->present(['data' => 12.34, 'currency' => 'EUR'], ['locale' => 'en_US'])->willReturn('£12.34');
         $pricesPresenter->present(['data' => 25.67, 'currency' => 'GBP'], ['locale' => 'en_US'])->willReturn('€25.67');
         $pricesPresenter->present(['data' => 20.12, 'currency' => 'USD'], ['locale' => 'en_US'])->willReturn('$20.12');
+        $pricesPresenter->present(['data' => null, 'currency' => 'JPY'], ['locale' => 'en_US'])->willReturn('');
 
         $change = [
             'data' => [
                 ['currency' => 'EUR', 'data' => '12.34'],
                 ['currency' => 'GBP', 'data' => '25.67'],
                 ['currency' => 'USD', 'data' => '20.12'],
+                ['currency' => 'JPY', 'data' => null],
             ]
         ];
 
         $renderer
-            ->renderDiff(['€15.67', '$22.34'], ['£12.34', '€25.67', '$20.12'])
+            ->renderDiff(['€15.67', '$22.34', '¥150'], ['£12.34', '€25.67', '$20.12'])
             ->willReturn('diff between two price collections');
 
         $this->setRenderer($renderer);
