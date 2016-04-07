@@ -96,7 +96,7 @@ class Edit extends ProductEditForm
     }
 
     /**
-     * Press the save button
+     * {@inheritdoc}
      */
     public function save()
     {
@@ -177,7 +177,7 @@ class Edit extends ProductEditForm
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getHistoryRows()
     {
@@ -234,12 +234,7 @@ class Edit extends ProductEditForm
     }
 
     /**
-     * Extracts and returns the label NodeElement, identified by $field content and $element
-     *
-     * @param string       $field
-     * @param Element|null $element
-     *
-     * @return NodeElement
+     * {@inheritdoc}
      */
     protected function extractLabelElement($field, $element)
     {
@@ -866,7 +861,7 @@ class Edit extends ProductEditForm
     /**
      * Find an attribute group in the nav
      *
-     * @param string $attributeGroupCode
+     * @param string $group
      *
      * @throws \Exception
      *
@@ -943,6 +938,9 @@ class Edit extends ProductEditForm
 
     /**
      * {@inheritdoc}
+     *
+     * We catch Timeout & ElementNotFound exceptions because some pages do not have
+     * the decorator for attribute inputs. This way we can fallback on the "old" fillField method.
      */
     public function fillField($field, $value, Element $element = null)
     {
@@ -956,12 +954,10 @@ class Edit extends ProductEditForm
     }
 
     /**
-     * @param string $name
-     * @param bool   $copy
+     * {@inheritdoc}
      *
-     * @throws ElementNotFoundException
-     *
-     * @return NodeElement
+     * We catch Timeout & ElementNotFound exceptions because some pages do not have
+     * the decorator for attribute inputs. This way we can fallback on the "old" findField method.
      */
     public function findField($name, $copy = false)
     {
@@ -975,7 +971,7 @@ class Edit extends ProductEditForm
     }
 
     /**
-     * @param array $attributes
+     * {@inheritdoc}
      */
     public function addAvailableAttributes(array $attributes = [])
     {

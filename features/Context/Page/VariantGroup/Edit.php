@@ -61,11 +61,10 @@ class Edit extends Form
     }
 
     /**
-     * @param string $name
+     * {@inheritdoc}
      *
-     * @throws ElementNotFoundException
-     *
-     * @return NodeElement
+     * We catch Timeout & ElementNotFound exceptions because some pages do not have
+     * the decorator for attribute inputs. This way we can fallback on the "old" findField method.
      */
     public function findField($name)
     {
@@ -79,13 +78,7 @@ class Edit extends Form
     }
 
     /**
-     * Find field container
-     *
-     * @param string $label
-     *
-     * @throws ElementNotFoundException
-     *
-     * @return NodeElement
+     * {@inheritdoc}
      */
     public function findFieldContainer($label)
     {
@@ -96,6 +89,9 @@ class Edit extends Form
 
     /**
      * {@inheritdoc}
+     *
+     * We catch Timeout & ElementNotFound exceptions because some pages do not have
+     * the decorator for attribute inputs. This way we can fallback on the "old" fillField method.
      */
     public function fillField($field, $value, Element $element = null)
     {
