@@ -25,6 +25,7 @@
 - PIM-5653: When using the Product Query Builder, it is now possible to filter on completeness without specifying a locale. Products with a matching completeness for at least one of the locales of the scope will be selected.
 - PIM-5653: Introduce a new storage-agnostic Product Reader using the PQB
 - Integrates the AkeneoMeasureBundle in our main repository
+- TIP-245: Add datetime filters in the Product Query Builder, allowing to select products on "created at" and "updated at" fields.
 
 ## BC breaks
 

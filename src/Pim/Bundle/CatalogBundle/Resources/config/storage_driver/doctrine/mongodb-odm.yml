@@ -54,6 +54,7 @@ parameters:
     pim_catalog.doctrine.query.filter.string.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter
     pim_catalog.doctrine.query.filter.boolean.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BooleanFilter
     pim_catalog.doctrine.query.filter.date.class:         Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter
+    pim_catalog.doctrine.query.filter.datetime.class:     Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateTimeFilter
     pim_catalog.doctrine.query.filter.product_id.class:   Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter
     pim_catalog.doctrine.query.filter.family.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter
     pim_catalog.doctrine.query.filter.groups.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter
