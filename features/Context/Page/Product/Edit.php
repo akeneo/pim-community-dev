@@ -236,8 +236,8 @@ class Edit extends ProductEditForm
     /**
      * Extracts and returns the label NodeElement, identified by $field content and $element
      *
-     * @param string  $field
-     * @param Element $element
+     * @param string       $field
+     * @param Element|null $element
      *
      * @return NodeElement
      */
@@ -246,24 +246,20 @@ class Edit extends ProductEditForm
         $subLabelContent = null;
         $labelContent    = $field;
 
-        if (strstr($field, 'USD') || strstr($field, 'EUR')) {
-            if (false !== strpos($field, ' ')) {
-                list($subLabelContent, $labelContent) = explode(' ', $field);
-            }
+        $matches = null;
+        if (preg_match('/(?P<subLabel>.*) (?P<currency>[A-Z]{1,3})$/', $field, $matches)) {
+            $subLabelContent = $matches['subLabel'];
+            $labelContent    = $matches['currency'];
         }
 
         if ($element) {
             $label = $this->spin(function () use ($element, $labelContent) {
                 return $element->find('css', sprintf('label:contains("%s")', $labelContent));
-            }, sprintf('unable to find label %s in element : %s', $labelContent, $element->getHtml()));
+            }, sprintf('Unable to find label %s in element : %s', $labelContent, $element->getHtml()));
         } else {
             $label = $this->spin(function () use ($labelContent) {
                 return $this->find('css', sprintf('label:contains("%s")', $labelContent));
-            }, sprintf('unable to find label %s', $labelContent));
-        }
-
-        if (!$label) {
-            $label = new \StdClass();
+            }, sprintf('Unable to find label %s', $labelContent));
         }
 
         $label->labelContent    = $labelContent;

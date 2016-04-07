@@ -37,9 +37,10 @@ class InputDecorator extends ElementDecorator
      */
     public function findField($label, $copy = false)
     {
-        if (1 === preg_match('/ in (.{1,3})$/', $label)) {
-            // Price in EUR
-            list($label, $currency) = explode(' in ', $label);
+        $matches = null;
+        if (preg_match('/^(?P<amount>.*) in (?P<currency>[A-Z]{1,3})$/', $label, $matches)) {
+            $label    = $matches['amount'];
+            $currency = $matches['currency'];
             $fieldContainer = $this->findFieldContainer($label);
 
             return $this->findCompoundField($fieldContainer, $currency);
@@ -68,9 +69,10 @@ class InputDecorator extends ElementDecorator
      */
     public function findFieldContainer($label)
     {
-        if (1 === preg_match('/ in (.{1,3})$/', $label)) {
-            // Price in EUR
-            $label = explode(' in ', $label)[0];
+        $matches = null;
+        if (preg_match('/^(?P<amount>.*) in [A-Z]{1,3}$/', $label, $matches)) {
+            // Match "Price in EUR" to have "Price" as label.
+            $label = $matches['amount'];
         }
 
         $selector = sprintf($this->selectors['Input label']['css'], $label);

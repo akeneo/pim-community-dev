@@ -70,9 +70,10 @@ class ProductEditForm extends Form
      */
     public function findFieldContainer($label)
     {
-        if (1 === preg_match('/ in (.{1,3})$/', $label)) {
-            // Price in EUR
-            $label = explode(' in ', $label)[0];
+        $matches = null;
+        if (preg_match('/^(?P<amount>.*) in [A-Z]{1,3}$/', $label, $matches)) {
+            // Match "Price in EUR" to have "Price" as label.
+            $label = $matches['amount'];
         }
 
         try {
