@@ -1,0 +1,7 @@
+Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor:
+    properties:
+        channel:
+            - NotBlank:
+                groups: [Execution]
+            - Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel: ~
+

@@ -23,13 +23,7 @@ class YamlReader extends FileReader implements
     UploadedFileAwareInterface,
     StepExecutionAwareInterface
 {
-    /**
-     * @Assert\NotBlank(groups={"Execution"})
-     * @AssertFile(
-     *     groups={"Execution"},
-     *     allowedExtensions={"yml", "yaml"}
-     * )
-     */
+    /** @var string */
     protected $filePath;
 
     /** @var string */
@@ -38,12 +32,7 @@ class YamlReader extends FileReader implements
     /** @var bool */
     protected $multiple = false;
 
-    /**
-     * @var bool
-     *
-     * @Assert\Type(type="bool")
-     * @Assert\IsTrue(groups={"UploadExecution"})
-     */
+    /** @var bool */
     protected $uploadAllowed = false;
 
     /** @var StepExecution */

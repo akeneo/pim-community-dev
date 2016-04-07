@@ -7,12 +7,10 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
-use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConstraint;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Reads products for Mongodb
@@ -23,12 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ODMProductReader extends AbstractConfigurableStepElement implements ProductReaderInterface
 {
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank(groups={"Execution"})
-     * @ChannelConstraint
-     */
+    /** @var string */
     protected $channel;
 
     /** @var StepExecution */
