@@ -961,19 +961,20 @@ class Edit extends ProductEditForm
 
     /**
      * @param string $name
+     * @param bool   $copy
      *
      * @throws ElementNotFoundException
      *
      * @return NodeElement
      */
-    public function findField($name)
+    public function findField($name, $copy = false)
     {
         try {
-            return $this->getElement('Attribute inputs')->findField($name);
+            return $this->getElement('Attribute inputs')->findField($name, $copy);
         } catch (TimeoutException $e) {
-            return parent::findField($name);
+            return parent::findField($name, $copy);
         } catch (ElementNotFoundException $e) {
-            return parent::findField($name);
+            return parent::findField($name, $copy);
         }
     }
 
