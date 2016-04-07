@@ -44,7 +44,7 @@ class ButtonDecorator extends ElementDecorator
                 'css',
                 '*:not(.hash-loading-mask):not(.grid-container):not(.loading-mask) > .loading-mask'
             );
-        });
+        }, 'There is a loading mask after saving.');
     }
 
     /**

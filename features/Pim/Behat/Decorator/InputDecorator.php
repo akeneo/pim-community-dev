@@ -128,7 +128,6 @@ class InputDecorator extends ElementDecorator
                 break;
             default:
                 throw new ElementNotFoundException($this->getSession());
-                break;
         }
     }
 
@@ -145,15 +144,15 @@ class InputDecorator extends ElementDecorator
         $field = $fieldContainerOrLabel->find('css', 'div.field-input input');
 
         // no field found, we're using a label
-        if (!$field) {
+        if (null === $field) {
             $field = $fieldContainerOrLabel->getParent()->getParent()->find('css', 'div.field-input input');
         }
 
-        if (!$field) {
+        if (null === $field) {
             $field = $fieldContainerOrLabel->getParent()->find('css', 'div.controls input');
         }
 
-        if (!$field) {
+        if (null === $field) {
             throw new ElementNotFoundException($this->getSession(), 'text field');
         }
 
@@ -165,7 +164,7 @@ class InputDecorator extends ElementDecorator
      * Find a compound field
      *
      * @param NodeElement $fieldContainer
-     * @param             $currency
+     * @param string      $currency
      *
      * @throws ElementNotFoundException
      *
@@ -235,7 +234,6 @@ class InputDecorator extends ElementDecorator
         $link = $this->spin(function () use ($fieldContainer) {
             return $fieldContainer->find('css', 'a.select2-choice');
         }, sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()));
-
 
         $link->click();
 
@@ -367,7 +365,7 @@ class InputDecorator extends ElementDecorator
             list($amount, $currency) = explode(' ', $value);
         }
 
-        if (!$currency) {
+        if (null === $currency) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'The "%s" field is compound but the sub label was not provided',
