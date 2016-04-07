@@ -126,11 +126,11 @@ class RuleController
     public function massImpactedProductCountAction(Request $request)
     {
         $request->request->add(['actionName' => 'massImpactedProductCount']);
-        $params           = $this->gridFilterAdapter->adapt($request);
-        $jobInstance      = $this->jobInstanceRepo->findOneByIdentifier(self::MASS_RULE_IMPACTED_PRODUCTS);
-        $rawConfiguration = addslashes(json_encode(['ruleIds' => $params['values']]));
+        $params        = $this->gridFilterAdapter->adapt($request);
+        $jobInstance   = $this->jobInstanceRepo->findOneByIdentifier(self::MASS_RULE_IMPACTED_PRODUCTS);
+        $configuration = ['ruleIds' => $params['values']];
 
-        $this->simpleJobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $rawConfiguration);
+        $this->simpleJobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
 
         return new JsonResponse(
             [

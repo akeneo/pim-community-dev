@@ -219,13 +219,13 @@ class ProductDraftController
         $request->request->add(['actionName' => 'massApprove' ]);
         $params           = $this->gridFilterAdapter->adapt($request);
         $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_APPROVE_JOB_CODE);
-        $rawConfiguration = addslashes(json_encode([
+        $configuration = [
             'draftIds' => $params['values'],
             'comment'  => $request->get('comment'),
-        ]));
+        ];
 
         $jobExecution = $this->simpleJobLauncher
-            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $rawConfiguration);
+            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
 
         return new RedirectResponse(
             $this->router->generate(
@@ -247,13 +247,13 @@ class ProductDraftController
         $request->request->add(['actionName' => 'massApprove' ]);
         $params           = $this->gridFilterAdapter->adapt($request);
         $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_REFUSE_JOB_CODE);
-        $rawConfiguration = addslashes(json_encode([
+        $configuration = [
             'draftIds' => $params['values'],
             'comment'  => $request->get('comment'),
-        ]));
+        ];
 
         $jobExecution = $this->simpleJobLauncher
-            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $rawConfiguration);
+            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
 
         return new RedirectResponse(
             $this->router->generate(
