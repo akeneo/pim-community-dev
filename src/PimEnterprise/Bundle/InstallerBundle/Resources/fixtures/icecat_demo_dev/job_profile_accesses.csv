@@ -50,3 +50,5 @@ xlsx_product_import;IT support,Manager,Redactor;IT support,Manager
 xlsx_product_proposal_import;IT support,Manager,Redactor;IT support,Manager
 xlsx_variant_group_export;All;All
 xlsx_group_export;All;All
+xlsx_group_import;IT support,Manager,Redactor;IT support
+xlsx_variant_group_import;IT support,Manager,Redactor;IT support
