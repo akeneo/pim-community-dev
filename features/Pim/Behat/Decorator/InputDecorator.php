@@ -201,7 +201,7 @@ class InputDecorator extends ElementDecorator
         $this->spin(function () use ($value, $fieldContainer) {
             $field = $fieldContainer->find('css', 'div.field-input > textarea');
 
-            if (!$field || !$field->isVisible()) {
+            if (null === $field || !$field->isVisible()) {
                 // the textarea can be hidden (display=none) when using WYSIWYG
                 $field = $fieldContainer->find('css', 'div.note-editor > .note-editable');
             }
@@ -289,7 +289,7 @@ class InputDecorator extends ElementDecorator
                 }, sprintf('Could not find option "%".', $select));
             }
 
-            if (!$item) {
+            if (null === $item) {
                 throw new \InvalidArgumentException(
                     sprintf('Could not find select2 widget inside %s', $field->getParent()->getHtml())
                 );
@@ -560,12 +560,12 @@ class InputDecorator extends ElementDecorator
     public function getRemoveLinkFor($field)
     {
         return $this->spin(function () use ($field) {
-            $link = $this->find('css', sprintf('.control-group:contains("%s") .remove-attribute', $field));
-            if (!$link) {
-                $link = $this->find('css', sprintf('.field-container:contains("%s") .remove-attribute', $field));
-            }
-
-            return $link;
+            return $this->find('css', sprintf(
+                '.control-group:contains("%s") .remove-attribute,' .
+                '.field-container:contains("%s") .remove-attribute',
+                $field,
+                $field
+            ));
         }, sprintf('Can not find remove link for attribute "%s".', $field));
     }
 

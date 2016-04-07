@@ -258,7 +258,7 @@ class ProductEditForm extends Form
     {
         $field = $subContainer->find('css', '.field-input textarea');
 
-        if (!$field || !$field->isVisible()) {
+        if (null === $field || !$field->isVisible()) {
             // the textarea can be hidden (display=none) when using WYSIWYG
             $div = $subContainer->find('css', '.note-editor > .note-editable');
 

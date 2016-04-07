@@ -876,7 +876,7 @@ class WebUser extends RawMinkContext
         foreach ($this->listToArray($attributes) as $attribute) {
             $element = $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
 
-            if (!$shouldNotSee && !$element || $shouldNotSee && $element) {
+            if (!$shouldNotSee && null === $element || $shouldNotSee && $element) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Expecting %sto see attribute "%s" under group "%s"',
@@ -935,7 +935,7 @@ class WebUser extends RawMinkContext
         $attributes = $this->listToArray($attributes);
 
         foreach ($attributes as $attribute) {
-            if (!$this->getCurrentPage()->getAttribute($attribute, $group)) {
+            if (null === $this->getCurrentPage()->getAttribute($attribute, $group)) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Expecting to see attribute %s under group %s, but was not present.',
