@@ -7,7 +7,6 @@ parameters:
 
     pim_base_connector.reader.file.yaml.class:         Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader
 
-    pim_base_connector.reader.dummy.class:             Pim\Bundle\BaseConnectorBundle\Reader\DummyReader
     pim_base_connector.reader.cached.class:            Pim\Bundle\BaseConnectorBundle\Reader\CachedReader
 
 services:
@@ -72,9 +71,6 @@ services:
         arguments:
             - false
             - false
-
-    pim_base_connector.reader.dummy:
-        class: %pim_base_connector.reader.dummy.class%
 
     # Deprecated: This service is deprecated and will be removed in 1.6
     pim_base_connector.reader.cached_association:

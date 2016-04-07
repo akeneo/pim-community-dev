@@ -170,3 +170,6 @@
 - Add mandatory arguments `Akeneo\Component\Batch\Job\JobRepositoryInterface` and `Symfony\Component\EventDispatcher\EventDispatcherInterface` in constructor of `Akeneo\Component\Batch\Job\Job`
 - Remove methods `setEventDispatcher`, `setJobRepository` and `setName` from `Akeneo\Component\Batch\Step\AbstractStep`
 - Add mandatory arguments `Akeneo\Component\Batch\Job\JobRepositoryInterface` and `Symfony\Component\EventDispatcher\EventDispatcherInterface` in constructor of `Akeneo\Component\Batch\Step\AbstractStep`
+- Remove deprecated `Pim\Bundle\BaseConnectorBundle\Reader\DummyReader`
+- Remove deprecated `Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface`
+- Remove deprecated `Pim\Bundle\BaseConnectorBundle\Validator\Import\SkipImportValidator`
