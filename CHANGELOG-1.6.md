@@ -17,6 +17,7 @@
 - PIM-5594: Panel state is now stored in the session storage
 - PIM-5645: Bath jobs configuration files can now also be loaded when contained in a folder named 'batch_jobs'. Introduces the new Akeneo XLSX Connector
 - TIP-342: be able to launch mass edit processes without having to previously store a JobConfiguration and only rely on dynamic configuration
+- PIM-5577: The completeness is now calculated every time a product is saved, ie during mass edit, product import and on edit/save of variant groups.
 
 ## BC breaks
 
@@ -160,3 +161,4 @@
 - Remove class `Pim\Component\Connector\Factory\JobConfigurationFactory`
 - Remove class `Pim\Component\Connector\Model\JobConfiguration`
 - Remove class `Pim\Component\Connector\Model\JobConfigurationInterface`
+- Removed the `recalculate` and `schedule` option from the `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver` and `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver`

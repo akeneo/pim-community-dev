@@ -70,9 +70,11 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($family);
+
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
+
         if (true === $options['schedule']) {
             $this->completenessManager->scheduleForFamily($family);
         }

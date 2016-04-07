@@ -51,15 +51,7 @@ class ProductSaverSpec extends ObjectBehavior
 
         $bulkVersionBuilder->buildVersions(Argument::any())->willReturn([]);
 
-        $optionsResolver
-            ->resolveSaveAllOptions(Argument::any())
-            ->willReturn(
-                [
-                    'flush'       => true,
-                    'recalculate' => false,
-                    'schedule'    => true
-                ]
-            );
+        $optionsResolver->resolveSaveAllOptions(Argument::any())->willReturn(['flush' => true]);
     }
 
     function it_is_a_saver()

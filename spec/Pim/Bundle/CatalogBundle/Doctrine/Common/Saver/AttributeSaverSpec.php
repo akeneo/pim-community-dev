@@ -39,7 +39,7 @@ class AttributeSaverSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('my_code');
         $optionsResolver->resolveSaveOptions([])
             ->shouldBeCalled()
-            ->willReturn(['flush' => true, 'schedule' => true]);
+            ->willReturn(['flush' => true]);
         $eventDispatcher
             ->dispatch(
                 Argument::exact(StorageEvents::PRE_SAVE),

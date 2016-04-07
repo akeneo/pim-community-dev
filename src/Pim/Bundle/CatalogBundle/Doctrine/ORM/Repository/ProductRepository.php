@@ -213,22 +213,6 @@ class ProductRepository extends EntityRepository implements
      */
     public function getFullProduct($id)
     {
-        $qb = $this->getFullProductQB();
-
-        return $qb
-            ->where('p.id=:id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    /**
-     * Get full product query builder
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function getFullProductQB()
-    {
         return $this
             ->createQueryBuilder('p')
             ->select('p, f, v, pr, m, o, os')
@@ -237,7 +221,11 @@ class ProductRepository extends EntityRepository implements
             ->leftJoin('v.prices', 'pr')
             ->leftJoin('v.media', 'm')
             ->leftJoin('v.option', 'o')
-            ->leftJoin('v.options', 'os');
+            ->leftJoin('v.options', 'os')
+            ->where('p.id=:id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     /**
