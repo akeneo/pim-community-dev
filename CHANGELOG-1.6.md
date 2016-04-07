@@ -106,3 +106,6 @@
 - Remove deprecated method `setName` from `Akeneo\Component\Batch\Job\Job`
 - Remove deprecated classes `Pim\Bundle\BaseConnectorBundle\Step\ValidatorStep` and `Pim\Bundle\BaseConnectorBundle\Validator\Step\CharsetValidator`
 - Remove methods `setEventDispatcher` and `setJobRepository` from `Akeneo\Component\Batch\Job\Job`
+- Remove deprecated `Pim\Bundle\BaseConnectorBundle\Reader\DummyReader`
+- Remove deprecated `Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface`
+- Remove deprecated `Pim\Bundle\BaseConnectorBundle\Validator\Import\SkipImportValidator`
