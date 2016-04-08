@@ -35,13 +35,6 @@ class PriceProperty extends FieldProperty
     {
         $data = $this->getBackendData($value);
 
-        $prices = [];
-        foreach ($data as $price) {
-            if (isset($price['data']) && $price['data'] !== null) {
-                $prices[] = $this->presenter->present($price, ['locale' => $this->translator->getLocale()]);
-            }
-        }
-
-        return implode(', ', $prices);
+        return $this->presenter->present($data, ['locale' => $this->translator->getLocale()]);
     }
 }

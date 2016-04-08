@@ -413,7 +413,12 @@ class ProductEditForm extends Form
             list($amount, $currency) = explode(' ', $value);
         }
 
-        if (!$currency) {
+        // it happens when we want to set an empty price
+        if (null === $currency && null !== $value) {
+            $currency = $value;
+        }
+
+        if (null === $currency) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'The "%s" field is compound but the sub label was not provided',
