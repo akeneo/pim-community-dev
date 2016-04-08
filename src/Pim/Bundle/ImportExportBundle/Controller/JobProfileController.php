@@ -6,8 +6,8 @@ use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
@@ -19,7 +19,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,9 +54,6 @@ class JobProfileController
 
     /** @var JobLauncherInterface */
     protected $simpleJobLauncher;
-
-    /** @var File */
-    protected $file;
 
     /** @var FormFactoryInterface */
     protected $formFactory;
@@ -142,7 +138,7 @@ class JobProfileController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function createAction(Request $request)
     {
@@ -182,7 +178,7 @@ class JobProfileController
      *
      * @param int $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction($id)
     {
@@ -233,7 +229,7 @@ class JobProfileController
      * @param Request $request
      * @param int     $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function editAction(Request $request, $id)
     {
@@ -283,7 +279,7 @@ class JobProfileController
      * @param Request $request
      * @param int     $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function removeAction(Request $request, $id)
     {
@@ -292,9 +288,9 @@ class JobProfileController
         } catch (NotFoundHttpException $e) {
             if ($request->isXmlHttpRequest()) {
                 return new Response('', 404);
-            } else {
-                return $this->redirectToIndexView();
             }
+
+            return $this->redirectToIndexView();
         }
 
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_REMOVE, new GenericEvent($jobInstance));
@@ -304,39 +300,9 @@ class JobProfileController
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
-        } else {
-            return $this->redirectToIndexView();
         }
-    }
 
-    /**
-     * Validate if the job is correct or not
-     *
-     * @param JobInstance $jobInstance
-     *
-     * @return bool
-     */
-    protected function validate(JobInstance $jobInstance)
-    {
-        $violations = $this->validator->validate($jobInstance, ['Default', 'Execution']);
-
-        return $violations->count() === 0;
-    }
-
-    /**
-     * Validate if the job is correct from an uploaded file
-     *
-     * @param JobInstance $jobInstance
-     *
-     * @return bool
-     */
-    protected function validateUpload(JobInstance $jobInstance)
-    {
-        $uploadViolations = $this->validator->validate($jobInstance, ['Default', 'UploadExecution']);
-
-        $uploadMode = $uploadViolations->count() === 0 ? $this->processUploadForm($jobInstance) : false;
-
-        return $uploadMode && $this->configureUploadJob($jobInstance, $this->file);
+        return $this->redirectToIndexView();
     }
 
     /**
@@ -344,7 +310,7 @@ class JobProfileController
      *
      * @param int $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function launchUploadedAction($id)
     {
@@ -370,7 +336,7 @@ class JobProfileController
      *
      * @param int $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function launchAction($id)
     {
@@ -392,28 +358,37 @@ class JobProfileController
     }
 
     /**
-     * Process the upload form
+     * Validate if the job is correct or not
      *
      * @param JobInstance $jobInstance
      *
      * @return bool
      */
-    protected function processUploadForm(JobInstance $jobInstance)
+    protected function validate(JobInstance $jobInstance)
     {
-        if ($this->request->isMethod('POST')) {
-            $form = $this->createUploadForm();
-            $form->handleRequest($this->request);
-            if ($form->isValid()) {
-                $data = $form->get('file')->getData();
-                if (null !== $file = $data->getUploadedFile()) {
-                    $this->file = $file->move(sys_get_temp_dir(), $file->getClientOriginalName());
+        $violations = $this->validator->validate($jobInstance, ['Default', 'Execution']);
 
-                    return true;
-                }
+        return 0 === $violations->count();
+    }
 
-                $this->request->getSession()->getFlashBag()
-                    ->add('error', new Message('You must select a file to upload'));
+    /**
+     * Validate if the job is correct from an uploaded file
+     *
+     * @param JobInstance $jobInstance
+     *
+     * @return bool
+     */
+    protected function validateUpload(JobInstance $jobInstance)
+    {
+        $uploadViolations = $this->validator->validate($jobInstance, ['Default', 'UploadExecution']);
+
+        if (0 === $uploadViolations->count()) {
+            $fileInfo = $this->getFileInfo();
+            if (null === $fileInfo) {
+                return false;
             }
+
+            return $this->configureUploadJob($jobInstance, $fileInfo);
         }
 
         return false;
@@ -448,25 +423,52 @@ class JobProfileController
     }
 
     /**
+     * Get uploaded file
+     *
+     * @return FileInfoInterface|null
+     */
+    protected function getFileInfo()
+    {
+        if ($this->request->isMethod('POST')) {
+            $form = $this->createUploadForm();
+            $form->handleRequest($this->request);
+            if ($form->isValid()) {
+                $fileInfo = $form->get('file')->getData();
+                if (null !== $fileInfo && null !== $fileInfo->getUploadedFile()) {
+                    return $fileInfo;
+                }
+
+                $this->request->getSession()->getFlashBag()
+                    ->add('error', new Message('You must select a file to upload'));
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Configure job instance for uploaded file
      *
-     * @param JobInstance $jobInstance
-     * @param File        $file
+     * @param JobInstance       $jobInstance
+     * @param FileInfoInterface $fileInfo
      *
      * @return bool
      */
-    protected function configureUploadJob(JobInstance $jobInstance, File $file)
+    protected function configureUploadJob(JobInstance $jobInstance, FileInfoInterface $fileInfo)
     {
         $success = false;
 
         $job = $jobInstance->getJob();
+        $uploadedFile = $fileInfo->getUploadedFile();
+        $file = $uploadedFile->move(sys_get_temp_dir(), $uploadedFile->getClientOriginalName());
+
         foreach ($job->getSteps() as $step) {
             if (method_exists($step, 'getReader')) {
                 $reader = $step->getReader();
 
                 if ($reader instanceof UploadedFileAwareInterface) {
                     $constraints = $reader->getUploadedFileConstraints();
-                    $this->fileError = $this->validator->validate($file, $constraints);
+                    $this->fileError = $this->validator->validate($fileInfo, $constraints);
 
                     if ($this->fileError->count() !== 0) {
                         foreach ($this->fileError as $error) {
@@ -494,7 +496,7 @@ class JobProfileController
      *
      * @throws NotFoundHttpException
      *
-     * @return Job|RedirectResponse
+     * @return JobInstance|RedirectResponse
      */
     protected function getJobInstance($id, $checkStatus = true)
     {
@@ -545,7 +547,7 @@ class JobProfileController
     /**
      * Redirect to the index view
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     protected function redirectToIndexView()
     {
@@ -559,7 +561,7 @@ class JobProfileController
      *
      * @param int $jobId
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     protected function redirectToShowView($jobId)
     {
@@ -574,7 +576,7 @@ class JobProfileController
      *
      * @param int $jobId
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     protected function redirectToReportView($jobId)
     {
