@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-5695: Do not format price with currency if data is null
 - PIM-5643: Fix default system locale
 
 # 1.5.1 (2016-03-09)

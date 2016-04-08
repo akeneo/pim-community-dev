@@ -31,6 +31,7 @@ class Creation extends Form
                 'attribute_option_table' => ['css' => '#attribute-option-grid table'],
                 'attribute_options'      => ['css' => '#attribute-option-grid tbody tr'],
                 'add_option_button'      => ['css' => '#attribute-option-grid .btn.option-add'],
+                'new_option'             => ['css' => '.in-edition']
             ]
         );
     }
@@ -104,6 +105,20 @@ class Creation extends Form
      */
     public function countOptions()
     {
+        $this->spin(function () {
+            $table = $this->find('css', $this->elements['attribute_option_table']['css']);
+
+            if (null !== $table) {
+                $this->spin(function () {
+                    $row = $this->find('css', $this->elements['new_option']['css']);
+
+                    return null === $row;
+                });
+            }
+
+            return true;
+        }, 'Attribute options are not visible');
+
         return count($this->findAll('css', $this->elements['attribute_options']['css']));
     }
 
