@@ -616,7 +616,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInFamily(ProductInterface $product, $attributeCode)
+    public function hasAttributeInFamily($productId, $attributeCode)
     {
         $queryBuilder = $this->createQueryBuilder('p')
             ->leftJoin('p.family', 'f')
@@ -624,7 +624,7 @@ class ProductRepository extends EntityRepository implements
             ->where('p.id = :id')
             ->andWhere('a.code = :code')
             ->setParameters([
-                'id'   => $product->getId(),
+                'id'   => $productId,
                 'code' => $attributeCode,
             ])
             ->setMaxResults(1);
@@ -635,14 +635,14 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInVariantGroup(ProductInterface $product, $attributeCode)
+    public function hasAttributeInVariantGroup($productId, $attributeCode)
     {
         $queryBuilder = $this->createQueryBuilder('p')
             ->select('g.id')
             ->leftJoin('p.groups', 'g')
             ->where('p.id = :id')
             ->setParameters([
-                'id' => $product->getId(),
+                'id' => $productId,
             ]);
 
         $groupIds = $queryBuilder->getQuery()->getScalarResult();

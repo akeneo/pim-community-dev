@@ -64,7 +64,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
 
         $product->getIdentifier()->shouldBeCalled()->willReturn($productValue);
-        $product->getId()->shouldBeCalled();
+        $product->getId()->willReturn(10);
         $productValue->getData()->shouldBeCalled();
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -105,8 +105,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
-        $productRepository->hasAttributeInFamily($product, 'categories')->shouldBeCalled()->willReturn(true);
-        $productRepository->hasAttributeInVariantGroup($product, 'categories')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInFamily(10, 'categories')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup(10, 'categories')->shouldBeCalled()->willReturn(true);
         $productUpdater->update($product, Argument::any())->shouldNotBeCalled();
 
         $this->process($product)->shouldReturn(null);
@@ -152,9 +152,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
+        $product->getId()->willReturn(10);
 
-        $productRepository->hasAttributeInFamily($product, 'categories')->shouldBeCalled()->willReturn(true);
-        $productRepository->hasAttributeInVariantGroup($product, 'categories')->shouldBeCalled()->willReturn(false);
+        $productRepository->hasAttributeInFamily(10, 'categories')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup(10, 'categories')->shouldBeCalled()->willReturn(false);
 
         $productUpdater->update($product, $values)->shouldBeCalled();
 
@@ -204,8 +205,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([$violation, $violation]);
         $validator->validate($product)->willReturn($violations);
 
-        $productRepository->hasAttributeInFamily($product, 'categories')->shouldBeCalled()->willReturn(true);
-        $productRepository->hasAttributeInVariantGroup($product, 'categories')->shouldBeCalled()->willReturn(false);
+        $product->getId()->willReturn(10);
+        $productRepository->hasAttributeInFamily(10, 'categories')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup(10, 'categories')->shouldBeCalled()->willReturn(false);
 
         $productUpdater->update($product, $values)->shouldBeCalled();
         $this->setStepExecution($stepExecution);

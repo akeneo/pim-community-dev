@@ -771,9 +771,9 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInFamily(ProductInterface $product, $attributeCode)
+    public function hasAttributeInFamily($productId, $attributeCode)
     {
-        $product = $this->getProductAsArray($product);
+        $product = $this->getProductAsArray($productId);
 
         if (!isset($product['family'])) {
             return false;
@@ -785,9 +785,9 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInVariantGroup(ProductInterface $product, $attributeCode)
+    public function hasAttributeInVariantGroup($productId, $attributeCode)
     {
-        $product = $this->getProductAsArray($product);
+        $product = $this->getProductAsArray($productId);
 
         if (!isset($product['groupIds'])) {
             return false;
@@ -797,14 +797,14 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param ProductInterface $product
+     * @param mixed $productId
      *
      * @return array
      */
-    protected function getProductAsArray(ProductInterface $product)
+    protected function getProductAsArray($productId)
     {
         $query = $this->createQueryBuilder()
-            ->field('_id')->equals($product->getId())
+            ->field('_id')->equals($productId)
             ->hydrate(false)
             ->getQuery();
 

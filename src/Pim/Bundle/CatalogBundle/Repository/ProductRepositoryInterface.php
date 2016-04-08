@@ -170,20 +170,20 @@ interface ProductRepositoryInterface
     /**
      * Checks if the family has the specified attribute
      *
-     * @param ProductInterface $product
-     * @param string           $attributeCode
+     * @param mixed  $productId
+     * @param string $attributeCode
      *
      * @return bool
      */
-    public function hasAttributeInFamily(ProductInterface $product, $attributeCode);
+    public function hasAttributeInFamily($productId, $attributeCode);
 
     /**
      * Checks if the group has the specified attribute
      *
-     * @param ProductInterface $product
-     * @param string           $attributeCode
+     * @param mixed  $productId
+     * @param string $attributeCode
      *
      * @return bool
      */
-    public function hasAttributeInVariantGroup(ProductInterface $product, $attributeCode);
+    public function hasAttributeInVariantGroup($productId, $attributeCode);
 }

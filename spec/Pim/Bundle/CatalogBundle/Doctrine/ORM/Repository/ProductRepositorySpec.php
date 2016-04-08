@@ -150,13 +150,10 @@ class ProductRepositorySpec extends ObjectBehavior
     function it_checks_if_the_product_has_an_attribute_in_its_variant_group(
         $em,
         GroupRepositoryInterface $groupRepository,
-        ProductInterface $product,
         QueryBuilder $queryBuilder,
         AbstractQuery $query
     ) {
         $this->setGroupRepository($groupRepository);
-
-        $product->getId()->willReturn(10);
 
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('p')->willReturn($queryBuilder);
@@ -176,19 +173,16 @@ class ProductRepositorySpec extends ObjectBehavior
 
         $groupRepository->hasAttribute([1, 2], 'attribute_code')->willReturn(true);
 
-        $this->hasAttributeInVariantGroup($product, 'attribute_code')->shouldReturn(true);
+        $this->hasAttributeInVariantGroup(10, 'attribute_code')->shouldReturn(true);
     }
 
     function it_checks_if_the_product_has_an_attribute_in_its_variant_group_but_it_has_not_group(
         $em,
         GroupRepositoryInterface $groupRepository,
-        ProductInterface $product,
         QueryBuilder $queryBuilder,
         AbstractQuery $query
     ) {
         $this->setGroupRepository($groupRepository);
-
-        $product->getId()->willReturn(10);
 
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('p')->willReturn($queryBuilder);
@@ -208,17 +202,14 @@ class ProductRepositorySpec extends ObjectBehavior
 
         $groupRepository->hasAttribute(Argument::cetera())->shouldNotBeCalled();
 
-        $this->hasAttributeInVariantGroup($product, 'attribute_code')->shouldReturn(false);
+        $this->hasAttributeInVariantGroup(10, 'attribute_code')->shouldReturn(false);
     }
 
     function it_checks_if_the_product_has_an_attribute_in_its_family(
         $em,
-        ProductInterface $product,
         QueryBuilder $queryBuilder,
         AbstractQuery $query
     ) {
-        $product->getId()->willReturn(10);
-
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('p')->willReturn($queryBuilder);
         $queryBuilder->from(Argument::type('string'), "p")->willReturn($queryBuilder);
@@ -235,10 +226,10 @@ class ProductRepositorySpec extends ObjectBehavior
         $queryBuilder->getQuery()->willReturn($query);
 
         $query->getArrayResult()->willReturn(['id' => 10]);
-        $this->hasAttributeInFamily($product, 'attribute_code')->shouldReturn(true);
+        $this->hasAttributeInFamily(10, 'attribute_code')->shouldReturn(true);
 
         $query->getArrayResult()->willReturn([]);
-        $this->hasAttributeInFamily($product, 'attribute_code')->shouldReturn(false);
+        $this->hasAttributeInFamily(10, 'attribute_code')->shouldReturn(false);
     }
 
     function it_count_all_products($em, QueryBuilder $queryBuilder, AbstractQuery $query)
