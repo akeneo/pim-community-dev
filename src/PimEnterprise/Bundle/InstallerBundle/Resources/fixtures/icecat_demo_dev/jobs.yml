@@ -464,4 +464,43 @@ jobs:
         configuration:
             filePath:      /tmp/variant_group.xlsx
             uploadAllowed: true
-
+    xlsx_family_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_export
+        label:     Demo XLSX family export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/family.xlsx
+    xlsx_category_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_category_export
+        label:     Demo XLSX category export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/category.xlsx
+    xlsx_attribute_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_export
+        label:     Demo XLSX attribute export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/attribute.xlsx
+    xlsx_option_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_option_export
+        label:     Demo XLSX attribute option export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/option.xlsx
+    xlsx_association_type_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_association_type_export
+        label:     Demo XLSX association type export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/association_type.xlsx

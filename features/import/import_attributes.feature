@@ -17,11 +17,11 @@ Feature: Import attributes
       pim_assets_collection;empty_attribute;;info;0;0;;;;assets;;
       pim_catalog_text;other_attribute;;info;0;0;;;;;1;1
       """
-    And the following job "footwear_attribute_import" configuration:
+    And the following job "csv_footwear_attribute_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_attribute_import" import job page
+    When I am on the "csv_footwear_attribute_import" import job page
     And I launch the import job
-    And I wait for the "footwear_attribute_import" job to finish
+    And I wait for the "csv_footwear_attribute_import" job to finish
     Then I should see "skipped 3"
     Then I should see "The assets collection attribute can not be scopable nether localizable: [scopable_localizable_attribute]"
     And I should see "The assets collection attribute can not be scopable nether localizable: [scopable_attribute]"
