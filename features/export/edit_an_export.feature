@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit an export
   In order to manage existing export jobs
   As an administrator
@@ -16,7 +17,6 @@ Feature: Edit an export
     And I press the "Save" button
     Then I should see "My export"
 
-  @javascript
   Scenario: Successfully update export job configuration
     Given I am on the "footwear_product_export" export job edit page
     Then I should see the Channel, Delimiter, Enclosure, With header, File path and Decimal separator fields
