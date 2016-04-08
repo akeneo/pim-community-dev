@@ -2,6 +2,7 @@ parameters:
     pim_catalog.filter.chained.class:                        Pim\Bundle\CatalogBundle\Filter\ChainedFilter
     pim_enrich.filter.product_value.locale.class:            Pim\Bundle\CatalogBundle\Filter\ProductValueLocaleFilter
     pim_enrich.filter.product_value.channel.class:           Pim\Bundle\CatalogBundle\Filter\ProductValueChannelFilter
+    pim_enrich.filter.product_value.currency.class:          Pim\Bundle\CatalogBundle\Filter\ProductValueCurrencyFilter
     pim_catalog.comparator.filter.product.class:             Pim\Component\Catalog\Comparator\Filter\ProductFilter
     pim_catalog.comparator.filter.product_association.class: Pim\Component\Catalog\Comparator\Filter\ProductAssociationFilter
 
@@ -22,6 +23,11 @@ services:
             - { name: pim_catalog.filter.collection, type: pim.transform.product_value.flat }
             - { name: pim_catalog.filter.collection, type: pim.transform.product_value.structured }
             - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
+
+    pim_enrich.filter.product_value.currency:
+        class: %pim_enrich.filter.product_value.currency.class%
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.product_value.view }
 
     pim_catalog.comparator.filter.product:
         class: %pim_catalog.comparator.filter.product.class%

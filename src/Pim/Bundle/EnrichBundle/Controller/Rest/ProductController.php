@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -54,7 +55,7 @@ class ProductController
     /** @var UserContext */
     protected $userContext;
 
-    /** @var ObjectFilterInterface */
+    /** @var ObjectFilterInterface | CollectionFilterInterface */
     protected $objectFilter;
 
     /** @var CollectionFilterInterface */
@@ -65,6 +66,9 @@ class ProductController
 
     /** @var ProductBuilderInterface */
     protected $productBuilder;
+
+    /** @var CurrencyRepositoryInterface */
+    protected $currencyRepository;
 
     /**
      * @param ProductRepositoryInterface   $productRepository
@@ -78,6 +82,7 @@ class ProductController
      * @param CollectionFilterInterface    $productEditDataFilter
      * @param RemoverInterface             $productRemover
      * @param ProductBuilderInterface      $productBuilder
+     * @param CurrencyRepositoryInterface  $currencyRepository
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -90,7 +95,8 @@ class ProductController
         ObjectFilterInterface $objectFilter,
         CollectionFilterInterface $productEditDataFilter,
         RemoverInterface $productRemover,
-        ProductBuilderInterface $productBuilder
+        ProductBuilderInterface $productBuilder,
+        CurrencyRepositoryInterface $currencyRepository
     ) {
         $this->productRepository     = $productRepository;
         $this->attributeRepository   = $attributeRepository;
@@ -103,6 +109,7 @@ class ProductController
         $this->productEditDataFilter = $productEditDataFilter;
         $this->productRemover        = $productRemover;
         $this->productBuilder        = $productBuilder;
+        $this->currencyRepository    = $currencyRepository;
     }
 
     /**
@@ -135,6 +142,7 @@ class ProductController
         $this->productBuilder->addMissingAssociations($product);
         $channels = array_keys($this->userContext->getChannelChoicesWithUserChannel());
         $locales  = $this->userContext->getUserLocaleCodes();
+        $currencies = $this->currencyRepository->getActivatedCurrencyCodes();
 
         return new JsonResponse(
             $this->normalizer->normalize(
@@ -143,6 +151,7 @@ class ProductController
                 [
                     'locales'     => $locales,
                     'channels'    => $channels,
+                    'currencies'  => $currencies,
                     'filter_type' => 'pim.internal_api.product_value.view'
                 ]
             )
@@ -184,7 +193,10 @@ class ProductController
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
 
-            return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
+            $currencies = $this->currencyRepository->getActivatedCurrencyCodes();
+            return new JsonResponse($this->normalizer->normalize($product, 'internal_api', [
+                'currencies' => $currencies
+            ]));
         } else {
             $errors = [
                 'values' => $this->normalizer->normalize($violations, 'internal_api')
@@ -257,6 +269,11 @@ class ProductController
     {
         $product = $this->productRepository->findOneByWithValues($id);
         $product = $this->objectFilter->filterObject($product, 'pim.internal_api.product.view') ? null : $product;
+
+        $currencies = $this->currencyRepository->getActivatedCurrencyCodes();
+        $this->objectFilter->filterCollection($product->getValues(), 'pim.internal_api.product_value.view', [
+            'currencies' => $currencies
+        ]);
 
         if (!$product) {
             throw new NotFoundHttpException(
