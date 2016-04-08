@@ -7,6 +7,7 @@ Feature: Edit an import
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
 
+  @javascript
   Scenario: Successfully edit an import job
     Given I am on the "csv_footwear_product_import" import job edit page
     Then I should see the Code field
@@ -19,7 +20,7 @@ Feature: Edit an import
   @javascript
   Scenario: Successfully update import job configuration
     Given I am on the "csv_footwear_product_import" import job edit page
-    Then I should see the File, Allow file upload, Delimiter, Enclosure, Escape, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator and Date format fields
+    Then I should see the File, Allow file upload, Delimiter, Enclosure, Escape, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator, Date format fields
     When I fill in the following information:
       | File               | file.csv   |
       | Delimiter          | \|         |
