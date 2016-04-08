@@ -52,8 +52,9 @@ class CommentNormalizer extends SerializerAwareNormalizer implements NormalizerI
             'resourceName' => $comment->getResourceName(),
             'resourceId'   => $comment->getResourceId(),
             'author'       => [
-                'username' => $comment->getAuthor()->getUsername(),
-                'fullName' => $comment->getAuthor()->getFirstName() . ' ' . $comment->getAuthor()->getLastName()
+                'username'        => $comment->getAuthor()->getUsername(),
+                'fullName'        => $comment->getAuthor()->getFirstName() . ' ' . $comment->getAuthor()->getLastName(),
+                'profile_picture' => $comment->getAuthor()->getImagePath()
             ],
             'body'         => $comment->getBody(),
             'created'      => $this->datetimePresenter->present($comment->getCreatedAt(), $context),
