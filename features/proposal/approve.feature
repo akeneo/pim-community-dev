@@ -15,7 +15,7 @@ Feature: Approve draft
     Given I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                               | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "handmade", "data": 1, "locale": null, "scope": null}] | {}     | Mary     |
-    And I send draft "akeneo_tshirt" created by "Mary" for approval"
+    And I send draft "akeneo_tshirt" created by "Mary" for approval
     Then I approve the proposal of the product "akeneo_tshirt" created by user "Mary"
 
   Scenario: Failed to approve a draft with a not found user
