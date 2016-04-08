@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit a channel
   In order to manage existing channels in the catalog
   As an administrator
@@ -26,7 +27,7 @@ Feature: Edit a channel
       | title   | Are you sure you want to leave this page?                    |
       | content | You will lose changes to the channel if you leave this page. |
 
-  @javascript @skip
+  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am logged in as "Peter"
     And  I am on the "mobile" channel page
@@ -34,7 +35,6 @@ Feature: Edit a channel
       | Default label | My mobile |
     Then I should see "There are unsaved changes."
 
-  @javascript
   Scenario: Successfully edit a channel to enable a locale and disable unused locales when deleting a channel
     Given I am logged in as "Peter"
     And  I am on the "tablet" channel page
