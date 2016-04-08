@@ -11,7 +11,7 @@ Feature: Import XLSX products
       | CROSS | Bag Cross | RELATED |
     And I am logged in as "Julia"
 
-  Scenario: Successfully import a xlsx file of products
+  Scenario: Successfully import an XLSX file of products
     Given the following XLSX file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-tablet
@@ -37,7 +37,7 @@ Feature: Import XLSX products
     And the english tablet name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-002" should be "Pellentesque habitant morbi tristique senectus et netus et malesuada fames"
 
-  Scenario: Successfully import a XLSX file of product with carriage return in product description
+  Scenario: Successfully import an XLSX file of product with carriage return in product description
     Given I am on the "xlsx_footwear_product_import" import job page
     When I upload and import the file "product_with_carriage_return.xlsx"
     And I wait for the "xlsx_footwear_product_import" job to finish
@@ -59,7 +59,7 @@ Feature: Import XLSX products
     Then there should be 2 products
 
   @jira https://akeneo.atlassian.net/browse/PIM-5696
-  Scenario: Successfully import products with numeric values in text attributes
+  Scenario: Successfully import an XLSX file of products with numeric values in text attributes
     Given the following XLSX file to import:
       """
       sku;family;groups;name-en_US;description-en_US-tablet
@@ -73,4 +73,3 @@ Feature: Import XLSX products
     Then there should be 1 product
     And the english tablet name of "123" should be "456"
     And the english tablet description of "123" should be "7890"
-

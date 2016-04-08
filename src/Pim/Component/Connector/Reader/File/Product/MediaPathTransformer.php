@@ -37,6 +37,10 @@ class MediaPathTransformer
         $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
 
         foreach ($data as $code => $value) {
+            if (!is_string($value)) {
+                continue;
+            }
+
             $pos = strpos($code, '-');
             $attributeCode = false !== $pos ? substr($code, 0, $pos) : $code;
             $value = trim($value);
