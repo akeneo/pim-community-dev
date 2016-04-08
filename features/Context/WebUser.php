@@ -9,6 +9,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -2152,7 +2153,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string|null $not
+     * @param string|null $shouldNotSee
      * @param string      $locale
      *
      * @Then /^I should (not )?see (.+) locale option$/
@@ -2161,23 +2162,14 @@ class WebUser extends RawMinkContext
      *
      * @return bool
      */
-    public function iShouldSeeLocaleOption($not, $locale)
+    public function iShouldSeeLocaleOption($shouldNotSee, $locale)
     {
-        $selectNames = ['system-locale', 'pim_user_user_form[uiLocale]'];
-        $field = null;
-        foreach ($selectNames as $selectName) {
-            $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);
-        }
-        if (null === $field) {
-            throw new \Exception(sprintf('Could not find field with name %s', json_encode($selectNames)));
-        }
-
-        $options = $field->findAll('css', 'option');
+        $options = $this->getLocaleField()->findAll('css', 'option');
 
         foreach ($options as $option) {
             $text = $option->getHtml();
             if ($text === $locale) {
-                if ($not) {
+                if ($shouldNotSee) {
                     throw new \Exception(sprintf('Should not see %s locale', $locale));
                 } else {
                     return true;
@@ -2186,6 +2178,26 @@ class WebUser extends RawMinkContext
         }
 
         return true;
+    }
+
+    /**
+     * Get the locale field
+     *
+     * @return NodeElement|null
+     *
+     * @throws ElementNotFoundException
+     */
+    protected function getLocaleField()
+    {
+        foreach (['system-locale', 'pim_user_user_form[uiLocale]'] as $selectName) {
+            try {
+                return $this->getCurrentPage()->findField($selectName);
+            } catch (TimeoutException $exception) {
+                // Try the other selectors
+            }
+        }
+
+        throw new ElementNotFoundException('Could not find any locale field.');
     }
 
     /**
