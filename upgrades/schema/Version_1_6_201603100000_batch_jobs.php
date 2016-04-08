@@ -23,9 +23,7 @@ class Version_1_6_201603100000_batch_jobs extends AbstractMigration
             INSERT INTO akeneo_batch_job_instance
                 (`code`, `label`, `alias`, `status`, `connector`, `rawConfiguration`, `type`)
             VALUES
-                ('xlsx_product_export', 'Demo XLSX product export', 'xlsx_product_export', 0, 'Akeneo XLSX Connector', 'a:5:{s:10:"withHeader";b:1;s:8:"filePath";s:17:"/tmp/product.xlsx";s:7:"channel";s:6:"mobile";s:16:"decimalSeparator";s:1:".";s:10:"dateFormat";s:10:"yyyy-MM-dd";}', 'export'),
                 ('xlsx_product_quick_export', 'XLSX product quick export', 'xlsx_product_quick_export', 0, 'Akeneo Mass Edit Connector', 'a:2:{s:10:"withHeader";b:1;s:8:"filePath";s:53:"/tmp/products_export_%locale%_%scope%_%datetime%.xlsx";}', 'quick_export'),
-                ('xlsx_published_product_export', 'Demo XLSX published product export', 'xlsx_published_product_export', 0, 'Akeneo XLSX Connector', 'a:5:{s:10:"withHeader";b:1;s:8:"filePath";s:27:"/tmp/published-product.xlsx";s:7:"channel";s:6:"mobile";s:16:"decimalSeparator";s:1:".";s:10:"dateFormat";s:10:"yyyy-MM-dd";}', 'export'),
                 ('xlsx_published_product_quick_export', 'XLSX published product quick export', 'xlsx_published_product_quick_export', 0, 'Akeneo Mass Edit Connector', 'a:2:{s:10:"withHeader";b:1;s:8:"filePath";s:63:"/tmp/published-products_export_%locale%_%scope%_%datetime%.xlsx";}', 'quick_export')
             ;
 SQL

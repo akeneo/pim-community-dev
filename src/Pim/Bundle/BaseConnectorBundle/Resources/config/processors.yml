@@ -42,6 +42,7 @@ services:
             - %upload_dir%
             - 'csv'
 
+    # @deprecated will be removed in 1.7 use @pim_connector.processor.normalization.family.flat
     pim_base_connector.processor.normalization.family.flat:
         class: %pim_base_connector.processor.normalization.family.class%
         arguments:

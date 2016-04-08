@@ -163,8 +163,8 @@ connector:
                     title:     pim_base_connector.jobs.csv_attribute_export.export.title
                     services:
                         reader:    pim_base_connector.reader.orm.attribute
-                        processor: pim_base_connector.processor.csv_serializer.homogeneous
-                        writer:    pim_connector.writer.file.simple_file
+                        processor: pim_connector.processor.normalization.attribute.flat
+                        writer:    pim_connector.writer.file.csv_attribute
         csv_attribute_option_export:
             title: pim_base_connector.jobs.csv_attribute_option_export.title
             type:  export

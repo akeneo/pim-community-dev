@@ -102,28 +102,6 @@ class ExportProfilesContext extends PimContext
     }
 
     /**
-     * @param string    $code
-     * @param TableNode $exectedLines
-     *
-     * @Then /^exported xlsx file of "([^"]*)" should contain:$/
-     *
-     * @throws ExpectationException
-     * @throws \Exception
-     */
-    public function exportedXlsxFileOfShouldContain($code, TableNode $exectedLines)
-    {
-        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
-
-        $reader = ReaderFactory::create(Type::XLSX);
-        $reader->open($path);
-        $sheet = current(iterator_to_array($reader->getSheetIterator()));
-        $actualLines = iterator_to_array($sheet->getRowIterator());
-        $reader->close();
-
-        $this->compareFile(array_values($exectedLines->getRows()), array_values($actualLines), $path);
-    }
-
-    /**
      * @param JobInstance $job
      *
      * @When /^I launch the ("([^"]*)" (import|export) job)$/

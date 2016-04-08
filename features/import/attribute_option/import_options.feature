@@ -18,11 +18,11 @@ Feature: Import options
       brand;Nike;Nike
       brand;Caterpillar;Caterpillar
       """
-    And the following job "footwear_option_import" configuration:
+    And the following job "csv_footwear_option_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_option_import" import job page
+    When I am on the "csv_footwear_option_import" import job page
     And I launch the import job
-    And I wait for the "footwear_option_import" job to finish
+    And I wait for the "csv_footwear_option_import" job to finish
     Then there should be the following options:
       | attribute | code        | label-en_US |
       | brand     | Converse    | Converse    |
@@ -42,11 +42,11 @@ Feature: Import options
       attribute;code;label-en_US
       brand;;Converse
       """
-    And the following job "footwear_option_import" configuration:
+    And the following job "csv_footwear_option_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_option_import" import job page
+    When I am on the "csv_footwear_option_import" import job page
     And I launch the import job
-    And I wait for the "footwear_option_import" job to finish
+    And I wait for the "csv_footwear_option_import" job to finish
     Then I should see "skipped 1"
     And I should see "code: This value should not be blank"
 
@@ -61,11 +61,11 @@ Feature: Import options
       attribute;code;label-en_US
       unknown;option_code;Converse
       """
-    And the following job "footwear_option_import" configuration:
+    And the following job "csv_footwear_option_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_option_import" import job page
+    When I am on the "csv_footwear_option_import" import job page
     And I launch the import job
-    And I wait for the "footwear_option_import" job to finish
+    And I wait for the "csv_footwear_option_import" job to finish
     Then I should see "skipped 1"
     And I should see "Attribute \"unknown\" does not exist"
 
@@ -134,11 +134,11 @@ Feature: Import options
       brand;30;Nike
       brand;04;Caterpillar
       """
-    And the following job "footwear_option_import" configuration:
+    And the following job "csv_footwear_option_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_option_import" import job page
+    When I am on the "csv_footwear_option_import" import job page
     And I launch the import job
-    And I wait for the "footwear_option_import" job to finish
+    And I wait for the "csv_footwear_option_import" job to finish
     Then there should be the following options:
       | attribute | code | label-en_US |
       | brand     | 1    | Converse    |

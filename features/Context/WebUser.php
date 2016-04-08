@@ -12,6 +12,8 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Box\Spout\Common\Type;
+use Box\Spout\Reader\ReaderFactory;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;

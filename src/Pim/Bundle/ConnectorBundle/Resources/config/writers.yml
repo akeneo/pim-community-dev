@@ -174,6 +174,12 @@ services:
         arguments:
             - '@pim_connector.writer.file.file_exporter'
 
+    pim_connector.writer.file.csv_attribute:
+        class: %pim_connector.writer.file.csv.class%
+        arguments:
+             - '@pim_connector.writer.file.file_path_resolver'
+             - '@pim_connector.writer.file.product.flat_item_buffer'
+
     pim_connector.writer.file.xlsx_product:
         class: %pim_connector.writer.file.xlsx_product.class%
         arguments:
@@ -200,3 +206,32 @@ services:
              - '@pim_connector.writer.file.product.flat_item_buffer'
              - '@pim_connector.writer.file.product.bulk_file_exporter'
 
+    pim_connector.writer.file.xlsx_family:
+        class: %pim_connector.writer.file.xlsx_simple.class%
+        arguments:
+             - '@pim_connector.writer.file.file_path_resolver'
+             - '@pim_connector.writer.file.product.flat_item_buffer'
+
+    pim_connector.writer.file.xlsx_category:
+        class: %pim_connector.writer.file.xlsx_simple.class%
+        arguments:
+             - '@pim_connector.writer.file.file_path_resolver'
+             - '@pim_connector.writer.file.product.flat_item_buffer'
+
+    pim_connector.writer.file.xlsx_attribute:
+        class: %pim_connector.writer.file.xlsx_simple.class%
+        arguments:
+             - '@pim_connector.writer.file.file_path_resolver'
+             - '@pim_connector.writer.file.product.flat_item_buffer'
+
+    pim_connector.writer.file.xlsx_attribute_option:
+        class: %pim_connector.writer.file.xlsx_simple.class%
+        arguments:
+             - '@pim_connector.writer.file.file_path_resolver'
+             - '@pim_connector.writer.file.product.flat_item_buffer'
+
+    pim_connector.writer.file.xlsx_association_type:
+        class: %pim_connector.writer.file.xlsx_simple.class%
+        arguments:
+             - '@pim_connector.writer.file.file_path_resolver'
+             - '@pim_connector.writer.file.product.flat_item_buffer'

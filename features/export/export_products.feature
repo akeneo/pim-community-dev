@@ -202,7 +202,7 @@ Feature: Export products
 
   Scenario: Export attributes with full numeric codes
     Given a "footwear" catalog configuration
-    And the following job "footwear_product_export" configuration:
+    And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
     And the following products:
       | sku      | family   | categories        | price          | size | color    | name-en_US | 123 |
@@ -210,10 +210,10 @@ Feature: Export products
       | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    | bbb |
       | SNKRS-1C | sneakers | summer_collection | 55 EUR, 75 USD | 45   | charcoal | Model 1    | ccc |
     And I am logged in as "Julia"
-    When I am on the "footwear_product_export" export job page
+    When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
-    And I wait for the "footwear_product_export" job to finish
-    Then exported file of "footwear_product_export" should contain:
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
     """
     sku;123;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
     SNKRS-1B;aaa;summer_collection;black;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;

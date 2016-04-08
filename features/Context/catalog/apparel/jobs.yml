@@ -69,7 +69,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/products.csv
-    footwear_family_export:
+    csv_apparel_family_export:
         connector: Akeneo CSV Connector
         alias:     csv_family_export
         label:     Footwear family export

@@ -8,7 +8,7 @@ Feature: Edit an export
     And I am logged in as "Peter"
 
   Scenario: Successfully edit an export job
-    Given I am on the "footwear_product_export" export job edit page
+    Given I am on the "csv_footwear_product_export" export job edit page
     Then I should see the Code field
     And the field Code should be disabled
     When I fill in the following information:
@@ -18,7 +18,7 @@ Feature: Edit an export
 
   @javascript
   Scenario: Successfully update export job configuration
-    Given I am on the "footwear_product_export" export job edit page
+    Given I am on the "csv_footwear_product_export" export job edit page
     Then I should see the Channel, Delimiter, Enclosure, With header, File path and Decimal separator fields
     When I fill in the following information:
       | Channel           | Tablet     |
@@ -38,7 +38,7 @@ Feature: Edit an export
     And I should see the text "Date format yyyy-MM-dd"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
-    Given I am on the "footwear_product_export" export job edit page
+    Given I am on the "csv_footwear_product_export" export job edit page
     When I fill in the following information:
       | Label | My export |
     When I click on the Akeneo logo
@@ -48,7 +48,7 @@ Feature: Edit an export
 
   @skip
   Scenario: Successfully display a message when there are unsaved changes
-    Given I am on the "footwear_product_export" export job edit page
+    Given I am on the "csv_footwear_product_export" export job edit page
     When I fill in the following information:
       | Label | My export |
     Then I should see "There are unsaved changes."

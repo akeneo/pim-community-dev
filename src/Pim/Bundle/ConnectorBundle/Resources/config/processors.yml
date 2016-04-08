@@ -219,3 +219,33 @@ services:
             - %pim_catalog.localization.date_formats%
             - %upload_dir%
             - 'flat'
+
+    pim_connector.processor.normalization.family.flat:
+        class: %pim_connector.processor.normalization.simple.class%
+        arguments:
+            - '@pim_serializer.normalizer.flat.family'
+            - 'flat'
+
+    pim_connector.processor.normalization.category.flat:
+        class: %pim_connector.processor.normalization.simple.class%
+        arguments:
+            - '@pim_serializer.normalizer.flat.category'
+            - 'flat'
+
+    pim_connector.processor.normalization.attribute.flat:
+        class: %pim_connector.processor.normalization.simple.class%
+        arguments:
+            - '@pim_serializer.normalizer.flat.attribute'
+            - 'flat'
+
+    pim_connector.processor.normalization.attribute_option.flat:
+          class: %pim_connector.processor.normalization.simple.class%
+          arguments:
+              - '@pim_serializer.normalizer.flat.option'
+              - 'flat'
+
+    pim_connector.processor.normalization.association_type.flat:
+          class: %pim_connector.processor.normalization.simple.class%
+          arguments:
+              - '@pim_serializer.normalizer.flat.association_type'
+              - 'flat'

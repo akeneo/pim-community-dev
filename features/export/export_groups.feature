@@ -6,15 +6,15 @@ Feature: Export groups
   @javascript
   Scenario: Successfully export groups
     Given a "footwear" catalog configuration
-    And the following job "footwear_group_export" configuration:
+    And the following job "csv_footwear_group_export" configuration:
       | filePath | %tmp%/group_export/group_export.csv |
     And I am logged in as "Julia"
-    And I am on the "footwear_group_export" export job page
+    And I am on the "csv_footwear_group_export" export job page
     When I launch the export job
-    And I wait for the "footwear_group_export" job to finish
+    And I wait for the "csv_footwear_group_export" job to finish
     Then I should see "Read 1"
     And I should see "Written 1"
-    And exported file of "footwear_group_export" should contain:
+    And exported file of "csv_footwear_group_export" should contain:
     """
     code;type;label-en_US
     similar_boots;RELATED;"Similar boots"
