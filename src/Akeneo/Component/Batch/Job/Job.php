@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Step\StepInterface;
+use Akeneo\Component\Batch\Step\AbstractStep;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -33,7 +33,7 @@ class Job implements JobInterface
     /* @var JobRepositoryInterface */
     protected $jobRepository;
 
-    /** @var array */
+    /** @var AbstractStep[] */
     protected $steps;
 
     /** @var string */
@@ -49,8 +49,8 @@ class Job implements JobInterface
      */
     public function __construct($name)
     {
-        $this->name   = $name;
-        $this->steps  = array();
+        $this->name = $name;
+        $this->steps = [];
     }
 
     /**
@@ -107,13 +107,17 @@ class Job implements JobInterface
      * Public setter for the steps in this job. Overrides any calls to
      * addStep(Step).
      *
-     * @param array $steps the steps to execute
+     * @param AbstractStep[] $steps the steps to execute
      *
      * @return Job
      */
     public function setSteps(array $steps)
     {
-        $this->steps = $steps;
+        $this->steps = [];
+        
+        foreach ($steps as $key => $step) {
+            $this->addStep($key, $step);
+        }
 
         return $this;
     }
@@ -124,7 +128,7 @@ class Job implements JobInterface
      *
      * @param string $stepName
      *
-     * @return StepInterface the Step
+     * @return AbstractStep
      */
     public function getStep($stepName)
     {
@@ -144,7 +148,7 @@ class Job implements JobInterface
      */
     public function getStepNames()
     {
-        $names = array();
+        $names = [];
         foreach ($this->steps as $step) {
             $names[] = $step->getName();
         }
@@ -155,10 +159,10 @@ class Job implements JobInterface
     /**
      * Convenience method for adding a single step to the job.
      *
-     * @param string        $stepName the name of the step
-     * @param StepInterface $step     a {@link Step} to add
+     * @param string       $stepName the name of the step
+     * @param AbstractStep $step     a {@link Step} to add
      */
-    public function addStep($stepName, StepInterface $step)
+    public function addStep($stepName, AbstractStep $step)
     {
         $this->steps[] = $step;
     }
@@ -194,7 +198,7 @@ class Job implements JobInterface
      */
     public function getConfiguration()
     {
-        $result = array();
+        $result = [];
         foreach ($this->steps as $step) {
             foreach ($step->getConfiguration() as $key => $value) {
                 if (!isset($result[$key]) || $value) {
@@ -279,6 +283,7 @@ class Job implements JobInterface
     /**
      * Run the specified job, handling all listener and repository calls, and
      * delegating the actual processing to {@link #doExecute(JobExecution)}.
+     *
      * @param JobExecution $jobExecution
      *
      * @see Job#execute(JobExecution)
@@ -376,14 +381,15 @@ class Job implements JobInterface
 
     /**
      * Handle a step and return the execution for it.
-     * @param StepInterface $step         Step
-     * @param JobExecution  $jobExecution Job execution
+     *
+     * @param AbstractStep $step         Step
+     * @param JobExecution $jobExecution Job execution
      *
      * @throws JobInterruptedException
      *
      * @return StepExecution
      */
-    protected function handleStep(StepInterface $step, JobExecution $jobExecution)
+    protected function handleStep(AbstractStep $step, JobExecution $jobExecution)
     {
         if ($jobExecution->isStopping()) {
             throw new JobInterruptedException("JobExecution interrupted.");
@@ -401,7 +407,8 @@ class Job implements JobInterface
         }
 
         if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPING
-            || $stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
+            || $stepExecution->getStatus()->getValue() == BatchStatus::STOPPED
+        ) {
             $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
             $this->jobRepository->updateJobExecution($jobExecution);
             throw new JobInterruptedException("Job interrupted by step execution");
@@ -443,8 +450,6 @@ class Job implements JobInterface
      */
     private function getDefaultExitStatusForFailure(\Exception $e)
     {
-        $exitStatus = new ExitStatus();
-
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
             $exitStatus->addExitDescription(get_class(new JobInterruptedException()));
@@ -463,7 +468,7 @@ class Job implements JobInterface
      * @param JobExecution $jobExecution Execution of the job
      * @param string       $status       Status of the execution
      *
-     * @return an {@link ExitStatus}
+     * @return ExitStatus an {@link ExitStatus}
      */
     private function updateStatus(JobExecution $jobExecution, $status)
     {
