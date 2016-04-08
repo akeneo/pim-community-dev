@@ -17,7 +17,7 @@ Feature: Revert product attributes to a previous version
     And I save the product
     And the history of the product "jean" has been built
     And I open the history
-    Then there should be 2 updates
+    Then I should see 2 versions in the history
     And I should see history:
       | version | property     | value    |
       | 2       | Manufacturer | Desigual |
@@ -25,7 +25,7 @@ Feature: Revert product attributes to a previous version
       | 1       | family       | pants    |
       | 1       | enabled      | 1        |
     When I revert the product version number 1
-    Then there should be 3 updates
+    Then I should see 3 versions in the history
     Then I should see history:
       | version | property     | value    |
       | 3       | Manufacturer |          |
