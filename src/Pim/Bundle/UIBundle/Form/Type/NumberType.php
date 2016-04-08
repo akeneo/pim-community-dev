@@ -8,7 +8,6 @@ use Akeneo\Component\Localization\Validator\Constraints\NumberFormat;
 use Akeneo\Component\Localization\Validator\Constraints\NumberFormatValidator;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Bundle\LocalizationBundle\Form\DataTransformer\NumberLocalizerTransformer;
-use Pim\Bundle\UIBundle\Form\Transformer\NumberTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -57,7 +56,6 @@ class NumberType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addViewTransformer(new NumberTransformer());
         $builder->addModelTransformer(new NumberLocalizerTransformer($this->localizer, $options['locale_options']));
     }
 

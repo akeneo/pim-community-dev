@@ -16,6 +16,19 @@ jobs:
             groupsColumn:       groups
             realTimeVersioning: true
             decimalSeparator:   .
+    xlsx_footwear_product_import_fr:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_import
+        label:     XLSX footwear product import FR
+        type:      import
+        configuration:
+            uploadAllowed:      true
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator:   ,
     xlsx_footwear_product_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_import

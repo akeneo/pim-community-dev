@@ -76,8 +76,12 @@ class NumberLocalizer implements LocalizerInterface
      */
     public function delocalize($number, array $options = [])
     {
-        if (null === $number || '' === $number) {
+        if (null === $number || '' === $number || is_float($number)) {
             return $number;
+        }
+
+        if (is_int($number)) {
+            return (float) $number;
         }
 
         $matchesNumber = $this->getMatchesNumber($number);
@@ -95,7 +99,7 @@ class NumberLocalizer implements LocalizerInterface
      */
     public function validate($number, $attributeCode, array $options = [])
     {
-        if (null === $number || ''  === $number) {
+        if (null === $number || ''  === $number || is_int($number) || is_float($number)) {
             return null;
         }
 
