@@ -431,13 +431,10 @@ class JobProfileController
     {
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EXECUTE, new GenericEvent($jobInstance));
 
-        $rawConfig = $isUpload
-            ? addslashes(json_encode($jobInstance->getJob()->getConfiguration()))
-            : '';
-
+        $configuration = $jobInstance->getJob()->getConfiguration();
+        $configuration['send_email'] = true;
         $jobExecution = $this->simpleJobLauncher
-            ->setConfig(['email' => true])
-            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $rawConfig);
+            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
 
         $this->eventDispatcher->dispatch(JobProfileEvents::POST_EXECUTE, new GenericEvent($jobInstance));
 

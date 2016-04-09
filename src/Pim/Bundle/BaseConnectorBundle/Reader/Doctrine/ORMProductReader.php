@@ -7,12 +7,10 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
-use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConstraint;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Reads products one by one
@@ -23,70 +21,43 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ORMProductReader extends AbstractConfigurableStepElement implements ProductReaderInterface
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $limit = 10;
 
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank(groups={"Execution"})
-     * @ChannelConstraint
-     */
+    /** @var string */
     protected $channel;
 
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /**
-     * @var AbstractQuery
-     */
+    /** @var AbstractQuery */
     protected $query;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $offset = 0;
 
-    /**
-     * @var null|integer[]
-     */
+    /** @var null|integer[] */
     protected $ids = null;
 
-    /**
-     * @var \ArrayIterator
-     */
+    /** @var \ArrayIterator */
     protected $products;
 
-    /**
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     protected $entityManager;
 
-    /**
-     * @var ProductRepositoryInterface
-     */
+    /** @var ProductRepositoryInterface */
     protected $repository;
 
-    /**
-     * @var CompletenessManager
-     */
+    /** @var CompletenessManager */
     protected $completenessManager;
 
-    /**
-     * @var MetricConverter
-     */
+    /** @var MetricConverter */
     protected $metricConverter;
 
-    /**
-     * @var StepExecution
-     */
+    /** @var StepExecution */
     protected $stepExecution;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $missingCompleteness;
 
     /**

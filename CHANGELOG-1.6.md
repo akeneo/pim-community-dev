@@ -163,3 +163,14 @@
 - Remove class `Pim\Component\Connector\Model\JobConfiguration`
 - Remove class `Pim\Component\Connector\Model\JobConfigurationInterface`
 - Removed the `recalculate` and `schedule` option from the `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver` and `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver`
+- Remove methods `setConfig` and `getConfig` from `Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface`
+- Change the method `launch` of `Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface`, `$configuration` is now an array and not a string anymore
+- Remove deprecated method `setName` from `Akeneo\Component\Batch\Job\Job`
+- Remove deprecated classes `Pim\Bundle\BaseConnectorBundle\Step\ValidatorStep` and `Pim\Bundle\BaseConnectorBundle\Validator\Step\CharsetValidator`
+- Remove methods `setEventDispatcher` and `setJobRepository` from `Akeneo\Component\Batch\Job\Job`
+- Add mandatory arguments `Akeneo\Component\Batch\Job\JobRepositoryInterface` and `Symfony\Component\EventDispatcher\EventDispatcherInterface` in constructor of `Akeneo\Component\Batch\Job\Job`
+- Remove methods `setEventDispatcher`, `setJobRepository` and `setName` from `Akeneo\Component\Batch\Step\AbstractStep`
+- Add mandatory arguments `Akeneo\Component\Batch\Job\JobRepositoryInterface` and `Symfony\Component\EventDispatcher\EventDispatcherInterface` in constructor of `Akeneo\Component\Batch\Step\AbstractStep`
+- Remove deprecated `Pim\Bundle\BaseConnectorBundle\Reader\DummyReader`
+- Remove deprecated `Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface`
+- Remove deprecated `Pim\Bundle\BaseConnectorBundle\Validator\Import\SkipImportValidator`

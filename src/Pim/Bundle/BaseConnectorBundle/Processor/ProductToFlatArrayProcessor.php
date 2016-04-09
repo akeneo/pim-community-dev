@@ -5,13 +5,11 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
-use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Process a product to an array
@@ -25,12 +23,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var Serializer */
     protected $serializer;
 
-    /**
-     * @Assert\NotBlank(groups={"Execution"})
-     * @Channel
-     *
-     * @var string Channel code
-     */
+    /** @var string Channel code */
     protected $channel;
 
     /** @var ChannelRepositoryInterface */

@@ -8,7 +8,6 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * An abstract processor to serialize data into csv
@@ -25,20 +24,10 @@ abstract class Processor extends AbstractConfigurableStepElement implements
     ItemProcessorInterface,
     StepExecutionAwareInterface
 {
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={",", ";", "|"}, message="The value must be one of , or ; or |")
-     *
-     * @var string
-     */
+    /** @var string */
     protected $delimiter = ';';
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"""", "'"}, message="The value must be one of "" or '")
-     *
-     * @var string
-     */
+    /** @var string */
     protected $enclosure = '"';
 
     /** @var bool */

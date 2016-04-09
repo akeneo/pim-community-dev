@@ -89,7 +89,10 @@ class ChangeFamilySpec extends ObjectBehavior
         );
 
         $this->getBatchConfig()->shouldReturn(
-            '{\"filters\":[[\"id\",\"IN\",[\"1003\",\"1002\"]]],\"actions\":[{\"field\":\"family\",\"value\":\"amazing_mugs\"}]}'
+            [
+                'filters' => [['id', 'IN', ['1003', '1002']]],
+                'actions' => [['field' => 'family', 'value' => 'amazing_mugs']]
+            ]
         );
     }
 }

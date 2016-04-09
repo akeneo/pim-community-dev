@@ -84,7 +84,10 @@ class ClassifySpec extends ObjectBehavior
         ]);
 
         $this->getBatchConfig()->shouldReturn(
-            '{\"filters\":[[\"id\",\"IN\",[\"49\",\"2\"]]],\"actions\":[{\"field\":\"categories\",\"value\":[\"office_room\",\"bedroom\"]}]}'
+            [
+                'filters' => [['id', 'IN', ['49', '2']]],
+                'actions' => [['field' => 'categories', 'value' => ['office_room', 'bedroom']]]
+            ]
         );
     }
 }

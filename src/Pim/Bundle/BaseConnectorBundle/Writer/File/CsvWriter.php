@@ -5,7 +5,6 @@ namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Write data into a csv file on the filesystem
@@ -18,35 +17,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CsvWriter extends FileWriter implements ArchivableWriterInterface
 {
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={",", ";", "|"}, message="The value must be one of , or ; or |")
-     *
-     * @var string
-     */
+    /** @var string */
     protected $delimiter = ';';
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"""", "'"}, message="The value must be one of "" or '")
-     *
-     * @var string
-     */
+    /** @var string */
     protected $enclosure = '"';
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $withHeader = true;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $writtenFiles = [];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $items = [];
 
     /** @var Filesystem */
