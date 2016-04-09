@@ -50,7 +50,7 @@ class PublishSpec extends ObjectBehavior
         ]);
 
         $this->getBatchConfig()->shouldReturn(
-            '{\"filters\":[[\"id\",\"IN\",[\"100\",\"50\"]]],\"actions\":[]}'
+            ['filters' => [['id', 'IN', ['100', '50']]], 'actions' => []]
         );
     }
 }
