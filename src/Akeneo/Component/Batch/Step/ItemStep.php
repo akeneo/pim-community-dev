@@ -7,6 +7,8 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Model\ConfigurableInterface;
+use Akeneo\Component\Batch\Model\Configuration;
 use Akeneo\Component\Batch\Model\StepExecution;
 
 /**
@@ -131,7 +133,7 @@ class ItemStep extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    public function setConfiguration(array $config)
+    public function configure(Configuration $configuration)
     {
         $stepElements = array(
             $this->reader,
@@ -140,10 +142,21 @@ class ItemStep extends AbstractStep
         );
 
         foreach ($stepElements as $stepElement) {
-            if ($stepElement instanceof AbstractConfigurableStepElement) {
-                $stepElement->setConfiguration($config);
+            if ($stepElement instanceof ConfigurableInterface) {
+                $stepElement->configure($configuration);
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.7, please use ConfigurableInterface::configure
+     */
+    public function setConfiguration(array $config)
+    {
+        $configuration = new Configuration($config);
+        $this->configure($configuration);
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace Pim\Component\Connector\Step;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Model\ConfigurableInterface;
+use Akeneo\Component\Batch\Model\Configuration;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\AbstractStep;
 use Pim\Component\Connector\Item\CharsetValidator;
@@ -50,13 +52,22 @@ class ValidatorStep extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    public function setConfiguration(array $config)
+    public function configure(Configuration $configuration)
     {
         foreach ($this->getConfigurableStepElements() as $stepElement) {
-            if ($stepElement instanceof AbstractConfigurableStepElement) {
-                $stepElement->setConfiguration($config);
+            if ($stepElement instanceof ConfigurableInterface) {
+                $stepElement->configure($configuration);
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConfiguration(array $config)
+    {
+        $configuration = new Configuration($config);
+        $this->configure($configuration);
     }
 
     /**

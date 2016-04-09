@@ -3,6 +3,7 @@
 namespace Akeneo\Component\Batch\Step;
 
 use Akeneo\Component\Batch\Job\JobInterruptedException;
+use Akeneo\Component\Batch\Model\ConfigurableInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 
 /**
@@ -18,7 +19,7 @@ use Akeneo\Component\Batch\Model\StepExecution;
  *
  * TODO: this interface should not enforce step configuration, not the same concern!
  */
-interface StepInterface
+interface StepInterface extends ConfigurableInterface
 {
     /**
      * @return string The name of this step
@@ -47,6 +48,8 @@ interface StepInterface
      * Set the configuration for the step
      *
      * @param array $config
+     *
+     * @deprecated will be removed in 1.7, please use ConfigurableInterface::configure
      */
     public function setConfiguration(array $config);
 

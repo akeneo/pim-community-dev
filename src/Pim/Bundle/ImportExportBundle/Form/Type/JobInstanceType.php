@@ -163,6 +163,15 @@ class JobInstanceType extends AbstractType
     {
         $builder
             ->add(
+                'configuration',
+                'text',
+                [
+                    'property_path' => 'label'
+                ]
+            );
+        /*
+        $builder
+            ->add(
                 'job',
                 'pim_import_export_job_configuration',
                 [
@@ -172,7 +181,7 @@ class JobInstanceType extends AbstractType
             )
             ->get('job')
             ->addEventSubscriber(new RemoveDuplicateJobConfigurationSubscriber());
-
+        */
         return $this;
     }
 

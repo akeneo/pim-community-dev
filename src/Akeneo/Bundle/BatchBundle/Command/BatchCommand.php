@@ -76,7 +76,6 @@ class BatchCommand extends ContainerAwareCommand
         $job = $this->getConnectorRegistry()->getJob($jobInstance);
         $jobInstance->setJob($job);
 
-        // Override job configuration
         if ($config = $input->getOption('config')) {
             $job->setConfiguration(
                 $this->decodeConfiguration($config)
@@ -103,12 +102,15 @@ class BatchCommand extends ContainerAwareCommand
         $defaultJobInstance = $this->getDefaultEntityManager()->merge($jobInstance);
         $defaultJobInstance->setJob($job);
 
+
+        // TODO : don't bypass validation
+        /*
         $errors = $validator->validate($defaultJobInstance, array('Default', 'Execution'));
         if (count($errors) > 0) {
             throw new \RuntimeException(
                 sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors))
             );
-        }
+        }*/
 
         $this->getDefaultEntityManager()->clear(get_class($jobInstance));
 
