@@ -35,6 +35,9 @@ class RuleDefinition implements RuleDefinitionInterface
     /** @var int */
     protected $priority = 0;
 
+    /** @var int */
+    protected $impactedSubjectCount;
+
     /** @var ArrayCollection */
     protected $relations;
 
@@ -122,6 +125,24 @@ class RuleDefinition implements RuleDefinitionInterface
     public function setPriority($priority)
     {
         $this->priority = $priority;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getImpactedSubjectCount()
+    {
+        return $this->impactedSubjectCount;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setImpactedSubjectCount($impactedSubjectCount)
+    {
+        $this->impactedSubjectCount = $impactedSubjectCount;
 
         return $this;
     }

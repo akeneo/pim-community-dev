@@ -9,27 +9,32 @@ services:
     pimee_security.manager.attribute_group_access:
         class: %pimee_security.manager.attribute_group_access.class%
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@pimee_security.repository.attribute_group_access'
+            - '@pimee_security.saver.attribute_group_access'
             - %pimee_security.entity.attribute_group_access.class%
 
     pimee_security.manager.category_access:
         class: %pimee_security.manager.category_access.class%
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@pimee_security.repository.category_access'
+            - '@pim_catalog.repository.category'
+            - '@pim_user.repository.group'
+            - '@pimee_security.saver.product_category_access'
+            - '@pimee_security.remover.product_category_access'
             - %pimee_security.entity.product_category_access.class%
-            - %pim_catalog.entity.category.class%
-            - %pim_user.entity.group.class%
 
     pimee_security.manager.job_profile_access:
         class: %pimee_security.manager.job_profile_access.class%
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@pimee_security.repository.job_profile_access'
+            - '@pimee_security.saver.job_profile_access'
             - %pimee_security.entity.job_profile_access.class%
 
     pimee_security.manager.locale_access:
         class: %pimee_security.manager.locale_access.class%
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@pimee_security.repository.locale_access'
+            - '@pimee_security.saver.locale_access'
             - %pimee_security.entity.locale_access.class%
 
     pimee_security.manager.datagtrid_view_access:

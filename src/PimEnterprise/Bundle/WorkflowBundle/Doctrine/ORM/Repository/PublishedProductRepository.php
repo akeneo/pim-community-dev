@@ -14,8 +14,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -23,7 +23,7 @@ use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 
 /**
  * Published products repository

@@ -1,0 +1,4 @@
+code;label;tree;locales;currencies;color
+mobile;Mobile;master;fr_FR,de_DE,en_US;USD,EUR;blue
+print;Print;master;fr_FR,de_DE,en_US;USD,EUR;gray
+ecommerce;Ecommerce;master;fr_FR,de_DE,en_US;USD,EUR;orange

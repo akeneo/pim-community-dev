@@ -1,0 +1,11 @@
+parameters:
+    pimee_catalog_rule.tasklet.impacted_product_count.class: PimEnterprise\Component\CatalogRule\Connector\Tasklet\ImpactedProductCountTasklet
+
+services:
+    pimee_catalog_rule.tasklet.impacted_product_count:
+        class: %pimee_catalog_rule.tasklet.impacted_product_count.class%
+        arguments:
+            - '@akeneo_rule_engine.repository.rule_definition'
+            - '@pimee_catalog_rule.runner.product'
+            - '@akeneo_rule_engine.saver.rule_definition'
+            - '@akeneo_storage_utils.doctrine.object_detacher'

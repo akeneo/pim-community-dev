@@ -1,22 +1,22 @@
 jobs:
-    fixtures_attribute_group_access_yml:
+    fixtures_attribute_group_access_csv:
         order: 150
         connector: Data fixtures
-        alias:     fixtures_attribute_group_access_yml
+        alias:     fixtures_attribute_group_access_csv
         label:     Attribute group accesses data fixtures
         type:      fixtures
         configuration:
-            filePath: attribute_groups_accesses.yml
+            filePath: attribute_group_accesses.csv
             multiple: false
 
-    fixtures_product_category_access_yml:
+    fixtures_product_category_access_csv:
         order: 150
         connector: Data fixtures
-        alias:     fixtures_product_category_access_yml
+        alias:     fixtures_product_category_access_csv
         label:     Product category accesses data fixtures
         type:      fixtures
         configuration:
-            filePath: product_category_accesses.yml
+            filePath: product_category_accesses.csv
             multiple: false
 
     fixtures_asset_category_csv:
@@ -34,34 +34,34 @@ jobs:
             circularRefsChecked: true
             uploadAllowed: true
 
-    fixtures_asset_category_access_yml:
+    fixtures_asset_category_access_csv:
         order: 170
         connector: Data fixtures
-        alias:     fixtures_asset_category_access_yml
+        alias:     fixtures_asset_category_access_csv
         label:     Asset category accesses data fixtures
         type:      fixtures
         configuration:
-            filePath: asset_category_accesses.yml
+            filePath: asset_category_accesses.csv
             multiple: false
 
-    fixtures_job_profile_access_yml:
+    fixtures_job_profile_access_csv:
         order:     150
         connector: Data fixtures
-        alias:     fixtures_job_profile_access_yml
+        alias:     fixtures_job_profile_access_csv
         label:     Job profile accesses data fixtures
         type:      fixtures
         configuration:
-            filePath: job_profile_accesses.yml
+            filePath: job_profile_accesses.csv
             multiple: false
 
-    fixtures_locale_access_yml:
+    fixtures_locale_access_csv:
         order:     150
         connector: Data fixtures
-        alias:     fixtures_locale_access_yml
+        alias:     fixtures_locale_access_csv
         label:     Locale accesses data fixtures
         type:      fixtures
         configuration:
-            filePath: locale_accesses.yml
+            filePath: locale_accesses.csv
             multiple: false
 
     fixtures_rule_yml:

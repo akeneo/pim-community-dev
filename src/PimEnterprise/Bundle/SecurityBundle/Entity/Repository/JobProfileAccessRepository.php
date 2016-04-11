@@ -13,17 +13,21 @@ namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Security\Repository\AccessRepositoryInterface;
 
 /**
  * Job profile access repository
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class JobProfileAccessRepository extends EntityRepository implements AccessRepositoryInterface
+class JobProfileAccessRepository extends EntityRepository implements
+    AccessRepositoryInterface,
+    IdentifiableObjectRepositoryInterface
 {
     /**
      * @var TableNameBuilder
@@ -118,5 +122,34 @@ class JobProfileAccessRepository extends EntityRepository implements AccessRepos
         return ($accessLevel === Attributes::EDIT)
             ? 'ja.editJobProfile'
             : 'ja.executeJobProfile';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return ['jobProfile', 'userGroup'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($identifier)
+    {
+        list($jobProfileCode, $userGroupName) = explode('.', $identifier, 2);
+
+        $associationMappings = $this->_em->getClassMetadata($this->_entityName)->getAssociationMappings();
+        $jobProfileClass = $associationMappings['jobProfile']['targetEntity'];
+
+        $qb = $this->createQueryBuilder('a')
+            ->innerJoin($jobProfileClass, 'j', 'WITH', 'a.jobProfile = j.id')
+            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
+            ->where('j.code = :jobProfileCode')
+            ->andWhere('g.name = :userGroupName')
+            ->setParameter('jobProfileCode', $jobProfileCode)
+            ->setParameter('userGroupName', $userGroupName);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

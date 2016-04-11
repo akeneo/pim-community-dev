@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Filter;
 
-use Pim\Bundle\CatalogBundle\Filter\AbstractFilter;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -24,11 +24,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class ProductValueLocaleRightFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
+class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
-
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
@@ -37,11 +34,13 @@ class ProductValueLocaleRightFilter extends AbstractFilter implements Collection
      * @param LocaleRepositoryInterface     $localeRepository
      */
     public function __construct(
+        TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         LocaleRepositoryInterface $localeRepository
     ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->localeRepository     = $localeRepository;
+        parent::__construct($tokenStorage, $authorizationChecker);
+
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -49,7 +48,7 @@ class ProductValueLocaleRightFilter extends AbstractFilter implements Collection
      */
     public function filterObject($productValue, $type, array $options = [])
     {
-        if (!$productValue instanceof ProductValueInterface) {
+        if (!$this->supportsObject($productValue, $type, $options)) {
             throw new \LogicException('This filter only handles objects of type "ProductValueInterface"');
         }
 
@@ -65,6 +64,6 @@ class ProductValueLocaleRightFilter extends AbstractFilter implements Collection
      */
     public function supportsObject($object, $type, array $options = [])
     {
-        return $object instanceof ProductValueInterface;
+        return parent::supportsObject($options, $type, $options) && $object instanceof ProductValueInterface;
     }
 }

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\CatalogRule\Validator;
 
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

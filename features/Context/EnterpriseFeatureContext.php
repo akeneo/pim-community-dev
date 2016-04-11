@@ -4,7 +4,6 @@ namespace Context;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
-use Pim\Behat\Context\Storage\ProductStorage;
 use PimEnterprise\Behat\Context\DashboardContext;
 use PimEnterprise\Behat\Context\HookContext;
 use PimEnterprise\Behat\Context\JobContext;
@@ -27,19 +26,17 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('fixtures', new EnterpriseFixturesContext());
         $this->useContext('catalogConfiguration', new EnterpriseCatalogConfigurationContext());
         $this->useContext('webUser', new EnterpriseWebUser());
-        $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new EnterpriseDataGridContext());
         $this->useContext('navigation', new EnterpriseNavigationContext($parameters['base_url']));
         $this->useContext('transformations', new EnterpriseTransformationContext());
         $this->useContext('assertions', new EnterpriseAssertionContext());
-        $this->useContext('technical', new TechnicalContext());
         $this->useContext('command', new EnterpriseCommandContext());
         $this->useContext('asset', new EnterpriseAssetContext());
         $this->useContext('file_transformer', new EnterpriseFileTransformerContext());
         $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
         $this->useContext('job', new JobContext());
+
         $this->useContext('dashboard', new DashboardContext());
-        $this->useContext('storage-product', new ProductStorage());
     }
 
     /**

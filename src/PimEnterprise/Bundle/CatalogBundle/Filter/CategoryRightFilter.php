@@ -12,9 +12,8 @@
 namespace PimEnterprise\Bundle\CatalogBundle\Filter;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Filter\AbstractFilter;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -23,16 +22,10 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class CategoryRightFilter extends AbstractFilter
+class CategoryRightFilter extends AbstractAuthorizationFilter
 {
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
-
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
 
     /**
      * @param TokenStorageInterface         $tokenStorage
@@ -41,12 +34,12 @@ class CategoryRightFilter extends AbstractFilter
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        CategoryAccessRepository $categoryAccessRepo,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        CategoryAccessRepository $categoryAccessRepo
     ) {
-        $this->tokenStorage         = $tokenStorage;
-        $this->categoryAccessRepo   = $categoryAccessRepo;
-        $this->authorizationChecker = $authorizationChecker;
+        parent::__construct($tokenStorage, $authorizationChecker);
+
+        $this->categoryAccessRepo = $categoryAccessRepo;
     }
 
     /**
@@ -72,7 +65,7 @@ class CategoryRightFilter extends AbstractFilter
      */
     public function filterObject($category, $type, array $options = [])
     {
-        if (!$category instanceof CategoryInterface) {
+        if (!$this->supportsObject($category, $type, $options)) {
             throw new \LogicException('This filter only handles objects of type "CategoryInterface"');
         }
 
@@ -84,6 +77,6 @@ class CategoryRightFilter extends AbstractFilter
      */
     public function supportsObject($object, $type, array $options = [])
     {
-        return $object instanceof CategoryInterface;
+        return parent::supportsObject($options, $type, $options) && $object instanceof CategoryInterface;
     }
 }

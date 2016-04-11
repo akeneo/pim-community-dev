@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Bundle\CatalogBundle\Model\ProductValueInterface;
+use PimEnterprise\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 class AssetCollectionCompleteCheckerSpec extends ObjectBehavior

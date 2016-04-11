@@ -11,37 +11,24 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Filter;
 
-use Pim\Bundle\CatalogBundle\Filter\AbstractFilter;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use PimEnterprise\Component\Security\Attributes;
 
 /**
  * Attribute filter
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
-class AttributeEditRightFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
+class AttributeEditRightFilter extends AbstractAuthorizationFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
-
-    /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     */
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
-    {
-        $this->authorizationChecker = $authorizationChecker;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function filterObject($attribute, $type, array $options = [])
     {
-        if (!$attribute instanceof AttributeInterface) {
+        if (!$this->supportsObject($attribute, $type, $options)) {
             throw new \LogicException('This filter only handles objects of type "AttributeInterface"');
         }
 
@@ -53,6 +40,6 @@ class AttributeEditRightFilter extends AbstractFilter implements CollectionFilte
      */
     public function supportsObject($object, $type, array $options = [])
     {
-        return $object instanceof AttributeInterface;
+        return parent::supportsObject($options, $type, $options) && $object instanceof AttributeInterface;
     }
 }

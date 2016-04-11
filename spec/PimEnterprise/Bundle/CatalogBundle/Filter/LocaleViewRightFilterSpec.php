@@ -3,15 +3,22 @@
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Filter;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class LocaleViewRightFilterSpec extends ObjectBehavior
 {
-    public function let(AuthorizationCheckerInterface $authorizationChecker)
-    {
-        $this->beConstructedWith($authorizationChecker);
+    public function let(
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenInterface $token
+    ) {
+        $tokenStorage->getToken()->willReturn($token);
+
+        $this->beConstructedWith($tokenStorage, $authorizationChecker);
     }
 
     public function it_does_not_filter_a_locale_if_the_user_is_granted_to_see_this_locale($authorizationChecker, LocaleInterface $enUS)

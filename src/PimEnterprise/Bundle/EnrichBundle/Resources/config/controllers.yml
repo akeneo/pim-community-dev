@@ -33,6 +33,7 @@ services:
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.factory.category'
+            - %pim_catalog.entity.category.class%
 
     pim_enrich.controller.rest.product:
         class: %pim_enrich.controller.rest.product.class%
@@ -97,7 +98,7 @@ services:
         class: %pim_enrich.controller.file.class%
         arguments:
             - '@liip_imagine.controller'
-            - '@oneup_flysystem.mount_manager'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.repository.file_info'
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'
@@ -119,7 +120,7 @@ services:
             - '@doctrine'
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
-            - '@pim_connector.launcher.simple_job_launcher'
+            - '@akeneo_batch.launcher.simple_job_launcher'
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.connectors'
             - '@pim_enrich.mass_edit_action.operation.registry'

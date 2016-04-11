@@ -12,10 +12,11 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Akeneo\Component\Batch\Model\JobInstance;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\SecurityBundle\Model\JobProfileAccessInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Security\Model\JobProfileAccessInterface;
 
 /**
  * Job profile access manager
@@ -24,21 +25,24 @@ use PimEnterprise\Bundle\SecurityBundle\Model\JobProfileAccessInterface;
  */
 class JobProfileAccessManager
 {
-    /** @var ManagerRegistry */
-    protected $registry;
+    /** @var JobProfileAccessRepository */
+    protected $repository;
+
+    /** @var BulkSaverInterface */
+    protected $saver;
 
     /** @var string */
     protected $objectAccessClass;
 
     /**
-     * Constructor
-     *
-     * @param ManagerRegistry $registry
-     * @param string          $objectAccessClass
+     * @param JobProfileAccessRepository $repository
+     * @param BulkSaverInterface         $saver
+     * @param string                     $objectAccessClass
      */
-    public function __construct(ManagerRegistry $registry, $objectAccessClass)
+    public function __construct(JobProfileAccessRepository $repository, BulkSaverInterface $saver, $objectAccessClass)
     {
-        $this->registry          = $registry;
+        $this->repository = $repository;
+        $this->saver = $saver;
         $this->objectAccessClass = $objectAccessClass;
     }
 
@@ -51,7 +55,7 @@ class JobProfileAccessManager
      */
     public function getExecuteUserGroups(JobInstance $jobProfile)
     {
-        return $this->getRepository()->getGrantedUserGroups($jobProfile, Attributes::EXECUTE);
+        return $this->repository->getGrantedUserGroups($jobProfile, Attributes::EXECUTE);
     }
 
     /**
@@ -63,7 +67,7 @@ class JobProfileAccessManager
      */
     public function getEditUserGroups(JobInstance $jobProfile)
     {
-        return $this->getRepository()->getGrantedUserGroups($jobProfile, Attributes::EDIT);
+        return $this->repository->getGrantedUserGroups($jobProfile, Attributes::EDIT);
     }
 
     /**
@@ -76,14 +80,15 @@ class JobProfileAccessManager
     public function setAccess(JobInstance $jobProfile, $executeGroups, $editGroups)
     {
         $grantedGroups = [];
+        $grantedAccesses = [];
         foreach ($editGroups as $group) {
-            $this->grantAccess($jobProfile, $group, Attributes::EDIT);
+            $grantedAccesses[] = $this->buildGrantAccess($jobProfile, $group, Attributes::EDIT);
             $grantedGroups[] = $group;
         }
 
         foreach ($executeGroups as $group) {
             if (!in_array($group, $grantedGroups)) {
-                $this->grantAccess($jobProfile, $group, Attributes::EXECUTE);
+                $grantedAccesses[] = $this->buildGrantAccess($jobProfile, $group, Attributes::EXECUTE);
                 $grantedGroups[] = $group;
             }
         }
@@ -91,7 +96,7 @@ class JobProfileAccessManager
         if (null !== $jobProfile->getId()) {
             $this->revokeAccess($jobProfile, $grantedGroups);
         }
-        $this->getObjectManager()->flush();
+        $this->saver->saveAll($grantedAccesses);
     }
 
     /**
@@ -103,12 +108,8 @@ class JobProfileAccessManager
      */
     public function grantAccess(JobInstance $jobProfile, Group $group, $accessLevel)
     {
-        $access = $this->getJobProfileAccess($jobProfile, $group);
-        $access
-            ->setExecuteJobProfile(true)
-            ->setEditJobProfile($accessLevel === Attributes::EDIT);
-
-        $this->getObjectManager()->persist($access);
+        $access = $this->buildGrantAccess($jobProfile, $group, $accessLevel);
+        $this->saver->saveAll([$access]);
     }
 
     /**
@@ -122,7 +123,7 @@ class JobProfileAccessManager
      */
     public function revokeAccess(JobInstance $jobProfile, array $excludedGroups = [])
     {
-        return $this->getRepository()->revokeAccess($jobProfile, $excludedGroups);
+        return $this->repository->revokeAccess($jobProfile, $excludedGroups);
     }
 
     /**
@@ -135,7 +136,7 @@ class JobProfileAccessManager
      */
     protected function getJobProfileAccess(JobInstance $jobProfile, Group $group)
     {
-        $access = $this->getRepository()
+        $access = $this->repository
             ->findOneby(
                 [
                     'jobProfile' => $jobProfile,
@@ -155,22 +156,21 @@ class JobProfileAccessManager
     }
 
     /**
-     * Get repository
+     * Build specified access on a job profile for the provided user group
      *
-     * @return \PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository
+     * @param JobInstance $jobProfile
+     * @param Group       $group
+     * @param string      $accessLevel
+     *
+     * @return JobProfileAccessInterface
      */
-    protected function getRepository()
+    protected function buildGrantAccess(JobInstance $jobProfile, Group $group, $accessLevel)
     {
-        return $this->registry->getRepository($this->objectAccessClass);
-    }
+        $access = $this->getJobProfileAccess($jobProfile, $group);
+        $access
+            ->setExecuteJobProfile(true)
+            ->setEditJobProfile($accessLevel === Attributes::EDIT);
 
-    /**
-     * Get the object manager
-     *
-     * @return \Doctrine\Common\Persistence\ObjectManager|null
-     */
-    protected function getObjectManager()
-    {
-        return $this->registry->getManagerForClass($this->objectAccessClass);
+        return $access;
     }
 }

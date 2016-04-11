@@ -57,7 +57,6 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('mass-uploader.yml');
         $loader->load('models.yml');
         $loader->load('normalizers.yml');
-        $loader->load('processors.yml');
         $loader->load('providers.yml');
         $loader->load('query_builders.yml');
         $loader->load('readers.yml');

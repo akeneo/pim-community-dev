@@ -13,8 +13,8 @@ use Doctrine\ORM\Event\LifecycleEventArgs as ORMLifecycleEventsArgs;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
 
 /**

@@ -22,7 +22,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs as ORMLifecycleEventsArgs;
 use Doctrine\ORM\Events as ORMEvents;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 
 /**
  * Keeps product draft categoryIds field synchronized with its related product's categories

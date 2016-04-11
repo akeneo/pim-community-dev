@@ -70,12 +70,12 @@ jobs:
             withHeader: true
             filePath:   /tmp/published_products_export_%locale%_%scope%_%datetime%.csv
     approve_product_draft:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Mass Edit Connector
         alias:     approve_product_draft
         label:     Mass approve product drafts
         type:      mass_edit
     refuse_product_draft:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Mass Edit Connector
         alias:     refuse_product_draft
         label:     Mass reject product drafts
         type:      mass_edit
@@ -84,3 +84,40 @@ jobs:
         alias:     apply_assets_mass_upload
         label:     Process mass uploaded assets
         type:      mass_upload
+    xlsx_product_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias: xlsx_product_quick_export
+        label: XLSX product quick export
+        type: quick_export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.xlsx
+    xlsx_published_product_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias: xlsx_published_product_quick_export
+        label: XLSX published product quick export
+        type: quick_export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/published_products_export_%locale%_%scope%_%datetime%.xlsx
+    rule_impacted_product_count:
+        connector: Akeneo Rule Engine Connector
+        alias:     rule_impacted_product_count
+        label:     Calculation the matching products for the rules
+        type:      mass_edit_rule
+    xlsx_group_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_export
+        label:     Demo xlsx group export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/group.xlsx
+    xlsx_variant_group_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_variant_group_export
+        label:     Demo xlsx variant group export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/variant_group.xlsx

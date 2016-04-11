@@ -26,8 +26,8 @@ Feature: Localize dates in asset picker
   Scenario: Successfully show french format datetime
     Given I am logged in as "Julien"
     And I am on the "shirt" product page
-    When I add available attributes front_view
-    And I start to manage assets for "[front_view]"
+    When I add available attributes Vue de face
+    And I start to manage assets for "Vue de face"
     And I change the page size to 25
     Then the row "mascot" should contain:
       | column               | value      |

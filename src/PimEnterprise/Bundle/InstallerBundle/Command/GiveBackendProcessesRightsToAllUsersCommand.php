@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\InstallerBundle\Command;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -75,7 +75,9 @@ class GiveBackendProcessesRightsToAllUsersCommand extends ContainerAwareCommand
             'refuse_product_draft',
             'apply_assets_mass_upload',
             'csv_product_quick_export',
-            'csv_published_product_quick_export'
+            'csv_published_product_quick_export',
+            'xlsx_product_quick_export',
+            'xlsx_published_product_quick_export'
         ];
     }
 

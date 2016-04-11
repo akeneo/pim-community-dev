@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

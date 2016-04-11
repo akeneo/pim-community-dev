@@ -15,6 +15,10 @@ pimee_catalog_rule:
       set.label: es modificado dentro
       copy.label: es copiado en
       add.label: es agregado en
+  datagrid:
+    rule-grid:
+      mass_edit_action:
+        confirm_ok: OK
 confirmation:
   remove:
     rule: ¿Está seguro que desea eliminar esta regla? No es posible deshacer esta acción

@@ -21,9 +21,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "1.5.x-dev@dev",
-        "doctrine/doctrine-migrations-bundle": "1.0.0",
-        "doctrine/migrations": "1.0.0-alpha3@alpha",
+        "akeneo/pim-community-dev": "1.6.x-dev",
         "sensio/generator-bundle": "2.3.5",
         "phpspec/php-diff": "1.0.2"
     },
@@ -45,7 +43,8 @@
         "akeneo/phpspec-skip-example-extension": "1.2.*",
         "phpunit/phpunit": "3.7.*",
         "sensiolabs/behat-page-object-extension": "1.0.1",
-        "squizlabs/php_codesniffer": "1.*"
+        "squizlabs/php_codesniffer": "1.*",
+        "akeneo/php-coupling-detector": "dev-master"
     },
     "suggest": {
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo",

@@ -38,6 +38,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/product.csv
     clothing_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
@@ -58,6 +59,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/category.csv
     clothing_association_type_import:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_import
@@ -77,6 +79,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/association-type.csv
     clothing_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_import
@@ -96,6 +99,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/group.csv
     clothing_attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
@@ -115,6 +119,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/attribute.csv
     clothing_option_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_import
@@ -134,6 +139,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/attribute-option.csv
     clothing_mobile_published_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_published_product_export
@@ -144,10 +150,11 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/published-product.csv
     clothing_product_proposal_import:
         connector: Akeneo CSV Connector
         alias:     csv_product_proposal_import
-        label:     Demo product draft import
+        label:     CSV Demo product draft import
         type:      import
         configuration:
             uploadAllowed:    true
@@ -157,7 +164,18 @@ jobs:
             escape:           '\'
             enabled:          true
             decimalSeparator: .
-            dateFormat:       mm/dd/yyyy
+            dateFormat:       MM/dd/yyyy
+    xlsx_clothing_product_proposal_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_proposal_import
+        label:     XLSX Demo product draft import
+        type:      import
+        configuration:
+            uploadAllowed:    true
+            multiple:         false
+            enabled:          true
+            decimalSeparator: .
+            dateFormat:       MM/dd/yyyy
     add_product_value_with_permission:
         connector: Akeneo Mass Edit Connector
         alias:     add_product_value_with_permission
@@ -219,12 +237,12 @@ jobs:
             withHeader: true
             filePath:   /tmp/products-quick-export.csv
     approve_product_draft:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Mass Edit Connector
         alias:     approve_product_draft
         label:     Mass approve product drafts
         type:      mass_edit
     refuse_product_draft:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Mass Edit Connector
         alias:     refuse_product_draft
         label:     Mass reject product drafts
         type:      mass_edit
@@ -248,6 +266,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/asset-category.csv
     clothing_asset_export:
         connector: Akeneo Product Asset Connector
         alias:     csv_asset_export
@@ -257,6 +276,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/asset.csv
     clothing_asset_variation_export:
         connector: Akeneo Product Asset Connector
         alias:     csv_asset_variation_export
@@ -266,13 +286,14 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/asset-variation.csv
     clothing_asset_category_import:
         connector: Akeneo Product Asset Connector
         alias:     csv_asset_category_import
         label:     Demo asset category import
         type:      import
         configuration:
-            filePath:      /tmp/assets_categories.csv
+            filePath:      /tmp/assets-categories.csv
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
@@ -284,7 +305,6 @@ jobs:
         type:      import
         configuration:
             uploadAllowed: true
-            filePath:      /tmp/asset_channel_configurations.yml
     clothing_asset_channel_configuration_export:
         connector: Akeneo Product Asset Connector
         alias: yml_asset_channel_configuration_export

@@ -11,15 +11,15 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
-use Akeneo\Component\Classification\Factory\CategoryFactory;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager as BaseCategoryManager;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -44,7 +44,7 @@ class CategoryManager extends BaseCategoryManager
      *
      * @param ObjectManager                 $om
      * @param CategoryRepositoryInterface   $categoryRepository
-     * @param CategoryFactory               $categoryFactory
+     * @param SimpleFactoryInterface        $categoryFactory
      * @param string                        $categoryClass
      * @param EventDispatcherInterface      $eventDispatcher
      * @param CategoryAccessRepository      $categoryAccessRepo
@@ -53,7 +53,7 @@ class CategoryManager extends BaseCategoryManager
     public function __construct(
         ObjectManager $om,
         CategoryRepositoryInterface $categoryRepository,
-        CategoryFactory $categoryFactory,
+        SimpleFactoryInterface $categoryFactory,
         $categoryClass,
         EventDispatcherInterface $eventDispatcher,
         CategoryAccessRepository $categoryAccessRepo,

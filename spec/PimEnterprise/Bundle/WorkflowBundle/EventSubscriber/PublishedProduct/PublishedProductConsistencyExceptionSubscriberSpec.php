@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
+use PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

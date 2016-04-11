@@ -17,9 +17,9 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
+use PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException;
+use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
+use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior

@@ -1,7 +1,8 @@
 parameters:
-    pim_datagrid.extension.mass_action.util.product_fields_builder.class: PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder
-    pim_datagrid.extension.mass_action.handler.mass_approve.class:        PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassApproveActionHandler
-    pim_datagrid.extension.mass_action.handler.mass_refuse.class:         PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassRefuseActionHandler
+    pim_datagrid.extension.mass_action.util.product_fields_builder.class:    PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder
+    pim_datagrid.extension.mass_action.handler.mass_approve.class:           PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassApproveActionHandler
+    pim_datagrid.extension.mass_action.handler.mass_refuse.class:            PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassRefuseActionHandler
+    pim_datagrid.extension.mass_action.handler.rule_impacted_product_count.class: PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\RuleImpactedProductCountActionHandler
 
 services:
     pim_datagrid.extension.mass_action.util.product_fields_builder:
@@ -10,7 +11,7 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.locale'
-            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.repository.currency'
             - '@pim_catalog.repository.association_type'
             - '@pim_catalog.context.catalog'
             - '@pimee_security.repository.attribute_group_access'
@@ -22,7 +23,7 @@ services:
             - '@pimee_workflow.repository.published_product'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.locale'
-            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.repository.currency'
             - '@pim_catalog.repository.association_type'
             - '@pim_catalog.context.catalog'
             - '@pimee_security.repository.attribute_group_access'
@@ -43,6 +44,14 @@ services:
             - '@event_dispatcher'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_refuse }
+
+    pim_datagrid.extension.mass_action.handler.rule_impacted_product_count:
+        class: %pim_datagrid.extension.mass_action.handler.rule_impacted_product_count.class%
+        arguments:
+            - '@pim_datagrid.datasource.result_record.hydrator.orm.object_id'
+            - '@event_dispatcher'
+        tags:
+            - { name: pim_datagrid.extension.mass_action.handler, alias: rule_impacted_product_count }
 
     pimee_datagrid.extension.mass_action.type.mass_approve:
         class: %oro_datagrid.extension.mass_action.type.redirect.class%

@@ -96,26 +96,13 @@ akeneo_storage_utils:
     mapping_overrides:
         -
             original: Pim\Component\Catalog\Model\ProductValue
-            override: PimEnterprise\Bundle\CatalogBundle\Model\ProductValue
+            override: PimEnterprise\Component\Catalog\Model\ProductValue
         -
-            original: PimEnterprise\Bundle\CatalogBundle\Model\ProductValue
+            original: PimEnterprise\Component\Catalog\Model\ProductValue
             override: AcmeEnterprise\Bundle\AppBundle\Model\ProductValue
         -
-            original: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
+            original: PimEnterprise\Component\Workflow\Model\PublishedProductValue
             override: AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue
         -
             original: Pim\Bundle\UserBundle\Entity\User
             override: PimEnterprise\Bundle\UserBundle\Entity\User
-
-pim_catalog:
-    localization:
-        decimal_separators:
-            - { value: '.', label: 'dot (.)' }
-            - { value: ',', label: 'comma (,)' }
-            - { value: '٫', label: 'arabic decimal separator (٫)' }
-        date_formats:
-            - { value: 'yyyy-MM-dd', label: 'yyyy-mm-dd' }
-            - { value: 'yyyy/MM/dd', label: 'yyyy/mm/dd' }
-            - { value: 'MM/dd/yyyy', label: 'mm/dd/yyyy' }
-            - { value: 'dd/MM/yyyy', label: 'dd/mm/yyyy' }
-            - { value: 'dd.MM.yyyy', label: 'dd.mm.yyyy' }

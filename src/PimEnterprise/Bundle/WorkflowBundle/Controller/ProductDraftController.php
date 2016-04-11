@@ -19,8 +19,8 @@ use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
-use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
+use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -219,13 +219,13 @@ class ProductDraftController
         $request->request->add(['actionName' => 'massApprove' ]);
         $params           = $this->gridFilterAdapter->adapt($request);
         $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_APPROVE_JOB_CODE);
-        $rawConfiguration = addslashes(json_encode([
+        $configuration = [
             'draftIds' => $params['values'],
             'comment'  => $request->get('comment'),
-        ]));
+        ];
 
         $jobExecution = $this->simpleJobLauncher
-            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $rawConfiguration);
+            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
 
         return new RedirectResponse(
             $this->router->generate(
@@ -247,13 +247,13 @@ class ProductDraftController
         $request->request->add(['actionName' => 'massApprove' ]);
         $params           = $this->gridFilterAdapter->adapt($request);
         $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_REFUSE_JOB_CODE);
-        $rawConfiguration = addslashes(json_encode([
+        $configuration = [
             'draftIds' => $params['values'],
             'comment'  => $request->get('comment'),
-        ]));
+        ];
 
         $jobExecution = $this->simpleJobLauncher
-            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $rawConfiguration);
+            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
 
         return new RedirectResponse(
             $this->router->generate(

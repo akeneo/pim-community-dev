@@ -18,7 +18,7 @@ services:
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.manager.product_draft'
             - '@pim_user.context.user'
-            - '@pim_connector.launcher.simple_job_launcher'
+            - '@akeneo_batch.launcher.simple_job_launcher'
             - '@pim_import_export.repository.job_instance'
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@security.authorization_checker'
@@ -36,7 +36,7 @@ services:
             - '@pim_user.context.user'
             - '@pimee_workflow.manager.published_product'
             - '@pim_catalog.manager.completeness'
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             - '@security.authorization_checker'
 
     pimee_workflow.controller.published_product_rest:

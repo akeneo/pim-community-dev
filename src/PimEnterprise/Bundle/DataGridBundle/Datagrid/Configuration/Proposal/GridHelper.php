@@ -13,11 +13,11 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use PimEnterprise\Component\Workflow\Provider\ProductDraftGrantedAttributeProvider;
+use PimEnterprise\Bundle\WorkflowBundle\Provider\ProductDraftGrantedAttributeProvider;
+use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

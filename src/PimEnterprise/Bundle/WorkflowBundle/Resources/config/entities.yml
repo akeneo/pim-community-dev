@@ -1,8 +1,8 @@
 parameters:
-    pimee_workflow.entity.published_product.class:              PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct
-    pimee_workflow.entity.published_product_value.class:        PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
-    pimee_workflow.entity.published_product_metric.class:       PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric
-    pimee_workflow.entity.published_product_price.class:        PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice
-    pimee_workflow.entity.published_product_completeness.class: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness
-    pimee_workflow.entity.published_product_association.class:  PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation
-    pimee_workflow.model.product_draft.class:                   PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft
+    pimee_workflow.entity.published_product.class:              PimEnterprise\Component\Workflow\Model\PublishedProduct
+    pimee_workflow.entity.published_product_value.class:        PimEnterprise\Component\Workflow\Model\PublishedProductValue
+    pimee_workflow.entity.published_product_metric.class:       PimEnterprise\Component\Workflow\Model\PublishedProductMetric
+    pimee_workflow.entity.published_product_price.class:        PimEnterprise\Component\Workflow\Model\PublishedProductPrice
+    pimee_workflow.entity.published_product_completeness.class: PimEnterprise\Component\Workflow\Model\PublishedProductCompleteness
+    pimee_workflow.entity.published_product_association.class:  PimEnterprise\Component\Workflow\Model\PublishedProductAssociation
+    pimee_workflow.model.product_draft.class:                   PimEnterprise\Component\Workflow\Model\ProductDraft

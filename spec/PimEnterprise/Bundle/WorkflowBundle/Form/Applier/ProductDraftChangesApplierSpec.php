@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Form\Applier;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormBuilderInterface;

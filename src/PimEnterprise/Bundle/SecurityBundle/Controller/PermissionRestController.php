@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

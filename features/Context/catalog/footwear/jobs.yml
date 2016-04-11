@@ -34,3 +34,16 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/published_products_export_%locale%_%scope%.csv
+    xlsx_published_product_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias: xlsx_published_product_quick_export
+        label: XLSX published product quick export
+        type: quick_export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/published_products_export_%locale%_%scope%.xlsx
+    rule_impacted_product_count:
+        connector: Akeneo Rule Engine Connector
+        alias:     rule_impacted_product_count
+        label:     Calculation the matching products for the rules
+        type:      mass_edit_rule

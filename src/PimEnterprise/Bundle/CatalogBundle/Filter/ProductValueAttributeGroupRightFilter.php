@@ -11,38 +11,25 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Filter;
 
-use Pim\Bundle\CatalogBundle\Filter\AbstractFilter;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use PimEnterprise\Component\Security\Attributes;
 
 /**
  * Product Value filter
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class ProductValueAttributeGroupRightFilter extends AbstractFilter implements CollectionFilterInterface,
+class ProductValueAttributeGroupRightFilter extends AbstractAuthorizationFilter implements CollectionFilterInterface,
 ObjectFilterInterface
 {
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
-
-    /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     */
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
-    {
-        $this->authorizationChecker = $authorizationChecker;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function filterObject($productValue, $type, array $options = [])
     {
-        if (!$productValue instanceof ProductValueInterface) {
+        if (!$this->supportsObject($productValue, $type, $options)) {
             throw new \LogicException('This filter only handles objects of type "ProductValueInterface"');
         }
 
@@ -57,6 +44,6 @@ ObjectFilterInterface
      */
     public function supportsObject($object, $type, array $options = [])
     {
-        return $object instanceof ProductValueInterface;
+        return parent::supportsObject($options, $type, $options) && $object instanceof ProductValueInterface;
     }
 }

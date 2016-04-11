@@ -19,12 +19,12 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException;
-use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException;
+use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

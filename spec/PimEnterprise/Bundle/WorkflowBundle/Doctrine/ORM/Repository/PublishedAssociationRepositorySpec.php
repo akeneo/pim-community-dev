@@ -10,7 +10,7 @@ class PublishedAssociationRepositorySpec extends ObjectBehavior
 {
     function let(EntityManager $em, ClassMetadata $class)
     {
-        $class->name = 'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation';
+        $class->name = 'PimEnterprise\Component\Workflow\Model\PublishedProductAssociation';
         $this->beConstructedWith($em, $class);
     }
 
@@ -22,6 +22,6 @@ class PublishedAssociationRepositorySpec extends ObjectBehavior
     function it_is_a_published_association_repository()
     {
         $this
-            ->shouldImplement('PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface');
+            ->shouldImplement('PimEnterprise\Component\Workflow\Repository\PublishedAssociationRepositoryInterface');
     }
 }

@@ -14,8 +14,8 @@ namespace AcmeEnterprise\Bundle\AppBundle\Model;
 use AcmeEnterprise\Bundle\AppBundle\Entity\Color;
 use AcmeEnterprise\Bundle\AppBundle\Entity\Fabric;
 use Doctrine\Common\Collections\ArrayCollection;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue as PimPublishedProductValue;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface;
+use PimEnterprise\Component\Workflow\Model\PublishedProductValue as PimPublishedProductValue;
+use PimEnterprise\Component\Workflow\Model\PublishedProductValueInterface;
 
 /**
  * Acme override of the published product value. In this example:

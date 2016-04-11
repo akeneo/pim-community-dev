@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation:
+PimEnterprise\Component\Workflow\Model\PublishedProductAssociation:
     type: embeddedDocument
     fields:
         id:
@@ -15,7 +15,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation:
             type: collection
     referenceOne:
         owner:
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+            targetDocument: PimEnterprise\Component\Workflow\Model\PublishedProductInterface
     referenceMany:
         products:
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+            targetDocument: PimEnterprise\Component\Workflow\Model\PublishedProductInterface

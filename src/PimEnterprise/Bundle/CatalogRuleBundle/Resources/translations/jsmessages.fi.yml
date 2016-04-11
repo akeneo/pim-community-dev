@@ -15,3 +15,7 @@ pimee_catalog_rule:
       set.label: on asetettu
       copy.label: on kopioitu
       add.label: on lisätty
+  datagrid:
+    rule-grid:
+      mass_edit_action:
+        confirm_ok: OK

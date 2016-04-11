@@ -13,9 +13,9 @@ namespace PimEnterprise\Bundle\EnrichBundle\Controller\Rest;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Controller\Rest\ProductCategoryController as BaseProductCategoryController;
+use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

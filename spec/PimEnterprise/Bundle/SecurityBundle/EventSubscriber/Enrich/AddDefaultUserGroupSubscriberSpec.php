@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -80,8 +80,7 @@ class AddDefaultUserGroupSubscriberSpec extends ObjectBehavior
         $attGrpAccessManager->grantAccess(
             $attributeGroup,
             $userGroup,
-            Attributes::EDIT_ATTRIBUTES,
-            true
+            Attributes::EDIT_ATTRIBUTES
         )->shouldBeCalled();
 
         $this->addDefaultUserGroupForAttributeGroup($event)->shouldReturn(null);

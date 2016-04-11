@@ -4,9 +4,9 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes as SecurityAttributes;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

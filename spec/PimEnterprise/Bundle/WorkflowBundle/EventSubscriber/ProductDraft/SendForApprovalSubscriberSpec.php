@@ -2,14 +2,15 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -17,12 +18,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class SendForApprovalSubscriberSpec extends ObjectBehavior
 {
     function let(
-        NotificationManager $notificationManager,
+        NotifierInterface $notifier,
         UserRepositoryInterface $userRepository,
         OwnerGroupsProvider $ownerGroupsProvider,
-        UsersToNotifyProvider $usersProvider
+        UsersToNotifyProvider $usersProvider,
+        SimpleFactoryInterface $notificationFactory
     ) {
-        $this->beConstructedWith($notificationManager, $userRepository, $ownerGroupsProvider, $usersProvider);
+        $this->beConstructedWith($notifier, $userRepository, $ownerGroupsProvider, $usersProvider, $notificationFactory);
     }
 
     function it_subscribes_to_approve_event()
@@ -33,18 +35,21 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
     }
 
     function it_sends_notification_to_owners_which_want_to_receive_them(
-        $notificationManager,
+        $notifier,
         $userRepository,
         $ownerGroupsProvider,
         $usersProvider,
+        $notificationFactory,
         GenericEvent $event,
         ProductDraftInterface $productDraft,
         ProductInterface $product,
         UserInterface $owner1,
         UserInterface $owner2,
         UserInterface $owner3,
-        UserInterface $author
+        UserInterface $author,
+        NotificationInterface $notification
     ) {
+
         $event->getSubject()->willReturn($productDraft);
         $event->getArgument('comment')->willReturn('comment');
 
@@ -67,8 +72,6 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
         $usersProvider->getUsersToNotify([2, 4])->willReturn([$owner1, $owner3]);
         $userRepository->findOneBy(['username' => 'mary'])->willReturn($author);
 
-        $this->sendNotificationToOwners($event);
-
         $gridParams = [
             'f' => [
                 'author' => [
@@ -83,24 +86,29 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $notificationManager->notify(
-            [$owner1, $owner3],
-            'pimee_workflow.proposal.to_review',
-            'add',
+
+        $notificationFactory->create()->willReturn($notification);
+        $notification->setType('add')->willReturn($notification);
+        $notification->setComment('comment')->willReturn($notification);
+        $notification->setMessage('pimee_workflow.proposal.to_review')->willReturn($notification);
+        $notification->setRoute('pimee_workflow_proposal_index')->willReturn($notification);
+        $notification->setMessageParams(
             [
-                'route'         => 'pimee_workflow_proposal_index',
-                'comment'       => 'comment',
-                'messageParams' => [
-                    '%product.label%'    => 'Light Saber',
-                    '%author.firstname%' => 'Mary',
-                    '%author.lastname%'  => 'Chobu'
-                ],
-                'context'       => [
-                    'actionType'       => 'pimee_workflow_product_draft_notification_new_proposal',
-                    'showReportButton' => false,
-                    'gridParameters'   => http_build_query($gridParams, 'flags_')
-                ]
+                '%product.label%'    => 'Light Saber',
+                '%author.firstname%' => 'Mary',
+                '%author.lastname%'  => 'Chobu'
             ]
-        )->shouldBeCalled();
+        )->willReturn($notification);
+        $notification->setContext(
+            [
+                'actionType'       => 'pimee_workflow_product_draft_notification_new_proposal',
+                'showReportButton' => false,
+                'gridParameters'   => http_build_query($gridParams, 'flags_')
+            ]
+        )->willReturn($notification);
+
+        $notifier->notify($notification, [$owner1, $owner3])->shouldBeCalled();
+
+        $this->sendNotificationToOwners($event);
     }
 }

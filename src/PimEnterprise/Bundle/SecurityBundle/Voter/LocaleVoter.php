@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 

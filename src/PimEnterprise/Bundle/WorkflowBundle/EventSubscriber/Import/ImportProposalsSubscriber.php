@@ -13,14 +13,15 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Import;
 
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -39,8 +40,8 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
 
     const PROPOSAL_IMPORT_ALIAS = 'csv_product_proposal_import';
 
-    /** @var NotificationManager */
-    protected $notificationManager;
+    /** @var NotifierInterface */
+    protected $notifier;
 
     /** @var UserRepositoryInterface */
     protected $userRepository;
@@ -54,28 +55,34 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
     /** @var ObjectRepository */
     protected $jobRepository;
 
+    /** @var SimpleFactoryInterface */
+    protected $notificationFactory;
+
     /** @var array */
     protected $ownerGroupIds = [];
 
     /**
-     * @param NotificationManager     $notificationManager
+     * @param NotifierInterface       $notifier
      * @param UserRepositoryInterface $userRepository
      * @param OwnerGroupsProvider     $ownerGroupsProvider
      * @param UsersToNotifyProvider   $usersProvider
      * @param ObjectRepository        $jobRepository
+     * @param SimpleFactoryInterface  $notificationFactory
      */
     public function __construct(
-        NotificationManager $notificationManager,
+        NotifierInterface $notifier,
         UserRepositoryInterface $userRepository,
         OwnerGroupsProvider $ownerGroupsProvider,
         UsersToNotifyProvider $usersProvider,
-        ObjectRepository $jobRepository
+        ObjectRepository $jobRepository,
+        SimpleFactoryInterface $notificationFactory
     ) {
-        $this->notificationManager = $notificationManager;
+        $this->notifier            = $notifier;
         $this->userRepository      = $userRepository;
         $this->ownerGroupsProvider = $ownerGroupsProvider;
         $this->usersProvider       = $usersProvider;
         $this->jobRepository       = $jobRepository;
+        $this->notificationFactory = $notificationFactory;
     }
 
     /**
@@ -142,7 +149,11 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
      */
     protected function sendProposalsNotification(array $users, $jobCode, UserInterface $author = null)
     {
-        $message        = 'pimee_workflow.proposal.generic_import';
+        $notification = $this->notificationFactory->create();
+        $notification
+            ->setType('add')
+            ->setMessage('pimee_workflow.proposal.generic_import');
+
         $gridParameters = [
             'f' => [
                 'author' => [
@@ -152,24 +163,29 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
                 ]
             ],
         ];
-        $params         = [
-            'route'   => 'pimee_workflow_proposal_index',
-            'context' => [
-                'actionType'       => self::NOTIFICATION_TYPE,
-                'showReportButton' => false,
-                'gridParameters'   => http_build_query($gridParameters, 'flags_')
-            ]
-        ];
+
+        $notification
+            ->setRoute('pimee_workflow_proposal_index')
+            ->setContext(
+                [
+                    'actionType'       => self::NOTIFICATION_TYPE,
+                    'showReportButton' => false,
+                    'gridParameters'   => http_build_query($gridParameters, 'flags_')
+                ]
+            );
 
         if (null !== $author) {
-            $message = 'pimee_workflow.proposal.individual_import';
-            $params['messageParams'] = [
-                '%author.firstname%' => $author->getFirstName(),
-                '%author.lastname%'  => $author->getLastName()
-            ];
+            $notification
+                ->setMessage('pimee_workflow.proposal.individual_import')
+                ->setMessageParams(
+                    [
+                        '%author.firstname%' => $author->getFirstName(),
+                        '%author.lastname%'  => $author->getLastName()
+                    ]
+                );
         }
 
-        $this->notificationManager->notify($users, $message, 'add', $params);
+        $this->notifier->notify($notification, $users);
     }
 
     /**

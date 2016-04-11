@@ -12,9 +12,9 @@
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductDraft;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**

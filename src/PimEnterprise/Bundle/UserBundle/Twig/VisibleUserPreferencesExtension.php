@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Twig;
 
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Component\Security\Attributes;
 
 /**
  * This twig extension provides several methods to know if user preferences are visible or not in the view mode

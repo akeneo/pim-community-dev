@@ -37,6 +37,76 @@ Feature: Read a single product by applying rules
     Then the product Name should be "My jacket"
 
   @javascript
+  Scenario: Successfully execute a rule with a "not equal" condition
+    Given the following products:
+      | sku         | family  |
+      | my-jacket   | jackets |
+      | my-cardigan | jackets |
+    And the following product values:
+      | product     | attribute   | value                  | locale | scope  |
+      | my-jacket   | name        | White jacket           | en_US  |        |
+      | my-jacket   | name        | Veste blanche          | fr_FR  |        |
+      | my-jacket   | description | A stylish white jacket | en_US  | mobile |
+      | my-cardigan | name        | Red cardigan           | en_US  |        |
+    And the following product rule definitions:
+      """
+      set_name:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: !=
+            value:    my-cardigan
+        actions:
+          - type:  set
+            field: name
+            value: My jacket
+            locale: en_US
+      """
+    And the product rule "set_name" is executed
+    When I am on the "my-jacket" product page
+    Then the product Name should be "My jacket"
+    When I switch the scope to "mobile"
+    Then the product Description should be "A stylish white jacket"
+    When I switch the locale to "fr_FR"
+    Then the product Nom should be "Veste blanche"
+    When I am on the "my-cardigan" product page
+    Then the product Name should be "Red cardigan"
+
+  @javascript
+  Scenario: Successfully execute a rule with a "not empty" condition
+    Given the following products:
+      | sku       | family  |
+      | my-jacket | jackets |
+    And the following product values:
+      | product   | attribute   | value                  | locale | scope  |
+      | my-jacket | name        |                        | en_US  |        |
+      | my-jacket | name        | Mocassin blanc         | fr_FR  |        |
+      | my-jacket | description | A stylish white jacket | en_US  | mobile |
+      | my-boot   | name        | White boot             | en_US  |        |
+      | my-boot   | name        | Bootes blanches        | fr_FR  |        |
+      | my-boot   | description | A stylish white boot   | en_US  | mobile |
+    And the following product rule definitions:
+      """
+      set_name:
+        priority: 10
+        conditions:
+          - field:    name
+            operator: NOT EMPTY
+            value:    null
+            locale:   en_US
+        actions:
+          - type:  set
+            field: name
+            value: New name
+            locale: en_US
+      """
+    And the product rule "set_name" is executed
+    When I am on the "my-jacket" product page
+    Then the product Name should be ""
+    When I am on the "my-boot" product page
+    Then the product Name should be "New name"
+
+  @javascript
   Scenario: Successfully execute a rule with a "starts with" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -60,7 +130,7 @@ Feature: Read a single product by applying rules
             value: My jacket
             locale: en_US
       """
-    Given the product rule "set_name" is executed
+    And the product rule "set_name" is executed
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
@@ -88,7 +158,7 @@ Feature: Read a single product by applying rules
             value: My jacket
             locale: en_US
       """
-    Given the product rule "set_name" is executed
+    And the product rule "set_name" is executed
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
@@ -116,7 +186,7 @@ Feature: Read a single product by applying rules
             value: My jacket
             locale: en_US
       """
-    Given the product rule "set_name" is executed
+    And the product rule "set_name" is executed
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
@@ -144,7 +214,7 @@ Feature: Read a single product by applying rules
             value: My jacket
             locale: en_US
       """
-    Given the product rule "set_name" is executed
+    And the product rule "set_name" is executed
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
@@ -173,7 +243,7 @@ Feature: Read a single product by applying rules
             value: My jacket
             locale: en_US
       """
-    Given the product rule "set_name" is executed
+    And the product rule "set_name" is executed
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
@@ -260,7 +330,7 @@ Feature: Read a single product by applying rules
       """
     Then product "my-jacket" should be enabled
     And the category of "my-jacket" should be "jackets"
-    Given the product rule "set_jacket" is executed
+    And the product rule "set_jacket" is executed
     Then the product "my-jacket" should have the following values:
       | name-fr_FR               | Veste blanche      |
       | handmade                 | 1                  |
@@ -268,9 +338,9 @@ Feature: Read a single product by applying rules
       | datasheet                | akeneo             |
       | side_view                | akeneo2            |
       | length                   | 50.0000 CENTIMETER |
-      | weather_conditions       | [dry], [hot]       |
+      | weather_conditions       | Dry, Hot           |
       | number_in_stock-tablet   | 8000               |
-      | size                     | [L]                |
+      | size                     | L                  |
       | price-EUR                | 180.00             |
       | description-fr_FR-tablet | En cuir            |
     Then product "my-jacket" should be disabled
@@ -360,7 +430,7 @@ Feature: Read a single product by applying rules
             from_scope:  mobile
             to_scope:    tablet
       """
-    Given the product rule "copy_jacket" is executed
+    And the product rule "copy_jacket" is executed
     Then the product "my-jacket" should have the following values:
       | handmade                 | 1                      |
       | made_in_france           | 1                      |
@@ -372,12 +442,12 @@ Feature: Read a single product by applying rules
       | top_view                 | akeneo2                |
       | length                   | 55.0000 CENTIMETER     |
       | width                    | 55.0000 CENTIMETER     |
-      | weather_conditions       | [hot], [cold]          |
-      | climate                  | [hot], [cold]          |
+      | weather_conditions       | Hot, Cold              |
+      | climate                  | Hot, Cold              |
       | number_in_stock-mobile   | 800.00                 |
       | number_in_stock-tablet   | 800.00                 |
-      | main_color               | [white]                |
-      | secondary_color          | [white]                |
+      | main_color               | White                  |
+      | secondary_color          | White                  |
       | name-en_US               | White jacket           |
       | name-fr_FR               | White jacket           |
       | description-en_US-mobile | A stylish white jacket |
@@ -518,7 +588,44 @@ Feature: Read a single product by applying rules
               - tshirts
       """
     And the category of "my-jacket" should be "jackets"
-    Given the product rule "rule_sku_jacket" is executed
+    And the product rule "rule_sku_jacket" is executed
     Then the product "my-jacket" should have the following values:
-      | weather_conditions       | [dry], [wet], [hot], [cold] |
+      | weather_conditions       | Dry, Wet, Hot, Cold |
     And the category of "my-jacket" should be "jackets, tshirts"
+
+  @javascript
+  Scenario: Successfully execute a rule with an "equals" condition
+    Given the following products:
+      | sku       | family  |
+      | my-jacket | jackets |
+    And the following product values:
+      | product   | attribute   | value                  | locale | scope  |
+      | my-jacket | name        | White jacket           | en_US  |        |
+      | my-jacket | name        | Mocassin blanc         | fr_FR  |        |
+      | my-jacket | description | A stylish white jacket | en_US  | mobile |
+    And I am on the "my-jacket" product page
+    When I open the "Completeness" panel
+    Then I should see the completeness:
+      | channel | locale | state   | missing_values                                                                          | ratio |
+      | tablet  | fr_FR  | warning | description weather_conditions price rating side_view size main_color gallery side_view | 20%   |
+    And the following product rule definitions:
+      """
+      set_name:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: =
+            value:    my-jacket
+        actions:
+          - type:  set
+            field: description
+            value: My jacket
+            locale: en_US
+            scope: tablet
+    """
+    Then the product rule "set_name" is executed
+    When I am on the "my-jacket" product page
+    When I open the "Completeness" panel
+    And I should see the completeness:
+      | channel | locale | state   | missing_values                                                              | ratio |
+      | tablet  | en_US  | warning | weather_conditions price rating side_view size main_color gallery side_view | 30%   |

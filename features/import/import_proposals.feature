@@ -46,6 +46,7 @@ Feature: Import proposals
     """
     And the following job "clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
+    And I am logged in as "Mary"
     When I am on the "clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish

@@ -1,3 +1,5 @@
 parameters:
     pim_catalog.entity.product_value.class: AcmeEnterprise\Bundle\AppBundle\Model\ProductValue
     pimee_workflow.entity.published_product_value.class: AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue
+    acme_app.entity.color.class:            AcmeEnterprise\Bundle\AppBundle\Entity\Color
+    acme_app.entity.fabric.class:           AcmeEnterprise\Bundle\AppBundle\Entity\Fabric

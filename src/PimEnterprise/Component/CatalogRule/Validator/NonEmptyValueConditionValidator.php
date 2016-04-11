@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Component\CatalogRule\Validator;
 
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use PimEnterprise\Component\CatalogRule\Model\ProductConditionInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Validates that a value is not empty (except if operator is EMPTY)
+ * Validates that a value is not empty (except if operator is EMPTY or NOT EMPTY)
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
@@ -37,7 +37,10 @@ class NonEmptyValueConditionValidator extends ConstraintValidator
 
         $value = $productCondition->getValue();
 
-        if (Operators::IS_EMPTY !== $productCondition->getOperator() && null === $value) {
+        if (Operators::IS_EMPTY !== $productCondition->getOperator() &&
+            Operators::IS_NOT_EMPTY !== $productCondition->getOperator() &&
+            null === $value
+        ) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
         }

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Normalizer;
 
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

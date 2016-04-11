@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

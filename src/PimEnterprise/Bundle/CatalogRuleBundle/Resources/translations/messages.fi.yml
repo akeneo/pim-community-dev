@@ -8,6 +8,8 @@ pimee_catalog_rule:
         code: Koodi
         conditions: Ehto
         actions: Toimi
+        impacted_product_count:
+          no_yet_calculated: Ei vielä laskettu
   condition:
     operators:
       STARTS WITH: alkaa

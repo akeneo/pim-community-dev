@@ -3,6 +3,7 @@
 namespace Context;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
@@ -11,17 +12,21 @@ use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
-use Context\Spin\SpinCapableTrait;
+use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
-use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\Asset;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
@@ -31,6 +36,7 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Yaml\Parser;
+use Context\Spin\SpinCapableTrait;
 
 /**
  * A context for creating entities
@@ -43,49 +49,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     use SpinCapableTrait;
 
     protected $enterpriseEntities = [
-        'Published'     => 'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
+        'Published'     => 'PimEnterprise\Component\Workflow\Model\PublishedProduct',
         'AssetCategory' => 'PimEnterprise\Component\ProductAsset\Model\Category',
         'User'          => 'PimEnterprise\Bundle\UserBundle\Entity\User',
     ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createProduct($data)
-    {
-        if (!is_array($data)) {
-            $data = ['sku' => $data];
-        }
-
-        return parent::createProduct($data);
-    }
-
-    /**
-     * @param TableNode $table
-     */
-    public function theFollowingProductValues(TableNode $table)
-    {
-        foreach ($table->getHash() as $row) {
-            $row = array_merge(['locale' => null, 'scope' => null, 'value' => null], $row);
-
-            $attributeCode = $row['attribute'];
-            if ($row['locale']) {
-                $attributeCode .= '-' . $row['locale'];
-            }
-            if ($row['scope']) {
-                $attributeCode .= '-' . $row['scope'];
-            }
-
-            $data = [
-                'sku'          => $row['product'],
-                $attributeCode => $this->replacePlaceholders($row['value'])
-            ];
-
-            $this->createProduct($data);
-        }
-
-        $this->flush();
-    }
 
     /**
      * @param string $userGroup
@@ -127,13 +94,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $data['author'],
                 []
             );
-            if ('ready' === $data['status']) {
-                $productDraft->markAsReady();
-            }
             if (isset($data['createdAt'])) {
                 $productDraft->setCreatedAt(new \DateTime($data['createdAt']));
             }
-            $manager = $this->getSmartRegistry()->getManagerForClass(get_class($productDraft));
 
             if (isset($data['result'])) {
                 $changes = json_decode($data['result'], true);
@@ -150,9 +113,16 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $productDraft->setChanges($changes);
             }
 
-            $manager->persist($productDraft);
+            if ('ready' === $data['status']) {
+                $productDraft->markAsReady();
+                $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW);
+            } else {
+                $productDraft->markAsInProgress();
+                $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT);
+            }
+
+            $this->getContainer()->get('pimee_workflow.saver.product_draft')->save($productDraft);
         }
-        $manager->flush();
     }
 
     /**
@@ -732,7 +702,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param mixed $data
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+     * @return PublishedProductInterface
      */
     protected function createPublishedProduct($data)
     {
@@ -824,7 +794,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager
+     * @return PublishedProductManager
      */
     protected function getPublishedProductManager()
     {
@@ -910,15 +880,12 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $rule->setCode($data['code']);
             $rule->setPriority((int) $data['priority']);
             $rule->setType('product');
-            // TODO : via EM to avoid validation
-            $manager = $this->getSmartRegistry()->getManagerForClass(get_class($rule));
-            $manager->persist($rule);
+            $this->getContainer()->get('akeneo_rule_engine.saver.rule_definition')->save($rule);
         }
-        $manager->flush();
     }
 
     /**
-     * @param TableNode $table
+     * @param PyStringNode $string
      *
      * @Given /^the following product rule definitions:$/
      */
@@ -941,7 +908,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
+     * @return RuleDefinitionInterface
      */
     public function getRule($code)
     {
@@ -1074,11 +1041,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
          * before adding and persisting products inside it
          */
         $assets = $category->getAssets();
-        $this->persist($category, true);
+        $this->getContainer()->get('pimee_product_asset.saver.category')->save($category);
         foreach ($assets as $asset) {
             $asset->addCategory($category);
-            // TODO replace by call to a saver
-            $this->flush($asset);
+            $this->getContainer()->get('pimee_product_asset.saver.asset')->save($asset);
         }
 
         return $category;

@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\UserBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 

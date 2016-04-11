@@ -20,7 +20,7 @@ jobs:
     csv_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
-        label:     Demo product export
+        label:     Demo CSV product export
         type:      export
         configuration:
             channel:    mobile
@@ -31,7 +31,7 @@ jobs:
     csv_published_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_published_product_export
-        label:     Demo published product export
+        label:     Demo published CSV product export
         type:      export
         configuration:
             channel:    mobile
@@ -172,7 +172,6 @@ jobs:
         label:     Demo rules import
         type:      import
         configuration:
-            filePath:      /tmp/rules.yml
             uploadAllowed: true
             multiple:      false
     yml_rule_export:
@@ -186,7 +185,7 @@ jobs:
     csv_product_proposal_import:
         connector: Akeneo CSV Connector
         alias:     csv_product_proposal_import
-        label:     Demo product draft import
+        label:     CSV Demo product draft import
         type:      import
         configuration:
             filePath:           /tmp/product_draft.csv
@@ -267,12 +266,12 @@ jobs:
             withHeader: true
             filePath:   /tmp/published_products_export_%locale%_%scope%_%datetime%.csv
     approve_product_draft:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Mass Edit Connector
         alias:     approve_product_draft
         label:     Mass approve product drafts
         type:      mass_edit
     refuse_product_draft:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Mass Edit Connector
         alias:     refuse_product_draft
         label:     Mass reject product drafts
         type:      mass_edit
@@ -340,7 +339,6 @@ jobs:
         type:      import
         configuration:
             uploadAllowed: true
-            filePath:      /tmp/asset_channel_configurations.yml
     yml_asset_channel_configuration_export:
         connector: Akeneo Product Asset Connector
         alias:     yml_asset_channel_configuration_export
@@ -372,3 +370,137 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/family.csv
+    xlsx_product_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_export
+        label:     Demo XLSX product export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/product.xlsx
+    xlsx_published_product_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_published_product_export
+        label:     Demo XLSX published product export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/published-product.xlsx
+    xlsx_product_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias:     xlsx_product_quick_export
+        label:     XLSX product quick export
+        type:      quick_export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.xlsx
+    xlsx_published_product_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias:     xlsx_published_product_quick_export
+        label:     XLSX published product quick export
+        type:      quick_export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/published-products_export_%locale%_%scope%_%datetime%.xlsx
+    rule_impacted_product_count:
+        connector: Akeneo Rule Engine Connector
+        alias:     rule_impacted_product_count
+        label:     Calculation of the matching products for the rules
+        type:      mass_edit_rule
+    xlsx_product_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_import
+        label:     XLSX Demo product import
+        type:      import
+        configuration:
+            filePath:           /tmp/product.xlsx
+            uploadAllowed:      true
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
+    xlsx_product_proposal_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_proposal_import
+        label:     XLSX Demo product draft import
+        type:      import
+        configuration:
+            filePath:      /tmp/product_draft.xlsx
+            uploadAllowed: true
+            multiple:      false
+            enabled:       true
+    xlsx_group_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_export
+        label:     Demo xlsx group export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/group.xlsx
+    xlsx_variant_group_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_variant_group_export
+        label:     Demo xlsx variant group export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/variant_group.xlsx
+    xlsx_group_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_import
+        label:     XLSX Demo group import
+        type:      import
+        configuration:
+            filePath:      /tmp/group.xlsx
+            uploadAllowed: true
+    xlsx_variant_group_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_variant_group_import
+        label:     XLSX Demo variant group import
+        type:      import
+        configuration:
+            filePath:      /tmp/variant_group.xlsx
+            uploadAllowed: true
+    xlsx_family_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_export
+        label:     Demo XLSX family export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/family.xlsx
+    xlsx_category_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_category_export
+        label:     Demo XLSX category export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/category.xlsx
+    xlsx_attribute_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_export
+        label:     Demo XLSX attribute export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/attribute.xlsx
+    xlsx_option_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_option_export
+        label:     Demo XLSX attribute option export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/option.xlsx
+    xlsx_association_type_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_association_type_export
+        label:     Demo XLSX association type export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/association_type.xlsx

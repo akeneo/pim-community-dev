@@ -55,7 +55,7 @@ Feature: Export rules
     And I am on the "clothing_rule_export" export job page
     When I launch the export job
     And I wait for the "clothing_rule_export" job to finish
-    Then exported file of "clothing_rule_export" should contain:
+    Then exported yaml file of "clothing_rule_export" should contain:
     """
     rules:
         set_name:

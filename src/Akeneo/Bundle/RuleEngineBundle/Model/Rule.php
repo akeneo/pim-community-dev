@@ -184,9 +184,27 @@ class Rule implements RuleInterface
     /**
      * {@inheritdoc}
      */
+    public function getImpactedSubjectCount()
+    {
+        return $this->definition->getImpactedSubjectCount();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setImpactedSubjectCount($impactedSubjectCount)
+    {
+        $this->definition->setImpactedSubjectCount($impactedSubjectCount);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setRelations($relations)
     {
-        $this->relation = $relations;
+        $this->relations = $relations;
 
         return $this;
     }

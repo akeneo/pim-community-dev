@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

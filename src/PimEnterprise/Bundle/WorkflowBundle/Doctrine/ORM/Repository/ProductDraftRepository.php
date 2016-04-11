@@ -16,8 +16,8 @@ use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogBundle\Query\Filter\Operators;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

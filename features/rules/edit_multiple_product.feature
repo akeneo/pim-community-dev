@@ -103,3 +103,44 @@ Feature: Update multiple product by applying rules
     When I am on the "mug" product page
     And I switch the locale to "fr_FR"
     Then the product name should be "Mug"
+
+  @javascript
+  Scenario: Successfully execute a rule with a setter action and a NOT EMPTY condition on multiple products
+    Given the following products:
+      | sku       | family  |
+      | my-loafer | sandals |
+      | fork      |         |
+      | rangers   | sandals |
+    And the following product values:
+      | product   | attribute | value          | locale |
+      | my-loafer | name      | White loafer   | en_US  |
+      | my-loafer | name      |                | fr_FR  |
+      | fork      | name      | Fork           | en_US  |
+      | fork      | name      |                | fr_FR  |
+      | rangers   | name      | Rangers        | en_US  |
+      | rangers   | name      |                | fr_FR  |
+    And the following product rule definitions:
+      """
+      copy_name:
+        priority: 10
+        conditions:
+          - field:    family.code
+            operator: NOT EMPTY
+            value:    ~
+        actions:
+          - type:        copy
+            from_field:  name
+            to_field:    name
+            from_locale: en_US
+            to_locale:   fr_FR
+      """
+    Given the product rule "copy_name" is executed
+    And I am on the "my-loafer" product page
+    When I switch the locale to "fr_FR"
+    Then the product name should be "White loafer"
+    When I am on the "fork" product page
+    And I switch the locale to "fr_FR"
+    Then the product name should be ""
+    When I am on the "rangers" product page
+    And I switch the locale to "fr_FR"
+    Then the product name should be "Rangers"

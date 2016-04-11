@@ -62,6 +62,9 @@ pimee_workflow:
       edit: Editar
       view: Vista
   jobs:
+    csv_published_product_export:
+      title: Exportación en CSV de productos publicados
+      export.title: Exportación de productos publicados
     csv_product_proposal_import:
       title: Importación de propuesta de producto en CSV
       import.title: Importación de propuesta de producto
@@ -70,7 +73,10 @@ pimee_workflow:
       perform.title: Aprobar la propuesta
     refuse_product_draft:
       title: Rechazar propuesta
-      perform.title: Rechazar propuesta
+      perform.title: Rechazar propuestas
+    xlsx_published_product_export:
+      title: Exportar productos publicados en XLSX
+      export.title: Exportar productos publicados
   steps:
     product_draft_processor.title: Procesador de propuesta
     approve.title: Aprobar la propuesta

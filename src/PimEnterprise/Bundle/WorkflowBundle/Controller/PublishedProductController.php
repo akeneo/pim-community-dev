@@ -12,17 +12,20 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\EnrichBundle\Flash\Message;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Pim\Component\Catalog\Manager\CompletenessManager;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
+use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -57,8 +60,8 @@ class PublishedProductController
     /** @var CompletenessManager */
     protected $completenessManager;
 
-    /** @var ChannelManager */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
@@ -71,7 +74,7 @@ class PublishedProductController
      * @param UserContext                   $userContext
      * @param PublishedProductManager       $manager
      * @param CompletenessManager           $completenessManager
-     * @param ChannelManager                $channelManager
+     * @param ChannelRepositoryInterface    $channelRepository
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
@@ -82,7 +85,7 @@ class PublishedProductController
         UserContext $userContext,
         PublishedProductManager $manager,
         CompletenessManager $completenessManager,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->request              = $request;
@@ -92,7 +95,7 @@ class PublishedProductController
         $this->userContext          = $userContext;
         $this->manager              = $manager;
         $this->completenessManager  = $completenessManager;
-        $this->channelManager       = $channelManager;
+        $this->channelRepository    = $channelRepository;
         $this->authorizationChecker = $authorizationChecker;
     }
 
@@ -121,9 +124,9 @@ class PublishedProductController
      * @Template
      * @AclAncestor("pimee_workflow_published_product_index")
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      *
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return JsonResponse|RedirectResponse
      */
     public function unpublishAction(Request $request, $id)
     {
@@ -175,12 +178,12 @@ class PublishedProductController
      *
      * @deprecated To be removed in 1.5
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function completenessAction($id)
     {
         $published = $this->findPublishedOr404($id);
-        $channels = $this->channelManager->getFullChannels();
+        $channels = $this->channelRepository->getFullChannels();
         $locales = $this->userContext->getUserLocales();
 
         $completenesses = $this->completenessManager->getProductCompleteness(
@@ -206,9 +209,9 @@ class PublishedProductController
      *
      * @param int|string $id
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+     * @return PublishedProductInterface
      */
     protected function findPublishedOr404($id)
     {
@@ -226,7 +229,7 @@ class PublishedProductController
     /**
      * Return only granted user locales
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale[]
+     * @return Locale[]
      */
     protected function getUserLocales()
     {

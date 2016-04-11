@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\WebServiceBundle\Handler\Rest;
 
 use Pim\Bundle\WebServiceBundle\Handler\Rest\ProductHandler as BaseProductHandler;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;

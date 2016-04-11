@@ -13,14 +13,14 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Factory\AttributeFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
-use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**

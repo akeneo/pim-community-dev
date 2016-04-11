@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\CatalogBundle\Model\ProductValue:
+PimEnterprise\Component\Catalog\Model\ProductValue:
     type: embeddedDocument
     fields:
         assets:

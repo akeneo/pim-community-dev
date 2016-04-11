@@ -44,7 +44,7 @@ class ProductsSaverSpec extends ObjectBehavior
         $versionManager->isRealTimeVersioning()->willReturn(false);
         $versionContext->addContextInfo('Applied rule "rule_one"')->shouldBeCalled();
         $versionManager->setRealTimeVersioning(false)->shouldBeCalled();
-        $productSaver->saveAll(Argument::any(), ['recalculate' => false, 'schedule' => true])->shouldBeCalled();
+        $productSaver->saveAll(Argument::any())->shouldBeCalled();
 
         $this->save($rule, [$product]);
     }

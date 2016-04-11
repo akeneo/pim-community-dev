@@ -38,19 +38,41 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pimee_security.event_subscriber.enrich.add_category_permissions:
+    pimee_security.event_subscriber.enrich.add_product_category_permissions:
         class: %pimee_security.event_subscriber.enrich.add_category_permissions.class%
         arguments:
             - '@pimee_security.manager.category_access'
+            - '%pim_catalog.model.category.interface%'
+            - true
         tags:
             - { name: kernel.event_subscriber }
 
-    pimee_security.event_subscriber.import_export.add_category_permissions:
+    pimee_security.event_subscriber.enrich.add_asset_category_permissions:
+        class: %pimee_security.event_subscriber.enrich.add_category_permissions.class%
+        arguments:
+            - '@pimee_product_asset.manager.category_access'
+            - '%pimee_product_asset.model.category.interface%'
+            - false
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_security.event_subscriber.import_export.add_product_category_permissions:
         class: %pimee_security.event_subscriber.import_export.add_category_permissions.class%
         arguments:
             - '@pimee_security.manager.category_access'
+            - '%pim_catalog.model.category.interface%'
+            - true
         tags:
-            - { name: doctrine.event_subscriber }
+            - { name: kernel.event_subscriber }
+
+    pimee_security.event_subscriber.import_export.add_asset_category_permissions:
+        class: %pimee_security.event_subscriber.import_export.add_category_permissions.class%
+        arguments:
+            - '@pimee_product_asset.manager.category_access'
+            - '%pimee_product_asset.model.category.interface%'
+            - false
+        tags:
+            - { name: kernel.event_subscriber }
 
     pimee_security.event_subscriber.enrich.add_default_user_group:
         class: %pimee_security.event_subscriber.enrich.add_default_user_group.class%

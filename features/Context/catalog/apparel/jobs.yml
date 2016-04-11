@@ -41,7 +41,6 @@ jobs:
         type:      import
         configuration:
             uploadAllowed: true
-            filePath:      /tmp/asset_channel_configurations.yml
     apparel_asset_channel_configuration_export:
         connector: Akeneo Product Asset Connector
         alias: yml_asset_channel_configuration_export

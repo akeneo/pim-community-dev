@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.factory.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory
+    pimee_workflow.factory.product_draft.class: PimEnterprise\Component\Workflow\Factory\ProductDraftFactory
 
 services:
     pimee_workflow.factory.product_draft:

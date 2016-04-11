@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\MassUpload;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor;
@@ -26,11 +25,7 @@ use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
  */
 class MassUploadTasklet implements TaskletInterface
 {
-    /** @staticvar string */
     const TASKLET_NAME = 'asset_mass_upload';
-
-    /** @staticvar string */
-    const NOTIFICATION_TYPE = 'mass_upload';
 
     /** @var StepExecution */
     protected $stepExecution;
@@ -41,21 +36,15 @@ class MassUploadTasklet implements TaskletInterface
     /** @var string */
     protected $tmpStorageDir;
 
-    /** @var NotificationManager */
-    protected $notificationManager;
-
     /**
      * @param MassUploadProcessor $massUploadProcessor
-     * @param NotificationManager $notificationManager
      * @param string              $tmpStorageDir
      */
     public function __construct(
         MassUploadProcessor $massUploadProcessor,
-        NotificationManager $notificationManager,
         $tmpStorageDir
     ) {
         $this->massUploadProcessor = $massUploadProcessor;
-        $this->notificationManager = $notificationManager;
         $this->tmpStorageDir       = $tmpStorageDir;
     }
 
@@ -112,17 +101,5 @@ class MassUploadTasklet implements TaskletInterface
                     break;
             }
         }
-
-        $this->notificationManager->notify(
-            [$username],
-            'pimee_product_asset.mass_upload.executed',
-            'success',
-            [
-                'route'         => 'pim_enrich_job_tracker_show',
-                'routeParams'   => ['id'         => $jobExecution->getId()],
-                'messageParams' => ['%label%'    => $jobExecution->getJobInstance()->getLabel()],
-                'context'       => ['actionType' => static::NOTIFICATION_TYPE]
-            ]
-        );
     }
 }

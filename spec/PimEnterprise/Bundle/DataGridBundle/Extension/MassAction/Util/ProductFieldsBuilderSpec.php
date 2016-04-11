@@ -6,14 +6,15 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -24,7 +25,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
-        CurrencyManager $currencyManager,
+        CurrencyRepositoryInterface $currencyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext,
         AttributeGroupAccessRepository $accessRepository,
@@ -41,7 +42,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
             $productRepository,
             $attributeRepository,
             $localeRepository,
-            $currencyManager,
+            $currencyRepository,
             $assocTypeRepo,
             $catalogContext,
             $accessRepository,

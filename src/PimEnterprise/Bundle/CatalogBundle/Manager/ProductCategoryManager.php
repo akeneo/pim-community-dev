@@ -14,11 +14,11 @@ namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager as BaseProductCategoryManager;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

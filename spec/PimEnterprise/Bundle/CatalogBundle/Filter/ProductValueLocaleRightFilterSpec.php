@@ -7,16 +7,22 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ProductValueLocaleRightFilterSpec extends ObjectBehavior
 {
     public function let(
+        TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        TokenInterface $token
     ) {
-        $this->beConstructedWith($authorizationChecker, $localeRepository);
+        $tokenStorage->getToken()->willReturn($token);
+
+        $this->beConstructedWith($tokenStorage, $authorizationChecker, $localeRepository);
     }
 
     public function it_does_not_filter_a_product_value_if_the_user_is_granted_to_see_its_locale(

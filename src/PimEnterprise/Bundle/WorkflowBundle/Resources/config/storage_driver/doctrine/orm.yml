@@ -23,6 +23,7 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - %pimee_workflow.entity.published_product.class%
+            - %pim_catalog.entity.category.class%
 
     pimee_workflow.repository.published_association:
         class: %pimee_workflow.repository.published_association.class%

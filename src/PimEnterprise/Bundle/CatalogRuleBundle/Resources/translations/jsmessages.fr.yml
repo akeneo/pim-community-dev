@@ -15,9 +15,17 @@ pimee_catalog_rule:
       set.label: est modifié dans
       copy.label: est copié dans
       add.label: est ajouté dans
+  datagrid:
+    rule-grid:
+      mass_edit_action:
+        confirm_title: Confirmation de calcul
+        confirm_content: Êtes-vous sûr de vouloir calculer les produits impactés par les règles ?
+        confirm_ok: OK
 confirmation:
   remove:
     rule: "Êtes-vous sûr de vouloir supprimer cette règle ? Il est impossible d'annuler cette action"
 flash:
   rule:
     removed: Règle supprimée avec succès
+    impacted_product_count: "Le calcul des produits impactés par les règles à été lancé. Vous serez notifié lorsqu'il sera terminé."
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Paramètres des règles

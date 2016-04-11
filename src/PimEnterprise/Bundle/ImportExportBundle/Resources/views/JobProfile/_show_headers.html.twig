@@ -12,12 +12,12 @@
     {{ elements.backLink(indexRoute) }}
 
     {% if jobInstance.status != constant('Akeneo\\Component\\Batch\\Model\\JobInstance::STATUS_IN_PROGRESS') and
-        is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EDIT'), jobInstance)
+        is_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EDIT'), jobInstance)
             and resource_granted('pim_importexport_' ~ jobInstance.type ~ '_profile_edit') %}
         {{ elements.link('Edit', editRoute, { icon: 'pencil' }) }}
     {% endif %}
 
-    {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EXECUTE'), jobInstance)
+    {% if is_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EXECUTE'), jobInstance)
         and resource_granted('pim_importexport_' ~ jobInstance.type ~ '_profile_launch') %}
         {% if uploadAllowed and uploadViolations|length == 0 %}
             {{ elements.link('Upload and '~action, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}

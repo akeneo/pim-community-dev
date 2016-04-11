@@ -15,8 +15,8 @@ use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterf
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use PimEnterprise\Bundle\CatalogBundle\Model\ProductValueInterface as EnterpriseProductValueInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
+use PimEnterprise\Component\Catalog\Model\ProductValueInterface as EnterpriseProductValueInterface;
 use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
@@ -43,7 +43,7 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
         if (!$productValue instanceof EnterpriseProductValueInterface) {
             $message = sprintf(
                 'Product value must implement %s, %s provided',
-                'PimEnterprise\\Bundle\\CatalogBundle\\Model\\ProductValueInterface',
+                'PimEnterprise\\Component\\Catalog\\Model\\ProductValueInterface',
                 get_class($productValue)
             );
             throw new \InvalidArgumentException($message);

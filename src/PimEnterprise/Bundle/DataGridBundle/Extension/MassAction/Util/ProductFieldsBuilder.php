@@ -12,14 +12,14 @@
 namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util;
 
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as BaseProductFieldsBuilder;
+use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -41,7 +41,7 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
      * @param ProductRepositoryInterface         $productRepository
      * @param AttributeRepositoryInterface       $attributeRepository
      * @param LocaleRepositoryInterface          $localeRepository
-     * @param CurrencyManager                    $currencyManager
+     * @param CurrencyRepositoryInterface        $currencyRepository
      * @param AssociationTypeRepositoryInterface $assocTypeRepo
      * @param CatalogContext                     $catalogContext
      * @param AttributeGroupAccessRepository     $accessRepository
@@ -51,7 +51,7 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
         ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
-        CurrencyManager $currencyManager,
+        CurrencyRepositoryInterface $currencyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext,
         AttributeGroupAccessRepository $accessRepository,
@@ -61,7 +61,7 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
             $productRepository,
             $attributeRepository,
             $localeRepository,
-            $currencyManager,
+            $currencyRepository,
             $assocTypeRepo,
             $catalogContext
         );

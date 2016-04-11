@@ -17,9 +17,9 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
@@ -125,11 +125,9 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         }
 
         $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
 
         foreach ($products as $product) {
-            $this->save($product, $itemOptions);
+            $this->save($product, $allOptions);
         }
 
         if (true === $allOptions['flush']) {

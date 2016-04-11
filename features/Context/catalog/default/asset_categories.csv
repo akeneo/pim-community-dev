@@ -1,0 +1,15 @@
+code;parent;label-en_US
+asset_main_catalog;;Asset main catalog
+images;asset_main_catalog;Images
+other;images;Other picture
+situ;images;In situ pictures
+prioritized_images;images;Prioritised images
+print;asset_main_catalog;Print
+videos;asset_main_catalog;Videos
+prioritized_videos;videos;Prioritised videos
+audio;asset_main_catalog;Audio
+client_documents;asset_main_catalog;Client documents
+store_documents;asset_main_catalog;Store documents
+technical_documents;asset_main_catalog;Technical documents
+sales_documents;asset_main_catalog;Sales documents
+archives;asset_main_catalog;Archives

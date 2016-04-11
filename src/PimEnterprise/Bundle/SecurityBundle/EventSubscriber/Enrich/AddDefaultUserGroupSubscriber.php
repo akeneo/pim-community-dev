@@ -16,9 +16,9 @@ use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -85,7 +85,7 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
         $object = $event->getSubject();
         if ($object instanceof AttributeGroupInterface) {
             $userGroup = $this->groupRepository->getDefaultUserGroup();
-            $this->attGrpAccessManager->grantAccess($object, $userGroup, Attributes::EDIT_ATTRIBUTES, true);
+            $this->attGrpAccessManager->grantAccess($object, $userGroup, Attributes::EDIT_ATTRIBUTES);
         }
     }
 }

@@ -12,15 +12,15 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Publisher\UnpublisherInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use PimEnterprise\Component\Workflow\Event\PublishedProductEvent;
+use PimEnterprise\Component\Workflow\Event\PublishedProductEvents;
+use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
+use PimEnterprise\Component\Workflow\Publisher\PublisherInterface;
+use PimEnterprise\Component\Workflow\Publisher\UnpublisherInterface;
+use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

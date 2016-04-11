@@ -11,7 +11,10 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -87,7 +90,7 @@ class ApproveProposalCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface
+     * @return ProductRepositoryInterface
      */
     protected function getProductRepository()
     {
@@ -95,7 +98,7 @@ class ApproveProposalCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface
+     * @return ProductDraftRepositoryInterface
      */
     protected function getProductDraftRepository()
     {
@@ -103,7 +106,7 @@ class ApproveProposalCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager
+     * @return ProductDraftManager
      */
     protected function getProductDraftManager()
     {

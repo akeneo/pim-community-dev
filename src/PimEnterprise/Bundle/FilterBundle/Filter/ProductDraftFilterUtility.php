@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 
 /**
  * ProductDraft filter utility

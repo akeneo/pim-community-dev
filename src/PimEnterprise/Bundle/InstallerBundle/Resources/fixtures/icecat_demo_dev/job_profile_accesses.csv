@@ -1,0 +1,59 @@
+job_profile;execute_job_profile;edit_job_profile
+csv_product_import;IT support,Manager,Redactor;IT support,Manager
+csv_product_export;IT support,Manager,Redactor;IT support,Manager
+csv_published_product_export;IT support,Manager,Redactor;IT support,Manager
+csv_category_import;IT support,Manager,Redactor;IT support,Manager
+csv_category_export;IT support,Manager,Redactor;IT support,Manager
+csv_association_type_import;IT support,Manager,Redactor;IT support
+csv_association_type_export;IT support,Manager,Redactor;IT support
+csv_group_import;IT support,Manager,Redactor;IT support
+csv_variant_group_import;IT support,Manager,Redactor;IT support
+csv_group_export;IT support,Manager,Redactor;IT support
+csv_variant_group_export;IT support,Manager,Redactor;IT support
+csv_attribute_import;IT support,Manager,Redactor;IT support,Manager
+csv_attribute_export;IT support,Manager,Redactor;IT support,Manager
+csv_option_import;IT support,Manager,Redactor;IT support,Manager
+csv_option_export;IT support,Manager,Redactor;IT support,Manager
+yml_rule_import;IT support,Manager,Redactor;IT support,Manager
+yml_rule_export;IT support,Manager,Redactor;IT support,Manager
+csv_product_proposal_import;IT support,Manager,Redactor;IT support,Manager
+csv_asset_import;IT support,Manager,Redactor;IT support,Manager
+csv_asset_category_import;IT support,Manager,Redactor;IT support,Manager
+csv_asset_category_export;IT support,Manager,Redactor;IT support,Manager
+csv_asset_export;IT support,Manager,Redactor;IT support,Manager
+csv_asset_variation_export;IT support,Manager,Redactor;IT support,Manager
+yml_asset_channel_configuration_import;IT support,Manager,Redactor;IT support,Manager
+yml_asset_channel_configuration_export;IT support,Manager,Redactor;IT support,Manager
+update_product_value;All;
+add_product_value;All;
+add_product_value_with_permission;All;
+update_product_value_with_permission;All;
+publish_product;All;
+unpublish_product;All;
+edit_common_attributes;All;
+edit_common_attributes_with_permission;All;
+add_to_variant_group;All;
+set_attribute_requirements;All;
+approve_product_draft;All;
+refuse_product_draft;All;
+apply_assets_mass_upload;All;
+csv_product_quick_export;All;
+csv_published_product_quick_export;All;
+csv_family_import;IT support,Manager,Redactor;IT support,Manager
+csv_family_export;IT support,Manager,Redactor;IT support,Manager
+xlsx_product_export;IT support,Manager,Redactor;IT support,Manager
+xlsx_published_product_export;IT support,Manager,Redactor;IT support,Manager
+xlsx_product_quick_export;All;
+xlsx_published_product_quick_export;All;
+rule_impacted_product_count;All;
+xlsx_product_import;IT support,Manager,Redactor;IT support,Manager
+xlsx_product_proposal_import;IT support,Manager,Redactor;IT support,Manager
+xlsx_variant_group_export;All;All
+xlsx_group_export;All;All
+xlsx_group_import;IT support,Manager,Redactor;IT support
+xlsx_variant_group_import;IT support,Manager,Redactor;IT support
+xlsx_attribute_export;IT support,Manager,Redactor;IT support,Manager
+xlsx_option_export;IT support,Manager,Redactor;IT support,Manager
+xlsx_family_export;IT support,Manager,Redactor;IT support,Manager
+xlsx_association_type_export;IT support,Manager,Redactor;IT support
+xlsx_category_export;IT support,Manager,Redactor;IT support,Manager

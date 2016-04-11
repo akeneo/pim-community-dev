@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\PdfGeneratorBundle\Twig;
 
-use \Pim\Bundle\PdfGeneratorBundle\Twig\ImageExtension as BaseImageExtension;
+use Pim\Bundle\PdfGeneratorBundle\Twig\ImageExtension as BaseImageExtension;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 

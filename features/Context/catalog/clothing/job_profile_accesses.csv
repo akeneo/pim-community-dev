@@ -1,0 +1,39 @@
+job_profile;execute_job_profile;edit_job_profile
+clothing_association_type_export;IT support,Redactor;IT support
+clothing_attribute_export;IT support,Manager,Redactor;IT support
+clothing_category_export;IT support,Manager,Redactor;IT support
+clothing_asset_category_export;IT support,Manager,Redactor;IT support,Manager,Redactor
+clothing_asset_export;IT support,Manager,Redactor;IT support,Manager,Redactor
+clothing_asset_variation_export;IT support,Manager,Redactor;IT support,Manager,Redactor
+clothing_group_export;IT support,Manager,Redactor;IT support
+clothing_option_export;IT support,Redactor;
+clothing_product_export;IT support,Manager,Redactor;IT support
+clothing_association_type_import;IT support,Redactor;
+clothing_attribute_import;IT support,Manager,Redactor;IT support
+clothing_category_import;IT support,Redactor;IT support
+clothing_group_import;IT support,Manager,Redactor;IT support
+clothing_option_import;IT support,Redactor;IT support
+clothing_product_import;IT support,Manager,Redactor;IT support
+clothing_mobile_published_product_export;IT support,Manager,Redactor;IT support
+clothing_rule_import;IT support,Manager,Redactor;IT support
+clothing_rule_export;IT support,Manager,Redactor;IT support
+clothing_product_proposal_import;IT support,Manager,Redactor;IT support
+clothing_asset_import;IT support,Manager,Redactor;IT support,Manager
+clothing_asset_category_import;IT support,Manager,Redactor;IT support,Manager
+clothing_asset_channel_configuration_import;IT support,Manager,Redactor;IT support,Manager
+clothing_asset_channel_configuration_export;IT support,Manager,Redactor;IT support,Manager
+update_product_value;IT support,Manager,Redactor;
+add_product_value;IT support,Manager,Redactor;
+add_product_value_with_permission;IT support,Manager,Redactor;
+update_product_value_with_permission;IT support,Manager,Redactor;
+publish_product;IT support,Manager,Redactor;
+unpublish_product;IT support,Manager,Redactor;
+edit_common_attributes;IT support,Manager,Redactor;
+add_to_variant_group;IT support,Manager,Redactor;
+set_attribute_requirements;IT support,Manager,Redactor;
+csv_product_quick_export;IT support,Manager,Redactor;
+edit_common_attributes_with_permission;IT support,Manager,Redactor;
+approve_product_draft;IT support,Manager;
+refuse_product_draft;IT support,Manager;
+apply_assets_mass_upload;IT support,Manager;
+xlsx_clothing_product_proposal_import;IT support,Manager,Redactor;IT support

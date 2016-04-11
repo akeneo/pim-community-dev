@@ -17,9 +17,10 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
+use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

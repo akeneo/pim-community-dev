@@ -14,16 +14,15 @@ namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Doctrine\DBAL\Connection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator as CommunityCompletenessGenerator;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\AttributeTypes as AttributeTypes;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
+use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes as AssetAttributeTypes;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
@@ -76,7 +75,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
     {
         $productQb = $this->documentManager->createQueryBuilder($this->productClass);
 
-        $attributesCodes = $this->attributeRepository->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION);
+        $attributesCodes = $this->attributeRepository->getAttributeCodesByType(AssetAttributeTypes::ASSETS_COLLECTION);
 
         $productQb
             ->update()
@@ -148,12 +147,12 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
             $shouldExistInLocale = !$attribute->isLocaleSpecific() || $attribute->hasLocaleSpecific($locale);
 
             if ($shouldExistInLocale) {
-                if (AbstractAttributeType::BACKEND_TYPE_PRICE === $requirement->getAttribute()->getBackendType()) {
+                if (AttributeTypes::BACKEND_TYPE_PRICE === $requirement->getAttribute()->getBackendType()) {
                     $fields[$expectedCompleteness]['reqs']['prices'][$fieldName] = [];
                     foreach ($channel->getCurrencies() as $currency) {
                         $fields[$expectedCompleteness]['reqs']['prices'][$fieldName][] = $currency->getCode();
                     }
-                } elseif (AttributeTypes::ASSETS_COLLECTION === $requirement->getAttribute()->getAttributeType()) {
+                } elseif (AssetAttributeTypes::ASSETS_COLLECTION === $requirement->getAttribute()->getAttributeType()) {
                     $fields[$expectedCompleteness]['reqs']['assets'][] = $fieldName;
                 } else {
                     $fields[$expectedCompleteness]['reqs']['attributes'][] = $fieldName;

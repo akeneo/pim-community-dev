@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -64,25 +64,33 @@ class RemoveNotificationSubscriber extends AbstractProposalStateNotificationSubs
             ? $messageInfos['message']
             : 'pimee_workflow.product_draft.notification.remove';
 
+        $notification = $this->notificationFactory->create();
+        $notification
+            ->setType('error')
+            ->setMessage($message)
+            ->setRoute('pim_enrich_product_edit')
+            ->setRouteParams(['id' => $productDraft->getProduct()->getId()]);
+
         $options = [
-            'route'         => 'pim_enrich_product_edit',
-            'routeParams'   => ['id' => $productDraft->getProduct()->getId()],
             'messageParams' => [
                 '%product%' => $productDraft->getProduct()->getLabel($this->userContext->getCurrentLocaleCode()),
                 '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
             ],
-            'context'       => [
+            'context' => [
                 'actionType'       => 'pimee_workflow_product_draft_notification_remove',
                 'showReportButton' => false,
             ]
         ];
 
-        $options = array_replace_recursive($options, $messageInfos['options']);
+        $options = array_replace_recursive($options, $messageInfos);
+        $notification
+            ->setMessageParams($options['messageParams'])
+            ->setContext($options['context']);
 
         if ($event->hasArgument('comment')) {
-            $options['comment'] = $event->getArgument('comment');
+            $notification->setComment($event->getArgument('comment'));
         }
 
-        $this->notifier->notify([$productDraft->getAuthor()], $message, 'error', $options);
+        $this->notifier->notify($notification, [$productDraft->getAuthor()]);
     }
 }

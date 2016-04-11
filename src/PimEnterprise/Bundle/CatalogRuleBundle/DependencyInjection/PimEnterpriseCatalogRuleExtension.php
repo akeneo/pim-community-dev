@@ -32,6 +32,7 @@ class PimEnterpriseCatalogRuleExtension extends AkeneoStorageUtilsExtension
         $loader->load('action_appliers.yml');
         $loader->load('connector/processors.yml');
         $loader->load('connector/readers.yml');
+        $loader->load('connector/tasklets.yml');
         $loader->load('connector/writers.yml');
         $loader->load('controllers.yml');
         $loader->load('datagrid_extensions.yml');
@@ -40,9 +41,11 @@ class PimEnterpriseCatalogRuleExtension extends AkeneoStorageUtilsExtension
         $loader->load('doctrine.yml');
         $loader->load('engine.yml');
         $loader->load('event_subscribers.yml');
+        $loader->load('factories.yml');
         $loader->load('managers.yml');
         $loader->load('models.yml');
         $loader->load('normalizers.yml');
+        $loader->load('repositories.yml');
         $loader->load('runners.yml');
         $loader->load('serializers.yml');
         $loader->load('validators.yml');

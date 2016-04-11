@@ -1,0 +1,5 @@
+{% if null == value and "0" != value %}
+    {{ 'pimee_catalog_rule.datagrid.rule-grid.column.impacted_product_count.no_yet_calculated'|trans }}
+{% else %}
+    {{ 'pimee_catalog_rule.datagrid.rule-grid.column.impacted_product_count.count'|transchoice(value) }}
+{% endif %}

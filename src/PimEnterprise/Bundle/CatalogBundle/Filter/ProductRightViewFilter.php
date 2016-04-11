@@ -11,37 +11,24 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Filter;
 
-use Pim\Bundle\CatalogBundle\Filter\AbstractFilter;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use PimEnterprise\Component\Security\Attributes;
 
 /**
  * Product view filter
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class ProductRightViewFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
+class ProductRightViewFilter extends AbstractAuthorizationFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
-
-    /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     */
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
-    {
-        $this->authorizationChecker = $authorizationChecker;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function filterObject($product, $type, array $options = [])
     {
-        if (!$product instanceof ProductInterface) {
+        if (!$this->supportsObject($product, $type, $options)) {
             throw new \LogicException('This filter only handles objects of type "ProductInterface"');
         }
 
@@ -53,6 +40,6 @@ class ProductRightViewFilter extends AbstractFilter implements CollectionFilterI
      */
     public function supportsObject($object, $type, array $options = [])
     {
-        return $object instanceof ProductInterface;
+        return parent::supportsObject($options, $type, $options) && $object instanceof ProductInterface;
     }
 }

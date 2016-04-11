@@ -6,9 +6,7 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor as BaseProcessor;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -35,7 +33,6 @@ class UpdateProductValueWithPermissionProcessor extends BaseProcessor
     /**
      * @param PropertySetterInterface             $propertySetter
      * @param ValidatorInterface                  $validator
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param UserManager                         $userManager
      * @param AuthorizationCheckerInterface       $authorizationChecker
      * @param TokenStorageInterface               $tokenStorage
@@ -43,16 +40,11 @@ class UpdateProductValueWithPermissionProcessor extends BaseProcessor
     public function __construct(
         PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         UserManager $userManager,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage
     ) {
-        BaseProcessor::__construct(
-            $propertySetter,
-            $validator,
-            $jobConfigurationRepo
-        );
+        parent::__construct($propertySetter, $validator);
 
         $this->authorizationChecker = $authorizationChecker;
         $this->tokenStorage         = $tokenStorage;

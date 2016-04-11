@@ -36,8 +36,8 @@ Feature: Revert a product to a previous version
       | version | author                          | property | value  |
       | 3       | Julia Stark - Julia@example.com | enabled  | 1      |
       | 2       | Julia Stark - Julia@example.com | enabled  | 0      |
-      | 1       | Admin Doe - admin@example.com   | SKU      | shirt  |
-      | 1       | Admin Doe - admin@example.com   | enabled  | 1      |
+      | 1       | John Doe - admin@example.com   | SKU      | shirt  |
+      | 1       | John Doe - admin@example.com   | enabled  | 1      |
 
   Scenario: Successfully revert the status of a product (disabled)
     Given an enabled "shirt" product

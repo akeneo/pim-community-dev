@@ -14,9 +14,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\Mongo
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Pim\Component\Catalog\ProductEvents;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

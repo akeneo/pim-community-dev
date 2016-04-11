@@ -13,12 +13,13 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
+use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Security\Model\CategoryAccessInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -29,32 +30,46 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class CategoryAccessManager
 {
-    /** @var ManagerRegistry */
-    protected $registry;
+    /** @var CategoryAccessRepository */
+    protected $accessRepository;
+
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
+
+    /** @var GroupRepository */
+    protected $groupRepository;
+
+    /** @var BulkSaverInterface */
+    protected $accessSaver;
+
+    /** @var BulkRemoverInterface */
+    protected $accessRemover;
 
     /** @var string */
     protected $categoryAccessClass;
 
-    /** @var string */
-    protected $categoryClass;
-
-    /** @var string */
-    protected $userGroupClass;
-
     /**
-     * Constructor
-     *
-     * @param ManagerRegistry $registry
-     * @param string          $categoryAccessClass
-     * @param string          $categoryClass
-     * @param string          $userGroupClass
+     * @param CategoryAccessRepository    $accessRepository
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param GroupRepository             $groupRepository
+     * @param BulkSaverInterface          $accessSaver
+     * @param BulkRemoverInterface        $accessRemover
+     * @param string                      $categoryAccessClass
      */
-    public function __construct(ManagerRegistry $registry, $categoryAccessClass, $categoryClass, $userGroupClass)
-    {
-        $this->registry            = $registry;
+    public function __construct(
+        CategoryAccessRepository $accessRepository,
+        CategoryRepositoryInterface $categoryRepository,
+        GroupRepository $groupRepository,
+        BulkSaverInterface $accessSaver,
+        BulkRemoverInterface $accessRemover,
+        $categoryAccessClass
+    ) {
+        $this->accessRepository    = $accessRepository;
+        $this->categoryRepository  = $categoryRepository;
+        $this->groupRepository     = $groupRepository;
+        $this->accessSaver         = $accessSaver;
+        $this->accessRemover       = $accessRemover;
         $this->categoryAccessClass = $categoryAccessClass;
-        $this->categoryClass       = $categoryClass;
-        $this->userGroupClass      = $userGroupClass;
     }
 
     /**
@@ -66,7 +81,7 @@ class CategoryAccessManager
      */
     public function getViewUserGroups(CategoryInterface $category)
     {
-        return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::VIEW_ITEMS);
+        return $this->accessRepository->getGrantedUserGroups($category, Attributes::VIEW_ITEMS);
     }
 
     /**
@@ -78,7 +93,7 @@ class CategoryAccessManager
      */
     public function getEditUserGroups(CategoryInterface $category)
     {
-        return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::EDIT_ITEMS);
+        return $this->accessRepository->getGrantedUserGroups($category, Attributes::EDIT_ITEMS);
     }
 
     /**
@@ -90,7 +105,7 @@ class CategoryAccessManager
      */
     public function getOwnUserGroups(CategoryInterface $category)
     {
-        return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::OWN_PRODUCTS);
+        return $this->accessRepository->getGrantedUserGroups($category, Attributes::OWN_PRODUCTS);
     }
 
     /**
@@ -130,26 +145,26 @@ class CategoryAccessManager
      * @param Group[]           $viewGroups the view user groups
      * @param Group[]           $editGroups the edit user groups
      * @param Group[]           $ownGroups  the own user groups
-     * @param bool              $flush      whether to flush the object manager
      */
-    public function setAccess(CategoryInterface $category, $viewGroups, $editGroups, $ownGroups, $flush = false)
+    public function setAccess(CategoryInterface $category, $viewGroups, $editGroups, $ownGroups)
     {
         $grantedGroups = [];
+        $grantedAccesses = [];
         foreach ($ownGroups as $group) {
-            $this->grantAccess($category, $group, Attributes::OWN_PRODUCTS, $flush);
+            $grantedAccesses[] = $this->buildGrantAccess($category, $group, Attributes::OWN_PRODUCTS);
             $grantedGroups[] = $group;
         }
 
         foreach ($editGroups as $group) {
             if (!in_array($group, $grantedGroups)) {
-                $this->grantAccess($category, $group, Attributes::EDIT_ITEMS, $flush);
+                $grantedAccesses[] = $this->buildGrantAccess($category, $group, Attributes::EDIT_ITEMS);
                 $grantedGroups[] = $group;
             }
         }
 
         foreach ($viewGroups as $group) {
             if (!in_array($group, $grantedGroups)) {
-                $this->grantAccess($category, $group, Attributes::VIEW_ITEMS, $flush);
+                $grantedAccesses[] = $this->buildGrantAccess($category, $group, Attributes::VIEW_ITEMS);
                 $grantedGroups[] = $group;
             }
         }
@@ -157,10 +172,7 @@ class CategoryAccessManager
         if (null !== $category->getId()) {
             $this->revokeAccess($category, $grantedGroups);
         }
-
-        if (true === $flush) {
-            $this->getObjectManager()->flush();
-        }
+        $this->accessSaver->saveAll($grantedAccesses);
     }
 
     /**
@@ -168,9 +180,8 @@ class CategoryAccessManager
      *
      * @param CategoryInterface $category
      * @param array             $options
-     * @param bool              $flush
      */
-    public function setAccessLikeParent(CategoryInterface $category, array $options = [], $flush = false)
+    public function setAccessLikeParent(CategoryInterface $category, array $options = [])
     {
         $resolver = new OptionsResolver();
         $this->configure($resolver);
@@ -191,18 +202,16 @@ class CategoryAccessManager
                 $category,
                 $this->getViewUserGroups($ancestor),
                 $this->getEditUserGroups($ancestor),
-                (true === $options['owner']) ? $this->getOwnUserGroups($ancestor) : [],
-                $flush
+                (true === $options['owner']) ? $this->getOwnUserGroups($ancestor) : []
             );
         } else {
             // it a category from a new tree, let's put ALL permissions
-            $defaultUserGroup = $this->getUserGroupRepository()->getDefaultUserGroup();
+            $defaultUserGroup = $this->groupRepository->getDefaultUserGroup();
             $this->setAccess(
                 $category,
                 [$defaultUserGroup],
                 [$defaultUserGroup],
-                (!isset($options['owner']) || true === $options['owner']) ? [$defaultUserGroup] : [],
-                $flush
+                (!isset($options['owner']) || true === $options['owner']) ? [$defaultUserGroup] : []
             );
         }
     }
@@ -252,7 +261,7 @@ class CategoryAccessManager
             $codeToGroups[$group->getName()] = $group;
         }
 
-        $categoryRepo = $this->getCategoryRepository();
+        $categoryRepo = $this->categoryRepository;
         $childrenIds = $categoryRepo->getAllChildrenIds($parent);
 
         foreach ($codeToGroups as $group) {
@@ -261,7 +270,7 @@ class CategoryAccessManager
             $edit = $mergedPermissions[$groupCode]['edit'];
             $own = $mergedPermissions[$groupCode]['own'];
 
-            $accessRepo = $this->getAccessRepository();
+            $accessRepo = $this->accessRepository;
             $toUpdateIds = $accessRepo->getCategoryIdsWithExistingAccess([$group], $childrenIds);
             $toAddIds = array_diff($childrenIds, $toUpdateIds);
 
@@ -346,12 +355,8 @@ class CategoryAccessManager
      */
     protected function removeAccesses($categoryIds, Group $group)
     {
-        $accesses = $this->getAccessRepository()->findBy(['category' => $categoryIds, 'userGroup' => $group]);
-
-        foreach ($accesses as $access) {
-            $this->getObjectManager()->remove($access);
-        }
-        $this->getObjectManager()->flush();
+        $accesses = $this->accessRepository->findBy(['category' => $categoryIds, 'userGroup' => $group]);
+        $this->accessRemover->removeAll($accesses);
     }
 
     /**
@@ -368,8 +373,9 @@ class CategoryAccessManager
         $view = ($view === null) ? false : $view;
         $edit = ($edit === null) ? false : $edit;
         $own = ($own === null) ? false : $own;
-        $categories = $this->getCategoryRepository()->findBy(['id' => $categoryIds]);
+        $categories = $this->categoryRepository->findBy(['id' => $categoryIds]);
 
+        $grantAccesses = [];
         foreach ($categories as $category) {
             /** @var CategoryAccessInterface $access */
             $access = new $this->categoryAccessClass();
@@ -379,10 +385,9 @@ class CategoryAccessManager
                 ->setEditItems($edit)
                 ->setOwnItems($own)
                 ->setUserGroup($group);
-
-            $this->getObjectManager()->persist($access);
+            $grantAccesses[] = $access;
         }
-        $this->getObjectManager()->flush();
+        $this->accessSaver->saveAll($grantAccesses);
     }
 
     /**
@@ -397,8 +402,7 @@ class CategoryAccessManager
     protected function updateAccesses($categoryIds, Group $group, $view = false, $edit = false, $own = false)
     {
         /** @var CategoryAccessInterface[] $accesses */
-        $accesses = $this->getAccessRepository()->findBy(['category' => $categoryIds, 'userGroup' => $group]);
-
+        $accesses = $this->accessRepository->findBy(['category' => $categoryIds, 'userGroup' => $group]);
         foreach ($accesses as $access) {
             if ($view !== null) {
                 $access->setViewItems($view);
@@ -409,9 +413,8 @@ class CategoryAccessManager
             if ($own !== null) {
                 $access->setOwnItems($own);
             }
-            $this->getObjectManager()->persist($access);
         }
-        $this->getObjectManager()->flush();
+        $this->accessSaver->saveAll($accesses);
     }
 
     /**
@@ -420,9 +423,23 @@ class CategoryAccessManager
      * @param CategoryInterface $category
      * @param Group             $group
      * @param string            $accessLevel
-     * @param bool              $flush
      */
-    public function grantAccess(CategoryInterface $category, Group $group, $accessLevel, $flush = false)
+    public function grantAccess(CategoryInterface $category, Group $group, $accessLevel)
+    {
+        $access = $this->buildGrantAccess($category, $group, $accessLevel);
+        $this->accessSaver->saveAll([$access]);
+    }
+
+    /**
+     * Build specified access on a category for the provided user group
+     *
+     * @param CategoryInterface $category
+     * @param Group             $group
+     * @param string            $accessLevel
+     *
+     * @return CategoryAccessInterface
+     */
+    protected function buildGrantAccess(CategoryInterface $category, Group $group, $accessLevel)
     {
         $access = $this->getCategoryAccess($category, $group);
         $access
@@ -430,10 +447,7 @@ class CategoryAccessManager
             ->setEditItems(in_array($accessLevel, [Attributes::EDIT_ITEMS, Attributes::OWN_PRODUCTS]))
             ->setOwnItems($accessLevel === Attributes::OWN_PRODUCTS);
 
-        $this->getObjectManager()->persist($access);
-        if (true === $flush) {
-            $this->getObjectManager()->flush();
-        }
+        return $access;
     }
 
     /**
@@ -447,7 +461,7 @@ class CategoryAccessManager
      */
     public function revokeAccess(CategoryInterface $category, array $excludedGroups = [])
     {
-        return $this->getAccessRepository()->revokeAccess($category, $excludedGroups);
+        return $this->accessRepository->revokeAccess($category, $excludedGroups);
     }
 
     /**
@@ -460,7 +474,7 @@ class CategoryAccessManager
      */
     protected function getCategoryAccess(CategoryInterface $category, Group $group)
     {
-        $access = $this->getAccessRepository()
+        $access = $this->accessRepository
             ->findOneBy(
                 [
                     'category'  => $category,
@@ -477,44 +491,6 @@ class CategoryAccessManager
         }
 
         return $access;
-    }
-
-    /**
-     * Get category repository
-     *
-     * @return CategoryRepositoryInterface
-     */
-    protected function getCategoryRepository()
-    {
-        return $this->registry->getRepository($this->categoryClass);
-    }
-
-    /**
-     * Get category access repository
-     *
-     * @return CategoryAccessRepository
-     */
-    protected function getAccessRepository()
-    {
-        return $this->registry->getRepository($this->categoryAccessClass);
-    }
-
-    /**
-     * @return \Pim\Bundle\UserBundle\Entity\Repository\GroupRepository
-     */
-    protected function getUserGroupRepository()
-    {
-        return $this->registry->getRepository($this->userGroupClass);
-    }
-
-    /**
-     * Get the object manager
-     *
-     * @return ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return $this->registry->getManagerForClass($this->categoryAccessClass);
     }
 
     /**
