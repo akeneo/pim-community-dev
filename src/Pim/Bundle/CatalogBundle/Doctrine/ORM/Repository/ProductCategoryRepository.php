@@ -5,8 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 use Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\Catalog\Model\CategoryInterface as CatalogCategoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
 
 /**
@@ -31,22 +29,6 @@ class ProductCategoryRepository extends AbstractItemCategoryRepository implement
         parent::__construct($em, $entityName);
 
         $this->categoryClass = $categoryClass;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProductCountByTree(ProductInterface $product)
-    {
-        return $this->getItemCountByTree($product);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProductsCountInCategory(CatalogCategoryInterface $category, QueryBuilder $categoryQb = null)
-    {
-        return $this->getItemsCountInCategory($category, $categoryQb);
     }
 
     /**

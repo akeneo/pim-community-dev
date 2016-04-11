@@ -31,7 +31,7 @@ interface ItemCategoryRepositoryInterface
      * parameter
      *
      * @param CategoryInterface $category   the requested node
-     * @param QueryBuilder      $categoryQb category query buider
+     * @param QueryBuilder      $categoryQb category query builder
      *
      * @return array
      */

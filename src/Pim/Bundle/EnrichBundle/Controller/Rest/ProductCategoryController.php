@@ -48,7 +48,7 @@ class ProductCategoryController
     public function listAction($id)
     {
         $product = $this->findProductOr404($id);
-        $trees   = $this->productCategoryRepository->getProductCountByTree($product);
+        $trees   = $this->productCategoryRepository->getItemCountByTree($product);
 
         $result['trees']      = $this->buildTrees($trees);
         $result['categories'] = $this->buildCategories($product);

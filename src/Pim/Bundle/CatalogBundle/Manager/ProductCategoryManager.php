@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
 
 /**
@@ -96,20 +95,5 @@ class ProductCategoryManager
         }
 
         return $this->productRepository->getProductIdsInCategory($category, $categoryQb);
-    }
-
-    /**
-     * Return the number of times the product is present in each tree
-     *
-     * @param ProductInterface $product The product to look for in the trees
-     *
-     * @return array Each row of the array has the format:'tree'=>treeObject, 'productCount'=>integer
-     *
-     * @deprecated Will be remove in 1.5, please use ProductCategoryRepositoryInterface::getProductCountByTree()
-     *             instead.
-     */
-    public function getProductCountByTree(ProductInterface $product)
-    {
-        return $this->productRepository->getProductCountByTree($product);
     }
 }
