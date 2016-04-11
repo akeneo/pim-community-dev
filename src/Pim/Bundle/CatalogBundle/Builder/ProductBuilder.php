@@ -273,9 +273,8 @@ class ProductBuilder implements ProductBuilderInterface
      */
     public function addMissingPrices(ProductValueInterface $value)
     {
-        $activeCurrencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
-
         if (AttributeTypes::PRICE_COLLECTION === $value->getAttribute()->getAttributeType()) {
+            $activeCurrencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
             $prices = $value->getPrices();
 
             foreach ($activeCurrencyCodes as $currencyCode) {
