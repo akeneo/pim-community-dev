@@ -246,6 +246,42 @@ jobs:
             groupsColumn:       groups
             realTimeVersioning: true
             decimalSeparator:   .
+    xlsx_footwear_category_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_category_import
+        label:     XLSX footwear category import
+        type:      import
+        configuration:
+            uploadAllowed:       true
+            circularRefsChecked: true
+    xlsx_footwear_association_type_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_association_type_import
+        label:     XLSX footwear association type import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_attribute_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_import
+        label:     XLSX footwear attribute import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_option_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_option_import
+        label:     XLSX footwear option import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_family_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_import
+        label:     XLSX footwear family import
+        type:      import
+        configuration:
+            uploadAllowed: true
     xlsx_product_quick_export:
         connector: Akeneo Mass Edit Connector
         alias: xlsx_product_quick_export

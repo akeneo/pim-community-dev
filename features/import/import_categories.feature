@@ -4,7 +4,7 @@ Feature: Import categories
   As a product manager
   I need to be able to import categories
 
-  Scenario: Successfully import categories
+  Scenario: Successfully import categories in CSV
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And the following CSV file to import:
@@ -73,3 +73,27 @@ Feature: Import categories
     And I launch the import job
     And I wait for the "csv_footwear_category_import" job to finish
     And I should see "Field \"code\" must be filled"
+
+  Scenario: Successfully import categories in XLSX
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following XLSX file to import:
+      """
+      code;parent;label-en_US
+      default;;
+      computers;;Computers
+      laptops;computers;Laptops
+      hard_drives;laptops;Hard drives
+      pc;computers;PC
+      """
+    And the following job "xlsx_footwear_category_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "xlsx_footwear_category_import" import job page
+    And I launch the import job
+    And I wait for the "xlsx_footwear_category_import" job to finish
+    Then there should be the following categories:
+      | code        | label       | parent    |
+      | computers   | Computers   |           |
+      | laptops     | Laptops     | computers |
+      | hard_drives | Hard drives | laptops   |
+      | pc          | PC          | computers |

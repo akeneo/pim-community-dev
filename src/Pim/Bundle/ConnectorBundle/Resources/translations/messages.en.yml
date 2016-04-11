@@ -56,6 +56,26 @@ pim_connector:
             title: Variant group import in CSV
             validation.title: File validation
             import.title: Variant group import
+        xlsx_category_import:
+            title: Category import in XLSX
+            validation.title: File validation
+            import.title: Category import
+        xlsx_association_type_import:
+            title: Association type import in XLSX
+            validation.title: File validation
+            import.title: Association type import
+        xlsx_attribute_import:
+            title: Attribute import in XLSX
+            validation.title: File validation
+            import.title: Attribute import
+        xlsx_attribute_option_import:
+            title: Attribute option import in XLSX
+            validation.title: File validation
+            import.title: Attribute option import
+        xlsx_family_import:
+            title: Family import in XLSX
+            validation.title: File validation
+            import.title: Family import
         xlsx_product_export:
             title: Product export in XLSX
             export.title: Product export

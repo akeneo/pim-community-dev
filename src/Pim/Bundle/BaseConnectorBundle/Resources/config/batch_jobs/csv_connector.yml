@@ -108,7 +108,7 @@ connector:
             type: import
             steps:
                 validation:
-                    title: pim_connector.jobs.csv_group_import.validation.title
+                    title: pim_connector.jobs.csv_association_type_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
