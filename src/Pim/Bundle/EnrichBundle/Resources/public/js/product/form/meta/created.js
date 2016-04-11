@@ -14,14 +14,14 @@ define(
         'text!pim/template/product/meta/created'
     ],
     function (_, BaseForm, formTemplate) {
-        var FormView = BaseForm.extend({
+        return BaseForm.extend({
             tagName: 'span',
             template: _.template(formTemplate),
             render: function () {
                 var product = this.getFormData();
                 var html = '';
 
-                if (product.meta.created) {
+                if (product.meta && product.meta.created) {
                     html = this.template({
                         label: _.__('pim_enrich.entity.product.meta.created'),
                         labelBy: _.__('pim_enrich.entity.product.meta.created_by'),
@@ -35,7 +35,5 @@ define(
                 return this;
             }
         });
-
-        return FormView;
     }
 );

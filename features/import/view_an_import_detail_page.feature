@@ -12,4 +12,4 @@ Feature: View an import detail page
     Given I am on the imports page
     When I click on the "csv_footwear_product_import" row
     Then I should be on the "csv_footwear_product_import" export job page
-    And I should see "Import profile - CSV footwear product"
+    And I should see the text "Import profile - CSV footwear product"

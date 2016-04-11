@@ -20,7 +20,7 @@ define(
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/group-manager',
-        'oro/navigation',
+        'pim/router',
         'pim/i18n',
         'backbone/bootstrap-modal'
     ],
@@ -36,7 +36,7 @@ define(
         UserContext,
         FetcherRegistry,
         GroupManager,
-        Navigation,
+        router,
         i18n
     ) {
         var FormView = BaseForm.extend({
@@ -134,24 +134,18 @@ define(
 
                         groupModal.on('ok', function visitGroup() {
                             groupModal.close();
-                            Navigation.getInstance().setLocation(
-                                Routing.generate(
-                                    'VARIANT' === group.type ?
-                                        'pim_enrich_variant_group_edit' :
-                                        'pim_enrich_group_edit',
-                                    { id: group.meta.id }
-                                )
+                            router.redirectToRoute(
+                                'VARIANT' === group.type ? 'pim_enrich_variant_group_edit' : 'pim_enrich_group_edit',
+                                { id: group.meta.id }
                             );
                         });
                         groupModal.open();
 
                         groupModal.$el.on('click', 'a[data-product-id]', function visitProduct(event) {
                             groupModal.close();
-                            Navigation.getInstance().setLocation(
-                                Routing.generate(
-                                    'pim_enrich_product_edit',
-                                    { id: event.currentTarget.dataset.productId }
-                                )
+                            router.redirectToRoute(
+                                'pim_enrich_product_edit',
+                                { id: event.currentTarget.dataset.productId }
                             );
                         });
                     }.bind(this));

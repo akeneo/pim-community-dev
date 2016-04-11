@@ -1,3 +1,4 @@
+@javascript
 Feature: Add attributes to a variant group
   In order to easily edit common attributes of variant group products
   As a product manager
@@ -21,7 +22,6 @@ Feature: Add attributes to a variant group
     And I should not see available attribute SKU in group "Product information"
     And I should not see available attribute Unique in group "Marketing"
 
-  @javascript
   Scenario: Add some available attributes to a variant group
     Given I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
@@ -35,7 +35,6 @@ Feature: Add attributes to a variant group
     And I should not see available attribute Name in group "Product information"
     And I should not see available attribute Price in group "Marketing"
 
-  @javascript
   Scenario: Update values of products in a variant group only after saving the group (not immediately after adding a new attribute)
     Given the following product:
       | sku  | groups            | name-en_US | color | size |
@@ -49,7 +48,6 @@ Feature: Add attributes to a variant group
     And I should see the flash message "Variant group successfully updated"
     Then the english Name of "boot" should be ""
 
-  @javascript
   Scenario: Update products when values are changed on the variant group page
     Given the following products:
       | sku  | groups            | color | size |
@@ -63,7 +61,6 @@ Feature: Add attributes to a variant group
     And I should see the flash message "Variant group successfully updated"
     Then the english Name of "boot" should be "bar"
 
-  @javascript
   Scenario: Remove an attribute which is linked to a variant group
     Given the following products:
       | sku  | groups            | color | size |
@@ -79,14 +76,13 @@ Feature: Add attributes to a variant group
     Then I am on the "caterpillar_boots" variant group page
     And I should not see available attribute Name in group "Product information"
 
-  @javascript
   Scenario: The price attribute should be visible once added
     Given I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
     When I add available attributes Price
     And I should see "EUR, USD" currencies on the Price price field
 
-  @javascript @jira https://akeneo.atlassian.net/browse/PIM-5208
+  @jira https://akeneo.atlassian.net/browse/PIM-5208
   Scenario: View only attribute filters that are usable as grid filters and view varient axes in columns
     Given the following attributes:
       | code                       | label-en_US                | type         | group  | useable_as_grid_filter |

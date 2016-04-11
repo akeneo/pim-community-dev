@@ -30,10 +30,10 @@ class ProductEditForm extends Form
                 'Channel dropdown'                => ['css' => '.attribute-edit-actions .scope-switcher'],
                 // Note: It erases parent add-attributes selector values because of the new JS module,
                 // once refactoring done everywhere, it should be set in parent like before
-                'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
-                'Available attributes list'       => ['css' => '.add-attribute .select2-results'],
-                'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
-                'Available attributes add button' => ['css' => '.add-attribute .ui-multiselect-footer button'],
+                'Available attributes button'     => ['css' => '.add-attribute:last-child a.select2-choice'],
+                'Available attributes list'       => ['css' => '.add-attribute:last-child .select2-results'],
+                'Available attributes search'     => ['css' => '.add-attribute:last-child .select2-search input[type="text"]'],
+                'Available attributes add button' => ['css' => '.add-attribute:last-child .ui-multiselect-footer button'],
             ]
         );
     }
@@ -124,7 +124,7 @@ class ProductEditForm extends Form
             $label->click();
         }
 
-        $this->getElement('Available attributes add button')->press();
+        $this->getElement('Available attributes add button')->click();
     }
 
     /**

@@ -16,5 +16,5 @@ class Index extends GroupIndex
     /**
      * @var string
      */
-    protected $path = '/enrich/variant-group/';
+    protected $path = '#/enrich/variant-group/';
 }

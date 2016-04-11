@@ -326,7 +326,11 @@ class NavigationContext extends BaseNavigationContext
     public function iShouldBeOnTheCategoryEditPage(Category $category)
     {
         $expectedAddress = $this->getPage('Category edit')->getUrl(['id' => $category->getId()]);
-        $this->assertAddress($expectedAddress);
+        $this->spin(function () use ($expectedAddress) {
+            $this->assertAddress($expectedAddress);
+
+            return true;
+        });
     }
 
     /**

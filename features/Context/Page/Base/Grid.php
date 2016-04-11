@@ -100,17 +100,9 @@ class Grid extends Index
     {
         $value = str_replace('"', '', $value);
 
-        try {
-            $gridRow = $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
-        } catch (TimeoutException $e) {
-            $gridRow = null;
-        }
-
-        if (null === $gridRow) {
-            throw new \InvalidArgumentException(
-                sprintf('Couldn\'t find a row for value "%s"', $value)
-            );
-        }
+        $gridRow = $this->spin(function () use ($value) {
+            return $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
+        }, sprintf('Couldn\'t find a row for value "%s"', $value));
 
         return $gridRow->getParent();
     }
@@ -419,6 +411,7 @@ class Grid extends Index
     public function sortBy($columnName, $order = 'ascending')
     {
         $sorter = $this->getColumnSorter($columnName);
+
         if ($sorter->getParent()->getAttribute('class') !== strtolower($order)) {
             $sorter->click();
         }
@@ -441,7 +434,6 @@ class Grid extends Index
 
         $values = $this->getValuesInColumn($columnName);
         $values = $this->formatColumnValues($values);
-
         $sortedValues = $values;
 
         if ($order === 'ascending') {
@@ -509,7 +501,7 @@ class Grid extends Index
      */
     public function isFilterAvailable($filterName)
     {
-        $this->clickFiltersList();
+        $this->showFiltersList();
 
         $filterElement = $this
             ->getElement('Manage filters')
@@ -525,13 +517,21 @@ class Grid extends Index
      */
     public function showFilter($filterName)
     {
-        try {
-            if (!$this->getFilter($filterName)->isVisible()) {
-                $this->clickOnFilterToManage($filterName);
-            }
-        } catch (TimeoutException $e) {
-            $this->clickOnFilterToManage($filterName);
-        }
+        $this->showFiltersList();
+        $this->activateFilter($filterName);
+        $this->hideFiltersList();
+    }
+
+    /**
+     * Make sure a filter is visible
+     *
+     * @param string $filterName
+     */
+    public function assertFilterVisible($filterName)
+    {
+        return $this->spin(function () use ($filterName) {
+            return $this->getFilter($filterName)->isVisible();
+        }, sprintf('Filter "%s" is not visible', $filterName));
     }
 
     /**
@@ -541,9 +541,9 @@ class Grid extends Index
      */
     public function hideFilter($filterName)
     {
-        if ($this->getFilter($filterName)->isVisible()) {
-            $this->clickOnFilterToManage($filterName);
-        }
+        $this->showFiltersList();
+        $this->deactivateFilter($filterName);
+        $this->hideFiltersList();
     }
 
     /**
@@ -609,46 +609,82 @@ class Grid extends Index
     }
 
     /**
-     * Click on a filter in filter management list
+     * Get a filter element
      *
      * @param string $filterName
      */
-    protected function clickOnFilterToManage($filterName)
+    protected function getFilterElement($filterName)
     {
-        $manageFilters = $this->getElement('Manage filters');
-        if (!$manageFilters->isVisible()) {
-            $this->clickFiltersList();
-        }
-
-        $searchField   = $this->spin(function () use ($manageFilters) {
-            return $manageFilters->find('css', 'input[type="search"]');
-        }, 'Cannot find manage filters search field');
-        $searchField->setValue($filterName);
-
-        $filterElement = $this->spin(function () use ($manageFilters, $filterName) {
-            $filterElement = $manageFilters->find('css', sprintf('label:contains("%s")', $filterName));
-            if (null === $filterElement || !$filterElement->isVisible()) {
-                return false;
-            }
-
-            return $filterElement;
+        return $this->spin(function () use ($filterName) {
+            return $this
+                ->getElement('Manage filters')
+                ->find('css', sprintf('label:contains("%s")', $filterName));
         }, sprintf('Impossible to activate filter "%s"', $filterName));
-
-        $filterElement->click();
     }
 
     /**
-     * Open/close filters list
+     * Activate a filter
+     *
+     * @param string $filterName
      */
-    protected function clickFiltersList()
+    protected function activateFilter($filterName)
     {
-        $filterList = $this->spin(function () {
+        $filterElement = $this->getFilterElement($filterName);
+
+        if (!$filterElement->find('css', 'input[type="checkbox"]')->isChecked()) {
+            $filterElement->find('css', 'input[type="checkbox"]')->click();
+        }
+    }
+
+    /**
+     * Deactivate filter
+     *
+     * @param string $filterName
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function deactivateFilter($filterName)
+    {
+        $filterElement = $this->getFilterElement($filterName);
+        if ($filterElement->find('css', 'input[type="checkbox"]')->isChecked()) {
+            $filterElement->find('css', 'input[type="checkbox"]')->click();
+        }
+    }
+
+    /**
+     * Open filters list
+     */
+    protected function getFiltersListButton()
+    {
+        return $this->spin(function () {
             return $this
                 ->getElement('Filters')
                 ->find('css', '#add-filter-button');
         }, 'Impossible to find filter list');
+    }
 
-        $filterList->click();
+    /**
+     * Open filters list
+     */
+    protected function showFiltersList()
+    {
+        $filterList = $this->getElement('Body')->find('css', 'div.filter-list');
+
+        if (!$filterList || !$filterList->isVisible()) {
+            $this->getFiltersListButton()->click();
+        }
+    }
+
+    /**
+     * Close filters list
+     */
+    protected function hideFiltersList()
+    {
+        $filterList = $this->getElement('Body')->find('css', 'div.filter-list');
+
+        if ($filterList && $filterList->isVisible()) {
+            $this->getFiltersListButton()->click();
+        }
     }
 
     /**
@@ -662,15 +698,17 @@ class Grid extends Index
     public function selectRow($value, $check = true)
     {
         $row      = $this->getRow($value);
-        $checkbox = $this->spin(function () use ($row) {
-            return $row->find('css', 'input[type="checkbox"]');
-        }, sprintf('Couldn\'t find a checkbox for row "%s"', $value));
+        $checkbox = $this->spin(function () use ($row, $check) {
+            $checkbox = $row->find('css', 'input[type="checkbox"]');
+            if ($check) {
+                $checkbox->check();
+            } else {
+                $checkbox->uncheck();
+            }
 
-        if ($check) {
-            $checkbox->check();
-        } else {
-            $checkbox->uncheck();
-        }
+            return true;
+        }, sprintf('Couldn\'t check the checkbox for row "%s"', $value));
+
 
         return $checkbox;
     }

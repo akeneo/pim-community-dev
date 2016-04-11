@@ -53,7 +53,6 @@ define(
                                     {
                                         id: id,
                                         categoryId: currentTree,
-                                        _format: 'json',
                                         dataLocale: dataLocale,
                                         context: 'associate',
                                         selected: selected
@@ -64,7 +63,6 @@ define(
                             return Routing.generate(
                                 routes.children,
                                 {
-                                    _format: 'json',
                                     dataLocale: dataLocale,
                                     context: 'associate'
                                 }

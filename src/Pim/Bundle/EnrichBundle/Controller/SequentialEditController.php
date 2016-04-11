@@ -72,11 +72,11 @@ class SequentialEditController
     public function sequentialEditAction(Request $request)
     {
         if ($this->seqEditManager->findByUser($this->userContext->getUser())) {
-            return new RedirectResponse(
-                $this->router->generate(
-                    'pim_enrich_product_index',
-                    ['dataLocale' => $request->get('dataLocale')]
-                )
+            return new JsonResponse(
+                [
+                    'route'  => 'pim_enrich_product_index',
+                    'params' => ['dataLocale' => $request->get('dataLocale')]
+                ]
             );
         }
 
@@ -87,14 +87,14 @@ class SequentialEditController
 
         $this->seqEditManager->save($sequentialEdit);
 
-        return new RedirectResponse(
-            $this->router->generate(
-                'pim_enrich_product_edit',
-                [
+        return new JsonResponse(
+            [
+                'route'  => 'pim_enrich_product_edit',
+                'params' => [
                     'dataLocale' => $request->get('dataLocale'),
                     'id'         => current($sequentialEdit->getObjectSet())
                 ]
-            )
+            ]
         );
     }
 

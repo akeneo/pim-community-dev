@@ -8,6 +8,7 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
+use Context\Spin\SpinCapableTrait;
 use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
@@ -40,6 +41,8 @@ use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
  */
 class FixturesContext extends BaseFixturesContext
 {
+    use SpinCapableTrait;
+
     protected $locales = [
         'english'    => 'en_US',
         'french'     => 'fr_FR',
@@ -1100,11 +1103,9 @@ class FixturesContext extends BaseFixturesContext
      */
     public function getProduct($sku)
     {
-        $product = $this->getProductRepository()->findOneByIdentifier($sku);
-
-        if (!$product) {
-            throw new \InvalidArgumentException(sprintf('Could not find a product with sku "%s"', $sku));
-        }
+        $product = $this->spin(function () use ($sku){
+            return $this->getProductRepository()->findOneByIdentifier($sku);
+        }, sprintf('Could not find a product with sku "%s"', $sku));
 
         $this->refresh($product);
 

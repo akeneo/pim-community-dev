@@ -22,5 +22,5 @@ Feature: Classify many products at once
     And I wait for the "classify" mass-edit job to finish
     When I am on the products page
     And I select the "2014 collection" tree
-    Then I should see "Summer collection (2)"
-    And I should see "Winter collection (2)"
+    Then I should see the text "Summer collection (2)"
+    And I should see the text "Winter collection (2)"

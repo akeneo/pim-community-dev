@@ -56,7 +56,11 @@ class Form extends Base
      */
     public function save()
     {
-        $this->getElement('Save')->click();
+        $this->spin(function() {
+            $this->getElement('Save')->click();
+
+            return true;
+        });
     }
 
     /**
@@ -74,8 +78,7 @@ class Form extends Base
      */
     public function visitTab($tab)
     {
-        $tabs = $this->spin(function () {
-
+        $tabs = $this->spin(function () use ($tab) {
             $tabs = $this->find('css', $this->elements['Tabs']['css']);
             if (!$tabs) {
                 $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
@@ -86,7 +89,7 @@ class Form extends Base
 
             return $tabs;
 
-        }, "Findind $tab tab");
+        }, sprintf('Cannot find the tab %s', $tab));
 
         $tabs->clickLink($tab);
     }
@@ -149,33 +152,44 @@ class Form extends Base
      */
     public function visitGroup($group)
     {
-        $groups = $this->find('css', $this->elements['Groups']['css']);
-        if (!$groups) {
-            $groups = $this->getElement('Form Groups');
+        $this->spin(function () use ($group) {
+            $groups = $this->find('css', $this->elements['Groups']['css']);
 
-            $groupsContainer = $this->spin(function () use ($groups, $group) {
-                return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
-            }, sprintf('Finding the group %s', $group));
 
-            $button = null;
+            if ($groups) {
+                $groups->clickLink($group);
 
-            if ($groupsContainer) {
-                $button = $groupsContainer->getParent();
+                return true;
+            } else {
+                $groupsContainer = $this->spin(function () use ($groups, $group) {
+                    return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
+                }, sprintf('Finding the group %s', $group));
+
+                $groups = $this->getElement('Form Groups');
+
+                $groupsContainer = $groups->find('css', sprintf('.group-label:contains("%s")', $group));
+                $button = null;
+
+                if ($groupsContainer) {
+                    $button = $groupsContainer->getParent();
+                }
+
+                if (!$button) {
+                    $labels = array_map(function ($element) {
+                        return $element->getText();
+                    }, $groups->findAll('css', '.group-label'));
+                    throw new \Exception(sprintf('Could not find group "%s". Available groups are %s',
+                        $group,
+                        implode(', ', $labels)
+                    ));
+                }
+                $button->click();
+
+                return true;
             }
 
-            if (!$button) {
-                $labels = array_map(function ($element) {
-                    return $element->getText();
-                }, $groups->findAll('css', '.group-label'));
-                throw new \Exception(sprintf('Could not find group "%s". Available groups are %s',
-                    $group,
-                    implode(', ', $labels)
-                ));
-            }
-            $button->click();
-        } else {
-            $groups->clickLink($group);
-        }
+            return false;
+        }, sprintf('Cannot visit group %s', $group));
 
         return true;
     }
@@ -303,14 +317,16 @@ class Form extends Base
      */
     public function findAvailableAttributeInGroup($attribute, $group)
     {
-        return $this->getElement('Available attributes form')->find(
-            'css',
-            sprintf(
-                'optgroup[label="%s"] option:contains("%s")',
-                $group,
-                $attribute
-            )
-        );
+        return $this->spin(function() use ($attribute, $group) {
+            return $this->getElement('Available attributes form')->find(
+                'css',
+                sprintf(
+                    'optgroup[label="%s"] option:contains("%s")',
+                    $group,
+                    $attribute
+                )
+            );
+        }, 'Cannot find the available attribute in group');
     }
 
     /**
@@ -837,11 +853,15 @@ class Form extends Base
         if (!$label->getAttribute('for') && null !== $label->channel) {
             $label = $label->getParent()->find('css', sprintf('[data-scope="%s"] label', $label->channel));
         }
-
         $for   = $label->getAttribute('for');
         $field = $this->find('css', sprintf('#%s', $for));
 
-        $field->setValue($value);
+
+        $this->spin(function () use ($field, $value) {
+            $field->setValue($value);
+
+            return $field->getValue() == $value;
+        }, 'field failed to be fulfilled');
     }
 
     /**

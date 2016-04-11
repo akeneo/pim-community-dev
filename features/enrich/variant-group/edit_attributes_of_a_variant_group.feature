@@ -76,7 +76,7 @@ Feature: Edit attributes of a variant group
     Given I am on the "jackets" variant group page
     And I visit the "Attributes" tab
     And I switch the locale to "fr_FR"
-    Then I should see "This variant group has no attributes in this locale"
+    Then I should see the text "This variant group has no attributes in this locale"
     When I am on the "sweaters" variant group page
     And I visit the "Attributes" tab
-    Then I should see "This variant group has no attributes yet"
+    Then I should see the text "This variant group has no attributes yet"

@@ -43,4 +43,4 @@ Feature: Upload and import products with media
       """
       $('#pim_importexport_import_upload').submit()
       """
-    Then I should see "You must select a file to upload"
+    Then I should see the text "You must select a file to upload"

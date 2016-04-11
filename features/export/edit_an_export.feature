@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit an export
   In order to manage existing export jobs
   As an administrator
@@ -14,9 +15,8 @@ Feature: Edit an export
     When I fill in the following information:
       | Label | My export |
     And I press the "Save" button
-    Then I should see "My export"
+    Then I should see the text "My export"
 
-  @javascript
   Scenario: Successfully update export job configuration
     Given I am on the "csv_footwear_product_export" export job edit page
     Then I should see the Channel, Delimiter, Enclosure, With header, File path and Decimal separator fields
@@ -46,9 +46,8 @@ Feature: Edit an export
       | title   | Are you sure you want to leave this page?                           |
       | content | You will lose changes to the export profile if you leave this page. |
 
-  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "csv_footwear_product_export" export job edit page
     When I fill in the following information:
       | Label | My export |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."

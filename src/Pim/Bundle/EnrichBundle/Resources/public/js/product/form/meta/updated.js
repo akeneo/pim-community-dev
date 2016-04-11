@@ -15,7 +15,7 @@ define(
         'text!pim/template/product/meta/updated'
     ],
     function (_, BaseForm, mediator, formTemplate) {
-        var FormView = BaseForm.extend({
+        return BaseForm.extend({
             tagName: 'span',
             template: _.template(formTemplate),
             configure: function () {
@@ -27,7 +27,7 @@ define(
                 var product = this.getFormData();
                 var html = '';
 
-                if (product.meta.updated) {
+                if (product.meta && product.meta.updated) {
                     html = this.template({
                         label: _.__('pim_enrich.entity.product.meta.updated'),
                         labelBy: _.__('pim_enrich.entity.product.meta.updated_by'),
@@ -41,7 +41,5 @@ define(
                 return this;
             }
         });
-
-        return FormView;
     }
 );

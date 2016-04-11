@@ -21,7 +21,7 @@ use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -186,7 +186,7 @@ class AttributeController
         $attributeTypes = $this->registry->getAliases();
 
         if (!$attributeType || !is_string($attributeType) || !in_array($attributeType, $attributeTypes)) {
-            return new RedirectResponse($this->router->generate('pim_enrich_attribute_index'));
+            return new JsonResponse(['route' => 'pim_enrich_attribute_index']);
         }
 
         $attribute = $this->factory->createAttribute($attributeType);
@@ -195,9 +195,10 @@ class AttributeController
             $this->request->getSession()->getFlashBag()
                 ->add('success', new Message('flash.attribute.created'));
 
-            return new RedirectResponse(
-                $this->router->generate('pim_enrich_attribute_edit', ['id' => $attribute->getId()])
-            );
+            return new JsonResponse([
+                'route'  => 'pim_enrich_attribute_edit',
+                'params' => ['id' => $attribute->getId()]
+            ]);
         }
 
         return [
@@ -224,12 +225,14 @@ class AttributeController
     {
         $attribute = $this->findAttributeOr404($id);
         if ($this->attributeHandler->process($attribute)) {
-            $this->request->getSession()->getFlashBag()
+            $request->getSession()->getFlashBag()
                 ->add('success', new Message('flash.attribute.updated'));
 
-            return new RedirectResponse(
-                $this->router->generate('pim_enrich_attribute_edit', ['id' => $attribute->getId()])
-            );
+
+            return new JsonResponse([
+                'route'  => 'pim_enrich_attribute_edit',
+                'params' => ['id' => $attribute->getId()]
+            ]);
         }
 
         return [
@@ -253,10 +256,6 @@ class AttributeController
      */
     public function sortAction(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
-            return new RedirectResponse($this->router->generate('pim_enrich_attribute_index'));
-        }
-
         $data = $request->request->all();
 
         if (!empty($data)) {
@@ -291,10 +290,11 @@ class AttributeController
     public function createOptionAction(Request $request, $id, $dataLocale)
     {
         $attribute = $this->findAttributeOr404($id);
-        if (!$request->isXmlHttpRequest() || !in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)) {
-            return new RedirectResponse(
-                $this->router->generate('pim_enrich_attribute_edit', ['id' => $attribute->getId()])
-            );
+        if (!in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)) {
+            return new JsonResponse([
+                'route'  => 'pim_enrich_attribute_edit',
+                'params' => ['id' => $attribute->getId()]
+            ]);
         }
 
         $option = $this->optionFactory->create();
@@ -338,7 +338,7 @@ class AttributeController
      *
      * @AclAncestor("pim_enrich_attribute_remove")
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|Response
      */
     public function removeAction(Request $request, $id)
     {
@@ -347,11 +347,8 @@ class AttributeController
 
         $this->attributeRemover->remove($attribute);
 
-        if ($request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return new RedirectResponse($this->router->generate('pim_enrich_attribute_index'));
-        }
+        return new JsonResponse(['route' => 'pim_enrich_attribute_index']);
+
     }
 
     /**
@@ -383,7 +380,7 @@ class AttributeController
      *
      * @throws DeleteException For ajax requests if the attribute is not removable
      *
-     * @return RedirectResponse|null
+     * @return JsonResponse|null
      */
     protected function validateRemoval(AttributeInterface $attribute)
     {
@@ -405,7 +402,7 @@ class AttributeController
                 $this->request->getSession()->getFlashBag()
                     ->add('error', new Message($errorMessage, $messageParameters));
 
-                return new RedirectResponse($this->router->generate('pim_enrich_attribute_index'));
+                return new JsonResponse(['route' => 'pim_enrich_attribute_index']);
             }
         }
     }

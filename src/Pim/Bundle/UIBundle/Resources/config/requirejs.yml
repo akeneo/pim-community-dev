@@ -1,8 +1,5 @@
 config:
     shim:
-        jquery-ui:
-            deps:
-                - jquery
         jquery.numeric:
             deps:
                 - jquery
@@ -54,7 +51,27 @@ config:
         json:                          pimui/lib/json2/json2
         base64:                        pimui/lib/base64/base64
         jquery:                        pimui/lib/jquery/jquery-1.10.2
-        jquery-ui:                     pimui/lib/jquery-ui/jquery-ui-1.11.4.custom.min
+        jquery-ui/core:                pimui/lib/jquery-ui/core
+        jquery-ui/accordion:           pimui/lib/jquery-ui/accordion
+        jquery-ui/autocomplete:        pimui/lib/jquery-ui/autocomplete
+        jquery-ui/button:              pimui/lib/jquery-ui/button
+        jquery-ui/datepicker:          pimui/lib/jquery-ui/datepicker
+        jquery-ui/dialog:              pimui/lib/jquery-ui/dialog
+        jquery-ui/draggable:           pimui/lib/jquery-ui/draggable
+        jquery-ui/droppable:           pimui/lib/jquery-ui/droppable
+        jquery-ui/menu:                pimui/lib/jquery-ui/menu
+        jquery-ui/mouse:               pimui/lib/jquery-ui/mouse
+        jquery-ui/position:            pimui/lib/jquery-ui/position
+        jquery-ui/progressbar:         pimui/lib/jquery-ui/progressbar
+        jquery-ui/resizable:           pimui/lib/jquery-ui/resizable
+        jquery-ui/selectable:          pimui/lib/jquery-ui/selectable
+        jquery-ui/selectmenu:          pimui/lib/jquery-ui/selectmenu
+        jquery-ui/slider:              pimui/lib/jquery-ui/slider
+        jquery-ui/sortable:            pimui/lib/jquery-ui/sortable
+        jquery-ui/spinner:             pimui/lib/jquery-ui/spinner
+        jquery-ui/tabs:                pimui/lib/jquery-ui/tabs
+        jquery-ui/tooltip:             pimui/lib/jquery-ui/tooltip
+        jquery-ui/widget:              pimui/lib/jquery-ui/widget
         jquery.numeric:                pimui/lib/jquery-numeric/jquery.numeric
         jquery.select2:                pimui/lib/select2/select2
         jquery.jstree:                 pimui/lib/jstree/jquery.jstree

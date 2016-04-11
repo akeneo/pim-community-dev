@@ -47,8 +47,8 @@ Feature: Import categories
     When I am on the "csv_footwear_category_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_category_import" job to finish
-    Then I should see "The parent category \"clothes\" does not exist"
-    And I should see "The parent category \"clothes\" does not exist"
+    Then I should see the text "The parent category \"clothes\" does not exist"
+    And I should see the text "The parent category \"clothes\" does not exist"
     And there should be the following categories:
       | code        | label       | parent    |
       | computers   | Computers   |           |
@@ -72,4 +72,4 @@ Feature: Import categories
     When I am on the "csv_footwear_category_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_category_import" job to finish
-    And I should see "Field \"code\" must be filled"
+    And I should see the text "Field \"code\" must be filled"
