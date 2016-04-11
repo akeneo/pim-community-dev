@@ -6,6 +6,7 @@ use Akeneo\Component\Localization\Provider\LocaleProviderInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -21,20 +22,22 @@ use Symfony\Component\Form\FormInterface;
  */
 class UserPreferencesSubscriber implements EventSubscriberInterface
 {
-    /** @var string */
-    protected $categoryClass;
-
     /** @var LocaleProviderInterface */
     protected $localeProvider;
 
+    /** @var ChoicesProviderInterface */
+    protected $categoryRepository;
+
     /**
-     * @param LocaleProviderInterface $localeProvider
-     * @param string                  $categoryClass
+     * @param LocaleProviderInterface  $localeProvider
+     * @param ChoicesProviderInterface $categoryRepository
      */
-    public function __construct(LocaleProviderInterface $localeProvider, $categoryClass)
-    {
-        $this->localeProvider = $localeProvider;
-        $this->categoryClass  = $categoryClass;
+    public function __construct(
+        LocaleProviderInterface $localeProvider,
+        ChoicesProviderInterface $categoryRepository
+    ) {
+        $this->localeProvider     = $localeProvider;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -48,7 +51,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Override catalogLocale, catalogScope and defautTree fields
+     * Override catalogLocale, catalogScope and defaultTree fields
      *
      * @param FormEvent $event
      */
@@ -109,14 +112,10 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     {
         $form->add(
             'defaultTree',
-            'entity',
+            'light_entity',
             [
-                'class'         => $this->categoryClass,
-                'property'      => 'label',
-                'select2'       => true,
-                'query_builder' => function (EntityRepository $repository) {
-                    return $repository->getTreesQB();
-                }
+                'select2'    => true,
+                'repository' => $this->categoryRepository,
             ]
         );
     }

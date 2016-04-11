@@ -24,14 +24,6 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getTreesQB()
-    {
-        return $this->getChildrenQueryBuilder(null, true, null, 'ASC', null);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function countChildren(CategoryInterface $category, $onlyDirect = false)
     {
         $qb = ($onlyDirect) ?

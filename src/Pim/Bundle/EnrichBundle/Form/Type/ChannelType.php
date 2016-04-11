@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\EnrichBundle\Helper\SortHelper;
 use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
@@ -32,7 +31,10 @@ class ChannelType extends AbstractType
     protected $localeHelper;
 
     /** @var ColorsProvider */
-    protected $colorsProvider;
+    protected $provider;
+
+    /** @var ChoicesProviderInterface */
+    protected $categoryRepository;
 
     /** @var string */
     protected $categoryClass;
@@ -43,24 +45,27 @@ class ChannelType extends AbstractType
     /**
      * Inject locale manager, locale helper and colors provider in the constructor
      *
-     * @param LocaleRepositoryInterface  $localeRepository
-     * @param LocaleHelper   $localeHelper
-     * @param ColorsProvider $provider
-     * @param string         $categoryClass
-     * @param string         $dataClass
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param LocaleHelper              $localeHelper
+     * @param ColorsProvider            $provider
+     * @param ChoicesProviderInterface  $categoryRepository
+     * @param string                    $categoryClass
+     * @param string                    $dataClass
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
         LocaleHelper $localeHelper,
         ColorsProvider $provider,
+        ChoicesProviderInterface $categoryRepository,
         $categoryClass,
         $dataClass
     ) {
-        $this->localeRepository = $localeRepository;
-        $this->localeHelper     = $localeHelper;
-        $this->provider         = $provider;
-        $this->categoryClass    = $categoryClass;
-        $this->dataClass        = $dataClass;
+        $this->localeRepository   = $localeRepository;
+        $this->localeHelper       = $localeHelper;
+        $this->provider           = $provider;
+        $this->categoryRepository = $categoryRepository;
+        $this->categoryClass      = $categoryClass;
+        $this->dataClass          = $dataClass;
     }
 
     /**
@@ -210,15 +215,13 @@ class ChannelType extends AbstractType
     {
         $builder->add(
             'category',
-            'entity',
+            'light_entity',
             [
-                'label'         => 'Category tree',
-                'required'      => true,
-                'select2'       => true,
-                'class'         => $this->categoryClass,
-                'query_builder' => function (EntityRepository $repository) {
-                    return $repository->getTreesQB();
-                }
+                'label'      => 'Category tree',
+                'required'   => true,
+                'select2'    => true,
+                'multiple'   => false,
+                'repository' => $this->categoryRepository
             ]
         );
 

@@ -23,13 +23,6 @@ interface CategoryRepositoryInterface extends
     ObjectRepository
 {
     /**
-     * Get query builder for all existing category trees
-     *
-     * @return QueryBuilder
-     */
-    public function getTreesQB();
-
-    /**
      * Count children for a given category.
      *
      * @param CategoryInterface $category   the requested node
