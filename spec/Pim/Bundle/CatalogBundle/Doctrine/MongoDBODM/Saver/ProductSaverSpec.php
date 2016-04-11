@@ -10,7 +10,7 @@ use Akeneo\Component\Versioning\BulkVersionBuilderInterface;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -51,15 +51,7 @@ class ProductSaverSpec extends ObjectBehavior
 
         $bulkVersionBuilder->buildVersions(Argument::any())->willReturn([]);
 
-        $optionsResolver
-            ->resolveSaveAllOptions(Argument::any())
-            ->willReturn(
-                [
-                    'flush'       => true,
-                    'recalculate' => false,
-                    'schedule'    => true
-                ]
-            );
+        $optionsResolver->resolveSaveAllOptions(Argument::any())->willReturn(['flush' => true]);
     }
 
     function it_is_a_saver()

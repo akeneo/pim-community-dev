@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\NotificationBundle\Controller;
 
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,25 +21,31 @@ class NotificationController
     /** @var EngineInterface */
     protected $templating;
 
-    /** @var NotificationManager */
-    protected $manager;
-
     /** @var UserContext */
     protected $userContext;
 
+    /** @var UserNotificationRepositoryInterface */
+    protected $userNotifRepository;
+
+    /** @var RemoverInterface */
+    protected $userNotifRemover;
+
     /**
-     * @param EngineInterface     $templating
-     * @param NotificationManager $manager
-     * @param UserContext         $userContext
+     * @param EngineInterface                     $templating
+     * @param UserContext                         $userContext
+     * @param UserNotificationRepositoryInterface $userNotifRepository
+     * @param RemoverInterface                    $userNotifRemover
      */
     public function __construct(
         EngineInterface $templating,
-        NotificationManager $manager,
-        UserContext $userContext
+        UserContext $userContext,
+        UserNotificationRepositoryInterface $userNotifRepository,
+        RemoverInterface $userNotifRemover
     ) {
-        $this->templating  = $templating;
-        $this->manager     = $manager;
-        $this->userContext = $userContext;
+        $this->templating          = $templating;
+        $this->userContext         = $userContext;
+        $this->userNotifRepository = $userNotifRepository;
+        $this->userNotifRemover    = $userNotifRemover;
     }
 
     /**
@@ -51,11 +58,13 @@ class NotificationController
     public function listAction(Request $request)
     {
         $user = $this->userContext->getUser();
+        $notifications = $this->userNotifRepository
+            ->findBy(['user' => $user], ['id' => 'DESC'], 10, $request->get('skip', 0));
 
         return $this->templating->renderResponse(
             'PimNotificationBundle:Notification:list.json.twig',
             [
-                'userNotifications'  => $this->manager->getUserNotifications($user, $request->get('skip', 0))
+                'userNotifications' => $notifications
             ],
             new JsonResponse()
         );
@@ -70,7 +79,7 @@ class NotificationController
     {
         $user = $this->userContext->getUser();
 
-        return new JsonResponse($this->manager->countUnreadForUser($user));
+        return new JsonResponse($this->userNotifRepository->countUnreadForUser($user));
     }
 
     /**
@@ -85,7 +94,7 @@ class NotificationController
         $user = $this->userContext->getUser();
 
         if (null !== $user) {
-            $this->manager->markAsViewed($user, $id);
+            $this->userNotifRepository->markAsViewed($user, $id);
         }
 
         return new JsonResponse();
@@ -103,7 +112,16 @@ class NotificationController
         $user = $this->userContext->getUser();
 
         if (null !== $user) {
-            $this->manager->remove($user, $id);
+            $notification = $this->userNotifRepository->findOneBy(
+                [
+                    'id'   => $id,
+                    'user' => $user
+                ]
+            );
+
+            if ($notification) {
+                $this->userNotifRemover->remove($notification);
+            }
         }
 
         return new JsonResponse();

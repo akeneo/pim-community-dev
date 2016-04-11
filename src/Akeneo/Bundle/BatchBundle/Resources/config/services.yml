@@ -1,8 +1,8 @@
 parameters:
     akeneo_batch.connectors.class:                            Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry
     akeneo_batch.job_repository.class:                        Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository
-    akeneo_batch.job_factory.class:                           Akeneo\Bundle\BatchBundle\Job\JobFactory
-    akeneo_batch.step_factory.class:                          Akeneo\Bundle\BatchBundle\Step\StepFactory
+    akeneo_batch.job_factory.class:                           Akeneo\Component\Batch\Job\JobFactory
+    akeneo_batch.step_factory.class:                          Akeneo\Component\Batch\Step\StepFactory
     akeneo_batch.job_instance_factory.class:                  Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory
     akeneo_batch.logger_subscriber.class:                     Akeneo\Bundle\BatchBundle\EventListener\LoggerSubscriber
     akeneo_batch.notification_subscriber.class:               Akeneo\Bundle\BatchBundle\EventListener\NotificationSubscriber
@@ -13,7 +13,6 @@ parameters:
     akeneo_batch.launcher.simple_job_launcher.class:          Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher
     akeneo_batch.connectors_config:                           ~
     akeneo_batch.jobs_config:                                 ~
-    akeneo_batch.entity.job_execution.class:                  Akeneo\Component\Batch\Model\JobExecution
 
 services:
     # connectors registry
@@ -28,6 +27,8 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - '%akeneo_batch.entity.job_execution.class%'
+            - '%akeneo_batch.entity.job_instance.class%'
+            - '%pim_import_export.repository.job_instance.class%'
 
     akeneo_batch.job_factory:
         class: %akeneo_batch.job_factory.class%
@@ -72,6 +73,10 @@ services:
     akeneo_batch.logger.batch_log_handler:
         class: %akeneo_batch.logger.batch_log_handler.class%
         arguments:
+            - 100
+            - true
+            - null
+            - false
             - %kernel.logs_dir%/batch
 
     akeneo_batch.set_job_execution_log_file_subscriber:

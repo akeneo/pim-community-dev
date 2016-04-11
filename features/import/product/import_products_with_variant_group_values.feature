@@ -35,11 +35,11 @@ Feature: Execute a product import
       new-sandal-white-40;sandals;SANDAL;My prod name 40;40;white
       new-no-vg;sandals;;My prod name 40;40;white
       """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
+    When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "read lines 4"
     And I should see "Processed 2"
     And I should see "Created 2"

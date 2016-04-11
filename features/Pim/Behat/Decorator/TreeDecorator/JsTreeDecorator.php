@@ -2,11 +2,12 @@
 
 namespace Pim\Behat\Decorator\TreeDecorator;
 
+use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 
 /**
- * Js tree lib Decorator to ease the dom manipulation and assertion arround it.
+ * Js tree lib Decorator to ease the dom manipulation and assertion around it.
  */
 class JsTreeDecorator extends ElementDecorator
 {

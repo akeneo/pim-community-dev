@@ -77,7 +77,7 @@ class ObjectIdResolverSpec extends ObjectBehavior
 
         $camcorders->getId()->willReturn(2);
 
-        $this->shouldThrow('\Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException')->during(
+        $this->shouldThrow('\Pim\Component\Catalog\Exception\ObjectNotFoundException')->during(
             'getIdsFromCodes',
             ['family', ['camcorders', 'shirt', 'men']]
         );

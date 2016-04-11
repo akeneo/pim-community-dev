@@ -3,9 +3,15 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 class AttributeStandardConverterSpec extends ObjectBehavior
 {
+    function let(FieldsRequirementChecker $fieldChecker)
+    {
+        $this->beConstructedWith($fieldChecker);
+    }
+
     function it_is_a_standard_array_converter()
     {
         $this->shouldImplement(
@@ -87,6 +93,7 @@ class AttributeStandardConverterSpec extends ObjectBehavior
             'allowed_extensions'     => '',
             'metric_family'          => '',
             'default_metric_unit'    => '',
+            'reference_data_name'    => null,
             'localizable'            => false,
             'scopable'               => false,
         ];

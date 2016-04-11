@@ -25,8 +25,11 @@ class AkeneoBatchExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('entities.yml');
+        $loader->load('savers.yml');
         $loader->load('services.yml');
         $loader->load('validators.yml');
+        $loader->load('updaters.yml');
 
         $container->setParameter('akeneo_batch.mail_notifier.sender_email', $config['sender_email']);
         if ($config['enable_mail_notification']) {

@@ -1,0 +1,28 @@
+{
+    "name": "akeneo/batch",
+    "type": "library",
+    "description": "Akeneo Batch",
+    "keywords": ["Akeneo", "Batch", "Job", "Reader", "Writer", "Processor"],
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Akeneo",
+            "homepage": "http://www.akeneo.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.4",
+        "symfony/event-dispatcher": "^2.3",
+        "symfony/property-access": "^2.3",
+        "doctrine/common": "^2.1"
+    },
+    "autoload": {
+        "psr-4": { "Akeneo\\Component\\Batch\\": "" }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.6.x-dev"
+        }
+    }
+}

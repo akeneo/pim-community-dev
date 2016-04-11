@@ -13,18 +13,18 @@ class FamilyFilterSpec extends ObjectBehavior
 {
     function let(QueryBuilder $qb, ObjectIdResolverInterface $objectIdResolver)
     {
-        $this->beConstructedWith($objectIdResolver, ['family', 'groups'], ['IN', 'NOT IN']);
+        $this->beConstructedWith($objectIdResolver, ['family', 'groups'], ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']);
         $this->setQueryBuilder($qb);
     }
 
     function it_is_a_field_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FieldFilterInterface');
     }
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['IN', 'NOT IN']);
+        $this->getOperators()->shouldReturn(['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']);
         $this->supportsOperator('IN')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
@@ -53,7 +53,7 @@ class FamilyFilterSpec extends ObjectBehavior
         $this->addFieldFilter('family', 'EMPTY', null);
     }
 
-    function it_adds_an_not_in_filter_on_a_field_in_the_query($qb, Expr $expr)
+    function it_adds_a_not_in_filter_on_a_field_in_the_query($qb, Expr $expr)
     {
         $qb->getRootAlias()->willReturn('f');
         $qb->leftJoin('f.family', Argument::any())->willReturn($qb);
@@ -68,6 +68,18 @@ class FamilyFilterSpec extends ObjectBehavior
             ->willReturn('filterfamily.id NOT IN(3)'.'filterfamily.id IS NULL');
 
         $this->addFieldFilter('family', 'NOT IN', [3]);
+    }
+
+    function it_adds_a_not_empty_filter_on_a_field_in_the_query($qb, Expr $expr)
+    {
+        $qb->getRootAlias()->willReturn('f');
+        $qb->leftJoin('f.family', Argument::any())->willReturn($qb);
+        $qb->expr()->willReturn($expr);
+        $qb->andWhere('filterfamily.id IS NOT NULL')->willReturn($qb);
+
+        $expr->isNotNull(Argument::any())->shouldBeCalled()->willReturn('filterfamily.id IS NOT NULL');
+
+        $this->addFieldFilter('family', 'NOT EMPTY', []);
     }
 
     function it_checks_if_field_is_supported()

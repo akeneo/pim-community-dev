@@ -73,7 +73,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             'XSELL-groups'  => ['akeneo_tshirt, oro_tshirt'],
             'XSELL-product' => ['AKN_TS, ORO_TSH']
         ];
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -89,10 +89,10 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
         $arrayConverter
-            ->convert($originalData, ["with_associations" => true])
+            ->convert($originalData, ['with_associations' => true])
             ->willReturn($convertedData);
 
-        $preFilteredData = $filteredData = [
+        $filteredData = [
             'associations' => [
                 'XSELL' => [
                     'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
@@ -102,7 +102,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         ];
 
         unset($filteredData['associations']['XSELL']['groups']);
-        $productAssocFilter->filter($product, $preFilteredData)
+        $productAssocFilter->filter($product, $convertedData)
             ->shouldBeCalled()
             ->willReturn($filteredData);
 
@@ -138,7 +138,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             'NOT_FOUND-groups'  => ['akeneo_tshirt, oro_tshirt'],
             'NOT_FOUND-product' => ['AKN_TS, ORO_TSH']
         ];
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -154,7 +154,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
         $arrayConverter
-            ->convert($originalData, ["with_associations" => true])
+            ->convert($originalData, ['with_associations' => true])
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -166,7 +166,9 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $productAssocFilter->filter($product, $filteredData)->willReturn($filteredData);
+        $productAssocFilter->filter($product, $convertedData)
+            ->shouldBeCalled()
+            ->willReturn($filteredData);
 
         $productUpdater
             ->update($product, $filteredData)
@@ -205,7 +207,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             'XSELL-groups'  => ['akeneo_tshirt, oro_tshirt'],
             'XSELL-product' => ['AKN_TS, ORO_TSH']
         ];
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -221,7 +223,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
         $arrayConverter
-            ->convert($originalData, ["with_associations" => true])
+            ->convert($originalData, ['with_associations' => true])
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -233,7 +235,9 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $productAssocFilter->filter($product, $filteredData)->willReturn($filteredData);
+        $productAssocFilter->filter($product, $convertedData)
+            ->shouldBeCalled()
+            ->willReturn($filteredData);
 
         $productUpdater
             ->update($product, $filteredData)
@@ -277,7 +281,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             'XSELL-groups'  => ['akeneo_tshirt, oro_tshirt'],
             'XSELL-product' => ['AKN_TS, ORO_TSH']
         ];
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -293,7 +297,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
         $arrayConverter
-            ->convert($originalData, ["with_associations" => true])
+            ->convert($originalData, ['with_associations' => true])
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -305,7 +309,9 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $productAssocFilter->filter($product, $filteredData)->willReturn([]);
+        $productAssocFilter->filter($product, $convertedData)
+            ->shouldBeCalled()
+            ->willReturn([]);
 
         $productUpdater
             ->update($product, $filteredData)

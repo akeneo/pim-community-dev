@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Validator\Constraints;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -13,9 +14,9 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ChannelValidatorSpec extends ObjectBehavior
 {
-    function let(ChannelManager $channelManager)
+    function let(ChannelRepositoryInterface $channelRepository)
     {
-        $this->beConstructedWith($channelManager);
+        $this->beConstructedWith($channelRepository);
     }
 
     function it_is_initializable()
@@ -33,9 +34,9 @@ class ChannelValidatorSpec extends ObjectBehavior
         $this->shouldHaveType('\Symfony\Component\Validator\ConstraintValidatorInterface');
     }
 
-    function it_throws_an_exception_if_there_is_no_channel_choices($channelManager, Constraint $constraint)
+    function it_throws_an_exception_if_there_is_no_channel_choices($channelRepository, Constraint $constraint)
     {
-        $channelManager->getChannelChoices()->willReturn([]);
+        $channelRepository->getLabelsIndexedByCode()->willReturn([]);
 
         $this
             ->shouldThrow(new ConstraintDefinitionException('No channel is set in the application'))
@@ -43,12 +44,12 @@ class ChannelValidatorSpec extends ObjectBehavior
     }
 
     function it_does_not_validate_a_non_existent_channel(
-        $channelManager,
+        $channelRepository,
         Channel $constraint,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $channelManager->getChannelChoices()->willReturn(['mobile' => 'mobile']);
+        $channelRepository->getLabelsIndexedByCode()->willReturn(['mobile' => 'mobile']);
 
         $context->buildViolation(Argument::cetera())
             ->shouldBeCalled()

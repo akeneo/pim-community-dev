@@ -1,8 +1,5 @@
-parameters:
-    pim_connector.factory.job_configuration.class: Pim\Component\Connector\Factory\JobConfigurationFactory
-
 services:
-    pim_connector.factory.job_configuration:
-        class: %pim_connector.factory.job_configuration.class%
+    pim_connector.factory.job_instance:
+        class: %akeneo_storage_utils.factory.simple.class%
         arguments:
-            - %pim_connector.model.job_configuration.class%
+            - %akeneo_batch.entity.job_instance.class%

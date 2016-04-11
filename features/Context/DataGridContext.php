@@ -70,6 +70,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param int $count
      *
+     * @return mixed
+     *
      * @Given /^the grid should contain (\d+) elements?$/
      */
     public function theGridShouldContainElement($count)
@@ -84,21 +86,36 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         }
 
         if ($count > 10) {
-            $this->iChangePageSize(100);
+            $this->getCurrentPage()->getCurrentGrid()->setPageSize(100);
         }
 
-        assertEquals(
-            $count,
-            $actualCount = $this->datagrid->getToolbarCount(),
-            sprintf('Expecting to see %d record(s) in the datagrid toolbar, actually saw %d', $count, $actualCount)
-        );
+        $this->spin(function () use ($count) {
+            assertEquals(
+                $count,
+                $actualCount = $this->datagrid->getToolbarCount()
+            );
 
-        assertEquals(
+            return true;
+        }, sprintf(
+            'Expecting to see %d record(s) in the datagrid toolbar, actually saw %d',
             $count,
-            $actualCount = $this->datagrid->countRows(),
-            sprintf('Expecting to see %d row(s) in the datagrid, actually saw %d.', $count, $actualCount)
-        );
+            $this->datagrid->countRows()
+        ));
+
+        $this->spin(function () use ($count) {
+            assertEquals(
+                $count,
+                $actualCount = $this->datagrid->countRows()
+            );
+
+            return true;
+        }, sprintf(
+            'Expecting to see %d row(s) in the datagrid, actually saw %d.',
+            $count,
+            $this->datagrid->countRows()
+        ));
     }
+
 
     /**
      * @param string $filterName
@@ -252,7 +269,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function assertColumnContainsValue($row, $column, $expectation)
     {
-        $column = strtoupper($column);
+        $column = mb_strtoupper($column);
         $actual = $this->datagrid->getColumnValue($column, $row);
 
         // do not consider the elements' order of "actual" and "expectation"
@@ -320,6 +337,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $filters
      *
+     * @throws ExpectationException
+     *
      * @Then /^I should see the filters? (.*)$/
      */
     public function iShouldSeeTheFilters($filters)
@@ -336,6 +355,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $not
+     * @param string $filters
+     *
+     * @throws ExpectationException
+     *
      * @Given /^I should( not)? see the available filters (.*)$/
      */
     public function iShouldSeeTheAvailableFilters($not, $filters)
@@ -358,6 +382,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @param string $filters
+     *
+     * @throws ExpectationException
      *
      * @Then /^I should not see the filters? (.*)$/
      */
@@ -423,6 +449,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $columns
      *
+     * @throws ExpectationException
+     *
      * @Then /^I should see the columns? (.*)$/
      */
     public function iShouldSeeTheColumns($columns)
@@ -459,6 +487,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $order
      * @param string $columnName
+     *
+     * @throws ExpectationException
      *
      * @Then /^the rows should be sorted (ascending|descending) by (.*)$/
      */
@@ -566,28 +596,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $size
-     *
-     * @When /^I change (?:the) page size to (.*)$/
-     */
-    public function iChangePageSize($size)
-    {
-        $this->datagrid->changePageSize((int) $size);
-        $this->wait();
-    }
-
-    /**
-     * @param int $size
-     *
-     * @When /^page size should be (\d+)$/
-     */
-    public function pageSizeShouldBe($size)
-    {
-        $this->datagrid->pageSizeIs((int) $size);
-        $this->wait();
-    }
-
-    /**
      * @param string $columnName
      * @param string $order
      *
@@ -609,6 +617,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $columns
      *
+     * @throws ExpectationException
+     *
      * @Then /^the rows should be sortable by (.*)$/
      */
     public function theRowsShouldBeSortableBy($columns)
@@ -629,6 +639,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @throws ExpectationException
      *
+     * @return Step
+     *
      * @Then /^I should see products? (.*)$/
      * @Then /^I should see attributes? (?!(?:.*)in group )(.*)$/
      * @Then /^I should see channels? (.*)$/
@@ -645,7 +657,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $elements = $this->getMainContext()->listToArray($elements);
 
         if (count($elements) > 10) {
-            $this->iChangePageSize(100);
+            $this->getCurrentPage()->getCurrentGrid()->setPageSize(100);
         }
 
         foreach ($elements as $element) {
@@ -657,6 +669,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @param array $entities
+     *
+     * @throws ExpectationException
      *
      * @Then /^I should not see products? (.*)$/
      * @Then /^I should not see attributes? (?!(.*)in group )(.*)$/
@@ -743,8 +757,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iClickOnTheRow($row)
     {
-        $this->datagrid->getRow($row)->click();
-        $this->wait();
+        $row = $this->spin(function () use ($row) {
+            return $this->datagrid->getRow($row);
+        });
+
+        $row->click();
     }
 
     /**
@@ -857,7 +874,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @Then /^I refresh the grid$/
      */
-    public function iRefrestTheGrid()
+    public function iRefreshTheGrid()
     {
         $this->spin(function () {
             $this->getSession()->getPage()->clickLink('Refresh');
@@ -1053,6 +1070,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param TableNode $table
      *
      * @return Then[]
+     *
      * @When /^I create the view:$/
      */
     public function iCreateTheView(TableNode $table)
@@ -1112,7 +1130,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * Wait
      *
-     * @param int    $time
      * @param string $condition
      */
     protected function wait($condition = null)

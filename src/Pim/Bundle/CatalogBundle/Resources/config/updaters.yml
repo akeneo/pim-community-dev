@@ -11,6 +11,11 @@ parameters:
     pim_catalog.updater.group.class:                          Pim\Component\Catalog\Updater\GroupUpdater
     pim_catalog.updater.association_type.class:               Pim\Component\Catalog\Updater\AssociationTypeUpdater
     pim_catalog.updater.family.class:                         Pim\Component\Catalog\Updater\FamilyUpdater
+    pim_catalog.updater.channel.class:                        Pim\Component\Catalog\Updater\ChannelUpdater
+    pim_catalog.updater.locale.class:                         Pim\Component\Catalog\Updater\LocaleUpdater
+    pim_catalog.updater.attribute_group.class:                Pim\Component\Catalog\Updater\AttributeGroupUpdater
+    pim_catalog.updater.group_type.class:                     Pim\Component\Catalog\Updater\GroupTypeUpdater
+    pim_catalog.updater.currency.class:                       Pim\Component\Catalog\Updater\CurrencyUpdater
 
     pim_catalog.updater.setter.registry.class:                Pim\Component\Catalog\Updater\Setter\SetterRegistry
     pim_catalog.updater.setter.abstract.class:                Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter
@@ -62,8 +67,8 @@ services:
         class: %pim_catalog.updater.product.class%
         arguments:
             - '@pim_catalog.updater.product_property_setter'
-            - '@pim_catalog.updater.product_property_copier'
             - '@pim_catalog.updater.product_template'
+            - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations']
 
     pim_catalog.updater.product_property_setter:
         class: %pim_catalog.updater.product_property_setter.class%
@@ -116,11 +121,31 @@ services:
         class: %pim_catalog.updater.family.class%
         arguments:
             - '@pim_catalog.repository.family'
-            - '@pim_catalog.factory.family'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.attribute_requirement'
             - '@pim_catalog.repository.attribute_requirement'
+
+    pim_catalog.updater.channel:
+        class: %pim_catalog.updater.channel.class%
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.currency'
+
+    pim_catalog.updater.locale:
+        class: %pim_catalog.updater.locale.class%
+
+    pim_catalog.updater.attribute_group:
+        class: %pim_catalog.updater.attribute_group.class%
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_catalog.updater.group_type:
+        class: %pim_catalog.updater.group_type.class%
+
+    pim_catalog.updater.currency:
+        class: %pim_catalog.updater.currency.class%
 
     pim_catalog.updater.association_type:
         class: %pim_catalog.updater.association_type.class%
@@ -140,6 +165,7 @@ services:
         class: %pim_catalog.updater.group.class%
         arguments:
             - '@pim_catalog.repository.group_type'
+            - '@pim_catalog.repository.attribute'
 
     # Setters
     pim_catalog.updater.setter.registry:
@@ -309,7 +335,7 @@ services:
         arguments:
             - '@akeneo_file_storage.file_storage.file.file_fetcher'
             - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@oneup_flysystem.mount_manager'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_image']
             - ['pim_catalog_image']
         tags:
@@ -321,7 +347,7 @@ services:
         arguments:
             - '@akeneo_file_storage.file_storage.file.file_fetcher'
             - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@oneup_flysystem.mount_manager'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file']
             - ['pim_catalog_file']
         tags:
@@ -447,7 +473,7 @@ services:
         arguments:
             - '@pim_catalog.builder.product'
             - '@pim_catalog.validator.helper.attribute'
-            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.repository.currency'
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.adder' }
@@ -470,7 +496,7 @@ services:
         class: %pim_catalog.updater.remover.price_collection_value.class%
         arguments:
             - '@pim_catalog.validator.helper.attribute'
-            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.repository.currency'
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.remover' }

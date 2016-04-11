@@ -12,8 +12,12 @@ use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
 use Pim\Behat\Context\Domain\Enrich\CompletenessContext;
+use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
+use Pim\Behat\Context\Domain\Enrich\PanelContext;
+use Pim\Behat\Context\Domain\Enrich\Product\AssociationTabContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
+use Pim\Behat\Context\Domain\Spread\XlsxFileContext;
 use Pim\Behat\Context\Domain\TreeContext;
 use Pim\Behat\Context\HookContext;
 use Pim\Behat\Context\JobContext;
@@ -58,14 +62,18 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());
 
-        $this->useContext('domain-variant-group', new VariantGroupContext());
-        $this->useContext('domain-tree', new TreeContext());
-        $this->useContext('job', new JobContext());
-        $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
-        $this->useContext('domain-import-profiles', new ImportProfilesContext());
-        $this->useContext('domain-export-profiles', new ExportProfilesContext());
         $this->useContext('domain-attribute-tab', new AttributeTabContext());
         $this->useContext('domain-completeness', new CompletenessContext());
+        $this->useContext('domain-export-profiles', new ExportProfilesContext());
+        $this->useContext('domain-xlsx-files', new XlsxFileContext());
+        $this->useContext('domain-import-profiles', new ImportProfilesContext());
+        $this->useContext('domain-pagination-grid', new GridPaginationContext());
+        $this->useContext('domain-panel', new PanelContext());
+        $this->useContext('domain-product-association-tab', new AssociationTabContext());
+        $this->useContext('domain-tree', new TreeContext());
+        $this->useContext('domain-variant-group', new VariantGroupContext());
+        $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
+        $this->useContext('job', new JobContext());
         $this->useContext('storage-product', new ProductStorage());
 
         $this->setTimeout($parameters);
@@ -267,6 +275,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Fills in form field with specified id|name|label|value.
      *
+     * @param string $field
+     * @param string $value
+     *
      * @When /^(?:|I )fill in "(?P<field>(?:[^"]|\\")*)" with "(?P<value>(?:[^"]|\\")*)" on the current page$/
      * @When /^(?:|I )fill in "(?P<value>(?:[^"]|\\")*)" for "(?P<field>(?:[^"]|\\")*)" on the current page$/
      */
@@ -327,6 +338,18 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
             return true;
         });
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function assertPageContainsText($text)
+    {
+        $this->spin(function () use ($text) {
+            parent::assertPageContainsText($text);
+
+            return true;
+        }, "Spining for asserting page contains text $text");
     }
 
     /**

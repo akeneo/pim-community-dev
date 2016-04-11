@@ -2,13 +2,26 @@ jobs:
     product_import:
         connector: Akeneo CSV Connector
         alias:     csv_product_import
-        label:     Product import
+        label:     CSV Product import
         type:      import
         configuration:
             uploadAllowed:     true
             delimiter:         ;
             enclosure:         '"'
             escape:            '\'
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator:   .
+    xlsx_product_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_import
+        label:     XLSX product import
+        type:      import
+        configuration:
+            uploadAllowed:      true
             enabled:            true
             categoriesColumn:   categories
             familyColumn:       family
@@ -25,6 +38,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/products.csv
     tablet_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
@@ -34,6 +48,15 @@ jobs:
             channel:    tablet
             delimiter:  ;
             enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/products.csv
+    xlsx_tablet_product_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_export
+        label:     XLSX product export for tablet
+        type:      export
+        configuration:
+            channel:    tablet
             withHeader: true
     print_product_export:
         connector: Akeneo CSV Connector
@@ -45,7 +68,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-    footwear_family_export:
+            filePath: /tmp/products.csv
+    csv_apparel_family_export:
         connector: Akeneo CSV Connector
         alias:     csv_family_export
         label:     Footwear family export
@@ -54,6 +78,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/family.csv
     category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
@@ -74,6 +99,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/category.csv
     association_type_import:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_import
@@ -93,6 +119,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/association_type.csv
     group_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_import
@@ -112,6 +139,15 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/group.csv
+    xlsx_group_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_export
+        label:     XLSX group export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/xlsx_group_export.xlsx
     variant_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_variant_group_import
@@ -132,6 +168,15 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/variant_group.csv
+    xlsx_variant_group_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_variant_group_export
+        label:     Variant group export
+        type:      export
+        configuration:
+            filePath:   /tmp/xlsx_variant_group_export.xlsx
+            withHeader: true
     attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
@@ -151,6 +196,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/attribute.csv
     option_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_import
@@ -170,6 +216,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            filePath: /tmp/option.csv
     update_product_value:
         connector: Akeneo Mass Edit Connector
         alias:     update_product_value

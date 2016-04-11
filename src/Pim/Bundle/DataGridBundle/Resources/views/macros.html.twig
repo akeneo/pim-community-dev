@@ -59,8 +59,12 @@
                                     'ASC';
                         }
 
-                        if (undefined != filters.pageSize) {
+                        if (undefined !== filters.pageSize) {
                             urlParams['{{ name }}[_pager][_per_page]'] = filters.pageSize;
+                        }
+
+                        if (undefined !== filters.currentPage) {
+                            urlParams['{{ name }}[_pager][_page]'] = filters.currentPage;
                         }
                     };
 

@@ -1,19 +1,45 @@
 parameters:
-    pim_catalog.factory.family.class:                Pim\Bundle\CatalogBundle\Factory\FamilyFactory
-    pim_catalog.factory.attribute_requirement.class: Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory
-    pim_catalog.factory.metric.class:                Pim\Bundle\CatalogBundle\Factory\MetricFactory
-    pim_catalog.factory.group.class:                 Pim\Bundle\CatalogBundle\Factory\GroupFactory
-    pim_catalog.factory.attribute.class:             Pim\Bundle\CatalogBundle\Factory\AttributeFactory
-    pim_catalog.factory.association_type.class:      Pim\Bundle\CatalogBundle\Factory\AssociationTypeFactory
+    pim_catalog.factory.family.class:                Pim\Component\Catalog\Factory\FamilyFactory
+    pim_catalog.factory.attribute_requirement.class: Pim\Component\Catalog\Factory\AttributeRequirementFactory
+    pim_catalog.factory.metric.class:                Pim\Component\Catalog\Factory\MetricFactory
+    pim_catalog.factory.group.class:                 Pim\Component\Catalog\Factory\GroupFactory
+    pim_catalog.factory.attribute.class:             Pim\Component\Catalog\Factory\AttributeFactory
+    pim_catalog.factory.group_type.class:            Pim\Component\Catalog\Factory\GroupTypeFactory
+    pim_catalog.factory.currency.class:              Pim\Component\Catalog\Factory\CurrencyFactory
 
 services:
     pim_catalog.factory.family:
         class: %pim_catalog.factory.family.class%
         arguments:
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.attribute_requirement'
             - '@pim_catalog.repository.attribute'
             - %pim_catalog.entity.family.class%
+
+    pim_catalog.factory.channel:
+        class: %akeneo_storage_utils.factory.simple.class%
+        arguments:
+            - %pim_catalog.entity.channel.class%
+
+    pim_catalog.factory.locale:
+        class: %akeneo_storage_utils.factory.simple.class%
+        arguments:
+            - %pim_catalog.entity.locale.class%
+
+    pim_catalog.factory.attribute_group:
+        class: %akeneo_storage_utils.factory.simple.class%
+        arguments:
+            - %pim_catalog.entity.attribute_group.class%
+
+    pim_catalog.factory.group_type:
+        class: %pim_catalog.factory.group_type.class%
+        arguments:
+            - %pim_catalog.entity.group_type.class%
+
+    pim_catalog.factory.currency:
+        class: %pim_catalog.factory.currency.class%
+        arguments:
+            - %pim_catalog.entity.currency.class%
 
     pim_catalog.factory.attribute_requirement:
         class: %pim_catalog.factory.attribute_requirement.class%
@@ -29,6 +55,16 @@ services:
             - %pim_catalog.entity.attribute.class%
             - %pim_catalog.entity.product.class%
 
+    pim_catalog.factory.attribute_option:
+        class: %akeneo_storage_utils.factory.simple.class%
+        arguments:
+            - %pim_catalog.entity.attribute_option.class%
+
+    pim_catalog.factory.attribute_option_value:
+        class: %akeneo_storage_utils.factory.simple.class%
+        arguments:
+            - %pim_catalog.entity.attribute_option_value.class%
+
     pim_catalog.factory.metric:
         class: %pim_catalog.factory.metric.class%
         arguments:
@@ -41,11 +77,11 @@ services:
             - %pim_catalog.entity.group.class%
 
     pim_catalog.factory.category:
-        class: %akeneo_classification.factory.category.class%
+        class: %akeneo_storage_utils.factory.simple.class%
         arguments:
             - %pim_catalog.entity.category.class%
 
     pim_catalog.factory.association_type:
-        class: %pim_catalog.factory.association_type.class%
+        class: %akeneo_storage_utils.factory.simple.class%
         arguments:
             - %pim_catalog.entity.association_type.class%

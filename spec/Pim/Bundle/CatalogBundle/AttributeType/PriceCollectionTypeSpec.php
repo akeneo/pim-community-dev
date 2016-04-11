@@ -3,11 +3,10 @@
 namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 
@@ -15,17 +14,15 @@ class PriceCollectionTypeSpec extends ObjectBehavior
 {
     function let(
         ConstraintGuesserInterface $guesser,
-        CurrencyManager $currencyManager,
         AttributeInterface $attribute,
         ProductValueInterface $value
     ) {
         $value->getAttribute()->willReturn($attribute);
 
         $this->beConstructedWith(
-            AbstractAttributeType::BACKEND_TYPE_PRICE,
+            AttributeTypes::BACKEND_TYPE_PRICE,
             'pim_enrich_price_collection',
-            $guesser,
-            $currencyManager
+            $guesser
         );
     }
 
@@ -40,8 +37,8 @@ class PriceCollectionTypeSpec extends ObjectBehavior
 
     function it_prepares_value_form_name($attribute, $value)
     {
-        $attribute->getBackendType()->willReturn(AbstractAttributeType::BACKEND_TYPE_PRICE);
-        $this->prepareValueFormName($value)->shouldReturn(AbstractAttributeType::BACKEND_TYPE_PRICE);
+        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_PRICE);
+        $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_PRICE);
     }
 
     function it_prepares_value_form_alias($value)

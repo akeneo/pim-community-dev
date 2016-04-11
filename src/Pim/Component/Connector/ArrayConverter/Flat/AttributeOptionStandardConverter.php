@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
@@ -18,12 +19,19 @@ class AttributeOptionStandardConverter implements StandardArrayConverterInterfac
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    /** @var FieldsRequirementChecker */
+    protected $fieldChecker;
+
     /**
      * @param LocaleRepositoryInterface $localeRepository
+     * @param FieldsRequirementChecker  $fieldChecker
      */
-    public function __construct(LocaleRepositoryInterface $localeRepository)
-    {
+    public function __construct(
+        LocaleRepositoryInterface $localeRepository,
+        FieldsRequirementChecker $fieldChecker
+    ) {
         $this->localeRepository = $localeRepository;
+        $this->fieldChecker     = $fieldChecker;
     }
 
     /**
@@ -83,17 +91,8 @@ class AttributeOptionStandardConverter implements StandardArrayConverterInterfac
     protected function validate(array $item)
     {
         $requiredFields = ['attribute', 'code'];
-        foreach ($requiredFields as $requiredField) {
-            if (!in_array($requiredField, array_keys($item))) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" is expected, provided fields are "%s"',
-                        $requiredField,
-                        implode(', ', array_keys($item))
-                    )
-                );
-            }
-        }
+
+        $this->fieldChecker->checkFieldsPresence($item, $requiredFields);
 
         $authorizedFields = array_merge($requiredFields, ['sort_order']);
         $localeCodes = $this->localeRepository->getActivatedLocaleCodes();

@@ -23,11 +23,11 @@ Feature: Import groups
       AKENEO_XSELL;Akeneo XSell;XSELL
       AKENEO_NEW;US;XSELL
       """
-    And the following job "footwear_group_import" configuration:
+    And the following job "csv_footwear_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_group_import" import job page
+    When I am on the "csv_footwear_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_group_import" job to finish
+    And I wait for the "csv_footwear_group_import" job to finish
     Then I should see "read lines 4"
     And I should see "Created 2"
     And I should see "Processed 2"
@@ -47,11 +47,11 @@ Feature: Import groups
       code;label-en_US;type
       AKENEO_XSELL;;RELATED
       """
-    And the following job "footwear_group_import" configuration:
+    And the following job "csv_footwear_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_group_import" import job page
+    When I am on the "csv_footwear_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_group_import" job to finish
+    And I wait for the "csv_footwear_group_import" job to finish
     Then I should see "This property cannot be changed"
     And I should see "read lines 1"
     And I should see "Skipped 1"
@@ -69,11 +69,11 @@ Feature: Import groups
       code;label-en_US;label-en_US;type
       ;;;RELATED
       """
-    And the following job "footwear_group_import" configuration:
+    And the following job "csv_footwear_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_group_import" import job page
+    When I am on the "csv_footwear_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_group_import" job to finish
+    And I wait for the "csv_footwear_group_import" job to finish
     Then I should see "read lines 1"
     And I should see "Field \"code\" must be filled"
 
@@ -83,11 +83,11 @@ Feature: Import groups
       code;label-en_US;type
       New_VG;Akeneo VG;VARIANT
       """
-    And the following job "footwear_group_import" configuration:
+    And the following job "csv_footwear_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_group_import" import job page
+    When I am on the "csv_footwear_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_group_import" job to finish
+    And I wait for the "csv_footwear_group_import" job to finish
     Then I should see "read lines 1"
     And I should see "skipped 1"
     And I should see "Cannot process variant group \"New_VG\", only groups are accepted"
@@ -98,11 +98,11 @@ Feature: Import groups
       code;label-en_US;type
       AKENEO_TSHIRT;Akeneo T-Shirt;VARIANT
       """
-    And the following job "footwear_group_import" configuration:
+    And the following job "csv_footwear_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_group_import" import job page
+    When I am on the "csv_footwear_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_group_import" job to finish
+    And I wait for the "csv_footwear_group_import" job to finish
     Then I should see "read lines 1"
     And I should see "skipped 1"
     And I should see "Cannot process variant group \"AKENEO_TSHIRT\", only groups are accepted"
@@ -113,10 +113,10 @@ Feature: Import groups
       code;label-en_US;label-en_US;type;axis
       STANDARD_WITH_AXIS;;;RELATED;size
       """
-    And the following job "footwear_group_import" configuration:
+    And the following job "csv_footwear_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_group_import" import job page
+    When I am on the "csv_footwear_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_group_import" job to finish
+    And I wait for the "csv_footwear_group_import" job to finish
     Then I should see "read lines 1"
     And I should see "Field \"axis\" is provided, authorized fields are: \"type, code, label-en_US\""

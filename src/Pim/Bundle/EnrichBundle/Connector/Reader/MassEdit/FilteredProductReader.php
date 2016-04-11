@@ -8,9 +8,8 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -40,23 +39,16 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     /** @var JobRepositoryInterface */
     protected $jobRepository;
 
-    /** @var JobConfigurationRepositoryInterface */
-    protected $jobConfigurationRepo;
+    /** @var array */
+    protected $filters;
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param JobRepositoryInterface              $jobRepository
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      */
-    public function __construct(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        JobRepositoryInterface $jobRepository,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo
-    ) {
-        $this->pqbFactory           = $pqbFactory;
-        $this->jobRepository        = $jobRepository;
-        $this->jobConfigurationRepo = $jobConfigurationRepo;
-
+    public function __construct(ProductQueryBuilderFactoryInterface $pqbFactory)
+    {
+        $this->pqbFactory = $pqbFactory;
+        $this->filters = [];
         $this->isExecuted = false;
     }
 
@@ -65,9 +57,8 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
      */
     public function read()
     {
-        $configuration = $this->getJobConfiguration();
-
-        if (null === $configuration) {
+        $configuration = $this->getConfiguration();
+        if (null === $configuration['filters']) {
             return null;
         }
 
@@ -146,7 +137,15 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
      */
     public function getConfigurationFields()
     {
-        return [];
+        return ['filters' => []];
+    }
+
+    /**
+     * @param array $filters
+     */
+    public function setFilters(array $filters)
+    {
+        $this->filters = $filters;
     }
 
     /**
@@ -165,27 +164,5 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     public function getChannel()
     {
         return $this->channel;
-    }
-
-    /**
-     * Return the job configuration
-     *
-     * @throws EntityNotFoundException
-     *
-     * @return array
-     */
-    protected function getJobConfiguration()
-    {
-        $jobExecution    = $this->stepExecution->getJobExecution();
-        $massEditJobConf = $this->jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution]);
-
-        if (null === $massEditJobConf) {
-            throw new EntityNotFoundException(sprintf(
-                'No JobConfiguration found for jobExecution with id %s',
-                $jobExecution->getId()
-            ));
-        }
-
-        return json_decode(stripcslashes($massEditJobConf->getConfiguration()), true);
     }
 }

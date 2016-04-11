@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
+use Pim\Component\Catalog\Factory\AttributeFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -21,8 +21,8 @@ class AttributeProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator
     ) {
         $this->beConstructedWith(
-            $arrayConverter,
             $repository,
+            $arrayConverter,
             $attributeFactory,
             $updater,
             $validator

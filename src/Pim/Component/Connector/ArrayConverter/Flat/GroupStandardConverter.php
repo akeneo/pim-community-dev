@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
@@ -18,12 +19,19 @@ class GroupStandardConverter implements StandardArrayConverterInterface
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    /** @var FieldsRequirementChecker */
+    protected $fieldChecker;
+
     /**
-     * @param LocaleRepositoryInterface $localeRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param FieldsRequirementChecker   $fieldChecker
      */
-    public function __construct(LocaleRepositoryInterface $localeRepository)
-    {
+    public function __construct(
+        LocaleRepositoryInterface $localeRepository,
+        FieldsRequirementChecker $fieldChecker
+    ) {
         $this->localeRepository = $localeRepository;
+        $this->fieldChecker     = $fieldChecker;
     }
 
     /**
@@ -33,22 +41,22 @@ class GroupStandardConverter implements StandardArrayConverterInterface
      *
      * Before:
      * [
-     *      'code' => 'group1',
-     *      'type' => 'RELATED',
+     *      'code'        => 'group1',
+     *      'type'        => 'RELATED',
      *      'label-de_DE' => '',
      *      'label-en_US' => '',
      *      'label-fr_FR' => '',
      * ]
      *
      * After:
-     * {
-     *     "code": "mycode",
-     *     "type": "RELATED",
-     *     "labels": {
-     *         "en_US": "T-shirt very beautiful",
-     *         "fr_FR": "T-shirt super beau",
-     *     },
-     * }
+     * [
+     *     'code'   => 'mycode',
+     *     'type'   => 'RELATED',
+     *     'labels' => [
+     *         'en_US' => 'T-shirt very beautiful',
+     *         'fr_FR' => 'T-shirt super beau',
+     *     ],
+     * ]
      */
     public function convert(array $item, array $options = [])
     {
@@ -64,6 +72,7 @@ class GroupStandardConverter implements StandardArrayConverterInterface
     }
 
     /**
+     * @param array  $convertedItem
      * @param string $field
      * @param mixed  $data
      *
@@ -75,13 +84,13 @@ class GroupStandardConverter implements StandardArrayConverterInterface
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
-        } else {
-            switch ($field) {
-                case 'code':
-                case 'type':
-                    $convertedItem[$field] = $data;
-                    break;
-            }
+        }
+
+        switch ($field) {
+            case 'code':
+            case 'type':
+                $convertedItem[$field] = $data;
+                break;
         }
 
         return $convertedItem;
@@ -92,39 +101,9 @@ class GroupStandardConverter implements StandardArrayConverterInterface
      */
     protected function validate(array $item)
     {
-        $this->validateRequiredFields($item, ['code', 'type']);
+        $this->fieldChecker->checkFieldsPresence($item, ['code', 'type']);
+        $this->fieldChecker->checkFieldsFilling($item, ['code', 'type']);
         $this->validateAuthorizedFields($item, ['type', 'code']);
-    }
-
-    /**
-     * @param array $item
-     * @param array $requiredFields
-     *
-     * @throws ArrayConversionException
-     */
-    protected function validateRequiredFields(array $item, array $requiredFields)
-    {
-        foreach ($requiredFields as $requiredField) {
-            if (!in_array($requiredField, array_keys($item))) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" is expected, provided fields are "%s"',
-                        $requiredField,
-                        implode(', ', array_keys($item))
-                    )
-                );
-            }
-
-            if ('' === $item[$requiredField]) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" must be filled',
-                        $requiredField,
-                        implode(', ', array_keys($item))
-                    )
-                );
-            }
-        }
     }
 
     /**

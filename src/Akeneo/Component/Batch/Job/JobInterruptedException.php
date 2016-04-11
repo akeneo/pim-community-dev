@@ -2,9 +2,6 @@
 
 namespace Akeneo\Component\Batch\Job;
 
-use Akeneo\Component\Batch\Job\BatchStatus;
-use Exception;
-
 /**
  * Exception to indicate the the job has been interrupted. The exception state
  * indicated is not normally recoverable by batch application clients, but

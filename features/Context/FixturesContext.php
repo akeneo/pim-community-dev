@@ -12,7 +12,6 @@ use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -24,6 +23,7 @@ use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -92,11 +92,13 @@ class FixturesContext extends BaseFixturesContext
 
         // use the processor part of the import system
         $product = $this->loadFixture('products', $data);
-        $this->getProductSaver()->save($product, ['recalculate' => false]);
+        $this->getProductSaver()->save($product);
 
         // reset the unique value set to allow to update product values
         $uniqueValueSet = $this->getContainer()->get('pim_catalog.validator.unique_value_set');
         $uniqueValueSet->reset();
+
+        $this->refresh($product);
 
         return $product;
     }
@@ -177,8 +179,6 @@ class FixturesContext extends BaseFixturesContext
         foreach ($table->getHash() as $data) {
             $this->createAttribute($data);
         }
-        // TODO use a Saver
-        $this->flush();
     }
 
     /**
@@ -192,10 +192,8 @@ class FixturesContext extends BaseFixturesContext
             $attribute = $this->getAttribute($data['attribute']);
             $attribute->setLocale($this->getLocaleCode($data['locale']))->setLabel($data['label']);
             $this->validate($attribute);
-            $this->persist($attribute);
+            $this->getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
         }
-        // TODO use a Saver
-        $this->flush();
     }
 
     /**
@@ -239,8 +237,6 @@ class FixturesContext extends BaseFixturesContext
             $row['resource']     = $product;
             $comments[$row['#']] = $this->createComment($row, $comments);
         }
-        // TODO use a Saver
-        $this->flush();
     }
 
     /**
@@ -342,21 +338,25 @@ class FixturesContext extends BaseFixturesContext
             }
         }
 
+        $attributeBulks = [];
         foreach ($attributeData as $index => $data) {
             $attribute = $this->loadFixture('attributes', $data);
             $this->validate($attribute);
-            $this->persist($attribute, $index % 200 === 0);
+            $attributeBulks[$index % 200][]= $attribute;
         }
-        // TODO use a Saver
-        $this->flush();
+        foreach ($attributeBulks as $attributes) {
+            $this->getContainer()->get('pim_catalog.saver.attribute')->saveAll($attributes);
+        }
 
+        $optionsBulks = [];
         foreach ($optionData as $index => $data) {
             $option = $this->loadFixture('attribute_options', $data);
             $this->validate($option);
-            $this->persist($option, $index % 200 === 0);
+            $optionsBulks[$index % 200][]= $option;
         }
-        // TODO use a Saver
-        $this->flush();
+        foreach ($optionsBulks as $options) {
+            $this->getContainer()->get('pim_catalog.saver.attribute_option')->saveAll($options);
+        }
     }
 
     /**
@@ -552,8 +552,8 @@ class FixturesContext extends BaseFixturesContext
         $locale     = $this->getLocale($localeCode);
         $channel->addLocale($locale);
         $this->validate($channel);
-        $this->persist($channel);
-        $this->persist($locale);
+        $this->getContainer()->get('pim_catalog.saver.channel')->save($channel);
+        $this->getContainer()->get('pim_catalog.saver.locale')->save($locale);
     }
 
     /**
@@ -587,9 +587,7 @@ class FixturesContext extends BaseFixturesContext
 
             $job = $registry->getJob($jobInstance);
             $jobInstance->setJob($job);
-
-            $this->validate($jobInstance);
-            $this->persist($jobInstance);
+            $this->getContainer()->get('akeneo_batch.saver.job_instance')->save($jobInstance);
         }
     }
 
@@ -678,8 +676,6 @@ class FixturesContext extends BaseFixturesContext
         foreach ($this->listToArray($referenceData) as $code) {
             $this->createReferenceData($referenceDataType, $code, $code);
         }
-        // TODO use a Saver
-        $this->getEntityManager()->flush();
     }
 
     /**
@@ -696,8 +692,6 @@ class FixturesContext extends BaseFixturesContext
 
             $this->createReferenceData(trim($row['type']), trim($row['code']), trim($row['label']));
         }
-        // TODO use a Saver
-        $this->getEntityManager()->flush();
     }
 
     /**
@@ -1037,9 +1031,7 @@ class FixturesContext extends BaseFixturesContext
     public function theFollowingChannelConversionOptions(Channel $channel, TableNode $conversionUnits)
     {
         $channel->setConversionUnits($conversionUnits->getRowsHash());
-
-        // TODO replace by call to a saver
-        $this->flush();
+        $this->getContainer()->get('pim_catalog.saver.channel')->save($channel);
     }
 
     /**
@@ -1235,10 +1227,10 @@ class FixturesContext extends BaseFixturesContext
      *
      * @Given /^I\'ve removed the "([^"]*)" attribute$/
      */
-    public function iVeRemovedTheAttribute($attribute)
+    public function iHaveRemovedTheAttribute($attribute)
     {
-        // TODO use a Remover
-        $this->remove($this->getAttribute($attribute));
+        $remover = $this->getContainer()->get('pim_catalog.remover.attribute');
+        $remover->remove($this->getAttribute($attribute));
     }
 
     /**
@@ -1320,10 +1312,8 @@ class FixturesContext extends BaseFixturesContext
         $this->getVersionManager()->setRealTimeVersioning(true);
         $versions = $this->getVersionManager()->buildPendingVersions($product);
         foreach ($versions as $version) {
-            // TODO replace by call to a saver
             $this->validate($version);
-            $this->persist($version);
-            $this->flush($version);
+            $this->getContainer()->get('pim_versioning.saver.version')->save($version);
         }
     }
 
@@ -1385,7 +1375,7 @@ class FixturesContext extends BaseFixturesContext
     {
         $product->setUpdated(new \DateTime($expected));
 
-        $this->getProductSaver()->save($product, ['recalculate' => false]);
+        $this->getProductSaver()->save($product);
     }
 
     /**
@@ -1431,7 +1421,7 @@ class FixturesContext extends BaseFixturesContext
             $association->addProduct($this->getProduct($row['product']));
         }
 
-        $this->getProductSaver()->save($owner, ['recalculate' => false]);
+        $this->getProductSaver()->save($owner);
     }
 
     /**
@@ -1479,7 +1469,7 @@ class FixturesContext extends BaseFixturesContext
         $type->setLocale('en_US')->setLabel($label);
 
         $this->validate($type);
-        $this->persist($type);
+        $this->getContainer()->get('pim_catalog.saver.group_type')->save($type);
 
         return $type;
     }
@@ -1558,10 +1548,11 @@ class FixturesContext extends BaseFixturesContext
             }
         }
 
-        $this->persist($attribute);
+        $this->getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
+
         foreach ($familiesToPersist as $family) {
             $this->validate($family);
-            $this->persist($family);
+            $this->getContainer()->get('pim_catalog.saver.family')->save($family);
         }
 
         return $attribute;
@@ -1616,7 +1607,8 @@ class FixturesContext extends BaseFixturesContext
          */
         $products = $category->getProducts();
         $this->validate($category);
-        $this->persist($category, true);
+        $this->getContainer()->get('pim_catalog.saver.category')->save($category);
+
         foreach ($products as $product) {
             $product->addCategory($category);
             $this->getProductSaver()->save($product);
@@ -1669,7 +1661,7 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $this->validate($channel);
-        $this->persist($channel);
+        $this->getContainer()->get('pim_catalog.saver.channel')->save($channel);
     }
 
     /**
@@ -1692,10 +1684,8 @@ class FixturesContext extends BaseFixturesContext
             $attribute = $this->getAttribute($attributeCode);
             $group->addAttribute($attribute);
         }
-        // TODO replace by call to a saver
         $this->validate($group);
-        $this->persist($group);
-        $this->flush($group);
+        $this->getContainer()->get('pim_catalog.saver.group')->save($group);
 
         foreach ($products as $sku) {
             if (!empty($sku)) {
@@ -1718,7 +1708,7 @@ class FixturesContext extends BaseFixturesContext
         $associationType->setLocale('en_US')->setLabel($label);
 
         $this->validate($associationType);
-        $this->persist($associationType);
+        $this->getContainer()->get('pim_catalog.saver.association_type')->save($associationType);
     }
 
     /**
@@ -1730,7 +1720,7 @@ class FixturesContext extends BaseFixturesContext
     {
         $role = new Role($data['role']);
         $this->validate($role);
-        $this->persist($role);
+        $this->getContainer()->get('pim_user.saver.role')->save($role);
 
         return $role;
     }
@@ -1763,17 +1753,17 @@ class FixturesContext extends BaseFixturesContext
             case 'color':
             case 'colors':
                 $referenceData = $this->createColorReferenceData($code, $label);
+                $this->validate($referenceData);
+                $this->getContainer()->get('acme_app.saver.color')->save($referenceData);
                 break;
             case 'fabric':
             case 'fabrics':
                 $referenceData = $this->createFabricReferenceData($code, $label);
+                $this->getContainer()->get('acme_app.saver.fabric')->save($referenceData);
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('Unknown reference data type "%s".', $type));
         }
-
-        $this->validate($referenceData);
-        $this->getEntityManager()->persist($referenceData);
 
         return $referenceData;
     }
@@ -1866,8 +1856,7 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $attributeGroup = $this->loadFixture('attribute_groups', $data);
-
-        $this->persist($attributeGroup);
+        $this->getContainer()->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
 
         return $attributeGroup;
     }
@@ -1896,10 +1885,10 @@ class FixturesContext extends BaseFixturesContext
             $parent->setRepliedAt($createdAt);
             $comment->setParent($parent);
             $this->validate($comment);
-            $this->persist($parent);
+            $this->getContainer()->get('pim_comment.saver.comment')->save($parent);
         }
 
-        $this->persist($comment);
+        $this->getContainer()->get('pim_comment.saver.comment')->save($comment);
 
         return $comment;
     }
@@ -1928,21 +1917,13 @@ class FixturesContext extends BaseFixturesContext
         $view->setOwner($this->getUser('Peter'));
 
         $this->validate($view);
-        $this->persist($view);
+        $this->getContainer()->get('pim_datagrid.saver.datagrid_view')->save($view);
 
         return $view;
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
-     */
-    protected function getProductManager()
-    {
-        return $this->getContainer()->get('pim_catalog.manager.product');
-    }
-
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface
+     * @return \Pim\Component\Catalog\Repository\ProductRepositoryInterface
      */
     protected function getProductRepository()
     {
@@ -1995,14 +1976,6 @@ class FixturesContext extends BaseFixturesContext
     protected function getAttributeOptionSaver()
     {
         return $this->getContainer()->get('pim_catalog.saver.attribute_option');
-    }
-
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\AttributeManager
-     */
-    protected function getAttributeManager()
-    {
-        return $this->getContainer()->get('pim_catalog.manager.attribute');
     }
 
     /**

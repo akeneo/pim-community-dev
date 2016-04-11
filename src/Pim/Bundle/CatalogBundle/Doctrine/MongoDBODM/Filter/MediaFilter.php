@@ -3,11 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Media filter
@@ -22,8 +22,6 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected $supportedAttributes;
 
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param array                    $supportedAttributes
      * @param array                    $supportedOperators
@@ -58,16 +56,30 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $options = []
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'media');
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
+            $this->checkValue($attribute, $value);
+        }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s.originalFilename', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        if (Operators::IS_EMPTY !== $operator) {
-            $this->checkValue($attribute, $value);
-            $value = $this->prepareValue($operator, $value);
-            $this->qb->field($field)->equals($value);
-        } else {
-            $this->qb->field($field)->exists(false);
+        switch ($operator) {
+            case Operators::EQUALS:
+                $this->qb->field($field)->equals($value);
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->field($field)->exists(true);
+                $this->qb->field($field)->notEqual($value);
+                break;
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->field($field)->exists(true);
+                break;
+            case Operators::IS_EMPTY:
+                $this->qb->field($field)->exists(false);
+                break;
+            default:
+                $value = $this->prepareValue($operator, $value);
+                $this->qb->field($field)->equals($value);
         }
 
         return $this;
@@ -95,8 +107,6 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
                 break;
             case Operators::DOES_NOT_CONTAIN:
                 $value = new \MongoRegex(sprintf('/^((?!%s).)*$/i', $value));
-                break;
-            default:
                 break;
         }
 

@@ -7,7 +7,6 @@ use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -34,17 +33,13 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /**
      * @param ValidatorInterface                  $validator
      * @param AttributeRepositoryInterface        $attributeRepository
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param ObjectUpdaterInterface              $productUpdater
      */
     public function __construct(
         ValidatorInterface $validator,
         AttributeRepositoryInterface $attributeRepository,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ObjectUpdaterInterface $productUpdater
     ) {
-        parent::__construct($jobConfigurationRepo);
-
         $this->validator           = $validator;
         $this->attributeRepository = $attributeRepository;
         $this->productUpdater      = $productUpdater;

@@ -3,25 +3,23 @@
 namespace spec\Pim\Component\Catalog\Updater;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
-use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
-use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
+use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRequirementRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
 
 class FamilyUpdaterSpec extends ObjectBehavior
 {
     function let(
         FamilyRepositoryInterface $familyRepository,
-        FamilyFactory $familyFactory,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $attrRequiFactory,
@@ -29,7 +27,6 @@ class FamilyUpdaterSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $familyRepository,
-            $familyFactory,
             $attributeRepository,
             $channelRepository,
             $attrRequiFactory,

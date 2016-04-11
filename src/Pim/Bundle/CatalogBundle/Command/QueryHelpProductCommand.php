@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Pim\Bundle\CatalogBundle\Query\Filter\DumperInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

@@ -6,7 +6,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 /**
@@ -19,7 +19,7 @@ class MediaFilterSpec extends ObjectBehavior
         $this->beConstructedWith(
             $attrValidatorHelper,
             ['pim_catalog_image', 'pim_catalog_file'],
-            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY']
+            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'IS EMPTY', '!=']
         );
         $this->setQueryBuilder($qb);
 
@@ -35,13 +35,13 @@ class MediaFilterSpec extends ObjectBehavior
 
     function it_is_an_attribute_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\AttributeFilterInterface');
     }
 
     function it_supports_operators()
     {
         $this->getOperators()->shouldReturn(
-            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY']
+            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'IS EMPTY', '!=']
         );
 
         $this->supportsOperator('=')->shouldReturn(true);
@@ -67,12 +67,8 @@ class MediaFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
 
-        $qb->field('normalizedData.picture.originalFilename')
-            ->shouldBeCalled()
-            ->willReturn($qb);
-
-        $qb->equals(new \MongoRegex('/^foo/i'))
-            ->shouldBeCalled();
+        $qb->field('normalizedData.picture.originalFilename')->shouldBeCalled()->willReturn($qb);
+        $qb->equals(new \MongoRegex('/^foo/i'))->shouldBeCalled();
 
         $this->addAttributeFilter($image, 'STARTS WITH', 'foo');
     }
@@ -82,12 +78,8 @@ class MediaFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
 
-        $qb->field('normalizedData.picture.originalFilename')
-            ->shouldBeCalled()
-            ->willReturn($qb);
-
-        $qb->equals(new \MongoRegex('/foo$/i'))
-            ->shouldBeCalled();
+        $qb->field('normalizedData.picture.originalFilename')->shouldBeCalled()->willReturn($qb);
+        $qb->equals(new \MongoRegex('/foo$/i'))->shouldBeCalled();
 
         $this->addAttributeFilter($image, 'ENDS WITH', 'foo');
     }
@@ -97,12 +89,8 @@ class MediaFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
 
-        $qb->field('normalizedData.picture.originalFilename')
-            ->shouldBeCalled()
-            ->willReturn($qb);
-
-        $qb->equals(new \MongoRegex('/foo/i'))
-            ->shouldBeCalled();
+        $qb->field('normalizedData.picture.originalFilename')->shouldBeCalled()->willReturn($qb);
+        $qb->equals(new \MongoRegex('/foo/i'))->shouldBeCalled();
 
         $this->addAttributeFilter($image, 'CONTAINS', 'foo');
     }
@@ -112,12 +100,8 @@ class MediaFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
 
-        $qb->field('normalizedData.picture.originalFilename')
-            ->shouldBeCalled()
-            ->willReturn($qb);
-
-        $qb->equals(new \MongoRegex('/^((?!foo).)*$/i'))
-            ->shouldBeCalled();
+        $qb->field('normalizedData.picture.originalFilename')->shouldBeCalled()->willReturn($qb);
+        $qb->equals(new \MongoRegex('/^((?!foo).)*$/i'))->shouldBeCalled();
 
         $this->addAttributeFilter($image, 'DOES NOT CONTAIN', 'foo');
     }
@@ -127,29 +111,44 @@ class MediaFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
 
-        $qb->field('normalizedData.picture.originalFilename')
-            ->shouldBeCalled()
-            ->willReturn($qb);
-
-        $qb->equals('foo')
-            ->shouldBeCalled();
+        $qb->field('normalizedData.picture.originalFilename')->shouldBeCalled()->willReturn($qb);
+        $qb->equals('foo')->shouldBeCalled();
 
         $this->addAttributeFilter($image, '=', 'foo');
     }
 
-    function it_adds_a_empty_filter_on_an_attribute_in_the_query($qb, $attrValidatorHelper, $image)
+    function it_adds_a_not_equal_filter_on_an_attribute_in_the_query($qb, $image, $attrValidatorHelper)
     {
         $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
 
-        $qb->field('normalizedData.picture.originalFilename')
-            ->shouldBeCalled()
-            ->willReturn($qb);
+        $qb->field('normalizedData.picture.originalFilename')->shouldBeCalled()->willReturn($qb);
+        $qb->exists(true)->shouldBeCalled();
+        $qb->notEqual('foo')->shouldBeCalled();
 
-        $qb->exists(false)
-            ->shouldBeCalled();
+        $this->addAttributeFilter($image, '!=', 'foo');
+    }
+
+    function it_adds_an_empty_filter_on_an_attribute_in_the_query($qb, $attrValidatorHelper, $image)
+    {
+        $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
+
+        $qb->field('normalizedData.picture.originalFilename')->shouldBeCalled()->willReturn($qb);
+        $qb->exists(false)->shouldBeCalled();
 
         $this->addAttributeFilter($image, 'EMPTY', null);
+    }
+
+    function it_adds_a_not_empty_filter_on_an_attribute_in_the_query($qb, $attrValidatorHelper, $image)
+    {
+        $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
+
+        $qb->field('normalizedData.picture.originalFilename')->shouldBeCalled()->willReturn($qb);
+        $qb->exists(true)->shouldBeCalled();
+
+        $this->addAttributeFilter($image, 'NOT EMPTY', null);
     }
 
     function it_throws_an_exception_if_value_is_not_valid($image)

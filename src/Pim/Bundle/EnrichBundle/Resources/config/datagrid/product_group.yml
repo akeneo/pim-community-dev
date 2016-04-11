@@ -95,7 +95,8 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_catalog.manager.family->getChoices'
+                            attr:
+                                empty_choice: true
                 enabled:
                     type:      product_enabled
                     ftype:     choice
@@ -126,7 +127,7 @@ datagrid:
                     data_name: values.scope
                     options:
                         field_options:
-                            choices: '@pim_catalog.manager.channel->getChannelChoices'
+                            choices: '@pim_catalog.repository.channel->getLabelsIndexedByCode'
                 category:
                     type:      product_category
                     label:     Category

@@ -2,6 +2,7 @@ parameters:
     pim_connector.array_converter.flat.attribute_option.class:                        Pim\Component\Connector\ArrayConverter\Flat\AttributeOptionStandardConverter
     pim_connector.array_converter.flat.attribute.class:                               Pim\Component\Connector\ArrayConverter\Flat\AttributeStandardConverter
     pim_connector.array_converter.structured.attribute_option.class:                  Pim\Component\Connector\ArrayConverter\Structured\AttributeOptionStandardConverter
+    pim_connector.array_converter.structured.job_instance.class:                      Pim\Component\Connector\ArrayConverter\Structured\JobInstanceConverter
     pim_connector.array_converter.flat.product.class:                                 Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter
     pim_connector.array_converter.flat.product_association.class:                     Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationStandardConverter
     pim_connector.array_converter.flat.variant_group.class:                           Pim\Component\Connector\ArrayConverter\Flat\VariantGroupStandardConverter
@@ -9,6 +10,14 @@ parameters:
     pim_connector.array_converter.flat.category.class:                                Pim\Component\Connector\ArrayConverter\Flat\CategoryStandardConverter
     pim_connector.array_converter.flat.association_type.class:                        Pim\Component\Connector\ArrayConverter\Flat\AssociationTypeStandardConverter
     pim_connector.array_converter.flat.family.class:                                  Pim\Component\Connector\ArrayConverter\Flat\FamilyStandardConverter
+    pim_connector.array_converter.flat.channel.class:                                 Pim\Component\Connector\ArrayConverter\Flat\ChannelStandardConverter
+    pim_connector.array_converter.flat.locale.class:                                  Pim\Component\Connector\ArrayConverter\Flat\LocaleStandardConverter
+    pim_connector.array_converter.flat.attribute_group.class:                         Pim\Component\Connector\ArrayConverter\Flat\AttributeGroupStandardConverter
+    pim_connector.array_converter.flat.group_type.class:                              Pim\Component\Connector\ArrayConverter\Flat\GroupTypeStandardConverter
+    pim_connector.array_converter.flat.currency.class:                                Pim\Component\Connector\ArrayConverter\Flat\CurrencyStandardConverter
+    pim_connector.array_converter.flat.user.class:                                    Pim\Component\Connector\ArrayConverter\Flat\UserStandardConverter
+    pim_connector.array_converter.flat.user_role.class:                               Pim\Component\Connector\ArrayConverter\Flat\UserRoleStandardConverter
+    pim_connector.array_converter.flat.user_group.class:                              Pim\Component\Connector\ArrayConverter\Flat\UserGroupStandardConverter
 
     pim_connector.array_converter.flat.product.value_converter.registry.class:        Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistry
     pim_connector.array_converter.flat.product.value_converter.abstract.class:        Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\AbstractValueConverter
@@ -17,6 +26,7 @@ parameters:
     pim_connector.array_converter.flat.product.value_converter.multiselect.class:     Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\MultiSelectConverter
     pim_connector.array_converter.flat.product.value_converter.simpleselect.class:    Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\SimpleSelectConverter
     pim_connector.array_converter.flat.product.value_converter.media.class:           Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\MediaConverter
+    pim_connector.array_converter.flat.product.value_converter.text.class:            Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\TextConverter
     pim_connector.array_converter.flat.product.value_converter.scalar.class:          Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ScalarConverter
 
     pim_connector.array_converter.flat.product.field_converter.class:                 Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter
@@ -28,27 +38,70 @@ parameters:
     pim_connector.array_converter.flat.product.attribute_column_info_extractor.class: Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor
     pim_connector.array_converter.flat.product.field_splitter.class:                  Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter
 
+    pim_connector.array_convertor.checker.fields_requirement.class:                 Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker
+
 services:
     # array converters
     pim_connector.array_converter.flat.attribute_option:
         class: %pim_connector.array_converter.flat.attribute_option.class%
         arguments:
             - '@pim_catalog.repository.locale'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.attribute:
         class: %pim_connector.array_converter.flat.attribute.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.category:
         class: %pim_connector.array_converter.flat.category.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.family:
         class: %pim_connector.array_converter.flat.family.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.flat.channel:
+        class: %pim_connector.array_converter.flat.channel.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.flat.locale:
+        class: %pim_connector.array_converter.flat.locale.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.flat.attribute_group:
+        class: %pim_connector.array_converter.flat.attribute_group.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.flat.group_type:
+        class: %pim_connector.array_converter.flat.group_type.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.flat.currency:
+        class: %pim_connector.array_converter.flat.currency.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.association_type:
         class: %pim_connector.array_converter.flat.association_type.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.structured.attribute_option:
         class: %pim_connector.array_converter.structured.attribute_option.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.structured.job_instance:
+        class: %pim_connector.array_converter.structured.job_instance.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.product:
         class: %pim_connector.array_converter.flat.product.class%
@@ -60,6 +113,7 @@ services:
             - '@pim_connector.array_converter.flat.product.field_converter'
             - '@pim_connector.array_converter.flat.product.columns_merger'
             - '@pim_connector.array_converter.flat.product.columns_mapper'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.product_association:
         class: %pim_connector.array_converter.flat.product_association.class%
@@ -73,12 +127,28 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.array_converter.flat.product'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat.group:
         class: %pim_connector.array_converter.flat.group.class%
         arguments:
             - '@pim_catalog.repository.locale'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.flat.user:
+        class: %pim_connector.array_converter.flat.user.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.flat.user_group:
+        class: %pim_connector.array_converter.flat.user_group.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.flat.user_role:
+        class: %pim_connector.array_converter.flat.user_role.class%
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     # extractors
     pim_connector.array_converter.flat.product.attribute_column_info_extractor:
@@ -129,11 +199,19 @@ services:
         tags:
             - { name: 'pim_connector.array_converter.flat.product.value_converter' }
 
+    pim_connector.array_converter.flat.product.value_converter.text:
+        class: %pim_connector.array_converter.flat.product.value_converter.text.class%
+        parent: pim_connector.array_converter.flat.product.value_converter.abstract
+        arguments:
+            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea']
+        tags:
+            - { name: 'pim_connector.array_converter.flat.product.value_converter' }
+
     pim_connector.array_converter.flat.product.value_converter.scalar:
         class: %pim_connector.array_converter.flat.product.value_converter.scalar.class%
         parent: pim_connector.array_converter.flat.product.value_converter.abstract
         arguments:
-            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_date', 'pim_catalog_boolean', 'pim_catalog_number']
+            - ['pim_catalog_date', 'pim_catalog_boolean', 'pim_catalog_number']
         tags:
             - { name: 'pim_connector.array_converter.flat.product.value_converter' }
 
@@ -179,3 +257,7 @@ services:
     # columns mappers
     pim_connector.array_converter.flat.product.columns_mapper:
         class: %pim_connector.array_converter.flat.product.columns_mapper.class%
+
+    # checkers
+    pim_connector.array_convertor.checker.fields_requirement:
+        class: %pim_connector.array_convertor.checker.fields_requirement.class%

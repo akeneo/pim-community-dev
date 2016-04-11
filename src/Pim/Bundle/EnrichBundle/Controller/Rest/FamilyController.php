@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -15,8 +15,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO: PIM-5194: to rework on master
  */
 class FamilyController
 {
@@ -37,7 +35,7 @@ class FamilyController
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
         NormalizerInterface $normalizer,
-        FamilySearchableRepository $familySearchableRepo = null
+        FamilySearchableRepository $familySearchableRepo
     ) {
         $this->familyRepository     = $familyRepository;
         $this->normalizer           = $normalizer;
@@ -53,15 +51,10 @@ class FamilyController
      */
     public function indexAction(Request $request)
     {
-        #TODO: PIM-5194: to rework on master, drop the if condition
-        if (null !== $this->familySearchableRepo) {
-            $query  = $request->query;
-            $search = $query->get('search');
-
-            $families = $this->familySearchableRepo->findBySearch($search, $query->get('options', []));
-        } else {
-            $families = $this->familyRepository->findAll();
-        }
+        $families = $this->familySearchableRepo->findBySearch(
+            $request->query->get('search'),
+            $request->query->get('options', ['limit' => 20])
+        );
 
         $normalizedFamilies = [];
         foreach ($families as $family) {

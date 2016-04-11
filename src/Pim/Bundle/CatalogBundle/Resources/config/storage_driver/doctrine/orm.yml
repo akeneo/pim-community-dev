@@ -86,6 +86,7 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - %pim_catalog.entity.product.class%
+            - %pim_catalog.entity.category.class%
 
     pim_catalog.repository.association:
         class: %pim_catalog.repository.association.class%
@@ -100,25 +101,6 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.product.class%
-
-    # PQB filters
-    pim_catalog.doctrine.query.filter.family:
-        class: %pim_catalog.doctrine.query.filter.family.class%
-        arguments:
-            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
-            - ['family.id', 'family.code']
-            - ['IN', 'NOT IN', 'EMPTY']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 20 }
-
-    pim_catalog.doctrine.query.filter.groups:
-        class: %pim_catalog.doctrine.query.filter.groups.class%
-        arguments:
-            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
-            - ['groups.id', 'groups.code']
-            - ['IN', 'NOT IN', 'EMPTY']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 20 }
 
     # PQB sorters
     pim_catalog.doctrine.query.sorter.entity:

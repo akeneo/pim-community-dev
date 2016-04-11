@@ -6,14 +6,13 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
-use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRequirementRepositoryInterface;
+use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -33,9 +32,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $familyRepository;
 
-    /** @var FamilyFactory */
-    protected $familyFactory;
-
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
@@ -50,7 +46,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
 
     /**
      * @param IdentifiableObjectRepositoryInterface   $familyRepository
-     * @param FamilyFactory                           $familyFactory
      * @param AttributeRepositoryInterface            $attributeRepository
      * @param ChannelRepositoryInterface              $channelRepository
      * @param AttributeRequirementFactory             $attrRequiFactory
@@ -58,7 +53,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
-        FamilyFactory $familyFactory,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $attrRequiFactory,
@@ -66,7 +60,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
     ) {
         $this->accessor            = PropertyAccess::createPropertyAccessor();
         $this->familyRepository    = $familyRepository;
-        $this->familyFactory       = $familyFactory;
         $this->attributeRepository = $attributeRepository;
         $this->channelRepository   = $channelRepository;
         $this->attrRequiFactory    = $attrRequiFactory;

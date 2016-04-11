@@ -11,8 +11,8 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver as BaseProductSaver;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductNormalizer;
+use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -118,10 +118,8 @@ class ProductSaver extends BaseProductSaver
             $this->updateDocuments($updateDocs);
         }
         
-        if (true === $options['recalculate']) {
-            foreach ($products as $product) {
-                $this->completenessManager->generateMissingForProduct($product);
-            }
+        foreach ($products as $product) {
+            $this->completenessManager->generateMissingForProduct($product);
         }
 
         $versions = $this->bulkVersionBuilder->buildVersions($products);

@@ -7,7 +7,7 @@ use Doctrine\ODM\MongoDB\PersistentCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
@@ -24,7 +24,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
 
     function it_is_a_completeness_generator()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface');
     }
 
     function it_schedules_product_completeness(

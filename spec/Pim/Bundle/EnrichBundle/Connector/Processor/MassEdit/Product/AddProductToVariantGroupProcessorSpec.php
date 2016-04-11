@@ -8,10 +8,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
-use Pim\Component\Connector\Model\JobConfigurationInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -20,13 +18,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
 {
     function let(
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ValidatorInterface $validator,
         GroupRepositoryInterface $groupRepository,
         ProductTemplateUpdaterInterface $templateUpdater
     ) {
         $this->beConstructedWith(
-            $jobConfigurationRepo,
             $validator,
             $groupRepository,
             $templateUpdater
@@ -40,22 +36,14 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         GroupInterface $variantGroup,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration,
         ProductTemplateInterface $productTemplate
     ) {
+        $configuration = ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']];
+        $this->setConfiguration($configuration);
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
-
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(
-                ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']]
-            )
-        );
 
         $groupRepository->findOneByIdentifier('variant_group_code')->willReturn($variantGroup);
         $product->getVariantGroup()->willReturn(null);
@@ -75,23 +63,17 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         GroupInterface $variantGroup,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration,
         ProductTemplateInterface $productTemplate
     ) {
+        $configuration = ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']];
+        $this->setConfiguration($configuration);
+
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
         $violations = new ConstraintViolationList([$violation, $violation]);
         $validator->validate($product)->willReturn($violations);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(
-                ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']]
-            )
-        );
 
         $groupRepository->findOneByIdentifier('variant_group_code')->willReturn($variantGroup);
         $product->getVariantGroup()->willReturn(null);
@@ -109,7 +91,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
 
     function it_returns_the_configuration_fields()
     {
-        $this->getConfigurationFields()->shouldReturn([]);
+        $this->getConfigurationFields()->shouldReturn(['actions' => []]);
     }
 
     function it_sets_the_step_execution(StepExecution $stepExecution)

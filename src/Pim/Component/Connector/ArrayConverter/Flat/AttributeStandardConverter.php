@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
  * Convert flat format to standard format for attribute
@@ -14,6 +14,17 @@ use Pim\Component\Connector\Exception\ArrayConversionException;
  */
 class AttributeStandardConverter implements StandardArrayConverterInterface
 {
+    /** @var FieldsRequirementChecker */
+    protected $fieldChecker;
+
+    /**
+     * @param FieldsRequirementChecker $fieldChecker
+     */
+    public function __construct(FieldsRequirementChecker $fieldChecker)
+    {
+        $this->fieldChecker = $fieldChecker;
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -21,7 +32,8 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validate($item);
+        $this->fieldChecker->checkFieldsPresence($item, ['code']);
+        $this->fieldChecker->checkFieldsFilling($item, ['code']);
 
         $convertedItem = ['labels' => []];
         foreach ($item as $field => $data) {
@@ -40,45 +52,6 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
         }
 
         return $convertedItem;
-    }
-
-    /**
-     * @param array $item
-     */
-    protected function validate(array $item)
-    {
-        $this->validateRequiredFields($item, ['code']);
-    }
-
-    /**
-     * @param array $item
-     * @param array $requiredFields
-     *
-     * @throws ArrayConversionException
-     */
-    protected function validateRequiredFields(array $item, array $requiredFields)
-    {
-        foreach ($requiredFields as $requiredField) {
-            if (!in_array($requiredField, array_keys($item))) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" is expected, provided fields are "%s"',
-                        $requiredField,
-                        implode(', ', array_keys($item))
-                    )
-                );
-            }
-
-            if ('' === $item[$requiredField]) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" must be filled',
-                        $requiredField,
-                        implode(', ', array_keys($item))
-                    )
-                );
-            }
-        }
     }
 
     /**
@@ -103,7 +76,7 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
             case 'number_min':
             case 'number_max':
             case 'max_file_size':
-                $convertedItem[$field] = (float) $data;
+                $convertedItem[$field] = '' === $data ? null : (float) $data;
                 break;
             case 'sort_order':
             case 'max_characters':
@@ -111,15 +84,13 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
                 break;
             case 'options':
             case 'available_locales':
-                $convertedItem[$field] = explode(',', $data);
+                $convertedItem[$field] = '' === $data ? [] : explode(',', $data);
                 break;
             case in_array($field, $booleanFields):
                 $convertedItem[$field] = (bool) $data;
                 break;
             case 'reference_data_name':
-                if ('' !== $data) {
-                    $convertedItem[$field] = $data;
-                }
+                $convertedItem[$field] = '' === $data ? null : $data;
                 break;
             default:
                 $convertedItem[$field] = (string) $data;

@@ -15,7 +15,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Select form type
- * A form type to display an asynchonous dropdown
+ * A form type to display an asynchronous dropdown
  *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

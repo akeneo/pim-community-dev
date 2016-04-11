@@ -6,7 +6,7 @@ use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
+use Pim\Component\Catalog\Validator\Constraints\File as AssertFile;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Yaml\Yaml;
@@ -23,13 +23,7 @@ class YamlReader extends FileReader implements
     UploadedFileAwareInterface,
     StepExecutionAwareInterface
 {
-    /**
-     * @Assert\NotBlank(groups={"Execution"})
-     * @AssertFile(
-     *     groups={"Execution"},
-     *     allowedExtensions={"yml", "yaml"}
-     * )
-     */
+    /** @var string */
     protected $filePath;
 
     /** @var string */
@@ -38,12 +32,7 @@ class YamlReader extends FileReader implements
     /** @var bool */
     protected $multiple = false;
 
-    /**
-     * @var bool
-     *
-     * @Assert\Type(type="bool")
-     * @Assert\IsTrue(groups={"UploadExecution"})
-     */
+    /** @var bool */
     protected $uploadAllowed = false;
 
     /** @var StepExecution */

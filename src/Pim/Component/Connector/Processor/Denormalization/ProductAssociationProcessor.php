@@ -46,7 +46,7 @@ class ProductAssociationProcessor extends AbstractProcessor
      * @param ObjectUpdaterInterface                $updater            product updater
      * @param ValidatorInterface                    $validator          validator of the object
      * @param ProductFilterInterface                $productAssocFilter product association filter
-     * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
+     * @param ObjectDetacherInterface               $detacher           detacher to remove it from UOW when skip
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
@@ -71,7 +71,8 @@ class ProductAssociationProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $identifier = $this->getIdentifier($item);
+        $convertedItem = $this->convertItemData($item);
+        $identifier    = $this->getIdentifier($convertedItem);
 
         if (null === $identifier) {
             $this->skipItemWithMessage($item, 'The identifier must be filled');
@@ -83,7 +84,6 @@ class ProductAssociationProcessor extends AbstractProcessor
             $this->skipItemWithMessage($item, sprintf('No product with identifier "%s" has been found', $identifier));
         }
 
-        $convertedItem = $this->convertItemData($item);
         if ($this->enabledComparison) {
             $convertedItem = $this->filterIdenticalData($product, $convertedItem);
 
@@ -165,21 +165,24 @@ class ProductAssociationProcessor extends AbstractProcessor
      */
     protected function convertItemData(array $item)
     {
-        $items = $this->arrayConverter->convert($item, ['with_associations' => true]);
-        $associations = isset($items['associations']) ? $items['associations'] : [];
+        $convertedItem = $this->arrayConverter->convert($item, ['with_associations' => true]);
+        $convertedItem = array_merge(
+            ['associations' => []],
+            $convertedItem
+        );
 
-        return ['associations' => $associations];
+        return $convertedItem;
     }
 
     /**
      * @param ProductInterface $product
-     * @param array            $convertItems
+     * @param array            $convertedItem
      *
      * @throws \InvalidArgumentException
      */
-    protected function updateProduct(ProductInterface $product, array $convertItems)
+    protected function updateProduct(ProductInterface $product, array $convertedItem)
     {
-        $this->updater->update($product, $convertItems);
+        $this->updater->update($product, $convertedItem);
     }
 
     /**
@@ -191,7 +194,7 @@ class ProductAssociationProcessor extends AbstractProcessor
     {
         $identifierProperty = $this->repository->getIdentifierProperties();
 
-        return $convertedItem[$identifierProperty[0]];
+        return $convertedItem[$identifierProperty[0]][0]['data'];
     }
 
     /**

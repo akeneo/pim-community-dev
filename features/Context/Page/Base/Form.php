@@ -30,10 +30,8 @@ class Form extends Base
                 'Oro tabs'                        => ['css' => '.navbar.scrollspy-nav'],
                 'Dialog'                          => ['css' => 'div.modal'],
                 'Form tabs'                       => ['css' => '.nav-tabs.form-tabs'],
-                'Associations list'               => ['css' => '#associations-list'],
+                'Associations list'               => ['css' => '.associations-list'],
                 'Active tab'                      => ['css' => '.form-horizontal .tab-pane.active'],
-                'Panel selector'                  => ['css' => '.panel-selector'],
-                'Panel container'                 => ['css' => '.panel-container'],
                 'Groups'                          => ['css' => '.tab-groups'],
                 'Form Groups'                     => ['css' => '.group-selector'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
@@ -43,7 +41,11 @@ class Form extends Base
                 'Available attributes search'     => ['css' => '.pimmultiselect input[type="search"]'],
                 'Available attributes add button' => ['css' => '.pimmultiselect a.btn:contains("Add")'],
                 'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid'],
-                'Save'                            => ['css' => 'button.btn-submit']
+                'Save'                            => ['css' => 'button.btn-submit'],
+                'Panel sidebar'                   => [
+                    'css'        => '.edit-form > .content',
+                    'decorators' => ['Pim\Behat\Decorator\PageDecorator\PanelableDecorator']
+                ]
             ],
             $this->elements
         );
@@ -73,6 +75,7 @@ class Form extends Base
     public function visitTab($tab)
     {
         $tabs = $this->spin(function () {
+
             $tabs = $this->find('css', $this->elements['Tabs']['css']);
             if (!$tabs) {
                 $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
@@ -82,44 +85,10 @@ class Form extends Base
             }
 
             return $tabs;
-        }, 'Could not find any tabs container element');
 
-        $tabDom = $this->spin(function () use ($tabs, $tab) {
-            return $tabs->findLink($tab);
-        }, sprintf('Could not find a tab named "%s"', $tab));
+        }, "Findind $tab tab");
 
-        $tabDom->click();
-    }
-
-    /**
-     * Open the specified panel
-     *
-     * @param string $panel
-     */
-    public function openPanel($panel)
-    {
-        $elt = $this->spin(function () {
-            return $this->getElement('Panel selector');
-        }, 'Can not find the Panel selector');
-
-        $panel = strtolower($panel);
-        if (null === $elt->find('css', sprintf('button[data-panel$="%s"].active', $panel))) {
-            $elt->find('css', sprintf('button[data-panel$="%s"]', $panel))->click();
-        }
-    }
-
-    /**
-     * Close the specified panel
-     *
-     * @throws \Context\Spin\TimeoutException
-     */
-    public function closePanel()
-    {
-        $elt = $this->spin(function () {
-            return $this->getElement('Panel container')->find('css', 'header .close');
-        });
-
-        $elt->click();
+        $tabs->clickLink($tab);
     }
 
     /**
@@ -186,7 +155,7 @@ class Form extends Base
 
             $groupsContainer = $this->spin(function () use ($groups, $group) {
                 return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
-            });
+            }, sprintf('Finding the group %s', $group));
 
             $button = null;
 
@@ -211,13 +180,14 @@ class Form extends Base
         return true;
     }
 
-    public function selectAssociation($assocation)
+    /**
+     * @return NodeElement
+     */
+    public function getAssociationsList()
     {
-        $associations = $this->spin(function () {
+        return $this->spin(function () {
             return $this->find('css', $this->elements['Associations list']['css']);
         });
-
-        $associations->clickLink($assocation);
     }
 
     /**

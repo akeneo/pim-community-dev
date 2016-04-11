@@ -3,10 +3,10 @@
 namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
+use Pim\Component\Catalog\Validator\AttributeConstraintGuesser;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 
@@ -16,7 +16,7 @@ class OptionSimpleSelectTypeSpec extends ObjectBehavior
     {
         $value->getAttribute()->willReturn($attribute);
 
-        $this->beConstructedWith(AbstractAttributeType::BACKEND_TYPE_OPTION, 'pim_ajax_entity', $guesser);
+        $this->beConstructedWith(AttributeTypes::BACKEND_TYPE_OPTION, 'pim_ajax_entity', $guesser);
     }
 
     function it_builds_attribute_form_types(FormFactory $factory, $attribute)
@@ -30,8 +30,8 @@ class OptionSimpleSelectTypeSpec extends ObjectBehavior
 
     function it_prepares_value_form_name($value, $attribute)
     {
-        $attribute->getBackendType()->willReturn(AbstractAttributeType::BACKEND_TYPE_OPTION);
-        $this->prepareValueFormName($value)->shouldReturn(AbstractAttributeType::BACKEND_TYPE_OPTION);
+        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_OPTION);
+        $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_OPTION);
     }
 
     function it_prepares_value_form_alias($value)

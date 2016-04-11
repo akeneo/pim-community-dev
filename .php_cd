@@ -314,7 +314,7 @@ $legacyExclusions = [
         'Pim\Bundle\CatalogBundle\Manager\CurrencyManager',
         // What to do with this, cannot be extracted due to dependencies to symfony form
         'Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType',
-        'Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes',
+        'Pim\Component\Catalog\AttributeTypes',
     ],
     'Pim\Component\Connector'                                   => [
         // Repositories interfaces of CatalogBundle should be extracted in the catalog component
@@ -322,7 +322,7 @@ $legacyExclusions = [
         'Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface',
         'Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface',
         // What to do with this, cannot be extracted due to dependencies to symfony form
-        'Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes',
+        'Pim\Component\Catalog\AttributeTypes',
         'Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType',
         // We need to check why we use these classes, interfaces should be extracted in the catalog component
         'Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver',
@@ -330,7 +330,6 @@ $legacyExclusions = [
         'Pim\Bundle\CatalogBundle\Validator\Constraints\File',
         // For factories and builders of CatalogBundle, interfaces should be created in the catalog component
         'Pim\Bundle\CatalogBundle\Factory\AttributeFactory',
-        'Pim\Bundle\CatalogBundle\Factory\AssociationTypeFactory',
         'Pim\Bundle\CatalogBundle\Factory\FamilyFactory',
         'Pim\Bundle\CatalogBundle\Factory\GroupFactory',
         // Version manager should be exploded with SRP and introduce different interfaces in a component, here we use it
@@ -343,7 +342,7 @@ $legacyExclusions = [
     ],
     // Same issues than catalog component updater classes, same fixes expected
     'Pim\Component\Localization'                                => [
-        'Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes',
+        'Pim\Component\Catalog\AttributeTypes',
         'Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface',
         // Why we use it?
         'Pim\Component\Localization\Normalizer\MetricNormalizer',

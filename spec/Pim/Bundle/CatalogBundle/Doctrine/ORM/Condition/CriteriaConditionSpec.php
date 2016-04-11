@@ -21,7 +21,7 @@ class CriteriaConditionSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_the_value_is_invalid_for_the_operator()
     {
-        $operators = array('=', '<', '<=', '>', '>=', 'LIKE', 'NOT LIKE');
+        $operators = ['=', '<', '<=', '>', '>=', 'LIKE', 'NOT LIKE'];
         foreach ($operators as $operator) {
             $this
                 ->shouldThrow('\InvalidArgumentException')
@@ -29,7 +29,7 @@ class CriteriaConditionSpec extends ObjectBehavior
             ;
         }
 
-        $operators = array('BETWEEN', 'IN', 'NOT IN');
+        $operators = ['BETWEEN', 'IN', 'NOT IN'];
         foreach ($operators as $operator) {
             $this
                 ->shouldThrow('\InvalidArgumentException')
@@ -41,7 +41,7 @@ class CriteriaConditionSpec extends ObjectBehavior
     function it_throws_an_exception_when_the_operator_is_not_supported()
     {
         $this
-            ->shouldThrow('\Pim\Bundle\CatalogBundle\Exception\ProductQueryException')
+            ->shouldThrow('\Pim\Component\Catalog\Exception\ProductQueryException')
             ->duringPrepareCriteriaCondition('my_field', 'NOT SUPPORTED', Argument::any())
         ;
     }
@@ -132,11 +132,11 @@ class CriteriaConditionSpec extends ObjectBehavior
         $this->prepareCriteriaCondition('my_field', 'NOT IN', ['my_value1', 'my_value2']);
     }
 
-    function it_processes_a_not_like_criteria($qb, Expr $expr, Expr\Literal $literal)
+    function it_processes_a_not_like_criteria($qb, Expr $expr, Expr\Comparison $comp, Expr\Literal $literal)
     {
-        $literal->__toString()->willReturn('');
         $qb->expr()->shouldBeCalled()->willReturn($expr);
         $expr->literal('my_value')->shouldBeCalled()->willReturn($literal);
+        $expr->notLike('my_field', $literal)->shouldBeCalled()->willReturn($comp);
 
         $this->prepareCriteriaCondition('my_field', 'NOT LIKE', 'my_value');
     }
@@ -157,5 +157,15 @@ class CriteriaConditionSpec extends ObjectBehavior
         $expr->isNull('my_field')->shouldBeCalled();
 
         $this->prepareCriteriaCondition('my_field', 'EMPTY', Argument::any());
+    }
+
+    function it_processes_a_not_empty_criteria($qb, Expr $expr, Expr\Comparison $comp, Expr\Literal $literal)
+    {
+        $qb->expr()->willReturn($expr);
+        $expr->isNotNull('my_field')->shouldBeCalled()->willReturn('my_field IS NOT NULL');
+
+        $this
+            ->prepareCriteriaCondition('my_field', 'NOT EMPTY', '')
+            ->shouldReturn('my_field IS NOT NULL');
     }
 }

@@ -5,14 +5,11 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
-use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Process a product to an array
@@ -26,16 +23,11 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var Serializer */
     protected $serializer;
 
-    /**
-     * @Assert\NotBlank(groups={"Execution"})
-     * @Channel
-     *
-     * @var string Channel code
-     */
+    /** @var string Channel code */
     protected $channel;
 
-    /** @var ChannelManager */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
     /** @var array Normalizer context */
     protected $normalizerContext;
@@ -55,27 +47,27 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var array */
     protected $dateFormats;
 
-    /** @var ProductBuilder */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /**
-     * @param Serializer              $serializer
-     * @param ChannelManager          $channelManager
-     * @param string[]                $mediaAttributeTypes
-     * @param array                   $decimalSeparators
-     * @param array                   $dateFormats
-     * @param ProductBuilderInterface $productBuilder
+     * @param Serializer                 $serializer
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param ProductBuilderInterface    $productBuilder
+     * @param string[]                   $mediaAttributeTypes
+     * @param array                      $decimalSeparators
+     * @param array                      $dateFormats
      */
     public function __construct(
         Serializer $serializer,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         ProductBuilderInterface $productBuilder,
         array $mediaAttributeTypes,
         array $decimalSeparators,
         array $dateFormats
     ) {
         $this->serializer          = $serializer;
-        $this->channelManager      = $channelManager;
+        $this->channelRepository   = $channelRepository;
         $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->decimalSeparators   = $decimalSeparators;
         $this->dateFormats         = $dateFormats;
@@ -87,9 +79,12 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      */
     public function process($product)
     {
-        $contextChannel = $this->channelManager->getChannelByCode($this->channel);
-        $this->productBuilder->addMissingProductValues($product, [$contextChannel],
-            $contextChannel->getLocales()->toArray());
+        $contextChannel = $this->channelRepository->findOneByIdentifier($this->channel);
+        $this->productBuilder->addMissingProductValues(
+            $product,
+            [$contextChannel],
+            $contextChannel->getLocales()->toArray()
+        );
 
         $data['media'] = [];
         $mediaValues   = $this->getMediaProductValues($product);
@@ -116,7 +111,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
             'channel' => [
                 'type'    => 'choice',
                 'options' => [
-                    'choices'  => $this->channelManager->getChannelChoices(),
+                    'choices'  => $this->channelRepository->getLabelsIndexedByCode(),
                     'required' => true,
                     'select2'  => true,
                     'label'    => 'pim_base_connector.export.channel.label',
@@ -238,7 +233,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      */
     protected function getLocaleCodes($channelCode)
     {
-        $channel = $this->channelManager->getChannelByCode($channelCode);
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
 
         return $channel->getLocaleCodes();
     }

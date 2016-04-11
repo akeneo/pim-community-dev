@@ -5,8 +5,9 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
-use Pim\Bundle\CatalogBundle\Query\Filter\FilterInterface;
+use Pim\Component\Catalog\Exception\ProductQueryException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\FilterInterface;
 
 /**
  * Abstract ORM filter
@@ -54,7 +55,7 @@ abstract class AbstractFilter implements FilterInterface
     /**
      * Get a unique alias
      *
-     * @param string alias
+     * @param string $alias
      *
      * @return string
      */
@@ -70,7 +71,7 @@ abstract class AbstractFilter implements FilterInterface
      * @param string|array $operator the operator used to filter
      * @param string|array $value    the value(s) to filter
      *
-     * @throws \Pim\Bundle\CatalogBundle\Exception\ProductQueryException
+     * @throws ProductQueryException
      *
      * @return string
      */
@@ -89,7 +90,7 @@ abstract class AbstractFilter implements FilterInterface
      * @param string             $locale    the locale
      * @param string             $scope     the scope
      *
-     * @throws \Pim\Bundle\CatalogBundle\Exception\ProductQueryException
+     * @throws ProductQueryException
      *
      * @return string
      */

@@ -2,13 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 /**
@@ -16,9 +15,17 @@ use Prophecy\Argument;
  */
 class OptionsFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb, ObjectIdResolverInterface $objectIdResolver, AttributeValidatorHelper $attrValidatorHelper)
-    {
-        $this->beConstructedWith($attrValidatorHelper, $objectIdResolver, ['pim_catalog_multiselect'], ['IN', 'EMPTY']);
+    function let(
+        Builder $qb,
+        AttributeValidatorHelper $attrValidatorHelper,
+        ObjectIdResolverInterface $objectIdResolver
+    ) {
+        $this->beConstructedWith(
+            $attrValidatorHelper,
+            $objectIdResolver,
+            ['pim_catalog_multiselect'],
+            ['IN', 'EMPTY', 'NOT EMPTY', '!=']
+        );
         $this->setQueryBuilder($qb);
     }
 
@@ -29,7 +36,7 @@ class OptionsFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['IN', 'EMPTY']);
+        $this->getOperators()->shouldReturn(['IN', 'EMPTY', 'NOT EMPTY', '!=']);
         $this->supportsOperator('IN')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
@@ -43,7 +50,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 
-    function it_adds_an_in_filter_to_the_query($attrValidatorHelper, $qb, AttributeInterface $attribute, Expr $expr)
+    function it_adds_an_in_filter_for_an_option_id_to_the_query($attrValidatorHelper, $qb, AttributeInterface $attribute)
     {
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
@@ -53,15 +60,37 @@ class OptionsFilterSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->getCode()->willReturn('options_code');
 
-        $qb->expr()->willReturn($expr);
-        $expr->field('normalizedData.options_code.id')->shouldBeCalled()->willReturn($expr);
-        $expr->in([118, 270])->shouldBeCalled()->willReturn($expr);
-        $qb->addAnd($expr)->shouldBeCalled();
+        $qb->field('normalizedData.options_code.id')->shouldBeCalled()->willReturn($qb);
+        $qb->in([118, 270])->shouldBeCalled();
 
-        $this->addAttributeFilter($attribute, 'IN', ['118', '270'], null, null, ['field' => 'options_code.id']);
+        $this->addAttributeFilter($attribute, 'IN', [118, 270], null, null, ['field' => 'options_code.id']);
     }
 
-    function it_adds_an_empty_filter_to_the_query($attrValidatorHelper, $qb, AttributeInterface $attribute, Expr $expr)
+    function it_adds_an_in_filter_for_an_option_code_to_the_query(
+        $attrValidatorHelper,
+        $qb,
+        $objectIdResolver,
+        AttributeInterface $attribute
+    ) {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('options');
+        $attribute->getCode()->willReturn('options_code');
+
+        $objectIdResolver->getIdsFromCodes('option', ['red', 'yellow'], Argument::type('Pim\Component\Catalog\Model\AttributeInterface'))
+            ->shouldBeCalled()
+            ->willReturn([118, 270]);
+
+        $qb->field('normalizedData.options_code.id')->shouldBeCalled()->willReturn($qb);
+        $qb->in([118, 270])->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, 'IN', ['red', 'yellow'], null, null, ['field' => 'options_code.code']);
+    }
+
+    function it_adds_an_empty_filter_for_an_option_id_to_the_query($attrValidatorHelper, $qb, AttributeInterface $attribute)
     {
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
@@ -71,15 +100,13 @@ class OptionsFilterSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->getCode()->willReturn('options_code');
 
-        $qb->expr()->willReturn($expr);
-        $expr->field('normalizedData.options_code')->shouldBeCalled()->willReturn($expr);
-        $expr->exists(false)->shouldBeCalled()->willReturn($expr);
-        $qb->addAnd($expr)->shouldBeCalled();
+        $qb->field('normalizedData.options_code.id')->shouldBeCalled()->willReturn($qb);
+        $qb->exists(false)->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'EMPTY', null, null, null, ['field' => 'options_code.id']);
     }
 
-    function it_adds_a_not_in_filter_to_the_query($attrValidatorHelper, $qb, AttributeInterface $attribute, Expr $expr)
+    function it_adds_an_empty_filter_for_an_option_code_to_the_query($attrValidatorHelper, $qb, AttributeInterface $attribute)
     {
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
@@ -89,11 +116,84 @@ class OptionsFilterSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->getCode()->willReturn('options_code');
 
-        $qb->expr()->willReturn($expr);
-        $qb->field('normalizedData.options_code')->shouldBeCalled()->willReturn($qb);
-        $qb->notIn(['118', '270'])->shouldBeCalled()->willReturn($qb);
+        $qb->field('normalizedData.options_code.id')->shouldBeCalled()->willReturn($qb);
+        $qb->exists(false)->shouldBeCalled();
 
-        $this->addAttributeFilter($attribute, 'NOT IN', ['118', '270'], null, null, ['field' => 'options_code.id']);
+        $this->addAttributeFilter($attribute, 'EMPTY', null, null, null, ['field' => 'options_code.code']);
+    }
+
+    function it_adds_a_not_empty_filter_for_an_option_id_to_the_query($attrValidatorHelper, $qb, AttributeInterface $attribute)
+    {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('options');
+        $attribute->getCode()->willReturn('options_code');
+
+        $qb->field('normalizedData.options_code.id')->shouldBeCalled()->willReturn($qb);
+        $qb->exists(true)->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, 'NOT EMPTY', null, null, null, ['field' => 'options_code.id']);
+    }
+
+    function it_adds_a_not_empty_filter_for_an_option_code_to_the_query($attrValidatorHelper, $qb, AttributeInterface $attribute)
+    {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('options');
+        $attribute->getCode()->willReturn('options_code');
+
+        $qb->field('normalizedData.options_code.id')->shouldBeCalled()->willReturn($qb);
+        $qb->exists(true)->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, 'NOT EMPTY', null, null, null, ['field' => 'options_code.code']);
+    }
+
+    function it_adds_a_not_in_filter_for_an_option_id_to_the_query($attrValidatorHelper, $qb, AttributeInterface $attribute)
+    {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('options');
+        $attribute->getCode()->willReturn('options_code');
+
+        $qb->field('normalizedData.options_code.id')->shouldBeCalled()->willReturn($qb);
+        $qb->exists(true)->shouldBeCalled();
+        $qb->notIn([118, 270])->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, 'NOT IN', [118, 270], null, null, ['field' => 'options_code.id']);
+    }
+
+    function it_adds_a_not_in_filter_for_an_option_code_to_the_query(
+        $attrValidatorHelper,
+        $qb,
+        $objectIdResolver,
+        AttributeInterface $attribute
+    ) {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('options');
+        $attribute->getCode()->willReturn('options_code');
+
+        $objectIdResolver->getIdsFromCodes('option', ['red', 'yellow'], Argument::type('Pim\Component\Catalog\Model\AttributeInterface'))
+            ->shouldBeCalled()
+            ->willReturn([118, 270]);
+
+        $qb->field('normalizedData.options_code.id')->shouldBeCalled()->willReturn($qb);
+        $qb->exists(true)->shouldBeCalled();
+        $qb->notIn([118, 270])->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, 'NOT IN', ['red', 'yellow'], null, null, ['field' => 'options_code.code']);
     }
 
     function it_throws_an_exception_if_the_content_of_value_are_not_numeric(AttributeInterface $attribute)

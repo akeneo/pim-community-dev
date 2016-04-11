@@ -6,9 +6,9 @@ use Doctrine\MongoDB\Collection;
 use Doctrine\MongoDB\Cursor;
 use Doctrine\MongoDB\CursorInterface;
 use Doctrine\MongoDB\Query\Query;
-use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
+use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 use PhpSpec\ObjectBehavior;
 
@@ -29,7 +29,7 @@ class ProductRepositorySpec extends ObjectBehavior
 
     function it_is_a_product_repository()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Repository\ProductRepositoryInterface');
     }
 
     function it_is_an_object_repository()

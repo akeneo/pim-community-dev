@@ -12,7 +12,7 @@ Feature: Display the product history
     And I fill in the following information in the popin:
       | SKU | sandals-001 |
     And I press the "Save" button in the popin
-    And I edit the "sandals-001" product
+    And I wait to be on the "sandals-001" product page
     And the history of the product "sandals-001" has been built
     When I open the history
     Then there should be 1 update
@@ -29,7 +29,7 @@ Feature: Display the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I edit the "boots" product
+    And I wait to be on the "boots" product page
     And I add available attributes Price
     When I visit the "Marketing" group
     And I change the "Price" to "10 EUR"
@@ -70,28 +70,32 @@ Feature: Display the product history
   @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product metric
     Given a "footwear" catalog configuration
-    And the following product:
-      | sku   | length        |
-      | boots | 30 CENTIMETER |
     And I am logged in as "Julia"
-    When I edit the "boots" product
-    And the history of the product "boots" has been built
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU | boots |
+    And I press the "Save" button in the popin
+    And I wait to be on the "boots" product page
+    And I add available attributes Length
+    And I change the "Length" to "30"
+    And I save the product
     When I open the history
-    Then there should be 1 update
+    Then there should be 2 update
     And I should see history:
       | version | property    | value      |
-      | 1       | Length      | 30         |
-      | 1       | Length unit | Centimeter |
+      | 2       | Length      | 30         |
+      | 2       | Length unit | Centimeter |
     When I close the "history" panel
     When I visit the "Attributes" tab
     And I change the "Length" to "35 Centimeter"
     And I save the product
     And the history of the product "boots" has been built
     When I open the history
-    Then there should be 2 updates
+    Then there should be 3 updates
     And I should see history:
       | version | property | value   |
-      | 2       | Length   | 35      |
+      | 3       | Length   | 35      |
     When I close the "history" panel
     When I visit the "Attributes" tab
     And I remove the "Length" attribute
@@ -99,18 +103,22 @@ Feature: Display the product history
     And I save the product
     And the history of the product "boots" has been built
     When I open the history
-    Then there should be 3 updates
+    Then there should be 4 updates
     And I should see history:
       | version | property    | value |
-      | 3       | Length      |       |
-      | 3       | Length unit |       |
+      | 4       | Length      |       |
+      | 4       | Length unit |       |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product media
     Given a "footwear" catalog configuration
-    And a "boots" product
     And I am logged in as "Julia"
-    When I edit the "boots" product
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU | boots |
+    And I press the "Save" button in the popin
+    And I wait to be on the "boots" product page
     And I add available attribute Side view
     And I visit the "Media" group
     And I attach file "SNKRS-1R.png" to "Side view"

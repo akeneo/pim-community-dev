@@ -51,6 +51,7 @@ Feature: Display the completeness of a product
     And I visit the "Attributes" tab
     And I switch the attribute "Rating" requirement in channel "Mobile"
     And I save the family
+    And I should see "Family successfully updated"
     And I am on the "sneakers" product page
     When I open the "Completeness" panel
     Then I should see the completeness summary

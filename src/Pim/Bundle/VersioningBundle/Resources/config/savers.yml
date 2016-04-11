@@ -1,6 +1,6 @@
 services:
     pim_versioning.saver.version:
-        class: %pim_catalog.saver.base.class%
+        class: %akeneo_storage_utils.saver.base.class%
         arguments:
             - '@pim_versioning.object_manager.version'
             - '@akeneo_storage_utils.saver.base_options_resolver'

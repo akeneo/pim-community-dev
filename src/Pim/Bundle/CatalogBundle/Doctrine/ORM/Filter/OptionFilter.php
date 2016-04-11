@@ -3,12 +3,12 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -77,7 +77,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'option');
         $field = $options['field'];
 
-        if (Operators::IS_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($field, $value);
         }
 
@@ -86,7 +86,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
         // prepare join value condition
         $optionAlias = $joinAlias . '.option';
 
-        if (Operators::IS_EMPTY === $operator) {
+        if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias() . '.values',
                 $joinAlias,
@@ -94,7 +94,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
             );
 
-            $this->qb->andWhere($this->qb->expr()->isNull($optionAlias));
+            $this->qb->andWhere($this->prepareCriteriaCondition($optionAlias, $operator, null));
         } else {
             // inner join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -103,7 +103,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $value = $this->objectIdResolver->getIdsFromCodes('option', $value, $attribute);
             }
 
-            $condition .= ' AND ( ' . $this->qb->expr()->in($optionAlias, $value) . ' ) ';
+            $condition .= ' AND ' . $this->prepareCriteriaCondition($optionAlias, $operator, $value);
 
             $this->qb->innerJoin(
                 $this->qb->getRootAlias().'.values',

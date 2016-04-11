@@ -9,11 +9,11 @@ Feature: Display jobs execution in job tracker
     And I am logged in as "Julia"
 
   Scenario: Display an export in the job tracker
-    And the following job "footwear_category_export" configuration:
+    And the following job "csv_footwear_category_export" configuration:
       | filePath | %tmp%/category_export/category_export.csv |
-    When I am on the "footwear_category_export" export job page
+    When I am on the "csv_footwear_category_export" export job page
     And I launch the export job
-    And I wait for the "footwear_category_export" job to finish
+    And I wait for the "csv_footwear_category_export" job to finish
     When I am on the dashboard page
     When I click on the job tracker button on the job widget
     Then I should be redirected on the job tracker page
@@ -21,7 +21,7 @@ Feature: Display jobs execution in job tracker
     And I should see the "Reset" button
     And I should see the columns Type, Job, User, Status and Started at
     And the grid should contain 1 element
-    And I should see entity Footwear category export
+    And I should see entity CSV footwear category export
 
   Scenario: Display a mass edit in the job tracker
     And the following products:
@@ -55,11 +55,11 @@ Feature: Display jobs execution in job tracker
     hard_drives;laptops;Hard drives
     pc;computers;PC
     """
-    And the following job "footwear_category_import" configuration:
+    And the following job "csv_footwear_category_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_category_import" import job page
+    When I am on the "csv_footwear_category_import" import job page
     And I launch the import job
-    And I wait for the "footwear_category_import" job to finish
+    And I wait for the "csv_footwear_category_import" job to finish
     When I am on the dashboard page
     When I click on the job tracker button on the job widget
     Then I should be redirected on the job tracker page
@@ -67,4 +67,4 @@ Feature: Display jobs execution in job tracker
     And I should see the "Reset" button
     And I should see the columns Type, Job, User, Status and Started at
     And the grid should contain 1 element
-    And I should see entity Footwear category import
+    And I should see entity CSV footwear category import

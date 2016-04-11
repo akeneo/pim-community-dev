@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
  * Entity filter
@@ -23,8 +23,6 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
     protected $objectIdResolver;
 
     /**
-     * Instanciate the base filter
-     *
      * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                     $supportedFields
      * @param array                     $supportedOperators
@@ -44,7 +42,7 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        if (Operators::IS_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($field, $value);
 
             if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
@@ -56,21 +54,24 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
         $entityAlias = $this->getUniqueAlias('filter' . FieldFilterHelper::getCode($field));
         $this->qb->leftJoin($rootAlias . '.' . FieldFilterHelper::getCode($field), $entityAlias);
 
-        if ($operator === Operators::IN_LIST) {
-            $this->qb->andWhere(
-                $this->qb->expr()->in($entityAlias . '.id', $value)
-            );
-        } elseif ($operator === Operators::NOT_IN_LIST) {
-            $this->qb->andWhere(
-                $this->qb->expr()->orX(
-                    $this->qb->expr()->notIn($entityAlias . '.id', $value),
-                    $this->qb->expr()->isNull($entityAlias . '.id')
-                )
-            );
-        } elseif ($operator === Operators::IS_EMPTY) {
-            $this->qb->andWhere(
-                $this->qb->expr()->isNull($entityAlias.'.id')
-            );
+        switch ($operator) {
+            case Operators::IN_LIST:
+                $this->qb->andWhere(
+                    $this->qb->expr()->in($entityAlias . '.id', $value)
+                );
+                break;
+            case Operators::NOT_IN_LIST:
+                $this->qb->andWhere($this->qb->expr()->notIn(
+                    $rootAlias . '.id',
+                    $this->getNotInSubquery(FieldFilterHelper::getCode($field), $value)
+                ));
+                break;
+            case Operators::IS_EMPTY:
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->andWhere(
+                    $this->prepareCriteriaCondition($entityAlias . '.id', $operator, null)
+                );
+                break;
         }
 
         return $this;
@@ -82,6 +83,32 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
     public function supportsField($field)
     {
         return in_array($field, $this->supportedFields);
+    }
+
+    /**
+     * Subquery matching all products that actually have one of $value groups
+     *
+     * @param string $field
+     * @param array  $value
+     *
+     * @return string
+     */
+    protected function getNotInSubquery($field, $value)
+    {
+        $notInQb      = $this->qb->getEntityManager()->createQueryBuilder();
+        $rootEntity   = current($this->qb->getRootEntities());
+        $notInAlias   = $this->getUniqueAlias('productsNotIn');
+        $joinAlias    = $this->getUniqueAlias('filter' . $field);
+
+        $notInQb->select($notInAlias . '.id')
+            ->from($rootEntity, $notInAlias, $notInAlias . '.id')
+            ->innerJoin(
+                sprintf('%s.%s', $notInQb->getRootAlias(), $field),
+                $joinAlias
+            )
+            ->where($notInQb->expr()->in($joinAlias . '.id', $value));
+
+        return $notInQb->getDQL();
     }
 
     /**

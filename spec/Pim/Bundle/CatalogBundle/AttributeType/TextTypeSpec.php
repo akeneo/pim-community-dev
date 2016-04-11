@@ -3,10 +3,10 @@
 namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
+use Pim\Component\Catalog\Validator\AttributeConstraintGuesser;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 
@@ -16,7 +16,7 @@ class TextTypeSpec extends ObjectBehavior
     {
         $value->getAttribute()->willReturn($name);
 
-        $this->beConstructedWith(AbstractAttributeType::BACKEND_TYPE_VARCHAR, 'text', $guesser);
+        $this->beConstructedWith(AttributeTypes::BACKEND_TYPE_VARCHAR, 'text', $guesser);
     }
 
     function it_builds_the_attribute_forms(FormFactory $factory, $name)
@@ -29,8 +29,8 @@ class TextTypeSpec extends ObjectBehavior
 
     function it_prepares_the_product_value_form($value, $name)
     {
-        $name->getBackendType()->willReturn(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
-        $this->prepareValueFormName($value)->shouldReturn(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
+        $name->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_VARCHAR);
+        $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_VARCHAR);
     }
 
     function it_prepares_the_product_value_form_alias($value)

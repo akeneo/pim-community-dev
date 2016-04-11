@@ -67,7 +67,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                     ).then(_.identity).done(function (entity) {
                         deferred.resolve(entity);
                     }).fail(function () {
-                        console.log(arguments);
+                        console.error('Error during fetching: ', arguments);
 
                         return deferred.reject();
                     });

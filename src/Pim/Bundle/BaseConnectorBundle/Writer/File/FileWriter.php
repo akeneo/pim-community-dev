@@ -7,8 +7,6 @@ use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Pim\Bundle\ImportExportBundle\Validator\Constraints\WritableDirectory;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Write data into a file on the filesystem
@@ -23,25 +21,16 @@ class FileWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
-    /**
-     * @Assert\NotBlank(groups={"Execution"})
-     * @WritableDirectory(groups={"Execution"})
-     */
+    /** @var string */
     protected $filePath = '/tmp/export_%datetime%.csv';
 
-    /**
-     * @var StepExecution
-     */
+    /** @var StepExecution */
     protected $stepExecution;
 
-    /**
-     * @var resource
-     */
+    /** @var resource */
     private $handler;
 
-    /**
-     * @var string|null
-     */
+    /** @var string|null */
     protected $resolvedFilePath;
 
     /**

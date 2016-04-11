@@ -2,21 +2,21 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\AttributeTypeRegistry;
+use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Factory\AttributeFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
@@ -55,12 +55,6 @@ class AttributeController
     /** @var Form */
     protected $attributeForm;
 
-    /** @var AttributeManager */
-    protected $attributeManager;
-
-    /** @var AttributeOptionManager */
-    protected $optionManager;
-
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
@@ -91,16 +85,25 @@ class AttributeController
     /** @var GroupRepositoryInterface */
     protected $groupRepository;
 
+    /** @var AttributeTypeRegistry */
+    protected $registry;
+
+    /** @var AttributeFactory */
+    protected $factory;
+
+    /** @var SimpleFactoryInterface */
+    protected $optionFactory;
+
+    /** @var SimpleFactoryInterface */
+    protected $optionValueFactory;
+
     /**
      * @param Request                      $request
      * @param RouterInterface              $router
      * @param FormFactoryInterface         $formFactory
-     * @param TranslatorInterface                   $translator
+     * @param TranslatorInterface          $translator
      * @param HandlerInterface             $attributeHandler
      * @param Form                         $attributeForm
-     * @param AttributeManager             $attributeManager
-     * @param AttributeFactory             $attributeFactory
-     * @param AttributeOptionManager       $optionManager
      * @param LocaleRepositoryInterface    $localeRepository
      * @param VersionManager               $versionManager
      * @param BulkSaverInterface           $attributeSaver
@@ -108,6 +111,10 @@ class AttributeController
      * @param SaverInterface               $optionSaver
      * @param AttributeRepositoryInterface $attributeRepository
      * @param GroupRepositoryInterface     $groupRepository
+     * @param AttributeTypeRegistry        $registry
+     * @param AttributeFactory             $factory
+     * @param SimpleFactoryInterface       $optionFactory
+     * @param SimpleFactoryInterface       $optionValueFactory
      * @param array                        $measuresConfig
      */
     public function __construct(
@@ -117,9 +124,6 @@ class AttributeController
         TranslatorInterface $translator,
         HandlerInterface $attributeHandler,
         Form $attributeForm,
-        AttributeManager $attributeManager,
-        AttributeFactory $attributeFactory,
-        AttributeOptionManager $optionManager,
         LocaleRepositoryInterface $localeRepository,
         VersionManager $versionManager,
         BulkSaverInterface $attributeSaver,
@@ -127,6 +131,10 @@ class AttributeController
         SaverInterface $optionSaver,
         AttributeRepositoryInterface $attributeRepository,
         GroupRepositoryInterface $groupRepository,
+        AttributeTypeRegistry $registry,
+        AttributeFactory $factory,
+        SimpleFactoryInterface $optionFactory,
+        SimpleFactoryInterface $optionValueFactory,
         $measuresConfig
     ) {
         $this->request             = $request;
@@ -135,9 +143,6 @@ class AttributeController
         $this->translator          = $translator;
         $this->attributeHandler    = $attributeHandler;
         $this->attributeForm       = $attributeForm;
-        $this->attributeManager    = $attributeManager;
-        $this->attributeFactory    = $attributeFactory;
-        $this->optionManager       = $optionManager;
         $this->localeRepository    = $localeRepository;
         $this->versionManager      = $versionManager;
         $this->measuresConfig      = $measuresConfig;
@@ -146,6 +151,10 @@ class AttributeController
         $this->optionSaver         = $optionSaver;
         $this->attributeRepository = $attributeRepository;
         $this->groupRepository     = $groupRepository;
+        $this->registry            = $registry;
+        $this->factory             = $factory;
+        $this->optionFactory       = $optionFactory;
+        $this->optionValueFactory  = $optionValueFactory;
     }
 
     /**
@@ -158,7 +167,7 @@ class AttributeController
      */
     public function indexAction()
     {
-        return ['attributeTypes' => $this->attributeManager->getAttributeTypes()];
+        return ['attributeTypes' => $this->registry->getSortedAliases()];
     }
 
     /**
@@ -174,13 +183,13 @@ class AttributeController
     public function createAction(Request $request)
     {
         $attributeType = $request->get('attribute_type');
-        $attributeTypes = $this->attributeManager->getAttributeTypes();
+        $attributeTypes = $this->registry->getAliases();
 
-        if (!$attributeType || !is_string($attributeType) || !array_key_exists($attributeType, $attributeTypes)) {
+        if (!$attributeType || !is_string($attributeType) || !in_array($attributeType, $attributeTypes)) {
             return new RedirectResponse($this->router->generate('pim_enrich_attribute_index'));
         }
 
-        $attribute = $this->attributeFactory->createAttribute($attributeType);
+        $attribute = $this->factory->createAttribute($attributeType);
 
         if ($this->attributeHandler->process($attribute)) {
             $this->request->getSession()->getFlashBag()
@@ -288,9 +297,9 @@ class AttributeController
             );
         }
 
-        $option = $this->optionManager->createAttributeOption();
+        $option = $this->optionFactory->create();
 
-        $optionValue = $this->optionManager->createAttributeOptionValue();
+        $optionValue = $this->optionValueFactory->create();
         $optionValue->setLocale($dataLocale);
         $optionValue->setValue('');
         $option->addOptionValue($optionValue);
@@ -360,7 +369,7 @@ class AttributeController
 
         if (null === $attribute) {
             throw new NotFoundHttpException(
-                sprintf('%s entity not found', $this->attributeRepository->getClassName())
+                sprintf('Attribute %s not found', $id)
             );
         }
 

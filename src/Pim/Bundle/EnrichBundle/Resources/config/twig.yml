@@ -28,7 +28,7 @@ services:
     pim_enrich.twig.channel_extension:
         class: %pim_enrich.twig.channel_extension.class%
         arguments:
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             - '@pim_enrich.provider.colors'
         tags:
             - { name: twig.extension }

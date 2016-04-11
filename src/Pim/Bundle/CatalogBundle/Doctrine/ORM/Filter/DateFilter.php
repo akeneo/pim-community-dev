@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Date filter
@@ -73,23 +73,21 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'date');
 
-        if (Operators::IS_EMPTY === $operator) {
-            $value = null;
-        } else {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $value = $this->formatValues($attribute->getCode(), $value);
         }
 
         $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
-        if ($operator === Operators::IS_EMPTY) {
+        if ($operator === Operators::IS_EMPTY || $operator === Operators::IS_NOT_EMPTY) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias() . '.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
             );
-            $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
+            $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, null));
         } elseif ($operator === Operators::NOT_BETWEEN) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias() . '.values',
@@ -122,9 +120,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        if (Operators::IS_EMPTY === $operator) {
-            $value = null;
-        } else {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $value = $this->formatValues($field, $value);
         }
 
@@ -166,8 +162,21 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
                 );
                 break;
 
+            case Operators::NOT_EQUAL:
+                $this->qb->andWhere(
+                    $this->qb->expr()->orX(
+                        $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value)),
+                        $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value, true))
+                    )
+                );
+                break;
+
             case Operators::IS_EMPTY:
                 $this->qb->andWhere($this->qb->expr()->isNull($field));
+                break;
+
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->andWhere($this->qb->expr()->isNotNull($field));
                 break;
         }
 
@@ -219,7 +228,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
         if (is_array($value) && 2 !== count($value)) {
             throw InvalidArgumentException::expected(
                 $type,
-                'array with 2 elements, string or \Datetime',
+                'array with 2 elements, string or \DateTime',
                 'filter',
                 'date',
                 print_r($value, true)
@@ -254,7 +263,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
         } elseif (null !== $value) {
             throw InvalidArgumentException::expected(
                 $type,
-                'array with 2 elements, string or \Datetime',
+                'array with 2 elements, string or \DateTime',
                 'filter',
                 'date',
                 print_r($value, true)

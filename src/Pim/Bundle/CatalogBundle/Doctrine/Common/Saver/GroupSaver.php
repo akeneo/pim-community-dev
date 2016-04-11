@@ -8,9 +8,9 @@ use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
+use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -160,7 +160,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      */
     protected function addProducts(array $products)
     {
-        $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => false]);
+        $this->productSaver->saveAll($products);
     }
 
     /**
@@ -168,7 +168,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      */
     protected function removeProducts(array $products)
     {
-        $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => false]);
+        $this->productSaver->saveAll($products);
     }
 
     /**

@@ -180,36 +180,6 @@ class FixturesContext extends PimContext
     }
 
     /**
-     * @param string $entityName
-     *
-     * @Given /^there is no (.*)$/
-     *
-     * @throws \Exception
-     */
-    public function thereIsNoEntity($entityName)
-    {
-        if (strpos($entityName, ' ')) {
-            $entityName = implode('', array_map('ucfirst', explode(' ', $entityName)));
-        }
-
-        $entityName = ucfirst($entityName);
-
-        if (!array_key_exists($entityName, $this->getEntities())) {
-            throw new \Exception(sprintf('Unrecognized entity "%s".', $entityName));
-        }
-
-        $namespace = $this->getEntities()[$entityName];
-        $entities  = $this->getRepository($namespace)->findAll();
-
-        foreach ($entities as $entity) {
-            // TODO use a Remover
-            $this->remove($entity, false);
-        }
-        $this->flush();
-    }
-
-
-    /**
      * @param mixed  $data
      * @param string $value
      */
@@ -336,63 +306,6 @@ class FixturesContext extends PimContext
     {
         if (is_object($object)) {
             $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
-        }
-    }
-
-    /**
-     * @param object $object
-     * @param bool   $flush
-     *
-     * TODO use Savers
-     */
-    protected function persist($object, $flush = true)
-    {
-        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
-        $manager->persist($object);
-
-        if ($flush) {
-            $manager->flush($object);
-        }
-    }
-
-    /**
-     * @param object $object
-     * @param bool   $flush
-     *
-     * * TODO use Removers
-     */
-    protected function remove($object, $flush = true)
-    {
-        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
-        $manager->remove($object);
-
-        if ($flush) {
-            $manager->flush($object);
-        }
-    }
-
-    /**
-     * @param object $object
-     */
-    public function flush($object = null)
-    {
-        if (!$object) {
-            $this->flushAll();
-
-            return;
-        }
-
-        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
-        $manager->flush($object);
-    }
-
-    /**
-     * Flush all managers
-     */
-    protected function flushAll()
-    {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
-            $manager->flush();
         }
     }
 }

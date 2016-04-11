@@ -3,10 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Component\Catalog\Model\CategoryInterface as CatalogCategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
 
 /**
  * Product category repository
@@ -17,6 +18,21 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class ProductCategoryRepository extends AbstractItemCategoryRepository implements ProductCategoryRepositoryInterface
 {
+    /** @var string */
+    protected $categoryClass;
+
+    /**
+     * @param EntityManager $em
+     * @param string        $entityName
+     * @param string        $categoryClass
+     */
+    public function __construct(EntityManager $em, $entityName, $categoryClass)
+    {
+        parent::__construct($em, $entityName);
+
+        $this->categoryClass = $categoryClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -46,5 +62,27 @@ class ProductCategoryRepository extends AbstractItemCategoryRepository implement
             $expression = $qb->expr()->notIn($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return ['code'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($identifier)
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->select('c')
+            ->from($this->categoryClass, 'c', 'c.id')
+            ->where('c.code = :code')
+            ->setParameter('code', $identifier);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

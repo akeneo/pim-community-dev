@@ -13,7 +13,7 @@ Feature: Update the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I am on the "boots" product page
+    And I wait to be on the "boots" product page
     And I add available attributes Price
     And I change the Price to "20 USD"
     And I change the Price to "10 EUR"
@@ -57,7 +57,7 @@ Feature: Update the product history
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
-    And I am on the "boots" product page
+    And I wait to be on the "boots" product page
     And I add available attributes Length
     And I change the "Length" to "30"
     And I save the product
@@ -93,9 +93,13 @@ Feature: Update the product history
   @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product media
     Given a "footwear" catalog configuration
-    And a "boots" product
     And I am logged in as "Julia"
-    When I edit the "boots" product
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU | boots |
+    And I press the "Save" button in the popin
+    And I wait to be on the "boots" product page
     And I add available attribute Side view
     And I visit the "Media" group
     And I attach file "SNKRS-1R.png" to "Side view"

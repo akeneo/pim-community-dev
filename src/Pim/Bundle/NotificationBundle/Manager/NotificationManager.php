@@ -2,11 +2,14 @@
 
 namespace Pim\Bundle\NotificationBundle\Manager;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\NotificationBundle\Entity\UserNotification;
-use Pim\Bundle\NotificationBundle\Factory\NotificationFactory;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
 use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
+use Pim\Bundle\NotificationBundle\Notifier;
+use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -17,17 +20,13 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be remove in 1.7. Please look at each method to know the replacement
  */
 class NotificationManager
 {
-    /** @var EntityManager */
-    protected $em;
-
-    /** @var EntityRepository */
-    protected $repository;
-
-    /** @var NotificationFactory  */
-    protected $notificationFactory;
+    /** @var UserNotificationRepositoryInterface */
+    protected $userNotifRepository;
 
     /** @var UserNotificationFactory */
     protected $userNotifFactory;
@@ -35,64 +34,58 @@ class NotificationManager
     /** @var UserProviderInterface */
     protected $userProvider;
 
+    /** @var SaverInterface  */
+    protected $notificationSaver;
+
+    /** @var BulkSaverInterface */
+    protected $userNotifsSaver;
+
+    /** @var RemoverInterface */
+    protected $userNotifRemover;
+
+    /** @var NotifierInterface */
+    protected $notifier;
+
     /**
-     * @param EntityManager           $em
-     * @param EntityRepository        $repository
-     * @param NotificationFactory     $notificationFactory
-     * @param UserNotificationFactory $userNotifFactory
-     * @param UserProviderInterface   $userProvider
+     * @param UserNotificationRepositoryInterface $userNotifRepository
+     * @param UserNotificationFactory             $userNotifFactory
+     * @param UserProviderInterface               $userProvider
+     * @param SaverInterface                      $notificationSaver
+     * @param BulkSaverInterface                  $userNotifsSaver
+     * @param RemoverInterface                    $userNotifRemover
+     * @param NotifierInterface                   $notifier
      */
     public function __construct(
-        EntityManager $em,
-        EntityRepository $repository,
-        NotificationFactory $notificationFactory,
+        UserNotificationRepositoryInterface $userNotifRepository,
         UserNotificationFactory $userNotifFactory,
-        UserProviderInterface $userProvider
+        UserProviderInterface $userProvider,
+        SaverInterface $notificationSaver,
+        BulkSaverInterface $userNotifsSaver,
+        RemoverInterface $userNotifRemover,
+        NotifierInterface $notifier
     ) {
-        $this->em                  = $em;
-        $this->repository          = $repository;
-        $this->notificationFactory = $notificationFactory;
+        $this->userNotifRepository = $userNotifRepository;
         $this->userNotifFactory    = $userNotifFactory;
         $this->userProvider        = $userProvider;
+        $this->notificationSaver   = $notificationSaver;
+        $this->userNotifsSaver     = $userNotifsSaver;
+        $this->userNotifRemover    = $userNotifRemover;
+        $this->notifier            = $notifier;
     }
 
     /**
      * Send a user notification to given users
      *
-     * @param array  $users   Users which have to be notified
-     *                        [(string) 'userName', ...] or UserInterface[]
-     * @param string $message Message which has to be sent
-     * @param string $type    success (default) | warning | error
-     * @param array  $options [
-     *                        'route'         => ''|null,
-     *                        'routeParams'   => [''],
-     *                        'messageParams' => [''],
-     *                        'context'       => '',
-     *                        'comment'       => ''|null,
-     *                        ]
+     * @param NotificationInterface    $notification
+     * @param string[]|UserInterface[] $users        Users which have to be notified
      *
      * @return NotificationManager
+     *
+     * @deprecated will be removed in 1.7. Please use Pim\Bundle\NotificationBundle\Notifier::notify()
      */
-    public function notify(array $users, $message, $type = 'success', array $options = [])
+    public function notify(NotificationInterface $notification, array $users)
     {
-        $notification = $this->notificationFactory->createNotification($message, $type, $options);
-
-        $userNotifications = [];
-        foreach ($users as $user) {
-            try {
-                $user = is_object($user) ? $user : $this->userProvider->loadUserByUsername($user);
-                $userNotifications[] = $this->userNotifFactory->createUserNotification($notification, $user);
-            } catch (UsernameNotFoundException $e) {
-                continue;
-            }
-        }
-
-        $this->em->persist($notification);
-        foreach ($userNotifications as $userNotification) {
-            $this->em->persist($userNotification);
-        }
-        $this->em->flush($notification);
-        $this->em->flush($userNotifications);
+        $this->notifier->notify($notification, $users);
 
         return $this;
     }
@@ -104,11 +97,13 @@ class NotificationManager
      * @param int           $offset
      * @param int           $limit
      *
-     * @return UserNotification[]
+     * @return UserNotificationInterface[]
+     *
+     * @deprecated will be removed in 1.7. Please use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository::findBy()
      */
     public function getUserNotifications(UserInterface $user, $offset, $limit = 10)
     {
-        return $this->repository->findBy(['user' => $user], ['id' => 'DESC'], $limit, $offset);
+        return $this->userNotifRepository->findBy(['user' => $user], ['id' => 'DESC'], $limit, $offset);
     }
 
     /**
@@ -116,10 +111,12 @@ class NotificationManager
      *
      * @param UserInterface $user The user
      * @param int|null      $id   If null, all notifications will be marked as viewed
+     *
+     * @deprecated will be removed in 1.7. Please use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository::markAsViewed()
      */
     public function markAsViewed(UserInterface $user, $id)
     {
-        $this->repository->markAsViewed($user, $id);
+        $this->userNotifRepository->markAsViewed($user, $id);
     }
 
     /**
@@ -128,10 +125,12 @@ class NotificationManager
      * @param UserInterface $user
      *
      * @return int
+     *
+     * @deprecated will be removed in 1.7. Please use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository::countUnreadForUser()
      */
     public function countUnreadForUser(UserInterface $user)
     {
-        return $this->repository->countUnreadForUser($user);
+        return $this->userNotifRepository->countUnreadForUser($user);
     }
 
     /**
@@ -139,10 +138,12 @@ class NotificationManager
      *
      * @param UserInterface $user
      * @param int           $id
+     *
+     * @deprecated will be removed in 1.7. Please use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemove::remove()
      */
     public function remove(UserInterface $user, $id)
     {
-        $notification = $this->repository->findOneBy(
+        $notification = $this->userNotifRepository->findOneBy(
             [
                 'id'   => $id,
                 'user' => $user
@@ -150,8 +151,7 @@ class NotificationManager
         );
 
         if ($notification) {
-            $this->em->remove($notification);
-            $this->em->flush($notification);
+            $this->userNotifRemover->remove($notification);
         }
     }
 }

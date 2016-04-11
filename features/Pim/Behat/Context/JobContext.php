@@ -29,8 +29,8 @@ class JobContext extends PimContext
         }
 
         $jobInstance->setRawConfiguration($configuration);
-        // TODO use a Saver
-        $this->getFixturesContext()->flush();
+        $saver = $this->getMainContext()->getContainer()->get('akeneo_batch.saver.job_instance');
+        $saver->save($jobInstance);
     }
 
     /**
@@ -96,23 +96,38 @@ class JobContext extends PimContext
      */
     public function getJobInstancePath($code)
     {
-        $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
-        $configuration = $this->getFixturesContext()->findEntity('JobConfiguration', [
-            'jobExecution' => $jobInstance->getJobExecutions()->first()
-        ]);
+        $archives = $this->getJobInstanceArchives($code);
+        $filePath = current($archives);
+        $archivePath = $this->getMainContext()->getContainer()->getParameter('archive_dir');
 
-        $step = $this->getMainContext()
-            ->getContainer()
-            ->get('akeneo_batch.connectors')
-            ->getJob($jobInstance)
-            ->getSteps()[0];
+        return sprintf('%s%s%s', $archivePath, DIRECTORY_SEPARATOR, $filePath);
+    }
 
-        $context = json_decode(stripcslashes($configuration->getConfiguration()), true);
+    /**
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getJobInstanceFilename($code)
+    {
+        $archives = $this->getJobInstanceArchives($code);
+        $filename = key($archives);
 
-        if (null !== $context) {
-            $step->setConfiguration($context);
-        }
+        return $filename;
+    }
 
-        return $step->getWriter()->getPath();
+    /**
+     * @param string $code
+     *
+     * @return array
+     */
+    protected function getJobInstanceArchives($code)
+    {
+        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+        $jobExecution = $jobInstance->getJobExecutions()->first();
+        $archiver = $this->getMainContext()->getContainer()->get('pim_base_connector.archiver.file_writer_archiver');
+        $archives = $archiver->getArchives($jobExecution);
+
+        return $archives;
     }
 }

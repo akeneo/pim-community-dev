@@ -3,12 +3,12 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Price filter
@@ -19,28 +19,26 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var CurrencyManager */
-    protected $currencyManager;
+    /** @var CurrencyRepositoryInterface */
+    protected $currencyRepository;
 
     /** @var array */
     protected $supportedAttributes;
 
     /**
-     * Instanciate the base filter
-     *
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param CurrencyManager          $currencyManager
-     * @param array                    $supportedAttributes
-     * @param array                    $supportedOperators
+     * @param AttributeValidatorHelper    $attrValidatorHelper
+     * @param CurrencyRepositoryInterface $currencyRepository
+     * @param array                       $supportedAttributes
+     * @param array                       $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        CurrencyManager $currencyManager,
+        CurrencyRepositoryInterface $currencyRepository,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->currencyManager     = $currencyManager;
+        $this->currencyRepository  = $currencyRepository;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
     }
@@ -67,15 +65,19 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'price');
         $this->checkValue($attribute, $value);
 
-        if (Operators::IS_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $value['data'] = (float) $value['data'];
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
-        $field = sprintf('%s.%s', $field, $value['currency']);
-        $fieldData = sprintf('%s.data', $field);
-        $this->applyFilter($operator, $fieldData, $value['data']);
+        $field = sprintf(
+            '%s.%s.%s.data',
+            ProductQueryUtility::NORMALIZED_FIELD,
+            $field,
+            $value['currency']
+        );
+
+        $this->applyFilter($field, $operator, $value['data']);
 
         return $this;
     }
@@ -83,30 +85,38 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     /**
      * Apply the filter to the query with the given operator
      *
+     * @param string $field
      * @param string $operator
-     * @param string $fieldData
      * @param float  $data
      */
-    protected function applyFilter($operator, $fieldData, $data)
+    protected function applyFilter($field, $operator, $data)
     {
         switch ($operator) {
+            case Operators::EQUALS:
+                $this->qb->field($field)->equals($data);
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->field($field)->exists(true);
+                $this->qb->field($field)->notEqual($data);
+                break;
             case Operators::LOWER_THAN:
-                $this->qb->field($fieldData)->lt($data);
+                $this->qb->field($field)->lt($data);
                 break;
             case Operators::LOWER_OR_EQUAL_THAN:
-                $this->qb->field($fieldData)->lte($data);
+                $this->qb->field($field)->lte($data);
                 break;
             case Operators::GREATER_THAN:
-                $this->qb->field($fieldData)->gt($data);
+                $this->qb->field($field)->gt($data);
                 break;
             case Operators::GREATER_OR_EQUAL_THAN:
-                $this->qb->field($fieldData)->gte($data);
+                $this->qb->field($field)->gte($data);
                 break;
             case Operators::IS_EMPTY:
-                $this->qb->field($fieldData)->equals(null);
+                $this->qb->field($field)->exists(false);
                 break;
-            default:
-                $this->qb->field($fieldData)->equals($data);
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->field($field)->exists(true);
+                break;
         }
     }
 
@@ -140,7 +150,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             );
         }
 
-        if (!is_numeric($data['data']) && null !== $data['data']) {
+        if (null !== $data['data'] && !is_int($data['data']) && !is_float($data['data'])) {
             throw InvalidArgumentException::arrayNumericKeyExpected(
                 $attribute->getCode(),
                 'data',
@@ -160,7 +170,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             );
         }
 
-        if (!in_array($data['currency'], $this->currencyManager->getActiveCodes())) {
+        if (!in_array($data['currency'], $this->currencyRepository->getActivatedCurrencyCodes())) {
             throw InvalidArgumentException::arrayInvalidKey(
                 $attribute->getCode(),
                 'currency',

@@ -8,8 +8,7 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityNotFoundException;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -33,17 +32,15 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
-    /**
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
-     * @param FamilyRepositoryInterface           $familyRepository
-     */
-    public function __construct(
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        FamilyRepositoryInterface $familyRepository
-    ) {
-        $this->jobConfigurationRepo = $jobConfigurationRepo;
-        $this->familyRepository     = $familyRepository;
+    /** @var array */
+    protected $filters;
 
+    /**
+     * @param FamilyRepositoryInterface $familyRepository
+     */
+    public function __construct(FamilyRepositoryInterface $familyRepository)
+    {
+        $this->familyRepository = $familyRepository;
         $this->isExecuted = false;
     }
 
@@ -52,8 +49,7 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
      */
     public function read()
     {
-        $configuration = $this->getJobConfiguration();
-
+        $configuration = $this->getConfiguration();
         if (!$this->isExecuted) {
             $this->isExecuted = true;
             $this->families = $this->getFamilies($configuration['filters']);
@@ -76,7 +72,15 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return [];
+        return ['filters' => []];
+    }
+
+    /**
+     * @param array $filters
+     */
+    public function setFilters($filters)
+    {
+        $this->filters = $filters;
     }
 
     /**
@@ -107,27 +111,5 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
         $familiesIds = $filter['value'];
 
         return new ArrayCollection($this->familyRepository->findByIds($familiesIds));
-    }
-
-    /**
-     * Return the job configuration
-     *
-     * @throws EntityNotFoundException
-     *
-     * @return array
-     */
-    protected function getJobConfiguration()
-    {
-        $jobExecution    = $this->stepExecution->getJobExecution();
-        $massEditJobConf = $this->jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution]);
-
-        if (null === $massEditJobConf) {
-            throw new EntityNotFoundException(sprintf(
-                'No JobConfiguration found for jobExecution with id %s',
-                $jobExecution->getId()
-            ));
-        }
-
-        return json_decode(stripcslashes($massEditJobConf->getConfiguration()), true);
     }
 }

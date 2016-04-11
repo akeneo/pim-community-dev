@@ -5,14 +5,12 @@ namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -30,8 +28,8 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var ChannelManager */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
     /** @var string */
     protected $uploadDirectory;
@@ -45,35 +43,34 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var array Normalizer context */
     protected $normalizerContext;
 
-    /** @var ProductBuilder */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var  ObjectDetacherInterface */
     protected $objectDetacher;
 
+    /** @var array */
+    protected $mainContext;
+
     /**
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
-     * @param ChannelManager                      $channelManager
+     * @param ChannelRepositoryInterface          $channelRepository
      * @param ProductBuilderInterface             $productBuilder
      * @param ObjectDetacherInterface             $objectDetacher
      * @param string                              $uploadDirectory
      */
     public function __construct(
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $objectDetacher,
         $uploadDirectory
     ) {
-        parent::__construct($jobConfigurationRepo);
-
-        $this->serializer      = $serializer;
-        $this->channelManager  = $channelManager;
-        $this->uploadDirectory = $uploadDirectory;
-        $this->productBuilder  = $productBuilder;
-        $this->objectDetacher  = $objectDetacher;
+        $this->serializer        = $serializer;
+        $this->channelRepository = $channelRepository;
+        $this->uploadDirectory   = $uploadDirectory;
+        $this->productBuilder    = $productBuilder;
+        $this->objectDetacher    = $objectDetacher;
     }
 
     /**
@@ -153,6 +150,22 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return ['mainContext' => [],];
+    }
+
+    /**
+     * @param array $context
+     */
+    public function setMainContext($context)
+    {
+        $this->mainContext = $context;
+    }
+
+    /**
      * @return array
      */
     protected function getNormalizerContext()
@@ -175,7 +188,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      */
     protected function getLocaleCodes($channelCode)
     {
-        $channel = $this->channelManager->getChannelByCode($channelCode);
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
 
         return $channel->getLocaleCodes();
     }
@@ -206,7 +219,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      */
     protected function setChannelCodeFromJobConfiguration()
     {
-        $configuration = $this->getJobConfiguration();
+        $configuration = $this->getConfiguration();
 
         if (!isset($configuration['mainContext']['scope'])) {
             throw new InvalidArgumentException('No channel found');

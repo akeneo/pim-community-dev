@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -68,13 +68,13 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'string');
 
-        if ($operator !== Operators::IS_EMPTY) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
         }
 
         $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
-        if ($operator === Operators::IS_EMPTY) {
+        if (Operators::IS_EMPTY === $operator) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias() . '.values',
                 $joinAlias,
@@ -84,7 +84,15 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
         } else {
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
-            $condition .= ' AND ' . $this->prepareCondition($backendField, $operator, $value);
+            if (Operators::IS_NOT_EMPTY === $operator) {
+                $condition .= sprintf(
+                    'AND (%s AND %s)',
+                    $this->qb->expr()->isNotNull($backendField),
+                    $this->qb->expr()->neq($backendField, $this->qb->expr()->literal(''))
+                );
+            } else {
+                $condition .= ' AND ' . $this->prepareCondition($backendField, $operator, $value);
+            }
 
             $this->qb->innerJoin(
                 $this->qb->getRootAlias() . '.values',
@@ -122,26 +130,26 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         switch ($operator) {
             case Operators::STARTS_WITH:
-                $operator = 'LIKE';
+                $operator = Operators::IS_LIKE;
                 $value    = $value . '%';
                 break;
             case Operators::ENDS_WITH:
-                $operator = 'LIKE';
+                $operator = Operators::IS_LIKE;
                 $value    = '%' . $value;
                 break;
             case Operators::CONTAINS:
-                $operator = 'LIKE';
+                $operator = Operators::IS_LIKE;
                 $value    = '%' . $value . '%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
-                $operator = 'NOT LIKE';
+                $operator = Operators::NOT_LIKE;
                 $value    = '%' . $value . '%';
                 break;
             case Operators::EQUALS:
-                $operator = 'LIKE';
-                $value    = $value;
+                $operator = Operators::IS_LIKE;
                 break;
-            default:
+            case Operators::NOT_EQUAL:
+                $operator = Operators::NOT_LIKE;
                 break;
         }
 

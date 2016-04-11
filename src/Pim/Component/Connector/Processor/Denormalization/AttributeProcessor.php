@@ -4,10 +4,8 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Factory\AttributeFactory;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -20,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AttributeProcessor extends AbstractProcessor
 {
     /** @var StandardArrayConverterInterface */
-    protected $arrayConverter;
+    protected $converter;
 
     /** @var ObjectUpdaterInterface */
     protected $updater;
@@ -29,28 +27,28 @@ class AttributeProcessor extends AbstractProcessor
     protected $validator;
 
     /** @var AttributeFactory */
-    protected $attributeFactory;
+    protected $factory;
 
     /**
-     * @param StandardArrayConverterInterface       $arrayConverter
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param AttributeFactory                      $attributeFactory
+     * @param StandardArrayConverterInterface       $converter
+     * @param AttributeFactory                      $factory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
-        StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
-        AttributeFactory $attributeFactory,
+        StandardArrayConverterInterface $converter,
+        AttributeFactory $factory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator
     ) {
         parent::__construct($repository);
 
-        $this->arrayConverter    = $arrayConverter;
-        $this->attributeFactory  = $attributeFactory;
-        $this->updater           = $updater;
-        $this->validator         = $validator;
+        $this->converter = $converter;
+        $this->factory   = $factory;
+        $this->updater   = $updater;
+        $this->validator = $validator;
     }
 
     /**
@@ -58,68 +56,35 @@ class AttributeProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $convertedItem = $this->convertItemData($item);
-        $attribute = $this->findOrCreateAttribute($convertedItem);
+        $convertedItem = $this->converter->convert($item);
+        $entity        = $this->findOrCreateObject($convertedItem);
 
         try {
-            $this->updateAttribute($attribute, $convertedItem);
+            $this->updater->update($entity, $convertedItem);
         } catch (\InvalidArgumentException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
-        $violations = $this->validateAttribute($attribute);
+        $violations = $this->validator->validate($entity);
         if ($violations->count() > 0) {
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
-        return $attribute;
-    }
-
-    /**
-     * @param array $item
-     *
-     * @return array
-     */
-    protected function convertItemData(array $item)
-    {
-        return $this->arrayConverter->convert($item);
+        return $entity;
     }
 
     /**
      * @param array $convertedItem
      *
-     * @return AttributeInterface
+     * @return mixed
      */
-    protected function findOrCreateAttribute(array $convertedItem)
+    protected function findOrCreateObject(array $convertedItem)
     {
-        $attribute = $this->findObject($this->repository, $convertedItem);
-        if (null === $attribute) {
-            return $this->attributeFactory->createAttribute($convertedItem['attributeType']);
+        $entity = $this->findObject($this->repository, $convertedItem);
+        if (null === $entity) {
+            return $this->factory->createAttribute($convertedItem['attributeType']);
         }
 
-        return $attribute;
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     * @param array              $convertedItem
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function updateAttribute(AttributeInterface $attribute, array $convertedItem)
-    {
-        $this->updater->update($attribute, $convertedItem);
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return ConstraintViolationListInterface
-     */
-    protected function validateAttribute(AttributeInterface $attribute)
-    {
-        return $this->validator->validate($attribute);
+        return $entity;
     }
 }

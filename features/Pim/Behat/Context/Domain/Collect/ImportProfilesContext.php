@@ -5,6 +5,8 @@ namespace Pim\Behat\Context\Domain\Collect;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Box\Spout\Common\Type;
+use Box\Spout\Writer\WriterFactory;
 use Pim\Behat\Context\PimContext;
 
 class ImportProfilesContext extends PimContext
@@ -31,7 +33,23 @@ class ImportProfilesContext extends PimContext
         @rmdir(dirname($filename));
         @mkdir(dirname($filename), 0777, true);
 
-        file_put_contents($filename, (string) $string);
+        if (Type::XLSX === $extension) {
+            $writer = WriterFactory::create($extension);
+            $writer->openToFile($filename);
+            foreach (explode(PHP_EOL, $string) as $row) {
+                $rowCells = explode(";", $row);
+                foreach ($rowCells as &$cell) {
+                    if (is_numeric($cell)) {
+                        $cell = false === strpos($cell, '.') ? (int) $cell : (float) $cell;
+                    }
+                }
+
+                $writer->addRow($rowCells);
+            }
+            $writer->close();
+        } else {
+            file_put_contents($filename, (string) $string);
+        }
     }
 
     /**

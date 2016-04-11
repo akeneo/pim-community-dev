@@ -45,18 +45,6 @@ class UserManager implements UserProviderInterface
     }
 
     /**
-     * Returns an empty user instance
-     *
-     * @return SecurityUserInterface
-     */
-    public function createUser()
-    {
-        $class = $this->getClass();
-
-        return new $class;
-    }
-
-    /**
      * Updates a user
      *
      * @param  SecurityUserInterface $user

@@ -10,7 +10,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 
 /**
- * Class peristing JobExecution and StepExecution states.
+ * Class persisting JobExecution and StepExecution states.
  * This class instantiates a specific EntityManager to avoid
  * polluting the transactional state of data coming through the
  * batch.
@@ -34,10 +34,14 @@ class DoctrineJobRepository implements JobRepositoryInterface
      *
      * @param EntityManager $entityManager
      * @param string        $jobExecutionClass
+     * @param string        $jobInstanceClass
+     * @param string        $jobInstanceRepoClass
      */
     public function __construct(
         EntityManager $entityManager,
-        $jobExecutionClass = 'Akeneo\\Component\\Batch\\Model\\JobExecution'
+        $jobExecutionClass,
+        $jobInstanceClass,
+        $jobInstanceRepoClass
     ) {
         $currentConn = $entityManager->getConnection();
 
@@ -59,6 +63,22 @@ class DoctrineJobRepository implements JobRepositoryInterface
 
         $this->jobManager        = $jobManager;
         $this->jobExecutionClass = $jobExecutionClass;
+
+        // ... there is an ugly fix related to PIM-5589...
+        // by default, doctrine creates an `ORM\EntityRepository` to query on entities
+        // you can configure a custom repository in the doctrine mapping of an entity
+        // we can override these custom repositories in projects by using `ResolveTargetRepositorySubscriber`
+        // these changes are allowed by the Doctrine lifecycle events
+        // when configuring connections in a 'classic' way, ie by defining these in the config.yml of the application
+        // the Symfony Bridge uses the compiler pass RegisterEventListenersAndSubscribersPass to configure all the
+        // event listener logic.
+        // here, we directly create a new Doctrine connection without benefiting on this default behavior and the
+        // repository is never customized, so we simulate the injection of the custom repository
+        $metadata = $entityManager->getClassMetadata($jobInstanceClass);
+        $metadata->customRepositoryClassName = $jobInstanceRepoClass;
+        // the good way to fix this is to configure the new connection in a more classic way and to re-write parts of
+        // BatchBundle to avoid job instance merges and other weirdnesses
+        // ... end of the ugly fix ...
     }
 
     /**

@@ -3,7 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRequirementRepositoryInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 
 /**
  * Repository for attribute requirement entity
@@ -14,4 +15,21 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRequirementRepositoryInterface;
  */
 class AttributeRequirementRepository extends EntityRepository implements AttributeRequirementRepositoryInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function findRequiredAttributesCodesByFamily(FamilyInterface $family)
+    {
+        $qb = $this->createQueryBuilder('ar');
+        $qb
+            ->select('a.code AS attribute, c.code AS channel')
+            ->innerJoin('ar.attribute', 'a')
+            ->innerJoin('ar.channel', 'c')
+            ->where('ar.family = :family')
+            ->andWhere('ar.required = :required')
+            ->setParameter(':family', $family)
+            ->setParameter(':required', true);
+
+        return $qb->getQuery()->getArrayResult();
+    }
 }

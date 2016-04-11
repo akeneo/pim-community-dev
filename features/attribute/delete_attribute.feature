@@ -18,7 +18,7 @@ Feature: Delete an attribute
     And I fill in the following information in the popin:
       | SKU  | caterpillar_1 |
     And I press the "Save" button in the popin
-    When I am on the "caterpillar_1" product page
+    Then I wait to be on the "caterpillar_1" product page
     Then I add available attributes name
     And I fill in the following information:
       | name | My caterpillar |

@@ -20,53 +20,85 @@ connector:
                     parameters:
                         batchSize: 1
 
-        fixtures_attribute_group_yml:
-            title: pim_installer.jobs.fixtures_attribute_group_yml.title
+        fixtures_attribute_group_csv:
+            title: pim_installer.jobs.fixtures_attribute_group_csv.title
             type:  fixtures
             steps:
                 validation:
-                    title: pim_connector.jobs.fixtures_attribute_group_yml.validation.title
+                    title: pim_connector.jobs.fixtures_attribute_group_csv.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:     pim_installer.jobs.fixtures_attribute_group_yml.import.title
+                    title: pim_installer.jobs.fixtures_attribute_group_csv.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.yaml
-                        processor: pim_base_connector.processor.attribute_group
-                        writer:    pim_base_connector.writer.doctrine
+                        reader:    pim_connector.reader.file.csv_attribute_group
+                        processor: pim_connector.processor.denormalization.attribute_group.flat
+                        writer:    pim_connector.writer.doctrine.attribute_group
 
-        fixtures_channel_yml:
-            title: pim_installer.jobs.fixtures_channel_yml.title
+        fixtures_channel_csv:
+            title: pim_installer.jobs.fixtures_channel_csv.title
             type:  fixtures
             steps:
                 validation:
-                    title: pim_connector.jobs.fixtures_channel_yml.validation.title
+                    title: pim_connector.jobs.fixtures_attribute_csv.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:     pim_installer.jobs.fixtures_channel_yml.import.title
+                    title:     pim_installer.jobs.fixtures_channel_csv.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.yaml
-                        processor: pim_base_connector.processor.channel
-                        writer:    pim_base_connector.writer.doctrine
+                        reader:    pim_connector.reader.file.csv_channel
+                        processor: pim_connector.processor.denormalization.channel.flat
+                        writer:    pim_connector.writer.doctrine.channel
 
-        fixtures_group_type_yml:
-            title: pim_installer.jobs.fixtures_group_type_yml.title
+        fixtures_locale_csv:
+            title: pim_installer.jobs.fixtures_locale_csv.title
             type:  fixtures
             steps:
                 validation:
-                    title: pim_connector.jobs.fixtures_group_type_yml.validation.title
+                    title: pim_connector.jobs.fixtures_attribute_csv.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:     pim_installer.jobs.fixtures_group_type_yml.import.title
+                    title:     pim_installer.jobs.fixtures_locale_csv.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.yaml
-                        processor: pim_base_connector.processor.group_type
-                        writer:    pim_base_connector.writer.doctrine
+                        reader:    pim_connector.reader.file.csv_locale
+                        processor: pim_connector.processor.denormalization.locale.flat
+                        writer:    pim_connector.writer.doctrine.locale
+
+        fixtures_currency_csv:
+            title: pim_installer.jobs.fixtures_currency_csv.title
+            type:  fixtures
+            steps:
+                validation:
+                    title: pim_connector.jobs.fixtures_attribute_csv.validation.title
+                    class: %pim_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import:
+                    title:     pim_installer.jobs.fixtures_currency_csv.import.title
+                    services:
+                        reader:    pim_connector.reader.file.csv_currency
+                        processor: pim_connector.processor.denormalization.currency.flat
+                        writer:    pim_connector.writer.doctrine.currency
+
+        fixtures_group_type_csv:
+            title: pim_installer.jobs.fixtures_group_type_csv.title
+            type:  fixtures
+            steps:
+                validation:
+                    title: pim_connector.jobs.fixtures_group_type_csv.validation.title
+                    class: %pim_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import:
+                    title:     pim_installer.jobs.fixtures_group_type_csv.import.title
+                    services:
+                        reader:    pim_connector.reader.file.csv_group_type
+                        processor: pim_connector.processor.denormalization.group_type.flat
+                        writer:    pim_connector.writer.doctrine.group_type
 
         fixtures_association_type_csv:
             title: pim_installer.jobs.fixtures_association_type_csv.title
@@ -171,6 +203,7 @@ connector:
                         writer:    pim_connector.writer.doctrine.product_association
                     parameters:
                         batch_size: 1
+
         fixtures_job_yml:
             title: pim_installer.jobs.fixtures_job_yml.title
             type:  fixtures
@@ -184,8 +217,56 @@ connector:
                     title:     pim_installer.jobs.fixtures_job_yml.import.title
                     services:
                         reader:    pim_base_connector.reader.file.yaml
-                        processor: pim_base_connector.processor.job_instance
-                        writer:    pim_base_connector.writer.doctrine
+                        processor: pim_connector.processor.denormalization.job_instance.flat
+                        writer:    pim_connector.writer.doctrine.job_instance
+
+        fixtures_user_csv:
+            title: pim_installer.jobs.fixtures_user_csv.title
+            type:  fixtures
+            steps:
+                validation:
+                    title: pim_connector.jobs.fixtures_user_csv.validation.title
+                    class: %pim_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import:
+                    title:     pim_installer.jobs.fixtures_user_csv.import.title
+                    services:
+                        reader:    pim_connector.reader.file.csv
+                        processor: pim_connector.processor.denormalization.user.flat
+                        writer:    pim_connector.writer.doctrine.user
+
+        fixtures_user_role_csv:
+            title: pim_installer.jobs.fixtures_user_role_csv.title
+            type:  fixtures
+            steps:
+                validation:
+                    title: pim_connector.jobs.fixtures_user_role_csv.validation.title
+                    class: %pim_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import:
+                    title:     pim_installer.jobs.fixtures_user_role_csv.import.title
+                    services:
+                        reader:    pim_connector.reader.file.csv
+                        processor: pim_connector.processor.denormalization.user_role.flat
+                        writer:    pim_connector.writer.doctrine.user_role
+
+        fixtures_user_group_csv:
+            title: pim_installer.jobs.fixtures_user_group_csv.title
+            type:  fixtures
+            steps:
+                validation:
+                    title: pim_connector.jobs.fixtures_user_group_csv.validation.title
+                    class: %pim_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import:
+                    title:     pim_installer.jobs.fixtures_user_group_csv.import.title
+                    services:
+                        reader:    pim_connector.reader.file.csv
+                        processor: pim_connector.processor.denormalization.user_group.flat
+                        writer:    pim_connector.writer.doctrine.user_group
 
         fixtures_group_csv:
             title: pim_installer.jobs.fixtures_group_csv.title

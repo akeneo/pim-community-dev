@@ -4,12 +4,12 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -31,8 +31,6 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
     protected $resolver;
 
     /**
-     * Instanciate the filter
-     *
      * @param AttributeValidatorHelper  $attrValidatorHelper
      * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                     $supportedAttributes
@@ -85,23 +83,23 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
 
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'options');
 
-        if ($operator !== Operators::IS_EMPTY) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
 
-            if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
+            if (FieldFilterHelper::CODE_PROPERTY === FieldFilterHelper::getProperty($options['field'])) {
                 $value = $this->objectIdResolver->getIdsFromCodes('option', $value, $attribute);
+            } else {
+                $value = array_map('intval', $value);
             }
-        } else {
-            $value = !is_array($value) ? [$value] : $value;
         }
 
-        $mongoField = sprintf(
-            '%s.%s',
+        $field = sprintf(
+            '%s.%s.id',
             ProductQueryUtility::NORMALIZED_FIELD,
             ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope)
         );
 
-        $this->applyFilter($value, $operator, $mongoField);
+        $this->applyFilter($field, $operator, $value);
 
         return $this;
     }
@@ -124,23 +122,26 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
     /**
      * Apply the filter to the query with the given operator
      *
-     * @param array  $value
-     * @param string $operator
      * @param string $field
+     * @param string $operator
+     * @param mixed  $value
      */
-    protected function applyFilter(array $value, $operator, $field)
+    protected function applyFilter($field, $operator, $value)
     {
-        if ($operator === Operators::NOT_IN_LIST) {
-            $this->qb->field($field)->notIn($value);
-        } else {
-            if (Operators::IS_EMPTY === $operator) {
-                $expr = $this->qb->expr()->field($field)->exists(false);
-                $this->qb->addAnd($expr);
-            } else {
-                $value = array_map('intval', $value);
-                $expr = $this->qb->expr()->field($field.'.id')->in($value);
-                $this->qb->addAnd($expr);
-            }
+        switch ($operator) {
+            case Operators::IN_LIST:
+                $this->qb->field($field)->in($value);
+                break;
+            case Operators::NOT_IN_LIST:
+                $this->qb->field($field)->exists(true);
+                $this->qb->field($field)->notIn($value);
+                break;
+            case Operators::IS_EMPTY:
+                $this->qb->field($field)->exists(false);
+                break;
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->field($field)->exists(true);
+                break;
         }
     }
 

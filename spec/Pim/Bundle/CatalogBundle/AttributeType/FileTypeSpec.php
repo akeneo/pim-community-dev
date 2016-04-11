@@ -3,10 +3,10 @@
 namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
+use Pim\Component\Catalog\Validator\AttributeConstraintGuesser;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 
@@ -16,7 +16,7 @@ class FileTypeSpec extends ObjectBehavior
     {
         $value->getAttribute()->willReturn($attribute);
 
-        $this->beConstructedWith(AbstractAttributeType::BACKEND_TYPE_MEDIA, 'pim_enrich_media', $guesser);
+        $this->beConstructedWith(AttributeTypes::BACKEND_TYPE_MEDIA, 'pim_enrich_media', $guesser);
     }
 
     function it_builds_the_attribute_forms(FormFactory $factory, $attribute)
@@ -31,8 +31,8 @@ class FileTypeSpec extends ObjectBehavior
 
     function it_prepares_the_product_value_form_name($value, $attribute)
     {
-        $attribute->getBackendType()->willReturn(AbstractAttributeType::BACKEND_TYPE_MEDIA);
-        $this->prepareValueFormName($value)->shouldReturn(AbstractAttributeType::BACKEND_TYPE_MEDIA);
+        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_MEDIA);
+        $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_MEDIA);
     }
 
     function it_prepares_the_value_form_alias($value)

@@ -47,6 +47,7 @@ class MediaController
      */
     public function postAction(Request $request)
     {
+        /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
         $file       = $request->files->get('file');
         $violations = $this->validator->validate($file);
 
@@ -70,8 +71,8 @@ class MediaController
                 $pathData['file_name']
             );
         } catch (FileException $e) {
-            //TODO: a message goes here
-            return new JsonResponse(null, 400);
+            //TODO: more specific message if debug mode is on?
+            return new JsonResponse("Unable to create target-directory, or moving file.", 400);
         }
 
         return new JsonResponse(

@@ -7,12 +7,10 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
-use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConstraint;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\TransformBundle\Converter\MetricConverter;
-use Symfony\Component\Validator\Constraints as Assert;
+use Pim\Component\Catalog\Converter\MetricConverter;
+use Pim\Component\Catalog\Manager\CompletenessManager;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 /**
  * Reads products one by one
@@ -23,77 +21,48 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ORMProductReader extends AbstractConfigurableStepElement implements ProductReaderInterface
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $limit = 10;
 
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank(groups={"Execution"})
-     * @ChannelConstraint
-     */
+    /** @var string */
     protected $channel;
 
-    /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
-    /**
-     * @var AbstractQuery
-     */
+    /** @var AbstractQuery */
     protected $query;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $offset = 0;
 
-    /**
-     * @var null|integer[]
-     */
+    /** @var null|integer[] */
     protected $ids = null;
 
-    /**
-     * @var ArrayIterator
-     */
+    /** @var \ArrayIterator */
     protected $products;
 
-    /**
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     protected $entityManager;
 
-    /**
-     * @var ProductRepositoryInterface
-     */
+    /** @var ProductRepositoryInterface */
     protected $repository;
 
-    /**
-     * @var CompletenessManager
-     */
+    /** @var CompletenessManager */
     protected $completenessManager;
 
-    /**
-     * @var MetricConverter
-     */
+    /** @var MetricConverter */
     protected $metricConverter;
 
-    /**
-     * @var StepExecution
-     */
+    /** @var StepExecution */
     protected $stepExecution;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $missingCompleteness;
 
     /**
      * @param ProductRepositoryInterface $repository
-     * @param ChannelManager             $channelManager
+     * @param ChannelRepositoryInterface $channelRepository
      * @param CompletenessManager        $completenessManager
      * @param MetricConverter            $metricConverter
      * @param EntityManager              $entityManager
@@ -101,7 +70,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
      */
     public function __construct(
         ProductRepositoryInterface $repository,
-        ChannelManager $channelManager,
+        ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         EntityManager $entityManager,
@@ -109,7 +78,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     ) {
         $this->entityManager       = $entityManager;
         $this->repository          = $repository;
-        $this->channelManager      = $channelManager;
+        $this->channelRepository   = $channelRepository;
         $this->completenessManager = $completenessManager;
         $this->metricConverter     = $metricConverter;
         $this->products            = new \ArrayIterator();
@@ -171,7 +140,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
             'channel' => [
                 'type'    => 'choice',
                 'options' => [
-                    'choices'  => $this->channelManager->getChannelChoices(),
+                    'choices'  => $this->channelRepository->getLabelsIndexedByCode(),
                     'required' => true,
                     'select2'  => true,
                     'label'    => 'pim_base_connector.export.channel.label',
@@ -237,7 +206,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     protected function getIds()
     {
         if (!is_object($this->channel)) {
-            $this->channel = $this->channelManager->getChannelByCode($this->channel);
+            $this->channel = $this->channelRepository->findOneByIdentifier($this->channel);
         }
 
         if ($this->missingCompleteness) {

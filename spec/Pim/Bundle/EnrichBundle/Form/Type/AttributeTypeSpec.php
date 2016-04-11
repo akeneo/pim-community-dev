@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Component\Catalog\AttributeTypeRegistry;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,14 +12,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class AttributeTypeSpec extends ObjectBehavior
 {
     function let(
-        AttributeManager $manager,
+        AttributeTypeRegistry $registry,
         AddAttributeTypeRelatedFieldsSubscriber $subscriber,
         FormBuilderInterface $builder
     ) {
-        $manager->getAttributeTypes()->willReturn(['text', 'number', 'email']);
+        $registry->getAliases()->willReturn(['text', 'number', 'email']);
+        $registry->getSortedAliases()->willReturn(['text' => 'text', 'number' => 'number', 'email' => 'email']);
 
         $this->beConstructedWith(
-            $manager,
+            $registry,
             $subscriber,
             'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeTranslation',
             'Pim\Bundle\CatalogBundle\Entity\Attribute',
@@ -58,7 +59,7 @@ class AttributeTypeSpec extends ObjectBehavior
                 'attributeType',
                 'choice',
                 [
-                    'choices'   => ['text', 'number', 'email'],
+                    'choices'   => ['text' => 'text', 'number' => 'number', 'email' => 'email'],
                     'select2'   => true,
                     'disabled'  => false,
                     'read_only' => true
@@ -67,10 +68,10 @@ class AttributeTypeSpec extends ObjectBehavior
             ->shouldHaveBeenCalled();
     }
 
-    function it_gets_attribute_type_choices_from_attribute_manager($builder, $manager)
+    function it_gets_attribute_type_choices($builder, $registry)
     {
         $this->buildForm($builder, []);
-        $manager->getAttributeTypes()->shouldHaveBeenCalled();
+        $registry->getSortedAliases()->shouldHaveBeenCalled();
     }
 
     function it_adds_required_field_to_the_form($builder)

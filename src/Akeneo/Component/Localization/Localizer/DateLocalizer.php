@@ -44,7 +44,7 @@ class DateLocalizer implements LocalizerInterface
      */
     public function validate($date, $attributeCode, array $options = [])
     {
-        if (null === $date || '' === $date) {
+        if (null === $date || '' === $date || $date instanceof \DateTime) {
             return null;
         }
 
@@ -74,9 +74,13 @@ class DateLocalizer implements LocalizerInterface
         $formatter = $this->factory->create($options);
         $formatter->setLenient(false);
 
-        $timestamp = $formatter->parse($date);
-        if (false === $timestamp) {
-            return $date;
+        if ($date instanceof \DateTime) {
+            $timestamp = $date->getTimestamp();
+        } else {
+            $timestamp = $formatter->parse($date);
+            if (false === $timestamp) {
+                return $date;
+            }
         }
 
         $formatter->setPattern(static::DEFAULT_DATE_FORMAT);

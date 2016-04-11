@@ -199,8 +199,6 @@ define(
              * @return {Object}
              */
             renderExtension: function (extension) {
-                /* global console */
-                console.log(extension.parent.code, 'triggered the rendering of', extension.code);
                 this.getZone(extension.targetZone).appendChild(extension.el);
                 return extension.render();
             },

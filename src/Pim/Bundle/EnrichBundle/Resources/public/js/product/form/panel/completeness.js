@@ -46,7 +46,7 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                if (this.code !== this.getParent().state.get('currentPanel')) {
+                if (!this.configured || this.code !== this.getParent().getCurrentPanelCode()) {
                     return this;
                 }
 

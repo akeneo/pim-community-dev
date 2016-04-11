@@ -55,8 +55,6 @@ datagrid:
                     data_name: j.code
                 label:
                     data_name: j.label
-                alias:
-                    data_name: jobAlias
                 connector:
                     data_name: j.connector
                 status:

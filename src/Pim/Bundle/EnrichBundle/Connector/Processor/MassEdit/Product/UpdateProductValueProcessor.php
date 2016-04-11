@@ -6,7 +6,6 @@ use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -27,15 +26,11 @@ class UpdateProductValueProcessor extends AbstractProcessor
     /**
      * @param PropertySetterInterface             $propertySetter
      * @param ValidatorInterface                  $validator
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
-        ValidatorInterface $validator,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo
+        ValidatorInterface $validator
     ) {
-        parent::__construct($jobConfigurationRepo);
-
         $this->propertySetter = $propertySetter;
         $this->validator      = $validator;
     }

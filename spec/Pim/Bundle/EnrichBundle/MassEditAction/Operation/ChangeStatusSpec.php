@@ -81,7 +81,10 @@ class ChangeStatusSpec extends ObjectBehavior
         ]);
 
         $this->getBatchConfig()->shouldReturn(
-            '{\"filters\":[[\"id\",\"IN\",[\"98\",\"99\",\"100\"]]],\"actions\":[{\"field\":\"enabled\",\"value\":true}]}'
+            [
+                'filters' => [['id', 'IN', ['98', '99', '100']]],
+                'actions' => [['field' => 'enabled', 'value' => true]]
+            ]
         );
 
         $this->setToEnable(false);
@@ -90,7 +93,10 @@ class ChangeStatusSpec extends ObjectBehavior
         ]);
 
         $this->getBatchConfig()->shouldReturn(
-            '{\"filters\":[[\"id\",\"IN\",[\"98\",\"99\",\"100\"]]],\"actions\":[{\"field\":\"enabled\",\"value\":false}]}'
+            [
+                'filters' => [['id', 'IN', ['98', '99', '100']]],
+                'actions' => [['field' => 'enabled', 'value' => false]]
+            ]
         );
     }
 }

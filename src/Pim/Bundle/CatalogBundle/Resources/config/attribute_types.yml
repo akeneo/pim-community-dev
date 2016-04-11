@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.registry.attribute_type.class:         Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry
+    pim_catalog.registry.attribute_type.class:         Pim\Component\Catalog\AttributeTypeRegistry
 
     pim_catalog.attribute_type.identifier.class:       Pim\Bundle\CatalogBundle\AttributeType\IdentifierType
     pim_catalog.attribute_type.text.class:             Pim\Bundle\CatalogBundle\AttributeType\TextType
@@ -69,7 +69,7 @@ services:
             - prices
             - pim_enrich_price_collection
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
-            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.repository.currency'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_price_collection, entity: %pim_catalog.entity.product.class% }
 

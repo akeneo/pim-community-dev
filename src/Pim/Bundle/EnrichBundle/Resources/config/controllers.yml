@@ -102,7 +102,7 @@ services:
             - '@form.factory'
             - '@translator'
             - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.family'
             - '@pim_enrich.form.handler.family'
             - '@pim_enrich.form.family'
@@ -131,9 +131,6 @@ services:
             - '@translator'
             - '@pim_enrich.form.handler.attribute'
             - '@pim_enrich.form.attribute'
-            - '@pim_catalog.manager.attribute'
-            - '@pim_catalog.factory.attribute'
-            - '@pim_catalog.manager.attribute_option'
             - '@pim_catalog.repository.locale'
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.attribute'
@@ -141,6 +138,10 @@ services:
             - '@pim_catalog.saver.attribute_option'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.group'
+            - '@pim_catalog.registry.attribute_type'
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.factory.attribute_option'
+            - '@pim_catalog.factory.attribute_option_value'
             - %akeneo_measure.measures_config%
 
     pim_enrich.controller.attribute_option:
@@ -151,11 +152,12 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@form.factory'
             - '@fos_rest.view_handler'
-            - '@pim_catalog.manager.attribute'
-            - '@pim_catalog.manager.attribute_option'
+            - '@pim_catalog.manager.attribute_options_sorter'
+            - '@pim_catalog.factory.attribute_option'
             - '@pim_catalog.saver.attribute_option'
             - '@pim_catalog.remover.attribute_option'
             - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_option'
 
     pim_enrich.controller.product:
         scope: request
@@ -180,6 +182,7 @@ services:
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.factory.category'
+            - %pim_catalog.entity.category.class%
 
     pim_enrich.controller.association:
         class: %pim_enrich.controller.association.class%
@@ -200,7 +203,7 @@ services:
             - '@doctrine'
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
-            - '@pim_connector.launcher.simple_job_launcher'
+            - '@akeneo_batch.launcher.simple_job_launcher'
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.connectors'
             - '@pim_enrich.mass_edit_action.operation.registry'
@@ -237,7 +240,7 @@ services:
         class: %pim_enrich.controller.file.class%
         arguments:
             - '@liip_imagine.controller'
-            - '@oneup_flysystem.mount_manager'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.repository.file_info'
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'
@@ -275,7 +278,7 @@ services:
         arguments:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             - '@pim_user.context.user'
             - '@templating'
 

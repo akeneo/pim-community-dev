@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Akeneo\Component\Classification\Factory\CategoryFactory;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -29,19 +29,19 @@ class CategoryManager
     /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
-    /** @var CategoryFactory */
+    /** @var SimpleFactoryInterface */
     protected $categoryFactory;
 
     /**
      * @param ObjectManager               $om
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param CategoryFactory             $categoryFactory
+     * @param SimpleFactoryInterface      $categoryFactory
      * @param string                      $categoryClass
      */
     public function __construct(
         ObjectManager $om,
         CategoryRepositoryInterface $categoryRepository,
-        CategoryFactory $categoryFactory,
+        SimpleFactoryInterface $categoryFactory,
         $categoryClass
     ) {
         $this->om                  = $om;

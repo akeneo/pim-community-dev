@@ -3,11 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -26,8 +26,6 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected $resolver;
 
     /**
-     * Instanciate the filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param array                    $supportedAttributes
      * @param array                    $supportedOperators
@@ -77,12 +75,13 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'string');
 
-        if ($operator !== Operators::IS_EMPTY) {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+
         $this->applyFilter($field, $operator, $value);
 
         return $this;
@@ -97,14 +96,23 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
      */
     protected function applyFilter($field, $operator, $value)
     {
-        if (Operators::IS_EMPTY === $operator) {
-            $this->qb->field($field)->exists(false);
-        } elseif (Operators::IN_LIST === $operator) {
-            $this->qb->field($field)->in($value);
-        } else {
-            $value = $this->prepareValue($operator, $value);
-
-            $this->qb->field($field)->equals($value);
+        switch ($operator) {
+            case Operators::IS_EMPTY:
+                $this->qb->field($field)->exists(false);
+                break;
+            case Operators::IS_NOT_EMPTY:
+                $this->qb->field($field)->exists(true);
+                break;
+            case Operators::IN_LIST:
+                $this->qb->field($field)->in($value);
+                break;
+            case Operators::NOT_EQUAL:
+                $this->qb->field($field)->exists(true);
+                $this->qb->field($field)->notEqual($value);
+                break;
+            default:
+                $value = $this->prepareValue($operator, $value);
+                $this->qb->field($field)->equals($value);
         }
     }
 
@@ -130,8 +138,6 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 break;
             case Operators::DOES_NOT_CONTAIN:
                 $value = new \MongoRegex(sprintf('/^((?!%s).)*$/i', $value));
-                break;
-            default:
                 break;
         }
 

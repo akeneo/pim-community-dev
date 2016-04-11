@@ -3,8 +3,6 @@
 namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
-use Akeneo\Component\Buffer\BufferFactory;
-use Akeneo\Component\Buffer\BufferInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -16,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
 {
-    /** @var BufferInterface */
+    /** @var FlatItemBuffer */
     protected $buffer;
 
     /** @var string */
@@ -36,13 +34,13 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
 
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param BufferFactory             $bufferFactory
+     * @param FlatItemBuffer            $flatRowBuffer
      */
-    public function __construct(FilePathResolverInterface $filePathResolver, BufferFactory $bufferFactory)
+    public function __construct(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer)
     {
         parent::__construct($filePathResolver);
 
-        $this->buffer = $bufferFactory->create();
+        $this->buffer = $flatRowBuffer;
     }
 
     /**
@@ -118,13 +116,7 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
      */
     public function write(array $items)
     {
-        foreach ($items as $item) {
-            if ($this->isWithHeader()) {
-                $this->addToHeaders(array_keys($item));
-            }
-
-            $this->buffer->write($item);
-        }
+        $this->buffer->write($items, $this->isWithHeader());
     }
 
     /**
@@ -134,11 +126,10 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     {
         $csvFile = $this->createCsvFile();
 
-        $headers = $this->isWithHeader() ? $this->headers : [];
+        $headers = $this->buffer->getHeaders();
+        $hollowItem = array_fill_keys($headers, '');
         $this->writeToCsvFile($csvFile, $headers);
-
-        $hollowItem = array_fill_keys($this->headers, '');
-        foreach ($this->buffer as $incompleteItem) {
+        foreach ($this->buffer->getBuffer() as $incompleteItem) {
             $item = array_replace($hollowItem, $incompleteItem);
             $this->writeToCsvFile($csvFile, $item);
 
@@ -219,22 +210,5 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
             fclose($csvFile);
             throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
         }
-    }
-
-    /**
-     * Add the specified keys to the list of headers
-     *
-     * @param array $keys
-     */
-    protected function addToHeaders(array $keys)
-    {
-        $headers = array_merge($this->headers, $keys);
-        $headers = array_unique($headers);
-
-        $identifier = array_shift($headers);
-        natsort($headers);
-        array_unshift($headers, $identifier);
-
-        $this->headers = $headers;
     }
 }

@@ -5,9 +5,9 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductTemplateRepositoryInterface;
+use Pim\Component\Catalog\Builder\ProductTemplateBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\ProductTemplateRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

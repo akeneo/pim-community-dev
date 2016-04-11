@@ -5,13 +5,12 @@ namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Event\ProductEvents;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
+use Pim\Component\Catalog\ProductEvents;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
+use Pim\Component\Catalog\Repository\ProductMassActionRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -23,7 +22,6 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
         HydratorInterface $hydrator,
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
-        ProductManager $productManager,
         DatagridInterface $datagrid,
         DatasourceInterface $datasource,
         DeleteMassAction $massAction,
@@ -33,8 +31,7 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
         $this->beConstructedWith(
             $hydrator,
             $translator,
-            $eventDispatcher,
-            $productManager
+            $eventDispatcher
         );
 
         $translator->trans('qux')->willReturn('qux');

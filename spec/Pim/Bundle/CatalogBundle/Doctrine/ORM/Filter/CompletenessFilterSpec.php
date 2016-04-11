@@ -14,18 +14,18 @@ class CompletenessFilterSpec extends ObjectBehavior
 {
     function let(QueryBuilder $queryBuilder)
     {
-        $this->beConstructedWith(['completeness'], ['=', '<']);
+        $this->beConstructedWith(['completeness'], ['<', '<=', '=', '>=', '>', '!=']);
         $this->setQueryBuilder($queryBuilder);
     }
 
     function it_is_a_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FieldFilterInterface');
     }
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['=', '<']);
+        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', '!=']);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }

@@ -45,6 +45,8 @@ class FileFetcher implements FileFetcherInterface
             $this->tmpFilesystem->createDir(dirname($fileKey));
         }
 
+        // TODO: we should not get the path prefix like that
+        // TODO: it should be injected in the constructor
         $localPathname = $this->tmpFilesystem->getAdapter()->getPathPrefix() . $fileKey;
 
         if (false === file_put_contents($localPathname, $stream)) {

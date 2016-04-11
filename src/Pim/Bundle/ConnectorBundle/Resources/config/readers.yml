@@ -1,10 +1,35 @@
 parameters:
-    pim_connector.reader.dummy_item.class:       Pim\Component\Connector\Reader\DummyItemReader
+    pim_connector.reader.dummy_item.class:    Pim\Component\Connector\Reader\DummyItemReader
+    pim_connector.reader.doctrine.base.class: Pim\Component\Connector\Reader\Doctrine\BaseReader
+
     pim_connector.reader.file.csv.class:         Pim\Component\Connector\Reader\File\CsvReader
-    pim_connector.reader.file.csv_product.class: Pim\Component\Connector\Reader\File\CsvProductReader
-    pim_connector.reader.doctrine.base.class:    Pim\Component\Connector\Reader\Doctrine\BaseReader
+    pim_connector.reader.file.csv_product.class: Pim\Component\Connector\Reader\File\Product\CsvProductReader
+
+    pim_connector.reader.file.xlsx.class:         Pim\Component\Connector\Reader\File\XlsxReader
+    pim_connector.reader.file.xlsx_product.class: Pim\Component\Connector\Reader\File\Product\XlsxProductReader
+
+    pim_connector.reader.file.file_iterator.class:          Pim\Component\Connector\Reader\File\FileIterator
+    pim_connector.reader.file.file_iterator_factory.class:  Pim\Component\Connector\Reader\File\FileIteratorFactory
+    pim_connector.reader.file.media_path_transformer.class: Pim\Component\Connector\Reader\File\Product\MediaPathTransformer
 
 services:
+    pim_connector.reader.file.csv_iterator_factory:
+        class: %pim_connector.reader.file.file_iterator_factory.class%
+        arguments:
+            - %pim_connector.reader.file.file_iterator.class%
+            - 'csv'
+
+    pim_connector.reader.file.xlsx_iterator_factory:
+        class: %pim_connector.reader.file.file_iterator_factory.class%
+        arguments:
+            - %pim_connector.reader.file.file_iterator.class%
+            - 'xlsx'
+
+    pim_connector.reader.file.media_path_transformer:
+        class: %pim_connector.reader.file.media_path_transformer.class%
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
     # Dummy Reader
     pim_connector.reader.dummy_item:
         class: %pim_connector.reader.dummy_item.class%
@@ -12,6 +37,8 @@ services:
     # CSV File Readers
     pim_connector.reader.file.csv:
         class: %pim_connector.reader.file.csv.class%
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
 
     pim_connector.reader.file.csv_association_type:
         alias: pim_connector.reader.file.csv
@@ -37,9 +64,48 @@ services:
     pim_connector.reader.file.csv_category:
         alias: pim_connector.reader.file.csv
 
+    pim_connector.reader.file.csv_channel:
+        alias: pim_connector.reader.file.csv
+
+    pim_connector.reader.file.csv_locale:
+        alias: pim_connector.reader.file.csv
+
+    pim_connector.reader.file.csv_attribute_group:
+        alias: pim_connector.reader.file.csv
+
+    pim_connector.reader.file.csv_group_type:
+        alias: pim_connector.reader.file.csv
+
+    pim_connector.reader.file.csv_currency:
+        alias: pim_connector.reader.file.csv
+
     pim_connector.reader.file.csv_product:
         class: %pim_connector.reader.file.csv_product.class%
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.reader.file.media_path_transformer'
             - %pim_catalog.localization.decimal_separators%
             - %pim_catalog.localization.date_formats%
+
+    # XLSX file Readers
+    pim_connector.reader.file.xlsx:
+        class: %pim_connector.reader.file.xlsx.class%
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+
+    pim_connector.reader.file.xlsx_product:
+       class: %pim_connector.reader.file.xlsx_product.class%
+       arguments:
+           - '@pim_connector.reader.file.xlsx_iterator_factory'
+           - '@pim_connector.reader.file.media_path_transformer'
+           - %pim_catalog.localization.decimal_separators%
+           - %pim_catalog.localization.date_formats%
+
+    pim_connector.reader.file.xlsx_association:
+        alias: pim_connector.reader.file.xlsx
+
+    pim_connector.reader.file.xlsx_group:
+        alias: pim_connector.reader.file.xlsx
+
+    pim_connector.reader.file.xlsx_variant_group:
+        alias: pim_connector.reader.file.xlsx_product

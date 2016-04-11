@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Pim\Component\Catalog\AttributeTypes;
+
 /**
  * Boolean attribute type
  *

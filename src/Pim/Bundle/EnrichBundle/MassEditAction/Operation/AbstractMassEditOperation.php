@@ -69,14 +69,10 @@ abstract class AbstractMassEditOperation implements
      */
     public function getBatchConfig()
     {
-        return addslashes(
-            json_encode(
-                [
-                    'filters' => $this->getFilters(),
-                    'actions' => $this->getActions(),
-                ]
-            )
-        );
+        return [
+            'filters' => $this->getFilters(),
+            'actions' => $this->getActions(),
+        ];
     }
 
     /**

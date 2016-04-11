@@ -229,11 +229,11 @@ class MassEditActionController
 
             $operation->finalize();
 
-            $rawConfiguration = $operation->getBatchConfig();
+            $configuration = $operation->getBatchConfig();
             $this->simpleJobLauncher->launch(
                 $jobInstance,
                 $this->tokenStorage->getToken()->getUser(),
-                $rawConfiguration
+                $configuration
             );
         }
 

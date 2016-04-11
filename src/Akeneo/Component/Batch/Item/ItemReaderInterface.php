@@ -2,8 +2,6 @@
 
 namespace Akeneo\Component\Batch\Item;
 
-use Akeneo\Component\Batch\Item\InvalidItemException;
-
 /**
  * Interface to provide data.
  *

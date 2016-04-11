@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Price filter
@@ -18,28 +18,29 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var CurrencyManager */
-    protected $currencyManager;
+    /** @var CurrencyRepositoryInterface */
+    protected $currencyRepository;
 
     /** @var array */
     protected $supportedAttributes;
 
     /**
      * Instanciate the base filter
+
      *
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param CurrencyManager          $currencyManager
-     * @param array                    $supportedAttributes
-     * @param array                    $supportedOperators
+     * @param AttributeValidatorHelper    $attrValidatorHelper
+     * @param CurrencyRepositoryInterface $currencyRepository
+     * @param array                       $supportedAttributes
+     * @param array                       $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        CurrencyManager $currencyManager,
+        CurrencyRepositoryInterface $currencyRepository,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->currencyManager     = $currencyManager;
+        $this->currencyRepository  = $currencyRepository;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
     }
@@ -58,10 +59,10 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'price');
         $this->checkValue($attribute, $value);
 
-        if (Operators::IS_EMPTY !== $operator) {
-            $this->addNonEmptyFilter($attribute, $value, $operator, $locale, $scope);
+        if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
+            $this->addEmptyTypeFilter($attribute, $value, $operator, $locale, $scope);
         } else {
-            $this->addEmptyFilter($attribute, $value, $locale, $scope);
+            $this->addFilter($attribute, $value, $operator, $locale, $scope);
         }
 
         return $this;
@@ -78,17 +79,19 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     /**
      * @param AttributeInterface $attribute
      * @param array              $value
+     * @param string             $operator
      * @param string             $locale
      * @param string             $scope
      */
-    protected function addEmptyFilter(
+    protected function addEmptyTypeFilter(
         AttributeInterface $attribute,
         array $value,
+        $operator,
         $locale = null,
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
 
         // join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -105,11 +108,14 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $priceData      = $joinAlias . '.' . $backendType;
         $this->qb->leftJoin($priceData, $joinAliasPrice);
 
-        // add conditions
-        $condition = $this->preparePriceCondition($value, $joinAliasPrice, Operators::IS_EMPTY);
-        $exprNull  = $this->qb->expr()->isNull($joinAliasPrice . '.id');
-        $exprOr    = $this->qb->expr()->orX($condition, $exprNull);
-        $this->qb->andWhere($exprOr);
+        $priceCondition   = $this->preparePriceCondition($value, $joinAliasPrice, $operator);
+        $priceIdCondition = $this->prepareCriteriaCondition($joinAliasPrice . '.id', $operator, null);
+        if (Operators::IS_NOT_EMPTY === $operator) {
+            $where = $this->qb->expr()->andX($priceCondition, $priceIdCondition);
+        } else {
+            $where = $this->qb->expr()->orX($priceCondition, $priceIdCondition);
+        }
+        $this->qb->andWhere($where);
     }
 
     /**
@@ -119,7 +125,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
      * @param string             $locale
      * @param string             $scope
      */
-    protected function addNonEmptyFilter(
+    protected function addFilter(
         AttributeInterface $attribute,
         array $value,
         $operator,
@@ -215,7 +221,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             );
         }
 
-        if (!in_array($data['currency'], $this->currencyManager->getActiveCodes())) {
+        if (!in_array($data['currency'], $this->currencyRepository->getActivatedCurrencyCodes())) {
             throw InvalidArgumentException::arrayInvalidKey(
                 $attribute->getCode(),
                 'currency',

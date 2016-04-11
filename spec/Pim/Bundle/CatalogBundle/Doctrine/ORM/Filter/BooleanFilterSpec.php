@@ -7,7 +7,7 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class BooleanFilterSpec extends ObjectBehavior
@@ -27,7 +27,7 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FieldFilterInterface');
     }
 
     function it_supports_operators()
@@ -51,13 +51,17 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_adds_an_equal_filter_on_a_field_in_the_query(
         $qb,
-        Expr $expr
+        Expr $expr,
+        Expr\Comparison $comp,
+        Expr\Literal $literal
     ) {
-        $qb->andWhere("p.enabled = true")->willReturn($qb);
+        $qb->andWhere('p.enabled = true')->shouldBeCalled()->willReturn($qb);
         $qb->expr()->willReturn($expr);
 
-        $expr->eq('p.enabled', true)->willReturn("p.enabled = true");
-        $expr->literal(true)->willReturn(true);
+        $expr->eq('p.enabled', true)->willReturn($comp);
+        $expr->literal(true)->willReturn($literal);
+        $literal->__toString()->willReturn('true');
+        $comp->__toString()->willReturn('p.enabled = true');
 
         $this->addFieldFilter('enabled', '=', true);
     }
@@ -66,7 +70,9 @@ class BooleanFilterSpec extends ObjectBehavior
         $qb,
         $attrValidatorHelper,
         AttributeInterface $attribute,
-        Expr $expr
+        Expr $expr,
+        Expr\Comparison $comp,
+        Expr\Literal $literal
     ) {
         $attribute->getBackendType()->willReturn('backend_type');
         $attribute->getCode()->willReturn('code');
@@ -79,8 +85,10 @@ class BooleanFilterSpec extends ObjectBehavior
 
         $qb->expr()->willReturn($expr);
         $qb->getRootAlias()->willReturn('p');
-        $expr->eq(Argument::any(), true)->willReturn('filtercode.backend_type = true');
-        $expr->literal(true)->willReturn(true);
+        $expr->eq(Argument::any(), true)->shouldBeCalled()->willReturn($comp);
+        $expr->literal(true)->willReturn($literal);
+        $literal->__toString()->willReturn('true');
+        $comp->__toString()->willReturn('filtercode.backend_type = true');
 
         $qb->innerJoin(
             'p.values',
@@ -90,5 +98,56 @@ class BooleanFilterSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, '=', true);
+    }
+
+    function it_adds_a_not_equal_filter_on_a_field_in_the_query(
+        $qb,
+        Expr $expr,
+        Expr\Comparison $comp,
+        Expr\Literal $literal
+    ) {
+        $qb->andWhere('p.enabled <> true')->shouldBeCalled()->willReturn($qb);
+        $qb->expr()->willReturn($expr);
+
+        $expr->neq('p.enabled', true)->willReturn($comp);
+        $expr->literal(true)->willReturn($literal);
+        $comp->__toString()->willReturn('p.enabled <> true');
+        $literal->__toString()->willReturn('true');
+
+        $this->addFieldFilter('enabled', '!=', true);
+    }
+
+    function it_adds_a_not_equal_filter_on_an_attribute_in_the_query(
+        $qb,
+        $attrValidatorHelper,
+        AttributeInterface $attribute,
+        Expr $expr,
+        Expr\Comparison $comp,
+        Expr\Literal $literal
+    ) {
+        $attribute->getBackendType()->willReturn('backend_type');
+        $attribute->getCode()->willReturn('code');
+        $attribute->getId()->willReturn(42);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $qb->expr()->willReturn($expr);
+        $qb->getRootAlias()->willReturn('p');
+        $expr->literal(true)->willReturn($literal);
+        $expr->neq(Argument::any(), $literal)->shouldBeCalled()->willReturn($comp);
+        $literal->__toString()->willReturn('true');
+        $comp->__toString()->willReturn('filtercode.backend_type <> true');
+
+        $qb->innerJoin(
+            'p.values',
+            Argument::any(),
+            'WITH',
+            Argument::any()
+        )->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, '!=', true);
     }
 }

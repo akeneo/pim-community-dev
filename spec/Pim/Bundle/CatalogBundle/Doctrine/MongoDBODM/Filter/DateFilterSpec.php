@@ -6,7 +6,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 /**
@@ -20,7 +20,7 @@ class DateFilterSpec extends ObjectBehavior
             $attrValidatorHelper,
             ['pim_catalog_date'],
             ['created', 'updated'],
-            ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY']
+            ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']
         );
         $this->setQueryBuilder($queryBuilder);
 
@@ -29,17 +29,17 @@ class DateFilterSpec extends ObjectBehavior
 
     function it_is_an_attribute_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\AttributeFilterInterface');
     }
 
     function it_is_a_field_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FieldFilterInterface');
     }
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY']);
+        $this->getOperators()->shouldReturn(['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']);
 
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
@@ -77,6 +77,40 @@ class DateFilterSpec extends ObjectBehavior
 
         $this->addAttributeFilter($date, '>', '2014-03-15');
         $this->addAttributeFilter($date, '>', new \Datetime('2014-03-15'));
+    }
+
+    function it_adds_an_empty_filter_on_an_attribute_value_in_the_query(
+        $attrValidatorHelper,
+        $queryBuilder,
+        AttributeInterface $date
+    ) {
+        $attrValidatorHelper->validateLocale($date, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($date, Argument::any())->shouldBeCalled();
+
+        $date->getCode()->willReturn('release_date');
+        $date->isLocalizable()->willReturn(false);
+        $date->isScopable()->willReturn(false);
+
+        $queryBuilder->exists(false)->shouldBeCalled()->willReturn($queryBuilder);
+
+        $this->addAttributeFilter($date, 'EMPTY', null);
+    }
+
+    function it_adds_a_not_empty_filter_on_an_attribute_value_in_the_query(
+        $attrValidatorHelper,
+        $queryBuilder,
+        AttributeInterface $date
+    ) {
+        $attrValidatorHelper->validateLocale($date, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($date, Argument::any())->shouldBeCalled();
+
+        $date->getCode()->willReturn('release_date');
+        $date->isLocalizable()->willReturn(false);
+        $date->isScopable()->willReturn(false);
+
+        $queryBuilder->exists(true)->shouldBeCalled()->willReturn($queryBuilder);
+
+        $this->addAttributeFilter($date, 'NOT EMPTY', null);
     }
 
     function it_adds_a_between_filter_on_an_attribute_value_in_the_query(

@@ -67,7 +67,7 @@ services:
             - '@pim_enrich.form.type.product.view'
             - '@pim_enrich.form.subscriber.transform_product_template_values'
             - '@pim_user.context.user'
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             -  %pim_catalog.entity.product_template.class%
         tags:
             - { name: form.type, alias: pim_enrich_product_template }
@@ -102,7 +102,7 @@ services:
         tags:
             - { name: form.type, alias: pim_enrich_attribute }
         arguments:
-            - '@pim_catalog.manager.attribute'
+            - '@pim_catalog.registry.attribute_type'
             - '@pim_enrich.form.subscriber.attribute'
             - %pim_catalog.entity.attribute_translation.class%
             - %pim_catalog.entity.attribute.class%

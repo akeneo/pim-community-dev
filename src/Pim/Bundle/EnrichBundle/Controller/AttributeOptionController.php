@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\ORM\EntityManager;
@@ -9,10 +10,10 @@ use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\View\View as RestView;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
+use Pim\Component\Catalog\Manager\AttributeOptionsSorter;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -42,14 +43,11 @@ class AttributeOptionController
     /** @var ViewHandlerInterface */
     protected $viewHandler;
 
-    /** @var AttributeManager */
-    protected $attributeManager;
+    /** @var AttributeOptionsSorter */
+    protected $sorter;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var AttributeOptionManager */
-    protected $optionManager;
+    /** @var SimpleFactoryInterface */
+    protected $optionFactory;
 
     /** @var RemoverInterface */
     protected $optionRemover;
@@ -57,39 +55,46 @@ class AttributeOptionController
     /** @var SaverInterface */
     protected $optionSaver;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var AttributeOptionRepositoryInterface */
+    protected $optionRepository;
+
     /**
-     * Constructor
-     *
      * @param NormalizerInterface          $normalizer
      * @param EntityManager                $entityManager
      * @param FormFactoryInterface         $formFactory
      * @param ViewHandlerInterface         $viewHandler
-     * @param AttributeManager             $attributeManager
-     * @param AttributeOptionManager       $optionManager
+     * @param AttributeOptionsSorter       $sorter
+     * @param SimpleFactoryInterface       $optionFactory
      * @param SaverInterface               $optionSaver
      * @param RemoverInterface             $optionRemover
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param AttributeOptionRepositoryInterface $attributeOptionRepository
      */
     public function __construct(
         NormalizerInterface $normalizer,
         EntityManager $entityManager,
         FormFactoryInterface $formFactory,
         ViewHandlerInterface $viewHandler,
-        AttributeManager $attributeManager,
-        AttributeOptionManager $optionManager,
+        AttributeOptionsSorter $sorter,
+        SimpleFactoryInterface $optionFactory,
         SaverInterface $optionSaver,
         RemoverInterface $optionRemover,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeOptionRepositoryInterface $attributeOptionRepository
     ) {
         $this->normalizer          = $normalizer;
         $this->entityManager       = $entityManager;
         $this->formFactory         = $formFactory;
         $this->viewHandler         = $viewHandler;
-        $this->attributeManager    = $attributeManager;
-        $this->optionManager       = $optionManager;
+        $this->sorter              = $sorter;
+        $this->optionFactory       = $optionFactory;
         $this->optionRemover       = $optionRemover;
         $this->optionSaver         = $optionSaver;
         $this->attributeRepository = $attributeRepository;
+        $this->optionRepository    = $attributeOptionRepository;
     }
 
     /**
@@ -124,7 +129,7 @@ class AttributeOptionController
     {
         $attribute = $this->findAttributeOr404($attributeId);
 
-        $attributeOption = $this->optionManager->createAttributeOption();
+        $attributeOption = $this->optionFactory->create();
         $attributeOption->setAttribute($attribute);
 
         //Should be replaced by a paramConverter
@@ -193,7 +198,7 @@ class AttributeOptionController
 
         $sorting = array_flip($data);
 
-        $this->attributeManager->updateSorting($attribute, $sorting);
+        $this->sorter->updateSorting($attribute, $sorting);
 
         return new JsonResponse();
     }
@@ -255,7 +260,7 @@ class AttributeOptionController
     protected function findAttributeOptionOr404($id)
     {
         try {
-            $result = $this->optionManager->getAttributeOption($id);
+            $result = $this->optionRepository->find($id);
         } catch (EntityNotFoundException $e) {
             throw new NotFoundHttpException($e->getMessage());
         }

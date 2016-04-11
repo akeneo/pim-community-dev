@@ -73,8 +73,6 @@ services:
     pim_datagrid.extension.mass_action.handler.product_delete:
         class: %pim_datagrid.extension.mass_action.handler.product_delete.class%
         parent: pim_datagrid.extension.mass_action.handler.delete
-        arguments:
-            - '@pim_catalog.manager.product'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: product_mass_delete }
 
@@ -107,6 +105,6 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.locale'
-            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.repository.currency'
             - '@pim_catalog.repository.association_type'
             - '@pim_catalog.context.catalog'

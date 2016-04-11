@@ -9,16 +9,16 @@ Feature: Export variant groups with localized values
     And the following variant group values:
       | group             | attribute       | value      |
       | caterpillar_boots | destocking_date | 1999-12-28 |
-    And the following job "footwear_variant_group_export" configuration:
+    And the following job "csv_footwear_variant_group_export" configuration:
       | filePath   | %tmp%/variant_group_export/variant_group_export.csv |
       | dateFormat | dd/MM/yyyy                                          |
     And I am logged in as "Julien"
-    And I am on the "footwear_variant_group_export" export job page
+    And I am on the "csv_footwear_variant_group_export" export job page
     When I launch the export job
-    And I wait for the "footwear_variant_group_export" job to finish
+    And I wait for the "csv_footwear_variant_group_export" job to finish
     Then I should see "lu 1"
     And I should see "écrit 1"
-    And exported file of "footwear_variant_group_export" should contain:
+    And exported file of "csv_footwear_variant_group_export" should contain:
       """
       code;axis;destocking_date;label-en_US;type
       caterpillar_boots;color,size;28/12/1999;"Caterpillar boots";VARIANT

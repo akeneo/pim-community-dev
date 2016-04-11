@@ -5,15 +5,15 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Doctrine\MongoDB\Query\Builder;
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 
 /**
  * Generate the completeness when Product are in MongoDBODM
@@ -67,7 +67,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     {
         $this->generate($product);
 
-        $this->documentManager->refresh($product);
+        if ($this->documentManager->contains($product)) {
+            $this->documentManager->refresh($product);
+        }
     }
 
     /**
@@ -326,7 +328,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     $shouldExistInLocale = !$attribute->isLocaleSpecific() || $attribute->hasLocaleSpecific($locale);
 
                     if ($shouldExistInLocale) {
-                        if (AbstractAttributeType::BACKEND_TYPE_PRICE === $attribute->getBackendType()) {
+                        if (AttributeTypes::BACKEND_TYPE_PRICE === $attribute->getBackendType()) {
                             $fields[$expectedCompleteness]['reqs']['prices'][$fieldName] = [];
                             foreach ($channel->getCurrencies() as $currency) {
                                 $fields[$expectedCompleteness]['reqs']['prices'][$fieldName][] = $currency->getCode();

@@ -21,7 +21,7 @@ services:
     pim_enrich.form.subscriber.attribute_requirements:
         class: %pim_enrich.form.subscriber.add_attribute_requirements.class%
         arguments:
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
 
     pim_enrich.form.subscriber.add_value_field_subscriber:
         class: %pim_enrich.form.subscriber.add_value_field_subscriber.class%

@@ -1,0 +1,6 @@
+Pim\Bundle\BaseConnectorBundle\Reader\ODMProductReader:
+    properties:
+        channel:
+            - NotBlank:
+                groups: [Execution]
+            - Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel: ~

@@ -12,8 +12,10 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Box\Spout\Common\Type;
+use Box\Spout\Reader\ReaderFactory;
 use Context\Spin\SpinCapableTrait;
-use Pim\Bundle\EnrichBundle\Mailer\MailRecorder;
+use Context\Spin\TimeoutException;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Component\Catalog\Model\Product;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -171,7 +173,7 @@ class WebUser extends RawMinkContext
      */
     public function iOpenTheHistory()
     {
-        $this->getCurrentPage()->openPanel('History');
+        $this->getCurrentPage()->getElement('Panel sidebar')->openPanel('History');
         $this->getMainContext()->executeScript("$('.panel-pane.history-panel').css({'height': '90%'});");
 
         $expandButton = $this->getMainContext()->spin(function () {
@@ -210,30 +212,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $panel
-     *
-     * @Given /^I open the "([^"]*)" panel$/
-     */
-    public function iOpenThePanel($panel)
-    {
-        $this->wait();
-        $this->getCurrentPage()->openPanel($panel);
-        $this->wait();
-    }
-
-    /**
-     * @param string $panel
-     *
-     * @Given /^I close the "([^"]*)" panel$/
-     */
-    public function iCloseThePanel($panel)
-    {
-        $this->wait();
-        $this->getCurrentPage()->closePanel($panel);
-        $this->wait();
-    }
-
-    /**
      * @param string $group
      *
      * @Given /^I visit the "([^"]*)" group$/
@@ -262,17 +240,6 @@ class WebUser extends RawMinkContext
     public function iClickOnTheACLRole($group)
     {
         $this->getCurrentPage()->selectRole($group);
-    }
-
-    /**
-     * @param string $association
-     *
-     * @Given /^I select the "([^"]*)" association$/
-     */
-    public function iSelectTheAssociation($association)
-    {
-        $this->getCurrentPage()->selectAssociation($association);
-        $this->wait();
     }
 
     /**
@@ -982,7 +949,12 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeARemoveLinkNextToTheField($not, $field)
     {
-        $removeLink = $this->getPage('Product edit')->getRemoveLinkFor($field);
+        try {
+            $removeLink = $this->getPage('Product edit')->getRemoveLinkFor($field);
+        } catch (TimeoutException $te) {
+            $removeLink = null;
+        }
+
         if ($not) {
             if ($removeLink) {
                 throw $this->createExpectationException(
@@ -1643,13 +1615,9 @@ class WebUser extends RawMinkContext
      */
     public function thereShouldBeUpdate($count)
     {
-        $historyRows = $this->spin(function () use ($count) {
-            return $this->getCurrentPage()->getHistoryRows();
-        });
-
-        if ((int) $count !== $actualCount = count($historyRows)) {
-            throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $actualCount));
-        }
+        $this->spin(function () use ($count) {
+            return (int) $count === count($this->getCurrentPage()->getHistoryRows());
+        }, sprintf('Expected %d updates, saw %d.', $count, count($this->getCurrentPage()->getHistoryRows())));
     }
 
     /**
@@ -1800,11 +1768,11 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I wait for the quick export to finish$/
+     * @Given /^I wait for the "([^"]*)" quick export to finish$/
      */
-    public function iWaitForTheQuickExportToFinish()
+    public function iWaitForTheQuickExportToFinish($code)
     {
-        $this->waitForMassEditJobToFinish('csv_product_quick_export');
+        $this->waitForMassEditJobToFinish($code);
     }
 
     /**

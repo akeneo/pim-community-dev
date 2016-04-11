@@ -56,6 +56,44 @@ pim_connector:
             title: Variant group import in CSV
             validation.title: File validation
             import.title: Variant group import
+        xlsx_product_export:
+            title: Product export in XLSX
+            export.title: Product export
+        xlsx_product_import:
+            title: Product import in XLSX
+            validation.title: File validation
+            import.title: Product import
+            import_associations.title: Association import
+        xlsx_group_export:
+            title: Group export in XLSX
+            export.title: Group export
+        xlsx_variant_group_export:
+            title: Variant group export in XLSX
+            export.title: Variant group export
+        xlsx_group_import:
+            title: Group import in XLSX
+            validation.title: File validation
+            import.title: Group import
+        xlsx_variant_group_import:
+            title: Variant group import in XLSX
+            validation.title: File validation
+            import.title: Variant Group import
+        xlsx_family_export:
+            title: Family export in XLSX
+            export.title: Family export
+        xlsx_category_export:
+            title: Category export in XLSX
+            export.title: Category export
+        xlsx_attribute_export:
+            title: Attribute export in XLSX
+            export.title: Attribute export in XLSX
+        xlsx_attribute_option_export:
+            title: Attribute option export in XLSX
+            export.title: Attribute option export in XLSX
+        xlsx_association_type_export:
+            title: Association type export in XLSX
+            export.title: Association type export in XLSX
+
     steps:
 
         dummy_reader.title:                  Dummy reader

@@ -2,40 +2,29 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Item\MassEdit;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
- * This step checks if there is no duplicate variant axis values between all products
- * in the user selection.
+ * Checks if there is no duplicate variant axis values between all products in the user selection.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupCleaner extends AbstractConfigurableStepElement implements StepExecutionAwareInterface
+class VariantGroupCleaner
 {
-    /** @var StepExecution */
-    protected $stepExecution;
-
-    /** @var JobConfigurationRepositoryInterface */
-    protected $jobConfigurationRepo;
-
     /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbFactory;
 
@@ -54,48 +43,40 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var SaverInterface */
-    protected $jobConfigurationSaver;
-
     /**
      * @param ProductQueryBuilderFactoryInterface   $pqbFactory
      * @param PaginatorFactoryInterface             $paginatorFactory
      * @param ObjectDetacherInterface               $objectDetacher
-     * @param JobConfigurationRepositoryInterface   $jobConfigurationRepo
      * @param IdentifiableObjectRepositoryInterface $groupRepository
      * @param ProductRepositoryInterface            $productRepository
      * @param TranslatorInterface                   $translator
-     * @param SaverInterface                        $jobConfigurationSaver
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PaginatorFactoryInterface $paginatorFactory,
         ObjectDetacherInterface $objectDetacher,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         IdentifiableObjectRepositoryInterface $groupRepository,
         ProductRepositoryInterface $productRepository,
-        TranslatorInterface $translator,
-        SaverInterface $jobConfigurationSaver
+        TranslatorInterface $translator
     ) {
         $this->pqbFactory           = $pqbFactory;
         $this->paginatorFactory     = $paginatorFactory;
         $this->objectDetacher       = $objectDetacher;
-        $this->jobConfigurationRepo = $jobConfigurationRepo;
         $this->groupRepository      = $groupRepository;
         $this->productRepository    = $productRepository;
         $this->translator           = $translator;
-        $this->jobConfigurationSaver = $jobConfigurationSaver;
     }
 
     /**
-     * @param array $configuration
+     * @param array         $configuration
+     * @param StepExecution $stepExecution
+     *
+     * @return array
      */
-    public function execute(array $configuration)
+    public function clean(array $configuration, StepExecution $stepExecution)
     {
         $actions = $configuration['actions'];
-
         $variantGroupCode = $actions['value'];
-
         $variantGroup = $this->groupRepository->findOneByIdentifier($variantGroupCode);
 
         $axisAttributeCodes = $this->getAxisAttributeCodes($variantGroup);
@@ -105,53 +86,22 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
         list($productAttributeAxis, $acceptedIds) = $this->filterDuplicateAxisCombinations(
+            $stepExecution,
             $paginator,
             $eligibleProductIds,
             $axisAttributeCodes
         );
 
-        $excludedIds = $this->addSkippedMessageForDuplicatedProducts($productAttributeAxis);
+        $excludedIds = $this->addSkippedMessageForDuplicatedProducts($stepExecution, $productAttributeAxis);
         $acceptedIds = array_diff($acceptedIds, $excludedIds);
 
         $configuration['filters'] = [['field' => 'id', 'operator' => 'IN', 'value' => $acceptedIds]];
 
         if (0 === count($acceptedIds)) {
-            $configuration = null;
+            return null;
         }
 
-        $this->setJobConfiguration(json_encode($configuration));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
-
-    /**
-     * Save the job configuration
-     *
-     * @param string $configuration
-     */
-    protected function setJobConfiguration($configuration)
-    {
-        $jobExecution    = $this->stepExecution->getJobExecution();
-        $massEditJobConf = $this->jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution]);
-        $massEditJobConf->setConfiguration($configuration);
-
-        $this->jobConfigurationSaver->save($massEditJobConf);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
-
-        return $this;
+        return $configuration;
     }
 
     /**
@@ -202,36 +152,11 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
     }
 
     /**
-     * @param ConstraintViolationListInterface $violations
-     * @param ProductInterface                 $product
-     */
-    protected function addWarningMessage($violations, $product)
-    {
-        foreach ($violations as $violation) {
-            // TODO re-format the message, property path doesn't exist for class constraint
-            // for instance cf VariantGroupAxis
-            $invalidValue = $violation->getInvalidValue();
-            if (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
-                $invalidValue = (string) $invalidValue;
-            } elseif (is_object($invalidValue)) {
-                $invalidValue = get_class($invalidValue);
-            }
-            $errors = sprintf(
-                "%s: %s: %s\n",
-                $violation->getPropertyPath(),
-                $violation->getMessage(),
-                $invalidValue
-            );
-            $this->stepExecution->addWarning($this->getName(), $errors, [], $product);
-        }
-    }
-
-    /**
      * @param GroupInterface $variantGroup
      *
      * @return array
      */
-    protected function getAxisAttributeCodes($variantGroup)
+    protected function getAxisAttributeCodes(GroupInterface $variantGroup)
     {
         $axisAttributes = $variantGroup->getAxisAttributes();
 
@@ -315,11 +240,12 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
     /**
      * Add a warning message to the skipped products
      *
-     * @param array $productAttributeAxis
+     * @param StepExecution $stepExecution
+     * @param array         $productAttributeAxis
      *
      * @return array
      */
-    protected function addSkippedMessageForDuplicatedProducts(array $productAttributeAxis)
+    protected function addSkippedMessageForDuplicatedProducts(StepExecution $stepExecution, array $productAttributeAxis)
     {
         $excludedIds = $this->getExcludedProductIds($productAttributeAxis);
         if (!empty($excludedIds)) {
@@ -328,8 +254,8 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
 
             foreach ($paginator as $productsPage) {
                 foreach ($productsPage as $product) {
-                    $this->stepExecution->incrementSummaryInfo('skipped_products');
-                    $this->stepExecution
+                    $stepExecution->incrementSummaryInfo('skipped_products');
+                    $stepExecution
                         ->addWarning(
                             'duplicated',
                             $this->translator->trans('add_to_variant_group.steps.cleaner.warning.description'),
@@ -349,6 +275,7 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
      * It checks it products is in eligible products for the variant group and
      * build the array based on variant axis and product ids.
      *
+     * @param StepExecution      $stepExecution
      * @param PaginatorInterface $paginator
      * @param array              $eligibleProductIds
      * @param array              $axisAttributeCodes
@@ -356,6 +283,7 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
      * @return array
      */
     protected function filterDuplicateAxisCombinations(
+        StepExecution $stepExecution,
         PaginatorInterface $paginator,
         array $eligibleProductIds,
         array $axisAttributeCodes
@@ -373,8 +301,8 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
                         $keyCombination
                     );
                 } else {
-                    $this->stepExecution->incrementSummaryInfo('skipped_products');
-                    $this->stepExecution
+                    $stepExecution->incrementSummaryInfo('skipped_products');
+                    $stepExecution
                         ->addWarning(
                             'excluded',
                             $this->translator->trans(
