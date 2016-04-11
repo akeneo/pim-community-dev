@@ -27,15 +27,15 @@ class LocaleSubscriber implements EventSubscriberInterface
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var EntityManager|null */
+    /** @var EntityManager */
     protected $em;
 
     /**
      * @param RequestStack        $requestStack
      * @param TranslatorInterface $translator
-     * @param EntityManager|null  $em
+     * @param EntityManager       $em
      */
-    public function __construct(RequestStack $requestStack, TranslatorInterface $translator, EntityManager $em = null)
+    public function __construct(RequestStack $requestStack, TranslatorInterface $translator, EntityManager $em)
     {
         $this->requestStack = $requestStack;
         $this->translator   = $translator;
@@ -96,12 +96,9 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     protected function getLocaleFromOroConfigValue()
     {
-        $locale = null;
-        if (null !== $this->em) {
-            $locale = $this->em
-                ->getRepository('OroConfigBundle:ConfigValue')
-                ->getSectionForEntityAndScope('pim_localization', 'app', 0);
-        }
+        $locale = $this->em
+            ->getRepository('OroConfigBundle:ConfigValue')
+            ->getSectionForEntityAndScope('pim_localization', 'app', 0);
 
         return null === $locale ? null : $locale->getValue();
     }
