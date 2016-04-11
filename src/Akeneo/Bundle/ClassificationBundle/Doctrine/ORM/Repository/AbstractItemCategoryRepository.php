@@ -69,29 +69,6 @@ abstract class AbstractItemCategoryRepository implements
     /**
      * {@inherit}
      */
-    public function getItemIdsInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null)
-    {
-        $qb = $this->em->createQueryBuilder();
-        $qb->select('DISTINCT a.id');
-        $qb->from($this->entityName, 'a', 'a.id');
-        $qb->join('a.categories', 'node');
-
-        if (null === $categoryQb) {
-            $qb->where('node.id = :nodeId');
-            $qb->setParameter('nodeId', $category->getId());
-        } else {
-            $qb->where($categoryQb->getDqlPart('where'));
-            $qb->setParameters($categoryQb->getParameters());
-        }
-
-        $assets = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
-
-        return array_keys($assets);
-    }
-
-    /**
-     * {@inherit}
-     */
     public function getItemsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null)
     {
         $qb = $this->em->createQueryBuilder();

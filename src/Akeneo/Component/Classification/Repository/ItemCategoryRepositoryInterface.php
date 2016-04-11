@@ -20,22 +20,10 @@ interface ItemCategoryRepositoryInterface
      * @param mixed $item The item to look for in the trees
      *
      * @throws \InvalidArgumentException If the $item belongs to a class we don't handle
-     * @return array Each row of the array has the format:'tree'=>treeObject, 'itemCount'=>integer
      *
+     * @return array Each row of the array has the format:'tree'=>treeObject, 'itemCount'=>integer
      */
     public function getItemCountByTree($item);
-
-    /**
-     * Get item ids linked to a category or its children.
-     * You can define if you just want to get the property of the actual node or with its children with the direct
-     * parameter
-     *
-     * @param CategoryInterface $category   the requested node
-     * @param QueryBuilder      $categoryQb category query builder
-     *
-     * @return array
-     */
-    public function getItemIdsInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
 
     /**
      * Count items linked to a node.

@@ -5,7 +5,6 @@ namespace Akeneo\Bundle\ClassificationBundle\Doctrine\Mongo\Repository;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
@@ -115,18 +114,6 @@ abstract class AbstractItemCategoryRepository implements
         }
 
         return $trees;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemIdsInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
-    {
-        $categoryIds = $this->getCategoryIds($category, $categoryQb);
-
-        $items = $this->getItemIdsInCategories($categoryIds);
-
-        return array_keys(iterator_to_array($items));
     }
 
     /**
