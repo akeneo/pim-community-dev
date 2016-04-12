@@ -8,3 +8,9 @@ services:
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.attribute.class%
             - %pimee_security.entity.attribute_group_access.class%
+
+    pimee_enrich.repository.asset_category_choices:
+        class: %pim_enrich.repository.category_choices.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - %pimee_product_asset.model.category.class%
