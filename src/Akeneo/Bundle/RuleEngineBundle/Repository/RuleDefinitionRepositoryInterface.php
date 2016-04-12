@@ -12,6 +12,7 @@
 namespace Akeneo\Bundle\RuleEngineBundle\Repository;
 
 use Akeneo\Bundle\RuleEngineBundle\Doctrine\ORM\QueryBuilder\RuleQueryBuilder;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
@@ -25,7 +26,7 @@ interface RuleDefinitionRepositoryInterface extends IdentifiableObjectRepository
     /**
      * Retrieve all rule ordered by priority
      *
-     * @return \Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface[]
+     * @return RuleDefinitionInterface[]
      */
     public function findAllOrderedByPriority();
 

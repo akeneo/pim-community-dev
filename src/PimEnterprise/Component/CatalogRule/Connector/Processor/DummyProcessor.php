@@ -1,8 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2016 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Component\CatalogRule\Connector\Processor;
 
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Don't do anything.
@@ -11,11 +21,38 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
  */
 class DummyProcessor implements ItemProcessorInterface
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $productRepository;
+
+    /**
+     * @param IdentifiableObjectRepositoryInterface $productRepository
+     */
+    public function __construct(IdentifiableObjectRepositoryInterface $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function process($item)
     {
-        return $item['sku'];
+        return $this->productRepository->findOneByIdentifier($this->getIdentifier($item));
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return string
+     */
+    protected function getIdentifier(array $item)
+    {
+        $identifierProperties = $this->productRepository->getIdentifierProperties();
+
+        if (!isset($item[$identifierProperties[0]])) {
+            throw new \RuntimeException(sprintf('Identifier property "%s" is expected', $identifierProperties[0]));
+        }
+
+        return $item[$identifierProperties[0]];
     }
 }
