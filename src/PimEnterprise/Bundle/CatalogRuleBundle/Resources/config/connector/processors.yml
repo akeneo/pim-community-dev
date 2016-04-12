@@ -4,6 +4,8 @@ parameters:
     # export rules
     pimee_catalog_rule.processor.normalization.rule_definition.class: PimEnterprise\Component\CatalogRule\Connector\Processor\Normalization\RuleDefinitionProcessor
 
+    pimee_catalog_rule.processor.dummy.class: PimEnterprise\Component\CatalogRule\Connector\Processor\DummyProcessor
+
 services:
     # import rules
     pimee_catalog_rule.processor.denormalization.rule_definition:
@@ -23,3 +25,7 @@ services:
             - '@pim_serializer'
             - '@pim_catalog.repository.locale'
             - '@akeneo_rule_engine.normalizer.rule'
+
+    # apply rules
+    pimee_catalog_rule.processor.dummy_processor:
+        class: %pimee_catalog_rule.processor.dummy.class%

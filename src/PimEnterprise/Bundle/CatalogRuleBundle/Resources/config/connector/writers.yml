@@ -4,6 +4,8 @@ parameters:
     # export rules
     pimee_catalog_rule.writer.yaml_file.rule_definition.class: PimEnterprise\Component\CatalogRule\Connector\Writer\YamlFile\RuleDefinitionWriter
 
+    pimee_catalog_rule.writer.apply_rules.class: PimEnterprise\Component\CatalogRule\Connector\Writer\RuleApplier
+
 services:
     # import rules
     pimee_catalog_rule.writer.doctrine.rule_definition:
@@ -14,3 +16,6 @@ services:
     # export rules
     pimee_catalog_rule.writer.yaml_file.rule_definition:
         class: %pimee_catalog_rule.writer.yaml_file.rule_definition.class%
+
+    pimee_catalog_rule.writer.apply_rules:
+        class: %pimee_catalog_rule.writer.apply_rules.class%

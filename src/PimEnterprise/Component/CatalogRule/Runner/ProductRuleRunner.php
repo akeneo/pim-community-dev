@@ -15,8 +15,8 @@ use Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
-use PimEnterprise\Component\CatalogRule\Model\ProductConditionInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -108,7 +108,7 @@ class ProductRuleRunner implements DryRunnerInterface
      * @param RuleDefinitionInterface $definition
      * @param array                   $options
      *
-     * @return \Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface
+     * @return RuleInterface
      */
     protected function loadRule(RuleDefinitionInterface $definition, array $options)
     {
