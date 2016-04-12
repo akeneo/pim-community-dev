@@ -108,11 +108,11 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $this->getSession()->getPage()->fillField('_username', $username);
         $this->getSession()->getPage()->fillField('_password', $username);
 
-        $this->getSession()->getPage()->pressButton('Log in');
+        $this->getSession()->getPage()->find('css', '.form-signin button')->press();
 
         $this->spin(function () {
             return $this->getSession()->getPage()->find('css', '.version-container');
-        }, "Spining for login with $username");
+        }, sprintf('Spining for login with %s', $username));
     }
 
     /**

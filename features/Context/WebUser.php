@@ -1405,7 +1405,9 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeTheButton($button)
     {
-        $this->getCurrentPage()->getButton($button);
+        $this->getMainContext()->spin(function () use ($button) {
+            return $this->getCurrentPage()->getButton($button);
+        }, sprintf("Can not find any '%s' button", $button));
     }
 
     /**
