@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\CatalogRule\Connector\Processor;
 
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
@@ -19,7 +20,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class DummyProcessor implements ItemProcessorInterface
+class DummyProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $productRepository;
@@ -54,5 +55,13 @@ class DummyProcessor implements ItemProcessorInterface
         }
 
         return $item[$identifierProperties[0]];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return [];
     }
 }

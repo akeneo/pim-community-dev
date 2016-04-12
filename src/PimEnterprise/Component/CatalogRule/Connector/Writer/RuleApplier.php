@@ -13,6 +13,7 @@ namespace PimEnterprise\Component\CatalogRule\Connector\Writer;
 
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -21,13 +22,13 @@ use Pim\Component\Catalog\Model\ProductInterface;
  *
  * @package PimEnterprise\Component\CatalogRule\Connector\Writer
  */
-class RuleApplier implements ItemWriterInterface
+class RuleApplier extends AbstractConfigurableStepElement implements ItemWriterInterface
 {
-    /** @var RuleDefinitionRepositoryInterface */
-    private $ruleRepository;
-
     /** @var RunnerInterface */
     private $runner;
+
+    /** @var RuleDefinitionRepositoryInterface */
+    private $ruleRepository;
 
     /**
      * @param RunnerInterface                   $runner
@@ -66,5 +67,13 @@ class RuleApplier implements ItemWriterInterface
                 $this->runner->run($ruleDefinition, ['selected_products' => $productIds]);
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return [];
     }
 }

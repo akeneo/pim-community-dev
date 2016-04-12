@@ -26,6 +26,8 @@ services:
             - '@pim_catalog.repository.locale'
             - '@akeneo_rule_engine.normalizer.rule'
 
-    # apply rules
+    # rule applier
     pimee_catalog_rule.processor.dummy_processor:
         class: %pimee_catalog_rule.processor.dummy.class%
+        arguments:
+            - '@pim_catalog.repository.product'
