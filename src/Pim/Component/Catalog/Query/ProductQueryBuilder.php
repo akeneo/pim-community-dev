@@ -195,7 +195,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     protected function addFieldFilter(FieldFilterInterface $filter, $field, $operator, $value, array $context)
     {
         $filter->setQueryBuilder($this->getQueryBuilder());
-        $filter->addFieldFilter($field, $operator, $value, $context['locale'], $context['scope']);
+        $filter->addFieldFilter($field, $operator, $value, $context['locale'], $context['scope'], $context);
 
         return $this;
     }
