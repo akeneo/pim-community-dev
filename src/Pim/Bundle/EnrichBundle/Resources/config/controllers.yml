@@ -178,7 +178,6 @@ services:
             - '@pim_user.context.user'
             - '@pim_versioning.manager.version'
             - '@oro_security.security_facade'
-            - '@pim_catalog.manager.product_category'
             - '@pim_catalog.saver.product'
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.builder.product'
