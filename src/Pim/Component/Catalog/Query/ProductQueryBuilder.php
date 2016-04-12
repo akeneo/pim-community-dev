@@ -105,28 +105,28 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFilter($field, $operator, $value, array $context = [])
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => FieldFilterHelper::getCode($field)]);
+        $attribute = $this->attributeRepository->findOneByIdentifier(FieldFilterHelper::getCode($field));
 
-        if ($attribute !== null) {
+        if (null !== $attribute) {
             $filter = $this->filterRegistry->getAttributeFilter($attribute);
         } else {
             $filter = $this->filterRegistry->getFieldFilter($field);
         }
 
-        if ($filter === null) {
+        if (null === $filter) {
             throw new \LogicException(
                 sprintf('Filter on field "%s" is not supported', $field)
             );
         }
 
-        if ($filter->supportsOperator($operator) === false) {
+        if (!$filter->supportsOperator($operator)) {
             throw new \LogicException(
                 sprintf('Filter on field "%s" doesn\'t provide operator "%s"', $field, $operator)
             );
         }
 
         $context = $this->getFinalContext($context);
-        if ($attribute !== null) {
+        if (null !== $attribute) {
             $context['field'] = $field;
 
             $this->addAttributeFilter($filter, $attribute, $operator, $value, $context);
@@ -151,20 +151,20 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     {
         $attribute = $this->attributeRepository->findOneBy(['code' => $field]);
 
-        if ($attribute !== null) {
+        if (null !== $attribute) {
             $sorter = $this->sorterRegistry->getAttributeSorter($attribute);
         } else {
             $sorter = $this->sorterRegistry->getFieldSorter($field);
         }
 
-        if ($sorter === null) {
+        if (null === $sorter) {
             throw new \LogicException(
                 sprintf('Sorter on field "%s" is not supported', $field)
             );
         }
 
         $context = $this->getFinalContext($context);
-        if ($attribute !== null) {
+        if (null !== $attribute) {
             $this->addAttributeSorter($sorter, $attribute, $direction, $context);
         } else {
             $this->addFieldSorter($sorter, $field, $direction, $context);
