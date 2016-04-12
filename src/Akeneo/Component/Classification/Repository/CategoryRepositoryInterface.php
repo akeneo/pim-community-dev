@@ -66,17 +66,20 @@ interface CategoryRepositoryInterface extends
      * @param bool              $includeNode true to include actual node in query result
      *
      * @return QueryBuilder
+     *
+     * @deprecated will be removed in 1.7
      */
     public function getAllChildrenQueryBuilder(CategoryInterface $category, $includeNode = false);
 
     /**
      * Shortcut to get all children ids
      *
-     * @param CategoryInterface $parent the parent
+     * @param CategoryInterface $parent      the parent
+     * @param bool              $includeNode true to include actual node in query result
      *
      * @return integer[]
      */
-    public function getAllChildrenIds(CategoryInterface $parent);
+    public function getAllChildrenIds(CategoryInterface $parent, $includeNode = false);
 
     /**
      * Get children from a parent id

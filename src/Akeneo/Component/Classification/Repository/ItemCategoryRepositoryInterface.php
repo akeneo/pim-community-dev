@@ -2,9 +2,6 @@
 
 namespace Akeneo\Component\Classification\Repository;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
-use Doctrine\ORM\QueryBuilder;
-
 /**
  * Item category repository interface
  *
@@ -26,15 +23,11 @@ interface ItemCategoryRepositoryInterface
     public function getItemCountByTree($item);
 
     /**
-     * Count items linked to a node.
-     * You can define if you just want to get the property of the actual node
-     * or with its children with the direct parameter
-     * The third parameter allow to include the actual node or not
+     * Count items linked to category ids
      *
-     * @param CategoryInterface $category   the requested category node
-     * @param QueryBuilder      $categoryQb category query buider
+     * @param array $categoryIds
      *
      * @return int
      */
-    public function getItemsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
+    public function getItemsCountInCategory(array $categoryIds = []);
 }

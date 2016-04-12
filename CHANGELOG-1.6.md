@@ -24,6 +24,7 @@
 
 ## BC breaks
 
+- Replace the last parameter `Doctrine\ORM\QueryBuilder $categoryQb` by `array $categoryIds` in `Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface::getItemsCountInCategory()`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\FamilyController`. Add Symfony validator.
 - Change constructor of `Pim\Component\Connector\Reader\File\CsvReader`. Add `Pim\Component\Connector\Reader\File\FileIteratorFactory`.
 - Move `Pim\Component\Connector\Reader\File\CsvProductReader` to `Pim\Component\Connector\Reader\File\Product\CsvProductReader`

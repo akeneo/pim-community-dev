@@ -38,7 +38,7 @@ abstract class AbstractItemCategoryRepository implements
     }
 
     /**
-     * {@inherit}
+     * {@inheritdoc}
      */
     public function getItemCountByTree($item)
     {
@@ -67,24 +67,24 @@ abstract class AbstractItemCategoryRepository implements
     }
 
     /**
-     * {@inherit}
+     * {@inheritdoc}
      */
-    public function getItemsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null)
+    public function getItemsCountInCategory(array $categoryIds = [])
     {
-        $qb = $this->em->createQueryBuilder();
-        $qb->select($qb->expr()->count('distinct i'));
-        $qb->from($this->entityName, 'i');
-        $qb->join('i.categories', 'node');
-
-        if (null === $categoryQb) {
-            $qb->where('node.id = :nodeId');
-            $qb->setParameter('nodeId', $category->getId());
-        } else {
-            $qb->where($categoryQb->getDqlPart('where'));
-            $qb->setParameters($categoryQb->getParameters());
+        if (empty($categoryIds)) {
+            return 0;
         }
 
-        return $qb->getQuery()->getSingleScalarResult();
+        $qb = $this->em->createQueryBuilder();
+
+        return $qb
+            ->select($qb->expr()->count('distinct i'))
+            ->from($this->entityName, 'i')
+            ->join('i.categories', 'node')
+            ->where('node.id IN (:categoryIds)')
+            ->setParameter('categoryIds', $categoryIds)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**

@@ -124,9 +124,9 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getAllChildrenIds(CategoryInterface $parent)
+    public function getAllChildrenIds(CategoryInterface $parent, $includeNode = false)
     {
-        $categoryQb = $this->getAllChildrenQueryBuilder($parent);
+        $categoryQb = $this->getAllChildrenQueryBuilder($parent, $includeNode);
         $rootAlias  = current($categoryQb->getRootAliases());
         $rootEntity = current($categoryQb->getRootEntities());
         $categoryQb->select($rootAlias.'.id');
