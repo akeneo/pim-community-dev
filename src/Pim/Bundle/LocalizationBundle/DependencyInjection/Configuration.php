@@ -21,19 +21,31 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-
-        $treeBuilder
+        $rootNode = $treeBuilder
             ->root('pim_localization')
-            ->children()
-                ->arrayNode('settings')
                 ->children()
                     ->arrayNode('language')
                     ->children()
-                        ->scalarNode('value')->defaultNull()->end()
+                        ->scalarNode('value')->defaultValue('en')->end()
                         ->scalarNode('scope')->defaultValue('app')->end()
                     ->end()
                 ->end()
             ->end();
+
+        $builder = new TreeBuilder();
+        $node    = $builder
+            ->root('settings')
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->arrayNode('language')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('value')->defaultValue('en')->end()
+                    ->scalarNode('scope')->defaultValue('app')->end()
+                ->end()
+            ->end();
+
+        $rootNode->children()->append($node->end());
 
         return $treeBuilder;
     }
