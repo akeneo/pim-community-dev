@@ -83,14 +83,19 @@ class ScopeFilter extends ChoiceFilter
 
         $defaultScope = $this->userContext->getUserChannel();
 
-        $metadata['populateDefault'] = true;
-        $metadata['placeholder']     = $defaultScope->getLabel();
-        $metadata['choices']         = array_filter(
-            $metadata['choices'],
-            function ($choice) use ($defaultScope) {
-                return $choice['value'] !== $defaultScope->getCode();
-            }
-        );
+        $metadata['populateDefault'] = false;
+
+        $defaultScopeIndex = 0;
+
+        foreach ($metadata['choices'] as $choiceKey => $choice) {
+            $defaultScopeIndex = ($choice['value'] === $defaultScope->getCode()) ? $choiceKey : $defaultScopeIndex;
+        }
+
+        if (!empty($defaultScopeIndex)) {
+            $temporaryElement = $metadata['choices'][$defaultScopeIndex];
+            unset($metadata['choices'][$defaultScopeIndex]);
+            array_unshift($metadata['choices'], $temporaryElement);
+        }
 
         return $metadata;
     }
