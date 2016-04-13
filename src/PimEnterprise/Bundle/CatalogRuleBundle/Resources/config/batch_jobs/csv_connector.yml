@@ -28,7 +28,7 @@ connector:
                     title:         pimee_catalog_rule.steps.rules_execution.title
                     services:
                         reader:    pim_connector.reader.file.csv_product
-                        processor: pimee_catalog_rule.processor.product_loader_processor
+                        processor: pimee_catalog_rule.processor.product_loader
                         writer:    pimee_catalog_rule.executor.rules
                     parameters:
                         batch_size: 100

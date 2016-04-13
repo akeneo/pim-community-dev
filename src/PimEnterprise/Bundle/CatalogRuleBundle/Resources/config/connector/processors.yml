@@ -27,7 +27,7 @@ services:
             - '@akeneo_rule_engine.normalizer.rule'
 
     # product loader
-    pimee_catalog_rule.processor.product_loader_processor:
+    pimee_catalog_rule.processor.product_loader:
         class: %pimee_catalog_rule.processor.product_loader.class%
         arguments:
             - '@pim_catalog.repository.product'

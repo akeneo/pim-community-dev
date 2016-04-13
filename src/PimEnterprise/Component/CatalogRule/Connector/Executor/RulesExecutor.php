@@ -38,8 +38,8 @@ class RulesExecutor extends AbstractConfigurableStepElement implements ItemWrite
         RunnerInterface $runner,
         RuleDefinitionRepositoryInterface $ruleRepository
     ) {
-        $this->ruleRepository = $ruleRepository;
         $this->runner         = $runner;
+        $this->ruleRepository = $ruleRepository;
     }
 
     /**
@@ -49,7 +49,6 @@ class RulesExecutor extends AbstractConfigurableStepElement implements ItemWrite
      */
     public function write(array $products)
     {
-        $ruleDefinitions = $this->ruleRepository->findAllOrderedByPriority();
         $productIds = array_reduce(
             $products,
             function ($carry, ProductInterface $product) {
@@ -63,6 +62,8 @@ class RulesExecutor extends AbstractConfigurableStepElement implements ItemWrite
         );
 
         if (!empty($productIds)) {
+            $ruleDefinitions = $this->ruleRepository->findAllOrderedByPriority();
+
             foreach ($ruleDefinitions as $ruleDefinition) {
                 $this->runner->run($ruleDefinition, ['selected_products' => $productIds]);
             }

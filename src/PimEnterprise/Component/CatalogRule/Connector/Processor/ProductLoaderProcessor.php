@@ -44,6 +44,8 @@ class ProductLoaderProcessor extends AbstractConfigurableStepElement implements 
     /**
      * @param array $item
      *
+     * @throws \RuntimeException
+     *
      * @return string
      */
     protected function getIdentifier(array $item)
