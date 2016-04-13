@@ -23,27 +23,48 @@ Feature: Import products with rules
             locale: fr_FR
             scope: tablet
       """
-    And the following CSV file to import:
+
+  Scenario: Successfully update product and apply rule
+    Given the following CSV file to import:
       """
       sku;family;categories;description-fr_FR-tablet
       SKU-001;tees;tees;a description
       """
-    And the following job "clothing_product_import_with_rules" configuration:
+    And the following job "csv_clothing_product_import_with_rules" configuration:
       | filePath | %file to import% |
-
-  Scenario: Successfully update product and apply rule
-    Given the following products:
+    And the following products:
       | sku     | family | categories | description-fr_FR-tablet |
       | SKU-001 | tees   | tees       | a description            |
-    Given I am on the "clothing_product_import_with_rules" import job page
+    Given I am on the "csv_clothing_product_import_with_rules" import job page
     When I launch the import job
-    And I wait for the "clothing_product_import_with_rules" job to finish
+    And I wait for the "csv_clothing_product_import_with_rules" job to finish
     Then there should be 1 product
     And the french tablet description of "SKU-001" should be "an other description"
 
-  Scenario: Successfully add new product and apply rule
-    Given I am on the "clothing_product_import_with_rules" import job page
+  Scenario: Successfully add new product and apply rule with CSV
+    Given the following CSV file to import:
+      """
+      sku;family;categories;description-fr_FR-tablet
+      SKU-001;tees;tees;a description
+      """
+    And the following job "csv_clothing_product_import_with_rules" configuration:
+      | filePath | %file to import% |
+    And I am on the "csv_clothing_product_import_with_rules" import job page
     When I launch the import job
-    And I wait for the "clothing_product_import_with_rules" job to finish
+    And I wait for the "csv_clothing_product_import_with_rules" job to finish
+    Then there should be 1 product
+    And the french tablet description of "SKU-001" should be "an other description"
+
+  Scenario: Successfully add new product and apply rule with XLSX
+    Given the following XLSX file to import:
+      """
+      sku;family;categories;description-fr_FR-tablet
+      SKU-001;tees;tees;a description
+      """
+    And the following job "xlsx_clothing_product_import_with_rules" configuration:
+      | filePath | %file to import% |
+    When I am on the "xlsx_clothing_product_import_with_rules" import job page
+    And I launch the import job
+    And I wait for the "xlsx_clothing_product_import_with_rules" job to finish
     Then there should be 1 product
     And the french tablet description of "SKU-001" should be "an other description"

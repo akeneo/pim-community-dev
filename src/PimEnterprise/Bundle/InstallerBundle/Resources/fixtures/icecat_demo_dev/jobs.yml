@@ -33,7 +33,22 @@ jobs:
             familyColumn:       family
             groupsColumn:       groups
             realTimeVersioning: true
-            decimalSeparator: .
+            decimalSeparator:   .
+            dateFormat: yyyy-MM-dd
+    xlsx_clothing_product_import_with_rules:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_import_with_rules
+        label:     XLSX Demo product import with rules
+        type:      import
+        configuration:
+            filePath:           /tmp/product.xlsx
+            uploadAllowed:      true
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator:   .
             dateFormat: yyyy-MM-dd
     csv_product_export:
         connector: Akeneo Product CSV Connector

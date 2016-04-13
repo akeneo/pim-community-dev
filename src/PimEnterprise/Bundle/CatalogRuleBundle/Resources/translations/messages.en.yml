@@ -78,6 +78,8 @@ pimee_catalog_rule:
             title:        Matching products for the rules
         csv_product_import_with_rules:
             title:        Product import in CSV with rules
+        xlsx_product_import_with_rules:
+            title:        Product import in XLSX with rules
     steps:
         product_rule_definition_reader.title: Product rule import reader
         rule_definition_processor.title:      Product rule import processor
