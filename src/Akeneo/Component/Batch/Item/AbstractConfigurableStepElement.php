@@ -8,14 +8,16 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 /**
  * Define a configurable step element
  *
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/MIT MIT
+ *
  * @abstract
  */
-abstract class AbstractConfigurableStepElement
+abstract class AbstractConfigurableStepElement implements StepElementInterface, InitializableInterface,
+    FlushableInterface
 {
     /**
-     * Return name
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -29,14 +31,14 @@ abstract class AbstractConfigurableStepElement
     }
 
     /**
-     * Override to add custom logic on step initialization.
+     * {@inheritdoc}
      */
     public function initialize()
     {
     }
 
     /**
-     * Override to add custom logic on step completion.
+     * {@inheritdoc}
      */
     public function flush()
     {

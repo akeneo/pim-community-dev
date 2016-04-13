@@ -3,6 +3,8 @@
 namespace Akeneo\Component\Batch\Step;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\FlushableInterface;
+use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
@@ -155,7 +157,7 @@ class ItemStep extends AbstractStep
             if ($element instanceof StepExecutionAwareInterface) {
                 $element->setStepExecution($stepExecution);
             }
-            if (method_exists($element, 'initialize')) {
+            if ($element instanceof InitializableInterface) {
                 $element->initialize();
             }
         }
@@ -167,10 +169,20 @@ class ItemStep extends AbstractStep
     public function flushStepElements()
     {
         foreach ($this->getStepElements() as $element) {
-            if (method_exists($element, 'flush')) {
+            if ($element instanceof FlushableInterface) {
                 $element->flush();
             }
         }
+    }
+
+    /**
+     * @deprected will be removed in 1.7
+     *
+     * @return array
+     */
+    public function getConfigurableStepElements()
+    {
+        return $this->getStepElements();
     }
 
     /**
