@@ -1,5 +1,11 @@
 # 1.4.x
 
+## Scalability improvements
+- PIM-5507 : Memory leak during mass edit attributes, mass publish
+ 
+## BC Breaks
+- Changed constructor `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor`
+
 # 1.4.22 (2016-03-23)
 
 # 1.4.21 (2016-03-07)
