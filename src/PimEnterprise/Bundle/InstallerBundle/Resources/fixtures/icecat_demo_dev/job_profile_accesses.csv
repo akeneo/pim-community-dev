@@ -48,6 +48,11 @@ xlsx_published_product_quick_export;All;
 rule_impacted_product_count;All;
 xlsx_product_import;IT support,Manager,Redactor;IT support,Manager
 xlsx_product_proposal_import;IT support,Manager,Redactor;IT support,Manager
+xlsx_category_import;IT support,Manager,Redactor;IT support,Manager
+xlsx_association_type_import;IT support,Manager,Redactor;IT support
+xlsx_attribute_import;IT support,Manager,Redactor;IT support,Manager
+xlsx_option_import;IT support,Manager,Redactor;IT support,Manager
+xlsx_family_import;IT support,Manager,Redactor;IT support,Manager
 xlsx_variant_group_export;All;All
 xlsx_group_export;All;All
 xlsx_group_import;IT support,Manager,Redactor;IT support

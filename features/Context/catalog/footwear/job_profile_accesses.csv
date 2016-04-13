@@ -32,6 +32,11 @@ xlsx_footwear_product_import;IT support,Manager,Redactor;IT support,Manager,Reda
 xlsx_footwear_product_import_fr;IT support,Manager,Redactor;IT support,Manager,Redactor
 xlsx_footwear_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor
 xlsx_footwear_variant_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor
+xlsx_footwear_category_import;IT support,Manager,Redactor;IT support,Manager,Redactor
+xlsx_footwear_association_type_import;IT support,Manager,Redactor;IT support,Manager,Redactor
+xlsx_footwear_attribute_import;IT support,Manager,Redactor;IT support,Manager,Redactor
+xlsx_footwear_option_import;IT support,Manager,Redactor;IT support,Manager,Redactor
+xlsx_footwear_family_import;IT support,Manager,Redactor;IT support,Manager,Redactor
 xlsx_product_quick_export;IT support,Manager,Redactor;
 xlsx_published_product_quick_export;IT support,Manager,Redactor;
 xlsx_footwear_association_type_export;IT support,Manager,Redactor;IT support,Manager,Redactor
