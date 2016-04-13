@@ -3,6 +3,9 @@
 namespace Akeneo\Bundle\BatchBundle\Command;
 
 use Akeneo\Component\Batch\Job\ExitStatus;
+use Akeneo\Component\Batch\Job\Job;
+use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -68,6 +71,7 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         $code = $input->getArgument('code');
+        /** @var JobInstance */
         $jobInstance = $this->getJobManager()->getRepository('Akeneo\Component\Batch\Model\JobInstance')->findOneByCode($code);
         if (!$jobInstance) {
             throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
@@ -76,11 +80,11 @@ class BatchCommand extends ContainerAwareCommand
         $job = $this->getConnectorRegistry()->getJob($jobInstance);
         $jobInstance->setJob($job);
 
-        // Override job configuration
         if ($config = $input->getOption('config')) {
-            $job->setConfiguration(
-                $this->decodeConfiguration($config)
-            );
+            $rawConfiguration = $this->decodeConfiguration($config);
+            $jobParameters = new JobParameters($rawConfiguration);
+        } else {
+            $jobParameters = new JobParameters($jobInstance->getRawConfiguration());
         }
 
         $validator = $this->getValidator();
@@ -103,7 +107,7 @@ class BatchCommand extends ContainerAwareCommand
         $defaultJobInstance = $this->getDefaultEntityManager()->merge($jobInstance);
         $defaultJobInstance->setJob($job);
 
-        $errors = $validator->validate($defaultJobInstance, array('Default', 'Execution'));
+        $errors = []; // TODO $validator->validate($defaultJobInstance, array('Default', 'Execution'));
         if (count($errors) > 0) {
             throw new \RuntimeException(
                 sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors))
@@ -116,6 +120,7 @@ class BatchCommand extends ContainerAwareCommand
         if ($executionId) {
             $jobExecution = $this->getJobManager()->getRepository('Akeneo\Component\Batch\Model\JobExecution')
                 ->find($executionId);
+            $jobExecution->setJobParameters($jobParameters);
             if (!$jobExecution) {
                 throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $executionId));
             }
@@ -125,7 +130,7 @@ class BatchCommand extends ContainerAwareCommand
                 );
             }
         } else {
-            $jobExecution = $job->getJobRepository()->createJobExecution($jobInstance);
+            $jobExecution = $job->getJobRepository()->createJobExecution($jobInstance, $jobParameters);
         }
         $jobExecution->setJobInstance($jobInstance);
 

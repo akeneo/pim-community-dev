@@ -42,13 +42,15 @@ class ConnectorRegistry
      * @param JobInstance $jobInstance
      *
      * @throws \LogicException
+     *
      * @return JobInterface
      */
     public function getJob(JobInstance $jobInstance)
     {
         if ($connector = $this->getConnector($jobInstance->getConnector(), $jobInstance->getType())) {
             if ($job = $this->getConnectorJob($connector, $jobInstance->getAlias())) {
-                $job->setConfiguration($jobInstance->getRawConfiguration());
+                // TODO: review and fix
+                //$job->setConfiguration($jobInstance->getRawConfiguration());
                 $jobInstance->setJob($job);
 
                 return $job;

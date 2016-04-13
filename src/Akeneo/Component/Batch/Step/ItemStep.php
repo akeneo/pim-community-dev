@@ -104,54 +104,11 @@ class ItemStep extends AbstractStep
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getConfiguration()
-    {
-        $stepElements = array(
-            $this->reader,
-            $this->writer,
-            $this->processor
-        );
-        $configuration = array();
-
-        foreach ($stepElements as $stepElement) {
-            if ($stepElement instanceof AbstractConfigurableStepElement) {
-                foreach ($stepElement->getConfiguration() as $key => $value) {
-                    if (!isset($configuration[$key]) || $value) {
-                        $configuration[$key] = $value;
-                    }
-                }
-            }
-        }
-
-        return $configuration;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfiguration(array $config)
-    {
-        $stepElements = array(
-            $this->reader,
-            $this->writer,
-            $this->processor
-        );
-
-        foreach ($stepElements as $stepElement) {
-            if ($stepElement instanceof AbstractConfigurableStepElement) {
-                $stepElement->setConfiguration($config);
-            }
-        }
-    }
-
-    /**
      * Get the configurable step elements
      *
      * @return array
      */
-    public function getConfigurableStepElements()
+    protected function getConfigurableStepElements()
     {
         return array(
             'reader'    => $this->getReader(),

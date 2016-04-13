@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Launcher;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -96,7 +97,8 @@ class SimpleJobLauncher implements JobLauncherInterface
      */
     protected function createJobExecution(JobInstance $jobInstance, UserInterface $user)
     {
-        $jobExecution = $this->jobRepository->createJobExecution($jobInstance);
+        $jobParameters = new JobParameters($jobInstance->getRawConfiguration());
+        $jobExecution = $this->jobRepository->createJobExecution($jobInstance, $jobParameters);
         $jobExecution->setUser($user->getUsername());
         $this->jobRepository->updateJobExecution($jobExecution);
 
