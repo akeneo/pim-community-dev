@@ -3,7 +3,7 @@ pimee_catalog_rule:
     list:
       code.label: Koodi
       condition.label: Ehto
-      action.label: Toiminto
+      action.label: Toimi
       no_rule_yet.label: Ei mitään sääntöä toistaiseksi
   rule:
     condition:

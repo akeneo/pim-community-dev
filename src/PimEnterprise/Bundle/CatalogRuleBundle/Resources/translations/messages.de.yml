@@ -13,9 +13,9 @@ pimee_catalog_rule:
   actions:
     type:
       copy: 'Dann wird %from_field% in %to_field% kopiert.'
-      copy_value: 'Dann wird %from_field% in %to_field% kopiert'
+      copy_value: 'Dann wird %from_field% in %to_field% kopiert.'
       set: 'Dann wird %value% in %field% gesetzt.'
-      set_value: 'Dann wird %value% in %field% gesetzt'
+      set_value: 'Dann wird %value% in %field% gesetzt.'
       add: 'Dann wird %value% in %field% hinzugefügt'
   condition:
     label: 'Wenn %field% %operator% %value%'
@@ -36,7 +36,7 @@ pimee_catalog_rule:
       =: ist gleich
       >: größer als
       >=: gleich oder größer als
-      <: kleiner als
+      <: weniger als
       <=: gleich oder kleiner als
   acl_group:
     rule: Regeln

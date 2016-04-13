@@ -47,4 +47,4 @@ Feature: Enforce no permissions for a locale
     When I edit the "foo" product
     Then I should not see the "Save working copy" button
     When I switch the locale to "de_DE"
-    Then I should see the "Save working copy" button
+    Then I should not see the "Save working copy" button

@@ -68,7 +68,7 @@ pimee_product_asset:
         image_height_error: 'Variaatio %channel% n luominen on mahdotonta, koska tuotu kuva on liian matala.'
         not_applicable: 'Variaatio %channel% n luominen on mahdotonta.'
         non_registered: '%transformation% muutosta ei rekisteröity mime tyypille %mimeType%. Mahdotonta luoda variaatio %channel%.'
-        error: 'Ei voida luoda variaatiota %channel%.'
+        error: 'Variaatio %channel% n luominen on mahdotonta.'
         success: Variaatiotiedoston luotu onnistuneesti.
       update:
         success: Variaatiotiedosto päivitetty.
@@ -138,7 +138,7 @@ pimee_product_asset:
     error:
       upload: Tuonnin yhteydessä tapahtui virhe
       code: Vääränmuotoinen koodi resurssille
-      localizable: Resurssi on olemassa, mutta sitä ei voi lokalisoida
+      localizable: Resurssi on olemassa, mutta se ei ole lokalisoitavissa
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
   category:
     menu: Resurssikategoriat

@@ -21,7 +21,7 @@ pimee_catalog_rule:
     label: 'Si %field% %operator% %value%'
     operators:
       STARTS WITH: comienza con
-      ENDS WITH: termina por
+      ENDS WITH: termina con
       CONTAINS: contiene
       DOES NOT CONTAIN: no contiene
       EMPTY: vacío
@@ -33,7 +33,7 @@ pimee_catalog_rule:
       UNCLASSIFIED: sin clasificar
       IN OR UNCLASSIFIED: sin clasificar o dentro
       BETWEEN: entre
-      NOT BETWEEN: no entre
+      NOT BETWEEN: No entre
       =: igual
       >: mayor que
       >=: igual o mayor que

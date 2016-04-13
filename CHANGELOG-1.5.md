@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-5695: Fix prices proposal when data is null
 - PIM-5545: Fix flash message when a proposal is approved/rejected in the proposal grid
 
 # 1.5.1 (2016-03-09)

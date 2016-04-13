@@ -37,8 +37,8 @@ pimee_enrich:
         owner_groups: Eigentümer-Gruppen
         draft_status: Entwurfsstatus
         draft:
-          in_progress: In Bearbeitung
-          sent_for_approval: Auf Genehmigung wartend
+          in_progress: In Arbeit
+          sent_for_approval: Auf Genehmigung warten
           working_copy: Arbeitskopie
       tab:
         proposals:
@@ -87,7 +87,7 @@ pimee_enrich:
         reject_proposal: Vorschlag ablehnen
         reject_selected_proposal: Ausgewählte Vorschläge ablehnen
         remove_proposal: Vorschlag entfernen
-        send_for_approval: Zur Genehmigung senden
+        send_for_approval: Zur Freigabe senden
         cancel: Abbrechen
         confirm: Senden
         title: 'Kommentar zu Ihrem Vorschlag (optional - max. 255 Zeichen)'

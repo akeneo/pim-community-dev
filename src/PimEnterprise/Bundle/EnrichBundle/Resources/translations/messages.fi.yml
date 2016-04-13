@@ -46,16 +46,16 @@ pim_enrich:
         error: Sinä et omista tätä tuotetta, joten et voi julkaista sitä.
         warning: 'Sinä et ole kaikkien valittujen tuotteiden omistaja. Et voi julkaista tuotteita "%notGranted%".'
         info: '%nbProducts% valitut tuotteet julkaistaan.'
-      not_editable: 'Sinulla ei ole käyttöoikeuksia muokata tuotteita %identifiers%.'
+      not_editable: 'Sinulla ei ole käyttöoikeuksia muokata tuotteita "%identifiers%".'
     published_product:
       page_title: Julkaistut tuotteet
       page_subtitle: 'Massamuokkaa (1 julkaistu tuote) | Massamuokkaa (%count% julkaistua tuotetta)'
-      title: Valitse toimenpide
+      title: Valitse toiminto
       subtitle: 'Valitse toimenpide, jonka haluat suorittaa valitulle julkaistulle tuotteelle | Valitse toimenpide jonka haluat suorittaa valituille %count% julkaistulle tuotteelle'
       confirm: 'Olet päivittämässä julkaistua tuotetta seuraavilla tiedoila, ole hyvä ja vahvista. | Olet päivittämässä %count% julkaistua tuotetta seuraavilla tiedoila, ole hyvä ja vahvista.'
       steps:
         first: Valitse julkaistut tuotteet
-        second: Valitse toimenpide
+        second: Valitse toiminto
         third: Konfiguroi
         fourth: Vahvista
     unpublish:
@@ -67,7 +67,7 @@ pim_enrich:
         error: Sinä et omista tätä tuotetta, joten et voi peruuttaa sen julkaisua.
         warning: 'Sinä et ole kaikkien valittujen tuotteiden omistaja. Et voi peruuttaa tuotteiden "%notGranted%" julkaisua.'
         info: '%nbProducts% valittujen tuotteiden julkaisu peruutetaan.'
-      not_editable: 'Sinulla ei ole käyttöoikeuksia muokata tuotteita %identifiers%.'
+      not_editable: 'Sinulla ei ole käyttöoikeuksia muokata tuotteita "%identifiers%".'
     classify:
       message:
         error: Et ole tuotteen omistaja, et voi luokitella sitä.
@@ -80,12 +80,12 @@ pim_enrich.mass_edit_action:
   product:
     page_title: Tuotteet
     page_subtitle: 'Massamuokkaa (1 tuote) | Massamuokkaa (%count% tuotetta)'
-    title: Valitse toimenpide
+    title: Valitse toiminto
     subtitle: 'Valitse toiminto, jonka haluat suorittaa valitulle tuotteelle| Valitse toiminto, jota haluat suorittaa valituille %count% tuotteille'
     confirm: 'Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuotteita %count% seuraavilla tiedoilla, ole hyvä ja vahvista.'
     steps:
       first: Valitse tuotteet
-      second: Valitse toimenpide
+      second: Valitse toiminto
       third: Konfiguroi
       fourth: Vahvista
 flash.product.updated: Tuotteen työn alla oleva kopio on päivitetty
@@ -100,7 +100,10 @@ pimee_enrich:
       proposal.title: Ehdotukset
   category:
     tab:
-      permission.title: Käyttöoikeudert
+      permission.title: Käyttöoikeudet
+  locale:
+    tab:
+      permission.title: Käyttöoikeudet
   channel:
     tab:
       asset_transformation.title: Resurssien muunnokset
@@ -114,7 +117,7 @@ pimee_enrich:
     not_found: Ei muunnosta löydettävissä
     title:
       transformation: Muunnos
-      options: Asetukset
+      options: Vaihtoehdot
     colorspace:
       title: Väriavaruus
       options:
@@ -146,7 +149,7 @@ edit_common_attributes_with_permission: Muokkaa yleisiä luvanvaraisia attribuut
 edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Muokkaa yleisiä luvanvaraisia attribuutteja
 job_execution.summary:
   mass_published: Tuote julkaistu
-  mass_unpublished: Tuote ei julkaistu
+  mass_unpublished: Tuote julkaisematon
   proposal: Ehdotus luotu
   proposal_deleted: poistettu
 pim_assets_collection: Resurssien keruu

@@ -169,10 +169,10 @@ class EnterpriseDataGridContext extends BaseDataGridContext
             sort($rawOriginalValues);
             sort($rawNewValues);
 
-            $originalExpected = implode(', ', $originalExpectedValues);
-            $newExpected      = implode(', ', $newExpectedValues);
-            $originalValues   = implode(', ', $rawOriginalValues);
-            $newValues        = implode(', ', $rawNewValues);
+            $originalExpected = trim(implode(', ', $originalExpectedValues));
+            $newExpected      = trim(implode(', ', $newExpectedValues));
+            $originalValues   = trim(implode(', ', $rawOriginalValues));
+            $newValues        = trim(implode(', ', $rawNewValues));
 
             if ($originalValues != $originalExpected) {
                 throw $this->createExpectationException(
