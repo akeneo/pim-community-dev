@@ -23,36 +23,36 @@ pim_connector:
       export.title: Экспорт групп вариантов
     csv_product_import:
       title: Импорт продуктов из CSV
-      validation.title: Проверка файла
+      validation.title: Подтверждение файла
       import.title: Импорт продуктов
       import_associations.title: Импорт ассоциаций
     csv_category_import:
       title: Импорт категорий из CSV
-      validation.title: Проверка файла
-      import.title: Импорт категорий
+      validation.title: Подтверждение файла
+      import.title: Импорт категории
     csv_attribute_import:
       title: Импорт атрибутов из CSV
-      validation.title: Проверка файла
+      validation.title: Подтверждение файла
       import.title: Импорт атрибутов
     csv_attribute_option_import:
       title: Импорт выборов атрибутов из CSV
-      validation.title: Проверка файла
+      validation.title: Подтверждение файла
       import.title: Импорт выборов атрибутов
     csv_association_type_import:
       title: Импорт типов ассоциаций из CSV
-      validation.title: Проверка файла
+      validation.title: Подтверждение файла
       import.title: Импорт типов ассоциаций
     csv_family_import:
       title: Импорт семейств из CSV
-      validation.title: Проверка файла
+      validation.title: Подтверждение файла
       import.title: Импорт семейств
     csv_group_import:
-      title: Импорт групп из CSV
-      validation.title: Проверка файла
-      import.title: Импорт групп
+      title: Импорт группы из CSV
+      validation.title: Подтверждение файла
+      import.title: Импорт группы
     csv_variant_group_import:
-      title: Импорт групп вариантов из CSV
-      validation.title: Проверка файла
+      title: Импорт группы вариантов в CSV
+      validation.title: Подтверждение файла
       import.title: Импорт групп вариантов
     xlsx_product_export:
       export.title: Экспорт продуктов
@@ -62,21 +62,21 @@ pim_connector:
       import_associations.title: Импорт ассоциаций
   steps:
     dummy_reader.title: Заглушка
-    product_reader.title: Извелечение продуктов
+    product_reader.title: Извелечение продукта
     entity_reader.title: Извлечение объектов
     csv_reader:
-      title: Считыватель из CSV
+      title: CSV
       invalid_item_columns_count: 'Ожидается получить %totalColumnsCount% колонок, но было передано %itemColumnsCount% в %csvPath%:%lineno%'
-    csv_product_reader.title: Считыватель продуктов из CSV
-    csv_category_reader.title: Считыватель категорий из CSV
+    csv_product_reader.title: Разбор продуктов CSV
+    csv_category_reader.title: Разбор категорий CSV
     csv_variant_group .title: Считыватель групп вариантов из CSV
     dummy_processor.title: Заглушка
     product_processor.title: Создание продукта
     variant_group_processor.title: Создание / обновление группы вариантов
-    category_processor.title: Создание категорий
-    association_processor.title: Создание ассоциаций
-    product_association_processor.title: Создание ассоциаций
-    group_processor.title: Создание групп
+    category_processor.title: Создание категории
+    association_processor.title: Создание ассоциации
+    product_association_processor.title: Создание ассоциации
+    group_processor.title: Создание группы
     attribute_processor.title: Создание атрибутов
     attribute_option_processor.title: Создание выборов атрибутов
     heterogeneous_processor.title: Сериализатор продукта в CSV
@@ -84,18 +84,18 @@ pim_connector:
     transformer_processor.title: Преобразование
     dummy_writer.title: Заглушка
     file_writer.title: Вывод в файл
-    product_writer.title: Хранилище продуктов
-    category_writer.title: Хранилище категорий
-    variant_group_writer.title: Хранилище групп вариантов
+    product_writer.title: Хранилище продукта
+    category_writer.title: Хранилище категории
+    variant_group_writer.title: Хранилище группы вариантов
     writer.title: Хранилище объектов
-    csv_writer.title: Записыватель CSV
+    csv_writer.title: Записыватель Csv
   export:
     delimiter:
       label: Разделитель
       help: Символ, используемый как разделитель полей
     enclosure:
       label: Символ обрамления
-      help: Символ, используемый для обрамления полей
+      help: Символ, используемый для обрамления поля
     withHeader:
       label: Включая заголовки
       help: Добавлять строку с заголовками
@@ -132,7 +132,7 @@ pim_connector:
       help: Символ, используемый как разделитель полей для CSV-файла
     enclosure:
       label: Символ обрамления
-      help: Символ, используемый для обрамления полей
+      help: Символ, используемый для обрамления поля
     escape:
       label: Экранирование
       help: Символ, используемый для экранирования
@@ -155,17 +155,7 @@ pim_connector:
       label: Формат даты
       help: Укажите формат столбцов дат в файле, например здесь дд/мм/гггг для формата 31/04/2014.
 job_execution.summary:
-  read: прочитано
   read_lines: прочитанных строк
-  write: записано
-  skip: пропущено
-  create: создано
   process: обработано
-  update_products: обновленных продуктов
   process_products: обработанных продуктов
-  skip_products: пропущенных продуктов
-  displayed: первые предупреждения отображены
-  charset_validator:
-    title: 'Кодировка файла:'
-    skipped: пропущено, расширение из белого списка
   product_skipped_no_diff: пропущен продукт (без разницы)

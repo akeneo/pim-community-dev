@@ -19,3 +19,18 @@ Feature: Change system locale
     Given I edit the system configuration
     Then I should see English locale option
     And I should not see Breton locale option
+
+  Scenario: Successfully display a localized login form according to the system locale
+    Given I edit the system configuration
+    And I select de_DE locale
+    And I save the configuration
+    Then I should see the text "Successfully updated"
+    Then I logout
+    Then I should see the "Anmelden" button
+    When I am logged in as "Julia"
+    And I edit the system configuration
+    And I select fr_FR locale
+    And I save the configuration
+    Then I should see the text "Successfully updated"
+    Then I logout
+    Then I should see the "Connexion" button

@@ -37,16 +37,18 @@ class PricesPresenter extends NumberPresenter
             ->numberFactory
             ->create(array_merge($options, ['type' => \NumberFormatter::CURRENCY]));
 
-        if (isset($prices['data']) && isset($prices['currency'])) {
-            return $numberFormatter->formatCurrency($prices['data'], $prices['currency']);
+        if (array_key_exists('data', $prices) && array_key_exists('currency', $prices)) {
+            return $this->getPrice($numberFormatter, $prices);
         }
 
         $presentedPrices = [];
         foreach ($prices as $price) {
-            $presentedPrices[] = $numberFormatter->formatCurrency($price['data'], $price['currency']);
-        };
+            if ('' !== $presentedPrice = $this->getPrice($numberFormatter, $price)) {
+                $presentedPrices[] = $presentedPrice;
+            }
+        }
 
-        return $presentedPrices;
+        return implode(', ', $presentedPrices);
     }
 
     /**
@@ -64,5 +66,23 @@ class PricesPresenter extends NumberPresenter
         $currency = end($parts);
 
         return ['data' => (float) $price, 'currency' => $currency];
+    }
+
+    /**
+     * Get price with currency only if data is not null
+     * (if data is null and formatted by formatCurrency(), it will return 0)
+     *
+     * @param \NumberFormatter $numberFormatter
+     * @param array            $price
+     *
+     * @return string
+     */
+    protected function getPrice(\NumberFormatter $numberFormatter, array $price)
+    {
+        if (!isset($price['data'])) {
+            return '';
+        }
+
+        return $numberFormatter->formatCurrency($price['data'], $price['currency']);
     }
 }

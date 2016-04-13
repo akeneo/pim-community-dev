@@ -10,7 +10,7 @@ pim_enrich:
     no_compared_media: Aucun média disponible pour comparaison
   attribute:
     tab:
-      parameter.title: Paramètres 
+      parameter.title: Paramètres
       value.title: Valeurs
       history.title: Historique
   attribute_group:
@@ -48,7 +48,7 @@ pim_enrich:
     type:
       VARIANT: Variante
       X_SELL: Vente croisée
-      ADDITIONAL: Additionnel
+      ADDITIONAL: Supplémentaire
       RELATED: Associés
     tab:
       product.title: Produits
@@ -58,8 +58,8 @@ pim_enrich:
     type:
       VARIANT: Variante
       X_SELL: Vente croisée
-      ADDITIONAL: Complémentaire
-      RELATED: Associé
+      ADDITIONAL: Supplémentaire
+      RELATED: Associés
     tab:
       product.title: Produits
       property.title: Propriétés
@@ -75,7 +75,7 @@ pim_enrich:
     legend:
       locale_not_associated: Locale non associée à ce canal
   mass_edit_action:
-    limit_exceeded: 'Veuillez sélectionner moins de %limit% produits à éditer'
+    limit_exceeded: 'Veuillez sélectionner moins de %limit% éléments à éditer'
     product:
       page_title: Produits
       page_subtitle: 'Edition de masse (1 produit)|Edition de masse (%count% produits)'
@@ -101,7 +101,7 @@ pim_enrich:
     change-status:
       label: Changer de statut (activé / désactivé)
       description: Les produits sélectionnés vont être activés ou désactivés.
-      success_flash: Le statut du/des produit(s) a/ont été changé(s)
+      success_flash: Le statut des produits ont été changés
       launched_flash: |-
         L'action de masse "changement de statut" a été lancée. Vous serez notifié lorsque la modification sera terminée.
     edit-common-attributes:
@@ -249,7 +249,7 @@ pim_enrich:
     job_tracker:
       index: Voir les processus exécutés
   acl_group:
-    association_type: "Types d'associations"
+    association_type: "Types d'association"
     attribute: Attributs
     attribute_group: "Groupes d'attributs"
     category: Catégories
@@ -348,14 +348,14 @@ btn:
     category: Créer une catégorie
     tree: Créer un arbre
     channel: Créer un canal
-    currency: Créer une devise
+    currency: Créer une monnaie
     family: Créer une famille
     locale: Créer une locale
     product: Créer un produit
     group: Créer un groupe
     variant group: Créer un groupe de variantes
     association type: "Créer un type d'association"
-    group type: Créer un type de groupe
+    group type: Créer le type de groupe
     drag_or_upload: Glisser et déposer pour télécharger ou cliquer ici
   edit: Modifier
   save: Enregistrer
@@ -572,7 +572,7 @@ switch_on: Oui
 switch_off: Non
 Close: Fermer
 Choose a color: Choisir une couleur
-Search: Recherche
+Search: Rechercher
 Choose the attribute type: "Choisissez le type d'attribut"
 Choose the attribute group: "Choisissez le groupe d'attributs"
 Drop a file or click here: Déposez un fichier ou cliquez ici
@@ -657,7 +657,7 @@ pim_title.variant_group:
   index: Groupes de variantes
   edit: 'Groupe de variantes %group.label% | Editer'
 pim_title.association_type:
-  index: "Types d'associations"
+  index: "Types d'association"
   edit: "Types d'association %association type.label% | Modifier"
 pim_title.group_type:
   index: Types de groupe
@@ -684,7 +684,7 @@ pim_catalog_metric: Unité de mesure
 pim_reference_data_simpleselect: Liste à choix unique de données référentielles
 pim_reference_data_multiselect: Liste à choix multiple de données référentielles
 Activated: Activé
-Disable: Désactivé
+Disable: Désactiver
 pim_enrich.sequential_edit_action:
   product:
     previous: 'Revenir à "%product%" sans enregistrer.'
@@ -719,7 +719,7 @@ pim_enrich.mass_edit_action:
     success_flash: Le statut des produits ont été changés
   edit-common-attributes:
     label: Modifier les attributs communs
-    description: Les attributs sélectionnés vont être modifiés avec les valeurs suivantes pour la locale choisie.
+    description: Les attributs sélectionnés du produit vont être modifiés avec les valeurs suivantes pour la locale choisie.
     empty: Veuillez sélectionner le ou les attribut(s) à modifier
     success_flash: Le(s) attribut(s) ont été mise à jour
     message.warning: "Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection."
@@ -776,7 +776,7 @@ pane.accordion:
   node_values: Valeurs du nœud
   general_properties: Propriétés générales
   locale_values: Valeurs de locale
-  backend_parameters: Paramètres de stockage
+  backend_parameters: "Paramètres de l'interface"
   general_parameters: Paramètres généraux
   validation_parameters: Paramètres de validation
   label_translations: Traduction des libellés
@@ -860,12 +860,12 @@ job_execution.summary:
   skipped_products: Produits ignorés
   skipped_attributes: Attributs ignorés
 pim_mass_edit_execution_show: Exécutions des éditions en masse | Détails
-edit_common_attributes.steps.edit_common_attributes_processor.title: Édition des attributs communs
+edit_common_attributes.steps.edit_common_attributes_processor.title: Modifier les attributs communs
 update_product_value.steps.update_product_value_processor.title: Mise à jour de la valeur produit
 add_to_variant_group_clean.steps.excluded.title: Produit exclu
 add_to_variant_group_clean.steps.duplicated.title: Axe dupliqué
 add_to_variant_group.steps.cleaner.warning.description: "Le produit ne peut pas être affecté au groupe de variantes : duplication de la valeur de l'axe de variation avec un autre produit de la sélection"
-edit_common_attributes: Édition des attributs communs
+edit_common_attributes: Modifier les attributs communs
 edit_common_attributes_clean: Nettoyer les fichiers pour les attributs communs
 mass_edit report:
   overview: Rapports des éditions en masses

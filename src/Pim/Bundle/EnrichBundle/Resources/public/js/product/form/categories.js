@@ -23,6 +23,8 @@ define(
             template: _.template(formTemplate),
             className: 'tab-pane active',
             id: 'product-categories',
+            treeLinkSelector: 'tree-link-',
+            treeHasItemClass: 'tree-has-item',
             events: {
                 'click .nav-tabs li': 'changeTree',
                 'change #hidden-tree-input': 'updateModel'
@@ -61,7 +63,8 @@ define(
                             locale: UserContext.get('catalogLocale'),
                             state: this.state.toJSON(),
                             trees: trees,
-                            categoriesCount: categoriesCount
+                            categoriesCount: categoriesCount,
+                            treeLinkSelector: this.treeLinkSelector
                         })
                     );
 
@@ -71,6 +74,7 @@ define(
                     });
                     this.delegateEvents();
                     this.state.set('currentTree', _.first(trees).code);
+                    this.state.set('currentTreeId', _.first(trees).id);
                     this.initCategoryCount(trees);
                 }.bind(this));
 
@@ -100,6 +104,7 @@ define(
 
             changeTree: function (event) {
                 this.state.set('currentTree', event.currentTarget.dataset.tree);
+                this.state.set('currentTreeId', event.currentTarget.dataset.treeId);
                 this.treeAssociate.switchTree(event.currentTarget.dataset.treeId);
             },
 
@@ -107,7 +112,7 @@ define(
                 var selectedIds = _.filter(event.currentTarget.value.split(','), _.identity);
                 this.state.set('selectedCategories', selectedIds);
 
-                this.updateCategoryCount(this.state.get('currentTree'));
+                this.updateCategoryCount(this.state.get('currentTree'), this.state.get('currentTreeId'));
 
                 var categoryCodes = _.map(selectedIds, this.getCategoryCode.bind(this));
                 this.getFormModel().set('categories', categoryCodes);
@@ -127,6 +132,9 @@ define(
                         selectedCategories.push(this.cache[categoryId]);
                     }.bind(this));
                     var categoryCount = _.where(selectedCategories, {rootId: tree.id}).length;
+                    if (categoryCount > 0) {
+                        $('#' + this.treeLinkSelector + tree.id).addClass(this.treeHasItemClass);
+                    }
                     this.updateCategoryBadge(tree.code, categoryCount);
                 }.bind(this));
             },
@@ -136,9 +144,16 @@ define(
              *
              * @param {String} rootTreeCode
              */
-            updateCategoryCount: function (rootTreeCode) {
+            updateCategoryCount: function (rootTreeCode, treeId) {
                 var $rootTreeContainer = this.$('li[data-code=' + rootTreeCode +  ']');
                 var selected = $rootTreeContainer.find('.jstree-checked');
+
+                if (selected.length > 0) {
+                    $('#' + this.treeLinkSelector + treeId).addClass(this.treeHasItemClass);
+                } else {
+                    $('#' + this.treeLinkSelector + treeId).removeClass(this.treeHasItemClass);
+                }
+
                 this.updateCategoryBadge(rootTreeCode, selected.length);
             },
 

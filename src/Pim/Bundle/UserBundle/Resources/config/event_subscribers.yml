@@ -22,6 +22,7 @@ services:
         arguments:
             - @request_stack
             - @translator
+            - @doctrine.orm.entity_manager
         tags:
             - { name: kernel.event_subscriber }
 

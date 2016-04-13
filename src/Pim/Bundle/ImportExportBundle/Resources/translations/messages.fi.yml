@@ -79,11 +79,11 @@ pim_importexport:
       dl_log: Lataa vientiraporttilogi
       dl_files: Lataa tuodut tiedostot
   acl_group:
-    export: Profiilien vieminen
-    import: Profiilien tuominen
+    export: Vientiprofiili
+    import: Tuontiprofiilit
 btn:
   create:
-    export profile: luo vientiprofiili
+    export profile: luo tuontiprofiili
     import profile: luo tuontiprofiili
 Upload and import: Lataa ja tuo
 Upload and import now: Lataa ja tuo nyt
