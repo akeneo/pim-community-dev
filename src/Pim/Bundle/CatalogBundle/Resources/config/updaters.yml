@@ -61,6 +61,8 @@ parameters:
     pim_catalog.updater.remover.price_collection_value.class: Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover
     pim_catalog.updater.remover.group_field.class:            Pim\Component\Catalog\Updater\Remover\GroupFieldRemover
 
+    pim_catalog.updater.category_translatable.class: Pim\Component\Catalog\Localization\CategoryUpdater
+
 services:
     # Updaters
     pim_catalog.updater.product:
@@ -116,6 +118,14 @@ services:
         class: %akeneo_classification.updater.category.class%
         arguments:
             - '@pim_catalog.repository.category'
+
+    pim_catalog.updater.category_translatable:
+        decorates: pim_catalog.updater.category
+        decoration_inner_name: pim_catalog.updater.category.base
+        class: %pim_catalog.updater.category_translatable.class%
+        arguments:
+            - '@pim_catalog.updater.category.base'
+            - '@pim_localization.updater.translatable'
 
     pim_catalog.updater.family:
         class: %pim_catalog.updater.family.class%

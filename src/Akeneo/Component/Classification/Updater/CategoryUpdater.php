@@ -3,7 +3,6 @@
 namespace Akeneo\Component\Classification\Updater;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
-use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -62,12 +61,9 @@ class CategoryUpdater implements ObjectUpdaterInterface
      */
     protected function setData(CategoryInterface $category, $field, $data)
     {
-        // TODO: Locales should be managed in a dedicated implementation of this updater
-        if ('labels' === $field && $category instanceof TranslatableInterface) {
+        if ('labels' === $field) {
             foreach ($data as $localeCode => $label) {
                 $category->setLocale($localeCode);
-                $translation = $category->getTranslation();
-                $translation->setLabel($label);
             }
         } elseif ('parent' === $field) {
             $categoryParent = $this->findParent($data);
