@@ -25,10 +25,10 @@ use Pim\Component\Catalog\Model\ProductInterface;
 class RulesExecutor extends AbstractConfigurableStepElement implements ItemWriterInterface
 {
     /** @var RunnerInterface */
-    private $runner;
+    protected $runner;
 
     /** @var RuleDefinitionRepositoryInterface */
-    private $ruleRepository;
+    protected $ruleRepository;
 
     /**
      * @param RunnerInterface                   $runner
