@@ -45,6 +45,5 @@ Feature: Import products with rules
     Given I am on the "clothing_product_import_with_rules" import job page
     When I launch the import job
     And I wait for the "clothing_product_import_with_rules" job to finish
-    And I wait 30 seconds
     Then there should be 1 product
     And the french tablet description of "SKU-001" should be "an other description"
