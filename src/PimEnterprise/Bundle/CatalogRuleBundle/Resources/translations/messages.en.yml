@@ -76,10 +76,13 @@ pimee_catalog_rule:
             export.title: Rule export
         impacted_product_count:
             title:        Matching products for the rules
+        csv_product_import_with_rules:
+            title:        Product import in CSV with rules
     steps:
         product_rule_definition_reader.title: Product rule import reader
         rule_definition_processor.title:      Product rule import processor
         product_rule_definition_writer.title: Product rule import writer
+        rules_execution.title:                Rules execution
     notification:
         mass_edit_rule:
             success: Calculation of the matching products for the rules finished

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\CatalogRule\Connector\Writer;
+namespace PimEnterprise\Component\CatalogRule\Connector\Executor;
 
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface;
@@ -18,11 +18,11 @@ use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
- * Class RuleApplier
+ * Execute all the rules to a set of products.
  *
- * @package PimEnterprise\Component\CatalogRule\Connector\Writer
+ * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class RuleApplier extends AbstractConfigurableStepElement implements ItemWriterInterface
+class RulesExecutor extends AbstractConfigurableStepElement implements ItemWriterInterface
 {
     /** @var RunnerInterface */
     private $runner;

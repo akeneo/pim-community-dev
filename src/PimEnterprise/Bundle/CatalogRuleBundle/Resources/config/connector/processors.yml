@@ -3,7 +3,7 @@ parameters:
     pimee_catalog_rule.processor.denormalization.rule_definition.class: PimEnterprise\Component\CatalogRule\Connector\Processor\Denormalization\RuleDefinitionProcessor
     # export rules
     pimee_catalog_rule.processor.normalization.rule_definition.class: PimEnterprise\Component\CatalogRule\Connector\Processor\Normalization\RuleDefinitionProcessor
-
+    # product loader
     pimee_catalog_rule.processor.product_loader.class: PimEnterprise\Component\CatalogRule\Connector\Processor\ProductLoaderProcessor
 
 services:
@@ -26,7 +26,7 @@ services:
             - '@pim_catalog.repository.locale'
             - '@akeneo_rule_engine.normalizer.rule'
 
-    # rule applier
+    # product loader
     pimee_catalog_rule.processor.product_loader_processor:
         class: %pimee_catalog_rule.processor.product_loader.class%
         arguments:

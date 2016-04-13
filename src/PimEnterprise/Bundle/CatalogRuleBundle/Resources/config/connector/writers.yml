@@ -3,8 +3,8 @@ parameters:
     pimee_catalog_rule.writer.doctrine.rule_definition.class: PimEnterprise\Component\CatalogRule\Connector\Writer\Doctrine\RuleDefinitionWriter
     # export rules
     pimee_catalog_rule.writer.yaml_file.rule_definition.class: PimEnterprise\Component\CatalogRule\Connector\Writer\YamlFile\RuleDefinitionWriter
-
-    pimee_catalog_rule.writer.apply_rules.class: PimEnterprise\Component\CatalogRule\Connector\Writer\RuleApplier
+    # execute rules
+    pimee_catalog_rule.executor.rules.class: PimEnterprise\Component\CatalogRule\Connector\Executor\RulesExecutor
 
 services:
     # import rules
@@ -17,9 +17,9 @@ services:
     pimee_catalog_rule.writer.yaml_file.rule_definition:
         class: %pimee_catalog_rule.writer.yaml_file.rule_definition.class%
 
-    # rules applier
-    pimee_catalog_rule.writer.apply_rules:
-        class: %pimee_catalog_rule.writer.apply_rules.class%
+    # execute rules
+    pimee_catalog_rule.executor.rules:
+        class: %pimee_catalog_rule.executor.rules.class%
         arguments:
             - '@pimee_catalog_rule.runner.product'
             - '@akeneo_rule_engine.repository.rule_definition'

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\CatalogRule\Connector\Writer;
+namespace spec\PimEnterprise\Component\CatalogRule\Connector\Executor;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 
-class RuleApplierSpec extends ObjectBehavior
+class RulesExecutorSpec extends ObjectBehavior
 {
     function let(
         RunnerInterface $runner,
@@ -20,7 +20,7 @@ class RuleApplierSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\CatalogRule\Connector\Writer\RuleApplier');
+        $this->shouldHaveType('PimEnterprise\Component\CatalogRule\Connector\Executor\RulesExecutor');
     }
 
     function it_should_implement_item_writer_interface()
