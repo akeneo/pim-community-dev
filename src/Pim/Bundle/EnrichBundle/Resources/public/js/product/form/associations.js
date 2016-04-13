@@ -290,7 +290,7 @@ define(
                 }
 
                 $.get(Routing.generate('pim_datagrid_load', urlParams)).then(function (resp) {
-                    this.$('.grid-' + gridName).data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
+                    this.$('#grid-' + gridName).data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
 
                     var gridModules = resp.metadata.requireJSModules;
                     gridModules.push('pim/datagrid/state-listener');
