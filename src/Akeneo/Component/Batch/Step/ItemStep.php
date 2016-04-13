@@ -104,20 +104,6 @@ class ItemStep extends AbstractStep
     }
 
     /**
-     * Get the configurable step elements
-     *
-     * @return array
-     */
-    protected function getConfigurableStepElements()
-    {
-        return array(
-            'reader'    => $this->getReader(),
-            'processor' => $this->getProcessor(),
-            'writer'    => $this->getWriter()
-        );
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function doExecute(StepExecution $stepExecution)
@@ -165,7 +151,7 @@ class ItemStep extends AbstractStep
     protected function initializeStepElements(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
-        foreach ($this->getConfigurableStepElements() as $element) {
+        foreach ($this->getStepElements() as $element) {
             if ($element instanceof StepExecutionAwareInterface) {
                 $element->setStepExecution($stepExecution);
             }
@@ -180,7 +166,7 @@ class ItemStep extends AbstractStep
      */
     public function flushStepElements()
     {
-        foreach ($this->getConfigurableStepElements() as $element) {
+        foreach ($this->getStepElements() as $element) {
             if (method_exists($element, 'flush')) {
                 $element->flush();
             }
@@ -241,6 +227,20 @@ class ItemStep extends AbstractStep
             $e->getMessage(),
             $e->getMessageParameters(),
             $e->getItem()
+        );
+    }
+
+    /**
+     * Get the configurable step elements
+     *
+     * @return array
+     */
+    protected function getStepElements()
+    {
+        return array(
+            'reader'    => $this->getReader(),
+            'processor' => $this->getProcessor(),
+            'writer'    => $this->getWriter()
         );
     }
 }
