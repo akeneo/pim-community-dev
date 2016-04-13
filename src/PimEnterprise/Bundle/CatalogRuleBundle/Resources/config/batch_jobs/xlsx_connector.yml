@@ -27,7 +27,7 @@ connector:
                 execute_rules:
                     title:         pimee_catalog_rule.steps.rules_execution.title
                     services:
-                        reader:    pim_connector.reader.file.xlsx_product
+                        reader:    pimee_catalog_rule.reader.file.xlsx_product_with_rule
                         processor: pimee_catalog_rule.processor.product_loader
                         writer:    pimee_catalog_rule.executor.rules
                     parameters:

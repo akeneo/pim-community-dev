@@ -4,3 +4,9 @@ services:
         class: %pim_connector.reader.doctrine.base.class%
         arguments:
             - '@akeneo_rule_engine.repository.rule_definition'
+
+    pimee_catalog_rule.reader.file.xlsx_product_with_rule:
+        alias: pim_connector.reader.file.xlsx_product
+
+    pimee_catalog_rule.reader.file.csv_product_with_rule:
+        alias: pim_connector.reader.file.csv_product
