@@ -105,9 +105,9 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
                     'choices'  => $this->decimalSeparators,
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_base_connector.export.decimalSeparator.label',
-                    'help'     => 'pim_base_connector.export.decimalSeparator.help'
-                ]
+                    'label'    => 'pim_connector.export.decimalSeparator.label',
+                    'help'     => 'pim_connector.export.decimalSeparator.help',
+                ],
             ],
             'dateFormat' => [
                 'type'    => 'choice',
@@ -115,9 +115,9 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
                     'choices'  => $this->dateFormats,
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_base_connector.export.dateFormat.label',
-                    'help'     => 'pim_base_connector.export.dateFormat.help'
-                ]
+                    'label'    => 'pim_connector.export.dateFormat.label',
+                    'help'     => 'pim_connector.export.dateFormat.help',
+                ],
             ],
         ];
     }
