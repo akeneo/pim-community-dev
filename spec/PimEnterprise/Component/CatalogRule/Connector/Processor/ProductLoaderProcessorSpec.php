@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 
-class DummyProcessorSpec extends ObjectBehavior
+class ProductLoaderProcessorSpec extends ObjectBehavior
 {
     function let(IdentifiableObjectRepositoryInterface $productRepository)
     {

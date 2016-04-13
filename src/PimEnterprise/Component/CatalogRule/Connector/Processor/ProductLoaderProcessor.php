@@ -16,11 +16,11 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
- * Don't do anything.
+ * Load a product from its identifier.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class DummyProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
+class ProductLoaderProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $productRepository;
