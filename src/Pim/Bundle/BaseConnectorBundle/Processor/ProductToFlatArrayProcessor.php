@@ -4,6 +4,8 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -18,7 +20,8 @@ use Symfony\Component\Serializer\Serializer;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
+class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
     /** @var Serializer */
     protected $serializer;
@@ -79,7 +82,9 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      */
     public function process($product)
     {
-        $contextChannel = $this->channelRepository->findOneByIdentifier($this->channel);
+        $parameters = $this->stepExecution->getJobExecution()->getJobParameters();
+        $channelCode = $parameters->getParameter('channel');
+        $contextChannel = $this->channelRepository->findOneByIdentifier($channelCode);
         $this->productBuilder->addMissingProductValues(
             $product,
             [$contextChannel],
@@ -97,9 +102,17 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
             );
         }
 
-        $data['product'] = $this->serializer->normalize($product, 'flat', $this->getNormalizerContext());
+        $data['product'] = $this->serializer->normalize($product, 'flat', $this->getNormalizerContext($channelCode));
 
         return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 
     /**
@@ -208,14 +221,16 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /**
      * Get normalizer context
      *
+     * @param string $channelCode
+     *
      * @return array $normalizerContext
      */
-    protected function getNormalizerContext()
+    protected function getNormalizerContext($channelCode)
     {
         if (null === $this->normalizerContext) {
             $this->normalizerContext = [
                 'scopeCode'         => $this->channel,
-                'localeCodes'       => $this->getLocaleCodes($this->channel),
+                'localeCodes'       => $this->getLocaleCodes($channelCode),
                 'decimal_separator' => $this->decimalSeparator,
                 'date_format'       => $this->dateFormat,
             ];

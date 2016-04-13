@@ -29,45 +29,6 @@ class ValidatorStep extends AbstractStep
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getConfiguration()
-    {
-        $configuration = [];
-        foreach ($this->getConfigurableStepElements() as $stepElement) {
-            if ($stepElement instanceof AbstractConfigurableStepElement) {
-                foreach ($stepElement->getConfiguration() as $key => $value) {
-                    if (!isset($configuration[$key]) || $value) {
-                        $configuration[$key] = $value;
-                    }
-                }
-            }
-        }
-
-        return $configuration;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfiguration(array $config)
-    {
-        foreach ($this->getConfigurableStepElements() as $stepElement) {
-            if ($stepElement instanceof AbstractConfigurableStepElement) {
-                $stepElement->setConfiguration($config);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurableStepElements()
-    {
-        return ['charsetValidator' => $this->getCharsetValidator()];
-    }
-
-    /**
      * @param CharsetValidator $charsetValidator
      */
     public function setCharsetValidator(CharsetValidator $charsetValidator)
