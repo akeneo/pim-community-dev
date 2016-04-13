@@ -94,6 +94,7 @@ class RenderLayoutExtension extends AbstractExtension
                 ];
             }
         }
+
         return $result;
     }
 }

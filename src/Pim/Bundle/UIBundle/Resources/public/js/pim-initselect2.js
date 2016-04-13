@@ -1,7 +1,7 @@
 /* jshint unused:vars */
 define(
-    ['jquery', 'underscore', 'pim/formatter/choices/base', 'jquery.select2'],
-    function ($, _, ChoicesFormatter) {
+    ['jquery', 'underscore', 'pim/formatter/choices/base', 'pim/user-context', 'jquery.select2'],
+    function ($, _, ChoicesFormatter, UserContext) {
         'use strict';
         return {
             resultsPerPage: 20,
@@ -91,7 +91,8 @@ define(
                                 search: options.term,
                                 options: {
                                     limit: self.resultsPerPage,
-                                    page: page
+                                    page: page,
+                                    locale: UserContext.get('catalogLocale')
                                 }
                             },
                             dataType: 'json',
