@@ -6,6 +6,8 @@ use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Component\Batch\Job\Job;
+use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -153,6 +155,11 @@ class JobProfileController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
+
+                $jobParamFactory = new JobParametersFactory();
+                $jobParameters = $jobParamFactory->createDefault($jobInstance->getJob());
+                $jobInstance->setRawConfiguration($jobParameters->getParameters());
+
                 $this->entityManager->persist($jobInstance);
                 $this->entityManager->flush();
 
