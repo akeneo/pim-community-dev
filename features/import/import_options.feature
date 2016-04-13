@@ -4,7 +4,7 @@ Feature: Import options
   As a product manager
   I need to be able to import options
 
-  Scenario: Successfully import options
+  Scenario: Successfully import options in CSV
     Given the "footwear" catalog configuration
     And the following attributes:
       | code  | label | type         |
@@ -145,3 +145,29 @@ Feature: Import options
       | brand     | 22   | TimberLand  |
       | brand     | 30   | Nike        |
       | brand     | 04   | Caterpillar |
+
+  Scenario: Successfully import options in XLSX
+    Given the "footwear" catalog configuration
+    And the following attributes:
+      | code  | label | type         |
+      | brand | Brand | simpleselect |
+    And I am logged in as "Julia"
+    And the following XLSX file to import:
+      """
+      attribute;code;label-en_US
+      brand;Converse;Converse
+      brand;TimberLand;TimberLand
+      brand;Nike;Nike
+      brand;Caterpillar;Caterpillar
+      """
+    And the following job "xlsx_footwear_option_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "xlsx_footwear_option_import" import job page
+    And I launch the import job
+    And I wait for the "xlsx_footwear_option_import" job to finish
+    Then there should be the following options:
+      | attribute | code        | label-en_US |
+      | brand     | Converse    | Converse    |
+      | brand     | TimberLand  | TimberLand  |
+      | brand     | Nike        | Nike        |
+      | brand     | Caterpillar | Caterpillar |

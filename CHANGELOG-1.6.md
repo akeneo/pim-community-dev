@@ -6,6 +6,7 @@
 - PIM-5096: Introduce the XLSX quick export
 - PIM-5593: The context is now kept in the associations tab of the product edit form
 - PIM-5099: The catalog structure can now be exported in XLSX format (families, attributes, attribute options, association types and categories)
+- PIM-5097: The catalog structure can now be imported in XLSX format (families, attributes, attribute options, association types and categories)
 
 ## Scalability improvements
 

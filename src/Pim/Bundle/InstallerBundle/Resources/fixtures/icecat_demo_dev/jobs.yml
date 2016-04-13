@@ -248,7 +248,7 @@ jobs:
     xlsx_product_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_import
-        label:     XLSX Demo product import
+        label:     Demo XLSX product import
         type:      import
         configuration:
             filePath:           /tmp/product.xlsx
@@ -260,10 +260,51 @@ jobs:
             realTimeVersioning: true
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
+    xlsx_category_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_category_import
+        label:     Demo XLSX category import
+        type:      import
+        configuration:
+            filePath:            /tmp/category.xlsx
+            uploadAllowed:       true
+            circularRefsChecked: true
+    xlsx_association_type_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_association_type_import
+        label:     Demo XLSX association type import
+        type:      import
+        configuration:
+            filePath:      /tmp/association_type.xlsx
+            uploadAllowed: true
+    xlsx_attribute_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_import
+        label:     Demo XLSX attribute import
+        type:      import
+        configuration:
+            filePath:      /tmp/attribute.xlsx
+            uploadAllowed: true
+    xlsx_option_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_option_import
+        label:     Demo XLSX option import
+        type:      import
+        configuration:
+            filePath:      /tmp/option.xlsx
+            uploadAllowed: true
+    xlsx_family_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_import
+        label:     Demo XLSX family import
+        type:      import
+        configuration:
+            filePath:      /tmp/family.xlsx
+            uploadAllowed: true
     xlsx_group_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_group_import
-        label:     XLSX Demo group import
+        label:     Demo XLSX group import
         type:      import
         configuration:
             filePath:      /tmp/group.xlsx
@@ -271,7 +312,7 @@ jobs:
     xlsx_variant_group_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_variant_group_import
-        label:     XLSX Demo variant group import
+        label:     Demo XLSX variant group import
         type:      import
         configuration:
             filePath:      /tmp/variant_group.xlsx

@@ -15,11 +15,11 @@ Feature: Delete import
     Given I delete the "csv_footwear_product_import" job
     When I confirm the deletion
     Then I should see flash message "Import profile successfully removed"
-    And the grid should contain 11 elements
+    And the grid should contain 16 elements
     And I should not see import profile "csv_footwear_product_import"
 
   Scenario: Successfully cancel the deletion of a CSV import job
     Given I delete the "csv_footwear_product_import" job
     When I cancel the deletion
-    Then the grid should contain 12 elements
+    Then the grid should contain 17 elements
     And I should see import profile "csv_footwear_product_import"
