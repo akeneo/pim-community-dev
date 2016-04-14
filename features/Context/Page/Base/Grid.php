@@ -63,15 +63,16 @@ class Grid extends Index
     public function getGrid()
     {
         $body = $this->getElement('Body');
+        $container = $this->getElement('Container');
 
         return $this->spin(
-            function () use ($body) {
+            function () use ($body, $container) {
                 $modal = $body->find('css', $this->elements['Dialog']['css']);
                 if (null !== $modal && $modal->isVisible()) {
                     return $modal->find('css', $this->elements['Grid']['css']);
                 }
 
-                return $this->getElement('Container')->find('css', $this->elements['Grid']['css']);
+                return $container->find('css', $this->elements['Grid']['css']);
             },
             'No visible grid found'
         );
