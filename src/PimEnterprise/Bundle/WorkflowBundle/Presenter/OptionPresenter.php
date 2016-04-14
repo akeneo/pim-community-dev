@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 
 /**
  * Present changes on option data
@@ -21,13 +21,13 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
  */
 class OptionPresenter extends AbstractProductValuePresenter
 {
-    /** @var AttributeOptionRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $repository;
 
     /**
-     * @param AttributeOptionRepositoryInterface $repository
+     * @param IdentifiableObjectRepositoryInterface $repository
      */
-    public function __construct(AttributeOptionRepositoryInterface $repository)
+    public function __construct(IdentifiableObjectRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
@@ -57,6 +57,8 @@ class OptionPresenter extends AbstractProductValuePresenter
             return null;
         }
 
-        return (string) $this->repository->findOneBy(['code' => $change['data']]);
+        $identifier = sprintf('%s.%s', $change['attribute'], $change['data']);
+
+        return (string) $this->repository->findOneByIdentifier($identifier);
     }
 }

@@ -4,10 +4,11 @@ namespace spec\PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class ReferenceDataPresenterSpec extends ObjectBehavior
 {
@@ -37,6 +38,7 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
         ConfigurationInterface $configuration,
         RendererInterface $renderer,
         CustomProductValuePresenter $value,
+        AttributeInterface $attribute,
         CustomProductValuePresenter $red,
         CustomProductValuePresenter $blue
     ) {
@@ -52,6 +54,8 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
         $this->setRenderer($renderer);
 
         $value->getData()->willReturn($red);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->willReturn('fabric');
         $this->present($value, ['data' => 'red'])->shouldReturn('diff between two reference data');
     }
 }

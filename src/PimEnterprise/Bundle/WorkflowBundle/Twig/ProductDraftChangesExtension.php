@@ -228,12 +228,12 @@ class ProductDraftChangesExtension extends \Twig_Extension
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($code);
         $newAttribute = $this->attributeManager->createAttribute($attribute->getAttributeType());
+        $newAttribute->setCode($code);
         $value = $this->productManager->createProductValue($newAttribute);
 
         if (null !== $attribute->getReferenceDataName()) {
             $newAttribute->setReferenceDataName($attribute->getReferenceDataName());
         }
-
         $value->setAttribute($newAttribute);
 
         return $value;
