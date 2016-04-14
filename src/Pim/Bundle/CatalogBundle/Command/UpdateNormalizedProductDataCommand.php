@@ -38,8 +38,11 @@ class UpdateNormalizedProductDataCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $documentManager = $this->getContainer()->get('doctrine_mongodb.odm.document_manager');
+
         $productClass    = $this->getContainer()->getParameter('pim_catalog.entity.product.class');
-        $queries         = json_decode($input->getArgument('queries'), true);
+        $socketTimeoutMS = $this->getContainer()->getParameter('pim_catalog.mongodb.cursor.socket_timeout_ms');
+
+        $queries = json_decode($input->getArgument('queries'), true);
 
         if (null === $queries) {
             throw new \InvalidArgumentException('There is no valid queries to execute or the JSON syntax is wrong');
@@ -50,8 +53,7 @@ class UpdateNormalizedProductDataCommand extends ContainerAwareCommand
         foreach ($queries as $query) {
             list($query, $compObject, $options) = $query;
 
-            // It is possible to define an option here to avoid a MongoDB timeout when having a lot of data.
-            // $options['socketTimeoutMS'] = -1;
+            $options['socketTimeoutMS'] = (int) $socketTimeoutMS;
             $collection->update($query, $compObject, $options);
         }
     }

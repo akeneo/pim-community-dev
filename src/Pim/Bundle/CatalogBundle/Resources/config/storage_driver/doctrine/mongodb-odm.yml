@@ -78,6 +78,8 @@ parameters:
 
     pim_catalog.saver.product.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver\ProductSaver
 
+    pim_catalog.mongodb.cursor.socket_timeout_ms: 30000
+
 services:
     pim_catalog.object_manager.product:
         alias: doctrine.odm.mongodb.document_manager
