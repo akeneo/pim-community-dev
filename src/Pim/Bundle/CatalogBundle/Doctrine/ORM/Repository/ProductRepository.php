@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -41,6 +42,9 @@ class ProductRepository extends EntityRepository implements
     /** @var ConfigurationRegistryInterface */
     protected $referenceDataRegistry;
 
+    /** @var GroupRepositoryInterface */
+    protected $groupRepository;
+
     /**
      * {@inheritdoc}
      */
@@ -59,6 +63,20 @@ class ProductRepository extends EntityRepository implements
     public function setAttributeRepository(AttributeRepositoryInterface $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;
+
+        return $this;
+    }
+
+    /**
+     * Set group repository
+     *
+     * @param GroupRepositoryInterface $groupRepository
+     *
+     * @return ProductRepository
+     */
+    public function setGroupRepository(GroupRepositoryInterface $groupRepository)
+    {
+        $this->groupRepository = $groupRepository;
 
         return $this;
     }
@@ -569,6 +587,55 @@ class ProductRepository extends EntityRepository implements
             ->getSingleScalarResult();
 
         return $count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAttributeInFamily($productId, $attributeCode)
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->leftJoin('p.family', 'f')
+            ->leftJoin('f.attributes', 'a')
+            ->where('p.id = :id')
+            ->andWhere('a.code = :code')
+            ->setParameters([
+                'id'   => $productId,
+                'code' => $attributeCode,
+            ])
+            ->setMaxResults(1);
+
+        return count($queryBuilder->getQuery()->getArrayResult()) > 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAttributeInVariantGroup($productId, $attributeCode)
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->select('g.id')
+            ->leftJoin('p.groups', 'g')
+            ->where('p.id = :id')
+            ->setParameters([
+                'id' => $productId,
+            ]);
+
+        $groupIds = $queryBuilder->getQuery()->getScalarResult();
+
+        $groupIds = array_reduce($groupIds, function ($carry, $item) {
+            if (isset($item['id'])) {
+                $carry[] = $item['id'];
+            }
+
+            return $carry;
+        }, []);
+
+        if (0 === count($groupIds)) {
+            return false;
+        }
+
+        return $this->groupRepository->hasAttribute($groupIds, $attributeCode);
     }
 
     /**

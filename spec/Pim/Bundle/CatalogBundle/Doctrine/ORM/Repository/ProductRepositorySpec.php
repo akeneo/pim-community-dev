@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
 use Doctrine\ORM\AbstractQuery;
@@ -23,6 +24,11 @@ class ProductRepositorySpec extends ObjectBehavior
         $this->beConstructedWith($em, $class);
         $this->setReferenceDataRegistry($registry);
         $this->setProductQueryBuilderFactory($pqbFactory);
+    }
+
+    function it_has_group_repository(GroupRepositoryInterface $groupRepository)
+    {
+        $this->setGroupRepository($groupRepository)->shouldReturn($this);
     }
 
     function it_is_a_product_repository()
@@ -89,6 +95,91 @@ class ProductRepositorySpec extends ObjectBehavior
         $query->getOneOrNullResult()->shouldBeCalled();
 
         $this->findOneByWithValues([42]);
+    }
+
+    function it_checks_if_the_product_has_an_attribute_in_its_variant_group(
+        $em,
+        GroupRepositoryInterface $groupRepository,
+        QueryBuilder $queryBuilder,
+        AbstractQuery $query
+    ) {
+        $this->setGroupRepository($groupRepository);
+
+        $em->createQueryBuilder()->willReturn($queryBuilder);
+        $queryBuilder->select('p')->willReturn($queryBuilder);
+        $queryBuilder->select('g.id')->willReturn($queryBuilder);
+        $queryBuilder->from(Argument::type('string'), "p")->willReturn($queryBuilder);
+        $queryBuilder->leftJoin('p.groups', 'g')->willReturn($queryBuilder);
+        $queryBuilder->where('p.id = :id')->willReturn($queryBuilder);
+        $queryBuilder->setParameters([
+            'id' => 10,
+        ])->willReturn($queryBuilder);
+
+        $queryBuilder->getQuery()->willReturn($query);
+        $query->getScalarResult()->willReturn([
+            ['id' => 1],
+            ['id' => 2]
+        ]);
+
+        $groupRepository->hasAttribute([1, 2], 'attribute_code')->willReturn(true);
+
+        $this->hasAttributeInVariantGroup(10, 'attribute_code')->shouldReturn(true);
+    }
+
+    function it_checks_if_the_product_has_an_attribute_in_its_variant_group_but_it_has_not_group(
+        $em,
+        GroupRepositoryInterface $groupRepository,
+        QueryBuilder $queryBuilder,
+        AbstractQuery $query
+    ) {
+        $this->setGroupRepository($groupRepository);
+
+        $em->createQueryBuilder()->willReturn($queryBuilder);
+        $queryBuilder->select('p')->willReturn($queryBuilder);
+        $queryBuilder->select('g.id')->willReturn($queryBuilder);
+        $queryBuilder->from(Argument::type('string'), "p")->willReturn($queryBuilder);
+        $queryBuilder->leftJoin('p.groups', 'g')->willReturn($queryBuilder);
+        $queryBuilder->where('p.id = :id')->willReturn($queryBuilder);
+        $queryBuilder->setParameters([
+            'id' => 10,
+        ])->willReturn($queryBuilder);
+
+        $queryBuilder->getQuery()->willReturn($query);
+
+        $query->getScalarResult()->willReturn([
+            ['id' => null],
+        ]);
+
+        $groupRepository->hasAttribute(Argument::cetera())->shouldNotBeCalled();
+
+        $this->hasAttributeInVariantGroup(10, 'attribute_code')->shouldReturn(false);
+    }
+
+    function it_checks_if_the_product_has_an_attribute_in_its_family(
+        $em,
+        QueryBuilder $queryBuilder,
+        AbstractQuery $query
+    ) {
+        $em->createQueryBuilder()->willReturn($queryBuilder);
+        $queryBuilder->select('p')->willReturn($queryBuilder);
+        $queryBuilder->from(Argument::type('string'), "p")->willReturn($queryBuilder);
+        $queryBuilder->leftJoin('p.family', 'f')->willReturn($queryBuilder);
+        $queryBuilder->leftJoin('f.attributes', 'a')->willReturn($queryBuilder);
+        $queryBuilder->where('p.id = :id')->willReturn($queryBuilder);
+        $queryBuilder->andWhere('a.code = :code')->willReturn($queryBuilder);
+        $queryBuilder->setMaxResults(1)->willReturn($queryBuilder);
+        $queryBuilder->setParameters([
+            'id' => 10,
+            'code' => 'attribute_code',
+        ])->willReturn($queryBuilder);
+
+        $queryBuilder->getQuery()->willReturn($query);
+
+        $query->getArrayResult()->willReturn(['id' => 10]);
+        $this->hasAttributeInFamily(10, 'attribute_code')->shouldReturn(true);
+
+        $query->getArrayResult()->willReturn([]);
+        $this->hasAttributeInFamily(10, 'attribute_code')->shouldReturn(false);
     }
 
     function it_count_all_products($em, QueryBuilder $queryBuilder, AbstractQuery $query)

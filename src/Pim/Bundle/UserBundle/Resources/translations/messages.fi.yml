@@ -7,7 +7,6 @@ pim_user:
       password.title: Salasana
       business_unit.title: Liiketoimintayksiköt
       email_synchronization.title: Sähköpostin synkronoinnin asetukset
-      interfaces.title: Rajapinnat
 oro.user.controller:
   group.message.saved: Ryhmä tallennettu
   role.message.saved: Rooli tallennettu
@@ -64,7 +63,6 @@ Ssl: SSL
 Last logged in: Viimeksi kirjautunut
 Login count: Kirjautumisien määrä
 Additional Information: Lisätiedot
-Interfaces: Rajapinnat
 Basic Information: Perustiedot
 Contact Information: Yhteystiedot
 User name: Käyttäjänimi
@@ -73,12 +71,7 @@ API key: API-avain
 Generate key: Luo avain
 Primary: ensisijainen
 Removed user: Poistettu käyttäjä
-user:
-  product_grid_filters: Tuoteruudukon suodattimet
-  default_product_grid_view:
-    label: Tuoteruudukon oletusnäkymä
-  default_grid_view:
-    none: Ei yhtään
+user.product_grid_filters: Tuoteruudukon suodattimet
 Role: Rooli
 Owner: Omistaja
 General: Yleinen

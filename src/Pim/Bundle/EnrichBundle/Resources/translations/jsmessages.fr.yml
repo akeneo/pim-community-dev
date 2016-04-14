@@ -14,9 +14,6 @@ confirmation:
     user: Êtes-vous sûr de vouloir supprimer cet utilisateur ?
     role: Êtes-vous sûr de vouloir supprimer ce rôle ?
 pim_datagrid:
-  mass_action_group:
-    quick_export:
-      label: Export rapide
   mass_action:
     delete:
       confirm_content: Êtes-vous sûr de vouloir supprimer les produits sélectionnés ?
@@ -107,11 +104,6 @@ pim_enrich:
     link:
       back_to_grid: Retour à la grille
   entity:
-    save:
-      label: Enregistrer
-    info:
-      update_failed: Échec de la mise à jour
-      update_successful: Mise à jour effectuée avec succès
     product:
       title: produit
       btn:
@@ -168,12 +160,11 @@ pim_enrich:
         all: Tous
         all_visible: Tous les visibles
         none: Aucun
-        copy: Copier
       variant_group:
         updated_by: Mis à jour par un groupe de variantes
         switch:
-          "yes": Oui
-          "no": Non
+          "yes": true
+          "no": false
       optional_attribute:
         remove: Supprimer cet attribut
       locale_specific_attribute:
@@ -216,11 +207,9 @@ pim_enrich:
             add: Ajouter
             add_attributes: Ajouter des attributs
           info:
-            search_attributes: Rechercher...
+            search_attributes: Rechercher
             no_available_attributes: "Il n'y a plus d'attributs disponibles"
             attributes_selected: '{{ attributeCount }} attribut(s) sélectionné(s)'
-            no_match: Aucune correspondance trouvée
-            load_more: Chargement de plus de résultats...
         categories:
           title: Catégories
       panel:
@@ -229,12 +218,11 @@ pim_enrich:
           info:
             no_family: Aucune famille définie. Merci de définir une famille pour calculer la complétude de ce produit.
             no_completeness: "Vous venez de modifier la famille du produit. Merci de l'enregistrer en premier pour calculer la complétude de la nouvelle famille."
-          missing_values: Valeurs manquantes
         history:
           title: Historique
       switch:
-        "no": Non
-        "yes": Oui
+        "no": false
+        "yes": true
       sequential_edit:
         info:
           products: Produits

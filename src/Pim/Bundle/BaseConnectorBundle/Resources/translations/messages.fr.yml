@@ -21,9 +21,6 @@ pim_base_connector:
     csv_variant_group_export:
       title: Export des groupes de variantes en CSV
       export.title: Export des groupes de variantes
-    csv_family_export:
-      title: Export des familles en CSV
-      export.title: Export des familles
     csv_product_import:
       title: Import des produits en CSV
       validation.title: Validation du fichier

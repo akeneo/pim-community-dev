@@ -21,9 +21,6 @@ pim_base_connector:
     csv_variant_group_export:
       title: Экспорт групп вариантов в CSV
       export.title: Экспорт групп вариантов
-    csv_family_export:
-      title: Экспорт семейств в CSV
-      export.title: Экспорт семейств
     csv_product_import:
       title: Импорт продуктов из CSV
       validation.title: Подтверждение файла
@@ -98,12 +95,6 @@ pim_base_connector:
     channel:
       label: Канал
       help: Канал, который вы хотите экспортировать
-    decimalSeparator:
-      label: Десятичный разделитель
-      help: Введите десятичный разделитель
-    dateFormat:
-      label: Формат даты
-      help: Введите формат даты
   import:
     enabled:
       label: Активировать продукт

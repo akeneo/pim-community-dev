@@ -55,10 +55,10 @@ datagrid:
             columns:
                 code:
                     type:      string
-                    data_name: jobCode
+                    data_name: j.code
                 label:
                     type:      string
-                    data_name: jobLabel
+                    data_name: j.label
                 alias:
                     type:      choice
                     data_name: j.alias
