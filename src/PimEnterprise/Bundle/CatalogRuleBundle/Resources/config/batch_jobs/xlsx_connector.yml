@@ -19,7 +19,7 @@ connector:
                 import_associations:
                     title:         pim_connector.jobs.xlsx_product_import.import_associations.title
                     services:
-                        reader:    pim_connector.reader.file.xlsx_association
+                        reader:    pim_connector.reader.file.xlsx_association_type
                         processor: pim_connector.processor.denormalization.product_association.flat
                         writer:    pim_connector.writer.doctrine.product_association
                     parameters:
