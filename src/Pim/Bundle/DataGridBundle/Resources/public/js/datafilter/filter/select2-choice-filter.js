@@ -6,9 +6,10 @@ define(
         'routing',
         'text!pim/template/datagrid/filter/select2-choice-filter',
         'pim/initselect2',
+        'pim/user-context',
         'jquery.select2'
     ],
-    function($, _, TextFilter, Routing, template, initSelect2) {
+    function($, _, TextFilter, Routing, template, initSelect2, UserContext) {
         'use strict';
 
         return TextFilter.extend({
@@ -91,7 +92,8 @@ define(
                                 search: term,
                                 options: {
                                     limit: this.resultsPerPage,
-                                    page: page
+                                    page: page,
+                                    locale: UserContext.get('catalogLocale')
                                 }
                             };
                         }, this),
