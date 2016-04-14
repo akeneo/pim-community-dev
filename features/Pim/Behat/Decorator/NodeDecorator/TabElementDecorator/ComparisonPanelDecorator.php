@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Behat\Decorator\TabElementDecorator;
+namespace Pim\Behat\Decorator\NodeDecorator\TabElementDecorator;
 
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;

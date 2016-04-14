@@ -375,6 +375,18 @@ class NavigationContext extends BaseNavigationContext
     }
 
     /**
+     * @Then /^I click back to grid$/
+     */
+    public function iClickBackToGrid()
+    {
+        $this->spin(function () {
+            $this->getSession()->getPage()->clickLink('Back to grid');
+
+            return true;
+        });
+    }
+
+    /**
      * @return FixturesContext
      */
     protected function getFixturesContext()

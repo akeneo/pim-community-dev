@@ -4,7 +4,7 @@ namespace Context\Page\Product;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
-use Context\Page\Base\Grid;
+use Context\Page\Base\Index as BaseIndex;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Index extends Grid
+class Index extends BaseIndex
 {
     /**
      * @var string

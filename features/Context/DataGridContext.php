@@ -7,7 +7,7 @@ use Behat\Behat\Context\Step\Then;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Context\Page\Base\Grid;
+use Context\Page\Base\Index as BaseIndex;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;

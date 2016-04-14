@@ -29,7 +29,7 @@ abstract class CategoryView extends Form
                 'Category tree'    => [
                     'css'        => '#tree',
                     'decorators' => [
-                        'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
+                        'Pim\Behat\Decorator\NodeDecorator\TreeDecorator\JsTreeDecorator'
                     ]
                 ],
                 'Tree select'      => ['css' => '#tree_select'],

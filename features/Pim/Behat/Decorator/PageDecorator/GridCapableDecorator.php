@@ -7,7 +7,7 @@ use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 
 /**
- * Decorator to handle the grid of a page
+ * Page decorator to handle the grid of a page and it's filters
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -25,13 +25,18 @@ class GridCapableDecorator extends ElementDecorator
 
     /** @var array */
     protected $decorators = [
-        'Pim\Behat\Decorator\GridDecorator\PaginationDecorator',
+        'Grid decorators'   => [
+            'Pim\Behat\Decorator\NodeDecorator\GridDecorator\DataDecorator',
+            'Pim\Behat\Decorator\NodeDecorator\GridDecorator\PaginationDecorator',
+            'Pim\Behat\Decorator\NodeDecorator\GridDecorator\ActionDecorator',
+            'Pim\Behat\Decorator\NodeDecorator\GridDecorator\FilterDecorator',
+        ],
     ];
 
     /**
      * Returns the currently visible grid, if there is one
      *
-     * @return NodeElement
+     * @return NodeElement|null
      */
     public function getCurrentGrid()
     {
@@ -47,6 +52,9 @@ class GridCapableDecorator extends ElementDecorator
             'No visible grid found'
         );
 
-        return $this->decorate($grid->getParent()->getParent()->getParent(), $this->decorators);
+        return $this->decorate(
+            $grid->getParent()->getParent()->getParent()->getParent(),
+            $this->decorators['Grid decorators']
+        );
     }
 }

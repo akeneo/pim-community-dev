@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Behat\Decorator\GridDecorator;
+namespace Pim\Behat\Decorator\NodeDecorator\GridDecorator;
 
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
@@ -16,7 +16,7 @@ class PaginationDecorator extends ElementDecorator
 {
     use SpinCapableTrait;
 
-    /** @var array selectors for pagination components*/
+    /** @var array selectors for pagination components */
     protected $selectors = [
         'pagination input' => '.icons-holder input[type="text"]',
         'page size button' => '.page-size .dropdown-toggle',
@@ -34,15 +34,18 @@ class PaginationDecorator extends ElementDecorator
     }
 
     /**
-     * Set the grid page number
+     * Set the grid page number if needed
      *
      * @param mixed $num
      */
     public function setPageNumber($num)
     {
         $pagination = $this->getPaginationField();
-        $pagination->setValue($num);
-        $pagination->blur();
+
+        if ((int) $num !== $this->getPageNumber()) {
+            $pagination->setValue($num);
+            $pagination->blur();
+        }
     }
 
     /**
@@ -57,19 +60,21 @@ class PaginationDecorator extends ElementDecorator
     }
 
     /**
-     * Set the page size
+     * Set the page size if needed
      *
      * @param mixed $num
      */
     public function setPageSize($num)
     {
-        $this->getPageSizeButton()->click();
+        if ((int) $num !== $this->getPageSize()) {
+            $this->getPageSizeButton()->click();
 
-        $list = $this->spin(function () {
-            return $this->find('css', $this->selectors['page size list']);
-        }, 'Cannot find the change page size list');
+            $list = $this->spin(function () {
+                return $this->find('css', $this->selectors['page size list']);
+            }, 'Cannot find the change page size list');
 
-        $list->find('css', sprintf('li a:contains("%d")', (int) $num))->click();
+            $list->find('css', sprintf('li a:contains("%d")', (int) $num))->click();
+        }
     }
 
     /**
