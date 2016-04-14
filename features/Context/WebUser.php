@@ -1390,7 +1390,7 @@ class WebUser extends RawMinkContext
      */
     public function iPressTheButton($button)
     {
-        $this->getMainContext()->spin(function () use ($button) {
+        $this->spin(function () use ($button) {
             $this->getCurrentPage()->pressButton($button);
 
             return true;
@@ -1653,7 +1653,13 @@ class WebUser extends RawMinkContext
      */
     public function iClickOnTheJobTrackerButtonOnTheJobWidget()
     {
-        $this->getCurrentPage()->find('css', 'a#btn-show-list')->click();
+        $currentPage = $this->getCurrentPage();
+
+        $button = $this->spin(function () use ($currentPage) {
+            return $currentPage->find('css', 'a#btn-show-list');
+        }, 'Could not find the job tracker button');
+
+        $button->click();
         $this->wait();
     }
 
@@ -1778,26 +1784,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * TODO: should be removed and add spin on next method
-     * @Given /^I wait for (the )?widgets to load$/
-     */
-    public function iWaitForTheWidgetsToLoad()
-    {
-        $this->iWaitSeconds(10);
-        $this->wait();
-    }
-
-    /**
-     * TODO: should be removed and add spin on next method
-     * @Given /^I wait for (the )?options to load$/
-     */
-    public function iWaitForTheOptionsToLoad()
-    {
-        $this->iWaitSeconds(10);
-        $this->wait();
-    }
-
-    /**
      * @param string    $fileName
      * @param TableNode $table
      *
@@ -1850,17 +1836,9 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeTheUploadedImage()
     {
-        $maxTime = 10000;
-
-        while ($maxTime > 0) {
-            $this->iWaitSeconds(10);
-            $maxTime -= 1000;
-            if ($this->getPage('Product edit')->getImagePreview()) {
-                return;
-            }
-        }
-
-        throw $this->createExpectationException('Image preview is not displayed.');
+        return $this->spin(function () {
+            return $this->getPage('Product edit')->getImagePreview();
+        }, 'Image preview could not be displayed.');
     }
 
     /**
