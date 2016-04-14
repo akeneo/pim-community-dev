@@ -32,9 +32,9 @@ class FormsOptionsRegistry
      */
     public function getFormsOptions(JobInterface $job)
     {
-        foreach ($this->formsOptions as $forms) {
-            if ($forms->supports($job)) {
-                return $forms->getOptions();
+        foreach ($this->formsOptions as $options) {
+            if ($options->supports($job)) {
+                return $options;
             }
         }
 
@@ -42,7 +42,7 @@ class FormsOptionsRegistry
     }
 
     /**
-     * Ensure Backward Compatibility with PIM <= CE-1.5
+     * Ensure Backward Compatibility with PIM <= CE-1.5 by fetching configuration from getConfigurationFields()
      *
      * @param JobInterface $job
      *
@@ -52,19 +52,19 @@ class FormsOptionsRegistry
      */
     private function getFormsOptionsFromStepElements(JobInterface $job)
     {
-        $configuration = [];
+        $options = [];
         if (method_exists($job, 'getSteps')) {
             foreach ($job->getSteps() as $step) {
                 if (method_exists($step, 'getConfigurableStepElements')) {
                     foreach ($step->getConfigurableStepElements() as $stepElement) {
                         if (method_exists($stepElement, 'getConfigurationFields')) {
-                            $configuration = array_merge($configuration, $stepElement->getConfigurationFields());
+                            $options = array_merge($options, $stepElement->getConfigurationFields());
                         }
                     }
                 }
             }
         }
 
-        return $configuration;
+        return new SimpleFormsOptions($options);
     }
 }
