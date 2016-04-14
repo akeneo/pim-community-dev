@@ -1,9 +1,11 @@
 parameters:
-    pim_connector.job_parameters.simple_csv_export.class: Pim\Component\Connector\Job\JobParameters\SimpleCsvExport
+    pim_connector.job_parameters.defaults.simple_csv_export.class:    Pim\Component\Connector\Job\JobParameters\Defaults\SimpleCsvExport
+    pim_connector.job_parameters.constraints.simple_csv_export.class: Pim\Component\Connector\Job\JobParameters\Constraints\SimpleCsvExport
 
 services:
-    pim_connector.job_parameters.simple_csv_export:
-        class: %pim_connector.job_parameters.simple_csv_export.class%
+    # Default parameters depending on Job
+    pim_connector.job_parameters.defaults.simple_csv_export:
+        class: %pim_connector.job_parameters.defaults.simple_csv_export.class%
         arguments:
             -
                 - 'pim_base_connector.jobs.csv_attribute_export.title'
@@ -14,4 +16,19 @@ services:
                 - 'pim_base_connector.jobs.csv_attribute_option_export.title'
                 - 'pim_base_connector.jobs.csv_category_export.title'
         tags:
-            - { name: akeneo_batch.job_parameters.default }
+            - { name: akeneo_batch.job_parameters.defaults }
+
+    # Validation constraints depending on Job
+    pim_connector.job_parameters.constraints.simple_csv_export:
+        class: %pim_connector.job_parameters.constraints.simple_csv_export.class%
+        arguments:
+            -
+                - 'pim_base_connector.jobs.csv_attribute_export.title'
+                - 'pim_base_connector.jobs.csv_family_export.title'
+                - 'pim_base_connector.jobs.csv_variant_group_export.title'
+                - 'pim_base_connector.jobs.csv_group_export.title'
+                - 'pim_base_connector.jobs.csv_association_type_export.title'
+                - 'pim_base_connector.jobs.csv_attribute_option_export.title'
+                - 'pim_base_connector.jobs.csv_category_export.title'
+        tags:
+            - { name: akeneo_batch.job_parameters.constraints }

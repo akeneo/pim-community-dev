@@ -28,7 +28,8 @@ class AkeneoBatchBundle extends Bundle
             ->addCompilerPass(new Compiler\RegisterNotifiersPass())
             ->addCompilerPass(new Compiler\PushBatchLogHandlerPass())
             ->addCompilerPass(new Compiler\RegisterJobsPass())
-            ->addCompilerPass(new Compiler\RegisterDefaultJobParametersPass())
+            ->addCompilerPass(new Compiler\RegisterJobParametersPass('defaults'))
+            ->addCompilerPass(new Compiler\RegisterJobParametersPass('constraints'))
             ->addCompilerPass(
                 DoctrineOrmMappingsPass::createYamlMappingDriver(
                     $mappings,

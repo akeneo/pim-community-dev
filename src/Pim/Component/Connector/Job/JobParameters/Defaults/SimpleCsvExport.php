@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Component\Connector\Job\JobParameters;
+namespace Pim\Component\Connector\Job\JobParameters\Defaults;
 
-use Akeneo\Component\Batch\Job\Job;
+use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultParametersInterface;
 
 /**
@@ -41,7 +41,7 @@ class SimpleCsvExport implements DefaultParametersInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(Job $job)
+    public function supports(JobInterface $job)
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }

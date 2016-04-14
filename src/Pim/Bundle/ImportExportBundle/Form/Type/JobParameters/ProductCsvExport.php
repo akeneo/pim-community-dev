@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\Type\JobParameters;
 
-use Akeneo\Component\Batch\Job\Job;
+use Akeneo\Component\Batch\Job\JobInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
@@ -46,6 +46,7 @@ class ProductCsvExport implements FormsOptionsInterface
                     'help'     => 'pim_base_connector.export.channel.help'
                 ]
             ],
+            // TODO, inject here
             'decimalSeparator' => [
                 'type'    => 'choice',
                 'options' => [
@@ -56,6 +57,7 @@ class ProductCsvExport implements FormsOptionsInterface
                     'help'     => 'pim_base_connector.export.decimalSeparator.help'
                 ]
             ],
+            // TODO, inject here
             'dateFormat' => [
                 'type'    => 'choice',
                 'options' => [
@@ -97,7 +99,7 @@ class ProductCsvExport implements FormsOptionsInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(Job $job)
+    public function supports(JobInterface $job)
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }

@@ -19,6 +19,7 @@ services:
         class: %pim_import_export.form.type.job_parameters.class%
         arguments:
             - '@pim_import_export.form.type.job_parameters.form_options_registry'
+            - '@akeneo_batch.job_parameters.constraints_registry'
         tags:
             - { name: form.type, alias: pim_import_export_job_parameters }
 

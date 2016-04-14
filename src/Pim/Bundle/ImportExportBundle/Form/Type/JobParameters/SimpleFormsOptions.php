@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\Type\JobParameters;
 
-use Akeneo\Component\Batch\Job\Job;
+use Akeneo\Component\Batch\Job\JobInterface;
 
 /**
  * Simple form options
@@ -35,7 +35,7 @@ class SimpleFormsOptions implements FormsOptionsInterface
     /**
      * @return boolean
      */
-    public function supports(Job $job)
+    public function supports(JobInterface $job)
     {
         return true;
     }

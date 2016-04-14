@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\Type\JobParameters;
 
-use Akeneo\Component\Batch\Job\Job;
+use Akeneo\Component\Batch\Job\JobInterface;
 
 /**
  * Define form options for a JobParameters
@@ -21,5 +21,5 @@ interface FormsOptionsInterface
     /**
      * @return boolean
      */
-    public function supports(Job $job);
+    public function supports(JobInterface $job);
 }

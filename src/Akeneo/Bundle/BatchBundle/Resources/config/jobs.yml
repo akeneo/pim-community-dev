@@ -1,8 +1,10 @@
 parameters:
-    akeneo_batch.job_parameters_factory.class:          Akeneo\Component\Batch\Job\JobParametersFactory
-    akeneo_batch.job_repository.class:                  Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository
-    akeneo_batch.job_factory.class:                     Akeneo\Component\Batch\Job\JobFactory
-    akeneo_batch.job_parameters.default_registry.class: Akeneo\Component\Batch\Job\JobParameters\DefaultParametersRegistry
+    akeneo_batch.job_parameters_factory.class:              Akeneo\Component\Batch\Job\JobParametersFactory
+    akeneo_batch.job_repository.class:                      Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository
+    akeneo_batch.job_factory.class:                         Akeneo\Component\Batch\Job\JobFactory
+    akeneo_batch.job_parameters.defaults_registry.class:    Akeneo\Component\Batch\Job\JobParameters\DefaultParametersRegistry
+    akeneo_batch.job_parameters.constraints_registry.class: Akeneo\Component\Batch\Job\JobParameters\ConstraintsRegistry
+    akeneo_batch.job_parameters.validator.class:            Akeneo\Component\Batch\Job\JobParametersValidator
 
 services:
     akeneo_batch.job_repository:
@@ -22,8 +24,17 @@ services:
     akeneo_batch.job_parameters_factory:
         class: %akeneo_batch.job_parameters_factory.class%
         arguments:
-            - '@akeneo_batch.job_parameters.default_registry'
+            - '@akeneo_batch.job_parameters.defaults_registry'
             - %akeneo_batch.job.job_parameters.class%
 
-    akeneo_batch.job_parameters.default_registry:
-        class: %akeneo_batch.job_parameters.default_registry.class%
+    akeneo_batch.job_parameters.defaults_registry:
+        class: %akeneo_batch.job_parameters.defaults_registry.class%
+
+    akeneo_batch.job_parameters.constraints_registry:
+        class: %akeneo_batch.job_parameters.constraints_registry.class%
+
+    akeneo_batch.job_parameters.validator:
+        class: %akeneo_batch.job_parameters.validator.class%
+        arguments:
+            - '@validator'
+            - '@akeneo_batch.job_parameters.constraints_registry'

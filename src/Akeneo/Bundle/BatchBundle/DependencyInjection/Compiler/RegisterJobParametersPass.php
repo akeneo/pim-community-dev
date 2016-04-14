@@ -13,30 +13,43 @@ use Symfony\Component\DependencyInjection\Reference;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RegisterDefaultJobParametersPass implements CompilerPassInterface
+class RegisterJobParametersPass implements CompilerPassInterface
 {
     /** @staticvar int The default provider priority */
     const DEFAULT_PRIORITY = 100;
 
     /** @staticvar string The registry id */
-    const REGISTRY_ID = 'akeneo_batch.job_parameters.default_registry';
+    const REGISTRY_ID = 'akeneo_batch.job_parameters.%s_registry';
 
     /** @staticvar string */
-    const SERVICE_TAG = 'akeneo_batch.job_parameters.default';
+    const SERVICE_TAG = 'akeneo_batch.job_parameters.%s';
+
+    /** @var string */
+    protected $type;
+
+    /**
+     * @param $type
+     */
+    public function __construct($type)
+    {
+        $this->type = $type;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition(self::REGISTRY_ID)) {
+        $registryId = sprintf(self::REGISTRY_ID, $this->type);
+        if (!$container->hasDefinition($registryId)) {
             return;
         }
 
-        $registryDefinition = $container->getDefinition(self::REGISTRY_ID);
+        $registryDefinition = $container->getDefinition($registryId);
 
         $providers = [];
-        foreach ($container->findTaggedServiceIds(self::SERVICE_TAG) as $serviceId => $tags) {
+        $serviceTag = sprintf(self::SERVICE_TAG, $this->type);
+        foreach ($container->findTaggedServiceIds($serviceTag) as $serviceId => $tags) {
             foreach ($tags as $tag) {
                 $priority = isset($tag['priority']) ? $tag['priority'] : static::DEFAULT_PRIORITY;
                 if (!isset($providers[$priority])) {

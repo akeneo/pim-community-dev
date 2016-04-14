@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
@@ -110,9 +111,8 @@ class BatchCommand extends ContainerAwareCommand
         $defaultJobInstance = $this->getDefaultEntityManager()->merge($jobInstance);
         $defaultJobInstance->setJob($job);
 
-        //$errors = $validator->validate($defaultJobInstance, array('Default', 'Execution'));
-
-        $errors = $validator->validate($jobParameters, array('Default', 'Execution'));
+        $paramsValidator = $this->getJobParametersValidator();
+        $errors = $paramsValidator->validate($job, $jobParameters, ['Default', 'Execution']);
         if (count($errors) > 0) {
             throw new \RuntimeException(
                 sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors))
@@ -244,6 +244,14 @@ class BatchCommand extends ContainerAwareCommand
     protected function getJobParametersFactory()
     {
         return $this->getContainer()->get('akeneo_batch.job_parameters_factory');
+    }
+
+    /**
+     * @return JobParametersValidator
+     */
+    protected function getJobParametersValidator()
+    {
+        return $this->getContainer()->get('akeneo_batch.job_parameters.validator');
     }
 
     /**

@@ -3,33 +3,23 @@
 namespace Akeneo\Component\Batch\Job\JobParameters;
 
 use Akeneo\Component\Batch\Job\JobInterface;
+use Symfony\Component\Validator\Constraints\Collection;
 
 /**
- * Provides simple default parameters
+ * Empty constraints that can be used to validate any JobParameters
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleDefaultParameters implements DefaultParametersInterface
+class EmptyConstraints implements ConstraintsInterface
 {
-    /** @var array */
-    protected $default;
-
-    /**
-     * @param array $default
-     */
-    public function __construct(array $default)
-    {
-        $this->default = $default;
-    }
-
     /**
      * {@inheritdoc}
      */
-    public function getParameters()
+    public function getConstraints()
     {
-        return $this->default;
+        return new Collection(['fields' => []]);
     }
 
     /**

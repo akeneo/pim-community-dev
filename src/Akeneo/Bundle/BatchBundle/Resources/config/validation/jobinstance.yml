@@ -12,5 +12,6 @@ Akeneo\Component\Batch\Model\JobInstance:
                 message: The code must only contain alphanumeric characters and underscore.
         label:
             - NotBlank: ~
-        job:
-            - Valid: ~
+        # TODO to drop and to document
+        #job:
+        #    - Valid: ~

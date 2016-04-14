@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Job\JobParameters\ConstraintsRegistry;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\FormsOptionsRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
@@ -24,12 +25,16 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     /** @var FormsOptionsRegistry */
     protected $formsOptionsRegistry;
 
+    /** @var FormsOptionsRegistry */
+    protected $constraintsRegistry;
+
     /**
      * @param FormsOptionsRegistry $formsOptionsRegistry
      */
-    public function __construct(FormsOptionsRegistry $formsOptionsRegistry)
+    public function __construct(FormsOptionsRegistry $formsOptionsRegistry, ConstraintsRegistry $constraintsRegistry)
     {
         $this->formsOptionsRegistry = $formsOptionsRegistry;
+        $this->constraintsRegistry = $constraintsRegistry;
     }
 
     /**
@@ -39,17 +44,28 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     {
         $builder->setDataMapper($this);
         $factory = $builder->getFormFactory();
-        $registry = $this->formsOptionsRegistry;
+        $formOptionsRegistry = $this->formsOptionsRegistry;
+        // TODO: constraints registry could be injected in the forma options registry
+        $constraintsRegistry = $this->constraintsRegistry;
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($factory, $registry) {
+            function (FormEvent $event) use ($factory, $formOptionsRegistry, $constraintsRegistry) {
                 $form   = $event->getForm();
                 $jobInstance = $form->getRoot()->getData();
                 if (null == $jobInstance->getId()) {
                     return;
                 }
-                $formOptions = $registry->getFormsOptions($jobInstance->getJob());
+                $formOptions = $formOptionsRegistry->getFormsOptions($jobInstance->getJob());
                 $configs = $formOptions->getOptions();
+
+                $job = $jobInstance->getJob();
+                $constraints = $constraintsRegistry->getConstraints($job);
+                $fieldConstraints = [];
+                if (!$constraints instanceof JobParameters\EmptyConstraints) {
+                    $collection = $constraints->getConstraints();
+                    $fieldConstraints = $collection->fields;
+                }
+
                 foreach ($configs as $parameter => $config) {
                     if (isset($config['system']) && true === $config['system']) {
                         continue;
@@ -69,6 +85,10 @@ class JobParametersType extends AbstractType implements DataMapperInterface
                         ],
                         $config['options']
                     );
+
+                    if (isset($fieldConstraints[$parameter])) {
+                        $options['constraints'] = $fieldConstraints[$parameter]->constraints;
+                    }
 
                     $form->add($factory->createNamed($parameter, $config['type'], null, $options));
                 }

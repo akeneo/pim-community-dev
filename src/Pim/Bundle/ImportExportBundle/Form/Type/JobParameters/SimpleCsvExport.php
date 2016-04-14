@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\Type\JobParameters;
 
-use Akeneo\Component\Batch\Job\Job;
+use Akeneo\Component\Batch\Job\JobInterface;
 
 /**
  * FormsOptions for simple CSV export
@@ -61,7 +61,7 @@ class SimpleCsvExport implements FormsOptionsInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(Job $job)
+    public function supports(JobInterface $job)
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }
