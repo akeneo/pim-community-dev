@@ -1,6 +1,10 @@
 parameters:
-    pim_import_export.form.type.job_instance.class:   Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
-    pim_import_export.form.type.job_parameters.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParametersType
+    pim_import_export.form.type.job_instance.class:                                   Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+    pim_import_export.form.type.job_parameters.class:                                 Pim\Bundle\ImportExportBundle\Form\Type\JobParametersType
+    pim_import_export.form.type.job_parameters.form_options_registry.class:           Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\FormsOptionsRegistry
+    pim_import_export.form.type.job_parameters.form_options.simple_csv_export.class:  Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\SimpleCsvExport
+    pim_import_export.form.type.job_parameters.form_options.simple_xlsx_export.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\SimpleXlsxExport
+    pim_import_export.form.type.job_parameters.form_options.product_csv_export.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\ProductCsvExport
 
 services:
     pim_import_export.form.type.job_instance:
@@ -13,5 +17,41 @@ services:
 
     pim_import_export.form.type.job_parameters:
         class: %pim_import_export.form.type.job_parameters.class%
+        arguments:
+            - '@pim_import_export.form.type.job_parameters.form_options_registry'
         tags:
             - { name: form.type, alias: pim_import_export_job_parameters }
+
+    pim_import_export.form.type.job_parameters.form_options_registry:
+        class: %pim_import_export.form.type.job_parameters.form_options_registry.class%
+
+    pim_import_export.form.type.job_parameters.form_options.simple_csv_export:
+        class: %pim_import_export.form.type.job_parameters.form_options.simple_csv_export.class%
+        arguments:
+            -
+                - 'pim_base_connector.jobs.csv_attribute_export.title'
+                - 'pim_base_connector.jobs.csv_family_export.title'
+                - 'pim_base_connector.jobs.csv_variant_group_export.title'
+                - 'pim_base_connector.jobs.csv_group_export.title'
+                - 'pim_base_connector.jobs.csv_association_type_export.title'
+                - 'pim_base_connector.jobs.csv_attribute_option_export.title'
+                - 'pim_base_connector.jobs.csv_category_export.title'
+        tags:
+            - { name: pim_import_export.form.type.job_parameters.form_options }
+
+    pim_import_export.form.type.job_parameters.form_options.simple_xlsx_export:
+        class: %pim_import_export.form.type.job_parameters.form_options.simple_xlsx_export.class%
+        arguments:
+            -
+                - 'pim_connector.jobs.xlsx_group_export.title'
+        tags:
+            - { name: pim_import_export.form.type.job_parameters.form_options }
+
+    pim_import_export.form.type.job_parameters.form_options.product_csv_export:
+        class: %pim_import_export.form.type.job_parameters.form_options.product_csv_export.class%
+        arguments:
+            - '@pim_catalog.repository.channel'
+            -
+                - 'pim_base_connector.jobs.csv_product_export.title'
+        tags:
+            - { name: pim_import_export.form.type.job_parameters.form_options }

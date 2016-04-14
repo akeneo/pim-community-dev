@@ -176,7 +176,7 @@ class ItemStep extends AbstractStep
     }
 
     /**
-     * @deprected will be removed in 1.7
+     * @deprecated will be removed in 1.7
      *
      * @return array
      */

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
 use Akeneo\Component\Batch\Job\JobParameters;
+use Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\FormsOptionsRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,6 +21,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class JobParametersType extends AbstractType implements DataMapperInterface
 {
+    /** @var FormsOptionsRegistry */
+    protected $formsOptionsRegistry;
+
+    /**
+     * @param FormsOptionsRegistry $formsOptionsRegistry
+     */
+    public function __construct(FormsOptionsRegistry $formsOptionsRegistry)
+    {
+        $this->formsOptionsRegistry = $formsOptionsRegistry;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -27,7 +39,7 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     {
         $builder->setDataMapper($this);
         $factory = $builder->getFormFactory();
-        $registry = new JobParameterFieldsRegistry();
+        $registry = $this->formsOptionsRegistry;
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use ($factory, $registry) {
@@ -36,7 +48,7 @@ class JobParametersType extends AbstractType implements DataMapperInterface
                 if (null == $jobInstance->getId()) {
                     return;
                 }
-                $configs = $registry->getFields($jobInstance->getJob());
+                $configs = $registry->getFormsOptions($jobInstance->getJob());
                 foreach ($configs as $parameter => $config) {
                     if (isset($config['system']) && true === $config['system']) {
                         continue;
