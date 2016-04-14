@@ -17,7 +17,7 @@ class UploadType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'upload';
     }

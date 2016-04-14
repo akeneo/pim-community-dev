@@ -3,6 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -41,10 +43,10 @@ class MetricType extends AbstractType
         }
 
         $builder
-            ->add('id', 'hidden')
+            ->add('id', HiddenType::class)
             ->add('data', 'pim_number')
-            ->add('unit', 'choice', $unitOptions)
-            ->add('family', 'hidden', ['data' => $options['family']]);
+            ->add('unit', ChoiceType::class, $unitOptions)
+            ->add('family', HiddenType::class, ['data' => $options['family']]);
     }
 
     /**
@@ -65,7 +67,7 @@ class MetricType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_metric';
     }

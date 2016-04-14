@@ -8,6 +8,7 @@ use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -54,7 +55,7 @@ class ProductEditType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_product_edit';
     }
@@ -82,7 +83,7 @@ class ProductEditType extends AbstractType
         $builder
             ->add(
                 'associations',
-                'collection',
+                CollectionType::class,
                 [
                     'type' => 'pim_enrich_association'
                 ]

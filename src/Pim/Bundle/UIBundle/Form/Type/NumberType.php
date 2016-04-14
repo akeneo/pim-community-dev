@@ -9,6 +9,7 @@ use Akeneo\Component\Localization\Validator\Constraints\NumberFormatValidator;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Bundle\LocalizationBundle\Form\DataTransformer\NumberLocalizerTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -85,7 +86,7 @@ class NumberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_number';
     }
@@ -95,6 +96,6 @@ class NumberType extends AbstractType
      */
     public function getParent()
     {
-        return 'text';
+        return TextType::class;
     }
 }

@@ -6,6 +6,7 @@ use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -55,7 +56,7 @@ class ProductValueType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'hidden');
+        $builder->add('id', HiddenType::class);
         $builder->addEventSubscriber($this->subscriber);
     }
 
@@ -87,7 +88,7 @@ class ProductValueType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_product_value';
     }

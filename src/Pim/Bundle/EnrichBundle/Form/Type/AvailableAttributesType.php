@@ -110,7 +110,7 @@ class AvailableAttributesType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_available_attributes';
     }

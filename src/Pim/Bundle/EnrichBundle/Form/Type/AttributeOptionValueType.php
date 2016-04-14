@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -45,7 +46,7 @@ class AttributeOptionValueType extends AbstractType
      */
     protected function addFieldId(FormBuilderInterface $builder)
     {
-        $builder->add('id', 'hidden');
+        $builder->add('id', HiddenType::class);
     }
 
     /**
@@ -55,7 +56,7 @@ class AttributeOptionValueType extends AbstractType
      */
     protected function addFieldLocale(FormBuilderInterface $builder)
     {
-        $builder->add('locale', 'hidden');
+        $builder->add('locale', HiddenType::class);
     }
 
     /**
@@ -83,7 +84,7 @@ class AttributeOptionValueType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_attribute_option_value';
     }

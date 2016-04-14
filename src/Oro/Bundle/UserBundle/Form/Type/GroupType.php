@@ -4,6 +4,7 @@ namespace Oro\Bundle\UserBundle\Form\Type;
 
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,7 +21,7 @@ class GroupType extends AbstractType
         $builder
             ->add(
                 'name',
-                'text',
+                TextType::class,
                 [
                     'required' => true,
                 ]
@@ -79,7 +80,7 @@ class GroupType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'oro_user_group';
     }

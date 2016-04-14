@@ -5,6 +5,9 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Pim\Component\Catalog\AttributeTypeRegistry;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -97,7 +100,7 @@ class AttributeType extends AbstractType
      */
     protected function addFieldId(FormBuilderInterface $builder)
     {
-        $builder->add('id', 'hidden');
+        $builder->add('id', HiddenType::class);
     }
 
     /**
@@ -107,7 +110,7 @@ class AttributeType extends AbstractType
      */
     protected function addFieldCode(FormBuilderInterface $builder)
     {
-        $builder->add('code', 'text', ['required' => true]);
+        $builder->add('code', TextType::class, ['required' => true]);
     }
 
     /**
@@ -117,7 +120,7 @@ class AttributeType extends AbstractType
     {
         $builder->add(
             'attributeType',
-            'choice',
+            ChoiceType::class,
             [
                 'choices'   => $this->registry->getSortedAliases(),
                 'select2'   => true,
@@ -202,7 +205,7 @@ class AttributeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_attribute';
     }

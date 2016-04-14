@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,7 +24,7 @@ class JobConfigurationType extends AbstractType
         $builder
             ->add(
                 'steps',
-                'collection',
+                CollectionType::class,
                 [
                     'type' => 'pim_import_export_step_configuration'
                 ]
@@ -45,7 +46,7 @@ class JobConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_import_export_job_configuration';
     }

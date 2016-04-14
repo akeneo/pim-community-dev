@@ -8,6 +8,9 @@ use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobAliasSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\RemoveDuplicateJobConfigurationSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -73,7 +76,7 @@ class JobInstanceType extends AbstractType
     protected function addCodeField(FormBuilderInterface $builder)
     {
         $builder
-            ->add('code', 'text')
+            ->add('code', TextType::class)
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
 
         return $this;
@@ -105,7 +108,7 @@ class JobInstanceType extends AbstractType
         $builder
             ->add(
                 'connector',
-                'hidden',
+                HiddenType::class,
                 [
                     'required'     => true,
                     'by_reference' => false,
@@ -137,7 +140,7 @@ class JobInstanceType extends AbstractType
         $builder
             ->add(
                 'alias',
-                'choice',
+                ChoiceType::class,
                 [
                     'choices'      => $choices,
                     'required'     => true,
@@ -179,7 +182,7 @@ class JobInstanceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_import_export_jobInstance';
     }

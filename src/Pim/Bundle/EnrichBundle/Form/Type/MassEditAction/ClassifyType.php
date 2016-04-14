@@ -97,7 +97,7 @@ class ClassifyType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_mass_classify';
     }

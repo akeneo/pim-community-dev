@@ -11,6 +11,8 @@ use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -102,7 +104,7 @@ class ChannelType extends AbstractType
      */
     protected function addLabelField(FormBuilderInterface $builder)
     {
-        $builder->add('label', 'text', ['label' => 'Default label']);
+        $builder->add('label', TextType::class, ['label' => 'Default label']);
 
         return $this;
     }
@@ -118,7 +120,7 @@ class ChannelType extends AbstractType
     {
         $builder->add(
             'color',
-            'choice',
+            ChoiceType::class,
             [
                 'choices'     => $this->provider->getColorChoices(),
                 'select2'     => true,
@@ -285,7 +287,7 @@ class ChannelType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_channel';
     }
