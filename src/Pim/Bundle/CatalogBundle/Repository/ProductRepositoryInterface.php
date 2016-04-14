@@ -166,4 +166,24 @@ interface ProductRepositoryInterface
      * @return int
      */
     public function countAll();
+
+    /**
+     * Checks if the family has the specified attribute
+     *
+     * @param mixed  $productId
+     * @param string $attributeCode
+     *
+     * @return bool
+     */
+    public function hasAttributeInFamily($productId, $attributeCode);
+
+    /**
+     * Checks if the group has the specified attribute
+     *
+     * @param mixed  $productId
+     * @param string $attributeCode
+     *
+     * @return bool
+     */
+    public function hasAttributeInVariantGroup($productId, $attributeCode);
 }

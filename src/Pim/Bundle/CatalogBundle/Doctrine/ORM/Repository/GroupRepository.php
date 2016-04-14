@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
@@ -337,5 +339,73 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     public function getIdentifierProperties()
     {
         return array('code');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAttribute(array $ids, $attributeCode)
+    {
+        if ($this->hasAttributeInAxisAttributes($ids, $attributeCode)) {
+            return true;
+        }
+
+        return $this->hasAttributeInProductTemplate($ids, $attributeCode);
+    }
+
+    /**
+     * @param array  $ids
+     * @param string $attributeCode
+     *
+     * @return bool
+     */
+    protected function hasAttributeInAxisAttributes(array $ids, $attributeCode)
+    {
+        $queryBuilder = $this->createQueryBuilder('g')
+            ->leftJoin('g.attributes', 'a')
+            ->leftJoin('g.type', 't')
+            ->where('g.id IN (:ids)')
+            ->andWhere('t.variant = :variant')
+            ->andWhere('a.code = :code')
+            ->setMaxResults(1)
+            ->setParameters([
+                'variant' => true,
+                'code'    => $attributeCode,
+                'ids'     => $ids,
+            ]);
+
+        $result = $queryBuilder->getQuery()->getArrayResult();
+
+        return count($result) > 0;
+    }
+
+    /**
+     * @param array  $ids
+     * @param string $attributeCode
+     *
+     * @return bool
+     */
+    protected function hasAttributeInProductTemplate(array $ids, $attributeCode)
+    {
+        $queryBuilder = $this->createQueryBuilder('g')
+            ->select('pt.valuesData')
+            ->leftJoin('g.type', 't')
+            ->leftJoin('g.productTemplate', 'pt')
+            ->where('g.id IN (:ids)')
+            ->andWhere('t.variant = :variant')
+            ->setParameters([
+                'variant' => true,
+                'ids'     => $ids,
+            ]);
+
+        $productTemplates = $queryBuilder->getQuery()->getArrayResult();
+
+        foreach ($productTemplates as $productTemplate) {
+            if (isset($productTemplate['valuesData'][$attributeCode])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

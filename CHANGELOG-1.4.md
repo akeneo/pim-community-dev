@@ -1,5 +1,15 @@
 # 1.4.x
 
+## Scalability improvements
+- PIM-5507 : Memory leak during mass edit attributes, mass publish
+
+## BC Breaks
+- Changed constructor `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor`
+- Added method `hasAttribute` to `Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface`
+- Added method `hasAttribute` to `Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface`
+- Added method `hasAttributeInFamily` to `Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface`
+- Added method `hasAttributeInVariantGroup` to `Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface`
+
 ## Bug fixes
 
 - PIM-5725: Fix reference data name of the attribute in case this attribute is not a reference data

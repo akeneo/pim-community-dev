@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
@@ -236,5 +237,26 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
             ->getSingleScalarResult();
 
         return $count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAttribute($id, $attributeCode)
+    {
+        $queryBuilder = $this->createQueryBuilder('f')
+            ->leftJoin('f.attributes', 'a')
+            ->where('f.id = :id')
+            ->andWhere('a.code = :code')
+            ->setMaxResults(1)
+            ->setParameters([
+                'id'   => $id,
+                'code' => $attributeCode,
+            ])
+            ->addGroupBy('a.id');
+
+        $result = $queryBuilder->getQuery()->getArrayResult();
+
+        return count($result) > 0;
     }
 }

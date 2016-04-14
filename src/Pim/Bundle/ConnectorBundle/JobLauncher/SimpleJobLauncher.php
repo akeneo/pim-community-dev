@@ -79,7 +79,7 @@ class SimpleJobLauncher extends BaseSimpleJobLauncher
             !empty($rawConfiguration) ? sprintf('--config="%s"', $rawConfiguration) : '',
             $this->rootDir
         );
-
+        
         $this->launchInBackground($cmd);
 
         return $jobExecution;
