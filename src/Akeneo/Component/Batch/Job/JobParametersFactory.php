@@ -2,6 +2,8 @@
 
 namespace Akeneo\Component\Batch\Job;
 
+use Akeneo\Component\Batch\Job\JobParameters\DefaultParametersRegistry;
+
 /**
  * Allow to create immutable JobParameters with only default values or with default values and passed parameters
  *
@@ -11,6 +13,22 @@ namespace Akeneo\Component\Batch\Job;
  */
 class JobParametersFactory
 {
+    /** @var DefaultParametersRegistry */
+    protected $defaultRegistry;
+
+    /** @var string */
+    protected $jobParametersClass;
+
+    /**
+     * @param DefaultParametersRegistry $registry
+     * @param string                    $jobParametersClass
+     */
+    public function __construct(DefaultParametersRegistry $registry, $jobParametersClass)
+    {
+        $this->defaultRegistry = $registry;
+        $this->jobParametersClass = $jobParametersClass;
+    }
+
     /**
      * @param JobInterface $job
      *
@@ -18,18 +36,9 @@ class JobParametersFactory
      */
     public function createDefault(JobInterface $job)
     {
-        if ('pim_base_connector.jobs.csv_attribute_export.title' === $job->getName()) {
-            $defaults = [
-                'filePath' => null,
-                'delimiter' => ';',
-                'enclosure' => '"',
-                'withHeader' => true,
-            ];
-        } else {
-            $defaults = $this->getDefaultParametersFromStepElements($job);
-        }
+        $defaults = $this->defaultRegistry->getDefaultParameters($job);
 
-        return new JobParameters($defaults);
+        return new $this->jobParametersClass($defaults->getParameters());
     }
 
     /**
@@ -40,39 +49,9 @@ class JobParametersFactory
      */
     public function create(JobInterface $job, array $parameters)
     {
-        $default = $this->createDefault($job);
-        $defaultParams = $default->getParameters();
-        $parameters = array_merge($defaultParams, $parameters);
+        $defaults = $this->defaultRegistry->getDefaultParameters($job);
+        $parameters = array_merge($defaults->getParameters(), $parameters);
 
-        return new JobParameters($parameters);
-    }
-
-    /**
-     * Ensure Backward Compatibility with PIM <= CE-1.5
-     *
-     * @param JobInterface $job
-     *
-     * @return array
-     *
-     * @deprecated will be removed in 1.7, please use a tagged service to define your configuration fields
-     */
-    private function getDefaultParametersFromStepElements(JobInterface $job)
-    {
-        $configuration = [];
-        if (method_exists($job, 'getSteps')) {
-            foreach ($job->getSteps() as $step) {
-                if (method_exists($step, 'getConfigurableStepElements')) {
-                    foreach ($step->getConfigurableStepElements() as $stepElement) {
-                        if (method_exists($stepElement, 'getConfigurationFields')) {
-                            foreach (array_keys($stepElement->getConfigurationFields()) as $field) {
-                                $configuration[$field] = null;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return $configuration;
+        return new $this->jobParametersClass($parameters);
     }
 }
