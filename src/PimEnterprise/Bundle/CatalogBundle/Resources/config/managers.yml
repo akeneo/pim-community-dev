@@ -1,6 +1,5 @@
 parameters:
     pim_catalog.manager.category.class: PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager
-    pim_catalog.manager.product_category.class: PimEnterprise\Bundle\CatalogBundle\Manager\ProductCategoryManager
 
 services:
     pim_catalog.manager.category:
@@ -13,12 +12,3 @@ services:
             - '@event_dispatcher'
             - '@pimee_security.repository.category_access'
             - '@security.authorization_checker'
-
-    pim_catalog.manager.product_category:
-        class: %pim_catalog.manager.product_category.class%
-        arguments:
-            - '@pim_catalog.repository.product_category'
-            - '@pim_catalog.repository.category'
-            - '@security.authorization_checker'
-            - '@pimee_security.repository.category_access'
-            - '@security.token_storage'

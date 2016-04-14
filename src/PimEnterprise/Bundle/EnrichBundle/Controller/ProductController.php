@@ -17,7 +17,6 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -116,15 +115,5 @@ class ProductController extends BaseProductController
     protected function getFilledTree(CategoryInterface $parent, Collection $categories)
     {
         return $this->categoryManager->getGrantedFilledTree($parent, $categories);
-    }
-
-    /**
-     * Override to get only the granted count for the granted tree
-     *
-     * {@inheritdoc}
-     */
-    protected function getProductCountByTree(ProductInterface $product)
-    {
-        return $this->productCatManager->getProductCountByGrantedTree($product);
     }
 }

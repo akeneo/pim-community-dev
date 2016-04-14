@@ -14,15 +14,6 @@ services:
             - '@pimee_workflow.unpublisher.product'
             - '@pim_catalog.object_manager.product'
 
-    pimee_workflow.manager.published_product_category:
-        class: %pim_catalog.manager.product_category.class%
-        arguments:
-            - '@pimee_workflow.repository.published_product_category'
-            - '@pim_catalog.repository.category'
-            - '@security.authorization_checker'
-            - '@pimee_security.repository.category_access'
-            - '@security.token_storage'
-
     pimee_workflow.manager.product_draft:
         class: %pimee_workflow.manager.product_draft.class%
         arguments:
