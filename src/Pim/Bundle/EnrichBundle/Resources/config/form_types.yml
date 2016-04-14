@@ -12,7 +12,6 @@ parameters:
     pim_enrich.form.type.product_value_media.class:            Pim\Bundle\EnrichBundle\Form\Type\MediaType
 
     pim_enrich.form.type.attribute.class:        Pim\Bundle\EnrichBundle\Form\Type\AttributeType
-    pim_enrich.form.type.currency.class:         Pim\Bundle\EnrichBundle\Form\Type\CurrencyType
     pim_enrich.form.type.channel.class:          Pim\Bundle\EnrichBundle\Form\Type\ChannelType
     pim_enrich.form.type.group.class:            Pim\Bundle\EnrichBundle\Form\Type\GroupType
     pim_enrich.form.type.variant_group.class:    Pim\Bundle\EnrichBundle\Form\Type\VariantGroupType
@@ -206,13 +205,6 @@ services:
             - %pim_catalog.entity.channel.class%
         tags:
             - { name: form.type, alias: pim_enrich_channel }
-
-    pim_enrich.form.type.currency:
-        class: %pim_enrich.form.type.currency.class%
-        arguments:
-            - '@pim_catalog.helper.locale'
-        tags:
-            - { name: form.type, alias: pim_enrich_currency }
 
     pim_enrich.form.type.localized_collection:
         class: %pim_enrich.form.type.localized_collection.class%
