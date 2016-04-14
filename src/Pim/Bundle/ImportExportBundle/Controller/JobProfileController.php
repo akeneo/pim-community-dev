@@ -82,8 +82,14 @@ class JobProfileController
     /** @var JobTemplateProviderInterface */
     protected $jobTemplateProvider;
 
+    /** @var JobInstanceRepository */
+    protected $jobInstanceRepository;
+
     /** @var TokenStorageInterface */
     protected $tokenStorage;
+
+    /** @var JobParametersFactory */
+    protected $jobParametersFactory;
 
     /**
      * @param Request                      $request
@@ -100,6 +106,7 @@ class JobProfileController
      * @param JobInstanceRepository        $jobInstanceRepository
      * @param TokenStorageInterface        $tokenStorage
      * @param JobTemplateProviderInterface $jobTemplateProvider
+     * @param JobParametersFactory         $jobParametersFactory
      * @param string                       $jobType
      */
     public function __construct(
@@ -117,6 +124,7 @@ class JobProfileController
         JobInstanceRepository $jobInstanceRepository,
         TokenStorageInterface $tokenStorage,
         JobTemplateProviderInterface $jobTemplateProvider,
+        JobParametersFactory $jobParametersFactory,
         $jobType
     ) {
         $this->connectorRegistry     = $connectorRegistry;
@@ -136,6 +144,7 @@ class JobProfileController
         $this->entityManager         = $entityManager;
         $this->jobInstanceRepository = $jobInstanceRepository;
         $this->jobTemplateProvider   = $jobTemplateProvider;
+        $this->jobParametersFactory  = $jobParametersFactory;
         $this->tokenStorage          = $tokenStorage;
     }
 
@@ -156,8 +165,7 @@ class JobProfileController
 
             if ($form->isValid()) {
 
-                $jobParamFactory = new JobParametersFactory();
-                $jobParameters = $jobParamFactory->createDefault($jobInstance->getJob());
+                $jobParameters = $this->jobParametersFactory->createDefault($jobInstance->getJob());
                 $jobInstance->setRawConfiguration($jobParameters->getParameters());
 
                 $this->entityManager->persist($jobInstance);

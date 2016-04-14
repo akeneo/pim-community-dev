@@ -2,9 +2,11 @@
 
 namespace Akeneo\Bundle\BatchBundle\Command;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
@@ -80,11 +82,12 @@ class BatchCommand extends ContainerAwareCommand
         $job = $this->getConnectorRegistry()->getJob($jobInstance);
         $jobInstance->setJob($job);
 
+        $jobParamsFactory = $this->getJobParametersFactory();
         if ($config = $input->getOption('config')) {
             $rawConfiguration = $this->decodeConfiguration($config);
-            $jobParameters = new JobParameters($rawConfiguration);
+            $jobParameters = $jobParamsFactory->create($job, $rawConfiguration);
         } else {
-            $jobParameters = new JobParameters($jobInstance->getRawConfiguration());
+            $jobParameters = $jobParamsFactory->create($job, $jobInstance->getRawConfiguration());
         }
 
         $validator = $this->getValidator();
@@ -102,12 +105,14 @@ class BatchCommand extends ContainerAwareCommand
                 ->setRecipientEmail($email);
         }
 
-        // We merge the JobInstance from the JobManager EntitManager to the DefaultEntityManager
+        // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
         // in order to be able to have a working UniqueEntity validation
         $defaultJobInstance = $this->getDefaultEntityManager()->merge($jobInstance);
         $defaultJobInstance->setJob($job);
 
-        $errors = []; // TODO $validator->validate($defaultJobInstance, array('Default', 'Execution'));
+        //$errors = $validator->validate($defaultJobInstance, array('Default', 'Execution'));
+
+        $errors = $validator->validate($jobParameters, array('Default', 'Execution'));
         if (count($errors) > 0) {
             throw new \RuntimeException(
                 sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors))
@@ -226,11 +231,19 @@ class BatchCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return \Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry
+     * @return ConnectorRegistry
      */
     protected function getConnectorRegistry()
     {
         return $this->getContainer()->get('akeneo_batch.connectors');
+    }
+
+    /**
+     * @return JobParametersFactory
+     */
+    protected function getJobParametersFactory()
+    {
+        return $this->getContainer()->get('akeneo_batch.job_parameters_factory');
     }
 
     /**

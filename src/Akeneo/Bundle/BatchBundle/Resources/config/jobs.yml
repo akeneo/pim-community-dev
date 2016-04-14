@@ -1,0 +1,22 @@
+parameters:
+    akeneo_batch.job_parameters_factory.class: Akeneo\Component\Batch\Job\JobParametersFactory
+    akeneo_batch.job_repository.class:         Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository
+    akeneo_batch.job_factory.class:            Akeneo\Component\Batch\Job\JobFactory
+
+services:
+    akeneo_batch.job_parameters_factory:
+        class: %akeneo_batch.job_parameters_factory.class%
+
+    akeneo_batch.job_repository:
+        class: %akeneo_batch.job_repository.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - '%akeneo_batch.entity.job_execution.class%'
+            - '%akeneo_batch.entity.job_instance.class%'
+            - '%pim_import_export.repository.job_instance.class%'
+
+    akeneo_batch.job_factory:
+        class: %akeneo_batch.job_factory.class%
+        arguments:
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
