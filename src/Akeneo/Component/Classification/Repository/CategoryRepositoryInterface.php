@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\RepositoryInterface as TreeRepositoryInterface;
 
 /**
@@ -58,18 +57,6 @@ interface CategoryRepositoryInterface extends
      * @return array
      */
     public function getTreeFromParents(array $parentsIds);
-
-    /**
-     * Shortcut to get all children query builder
-     *
-     * @param CategoryInterface $category    the requested node
-     * @param bool              $includeNode true to include actual node in query result
-     *
-     * @return QueryBuilder
-     *
-     * @deprecated will be removed in 1.7
-     */
-    public function getAllChildrenQueryBuilder(CategoryInterface $category, $includeNode = false);
 
     /**
      * Shortcut to get all children ids
