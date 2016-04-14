@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.23 (2016-04-14)
 
 ## Scalability improvements
 - PIM-5507 : Memory leak during mass edit attributes, mass publish
