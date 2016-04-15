@@ -5,12 +5,13 @@ namespace Akeneo\Component\FileStorage\File;
 use Akeneo\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\FileInfoFactoryInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\MountManager;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
-use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 
 /**
  * Move a raw file to the storage destination filesystem
@@ -56,7 +57,7 @@ class FileStorer implements FileStorerInterface
     /**
      * Find previously saved file copy. If copy not found, save new file.
      *
-     * @param \SplFileInfo $rawFile       file to store
+     * @param \SplFileInfo $localFile     file to store
      * @param string       $destFsAlias   alias of the destination filesystem
      * @param bool         $deleteRawFile should the raw file be deleted once stored in the VFS or not ?
      *
@@ -96,8 +97,8 @@ class FileStorer implements FileStorerInterface
      * transforms it as a \Akeneo\Component\FileStorage\Model\FileInfoInterface
      * and save it to the database.
      *
-     * @param \SplFileInfo $file
-     * @param string $destFsAlias
+     * @param \SplFileInfo $localFile
+     * @param string       $destFsAlias
      *
      * @throws FileTransferException
      *
