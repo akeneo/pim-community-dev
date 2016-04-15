@@ -12,8 +12,8 @@ Feature: Export families
     And I am on the "footwear_family_export" export job page
     When I launch the export job
     And I wait for the "footwear_family_export" job to finish
-    Then I should see "Read 4"
-    And I should see "Written 4"
+    Then I should see "Read 5"
+    And I should see "Written 5"
     And exported file of "footwear_family_export" should contain:
       """
       code;label-en_US;attributes;attribute_as_label;requirements-mobile;requirements-tablet
@@ -21,6 +21,7 @@ Feature: Export families
       heels;Heels;sku,name,manufacturer,description,price,side_view,top_view,size,color,heel_color,sole_color,sole_fabric;name;sku,name,price,size,color,heel_color,sole_color;sku,name,description,price,side_view,size,color,heel_color,sole_color
       sneakers;Sneakers;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;sku,name,price,size,color;sku,name,description,weather_conditions,price,rating,side_view,size,color
       sandals;Sandals;sku,name,manufacturer,description,price,rating,side_view,size,color;name;sku,name,price,size,color;sku,name,description,price,rating,side_view,size,color
+      led_tvs;LED TVs;sku,name,manufacturer,description,price,rating,side_view,size,color;name;sku,name,description,price,rating,side_view,size,color;sku,name,price,size,color
       """
 
   @javascript
@@ -35,8 +36,8 @@ Feature: Export families
     And I am on the "footwear_family_export" export job page
     When I launch the export job
     And I wait for the "footwear_family_export" job to finish
-    Then I should see "Read 5"
-    And I should see "Written 5"
+    Then I should see "Read 6"
+    And I should see "Written 6"
     And exported file of "footwear_family_export" should contain:
       """
       code;label-en_US;attributes;attribute_as_label;requirements-mobile;requirements-tablet
@@ -44,5 +45,6 @@ Feature: Export families
       heels;Heels;sku,name,manufacturer,description,price,side_view,top_view,size,color,heel_color,sole_color,sole_fabric;name;sku,name,price,size,color,heel_color,sole_color;sku,name,description,price,side_view,size,color,heel_color,sole_color
       sneakers;Sneakers;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;sku,name,price,size,color;sku,name,description,weather_conditions,price,rating,side_view,size,color
       sandals;Sandals;sku,name,manufacturer,description,price,rating,side_view,size,color;name;sku,name,price,size,color;sku,name,description,price,rating,side_view,size,color
+      led_tvs;LED TVs;sku,name,manufacturer,description,price,rating,side_view,size,color;name;sku,name,description,price,rating,side_view,size,color;sku,name,price,size,color
       tractors;;sku;sku;sku;sku
       """
