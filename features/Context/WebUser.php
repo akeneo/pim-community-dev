@@ -1834,8 +1834,8 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeTheUploadedImage()
     {
-        $this->spin(function () {
-            $this->getPage('Product edit')->getImagePreview();
+        return $this->spin(function () {
+            return $this->getPage('Product edit')->getImagePreview();
         }, 'Image preview could not be displayed.');
     }
 
