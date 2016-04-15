@@ -67,7 +67,6 @@ class ProductCsvExport implements FormsOptionsInterface
                     'help'     => 'pim_base_connector.export.channel.help'
                 ]
             ],
-            // TODO, inject here
             'decimalSeparator' => [
                 'type'    => 'choice',
                 'options' => [
@@ -78,7 +77,6 @@ class ProductCsvExport implements FormsOptionsInterface
                     'help'     => 'pim_base_connector.export.decimalSeparator.help'
                 ]
             ],
-            // TODO, inject here
             'dateFormat' => [
                 'type'    => 'choice',
                 'options' => [

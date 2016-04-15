@@ -37,7 +37,7 @@ class ConstraintsRegistry
             }
         }
 
-        // TODO: not a good idea!
+        // TODO: not a good idea? Should we raise an Exception to force to always declare Contraints for a Job?
         return new EmptyConstraints();
     }
 }

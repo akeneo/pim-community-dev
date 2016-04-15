@@ -45,7 +45,10 @@ class JobParametersType extends AbstractType implements DataMapperInterface
         $builder->setDataMapper($this);
         $factory = $builder->getFormFactory();
         $formOptionsRegistry = $this->formsOptionsRegistry;
-        // TODO: constraints registry could be injected in the forma options registry
+        // TODO: constraints registry could be injected in the form options registry?
+        // TODO: re-work the following form options building (copy/pasted from dropped ConfigurationFormType)
+        // TODO: move the whole FormType, DataTransformer, Registry in the EnrichBundle to prepare the drop of
+        //       ImportExportBundle
         $constraintsRegistry = $this->constraintsRegistry;
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
