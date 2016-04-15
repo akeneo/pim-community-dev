@@ -5,8 +5,7 @@ namespace Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobInterface;
 
 /**
- * Provides constraints used to validate a JobParameters
- * For instance, define that a filepath parameter should not be blank
+ * Registry of constraints that can be used to validate a JobParameters
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -38,6 +37,7 @@ class ConstraintsRegistry
             }
         }
 
+        // TODO: not a good idea!
         return new EmptyConstraints();
     }
 }

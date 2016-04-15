@@ -5,8 +5,7 @@ namespace Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobInterface;
 
 /**
- * Provides default parameters to build a JobParameters
- * For instance, define that a filepath parameter is fulfilled with '/tmp/myfile.csv' by default
+ * Provides default parameters to build a JobParameters depending of the Job
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -42,13 +41,13 @@ class DefaultParametersRegistry
     }
 
     /**
-     * Ensure Backward Compatibility with PIM <= CE-1.5
+     * Partially ensure the Backward Compatibility with Akeneo PIM <= v1.5
      *
      * @param JobInterface $job
      *
-     * @return array
+     * @return DefaultParametersInterface
      *
-     * @deprecated will be removed in 1.7, please use a tagged service to define your configuration fields
+     * @deprecated will be removed in 1.7, please use a DefaultParametersInterface to define your default params
      */
     private function getDefaultParametersFromStepElements(JobInterface $job)
     {

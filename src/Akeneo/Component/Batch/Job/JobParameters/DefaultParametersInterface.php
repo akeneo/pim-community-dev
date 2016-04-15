@@ -5,7 +5,10 @@ namespace Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobInterface;
 
 /**
- * Default parameters to be used to create a JobParameters
+ * Define the default parameters that need to be be used to create a JobParameters depending of the Job we need
+ * to configure
+ *
+ * For instance, define that a filepath parameter is fulfilled with '/tmp/myfile.csv' by default
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

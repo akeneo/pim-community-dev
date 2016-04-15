@@ -49,8 +49,6 @@ class ConnectorRegistry
     {
         if ($connector = $this->getConnector($jobInstance->getConnector(), $jobInstance->getType())) {
             if ($job = $this->getConnectorJob($connector, $jobInstance->getAlias())) {
-                // TODO: review and fix
-                //$job->setConfiguration($jobInstance->getRawConfiguration());
                 $jobInstance->setJob($job);
 
                 return $job;

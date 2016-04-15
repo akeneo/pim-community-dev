@@ -70,6 +70,7 @@ class CsvProductWriter extends CsvWriter
      */
     public function setConfiguration(array $config)
     {
+        // TODO: to fix!
         parent::setConfiguration($config);
 
         if (!isset($config['mainContext'])) {

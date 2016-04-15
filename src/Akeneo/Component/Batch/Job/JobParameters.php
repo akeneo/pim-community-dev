@@ -9,6 +9,8 @@ namespace Akeneo\Component\Batch\Job;
  *
  * This class is immutable.
  *
+ * Inspired by Spring Batch  org.springframework.batch.core.JobParameters;
+ *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -33,7 +35,7 @@ class JobParameters
      */
     public function hasParameter($key)
     {
-        return isset($this->parameters[$key]);
+        return array_key_exists($key, $this->parameters);
     }
 
     /**

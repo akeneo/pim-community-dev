@@ -42,13 +42,13 @@ class FormsOptionsRegistry
     }
 
     /**
-     * Ensure Backward Compatibility with PIM <= CE-1.5 by fetching configuration from getConfigurationFields()
+     * Partially ensure the Backward Compatibility with Akeneo PIM <= v1.5
      *
      * @param JobInterface $job
      *
-     * @return array
+     * @return FormsOptionsInterface
      *
-     * @deprecated will be removed in 1.7, please use a tagged service to define your configuration fields
+     * @deprecated will be removed in 1.7, please use a FormsOptionsInterface to define your form fields options
      */
     private function getFormsOptionsFromStepElements(JobInterface $job)
     {

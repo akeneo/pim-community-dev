@@ -6,7 +6,9 @@ use Akeneo\Component\Batch\Job\JobParameters\ConstraintsRegistry;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Class JobParametersValidator
+ * Validate a JobParameters depending on the Job we're editing or launching
+ *
+ * This implementation rely on the ConstraintsRegistry to fetch the relevant Constraints to apply.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Symfony\Component\Validator\Constraints\Collection;
 
 /**
- * Empty constraints that can be used to validate any JobParameters
+ * Empty constraints that may be used to validate any simple JobParameters
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

@@ -6,7 +6,21 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Symfony\Component\Validator\Constraints\Collection;
 
 /**
- * Constraints to be used to validate a JobParameters
+ * Constraints collection to be used to validate every parameters of a JobParameters
+ *
+ * For instance, to validate an export JobParameters, we can use the following Constraint,
+ *
+ * return new Collection([
+ *   'fields' => [
+ *     'filePath' => new NotBlank(['groups' => 'Execution']),
+ *     'delimiter' => [
+ *       new NotBlank(),
+ *       new Choice([ 'choices' => [",", ";", "|"], 'message' => 'The value must be one of , or ; or |' ])
+ *     ]
+ *   ]
+ * );
+ *
+ * We use the Job in the support method to determine if the Constraint can be applied.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

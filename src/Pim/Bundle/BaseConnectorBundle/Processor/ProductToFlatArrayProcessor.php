@@ -6,8 +6,8 @@ use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -26,9 +26,6 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var Serializer */
     protected $serializer;
 
-    /** @var string Channel code */
-    protected $channel;
-
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
@@ -38,18 +35,6 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var array */
     protected $mediaAttributeTypes;
 
-    /** @var string */
-    protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
-
-    /** @var array */
-    protected $decimalSeparators;
-
-    /** @var string */
-    protected $dateFormat = LocalizerInterface::DEFAULT_DATE_FORMAT;
-
-    /** @var array */
-    protected $dateFormats;
-
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
@@ -58,22 +43,16 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      * @param ChannelRepositoryInterface $channelRepository
      * @param ProductBuilderInterface    $productBuilder
      * @param string[]                   $mediaAttributeTypes
-     * @param array                      $decimalSeparators
-     * @param array                      $dateFormats
      */
     public function __construct(
         Serializer $serializer,
         ChannelRepositoryInterface $channelRepository,
         ProductBuilderInterface $productBuilder,
-        array $mediaAttributeTypes,
-        array $decimalSeparators,
-        array $dateFormats
+        array $mediaAttributeTypes
     ) {
         $this->serializer          = $serializer;
         $this->channelRepository   = $channelRepository;
         $this->mediaAttributeTypes = $mediaAttributeTypes;
-        $this->decimalSeparators   = $decimalSeparators;
-        $this->dateFormats         = $dateFormats;
         $this->productBuilder      = $productBuilder;
     }
 
@@ -102,7 +81,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
             );
         }
 
-        $data['product'] = $this->serializer->normalize($product, 'flat', $this->getNormalizerContext($channelCode));
+        $data['product'] = $this->serializer->normalize($product, 'flat', $this->getNormalizerContext($contextChannel));
 
         return $data;
     }
@@ -116,141 +95,28 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'channel' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => $this->channelRepository->getLabelsIndexedByCode(),
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_base_connector.export.channel.label',
-                    'help'     => 'pim_base_connector.export.channel.help'
-                ]
-            ],
-            'decimalSeparator' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => $this->decimalSeparators,
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_base_connector.export.decimalSeparator.label',
-                    'help'     => 'pim_base_connector.export.decimalSeparator.help'
-                ]
-            ],
-            'dateFormat' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => $this->dateFormats,
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_base_connector.export.dateFormat.label',
-                    'help'     => 'pim_base_connector.export.dateFormat.help',
-                ]
-            ],
-        ];
-    }
-
-    /**
-     * Set channel
-     *
-     * @param string $channelCode Channel code
-     *
-     * @return $this
-     */
-    public function setChannel($channelCode)
-    {
-        $this->channel = $channelCode;
-
-        return $this;
-    }
-
-    /**
-     * Get channel
-     *
-     * @return string Channel code
-     */
-    public function getChannel()
-    {
-        return $this->channel;
-    }
-
-    /**
-     * Set the separator for decimal
-     *
-     * @param string $decimalSeparator
-     */
-    public function setDecimalSeparator($decimalSeparator)
-    {
-        $this->decimalSeparator = $decimalSeparator;
-    }
-
-    /**
-     * Get the delimiter for decimal
-     *
-     * @return string
-     */
-    public function getDecimalSeparator()
-    {
-        return $this->decimalSeparator;
-    }
-
-    /**
-     * Set the date format
-     *
-     * @param string $dateFormat
-     */
-    public function setDateFormat($dateFormat)
-    {
-        $this->dateFormat = $dateFormat;
-    }
-
-    /**
-     * Get the date format
-     *
-     * @return string
-     */
-    public function getDateFormat()
-    {
-        return $this->dateFormat;
-    }
-
-    /**
      * Get normalizer context
      *
-     * @param string $channelCode
+     * @param ChannelInterface $channel
      *
      * @return array $normalizerContext
      */
-    protected function getNormalizerContext($channelCode)
+    protected function getNormalizerContext(ChannelInterface $channel)
     {
+        $parameters = $this->stepExecution->getJobExecution()->getJobParameters();
+        $decimalSeparator = $parameters->getParameter('decimalSeparator');
+        $dateFormat = $parameters->getParameter('dateFormat');
+
         if (null === $this->normalizerContext) {
             $this->normalizerContext = [
-                'scopeCode'         => $this->channel,
-                'localeCodes'       => $this->getLocaleCodes($channelCode),
-                'decimal_separator' => $this->decimalSeparator,
-                'date_format'       => $this->dateFormat,
+                'scopeCode'         => $channel,
+                'localeCodes'       => $channel->getLocaleCodes(),
+                'decimal_separator' => $decimalSeparator,
+                'date_format'       => $dateFormat,
             ];
         }
 
         return $this->normalizerContext;
-    }
-
-    /**
-     * Get locale codes for a channel
-     *
-     * @param string $channelCode
-     *
-     * @return array
-     */
-    protected function getLocaleCodes($channelCode)
-    {
-        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
-
-        return $channel->getLocaleCodes();
     }
 
     /**

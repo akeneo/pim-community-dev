@@ -5,7 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Form\Type\JobParameters;
 use Akeneo\Component\Batch\Job\JobInterface;
 
 /**
- * Define form options for a JobParameters
+ * Define form options to use to edit a JobParameters depending on the Job we want configure
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

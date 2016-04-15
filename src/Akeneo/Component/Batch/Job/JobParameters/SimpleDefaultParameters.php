@@ -5,7 +5,7 @@ namespace Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobInterface;
 
 /**
- * Provides simple default parameters
+ * Provides simple default parameters to setup any JobParameters
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

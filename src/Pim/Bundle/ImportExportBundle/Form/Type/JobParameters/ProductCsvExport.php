@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Form\Type\JobParameters;
 
 use Akeneo\Component\Batch\Job\JobInterface;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
@@ -17,17 +18,37 @@ class ProductCsvExport implements FormsOptionsInterface
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
+    /** @var string */
+    protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+
+    /** @var array */
+    protected $decimalSeparators;
+
+    /** @var string */
+    protected $dateFormat = LocalizerInterface::DEFAULT_DATE_FORMAT;
+
+    /** @var array */
+    protected $dateFormats;
+
     /** @var array */
     protected $supportedJobNames;
 
     /**
      * @param ChannelRepositoryInterface $channelRepository
      * @param array                      $supportedJobNames
+     * @param array                      $decimalSeparators
+     * @param array                      $dateFormats
      */
-    public function __construct(ChannelRepositoryInterface $channelRepository, array $supportedJobNames)
-    {
+    public function __construct(
+        ChannelRepositoryInterface $channelRepository,
+        array $supportedJobNames,
+        array $decimalSeparators,
+        array $dateFormats
+    ) {
         $this->channelRepository = $channelRepository;
         $this->supportedJobNames = $supportedJobNames;
+        $this->decimalSeparators = $decimalSeparators;
+        $this->dateFormats       = $dateFormats;
     }
 
     /**
