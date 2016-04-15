@@ -22,7 +22,6 @@ Feature: Datagrid views
     And I create the view:
       | label | Sneakers only |
     Then I should be on the products page
-    And I should see a flash message "Datagrid view successfully created"
     And I should see the text "Views Sneakers only"
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
@@ -39,7 +38,6 @@ Feature: Datagrid views
     And I create the view:
       | label | Some shoes |
     Then I should be on the products page
-    And I should see a flash message "Datagrid view successfully created"
     And I should see the text "Views Some shoes"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
@@ -58,14 +56,12 @@ Feature: Datagrid views
     And I create the view:
       | label | Boots only |
     Then I should be on the products page
-    And I should see a flash message "Datagrid view successfully created"
     And I should see the text "Views Boots only"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
     When I delete the view
     And I confirm the deletion
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully removed"
     And I should see the text "Views Default view"
     But I should not see "Boots only"
     And I should see products black-boots, purple-sneakers and black-sneakers
@@ -84,7 +80,6 @@ Feature: Datagrid views
     And I create the view:
       | label | Sneakers only |
     Then I should be on the products page
-    And I should see a flash message "Datagrid view successfully created"
     When I am on my profile page
     And I press the "Edit" button
     And I visit the "Additional" tab
@@ -110,7 +105,6 @@ Feature: Datagrid views
     And I create the view:
       | label | Sneakers only |
     Then I should be on the products page
-    And I should see a flash message "Datagrid view successfully created"
     When I am on my profile page
     And I press the "Edit" button
     And I visit the "Additional" tab
@@ -123,6 +117,5 @@ Feature: Datagrid views
     When I delete the view
     And I confirm the deletion
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully removed"
     And I should see the text "Views Default view"
     But I should not see the text "Sneakers only"
