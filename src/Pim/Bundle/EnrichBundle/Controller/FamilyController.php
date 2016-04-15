@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Family controller
@@ -84,6 +85,9 @@ class FamilyController
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
+    /** @var ValidatorInterface */
+    protected $validator;
+
     /**
      * @param Request                      $request
      * @param EngineInterface              $templating
@@ -99,6 +103,7 @@ class FamilyController
      * @param RemoverInterface             $familyRemover
      * @param AttributeRepositoryInterface $attributeRepo
      * @param FamilyRepositoryInterface    $familyRepository
+     * @param ValidatorInterface           $validator
      * @param string                       $attributeClass
      * @param string                       $familyClass
      */
@@ -117,6 +122,7 @@ class FamilyController
         RemoverInterface $familyRemover,
         AttributeRepositoryInterface $attributeRepo,
         FamilyRepositoryInterface $familyRepository,
+        ValidatorInterface $validator,
         $attributeClass,
         $familyClass
     ) {
@@ -136,6 +142,7 @@ class FamilyController
         $this->familyClass       = $familyClass;
         $this->attributeRepo     = $attributeRepo;
         $this->familyRepository  = $familyRepository;
+        $this->validator         = $validator;
     }
 
     /**
@@ -293,9 +300,15 @@ class FamilyController
             $family->addAttribute($attribute);
         }
 
-        $this->familySaver->save($family);
-
-        $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.attributes added'));
+        $errors = $this->validator->validate($family);
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                $this->request->getSession()->getFlashBag()->add('error', new Message($error->getMessage()));
+            }
+        } else {
+            $this->familySaver->save($family);
+            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.attributes added'));
+        }
 
         return new RedirectResponse($this->router->generate('pim_enrich_family_edit', ['id' => $family->getId()]));
     }
@@ -334,11 +347,17 @@ class FamilyController
             throw new DeleteException($this->translator->trans('flash.family.label attribute not removable'));
         } else {
             $family->removeAttribute($attribute);
+
             foreach ($family->getAttributeRequirements() as $requirement) {
                 if ($requirement->getAttribute() === $attribute) {
                     $family->removeAttributeRequirement($requirement);
                     $this->doctrine->getManagerForClass(ClassUtils::getClass($requirement))->remove($requirement);
                 }
+            }
+
+            $errors = $this->validator->validate($family);
+            if (count($errors) > 0) {
+                throw new DeleteException($errors[0]->getMessage());
             }
 
             $this->familySaver->save($family);
