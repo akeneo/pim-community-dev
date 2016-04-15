@@ -2,7 +2,7 @@ connector:
     name: Akeneo XLSX Connector
     jobs:
         xlsx_product_import_with_rules:
-            title: pim_connector.jobs.xlsx_product_import_with_rules.title
+            title: pimee_catalog_rule.jobs.xlsx_product_import_with_rules.title
             type:  import
             steps:
                 validation:

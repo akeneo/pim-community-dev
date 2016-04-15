@@ -35,7 +35,7 @@ jobs:
             realTimeVersioning: true
             decimalSeparator:   .
             dateFormat: yyyy-MM-dd
-    xlsx_clothing_product_import_with_rules:
+    xlsx_product_import_with_rules:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_import_with_rules
         label:     XLSX Demo product import with rules
