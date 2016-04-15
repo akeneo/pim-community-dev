@@ -108,13 +108,10 @@ class Index extends Grid
      */
     public function clickCategoryFilterLink($category)
     {
-        $elt = $this
-            ->getElement('Categories tree')
-            ->find('css', sprintf('#node_%s a', $category->getId()));
-
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find category filter "%s".', $category->getId()));
-        }
+        $element = $this->getElement('Categories tree');
+        $elt = $this->spin(function () use ($category, $element) {
+            return $element->find('css', sprintf('#node_%s a', $category->getId()));
+        }, sprintf('Could not find category filter "%s".', $category->getId()));
 
         $elt->click();
     }

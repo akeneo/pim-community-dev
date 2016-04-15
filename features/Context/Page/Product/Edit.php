@@ -779,18 +779,13 @@ class Edit extends ProductEditForm
 
     /**
      * @param Category $category
-     *
-     * @throws \Exception
      */
     public function clickCategoryFilterLink($category)
     {
-        $node = $this
-            ->getCategoryTree()
-            ->find('css', sprintf('#node_%s a', $category->getId()));
-
-        if (null === $node) {
-            throw new \Exception(sprintf('Could not find category filter "%s".', $category->getId()));
-        }
+        $categoryTree = $this->getCategoryTree();
+        $node = $this->spin(function () use ($category, $categoryTree) {
+            return $categoryTree->find('css', sprintf('#node_%s a', $category->getId()));
+        }, sprintf('Could not find category filter "%s".', $category->getId()));
 
         $node->click();
     }
@@ -800,13 +795,10 @@ class Edit extends ProductEditForm
      */
     public function clickUnclassifiedCategoryFilterLink()
     {
-        $node = $this
-            ->getCategoryTree()
-            ->find('css', '#node_-1 a');
-
-        if (null === $node) {
-            throw new \Exception(sprintf('Could not find unclassified category filter.'));
-        }
+        $categoryTree = $this->getCategoryTree();
+        $node = $this->spin(function () use ($categoryTree) {
+            return $categoryTree->find('css', '#node_-1 a');
+        }, 'Could not find unclassified category filter.');
 
         $node->click();
     }
