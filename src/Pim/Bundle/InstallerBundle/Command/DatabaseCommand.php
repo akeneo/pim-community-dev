@@ -153,6 +153,21 @@ class DatabaseCommand extends ContainerAwareCommand
         );
         $this->getFixtureJobLoader()->load();
 
+        $jobInstances = $this->getFixtureJobLoader()->getRunnableJobInstances();
+        foreach ($jobInstances as $jobInstance) {
+            $params = [
+                'code'       => $jobInstance->getCode(),
+                '--no-debug' => true,
+                '--no-log'   => true,
+                '-v'         => true
+            ];
+            $this->commandExecutor->runCommand('akeneo:batch:job', $params);
+        }
+
+
+        // TODO: run all imports!!
+
+        /*
         $output->writeln(
             sprintf('<info>Load fixtures. (data set: %s)</info>', $this->getContainer()->getParameter('installer_data'))
         );
@@ -168,6 +183,7 @@ class DatabaseCommand extends ContainerAwareCommand
         if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $this->getStorageDriver()) {
             $this->commandExecutor->runCommand('doctrine:mongodb:fixtures:load', ['--append' => true]);
         }
+        */
 
         $output->writeln('');
 

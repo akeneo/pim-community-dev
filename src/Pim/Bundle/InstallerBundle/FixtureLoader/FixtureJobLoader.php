@@ -116,6 +116,27 @@ class FixtureJobLoader
     }
 
     /**
+     * Get the list of stored jobs
+     *
+     * @return JobInstance[]
+     */
+    public function getRunnableJobInstances()
+    {
+        $jobs = $this->em
+            ->getRepository($this->container->getParameter('akeneo_batch.entity.job_instance.class'))
+            ->findBy(['type' => self::JOB_TYPE]);
+
+        foreach ($jobs as $index => $job) {
+            // Do not load job when fixtures file is not available
+            if (!is_readable($job->getRawConfiguration()['filePath'])) {
+                unset($jobs[$index]);
+            }
+        }
+
+        return $jobs;
+    }
+
+    /**
      * Get the path of the data used by the installer
      *
      * @return string
