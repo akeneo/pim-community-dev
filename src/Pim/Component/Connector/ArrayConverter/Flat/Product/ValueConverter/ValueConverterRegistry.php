@@ -17,11 +17,16 @@ class ValueConverterRegistry implements ValueConverterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function register(ValueConverterInterface $converter)
+    public function register(ValueConverterInterface $converter, $priority)
     {
-        if ($converter instanceof ValueConverterInterface) {
-            $this->converters[] = $converter;
+        $priority = (int)$priority;
+        if (!isset($this->converters[$priority])) {
+            $this->converters[$priority] = $converter;
+        } else {
+            $this->register($converter, ++$priority);
         }
+
+        ksort($this->converters);
 
         return $this;
     }
