@@ -4,22 +4,18 @@ namespace Pim\Bundle\ImportExportBundle\Form\Type\JobParameters;
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
- * FormsOptions for product CSV export
+ * FormsOptions for variant group CSV export
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCsvExport implements FormsOptionsInterface
+class VariantGroupCsvExport implements FormsOptionsInterface
 {
     /** @var SimpleCsvExport */
     protected $simpleCsvExport;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
 
     /** @var string */
     protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
@@ -38,20 +34,17 @@ class ProductCsvExport implements FormsOptionsInterface
 
     /**
      * @param SimpleCsvExport            $simpleCsvExport
-     * @param ChannelRepositoryInterface $channelRepository
      * @param array                      $supportedJobNames
      * @param array                      $decimalSeparators
      * @param array                      $dateFormats
      */
     public function __construct(
         SimpleCsvExport $simpleCsvExport,
-        ChannelRepositoryInterface $channelRepository,
         array $supportedJobNames,
         array $decimalSeparators,
         array $dateFormats
     ) {
         $this->simpleCsvExport   = $simpleCsvExport;
-        $this->channelRepository = $channelRepository;
         $this->supportedJobNames = $supportedJobNames;
         $this->decimalSeparators = $decimalSeparators;
         $this->dateFormats       = $dateFormats;
@@ -63,16 +56,6 @@ class ProductCsvExport implements FormsOptionsInterface
     public function getOptions()
     {
         $formOptions = [
-            'channel' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => $this->channelRepository->getLabelsIndexedByCode(),
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_base_connector.export.channel.label',
-                    'help'     => 'pim_base_connector.export.channel.help'
-                ]
-            ],
             'decimalSeparator' => [
                 'type'    => 'choice',
                 'options' => [

@@ -17,18 +17,25 @@ class FormsOptionsRegistry
     /** @var FormsOptionsInterface[] */
     protected $formsOptions = [];
 
+    /** @var boolean */
+    protected $isStrict;
+
     /**
      * @param FormsOptionsInterface $options
+     * @param boolean               $isStrict
      */
-    public function register(FormsOptionsInterface $options)
+    public function register(FormsOptionsInterface $options, $isStrict = true)
     {
         $this->formsOptions[] = $options;
+        $this->isStrict = $isStrict;
     }
 
     /**
      * @param JobInterface $job
      *
      * @return FormsOptionsInterface
+     *
+     * @throws UndefinedFormOptionsException
      */
     public function getFormsOptions(JobInterface $job)
     {
@@ -36,6 +43,12 @@ class FormsOptionsRegistry
             if ($options->supports($job)) {
                 return $options;
             }
+        }
+
+        if ($this->isStrict) {
+            throw new UndefinedFormOptionsException(
+                sprintf('No Form options have been defined for the Job "%s"', $job->getName())
+            );
         }
 
         return $this->getFormsOptionsFromStepElements($job);

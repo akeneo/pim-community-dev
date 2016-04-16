@@ -5,13 +5,13 @@ namespace Pim\Bundle\ImportExportBundle\Form\Type\JobParameters;
 use Akeneo\Component\Batch\Job\JobInterface;
 
 /**
- * FormsOptions for simple XSLX export
+ * FormsOptions for simple CSV import
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleXlsxExport implements FormsOptionsInterface
+class SimpleCsvImport implements FormsOptionsInterface
 {
     /** @var array */
     protected $supportedJobNames;
@@ -32,15 +32,8 @@ class SimpleXlsxExport implements FormsOptionsInterface
         return [
             'filePath' => [
                 'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help'
-                ]
-            ],
-            'withHeader' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.export.withHeader.label',
-                    'help'  => 'pim_connector.export.withHeader.help'
+                    'label' => 'pim_connector.import.filePath.label',
+                    'help'  => 'pim_connector.import.filePath.help'
                 ]
             ],
             'uploadAllowed' => [
@@ -48,6 +41,24 @@ class SimpleXlsxExport implements FormsOptionsInterface
                 'options' => [
                     'label' => 'pim_connector.import.uploadAllowed.label',
                     'help'  => 'pim_connector.import.uploadAllowed.help'
+                ]
+            ],
+            'delimiter' => [
+                'options' => [
+                    'label' => 'pim_connector.import.delimiter.label',
+                    'help'  => 'pim_connector.import.delimiter.help'
+                ]
+            ],
+            'enclosure' => [
+                'options' => [
+                    'label' => 'pim_connector.import.enclosure.label',
+                    'help'  => 'pim_connector.import.enclosure.help'
+                ]
+            ],
+            'escape' => [
+                'options' => [
+                    'label' => 'pim_connector.import.escape.label',
+                    'help'  => 'pim_connector.import.escape.help'
                 ]
             ],
         ];

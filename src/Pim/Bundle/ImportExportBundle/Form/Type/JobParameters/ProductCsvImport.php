@@ -7,19 +7,16 @@ use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
- * FormsOptions for product CSV export
+ * FormsOptions for product CSV import
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCsvExport implements FormsOptionsInterface
+class ProductCsvImport implements FormsOptionsInterface
 {
-    /** @var SimpleCsvExport */
-    protected $simpleCsvExport;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
+    /** @var SimpleCsvImport */
+    protected $simpleCsvImport;
 
     /** @var string */
     protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
@@ -37,21 +34,18 @@ class ProductCsvExport implements FormsOptionsInterface
     protected $supportedJobNames;
 
     /**
-     * @param SimpleCsvExport            $simpleCsvExport
-     * @param ChannelRepositoryInterface $channelRepository
+     * @param SimpleCsvImport            $simpleCsvImport
      * @param array                      $supportedJobNames
      * @param array                      $decimalSeparators
      * @param array                      $dateFormats
      */
     public function __construct(
-        SimpleCsvExport $simpleCsvExport,
-        ChannelRepositoryInterface $channelRepository,
+        SimpleCsvImport $simpleCsvImport,
         array $supportedJobNames,
         array $decimalSeparators,
         array $dateFormats
     ) {
-        $this->simpleCsvExport   = $simpleCsvExport;
-        $this->channelRepository = $channelRepository;
+        $this->simpleCsvImport   = $simpleCsvImport;
         $this->supportedJobNames = $supportedJobNames;
         $this->decimalSeparators = $decimalSeparators;
         $this->dateFormats       = $dateFormats;
@@ -63,16 +57,6 @@ class ProductCsvExport implements FormsOptionsInterface
     public function getOptions()
     {
         $formOptions = [
-            'channel' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => $this->channelRepository->getLabelsIndexedByCode(),
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_base_connector.export.channel.label',
-                    'help'     => 'pim_base_connector.export.channel.help'
-                ]
-            ],
             'decimalSeparator' => [
                 'type'    => 'choice',
                 'options' => [
@@ -93,8 +77,47 @@ class ProductCsvExport implements FormsOptionsInterface
                     'help'     => 'pim_base_connector.export.dateFormat.help',
                 ]
             ],
+            'enabled' => [
+                'type'    => 'switch',
+                'options' => [
+                    'label' => 'pim_connector.import.enabled.label',
+                    'help'  => 'pim_connector.import.enabled.help'
+                ]
+            ],
+            'categoriesColumn' => [
+                'options' => [
+                    'label' => 'pim_connector.import.categoriesColumn.label',
+                    'help'  => 'pim_connector.import.categoriesColumn.help'
+                ]
+            ],
+            'familyColumn' => [
+                'options' => [
+                    'label' => 'pim_connector.import.familyColumn.label',
+                    'help'  => 'pim_connector.import.familyColumn.help'
+                ]
+            ],
+            'groupsColumn' => [
+                'options' => [
+                    'label' => 'pim_connector.import.groupsColumn.label',
+                    'help'  => 'pim_connector.import.groupsColumn.help'
+                ]
+            ],
+            'enabledComparison' => [
+                'type'    => 'switch',
+                'options' => [
+                    'label' => 'pim_connector.import.enabledComparison.label',
+                    'help'  => 'pim_connector.import.enabledComparison.help'
+                ]
+            ],
+            'realTimeVersioning' => [
+                'type'    => 'switch',
+                'options' => [
+                    'label' => 'pim_connector.import.realTimeVersioning.label',
+                    'help'  => 'pim_connector.import.realTimeVersioning.help'
+                ]
+            ]
         ];
-        $formOptions = array_merge($formOptions, $this->simpleCsvExport->getOptions());
+        $formOptions = array_merge($this->simpleCsvImport->getOptions(), $formOptions);
 
         return $formOptions;
     }

@@ -1,10 +1,14 @@
 parameters:
-    pim_import_export.form.type.job_instance.class:                                   Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
-    pim_import_export.form.type.job_parameters.class:                                 Pim\Bundle\ImportExportBundle\Form\Type\JobParametersType
-    pim_import_export.form.type.job_parameters.form_options_registry.class:           Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\FormsOptionsRegistry
-    pim_import_export.form.type.job_parameters.form_options.simple_csv_export.class:  Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\SimpleCsvExport
-    pim_import_export.form.type.job_parameters.form_options.simple_xlsx_export.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\SimpleXlsxExport
-    pim_import_export.form.type.job_parameters.form_options.product_csv_export.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\ProductCsvExport
+    pim_import_export.form.type.job_instance.class:                                         Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+    pim_import_export.form.type.job_parameters.class:                                       Pim\Bundle\ImportExportBundle\Form\Type\JobParametersType
+    pim_import_export.form.type.job_parameters.form_options_registry.class:                 Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\FormsOptionsRegistry
+    pim_import_export.form.type.job_parameters.form_options.simple_csv_export.class:        Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\SimpleCsvExport
+    pim_import_export.form.type.job_parameters.form_options.simple_xlsx_export.class:       Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\SimpleXlsxExport
+    pim_import_export.form.type.job_parameters.form_options.product_csv_export.class:       Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\ProductCsvExport
+    pim_import_export.form.type.job_parameters.form_options.variant_group_csv_export.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\VariantGroupCsvExport
+    pim_import_export.form.type.job_parameters.form_options.simple_csv_import.class:        Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\SimpleCsvImport
+    pim_import_export.form.type.job_parameters.form_options.product_csv_import.class:       Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\ProductCsvImport
+    pim_import_export.form.type.job_parameters.form_options.variant_group_csv_import.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\VariantGroupCsvImport
 
 services:
     pim_import_export.form.type.job_instance:
@@ -26,13 +30,13 @@ services:
     pim_import_export.form.type.job_parameters.form_options_registry:
         class: %pim_import_export.form.type.job_parameters.form_options_registry.class%
 
+    # Form options for Exports
     pim_import_export.form.type.job_parameters.form_options.simple_csv_export:
         class: %pim_import_export.form.type.job_parameters.form_options.simple_csv_export.class%
         arguments:
             -
                 - 'pim_base_connector.jobs.csv_attribute_export.title'
                 - 'pim_base_connector.jobs.csv_family_export.title'
-                - 'pim_base_connector.jobs.csv_variant_group_export.title'
                 - 'pim_base_connector.jobs.csv_group_export.title'
                 - 'pim_base_connector.jobs.csv_association_type_export.title'
                 - 'pim_base_connector.jobs.csv_attribute_option_export.title'
@@ -51,9 +55,57 @@ services:
     pim_import_export.form.type.job_parameters.form_options.product_csv_export:
         class: %pim_import_export.form.type.job_parameters.form_options.product_csv_export.class%
         arguments:
+            - '@pim_import_export.form.type.job_parameters.form_options.simple_csv_export'
             - '@pim_catalog.repository.channel'
             -
                 - 'pim_base_connector.jobs.csv_product_export.title'
+            - %pim_catalog.localization.decimal_separators%
+            - %pim_catalog.localization.date_formats%
+        tags:
+            - { name: pim_import_export.form.type.job_parameters.form_options }
+
+    pim_import_export.form.type.job_parameters.form_options.variant_group_csv_export:
+        class: %pim_import_export.form.type.job_parameters.form_options.variant_group_csv_export.class%
+        arguments:
+            - '@pim_import_export.form.type.job_parameters.form_options.simple_csv_export'
+            -
+                - 'pim_base_connector.jobs.csv_variant_group_export.title'
+            - %pim_catalog.localization.decimal_separators%
+            - %pim_catalog.localization.date_formats%
+        tags:
+            - { name: pim_import_export.form.type.job_parameters.form_options }
+
+    # Form options for Imports
+    pim_import_export.form.type.job_parameters.form_options.simple_csv_import:
+        class: %pim_import_export.form.type.job_parameters.form_options.simple_csv_import.class%
+        arguments:
+            -
+                - 'pim_connector.jobs.csv_attribute_import.title'
+                - 'pim_connector.jobs.csv_family_import.title'
+                - 'pim_connector.jobs.csv_group_import.title'
+                - 'pim_connector.jobs.csv_association_type_import.title'
+                - 'pim_connector.jobs.csv_attribute_option_import.title'
+                - 'pim_connector.jobs.csv_category_import.title'
+        tags:
+            - { name: pim_import_export.form.type.job_parameters.form_options }
+
+    pim_import_export.form.type.job_parameters.form_options.product_csv_import:
+        class: %pim_import_export.form.type.job_parameters.form_options.product_csv_import.class%
+        arguments:
+            - '@pim_import_export.form.type.job_parameters.form_options.simple_csv_import'
+            -
+                - 'pim_connector.jobs.csv_product_import.title'
+            - %pim_catalog.localization.decimal_separators%
+            - %pim_catalog.localization.date_formats%
+        tags:
+            - { name: pim_import_export.form.type.job_parameters.form_options }
+
+    pim_import_export.form.type.job_parameters.form_options.variant_group_csv_import:
+        class: %pim_import_export.form.type.job_parameters.form_options.variant_group_csv_import.class%
+        arguments:
+            - '@pim_import_export.form.type.job_parameters.form_options.simple_csv_import'
+            -
+                - 'pim_connector.jobs.csv_variant_group_import.title'
             - %pim_catalog.localization.decimal_separators%
             - %pim_catalog.localization.date_formats%
         tags:

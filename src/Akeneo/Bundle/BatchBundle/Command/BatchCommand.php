@@ -90,7 +90,6 @@ class BatchCommand extends ContainerAwareCommand
         } else {
             $jobParameters = $jobParamsFactory->create($job, $jobInstance->getRawConfiguration());
         }
-
         $validator = $this->getValidator();
 
         // Override mail notifier recipient email
@@ -115,7 +114,13 @@ class BatchCommand extends ContainerAwareCommand
         $errors = $paramsValidator->validate($job, $jobParameters, ['Default', 'Execution']);
         if (count($errors) > 0) {
             throw new \RuntimeException(
-                sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors))
+                sprintf(
+                    'Job instance "%s" running the job "%s" with parameters "%s" is invalid because of "%s"',
+                    $code,
+                    $job->getName(),
+                    print_r($jobParameters->getParameters(), true),
+                    $this->getErrorMessages($errors)
+                )
             );
         }
 

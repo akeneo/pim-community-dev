@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
@@ -21,11 +22,9 @@ use Symfony\Component\Yaml\Yaml;
 class YamlReader extends FileReader implements
     ItemReaderInterface,
     UploadedFileAwareInterface,
-    StepExecutionAwareInterface
+    StepExecutionAwareInterface,
+    FlushableInterface
 {
-    /** @var string */
-    protected $filePath;
-
     /** @var string */
     protected $codeField = 'code';
 
@@ -51,49 +50,6 @@ class YamlReader extends FileReader implements
     {
         $this->codeField = $codeField;
         $this->multiple = $multiple;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return YamlReader
-     */
-    public function setFilePath($filePath)
-    {
-        $this->filePath = $filePath;
-        $this->yaml     = null;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
-    }
-
-    /**
-     * Set the multiple attribute
-     *
-     * @param bool $multiple
-     *
-     * @return YamlReader
-     */
-    public function setMultiple($multiple)
-    {
-        $this->multiple = $multiple;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isMultiple()
-    {
-        return $this->multiple;
     }
 
     /**
@@ -129,30 +85,6 @@ class YamlReader extends FileReader implements
     }
 
     /**
-     * Set the uploadAllowed property
-     *
-     * @param bool $uploadAllowed
-     *
-     * @return YamlReader
-     */
-    public function setUploadAllowed($uploadAllowed)
-    {
-        $this->uploadAllowed = $uploadAllowed;
-
-        return $this;
-    }
-
-    /**
-     * Get the uploadAllowed property
-     *
-     * @return bool
-     */
-    public function isUploadAllowed()
-    {
-        return $this->uploadAllowed;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getUploadedFileConstraints()
@@ -174,6 +106,7 @@ class YamlReader extends FileReader implements
      */
     public function setUploadedFile(File $uploadedFile)
     {
+        // TODO: to fix!!
         $this->filePath = $uploadedFile->getRealPath();
         $this->yaml = null;
 
@@ -213,7 +146,9 @@ class YamlReader extends FileReader implements
      */
     protected function getFileData()
     {
-        $fileData = current(Yaml::parse(file_get_contents($this->filePath)));
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->getParameter('filePath');
+        $fileData = current(Yaml::parse(file_get_contents($filePath)));
         if (null === $fileData) {
             return null;
         }
@@ -257,5 +192,13 @@ class YamlReader extends FileReader implements
         if (null !== $this->yaml) {
             $this->yaml->rewind();
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function flush()
+    {
+        $this->yaml = null;
     }
 }

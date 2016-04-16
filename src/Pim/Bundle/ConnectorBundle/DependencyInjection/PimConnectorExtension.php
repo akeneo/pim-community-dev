@@ -25,7 +25,8 @@ class PimConnectorExtension extends Extension
         $loader->load('array_converters.yml');
         $loader->load('factories.yml');
         $loader->load('items.yml');
-        $loader->load('jobs.yml');
+        $loader->load('job_constraints.yml');
+        $loader->load('job_defaults.yml');
         $loader->load('processors.yml');
         $loader->load('readers.yml');
         $loader->load('steps.yml');

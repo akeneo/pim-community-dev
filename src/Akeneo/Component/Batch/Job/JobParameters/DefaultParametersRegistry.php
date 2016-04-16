@@ -16,18 +16,25 @@ class DefaultParametersRegistry
     /** @var DefaultParametersInterface[] */
     protected $defaultParameters = [];
 
+    /** @var boolean */
+    protected $isStrict;
+
     /**
      * @param DefaultParametersInterface $parameters
+     * @param boolean                    $isStrict
      */
-    public function register(DefaultParametersInterface $parameters)
+    public function register(DefaultParametersInterface $parameters, $isStrict = true)
     {
         $this->defaultParameters[] = $parameters;
+        $this->isStrict = $isStrict;
     }
 
     /**
      * @param JobInterface $job
      *
      * @return DefaultParametersInterface
+     *
+     * @throws UndefinedDefaultsException
      */
     public function getDefaultParameters(JobInterface $job)
     {
@@ -35,6 +42,12 @@ class DefaultParametersRegistry
             if ($default->supports($job)) {
                 return $default;
             }
+        }
+
+        if ($this->isStrict) {
+            throw new UndefinedDefaultsException(
+                sprintf('No defaults parameters have been defined for the Job "%s"', $job->getName())
+            );
         }
 
         return $this->getDefaultParametersFromStepElements($job);

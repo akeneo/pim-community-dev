@@ -44,28 +44,7 @@ class ProductProcessor extends AbstractProcessor
     protected $detacher;
 
     /** @var bool */
-    protected $enabled = true;
-
-    /** @var bool */
     protected $itemHasStatus = false;
-
-    /** @var string */
-    protected $categoriesColumn = 'categories';
-
-    /** @var string */
-    protected $familyColumn  = 'family';
-
-    /** @var string */
-    protected $groupsColumn  = 'groups';
-
-    /** @var bool */
-    protected $enabledComparison = true;
-
-    /** @var string */
-    protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
-
-    /** @var string */
-    protected $dateFormat = LocalizerInterface::DEFAULT_DATE_FORMAT;
 
     /** @var ProductFilterInterface */
     protected $productFilter;
@@ -133,7 +112,9 @@ class ProductProcessor extends AbstractProcessor
             unset($filteredItem['enabled']);
         }
 
-        if ($this->enabledComparison) {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $enabledComparison = $jobParameters->getParameter('enabledComparison');
+        if ($enabledComparison) {
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
 
             if (empty($filteredItem) && null !== $product->getId()) {
@@ -162,201 +143,6 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
-     * Set whether or not the created product should be activated or not
-     *
-     * @param bool $enabled
-     */
-    public function setEnabled($enabled)
-    {
-        $this->enabled = $enabled;
-    }
-
-    /**
-     * Whether or not the created product should be activated or not
-     *
-     * @return bool
-     */
-    public function isEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * Set the categories column
-     *
-     * @param string $categoriesColumn
-     */
-    public function setCategoriesColumn($categoriesColumn)
-    {
-        $this->categoriesColumn = $categoriesColumn;
-    }
-
-    /**
-     * Get the categories column
-     *
-     * @return string
-     */
-    public function getCategoriesColumn()
-    {
-        return $this->categoriesColumn;
-    }
-
-    /**
-     * Set the groups column
-     *
-     * @param string $groupsColumn
-     */
-    public function setGroupsColumn($groupsColumn)
-    {
-        $this->groupsColumn = $groupsColumn;
-    }
-
-    /**
-     * Get the categories column
-     *
-     * @return string
-     */
-    public function getGroupsColumn()
-    {
-        return $this->groupsColumn;
-    }
-
-    /**
-     * Set the family column
-     *
-     * @param string $familyColumn
-     */
-    public function setFamilyColumn($familyColumn)
-    {
-        $this->familyColumn = $familyColumn;
-    }
-
-    /**
-     * Get the family column
-     *
-     * @return string
-     */
-    public function getFamilyColumn()
-    {
-        return $this->familyColumn;
-    }
-
-    /**
-     * Set whether or not the comparison between original values and imported values should be activated
-     *
-     * @param bool $enabledComparison
-     */
-    public function setEnabledComparison($enabledComparison)
-    {
-        $this->enabledComparison = $enabledComparison;
-    }
-
-    /**
-     * Whether or not the comparison between original values and imported values is activated
-     *
-     * @return bool
-     */
-    public function isEnabledComparison()
-    {
-        return $this->enabledComparison;
-    }
-
-    /**
-     * Set the separator for decimal
-     *
-     * @param string $decimalSeparator
-     */
-    public function setDecimalSeparator($decimalSeparator)
-    {
-        $this->decimalSeparator = $decimalSeparator;
-    }
-
-    /**
-     * Get the delimiter for decimal
-     *
-     * @return string
-     */
-    public function getDecimalSeparator()
-    {
-        return $this->decimalSeparator;
-    }
-
-    /**
-     * Set the format for date field
-     *
-     * @param string $dateFormat
-     */
-    public function setDateFormat($dateFormat)
-    {
-        $this->dateFormat = $dateFormat;
-    }
-
-    /**
-     * Get the format for the date field
-     *
-     * @return string
-     */
-    public function getDateFormat()
-    {
-        return $this->dateFormat;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'enabled' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.import.enabled.label',
-                    'help'  => 'pim_connector.import.enabled.help'
-                ]
-            ],
-            'categoriesColumn' => [
-                'options' => [
-                    'label' => 'pim_connector.import.categoriesColumn.label',
-                    'help'  => 'pim_connector.import.categoriesColumn.help'
-                ]
-            ],
-            'familyColumn' => [
-                'options' => [
-                    'label' => 'pim_connector.import.familyColumn.label',
-                    'help'  => 'pim_connector.import.familyColumn.help'
-                ]
-            ],
-            'groupsColumn' => [
-                'options' => [
-                    'label' => 'pim_connector.import.groupsColumn.label',
-                    'help'  => 'pim_connector.import.groupsColumn.help'
-                ]
-            ],
-            'enabledComparison' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.import.enabledComparison.label',
-                    'help'  => 'pim_connector.import.enabledComparison.help'
-                ]
-            ],
-            'decimalSeparator' => [
-                'type'    => 'choice',
-                'options' => [
-                    'label' => 'pim_connector.import.decimalSeparator.label',
-                    'help'  => 'pim_connector.import.decimalSeparator.help'
-                ]
-            ],
-            'dateFormat' => [
-                'type'    => 'choice',
-                'options' => [
-                    'label' => 'pim_connector.import.dateFormat.label',
-                    'help'  => 'pim_connector.import.dateFormat.help'
-                ]
-            ]
-        ];
-    }
-
-    /**
      * Check and convert localized attributes to default format
      *
      * @param array $convertedItem
@@ -365,9 +151,11 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function convertLocalizedAttributes(array $convertedItem)
     {
+        $jobParameters = $this->stepExecution->getJobParameters();
+
         return $this->localizedConverter->convertToDefaultFormats($convertedItem, [
-            'decimal_separator' => $this->decimalSeparator,
-            'date_format'       => $this->dateFormat
+            'decimal_separator' => $jobParameters->getParameter('decimalSeparator'),
+            'date_format'       => $jobParameters->getParameter('dateFormat')
         ]);
     }
 
@@ -502,10 +290,12 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function getMapping()
     {
+        $jobParameters = $this->stepExecution->getJobParameters();
+
         return [
-            $this->familyColumn     => 'family',
-            $this->categoriesColumn => 'categories',
-            $this->groupsColumn     => 'groups'
+            $jobParameters->getParameter('familyColumn') => 'family',
+            $jobParameters->getParameter('categoriesColumn') => 'categories',
+            $jobParameters->getParameter('groupsColumn') => 'groups'
         ];
     }
 
@@ -514,6 +304,8 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function getDefaultValues()
     {
-        return ['enabled' => $this->enabled];
+        $jobParameters = $this->stepExecution->getJobParameters();
+
+        return ['enabled' => $jobParameters->getParameter('enabled')];
     }
 }

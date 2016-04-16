@@ -40,7 +40,6 @@ jobs:
             delimiter:           ;
             enclosure:           '"'
             escape:              '\'
-            circularRefsChecked: true
     csv_category_export:
         connector: Akeneo CSV Connector
         alias:     csv_category_export

@@ -16,18 +16,25 @@ class ConstraintsRegistry
     /** @var ConstraintsInterface[] */
     protected $constraints = [];
 
+    /** @var boolean */
+    protected $isStrict;
+
     /**
      * @param ConstraintsInterface $constraint
+     * @param boolean              $isStrict
      */
-    public function register(ConstraintsInterface $constraint)
+    public function register(ConstraintsInterface $constraint, $isStrict = true)
     {
         $this->constraints[] = $constraint;
+        $this->isStrict = $isStrict;
     }
 
     /**
      * @param JobInterface $job
      *
      * @return ConstraintsInterface
+     *
+     * @throws UndefinedConstraintsException
      */
     public function getConstraints(JobInterface $job)
     {
@@ -37,7 +44,12 @@ class ConstraintsRegistry
             }
         }
 
-        // TODO: not a good idea? Should we raise an Exception to force to always declare Contraints for a Job?
+        if ($this->isStrict) {
+            throw new UndefinedConstraintsException(
+                sprintf('No constraints have been defined for the Job "%s"', $job->getName())
+            );
+        }
+
         return new EmptyConstraints();
     }
 }

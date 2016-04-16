@@ -95,8 +95,6 @@ services:
         arguments:
             - '@pim_connector.reader.file.csv_iterator_factory'
             - '@pim_connector.reader.file.media_path_transformer'
-            - %pim_catalog.localization.decimal_separators%
-            - %pim_catalog.localization.date_formats%
 
     # XLSX file Readers
     pim_connector.reader.file.xlsx:
