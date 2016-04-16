@@ -163,28 +163,6 @@ class DatabaseCommand extends ContainerAwareCommand
             ];
             $this->commandExecutor->runCommand('akeneo:batch:job', $params);
         }
-
-
-        // TODO: run all imports!!
-
-        /*
-        $output->writeln(
-            sprintf('<info>Load fixtures. (data set: %s)</info>', $this->getContainer()->getParameter('installer_data'))
-        );
-
-        $params = [
-                '--no-interaction' => true,
-                '--append'         => true
-            ]
-            + $this->getFixturesList($input->getOption('fixtures'));
-
-        $this->commandExecutor->runCommand('doctrine:fixtures:load', $params);
-
-        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $this->getStorageDriver()) {
-            $this->commandExecutor->runCommand('doctrine:mongodb:fixtures:load', ['--append' => true]);
-        }
-        */
-
         $output->writeln('');
 
         $output->writeln('<info>Delete jobs for fixtures.</info>');
