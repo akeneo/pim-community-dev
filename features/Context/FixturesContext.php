@@ -91,7 +91,9 @@ class FixturesContext extends BaseFixturesContext
         }
 
         // use the processor part of the import system
-        $product = $this->loadFixture('products', $data);
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.product.flat');
+        $processor->setEnabledComparison(false);
+        $product = $processor->process($data);
         $this->getProductSaver()->save($product);
 
         // reset the unique value set to allow to update product values
@@ -339,8 +341,9 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $attributeBulks = [];
+        $attributeProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute.flat');
         foreach ($attributeData as $index => $data) {
-            $attribute = $this->loadFixture('attributes', $data);
+            $attribute = $attributeProcessor->process($data);
             $this->validate($attribute);
             $attributeBulks[$index % 200][]= $attribute;
         }
@@ -349,8 +352,9 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $optionsBulks = [];
+        $optionProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_option.flat');
         foreach ($optionData as $index => $data) {
-            $option = $this->loadFixture('attribute_options', $data);
+            $option = $optionProcessor->process($data);
             $this->validate($option);
             $optionsBulks[$index % 200][]= $option;
         }
@@ -1529,7 +1533,8 @@ class FixturesContext extends BaseFixturesContext
             }
         }
 
-        $attribute = $this->loadFixture('attributes', $data);
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute.flat');
+        $attribute = $processor->process($data);
 
         $familiesToPersist = [];
         if ($families) {
@@ -1599,7 +1604,8 @@ class FixturesContext extends BaseFixturesContext
             $data = [['code' => $data]];
         }
 
-        $category = $this->loadFixture('categories', $data);
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.category.flat');
+        $category = $processor->process($data);
 
         /*
          * When using ODM, one must persist and flush category without product
@@ -1836,7 +1842,8 @@ class FixturesContext extends BaseFixturesContext
             }
         }
 
-        $family = $this->loadFixture('families', $data);
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family.flat');
+        $family = $processor->process($data);
         $this->getFamilySaver()->save($family);
 
         return $family;
@@ -1855,7 +1862,8 @@ class FixturesContext extends BaseFixturesContext
             $data = ['code' => $data];
         }
 
-        $attributeGroup = $this->loadFixture('attribute_groups', $data);
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_group.flat');
+        $attributeGroup = $processor->process($data);
         $this->getContainer()->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
 
         return $attributeGroup;

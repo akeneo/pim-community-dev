@@ -2,13 +2,13 @@
 
 namespace Pim\Behat\Context;
 
+use Behat\Behat\Console\Processor\ProcessorInterface;
 use Behat\Behat\Context\Step;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Inflector;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 
 /**
  * A context for creating entities
@@ -200,35 +200,6 @@ class FixturesContext extends PimContext
                 }
                 assertEquals($value, $data);
         }
-    }
-
-    /**
-     * Load an installer fixture
-     *
-     * @param string $type
-     * @param array  $data
-     * @param string $format
-     *
-     * @return object
-     */
-    public function loadFixture($type, array $data, $format = 'csv')
-    {
-        $processor = $this
-            ->getContainer()
-            ->get('pim_installer.fixture_loader.configuration_registry')
-            ->getProcessor($type, $format);
-
-        if ($processor instanceof ProductProcessor) {
-            $processor->setEnabledComparison(false);
-        }
-
-        $entity = $processor->process($data);
-
-        // we encountered a bunch of invalid data in behat due to old way to import them
-        // could be removed once all the fixtures will use the new API (processor, updater, validator)
-        $this->validate($entity);
-
-        return $entity;
     }
 
     /**

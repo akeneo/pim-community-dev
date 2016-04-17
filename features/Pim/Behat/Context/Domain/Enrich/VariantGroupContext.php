@@ -22,7 +22,8 @@ class VariantGroupContext extends PimContext
             $data = ['code' => $data];
         }
 
-        $variantGroup = $this->getFixturesContext()->loadFixture('variant_groups', $data);
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.variant_group.flat');
+        $variantGroup = $processor->process($data);
         $this->saveVariantGroup($variantGroup);
 
         return $variantGroup;
