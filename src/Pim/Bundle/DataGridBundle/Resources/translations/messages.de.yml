@@ -1,4 +1,5 @@
 "oro_datagrid.no_data_hint %entityHint%": '%entityHint% existiert nicht.'
+"oro_datagrid.not_found_hint %entityHint%": 'Kein %entityHint% stimmt mit der Suche überein. Bitte passen Sie Ihre Suchkriterien an ...'
 oro_datagrid.label_add_filter: Filter verwalten
 oro_datagrid.label_loading_mask: Lädt . . .
 oro.grid.mass_action.selected_rows: Ausgewählte Zeilen
@@ -14,6 +15,7 @@ oro.grid.datagrid.page_size.all: Alle
 oro.grid.mass_action.delete.success_message: '{0} Keine Entität wurde entfernt|{1} Eine Entität wurde entfernt|]1,Inf[ %count% Entitäten wurden entfernt'
 datagrid_view:
   views: Ansichten
+  default: Meine Standard-Ansicht
   create: Ansicht erstellen
   placeholder: Name der neuen Ansicht
   remove: Diese Ansicht löschen
