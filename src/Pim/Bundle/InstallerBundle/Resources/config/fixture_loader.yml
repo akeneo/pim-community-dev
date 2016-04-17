@@ -1,7 +1,5 @@
 parameters:
     pim_installer.fixture_loader.configuration_registry.class: Pim\Bundle\InstallerBundle\FixtureLoader\ConfigurationRegistry
-    pim_installer.fixture_loader.loader_factory.class:         Pim\Bundle\InstallerBundle\FixtureLoader\LoaderFactory
-    pim_installer.fixture_loader.multiple_loader.class:        Pim\Bundle\InstallerBundle\FixtureLoader\MultipleLoader
     pim_installer.fixture_loader.job_loader.class:             Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader
     pim_installer.reader.file.yaml.class:                      Pim\Bundle\InstallerBundle\FixtureLoader\YamlReader
     pim_installer.fixture_loader.job_loader.config_file:       'PimInstallerBundle/Resources/config/fixtures_jobs.yml'
@@ -15,19 +13,6 @@ services:
             - %kernel.bundles%
             - %kernel.cache_dir%
             - %kernel.debug%
-
-    pim_installer.fixture_loader.loader_factory:
-        class: %pim_installer.fixture_loader.loader_factory.class%
-        arguments:
-            - '@pim_transform.cache.doctrine_cache'
-            - '@pim_installer.fixture_loader.configuration_registry'
-            - '@event_dispatcher'
-
-    pim_installer.fixture_loader.multiple_loader:
-        class: %pim_installer.fixture_loader.multiple_loader.class%
-        arguments:
-            - '@pim_installer.fixture_loader.configuration_registry'
-            - '@pim_installer.fixture_loader.loader_factory'
 
     pim_installer.fixture_loader.job_loader:
         class: %pim_installer.fixture_loader.job_loader.class%
