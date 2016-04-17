@@ -8,6 +8,7 @@ use Pim\Bundle\UserBundle\Entity\UserInterface;
 /**
  * @ORM\Table(name="oro_user_api")
  * @ORM\Entity
+ * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
  */
 class UserApi
 {

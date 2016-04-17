@@ -2,11 +2,15 @@
 
 namespace Context;
 
+use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Loader\ReferenceDataLoader;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
+use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
+use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\CS\Console\Application;
 
 /**
  * A context for initializing catalog configuration
@@ -31,16 +35,6 @@ class CatalogConfigurationContext extends RawMinkContext
      * @var ReferenceRepository Fixture reference repository
      */
     protected $referenceRepository;
-
-    /**
-     * @var string Path of the entity loaders
-     */
-    protected $entityLoaderPath = 'Context\Loader';
-
-    /**
-     * @var array Entity loaders and corresponding files
-     */
-    protected $preEntityLoaders = [];
 
     /**
      * Add an additional directory for catalog configuration files
@@ -73,32 +67,46 @@ class CatalogConfigurationContext extends RawMinkContext
      */
     protected function loadCatalog($files)
     {
-        $treatedFiles = [];
-        foreach ($this->preEntityLoaders as $loaderName => $fileName) {
-            $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
-            $file   = $this->getLoaderFile($files, $fileName);
-            if ($file) {
-                $treatedFiles[] = $file;
-            }
-            $this->runLoader($loader, $file);
+        // load JobInstances
+        $this->getFixtureJobLoader()->load($files);
+
+        // setup akeneo:batch:job command
+        $application = new Application();
+        $application->add(new BatchCommand());
+        $batchJobCommand = $application->find('akeneo:batch:job');
+        $batchJobCommand->setContainer($this->getContainer());
+        $commandTester = new CommandTester($batchJobCommand);
+
+        // install the catalog
+        $jobInstances = $this->getFixtureJobLoader()->getRunnableJobInstances();
+        foreach ($jobInstances as $jobInstance) {
+            $commandTester->execute(
+                [
+                    'command'    => $batchJobCommand->getName(),
+                    'code'       => $jobInstance->getCode(),
+                    '--no-log'   => true,
+                    '-v'         => true
+                ]
+            );
         }
 
-        $files = array_diff($files, $treatedFiles);
-        if (count($files)) {
-            $this->getContainer()
-                ->get('pim_installer.fixture_loader.multiple_loader')
-                ->load(
-                    $this->getEntityManager(),
-                    $this->referenceRepository,
-                    $files
-                );
-        }
+        // delete the job instances
+        $this->getFixtureJobLoader()->deleteJobs();
 
+        // install reference data
         $bundles = $this->getContainer()->getParameter('kernel.bundles');
         if (isset($bundles['AcmeAppBundle'])) {
             $referenceDataLoader = new ReferenceDataLoader();
             $referenceDataLoader->load($this->getEntityManager());
         }
+    }
+
+    /**
+     * @return FixtureJobLoader
+     */
+    protected function getFixtureJobLoader()
+    {
+        return $this->getContainer()->get('pim_installer.fixture_loader.job_loader');
     }
 
     /**
@@ -134,36 +142,6 @@ class CatalogConfigurationContext extends RawMinkContext
     }
 
     /**
-     * Find the appropriate file for the loader in the catalog configuration files
-     *
-     * @param string[]    $files
-     * @param string|null $fileName
-     *
-     * @throws ExpectationException If the requested file is not found
-     *
-     * @return string|null
-     */
-    protected function getLoaderFile($files, $fileName)
-    {
-        if ($fileName !== null) {
-            $matchingFiles = array_filter(
-                $files,
-                function ($file) use ($fileName) {
-                    return $fileName === pathinfo($file, PATHINFO_FILENAME);
-                }
-            );
-
-            if (empty($matchingFiles)) {
-                throw $this->getMainContext()->createExpectationException(
-                    sprintf('Catalog configuration file "%s" not found', $fileName)
-                );
-            }
-
-            return end($matchingFiles);
-        }
-    }
-
-    /**
      * Initialize the reference repository
      */
     protected function initializeReferenceRepository()
@@ -171,23 +149,6 @@ class CatalogConfigurationContext extends RawMinkContext
         $this->referenceRepository = new ReferenceRepository($this->getEntityManager());
         $listener                  = new ORMReferenceListener($this->referenceRepository);
         $this->getEntityManager()->getEventManager()->addEventSubscriber($listener);
-    }
-
-    /**
-     * Run an entity loader
-     *
-     * @param string $loaderClass
-     * @param string $filePath
-     */
-    protected function runLoader($loaderClass, $filePath)
-    {
-        $loader = new $loaderClass();
-        $loader->setContainer($this->getContainer());
-        $loader->setReferenceRepository($this->referenceRepository);
-        if ($filePath !== null) {
-            $loader->setFilePath($filePath);
-        }
-        $loader->load($this->getEntityManager());
     }
 
     /**

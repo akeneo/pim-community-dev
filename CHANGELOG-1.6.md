@@ -21,6 +21,7 @@
 - TIP-342: be able to launch mass edit processes without having to previously store a JobConfiguration and only rely on dynamic configuration
 - PIM-5577: The completeness is now calculated every time a product is saved, ie during mass edit, product import and on edit/save of variant groups.
 - Call validation in the controller when adding/removing attributes to the family.
+- Simplify installation process and the loading of catalogs in Behat by using the import system and `akeneo:batch:job` commands.
 
 ## BC breaks
 

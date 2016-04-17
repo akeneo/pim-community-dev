@@ -172,24 +172,6 @@ class DatabaseCommand extends ContainerAwareCommand
     }
 
     /**
-     * Get fixtures to load list
-     *
-     * @param string $fixtureOpt
-     *
-     * @return array
-     */
-    protected function getFixturesList($fixtureOpt)
-    {
-        if ($fixtureOpt === self::LOAD_BASE) {
-            $fixtures = $this->getOroFixturesList();
-
-            return ['--fixtures' => $fixtures];
-        }
-
-        return [];
-    }
-
-    /**
      * Launchs all commands needed after fixtures loading
      *
      * @param InputInterface  $input
@@ -222,15 +204,5 @@ class DatabaseCommand extends ContainerAwareCommand
     protected function getFixtureJobLoader()
     {
         return $this->getContainer()->get('pim_installer.fixture_loader.job_loader');
-    }
-
-    /**
-     * Get the Oro fixtures list
-     *
-     * @return array
-     */
-    protected function getOroFixturesList()
-    {
-        return [];
     }
 }
