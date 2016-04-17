@@ -92,12 +92,12 @@ class FixtureJobLoader
                         break;
                     }
                 }
-                /*
-                TODO: product.csv can be empty for instance, in the case of Behat catalog
-                      we should enforce the fact that all files are presents
+
+                // TODO: product.csv can be empty for instance, in the case of Behat catalog
+                //       we should enforce the fact that all files are presents
                 if (false === $replaced) {
                     throw new \Exception(sprintf('No replacement path for "%s"', $config['filePath']));
-                }*/
+                }
             }
 
             $jobInstance->setRawConfiguration($config);
