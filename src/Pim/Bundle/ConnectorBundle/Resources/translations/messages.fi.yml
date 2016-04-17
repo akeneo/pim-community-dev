@@ -7,11 +7,11 @@ pim_connector:
       title: Kategorian vienti CSV-muodossa
       export.title: Kategorian vienti
     csv_attribute_export:
-      title: Attribuuttien vienti CSV-muodossa
-      export.title: Attribuuttien vienti
+      title: Attribuutin vienti CSV-muodossa
+      export.title: Attribuutin vienti
     csv_attribute_option_export:
-      title: Attribuuttien määritteiden vienti CSV-muodossa
-      export.title: Attribuuttien määritteiden vienti
+      title: Attribuutin vaihtoehdon vienti CSV-muodossa
+      export.title: Attribuutin vaihtoehdon vienti
     csv_association_type_export:
       title: Liitännäistyyppien vienti CSV-muodossa
       export.title: Liitännäistyyppien vienti
@@ -20,7 +20,7 @@ pim_connector:
       export.title: Ryhmän vienti
     csv_variant_group_export:
       title: Muuttujaryhmien vienti CSV-muodossa
-      export.title: Muutujaryhmien vienti
+      export.title: Muuttujaryhmien vienti
     csv_product_import:
       title: Tuotteiden tuonti CSV-muodossa
       validation.title: Tiedostojen tarkistaminen
@@ -28,16 +28,16 @@ pim_connector:
       import_associations.title: Liitännäisten tuonti
     csv_category_import:
       title: Kategorioiden tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
+      validation.title: Tiedostojen validaatio
       import.title: Kategorioiden tuonti
     csv_attribute_import:
       title: Attribuuttien tuonti CSV-muodossa
       validation.title: Tiedostojen tarkistaminen
       import.title: Attribuuttien tuonti
     csv_attribute_option_import:
-      title: Attribuuttien määritteiden tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Attribuuttien määritteiden tuonti
+      title: Attribuutin vaihtoehdon tuonti CSV-muodossa
+      validation.title: Tiedostojen validaatio
+      import.title: Attribuutin vaihtoehdon tuonti
     csv_association_type_import:
       title: Liitännäistyyppien tuonti CSV-muodossa
       validation.title: Tiedostojen tarkistaminen
@@ -47,8 +47,8 @@ pim_connector:
       validation.title: Tiedostojen tarkistaminen
       import.title: Ryhmätuonti
     csv_group_import:
-      title: Ryhmien tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
+      title: Ryhmän tuonti CSV-muodossa
+      validation.title: Tiedostojen validaatio
       import.title: Ryhmien tuonti
     csv_variant_group_import:
       title: Muuttujaryhmien tuonti CSV-muodossa
@@ -60,6 +60,19 @@ pim_connector:
       validation.title: Tiedostojen tarkistaminen
       import.title: Tuotteiden tuonti
       import_associations.title: Liitännäisten tuonti
+    xlsx_group_export:
+      export.title: Ryhmän vienti
+    xlsx_variant_group_export:
+      export.title: Muutujaryhmien vienti
+    xlsx_group_import:
+      validation.title: Tiedostojen tarkistaminen
+      import.title: Ryhmien tuonti
+    xlsx_variant_group_import:
+      validation.title: Tiedostojen tarkistaminen
+    xlsx_family_export:
+      export.title: Ryhmän vienti
+    xlsx_category_export:
+      export.title: Kategorian vienti
   steps:
     dummy_reader.title: Mallilukija
     product_reader.title: Tuotteen poisto
@@ -69,7 +82,7 @@ pim_connector:
       invalid_item_columns_count: 'Odotit %totalColumnsCount% saraketta, sinulla on %itemColumnsCount% %csvPath%:%lineno%'
     csv_product_reader.title: CSV-tuotteen lukija
     csv_category_reader.title: CSV-kategorian lukija
-    csv_variant_group .title: CSV variant ryhmän lukija
+    csv_variant_group .title: CSV-vaihtoehtojen ryhmälukija
     dummy_processor.title: Malliprosessori
     product_processor.title: Tuotteen luominen
     variant_group_processor.title: Malliryhmän luonti / päivitys
@@ -79,14 +92,14 @@ pim_connector:
     group_processor.title: Ryhmän perustaminen
     attribute_processor.title: Attribuutin luominen
     attribute_option_processor.title: Attribuutin vaihtoehdon luominen
-    heterogeneous_processor.title: CSV-tuotteiden sarjanmuodostaja
+    heterogeneous_processor.title: CSV-tuotteiden sarjanmuodostoja
     homogeneous_processor.title: CSV-entiteettien sarjanmuodostaja
     transformer_processor.title: Muunnos
     dummy_writer.title: Mallikirjoittaja
     file_writer.title: Ulostulo
     product_writer.title: Tuotteen varastointi
-    category_writer.title: Luokan varastointi
-    variant_group_writer.title: Variant ryhmän tallennus
+    category_writer.title: Kategorian varastointi
+    variant_group_writer.title: Variant ryhmän varastointi
     writer.title: Yksikön varastointi
     csv_writer.title: CSV-kirjoittaja
   export:
@@ -98,7 +111,7 @@ pim_connector:
       help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
     withHeader:
       label: Otsikon kanssa
-      help: Tulostatko sarakkeen nimen vai et
+      help: Tulostaako sarakkeen nimen vai ei
     filePath:
       label: Tiedostopolku
       help: Mihin kirjoittaa generoitu tiedosto tiedostorakenteessa
