@@ -1355,7 +1355,6 @@ class WebUser extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $this->getCurrentPage()->addOption($data['Code']);
-            $this->wait();
         }
     }
 
