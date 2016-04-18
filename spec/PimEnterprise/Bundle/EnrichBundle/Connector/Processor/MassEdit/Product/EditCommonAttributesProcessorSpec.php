@@ -88,8 +88,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                     'actions' => [
                         'normalized_values' => $normalizedValues,
                         'ui_locale'         => 'fr_FR',
-                        'attribute_locale'  => 'en_US',
-                        'current_locale'    => 'en_US'
+                        'attribute_locale'  => 'en_US'
                     ]
                 ]
             )
@@ -148,8 +147,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                     'actions' => [
                         'normalized_values' => $normalizedValues,
                         'ui_locale'         => 'fr_FR',
-                        'attribute_locale'  => 'en_US',
-                        'current_locale'    => 'en_US'
+                        'attribute_locale'  => 'en_US'
                     ]
                 ]
             )
@@ -201,8 +199,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 [
                     'filters' => [],
                     'actions' => [
-                        'normalized_values' => $normalizedValues,
-                        'current_locale'    => 'en_US'
+                        'normalized_values' => $normalizedValues
                     ]
                 ]
             )
