@@ -97,8 +97,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                         'normalized_values' => $normalizedValues,
                         'ui_locale'         => 'en_US',
                         'attribute_locale'  => 'en_US',
-                        'attribute_channel' => null,
-                        'current_locale'    => 'en_US'
+                        'attribute_channel' => null
                     ]
                 ]
             )
@@ -122,8 +121,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration,
-        LocalizerInterface $localizer
+        JobConfigurationInterface $jobConfiguration
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -149,8 +147,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                         'normalized_values' => $normalizedValues,
                         'ui_locale'         => 'fr_FR',
                         'attribute_locale'  => 'en_US',
-                        'attribute_channel' => null,
-                        'current_locale'    => 'en_US'
+                        'attribute_channel' => null
                     ]
                 ]
             )
@@ -202,8 +199,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                         'normalized_values' => $normalizedValues,
                         'ui_locale'         => 'fr_FR',
                         'attribute_locale'  => 'en_US',
-                        'attribute_channel' => null,
-                        'current_locale'    => 'en_US'
+                        'attribute_channel' => null
                     ]
                 ]
             )

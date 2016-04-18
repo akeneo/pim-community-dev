@@ -124,7 +124,6 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     protected function updateProduct(ProductInterface $product, array $actions)
     {
         $normalizedValues = json_decode($actions['normalized_values'], true);
-        $currentLocale = $actions['current_locale'];
         $filteredValues = [];
 
         foreach ($normalizedValues as $attributeCode => $values) {
@@ -133,10 +132,6 @@ class EditCommonAttributesProcessor extends AbstractProcessor
              * lot of models and it causes memory leak...
              */
             if ($this->isAttributeEditable($product, $attributeCode)) {
-                $values = array_filter($values, function ($value) use ($currentLocale) {
-                    return $currentLocale === $value['locale'] || null === $value['locale'];
-                });
-
                 $filteredValues[$attributeCode] = $values;
             }
         }
