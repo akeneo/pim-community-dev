@@ -108,7 +108,7 @@ connector:
                  export:
                      title: pim_connector.jobs.xlsx_product_export.export.title
                      services:
-                         reader:    pim_base_connector.reader.doctrine.product
+                         reader:    pim_connector.reader.product
                          processor: pim_base_connector.processor.product_to_flat_array
                          writer:    pim_connector.writer.file.xlsx_product
                      parameters:
