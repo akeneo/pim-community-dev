@@ -74,7 +74,6 @@ class CatalogConfigurationContext extends RawMinkContext
             $tokens = explode(DIRECTORY_SEPARATOR, $file);
             $fileName = array_pop($tokens);
             $replacePaths[$fileName] = $file;
-
         }
 
         // load JobInstances

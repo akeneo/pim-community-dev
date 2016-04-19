@@ -24,30 +24,38 @@ class FixtureJobLoader
     /** @var string */
     protected $jobsFilePaths;
 
+    /** @var FixturePathProvider */
+    protected $pathProvider;
+
     /** @var ContainerInterface */
     protected $container;
 
     /**
-     * @param ContainerInterface $container
-     * @param array              $jobsFilePaths
-     * @throws \Exception
+     * @param FixturePathProvider $pathProvider
+     * @param ContainerInterface  $container
+     * @param array               $jobsFilePaths
      */
-    public function __construct(ContainerInterface $container, array $jobsFilePaths)
-    {
+    public function __construct(
+        FixturePathProvider $pathProvider,
+        ContainerInterface $container,
+        array $jobsFilePaths
+    ) {
         $this->container = $container;
+        $this->pathProvider = $pathProvider;
         $this->jobsFilePaths = $jobsFilePaths;
     }
 
     /**
      * Load the fixture jobs in database
      *
-     * TODO: refactor / split this class
-     * TODO: order !!
+     * @param array $replacePaths
+     *
+     * @throws \Exception
      */
     public function load(array $replacePaths = [])
     {
         if (0 === count($replacePaths)) {
-            $installerDataPath = $this->getInstallerDataPath();
+            $installerDataPath = $this->pathProvider->getFixturesPath();
             if (!is_dir($installerDataPath)) {
                 throw new \Exception(sprintf('Path "%s" not found', $installerDataPath));
             }
@@ -129,35 +137,6 @@ class FixtureJobLoader
         }
 
         return $jobs;
-    }
-
-    /**
-     * Get the path of the data used by the installer
-     *
-     * @return string
-     */
-    protected function getInstallerDataPath()
-    {
-        $installerDataDir = null;
-        $installerData = $this->container->getParameter('installer_data');
-
-        if (preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $installerData, $matches)) {
-            $bundles = $this->container->getParameter('kernel.bundles');
-            $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
-            $installerDataDir = dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'];
-        } else {
-            $installerDataDir = $this->container->getParameter('installer_data');
-        }
-
-        if (null === $installerDataDir || !is_dir($installerDataDir)) {
-            throw new \RuntimeException('Installer data directory cannot be found.');
-        }
-
-        if (DIRECTORY_SEPARATOR !== substr($installerDataDir, -1, 1)) {
-            $installerDataDir .= DIRECTORY_SEPARATOR;
-        }
-
-        return $installerDataDir;
     }
 
     /**

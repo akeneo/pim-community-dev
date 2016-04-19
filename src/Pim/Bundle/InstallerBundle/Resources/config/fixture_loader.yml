@@ -1,10 +1,19 @@
 parameters:
-    pim_installer.fixture_loader.job_loader.class:             Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader
-    pim_installer.fixture_loader.job_loader.config_file:       'PimInstallerBundle/Resources/config/fixtures_jobs.yml'
+    pim_installer.fixture_loader.path_provider.class:    Pim\Bundle\InstallerBundle\FixtureLoader\FixturePathProvider
+    pim_installer.fixture_loader.job_loader.class:       Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader
+    pim_installer.fixture_loader.job_loader.config_file: 'PimInstallerBundle/Resources/config/fixtures_jobs.yml'
 
 services:
+
+    pim_installer.fixture_loader.path_provider:
+        class: %pim_installer.fixture_loader.path_provider.class%
+        arguments:
+            - '%kernel.bundles%'
+            - '%installer_data%'
+
     pim_installer.fixture_loader.job_loader:
         class: %pim_installer.fixture_loader.job_loader.class%
         arguments:
+            - '@pim_installer.fixture_loader.path_provider'
             - '@service_container'
             - [ %pim_installer.fixture_loader.job_loader.config_file% ]
