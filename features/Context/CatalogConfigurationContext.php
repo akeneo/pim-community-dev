@@ -67,8 +67,18 @@ class CatalogConfigurationContext extends RawMinkContext
      */
     protected function loadCatalog($files)
     {
+        // prepare replace paths
+        // ['currencies' => '/home/nico/git/project/features/Context/catalog/apparel/currencies.csv']
+        $replacePaths = [];
+        foreach ($files as $file) {
+            $tokens = explode(DIRECTORY_SEPARATOR, $file);
+            $fileName = array_pop($tokens);
+            $replacePaths[$fileName] = $file;
+
+        }
+
         // load JobInstances
-        $this->getFixtureJobLoader()->load($files);
+        $this->getFixtureJobLoader()->load($replacePaths);
 
         // setup akeneo:batch:job command
         $application = new Application();

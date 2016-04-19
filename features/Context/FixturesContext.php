@@ -5,6 +5,7 @@ namespace Context;
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
@@ -29,6 +30,7 @@ use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -90,9 +92,11 @@ class FixturesContext extends BaseFixturesContext
             $data[$key] = $this->replacePlaceholders($value);
         }
 
-        // use the processor part of the import system
+        /** @var ProductProcessor */
         $processor = $this->getContainer()->get('pim_connector.processor.denormalization.product.flat');
         $processor->setEnabledComparison(false);
+        $processor->setDateFormat(LocalizerInterface::DEFAULT_DATE_FORMAT);
+        $processor->setDecimalSeparator(LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR);
         $product = $processor->process($data);
         $this->getProductSaver()->save($product);
 

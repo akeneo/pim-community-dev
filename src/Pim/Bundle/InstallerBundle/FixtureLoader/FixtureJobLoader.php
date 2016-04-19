@@ -42,6 +42,7 @@ class FixtureJobLoader
      * Load the fixture jobs in database
      *
      * TODO: refactor / split this class
+     * TODO: order !!
      */
     public function load(array $replacePaths = [])
     {
@@ -63,6 +64,7 @@ class FixtureJobLoader
             while ($rawJob = $yamlReader->read()) {
                 $rawJobs[] = $rawJob;
             }
+
             usort(
                 $rawJobs,
                 function ($item1, $item2) {
@@ -86,20 +88,10 @@ class FixtureJobLoader
             if (0 === count($replacePaths)) {
                 $config['filePath'] = sprintf('%s%s', $installerDataPath, $config['filePath']);
             } else {
-                $replaced = false;
-                foreach ($replacePaths as $replacePath) {
-                    if (false !== strpos($replacePath, $config['filePath'])) {
-                        $config['filePath'] = $replacePath;
-                        $replaced = true;
-                        break;
-                    }
-                }
-
-                // TODO: product.csv can be empty for instance, in the case of Behat catalog
-                //       we should enforce the fact that all files are presents
-                if (false === $replaced) {
+                if (!isset($replacePaths[$config['filePath']])) {
                     throw new \Exception(sprintf('No replacement path for "%s"', $config['filePath']));
                 }
+                $config['filePath'] = $replacePaths[$config['filePath']];
             }
 
             $jobInstance->setRawConfiguration($config);
