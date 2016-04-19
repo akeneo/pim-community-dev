@@ -48,6 +48,10 @@ class NumberComparator implements ComparatorInterface
             return $data;
         }
 
+        if ((string) $data['data'] == '0' && null === $originals['data']) {
+            return $data;
+        }
+
         return (float) $data['data'] !== (float) $originals['data'] ? $data : null;
     }
 }

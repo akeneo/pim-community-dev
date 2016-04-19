@@ -39,3 +39,12 @@ Feature: Add attributes to a product
   Scenario: Successfully display unclassified attributes in group "Other"
     Given I am on the "sandals" product page
     Then I should see available attribute Comment in group "Other"
+
+  Scenario: Successfully add metric attribute with "0" value
+    Given I am on the "boots" product page
+    And I add available attribute Rate of sale
+    Then attributes in group "Marketing" should be Rate of sale
+    When I change the "Rate of sale" to "0"
+    And I save the product
+    Then the product Rate of sale should be "0"
+
