@@ -165,7 +165,7 @@ class FixtureJobLoader
      */
     protected function getYamlReader()
     {
-        return $this->container->get('pim_installer.reader.file.yaml');
+        return $this->container->get('pim_base_connector.reader.file.yaml');
     }
 
     /**

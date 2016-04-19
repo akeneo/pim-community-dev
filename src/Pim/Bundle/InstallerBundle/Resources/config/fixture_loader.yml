@@ -1,6 +1,5 @@
 parameters:
     pim_installer.fixture_loader.job_loader.class:             Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader
-    pim_installer.reader.file.yaml.class:                      Pim\Bundle\InstallerBundle\FixtureLoader\YamlReader
     pim_installer.fixture_loader.job_loader.config_file:       'PimInstallerBundle/Resources/config/fixtures_jobs.yml'
 
 services:
@@ -9,6 +8,3 @@ services:
         arguments:
             - '@service_container'
             - [ %pim_installer.fixture_loader.job_loader.config_file% ]
-
-    pim_installer.reader.file.yaml:
-        class: %pim_installer.reader.file.yaml.class%

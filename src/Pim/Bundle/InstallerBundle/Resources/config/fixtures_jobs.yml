@@ -7,7 +7,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: currencies.csv
-            multiple: false
 
     fixtures_locale_csv:
         order: 10
@@ -17,7 +16,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: locales.csv
-            multiple: false
 
     fixtures_category_csv:
         order: 30
@@ -42,7 +40,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: attribute_groups.csv
-            multiple: false
 
     fixtures_group_type_csv:
         order: 30
@@ -52,7 +49,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: group_types.csv
-            multiple: false
 
     fixtures_channel_csv:
         order: 40
@@ -62,7 +58,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: channels.csv
-            multiple: false
 
     fixtures_association_type_csv:
         order: 40
@@ -72,7 +67,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: association_types.csv
-            multiple: false
 
     fixtures_attribute_csv:
         order: 40
@@ -82,7 +76,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: attributes.csv
-            multiple: false
 
     fixtures_attribute_options_csv:
         order: 50
@@ -92,7 +85,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: attribute_options.csv
-            multiple: false
 
     fixtures_family_csv:
         order: 60
@@ -102,7 +94,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: families.csv
-            multiple: false
 
     fixtures_variant_group_csv:
         order: 70
@@ -112,7 +103,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: variant_groups.csv
-            multiple: false
             decimalSeparator: .
 
     fixtures_group_csv:
@@ -123,7 +113,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: groups.csv
-            multiple: false
 
     fixtures_user_group_csv:
         order: 25
@@ -133,7 +122,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: user_groups.csv
-            multiple: false
 
     fixtures_user_role_csv:
         order: 75
@@ -143,7 +131,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: user_roles.csv
-            multiple: false
 
     fixtures_user_csv:
         order: 79
@@ -153,7 +140,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: users.csv
-            multiple: false
 
     fixtures_product_csv:
         order: 80
@@ -186,4 +172,3 @@ jobs:
         type:      fixtures
         configuration:
             filePath: jobs.yml
-            multiple: false

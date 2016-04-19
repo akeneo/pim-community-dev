@@ -186,3 +186,6 @@
 - Remove deprecated `Pim\Bundle\BaseConnectorBundle\Reader\DummyReader`
 - Remove deprecated `Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface`
 - Remove deprecated `Pim\Bundle\BaseConnectorBundle\Validator\Import\SkipImportValidator`
+- Remove `Pim\Bundle\InstallerBundle\Command\LoadDataFixturesDoctrineCommand`, `Pim\Bundle\InstallerBundle\Command\LoadFixturesCommand`
+- Remove `Pim\Bundle\InstallerBundle\DataFixtures\*`
+- Remove `Pim\Bundle\InstallerBundle\FixtureLoader\*`
