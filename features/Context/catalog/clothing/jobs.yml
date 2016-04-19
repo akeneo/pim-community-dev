@@ -1,6 +1,6 @@
 jobs:
-    clothing_product_import:
-        connector: Akeneo CSV Connector
+    csv_clothing_product_import:
+        connector: Akeneo Product CSV Connector
         alias:     csv_product_import
         label:     Clothing product import
         type:      import
@@ -29,7 +29,7 @@ jobs:
         configuration:
             header: rules
     clothing_product_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product CSV Connector
         alias:     csv_product_export
         label:     Clothing product export
         type:      export
@@ -40,7 +40,7 @@ jobs:
             withHeader: true
             filePath: /tmp/product.csv
     clothing_category_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product CSV Connector
         alias:     csv_category_import
         label:     Clothing category import
         type:      import
@@ -51,7 +51,7 @@ jobs:
             escape:              '\'
             circularRefsChecked: true
     clothing_category_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product CSV Connector
         alias:     csv_category_export
         label:     Clothing category export
         type:      export
@@ -61,7 +61,7 @@ jobs:
             withHeader: true
             filePath: /tmp/category.csv
     clothing_association_type_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product CSV Connector
         alias:     csv_association_type_import
         label:     Clothing association type import
         type:      import
@@ -71,7 +71,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     clothing_association_type_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product CSV Connector
         alias:     csv_association_type_export
         label:     Clothing association type export
         type:      export
@@ -81,7 +81,7 @@ jobs:
             withHeader: true
             filePath: /tmp/association-type.csv
     clothing_group_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product CSV Connector
         alias:     csv_group_import
         label:     Clothing group import
         type:      import
@@ -91,7 +91,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     clothing_group_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product CSV Connector
         alias:     csv_group_export
         label:     Clothing group export
         type:      export
@@ -101,7 +101,7 @@ jobs:
             withHeader: true
             filePath: /tmp/group.csv
     clothing_attribute_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product CSV Connector
         alias:     csv_attribute_import
         label:     Clothing attribute import
         type:      import
@@ -111,7 +111,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     clothing_attribute_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product CSV Connector
         alias:     csv_attribute_export
         label:     Clothing attribute export
         type:      export
@@ -121,7 +121,7 @@ jobs:
             withHeader: true
             filePath: /tmp/attribute.csv
     clothing_option_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product CSV Connector
         alias:     csv_attribute_option_import
         label:     Clothing option import
         type:      import
@@ -131,7 +131,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     clothing_option_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product CSV Connector
         alias:     csv_attribute_option_export
         label:     Clothing option export
         type:      export
@@ -141,7 +141,7 @@ jobs:
             withHeader: true
             filePath: /tmp/attribute-option.csv
     clothing_mobile_published_product_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product CSV Connector
         alias:     csv_published_product_export
         label:     Published product export for mobile
         type:      export
@@ -152,9 +152,9 @@ jobs:
             withHeader: true
             filePath: /tmp/published-product.csv
     clothing_product_proposal_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product CSV Connector
         alias:     csv_product_proposal_import
-        label:     CSV Demo product draft import
+        label:     Demo CSV product draft import
         type:      import
         configuration:
             uploadAllowed:    true
@@ -166,9 +166,9 @@ jobs:
             decimalSeparator: .
             dateFormat:       MM/dd/yyyy
     xlsx_clothing_product_proposal_import:
-        connector: Akeneo XLSX Connector
+        connector: Akeneo Product XLSX Connector
         alias:     xlsx_product_proposal_import
-        label:     XLSX Demo product draft import
+        label:     Demo XLSX product draft import
         type:      import
         configuration:
             uploadAllowed:    true
@@ -246,7 +246,7 @@ jobs:
         alias:     refuse_product_draft
         label:     Mass reject product drafts
         type:      mass_edit
-    clothing_asset_import:
+    csv_clothing_asset_import:
         connector: Akeneo Product Asset Connector
         alias:     csv_asset_import
         label:     Demo asset import
@@ -257,7 +257,7 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
-    clothing_asset_category_export:
+    csv_clothing_asset_category_export:
         connector: Akeneo Product Asset Connector
         alias:     csv_asset_category_export
         label:     Clothing asset category export
@@ -267,7 +267,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/asset-category.csv
-    clothing_asset_export:
+    csv_clothing_asset_export:
         connector: Akeneo Product Asset Connector
         alias:     csv_asset_export
         label:     Clothing asset export
@@ -277,7 +277,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/asset.csv
-    clothing_asset_variation_export:
+    csv_clothing_asset_variation_export:
         connector: Akeneo Product Asset Connector
         alias:     csv_asset_variation_export
         label:     Clothing asset export
@@ -287,7 +287,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/asset-variation.csv
-    clothing_asset_category_import:
+    csv_clothing_asset_category_import:
         connector: Akeneo Product Asset Connector
         alias:     csv_asset_category_import
         label:     Demo asset category import
@@ -320,3 +320,27 @@ jobs:
         alias:     apply_assets_mass_upload
         label:     Mass approve product drafts
         type:      mass_upload
+    xlsx_clothing_asset_export:
+        connector: Akeneo Product Asset Connector
+        alias:     xlsx_asset_export
+        label:     Clothing asset export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/asset.xlsx
+    xlsx_clothing_asset_category_export:
+        connector: Akeneo Product Asset Connector
+        alias:     xlsx_asset_category_export
+        label:     Clothing asset category export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/asset_category.xlsx
+    xlsx_clothing_asset_variation_export:
+        connector: Akeneo Product Asset Connector
+        alias:     xlsx_asset_variation_export
+        label:     Clothing asset export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/asset-variation.xlsx

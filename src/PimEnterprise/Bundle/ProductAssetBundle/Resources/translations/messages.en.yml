@@ -111,16 +111,20 @@ pimee_product_asset:
             unique: Code must be unique.
             new_generation: We generated a new one for you.
     jobs:
-        csv_asset_import.title: Asset import in csv
-        csv_asset_export.title: Asset export in csv
-        csv_asset_variation_export.title: Asset variations export in csv
-        csv_tag_import.title: Tag import in csv
-        csv_asset_category_import.title: Asset category import in csv
-        csv_asset_configuration_import.title: Asset channel configuration import in csv
-        yml_asset_configuration_export.title: Asset channel configuration export in Yaml
-        csv_asset_category_export.title: Asset category export in csv
-        yml_asset_channel_configuration_import.title: Asset channel configuration import in Yaml
         assets_mass_upload.title: Assets mass upload
+        yml_asset_channel_configuration_import.title: Asset channel configuration import in Yaml
+        yml_asset_configuration_export.title: Asset channel configuration export in Yaml
+        csv_asset_import.title: Asset import in CSV
+        csv_asset_export.title: Asset export in CSV
+        csv_asset_variation_export.title: Asset variations export in CSV
+        csv_tag_import.title: Tag import in CSV
+        csv_asset_category_import.title: Asset category import in CSV
+        csv_asset_configuration_import.title: Asset channel configuration import in CSV
+        csv_asset_category_export.title: Asset category export in CSV
+        xlsx_asset_export.title: Asset export in XLSX
+        xlsx_asset_category_export.title: Asset category export in XLSX
+        xlsx_asset_variation_export.title: Asset category export in XLSX
+
     steps:
         channel_configuration.processor.title: Process channel configurations
     notAvailable:

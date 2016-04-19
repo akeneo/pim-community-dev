@@ -15,7 +15,7 @@ Feature: Browse job executions
     And I launch the "clothing_attribute_export" export job
     And I launch the "clothing_category_export" export job
     And I launch the "clothing_option_export" export job
-    And I launch the "clothing_product_import" import job
+    And I launch the "csv_clothing_product_import" import job
     When I am on the export executions page
     Then the grid should contain 5 elements
     And I should see export profiles clothing_product_export, clothing_category_export, clothing_attribute_export, clothing_category_export and clothing_option_export

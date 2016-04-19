@@ -15,11 +15,11 @@ Feature: Import categories
       others;images;;"Other picture";"Autre images"
       back;images;;"Back picture";"image de dos"
       """
-    And the following job "clothing_asset_category_import" configuration:
+    And the following job "csv_clothing_asset_category_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_asset_category_import" import job page
+    When I am on the "csv_clothing_asset_category_import" import job page
     And I launch the import job
-    And I wait for the "clothing_asset_category_import" job to finish
+    And I wait for the "csv_clothing_asset_category_import" job to finish
     And I should see "read lines 4"
     And I should see "processed 2"
     And I should see "created 2"
@@ -38,11 +38,11 @@ Feature: Import categories
       code;parent;label-de_DE;label-en_US;label-fr_FR
       asset_main_catalog;clothes;;"Asset main catalog";"Catalogue principal d'Assets"
       """
-    And the following job "clothing_asset_category_import" configuration:
+    And the following job "csv_clothing_asset_category_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_asset_category_import" import job page
+    When I am on the "csv_clothing_asset_category_import" import job page
     And I launch the import job
-    And I wait for the "clothing_asset_category_import" job to finish
+    And I wait for the "csv_clothing_asset_category_import" job to finish
     Then I should see "The parent category \"clothes\" does not exist"
 
   Scenario: Skip assets categories with empty code
@@ -53,11 +53,11 @@ Feature: Import categories
       code;parent;label-en_US
       ;;label US
       """
-    And the following job "clothing_asset_category_import" configuration:
+    And the following job "csv_clothing_asset_category_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_asset_category_import" import job page
+    When I am on the "csv_clothing_asset_category_import" import job page
     And I launch the import job
-    And I wait for the "clothing_asset_category_import" job to finish
+    And I wait for the "csv_clothing_asset_category_import" job to finish
     And I should see "Field \"code\" must be filled"
 
   Scenario: Set parent's permissions to new asset categories
@@ -69,11 +69,11 @@ Feature: Import categories
     clothes;asset_main_catalog;Clothes
     tshirts;clothes;Tshirts
     """
-    And the following job "clothing_asset_category_import" configuration:
+    And the following job "csv_clothing_asset_category_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_asset_category_import" import job page
+    When I am on the "csv_clothing_asset_category_import" import job page
     And I launch the import job
-    And I wait for the "clothing_asset_category_import" job to finish
+    And I wait for the "csv_clothing_asset_category_import" job to finish
     Then there should be the following assets categories:
       | code               | label-en_US        | parent             |
       | asset_main_catalog | Asset main catalog |                    |
@@ -100,11 +100,11 @@ Feature: Import categories
     2015_jeans;2015_collection;2015 jeans
     2015_tees;2015_collection;2015 tees
     """
-    And the following job "clothing_asset_category_import" configuration:
+    And the following job "csv_clothing_asset_category_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_asset_category_import" import job page
+    When I am on the "csv_clothing_asset_category_import" import job page
     And I launch the import job
-    And I wait for the "clothing_asset_category_import" job to finish
+    And I wait for the "csv_clothing_asset_category_import" job to finish
     Then there should be the following assets categories:
       | code            | label           | parent          |
       | 2015_collection | 2015 collection |                 |

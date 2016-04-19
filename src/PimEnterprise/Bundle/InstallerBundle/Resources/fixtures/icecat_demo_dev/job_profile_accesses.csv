@@ -62,3 +62,6 @@ xlsx_option_export;IT support,Manager,Redactor;IT support,Manager
 xlsx_family_export;IT support,Manager,Redactor;IT support,Manager
 xlsx_association_type_export;IT support,Manager,Redactor;IT support
 xlsx_category_export;IT support,Manager,Redactor;IT support,Manager
+xlsx_asset_export;IT support,Manager,Redactor;IT support,Manager
+xlsx_asset_category_export;IT support,Manager,Redactor;IT support,Manager
+xlsx_asset_variation_export;IT support,Manager,Redactor;IT support,Manager

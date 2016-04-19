@@ -30,9 +30,9 @@ Feature: Create product drafts for new attributes added to the product
       sku;family;categories
       bullet_proof_vest;security_vests;jackets
       """
-    And the following job "clothing_product_import" configuration:
+    And the following job "csv_clothing_product_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_product_import" import job page
+    When I am on the "csv_clothing_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     And I am on the "bullet_proof_vest" product page

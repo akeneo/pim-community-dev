@@ -35,11 +35,22 @@ services:
             - '@validator'
 
     pimee_product_asset.processor.normalization.asset.flat:
-        class: %pimee_product_asset.processor.normalization.asset.class%
+        class: %pim_connector.processor.normalization.simple.class%
         arguments:
-            - '@pim_serializer'
-            - '@pim_catalog.repository.locale'
             - '@pim_product_asset.normalizer.flat.asset'
+            - 'flat'
+
+    pimee_product_asset.processor.normalization.category.flat:
+        class: %pim_connector.processor.normalization.simple.class%
+        arguments:
+            - '@pim_serializer.normalizer.flat.category'
+            - 'flat'
+
+    pimee_product_asset.processor.normalization.variation.flat:
+        class: %pim_connector.processor.normalization.simple.class%
+        arguments:
+            - '@pim_product_asset.normalizer.flat.variation'
+            - 'flat'
 
     pimee_product_asset.processor.normalization.channel_configuration.flat:
         class: %pimee_product_asset.processor.normalization.channel_configuration.class%
@@ -47,13 +58,6 @@ services:
             - '@pim_serializer'
             - '@pim_catalog.repository.locale'
             - '@pim_product_asset.normalizer.structured.channel_configuration'
-
-    pimee_product_asset.processor.normalization.variation.flat:
-        class: %pimee_product_asset.processor.normalization.variation.class%
-        arguments:
-            - '@pim_serializer'
-            - '@pim_catalog.repository.locale'
-            - '@pim_product_asset.normalizer.flat.variation'
 
     pimee_product_asset.processor.denormalization.category.flat:
         class: %pim_connector.processor.denormalization.simple.class%

@@ -20,6 +20,8 @@ use Symfony\Component\Serializer\SerializerInterface;
  * Processes and transforms assets to array of assets
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
+ *
+ * @deprecated will be removed in 1.7 use @pim_connector.processor.normalization.simple.class
  */
 class AssetProcessor extends Processor
 {

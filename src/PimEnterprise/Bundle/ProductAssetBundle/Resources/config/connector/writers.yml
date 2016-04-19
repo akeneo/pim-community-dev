@@ -22,3 +22,21 @@ services:
         arguments:
             - '@pimee_product_asset.saver.channel_configuration'
             - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pimee_product_asset.writer.file.csv_asset:
+        alias: pim_connector.writer.file.csv
+
+    pimee_product_asset.writer.file.csv_asset_category:
+        alias: pim_connector.writer.file.csv
+
+    pimee_product_asset.writer.file.csv_asset_variation:
+        alias: pim_connector.writer.file.csv
+
+    pimee_product_asset.writer.file.xlsx_asset:
+        alias: pim_connector.writer.file.xlsx
+
+    pimee_product_asset.writer.file.xlsx_asset_category:
+        alias: pim_connector.writer.file.xlsx
+
+    pimee_product_asset.writer.file.xlsx_asset_variation:
+        alias: pim_connector.writer.file.xlsx
