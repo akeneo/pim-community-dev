@@ -17,7 +17,7 @@
 - PIM-5589: Introduce a channels, attribute groups, group types, locales and currencies import using the new import system introduced in v1.4
 - PIM-5589: Introduce a SimpleFactoryInterface to create simple entities
 - PIM-5594: Panel state is now stored in the session storage
-- PIM-5645: Bath jobs configuration files can now also be loaded when contained in a folder named 'batch_jobs'. Introduces the new Akeneo XLSX Connector
+- PIM-5645: Bath jobs configuration files can now also be loaded when contained in a folder named 'batch_jobs'. Introduces the new Akeneo Product XLSX Connector
 - TIP-342: be able to launch mass edit processes without having to previously store a JobConfiguration and only rely on dynamic configuration
 - PIM-5577: The completeness is now calculated every time a product is saved, ie during mass edit, product import and on edit/save of variant groups.
 - Call validation in the controller when adding/removing attributes to the family.
