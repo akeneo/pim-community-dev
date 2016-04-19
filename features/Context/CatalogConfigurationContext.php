@@ -84,12 +84,12 @@ class CatalogConfigurationContext extends RawMinkContext
         $application->add(new BatchCommand());
         $batchJobCommand = $application->find('akeneo:batch:job');
         $batchJobCommand->setContainer($this->getContainer());
-        $commandTester = new CommandTester($batchJobCommand);
+        $command = new CommandTester($batchJobCommand);
 
         // install the catalog
         $jobInstances = $this->getFixtureJobLoader()->getRunnableJobInstances();
         foreach ($jobInstances as $jobInstance) {
-            $commandTester->execute(
+            $command->execute(
                 [
                     'command'    => $batchJobCommand->getName(),
                     'code'       => $jobInstance->getCode(),

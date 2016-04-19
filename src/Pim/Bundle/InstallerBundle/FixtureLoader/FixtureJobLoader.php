@@ -102,6 +102,16 @@ class FixtureJobLoader
                 $config['filePath'] = $replacePaths[$config['filePath']];
             }
 
+            if (!is_readable($config['filePath'])) {
+                throw new \Exception(
+                    sprintf(
+                        'The job "%s" can\'t be processed because the file "%s" is not readable',
+                        $jobInstance->getCode(),
+                        $config['filePath']
+                    )
+                );
+            }
+
             $jobInstance->setRawConfiguration($config);
             $jobInstances[] = $jobInstance;
         }
@@ -129,12 +139,6 @@ class FixtureJobLoader
     public function getRunnableJobInstances()
     {
         $jobs = $this->getJobInstanceRepository()->findBy(['type' => self::JOB_TYPE]);
-        foreach ($jobs as $index => $job) {
-            // Do not load job when fixtures file is not available
-            if (!is_readable($job->getRawConfiguration()['filePath'])) {
-                unset($jobs[$index]);
-            }
-        }
 
         return $jobs;
     }
