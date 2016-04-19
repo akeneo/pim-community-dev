@@ -8,7 +8,7 @@ services:
         class: %pim_installer.fixture_loader.job_loader.class%
         arguments:
             - '@service_container'
-            - %pim_installer.fixture_loader.job_loader.config_file%
+            - [ %pim_installer.fixture_loader.job_loader.config_file% ]
 
     pim_installer.reader.file.yaml:
         class: %pim_installer.reader.file.yaml.class%

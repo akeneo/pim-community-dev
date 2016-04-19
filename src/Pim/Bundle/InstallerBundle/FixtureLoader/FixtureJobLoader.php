@@ -22,20 +22,20 @@ class FixtureJobLoader
     const JOB_TYPE = 'fixtures';
 
     /** @var string */
-    protected $jobsFilePath;
+    protected $jobsFilePaths;
 
     /** @var ContainerInterface */
     protected $container;
 
     /**
      * @param ContainerInterface $container
-     * @param string             $jobsFilePath
+     * @param array              $jobsFilePaths
      * @throws \Exception
      */
-    public function __construct(ContainerInterface $container, $jobsFilePath)
+    public function __construct(ContainerInterface $container, array $jobsFilePaths)
     {
         $this->container = $container;
-        $this->jobsFilePath = $jobsFilePath;
+        $this->jobsFilePaths = $jobsFilePaths;
     }
 
     /**
@@ -52,26 +52,28 @@ class FixtureJobLoader
             }
         }
 
-        // read the job instance from yaml file
+        // read the job instances from yaml files (can be CE + EE)
         $rawJobs = [];
         $fileLocator = $this->container->get('file_locator');
-        $yamlReader = $this->getYamlReader();
-        $realPath = $fileLocator->locate('@' . $this->jobsFilePath);
-        $yamlReader->setFilePath($realPath);
+        foreach ($this->jobsFilePaths as $jobsFilePath) {
+            $yamlReader = $this->getYamlReader();
+            $realPath = $fileLocator->locate('@' . $jobsFilePath);
+            $yamlReader->setFilePath($realPath);
 
-        while ($rawJob = $yamlReader->read()) {
-            $rawJobs[] = $rawJob;
-        }
-        usort(
-            $rawJobs,
-            function ($item1, $item2) {
-                if ($item1['order'] === $item2['order']) {
-                    return 0;
-                }
-
-                return ($item1['order'] < $item2['order']) ? -1 : 1;
+            while ($rawJob = $yamlReader->read()) {
+                $rawJobs[] = $rawJob;
             }
-        );
+            usort(
+                $rawJobs,
+                function ($item1, $item2) {
+                    if ($item1['order'] === $item2['order']) {
+                        return 0;
+                    }
+
+                    return ($item1['order'] < $item2['order']) ? -1 : 1;
+                }
+            );
+        }
 
         // build the job instances
         $processor = $this->getJobInstanceProcessor();
