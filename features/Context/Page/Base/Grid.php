@@ -222,9 +222,12 @@ class Grid extends Index
                         $driver->getWebDriverSession()
                             ->element('xpath', $select2->getXpath())
                             ->postValue(['value' => [$value]]);
-                        sleep(2);
-                        $results->find('css', 'li')->click();
-                        sleep(2);
+
+                        $element = $this->spin(function () use ($results) {
+                            return $results->find('css', 'div.select2-result-label');
+                        });
+
+                        $element->click();
                     }
                 }
             } elseif ($value !== false) {
