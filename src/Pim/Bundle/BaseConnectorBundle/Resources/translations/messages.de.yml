@@ -99,6 +99,7 @@ pim_base_connector:
       help: Name der Gruppen-Spalte
     filePath:
       label: Datei
+      help: Die zu importierende CSV-Datei
     uploadAllowed:
       label: Datei-Upload erlauben
       help: Auswahl, ob ein direkter Datei-Upload möglich sein soll oder nicht
