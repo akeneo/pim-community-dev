@@ -2,7 +2,7 @@ pim_user:
   user:
     tab:
       general.title: Allgemein
-      additional.title: Ergänzend
+      additional.title: Weiteres
       group_and_role.title: Gruppen und Rollen
       password.title: Kennwort
       business_unit.title: Geschäftsbereich
