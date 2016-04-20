@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
-use Akeneo\Bundle\BatchBundle\Validator\Constraints\JobInstance;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader;
@@ -49,19 +49,125 @@ class FixtureJobLoader
      * Load the fixture jobs in database
      *
      * @param array $replacePaths
+     */
+    public function loadJobInstances(array $replacePaths = [])
+    {
+        $rawJobs = $this->readOrderedRawJobData();
+        $jobInstances = $this->buildJobInstances($rawJobs);
+        $configuredJobInstances = $this->configureJobInstances($jobInstances, $replacePaths);
+        $saver = $this->getJobInstanceSaver();
+        $saver->saveAll($configuredJobInstances);
+    }
+
+    /**
+     * Deletes all the fixtures job
+     */
+    public function deleteJobInstances()
+    {
+        $jobInstances = $this->getJobInstanceRepository()->findBy(['type' => static::JOB_TYPE]);
+        $remover = $this->getJobInstanceRemover();
+        $remover->removeAll($jobInstances);
+    }
+
+    /**
+     * Get the list of stored jobs
+     *
+     * @return JobInstance[]
+     */
+    public function getLoadedJobInstances()
+    {
+        $jobs = $this->getJobInstanceRepository()->findBy(['type' => self::JOB_TYPE]);
+
+        return $jobs;
+    }
+
+    /**
+     * @param JobInstance[] $jobInstances
+     * @param array         $replacePaths
      *
      * @throws \Exception
+     *
+     * @return JobInstance[]
      */
-    public function load(array $replacePaths = [])
+    protected function configureJobInstances(array $jobInstances, array $replacePaths)
     {
+        $configuredJobInstances = [];
         if (0 === count($replacePaths)) {
             $installerDataPath = $this->pathProvider->getFixturesPath();
             if (!is_dir($installerDataPath)) {
                 throw new \Exception(sprintf('Path "%s" not found', $installerDataPath));
             }
+            foreach ($jobInstances as $jobInstance) {
+                $configuration = $jobInstance->getRawConfiguration();
+                $configuration['filePath'] = sprintf('%s%s', $installerDataPath, $configuration['filePath']);
+                if (!is_readable($configuration['filePath'])) {
+                    throw new \Exception(
+                        sprintf(
+                            'The job "%s" can\'t be processed because the file "%s" is not readable',
+                            $jobInstance->getCode(),
+                            $configuration['filePath']
+                        )
+                    );
+                }
+
+                $jobInstance->setRawConfiguration($configuration);
+                $configuredJobInstances[] = $jobInstance;
+            }
+
+            return $configuredJobInstances;
+
+        } else {
+            $counter = 0;
+            foreach ($jobInstances as $jobInstance) {
+                $configuration = $jobInstance->getRawConfiguration();
+                if (!isset($replacePaths[$configuration['filePath']])) {
+                    throw new \Exception(sprintf('No replacement path for "%s"', $configuration['filePath']));
+                }
+                foreach ($replacePaths[$configuration['filePath']] as $replacePath) {
+                    $configuredJobInstance = clone $jobInstance;
+                    $configuredJobInstance->setCode($configuredJobInstance->getCode().''.$counter++);
+                    $configuration['filePath'] = $replacePath;
+                    if (!is_readable($configuration['filePath'])) {
+                        throw new \Exception(
+                            sprintf(
+                                'The job "%s" can\'t be processed because the file "%s" is not readable',
+                                $configuredJobInstance->getCode(),
+                                $configuration['filePath']
+                            )
+                        );
+                    }
+                    $configuredJobInstance->setRawConfiguration($configuration);
+                    $configuredJobInstances[] = $configuredJobInstance;
+                }
+            }
+
+            return $configuredJobInstances;
+        }
+    }
+
+    /**
+     * @param array $rawJobs
+     *
+     * @return JobInstance[]
+     */
+    protected function buildJobInstances(array $rawJobs)
+    {
+        $processor = $this->getJobInstanceProcessor();
+        $jobInstances = [];
+        foreach ($rawJobs as $rawJob) {
+            unset($rawJob['order']);
+            $jobInstance = $processor->process($rawJob);
+            $jobInstances[] = $jobInstance;
         }
 
-        // read the job instances from yaml files (can be CE + EE)
+        return $jobInstances;
+    }
+
+    /**
+     * @return array
+     */
+    protected function readOrderedRawJobData()
+    {
         $rawJobs = [];
         $fileLocator = $this->container->get('file_locator');
         foreach ($this->jobsFilePaths as $jobsFilePath) {
@@ -85,62 +191,7 @@ class FixtureJobLoader
             );
         }
 
-        // build the job instances
-        $processor = $this->getJobInstanceProcessor();
-        $jobInstances = [];
-        foreach ($rawJobs as $rawJob) {
-            unset($rawJob['order']);
-            $jobInstance = $processor->process($rawJob);
-            $config = $jobInstance->getRawConfiguration();
-
-            if (0 === count($replacePaths)) {
-                $config['filePath'] = sprintf('%s%s', $installerDataPath, $config['filePath']);
-            } else {
-                if (!isset($replacePaths[$config['filePath']])) {
-                    throw new \Exception(sprintf('No replacement path for "%s"', $config['filePath']));
-                }
-                $config['filePath'] = $replacePaths[$config['filePath']];
-            }
-
-            if (!is_readable($config['filePath'])) {
-                throw new \Exception(
-                    sprintf(
-                        'The job "%s" can\'t be processed because the file "%s" is not readable',
-                        $jobInstance->getCode(),
-                        $config['filePath']
-                    )
-                );
-            }
-
-            $jobInstance->setRawConfiguration($config);
-            $jobInstances[] = $jobInstance;
-        }
-
-        // save the job instances
-        $saver = $this->getJobInstanceSaver();
-        $saver->saveAll($jobInstances);
-    }
-
-    /**
-     * Deletes all the fixtures job
-     */
-    public function deleteJobs()
-    {
-        $jobInstances = $this->getJobInstanceRepository()->findBy(['type' => static::JOB_TYPE]);
-        $remover = $this->getJobInstanceRemover();
-        $remover->removeAll($jobInstances);
-    }
-
-    /**
-     * Get the list of stored jobs
-     *
-     * @return JobInstance[]
-     */
-    public function getRunnableJobInstances()
-    {
-        $jobs = $this->getJobInstanceRepository()->findBy(['type' => self::JOB_TYPE]);
-
-        return $jobs;
+        return $rawJobs;
     }
 
     /**

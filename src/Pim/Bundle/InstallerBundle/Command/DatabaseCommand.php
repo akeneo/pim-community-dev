@@ -151,9 +151,9 @@ class DatabaseCommand extends ContainerAwareCommand
         $output->writeln(
             sprintf('<info>Load jobs for fixtures. (data set: %s)</info>', $this->getContainer()->getParameter('installer_data'))
         );
-        $this->getFixtureJobLoader()->load();
+        $this->getFixtureJobLoader()->loadJobInstances();
 
-        $jobInstances = $this->getFixtureJobLoader()->getRunnableJobInstances();
+        $jobInstances = $this->getFixtureJobLoader()->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
             $params = [
                 'code'       => $jobInstance->getCode(),
@@ -166,7 +166,7 @@ class DatabaseCommand extends ContainerAwareCommand
         $output->writeln('');
 
         $output->writeln('<info>Delete jobs for fixtures.</info>');
-        $this->getFixtureJobLoader()->deleteJobs();
+        $this->getFixtureJobLoader()->deleteJobInstances();
 
         return $this;
     }

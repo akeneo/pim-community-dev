@@ -69,17 +69,25 @@ class CatalogConfigurationContext extends RawMinkContext
      */
     protected function loadCatalog($files)
     {
-        // prepare replace paths to use Behat catalog paths and not the minimal fixtures
-        // ['currencies' => '/home/nico/git/project/features/Context/catalog/apparel/currencies.csv']
+        // prepare replace paths to use Behat catalog paths and not the minimal fixtures path, please not that we can
+        // have several files per job in case of Enterprise Catalog, for instance,
+        // [
+        //     'jobs' => [
+        //         "/project/features/Context/catalog/footwear/jobs.yml"
+        //         "/project/features/PimEnterprise/Behat/Context/../../../Context/catalog/footwear/jobs.yml"
+        // ]
         $replacePaths = [];
         foreach ($files as $file) {
             $tokens = explode(DIRECTORY_SEPARATOR, $file);
             $fileName = array_pop($tokens);
-            $replacePaths[$fileName] = $file;
+            if (!isset($replacePaths[$fileName])) {
+                $replacePaths[$fileName] = [];
+            }
+            $replacePaths[$fileName][] = $file;
         }
 
         // load JobInstances in database
-        $this->getFixtureJobLoader()->load($replacePaths);
+        $this->getFixtureJobLoader()->loadJobInstances($replacePaths);
 
         // setup application to be able to run akeneo:batch:job command
         $application = new Application();
@@ -89,7 +97,7 @@ class CatalogConfigurationContext extends RawMinkContext
         $command = new CommandTester($batchJobCommand);
 
         // install the catalog
-        $jobInstances = $this->getFixtureJobLoader()->getRunnableJobInstances();
+        $jobInstances = $this->getFixtureJobLoader()->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
             $command->execute(
                 [
@@ -102,7 +110,7 @@ class CatalogConfigurationContext extends RawMinkContext
         }
 
         // delete the job instances
-        $this->getFixtureJobLoader()->deleteJobs();
+        $this->getFixtureJobLoader()->deleteJobInstances();
 
         // install reference data
         $bundles = $this->getContainer()->getParameter('kernel.bundles');
