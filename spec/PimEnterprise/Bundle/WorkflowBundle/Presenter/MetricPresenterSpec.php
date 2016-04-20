@@ -3,7 +3,9 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -31,12 +33,15 @@ class MetricPresenterSpec extends ObjectBehavior
     function it_presents_metric_change_using_the_injected_renderer(
         $translator,
         RendererInterface $renderer,
-        Model\ProductValueInterface $value,
-        Model\Metric $metric
+        ProductValueInterface $value,
+        AttributeInterface $attribute,
+        Metric $metric
     ) {
         $value->getData()->willReturn($metric);
         $metric->getData()->willReturn(50);
         $metric->getUnit()->willReturn('KILOGRAM');
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->willReturn('size');
 
         $renderer->renderDiff('50 trans_kilogram', '123 trans_millimeter')->willReturn('diff between two metrics');
 
@@ -50,9 +55,12 @@ class MetricPresenterSpec extends ObjectBehavior
     function it_presents_metric_new_value_even_if_metric_does_not_have_a_value_yet(
         $translator,
         RendererInterface $renderer,
-        Model\ProductValueInterface $value
+        ProductValueInterface $value,
+        AttributeInterface $attribute
     ) {
         $value->getData()->willReturn(null);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->willReturn('size');
 
         $renderer->renderDiff('', '123 trans_millimeter')->willReturn('a new metric');
 

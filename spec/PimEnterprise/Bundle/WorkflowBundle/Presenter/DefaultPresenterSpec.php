@@ -3,8 +3,9 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 class DefaultPresenterSpec extends ObjectBehavior
 {
@@ -18,10 +19,12 @@ class DefaultPresenterSpec extends ObjectBehavior
         $this->supportsChange(null)->shouldBe(true);
     }
 
-    function it_presents_change_using_the_injected_renderer(RendererInterface $renderer, ProductValueInterface $value)
+    function it_presents_change_using_the_injected_renderer(RendererInterface $renderer, ProductValueInterface $value, AttributeInterface $attribute)
     {
         $value->getData()->willReturn('bar');
-        $renderer->renderDiff('bar', 'foo')->willReturn('diff between two simple values');
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->willReturn('default');
+        $renderer->renderDiff('bar', 'default')->willReturn('diff between two simple values');
 
         $this->setRenderer($renderer);
         $this->present($value, ['id' => 123, 'varchar' => 'foo'])->shouldReturn('diff between two simple values');

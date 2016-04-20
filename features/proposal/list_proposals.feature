@@ -15,10 +15,10 @@ Feature: List proposals
       | 2014_collection  | IT support | own   |
       | 2015_collection  | IT support | own   |
     And the following products:
-      | sku     | family   | categories      |
-      | tshirt  | tshirts  | 2014_collection |
-      | sweater | sweaters | 2014_collection |
-      | jacket  | jackets  | 2015_collection |
+      | sku     | family   | categories      | weather_conditions |
+      | tshirt  | tshirts  | 2014_collection | dry |
+      | sweater | sweaters | 2014_collection | |
+      | jacket  | jackets  | 2015_collection | |
     And Mary proposed the following change to "tshirt":
       | field | value          |
       | Name  | Summer t-shirt |
@@ -57,3 +57,29 @@ Feature: List proposals
     And I am on the proposals page
     Then the grid should contain 2 elements
     And I should see entities tshirt and sweater
+
+  Scenario: Successfully review a proposal with a new simple select value
+    Given I am logged in as "Julia"
+    Given I am on the "additional_materials" attribute page
+    And I visit the "Values" tab
+    And I wait for options to load
+    Given I create the following attribute options:
+      | Code   | en_US  | fr_FR  | de_DE  |
+      | Blue   | Blue   | Bleu   | Blau   |
+    Given I am on the "weather_conditions" attribute page
+    And I visit the "Values" tab
+    And I wait for options to load
+    Given I create the following attribute options:
+      | Code   | en_US   | fr_FR  | de_DE  |
+      | Blue   | Blue    | Bleu   | Blau   |
+    Given I logout
+    Then I am logged in as "Mary"
+    And I am on the "tshirt" product page
+    And Mary proposed the following change to "tshirt":
+      | tab        | field               | value|
+      | Additional | Weather conditions  | Blue |
+    Given I am logged in as "Julia"
+    When I am on the proposals page
+    Then I should see the following proposals:
+      | product_label | author | "Weather conditions" base | "Weather conditions" changed | status               |
+      | tshirt        | Mary   | Dry                       | Blue                         | Waiting for approval |
