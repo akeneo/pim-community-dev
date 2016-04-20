@@ -1653,10 +1653,11 @@ class WebUser extends RawMinkContext
      */
     public function iClickOnTheJobTrackerButtonOnTheJobWidget()
     {
-        $this->spin(function () {
-            $this->getCurrentPage()->find('css', 'a#btn-show-list')->click();
+        $jobTrackerBtn = $this->spin(function () {
+            $this->getCurrentPage()->find('css', 'a#btn-show-list');
         }, sprintf('Could not find the job tracker button'));
-        $this->wait();
+
+        $jobTrackerBtn->click();
     }
 
     /**
