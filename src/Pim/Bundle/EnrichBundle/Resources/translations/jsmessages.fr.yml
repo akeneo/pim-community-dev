@@ -26,17 +26,17 @@ flash:
   item:
     removed: Elément supprimé avec succès
   association type:
-    removed: "Le type d'association est supprimé avec succès"
+    removed: "Le type d'association a bien été supprimé"
   attribute:
-    removed: Attribut supprimé avec succès
+    removed: "L'attribut a bien été supprimé"
   family:
-    removed: Famille supprimée avec succès
+    removed: La famille a bien été supprimée
   product:
-    removed: Produit supprimé avec succès
+    removed: Le produit a bien été supprimé
   channel:
-    removed: Canal supprimé avec succès
+    removed: Le canal a bien été supprimé
   group:
-    removed: Groupe supprimé avec succès
+    removed: Le groupe a bien été supprimé
   variant group:
     removed: Le groupe de variantes a bien été supprimé
   group type:
@@ -46,7 +46,7 @@ flash:
   export profile:
     removed: "Le profil d'export a bien été supprimé"
   user:
-    removed: Utilisateur supprimé avec succès
+    removed: "L'utilisateur a bien été supprimé"
   role:
     removed: Le rôle a bien été supprimé
 error:
@@ -81,7 +81,7 @@ label:
   attribute_option:
     add_option: Ajouter une option
 Code: Code
-Edit: Modifier
+Edit: Editer
 Delete: Supprimer
 Edit attributes of the product: Modifier les attributs du produit
 Classify the product: Classer le produit
@@ -118,7 +118,7 @@ pim_enrich:
       btn:
         enable: Activer
         enabled: Activé
-        disable: Désactiver
+        disable: Desactiver
         disabled: Désactivé
         download_pdf: PDF
         compare_translate: Comparer / traduire
@@ -193,7 +193,7 @@ pim_enrich:
     delete:
       product_attribute: Êtes-vous sûr de que vouloir supprimer cet attribut du produit ?
   info:
-    not_applicable: N/A
+    not_applicable: Inconnu
     entity:
       updated: "Des modifications n'ont pas encore été sauvegardées."
   error:
@@ -250,7 +250,7 @@ pim_enrich:
           merge_attributes: Les attributs existants seront fusionnés avec ceux de la nouvelle famille.
           keep_attributes: Aucun attribut ne sera supprimé.
           change_family_to: Changer la famille pour
-          empty_selection: Choisissez une famille
+          empty_selection: Choisir une famille
       flash:
         attribute_deletion_error: "Une erreur s'est produite lors de la suppression de l'attribut"
       mass_edit:

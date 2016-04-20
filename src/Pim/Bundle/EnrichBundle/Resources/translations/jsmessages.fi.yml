@@ -1,6 +1,6 @@
 confirmation:
   remove:
-    item: Oletko varma että haluat poistaa tämän kohteen?
+    item: Haluatko varmasti poistaa tämän kohteen?
     association type: Oletko varma, että haluat poistaa tämän liitostyypin?
     attribute: Oletko varma, että haluat poistaa tämän määritteen?
     family: Oletko varma, että haluat poistaa tämän ryhmän?
@@ -26,11 +26,11 @@ flash:
   item:
     removed: Kohde poistettu
   association type:
-    removed: Sidostyyppi poistettu onnistuneesti
+    removed: Liitostyyppi poistettu
   attribute:
-    removed: Attribuutin poistaminen onnistui
+    removed: Määritteen poistaminen onnistui
   family:
-    removed: Tuoteperhe poistettu
+    removed: Ryhmä poistettu
   product:
     removed: Tuote poistettu
   channel:
@@ -38,15 +38,15 @@ flash:
   group:
     removed: Ryhmän poistaminen onnistui
   variant group:
-    removed: Tuotevariaatioryhmä poistettiin onnistuneesti
+    removed: Variant-ryhmä poistettiin onnistuneesti
   group type:
-    removed: Ryhmätyyppi poistettu onnistuneesti
+    removed: Ryhmätyyppi poistettiin onnistuneesti
   import profile:
     removed: Tuontiprofiili poistettiin onnistuneesti
   export profile:
     removed: Vientiprofiili poistettiin onnistuneesti
   user:
-    removed: Käyttäjä poistettu onnistuneesti
+    removed: Käyttäjän poistaminen onnistui
   role:
     removed: Roolin poistaminen onnistui
 error:
@@ -117,8 +117,8 @@ pim_enrich:
       btn:
         enable: Ota käyttöön
         enabled: Käytössä
-        disable: Poista käytöstä
-        disabled: Poistettu käytöstä
+        disable: Ota pois käytöstä
+        disabled: Pois käytöstä
         download_pdf: PDF
         compare_translate: Vertaa / Käännä
         delete: Poista
@@ -151,7 +151,7 @@ pim_enrich:
         created: Luotu
         created_by: Luoja
         updated_by: Luoja
-        updated: Viimeisin päivitys
+        updated: Uusi päivitys
         family:
           title: Perhe
           none: Ei yhtään
@@ -175,24 +175,24 @@ pim_enrich:
           "yes": Kyllä
           "no": Ei
       optional_attribute:
-        remove: Poista tämä attribuutti
+        remove: Poista määrite
       locale_specific_attribute:
         unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
       localizable:
         channel_locale_unavailable: "Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'"
       media:
-        upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
+        upload: Vedä ja pudota ladattavaksi tai klikkaa tästä
     attribute_option:
       code: Koodi
       label: Nimike
   confirmation:
-    leave: Oletko varma että haluat poistua sivulta?
+    leave: Oletko varma, että haluat poistua tältä sivulta?
     discard_changes: 'Menetät muutokset tähän {{ entity }}, jos poistut sivulta.'
     delete_item: Vahvista poisto
     delete:
       product_attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
   info:
-    not_applicable: Ei mitään
+    not_applicable: N/A
     entity:
       updated: Tallentamattomia muutoksia löytyy.
   error:
@@ -206,32 +206,32 @@ pim_enrich:
         associations:
           title: Määritteet
           info:
-            none_exist: Sidostyyppiä ei ole olemassa.
+            none_exist: Yhdistystyyppejä ei ole olemassa.
             show_products: Näytä tuotteet
             show_groups: Näytä ryhmät
             number_of_associations: '{{ productCount }} ja {{ groupCount }} ryhmistä'
         attributes:
-          title: Attribuutit
+          title: Ominaisuudet
           btn:
             add: Lisää
-            add_attributes: Lisää attribuutteja
+            add_attributes: Lisää määritteet
           info:
             search_attributes: Hae...
-            no_available_attributes: Ei ole enää attribuutteja lisättäväksi
+            no_available_attributes: Määritteitä ei ole enää lisättävänä
             attributes_selected: '{{ attributeCount }} attribuuttia valittu'
-            no_match: Vastaavuuksia ei löydy
+            no_match: Ei hakutuloksia
             load_more: Ladataan lisää tuloksia...
         categories:
           title: Kategoriat
       panel:
         completeness:
-          title: Valmistumisaste
+          title: Täyttöaste
           info:
             no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
             no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
           missing_values: Puuttuvat arvot
         history:
-          title: Historia
+          title: Historiatiedot
       switch:
         "no": Ei
         "yes": Kyllä
@@ -245,11 +245,11 @@ pim_enrich:
           save_and_finish: Tallenna ja lopeta
       change_family:
         modal:
-          title: Vaihda tuoteperhettä
-          merge_attributes: Nykyiset attribuutit yhdistetään uuteen perheeseen.
-          keep_attributes: Mitään attribuutteja ei poisteta.
-          change_family_to: Vaihda perhe olemaan
-          empty_selection: Valitse perhe
+          title: Muuta tuoteperhe
+          merge_attributes: Nykyiset määritteet yhdistetään uuteen ryhmään.
+          keep_attributes: Määritteitä ei poisteta.
+          change_family_to: Vaihda ryhmä
+          empty_selection: Valitse ryhmä
       flash:
         attribute_deletion_error: Määritteen poistamisen aikana tapahtui virhe
       mass_edit:
