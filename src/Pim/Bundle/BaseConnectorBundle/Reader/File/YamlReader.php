@@ -186,7 +186,11 @@ class YamlReader extends FileReader implements
     public function read()
     {
         if (null === $this->yaml) {
-            $this->yaml = new \ArrayIterator($this->getFileData());
+            $fileData = $this->getFileData();
+            if (null === $fileData) {
+                return null;
+            }
+            $this->yaml = new \ArrayIterator($fileData);
         }
 
         if ($data = $this->yaml->current()) {
