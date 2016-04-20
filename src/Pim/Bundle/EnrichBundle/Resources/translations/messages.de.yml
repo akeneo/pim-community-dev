@@ -100,6 +100,7 @@ pim_enrich:
       success_flash: Der Produktstatus wurde geändert
     edit-common-attributes:
       label: Attribute bearbeiten
+      description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
       empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
       success_flash: Die Produkt-Attribute wurden aktualisiert
       message:
@@ -121,6 +122,7 @@ pim_enrich:
       label: Zu einer Variantengruppe hinzufügen
       description: Bitte wählen Sie die Variantengruppe aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
       success_flash: Die Produkte wurden erfolgreich zur ausgewählten Variantengruppe hinzugefügt
+      already_in_variant_group_or_not_valid: 'Die folgenden Produkte (%products%) können nicht gruppiert werden, da sie bereits in einer Variantengruppe existieren oder keine Gruppenachse besitzen.'
       no_variant_group: Bis jetzt keine Variantengruppen vorhanden. Beginnen Sie mit dem Anlegen einer Variantengruppe.
       no_valid_variant_group: Keine Variantengruppe teilt Attribute mit den ausgewählten Produkten.
       some_variant_groups_are_skipped:
@@ -391,6 +393,7 @@ flash:
     created: Strukturbaum erfolgreich angelegt
     updated: Strukturbaum erfolgreich aktualisiert
     removed: Strukturbaum erfolgreich entfernt
+    not removable: Strukturbäume, die mit Ausgabekanälen verbunden sind, können nicht entfernt werden.
   channel:
     saved: Ausgabekanal erfolgreich gespeichert
     removed: Ausgabekanal erfolgreich entfernt
@@ -674,6 +677,7 @@ pim_enrich.mass_edit_action:
     success_flash: Der Produktstatus wurde geändert
   edit-common-attributes:
     label: Gemeinsame Attribute bearbeiten
+    description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
     empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
     success_flash: Die Produkt-Attribute wurden aktualisiert
     message.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
