@@ -246,6 +246,7 @@ jobs:
             groupsColumn:       groups
             realTimeVersioning: true
             decimalSeparator:   .
+            dateFormat: yyyy-MM-dd
     xlsx_footwear_category_import:
         connector: Akeneo Product XLSX Connector
         alias:     xlsx_category_import

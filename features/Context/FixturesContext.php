@@ -377,6 +377,9 @@ class FixturesContext extends BaseFixturesContext
         foreach ($table->getHash() as $data) {
             $attribute = $this->getAttribute($data['code']);
             $this->refresh($attribute);
+            foreach ($attribute->getTranslations() as $translation) {
+                $this->refresh($translation);
+            }
 
             assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
             assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
