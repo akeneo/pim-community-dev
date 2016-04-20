@@ -48,7 +48,7 @@ class NumberComparator implements ComparatorInterface
             return $data;
         }
 
-        if ((string) $data['data'] == '0' && null === $originals['data']) {
+        if ('0' == (string) $data['data'] && null === $originals['data']) {
             return $data;
         }
 
