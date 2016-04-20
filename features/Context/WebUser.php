@@ -1658,6 +1658,8 @@ class WebUser extends RawMinkContext
         }, sprintf('Could not find the job tracker button'));
 
         $jobTrackerBtn->click();
+
+        $this->wait();
     }
 
     /**
