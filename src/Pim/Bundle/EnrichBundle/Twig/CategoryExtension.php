@@ -3,6 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Twig;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Registry\DomainRegistry;
+use Akeneo\Component\Registry\DomainRegistryInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface;
 use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterRegistryInterface;
@@ -22,7 +24,7 @@ class CategoryExtension extends \Twig_Extension
     /** @var int */
     protected $itemsLimitRemoval;
 
-    public function __construct(CategoryItemsCounterRegistryInterface $categoryItemsCounter, $itemsLimitRemoval = null)
+    public function __construct(DomainRegistryInterface $categoryItemsCounter, $itemsLimitRemoval = null)
     {
         $this->categoryItemsCounter = $categoryItemsCounter;
         $this->itemsLimitRemoval    = $itemsLimitRemoval;
