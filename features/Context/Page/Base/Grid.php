@@ -225,7 +225,7 @@ class Grid extends Index
 
                         $element = $this->spin(function () use ($results) {
                             return $results->find('css', 'div.select2-result-label');
-                        });
+                        }, 'Unable to find Select2 result label.');
 
                         $element->click();
                     }
