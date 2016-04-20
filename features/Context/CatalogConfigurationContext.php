@@ -8,6 +8,8 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Loader\ReferenceDataLoader;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\CS\Console\Application;
@@ -67,7 +69,7 @@ class CatalogConfigurationContext extends RawMinkContext
      */
     protected function loadCatalog($files)
     {
-        // prepare replace paths
+        // prepare replace paths to use Behat catalog paths and not the minimal fixtures
         // ['currencies' => '/home/nico/git/project/features/Context/catalog/apparel/currencies.csv']
         $replacePaths = [];
         foreach ($files as $file) {
@@ -76,10 +78,10 @@ class CatalogConfigurationContext extends RawMinkContext
             $replacePaths[$fileName] = $file;
         }
 
-        // load JobInstances
+        // load JobInstances in database
         $this->getFixtureJobLoader()->load($replacePaths);
 
-        // setup akeneo:batch:job command
+        // setup application to be able to run akeneo:batch:job command
         $application = new Application();
         $application->add(new BatchCommand());
         $batchJobCommand = $application->find('akeneo:batch:job');
@@ -108,6 +110,15 @@ class CatalogConfigurationContext extends RawMinkContext
             $referenceDataLoader = new ReferenceDataLoader();
             $referenceDataLoader->load($this->getEntityManager());
         }
+
+        // clear doctrine UOW after the whole install to avoid to call refresh everywhere in our contexts
+        /** @var ObjectManager, the product object manager, can be ORM or ODM */
+        $productObjectManager = $this->getContainer()->get('pim_catalog.object_manager.product');
+        $productObjectManager->clear();
+
+        /** @var EntityManager, the standard entity manager (can be the same than for product) */
+        $standardObjectManager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $standardObjectManager->clear();
     }
 
     /**

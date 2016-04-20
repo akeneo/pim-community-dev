@@ -196,7 +196,13 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $attribute = $this->getAttribute($data['attribute']);
-            $attribute->setLocale($this->getLocaleCode($data['locale']))->setLabel($data['label']);
+            $standardData = [
+                'labels' => [
+                    $this->getLocaleCode($data['locale']) => $data['label']
+                ]
+            ];
+            $updater = $this->getContainer()->get('pim_catalog.updater.attribute');
+            $updater->update($attribute, $standardData);
             $this->validate($attribute);
             $this->getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
         }
@@ -376,11 +382,6 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $attribute = $this->getAttribute($data['code']);
-            $this->refresh($attribute);
-            foreach ($attribute->getTranslations() as $translation) {
-                $this->refresh($translation);
-            }
-
             assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
             assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
             assertEquals(($data['localizable'] == 1), $attribute->isLocalizable());
@@ -413,8 +414,6 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $family = $this->getFamily($data['code']);
-            $this->refresh($family);
-
             $requirement = $this->normalizeRequirements($family);
 
             assertEquals($data['attributes'], implode(',', $family->getAttributeCodes()));
@@ -466,8 +465,6 @@ class FixturesContext extends BaseFixturesContext
                 'AttributeOption',
                 ['code' => $data['code'], 'attribute' => $attribute]
             );
-            $this->refresh($option);
-
             $option->setLocale('en_US');
             assertEquals($data['label-en_US'], (string) $option);
         }
@@ -482,8 +479,6 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $category = $this->getCategory($data['code']);
-            $this->refresh($category);
-
             assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
             if (empty($data['parent'])) {
                 assertNull($category->getParent());
@@ -502,8 +497,6 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $associationType = $this->getAssociationType($data['code']);
-            $this->refresh($associationType);
-
             assertEquals($data['label-en_US'], $associationType->getTranslation('en_US')->getLabel());
             assertEquals($data['label-fr_FR'], $associationType->getTranslation('fr_FR')->getLabel());
         }
