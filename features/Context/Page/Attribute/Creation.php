@@ -3,6 +3,7 @@
 namespace Context\Page\Attribute;
 
 use Context\Page\Base\Form;
+use Context\Spin\TimeoutException;
 
 /**
  * Attribute creation page
@@ -56,16 +57,32 @@ class Creation extends Form
      */
     public function addOption($name)
     {
-        if (!$this->getElement('attribute_option_table')->find('css', '.attribute_option_code')) {
-            $this->getElement('add_option_button')->click();
-            $this->getSession()->wait($this->getTimeout());
+        try {
+            $element = $this->spin(function () {
+                return $this->getElement('attribute_option_table')->find('css', '.attribute_option_code');
+            });
+        } catch (TimeoutException $e) {
+            $element = $this->spin(function () {
+                return $this->getElement('add_option_button');
+            }, 'Could not find the element');
         }
+
+        $element->click();
 
         $rows = $this->getOptionsElement();
         $row  = end($rows);
 
-        $row->find('css', '.attribute_option_code')->setValue($name);
-        $row->find('css', '.btn.update-row')->click();
+        $attributeOption = $this->spin(function () use ($row) {
+            return $row->find('css', '.attribute_option_code');
+        }, 'Could not find the attribute option code');
+
+        $attributeOption->setValue($name);
+
+        $button = $this->spin(function () use ($row) {
+            return $row->find('css', '.btn.update-row');
+        }, 'Could not find button');
+
+        $button->click();
     }
 
     /**
@@ -160,7 +177,9 @@ class Creation extends Form
      */
     protected function getOptionsElement()
     {
-        return $this->findAll('css', $this->elements['attribute_options']['css']);
+        return $this->spin(function () {
+            return $this->findAll('css', $this->elements['attribute_options']['css']);
+        }, 'Could not find options element');
     }
 
     /**

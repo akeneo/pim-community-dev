@@ -15,8 +15,8 @@ Feature: Display the attribute history
       | Code            | packaging |
       | Attribute group | Other     |
     And I save the attribute
+    Then I am on the "packaging" attribute page
     And I visit the "Values" tab
-    And I wait for options to load
     And I create the following attribute options:
       | Code        |
       | classic_box |
@@ -26,8 +26,8 @@ Feature: Display the attribute history
     And I should see history:
       | version | property | value     |
       | 1       | code     | packaging |
+    Then I am on the "packaging" attribute page
     And I visit the "Values" tab
-    And I wait for options to load
     And I create the following attribute options:
       | Code      |
       | collector |

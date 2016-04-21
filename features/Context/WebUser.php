@@ -1355,7 +1355,6 @@ class WebUser extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $this->getCurrentPage()->addOption($data['Code']);
-            $this->wait();
         }
     }
 
@@ -1390,7 +1389,7 @@ class WebUser extends RawMinkContext
      */
     public function iPressTheButton($button)
     {
-        $this->getMainContext()->spin(function () use ($button) {
+        $this->spin(function () use ($button) {
             $this->getCurrentPage()->pressButton($button);
 
             return true;
@@ -1513,7 +1512,6 @@ class WebUser extends RawMinkContext
     public function iCheckTheSwitch($status, $locator)
     {
         $this->getCurrentPage()->toggleSwitch($locator, $status === '');
-        $this->wait();
     }
 
     /**
@@ -1644,7 +1642,9 @@ class WebUser extends RawMinkContext
      */
     public function iClickOnInTheRightClickMenu($action)
     {
-        $this->getCurrentPage()->rightClickAction($action);
+        $this->spin(function () use ($action) {
+            $this->getCurrentPage()->rightClickAction($action);
+        }, sprintf('Could not find the action $s', $action));
         $this->wait();
     }
 
@@ -1653,8 +1653,11 @@ class WebUser extends RawMinkContext
      */
     public function iClickOnTheJobTrackerButtonOnTheJobWidget()
     {
-        $this->getCurrentPage()->find('css', 'a#btn-show-list')->click();
-        $this->wait();
+        $jobTrackerBtn = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', 'a#btn-show-list');
+        }, 'Could not find the job tracker button');
+
+        $jobTrackerBtn->click();
     }
 
     /**
@@ -1778,26 +1781,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * TODO: should be removed and add spin on next method
-     * @Given /^I wait for (the )?widgets to load$/
-     */
-    public function iWaitForTheWidgetsToLoad()
-    {
-        $this->iWaitSeconds(10);
-        $this->wait();
-    }
-
-    /**
-     * TODO: should be removed and add spin on next method
-     * @Given /^I wait for (the )?options to load$/
-     */
-    public function iWaitForTheOptionsToLoad()
-    {
-        $this->iWaitSeconds(10);
-        $this->wait();
-    }
-
-    /**
      * @param string    $fileName
      * @param TableNode $table
      *
@@ -1850,17 +1833,9 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeTheUploadedImage()
     {
-        $maxTime = 10000;
-
-        while ($maxTime > 0) {
-            $this->iWaitSeconds(10);
-            $maxTime -= 1000;
-            if ($this->getPage('Product edit')->getImagePreview()) {
-                return;
-            }
-        }
-
-        throw $this->createExpectationException('Image preview is not displayed.');
+        return $this->spin(function () {
+            return $this->getPage('Product edit')->getImagePreview();
+        }, 'Image preview could not be displayed.');
     }
 
     /**

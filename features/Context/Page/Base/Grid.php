@@ -63,15 +63,16 @@ class Grid extends Index
     public function getGrid()
     {
         $body = $this->getElement('Body');
+        $container = $this->getElement('Container');
 
         return $this->spin(
-            function () use ($body) {
+            function () use ($body, $container) {
                 $modal = $body->find('css', $this->elements['Dialog']['css']);
                 if (null !== $modal && $modal->isVisible()) {
                     return $modal->find('css', $this->elements['Grid']['css']);
                 }
 
-                return $this->getElement('Container')->find('css', $this->elements['Grid']['css']);
+                return $container->find('css', $this->elements['Grid']['css']);
             },
             'No visible grid found'
         );
@@ -222,9 +223,12 @@ class Grid extends Index
                         $driver->getWebDriverSession()
                             ->element('xpath', $select2->getXpath())
                             ->postValue(['value' => [$value]]);
-                        sleep(2);
-                        $results->find('css', 'li')->click();
-                        sleep(2);
+
+                        $element = $this->spin(function() use ($results){
+                            return $results->find('css', 'div.select2-result-label');
+                        });
+
+                        $element->click();
                     }
                 }
             } elseif ($value !== false) {

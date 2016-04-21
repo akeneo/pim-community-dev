@@ -22,7 +22,7 @@ Feature: Editing localized attribute values of a variant group also updates prod
   Scenario: Successfully change a pim_catalog_metric attribute of a variant group
     Given I change the "Weight" to "5,45"
     When I save the variant group
-    Then I should see the text "Le groupe de variantes a bien été mis à jour"
+    Then I should see the flash message "Le groupe de variantes a bien été mis à jour"
     Then the product "boot" should have the following values:
       | weight | 5.4500 GRAM |
 
@@ -30,7 +30,7 @@ Feature: Editing localized attribute values of a variant group also updates prod
     Given I visit the "Marketing" group
     When I change the "Rate of sale" to "8000,2"
     And I save the variant group
-    Then I should see the text "Le groupe de variantes a bien été mis à jour"
+    Then I should see the flash message "Le groupe de variantes a bien été mis à jour"
     Then the product "boot" should have the following values:
       | rate_sale | 8000.2000 |
 
@@ -38,7 +38,7 @@ Feature: Editing localized attribute values of a variant group also updates prod
     Given I visit the "Marketing" group
     When I change the "€ Price" to "89,27"
     And I save the variant group
-    Then I should see the text "Le groupe de variantes a bien été mis à jour"
+    Then I should see the flash message "Le groupe de variantes a bien été mis à jour"
     Then the product "boot" should have the following values:
       | price | 89.27 EUR |
 
@@ -46,7 +46,7 @@ Feature: Editing localized attribute values of a variant group also updates prod
     Given I visit the "Other" group
     When I change the "Destocking date" to "28/12/2015"
     And I save the variant group
-    Then I should see the text "Le groupe de variantes a bien été mis à jour"
+    Then I should see the flash message "Le groupe de variantes a bien été mis à jour"
     Then the product "boot" should have the following values:
       | destocking_date | 2015-12-28 |
 
