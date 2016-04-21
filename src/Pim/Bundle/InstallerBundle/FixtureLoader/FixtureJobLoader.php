@@ -5,12 +5,11 @@ namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader;
-use Pim\Component\Connector\Processor\Denormalization\SimpleProcessor;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Load the jobs used to load fixtures
+ * Load in database the job instances that can be used to install the PIM, once install, these job instance can be
+ * removed
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -21,28 +20,34 @@ class FixtureJobLoader
     /** @staticvar */
     const JOB_TYPE = 'fixtures';
 
-    /** @var array */
-    protected $jobsFilePaths;
-
     /** @var FixturePathProvider */
     protected $pathProvider;
+
+    /** @var JobInstancesBuilder */
+    protected $jobInstancesBuilder;
+
+    /** @var JobInstancesConfigurator */
+    protected $jobInstancesConfigurator;
 
     /** @var ContainerInterface */
     protected $container;
 
     /**
-     * @param FixturePathProvider $pathProvider
-     * @param ContainerInterface  $container
-     * @param array               $jobsFilePaths
+     * @param FixturePathProvider      $pathProvider
+     * @param JobInstancesBuilder      $jobInstancesBuilder
+     * @param JobInstancesConfigurator $jobInstancesConfigurator
+     * @param ContainerInterface       $container
      */
     public function __construct(
         FixturePathProvider $pathProvider,
-        ContainerInterface $container,
-        array $jobsFilePaths
+        JobInstancesBuilder $jobInstancesBuilder,
+        JobInstancesConfigurator $jobInstancesConfigurator,
+        ContainerInterface $container
     ) {
         $this->container = $container;
         $this->pathProvider = $pathProvider;
-        $this->jobsFilePaths = $jobsFilePaths;
+        $this->jobInstancesBuilder = $jobInstancesBuilder;
+        $this->jobInstancesConfigurator = $jobInstancesConfigurator;
     }
 
     /**
@@ -52,8 +57,7 @@ class FixtureJobLoader
      */
     public function loadJobInstances(array $replacePaths = [])
     {
-        $rawJobs = $this->readOrderedRawJobData();
-        $jobInstances = $this->buildJobInstances($rawJobs);
+        $jobInstances = $this->jobInstancesBuilder->build();
         $configuredJobInstances = $this->configureJobInstances($jobInstances, $replacePaths);
         $saver = $this->getJobInstanceSaver();
         $saver->saveAll($configuredJobInstances);
@@ -84,155 +88,19 @@ class FixtureJobLoader
     /**
      * @param JobInstance[] $jobInstances
      * @param array         $replacePaths
-     *
      * @throws \Exception
-     *
      * @return JobInstance[]
      */
     protected function configureJobInstances(array $jobInstances, array $replacePaths)
     {
         if (0 === count($replacePaths)) {
-            return $this->configureJobInstancesWithInstallerData($jobInstances);
+            return $this->jobInstancesConfigurator->configureJobInstancesWithInstallerData($jobInstances);
         } else {
-            return $this->configureJobInstancesWithReplacementPaths($jobInstances, $replacePaths);
-        }
-    }
-
-    /**
-     * The standard method to configure job instances with files provided in an install fixtures set
-     *
-     * @param JobInstance[] $jobInstances
-     * @return JobInstance[]
-     * @throws \Exception
-     */
-    protected function configureJobInstancesWithInstallerData(array $jobInstances)
-    {
-        $installerDataPath = $this->pathProvider->getFixturesPath();
-        if (!is_dir($installerDataPath)) {
-            throw new \Exception(sprintf('Path "%s" not found', $installerDataPath));
-        }
-        foreach ($jobInstances as $jobInstance) {
-            $configuration = $jobInstance->getRawConfiguration();
-            $configuration['filePath'] = sprintf('%s%s', $installerDataPath, $configuration['filePath']);
-            if (!is_readable($configuration['filePath'])) {
-                throw new \Exception(
-                    sprintf(
-                        'The job "%s" can\'t be processed because the file "%s" is not readable',
-                        $jobInstance->getCode(),
-                        $configuration['filePath']
-                    )
-                );
-            }
-
-            $jobInstance->setRawConfiguration($configuration);
-            $configuredJobInstances[] = $jobInstance;
-        }
-
-        return $configuredJobInstances;
-    }
-
-    /**
-     * An alternative methods with configure job instance with replacement paths, please note that we can configure
-     * here several job instances for a same job, for instance loading users.csv with a Community Edition file and
-     * with an Enterprise Edition file
-     *
-     * @param JobInstance[] $jobInstances
-     * @param array $replacePaths
-     * @return JobInstance[]
-     * @throws \Exception
-     */
-    protected function configureJobInstancesWithReplacementPaths(array $jobInstances, array $replacePaths)
-    {
-        $counter = 0;
-        foreach ($jobInstances as $jobInstance) {
-            $configuration = $jobInstance->getRawConfiguration();
-            if (!isset($replacePaths[$configuration['filePath']])) {
-                throw new \Exception(sprintf('No replacement path for "%s"', $configuration['filePath']));
-            }
-            foreach ($replacePaths[$configuration['filePath']] as $replacePath) {
-                $configuredJobInstance = clone $jobInstance;
-                $configuredJobInstance->setCode($configuredJobInstance->getCode().''.$counter++);
-                $configuration['filePath'] = $replacePath;
-                if (!is_readable($configuration['filePath'])) {
-                    throw new \Exception(
-                        sprintf(
-                            'The job "%s" can\'t be processed because the file "%s" is not readable',
-                            $configuredJobInstance->getCode(),
-                            $configuration['filePath']
-                        )
-                    );
-                }
-                $configuredJobInstance->setRawConfiguration($configuration);
-                $configuredJobInstances[] = $configuredJobInstance;
-            }
-        }
-
-        return $configuredJobInstances;
-    }
-
-    /**
-     * @param array $rawJobs
-     *
-     * @return JobInstance[]
-     */
-    protected function buildJobInstances(array $rawJobs)
-    {
-        $processor = $this->getJobInstanceProcessor();
-        $jobInstances = [];
-        foreach ($rawJobs as $rawJob) {
-            unset($rawJob['order']);
-            $jobInstance = $processor->process($rawJob);
-            $jobInstances[] = $jobInstance;
-        }
-
-        return $jobInstances;
-    }
-
-    /**
-     * @return array
-     */
-    protected function readOrderedRawJobData()
-    {
-        $rawJobs = [];
-        $fileLocator = $this->container->get('file_locator');
-        foreach ($this->jobsFilePaths as $jobsFilePath) {
-            $yamlReader = $this->getYamlReader();
-            $realPath = $fileLocator->locate('@' . $jobsFilePath);
-            $yamlReader->setFilePath($realPath);
-
-            while ($rawJob = $yamlReader->read()) {
-                $rawJobs[] = $rawJob;
-            }
-
-            usort(
-                $rawJobs,
-                function ($item1, $item2) {
-                    if ($item1['order'] === $item2['order']) {
-                        return 0;
-                    }
-
-                    return ($item1['order'] < $item2['order']) ? -1 : 1;
-                }
+            return $this->jobInstancesConfigurator->configureJobInstancesWithReplacementPaths(
+                $jobInstances,
+                $replacePaths
             );
         }
-
-        return $rawJobs;
-    }
-
-    /**
-     * @return YamlReader
-     */
-    protected function getYamlReader()
-    {
-        return $this->container->get('pim_base_connector.reader.file.yaml');
-    }
-
-    /**
-     * @return SimpleProcessor
-     */
-    protected function getJobInstanceProcessor()
-    {
-        return $this->container->get('pim_base_connector.processor.job_instance');
     }
 
     /**

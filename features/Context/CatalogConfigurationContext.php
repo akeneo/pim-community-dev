@@ -11,8 +11,8 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\CS\Console\Application;
 
 /**
  * A context for initializing catalog configuration
