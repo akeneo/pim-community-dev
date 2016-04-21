@@ -11,6 +11,7 @@
 namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber as CEUserPreferencesSubscriber;
@@ -28,11 +29,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class UserType extends BaseUserType
 {
-    /** @var string */
-    protected $class;
-
     /** @var EEUserPreferencesSubscriber */
     protected $eeSubscriber;
+
+    /** @var ChoicesProviderInterface */
+    protected $categoryRepository;
 
     /**
      * @param TokenStorageInterface       $tokenStorage
@@ -42,7 +43,7 @@ class UserType extends BaseUserType
      * @param GroupRepository             $groupRepository
      * @param EventDispatcherInterface    $eventDispatcher
      * @param EEUserPreferencesSubscriber $eeSubscriber
-     * @param string                      $class
+     * @param ChoicesProviderInterface    $categoryRepository
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -52,7 +53,7 @@ class UserType extends BaseUserType
         GroupRepository $groupRepository,
         EventDispatcherInterface $eventDispatcher,
         EEUserPreferencesSubscriber $eeSubscriber,
-        $class
+        ChoicesProviderInterface $categoryRepository
     ) {
         parent::__construct(
             $tokenStorage,
@@ -63,8 +64,8 @@ class UserType extends BaseUserType
             $eventDispatcher
         );
 
-        $this->class        = $class;
-        $this->eeSubscriber = $eeSubscriber;
+        $this->eeSubscriber       = $eeSubscriber;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -104,14 +105,10 @@ class UserType extends BaseUserType
 
         $builder->add(
             'defaultAssetTree',
-            'entity',
+            'light_entity',
             [
-                'class'         => $this->class,
-                'property'      => 'label',
-                'select2'       => true,
-                'query_builder' => function (EntityRepository $repository) {
-                    return $repository->getTreesQB();
-                }
+                'select2'    => true,
+                'repository' => $this->categoryRepository
             ]
         );
     }

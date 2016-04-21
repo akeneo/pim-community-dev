@@ -16,6 +16,6 @@ services:
             - '@pim_user.repository.group'
             - '@event_dispatcher'
             - '@pimee_user.form.subscriber.user_preferences'
-            - %pimee_product_asset.model.category.class%
+            - '@pimee_enrich.repository.asset_category_choices'
         tags:
             - { name: form.type, alias: pim_user_user }

@@ -124,36 +124,34 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     }
 
     /**
-     * Get granted categories QB from the provided QB.
-     * The provided QB will be used to generate a subquery from which
-     * only granted categories will be extracted.
+     * Get granted categories ids from the provided category
      *
-     * @param QueryBuilder  $categoryQB
-     * @param UserInterface $user
-     * @param string        $accessLevel
+     * @param CategoryInterface $category
+     * @param UserInterface     $user
+     * @param string            $accessLevel
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return array
      */
-    public function getGrantedCategoryIdsFromQB(QueryBuilder $categoryQB, UserInterface $user, $accessLevel)
+    public function getGrantedChildrenIds(CategoryInterface $category, UserInterface $user, $accessLevel)
     {
-        $categoryRootAlias = current($categoryQB->getRootAliases());
-
-        $categoryQB->resetDQLParts(['select']);
-        $categoryQB->select($categoryRootAlias.'.id');
-
         $qb = $this->createQueryBuilder('ca');
         $qb
             ->select('DISTINCT c.id')
             ->innerJoin('ca.category', 'c', 'c.id')
             ->andWhere($qb->expr()->in('ca.userGroup', ':groups'))
             ->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true))
-            ->andWhere($qb->expr()->in('c.id', $categoryQB->getDQL()));
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->andX(
+                        $qb->expr()->lt('c.right', $category->getRight()),
+                        $qb->expr()->gt('c.left', $category->getLeft()),
+                        $qb->expr()->eq('c.root', $category->getRoot())
+                    ),
+                    $qb->expr()->eq('c.id', $category->getId())
+                )
+            );
 
         $qb->setParameter('groups', $user->getGroups()->toArray());
-
-        foreach ($categoryQB->getParameters() as $param) {
-            $qb->getParameters()->add($param);
-        }
 
         return $this->hydrateAsIds($qb);
     }

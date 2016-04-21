@@ -42,3 +42,11 @@ services:
         class: %akeneo_classification.updater.category.class%
         arguments:
             - '@pimee_product_asset.repository.category'
+
+    pimee_product_asset.updater.category_translatable:
+        decorates: pimee_product_asset.updater.category
+        decoration_inner_name: pimee_product_asset.updater.category.base
+        class: %pim_catalog.updater.category_translatable.class%
+        arguments:
+            - '@pimee_product_asset.updater.category.base'
+            - '@pim_localization.updater.translatable'
