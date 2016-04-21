@@ -14,6 +14,39 @@ jobs:
             familyColumn:       family
             groupsColumn:       groups
             realTimeVersioning: true
+            decimalSeparator:   .
+            dateFormat:         yyyy-MM-dd
+    csv_clothing_product_import_with_rules:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_import_with_rules
+        label:     CSV Clothing product import with rules
+        type:      import
+        configuration:
+            uploadAllowed:      true
+            delimiter:          ;
+            enclosure:          '"'
+            escape:             '\'
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator:   .
+            dateFormat:         yyyy-MM-dd
+    xlsx_clothing_product_import_with_rules:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_import_with_rules
+        label:     XLSX Clothing product import with rules
+        type:      import
+        configuration:
+            uploadAllowed:      true
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator:   .
+            dateFormat:         yyyy-MM-dd
     clothing_rule_import:
         connector: Akeneo Rule Engine Connector
         alias:     yml_rule_import

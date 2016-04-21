@@ -40,3 +40,5 @@ xlsx_clothing_asset_export;IT support,Manager,Redactor;IT support,Manager,Redact
 xlsx_clothing_asset_category_export;IT support,Manager,Redactor;IT support,Manager,Redactor
 xlsx_clothing_asset_variation_export;IT support,Manager,Redactor;IT support,Manager,Redactor
 xlsx_clothing_product_proposal_import;IT support,Manager,Redactor;IT support
+csv_clothing_product_import_with_rules;IT support,Manager,Redactor;IT support
+xlsx_clothing_product_import_with_rules;IT support,Manager,Redactor;IT support
