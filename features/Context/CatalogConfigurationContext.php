@@ -69,7 +69,7 @@ class CatalogConfigurationContext extends RawMinkContext
      */
     protected function loadCatalog($files)
     {
-        // prepare replace paths to use Behat catalog paths and not the minimal fixtures path, please not that we can
+        // prepare replace paths to use Behat catalog paths and not the minimal fixtures path, please note that we can
         // have several files per job in case of Enterprise Catalog, for instance,
         // [
         //     'jobs' => [
@@ -86,7 +86,7 @@ class CatalogConfigurationContext extends RawMinkContext
             $replacePaths[$fileName][] = $file;
         }
 
-        // load JobInstances in database
+        // configure and load job instances in database
         $this->getFixtureJobLoader()->loadJobInstances($replacePaths);
 
         // setup application to be able to run akeneo:batch:job command
@@ -96,7 +96,7 @@ class CatalogConfigurationContext extends RawMinkContext
         $batchJobCommand->setContainer($this->getContainer());
         $command = new CommandTester($batchJobCommand);
 
-        // install the catalog
+        // install the catalog via the job instances
         $jobInstances = $this->getFixtureJobLoader()->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
             $command->execute(
@@ -119,12 +119,11 @@ class CatalogConfigurationContext extends RawMinkContext
             $referenceDataLoader->load($this->getEntityManager());
         }
 
-        // clear doctrine UOW after the whole install to avoid to call refresh everywhere in our contexts
-        /** @var ObjectManager, the product object manager, can be ORM or ODM */
+        // clear product manager UOW after the install to start the scenario execution with a clean state
         $productObjectManager = $this->getContainer()->get('pim_catalog.object_manager.product');
         $productObjectManager->clear();
 
-        /** @var EntityManager, the standard entity manager (can be the same than for product) */
+        // clear the standard entity manager UOW after the install to start the scenario execution with a clean state
         $standardObjectManager = $this->getContainer()->get('doctrine.orm.entity_manager');
         $standardObjectManager->clear();
     }

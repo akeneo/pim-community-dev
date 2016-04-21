@@ -21,7 +21,7 @@ class FixtureJobLoader
     /** @staticvar */
     const JOB_TYPE = 'fixtures';
 
-    /** @var string */
+    /** @var array */
     protected $jobsFilePaths;
 
     /** @var FixturePathProvider */
@@ -91,58 +91,83 @@ class FixtureJobLoader
      */
     protected function configureJobInstances(array $jobInstances, array $replacePaths)
     {
-        $configuredJobInstances = [];
         if (0 === count($replacePaths)) {
-            $installerDataPath = $this->pathProvider->getFixturesPath();
-            if (!is_dir($installerDataPath)) {
-                throw new \Exception(sprintf('Path "%s" not found', $installerDataPath));
+            return $this->configureJobInstancesWithInstallerData($jobInstances);
+        } else {
+            return $this->configureJobInstancesWithReplacementPaths($jobInstances, $replacePaths);
+        }
+    }
+
+    /**
+     * The standard method to configure job instances with files provided in an install fixtures set
+     *
+     * @param JobInstance[] $jobInstances
+     * @return JobInstance[]
+     * @throws \Exception
+     */
+    protected function configureJobInstancesWithInstallerData(array $jobInstances)
+    {
+        $installerDataPath = $this->pathProvider->getFixturesPath();
+        if (!is_dir($installerDataPath)) {
+            throw new \Exception(sprintf('Path "%s" not found', $installerDataPath));
+        }
+        foreach ($jobInstances as $jobInstance) {
+            $configuration = $jobInstance->getRawConfiguration();
+            $configuration['filePath'] = sprintf('%s%s', $installerDataPath, $configuration['filePath']);
+            if (!is_readable($configuration['filePath'])) {
+                throw new \Exception(
+                    sprintf(
+                        'The job "%s" can\'t be processed because the file "%s" is not readable',
+                        $jobInstance->getCode(),
+                        $configuration['filePath']
+                    )
+                );
             }
-            foreach ($jobInstances as $jobInstance) {
-                $configuration = $jobInstance->getRawConfiguration();
-                $configuration['filePath'] = sprintf('%s%s', $installerDataPath, $configuration['filePath']);
+
+            $jobInstance->setRawConfiguration($configuration);
+            $configuredJobInstances[] = $jobInstance;
+        }
+
+        return $configuredJobInstances;
+    }
+
+    /**
+     * An alternative methods with configure job instance with replacement paths, please note that we can configure
+     * here several job instances for a same job, for instance loading users.csv with a Community Edition file and
+     * with an Enterprise Edition file
+     *
+     * @param JobInstance[] $jobInstances
+     * @param array $replacePaths
+     * @return JobInstance[]
+     * @throws \Exception
+     */
+    protected function configureJobInstancesWithReplacementPaths(array $jobInstances, array $replacePaths)
+    {
+        $counter = 0;
+        foreach ($jobInstances as $jobInstance) {
+            $configuration = $jobInstance->getRawConfiguration();
+            if (!isset($replacePaths[$configuration['filePath']])) {
+                throw new \Exception(sprintf('No replacement path for "%s"', $configuration['filePath']));
+            }
+            foreach ($replacePaths[$configuration['filePath']] as $replacePath) {
+                $configuredJobInstance = clone $jobInstance;
+                $configuredJobInstance->setCode($configuredJobInstance->getCode().''.$counter++);
+                $configuration['filePath'] = $replacePath;
                 if (!is_readable($configuration['filePath'])) {
                     throw new \Exception(
                         sprintf(
                             'The job "%s" can\'t be processed because the file "%s" is not readable',
-                            $jobInstance->getCode(),
+                            $configuredJobInstance->getCode(),
                             $configuration['filePath']
                         )
                     );
                 }
-
-                $jobInstance->setRawConfiguration($configuration);
-                $configuredJobInstances[] = $jobInstance;
+                $configuredJobInstance->setRawConfiguration($configuration);
+                $configuredJobInstances[] = $configuredJobInstance;
             }
-
-            return $configuredJobInstances;
-
-        } else {
-            $counter = 0;
-            foreach ($jobInstances as $jobInstance) {
-                $configuration = $jobInstance->getRawConfiguration();
-                if (!isset($replacePaths[$configuration['filePath']])) {
-                    throw new \Exception(sprintf('No replacement path for "%s"', $configuration['filePath']));
-                }
-                foreach ($replacePaths[$configuration['filePath']] as $replacePath) {
-                    $configuredJobInstance = clone $jobInstance;
-                    $configuredJobInstance->setCode($configuredJobInstance->getCode().''.$counter++);
-                    $configuration['filePath'] = $replacePath;
-                    if (!is_readable($configuration['filePath'])) {
-                        throw new \Exception(
-                            sprintf(
-                                'The job "%s" can\'t be processed because the file "%s" is not readable',
-                                $configuredJobInstance->getCode(),
-                                $configuration['filePath']
-                            )
-                        );
-                    }
-                    $configuredJobInstance->setRawConfiguration($configuration);
-                    $configuredJobInstances[] = $configuredJobInstance;
-                }
-            }
-
-            return $configuredJobInstances;
         }
+
+        return $configuredJobInstances;
     }
 
     /**
