@@ -97,9 +97,10 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
 
+        $context = $this->productClassName;
         $this->versionContext->addContextInfo(
             sprintf('Comes from variant group %s', $group->getCode()),
-            $this->productClassName
+            $context
         );
 
         if ($group->getType()->isVariant()) {
@@ -125,6 +126,8 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         if (0 < count($options['remove_products'])) {
             $this->removeProducts($options['remove_products']);
         }
+
+        $this->versionContext->unsetContextInfo($context);
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
     }
