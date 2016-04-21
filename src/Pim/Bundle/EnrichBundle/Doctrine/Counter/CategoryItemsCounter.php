@@ -22,10 +22,8 @@ class CategoryItemsCounter implements CategoryItemsCounterInterface
     protected $categoryRepository;
 
     /**
-     * Constructor
-     *
-     * @param ItemCategoryRepositoryInterface $itemRepository  Item category repository
-     * @param CategoryRepositoryInterface     $categoryRepo    Category repository
+     * @param ItemCategoryRepositoryInterface $itemRepository Item category repository
+     * @param CategoryRepositoryInterface     $categoryRepo   Category repository
      */
     public function __construct(
         ItemCategoryRepositoryInterface $itemRepository,
@@ -40,11 +38,9 @@ class CategoryItemsCounter implements CategoryItemsCounterInterface
      */
     public function getItemsCountInCategory(CategoryInterface $category, $inChildren = false, $inProvided = true)
     {
-        $categoryQb = null;
-        if ($inChildren) {
-            $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, $inProvided);
-        }
+        $categoryIds = $inChildren
+            ? $this->categoryRepository->getAllChildrenIds($category, $inProvided) : [$category->getId()];
 
-        return $this->itemRepository->getItemsCountInCategory($category, $categoryQb);
+        return $this->itemRepository->getItemsCountInCategory($categoryIds);
     }
 }

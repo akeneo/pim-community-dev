@@ -61,11 +61,7 @@ class CompletenessRepositorySpec extends ObjectBehavior
         $odmQb->select('_id')->willReturn($odmQb);
         $odmQb->getQuery()->willReturn($odmQuery);
 
-        $categoryRepository->getAllChildrenQueryBuilder($category, true)->willReturn($ormQb);
-        $ormQb->select(Argument::any())->willReturn($ormQb);
-        $ormQb->getRootAlias()->willReturn('a');
-        $ormQb->getQuery()->willReturn($ormQuery);
-        $ormQuery->getArrayResult()->willReturn([1, 2, 3]);
+        $categoryRepository->getAllChildrenIds($category, true)->willReturn([1, 2, 3]);
 
         $channelRepository->findAll()->willReturn([$ecommerce, $mobile]);
         $manager->getRepository('pim_product_class')->willReturn($productRepository);

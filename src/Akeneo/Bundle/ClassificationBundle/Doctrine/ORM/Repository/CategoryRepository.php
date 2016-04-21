@@ -24,14 +24,6 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getTreesQB()
-    {
-        return $this->getChildrenQueryBuilder(null, true, null, 'ASC', null);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function countChildren(CategoryInterface $category, $onlyDirect = false)
     {
         $qb = ($onlyDirect) ?
@@ -124,17 +116,9 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getAllChildrenQueryBuilder(CategoryInterface $category, $includeNode = false)
+    public function getAllChildrenIds(CategoryInterface $parent, $includeNode = false)
     {
-        return $this->getChildrenQueryBuilder($category, false, null, 'ASC', $includeNode);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllChildrenIds(CategoryInterface $parent)
-    {
-        $categoryQb = $this->getAllChildrenQueryBuilder($parent);
+        $categoryQb = $this->getAllChildrenQueryBuilder($parent, $includeNode);
         $rootAlias  = current($categoryQb->getRootAliases());
         $rootEntity = current($categoryQb->getRootEntities());
         $categoryQb->select($rootAlias.'.id');
@@ -338,6 +322,30 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
+    {
+        $sameRoot = $parentNode->getRoot() === $childNode->getRoot();
+
+        $isAncestor = $childNode->getLeft() > $parentNode->getLeft()
+                      && $childNode->getRight() < $parentNode->getRight();
+
+        return $sameRoot && $isAncestor;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrderedAndSortedByTreeCategories()
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder = $queryBuilder->orderBy('c.root')->addOrderBy('c.left');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * Create a query builder with just a link to the category passed in parameter
      *
      * @param CategoryInterface $category
@@ -354,26 +362,15 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * Shortcut to get all children query builder
+     *
+     * @param CategoryInterface $category    the requested node
+     * @param bool              $includeNode true to include actual node in query result
+     *
+     * @return QueryBuilder
      */
-    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
+    protected function getAllChildrenQueryBuilder(CategoryInterface $category, $includeNode = false)
     {
-        $sameRoot = $parentNode->getRoot() === $childNode->getRoot();
-
-        $isAncestor = $childNode->getLeft() > $parentNode->getLeft()
-            && $childNode->getRight() < $parentNode->getRight();
-
-        return $sameRoot && $isAncestor;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrderedAndSortedByTreeCategories()
-    {
-        $queryBuilder = $this->createQueryBuilder('c');
-        $queryBuilder = $queryBuilder->orderBy('c.root')->addOrderBy('c.left');
-
-        return $queryBuilder->getQuery()->getResult();
+        return $this->getChildrenQueryBuilder($category, false, null, 'ASC', $includeNode);
     }
 }

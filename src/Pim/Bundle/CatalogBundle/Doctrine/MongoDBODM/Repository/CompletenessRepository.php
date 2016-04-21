@@ -59,18 +59,20 @@ class CompletenessRepository implements CompletenessRepositoryInterface
         $productsCount = [];
         foreach ($channels as $channel) {
             $category = $channel->getCategory();
-            $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true);
-            $categoryIds = $this->getCategoryIds($categoryQb);
+            $categoryIds = $this->categoryRepository->getAllChildrenIds($category, true);
 
-            $qb = $productRepo->createQueryBuilder()
+            $total = $productRepo->createQueryBuilder()
                 ->hydrate(false)
                 ->field('categoryIds')->in($categoryIds)
                 ->field('enabled')->equals(true)
-                ->select('_id');
+                ->select('_id')
+                ->getQuery()
+                ->execute()
+                ->count();
 
             $productsCount[] = [
                 'label' => $channel->getLabel(),
-                'total' => $qb->getQuery()->execute()->count()
+                'total' => $total
             ];
         }
 
@@ -88,22 +90,23 @@ class CompletenessRepository implements CompletenessRepositoryInterface
         $productsCount = [];
         foreach ($channels as $channel) {
             $category = $channel->getCategory();
-            $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true);
-            $categoryIds = $this->getCategoryIds($categoryQb);
+            $categoryIds = $this->categoryRepository->getAllChildrenIds($category, true);
 
             foreach ($channel->getLocales() as $locale) {
                 $data = [];
                 $compSuffix = $channel->getCode().'-'.$locale->getCode();
 
-                $qb = $productRepo->createQueryBuilder()
+                $localeCount = $productRepo->createQueryBuilder()
                     ->hydrate(false)
                     ->field('categoryIds')->in($categoryIds)
                     ->field('enabled')->equals(true)
                     ->field('normalizedData.completenesses.'.$compSuffix)
                     ->equals(100)
-                    ->select('_id');
+                    ->select('_id')
+                    ->getQuery()
+                    ->execute()
+                    ->count();
 
-                $localeCount = $qb->getQuery()->execute()->count();
                 $data['locale'] = $locale->getCode();
                 $data['label'] = $channel->getLabel();
                 $data['total'] = $localeCount;

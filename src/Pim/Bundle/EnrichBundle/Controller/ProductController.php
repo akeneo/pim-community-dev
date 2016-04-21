@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
@@ -86,9 +85,6 @@ class ProductController
     /** @var CategoryManager */
     protected $categoryManager;
 
-    /** @var ProductCategoryManager */
-    protected $productCatManager;
-
     /** @var UserContext */
     protected $userContext;
 
@@ -131,7 +127,6 @@ class ProductController
      * @param UserContext                 $userContext
      * @param VersionManager              $versionManager
      * @param SecurityFacade              $securityFacade
-     * @param ProductCategoryManager      $prodCatManager
      * @param SaverInterface              $productSaver
      * @param SequentialEditManager       $seqEditManager
      * @param ProductBuilderInterface     $productBuilder
@@ -153,7 +148,6 @@ class ProductController
         UserContext $userContext,
         VersionManager $versionManager,
         SecurityFacade $securityFacade,
-        ProductCategoryManager $prodCatManager,
         SaverInterface $productSaver,
         SequentialEditManager $seqEditManager,
         ProductBuilderInterface $productBuilder,
@@ -172,7 +166,6 @@ class ProductController
         $this->userContext        = $userContext;
         $this->versionManager     = $versionManager;
         $this->securityFacade     = $securityFacade;
-        $this->productCatManager  = $prodCatManager;
         $this->productSaver       = $productSaver;
         $this->seqEditManager     = $seqEditManager;
         $this->productBuilder     = $productBuilder;
@@ -379,17 +372,6 @@ class ProductController
         return $this->categoryManager->getFilledTree($parent, $categories);
     }
 
-    /**
-     * Fetch the product count by tree
-     *
-     * @param ProductInterface $product
-     *
-     * @return array
-     */
-    protected function getProductCountByTree(ProductInterface $product)
-    {
-        return $this->productCatManager->getProductCountByTree($product);
-    }
 
     /**
      * {@inheritdoc}

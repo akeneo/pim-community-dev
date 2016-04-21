@@ -4,7 +4,6 @@ parameters:
     pim_catalog.manager.category.class:            Pim\Bundle\CatalogBundle\Manager\CategoryManager
     pim_catalog.manager.completeness.class:        Pim\Component\Catalog\Manager\CompletenessManager
     pim_catalog.manager.group.class:               Pim\Bundle\CatalogBundle\Manager\GroupManager
-    pim_catalog.manager.product_category.class:    Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager
     pim_catalog.manager.product_template_media.class:    Pim\Component\Catalog\Manager\ProductTemplateMediaManager
     pim_catalog.applier.product_template.class:          Pim\Component\Catalog\Manager\ProductTemplateApplier
     pim_catalog.resolver.variant_group_attributes.class: Pim\Component\Catalog\Manager\VariantGroupAttributesResolver
@@ -12,12 +11,6 @@ parameters:
 
 services:
     # Managers
-    pim_catalog.manager.product_category:
-        class: %pim_catalog.manager.product_category.class%
-        arguments:
-            - '@pim_catalog.repository.product_category'
-            - '@pim_catalog.repository.category'
-
     pim_catalog.manager.category:
         class: %pim_catalog.manager.category.class%
         arguments:

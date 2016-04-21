@@ -3,9 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
 use Akeneo\Bundle\ClassificationBundle\Doctrine\Mongo\Repository\AbstractItemCategoryRepository;
-use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
-use Pim\Component\Catalog\Model\CategoryInterface as CatalogCategoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
 
 /**
@@ -17,22 +14,6 @@ use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
  */
 class ProductCategoryRepository extends AbstractItemCategoryRepository implements ProductCategoryRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getProductCountByTree(ProductInterface $product)
-    {
-        return $this->getItemCountByTree($product);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProductsCountInCategory(CatalogCategoryInterface $category, OrmQueryBuilder $categoryQb = null)
-    {
-        return $this->getItemsCountInCategory($category, $categoryQb);
-    }
-
     /**
      * {@inheritdoc}
      */
