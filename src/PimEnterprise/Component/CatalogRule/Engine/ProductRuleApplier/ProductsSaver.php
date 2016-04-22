@@ -68,9 +68,10 @@ class ProductsSaver
             'en'
         );
         $versioningState = $this->versionManager->isRealTimeVersioning();
-        $this->versionContext->addContextInfo($savingContext);
+        $this->versionContext->addContextInfo($savingContext, 'default');
         $this->versionManager->setRealTimeVersioning(false);
         $this->productSaver->saveAll($products);
         $this->versionManager->setRealTimeVersioning($versioningState);
+        $this->versionContext->unsetContextInfo('default');
     }
 }

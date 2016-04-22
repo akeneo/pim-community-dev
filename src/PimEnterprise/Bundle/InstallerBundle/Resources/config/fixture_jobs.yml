@@ -7,7 +7,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: attribute_group_accesses.csv
-            multiple: false
 
     fixtures_product_category_access_csv:
         order: 150
@@ -17,7 +16,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: product_category_accesses.csv
-            multiple: false
 
     fixtures_asset_category_csv:
         order: 30
@@ -42,7 +40,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: asset_category_accesses.csv
-            multiple: false
 
     fixtures_job_profile_access_csv:
         order:     150
@@ -52,7 +49,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: job_profile_accesses.csv
-            multiple: false
 
     fixtures_locale_access_csv:
         order:     150
@@ -62,7 +58,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: locale_accesses.csv
-            multiple: false
 
     fixtures_rule_yml:
         order:     70
@@ -72,7 +67,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: rules.yml
-            multiple: false
 
     fixtures_asset_csv:
         order:     150
@@ -82,7 +76,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: assets.csv
-            multiple: false
 
     fixtures_asset_channel_configurations_yml:
         order:     110
@@ -92,4 +85,3 @@ jobs:
         type:      fixtures
         configuration:
             filePath: asset_channel_configurations.yml
-            multiple: false

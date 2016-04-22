@@ -42,9 +42,10 @@ class ProductsSaverSpec extends ObjectBehavior
     ) {
         $translator->trans(Argument::cetera())->willReturn('Applied rule "rule_one"');
         $versionManager->isRealTimeVersioning()->willReturn(false);
-        $versionContext->addContextInfo('Applied rule "rule_one"')->shouldBeCalled();
+        $versionContext->addContextInfo('Applied rule "rule_one"', 'default')->shouldBeCalled();
         $versionManager->setRealTimeVersioning(false)->shouldBeCalled();
         $productSaver->saveAll(Argument::any())->shouldBeCalled();
+        $versionContext->unsetContextInfo('default')->shouldBeCalled();
 
         $this->save($rule, [$product]);
     }

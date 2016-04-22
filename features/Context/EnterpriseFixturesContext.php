@@ -1034,7 +1034,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $data = [['code' => $data]];
         }
 
-        $category = $this->loadFixture('asset_categories', $data);
+        $processor = $this->getContainer()->get('pimee_product_asset.processor.denormalization.category.flat');
+        $category = $processor->process($data);
 
         /*
          * When using ODM, one must persist and flush category without product
