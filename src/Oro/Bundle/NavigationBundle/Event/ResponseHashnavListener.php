@@ -2,7 +2,7 @@
 namespace Oro\Bundle\NavigationBundle\Event;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -11,19 +11,29 @@ class ResponseHashnavListener
     const HASH_NAVIGATION_HEADER = 'x-oro-hash-navigation';
 
     /**
-     * @var TokenStorageInterface
+     * @var ContainerInterface
      */
-    protected $tokenStorage;
+    protected $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
 
     /**
-     * @var EngineInterface
+     * @return TokenStorageInterface
      */
-    protected $templating;
-
-    public function __construct(TokenStorageInterface $tokenStorage, EngineInterface $templating)
+    final protected function getTokenStorage()
     {
-        $this->tokenStorage = $tokenStorage;
-        $this->templating = $templating;
+        return $this->container->get('security.token_storage');
+    }
+
+    /**
+     * @return EngineInterface
+     */
+    final protected function getTemplating()
+    {
+        return $this->container->get('templating');
     }
 
     /**
@@ -40,7 +50,7 @@ class ResponseHashnavListener
             $isFullRedirect = $response->headers->get('oroFullRedirect', false);
             if ($response->isRedirect()) {
                 $location = $response->headers->get('location');
-                if (!is_object($this->tokenStorage->getToken())) {
+                if (!is_object($this->getTokenStorage()->getToken())) {
                     $isFullRedirect = true;
                 }
             }
@@ -50,7 +60,7 @@ class ResponseHashnavListener
             }
             if ($location) {
                 $event->setResponse(
-                    $this->templating->renderResponse(
+                    $this->getTemplating()->renderResponse(
                         'OroNavigationBundle:HashNav:redirect.html.twig',
                         [
                             'full_redirect' => $isFullRedirect,

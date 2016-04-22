@@ -6,7 +6,6 @@ use FOS\Rest\Util\Codes;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\FOSRestController;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory;
 use Oro\Bundle\NavigationBundle\Entity\Repository\NavigationRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
@@ -25,10 +24,6 @@ class NavigationItemController extends FOSRestController
      *
      * @param string $type
      *
-     * @ApiDoc(
-     *  description="Get all Navigation items for user",
-     *  resource=true
-     * )
      * @return Response
      */
     public function getAction($type)
@@ -50,10 +45,6 @@ class NavigationItemController extends FOSRestController
      *
      * @param string $type
      *
-     * @ApiDoc(
-     *  description="Add Navigation item",
-     *  resource=true
-     * )
      * @return Response
      */
     public function postAction($type)
@@ -95,10 +86,6 @@ class NavigationItemController extends FOSRestController
      * @param string $type
      * @param int    $itemId Navigation item id
      *
-     * @ApiDoc(
-     *  description="Update Navigation item",
-     *  resource=true
-     * )
      * @return Response
      */
     public function putIdAction($type, $itemId)
@@ -145,10 +132,6 @@ class NavigationItemController extends FOSRestController
      * @param string $type
      * @param int    $itemId
      *
-     * @ApiDoc(
-     *  description="Remove Navigation item",
-     *  resource=true
-     * )
      * @return Response
      */
     public function deleteIdAction($type, $itemId)
