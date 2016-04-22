@@ -1,0 +1,8 @@
+services:
+    akeneo_batch.remover.job_instance:
+        class: %akeneo_storage_utils.remover.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@akeneo_storage_utils.remover.base_options_resolver'
+            - '@event_dispatcher'
+            - '%akeneo_batch.entity.job_instance.class%'

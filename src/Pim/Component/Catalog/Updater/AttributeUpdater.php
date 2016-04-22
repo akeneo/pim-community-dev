@@ -129,7 +129,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
      */
     protected function checkIfReferenceDataExists($value)
     {
-        if (in_array($value['attributeType'], $this->referenceDataType)) {
+        if (isset($value['attributeType']) && in_array($value['attributeType'], $this->referenceDataType)) {
             if (!$this->registry->has($value['reference_data_name'])) {
                 $references = array_keys($this->registry->all());
                 throw new \InvalidArgumentException(

@@ -1,39 +1,34 @@
 parameters:
-    pim_installer.fixture_loader.configuration_registry.class: Pim\Bundle\InstallerBundle\FixtureLoader\ConfigurationRegistry
-    pim_installer.fixture_loader.loader_factory.class:         Pim\Bundle\InstallerBundle\FixtureLoader\LoaderFactory
-    pim_installer.fixture_loader.multiple_loader.class:        Pim\Bundle\InstallerBundle\FixtureLoader\MultipleLoader
-    pim_installer.fixture_loader.job_loader.class:             Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader
-    pim_installer.reader.file.yaml.class:                      Pim\Bundle\InstallerBundle\FixtureLoader\YamlReader
-    pim_installer.fixture_loader.job_loader.config_file:       'PimInstallerBundle/Resources/config/fixtures_jobs.yml'
+    pim_installer.fixture_loader.path_provider.class:              Pim\Bundle\InstallerBundle\FixtureLoader\FixturePathProvider
+    pim_installer.fixture_loader.job_instances_builder.class:      Pim\Bundle\InstallerBundle\FixtureLoader\JobInstancesBuilder
+    pim_installer.fixture_loader.job_instances_configurator.class: Pim\Bundle\InstallerBundle\FixtureLoader\JobInstancesConfigurator
+    pim_installer.fixture_loader.job_loader.class:                 Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader
+    pim_installer.fixture_loader.job_loader.config_file:           'PimInstallerBundle/Resources/config/fixtures_jobs.yml'
 
 services:
-    pim_installer.fixture_loader.configuration_registry:
-        class: %pim_installer.fixture_loader.configuration_registry.class%
+    pim_installer.fixture_loader.path_provider:
+        class: %pim_installer.fixture_loader.path_provider.class%
         arguments:
-            - '@service_container'
-            - '@property_accessor'
-            - %kernel.bundles%
-            - %kernel.cache_dir%
-            - %kernel.debug%
+            - '%kernel.bundles%'
+            - '%installer_data%'
 
-    pim_installer.fixture_loader.loader_factory:
-        class: %pim_installer.fixture_loader.loader_factory.class%
+    pim_installer.fixture_loader.job_instances_builder:
+        class: %pim_installer.fixture_loader.job_instances_builder.class%
         arguments:
-            - '@pim_transform.cache.doctrine_cache'
-            - '@pim_installer.fixture_loader.configuration_registry'
-            - '@event_dispatcher'
+            - '@file_locator'
+            - '@pim_base_connector.reader.file.yaml'
+            - '@pim_base_connector.processor.job_instance'
+            - [ %pim_installer.fixture_loader.job_loader.config_file% ]
 
-    pim_installer.fixture_loader.multiple_loader:
-        class: %pim_installer.fixture_loader.multiple_loader.class%
+    pim_installer.fixture_loader.job_instances_configurator:
+        class: %pim_installer.fixture_loader.job_instances_configurator.class%
         arguments:
-            - '@pim_installer.fixture_loader.configuration_registry'
-            - '@pim_installer.fixture_loader.loader_factory'
+            - '@pim_installer.fixture_loader.path_provider'
 
     pim_installer.fixture_loader.job_loader:
         class: %pim_installer.fixture_loader.job_loader.class%
         arguments:
+            - '@pim_installer.fixture_loader.path_provider'
+            - '@pim_installer.fixture_loader.job_instances_builder'
+            - '@pim_installer.fixture_loader.job_instances_configurator'
             - '@service_container'
-            - [ %pim_installer.fixture_loader.job_loader.config_file% ]
-
-    pim_installer.reader.file.yaml:
-        class: %pim_installer.reader.file.yaml.class%

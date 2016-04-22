@@ -186,7 +186,11 @@ class YamlReader extends FileReader implements
     public function read()
     {
         if (null === $this->yaml) {
-            $this->yaml = new \ArrayIterator($this->getFileData());
+            $fileData = $this->getFileData();
+            if (null === $fileData) {
+                return null;
+            }
+            $this->yaml = new \ArrayIterator($fileData);
         }
 
         if ($data = $this->yaml->current()) {
@@ -210,6 +214,9 @@ class YamlReader extends FileReader implements
     protected function getFileData()
     {
         $fileData = current(Yaml::parse(file_get_contents($this->filePath)));
+        if (null === $fileData) {
+            return null;
+        }
 
         foreach ($fileData as $key => $row) {
             if ($this->codeField && !isset($row[$this->codeField])) {

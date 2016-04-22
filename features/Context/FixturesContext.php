@@ -5,6 +5,7 @@ namespace Context;
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
@@ -29,6 +30,7 @@ use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -90,8 +92,12 @@ class FixturesContext extends BaseFixturesContext
             $data[$key] = $this->replacePlaceholders($value);
         }
 
-        // use the processor part of the import system
-        $product = $this->loadFixture('products', $data);
+        /** @var ProductProcessor */
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.product.flat');
+        $processor->setEnabledComparison(false);
+        $processor->setDateFormat(LocalizerInterface::DEFAULT_DATE_FORMAT);
+        $processor->setDecimalSeparator(LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR);
+        $product = $processor->process($data);
         $this->getProductSaver()->save($product);
 
         // reset the unique value set to allow to update product values
@@ -190,7 +196,13 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $attribute = $this->getAttribute($data['attribute']);
-            $attribute->setLocale($this->getLocaleCode($data['locale']))->setLabel($data['label']);
+            $standardData = [
+                'labels' => [
+                    $this->getLocaleCode($data['locale']) => $data['label']
+                ]
+            ];
+            $updater = $this->getContainer()->get('pim_catalog.updater.attribute');
+            $updater->update($attribute, $standardData);
             $this->validate($attribute);
             $this->getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
         }
@@ -339,8 +351,9 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $attributeBulks = [];
+        $attributeProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute.flat');
         foreach ($attributeData as $index => $data) {
-            $attribute = $this->loadFixture('attributes', $data);
+            $attribute = $attributeProcessor->process($data);
             $this->validate($attribute);
             $attributeBulks[$index % 200][]= $attribute;
         }
@@ -349,8 +362,9 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $optionsBulks = [];
+        $optionProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_option.flat');
         foreach ($optionData as $index => $data) {
-            $option = $this->loadFixture('attribute_options', $data);
+            $option = $optionProcessor->process($data);
             $this->validate($option);
             $optionsBulks[$index % 200][]= $option;
         }
@@ -368,8 +382,6 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $attribute = $this->getAttribute($data['code']);
-            $this->refresh($attribute);
-
             assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
             assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
             assertEquals(($data['localizable'] == 1), $attribute->isLocalizable());
@@ -402,8 +414,6 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $family = $this->getFamily($data['code']);
-            $this->refresh($family);
-
             $requirement = $this->normalizeRequirements($family);
 
             assertEquals($data['attributes'], implode(',', $family->getAttributeCodes()));
@@ -455,8 +465,6 @@ class FixturesContext extends BaseFixturesContext
                 'AttributeOption',
                 ['code' => $data['code'], 'attribute' => $attribute]
             );
-            $this->refresh($option);
-
             $option->setLocale('en_US');
             assertEquals($data['label-en_US'], (string) $option);
         }
@@ -471,8 +479,6 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $category = $this->getCategory($data['code']);
-            $this->refresh($category);
-
             assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
             if (empty($data['parent'])) {
                 assertNull($category->getParent());
@@ -491,8 +497,6 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $associationType = $this->getAssociationType($data['code']);
-            $this->refresh($associationType);
-
             assertEquals($data['label-en_US'], $associationType->getTranslation('en_US')->getLabel());
             assertEquals($data['label-fr_FR'], $associationType->getTranslation('fr_FR')->getLabel());
         }
@@ -1529,7 +1533,8 @@ class FixturesContext extends BaseFixturesContext
             }
         }
 
-        $attribute = $this->loadFixture('attributes', $data);
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute.flat');
+        $attribute = $processor->process($data);
 
         $familiesToPersist = [];
         if ($families) {
@@ -1599,7 +1604,8 @@ class FixturesContext extends BaseFixturesContext
             $data = [['code' => $data]];
         }
 
-        $category = $this->loadFixture('categories', $data);
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.category.flat');
+        $category = $processor->process($data);
 
         /*
          * When using ODM, one must persist and flush category without product
@@ -1836,7 +1842,8 @@ class FixturesContext extends BaseFixturesContext
             }
         }
 
-        $family = $this->loadFixture('families', $data);
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family.flat');
+        $family = $processor->process($data);
         $this->getFamilySaver()->save($family);
 
         return $family;
@@ -1855,7 +1862,8 @@ class FixturesContext extends BaseFixturesContext
             $data = ['code' => $data];
         }
 
-        $attributeGroup = $this->loadFixture('attribute_groups', $data);
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_group.flat');
+        $attributeGroup = $processor->process($data);
         $this->getContainer()->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
 
         return $attributeGroup;

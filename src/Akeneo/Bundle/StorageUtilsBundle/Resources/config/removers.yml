@@ -1,3 +1,7 @@
 parameters:
     akeneo_storage_utils.remover.base.class:                  Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover
     akeneo_storage_utils.remover.base_options_resolver.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemovingOptionsResolver
+
+services:
+    akeneo_storage_utils.remover.base_options_resolver:
+        class: %akeneo_storage_utils.remover.base_options_resolver.class%

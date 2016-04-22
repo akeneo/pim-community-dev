@@ -151,48 +151,24 @@ class DatabaseCommand extends ContainerAwareCommand
         $output->writeln(
             sprintf('<info>Load jobs for fixtures. (data set: %s)</info>', $this->getContainer()->getParameter('installer_data'))
         );
-        $this->getFixtureJobLoader()->load();
+        $this->getFixtureJobLoader()->loadJobInstances();
 
-        $output->writeln(
-            sprintf('<info>Load fixtures. (data set: %s)</info>', $this->getContainer()->getParameter('installer_data'))
-        );
-
-        $params = [
-                '--no-interaction' => true,
-                '--append'         => true
-            ]
-            + $this->getFixturesList($input->getOption('fixtures'));
-
-        $this->commandExecutor->runCommand('doctrine:fixtures:load', $params);
-
-        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $this->getStorageDriver()) {
-            $this->commandExecutor->runCommand('doctrine:mongodb:fixtures:load', ['--append' => true]);
+        $jobInstances = $this->getFixtureJobLoader()->getLoadedJobInstances();
+        foreach ($jobInstances as $jobInstance) {
+            $params = [
+                'code'       => $jobInstance->getCode(),
+                '--no-debug' => true,
+                '--no-log'   => true,
+                '-v'         => true
+            ];
+            $this->commandExecutor->runCommand('akeneo:batch:job', $params);
         }
-
         $output->writeln('');
 
         $output->writeln('<info>Delete jobs for fixtures.</info>');
-        $this->getFixtureJobLoader()->deleteJobs();
+        $this->getFixtureJobLoader()->deleteJobInstances();
 
         return $this;
-    }
-
-    /**
-     * Get fixtures to load list
-     *
-     * @param string $fixtureOpt
-     *
-     * @return array
-     */
-    protected function getFixturesList($fixtureOpt)
-    {
-        if ($fixtureOpt === self::LOAD_BASE) {
-            $fixtures = $this->getOroFixturesList();
-
-            return ['--fixtures' => $fixtures];
-        }
-
-        return [];
     }
 
     /**
@@ -228,15 +204,5 @@ class DatabaseCommand extends ContainerAwareCommand
     protected function getFixtureJobLoader()
     {
         return $this->getContainer()->get('pim_installer.fixture_loader.job_loader');
-    }
-
-    /**
-     * Get the Oro fixtures list
-     *
-     * @return array
-     */
-    protected function getOroFixturesList()
-    {
-        return [];
     }
 }
