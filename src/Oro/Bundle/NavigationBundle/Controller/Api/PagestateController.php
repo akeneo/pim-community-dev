@@ -7,7 +7,6 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Routing\ClassResourceInterface;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\NavigationBundle\Entity\PageState;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -19,11 +18,6 @@ class PagestateController extends FOSRestController implements ClassResourceInte
 {
     /**
      * Get list of user's page states
-     *
-     * @ApiDoc(
-     *  description="Get list of user's page states",
-     *  resource=true
-     * )
      */
     public function cgetAction()
     {
@@ -42,13 +36,7 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *
      * @param int $id Page state id
      *
-     * @ApiDoc(
-     *  description="Get page state",
-     *  resource=true,
-     *  requirements={
-     *      {"name"="id", "dataType"="integer"},
-     *  }
-     * )
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getAction($id)
     {
@@ -61,11 +49,6 @@ class PagestateController extends FOSRestController implements ClassResourceInte
 
     /**
      * Create new page state
-     *
-     * @ApiDoc(
-     *  description="Create new page state",
-     *  resource=true
-     * )
      */
     public function postAction()
     {
@@ -82,14 +65,6 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      * Update existing page state
      *
      * @param int $id Page state id
-     *
-     * @ApiDoc(
-     *  description="Update existing page state",
-     *  resource=true,
-     *  requirements={
-     *      {"name"="id", "dataType"="integer"},
-     *  }
-     * )
      */
     public function putAction($id)
     {
@@ -108,14 +83,6 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      * Remove page state
      *
      * @param int $d
-     *
-     * @ApiDoc(
-     *  description="Remove page state",
-     *  resource=true,
-     *  requirements={
-     *      {"name"="id", "dataType"="integer"},
-     *  }
-     * )
      */
     public function deleteAction($id)
     {
@@ -133,11 +100,6 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      * Check if page id already exists
      *
      * @QueryParam(name="pageId", nullable=false, description="Unique page id")
-     *
-     * @ApiDoc(
-     *  description="Check if page id already exists",
-     *  resource=true
-     * )
      */
     public function getCheckidAction()
     {
