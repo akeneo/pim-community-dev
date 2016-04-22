@@ -4,14 +4,15 @@ namespace Oro\Bundle\DataGridBundle\Twig;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class MetadataExtension extends \Twig_Extension
 {
     const ROUTE = 'oro_datagrid_index';
 
-    /** @var Manager */
-    protected $manager;
+    /** @var ContainerInterface */
+    protected $container;
 
     /** @var RequestParameters */
     protected $requestParams;
@@ -19,9 +20,9 @@ class MetadataExtension extends \Twig_Extension
     /** @var RouterInterface */
     protected $router;
 
-    public function __construct(Manager $manager, RequestParameters $requestParams, RouterInterface $router)
+    public function __construct(ContainerInterface $container, RequestParameters $requestParams, RouterInterface $router)
     {
-        $this->manager       = $manager;
+        $this->container     = $container;
         $this->requestParams = $requestParams;
         $this->router        = $router;
     }
@@ -55,7 +56,8 @@ class MetadataExtension extends \Twig_Extension
      */
     public function getGridMetadata($name, $params = [])
     {
-        $metaData = $this->manager->getDatagrid($name)->getMetadata();
+        $manager = $this->container->get('oro_datagrid.datagrid.manager');
+        $metaData = $manager->getDatagrid($name)->getMetadata();
         $metaData->offsetAddToArray('options', ['url' => $this->generateUrl($name, $params)]);
 
         return $metaData->toArray();

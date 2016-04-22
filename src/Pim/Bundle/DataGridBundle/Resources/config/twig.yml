@@ -6,7 +6,7 @@ services:
     pim_datagrid.twig.filter_extension:
         class: %pim_datagrid.twig.filter_extension.class%
         arguments:
-            - @oro_datagrid.datagrid.manager
+            - @service_container
             - @pim_datagrid.datagrid.product.filters_configurator
         tags:
             - { name: twig.extension }

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Twig;
 
-use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Add some functions about datagrid filters
@@ -14,19 +14,21 @@ use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator
  */
 class FilterExtension extends \Twig_Extension
 {
-    /** @var Manager */
-    protected $manager;
+    /** @var ContainerInterface */
+    protected $container;
 
     /** @var FiltersConfigurator */
     protected $configurator;
 
     /**
-     * @param Manager             $configuration
+     * @param ContainerInterface  $container
      * @param FiltersConfigurator $configurator
+     *
+     * @internal param ContainerInterface $configuration
      */
-    public function __construct(Manager $manager, FiltersConfigurator $configurator)
+    public function __construct(ContainerInterface $container, FiltersConfigurator $configurator)
     {
-        $this->manager      = $manager;
+        $this->container    = $container;
         $this->configurator = $configurator;
     }
 
@@ -47,7 +49,8 @@ class FilterExtension extends \Twig_Extension
      */
     public function filterLabel($code)
     {
-        $configuration = $this->manager->getDatagrid('product-grid')->getAcceptor()->getConfig();
+        $manager = $this->container->get('oro_datagrid.datagrid.manager');
+        $configuration = $manager->getDatagrid('product-grid')->getAcceptor()->getConfig();
         $this->configurator->configure($configuration);
 
         $label = $configuration->offsetGetByPath(sprintf('[filters][columns][%s][label]', $code));
