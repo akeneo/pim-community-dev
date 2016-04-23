@@ -36,8 +36,6 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
             targetEntity: Pim\Component\Catalog\Model\CurrencyInterface
             mappedBy: null
             inversedBy: null
-            cascade:
-                - persist
             joinTable:
                 name: pim_catalog_channel_currency
                 schema: null
@@ -54,6 +52,7 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
             inversedBy: channels
             cascade:
                 - persist
+                - detach
             joinTable:
                 name: pim_catalog_channel_locale
                 schema: null
