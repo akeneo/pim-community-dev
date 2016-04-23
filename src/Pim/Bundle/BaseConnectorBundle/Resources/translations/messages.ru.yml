@@ -31,15 +31,15 @@ pim_base_connector:
       import_associations.title: Импорт ассоциаций
     csv_category_import:
       title: Импорт категорий из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт категории
     csv_attribute_import:
       title: Импорт атрибутов из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт атрибутов
     csv_attribute_option_import:
       title: Импорт выборов атрибутов из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт выборов атрибутов
     csv_association_type_import:
       title: Импорт типов ассоциаций из CSV
@@ -47,11 +47,11 @@ pim_base_connector:
       import.title: Импорт типов ассоциаций
     csv_group_import:
       title: Импорт группы из CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт группы
     csv_variant_group_import:
       title: Импорт группы вариантов в CSV
-      validation.title: Подтверждение файла
+      validation.title: Проверка файла
       import.title: Импорт групп вариантов
   steps:
     dummy_reader.title: Заглушка
@@ -131,7 +131,7 @@ pim_base_connector:
       help: Символ, используемый как разделитель полей
     enclosure:
       label: Символ обрамления
-      help: Символ, используемый для обрамления поля
+      help: Символ, используемый для обрамления полей
     escape:
       label: Экранирование
       help: Символ, используемый для экранирования

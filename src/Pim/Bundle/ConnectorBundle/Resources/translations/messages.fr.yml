@@ -21,6 +21,9 @@ pim_connector:
     csv_variant_group_export:
       title: Export des groupes de variantes en CSV
       export.title: Export des groupes de variantes
+    csv_family_export:
+      title: Export des familles en CSV
+      export.title: Export des familles
     csv_product_import:
       title: Import des produits en CSV
       validation.title: Validation du fichier
@@ -54,6 +57,26 @@ pim_connector:
       title: Import des groupes de variantes en CSV
       validation.title: Validation du fichier
       import.title: Import des groupes de variantes
+    xlsx_category_import:
+      title: Import des catégories en XLSX
+      validation.title: Validation du fichier
+      import.title: Import des catégories
+    xlsx_association_type_import:
+      title: "Import des types d'association en XLSX"
+      validation.title: Validation du fichier
+      import.title: "Import des types d'association"
+    xlsx_attribute_import:
+      title: Import des attributs en XLSX
+      validation.title: Validation du fichier
+      import.title: Import des attributs
+    xlsx_attribute_option_import:
+      title: "Import des options d'attributs en XLSX"
+      validation.title: Validation du fichier
+      import.title: "Import des options d'attributs"
+    xlsx_family_import:
+      title: Import des familles en XLSX
+      validation.title: Validation du fichier
+      import.title: Import des familles
     xlsx_product_export:
       title: Export produits en XLSX
       export.title: Export des produits
@@ -62,6 +85,35 @@ pim_connector:
       validation.title: Validation du fichier
       import.title: Import des produits
       import_associations.title: Import des associations de produits
+    xlsx_group_export:
+      title: Export des groupes en XLSX
+      export.title: Export de groupes
+    xlsx_variant_group_export:
+      title: Export des groupes de variantes en XLSX
+      export.title: Export des groupes de variantes
+    xlsx_group_import:
+      title: Import des groupes en XLSX
+      validation.title: Validation du fichier
+      import.title: Import des groupes
+    xlsx_variant_group_import:
+      title: Import des groupes de variantes en XLSX
+      validation.title: Validation du fichier
+      import.title: Import des groupes de variantes
+    xlsx_family_export:
+      title: Export des familles en XLSX
+      export.title: Export des familles
+    xlsx_category_export:
+      title: Export des catégories en XLSX
+      export.title: Export des catégories
+    xlsx_attribute_export:
+      title: Export des attributs en XLSX
+      export.title: Export des attributs en XLSX
+    xlsx_attribute_option_export:
+      title: "Export des options d'attributs en XLSX"
+      export.title: "Export des options d'attributs en XLSX"
+    xlsx_association_type_export:
+      title: "Export des types d'association en XLSX"
+      export.title: "Export des types d'association en XLSX"
   steps:
     dummy_reader.title: Lecteur factice
     product_reader.title: Extraction des produits
@@ -90,14 +142,14 @@ pim_connector:
     category_writer.title: Stockage des catégories
     variant_group_writer.title: Stockage des groupes de variantes
     writer.title: Stockage des entités
-    csv_writer.title: Ecriture CSV
+    csv_writer.title: Ecriture Csv
   export:
     delimiter:
       label: Délimiteur
-      help: Caractère utilisé pour délimiter les valeurs
+      help: Caractère unique utilisé pour délimiter les valeurs
     enclosure:
-      label: "Caractère d'encadrement (enclosure)"
-      help: Délimiteur de champs
+      label: "Caractère d'encadrement"
+      help: Caractère unique utilisé pour encadrer les champs
     withHeader:
       label: Avec en-tête
       help: Définit si la première ligne du fichier contient les libellés des colonnes
@@ -107,6 +159,12 @@ pim_connector:
     channel:
       label: Canal
       help: Le canal que vous souhaitez exporter
+    decimalSeparator:
+      label: Séparateur de décimales
+      help: Détermine le séparateur de décimale
+    dateFormat:
+      label: Format de date
+      help: Déterminer le format des champs de type date
     header:
       label: Entête
   import:
@@ -135,8 +193,8 @@ pim_connector:
       label: Délimiteur
       help: Caractère unique utilisé comme délimiteur de champ pour les fichiers CSV
     enclosure:
-      label: "Caractère d'encadrement (enclosure)"
-      help: Délimiteur de champs
+      label: "Caractère d'encadrement"
+      help: Caractère unique utilisé pour encadrer les champs
     escape:
       label: Echapper
       help: Le caractère utilisé pour échapper les champs
@@ -145,10 +203,10 @@ pim_connector:
       help: "Si oui, un contrôle sera effectué pour s'assurer qu'il n'existe pas de références circulaires entre les catégories"
     realTimeVersioning:
       label: "Mise à jour de l'historique en temps réel"
-      help: "Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances."
+      help: "Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances"
     copyValuesToProducts:
       label: Copie des valeurs liées aux groupes de variantes dans les produits
-      help: "Les produits associés aux groupes de variantes seront mis à jour automatiquement avec les valeurs d'attributs liées aux groupes. Cette option peut être désactivée pour mettre à jour uniquement les groupes de variantes."
+      help: "Les produits associés aux groupes de variantes seront mis à jour automatiquement avec les valeurs d'attributs liées aux groupes. Cette option peut être désactivée pour mettre à jour uniquement les groupes de variantes"
     enabledComparison:
       label: Comparer les valeurs
       help: "Permettre la comparaison entre les valeurs d'origine et des valeurs importées. Permet d'accélérer les importations si les valeurs importées sont très similaires aux valeurs d'origine"
@@ -170,6 +228,6 @@ job_execution.summary:
   skip_products: produits ignorés
   displayed: premiers avertissements affichés
   charset_validator:
-    title: 'Encodage du fichier :'
-    skipped: Ignoré, extension dans la liste blanche
+    title: 'Encodage du fichier:'
+    skipped: ignoré, extension dans la liste blanche
   product_skipped_no_diff: produit ignoré (aucune différence)
