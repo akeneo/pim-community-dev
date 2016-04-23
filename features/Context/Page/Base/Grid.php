@@ -610,6 +610,36 @@ class Grid extends Index
     }
 
     /**
+     * Removes selection from filter
+     * 
+     * @param string $filterName
+     * @param string $selectionName
+     * @param DriverInterface|null $driver
+     * 
+     * @return null
+     */
+    public function removeFiltersSelection($filterName, $selectionName, $driver = null)
+    {
+        if (!$driver || !$driver instanceof Selenium2Driver) {
+            throw new \InvalidArgumentException('Selenium2Driver is required to filter by a choice filter');
+        }
+
+        $filter = $this->getFilter($filterName);
+        $this->openFilter($filter);
+
+        $driver->executeScript(
+            sprintf(
+                "$('.select2-search-choice div:contains(\"%s\")').parent().children('a').click().trigger('click');",
+                $selectionName
+            )
+        );
+        sleep(1);
+
+        
+        $filter->find('css', 'button.filter-update')->click();
+    }
+
+    /**
      * Click on a filter in filter management list
      *
      * @param string $filterName

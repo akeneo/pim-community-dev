@@ -61,3 +61,10 @@ Feature: Filter products per family
     And I should see the filter "Family"
     When I press the "Family:" button
     Then I should see 20 items in the autocomplete
+
+  Scenario: Successfully remove families selected filter
+    Given I am on the products page
+    When I filter by "Family" with value "computers"
+    Then the grid should contain 2 elements
+    When I remove value "computers" on filter "Family"
+    Then the grid should contain 7 elements
