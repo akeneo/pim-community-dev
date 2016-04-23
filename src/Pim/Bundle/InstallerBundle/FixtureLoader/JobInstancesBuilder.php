@@ -74,6 +74,7 @@ class JobInstancesBuilder
             $yamlReader = $this->getYamlReader();
             $realPath = $fileLocator->locate('@' . $jobsFilePath);
 
+            // TODO: hack to be able to use only the reader of a job
             $jobExecution = new JobExecution();
             $jobParameters = new JobParameters(['filePath' => $realPath]);
             $jobExecution->setJobParameters($jobParameters);

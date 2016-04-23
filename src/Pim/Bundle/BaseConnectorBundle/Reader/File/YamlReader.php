@@ -134,6 +134,10 @@ class YamlReader extends FileReader implements
             }
 
             return $data;
+
+        } else {
+            // TODO: because if not used in the context of an ItemStep, the previous read file will be returned...
+            $this->flush();
         }
 
         return null;

@@ -2,9 +2,12 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\StepExecution;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
+use Pim\Component\Connector\Job\JobParameters\Defaults\ProductCsvExport;
 use Pim\Component\Connector\Writer\File\CsvWriter;
 
 /**
@@ -52,10 +55,17 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
             ['%filename%' => 'invalid_items.csv']
         );
         $this->filesystem->put($key, '');
-        $this->writer->setFilePath(
-            $this->filesystem->getAdapter()->getPathPrefix() .
-            $key
-        );
+
+        // TODO: not convinced at all by this config ... need to separate config and exec concern?
+        $jobExecution = new JobExecution();
+        $default = new ProductCsvExport([]);
+        $params = $default->getParameters();
+        $params ['filePath'] = $this->filesystem->getAdapter()->getPathPrefix() . $key;
+        $jobParameters = new JobParameters($params);
+        $jobExecution->setJobParameters($jobParameters);
+        $stepExecution = new StepExecution('processor', $jobExecution);
+        $this->writer->setStepExecution($stepExecution);
+
         $this->writer->initialize();
         $this->writer->write($this->collector->getInvalidItems());
         $this->writer->flush();
