@@ -213,6 +213,9 @@ class Grid extends Index
 
             if (null !== $results && null !== $select2) {
                 if (in_array($value, ['empty', 'is empty'])) {
+                    // Remove select2 drop mask, who making trouble for switching filter
+                    $driver->executeScript('$("#select2-drop-mask").remove();');
+
                     // Allow passing 'empty' as value too (for backwards compability with existing scenarios)
                     $filter->find('css', 'button.dropdown-toggle')->click();
                     $filter->find('css', '[data-value="empty"]')->click();
@@ -224,9 +227,8 @@ class Grid extends Index
                             ->postValue(['value' => [$value]]);
 
                         $element = $this->spin(function () use ($results) {
-                            return $results->find('css', 'div.select2-result-label');
+                            return $results->find('css', '.select2-result-label');
                         }, 'Unable to find Select2 result label.');
-
                         $element->click();
                     }
                 }
