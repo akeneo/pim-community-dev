@@ -1,36 +1,3 @@
-oro.user.grid.users:
-  columns:
-    createdAt: Создано
-    updatedAt: Обновлено
-    enabled: Статус
-oro.user.grid.roles:
-  columns:
-    label: Метка
-oro.user.grid.groups:
-  columns:
-    name: Имя
-pim_title:
-  user.index: Пользователи
-  user_role.index: Роли
-  user_group.index: Группы
-  system_configuration.index: Настройки
-user.title: Пользователь
-user.overview: Пользователь
 user:
   default_grid_view:
     none: Нет
-Entity: Объект
-oro_security:
-  acl_group:
-    user: Пользователи
-    role: Роли
-CREATE: Создать
-EDIT: Редактировать
-DELETE: Удалить
-oro:
-  security:
-    access-level:
-      BASIC: Пользователь
-      SYSTEM: Система
-      NONE: Нет
-user-group.overview: Группы

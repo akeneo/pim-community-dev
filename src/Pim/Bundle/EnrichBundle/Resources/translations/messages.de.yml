@@ -59,7 +59,7 @@ pim_enrich:
       VARIANT: Variante
       X_SELL: Cross-Sell
       ADDITIONAL: Ergänzend
-      RELATED: Verknüpft
+      RELATED: Zugehörig
     tab:
       product.title: Produkte
       property.title: Eigenschaften
@@ -81,7 +81,7 @@ pim_enrich:
       page_subtitle: 'Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)'
       title: Aktion auswählen
       subtitle: 'Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen'
-      confirm: 'Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.'
+      confirm: 'Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.'
       steps:
         first: Produkte auswählen
         second: Aktion auswählen
@@ -92,7 +92,7 @@ pim_enrich:
       page_subtitle: 'Massenbearbeitung (1 Produktfamilie)|Massenbearbeitung (%count% Produktfamilien)'
       title: Aktion auswählen
       subtitle: 'Wählen Sie die Aktion aus, die Sie auf die ausgewählte Produktfamilie anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produktfamilien anwenden wollen'
-      confirm: 'Sie sind dabei eine Produktfamilie mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produktfamilien mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.'
+      confirm: 'Sie sind dabei eine Produktfamilie mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produktfamilien mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.'
       steps:
         first: Produktfamilien auswählen
         second: Aktion auswählen
@@ -140,9 +140,9 @@ pim_enrich:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: 'Die Massenbearbeitung "zu Variantengruppe hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
     set-attribute-requirements:
-      label: Benötigte Attribute auswählen
-      description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
-      success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
+      label: Attribut-Anforderungen festlegen
+      description: Die folgenden Attribut-Anforderungen werden den ausgewählten Produktfamilien zugeordnet
+      success_flash: Die Attribut-Anforderungen wurden den ausgewählten Produktfamilien zugeordnet
       launched_flash: 'Die Massenbearbeitung "setzen von Attributanforderungen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
     mass_action:
       quick_export:
@@ -856,6 +856,8 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Gemeinsame 
 update_product_value.steps.update_product_value_processor.title: Wert des Produkts aktualisieren
 add_to_variant_group_clean.steps.excluded.title: Ausgeschlossene Produkte
 add_to_variant_group_clean.steps.duplicated.title: Doppelte Achse
+add_to_variant_group.steps.excluded.title: Ausgeschlossene Produkte
+add_to_variant_group.steps.duplicated.title: Doppelte Achse
 add_to_variant_group.steps.cleaner.warning.description: 'Das Produkt kann der gewählten Variantengruppe nicht zugeordnet werden: gleiche Variantenachsenwerte mit einem anderen Produkt in der Auswahl'
 edit_common_attributes: Gemeinsame Attribute bearbeiten
 edit_common_attributes_clean: Bereinige Dateien für gemeinsame Attribute
