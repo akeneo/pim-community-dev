@@ -12,12 +12,12 @@ services:
         class: %pim_connector.job_parameters.defaults.simple_csv_export.class%
         arguments:
             -
-                - 'pim_base_connector.jobs.csv_attribute_export.title'
-                - 'pim_base_connector.jobs.csv_family_export.title'
-                - 'pim_base_connector.jobs.csv_group_export.title'
-                - 'pim_base_connector.jobs.csv_association_type_export.title'
-                - 'pim_base_connector.jobs.csv_attribute_option_export.title'
-                - 'pim_base_connector.jobs.csv_category_export.title'
+                - 'pim_connector.jobs.csv_attribute_export.title'
+                - 'pim_connector.jobs.csv_family_export.title'
+                - 'pim_connector.jobs.csv_group_export.title'
+                - 'pim_connector.jobs.csv_association_type_export.title'
+                - 'pim_connector.jobs.csv_attribute_option_export.title'
+                - 'pim_connector.jobs.csv_category_export.title'
         tags:
             - { name: akeneo_batch.job_parameters.defaults }
 
@@ -25,7 +25,7 @@ services:
         class: %pim_connector.job_parameters.defaults.product_csv_export.class%
         arguments:
             -
-                - 'pim_base_connector.jobs.csv_product_export.title'
+                - 'pim_connector.jobs.csv_product_export.title'
         tags:
             - { name: akeneo_batch.job_parameters.defaults }
 
@@ -33,7 +33,7 @@ services:
         class: %pim_connector.job_parameters.defaults.variant_group_csv_export.class%
         arguments:
             -
-                - 'pim_base_connector.jobs.csv_variant_group_export.title'
+                - 'pim_connector.jobs.csv_variant_group_export.title'
         tags:
             - { name: akeneo_batch.job_parameters.defaults }
 
