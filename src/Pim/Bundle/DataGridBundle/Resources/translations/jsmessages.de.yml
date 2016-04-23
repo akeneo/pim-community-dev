@@ -29,6 +29,7 @@ Please, select item to perform action.: Bitte Element zum Ausführen der Aktion 
 View per page: Pro Seite
 oro.datagrid.entityHint: Entität
 oro.datagrid.noentities: Keine Einträge gefunden
+oro.datagrid.noresults: 'Kein {{ entityHint }} stimmt mit der Suche überein. Bitte passen Sie Ihre Suchkriterien an...'
 oro.datagrid.nocolumns: Es sind keine Spalten für diese Tabelle konfiguriert
 oro.datagrid.pagination.label: Seite
 oro.datagrid.pagination.totalPages: 'von {{ totalPages }}'

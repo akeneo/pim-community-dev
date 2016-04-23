@@ -123,6 +123,8 @@ flash:
     removed: Attribut erfolgreich entfernt
     identifier not removable: Ein Attribut zur eindeutigen Identifizierung kann nicht entfernt werden
     used by groups: 'Dieses Attribut kann nicht gelöscht werden, da es in %count% Variantengruppen verwendet wird'
+    option created: Option erfolgreich angelegt
+    error creating option: Es trat ein Fehler bei dem Versuch auf, eine Option anzulegen. Bitte wiederholen Sie den Vorgang
   attribute group:
     created: Attributgruppe erfolgreich angelegt
     updated: Attributgruppe erfolgreich aktualisiert
@@ -140,6 +142,7 @@ flash:
     created: Strukturbaum erfolgreich angelegt
     updated: Strukturbaum erfolgreich aktualisiert
     removed: Strukturbaum erfolgreich entfernt
+    not removable: Strukturbäume, die mit Ausgabekanälen verbunden sind, können nicht entfernt werden.
   channel:
     saved: Ausgabekanal erfolgreich gespeichert
     removed: Ausgabekanal erfolgreich entfernt
@@ -272,6 +275,7 @@ Defaultvalue: Standardwert
 Variant: Variante
 Smart: Smart
 Useable as grid column: Verwendbar als Spalte in der Übersicht
+Useable as grid filter: Verwendbar als Grid-Filter
 Family: Produktfamilie
 Available locales: Verfügbare Gebietsschemata
 Locale specific: Gebietsschema-spezifisch
@@ -414,6 +418,7 @@ pim_enrich.mass_edit_action:
     success_flash: Der Produktstatus wurde geändert
   edit-common-attributes:
     label: Attribute bearbeiten
+    description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
     empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
     success_flash: Die Produkt-Attribute wurden aktualisiert
   classify:
@@ -443,6 +448,7 @@ pim_enrich.completeness:
   legend:
     locale_not_associated: Das Gebietsschema ist nicht mit diesem Ausgabekanal verbunden
 pim_enrich.group:
+  axis.help: Achsen sind Attribute, die Varianten der Variantengruppe definieren. Achsen sind Attribute mit Optionen, welche nicht sprachabhängig sind und keinen Gültigkeitsbereich haben. Eine Achse kann nach der Erstellung der Variantengruppe nicht geändert werden.
   type:
     VARIANT: Variante
     X_SELL: Cross-Sell
