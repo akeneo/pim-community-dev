@@ -1,59 +1,77 @@
 pim_connector:
   jobs:
     csv_product_export:
-      title: Exportar productos a CSV
-      export.title: Exportar productos
+      title: Exportar producto en CSV
+      export.title: Exportar producto
     csv_category_export:
-      title: Exportar categorías a CSV
+      title: Exportar categorías en CSV
       export.title: Exportar categorías
     csv_attribute_export:
-      title: Exportar atributos a CSV
+      title: Exportar atributos en CSV
       export.title: Exportar atributos
     csv_attribute_option_export:
-      title: Exportar opciones de atributos a CSV
+      title: Exportar opciones de atributos en CSV
       export.title: Exportar opciones de atributos
     csv_association_type_export:
-      title: Exportar tipos de asociaciones a CSV
+      title: Exportar tipos de asociociones en CSV
       export.title: Exportar tipos de asociaciones
     csv_group_export:
-      title: Exportar grupos a CSV
+      title: Exportar grupos en CSV
       export.title: Exportar grupos
     csv_variant_group_export:
-      title: Exportar Grupo de variantes a CSV
-      export.title: Exportación de grupo de variantes
+      title: Exportar grupo de variantes en CSV
+      export.title: Exportar grupo de variantes
+    csv_family_export:
+      title: Exportar familias en CSV
+      export.title: Exportar familias
     csv_product_import:
-      title: Importar productos desde CSV
+      title: Importar productos en CSV
       validation.title: Validación de archivo
       import.title: Importar productos
       import_associations.title: Importar asociaciones
     csv_category_import:
-      title: Importar categorías desde CSV
-      validation.title: Validación de archivo
+      title: Importar categorías en CSV
+      validation.title: Validación de fichero
       import.title: Importar categorías
     csv_attribute_import:
-      title: Importar atributos desde CSV
-      validation.title: Validación de archivo
+      title: Importar atributos en CSV
+      validation.title: Validación de fichero
       import.title: Importar atributos
     csv_attribute_option_import:
-      title: Importar opciones de atributos desde CSV
-      validation.title: Validación de archivo
+      title: Importar opciones de atributos en CSV
+      validation.title: Validación de fichero
       import.title: Importar opciones de atributos
     csv_association_type_import:
-      title: Importar tipos de asociaciones desde CSV
-      validation.title: Validación de archivo
+      title: Importar tipos de asociaciones en CSV
+      validation.title: Validación de fichero
       import.title: Importar tipos de asociaciones
     csv_family_import:
       title: Importar familias en CSV
-      validation.title: Validación de archivo
+      validation.title: Validación de fichero
       import.title: Importe de familias
     csv_group_import:
-      title: Importar grupos desde CSV
-      validation.title: Validación de archivo
+      title: Importar grupos en CSV
+      validation.title: Validación de fichero
       import.title: Importar grupos
     csv_variant_group_import:
       title: Importar grupo de variantes en CSV
       validation.title: Validación de fichero
       import.title: Importar grupos de variantes
+    xlsx_category_import:
+      validation.title: Validación de archivo
+      import.title: Importar categorías
+    xlsx_association_type_import:
+      validation.title: Validación de archivo
+      import.title: Importar tipos de asociaciones
+    xlsx_attribute_import:
+      validation.title: Validación de archivo
+      import.title: Importar atributos
+    xlsx_attribute_option_import:
+      validation.title: Validación de archivo
+      import.title: Importar opciones de atributos
+    xlsx_family_import:
+      validation.title: Validación de archivo
+      import.title: Importe de familias
     xlsx_product_export:
       title: Exportar producto en XLSX
       export.title: Exportar producto
@@ -61,93 +79,112 @@ pim_connector:
       validation.title: Validación de archivo
       import.title: Importar productos
       import_associations.title: Importar asociaciones
+    xlsx_group_export:
+      export.title: Exportar grupos
+    xlsx_variant_group_export:
+      export.title: Exportación de grupo de variantes
+    xlsx_group_import:
+      validation.title: Validación de archivo
+      import.title: Importar grupos
+    xlsx_variant_group_import:
+      validation.title: Validación de archivo
+    xlsx_family_export:
+      export.title: Exportar familias
+    xlsx_category_export:
+      export.title: Exportar categorías
   steps:
     dummy_reader.title: Lector de prueba
     product_reader.title: Extracción de productos
     entity_reader.title: Extracción de entidades
     csv_reader:
       title: Lector de CSV
-      invalid_item_columns_count: 'Se esperan %totalColumnsCount% columna(s), encontradas %itemColumnsCount% en %csvPath%:%lineno%'
-    csv_product_reader.title: Lector de productos desde CSV
-    csv_category_reader.title: Lector de categorías desde CSV
-    csv_variant_group .title: Lector de grupo de variantes CSV
+      invalid_item_columns_count: 'Se esperan tener %totalColumnsCount% columnas, actualmente hay %itemColumnsCount% en %csvPath%:%lineno%'
+    csv_product_reader.title: Lector CSV de productos
+    csv_category_reader.title: Lector CSV de categorías
+    csv_variant_group .title: Lector CSV de groupos de variantes
     dummy_processor.title: Procesador de prueba
     product_processor.title: Creación de productos
-    variant_group_processor.title: Creación / actualización de grupo de variantes
+    variant_group_processor.title: Creación/actualización de grupo de variantes
     category_processor.title: Creación de categorías
     association_processor.title: Creación de asociaciones
     product_association_processor.title: Creación de asociaciones
     group_processor.title: Creación de grupos
     attribute_processor.title: Creación de atributos
-    attribute_option_processor.title: Creación de opciones de atributo
-    heterogeneous_processor.title: Serializar productos a CSV
-    homogeneous_processor.title: Serializar entidades a CSV
+    attribute_option_processor.title: Creación de opciones de atributos
+    heterogeneous_processor.title: Serializador CSV de productos
+    homogeneous_processor.title: Serializador CSV de entidades
     transformer_processor.title: Transformación
     dummy_writer.title: Escritor de prueba
     file_writer.title: Salida
-    product_writer.title: Almacenado de productos
-    category_writer.title: Almacenado de categorías
+    product_writer.title: Almacenamiento de productos
+    category_writer.title: Almacenamiento de categorías
     variant_group_writer.title: Almacenamiento de grupo de variantes
-    writer.title: Almacenado de entidades
-    csv_writer.title: Editor CSV
+    writer.title: Almacenamiento de entidades
+    csv_writer.title: Editor Csv
   export:
     delimiter:
       label: Delimitador
-      help: Carácter usado para establecer el delimitador de campo
+      help: Único caracter utilizado para delimitar el campo
     enclosure:
-      label: Contenedor
-      help: Carácter usado para establecer el contenedor de campo
+      label: Encuadre
+      help: Único caracter utilizado para encuadrar los campos
     withHeader:
-      label: Con cabecera
-      help: Si desea imprimir el nombre de columna o no
+      label: Con encabezado
+      help: Imprimir o no el nombre de columnas
     filePath:
-      label: Ruta del archivo
-      help: Donde guardar el archivo generado en el sistema de archivos
+      label: Camino del fichero
+      help: Ubicación del archivo generado dentro del servidor
     channel:
       label: Canal
-      help: Canal que desea exportar
+      help: El canal que desea exportar
+    decimalSeparator:
+      label: Separador de decimales
+      help: Determinar el separador de decimales
+    dateFormat:
+      label: Formato de fecha
+      help: Determinar el formato de los campos de fecha
     header:
       label: Encabezado
   import:
     enabled:
-      label: Activar el producto
-      help: Si el producto importado debe estar habilitado o no
+      label: Habilitar el producto
+      help: Habilitar o no los productos importados
     categoriesColumn:
       label: Columna de categorías
       help: Nombre de la columna de categorías
     familyColumn:
-      label: Familia de la columna
-      help: Nombre de la familia de la columna
+      label: Columna de familias
+      help: Nombre de la columna de familias
     groupsColumn:
       label: Columna de grupos
       help: Nombre de la columna de grupos
     filePath:
       label: Fichero
-      help: El archivo CSV para importar
+      help: Fichero CSV a importar
     yamlFilePath:
       label: Fichero
-      help: El archivo YAML para importar
+      help: Archivo YAML a importar
     uploadAllowed:
-      label: Permite la carga de archivos
-      help: Si desea o no permitir cargar el archivo directamente
+      label: Permitir la carga de ficheros
+      help: Permitir o no cargar el fichero directamente
     delimiter:
       label: Delimitador
       help: Único carácter utilizado para delimitar el campo para el fichero CSV
     enclosure:
-      label: Contenedor
-      help: Carácter usado para establecer el contenedor de campo
+      label: Encuadre
+      help: Único carácter usado para encuadrar el campo
     escape:
       label: Escape
-      help: Carácter usado para establecer el escape de campo
+      help: Único carácter utilizado para fijar el escape del campo
     circularRefsChecked:
-      label: Comprobar referencias circulares
-      help: En caso afirmativo, los datos se procesarán para comprobar que no existen referencias circulares entre las categorías
+      label: Verificar referencias circulares
+      help: De ser afirmativo, los datos serán procesados para asegurar que no hay referencias circulares entre las categorías
     realTimeVersioning:
       label: Actualización del historial en tiempo real
-      help: Significa que el historial de productos se actualiza automáticamente, puede desactivarse para mejorar el rendimiento
+      help: Significa que el historial del producto es actualizada automáticamente, puede ser desactivada para mejorar el desempeño
     copyValuesToProducts:
-      label: Copiar los valores de grupo de variantes a productos
-      help: Significa que los productos se actualizan automáticamente con los valores del grupo de variantes, puede establecerse a sólo actualizar un grupo de variantes
+      label: Copiar los valores de grupo de variantes a los productos
+      help: Significa que el producto es actualizado automáticamente con valores de un grupo de variantes, puede ser desactivado solamente para actualizar el grupo de variantes
     enabledComparison:
       label: Comparar valores
       help: Permite comparar entre los valores originales y valores importados. Puede acelerar la importación si los valores importados son similares a los valores originales
@@ -167,8 +204,8 @@ job_execution.summary:
   update_products: productos actualizados
   process_products: productos procesados
   skip_products: productos omitidos
-  displayed: primeras advertencias mostradas
+  displayed: primeras alertas mostradas
   charset_validator:
-    title: 'Codificación de Archivo:'
-    skipped: omitido, extensión en lista blanca
+    title: 'Codificación del archivo:'
+    skipped: omitido, extensión en la lista blanca
   product_skipped_no_diff: producto omitido (ninguna diferencia)

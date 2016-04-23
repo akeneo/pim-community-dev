@@ -33,6 +33,6 @@ flash.datagrid view:
   removed: Vista de grilla de datos eliminada correctamente
   not removable: No tienes los derechos para eliminar este punto de vista
 quick_export: Exportación rápida
-import: Importar
-export: Exportar
-mass_edit: Edición masiva
+import: Importación
+export: Exportación
+mass_edit: Edición en masa
