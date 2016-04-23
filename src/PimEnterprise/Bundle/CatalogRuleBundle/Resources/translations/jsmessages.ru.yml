@@ -3,7 +3,3 @@ pimee_catalog_rule:
     rule-grid:
       mass_edit_action:
         confirm_ok: Подтвердить
-  attribute:
-    list:
-      code.label: Код
-      action.label: Действие

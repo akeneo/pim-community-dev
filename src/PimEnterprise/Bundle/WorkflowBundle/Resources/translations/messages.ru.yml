@@ -39,15 +39,17 @@ pimee_workflow:
     index: Управление опубликованными продуктами
   product:
     permission:
+      label: Разрешения
       own: Обзор / публикация
       edit: Редактировать
+      view: Просмотр
   jobs:
     csv_product_proposal_import:
       title: Импорт предложений в CSV
       import.title: Импорт предложений
     approve_product_draft:
-      title: Принять предложение
-      perform.title: Принять предложение
+      title: Одобрить предложение
+      perform.title: Одобрить предложение
     refuse_product_draft:
       title: Отклонить предложения
       perform.title: Отклонить предложения
@@ -71,6 +73,8 @@ flash:
       error: 'Это предложение нельзя применить из-за следующей ошибки. %error%'
     refuse:
       success: Это предложение было отклонено.
+    remove:
+      success: Это предложение было удалено.
 pim_menu:
   item:
     published_product: Опубликованные продукты
@@ -106,4 +110,3 @@ job_execution.summary:
   proposal_updated: обновленное предложение
   proposal_created: созданное предложение
   proposal_skipped: пропущеннoе предложение (без изменений)
-published products: Опубликованные продукты

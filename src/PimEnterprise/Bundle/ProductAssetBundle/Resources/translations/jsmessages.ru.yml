@@ -1,16 +1,4 @@
 pimee_product_asset:
-  form:
-    product:
-      asset:
-        manage_asset:
-          cancel: Отмена
-  enrich_variation:
-    popin:
-      delete:
-        title: Подтверждение удаления
   mass_upload:
-    btn:
-      delete: Удалить
     action:
-      cancel: Отмена
       delete: Удалить

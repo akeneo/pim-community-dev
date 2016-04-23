@@ -8,7 +8,7 @@ pimee_workflow:
   entity:
     published_product:
       btn:
-        original_product: Muokkaa työn alla olevaa kopiota
+        original_product: Muokkaa työstämääsi kopiota
     proposal:
       modal.title: 'Jätä kommentti (valinnainen - 255 merkkiä max.)'
   proposal:

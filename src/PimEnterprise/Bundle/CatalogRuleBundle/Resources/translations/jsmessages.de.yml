@@ -12,12 +12,14 @@ pimee_catalog_rule:
       then.label: dann
       set_value.label: ist gesetzt in
       copy_value.label: ist kopiert in
-      set.label: ist gesetzt in
-      copy.label: ist kopiert in
+      set.label: wird gesetzt in
+      copy.label: wird kopiert nach
       add.label: wird hinzugefügt zu
   datagrid:
     rule-grid:
       mass_edit_action:
+        confirm_title: Berechnungs-Bestätigung
+        confirm_content: Sind Sie sicher, dass Sie die übereinstimmenden Produkte für die Regeln berechnen möchten?
         confirm_ok: OK
 confirmation:
   remove:
@@ -25,3 +27,5 @@ confirmation:
 flash:
   rule:
     removed: Regel erfolgreich entfernt
+    impacted_product_count: Die Bulk-Aktion, die übereinstimmenden Produkte für die Regeln zu berechnen ist gestartet worden. Sie werden benachrichtigt, wenn dieser Vorgang abgeschlossen ist.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regeleinstellungen

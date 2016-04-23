@@ -17,7 +17,7 @@ pimee_product_asset:
   enrich_variation:
     popin:
       delete:
-        title: Confirmación de borrado
+        title: Confirmación de eliminación
         message: ¿Está seguro que desea eliminar este elemento?
       reset:
         title: Reinicializar variaciones
@@ -29,21 +29,21 @@ pimee_product_asset:
       cancel: Cancelar carga
       delete: Eliminar
       schedule: Programar
-      start: Comenzar carga
+      start: Comenzar la carga
     success:
-      new: Un nuevo recurso ha sido creado
+      new: Un nuevo recurso será creado
       scheduled: Ficheros programados para el tratamiento de recursos
       canceled: Carga cancelada con éxito
       deleted: Fichero cargado eliminado con éxito
     error:
       list: Imposible de leer los ficheros ya cargados
-      upload: Un error ha ocurrido al intentar cargar
+      upload: Un error ocurrió al intentar cargar el fichero
       delete: Imposible eliminar el fichero del servidor
       schedule: Un error ocurrió al intentar programar el proceso de carga
       filename: Nombre de fichero inválido para el recurso
-      code: Formato de código no válido para los recursos
+      code: Formato de código inválido para el recurso
       locale: Un recurso existe pero no se puede traducir
-      invalid_locale: El local está inhabilitado o es inválido
+      invalid_locale: El local está desactivado o es inválido
       exists: Un fichero con el mismo nombre ya está programado para la carga
       conflicts: Conflicto de nombre de ficheros
     grid:

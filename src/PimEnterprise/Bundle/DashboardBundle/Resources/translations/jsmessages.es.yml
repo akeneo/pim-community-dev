@@ -4,6 +4,6 @@ pimee_dashboard:
       date: Fecha
       author: Autor
       product: Producto
-      review: 'Revisar 	'
+      review: Revisión
       empty: Ninguna propuesta a revisar
       view_all: Ver todo
