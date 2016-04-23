@@ -417,7 +417,7 @@ class JobProfileController
     {
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EXECUTE, new GenericEvent($jobInstance));
 
-        $configuration = $jobInstance->getJob()->getConfiguration();
+        $configuration = $jobInstance->getRawConfiguration();
         $configuration['send_email'] = true;
         $jobExecution = $this->simpleJobLauncher
             ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
