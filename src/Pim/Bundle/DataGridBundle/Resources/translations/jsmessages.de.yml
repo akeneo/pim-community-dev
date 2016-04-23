@@ -53,7 +53,7 @@ pim_datagrid:
     all_groups: Alle Gruppen
     search: Suche
     clear: Zurücksetzen
-    displayed_columns: Angezeigte Spalten
+    displayed_columns: Angezeigten Spalten
     apply: Anwenden
     cancel: Abbrechen
     remove_column: Entfernen
@@ -69,5 +69,5 @@ pim.grid.action.show.title: Anzeigen
 Please select view: Bitte Ansicht auswählen
 Loading...: Lädt...
 View: Ansehen
-from: von
-to: bis
+from: Von
+to: An

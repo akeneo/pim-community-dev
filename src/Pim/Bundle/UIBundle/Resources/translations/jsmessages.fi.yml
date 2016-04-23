@@ -44,18 +44,3 @@ jstree:
     unclassified: Luokittelemattomat tuotteet
   no_tree: Ei puuta käytettävissä
   include_sub: Sisällytä alakategoriat
-  loading: Ladataan ...
-oro_config:
-  form:
-    config:
-      title: Järjestelmän asetukset
-      tab:
-        system:
-          title: Järjestelmä
-      group:
-        localization:
-          title: Lokalisointi
-          system_locale: Kieli
-        notification:
-          title: Ilmoitukset
-          system_notification: Uuden version päivitykset

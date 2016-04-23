@@ -84,7 +84,7 @@ pim_importexport:
 btn:
   create:
     export profile: crear perfil exportador
-    import profile: crear perfil de importación
+    import profile: crear Perfil de importación
 Upload and import: Cargar e Importar
 Upload and import now: Subir e importar ahora
 import now: Importar ahora
@@ -143,11 +143,11 @@ Summary: Resumen
 Start: Iniciar
 End: Finalizar
 set_attribute_requirements: Configurar requerimientos del atributo
-COMPLETED: COMPLETADO
+COMPLETED: FINALIZADO
 STARTING: INICIANDO
 STARTED: INICIADO
-STOPPING: PARAR
+STOPPING: DETENIENDO
 STOPPED: DETENIDO
-FAILED: FALLO
+FAILED: FALLIDO
 ABANDONED: ABANDONADO
 UNKNOWN: DESCONOCIDO
