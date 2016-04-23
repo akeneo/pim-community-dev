@@ -16,7 +16,7 @@ confirmation:
 pim_datagrid:
   mass_action_group:
     quick_export:
-      label: Schnell-Export
+      label: Schnellexport
   mass_action:
     delete:
       confirm_content: Sind Sie sicher, dass Sie die ausgewählten Produkte löschen möchten?
@@ -26,7 +26,7 @@ flash:
   item:
     removed: Element erfolgreich entfernt
   association type:
-    removed: Verbindungstyp erfolgreich gelöscht
+    removed: Verbindungstyp erfolgreich entfernt
   attribute:
     removed: Attribut erfolgreich entfernt
   family:
@@ -40,13 +40,13 @@ flash:
   variant group:
     removed: Variantengruppe erfolgreich entfernt
   group type:
-    removed: Gruppentyp erfolgreich gelöscht
+    removed: Gruppentyp erfolgreich entfernt
   import profile:
     removed: Importprofil erfolgreich entfernt
   export profile:
     removed: Exportprofil erfolgreich entfernt
   user:
-    removed: Benutzer erfolgreich gelöscht
+    removed: Benutzer erfolgreich entfernt
   role:
     removed: Rolle erfolgreich entfernt
 error:
@@ -89,6 +89,7 @@ Delete the product: Produkt löschen
 Change status: Status ändern
 Toggle status: Status umschalten
 pim.grid.mass_action.quick_export.csv_all: CSV (alle Attribute)
+pim.grid.mass_action.quick_export.xlsx_all: XLSX (alle Attribute)
 pim.grid.mass_action.delete: Löschen
 pim.grid.mass_action.mass_edit: Massenbearbeitung
 pim.grid.mass_action.sequential_edit: Sequentielles Bearbeiten
@@ -127,7 +128,7 @@ pim_enrich:
       history:
         version: Version
         author: Autor
-        logged_at: Angemeldet am
+        logged_at: Aufgezeichnet am
         more: Mehr
         less: Weniger
         from: Von
@@ -148,9 +149,9 @@ pim_enrich:
       error:
         upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
       meta:
-        created: Angelegt
-        created_by: durch
-        updated_by: durch
+        created: Erstellt
+        created_by: Von
+        updated_by: Von
         updated: Letzte Aktualisierung
         family:
           title: Produktfamilie
@@ -168,14 +169,14 @@ pim_enrich:
         all: Alle
         all_visible: Alle sichtbaren
         none: Keine
-        copy: Kopieren
+        copy: Kopie
       variant_group:
         updated_by: Aktualisiert durch eine Variantengruppe
         switch:
           "yes": Ja
           "no": Nein
       optional_attribute:
-        remove: Dieses Attribut löschen
+        remove: Dieses Attribut entfernen
       locale_specific_attribute:
         unavailable: Dieses vom Gebietsschema abhängige Feld ist in diesem Gebietsschema nicht verfügbar
       localizable:
@@ -194,7 +195,7 @@ pim_enrich:
   info:
     not_applicable: N/A
     entity:
-      updated: Es gibt ungesicherte Änderungen.
+      updated: Es gibt ungespeicherte Änderungen.
   error:
     upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
   alert:
@@ -217,7 +218,7 @@ pim_enrich:
             add_attributes: Attribute hinzufügen
           info:
             search_attributes: Suche...
-            no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
+            no_available_attributes: Es gibt keine weiteren Attribute zum Hinzufügen
             attributes_selected: '{{ attributeCount }} Attribute ausgewählt'
             no_match: Keine Treffer gefunden
             load_more: Weitere Ergebnisse werden geladen...

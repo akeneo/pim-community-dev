@@ -1,6 +1,6 @@
 confirmation:
   remove:
-    item: Вы уверены, что хотите удалить этот элемент?
+    item: Вы действительно хотите удалить этот элемент?
     association type: Вы действительно хотите удалить этот тип ассоциации?
     attribute: Вы действительно хотите удалить этот атрибут?
     family: Вы действительно хотите удалить это семейство?
@@ -38,9 +38,9 @@ flash:
   group:
     removed: Группа успешно удалена
   variant group:
-    removed: Вариативная группа успешно удалена
+    removed: Группа вариантов успешно удалена
   group type:
-    removed: Тип группы успешно удален
+    removed: Группа типов успешно удалена
   import profile:
     removed: Профиль импорта успешно удален
   export profile:
@@ -81,7 +81,7 @@ label:
   attribute_option:
     add_option: Добавить новое свойство
 Code: Код
-Edit: Редактировать
+Edit: Изменить
 Delete: Удалить
 Edit attributes of the product: Изменение атрибутов продукта
 Classify the product: Классифицировать продукт
@@ -93,6 +93,8 @@ pim.grid.mass_action.delete: Удалить
 pim.grid.mass_action.mass_edit: Массовое редактирование
 pim.grid.mass_action.sequential_edit: Последовательное редактирование
 jstree.create: Создать
+switch_on: Да
+switch_off: Нет
 pim_enrich:
   item:
     list:
@@ -105,23 +107,27 @@ pim_enrich:
     link:
       back_to_grid: Вернуться к списку
   entity:
+    save:
+      label: Сохранить
     info:
       update_failed: Не удалось обновить
       update_successful: Обновление завершено
     product:
       title: продукт
       btn:
-        enable: Включить
-        enabled: Включено
-        disable: Отключить
-        disabled: Отключено
+        enable: Активировать
+        enabled: Активирован
+        disable: Деактивировать
+        disabled: Деактивирован
         download_pdf: PDF
         compare_translate: Сравнить / Перевести
         delete: Удалить
+        save: Сохранить
         save_and_back: Сохранить и вернуться к списку
       history:
         version: Версия
         author: Автор
+        logged_at: Дата входа
         more: Дополнительно
         less: Менее
         from: С
@@ -129,6 +135,7 @@ pim_enrich:
         property: Свойство
         old_values: Старые значения
         new_values: Новые значения
+        actions: Действия
       info:
         deletion_successful: Продукт успешно удален.
         deletion_failed: Не удалось удалить продукт.
@@ -141,29 +148,32 @@ pim_enrich:
       error:
         upload: Произошла ошибка при загрузке файла
       meta:
-        created: Создано
-        created_by: Создано
-        updated_by: Создано
+        created: Создан
+        created_by: Создан
+        updated_by: Обновлен
         updated: Последнее обновление
         family:
           title: Семейство
-          none: Нет
+          none: (Пусто)
         groups:
           title: Группы
           modal:
             title: 'Группа {{ group }}'
             view_group: Посмотреть группу
-            group_label: Метка
+            group_label: Ярлык
             more_products: '{{ count }} больше продуктов...'
             close: Закрыть
       copy:
         select: Выбрать
         all: Все
         all_visible: Все видимые
-        none: Нет
-        copy: Копия
+        none: (Пусто)
+        copy: Копировать
       variant_group:
         updated_by: Обновлено группой вариантов
+        switch:
+          "yes": Да
+          "no": Нет
       optional_attribute:
         remove: Удалить этот атрибут
       locale_specific_attribute:
@@ -174,7 +184,7 @@ pim_enrich:
         upload: Перетащите чтобы загрузить, или нажмите здесь
     attribute_option:
       code: Код
-      label: Метка
+      label: Ярлык
   confirmation:
     leave: Вы уверены, что хотите покинуть эту страницу?
     discard_changes: 'Если вы покините страницу изменения будут потеряны для {{ entity }}.'
@@ -182,7 +192,7 @@ pim_enrich:
     delete:
       product_attribute: Вы уверены, что хотите удалить этот атрибут из продукта?
   info:
-    not_applicable: Н/Д
+    not_applicable: '-'
     entity:
       updated: Имеются несохраненные изменения.
   error:
@@ -196,13 +206,14 @@ pim_enrich:
         associations:
           title: Ассоциации
           info:
-            none_exist: Титпы ассоциаций отсутствуют.
+            none_exist: Типы ассоциаций отсутствуют.
             show_products: Показать продукты
             show_groups: Показать группы
             number_of_associations: '{{ productCount }} продуктов и {{ groupCount }} групп'
         attributes:
           title: Атрибуты
           btn:
+            add: Добавить
             add_attributes: Добавить атрибуты
           info:
             search_attributes: Поиск...
@@ -220,10 +231,13 @@ pim_enrich:
             no_completeness: Вы только что изменили семейство продукта. Пожалуйста, сохраните его первым, чтобы вычислить завершенность для нового семейства.
           missing_values: Отсутствующуют значения
         history:
-          title: История
+          title: Журнал
+      switch:
+        "no": Нет
+        "yes": Да
       sequential_edit:
         info:
-          products: продукты
+          products: продуктов
           previous: 'Перейдите обратно к {{ product }} без сохранения.'
           next: 'Перейти к {{ product }} без сохранения.'
         btn:
@@ -232,7 +246,7 @@ pim_enrich:
       change_family:
         modal:
           title: Изменить семейство продуктов
-          merge_attributes: Текущие атрибуты будут объединены с существующими, в новом семействе.
+          merge_attributes: Текущие атрибуты будут объединены с существующими в новом семействе.
           keep_attributes: Атрибуты не будут удалены.
           change_family_to: Изменить семейство на
           empty_selection: Выберите семейство
@@ -240,14 +254,19 @@ pim_enrich:
         attribute_deletion_error: Произошла ошибка при удалении атрибута
       mass_edit:
         select_attributes: Выберите атрибуты
-        select: Выбрать
+        select: Выберите
     attribute_option:
       flash:
         option_created: Выбор в списке атрибута успешно создан
         error_creating_option: Произошла ошибка при попытке создания выбора для атрибута
       add_option_modal:
         title: Добавить выбор для атрибута
-        cancel: Отмена
+        confirm: Добавить
+        cancel: Отменить
+    entity:
+      switch:
+        "no": Нет
+        "yes": Да
   mass_edit_action:
     edit_common_attributes:
       description: 'Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.'
