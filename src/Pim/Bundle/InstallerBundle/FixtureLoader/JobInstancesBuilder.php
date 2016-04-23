@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader;
-use Pim\Component\Connector\Processor\Denormalization\SimpleProcessor;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Read the 'fixture_jobs.yml' to build the job instances that can be used to install the PIM
@@ -26,22 +25,22 @@ class JobInstancesBuilder
     /** @var YamlReader */
     protected $yamlReader;
 
-    /** @var SimpleProcessor */
+    /** @var ItemProcessorInterface */
     protected $jobInstanceProcessor;
 
     /** @var array */
     protected $jobsFilePaths;
 
     /**
-     * @param FileLocator     $locator
-     * @param YamlReader      $reader
-     * @param SimpleProcessor $processor
-     * @param array           $jobsFilePaths
+     * @param FileLocator            $locator
+     * @param YamlReader             $reader
+     * @param ItemProcessorInterface $processor
+     * @param array                  $jobsFilePaths
      */
     public function __construct(
         FileLocator $locator,
         YamlReader $reader,
-        SimpleProcessor $processor,
+        ItemProcessorInterface $processor,
         array $jobsFilePaths
     ) {
         $this->fileLocator = $locator;
@@ -135,7 +134,7 @@ class JobInstancesBuilder
     }
 
     /**
-     * @return SimpleProcessor
+     * @return ItemProcessorInterface
      */
     protected function getJobInstanceProcessor()
     {
