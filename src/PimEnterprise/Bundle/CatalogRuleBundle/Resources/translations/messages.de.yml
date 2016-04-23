@@ -9,13 +9,17 @@ pimee_catalog_rule:
         conditions: Bedingung
         actions: Aktion
         impacted_product_count:
+          label: Übereinstimmende Produkte
+          count: '{0,1}%count% übereinstimmende Produkte|] 1, Inf [%count% übereinstimmende Produkte'
           no_yet_calculated: Noch nicht berechnet
+      mass_edit_action:
+        impacted_product_count: Berechnen Sie die übereinstimmenden Produkte für die Regeln
   actions:
     type:
       copy: 'Dann wird %from_field% in %to_field% kopiert.'
-      copy_value: 'Dann wird %from_field% in %to_field% kopiert.'
+      copy_value: 'Dann wird %from_field% in %to_field% kopiert'
       set: 'Dann wird %value% in %field% gesetzt.'
-      set_value: 'Dann wird %value% in %field% gesetzt.'
+      set_value: 'Dann wird %value% in %field% gesetzt'
       add: 'Dann wird %value% in %field% hinzugefügt'
   condition:
     label: 'Wenn %field% %operator% %value%'
@@ -25,6 +29,7 @@ pimee_catalog_rule:
       CONTAINS: enthält
       DOES NOT CONTAIN: enthält nicht
       EMPTY: leer
+      NOT EMPTY: nicht leer
       IN: in
       NOT IN: nicht in
       IN CHILDREN: in Kindelementen
@@ -34,9 +39,10 @@ pimee_catalog_rule:
       BETWEEN: zwischen
       NOT BETWEEN: nicht zwischen
       =: ist gleich
+      !=: ungleich
       >: größer als
       >=: gleich oder größer als
-      <: weniger als
+      <: kleiner als
       <=: gleich oder kleiner als
   acl_group:
     rule: Regeln
@@ -44,6 +50,7 @@ pimee_catalog_rule:
     rule:
       view_permissions: Regeln ansehen
       delete_permissions: Regeln löschen
+      impacted_product_count_permissions: Berechnen Sie die übereinstimmenden Produkte für die Regeln
   attribute:
     tab:
       rule.title: Regeln
@@ -67,7 +74,14 @@ pimee_catalog_rule:
     yml_rule_export:
       title: Regel-Export in YAML
       export.title: Regelexport
+    impacted_product_count:
+      title: Übereinstimmende Produkte für die Regeln
   steps:
     product_rule_definition_reader.title: Produktimport-Regeln Reader
     rule_definition_processor.title: Produktimport-Regeln Processor
     product_rule_definition_writer.title: Produktimport-Regeln Writer
+  notification:
+    mass_edit_rule:
+      success: Berechnung der übereinstimmenden Produkte für die Regeln abgeschlossen
+mass_edit_rule: Regeleinstellungen
+job_execution.summary.rule_calculated: Anzahl der Regeln

@@ -24,10 +24,10 @@ pimee_product_asset:
       delete: Eliminar
       download: Descargar
       generate_from_reference: Generar desde la referencia
-      reset_variations: Reinicializar variaciones
+      reset_variations: Reajuste de variaciones
     confirmation.remove: '¿Está seguro que desea quitar el recurso "%asset%"?'
     grid:
-      edit: Editar prodpiedades del recurso
+      edit: Editar las propiedades de el recurso
     view:
       title: Recursos del producto
       code: Código
@@ -43,7 +43,7 @@ pimee_product_asset:
       filetype: Tipo de fichero
       actions: Acciones
       download: Descargar
-      tag: Etiquetas
+      tag: Etiqueta
       no_reference: Ningún fichero de referencia ha sido cargado.
       no_variation: Ningún fichero de variación ha sido generado.
     flash:
@@ -68,7 +68,7 @@ pimee_product_asset:
         image_height_error: 'Imposible de generar la variación %channel% debido a que la imagen cargada tiene un alto menor que el solicitado por la transformación.'
         not_applicable: 'Imposible generar la variación %channel%.'
         non_registered: 'Ninguna %transformation% transformación registrada por el mime type %mimeType%. Imposible de generar la variación %channel%.'
-        error: 'Imposible generar la variación %channel%.'
+        error: 'Imposible de generar la variación %channel%.'
         success: Los ficheros de variaciones han sido creados con éxito.
       update:
         success: El fichero de variación ha sido actualizado.
@@ -104,7 +104,7 @@ pimee_product_asset:
   tabs:
     properties.title: Propiedades
     variations.title: Variaciones
-    categories.title: Categorías
+    categories.title: Ctegorías
   validation:
     code:
       not_empty: Código requerido. No puede estar vacío.
@@ -138,7 +138,7 @@ pimee_product_asset:
     error:
       upload: Un error ha ocurrido al intentar cargar
       code: Formato de código no válido para los recursos
-      localizable: Un recurso existe pero no se puede traducir
+      localizable: Existe un recurso pero no es localizable
       invalid_locale: El local está inhabilitado o es inválido
   category:
     menu: Categorías de recursos
@@ -148,8 +148,8 @@ pimee_product_asset:
       edit.label: Permitir editar los recursos
       edit.help: Permitir editar los recursos en esta categoría (implica el permiso de ver)
       no_access_to_products: Usted no tiene acceso a recursos en ningún árbol, por favor contacte a su administrador
-      apply_on_children.label: Aplicar cambios a la sub-categoría
-      apply_on_children.help: Copiar los cambios de permisos en todas las sub-categorías, los permisos existentes en sub-categorías son mantenidos
+      apply_on_children.label: Aplicar cambios en sub categorías
+      apply_on_children.help: Copiar los cambios de permisos en todas las sub categorías, los permisos existentes en las sub categorías son conservados
 btn.create.asset: Crear un recurso
 btn.drag_or_upload: Arrastrar y soltar un fichero o haga clic aquí
 job_execution.summary:

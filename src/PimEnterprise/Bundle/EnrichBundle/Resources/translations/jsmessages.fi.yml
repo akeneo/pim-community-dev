@@ -1,4 +1,4 @@
-View the product: Katso tuotte
+View the product: Näytä tuote
 pimee_enrich.product_history.action.revert: Palaa tähän versioon
 permission-changes:
   category:
@@ -37,7 +37,7 @@ pimee_enrich:
         owner_groups: Omistajaryhmät
         draft_status: Luonnoksen tila
         draft:
-          in_progress: Toiminto käynnissä
+          in_progress: Työn alla
           sent_for_approval: Odottaa hyväksyntää
           working_copy: Työkopio
       tab:
@@ -64,7 +64,7 @@ pimee_enrich:
           title: Peruuta tuotteen julkaisu
           content: Oletko varma että haluat peruuttaa tuotteen julkaisun?
       info:
-        update_successful: Tuotteen työn alla oleva kopio on päivitetty
+        update_successful: Tuotteen työkopio on päivitetty
       copy:
         source:
           working_copy: Työkopio
@@ -88,7 +88,7 @@ pimee_enrich:
         reject_selected_proposal: Hylkää valittu ehdotus / ehdotukset
         remove_proposal: Poista ehdotus
         send_for_approval: Lähetä hyväksyttäväksi
-        cancel: Peruuta
+        cancel: Hylkää
         confirm: Lähetä
         title: 'Kommentoi ehdotustasi (valinnainen - 255 merkkiä max)'
         characters: merkkiä

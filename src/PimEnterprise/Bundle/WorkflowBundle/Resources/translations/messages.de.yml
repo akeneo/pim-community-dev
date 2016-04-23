@@ -20,6 +20,7 @@ pimee_workflow:
       can_be_partially_reviewed: Sie können diesen Vorschlag nur teilweise überprüfen, da einige Änderungen Werte betreffen, die Sie nicht bearbeiten können. Bitte wenden Sie sich an Ihren Administrator um Ihre Rechte anzupassen.
       can_not_be_approved: Sie können nicht diesen Vorschlag überprüfen, weil alle Änderungen Werte betreffen, die Sie nicht bearbeiten können. Bitte kontaktieren Sie Ihren Administrator, um Ihre Rechte zu ändern.
       can_not_be_deleted: Dieser Vorschlag kann nicht gelöscht werden, da alle Änderungen Werte betreffen, die Sie nicht bearbeiten können. Bitte kontaktieren Sie Ihren Administrator, um Ihre Rechte zu ändern.
+      in_progress: Dieser Vorschlag ist in Bearbeitung und ist noch nicht übermittelt worden.
     action:
       approve: Alle genehmigen
       refuse: Alle ablehnen
@@ -31,6 +32,8 @@ pimee_workflow:
       partial_approve_number: '%owner% hat Werte für %attributes_count% Attribute, für das Produkt %product% akzeptiert'
       partial_reject: '%owner% hat Wert(e) für %attributes% für das Produkt %product% abgelehnt'
       partial_reject_number: '%owner% hat Werte für %attributes_count% Attribute, für das Produkt %product% abgelehnt'
+      partial_remove: '%owner% hat Wert(e) für %attributes% für das Produkt %product% gelöscht'
+      partial_remove_number: '%owner% hat Werte für %attributes_count% Attribute, für das Produkt %product% gelöscht'
       approve: '%owner% hat Ihren Vorschlag für das Produkt %product% akzeptiert'
       refuse: '%owner% hat Ihren Vorschlag für das Produkt %product% abgelehnt'
       remove: '%owner% hat Ihren Vorschlag für das Produkt %product% gelöscht'
@@ -77,6 +80,9 @@ pimee_workflow:
     xlsx_published_product_export:
       title: Export veröffentlichter Produkte als XLSX
       export.title: Export veröffentlichter Produkte
+    xlsx_product_proposal_import:
+      title: Produkt-Vorschlag Import in XLSX
+      import.title: Produkt-Vorschlag Import in XLSX
   steps:
     product_draft_processor.title: Vorschlag-Prozessor
     approve.title: Vorschlag freigeben
@@ -87,6 +93,7 @@ btn.publish: Veröffentlichen
 btn.unpublish: Veröffentlichung entziehen
 pimee_workflow_product_draft_notification_partial_approve: Vorschlag teilweise genehmigt
 pimee_workflow_product_draft_notification_partial_reject: Vorschlag teilweise abgelehnt
+pimee_workflow_product_draft_notification_partial_remove: Vorschlag teilweise gelöscht
 pimee_workflow_product_draft_notification_approve: Vorschlag genehmigt
 pimee_workflow_product_draft_notification_refuse: Vorschlag abgelehnt
 pimee_workflow_product_draft_notification_remove: Vorschlag gelöscht
