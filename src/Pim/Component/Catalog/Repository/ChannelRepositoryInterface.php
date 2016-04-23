@@ -35,6 +35,8 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
      *
      * @param ChannelInterface $channel
      *
+     * @deprecated will be removed in 1.7, has been used by the removed method CompletenessManager::scheduleForChannel
+     *
      * @return array the list of deleted locales
      */
     public function getDeletedLocaleIdsForChannel(ChannelInterface $channel);
