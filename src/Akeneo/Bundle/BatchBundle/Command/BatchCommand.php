@@ -74,7 +74,7 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         $code = $input->getArgument('code');
-        /** @var JobInstance */
+        /** @var JobInstance $jobInstance */
         $jobInstance = $this->getJobManager()->getRepository('Akeneo\Component\Batch\Model\JobInstance')->findOneByCode($code);
         if (!$jobInstance) {
             throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));

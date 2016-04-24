@@ -25,7 +25,7 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     /** @var FormsOptionsRegistry */
     protected $formsOptionsRegistry;
 
-    /** @var FormsOptionsRegistry */
+    /** @var ConstraintsRegistry */
     protected $constraintsRegistry;
 
     /**

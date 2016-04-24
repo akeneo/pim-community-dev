@@ -10,8 +10,6 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  *
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
- *
- * @abstract
  */
 abstract class AbstractConfigurableStepElement implements StepElementInterface, InitializableInterface,
     FlushableInterface
