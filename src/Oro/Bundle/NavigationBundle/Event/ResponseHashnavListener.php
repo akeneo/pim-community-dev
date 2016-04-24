@@ -13,27 +13,11 @@ class ResponseHashnavListener
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    protected $serviceLocator;
 
     public function __construct(ContainerInterface $container)
     {
-        $this->container = $container;
-    }
-
-    /**
-     * @return TokenStorageInterface
-     */
-    final protected function getTokenStorage()
-    {
-        return $this->container->get('security.token_storage');
-    }
-
-    /**
-     * @return EngineInterface
-     */
-    final protected function getTemplating()
-    {
-        return $this->container->get('templating');
+        $this->serviceLocator = $container;
     }
 
     /**
@@ -70,5 +54,21 @@ class ResponseHashnavListener
                 );
             }
         }
+    }
+
+    /**
+     * @return TokenStorageInterface
+     */
+    final protected function getTokenStorage()
+    {
+        return $this->serviceLocator->get('security.token_storage');
+    }
+
+    /**
+     * @return EngineInterface
+     */
+    final protected function getTemplating()
+    {
+        return $this->serviceLocator->get('twig');
     }
 }

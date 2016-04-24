@@ -3,24 +3,25 @@
 namespace Oro\Bundle\NavigationBundle\Event;
 
 use Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 
 class RequestTitleListener
 {
     /**
-     * @var TitleServiceInterface
+     * @var ContainerInterface
      */
-    private $service;
+    private $serviceLocator;
 
     /**
      * Injection
      *
-     * @param TitleServiceInterface $service
+     * @param ContainerInterface $container
      */
-    public function __construct(TitleServiceInterface $service)
+    public function __construct(ContainerInterface $container)
     {
-        $this->service = $service;
+        $this->serviceLocator = $container;
     }
 
     /**
@@ -44,6 +45,14 @@ class RequestTitleListener
 
         $route = $request->get('_route');
 
-        $this->service->loadByRoute($route);
+        $this->getTitleService()->loadByRoute($route);
+    }
+
+    /**
+     * @return TitleServiceInterface
+     */
+    final protected function getTitleService()
+    {
+        return $this->serviceLocator->get('oro_navigation.title_service');
     }
 }
