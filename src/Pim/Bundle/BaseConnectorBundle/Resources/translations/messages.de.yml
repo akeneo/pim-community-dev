@@ -21,6 +21,9 @@ pim_base_connector:
     csv_variant_group_export:
       title: Variantengruppen-Export als CSV
       export.title: Variantengruppen-Export
+    csv_family_export:
+      title: Exportiere Produktfamilie in CSV-Datei
+      export.title: Exportiere Produktfamilie
     csv_product_import:
       title: Produkt-Export als CSV-Datei
       validation.title: Dateivalidierung
@@ -95,6 +98,12 @@ pim_base_connector:
     channel:
       label: Ausgabekanal
       help: Der Ausgabekanal, den Sie exportieren möchten
+    decimalSeparator:
+      label: Dezimaltrennzeichen
+      help: Wählen Sie ein Dezimaltrennzeichen
+    dateFormat:
+      label: Datumsformat
+      help: Bestimmen Sie das Format der Datumsfelder
   import:
     enabled:
       label: Produkt aktivieren

@@ -21,6 +21,9 @@ pim_base_connector:
     csv_variant_group_export:
       title: Exportar Grupo de variantes a CSV
       export.title: Exportación de grupo de variantes
+    csv_family_export:
+      title: Exportar familias en CSV
+      export.title: Exportar familias
     csv_product_import:
       title: Importar productos desde CSV
       validation.title: Validación de archivo
@@ -95,6 +98,12 @@ pim_base_connector:
     channel:
       label: Canal
       help: Canal que desea exportar
+    decimalSeparator:
+      label: Separador de decimales
+      help: Determinar el separador de decimales
+    dateFormat:
+      label: Formato de fecha
+      help: Determinar el formato de los campos de fecha
   import:
     enabled:
       label: Activar el producto

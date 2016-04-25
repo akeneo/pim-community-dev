@@ -15,6 +15,7 @@ oro.grid.datagrid.page_size.all: Kaikki
 oro.grid.mass_action.delete.success_message: '{0} yksiköitä ei poistettu|{1} yksi kokonaisuus poistettiin|] 1, Inf [%count% yksiköt poistettiin'
 datagrid_view:
   views: Näkymät
+  default: Oletusnäkymä
   create: Näkymän luominen
   placeholder: Uuden näkymän nimi
   remove: Poista näkymä
