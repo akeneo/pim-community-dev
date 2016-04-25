@@ -1,10 +1,11 @@
 parameters:
+    pim_enrich.doctrine.counter.interface:               Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface
     pim_enrich.doctrine.counter.category_items.class:    Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounter
-    pim_enrich.doctrine.counter.category_registry.class: Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterRegistry
+    pim_enrich.doctrine.counter.category_registry.class: Akeneo\Component\Registry\DomainRegistry
 
 services:
     pim_enrich.doctrine.counter.category_product:
-        class: %pim_enrich.doctrine.counter.category_items.class%
+        class: '%pim_enrich.doctrine.counter.category_items.class%'
         arguments:
             - '@pim_catalog.repository.product_category'
             - '@pim_catalog.repository.category'
@@ -12,4 +13,6 @@ services:
             - { name: pim_enrich.doctrine.counter.category_item, type: product }
 
     pim_enrich.doctrine.counter.category_registry:
-        class: %pim_enrich.doctrine.counter.category_registry.class%
+        class: '%pim_enrich.doctrine.counter.category_registry.class%'
+        arguments:
+            - '%pim_enrich.doctrine.counter.interface%'

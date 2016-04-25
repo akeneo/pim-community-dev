@@ -2,16 +2,16 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Twig;
 
+use Akeneo\Component\Registry\DomainRegistryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface;
-use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterRegistryInterface;
 use Prophecy\Argument;
 
 class CategoryExtensionSpec extends ObjectBehavior
 {
-    function let(CategoryItemsCounterRegistryInterface $registry)
+    function let(DomainRegistryInterface $registry)
     {
         $productsLimitForRemoval = 10;
         $this->beConstructedWith($registry, $productsLimitForRemoval);

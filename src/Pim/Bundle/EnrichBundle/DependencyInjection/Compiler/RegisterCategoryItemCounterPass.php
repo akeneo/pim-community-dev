@@ -35,8 +35,8 @@ class RegisterCategoryItemCounterPass implements CompilerPassInterface
                 $registryDefinition->addMethodCall(
                     'register',
                     [
+                        $attribute['type'],
                         new Reference($serviceId),
-                        $attribute['type']
                     ]
                 );
             }
