@@ -265,6 +265,7 @@ services:
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
             - [setFamilyRepository, ['@pim_catalog.repository.family']]
             - [setCategoryRepository, ['@pim_catalog.repository.category']]
+            - [setGroupRepository, ['@pim_catalog.repository.group']]
         tags:
             - { name: 'pim_repository' }
 

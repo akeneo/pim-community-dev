@@ -237,4 +237,25 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
 
         return $count;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAttribute($id, $attributeCode)
+    {
+        $queryBuilder = $this->createQueryBuilder('f')
+            ->leftJoin('f.attributes', 'a')
+            ->where('f.id = :id')
+            ->andWhere('a.code = :code')
+            ->setMaxResults(1)
+            ->setParameters([
+                'id'   => $id,
+                'code' => $attributeCode,
+            ])
+            ->addGroupBy('a.id');
+
+        $result = $queryBuilder->getQuery()->getArrayResult();
+
+        return count($result) > 0;
+    }
 }

@@ -4,11 +4,13 @@ namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
@@ -22,15 +24,17 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 {
     function let(
         ValidatorInterface $validator,
-        AttributeRepositoryInterface $attributeRepository,
+        ProductRepositoryInterface $productRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        ObjectUpdaterInterface $productUpdater
+        ObjectUpdaterInterface $productUpdater,
+        ObjectDetacherInterface $productDetacher
     ) {
         $this->beConstructedWith(
             $validator,
-            $attributeRepository,
+            $productRepository,
             $jobConfigurationRepo,
-            $productUpdater
+            $productUpdater,
+            $productDetacher
         );
     }
 
@@ -47,23 +51,31 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
     function it_does_not_set_values_when_attribute_is_not_editable(
         $validator,
         $productUpdater,
-        AttributeInterface $attribute,
-        AttributeRepositoryInterface $attributeRepository,
+        $productDetacher,
+        $productRepository,
         ProductInterface $product,
+        ProductValueInterface $productValue,
         StepExecution $stepExecution,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
         JobConfigurationInterface $jobConfiguration
     ) {
         $this->setStepExecution($stepExecution);
+
+        $product->getIdentifier()->shouldBeCalled()->willReturn($productValue);
+        $product->getId()->willReturn(10);
+        $productValue->getData()->shouldBeCalled();
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->incrementSummaryInfo("skipped_products")->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
         $stepExecution->addWarning(
             'edit_common_attributes_processor',
             'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
             [],
-            $product
+            Argument::type('array')
         )->shouldBeCalled();
+
+        $productDetacher->detach($product)->shouldBeCalled();
 
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
 
@@ -85,7 +97,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                         'normalized_values' => $normalizedValues,
                         'ui_locale'         => 'en_US',
                         'attribute_locale'  => 'en_US',
-                        'attribute_channel' => null,
+                        'attribute_channel' => null
                     ]
                 ]
             )
@@ -94,8 +106,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
-        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
-        $product->isAttributeEditable($attribute)->willReturn(false);
+        $productRepository->hasAttributeInFamily(10, 'categories')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup(10, 'categories')->shouldBeCalled()->willReturn(true);
         $productUpdater->update($product, Argument::any())->shouldNotBeCalled();
 
         $this->process($product)->shouldReturn(null);
@@ -104,14 +116,12 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
     function it_sets_values_to_attributes(
         $validator,
         $productUpdater,
-        AttributeInterface $attribute,
-        AttributeRepositoryInterface $attributeRepository,
+        $productRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration,
-        LocalizerInterface $localizer
+        JobConfigurationInterface $jobConfiguration
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -137,7 +147,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                         'normalized_values' => $normalizedValues,
                         'ui_locale'         => 'fr_FR',
                         'attribute_locale'  => 'en_US',
-                        'attribute_channel' => null,
+                        'attribute_channel' => null
                     ]
                 ]
             )
@@ -145,11 +155,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
+        $product->getId()->willReturn(10);
 
-        $attribute->getAttributeType()->willReturn('number');
-        $attributeRepository->findOneBy(['code' => 'number'])->willReturn($attribute);
-        $attributeRepository->findOneByIdentifier('number')->willReturn($attribute);
-        $product->isAttributeEditable($attribute)->willReturn(true);
+        $productRepository->hasAttributeInFamily(10, 'number')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup(10, 'number')->shouldBeCalled()->willReturn(false);
 
         $productUpdater->update($product, $values)->shouldBeCalled();
 
@@ -159,8 +168,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
     function it_sets_invalid_values_to_attributes(
         $validator,
         $productUpdater,
-        AttributeInterface $attribute,
-        AttributeRepositoryInterface $attributeRepository,
+        $productRepository,
         ProductInterface $product,
         ConstraintViolationListInterface $violations,
         StepExecution $stepExecution,
@@ -191,7 +199,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                         'normalized_values' => $normalizedValues,
                         'ui_locale'         => 'fr_FR',
                         'attribute_locale'  => 'en_US',
-                        'attribute_channel' => null,
+                        'attribute_channel' => null
                     ]
                 ]
             )
@@ -202,8 +210,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([$violation, $violation]);
         $validator->validate($product)->willReturn($violations);
 
-        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
-        $product->isAttributeEditable($attribute)->willReturn(true);
+        $product->getId()->willReturn(10);
+        $productRepository->hasAttributeInFamily(10, 'categories')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup(10, 'categories')->shouldBeCalled()->willReturn(false);
 
         $productUpdater->update($product, $values)->shouldBeCalled();
         $this->setStepExecution($stepExecution);

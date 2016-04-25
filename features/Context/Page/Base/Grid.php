@@ -189,6 +189,12 @@ class Grid extends Index
                             $value
                         )
                     );
+                    $driver->executeScript(
+                        sprintf(
+                            "$('.ui-multiselect-menu:visible input[title=\"%s\"]:visible').click().trigger('click');",
+                            $value
+                        )
+                    );
                     sleep(1);
                 }
 

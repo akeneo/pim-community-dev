@@ -42,10 +42,6 @@ pim_connector:
       title: Liitännäistyyppien tuonti CSV-muodossa
       validation.title: Tiedostojen tarkistaminen
       import.title: Liitännäistyyppien tuonti
-    csv_family_import:
-      title: Ryhmän tuonti CSV-tiedostona
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Ryhmätuonti
     csv_group_import:
       title: Ryhmien tuonti CSV-muodossa
       validation.title: Tiedostojen tarkistaminen
@@ -123,7 +119,7 @@ pim_connector:
       help: Sallitaanko tiedoston suora lataus järjestelmään
     delimiter:
       label: Erotin
-      help: Yhtä merkkiä käytetään CSV-tiedoston kenttäerottimena
+      help: Yhtä merkkiä käytetään kentän erottajan määrittämiseen
     enclosure:
       label: Liite
       help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
@@ -142,12 +138,6 @@ pim_connector:
     enabledComparison:
       label: Vertaa arvoja
       help: Ota päälle alkuperäisten ja tuotujen arvojen vertailu. Voi nopeuttaa tuonti, ja tuodut arvot ovat hyvin samanlaisia kuin alkuperäiset arvot
-    decimalSeparator:
-      label: Desimaalierotin
-      help: Yksi merkki asettaa kenttäerottimen desimaaleja varten
-    dateFormat:
-      label: Päivämäärän muoto
-      help: Määritä minkä tahansa päivämäärä-sarakkeen muoto tiedostossa, esim, tässä DD/MM/YYYY 31/04/2014 formaattia varten.
 job_execution.summary:
   read: lue
   read_lines: lue rivit

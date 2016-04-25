@@ -294,6 +294,7 @@ define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro
                         }
                     });
 
+                    mediator.off('datagrid:doRefresh:' + grid.name);
                     mediator.on('datagrid:doRefresh:' + grid.name, function () {
                         grid.refreshAction.execute();
                     });
