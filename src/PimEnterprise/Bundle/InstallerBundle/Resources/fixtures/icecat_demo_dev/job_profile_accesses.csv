@@ -37,6 +37,7 @@ edit_common_attributes;All;
 edit_common_attributes_with_permission;All;
 edit_common_attributes_with_permission_and_rules;All;
 add_to_variant_group;All;
+add_to_variant_group_with_rules;All;
 set_attribute_requirements;All;
 approve_product_draft;All;
 refuse_product_draft;All;
