@@ -117,7 +117,7 @@ class ProductSaver extends BaseProductSaver
         if (count($updateDocs) > 0) {
             $this->updateDocuments($updateDocs);
         }
-        
+
         foreach ($products as $product) {
             $this->completenessManager->generateMissingForProduct($product);
         }
