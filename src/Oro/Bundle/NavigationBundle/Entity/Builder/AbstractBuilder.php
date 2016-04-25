@@ -20,7 +20,7 @@ abstract class AbstractBuilder
      * @param EntityManager $em
      * @param string        $type
      */
-    public function __construct(EntityManager $em, $type = '')
+    public function __construct(EntityManager $em, $type)
     {
         $this->em = $em;
         $this->type = $type;

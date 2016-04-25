@@ -14,7 +14,6 @@ services:
     # Dispatchers
     pim_datagrid.extension.mass_action.dispatcher:
         class: '%pim_datagrid.extension.mass_action.dispatcher.class%'
-        lazy: true
         arguments:
             - '@pim_datagrid.extension.mass_action.handler.registry'
             - '@oro_datagrid.datagrid.manager'
