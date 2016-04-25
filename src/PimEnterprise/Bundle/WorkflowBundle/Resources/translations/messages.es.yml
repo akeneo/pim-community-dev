@@ -20,6 +20,7 @@ pimee_workflow:
       can_be_partially_reviewed: Sólo puede revisar parcialmente esta propuesta debido a que ciertos cambios se aplican a valores que usted no tiene el permiso de editar. Por favor contacte al administrador para cambiar sus permisos.
       can_not_be_approved: No puede revisar esta propuesta debido a que todos los cambios se aplicarán en valores que usted no tiene el permiso de editar. Por favor contacte al administrador para cambiar sus permisos.
       can_not_be_deleted: No puede eliminar esta propuesta debido a que todos los cambios se aplicarán en valores que usted no tiene el permiso de editar. Por favor contacte al administrador para cambiar sus permisos.
+      in_progress: Esta propuesta está actualmente en progreso y aún no ha sido enviada.
     action:
       approve: Aprobar todos
       refuse: Rechazar todos
@@ -31,6 +32,8 @@ pimee_workflow:
       partial_approve_number: '%owner% ha aceptado %attributes_count% valores para los atributos para el producto %product%'
       partial_reject: '%owner% ha rechazado el(los) valor(es) de %attributes% para el producto %product%'
       partial_reject_number: '%owner% ha rechazado %attributes_count% valores de atributos para el producto %product%'
+      partial_remove: '%owner% ha eliminado el/los valor(es) en %attributes% en el/los producto(s) %product%'
+      partial_remove_number: '%owner% ha eliminado los valores de %attributes_count% atributos en el producto %product%'
       approve: '%owner% ha aceptado su propuesta por el producto %product%'
       refuse: '%owner% ha rechazado su propuesta por el producto %product%'
       remove: '%owner% ha eliminado su propuesta por el producto %product%'
