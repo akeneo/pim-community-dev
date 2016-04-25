@@ -25,9 +25,10 @@ csv_asset_export;IT support,Manager,Redactor;IT support,Manager
 csv_asset_variation_export;IT support,Manager,Redactor;IT support,Manager
 yml_asset_channel_configuration_import;IT support,Manager,Redactor;IT support,Manager
 yml_asset_channel_configuration_export;IT support,Manager,Redactor;IT support,Manager
-update_product_value;All;
 add_product_value;All;
 add_product_value_with_permission;All;
+add_product_value_with_permission_and_rules;All;
+update_product_value;All;
 update_product_value_with_permission;All;
 update_product_value_with_permission_and_rules;All;
 publish_product;All;

@@ -28,6 +28,6 @@ class Classify extends BaseClassify
      */
     public function getBatchJobCode()
     {
-        return 'add_product_value_with_permission';
+        return 'add_product_value_with_permission_and_rules';
     }
 }
