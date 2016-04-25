@@ -4,9 +4,11 @@ namespace spec\PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Pr
 
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -24,18 +26,20 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 {
     function let(
         ValidatorInterface $validator,
-        AttributeRepositoryInterface $attributeRepository,
+        ProductRepositoryInterface $productRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ObjectUpdaterInterface $productUpdater,
+        ObjectDetacherInterface $productDetacher,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->beConstructedWith(
             $validator,
-            $attributeRepository,
+            $productRepository,
             $jobConfigurationRepo,
             $productUpdater,
+            $productDetacher,
             $userManager,
             $tokenStorage,
             $authorizationChecker
@@ -47,8 +51,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $productUpdater,
         $userManager,
         $authorizationChecker,
+        $productRepository,
         AttributeInterface $attribute,
-        AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
@@ -63,6 +67,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $productRepository->hasAttributeInFamily(10, 'categories')->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup(10, 'categories')->willReturn(false);
 
         $values = [
             'categories' => [
@@ -90,8 +96,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
+        $product->getId()->willReturn(10);
 
-        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(true);
         $productUpdater->update($product, $values)->shouldBeCalled();
 
@@ -103,8 +109,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $productUpdater,
         $userManager,
         $authorizationChecker,
+        $productRepository,
         AttributeInterface $attribute,
-        AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
@@ -120,6 +126,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $productRepository->hasAttributeInFamily(10, 'categories')->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup(10, 'categories')->willReturn(false);
 
         $values = [
             'categories' => [
@@ -147,8 +155,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
+        $product->getId()->willReturn(10);
 
-        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(true);
         $productUpdater->update($product, $values)->shouldBeCalled();
 
@@ -191,8 +199,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 [
                     'filters' => [],
                     'actions' => [
-                        'normalized_values' => $normalizedValues,
-                        'current_locale'    => 'en_US'
+                        'normalized_values' => $normalizedValues
                     ]
                 ]
             )

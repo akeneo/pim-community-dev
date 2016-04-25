@@ -3,13 +3,13 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor as BaseProcessor;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -33,28 +33,31 @@ class EditCommonAttributesProcessor extends BaseProcessor
     protected $authorizationChecker;
 
     /**
-     * @param ValidatorInterface                  $validator
-     * @param AttributeRepositoryInterface        $attributeRepository
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
-     * @param ObjectUpdaterInterface              $productUpdater
-     * @param UserManager                         $userManager
-     * @param TokenStorageInterface               $tokenStorage
-     * @param AuthorizationCheckerInterface       $authorizationChecker
+     * @param ValidatorInterface                   $validator
+     * @param ProductRepositoryInterface           $productRepository
+     * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
+     * @param ObjectUpdaterInterface               $productUpdater
+     * @param ObjectDetacherInterface              $productDetacher
+     * @param UserManager                          $userManager
+     * @param TokenStorageInterface                $tokenStorage
+     * @param AuthorizationCheckerInterface        $authorizationChecker
      */
     public function __construct(
         ValidatorInterface $validator,
-        AttributeRepositoryInterface $attributeRepository,
+        ProductRepositoryInterface $productRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ObjectUpdaterInterface $productUpdater,
+        ObjectDetacherInterface $productDetacher,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         BaseProcessor::__construct(
             $validator,
-            $attributeRepository,
+            $productRepository,
             $jobConfigurationRepo,
-            $productUpdater
+            $productUpdater,
+            $productDetacher
         );
 
         $this->tokenStorage         = $tokenStorage;
