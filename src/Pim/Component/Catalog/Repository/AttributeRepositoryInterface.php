@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -59,20 +60,9 @@ interface AttributeRepositoryInterface extends
      * An axis define a variation of a variant group
      * Axes are attributes with simple select option, not localizable and not scopable
      *
-     * @return mixed a query builder
+     * @return QueryBuilder
      */
     public function findAllAxisQB();
-
-    /**
-     * Find all axis
-     *
-     * @see findAllAxisQB
-     *
-     * @deprecated avoid the hydration of attributes as objects (performance), will be removed in 1.6
-     *
-     * @return array
-     */
-    public function findAllAxis();
 
     /**
      * Get available attributes as label as a choice
@@ -177,4 +167,13 @@ interface AttributeRepositoryInterface extends
      * @return int
      */
     public function countAll();
+
+    /**
+     * Get axis as choice list
+     *
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function findAvailableAxis($locale);
 }

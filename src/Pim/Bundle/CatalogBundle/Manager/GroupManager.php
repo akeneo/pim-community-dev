@@ -34,25 +34,6 @@ class GroupManager
         $this->attributeRepository = $attributeRepository;
     }
 
-    /**
-     * Get axis as choice list
-     *
-     * @deprecated not used anymore except in datagrid configuration, will be removed in 1.6
-     *
-     * @return array
-     */
-    public function getAvailableAxisChoices()
-    {
-        $attributes = $this->attributeRepository->findAllAxis();
-
-        $choices = [];
-        foreach ($attributes as $attribute) {
-            $choices[$attribute->getId()] = $attribute->getLabel();
-        }
-        asort($choices);
-
-        return $choices;
-    }
 
     /**
      * Get axis as choice list
