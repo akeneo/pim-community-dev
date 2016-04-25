@@ -15,6 +15,8 @@ use Pim\Component\Catalog\Normalizer\Structured\AttributeNormalizer as BaseNorma
  */
 class AttributeNormalizer extends BaseNormalizer
 {
+    const DATE_FORMAT = 'Y-m-d';
+
     /** @var string[] */
     protected $supportedFormats = ['csv'];
 

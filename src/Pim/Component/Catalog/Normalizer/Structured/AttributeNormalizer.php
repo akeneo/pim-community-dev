@@ -20,6 +20,7 @@ class AttributeNormalizer implements NormalizerInterface
     const GLOBAL_SCOPE        = 'Global';
     const CHANNEL_SCOPE       = 'Channel';
     const ALL_LOCALES         = 'All';
+    const DATE_FORMAT         = \DateTime::ISO8601;
 
     /** @var array */
     protected $supportedFormats = ['json', 'xml'];
@@ -174,7 +175,7 @@ class AttributeNormalizer implements NormalizerInterface
     protected function normalizeDate($date = null)
     {
         if (!is_null($date) && $date instanceof \DateTime) {
-            return $date->format(\DateTime::ISO8601);
+            return $date->format(static::DATE_FORMAT);
         }
 
         return '';
