@@ -106,17 +106,9 @@ class SystemAwareResolver implements ContainerAwareInterface
                     }
                 }
                 break;
-            // service method call @service->method
-            case preg_match('#@([\w\._]+)->([\w\._]+)#', $val, $match):
-                $service = $match[1];
-                $method  = $match[2];
-                $val     = $this->container
-                    ->get($service)
-                    ->$method(
-                        $datagridName,
-                        $key,
-                        $this->parentNode
-                    );
+            // service method call @service->method, @service->method(argument), @service->method(@other.service->method)
+            case preg_match('#@([\w\._]+)->([\w\._]+)(\((.*)\))*#', $val, $match):
+                $val = $this->executeMethod($val, [$datagridName, $key, $this->parentNode]);
                 break;
             // service pass @service
             case preg_match('#@([\w\._]+)#', $val, $match):
@@ -140,5 +132,36 @@ class SystemAwareResolver implements ContainerAwareInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+    }
+
+    /**
+     * @param string $expression
+     * @param array  $optionsArguments
+     *
+     * @return mixed
+     */
+    protected function executeMethod($expression, $optionsArguments = [])
+    {
+        preg_match('#@([\w\._]+)->([\w\._]+)(\((.*)\))*#', $expression, $matches);
+        $service   = $matches[1];
+        $method    = $matches[2];
+        $arguments = [];
+
+        if (isset($matches[4]) && !empty($matches[4])) {
+            $arguments = explode(',', $matches[4]);
+
+            $newArguments = [];
+            foreach ($arguments as $argument) {
+                if (0 === strpos(trim($argument), '@')) {
+                    $newArguments[] =  $this->executeMethod($argument);
+                } else {
+                    $newArguments[] = $argument;
+                }
+            }
+
+            $arguments = array_merge($newArguments, $optionsArguments);
+        }
+
+        return call_user_func_array([$this->container->get($service), $method], $arguments);
     }
 }

@@ -16,19 +16,4 @@ class GroupManagerSpec extends ObjectBehavior
         $this->beConstructedWith($groupTypeRepository, $attRepository);
     }
 
-    function it_provides_available_axis_as_a_sorted_choice(
-        $attRepository,
-        AttributeInterface $attribute1,
-        AttributeInterface $attribute2
-    ) {
-        $attribute1->getId()->willReturn(1);
-        $attribute1->getLabel()->willReturn('Foo');
-
-        $attribute2->getId()->willReturn(2);
-        $attribute2->getLabel()->willReturn('Bar');
-
-        $attRepository->findAllAxis()->willReturn([$attribute1, $attribute2]);
-
-        $this->getAvailableAxisChoices()->shouldReturn([2 => 'Bar', 1 => 'Foo']);
-    }
 }
