@@ -39,7 +39,7 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *
      * @param int $id Page state id
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function getAction($id)
     {

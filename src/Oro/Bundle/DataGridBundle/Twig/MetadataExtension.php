@@ -14,7 +14,7 @@ class MetadataExtension extends Twig_Extension
     const ROUTE = 'oro_datagrid_index';
 
     /** @var ContainerInterface */
-    protected $serviceLocator;
+    private $serviceLocator;
 
     /**
      * @param ContainerInterface $container

@@ -13,7 +13,7 @@ class ResponseHashnavListener
     /**
      * @var ContainerInterface
      */
-    protected $serviceLocator;
+    private $serviceLocator;
 
     public function __construct(ContainerInterface $container)
     {

@@ -18,7 +18,7 @@ use Twig_Function_Method;
 class FilterExtension extends Twig_Extension
 {
     /** @var ContainerInterface */
-    protected $serviceLocator;
+    private $serviceLocator;
 
     public function __construct(ContainerInterface $container)
     {
