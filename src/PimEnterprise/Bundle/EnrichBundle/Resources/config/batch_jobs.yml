@@ -74,6 +74,31 @@ connector:
                     class: "%pim_enrich.step.mass_edit.step.class%"
                     services:
                         cleaner: pim_enrich.connector.item.mass_edit.temporary_file_cleaner
+        edit_common_attributes_with_permission_and_rules:
+            title: edit_common_attributes_with_permission_and_rules
+            type:  mass_edit
+            steps:
+                perform:
+                    title: edit_common_attributes_with_permission_and_rules
+                    services:
+                        reader:    pim_enrich.connector.reader.mass_edit.product
+                        processor: pim_enrich.connector.processor.mass_edit.product.edit_common_attributes
+                        writer:    pimee_enrich.connector.writer.mass_edit.product
+                    parameters:
+                        batch_size: 1000
+                clean:
+                    title: edit_common_attributes_clean
+                    class: "%pim_enrich.step.mass_edit.step.class%"
+                    services:
+                        cleaner: pim_enrich.connector.item.mass_edit.temporary_file_cleaner
+                execute_rules:
+                     title:         pimee_catalog_rule.steps.rules_execution.title
+                     services:
+                         reader:    pim_enrich.connector.reader.mass_edit.product
+                         processor: pimee_catalog_rule.processor.product_loader
+                         writer:    pimee_catalog_rule.executor.rules
+                     parameters:
+                         batch_size: 100
         csv_published_product_quick_export:
             title: csv_published_product_quick_export
             type: quick_export
