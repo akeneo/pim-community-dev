@@ -17,9 +17,7 @@ services:
     oro_datagrid.datagrid.manager:
         class: '%oro_datagrid.datagrid.manager.class%'
         arguments:
-            - '@oro_datagrid.configuration.provider.chain'
-            - '@oro_datagrid.datagrid.builder'
-            - '@oro_datagrid.datagrid.request_params'
+            - '@service_container'
 
     oro_datagrid.datagrid.builder:
         class: '%oro_datagrid.datagrid.builder.class%'
