@@ -119,7 +119,8 @@ pimee_product_asset:
     csv_asset_configuration_import.title: Assetausgabekanalkonfiguration-Import aus CSV-Datei
     yml_asset_configuration_export.title: Assetausgabekanalkonfiguration-Export in Yaml
     csv_asset_category_export.title: Assetkategorie-Export in CSV-Datei
-    yml_asset_channel_configuration_import.title: Assetausgabekanalkonfiguration-Import aus CSV-Datei
+    yml_asset_channel_configuration_import.title: Assets Channel-Konfiguration in Yaml importieren
+    assets_mass_upload.title: Massenupload von Assets
   steps:
     channel_configuration.processor.title: Verarbeite Ausgabekanalkonfigurationen
   notAvailable:
