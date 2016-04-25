@@ -69,6 +69,6 @@ class ResponseHashnavListener
      */
     final protected function getTemplating()
     {
-        return $this->serviceLocator->get('twig');
+        return $this->serviceLocator->get('templating');
     }
 }
