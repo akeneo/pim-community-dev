@@ -58,40 +58,62 @@ pim_connector:
       validation.title: Validación de fichero
       import.title: Importar grupos de variantes
     xlsx_category_import:
+      title: Importar categorías en XLSX
       validation.title: Validación de archivo
       import.title: Importar categorías
     xlsx_association_type_import:
+      title: Importar tipo de asociaciones en XLSX
       validation.title: Validación de archivo
       import.title: Importar tipos de asociaciones
     xlsx_attribute_import:
+      title: Importar atributos en XLSX
       validation.title: Validación de archivo
       import.title: Importar atributos
     xlsx_attribute_option_import:
+      title: Importar opciones de atributos en XLSX
       validation.title: Validación de archivo
       import.title: Importar opciones de atributos
     xlsx_family_import:
+      title: Importar familias en XLSX
       validation.title: Validación de archivo
       import.title: Importe de familias
     xlsx_product_export:
       title: Exportar producto en XLSX
       export.title: Exportar producto
     xlsx_product_import:
+      title: Importar productos en XLSX
       validation.title: Validación de archivo
       import.title: Importar productos
       import_associations.title: Importar asociaciones
     xlsx_group_export:
+      title: Exportar grupos en XLSX
       export.title: Exportar grupos
     xlsx_variant_group_export:
+      title: Exportar grupo de variantes en XLSX
       export.title: Exportación de grupo de variantes
     xlsx_group_import:
+      title: Importar grupos en XLSX
       validation.title: Validación de archivo
       import.title: Importar grupos
     xlsx_variant_group_import:
+      title: Importar grupo de variantes en XLSX
       validation.title: Validación de archivo
+      import.title: Importar grupo de variantes
     xlsx_family_export:
+      title: Exportar familias en XLSX
       export.title: Exportar familias
     xlsx_category_export:
+      title: Exportar categorías en XLSX
       export.title: Exportar categorías
+    xlsx_attribute_export:
+      title: Exportar atributos en XLSX
+      export.title: Exportar atributos en XLSX
+    xlsx_attribute_option_export:
+      title: Exportar opciones de atributos en XLSX
+      export.title: Exportar opciones de atributos en XLSX
+    xlsx_association_type_export:
+      title: Exportar tipo de asociaciones en XLSX
+      export.title: Exportar tipo de asociaciones en XLSX
   steps:
     dummy_reader.title: Lector de prueba
     product_reader.title: Extracción de productos
