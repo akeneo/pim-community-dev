@@ -39,6 +39,10 @@ pim_enrich:
     tab:
       property.title: Propriétés
       history.title: Historique
+  locale:
+    tab:
+      property.title: Propriétés
+      permission.title: Permissions
   group:
     axis.help: Les axes sont les attributs qui définissent des variantes du groupe. Les axes sont des attributs avec des options, non localisables et ayant une portée globale. Il ne peuvent pas être modifiés après la création.
     type:
@@ -102,7 +106,7 @@ pim_enrich:
         L'action de masse "changement de statut" a été lancée. Vous serez notifié lorsque la modification sera terminée.
     edit-common-attributes:
       label: Modifier les attributs
-      description: Les attributs sélectionnés vont être modifiés avec les valeurs suivantes pour la locale choisie.
+      description: Les attributs sélectionnés du produit vont être modifiés avec les valeurs suivantes pour la locale choisie.
       empty: Veuillez sélectionner le ou les attribut(s) à modifier
       success_flash: "Le processus de mise à jour du statut de produit(s) est en cours d'exécution"
       launched_flash: |-
@@ -575,6 +579,10 @@ Drop a file or click here: Déposez un fichier ou cliquez ici
 Drop an image or click here: Déposez une image ou cliquez ici
 Automatic option sorting: Option de tri automatique
 save_attribute_before_manage_option: "Pour gérer les options, veuillez d'abord enregistrer l'attribut"
+Please select: Veuillez sélectionner
+Active: Actif
+Inactive: Inactif
+Do not convert: Ne pas convertir
 Create: Créer
 Cancel: Annuler
 Choose a family: Choisissez une famille
@@ -672,7 +680,7 @@ pim_catalog_file: Fichier
 pim_catalog_image: Image
 pim_catalog_boolean: Oui/Non
 pim_catalog_date: Date
-pim_catalog_metric: Métrique
+pim_catalog_metric: Unité de mesure
 pim_reference_data_simpleselect: Liste à choix unique de données référentielles
 pim_reference_data_multiselect: Liste à choix multiple de données référentielles
 Activated: Activé
@@ -864,3 +872,5 @@ mass_edit report:
 job_tracker:
   tab:
     title: Traqueur de processus
+  filter:
+    started_at: Démarré à
