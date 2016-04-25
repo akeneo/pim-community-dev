@@ -612,9 +612,9 @@ class Grid extends Index
     /**
      * Removes selection from filter
      * 
-     * @param  string   $filterName
-     * @param  string   $selectionName
-     * @param  Driver   Interface|null $driver
+     * @param  string           $filterName
+     * @param  string           $selectionName
+     * @param  Interface|null   $driver
      * 
      * @return null
      */
@@ -633,10 +633,10 @@ class Grid extends Index
                 $selectionName
             )
         );
-        
-        sleep(1);
 
-        $this->getFilter($filterName)->find('css', 'button.filter-update')->click();
+        $updateBtn = $filter->find('css', 'button.filter-update');
+        $updateBtn->focus();
+        $updateBtn->click();
     }
 
     /**
