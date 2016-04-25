@@ -16,6 +16,6 @@ class ChangeStatus extends BaseChangeStatus
      */
     public function getBatchJobCode()
     {
-        return 'update_product_value_with_permission';
+        return 'update_product_value_with_permission_and_rules';
     }
 }

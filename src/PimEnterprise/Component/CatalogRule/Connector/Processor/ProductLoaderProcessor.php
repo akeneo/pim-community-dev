@@ -38,6 +38,10 @@ class ProductLoaderProcessor extends AbstractConfigurableStepElement implements 
      */
     public function process($item)
     {
+        if (is_object($item)) {
+            return $item;
+        }
+
         return $this->productRepository->findOneByIdentifier($this->getIdentifier($item));
     }
 
