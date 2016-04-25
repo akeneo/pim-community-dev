@@ -1,21 +1,28 @@
 <?php
 
-namespace spec\Pim\Bundle\TransformBundle\Normalizer;
+namespace spec\Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Prophecy\Argument;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Serializer;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer)
+    function let(CollectionFilterInterface $filter, Serializer $serializer)
     {
-        $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->beConstructedWith($filter);
+
         $this->setSerializer($serializer);
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('Pim\Bundle\TransformBundle\Normalizer\Structured\ProductNormalizer');
     }
 
     function it_is_a_normalizer()
@@ -43,26 +50,55 @@ class ProductNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_the_properties_of_product(
+        $filter,
         ProductInterface $product,
         ArrayCollection $values,
         \ArrayIterator $iterator
     ) {
+        $filter
+            ->filterCollection(
+                $values,
+                'pim.transform.product_value.structured',
+                [
+                    "only_associations"    => false,
+                    "exclude_associations" => false,
+                    "entity"               => "product",
+                    'scopeCode'            => 'scope',
+                    'localeCodes'          => ['locale'],
+                    'channels'             => ['scope'],
+                    'locales'              => ['locale'],
+                ]
+            )
+            ->shouldBeCalled()
+            ->willReturn($values);
+
+        $product->getValues()->willReturn($values);
+
         $values->getIterator()->willReturn($iterator);
+        $iterator->rewind()->willReturn(null);
+        $iterator->valid()->will(function () use (&$valueCount) {
+            return false;
+        });
+        $iterator->next()->willReturn(null);
 
         $product->getAssociations()->willReturn([]);
         $product->getFamily()->willReturn(null);
         $product->getGroupCodes()->willReturn([]);
+        $product->getVariantGroup()->willReturn(null);
         $product->getCategoryCodes()->willReturn([]);
         $product->isEnabled()->willReturn(true);
-        $product->getValues()->willReturn($values);
 
-        $this->normalize($product, 'csv')->shouldReturn([
+        $this->normalize($product, 'json', [
+            'scopeCode'   => 'scope',
+            'localeCodes' => ['locale']
+        ])->shouldReturn([
             'family' => null,
             'groups' => [],
+            'variant_group' => null,
             'categories' => [],
             'enabled' => true,
+            'values' => [],
             'associations' => [],
-            'values' => []
         ]);
     }
 
@@ -80,6 +116,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getAssociations()->willReturn([]);
         $product->getFamily()->willReturn(null);
         $product->getGroupCodes()->willReturn([]);
+        $product->getVariantGroup()->willReturn(null);
         $product->getCategoryCodes()->willReturn([]);
         $product->isEnabled()->willReturn(true);
 
@@ -88,7 +125,22 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $product->getValues()->willReturn($values);
 
-        $filter->filter($values, Argument::any())->shouldBeCalled()->willReturn($values);
+        $filter
+            ->filterCollection(
+                $values,
+                'pim.transform.product_value.structured',
+                [
+                    "only_associations"    => false,
+                    "exclude_associations" => false,
+                    "entity"               => "product",
+                    'scopeCode'            => 'scope',
+                    'localeCodes'          => ['locale'],
+                    'channels'             => ['scope'],
+                    'locales'              => ['locale'],
+                ]
+            )
+            ->shouldBeCalled()
+            ->willReturn($values);
 
         $iterator->rewind()->willReturn(null);
         $valueCount = 1;
@@ -104,21 +156,25 @@ class ProductNormalizerSpec extends ObjectBehavior
             ->normalize($value, 'json', Argument::any())
             ->willReturn(['locale' => null, 'scope' => null, 'value' => 'foo']);
 
-        $this->normalize($product, 'json')->shouldReturn([
+        $this->normalize($product, 'json', [
+            'scopeCode'   => 'scope',
+            'localeCodes' => ['locale']
+        ])->shouldReturn([
             'family' => null,
             'groups' => [],
+            'variant_group' => null,
             'categories' => [],
             'enabled' => true,
-            'associations' => [],
             'values' => [
                 'name' => [
                     [
                         'locale' => null,
                         'scope' => null,
-                        'value' => 'foo'
+                        'value' => 'foo',
                     ]
                 ]
-            ]
+            ],
+            'associations' => [],
         ]);
     }
 }
