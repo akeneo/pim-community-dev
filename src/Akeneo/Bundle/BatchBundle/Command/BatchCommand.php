@@ -8,7 +8,9 @@ use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -29,6 +31,10 @@ use Symfony\Component\Validator\Validator;
  */
 class BatchCommand extends ContainerAwareCommand
 {
+    const EXIT_SUCCESS_CODE = 0;
+    const EXIT_ERROR_CODE = 1;
+    const EXIT_WARNING_CODE = 2;
+
     /**
      * {@inheritdoc}
      */
@@ -156,13 +162,37 @@ class BatchCommand extends ContainerAwareCommand
         $job->getJobRepository()->updateJobExecution($jobExecution);
 
         if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
-            $output->writeln(
-                sprintf(
-                    '<info>%s %s has been successfully executed.</info>',
-                    ucfirst($jobInstance->getType()),
-                    $jobInstance->getCode()
-                )
-            );
+
+            $nbWarnings = 0;
+            /** @var StepExecution $stepExecution */
+            foreach ($jobExecution->getStepExecutions() as $stepExecution) {
+                $nbWarnings += count($stepExecution->getWarnings());
+            }
+
+            if (0 === $nbWarnings) {
+                $output->writeln(
+                    sprintf(
+                        '<info>%s %s has been successfully executed.</info>',
+                        ucfirst($jobInstance->getType()),
+                        $jobInstance->getCode()
+                    )
+                );
+
+                return self::EXIT_SUCCESS_CODE;
+
+            } else {
+                $output->writeln(
+                    sprintf(
+                        '<comment>%s %s has been executed with %d warnings.</comment>',
+                        ucfirst($jobInstance->getType()),
+                        $jobInstance->getCode(),
+                        $nbWarnings
+                    )
+                );
+
+                return self::EXIT_WARNING_CODE;
+            }
+
         } else {
             $output->writeln(
                 sprintf(
@@ -175,6 +205,8 @@ class BatchCommand extends ContainerAwareCommand
             foreach ($jobExecution->getStepExecutions() as $stepExecution) {
                 $this->writeExceptions($output, $stepExecution->getFailureExceptions(), $verbose);
             }
+
+            return self::EXIT_ERROR_CODE;
         }
     }
 
