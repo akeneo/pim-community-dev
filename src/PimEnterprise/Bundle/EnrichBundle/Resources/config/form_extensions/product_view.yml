@@ -48,16 +48,22 @@ extensions:
         position: 80
 
     pimee-product-view-created:
-        module: pim/product-edit-form/meta/created
+        module: pim/form/common/meta/created
         parent: pimee-product-view-form
         targetZone: meta
         position: 90
+        config:
+            label: pim_enrich.entity.product.meta.created
+            labelBy: pim_enrich.entity.product.meta.created_by
 
     pimee-product-view-updated:
-        module: pim/product-edit-form/meta/updated
+        module: pim/form/common/meta/updated
         parent: pimee-product-view-form
         targetZone: meta
         position: 100
+        config:
+            label: pim_enrich.entity.product.meta.updated
+            labelBy: pim_enrich.entity.product.meta.updated_by
 
     pimee-product-view-form-meta-owner-group:
         module: pimee/product-edit-form/meta/owner-groups
@@ -126,7 +132,9 @@ extensions:
         position: 100
 
     pimee-product-view-state:
-        module: pim/product-edit-form/state
+        module: pim/form/common/state
         parent: pimee-product-view-form
         targetZone: state
         position: 900
+        config:
+            entity: pim_enrich.entity.product.title

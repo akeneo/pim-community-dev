@@ -17,11 +17,10 @@ define(
         'pim/field-manager',
         'pim/fetcher-registry',
         'pim/attribute-manager',
-        'pim/product-manager',
         'pim/attribute-group-manager',
         'pim/user-context',
         'pim/security-context',
-        'text!pim/template/product/tab/attributes'
+        'text!pim/template/form/tab/attributes'
     ],
     function (
         $,
@@ -32,7 +31,6 @@ define(
         FieldManager,
         FetcherRegistry,
         AttributeManager,
-        ProductManager,
         AttributeGroupManager,
         UserContext,
         SecurityContext,
@@ -70,7 +68,7 @@ define(
                     this.$el.html(this.template({}));
                     this.resize();
                     var product = this.getFormData();
-                    ProductManager.getValues(product).then(function (values) {
+                    AttributeManager.getValues(product).then(function (values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
                             values,
                             this.getExtension('attribute-group-selector').getCurrentElement()
@@ -85,7 +83,7 @@ define(
 
                         return $.when.apply($, fieldPromises);
                     }.bind(this)).then(function () {
-                        var $productValuesPanel = this.$('.product-values');
+                        var $productValuesPanel = this.$('.object-values');
                         $productValuesPanel.empty();
 
                         FieldManager.clearVisibleFields();
@@ -105,7 +103,7 @@ define(
                 return this;
             },
             resize: function () {
-                var productValuesContainer = this.$('.product-values');
+                var productValuesContainer = this.$('.object-values');
                 if (productValuesContainer.length && this.getRoot().$el.length && productValuesContainer.offset()) {
                     productValuesContainer.css(
                         {'height': ($(window).height() - productValuesContainer.offset().top - 4) + 'px'}
@@ -130,7 +128,7 @@ define(
                 var promises = [];
                 var product = this.getFormData();
 
-                promises.push(AttributeGroupManager.getAttributeGroupsForProduct(product)
+                promises.push(AttributeGroupManager.getAttributeGroupsForObject(product)
                     .then(function (attributeGroups) {
                         this.getExtension('attribute-group-selector').setElements(attributeGroups);
                     }.bind(this))
@@ -155,7 +153,7 @@ define(
                 this.render();
             },
             showAttribute: function (event) {
-                AttributeGroupManager.getAttributeGroupsForProduct(this.getFormData())
+                AttributeGroupManager.getAttributeGroupsForObject(this.getFormData())
                     .done(function (attributeGroups) {
                         this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.code);
 

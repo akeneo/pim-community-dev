@@ -210,6 +210,10 @@ class EnterpriseFeatureContext extends FeatureContext
         $button->click();
 
         $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
+
+        $this->spin(function () use ($versionCount) {
+            return ($versionCount + 1) === count($this->getSession()->getPage()->findAll('css', 'tr[data-version]'));
+        }, 'Revert failed');
     }
 
     /**
