@@ -30,11 +30,11 @@ connector:
                         processor: pimee_enrich.mass_edit.add_product_value.processor
                         writer:    pim_connector.writer.doctrine.product
         add_product_value_with_permission_and_rules:
-            title: add_product_value_with_permission_and_rules
+            title: add_product_value_with_permission_and_rules.title
             type:  mass_edit
             steps:
                 perform:
-                    title: add_product_value_with_permission_and_rules
+                    title: add_product_value_with_permission_and_rules.steps.perform
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.product
                         processor: pimee_enrich.mass_edit.add_product_value.processor
@@ -58,11 +58,11 @@ connector:
                         processor: pimee_enrich.mass_edit.update_product_value.processor
                         writer:    pim_connector.writer.doctrine.product
         update_product_value_with_permission_and_rules:
-            title: update_product_value_with_permission
+            title: update_product_value_with_permission_and_rules.title
             type:  mass_edit
             steps:
                 perform:
-                    title: update_product_value_with_permission_and_rules
+                    title: update_product_value_with_permission_and_rules.steps.perform
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.product
                         processor: pimee_enrich.mass_edit.update_product_value.processor
@@ -93,11 +93,11 @@ connector:
                     services:
                         cleaner: pim_enrich.connector.item.mass_edit.temporary_file_cleaner
         edit_common_attributes_with_permission_and_rules:
-            title: edit_common_attributes_with_permission_and_rules
+            title: edit_common_attributes_with_permission_and_rules.title
             type:  mass_edit
             steps:
                 perform:
-                    title: edit_common_attributes_with_permission_and_rules
+                    title: edit_common_attributes_with_permission_and_rules.steps.perform
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.product
                         processor: pim_enrich.connector.processor.mass_edit.product.edit_common_attributes
@@ -142,11 +142,11 @@ connector:
                      parameters:
                          batch_size: 1000
         add_to_variant_group_with_rules:
-            title: add_to_variant_group_with_rules
+            title: add_to_variant_group_with_rules.title
             type:  mass_edit
             steps:
                 perform:
-                    title: add_to_variant_group_with_rules
+                    title: add_to_variant_group_with_rules.steps.perform
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.variant_group_product
                         processor: pim_enrich.connector.processor.mass_edit.product.add_to_variant_group

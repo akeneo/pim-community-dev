@@ -281,7 +281,7 @@ jobs:
     edit_common_attributes_with_permission_and_rules:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes_with_permission_and_rules
-        label:     Mass edit common product attributes & apply rules
+        label:     Mass edit common product attributes & rules application
         type:      mass_edit
     add_to_variant_group:
         connector: Akeneo Mass Edit Connector
