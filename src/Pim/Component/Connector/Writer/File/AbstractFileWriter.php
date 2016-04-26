@@ -26,9 +26,6 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var string */
-    protected $resolvedFilePath;
-
     /** @var array */
     protected $filePathResolverOptions;
 

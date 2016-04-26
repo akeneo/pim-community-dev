@@ -5,17 +5,20 @@ namespace spec\Pim\Component\Connector\Writer\File;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Buffer\BufferInterface;
+use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Prophecy\Argument;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\Type as ConstraintsType;
 
 class XlsxSimpleWriterSpec extends ObjectBehavior
 {
     function let(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer, ColumnSorterInterface $columnSorter)
     {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $columnSorter);
+        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $columnSorter, 10000);
 
         $filePathResolver
             ->resolve(Argument::any(), Argument::type('array'))

@@ -158,6 +158,9 @@ pim_connector:
         enclosure:
             label: Enclosure
             help: One character used to set the field enclosure
+        lines_per_files:
+            label: Number of lines per file
+            help: Define the limit number of lines per file
         withHeader:
             label: With header
             help: Whether or not to print the column name
