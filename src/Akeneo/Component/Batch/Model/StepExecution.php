@@ -440,8 +440,8 @@ class StepExecution
     public function addWarning($name, $reason, array $reasonParameters, $item)
     {
         $element = $this->stepName;
-        if (strpos($element, '.')) {
-            $element = substr($element, 0, strpos($element, '.'));
+        if (substr($element, -6) === '.title') {
+            $element = substr($element, 0, -6);
         }
         if (is_object($item)) {
             $item = [

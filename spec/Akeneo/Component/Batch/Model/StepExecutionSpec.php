@@ -11,7 +11,7 @@ class StepExecutionSpec extends ObjectBehavior
 {
     function let(JobExecution $jobExecution)
     {
-        $this->beConstructedWith('myStepName', $jobExecution);
+        $this->beConstructedWith('my.step.title', $jobExecution);
     }
 
     function it_is_properly_instanciated()
@@ -66,6 +66,18 @@ class StepExecutionSpec extends ObjectBehavior
         $this->getWarnings()->shouldHaveCount(1);
     }
 
+    function it_adds_warning_and_respects_the_name()
+    {
+        $this->addWarning(
+            'excluded',
+            'my reason',
+            [],
+            ['myitem']
+        );
+        $warnings = $this->getWarnings();
+        $warnings[0]->getName()->shouldReturn('my.step.steps.excluded.title');
+    }
+
     function it_increments_summary_info()
     {
         $this->incrementSummaryInfo('counter');
@@ -76,6 +88,6 @@ class StepExecutionSpec extends ObjectBehavior
 
     function it_is_displayable()
     {
-        $this->__toString()->shouldReturn('id=0, name=[myStepName], status=[2], exitCode=[EXECUTING], exitDescription=[]');
+        $this->__toString()->shouldReturn('id=0, name=[my.step.title], status=[2], exitCode=[EXECUTING], exitDescription=[]');
     }
 }
