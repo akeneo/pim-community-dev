@@ -169,7 +169,7 @@ interface AttributeRepositoryInterface extends
     public function countAll();
 
     /**
-     * Get axis as choice list
+     * Find axis label for a locale
      *
      * @param string $locale
      *
