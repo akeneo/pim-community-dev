@@ -15,14 +15,19 @@ use Akeneo\Component\Localization\Localizer\LocalizerInterface;
  */
 class ProductCsvImport implements DefaultParametersInterface
 {
+    /** @var DefaultParametersInterface */
+    protected $simpleParameters;
+
     /** @var array */
     protected $supportedJobNames;
 
     /**
-     * @param array $supportedJobNames
+     * @param DefaultParametersInterface $simpleParameters
+     * @param array                      $supportedJobNames
      */
-    public function __construct(array $supportedJobNames)
+    public function __construct(DefaultParametersInterface $simpleParameters, array $supportedJobNames)
     {
+        $this->simpleParameters = $simpleParameters;
         $this->supportedJobNames = $supportedJobNames;
     }
 
@@ -31,21 +36,17 @@ class ProductCsvImport implements DefaultParametersInterface
      */
     public function getParameters()
     {
-        return [
-            'filePath' => null,
-            'delimiter' => ';',
-            'enclosure' => '"',
-            'escape' => '\\',
-            'decimalSeparator' => LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR,
-            'dateFormat' => LocalizerInterface::DEFAULT_DATE_FORMAT,
-            'uploadAllowed' => true,
-            'enabled' => true,
-            'categoriesColumn' => 'categories',
-            'familyColumn' => 'family',
-            'groupsColumn' => 'groups',
-            'enabledComparison' => true,
-            'realTimeVersioning' => true
-        ];
+        $parameters = $this->simpleParameters->getParameters();
+        $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+        $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
+        $parameters['enabled'] = true;
+        $parameters['categoriesColumn'] = 'categories';
+        $parameters['familyColumn'] = 'family';
+        $parameters['groupsColumn'] = 'groups';
+        $parameters['enabledComparison'] = true;
+        $parameters['realTimeVersioning'] = true;
+
+        return $parameters;
     }
 
     /**

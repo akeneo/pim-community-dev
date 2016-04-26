@@ -1,17 +1,18 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Form\Type\JobParameters;
+namespace Pim\Component\Connector\Job\JobParameters\Defaults;
 
 use Akeneo\Component\Batch\Job\JobInterface;
+use Akeneo\Component\Batch\Job\JobParameters\DefaultParametersInterface;
 
 /**
- * FormsOptions for simple XSLX export
+ * DefaultParameters for simple Xlsx export
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleXlsxExport implements FormsOptionsInterface
+class SimpleXlsxExport implements DefaultParametersInterface
 {
     /** @var array */
     protected $supportedJobNames;
@@ -27,22 +28,11 @@ class SimpleXlsxExport implements FormsOptionsInterface
     /**
      * {@inheritdoc}
      */
-    public function getOptions()
+    public function getParameters()
     {
         return [
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help'
-                ]
-            ],
-            'withHeader' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.export.withHeader.label',
-                    'help'  => 'pim_connector.export.withHeader.help'
-                ]
-            ],
+            'filePath' => null,
+            'withHeader' => true,
         ];
     }
 

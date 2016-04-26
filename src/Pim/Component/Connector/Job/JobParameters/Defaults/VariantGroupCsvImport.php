@@ -15,32 +15,34 @@ use Akeneo\Component\Localization\Localizer\LocalizerInterface;
  */
 class VariantGroupCsvImport implements DefaultParametersInterface
 {
+    /** @var DefaultParametersInterface */
+    protected $simpleParameters;
+
     /** @var array */
     protected $supportedJobNames;
 
     /**
-     * @param array $supportedJobNames
+     * @param DefaultParametersInterface $simpleParameters
+     * @param array                      $supportedJobNames
      */
-    public function __construct(array $supportedJobNames)
+    public function __construct(DefaultParametersInterface $simpleParameters, array $supportedJobNames)
     {
+        $this->simpleParameters = $simpleParameters;
         $this->supportedJobNames = $supportedJobNames;
     }
+
 
     /**
      * {@inheritdoc}
      */
     public function getParameters()
     {
-        return [
-            'filePath' => null,
-            'delimiter' => ';',
-            'enclosure' => '"',
-            'escape' => '\\',
-            'decimalSeparator' => LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR,
-            'dateFormat' => LocalizerInterface::DEFAULT_DATE_FORMAT,
-            'uploadAllowed' => true,
-            'copyValues' => true
-        ];
+        $parameters = $this->simpleParameters->getParameters();
+        $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+        $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
+        $parameters['copyValues'] = true;
+
+        return $parameters;
     }
 
     /**

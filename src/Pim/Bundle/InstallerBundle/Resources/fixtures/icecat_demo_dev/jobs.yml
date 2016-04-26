@@ -267,7 +267,6 @@ jobs:
         configuration:
             filePath:            /tmp/category.xlsx
             uploadAllowed:       true
-            circularRefsChecked: true
     xlsx_association_type_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_association_type_import

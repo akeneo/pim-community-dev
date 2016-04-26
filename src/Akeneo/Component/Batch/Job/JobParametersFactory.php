@@ -5,7 +5,7 @@ namespace Akeneo\Component\Batch\Job;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultParametersRegistry;
 
 /**
- * Allow to create immutable JobParameters with only default values or with default values and passed parameters
+ * Allow to create immutable JobParameters with passed parameters completed by default values
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -30,24 +30,12 @@ class JobParametersFactory
     }
 
     /**
-     * @param JobInterface $job
+     * @param JobInterface $job        the job we expect to configure
+     * @param array        $parameters the parameters to use in addition of the default values
      *
      * @return JobParameters
      */
-    public function createDefault(JobInterface $job)
-    {
-        $defaults = $this->defaultRegistry->getDefaultParameters($job);
-
-        return new $this->jobParametersClass($defaults->getParameters());
-    }
-
-    /**
-     * @param JobInterface $job
-     * @param array        $parameters
-     *
-     * @return JobParameters
-     */
-    public function create(JobInterface $job, array $parameters)
+    public function create(JobInterface $job, array $parameters = [])
     {
         $defaults = $this->defaultRegistry->getDefaultParameters($job);
         $parameters = array_merge($defaults->getParameters(), $parameters);

@@ -27,6 +27,7 @@ services:
     pim_installer.job_parameters.defaults.product_csv_import:
         class: %pim_connector.job_parameters.defaults.product_csv_import.class%
         arguments:
+            - '@pim_connector.job_parameters.defaults.simple_csv_import'
             -
                 - 'pim_installer.jobs.fixtures_product_csv.title'
         tags:
@@ -35,6 +36,7 @@ services:
     pim_installer.job_parameters.defaults.variant_group_csv_import:
         class: %pim_connector.job_parameters.defaults.variant_group_csv_import.class%
         arguments:
+            - '@pim_connector.job_parameters.defaults.simple_csv_import'
             -
                 - 'pim_installer.jobs.fixtures_variant_group_csv.title'
         tags:

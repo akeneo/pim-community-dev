@@ -7,7 +7,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Entity job
+ * Batch domain object representing a uniquely identifiable configured job.
+ *
+ * In spring batch:
+ * "Batch domain object representing a uniquely identifiable job run. JobInstance can be restarted multiple times in
+ * case of execution failure and it's lifecycle ends with first successful execution. Trying to execute an existing
+ * JobIntance that has already completed successfully will result in error. Error will be raised also for an attempt
+ * to restart a failed JobInstance if the Job is not restartable.
+ * cf https://docs.spring.io/spring-batch/apidocs/org/springframework/batch/core/JobInstance.html"
+ *
+ * In Akeneo Batch: the responsibility is not the same, we're able to store a JobInstance, run the Job, run it again
+ * with the same config, then change the config, then run it...
+ *
+ * TODO: we need to double think about this
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -152,6 +164,8 @@ class JobInstance
     }
 
     /**
+     * TODO: job name in spring batch
+     *
      * Get alias
      *
      * @return string
@@ -210,7 +224,8 @@ class JobInstance
     }
 
     /**
-     * Set job configuration
+     * This configuration can be used to create a JobParameters, stored like this in a legacy way
+     * TODO: we should rename and extract this configuration to be able to use JobParameters from whatever source
      *
      * @param array $configuration
      *
@@ -224,7 +239,8 @@ class JobInstance
     }
 
     /**
-     * Get raw configuration
+     * This configuration can be used to create a JobParameters, stored like this in a legacy way
+     * TODO: we should rename and extract this configuration to be able to use JobParameters from whatever source
      *
      * @return array
      */
@@ -234,6 +250,8 @@ class JobInstance
     }
 
     /**
+     * TODO: such weird, we should only provide the "job name"
+     *
      * Set job
      *
      * @param Job $job
@@ -248,6 +266,8 @@ class JobInstance
     }
 
     /**
+     * TODO: such weird, we should only provide the "job name"
+     *
      * Get job
      *
      * @return Job
@@ -290,7 +310,10 @@ class JobInstance
     }
 
     /**
+     * TODO: job name in spring batch
+     *
      * Set alias
+     *
      * Throws logic exception if alias property is already set.
      *
      * @param string $alias

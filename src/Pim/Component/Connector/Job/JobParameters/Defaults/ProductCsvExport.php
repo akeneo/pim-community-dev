@@ -15,14 +15,19 @@ use Akeneo\Component\Localization\Localizer\LocalizerInterface;
  */
 class ProductCsvExport implements DefaultParametersInterface
 {
+    /** @var DefaultParametersInterface */
+    protected $simpleParameters;
+
     /** @var array */
     protected $supportedJobNames;
 
     /**
-     * @param array $supportedJobNames
+     * @param DefaultParametersInterface $simpleParameters
+     * @param array                      $supportedJobNames
      */
-    public function __construct(array $supportedJobNames)
+    public function __construct(DefaultParametersInterface $simpleParameters, array $supportedJobNames)
     {
+        $this->simpleParameters = $simpleParameters;
         $this->supportedJobNames = $supportedJobNames;
     }
 
@@ -31,15 +36,12 @@ class ProductCsvExport implements DefaultParametersInterface
      */
     public function getParameters()
     {
-        return [
-            'filePath' => null,
-            'delimiter' => ';',
-            'enclosure' => '"',
-            'withHeader' => true,
-            'decimalSeparator' => LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR,
-            'dateFormat' => LocalizerInterface::DEFAULT_DATE_FORMAT,
-            'channel' => null
-        ];
+        $parameters = $this->simpleParameters->getParameters();
+        $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+        $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
+        $parameters['channel'] = null;
+
+        return $parameters;
     }
 
     /**

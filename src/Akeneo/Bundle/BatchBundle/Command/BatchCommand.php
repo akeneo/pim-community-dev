@@ -87,6 +87,7 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         $job = $this->getConnectorRegistry()->getJob($jobInstance);
+        // TODO: this way to configure is really weird, setters must die...
         $jobInstance->setJob($job);
 
         $jobParamsFactory = $this->getJobParametersFactory();

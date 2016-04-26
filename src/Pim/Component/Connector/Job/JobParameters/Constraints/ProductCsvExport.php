@@ -5,7 +5,6 @@ namespace Pim\Component\Connector\Job\JobParameters\Constraints;
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintsInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
-use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -18,17 +17,17 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class ProductCsvExport implements ConstraintsInterface
 {
-    /** @var SimpleCsvExport */
+    /** @var ConstraintsInterface */
     protected $simpleConstraint;
 
     /** @var array */
     protected $supportedJobNames;
 
     /**
-     * @param SimpleCsvExport $simpleCsv
-     * @param array           $supportedJobNames
+     * @param ConstraintsInterface $simpleCsv
+     * @param array                $supportedJobNames
      */
-    public function __construct(SimpleCsvExport $simpleCsv, array $supportedJobNames)
+    public function __construct(ConstraintsInterface $simpleCsv, array $supportedJobNames)
     {
         $this->simpleConstraint = $simpleCsv;
         $this->supportedJobNames = $supportedJobNames;

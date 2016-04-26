@@ -18,17 +18,17 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class VariantGroupCsvImport implements ConstraintsInterface
 {
-    /** @var SimpleCsvImport */
+    /** @var ConstraintsInterface */
     protected $simpleConstraint;
 
     /** @var array */
     protected $supportedJobNames;
 
     /**
-     * @param SimpleCsvImport $simpleConstraint
-     * @param array           $supportedJobNames
+     * @param ConstraintsInterface $simpleConstraint
+     * @param array                $supportedJobNames
      */
-    public function __construct(SimpleCsvImport $simpleConstraint, array $supportedJobNames)
+    public function __construct(ConstraintsInterface $simpleConstraint, array $supportedJobNames)
     {
         $this->simpleConstraint = $simpleConstraint;
         $this->supportedJobNames = $supportedJobNames;

@@ -9,27 +9,22 @@ use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Constraints for variant group CSV export
+ * Constraints for simple XLSX export
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupCsvExport implements ConstraintsInterface
+class SimpleXlsxExport implements ConstraintsInterface
 {
-    /** @var ConstraintsInterface */
-    protected $simpleConstraint;
-
     /** @var array */
     protected $supportedJobNames;
 
     /**
-     * @param ConstraintsInterface $simpleConstraint
-     * @param array                $supportedJobNames
+     * @param array $supportedJobNames
      */
-    public function __construct(ConstraintsInterface $simpleConstraint, array $supportedJobNames)
+    public function __construct(array $supportedJobNames)
     {
-        $this->simpleConstraint = $simpleConstraint;
         $this->supportedJobNames = $supportedJobNames;
     }
 
@@ -38,12 +33,14 @@ class VariantGroupCsvExport implements ConstraintsInterface
      */
     public function getConstraints()
     {
-        $baseConstraint = $this->simpleConstraint->getConstraints();
-        $constraintFields = $baseConstraint->fields;
-        $constraintFields['decimalSeparator'] = new NotBlank();
-        $constraintFields['dateFormat'] = new NotBlank();
-
-        return new Collection(['fields' => $constraintFields]);
+        return new Collection(
+            [
+                'fields' => [
+                    'filePath' => new NotBlank(['groups' => 'Execution']),
+                    'withHeader' => new NotBlank(),
+                ]
+            ]
+        );
     }
 
     /**

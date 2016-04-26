@@ -14,8 +14,8 @@ use Akeneo\Component\Localization\Localizer\LocalizerInterface;
  */
 class VariantGroupCsvExport implements FormsOptionsInterface
 {
-    /** @var SimpleCsvExport */
-    protected $simpleCsvExport;
+    /** @var FormsOptionsInterface */
+    protected $simpleOptions;
 
     /** @var string */
     protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
@@ -33,18 +33,18 @@ class VariantGroupCsvExport implements FormsOptionsInterface
     protected $supportedJobNames;
 
     /**
-     * @param SimpleCsvExport            $simpleCsvExport
+     * @param FormsOptionsInterface      $simpleOptions
      * @param array                      $supportedJobNames
      * @param array                      $decimalSeparators
      * @param array                      $dateFormats
      */
     public function __construct(
-        SimpleCsvExport $simpleCsvExport,
+        FormsOptionsInterface $simpleOptions,
         array $supportedJobNames,
         array $decimalSeparators,
         array $dateFormats
     ) {
-        $this->simpleCsvExport   = $simpleCsvExport;
+        $this->simpleOptions     = $simpleOptions;
         $this->supportedJobNames = $supportedJobNames;
         $this->decimalSeparators = $decimalSeparators;
         $this->dateFormats       = $dateFormats;
@@ -77,7 +77,7 @@ class VariantGroupCsvExport implements FormsOptionsInterface
                 ]
             ],
         ];
-        $formOptions = array_merge($formOptions, $this->simpleCsvExport->getOptions());
+        $formOptions = array_merge($formOptions, $this->simpleOptions->getOptions());
 
         return $formOptions;
     }

@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
  */
 class VariantGroupCsvImport implements FormsOptionsInterface
 {
-    /** @var SimpleCsvImport */
+    /** @var FormsOptionsInterface */
     protected $simpleCsvImport;
 
     /** @var string */
@@ -34,13 +34,13 @@ class VariantGroupCsvImport implements FormsOptionsInterface
     protected $supportedJobNames;
 
     /**
-     * @param SimpleCsvImport            $simpleCsvImport
-     * @param array                      $supportedJobNames
-     * @param array                      $decimalSeparators
-     * @param array                      $dateFormats
+     * @param FormsOptionsInterface $simpleCsvImport
+     * @param array                 $supportedJobNames
+     * @param array                 $decimalSeparators
+     * @param array                 $dateFormats
      */
     public function __construct(
-        SimpleCsvImport $simpleCsvImport,
+        FormsOptionsInterface $simpleCsvImport,
         array $supportedJobNames,
         array $decimalSeparators,
         array $dateFormats

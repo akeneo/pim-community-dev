@@ -2,9 +2,15 @@
 
 namespace Akeneo\Component\Batch\Updater;
 
+// TODO bad use of BatchBundle ... anyway the ConnectorRegistry is too complex
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Component\Batch\Job\Job;
+use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Update a job instance
@@ -15,6 +21,22 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class JobInstanceUpdater implements ObjectUpdaterInterface
 {
+    /** @var JobParametersFactory */
+    protected $jobParametersFactory;
+
+    /** @var ContainerInterface TODO: to fix circular reference, the way we load the whole Job in DI is realllly problematic */
+    protected $container;
+
+    /**
+     * @param JobParametersFactory $jobParametersFactory
+     * @param ContainerInterface   $container
+     */
+    public function __construct(JobParametersFactory $jobParametersFactory, ContainerInterface $container)
+    {
+        $this->jobParametersFactory = $jobParametersFactory;
+        $this->container = $container;
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -57,11 +79,23 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
                 $jobInstance->setType($data);
                 break;
             case 'configuration':
-                $jobInstance->setRawConfiguration($data);
+                /** @var Job */
+                $job = $this->getConnectorRegistry()->getJob($jobInstance);
+                /** @var JobParameters $jobParameters */
+                $jobParameters = $this->jobParametersFactory->create($job, $data);
+                $jobInstance->setRawConfiguration($jobParameters->getParameters());
                 break;
             case 'code':
                 $jobInstance->setCode($data);
                 break;
         }
+    }
+
+    /**
+     * @return ConnectorRegistry
+     */
+    protected function getConnectorRegistry()
+    {
+        return $this->container->get('akeneo_batch.connectors');
     }
 }

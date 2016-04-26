@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
  */
 class ProductCsvExport implements FormsOptionsInterface
 {
-    /** @var SimpleCsvExport */
+    /** @var FormsOptionsInterface */
     protected $simpleCsvExport;
 
     /** @var ChannelRepositoryInterface */
@@ -37,14 +37,14 @@ class ProductCsvExport implements FormsOptionsInterface
     protected $supportedJobNames;
 
     /**
-     * @param SimpleCsvExport            $simpleCsvExport
+     * @param FormsOptionsInterface      $simpleCsvExport
      * @param ChannelRepositoryInterface $channelRepository
      * @param array                      $supportedJobNames
      * @param array                      $decimalSeparators
      * @param array                      $dateFormats
      */
     public function __construct(
-        SimpleCsvExport $simpleCsvExport,
+        FormsOptionsInterface $simpleCsvExport,
         ChannelRepositoryInterface $channelRepository,
         array $supportedJobNames,
         array $decimalSeparators,

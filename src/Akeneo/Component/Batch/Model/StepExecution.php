@@ -11,9 +11,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 
 /**
- * Batch domain object representation the execution of a step. Unlike
- * JobExecution, there are additional properties related the processing
- * of items such as commit count, etc.
+ * Batch domain object representation the execution of a step. Unlike JobExecution, there are additional properties
+ * related the processing of items such as commit count, etc.
  *
  * Inspired by Spring Batch  org.springframework.batch.core.StepExecution
  *

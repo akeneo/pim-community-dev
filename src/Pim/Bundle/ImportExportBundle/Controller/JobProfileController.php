@@ -165,7 +165,7 @@ class JobProfileController
 
             if ($form->isValid()) {
 
-                $jobParameters = $this->jobParametersFactory->createDefault($jobInstance->getJob());
+                $jobParameters = $this->jobParametersFactory->create($jobInstance->getJob());
                 $jobInstance->setRawConfiguration($jobParameters->getParameters());
 
                 $this->entityManager->persist($jobInstance);
