@@ -635,9 +635,4 @@ interface AttributeInterface extends
      * @return bool
      */
     public function isBackendTypeReferenceData();
-
-    /**
-     * @return AttributeInterface
-     */
-    public function clearAvailableLocales();
 }

@@ -1046,14 +1046,4 @@ abstract class AbstractAttribute implements AttributeInterface
             AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS
         ]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function clearAvailableLocales()
-    {
-        $this->availableLocales = new ArrayCollection();
-
-        return $this;
-    }
 }
