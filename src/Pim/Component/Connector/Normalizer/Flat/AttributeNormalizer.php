@@ -31,7 +31,7 @@ class AttributeNormalizer extends BaseNormalizer
             $availableLocales = implode(self::ITEM_SEPARATOR, $availableLocales);
         }
 
-        return $availableLocales ?: self::ALL_LOCALES;
+        return !count($availableLocales) ? null : $availableLocales;
     }
 
     /**
