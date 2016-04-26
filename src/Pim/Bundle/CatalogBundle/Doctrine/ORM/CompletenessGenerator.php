@@ -631,8 +631,8 @@ MAIN_SQL;
     {
         $sql = '
             DELETE c FROM pim_catalog_completeness c
-              JOIN %product_table% p ON p.id = c.product_id
-             WHERE p.id = :product_id';
+            JOIN %product_table% p ON p.id = c.product_id
+            WHERE p.id = :product_id';
 
         $sql = $this->applyTableNames($sql);
 
@@ -649,8 +649,8 @@ MAIN_SQL;
     {
         $sql = '
             DELETE c FROM pim_catalog_completeness c
-              JOIN %product_table% p ON p.id = c.product_id
-             WHERE p.family_id = :family_id';
+            JOIN %product_table% p ON p.id = c.product_id
+            WHERE p.family_id = :family_id';
 
         $sql = $this->applyTableNames($sql);
 
