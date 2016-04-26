@@ -258,7 +258,9 @@ class VariantGroupCleaner
                     $stepExecution
                         ->addWarning(
                             'duplicated',
-                            $this->translator->trans('add_to_variant_group.steps.cleaner.warning.description'),
+                            $this->translator->trans(
+                                'pim_enrich.jobs.add_to_variant_group.steps.cleaner.warning.description'
+                            ),
                             [],
                             $product
                         );

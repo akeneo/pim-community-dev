@@ -293,6 +293,33 @@ pim_enrich:
             reference_data_type:
                 label: Choose the reference data type
 
+    # Background jobs
+    jobs:
+        update_product_value:
+            title: Update product value
+            steps.perform.title: Update product value
+        add_product_value:
+            title: Add product value
+            steps.perform.title: Add product value
+        edit_common_attributes:
+            title: Edit common attributes
+            steps:
+                perform.title: Edit common attributes
+                clean.title: Clean files for common attributes
+        set_attribute_requirements:
+            title: Set attribute requirements
+            steps.perform.title: Set attribute requirements
+        add_to_variant_group:
+            title: Add products to variant group
+            steps:
+                perform:
+                    title: Add products to variant group
+                    steps:
+                        excluded.title: Excluded product
+                        duplicated.title: Duplicated Axis
+                cleaner:
+                    warning.description: "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"
+
 # Entity and page header titles
 attribute:
     title:    attribute
@@ -969,16 +996,6 @@ job_execution.summary:
     skipped_attributes: Skipped attributes
 
 pim_mass_edit_execution_show:  Mass edit executions | Details
-
-edit_common_attributes.steps.edit_common_attributes_processor.title: Edit common attributes
-update_product_value.steps.update_product_value_processor.title: Update product value
-add_to_variant_group_clean.steps.excluded.title: Excluded product
-add_to_variant_group_clean.steps.duplicated.title: Duplicated Axis
-add_to_variant_group.steps.excluded.title: Excluded product
-add_to_variant_group.steps.duplicated.title: Duplicated Axis
-add_to_variant_group.steps.cleaner.warning.description: "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"
-edit_common_attributes: Edit common attributes
-edit_common_attributes_clean: Clean files for common attributes
 
 mass_edit report:
     overview: Mass edit reports
