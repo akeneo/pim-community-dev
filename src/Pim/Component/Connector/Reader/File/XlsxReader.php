@@ -4,6 +4,7 @@ namespace Pim\Component\Connector\Reader\File;
 
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
@@ -21,19 +22,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class XlsxReader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
     UploadedFileAwareInterface,
-    StepExecutionAwareInterface
+    StepExecutionAwareInterface,
+    FlushableInterface
 {
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
 
     /** @var FileIteratorInterface */
     protected $fileIterator;
-
-    /** @var string */
-    protected $filePath;
-
-    /** @var bool */
-    protected $uploadAllowed = false;
 
     /** @var StepExecution */
     protected $stepExecution;
@@ -52,7 +48,9 @@ class XlsxReader extends AbstractConfigurableStepElement implements
     public function read()
     {
         if (null === $this->fileIterator) {
-            $this->fileIterator = $this->fileIteratorFactory->create($this->filePath);
+            $jobParameters = $this->stepExecution->getJobParameters();
+            $filePath = $jobParameters->getParameter('filePath');
+            $this->fileIterator = $this->fileIteratorFactory->create($filePath);
             $this->fileIterator->rewind();
         }
 
@@ -72,6 +70,7 @@ class XlsxReader extends AbstractConfigurableStepElement implements
      */
     public function getUploadedFileConstraints()
     {
+        // TODO to fix
         return [
             new Assert\NotBlank(),
             new AssertFile(
@@ -91,81 +90,11 @@ class XlsxReader extends AbstractConfigurableStepElement implements
      */
     public function setUploadedFile(File $uploadedFile)
     {
+        // TODO: to fix by changing the job parameters to use !!
         $this->filePath     = $uploadedFile->getRealPath();
         $this->fileIterator = null;
 
         return $this;
-    }
-
-    /**
-     * Set file path
-     *
-     * @param string $filePath
-     *
-     * @return CsvReader
-     */
-    public function setFilePath($filePath)
-    {
-        $this->filePath     = $filePath;
-        $this->fileIterator = null;
-
-        return $this;
-    }
-
-    /**
-     * Get file path
-     *
-     * @return string $filePath
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
-    }
-
-    /**
-     * Set the uploadAllowed property
-     *
-     * @param bool $uploadAllowed
-     *
-     * @return CsvReader
-     */
-    public function setUploadAllowed($uploadAllowed)
-    {
-        $this->uploadAllowed = $uploadAllowed;
-
-        return $this;
-    }
-
-    /**
-     * Get the uploadAllowed property
-     *
-     * @return bool $uploadAllowed
-     */
-    public function isUploadAllowed()
-    {
-        return $this->uploadAllowed;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.import.filePath.label',
-                    'help'  => 'pim_connector.import.filePath.help'
-                ]
-            ],
-            'uploadAllowed' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.import.uploadAllowed.label',
-                    'help'  => 'pim_connector.import.uploadAllowed.help'
-                ]
-            ],
-        ];
     }
 
     /**
@@ -174,5 +103,13 @@ class XlsxReader extends AbstractConfigurableStepElement implements
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function flush()
+    {
+        $this->fileIterator = null;
     }
 }

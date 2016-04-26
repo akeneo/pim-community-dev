@@ -218,8 +218,6 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_serializer'
-            - %pim_catalog.localization.decimal_separators%
-            - %pim_catalog.localization.date_formats%
             - %upload_dir%
             - 'flat'
 

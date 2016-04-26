@@ -220,6 +220,7 @@ jobs:
         configuration:
             withHeader: true
             filePath:   /tmp/product.xlsx
+            channel:    mobile
     xlsx_group_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_group_export

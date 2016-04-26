@@ -55,8 +55,12 @@ services:
         class: %pim_import_export.form.type.job_parameters.form_options.simple_xlsx_export.class%
         arguments:
             -
-                - 'pim_connector.jobs.xlsx_group_export.title'
                 - 'pim_connector.jobs.xlsx_attribute_export.title'
+                - 'pim_connector.jobs.xlsx_family_export.title'
+                - 'pim_connector.jobs.xlsx_group_export.title'
+                - 'pim_connector.jobs.xlsx_association_type_export.title'
+                - 'pim_connector.jobs.xlsx_attribute_option_export.title'
+                - 'pim_connector.jobs.xlsx_category_export.title'
                 - 'xlsx_product_quick_export'
         tags:
             - { name: pim_import_export.form.type.job_parameters.form_options }

@@ -54,6 +54,7 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
      */
     public function getFilePath()
     {
+        // TODO: why we need this?
         $parameters = $this->stepExecution->getJobParameters();
 
         return $parameters->getParameter('filePath');
@@ -66,6 +67,7 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
      */
     public function getPath()
     {
+        // TODO: why we need this?
         if (null === $this->resolvedFilePath) {
             $parameters = $this->stepExecution->getJobParameters();
             $filePath = $parameters->getParameter('filePath');
@@ -73,21 +75,6 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
         }
 
         return $this->resolvedFilePath;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help'
-                ]
-            ]
-        ];
     }
 
     /**

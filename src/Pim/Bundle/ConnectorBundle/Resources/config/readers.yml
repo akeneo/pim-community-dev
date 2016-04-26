@@ -107,8 +107,6 @@ services:
        arguments:
            - '@pim_connector.reader.file.xlsx_iterator_factory'
            - '@pim_connector.reader.file.media_path_transformer'
-           - %pim_catalog.localization.decimal_separators%
-           - %pim_catalog.localization.date_formats%
 
     pim_connector.reader.file.xlsx_association_type:
         alias: pim_connector.reader.file.xlsx
