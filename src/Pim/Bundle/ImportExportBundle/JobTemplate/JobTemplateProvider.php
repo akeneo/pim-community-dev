@@ -14,7 +14,7 @@ use Akeneo\Component\Batch\Model\JobInstance;
 class JobTemplateProvider implements JobTemplateProviderInterface
 {
     /** @staticvar string */
-    const DEFAULT_CREATE_TEMPLATE   = 'PimImportExportBundle:%sProfile:create.html.twig';
+    const DEFAULT_CREATE_TEMPLATE = 'PimImportExportBundle:%sProfile:create.html.twig';
 
     /** @staticvar string */
     const DEFAULT_SHOW_TEMPLATE   = 'PimImportExportBundle:%sProfile:show.html.twig';
@@ -66,6 +66,7 @@ class JobTemplateProvider implements JobTemplateProviderInterface
 
         if (isset($this->jobTemplates[$jobAlias]) &&
             isset($this->jobTemplates[$jobAlias]['templates']['edit'])) {
+
             return $this->jobTemplates[$jobAlias]['templates']['edit'];
         }
 

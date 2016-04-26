@@ -1,0 +1,16 @@
+<div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane buffer-top active">
+    {% set properties %}
+        {{ form_row(form.code) }}
+        {{ form_row(form.label) }}
+    {% endset %}
+    {{ elements.accordion({ 'pane.accordion.properties': properties }, 1) }}
+
+    {% set globalSettings %}
+        {% for step in form.job.steps %}
+            {% for child in step.children %}
+                {{ form_widget(child) }}
+            {% endfor %}
+        {% endfor %}
+    {% endset %}
+    {{ elements.accordion({ 'pane.accordion.global_settings': globalSettings }, 2) }}
+</div>

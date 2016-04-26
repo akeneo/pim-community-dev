@@ -7,16 +7,16 @@ Feature: Display last operations widget
   @unstable
   Scenario: Display last operations widget
     Given a "footwear" catalog configuration
-    And the following job "csv_footwear_category_import" configuration:
+    And the following job "csv_footwear_category_export" configuration:
       | filePath | %tmp%/category_export/category_export.csv |
     And I am logged in as "Mary"
     When I am on the dashboard page
     Then I should see "Last operations"
     When I wait for widgets to load
     Then I should see "No operations found"
-    When I am on the "csv_footwear_category_import" export job page
+    When I am on the "csv_footwear_category_export" export job page
     And I launch the export job
-    And I wait for the "csv_footwear_category_import" job to finish
+    And I wait for the "csv_footwear_category_export" job to finish
     When I am on the dashboard page
     Then I should see "Last operations"
     When I wait for widgets to load
@@ -24,12 +24,12 @@ Feature: Display last operations widget
 
   Scenario: Show last operations list
     Given a "footwear" catalog configuration
-    And the following job "csv_footwear_category_import" configuration:
+    And the following job "csv_footwear_category_export" configuration:
       | filePath | %tmp%/category_export/category_export.csv |
     And I am logged in as "Mary"
-    When I am on the "csv_footwear_category_import" export job page
+    When I am on the "csv_footwear_category_export" export job page
     And I launch the export job
-    And I wait for the "csv_footwear_category_import" job to finish
+    And I wait for the "csv_footwear_category_export" job to finish
     When I am on the dashboard page
     Then I should see "Last operations"
     When I click on the job tracker button on the job widget

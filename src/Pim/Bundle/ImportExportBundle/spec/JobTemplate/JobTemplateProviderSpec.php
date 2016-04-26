@@ -14,8 +14,8 @@ class JobTemplateProviderSpec extends ObjectBehavior
         $jobTemplateConfigurations = [
             'my_custom_job' => [
                 'templates' => [
-                    'edit' => 'edit_overidden_template',
-                    'show' => 'show_overidden_template',
+                    'edit' => 'edit_overridden_template',
+                    'show' => 'show_overridden_template',
                 ],
             ],
         ];
@@ -32,12 +32,12 @@ class JobTemplateProviderSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\ImportExportBundle\JobTemplate\JobTemplateProviderInterface');
     }
 
-    function it_retrieves_overidden_job_templates(JobInstance $jobInstance)
+    function it_retrieves_overridden_job_templates(JobInstance $jobInstance)
     {
         $jobInstance->getAlias()->willReturn('my_custom_job');
 
-        $this->getShowTemplate($jobInstance)->shouldReturn('show_overidden_template');
-        $this->getEditTemplate($jobInstance)->shouldReturn('edit_overidden_template');
+        $this->getShowTemplate($jobInstance)->shouldReturn('show_overridden_template');
+        $this->getEditTemplate($jobInstance)->shouldReturn('edit_overridden_template');
     }
 
     function it_generates_default_import_job_template(JobInstance $jobInstance)
