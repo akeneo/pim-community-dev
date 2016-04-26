@@ -597,15 +597,6 @@ interface AttributeInterface extends
     public function getValidationRegexp();
 
     /**
-     * Set available locales
-     *
-     * @param ArrayCollection $availableLocales
-     *
-     * @return AttributeInterface
-     */
-    public function setAvailableLocales(ArrayCollection $availableLocales);
-
-    /**
      * Set decimalsAllowed
      *
      * @param bool $decimalsAllowed
@@ -644,4 +635,9 @@ interface AttributeInterface extends
      * @return bool
      */
     public function isBackendTypeReferenceData();
+
+    /**
+     * @return AttributeInterface
+     */
+    public function clearAvailableLocales();
 }

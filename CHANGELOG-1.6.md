@@ -35,6 +35,8 @@
 - Remove properties editTemplate, showTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Remove methods setShowTemplate, setEditTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Change constructor of `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`. Add `Akeneo\Bundle\BatchBundle\Connector\JobTemplateProviderInterface`
+- Remove method `setAvailableLocales` in `Pim/Component/Catalog/Model/AttributeInterface` and `Pim/Component/Catalog/Model/AbstractAttribute`
+- Remove method `setAvailableLocales` in `Pim/Component/Catalog/Model/AttributeInterface.php` and `Pim/Component/Catalog/Model/AbstractAttribute.php`
 - `Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/Filter/DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
 - `Pim/Bundle/CatalogBundle/Doctrine/ORM/Filter/DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
 - Change constructor of `Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/Filter/DateFilter`. Remove the third parameter `supportedFields`

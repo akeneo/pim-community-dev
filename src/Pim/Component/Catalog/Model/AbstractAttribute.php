@@ -554,16 +554,6 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function setAvailableLocales(ArrayCollection $availableLocales)
-    {
-        $this->availableLocales = $availableLocales;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function addFamily(FamilyInterface $family)
     {
         $this->families[] = $family;
@@ -1055,5 +1045,15 @@ abstract class AbstractAttribute implements AttributeInterface
             AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION,
             AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function clearAvailableLocales()
+    {
+        $this->availableLocales = new ArrayCollection();
+
+        return $this;
     }
 }

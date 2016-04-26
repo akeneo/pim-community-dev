@@ -27,11 +27,11 @@ class AttributeNormalizer extends BaseNormalizer
     {
         $availableLocales = $attribute->getLocaleSpecificCodes();
 
-        if ($availableLocales) {
-            $availableLocales = implode(self::ITEM_SEPARATOR, $availableLocales);
+        if (empty($availableLocales)) {
+            return null;
         }
 
-        return !count($availableLocales) ? null : $availableLocales;
+        return implode(self::ITEM_SEPARATOR, $availableLocales);
     }
 
     /**

@@ -161,12 +161,12 @@ class AttributeUpdater implements ObjectUpdaterInterface
     /**
      * @param AttributeInterface $attribute
      * @param string             $field
-     * @param array              $availableLocales
+     * @param array              $availableLocaleCodes
      */
-    protected function setAvailableLocales(AttributeInterface $attribute, $field, array $availableLocales)
+    protected function setAvailableLocales(AttributeInterface $attribute, $field, array $availableLocaleCodes)
     {
         $locales = [];
-        foreach ($availableLocales as $localeCode) {
+        foreach ($availableLocaleCodes as $localeCode) {
             $locale = $this->localeRepository->findOneByIdentifier($localeCode);
             if (null !== $locale) {
                 $locales[] = $locale;
