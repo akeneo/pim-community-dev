@@ -12,9 +12,14 @@ config:
         translator:
             exports: Translator
 
+    map:
+        '*':
+            pim/remover/variant-group: pim/remover/base
+            pim/saver/variant-group:   pim/saver/base
+
     config:
         # Forwarded events from mediator
-        pim/product-edit-form:
+        pim/form/common/edit-form:
             forwarded-events:
                 'pim_enrich:form:field:extension:add': 'pim_enrich:form:field:extension:add'
                 'pim_enrich:form:entity:pre_save':     'pim_enrich:form:entity:pre_save'
@@ -24,16 +29,17 @@ config:
         pim/cache-invalidator:
             events:
                 - 'pim_enrich:form:entity:post_fetch'
-        pim/product-manager:
-            urls:
-                get:    pim_enrich_product_rest_get
-                post:   pim_enrich_product_rest_post
-                remove: pim_enrich_product_rest_remove
         pim/variant-group-manager:
             urls:
-                get:    pim_enrich_variant_group_rest_get
-                post:   pim_enrich_variant_group_rest_post
-                remove: pim_enrich_variant_group_rest_remove
+                get: pim_enrich_variant_group_rest_get
+        pim/remover/variant-group:
+            url: pim_enrich_variant_group_rest_remove
+        pim/remover/product:
+            url: pim_enrich_product_rest_remove
+        pim/saver/variant-group:
+            url: pim_enrich_variant_group_rest_post
+        pim/saver/product:
+            url: pim_enrich_product_rest_post
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher
@@ -69,6 +75,7 @@ config:
                 measure:
                     module: pim/base-fetcher
                     options:
+                        warmup: false
                         urls:
                             list: pim_enrich_measures_rest_index
                 currency:
@@ -84,30 +91,41 @@ config:
                 product-completeness:
                     module: pim/completeness-fetcher
                     options:
+                        warmup: false
                         urls:
                             get: pim_enrich_product_completeness_rest_get
                 group:
                     module: pim/base-fetcher
                     options:
+                        warmup: false
                         urls:
                             list: pim_enrich_group_rest_index
                             get: pim_enrich_group_rest_get
                 variant-group:
-                    module: pim/base-fetcher
+                    module: pim/variant-group-fetcher
                     options:
+                        warmup: false
                         urls:
                             list: pim_enrich_variant_group_rest_index
                             get: pim_enrich_variant_group_rest_get
                 sequential-edit:
                     module: pim/base-fetcher
                     options:
+                        warmup: false
                         urls:
                             list: pim_enrich_mass_edit_action_sequential_edit_get
                 product-history:
                     module: pim/base-fetcher
                     options:
+                        warmup: false
                         urls:
                             get: pim_enrich_product_history_rest_get
+                product:
+                    module: pim/product-fetcher
+                    options:
+                        warmup: false
+                        urls:
+                            get: pim_enrich_product_rest_get
 
     paths:
         jquery.wizard:                      pimenrich/js/jquery.wizard
@@ -148,6 +166,16 @@ config:
         pim/base-fetcher:                   pimenrich/js/fetcher/base-fetcher
         pim/attribute-fetcher:              pimenrich/js/fetcher/attribute-fetcher
         pim/completeness-fetcher:           pimenrich/js/fetcher/completeness-fetcher
+        pim/product-fetcher:                pimenrich/js/fetcher/product-fetcher
+        pim/variant-group-fetcher:          pimenrich/js/fetcher/variant-group-fetcher
+
+        # Remover
+        pim/remover/base:    pimenrich/js/remover/base-remover
+        pim/remover/product: pimenrich/js/remover/product-remover
+
+        # Saver
+        pim/saver/base:    pimenrich/js/saver/base-saver
+        pim/saver/product: pimenrich/js/saver/product-saver
 
         # Generator
         pim/media-url-generator:            pimenrich/js/generator/media-url-generator
@@ -165,7 +193,6 @@ config:
 
         # Product
         pim/product-edit-form/product-label:                       pimenrich/js/product/form/product-label
-        pim/product-edit-form/attributes:                          pimenrich/js/product/form/attributes
         pim/product-edit-form/attributes/copy:                     pimenrich/js/product/form/attributes/copy
         pim/product-edit-form/attributes/copyfield:                pimenrich/js/product/form/attributes/copy-field
         pim/product-edit-form/attributes/validation:               pimenrich/js/product/form/attributes/validation
@@ -190,14 +217,10 @@ config:
         pim/product-edit-form/meta/family:                         pimenrich/js/product/form/meta/family
         pim/product-edit-form/meta/change-family:                  pimenrich/js/product/form/meta/change-family
         pim/product-edit-form/meta/groups:                         pimenrich/js/product/form/meta/groups
-        pim/product-edit-form/meta/created:                        pimenrich/js/product/form/meta/created
-        pim/product-edit-form/meta/updated:                        pimenrich/js/product/form/meta/updated
-        pim/product-edit-form/state:                               pimenrich/js/product/form/state
         pim/product-edit-form/status-switcher:                     pimenrich/js/product/form/status-switcher
         pim/product-edit-form/download-pdf:                        pimenrich/js/product/form/download-pdf
 
         # Product edit form
-        pim/product-edit-form:              pimenrich/js/product/edit-form
         pim/field-manager:                  pimenrich/js/product/field-manager
 
         # Mass product edit form
@@ -222,6 +245,9 @@ config:
         pim/common/grid:                pimenrich/js/form/common/grid
         pim/common/add-attribute:       pimenrich/js/form/common/attributes/add-attribute
 
+        # Root
+        pim/form/common/edit-form:      pimenrich/js/form/common/edit-form
+
         pim/form/common/label:          pimenrich/js/form/common/label
         pim/form/common/group-selector: pimenrich/js/form/common/group-selector
         pim/form/common/save:           pimenrich/js/form/common/save
@@ -229,6 +255,10 @@ config:
         pim/form/common/back-to-grid:   pimenrich/js/form/common/back-to-grid
         pim/form/common/form-tabs:      pimenrich/js/form/common/form-tabs
         pim/form/common/save-buttons:   pimenrich/js/form/common/save-buttons
+        pim/form/common/state:          pimenrich/js/form/common/state
+        pim/form/common/meta/created:   pimenrich/js/form/common/meta/created
+        pim/form/common/meta/updated:   pimenrich/js/form/common/meta/updated
+        pim/form/common/attributes:     pimenrich/js/form/common/attributes
 
         # Add attribute component
         pim/common/add-attribute-line:   pimenrich/js/form/common/attributes/add-attribute-line
@@ -262,11 +292,14 @@ config:
         pim/template/form/attribute/add-attribute-footer: pimenrich/templates/form/attribute/add-attribute-footer.html
         pim/template/form/back-to-grid:                   pimenrich/templates/form/back-to-grid.html
         pim/template/form/form-tabs:                      pimenrich/templates/form/form-tabs.html
-        pim/template/form/save-buttons:                   pimenrich/templates/product/save-buttons.html
+        pim/template/form/state:                          pimenrich/templates/form/state.html
+        pim/template/form/meta/created:                   pimenrich/templates/form/meta/created.html
+        pim/template/form/meta/updated:                   pimenrich/templates/form/meta/updated.html
+        pim/template/form/tab/attributes:                 pimenrich/templates/form/tab/attributes.html
+        pim/template/form/save-buttons:                   pimenrich/templates/form/save-buttons.html
+        pim/template/form/edit-form:                      pimenrich/templates/form/edit-form.html
 
-        pim/template/product/form:                                   pimenrich/templates/product/form.html
         pim/template/product/tab/categories:                         pimenrich/templates/product/tab/categories.html
-        pim/template/product/tab/attributes:                         pimenrich/templates/product/tab/attributes.html
         pim/template/product/tab/attribute/copy:                     pimenrich/templates/product/tab/attributes/copy.html
         pim/template/product/tab/attribute/copy-field:               pimenrich/templates/product/tab/attributes/copy-field.html
         pim/template/product/tab/attribute/validation-error:         pimenrich/templates/product/tab/attributes/validation-error.html
@@ -287,9 +320,6 @@ config:
         pim/template/product/meta/change-family-modal:               pimenrich/templates/product/meta/change-family-modal.html
         pim/template/product/meta/groups:                            pimenrich/templates/product/meta/groups.html
         pim/template/product/meta/group-modal:                       pimenrich/templates/product/meta/group-modal.html
-        pim/template/product/state:                                  pimenrich/templates/product/state.html
-        pim/template/product/meta/created:                           pimenrich/templates/product/meta/created.html
-        pim/template/product/meta/updated:                           pimenrich/templates/product/meta/updated.html
         pim/template/product/scope-switcher:                         pimenrich/templates/product/scope-switcher.html
         pim/template/product/field/field:                            pimenrich/templates/product/field/field.html
         pim/template/product/field/boolean:                          pimenrich/templates/product/field/boolean.html

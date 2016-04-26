@@ -54,10 +54,10 @@
                     <script>
                         require(
                             ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/variant-group-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation'],
-                            function($, FetcherRegistry, FormBuilder, Manager, UserContext, Dialog, mediator, Error, Navigation) {
+                            function($, FetcherRegistry, FormBuilder, VariantGroupManager, UserContext, Dialog, mediator, Error, Navigation) {
                                 $(function() {
                                     FetcherRegistry.initialize().done(function () {
-                                        Manager.get('{{ id }}')
+                                        FetcherRegistry.getFetcher('variant-group').fetch('{{ code }}', {cached: false, generateMissing: true})
                                             .then(function (group) {
                                                 var label    = _.escape(group.labels[UserContext.get('catalogLocale')]);
                                                 var newTitle = document.title.replace('%group.label%', label);
@@ -69,7 +69,7 @@
                                                 navigation.setPinButtonsData('title', navTitle);
                                                 navigation.setPinButtonsData('title-rendered-short', newTitle);
 
-                                                FormBuilder.build('pim-variant-group-edit-form')
+                                                FormBuilder.build(group.meta.form)
                                                     .then(function (form) {
                                                         form.setData(group);
                                                         mediator.trigger('pim_enrich:form:entity:post_fetch', group);

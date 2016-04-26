@@ -18,7 +18,7 @@ define(
 
         var getExtensionMeta = function (formName) {
             return ConfigProvider.getExtensionMap().then(function (extensionMap) {
-                var form = _.first(_.where(extensionMap, { code: formName }));
+                var form = _.findWhere(extensionMap, { code: formName });
 
                 return _.where(extensionMap, { parent: form.code });
             });
@@ -26,7 +26,7 @@ define(
 
         var getFormMeta = function (formName) {
             return ConfigProvider.getExtensionMap().then(function (extensionMap) {
-                return _.first(_.where(extensionMap, { code: formName }));
+                return _.findWhere(extensionMap, { code: formName });
             });
         };
 

@@ -73,7 +73,7 @@ class VariantGroupContext extends PimContext
     {
         $page   = 'VariantGroup';
         $entity = $this->getFixturesContext()->getProductGroup($identifier);
-        $this->getNavigationContext()->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+        $this->getNavigationContext()->openPage(sprintf('%s edit', $page), ['code' => $entity->getCode()]);
     }
 
     /**
@@ -83,7 +83,7 @@ class VariantGroupContext extends PimContext
      */
     public function iShouldBeOnTheVariantGroupPage(GroupInterface $group)
     {
-        $expectedAddress = $this->getPage('VariantGroup edit')->getUrl(['id' => $group->getId()]);
+        $expectedAddress = $this->getPage('VariantGroup edit')->getUrl(['code' => $group->getCode()]);
         $this->getNavigationContext()->assertAddress($expectedAddress);
     }
 

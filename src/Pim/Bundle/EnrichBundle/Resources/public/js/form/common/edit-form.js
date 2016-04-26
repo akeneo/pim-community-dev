@@ -13,7 +13,7 @@ define(
         'underscore',
         'oro/translator',
         'backbone',
-        'text!pim/template/product/form',
+        'text!pim/template/form/edit-form',
         'pim/form',
         'oro/mediator',
         'pim/fetcher-registry',
@@ -32,6 +32,10 @@ define(
     ) {
         var FormView = BaseForm.extend({
             template: _.template(template),
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 mediator.clear('pim_enrich:form');
                 Backbone.Router.prototype.once('route', this.unbindEvents);
@@ -46,23 +50,33 @@ define(
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (!this.configured) {
                     return this;
                 }
                 this.getRoot().trigger('pim_enrich:form:render:before');
 
-                this.$el.html(
-                    this.template({'__': __})
-                );
+                this.$el.html(this.template());
 
                 this.renderExtensions();
 
                 this.getRoot().trigger('pim_enrich:form:render:after');
             },
+
+            /**
+             * Clear the mediator
+             */
             unbindEvents: function () {
                 mediator.clear('pim_enrich:form');
             },
+
+            /**
+             * Clear the cached informations
+             */
             clearCache: function () {
                 FetcherRegistry.clearAll();
                 FieldManager.clearFields();

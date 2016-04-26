@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Catalog\Builder\ProductTemplateBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class VariantGroupAttributeController
 {
-    /** @var GroupRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
     /** @var SaverInterface */
@@ -32,13 +32,13 @@ class VariantGroupAttributeController
     protected $templateBuilder;
 
     /**
-     * @param GroupRepositoryInterface        $groupRepository
-     * @param SaverInterface                  $groupSaver
-     * @param AttributeRepositoryInterface    $attributeRepository
-     * @param ProductTemplateBuilderInterface $templateBuilder
+     * @param IdentifiableObjectRepositoryInterface $groupRepository
+     * @param SaverInterface                        $groupSaver
+     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param ProductTemplateBuilderInterface       $templateBuilder
      */
     public function __construct(
-        GroupRepositoryInterface $groupRepository,
+        IdentifiableObjectRepositoryInterface $groupRepository,
         SaverInterface $groupSaver,
         AttributeRepositoryInterface $attributeRepository,
         ProductTemplateBuilderInterface $templateBuilder
@@ -52,8 +52,8 @@ class VariantGroupAttributeController
     /**
      * Remove an attribute form a variant group
      *
-     * @param int $id          The variant group id
-     * @param int $attributeId The attribute id
+     * @param string $code        The variant group code
+     * @param int    $attributeId The attribute id
      *
      * @AclAncestor("pim_enrich_group_remove_attribute")
      *
@@ -61,9 +61,9 @@ class VariantGroupAttributeController
      *
      * @return JsonResponse
      */
-    public function removeAttributeAction($id, $attributeId)
+    public function removeAttributeAction($code, $attributeId)
     {
-        $group     = $this->findVariantGroupOr404($id);
+        $group     = $this->findVariantGroupOr404($code);
         $attribute = $this->findAttributeOr404($attributeId);
 
         $template = $group->getProductTemplate();
@@ -78,15 +78,15 @@ class VariantGroupAttributeController
     /**
      * Find a variant group by its id or return a 404 response
      *
-     * @param int $id
+     * @param string $code
      *
      * @throws NotFoundHttpException
      *
      * @return GroupInterface
      */
-    protected function findVariantGroupOr404($id)
+    protected function findVariantGroupOr404($code)
     {
-        $group = $this->groupRepository->find($id);
+        $group = $this->groupRepository->findOneByIdentifier($code);
 
         if (null === $group || false === $group->getType()->isVariant()) {
             throw new NotFoundHttpException(

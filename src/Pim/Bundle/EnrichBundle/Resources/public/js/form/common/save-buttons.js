@@ -54,7 +54,7 @@ define(
             },
 
             /**
-             * Add a button to the
+             * Add a button to the main button
              *
              * @param {Object} options
              */

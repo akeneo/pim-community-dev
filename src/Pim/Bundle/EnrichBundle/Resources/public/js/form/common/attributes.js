@@ -18,11 +18,10 @@ define(
         'pim/field-manager',
         'pim/fetcher-registry',
         'pim/attribute-manager',
-        'pim/product-manager',
         'pim/attribute-group-manager',
         'pim/user-context',
         'pim/security-context',
-        'text!pim/template/product/tab/attributes',
+        'text!pim/template/form/tab/attributes',
         'pim/dialog',
         'oro/messenger'
     ],
@@ -36,7 +35,6 @@ define(
         FieldManager,
         FetcherRegistry,
         AttributeManager,
-        ProductManager,
         AttributeGroupManager,
         UserContext,
         SecurityContext,
@@ -46,7 +44,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(formTemplate),
-            className: 'tabbable tabs-left product-attributes',
+            className: 'tabbable tabs-left object-attributes',
             events: {
                 'click .remove-attribute': 'removeAttribute'
             },
@@ -56,9 +54,7 @@ define(
              * {@inheritdoc}
              */
             initialize: function (meta) {
-                this.config = _.extend({}, {
-                    deleteUrl: 'pim_enrich_product_remove_attribute_rest'
-                }, meta.config);
+                this.config = meta.config;
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -69,7 +65,7 @@ define(
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
-                    label: _.__('pim_enrich.form.product.tab.attributes.title')
+                    label: _.__(this.config.tabTitle)
                 });
 
                 UserContext.off('change:catalogLocale change:catalogScope', this.render);
@@ -103,42 +99,41 @@ define(
                 this.rendering = true;
                 this.$el.html(this.template({}));
                 this.getConfig().then(function () {
-                    var product = this.getFormData();
-                    $.when(
-                        ProductManager.getValues(product)
-                    ).then(function (values) {
-                        var productValues = AttributeGroupManager.getAttributeGroupValues(
-                            values,
-                            this.getExtension('attribute-group-selector').getCurrentElement()
-                        );
+                    var object = this.getFormData();
+                    AttributeManager.getValues(object)
+                        .then(function (values) {
+                            var values = AttributeGroupManager.getAttributeGroupValues(
+                                values,
+                                this.getExtension('attribute-group-selector').getCurrentElement()
+                            );
 
-                        var fieldPromises = [];
-                        _.each(productValues, function (productValue, attributeCode) {
-                            fieldPromises.push(this.renderField(product, attributeCode, productValue));
+                            var fieldPromises = [];
+                            _.each(values, function (value, attributeCode) {
+                                fieldPromises.push(this.renderField(object, attributeCode, value));
+                            }.bind(this));
+
+                            this.rendering = false;
+
+                            return $.when.apply($, fieldPromises);
+                        }.bind(this)).then(function () {
+                            return _.sortBy(arguments, function (field) {
+                                return field.attribute.sort_order;
+                            });
+                        }).then(function (fields) {
+                            var $valuesPanel = this.$('.object-values');
+                            $valuesPanel.empty();
+
+                            FieldManager.clearVisibleFields();
+                            _.each(fields, function (field) {
+                                if (field.canBeSeen()) {
+                                    field.render();
+                                    FieldManager.addVisibleField(field.attribute.code);
+                                    $valuesPanel.append(field.$el);
+                                }
+                            }.bind(this));
+
+                            this.resize();
                         }.bind(this));
-
-                        this.rendering = false;
-
-                        return $.when.apply($, fieldPromises);
-                    }.bind(this)).then(function () {
-                        return _.sortBy(arguments, function (field) {
-                            return field.attribute.sort_order;
-                        });
-                    }).then(function (fields) {
-                        var $productValuesPanel = this.$('.product-values');
-                        $productValuesPanel.empty();
-
-                        FieldManager.clearVisibleFields();
-                        _.each(fields, function (field) {
-                            if (field.canBeSeen()) {
-                                field.render();
-                                FieldManager.addVisibleField(field.attribute.code);
-                                $productValuesPanel.append(field.$el);
-                            }
-                        }.bind(this));
-
-                        this.resize();
-                    }.bind(this));
                     this.delegateEvents();
 
                     this.renderExtensions();
@@ -146,20 +141,34 @@ define(
 
                 return this;
             },
+
+            /**
+             * Resize method to update the container size
+             */
             resize: function () {
-                var productValuesContainer = this.$('.product-values');
-                if (productValuesContainer.length && this.getRoot().$el.length && productValuesContainer.offset()) {
-                    productValuesContainer.css(
-                        {'height': ($(window).height() - productValuesContainer.offset().top - 4) + 'px'}
+                var valuesContainer = this.$('.object-values');
+                if (valuesContainer.length && this.getRoot().$el.length && valuesContainer.offset()) {
+                    valuesContainer.css(
+                        {'height': ($(window).height() - valuesContainer.offset().top - 4) + 'px'}
                     );
                 }
             },
-            renderField: function (product, attributeCode, values) {
+
+            /**
+             * Render a single field
+             *
+             * @param {Object} object
+             * @param {String} attributeCode
+             * @param {Array} values
+             *
+             * @return {Promise}
+             */
+            renderField: function (object, attributeCode, values) {
                 return FieldManager.getField(attributeCode).then(function (field) {
                     return $.when(
                         (new $.Deferred().resolve(field)),
                         FetcherRegistry.getFetcher('channel').fetchAll(),
-                        AttributeManager.isOptional(field.attribute, product)
+                        AttributeManager.isOptional(field.attribute, object)
                     );
                 }).then(function (field, channels, isOptional) {
                     var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
@@ -170,18 +179,24 @@ define(
                         scopeLabel: scope.label,
                         uiLocale: UserContext.get('catalogLocale'),
                         optional: isOptional,
-                        removable: SecurityContext.isGranted('pim_enrich_product_remove_attribute')
+                        removable: SecurityContext.isGranted(this.config.removeAttributeACL)
                     });
                     field.setValues(values);
 
                     return field;
-                });
+                }.bind(this));
             },
+
+            /**
+             * Get the configuration needed to load the attribute tab
+             *
+             * @return {Promise}
+             */
             getConfig: function () {
                 var promises = [];
-                var product = this.getFormData();
+                var object = this.getFormData();
 
-                promises.push(AttributeGroupManager.getAttributeGroupsForProduct(product)
+                promises.push(AttributeGroupManager.getAttributeGroupsForObject(object)
                     .then(function (attributeGroups) {
                         this.getExtension('attribute-group-selector').setElements(
                             _.indexBy(_.sortBy(attributeGroups, 'sortOrder'), 'code')
@@ -191,6 +206,12 @@ define(
 
                 return $.when.apply($, promises).promise();
             },
+
+            /**
+             * Add an attribute to the current attribute list
+             *
+             * @param {Event} event
+             */
             addAttributes: function (event) {
                 var attributeCodes = event.codes;
 
@@ -223,8 +244,14 @@ define(
                     this.getRoot().trigger('pim_enrich:form:add-attribute:after');
                 }.bind(this));
             },
+
+            /**
+             * Remove an attribute from the collection
+             *
+             * @param {Event} event
+             */
             removeAttribute: function (event) {
-                if (!SecurityContext.isGranted('pim_enrich_product_remove_attribute')) {
+                if (!SecurityContext.isGranted(this.config.removeAttributeACL)) {
                     return;
                 }
                 var attributeCode = event.currentTarget.dataset.attribute;
@@ -232,14 +259,14 @@ define(
                 var fields = FieldManager.getFields();
 
                 Dialog.confirm(
-                    _.__('pim_enrich.confirmation.delete.product_attribute'),
+                    _.__('pim_enrich.confirmation.delete.attribute'),
                     _.__('pim_enrich.confirmation.delete_item'),
                     function () {
                         FetcherRegistry.getFetcher('attribute').fetch(attributeCode).then(function (attribute) {
                             $.ajax({
                                 type: 'DELETE',
                                 url: Routing.generate(
-                                    this.config.deleteUrl,
+                                    this.config.removeAttributeRoute,
                                     {
                                         id: this.getFormData().meta.id,
                                         attributeId: attribute.id
@@ -260,31 +287,69 @@ define(
                             }.bind(this)).fail(function () {
                                 messenger.notificationFlashMessage(
                                     'error',
-                                    _.__('pim_enrich.form.product.flash.attribute_deletion_error')
+                                    _.__(this.config.deletionFailed)
                                 );
                             });
                         }.bind(this));
                     }.bind(this)
                 );
             },
+
+            /**
+             * Set the current scope
+             *
+             * @param {String} scope
+             * @param {Object} options
+             */
             setScope: function (scope, options) {
                 UserContext.set('catalogScope', scope, options);
             },
+
+            /**
+             * Get the current scope
+             *
+             * @param {String} scope
+             * @param {Object} options
+             */
             getScope: function () {
                 return UserContext.get('catalogScope');
             },
+
+            /**
+             * Set the current locale
+             *
+             * @param {String} locale
+             * @param {Object} options
+             */
             setLocale: function (locale, options) {
                 UserContext.set('catalogLocale', locale, options);
             },
+
+            /**
+             * Get the current locale
+             *
+             * @param {String} locale
+             * @param {Object} options
+             */
             getLocale: function () {
                 return UserContext.get('catalogLocale');
             },
+
+            /**
+             * Post save actions
+             */
             postSave: function () {
                 FieldManager.fields = {};
                 this.render();
             },
+
+            /**
+             * Switch to the given attribute
+             *
+             * @param {Event} event
+             */
             showAttribute: function (event) {
-                AttributeGroupManager.getAttributeGroupsForProduct(this.getFormData())
+                AttributeGroupManager.getAttributeGroupsForObject(this.getFormData())
                     .then(function (attributeGroups) {
                         this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.code);
 
@@ -324,6 +389,12 @@ define(
                         }
                     }.bind(this));
             },
+
+            /**
+             * Toggle the comparison mode
+             *
+             * @param {Boolean} open
+             */
             comparisonChange: function (open) {
                 this.$el[open ? 'addClass' : 'removeClass']('comparison-mode');
             }

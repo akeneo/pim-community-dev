@@ -15,7 +15,7 @@ define(
         'backbone',
         'pim/dialog',
         'pim/form',
-        'text!pim/template/product/state',
+        'text!pim/template/form/state',
         'oro/navigation',
         'oro/mediator'
     ],
@@ -35,14 +35,23 @@ define(
             template: _.template(template),
             state: null,
             linkSelector: 'a[href^="/"]:not(".no-hash")',
-            message: __('pim_enrich.info.entity.updated'),
-            confirmationMessage: __(
-                'pim_enrich.confirmation.discard_changes',
-                {
-                    'entity': __('pim_enrich.entity.product.title')
-                }
-            ),
-            confirmationTitle: __('pim_enrich.confirmation.leave'),
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (meta) {
+                this.config = _.extend({}, {
+                    confirmationMessage: 'pim_enrich.confirmation.discard_changes',
+                    confirmationTitle: 'pim_enrich.confirmation.leave',
+                    message: 'pim_enrich.info.entity.updated'
+                }, meta.config);
+
+                this.confirmationMessage = __(this.config.confirmationMessage, {entity: this.config.entity});
+                this.confirmationTitle   = __(this.config.confirmationTitle);
+                this.message             = __(this.config.message);
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
 
             /**
              * @inheritdoc

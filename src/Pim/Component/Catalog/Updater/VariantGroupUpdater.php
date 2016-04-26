@@ -34,34 +34,34 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     /** @var ObjectUpdaterInterface */
     protected $productUpdater;
 
-    /** @var string */
-    protected $productTemplateClass;
-
     /** @var ProductQueryBuilderFactoryInterface */
     protected $productQueryBuilderFactory;
+
+    /** @var string */
+    protected $productTemplateClass;
 
     /**
      * @param AttributeRepositoryInterface        $attributeRepository
      * @param GroupTypeRepositoryInterface        $groupTypeRepository
      * @param ProductBuilderInterface             $productBuilder
      * @param ObjectUpdaterInterface              $productUpdater
-     * @param string                              $productTemplateClass
      * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+     * @param string                              $productTemplateClass
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         GroupTypeRepositoryInterface $groupTypeRepository,
         ProductBuilderInterface $productBuilder,
         ObjectUpdaterInterface $productUpdater,
-        $productTemplateClass,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        $productTemplateClass
     ) {
         $this->attributeRepository        = $attributeRepository;
         $this->groupTypeRepository        = $groupTypeRepository;
         $this->productBuilder             = $productBuilder;
         $this->productUpdater             = $productUpdater;
-        $this->productTemplateClass       = $productTemplateClass;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
+        $this->productTemplateClass       = $productTemplateClass;
     }
 
     /**
@@ -220,7 +220,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     {
         $template = $this->getProductTemplate($variantGroup);
         $originalValues = $template->getValuesData();
-        $mergedValuesData = array_merge($originalValues, $newValues);
+        $mergedValuesData = array_replace($originalValues, $newValues);
         $mergedValues = $this->transformArrayToValues($mergedValuesData);
         $mergedValuesData = $this->replaceMediaLocalPathsByStoredPaths($mergedValues, $mergedValuesData);
 
@@ -306,8 +306,6 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     /**
      * @param GroupInterface $group
      * @param array          $labels
-     *
-     * @throws \InvalidArgumentException
      */
     protected function setProducts(GroupInterface $variantGroup, array $productIds)
     {

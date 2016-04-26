@@ -72,15 +72,30 @@ define([
                 }.bind(this));
             },
 
+            /**
+             * Get the current grid selection
+             *
+             * @return {Array}
+             */
             getSelection: function () {
                 return this.selection;
             },
 
+            /**
+             * Add an element to the selection
+             *
+             * @param {Object} element
+             */
             addElement: function (element) {
                 this.selection = _.union(this.selection, [element]);
                 this.trigger('grid:selection:updated', this.selection);
             },
 
+            /**
+             * Remove an element to the selection
+             *
+             * @param {Object} element
+             */
             removeElement: function (element) {
                 this.selection = _.without(this.selection, element);
                 this.trigger('grid:selection:updated', this.selection);

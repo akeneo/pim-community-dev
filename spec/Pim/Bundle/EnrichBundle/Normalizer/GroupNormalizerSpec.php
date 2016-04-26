@@ -10,6 +10,7 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
+use Prophecy\Promise\ReturnPromise;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class GroupNormalizerSpec extends ObjectBehavior
@@ -42,7 +43,8 @@ class GroupNormalizerSpec extends ObjectBehavior
         Version $oldestLog,
         Version $newestLog,
         ArrayCollection $products,
-        ProductInterface $product
+        ProductInterface $product,
+        \ArrayIterator $productsIterator
     ) {
         $normalizer->normalize($tshirt, 'json', [])->willReturn([
             'normalized_property'          => 'the_first_one',
@@ -54,7 +56,20 @@ class GroupNormalizerSpec extends ObjectBehavior
         $versionManager->getNewestLogEntry($tshirt)->willReturn($newestLog);
         $versionNormalizer->normalize($oldestLog, 'internal_api')->willReturn('normalized_oldest_log');
         $versionNormalizer->normalize($newestLog, 'internal_api')->willReturn('normalized_newest_log');
-        $products->toArray()->willReturn([$product]);
+
+        $products->getIterator()->willReturn($productsIterator);
+        $productsIterator->rewind()->shouldBeCalled();
+        $productsCount = 1;
+        $productsIterator->valid()->will(
+            function () use (&$productsCount) {
+                return $productsCount-- > 0;
+            }
+        );
+        $productsIterator->next()->shouldBeCalled();
+        $productsIterator->current()->will(new ReturnPromise([$product]));
+
+
+
         $product->getId()->willReturn(42);
 
         $tshirt->getId()->willReturn(12);
@@ -66,6 +81,7 @@ class GroupNormalizerSpec extends ObjectBehavior
             'products' => [42],
             'meta'                         => [
                 'id'                => 12,
+                'form'              => 'pim-variant-group-edit-form',
                 'structure_version' => 1,
                 'model_type'        => 'variant_group',
                 'created'           => 'normalized_oldest_log',

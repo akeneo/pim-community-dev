@@ -50,6 +50,9 @@ class VariantGroupController
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var NormalizerInterface */
+    protected $violationNormalizer;
+
     /**
      * @param EntityRepository            $repository
      * @param NormalizerInterface         $normalizer
@@ -58,6 +61,7 @@ class VariantGroupController
      * @param UserContext                 $userContext
      * @param AttributeConverterInterface $attributeConverter
      * @param ValidatorInterface          $validator
+     * @param NormalizerInterface         $violationNormalizer
      */
     public function __construct(
         GroupRepositoryInterface $repository,
@@ -67,16 +71,18 @@ class VariantGroupController
         RemoverInterface $remover,
         UserContext $userContext,
         AttributeConverterInterface $attributeConverter,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        NormalizerInterface $violationNormalizer
     ) {
-        $this->repository         = $repository;
-        $this->normalizer         = $normalizer;
-        $this->updater            = $updater;
-        $this->saver              = $saver;
-        $this->remover            = $remover;
-        $this->userContext        = $userContext;
-        $this->attributeConverter = $attributeConverter;
-        $this->validator          = $validator;
+        $this->repository          = $repository;
+        $this->normalizer          = $normalizer;
+        $this->updater             = $updater;
+        $this->saver               = $saver;
+        $this->remover             = $remover;
+        $this->userContext         = $userContext;
+        $this->attributeConverter  = $attributeConverter;
+        $this->validator           = $validator;
+        $this->violationNormalizer = $violationNormalizer;
     }
 
     /**
@@ -93,7 +99,7 @@ class VariantGroupController
             $normalizedVariants[$variantGroup->getCode()] = $this->normalizer->normalize(
                 $variantGroup,
                 'internal_api',
-                ['with_variant_group_values' => true]
+                $this->userContext->toArray()
             );
         }
 
@@ -103,42 +109,39 @@ class VariantGroupController
     /**
      * Get a single variant group
      *
-     * @param int $identifier
+     * @param string $code
      *
      * @return JsonResponse
      */
-    public function getAction($identifier)
+    public function getAction($code)
     {
-        if (is_numeric($identifier)) {
-            $variantGroup = $this->repository->findOneBy(['id' => (int) $identifier]);
-        } else {
-            $variantGroup = $this->repository->findOneByIdentifier($identifier);
-        }
-
-        if (!$variantGroup) {
-            throw new NotFoundHttpException(sprintf('Variant group with code "%s" not found', $identifier));
+        $variantGroup = $this->repository->findOneByIdentifier($code);
+        if (null === $variantGroup) {
+            throw new NotFoundHttpException(sprintf('Variant group with code "%s" not found', $code));
         }
 
         return new JsonResponse(
-            $this->normalizer->normalize($variantGroup, 'internal_api', $this->userContext->toArray() + [
-                'with_variant_group_values' => true
-            ])
+            $this->normalizer->normalize(
+                $variantGroup,
+                'internal_api',
+                $this->userContext->toArray() + ['with_variant_group_values' => true]
+            )
         );
     }
 
     /**
      * @param Request $request
-     * @param string  $id
+     * @param string  $code
      *
      * @throws NotFoundHttpException     If product is not found or the user cannot see it
      * @throws AccessDeniedHttpException If the user does not have right to edit the product
      *
      * @return JsonResponse
      */
-    public function postAction(Request $request, $id)
+    public function postAction(Request $request, $code)
     {
-        $variantGroup = $this->repository->findOneBy(['id' => (int) $id]);
-        if (!$variantGroup) {
+        $variantGroup = $this->repository->findOneByIdentifier($code);
+        if (null === $variantGroup) {
             throw new NotFoundHttpException(sprintf('Variant group with id "%s" not found', $id));
         }
 
@@ -152,13 +155,11 @@ class VariantGroupController
         $violations->addAll($this->attributeConverter->getViolations());
 
         if (0 < $violations->count()) {
-            $errors = [
-                'values' => $this->normalizer->normalize(
-                    $violations,
-                    'internal_api',
-                    $this->userContext->toArray() + ['product' => $variantGroup->getProductTemplate()]
-                )
-            ];
+            $errors = $this->violationNormalizer->normalize(
+                $violations,
+                'internal_api',
+                $this->userContext->toArray() + ['product' => $variantGroup->getProductTemplate()]
+            );
 
             return new JsonResponse($errors, 400);
         }
@@ -178,17 +179,16 @@ class VariantGroupController
     /**
      * Remove a variant group
      *
-     * @param int $id
+     * @param string $code
      *
      * @AclAncestor("pim_enrich_group_remove")
      *
      * @return JsonResponse
      */
-    public function removeAction($id)
+    public function removeAction($code)
     {
-        $variantGroup = $this->repository->findOneBy(['id' => (int) $id]);
-
-        if (!$variantGroup) {
+        $variantGroup = $this->repository->findOneByIdentifier($code);
+        if (null === $variantGroup) {
             throw new NotFoundHttpException(sprintf('Variant group with id "%s" not found', $id));
         }
 

@@ -15,12 +15,19 @@ define([
             historyGrid: null,
 
             /**
+             * @param {Object} meta
+             */
+            initialize: function (meta) {
+                this.config = _.extend({}, meta.config);
+            },
+
+            /**
              * {@inheritdoc}
              */
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
-                    label: __('pim_enrich.form.variant_group.tab.history.title')
+                    label: __(this.config.title)
                 });
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -34,7 +41,7 @@ define([
                     this.historyGrid = new Grid(
                         'history-grid',
                         {
-                            object_class: 'Pim\\Bundle\\CatalogBundle\\Entity\\Group',
+                            object_class: this.config.class,
                             object_id: this.getFormData().meta.id
                         }
                     );

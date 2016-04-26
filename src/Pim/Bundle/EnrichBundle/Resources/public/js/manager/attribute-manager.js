@@ -30,23 +30,6 @@ define([
             },
 
             /**
-             * Get the axis attributes of the given entity
-             *
-             * @param {Object} entity
-             *
-             * @return {Array}
-             */
-            getAxisAttributes: function (entity) {
-                var axis = [];
-
-                if (_.isArray(entity.axis)) {
-                    axis = entity.axis;
-                }
-
-                return $.Deferred().resolve(axis);
-            },
-
-            /**
              * Get all optional attributes available for a product
              *
              * @param {Object} product
@@ -108,6 +91,25 @@ define([
                 scope  = attribute.scopable ? scope : null;
 
                 return _.findWhere(values, { scope: scope, locale: locale });
+            },
+
+            /**
+             * Get values for the given object
+             *
+             * @param {Object} object
+             *
+             * @return {Promise}
+             */
+            getValues: function (object) {
+                return this.getAttributes(object).then(function (attributes) {
+                    _.each(attributes, function (attributeCode) {
+                        if (!_.has(object.values, attributeCode)) {
+                            object.values[attributeCode] = [];
+                        }
+                    });
+
+                    return object.values;
+                });
             },
 
             /**

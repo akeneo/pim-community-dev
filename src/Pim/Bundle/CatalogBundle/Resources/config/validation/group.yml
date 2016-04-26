@@ -33,4 +33,4 @@ Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
 Pim\Bundle\CatalogBundle\Entity\ProductTemplate:
     getters:
         values:
-            - Symfony\Component\Validator\Constraints\Valid
+            - Symfony\Component\Validator\Constraints\Valid: ~

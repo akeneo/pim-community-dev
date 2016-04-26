@@ -39,7 +39,9 @@ extensions:
         position: 110
 
     oro-system-config-form-state:
-        module: pim/product-edit-form/state
+        module: pim/form/common/state
         parent: oro-system-config-form
         targetZone: state
         position: 900
+        config:
+            entity: pim_enrich.entity.product.title

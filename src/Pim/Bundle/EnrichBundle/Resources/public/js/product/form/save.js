@@ -4,7 +4,6 @@
  * Save extension
  *
  * @author    Julien Sanchez <julien@akeneo.com>
- * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -16,6 +15,7 @@ define(
         'pim/form/common/save',
         'oro/messenger',
         'pim/product-manager',
+        'pim/saver/product',
         'pim/field-manager',
         'pim/i18n',
         'pim/user-context'
@@ -27,6 +27,7 @@ define(
         BaseSave,
         messenger,
         ProductManager,
+        ProductSaver,
         FieldManager,
         i18n,
         UserContext
@@ -67,7 +68,7 @@ define(
                 this.showLoadingMask();
                 this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
-                return ProductManager
+                return ProductSaver
                     .save(productId, product)
                     .then(ProductManager.generateMissing.bind(ProductManager))
                     .then(function (data) {

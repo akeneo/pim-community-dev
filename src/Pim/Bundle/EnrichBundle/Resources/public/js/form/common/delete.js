@@ -88,7 +88,7 @@ define(
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
                 var navigation = Navigation.getInstance();
 
-                this.remover.remove(this.getFormData().meta.id)
+                this.remover.remove(this.getIdentifier())
                     .done(function () {
                         navigation.addFlashMessage('success', __(this.config.trans.success));
                         navigation.setLocation(Routing.generate(this.config.redirect));
@@ -104,6 +104,15 @@ define(
                     .always(function () {
                         loadingMask.hide().$el.remove();
                     });
+            },
+
+            /**
+             * Get the current form identifier
+             *
+             * @return {String}
+             */
+            getIdentifier: function () {
+                return this.getFormData().code;
             }
         });
     }

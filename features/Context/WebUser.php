@@ -543,15 +543,13 @@ class WebUser extends RawMinkContext
      */
     public function theTitleOfTheProductShouldBe($title)
     {
-        if ($title !== $actual = $this->getCurrentPage()->getTitle()) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expected product title "%s", actually saw "%s"',
-                    $title,
-                    $actual
-                )
-            );
-        }
+        $this->spin(function () use ($title) {
+            $title !== $this->getCurrentPage()->getTitle();
+        }, sprintf(
+            'Expected product title "%s", actually saw "%s"',
+            $title,
+            $this->getCurrentPage()->getTitle()
+        ));
     }
 
     /**
@@ -1137,6 +1135,7 @@ class WebUser extends RawMinkContext
     public function iFillInTheFollowingInformation($popin, TableNode $table)
     {
         $element = $popin ? $this->getCurrentPage()->find('css', '.ui-dialog') : null;
+
         if ($popin && !$element) {
             $element = $this->getCurrentPage()->find('css', '.modal');
         }
@@ -1144,57 +1143,6 @@ class WebUser extends RawMinkContext
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value, $element);
         }
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @When /^I fill in the following information in the quick search popin:$/
-     */
-    public function iFillInTheFollowingInformationInTheQuickSearchPopin(TableNode $table)
-    {
-        $fields = $table->getRowsHash();
-        if (!isset($fields['type'])) {
-            $fields['type'] = null;
-        }
-
-        $this->getCurrentPage()->fillQuickSearch($fields['search'], $fields['type']);
-    }
-
-    /**
-     * @When /^I open the quick search popin$/
-     */
-    public function iOpenTheQuickSearchPopin()
-    {
-        $this->getCurrentPage()->openQuickSearchPopin();
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @When /^I can search by the following types:$/
-     */
-    public function iCanSearchByTheFollowingTypes(TableNode $table)
-    {
-        $list = [];
-        foreach ($table->getHash() as $row) {
-            $list[] = $row['type'];
-        }
-        $this->getCurrentPage()->checkTypeSearchFieldList($list);
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @When /^I can not search by the following types:$/
-     */
-    public function iCanNotSearchByTheFollowingTypes(TableNode $table)
-    {
-        $list = [];
-        foreach ($table->getHash() as $row) {
-            $list[] = $row['type'];
-        }
-        $this->getCurrentPage()->checkTypeSearchFieldList($list, false);
     }
 
     /**
@@ -1545,10 +1493,11 @@ class WebUser extends RawMinkContext
      */
     public function productShouldBeDisabled(Product $product)
     {
-        $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
-        if ($product->isEnabled()) {
-            throw $this->createExpectationException('Product was expected to be be disabled');
-        }
+        $this->spin(function () use ($product) {
+            $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
+
+            return !$product->isEnabled();
+        }, 'Product was expected to be be disabled');
     }
 
     /**
@@ -1560,10 +1509,12 @@ class WebUser extends RawMinkContext
      */
     public function productShouldBeEnabled(Product $product)
     {
-        $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
-        if (!$product->isEnabled()) {
-            throw $this->createExpectationException('Product was expected to be be enabled');
-        }
+
+        $this->spin(function () use ($product) {
+            $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
+
+            return $product->isEnabled();
+        }, 'Product was expected to be be enabled');
     }
 
     /**

@@ -19,7 +19,7 @@ class Edit extends ProductEditForm
     /**
      * @var string
      */
-    protected $path = '/enrich/variant-group/{id}/edit';
+    protected $path = '/enrich/variant-group/{code}/edit';
 
     /**
      * {@inheritdoc}
@@ -32,7 +32,7 @@ class Edit extends ProductEditForm
             $this->elements,
             [
                 'Main context selector' => [
-                    'css'        => '.tab-container .product-attributes .attribute-edit-actions .context-selectors',
+                    'css'        => '.tab-container .object-attributes .attribute-edit-actions .context-selectors',
                     'decorators' => [
                         'Pim\Behat\Decorator\ContextSwitcherDecorator'
                     ]

@@ -18,17 +18,17 @@ datagrid:
                 template: PimDataGridBundle:Property:options.html.twig
                 frontend_type: html
         properties:
-            id: ~
+            code: ~
             edit_link:
                 type: url
                 route: pim_enrich_variant_group_edit
                 params:
-                    - id
+                    - code
             delete_link:
                 type: url
                 route: pim_enrich_variant_group_rest_remove
                 params:
-                    - id
+                    - code
         actions:
             edit:
                 type:      navigate

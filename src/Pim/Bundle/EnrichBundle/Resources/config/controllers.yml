@@ -250,17 +250,13 @@ services:
         scope: request
         class: %pim_enrich.controller.variant_group.class%
         arguments:
-            - '@request'
-            - '@templating'
             - '@router'
             - '@pim_catalog.manager.group'
             - '@pim_enrich.form.handler.variant_group'
             - '@pim_enrich.form.variant_group'
             - '@pim_catalog.factory.group'
             - '@form.factory'
-            - '@pim_catalog.remover.group'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.resolver.variant_group_attributes'
 
     pim_enrich.controller.group_type:
         scope: request
@@ -434,6 +430,7 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_catalog.validator.product'
+            - '@pim_enrich.normalizer.variant_group_violation'
 
     pim_enrich.controller.rest.variant_group_attribute:
         scope: request

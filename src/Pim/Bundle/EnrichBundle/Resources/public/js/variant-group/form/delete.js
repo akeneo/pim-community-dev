@@ -7,8 +7,8 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['pim/form/common/delete', 'pim/variant-group-manager'], function (DeleteForm, Manager) {
+define(['pim/form/common/delete', 'pim/remover/variant-group'], function (DeleteForm, VariantGroupRemover) {
     return DeleteForm.extend({
-        remover: Manager
+        remover: VariantGroupRemover
     });
 });

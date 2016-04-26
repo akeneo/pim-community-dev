@@ -10,10 +10,11 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'pim/form',
         'text!pim/template/variant-group/meta/product-count'
     ],
-    function (_, BaseForm, formTemplate) {
+    function (_, __, BaseForm, formTemplate) {
         return BaseForm.extend({
             tagName: 'span',
             template: _.template(formTemplate),
@@ -34,9 +35,9 @@ define(
                 var variantGroup = this.getFormData();
                 var html = '';
 
-                if (variantGroup.products) {
+                if (_.has(variantGroup, 'products')) {
                     html = this.template({
-                        label: _.__('pim_enrich.entity.variant_group.meta.product_count'),
+                        label: __('pim_enrich.entity.variant_group.meta.product_count'),
                         productCount: variantGroup.products.length
                     });
                 }

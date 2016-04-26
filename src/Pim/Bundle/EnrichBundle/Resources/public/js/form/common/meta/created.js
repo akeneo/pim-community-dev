@@ -10,21 +10,38 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'pim/form',
-        'text!pim/template/product/meta/created'
+        'text!pim/template/form/meta/created'
     ],
-    function (_, BaseForm, formTemplate) {
-        var FormView = BaseForm.extend({
+    function (_, __, BaseForm, formTemplate) {
+        return BaseForm.extend({
             tagName: 'span',
             template: _.template(formTemplate),
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (meta) {
+                this.config = meta.config;
+
+                this.label   = __(this.config.label);
+                this.labelBy = __(this.config.labelBy);
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 var product = this.getFormData();
                 var html = '';
 
                 if (product.meta.created) {
                     html = this.template({
-                        label: _.__('pim_enrich.entity.product.meta.created'),
-                        labelBy: _.__('pim_enrich.entity.product.meta.created_by'),
+                        label: this.label,
+                        labelBy: this.labelBy,
                         loggedAt: _.result(product.meta.created, 'logged_at', null),
                         author: _.result(product.meta.created, 'author', null)
                     });
@@ -35,7 +52,5 @@ define(
                 return this;
             }
         });
-
-        return FormView;
     }
 );

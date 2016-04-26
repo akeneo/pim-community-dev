@@ -10,27 +10,48 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'pim/form',
         'oro/mediator',
-        'text!pim/template/product/meta/updated'
+        'text!pim/template/form/meta/updated'
     ],
-    function (_, BaseForm, mediator, formTemplate) {
-        var FormView = BaseForm.extend({
+    function (_, __, BaseForm, mediator, formTemplate) {
+        return BaseForm.extend({
             tagName: 'span',
             template: _.template(formTemplate),
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (meta) {
+                this.config = meta.config;
+
+                this.label   = __(this.config.label);
+                this.labelBy = __(this.config.labelBy);
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 var product = this.getFormData();
                 var html = '';
 
                 if (product.meta.updated) {
                     html = this.template({
-                        label: _.__('pim_enrich.entity.product.meta.updated'),
-                        labelBy: _.__('pim_enrich.entity.product.meta.updated_by'),
+                        label: this.label,
+                        labelBy: this.labelBy,
                         loggedAt: _.result(product.meta.updated, 'logged_at', null),
                         author: _.result(product.meta.updated, 'author', null)
                     });
@@ -41,7 +62,5 @@ define(
                 return this;
             }
         });
-
-        return FormView;
     }
 );

@@ -28,14 +28,13 @@ define(
     ) {
         return BaseForm.extend({
             loadingMask: null,
-            className: 'save',
             updateFailureMessage: __('pim_enrich.entity.info.update_failed'),
             updateSuccessMessage: __('pim_enrich.entity.info.update_successful'),
             label: __('pim_enrich.entity.save.label'),
 
             configure: function () {
                 this.trigger('save-buttons:register-button', {
-                    className: this.className,
+                    className: 'save',
                     priority: 200,
                     label: this.label,
                     events: {

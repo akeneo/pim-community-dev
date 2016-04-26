@@ -1,6 +1,6 @@
 extensions:
     pim-product-edit-form:
-        module: pim/product-edit-form
+        module: pim/form/common/edit-form
 
     pim-product-edit-form-cache-invalidator:
         module: pim/cache-invalidator
@@ -82,10 +82,12 @@ extensions:
         position: 0
 
     pim-product-edit-form-state:
-        module: pim/product-edit-form/state
+        module: pim/form/common/state
         parent: pim-product-edit-form
         targetZone: state
         position: 900
+        config:
+            entity: pim_enrich.entity.product.title
 
     pim-product-edit-form-family:
         module: pim/product-edit-form/meta/family
@@ -101,16 +103,22 @@ extensions:
         position: 100
 
     pim-product-edit-form-created:
-        module: pim/product-edit-form/meta/created
+        module: pim/form/common/meta/created
         parent: pim-product-edit-form
         targetZone: meta
         position: 90
+        config:
+            label: pim_enrich.entity.product.meta.created
+            labelBy: pim_enrich.entity.product.meta.created_by
 
     pim-product-edit-form-updated:
-        module: pim/product-edit-form/meta/updated
+        module: pim/form/common/meta/updated
         parent: pim-product-edit-form
         targetZone: meta
         position: 100
+        config:
+            label: pim_enrich.entity.product.meta.updated
+            labelBy: pim_enrich.entity.product.meta.updated_by
 
     pim-product-edit-form-groups:
         module: pim/product-edit-form/meta/groups
@@ -119,13 +127,16 @@ extensions:
         position: 110
 
     pim-product-edit-form-attributes:
-        module: pim/product-edit-form/attributes
+        module: pim/form/common/attributes
         parent: pim-product-edit-form-form-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_edit_attributes
         position: 90
         config:
-            deleteUrl: pim_enrich_product_remove_attribute_rest
+            removeAttributeRoute: pim_enrich_product_remove_attribute_rest
+            removeAttributeACL: pim_enrich_product_remove_attribute
+            tabTitle: pim_enrich.form.product.tab.attributes.title
+            deletionFailed: pim_enrich.form.product.flash.attribute_deletion_error
 
     pim-product-edit-form-categories:
         module: pim/product-edit-form/categories

@@ -38,7 +38,7 @@ define([
                 this.getRoot().trigger('pim_enrich:form:entity:pre_save');
                 this.showLoadingMask();
 
-                $.ajax({
+                $.post({
                     method: 'POST',
                     url: this.getSaveUrl(),
                     contentType: 'application/json',

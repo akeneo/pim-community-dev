@@ -133,41 +133,36 @@ define(
                             }
                             var searchParameters = this.getSelectSearchParameters(options.term, page);
 
-                            $.when(
-                                AttributeManager.getAttributes(this.getFormData()),
-                                AttributeManager.getAxisAttributes(this.getFormData())
-                            ).then(function (entityAttributes, axisAttributes) {
-                                searchParameters.options.excluded_identifiers = _.union(
-                                    entityAttributes,
-                                    axisAttributes
-                                );
+                            this.getExcludedAttributes()
+                                .then(function (excludedAttribute) {
+                                    searchParameters.options.excluded_identifiers = excludedAttribute;
 
-                                return FetcherRegistry.getFetcher('attribute').search(searchParameters);
-                            })
-                            .then(function (attributes) {
-                                var choices = _.chain(attributes)
-                                    .map(function (attribute) {
-                                        var attributeGroup = ChoicesFormatter.formatOne(attribute.group);
-                                        var attributeChoice = ChoicesFormatter.formatOne(attribute);
-                                        attributeChoice.group = attributeGroup;
+                                    return FetcherRegistry.getFetcher('attribute').search(searchParameters);
+                                })
+                                .then(function (attributes) {
+                                    var choices = _.chain(attributes)
+                                        .map(function (attribute) {
+                                            var attributeGroup = ChoicesFormatter.formatOne(attribute.group);
+                                            var attributeChoice = ChoicesFormatter.formatOne(attribute);
+                                            attributeChoice.group = attributeGroup;
 
-                                        return attributeChoice;
-                                    })
-                                    .value();
+                                            return attributeChoice;
+                                        })
+                                        .value();
 
-                                options.callback({
-                                    results: choices,
-                                    more: choices.length === this.resultsPerPage,
-                                    context: {
-                                        page: page + 1
-                                    }
-                                });
-                            }.bind(this));
+                                    options.callback({
+                                        results: choices,
+                                        more: choices.length === this.resultsPerPage,
+                                        context: {
+                                            page: page + 1
+                                        }
+                                    });
+                                }.bind(this));
                         }.bind(this), 400);
                     }.bind(this)
                 };
 
-                opts = $.extend(true, this.config.select2, opts);
+                opts = $.extend(true, {}, this.config.select2, opts);
                 $select = initSelect2.init($select, opts);
 
                 // Close & destroy select2 DOM on change page via hash-navigation
@@ -246,6 +241,17 @@ define(
                         page: page,
                         locale: UserContext.get('catalogLocale')
                     }
+                });
+            },
+
+            getExcludedAttributes: function () {
+                var entity = this.getFormData();
+
+                return AttributeManager.getAttributes(entity).then(function(entityAttributes) {
+                    return _.union(
+                        entityAttributes,
+                        _.isArray(entity.axis) ? entity.axis : []
+                    );
                 });
             }
         });

@@ -62,7 +62,7 @@ class Edit extends ProductEditForm
                 'Progress bar'            => ['css' => '.progress-bar'],
                 'Save'                    => ['css' => '.save'],
                 'Attribute tab'           => [
-                    'css'        => '.tab-container .product-attributes',
+                    'css'        => '.tab-container .object-attributes',
                     'decorators' => [
                         'Pim\Behat\Decorator\TabDecorator\ComparableTabDecorator'
                     ]
@@ -75,7 +75,7 @@ class Edit extends ProductEditForm
                     ]
                 ],
                 'Main context selector' => [
-                    'css'        => '.tab-container .product-attributes .attribute-edit-actions .context-selectors',
+                    'css'        => '.tab-container .object-attributes .attribute-edit-actions .context-selectors',
                     'decorators' => [
                         'Pim\Behat\Decorator\ContextSwitcherDecorator'
                     ]
@@ -176,12 +176,12 @@ class Edit extends ProductEditForm
     public function getAttributePosition($attribute)
     {
         $productValues = $this->spin(function () {
-            return $this->find('css', '.tab-pane.active.product-values');
+            return $this->find('css', '.tab-pane.active.object-values');
         }, "Spining on find for product-values tab to get attribute position");
 
         $rows = $this->spin(function () use ($productValues) {
             return $productValues->findAll('css', '.field-container');
-        }, "Spining on findAll for rows on product-values to get attribute position");
+        }, "Spining on findAll for rows on object-values to get attribute position");
 
         $position = $this->spin(function () use ($rows, $attribute) {
             foreach ($rows as $index => $row) {
@@ -204,7 +204,7 @@ class Edit extends ProductEditForm
     /**
      * {@inheritdoc}
      */
-    protected function extractLabelElement($field, ElementInterface $element)
+    protected function extractLabelElement($field, ElementInterface $element = null)
     {
         $subLabelContent = null;
         $labelContent    = $field;

@@ -15,6 +15,7 @@ define(
         'pim/form/common/save',
         'oro/messenger',
         'pim/variant-group-manager',
+        'pim/saver/variant-group',
         'pim/field-manager',
         'pim/i18n',
         'pim/user-context'
@@ -26,6 +27,7 @@ define(
         BaseSave,
         messenger,
         VariantGroupManager,
+        VariantGroupSaver,
         FieldManager,
         i18n,
         UserContext
@@ -39,7 +41,6 @@ define(
              */
             save: function () {
                 var variantGroup = $.extend(true, {}, this.getFormData());
-                var variantGroupId = variantGroup.meta.id;
 
                 delete variantGroup.meta;
 
@@ -65,8 +66,8 @@ define(
                 this.showLoadingMask();
                 this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
-                return VariantGroupManager
-                    .save(variantGroupId, variantGroup)
+                return VariantGroupSaver
+                    .save(variantGroup.code, variantGroup)
                     .then(VariantGroupManager.generateMissing.bind(VariantGroupManager))
                     .then(function (data) {
                         this.postSave();

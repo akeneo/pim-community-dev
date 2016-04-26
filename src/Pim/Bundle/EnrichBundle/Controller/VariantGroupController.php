@@ -4,22 +4,18 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Manager\VariantGroupAttributesResolver;
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Enrich\Model\AvailableAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Templating\EngineInterface;
 
@@ -30,13 +26,13 @@ use Symfony\Component\Templating\EngineInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupController extends GroupController
+class VariantGroupController
 {
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var VariantGroupAttributesResolver */
-    protected $groupAttrResolver;
+    /** @var RouterInterface */
+    protected $router;
 
     /** @var FormFactoryInterface */
     protected $formFactory;
@@ -54,48 +50,26 @@ class VariantGroupController extends GroupController
     protected $groupHandler;
 
     /**
-     * @param Request                        $request
-     * @param EngineInterface                $templating
      * @param RouterInterface                $router
      * @param GroupManager                   $groupManager
      * @param HandlerInterface               $groupHandler
      * @param FormInterface                  $groupForm
      * @param GroupFactory                   $groupFactory
      * @param FormFactoryInterface           $formFactory
-     * @param RemoverInterface               $groupRemover
      * @param AttributeRepositoryInterface   $attributeRepository
-     * @param VariantGroupAttributesResolver $groupAttrResolver
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
         RouterInterface $router,
         GroupManager $groupManager,
         HandlerInterface $groupHandler,
         FormInterface $groupForm,
         GroupFactory $groupFactory,
         FormFactoryInterface $formFactory,
-        RemoverInterface $groupRemover,
-        AttributeRepositoryInterface $attributeRepository,
-        VariantGroupAttributesResolver $groupAttrResolver
+        AttributeRepositoryInterface $attributeRepository
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $groupManager,
-            $groupHandler,
-            $groupForm,
-            $groupFactory,
-            $groupRemover
-        );
-
-        $this->request             = $request;
-        $this->templating          = $templating;
         $this->router              = $router;
         $this->formFactory         = $formFactory;
         $this->attributeRepository = $attributeRepository;
-        $this->groupAttrResolver   = $groupAttrResolver;
         $this->groupManager        = $groupManager;
         $this->groupFactory        = $groupFactory;
         $this->groupForm           = $groupForm;
@@ -132,11 +106,11 @@ class VariantGroupController extends GroupController
         $group = $this->groupFactory->createGroup('VARIANT');
 
         if ($this->groupHandler->process($group)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.variant group.created'));
+            $request->getSession()->getFlashBag()->add('success', new Message('flash.variant group.created'));
 
             $url = $this->router->generate(
                 'pim_enrich_variant_group_edit',
-                ['id' => $group->getId()]
+                ['code' => $group->getCode()]
             );
             $response = ['status' => 1, 'url' => $url];
 
@@ -151,31 +125,13 @@ class VariantGroupController extends GroupController
     /**
      * {@inheritdoc}
      *
-     * TODO: find a way to use param converter with interfaces
-     *
      * @AclAncestor("pim_enrich_variant_group_edit")
      * @Template
      */
-    public function editAction(Group $group)
+    public function editAction($code)
     {
         return [
-            'id' => $group->getId()
+            'code' => $code
         ];
-    }
-
-    /**
-     * Get the AvailableAttributes form
-     *
-     * @param GroupInterface $group
-     *
-     * @return FormInterface
-     */
-    protected function getAvailableAttributesForm(GroupInterface $group)
-    {
-        return $this->formFactory->create(
-            'pim_available_attributes',
-            new AvailableAttributes(),
-            ['excluded_attributes' => $this->groupAttrResolver->getNonEligibleAttributes($group)]
-        );
     }
 }

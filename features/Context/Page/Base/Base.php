@@ -210,7 +210,7 @@ class Base extends Page
     {
         // Search with exact name at first
         $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
-        
+
         if (null === $button) {
             $button = $this->find('xpath', sprintf("//a[text() = '%s']", $locator));
         }

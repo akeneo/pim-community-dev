@@ -20,10 +20,41 @@ define([
         template
     ) {
         return BaseForm.extend({
-            className: 'accordion-group',
+            className: 'accordion-group translation-container',
             template: _.template(template),
             events: {
                 'change .label-field': 'updateModel'
+            },
+            validationErrors: {},
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', this.onPreSave);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onValidationError);
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * Pre save callback
+             */
+            onPreSave: function () {
+                this.validationErrors = {};
+
+                this.render();
+            },
+
+            /**
+             * On validation callback
+             *
+             * @param {Event} event
+             */
+            onValidationError: function (event) {
+                this.validationErrors = event.response.translations ? event.response.translations : {};
+
+                this.render();
             },
 
             /**
@@ -33,7 +64,8 @@ define([
                 FetcherRegistry.getFetcher('locale').fetchAll().then(function (locales) {
                     this.$el.html(this.template({
                         model: this.getFormData(),
-                        locales: locales
+                        locales: locales,
+                        errors: this.validationErrors
                     }));
                 }.bind(this));
 

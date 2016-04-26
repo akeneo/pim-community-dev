@@ -1,7 +1,7 @@
 <div class="accordion-heading">
     <a class="accordion-toggle" data-toggle="collapse">
         <i class="icon-chevron-down"></i>
-        <%- __('pim_enrich.form.variant_group.tab.properties.general') %>
+        <%- sectionTitle %>
     </a>
 </div>
 <div class="accordion-body in">
@@ -9,7 +9,7 @@
         <div class="control-group">
             <label class="control-label required" for="pim_enrich_variant_group_form_code">
                 <em>*</em>
-                <%- __('pim_enrich.form.variant_group.tab.properties.code') %>
+                <%- codeLabel %>
             </label>
             <div class="controls">
                 <input type="text" id="pim_enrich_variant_group_form_code" readonly="readonly" disabled="disabled" required="required" class="input-large" value="<%- model.code %>">
@@ -19,7 +19,7 @@
         <div class="control-group">
             <label class="control-label required">
                 <em>*</em>
-                <%- __('pim_enrich.form.variant_group.tab.properties.type') %>
+                <%- typeLabel %>
                 </label>
             <div class="controls">
                 <select id="pim_enrich_variant_group_form_type" readonly="readonly" disabled="disabled" class="select2 input-large">
@@ -31,7 +31,7 @@
         <div class="control-group">
             <label class="control-label required">
                 <em>*</em>
-                <%- __('pim_enrich.form.variant_group.tab.properties.axis') %>
+                <%- axisLabel %>
             </label>
             <div class="controls">
                 <select id="pim_enrich_variant_group_form_type" readonly="readonly" disabled="disabled" class="select2 input-large" multiple>

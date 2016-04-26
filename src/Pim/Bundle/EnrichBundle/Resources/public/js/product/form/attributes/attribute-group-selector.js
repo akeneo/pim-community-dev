@@ -44,7 +44,7 @@ define(
                 });
 
                 if (valuesErrors) {
-                    AttributeGroupManager.getAttributeGroupsForProduct(product)
+                    AttributeGroupManager.getAttributeGroupsForObject(product)
                         .then(function (attributeGroups) {
                             var globalErrors = [];
                             _.each(valuesErrors, function (error) {

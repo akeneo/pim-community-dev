@@ -56,9 +56,10 @@ class GroupNormalizer implements NormalizerInterface
     {
         $normalizedGroup = $this->groupNormalizer->normalize($group, 'json', $context);
 
-        $normalizedGroup['products'] = array_values(array_map(function ($product) {
-            return $product->getId();
-        }, $group->getProducts()->toArray()));
+        $normalizedGroup['products'] = [];
+        foreach ($group->getProducts() as $product) {
+            $normalizedGroup['products'][] = $product->getId();
+        }
 
         $oldestLog = $this->versionManager->getOldestLogEntry($group);
         $newestLog = $this->versionManager->getNewestLogEntry($group);
@@ -68,6 +69,7 @@ class GroupNormalizer implements NormalizerInterface
 
         $normalizedGroup['meta'] = [
             'id'                => $group->getId(),
+            'form'              => 'pim-variant-group-edit-form',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'model_type'        => 'variant_group',
             'created'           => $created,

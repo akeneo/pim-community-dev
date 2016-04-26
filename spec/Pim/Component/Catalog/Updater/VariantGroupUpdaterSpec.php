@@ -35,8 +35,8 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
             $groupTypeRepository,
             $productBuilder,
             $productUpdater,
-            $productTemplateClass,
-            $pqbFactory
+            $pqbFactory,
+            $productTemplateClass
         );
     }
 

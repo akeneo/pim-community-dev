@@ -173,14 +173,14 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * Save associated products
+     * Save associated products updated by the variant group update
      *
      * @param  GroupInterface $group
      */
     protected function saveAssociatedProducts(GroupInterface $group)
     {
-        $newProducts = $group->getProducts();
-        $updatedProducts = $newProducts->toArray();
+        $productInGroup  = $group->getProducts();
+        $productToUpdate = $productInGroup->toArray();
 
         if (null !== $group->getId()) {
             $pqb = $this->productQueryBuilderFactory->create();
@@ -188,15 +188,15 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             $oldProducts = $pqb->execute();
 
             foreach ($oldProducts as $oldProduct) {
-                if (!$newProducts->contains($oldProduct)) {
+                if (!$productInGroup->contains($oldProduct)) {
                     $oldProduct->removeGroup($group);
-                    $updatedProducts[] = $oldProduct;
+                    $productToUpdate[] = $oldProduct;
                 }
             }
         }
 
-        if (!empty($updatedProducts)) {
-            $this->productSaver->saveAll($updatedProducts);
+        if (!empty($productToUpdate)) {
+            $this->productSaver->saveAll($productToUpdate);
         }
     }
 }

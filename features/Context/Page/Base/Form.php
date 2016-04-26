@@ -77,7 +77,6 @@ class Form extends Base
     public function visitTab($tab)
     {
         $tabs = $this->spin(function () {
-
             $tabs = $this->find('css', $this->elements['Tabs']['css']);
             if (!$tabs) {
                 $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
@@ -87,8 +86,7 @@ class Form extends Base
             }
 
             return $tabs;
-
-        }, "Findind $tab tab");
+        }, sprintf('Unable to find the tab "%s"', $tab));
 
         $tabs->clickLink($tab);
     }
@@ -587,7 +585,7 @@ class Form extends Base
             }
         }
 
-        if (null === $element) {
+        if ($element) {
             $label = $this->spin(function () use ($element, $labelContent) {
                 return $element->find('css', sprintf('label:contains("%s")', $labelContent));
             });

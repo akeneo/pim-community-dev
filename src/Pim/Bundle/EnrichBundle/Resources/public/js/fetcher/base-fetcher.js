@@ -58,7 +58,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
         fetch: function (identifier, options) {
             options = options || {};
 
-            if (!(identifier in this.entityPromises)) {
+            if (!(identifier in this.entityPromises) || false === options.cached) {
                 var deferred = $.Deferred();
 
                 if (this.options.urls.get) {

@@ -10,9 +10,9 @@
     <ul class="dropdown-menu right-align">
         <% _.each(secondaryButtons, function (btn) { %>
             <li>
-                <a class="<%- btn.className || '' %>" href="<% if (btn.link) { %><%- btn.link %><% } else { %>javascript:void(0);<% } %>">
+                <span class="<%- btn.className || '' %>" href="<%- btn.link %>">
                     <%- btn.label %>
-                </a>
+                </span>
             </li>
         <% }) %>
     </ul>

@@ -120,7 +120,7 @@ class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInt
 
         // As variant group > product template > values data are not type hinted we cannot normalize them directly
         // so we first denormalize them into product values using the common format then normalize them
-        // this allow use to transform localization based values for example
+        // this allow to transform localization based values for example
         return $this->valuesNormalizer->normalize(
             $this->valuesDenormalizer->denormalize(
                 $group->getProductTemplate()->getValuesData(),
