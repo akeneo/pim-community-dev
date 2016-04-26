@@ -2,10 +2,17 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Helper;
 
+/**
+ * Helper for doctrine
+ *
+ * @author    Langlade Arnaud <arnaud.langlade@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class ResultParser
 {
     /**
-     * Extract translations for a locale from a result of doctrine query (array hydration)
+     * Extract translations for a locale from a result set of doctrine query (array hydration)
      *
      * In :
      * [
@@ -49,7 +56,7 @@ class ResultParser
     }
 
     /**
-     * Extract ids from a result of doctrine query (array hydration)
+     * Extract ids from a result set of doctrine query (array hydration)
      *
      * @param array $flatIds
      *
