@@ -7,7 +7,7 @@ parameters:
 services:
     pim_import_export.controller.export_profile:
         scope: request
-        class: %pim_import_export.controller.export_profile.class%
+        class: '%pim_import_export.controller.export_profile.class%'
         arguments:
             - '@request'
             - '@templating'
@@ -22,11 +22,12 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pim_import_export.repository.job_instance'
             - '@security.token_storage'
+            - '@pim_import_export.provider.job_template'
             - export
 
     pim_import_export.controller.import_profile:
         scope: request
-        class: %pim_import_export.controller.import_profile.class%
+        class: '%pim_import_export.controller.import_profile.class%'
         arguments:
             - '@request'
             - '@templating'
@@ -41,11 +42,12 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pim_import_export.repository.job_instance'
             - '@security.token_storage'
+            - '@pim_import_export.provider.job_template'
             - import
 
     pim_import_export.controller.export_execution:
         scope: request
-        class: %pim_import_export.controller.export_execution.class%
+        class: '%pim_import_export.controller.export_execution.class%'
         arguments:
             - '@templating'
             - '@translator'
@@ -59,7 +61,7 @@ services:
 
     pim_import_export.controller.import_execution:
         scope: request
-        class: %pim_import_export.controller.import_execution.class%
+        class: '%pim_import_export.controller.import_execution.class%'
         arguments:
             - '@templating'
             - '@translator'

@@ -114,20 +114,6 @@ class RegisterJobsPass implements CompilerPassInterface
                         $parameters
                     )
                 );
-
-                if ($job['templates']['show']) {
-                    $definition->addMethodCall(
-                        'setJobShowTemplate',
-                        array($config['name'], $job['type'], $alias, $job['templates']['show'])
-                    );
-                }
-
-                if ($job['templates']['edit']) {
-                    $definition->addMethodCall(
-                        'setJobEditTemplate',
-                        array($config['name'], $job['type'], $alias, $job['templates']['edit'])
-                    );
-                }
             }
         }
     }
@@ -161,13 +147,6 @@ class RegisterJobsPass implements CompilerPassInterface
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
-                            ->arrayNode('templates')
-                                ->addDefaultsIfNotSet()
-                                ->children()
-                                    ->scalarNode('show')->defaultNull()->end()
-                                    ->scalarNode('edit')->defaultNull()->end()
-                                ->end()
-                            ->end()
                             ->scalarNode('title')->end()
                             ->scalarNode('type')->end()
                             ->arrayNode('steps')

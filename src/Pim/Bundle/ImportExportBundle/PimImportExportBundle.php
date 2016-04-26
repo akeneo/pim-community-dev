@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle;
 
+use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterJobTemplatePass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -13,4 +15,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimImportExportBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new RegisterJobTemplatePass());
+    }
 }

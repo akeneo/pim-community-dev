@@ -19,7 +19,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  *
- * TODO: templates should be extracted, we mix concerns here
  */
 class Job implements JobInterface
 {
@@ -34,12 +33,6 @@ class Job implements JobInterface
 
     /** @var array */
     protected $steps;
-
-    /** @var string */
-    protected $showTemplate;
-
-    /** @var string */
-    protected $editTemplate;
 
     /**
      * @param string                   $name
@@ -178,54 +171,6 @@ class Job implements JobInterface
         foreach ($this->steps as $step) {
             $step->setConfiguration($config);
         }
-    }
-
-    /**
-     * Set the show template
-     *
-     * @param string $showTemplate
-     *
-     * @return Job
-     */
-    public function setShowTemplate($showTemplate)
-    {
-        $this->showTemplate = $showTemplate;
-
-        return $this;
-    }
-
-    /**
-     * Return the show template
-     *
-     * @return string
-     */
-    public function getShowTemplate()
-    {
-        return $this->showTemplate;
-    }
-
-    /**
-     * Set the edit template
-     *
-     * @param string $editTemplate
-     *
-     * @return Job
-     */
-    public function setEditTemplate($editTemplate)
-    {
-        $this->editTemplate = $editTemplate;
-
-        return $this;
-    }
-
-    /**
-     * Return the edit template
-     *
-     * @return string
-     */
-    public function getEditTemplate()
-    {
-        return $this->editTemplate;
     }
 
     /**
