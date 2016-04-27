@@ -64,17 +64,6 @@ interface AttributeRepositoryInterface extends
     public function findAllAxisQB();
 
     /**
-     * Find all axis
-     *
-     * @see findAllAxisQB
-     *
-     * @deprecated avoid the hydration of attributes as objects (performance), will be removed in 1.6
-     *
-     * @return array
-     */
-    public function findAllAxis();
-
-    /**
      * Get available attributes as label as a choice
      *
      * @deprecated only used in grid, will be removed in 1.6
@@ -177,4 +166,13 @@ interface AttributeRepositoryInterface extends
      * @return int
      */
     public function countAll();
+
+    /**
+     * Find axis label for a locale
+     *
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function findAvailableAxis($locale);
 }

@@ -8,10 +8,13 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Manager\VariantGroupAttributesResolver;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Pim\Component\Enrich\Model\AvailableAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -41,28 +44,17 @@ class VariantGroupController extends GroupController
     /** @var FormFactoryInterface */
     protected $formFactory;
 
-    /** @var GroupManager */
-    protected $groupManager;
-
-    /** @var GroupFactory */
-    protected $groupFactory;
-
-    /** @var FormInterface */
-    protected $groupForm;
-
-    /** @var HandlerInterface */
-    protected $groupHandler;
-
     /**
      * @param Request                        $request
      * @param EngineInterface                $templating
      * @param RouterInterface                $router
-     * @param GroupManager                   $groupManager
+     * @param GroupTypeRepositoryInterface   $groupTypeRepository
      * @param HandlerInterface               $groupHandler
      * @param FormInterface                  $groupForm
      * @param GroupFactory                   $groupFactory
-     * @param FormFactoryInterface           $formFactory
      * @param RemoverInterface               $groupRemover
+     * @param UserContext                    $userContext
+     * @param FormFactoryInterface           $formFactory
      * @param AttributeRepositoryInterface   $attributeRepository
      * @param VariantGroupAttributesResolver $groupAttrResolver
      */
@@ -70,12 +62,13 @@ class VariantGroupController extends GroupController
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        GroupManager $groupManager,
+        GroupTypeRepositoryInterface $groupTypeRepository,
         HandlerInterface $groupHandler,
         FormInterface $groupForm,
         GroupFactory $groupFactory,
-        FormFactoryInterface $formFactory,
         RemoverInterface $groupRemover,
+        UserContext $userContext,
+        FormFactoryInterface $formFactory,
         AttributeRepositoryInterface $attributeRepository,
         VariantGroupAttributesResolver $groupAttrResolver
     ) {
@@ -83,23 +76,17 @@ class VariantGroupController extends GroupController
             $request,
             $templating,
             $router,
-            $groupManager,
+            $groupTypeRepository,
             $groupHandler,
             $groupForm,
             $groupFactory,
-            $groupRemover
+            $groupRemover,
+            $userContext
         );
 
-        $this->request             = $request;
-        $this->templating          = $templating;
-        $this->router              = $router;
         $this->formFactory         = $formFactory;
         $this->attributeRepository = $attributeRepository;
         $this->groupAttrResolver   = $groupAttrResolver;
-        $this->groupManager        = $groupManager;
-        $this->groupFactory        = $groupFactory;
-        $this->groupForm           = $groupForm;
-        $this->groupHandler        = $groupHandler;
     }
 
     /**
@@ -112,8 +99,13 @@ class VariantGroupController extends GroupController
      */
     public function indexAction()
     {
+        $groupTypes = $this->groupTypeRepository->findTypeIds(
+            true,
+            $this->userContext->getCurrentLocaleCode()
+        );
+
         return [
-            'groupTypes' => array_keys($this->groupManager->getTypeChoices(true))
+            'groupTypes' => $groupTypes
         ];
     }
 

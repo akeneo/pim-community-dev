@@ -30,4 +30,23 @@ interface GroupTypeRepositoryInterface extends IdentifiableObjectRepositoryInter
      * @return string
      */
     public function getTypeByGroup($code);
+
+    /**
+     * Find group type labels for a locale indexed by technical identifiers
+     *
+     * @param bool   $isVariant
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function findTypes($isVariant, $locale);
+
+    /**
+     * Find axis technical identifiers
+     *
+     * @param bool $isVariant
+     *
+     * @return array
+     */
+    public function findTypeIds($isVariant);
 }

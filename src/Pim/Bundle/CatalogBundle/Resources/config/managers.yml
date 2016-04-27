@@ -1,9 +1,7 @@
 parameters:
     pim_catalog.manager.attribute_options_sorter.class: Pim\Component\Catalog\Manager\AttributeOptionsSorter
     pim_catalog.manager.attribute_group.class:     Pim\Component\Catalog\Manager\AttributeGroupManager
-    pim_catalog.manager.category.class:            Pim\Bundle\CatalogBundle\Manager\CategoryManager
     pim_catalog.manager.completeness.class:        Pim\Component\Catalog\Manager\CompletenessManager
-    pim_catalog.manager.group.class:               Pim\Bundle\CatalogBundle\Manager\GroupManager
     pim_catalog.manager.product_template_media.class:    Pim\Component\Catalog\Manager\ProductTemplateMediaManager
     pim_catalog.applier.product_template.class:          Pim\Component\Catalog\Manager\ProductTemplateApplier
     pim_catalog.resolver.variant_group_attributes.class: Pim\Component\Catalog\Manager\VariantGroupAttributesResolver
@@ -11,50 +9,36 @@ parameters:
 
 services:
     # Managers
-    pim_catalog.manager.category:
-        class: %pim_catalog.manager.category.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.repository.category'
-            - '@pim_catalog.factory.category'
-            - %pim_catalog.entity.category.class%
-
     pim_catalog.manager.attribute_options_sorter:
-        class: %pim_catalog.manager.attribute_options_sorter.class%
+        class: '%pim_catalog.manager.attribute_options_sorter.class%'
         arguments:
             - '@pim_catalog.saver.attribute_option'
 
     pim_catalog.manager.attribute_group:
-        class: %pim_catalog.manager.attribute_group.class%
+        class: '%pim_catalog.manager.attribute_group.class%'
         arguments:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_catalog.saver.attribute_group'
             - '@pim_catalog.saver.attribute'
 
-    pim_catalog.manager.group:
-        class: %pim_catalog.manager.group.class%
-        arguments:
-            - '@pim_catalog.repository.group_type'
-            - '@pim_catalog.repository.attribute'
-
     pim_catalog.manager.completeness:
-        class: %pim_catalog.manager.completeness.class%
+        class: '%pim_catalog.manager.completeness.class%'
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.doctrine.completeness_generator'
             - '@pim_catalog.completeness.checker.chained'
-            - %pim_catalog.entity.completeness.class%
+            - '%pim_catalog.entity.completeness.class%'
 
     pim_catalog.manager.product_template_media:
-        class: %pim_catalog.manager.product_template_media.class%
+        class: '%pim_catalog.manager.product_template_media.class%'
         arguments:
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@pim_serializer'
 
     pim_catalog.applier.product_template:
-        class: %pim_catalog.applier.product_template.class%
+        class: '%pim_catalog.applier.product_template.class%'
         arguments:
             - '@pim_catalog.updater.product_template'
             - '@pim_catalog.validator.product'
@@ -62,12 +46,12 @@ services:
             - '@pim_catalog.saver.product'
 
     pim_catalog.resolver.variant_group_attributes:
-        class: %pim_catalog.resolver.variant_group_attributes.class%
+        class: '%pim_catalog.resolver.variant_group_attributes.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
 
     pim_catalog.resolver.attribute_values:
-        class: %pim_catalog.resolver.attribute_values.class%
+        class: '%pim_catalog.resolver.attribute_values.class%'
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'

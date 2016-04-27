@@ -52,8 +52,18 @@ class CategoryRepositorySpec extends ObjectBehavior
         $this->beConstructedWith($em, $classMetadata);
     }
 
+    function it_is_a_nested_repository()
+    {
+        $this->shouldHaveType('Gedmo\Tree\Entity\Repository\NestedTreeRepository');
+    }
+
     function it_is_a_category_repository()
     {
         $this->shouldImplement('Akeneo\Component\Classification\Repository\CategoryRepositoryInterface');
+    }
+
+    function it_is_an_identifiable_object_repository()
+    {
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface');
     }
 }

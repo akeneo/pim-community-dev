@@ -66,4 +66,4 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_catalog.manager.group->getAvailableAxisChoices'
+                            choices:  '@pim_catalog.repository.attribute->findAvailableAxis(@pim_user.context.user->getCurrentLocaleCode())'

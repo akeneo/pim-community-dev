@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Helper\ResultParser;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
@@ -208,11 +209,18 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllAxis()
+    public function findAvailableAxis($locale)
     {
-        $qb = $this->findAllAxisQB();
+        $query = $this->findAllAxisQB()
+            ->select('a.id, a.code, t.label, t.locale')
+            ->leftJoin('a.translations', 't')
+            ->getQuery();
 
-        return $qb->getQuery()->getResult();
+        $axis = ResultParser::parseTranslations($query->getArrayResult(), $locale);
+
+        asort($axis);
+
+        return $axis;
     }
 
     /**
