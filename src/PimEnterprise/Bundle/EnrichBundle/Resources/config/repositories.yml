@@ -3,14 +3,15 @@ parameters:
 
 services:
     pimee_enrich.repository.attribute.search:
-        class: %pimee_enrich.repository.attribute.search.class%
+        class: '%pimee_enrich.repository.attribute.search.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - %pim_catalog.entity.attribute.class%
-            - %pimee_security.entity.attribute_group_access.class%
+            - '%pim_catalog.entity.attribute.class%'
+            - '%pimee_security.entity.attribute_group_access.class%'
 
     pimee_enrich.repository.asset_category_choices:
-        class: %pim_enrich.repository.category_choices.class%
+        class: '%pim_enrich.repository.category.class%'
         arguments:
+            - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'
-            - %pimee_product_asset.model.category.class%
+            - '%pimee_product_asset.model.category.class%'

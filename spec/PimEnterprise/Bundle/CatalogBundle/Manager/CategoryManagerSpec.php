@@ -2,13 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Akeneo\Component\Classification\Factory\CategoryFactory;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
@@ -19,24 +17,14 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class CategoryManagerSpec extends ObjectBehavior
 {
     function let(
-        ObjectManager $om,
-        CategoryRepositoryInterface $productCategoryRepo,
-        SimpleFactoryInterface $categoryFactory,
-        EventDispatcherInterface $eventDispatcher,
+        CategoryRepositoryInterface $categoryRepository,
         CategoryAccessRepository $categoryAccessRepo,
-        CategoryRepositoryInterface $assetCategoryRepo,
-        AuthorizationCheckerInterface $context
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
-        $om->getRepository(Argument::any())->willReturn($productCategoryRepo);
         $this->beConstructedWith(
-            $om,
-            $productCategoryRepo,
-            $categoryFactory,
-            Argument::any(),
-            $eventDispatcher,
+            $categoryRepository,
             $categoryAccessRepo,
-            $context,
-            $assetCategoryRepo
+            $authorizationChecker
         );
     }
 
@@ -47,7 +35,7 @@ class CategoryManagerSpec extends ObjectBehavior
 
     function it_gets_accessible_trees_for_display(
         $categoryAccessRepo,
-        $productCategoryRepo,
+        $categoryRepository,
         CategoryInterface $firstTree,
         CategoryInterface $secondTree,
         CategoryInterface $thirdTree,
@@ -57,7 +45,7 @@ class CategoryManagerSpec extends ObjectBehavior
         $secondTree->getId()->willReturn(2);
         $thirdTree->getId()->willReturn(3);
 
-        $productCategoryRepo->getTrees()->willReturn([$firstTree, $secondTree, $thirdTree]);
+        $categoryRepository->getTrees()->willReturn([$firstTree, $secondTree, $thirdTree]);
 
         $accessibleCategoryIds = [1, 3];
 
@@ -70,7 +58,7 @@ class CategoryManagerSpec extends ObjectBehavior
 
     function it_gets_accessible_trees_for_edition(
         $categoryAccessRepo,
-        $productCategoryRepo,
+        $categoryRepository,
         CategoryInterface $firstTree,
         CategoryInterface $secondTree,
         CategoryInterface $thirdTree,
@@ -80,7 +68,7 @@ class CategoryManagerSpec extends ObjectBehavior
         $secondTree->getId()->willReturn(2);
         $thirdTree->getId()->willReturn(3);
 
-        $productCategoryRepo->getTrees()->willReturn([$firstTree, $secondTree, $thirdTree]);
+        $categoryRepository->getTrees()->willReturn([$firstTree, $secondTree, $thirdTree]);
 
         $accessibleCategoryIds = [1];
 
@@ -92,56 +80,40 @@ class CategoryManagerSpec extends ObjectBehavior
     }
 
     function it_gets_granted_filled_tree_when_path_is_not_granted(
-        $productCategoryRepo,
+        $categoryRepository,
         CategoryInterface $parent,
         CategoryInterface $childOne,
         CategoryInterface $childTwo
     ) {
-        $productCategoryRepo->getPath($childTwo)->willReturn(
+        $categoryRepository->getFilledTree($parent, new ArrayCollection([$childTwo]))->willReturn(
             [0 => $parent, 1 => $childOne, 2 => $childTwo]
         );
         $parent->getId()->willReturn(3);
         $childOne->getId()->willReturn(1);
         $childTwo->getId()->willReturn(2);
-        $productCategoryRepo->getTreeFromParents([3, 1, 2])->willReturn([]);
         $this->getGrantedFilledTree($parent, new ArrayCollection([$childTwo]));
     }
 
     function it_gets_granted_filled_tree_when_path_is_granted(
-        $productCategoryRepo,
+        $categoryRepository,
+        $authorizationChecker,
         CategoryInterface $parent,
         CategoryInterface $childOne,
-        CategoryInterface $childTwo,
-        $context
+        CategoryInterface $childTwo
     ) {
-        $productCategoryRepo->getPath($childTwo)->willReturn(
+        $categoryRepository->getFilledTree($parent, new ArrayCollection([$childTwo]))->willReturn(
             [0 => $parent, 1 => $childOne, 2 => $childTwo]
         );
         $parent->getId()->willReturn(3);
         $childOne->getId()->willReturn(1);
         $childTwo->getId()->willReturn(2);
 
-        $context->isGranted(Attributes::VIEW_ITEMS, $parent)->willReturn(true);
-        $context->isGranted(Attributes::VIEW_ITEMS, $childOne)->willReturn(true);
-        $context->isGranted(Attributes::VIEW_ITEMS, $childTwo)->willReturn(true);
-        $productCategoryRepo->getTreeFromParents([3, 1, 2])->willReturn(
-            [
-                0 => [
-                    'item' => $parent,
-                    '__children' => [
-                        0 => [
-                            'item' => $childOne,
-                            '__children' => [
-                                0 => $childTwo
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        );
-        $context->isGranted(Attributes::VIEW_ITEMS, $parent)->willReturn(true);
-        $context->isGranted(Attributes::VIEW_ITEMS, $childOne)->willReturn(true);
-        $context->isGranted(Attributes::VIEW_ITEMS, $childTwo)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $parent)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $childOne)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $childTwo)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $parent)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $childOne)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $childTwo)->willReturn(true);
 
         $this->getGrantedFilledTree($parent, new ArrayCollection([$childTwo]));
     }

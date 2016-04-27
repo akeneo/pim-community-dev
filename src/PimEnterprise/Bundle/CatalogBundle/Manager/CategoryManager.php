@@ -13,15 +13,13 @@ namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager as BaseCategoryManager;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Category manager
@@ -30,7 +28,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @deprecated Will be removed in 1.6
  */
-class CategoryManager extends BaseCategoryManager
+class CategoryManager
 {
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
@@ -38,30 +36,24 @@ class CategoryManager extends BaseCategoryManager
     /* @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
+    /* @var CategoryRepositoryInterface */
+    protected $categoryRepository;
+
     /**
      * Constructor
      *
-     * @param ObjectManager                 $om
      * @param CategoryRepositoryInterface   $categoryRepository
-     * @param SimpleFactoryInterface        $categoryFactory
-     * @param string                        $categoryClass
-     * @param EventDispatcherInterface      $eventDispatcher
      * @param CategoryAccessRepository      $categoryAccessRepo
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
-        ObjectManager $om,
         CategoryRepositoryInterface $categoryRepository,
-        SimpleFactoryInterface $categoryFactory,
-        $categoryClass,
-        EventDispatcherInterface $eventDispatcher,
         CategoryAccessRepository $categoryAccessRepo,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        parent::__construct($om, $categoryRepository, $categoryFactory, $categoryClass);
-
         $this->categoryAccessRepo   = $categoryAccessRepo;
         $this->authorizationChecker = $authorizationChecker;
+        $this->categoryRepository   = $categoryRepository;
     }
 
     /**
@@ -74,10 +66,9 @@ class CategoryManager extends BaseCategoryManager
      */
     public function getAccessibleTrees(UserInterface $user, $accessLevel = Attributes::VIEW_ITEMS)
     {
-        $trees = [];
-
         $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $accessLevel);
 
+        $trees = [];
         foreach ($this->categoryRepository->getTrees() as $tree) {
             if (in_array($tree->getId(), $grantedCategoryIds)) {
                 $trees[] = $tree;
@@ -101,7 +92,7 @@ class CategoryManager extends BaseCategoryManager
      */
     public function getGrantedFilledTree(CategoryInterface $root, Collection $categories)
     {
-        $filledTree = parent::getFilledTree($root, $categories);
+        $filledTree = $this->categoryRepository->getFilledTree($root, $categories);
 
         $this->filterGrantedFilledTree($filledTree);
 
