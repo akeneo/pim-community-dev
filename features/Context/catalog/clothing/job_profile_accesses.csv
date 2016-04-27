@@ -18,23 +18,27 @@ csv_clothing_mobile_published_product_export;IT support,Manager,Redactor;IT supp
 csv_clothing_product_proposal_import;IT support,Manager,Redactor;IT support
 csv_clothing_asset_import;IT support,Manager,Redactor;IT support,Manager
 csv_clothing_asset_category_import;IT support,Manager,Redactor;IT support,Manager
+csv_clothing_product_import_with_rules;IT support,Manager,Redactor;IT support
 clothing_asset_channel_configuration_import;IT support,Manager,Redactor;IT support,Manager
 clothing_asset_channel_configuration_export;IT support,Manager,Redactor;IT support,Manager
-csv_clothing_product_import_with_rules;IT support,Manager,Redactor;IT support
-clothing_rule_import;IT support,Manager,Redactor;IT support
 clothing_rule_export;IT support,Manager,Redactor;IT support
-update_product_value;IT support,Manager,Redactor;
+clothing_rule_import;IT support,Manager,Redactor;IT support
 add_product_value;IT support,Manager,Redactor;
 add_product_value_with_permission;IT support,Manager,Redactor;
+add_product_value_with_permission_and_rules;IT support,Manager,Redactor;
+update_product_value;IT support,Manager,Redactor;
 update_product_value_with_permission;IT support,Manager,Redactor;
+update_product_value_with_permission_and_rules;IT support,Manager,Redactor;
 publish_product;IT support,Manager,Redactor;
 unpublish_product;IT support,Manager,Redactor;
 edit_common_attributes;IT support,Manager,Redactor;
+edit_common_attributes_with_permission;IT support,Manager,Redactor;
+edit_common_attributes_with_permission_and_rules;IT support,Manager,Redactor;
 add_to_variant_group;IT support,Manager,Redactor;
+add_to_variant_group_with_rules;IT support,Manager,Redactor;
 set_attribute_requirements;IT support,Manager,Redactor;
 csv_product_quick_export;IT support,Manager,Redactor;
 csv_published_product_quick_export;IT support,Manager,Redactor;
-edit_common_attributes_with_permission;IT support,Manager,Redactor;
 approve_product_draft;IT support,Manager;
 refuse_product_draft;IT support,Manager;
 apply_assets_mass_upload;IT support,Manager;
