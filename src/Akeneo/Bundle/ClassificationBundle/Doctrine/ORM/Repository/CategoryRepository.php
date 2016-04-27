@@ -6,9 +6,11 @@ use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Helper\ResultParser;
 
 /**
  * Category repository
@@ -111,6 +113,28 @@ class CategoryRepository extends NestedTreeRepository implements
         $nodes = $qb->getQuery()->getResult();
 
         return $this->buildTreeNode($nodes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFilledTree(CategoryInterface $root, Collection $categories)
+    {
+        $parentsIds = [];
+        foreach ($categories as $category) {
+            $categoryParentsIds = [];
+            $path               = $this->getPath($category);
+
+            if ($path[0]->getId() === $root->getId()) {
+                foreach ($path as $pathItem) {
+                    $categoryParentsIds[] = $pathItem->getId();
+                }
+            }
+            $parentsIds = array_merge($parentsIds, $categoryParentsIds);
+        }
+        $parentsIds = array_unique($parentsIds);
+
+        return $this->getTreeFromParents($parentsIds);
     }
 
     /**
@@ -304,6 +328,21 @@ class CategoryRepository extends NestedTreeRepository implements
     public function getTrees()
     {
         return $this->getChildren(null, true, 'created', 'DESC');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findTree($locale)
+    {
+        $query = $this->childrenQueryBuilder(null, true, 'created', 'DESC')
+            ->select('node.id, node.code, t.label, t.locale')
+            ->leftJoin('node.translations', 't')
+            ->getQuery();
+
+        $categories = ResultParser::parseTranslations($query->getArrayResult(), $locale);
+
+        return $categories;
     }
 
     /**
