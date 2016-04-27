@@ -62,7 +62,7 @@ class CategoryRepositorySpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\Classification\Repository\CategoryRepositoryInterface');
     }
 
-    function it_is_a_identifiable_object_repository()
+    function it_is_an_identifiable_object_repository()
     {
         $this->shouldImplement('Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface');
     }

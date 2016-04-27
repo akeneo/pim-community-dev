@@ -45,7 +45,7 @@ interface GroupTypeRepositoryInterface extends IdentifiableObjectRepositoryInter
     /**
      * Find axis technical identifiers
      *
-     * @param bool   $isVariant
+     * @param bool $isVariant
      *
      * @return array
      */
