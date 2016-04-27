@@ -159,6 +159,7 @@ update_product_value_with_permission_and_rules:
 edit_common_attributes_with_permission_and_rules:
     title: Edit common attributes with permission check & rules application
     steps.perform: Edit common attributes
+    steps.edit_common_attributes_processor.title: Edit common attributes
 add_to_variant_group_with_rules:
     title: Add products to variant group with rules application
     steps.perform: Add products to variant group
