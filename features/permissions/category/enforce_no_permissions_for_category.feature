@@ -89,16 +89,9 @@ Feature: Enforce no permissions for a category
     And the following product category accesses:
       | product category  | user group | access |
       | winter_collection | Manager    | own    |
-    And I am on the "summer_collection" category page
-    And I visit the "Permissions" tab
-    And I fill in the following information:
-      | Allowed to view products | IT support |
-      | Allowed to edit products | IT support |
-      | Allowed to own products  | IT support |
-    And I save the category
-    And I edit the "grantedOne" product
-    When I visit the "Associations" tab
-    And I wait 3 seconds
+      | summer_collection | IT support | all    |
+    When I edit the "grantedOne" product
+    And I visit the "Associations" tab
     Then the grid should contain 1 elements
 
   @javascript

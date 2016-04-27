@@ -29,13 +29,15 @@ Feature: List proposals
       | field | value         | tab     |
       | Name  | Autumn jacket | General |
       | Price | 10 USD        | Sales   |
-    And Mary proposed the following change to "hoodie":
-      | field | value              |
-      | Name  | Hoodie for hackers |
 
   Scenario: Successfully sort and filter proposals in the grid
     Given I am logged in as "Peter"
-    And I am on the proposals page
+    When I am on the proposals page
+    Then the grid should contain 1 elements
+    Given the following product category accesses:
+      | product category | user group | access |
+      | 2014_collection  | IT support | own    |
+    When I am on the proposals page
     Then the grid should contain 3 elements
     And the rows should be sorted descending by proposed at
     And I should be able to sort the rows by author and proposed at
@@ -52,8 +54,10 @@ Feature: List proposals
 
   Scenario: Successfully approve or reject a proposal
     Given I am logged in as "Peter"
+    And the following product category accesses:
+      | product category | user group | access |
+      | 2014_collection  | IT support | own    |
     And I am on the proposals page
-    Then the grid should contain 3 elements
     And I should see entities tshirt, sweater and jacket
     When I click on the "Approve all" action of the row which contains "tshirt"
     And I press the "Send" button in the popin
@@ -72,26 +76,27 @@ Feature: List proposals
 
   Scenario: Successfully review a proposal with a new simple select value
     Given I am logged in as "Julia"
-    Given I am on the "additional_materials" attribute page
+    And I am on the "additional_materials" attribute page
     And I visit the "Values" tab
     And I wait for options to load
-    Given I create the following attribute options:
+    And I create the following attribute options:
       | Code   | en_US  | fr_FR  | de_DE  |
       | Blue   | Blue   | Bleu   | Blau   |
-    Given I am on the "weather_conditions" attribute page
+    And I am on the "weather_conditions" attribute page
     And I visit the "Values" tab
     And I wait for options to load
-    Given I create the following attribute options:
+    And I create the following attribute options:
       | Code   | en_US   | fr_FR  | de_DE  |
       | Blue   | Blue    | Bleu   | Blau   |
-    Given I logout
-    Then I am logged in as "Mary"
+    And I logout
+    And I am logged in as "Mary"
     And I am on the "tshirt" product page
     And Mary proposed the following change to "tshirt":
       | tab        | field               | value|
       | Additional | Weather conditions  | Blue |
-    Given I am logged in as "Julia"
+    And I logout
+    And I am logged in as "Julia"
     When I am on the proposals page
     Then I should see the following proposals:
-      | product_label | author | "Weather conditions" base | "Weather conditions" changed | status               |
-      | tshirt        | Mary   | Dry                       | Blue                         | Waiting for approval |
+      | product | author | attribute          | original | new  |
+      | tshirt  | Mary   | weather_conditions | Dry      | Blue |

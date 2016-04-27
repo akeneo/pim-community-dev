@@ -1,13 +1,39 @@
 parameters:
+    # Datagrid
+    pimee_security.event_subscriber.datagrid.product_category_access.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\ProductCategoryAccessSubscriber
+    pimee_security.event_subscriber.datagrid.asset_category_access.class:   PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\AssetCategoryAccessSubscriber
+
+    # Enrich
     pimee_security.event_subscriber.enrich.disable_product_value_form.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\DisableProductValueFieldSubscriber
     pimee_security.event_subscriber.enrich.product.class:                    PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\ProductSubscriber
     pimee_security.event_subscriber.enrich.job_permissions.class:            PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\JobPermissionsSubscriber
     pimee_security.event_subscriber.enrich.add_owner_groups_parameter.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddOwnerGroupsParameterSubscriber
     pimee_security.event_subscriber.enrich.add_category_permissions.class:   PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddCategoryPermissionsSubscriber
     pimee_security.event_subscriber.enrich.add_default_user_group.class:     PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddDefaultUserGroupSubscriber
+
+    # Import & Export
     pimee_security.event_subscriber.import_export.add_category_permissions.class:   PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport\AddCategoryPermissionsSubscriber
 
 services:
+    # Datagrid
+    pimee_security.event_subscriber.datagrid.product_category_access:
+        class: %pimee_security.event_subscriber.datagrid.product_category_access.class%
+        arguments:
+            - '@security.token_storage'
+            - '@pimee_security.repository.category_access'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_security.event_subscriber.datagrid.asset_category_access:
+        class: %pimee_security.event_subscriber.datagrid.asset_category_access.class%
+        arguments:
+            - '@security.token_storage'
+            - '@pimee_product_asset.repository.asset_category_access'
+            - '@pimee_product_asset.doctrine.query.filter.category'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # Enrich
     pimee_security.event_subscriber.enrich.disable_product_value_form:
         class: %pimee_security.event_subscriber.enrich.disable_product_value_form.class%
         arguments:
@@ -45,13 +71,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pimee_security.event_subscriber.import_export.add_category_permissions:
-        class: %pimee_security.event_subscriber.import_export.add_category_permissions.class%
-        arguments:
-            - '@pimee_security.manager.category_access'
-        tags:
-            - { name: doctrine.event_subscriber }
-
     pimee_security.event_subscriber.enrich.add_default_user_group:
         class: %pimee_security.event_subscriber.enrich.add_default_user_group.class%
         arguments:
@@ -60,3 +79,11 @@ services:
             - '@pimee_security.manager.attribute_group_access'
         tags:
             - { name: kernel.event_subscriber }
+
+    # Import & Export
+    pimee_security.event_subscriber.import_export.add_category_permissions:
+        class: %pimee_security.event_subscriber.import_export.add_category_permissions.class%
+        arguments:
+            - '@pimee_security.manager.category_access'
+        tags:
+            - { name: doctrine.event_subscriber }

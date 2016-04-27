@@ -39,6 +39,6 @@ class DefaultPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        return array_pop($change);
+        return $change['data'];
     }
 }
