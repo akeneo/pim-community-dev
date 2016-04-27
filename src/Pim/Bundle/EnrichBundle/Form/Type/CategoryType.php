@@ -21,7 +21,7 @@ class CategoryType extends AbstractType
     protected $dataClass;
 
     /** @var string Translation entity FQCN */
-    protected $translationdataClass;
+    protected $translationDataClass;
 
     /** @var EventSubscriberInterface[] */
     protected $subscribers = [];
@@ -30,12 +30,12 @@ class CategoryType extends AbstractType
      * Constructor
      *
      * @param string $dataClass
-     * @param string $translationdataClass
+     * @param string $translationDataClass
      */
-    public function __construct($dataClass, $translationdataClass)
+    public function __construct($dataClass, $translationDataClass)
     {
         $this->dataClass            = $dataClass;
-        $this->translationdataClass = $translationdataClass;
+        $this->translationDataClass = $translationDataClass;
     }
 
     /**
@@ -68,7 +68,7 @@ class CategoryType extends AbstractType
             'pim_translatable_field',
             [
                 'field'             => 'label',
-                'translation_class' => $this->translationdataClass,
+                'translation_class' => $this->translationDataClass,
                 'entity_class'      => $this->dataClass,
                 'property_path'     => 'translations'
             ]
