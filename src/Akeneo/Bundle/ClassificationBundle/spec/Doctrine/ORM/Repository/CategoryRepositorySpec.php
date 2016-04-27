@@ -16,7 +16,7 @@ use Prophecy\Argument;
 
 class CategoryRepositorySpec extends ObjectBehavior
 {
-        function let(
+    function let(
         EntityManager $em,
         Connection $connection,
         Statement $statement,
@@ -52,7 +52,7 @@ class CategoryRepositorySpec extends ObjectBehavior
         $this->beConstructedWith($em, $classMetadata);
     }
 
-    function it_is_a_nesty_repository()
+    function it_is_a_nested_repository()
     {
         $this->shouldHaveType('Gedmo\Tree\Entity\Repository\NestedTreeRepository');
     }
