@@ -60,15 +60,15 @@ class GroupTypeRepositorySpec extends ObjectBehavior
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('g')->willReturn($queryBuilder);
         $queryBuilder->select('g.id')->willReturn($queryBuilder);
-        $queryBuilder->from('group_type', 'g')->willReturn($queryBuilder);
+        $queryBuilder->from('group_type', 'g', 'g.id')->willReturn($queryBuilder);
         $queryBuilder->leftJoin('g.translations', 't')->willReturn($queryBuilder);
         $queryBuilder->andWhere('g.variant = :variant')->willReturn($queryBuilder);
         $queryBuilder->setParameter('variant', true)->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
         $query->getArrayResult()->willReturn([
-            ['id' => 10],
-            ['id' => 101],
-            ['id' => 11],
+            10 => ['id' => 10],
+            101 => ['id' => 101],
+            11 => ['id' => 11],
         ]);
 
         $this->findTypeIds(true, 'en_US')->shouldReturn([

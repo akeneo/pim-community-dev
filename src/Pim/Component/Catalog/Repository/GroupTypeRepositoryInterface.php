@@ -4,7 +4,6 @@ namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Helper\ResultParser;
 
 /**
  * Group type repository interface
@@ -45,7 +44,7 @@ interface GroupTypeRepositoryInterface extends IdentifiableObjectRepositoryInter
     /**
      * Find axis technical identifiers
      *
-     * @param bool   $isVariant
+     * @param bool $isVariant
      *
      * @return array
      */

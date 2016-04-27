@@ -26,17 +26,4 @@ class ResultParserSpec extends ObjectBehavior
             11 => '[group_other_code]',
         ]);
     }
-
-    function it_parses_ids()
-    {
-        $this::parseIds([
-            ['id' => 10],
-            ['id' => 101],
-            ['id' => 11],
-        ])->shouldReturn([
-            10,
-            101,
-            11,
-        ]);
-    }
 }

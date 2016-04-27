@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Gedmo\Tree\RepositoryInterface as TreeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Helper\ResultParser;
 
 /**
  * Category repository interface

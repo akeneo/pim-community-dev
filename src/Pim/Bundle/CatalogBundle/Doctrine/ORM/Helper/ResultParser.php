@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Helper;
 
 /**
- * Helper for doctrine
+ * Normalize doctrine result set from flat format into structured one.
  *
  * @author    Langlade Arnaud <arnaud.langlade@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -53,27 +53,5 @@ class ResultParser
 
         return $flatTranslations;
 
-    }
-
-    /**
-     * Extract ids from a result set of doctrine query (array hydration)
-     *
-     * @param array $flatIds
-     *
-     * @return array
-     */
-    public static function parseIds(array $flatIds)
-    {
-        $ids = array_reduce($flatIds, function ($carry, $item) {
-            $carry[] = $item['id'];
-
-            return $carry;
-        }, []);
-
-        if (null === $ids) {
-            return [];
-        }
-
-        return $ids;
     }
 }
