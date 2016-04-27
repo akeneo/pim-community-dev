@@ -291,7 +291,7 @@ class UpdateProductCommand extends ContainerAwareCommand
      */
     protected function validate(ProductInterface $product)
     {
-        $validator = $this->getContainer()->get('pim_validator');
+        $validator = $this->getContainer()->get('pim_catalog.validator.product');
         $errors = $validator->validate($product);
 
         return $errors;
