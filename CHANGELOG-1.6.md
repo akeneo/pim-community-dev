@@ -189,3 +189,14 @@
 - Remove `Pim\Bundle\InstallerBundle\Command\LoadDataFixturesDoctrineCommand`, `Pim\Bundle\InstallerBundle\Command\LoadFixturesCommand`
 - Remove `Pim\Bundle\InstallerBundle\DataFixtures\*`
 - Remove `Pim\Bundle\InstallerBundle\FixtureLoader\*`
+- Remove `Pim\Bundle\CatalogBundle\Manager\CategoryManager`
+- Remove `Pim\Bundle\CatalogBundle\Manager\GroupManager`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\GroupController` replace `Pim\Bundle\CatalogBundle\Manager\GroupManager` by `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\VariantGroupController`
+    replace `Pim\Bundle\CatalogBundle\Manager\GroupManager` by `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface`
+    add `Pim\Bundle\UserBundle\Context\UserContext`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` remove `Pim\Bundle\CatalogBundle\Manager\GroupManager`
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType`
+    replace `Pim\Bundle\CatalogBundle\Manager\CategoryManager` by `Pim\Component\Catalog\Repository\CategoryRepositoryInterface`
+    remove the parameter `$categoryClass`
+    remove method `getTrees()`
