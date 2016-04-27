@@ -58,7 +58,7 @@ class RuleExtensionSpec extends ObjectBehavior
         $localeResolver,
         PresenterInterface $presenter
     ) {
-        $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
+        $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $presenter->present('toto', ['locale' => 'en_US'])->willReturn('expected');
 
@@ -70,7 +70,7 @@ class RuleExtensionSpec extends ObjectBehavior
         $localeResolver,
         PresenterInterface $presenter
     ) {
-        $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
+        $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $presenter->present(true, ['locale' => 'en_US'])->willReturn('expected');
 
@@ -82,7 +82,7 @@ class RuleExtensionSpec extends ObjectBehavior
         $localeResolver,
         PresenterInterface $presenter
     ) {
-        $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
+        $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $presenter->present(['foo', 'bar'], ['locale' => 'en_US'])->willReturn('foobar');
 
@@ -94,7 +94,7 @@ class RuleExtensionSpec extends ObjectBehavior
         $localeResolver,
         PresenterInterface $presenter
     ) {
-        $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
+        $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $presenter->present(['foo', 'bar'], ['locale' => 'en_US'])->willReturn(['presented foo', 'presented bar']);
 

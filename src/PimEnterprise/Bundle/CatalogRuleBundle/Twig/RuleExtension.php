@@ -74,7 +74,7 @@ class RuleExtension extends \Twig_Extension
      */
     public function presentRuleActionValue($value, $code)
     {
-        $presenter = $this->presenterRegistry->getPresenterByAttributeCode($code);
+        $presenter = $this->presenterRegistry->getPresenterByFieldCode($code);
 
         if (is_array($value)) {
             if (isset($value['originalFilename'])) {
