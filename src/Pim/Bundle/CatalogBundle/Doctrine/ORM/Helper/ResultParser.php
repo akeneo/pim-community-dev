@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Helper;
 
 /**
- * Helper for doctrine
+ * Normalize doctrine result set from flat format into structured one.
  *
  * @author    Langlade Arnaud <arnaud.langlade@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
