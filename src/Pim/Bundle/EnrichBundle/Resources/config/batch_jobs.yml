@@ -2,11 +2,11 @@ connector:
     name: Akeneo Mass Edit Connector
     jobs:
         update_product_value:
-            title: update_product_value
+            title: pim_enrich.jobs.update_product_value.title
             type:  mass_edit
             steps:
                 perform:
-                    title: update_product_value
+                    title: pim_enrich.jobs.update_product_value.steps.perform.title
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.product
                         processor: pim_enrich.connector.processor.mass_edit.product.update_value
@@ -14,11 +14,11 @@ connector:
                     parameters:
                         batch_size: 1000
         add_product_value:
-            title: add_product_value
+            title: pim_enrich.jobs.add_product_value.title
             type:  mass_edit
             steps:
                 perform:
-                    title: add_product_value
+                    title: pim_enrich.jobs.add_product_value.steps.perform.title
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.product
                         processor: pim_enrich.connector.processor.mass_edit.product.add_value
@@ -26,11 +26,11 @@ connector:
                     parameters:
                         batch_size: 1000
         edit_common_attributes:
-            title: edit_common_attributes
+            title: pim_enrich.jobs.edit_common_attributes.title
             type:  mass_edit
             steps:
                 perform:
-                    title: edit_common_attributes
+                    title: pim_enrich.jobs.edit_common_attributes.steps.perform.title
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.product
                         processor: pim_enrich.connector.processor.mass_edit.product.edit_common_attributes
@@ -38,16 +38,16 @@ connector:
                     parameters:
                         batch_size: 1000
                 clean:
-                    title: edit_common_attributes_clean
+                    title: pim_enrich.jobs.edit_common_attributes.steps.clean.title
                     class: "%pim_enrich.step.mass_edit.step.class%"
                     services:
                         cleaner: pim_enrich.connector.item.mass_edit.temporary_file_cleaner
         set_attribute_requirements:
-            title: set_attribute_requirements
+            title: pim_enrich.jobs.set_attribute_requirements.title
             type:  mass_edit
             steps:
                 perform:
-                    title: set_attribute_requirements
+                    title: pim_enrich.jobs.set_attribute_requirements.steps.perform.title
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.family
                         processor: pim_enrich.connector.processor.mass_edit.family.set_requirements
@@ -79,11 +79,11 @@ connector:
                      parameters:
                          batch_size: 1000
         add_to_variant_group:
-            title: add_to_variant_group
+            title: pim_enrich.jobs.add_to_variant_group.title
             type:  mass_edit
             steps:
                 perform:
-                    title: add_to_variant_group
+                    title: pim_enrich.jobs.add_to_variant_group.steps.perform.title
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.variant_group_product
                         processor: pim_enrich.connector.processor.mass_edit.product.add_to_variant_group
