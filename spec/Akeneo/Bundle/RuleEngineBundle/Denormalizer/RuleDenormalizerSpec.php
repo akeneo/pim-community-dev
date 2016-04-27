@@ -5,8 +5,8 @@ namespace spec\Akeneo\Bundle\RuleEngineBundle\Denormalizer;
 use Akeneo\Bundle\RuleEngineBundle\Model\ConditionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
+use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
+use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -40,8 +40,8 @@ class RuleDenormalizerSpec extends ObjectBehavior
         $chainedDernomalizer,
         RuleInterface $rule,
         ConditionInterface $condition,
-        ProductSetValueActionInterface $setValueAction,
-        ProductCopyValueActionInterface $copyValueAction
+        ProductSetActionInterface $setAction,
+        ProductCopyActionInterface $copyAction
 
     ) {
         $rawContent = ['conditions' => ['my conditions are here'], 'actions' => ['my actions are there']];
@@ -52,10 +52,10 @@ class RuleDenormalizerSpec extends ObjectBehavior
         $rule->setPriority(10)->shouldBeCalled();
         $rule->setContent($rawContent)->shouldBeCalled();
         $rule->addCondition($condition)->shouldBeCalled();
-        $rule->addAction($setValueAction)->shouldBeCalled();
-        $rule->addAction($copyValueAction)->shouldBeCalled();
+        $rule->addAction($setAction)->shouldBeCalled();
+        $rule->addAction($copyAction)->shouldBeCalled();
 
-        $chainedDernomalizer->denormalize($rawContent, Argument::cetera())->willReturn(['conditions' => [$condition], 'actions' => [$setValueAction, $copyValueAction]]);
+        $chainedDernomalizer->denormalize($rawContent, Argument::cetera())->willReturn(['conditions' => [$condition], 'actions' => [$setAction, $copyAction]]);
 
         // TODO: really spec it...
         $this->denormalize(
