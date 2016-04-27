@@ -63,6 +63,6 @@ services:
         arguments:
             - '@akeneo_rule_engine.action_applier.registry'
             - '@pim_catalog.builder.product'
-            - '@pim_validator'
+            - '@pim_catalog.validator.product'
         tags:
             - { name: validator.constraint_validator, alias: pimee_property_action_validator }
