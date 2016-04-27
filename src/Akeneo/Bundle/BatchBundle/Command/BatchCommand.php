@@ -197,7 +197,7 @@ class BatchCommand extends ContainerAwareCommand
         } else {
             $output->writeln(
                 sprintf(
-                    '<error>An error occured during the %s execution.</error>',
+                    '<error>An error occurred during the %s execution.</error>',
                     $jobInstance->getType()
                 )
             );
