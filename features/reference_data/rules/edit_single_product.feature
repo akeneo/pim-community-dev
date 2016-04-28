@@ -42,34 +42,34 @@ Feature: Update a single product by applying rules
             operator: =
             value:    red-heels
         actions:
-          - type:   set_value
+          - type:   set
             field:  sole_color
             value:  orange
-          - type:   set_value
+          - type:   set
             field:  sole_fabric
             value:
               - chiffon
               - satin
               - leather
-          - type:   set_value
+          - type:   set
             field:  cap_color
             value:  red
             locale: en_US
             scope:  mobile
-          - type:   set_value
+          - type:   set
             field:  lace_fabric
             value:
               - cashmere
             locale: fr_FR
             scope:  tablet
-          - type:   set_value
+          - type:   set
             field:  lace_fabric
             value:
               - toile
               - cashmere
             locale: en_US
             scope:  tablet
-          - type:   set_value
+          - type:   set
             field:  lace_fabric
             value:
               - gore-tex
@@ -106,17 +106,17 @@ Feature: Update a single product by applying rules
             operator: =
             value:    red-heels
         actions:
-          - type:       copy_value
+          - type:       copy
             from_field: sole_color
             to_field:   cap_color
             to_scope:   mobile
             to_locale:  en_US
-          - type:       copy_value
+          - type:       copy
             from_field: sole_color
             to_field:   cap_color
             to_scope:   tablet
             to_locale:  fr_FR
-          - type:       copy_value
+          - type:       copy
             from_field: lace_fabric
             to_field:   sole_fabric
             from_scope:   tablet
