@@ -67,4 +67,4 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_catalog.repository.category->findTree(@pim_user.context.user->getCurrentLocaleCode())'
+                            choices:  '@pim_enrich.repository.category->findChoices'

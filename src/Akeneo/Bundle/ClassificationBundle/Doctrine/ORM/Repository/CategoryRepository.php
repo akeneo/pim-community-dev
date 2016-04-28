@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Helper\ResultParser;
 
 /**
  * Category repository
@@ -328,21 +327,6 @@ class CategoryRepository extends NestedTreeRepository implements
     public function getTrees()
     {
         return $this->getChildren(null, true, 'created', 'DESC');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findTree($locale)
-    {
-        $query = $this->childrenQueryBuilder(null, true, 'created', 'DESC')
-            ->select('node.id, node.code, t.label, t.locale')
-            ->leftJoin('node.translations', 't')
-            ->getQuery();
-
-        $categories = ResultParser::parseTranslations($query->getArrayResult(), $locale);
-
-        return $categories;
     }
 
     /**

@@ -89,36 +89,16 @@ class GroupTypeRepository extends EntityRepository implements GroupTypeRepositor
     /**
      * {@inheritdoc}
      */
-    public function findTypes($isVariant, $locale)
-    {
-        $query = $this->createQueryBuilder('g')
-            ->select('g.id, g.code, t.label, t.locale')
-            ->leftJoin('g.translations', 't')
-            ->andWhere('g.variant = :variant')
-            ->setParameter('variant', $isVariant)
-            ->getQuery();
-
-        $types = ResultParser::parseTranslations($query->getArrayResult(), $locale);
-
-        asort($types);
-
-        return $types;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findTypeIds($isVariant)
     {
-        $query = $this->createQueryBuilder('g')
+        $query = $this->_em->createQueryBuilder()
             ->select('g.id')
+            ->from($this->_entityName, 'g', 'g.id')
             ->leftJoin('g.translations', 't')
             ->andWhere('g.variant = :variant')
             ->setParameter('variant', $isVariant)
             ->getQuery();
 
-        $ids = ResultParser::parseIds($query->getArrayResult());
-
-        return $ids;
+        return array_keys($query->getArrayResult());
     }
 }

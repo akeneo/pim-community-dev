@@ -75,7 +75,7 @@ services:
         class: '%pim_enrich.form.type.product_edit.class%'
         arguments:
             - '@pim_enrich.form.type.product.view'
-            - '@pim_catalog.repository.family'
+            - '@pim_enrich.repository.family'
             - '%pim_catalog.entity.category.class%'
         tags:
             - { name: form.type, alias: pim_product_edit }
@@ -200,7 +200,7 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.helper.locale'
             - '@pim_enrich.provider.colors'
-            - '@pim_enrich.repository.category_choices'
+            - '@pim_enrich.repository.category'
             - '%pim_catalog.entity.category.class%'
             - '%pim_catalog.entity.channel.class%'
         tags:
@@ -249,8 +249,7 @@ services:
     pim_enrich.form.type.available_attributes:
         class: '%pim_enrich.form.type.available_attributes.class%'
         arguments:
-            - '@pim_catalog.repository.attribute'
-            - '@pim_user.context.user'
+            - '@pim_enrich.repository.attribute'
             - '@translator'
             - '%pim_catalog.entity.attribute.class%'
             - '%pim_enrich.entity.available_attributes.class%'

@@ -6,7 +6,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Helper\ResultParser;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
@@ -81,24 +80,6 @@ class AttributeRepository extends EntityRepository implements
         }
 
         return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChoices(array $options)
-    {
-        $qb = $this->getChoicesQB($options);
-        $result = $qb->getQuery()->getArrayResult();
-
-        // Build choices list
-        $attributes = [];
-        foreach ($result as $key => $attribute) {
-            $attributes[$attribute['group_label']][$attribute['id']] = $attribute['attribute_label'];
-            unset($result[$key]);
-        }
-
-        return $attributes;
     }
 
     /**
@@ -212,13 +193,18 @@ class AttributeRepository extends EntityRepository implements
     public function findAvailableAxis($locale)
     {
         $query = $this->findAllAxisQB()
-            ->select('a.id, a.code, t.label, t.locale')
+            ->select('a.id')
+            ->addSelect('COALESCE(t.label, CONCAT(\'[\', a.code, \']\')) as label')
             ->leftJoin('a.translations', 't')
+            ->andWhere('t.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->orderBy('t.label')
             ->getQuery();
 
-        $axis = ResultParser::parseTranslations($query->getArrayResult(), $locale);
-
-        asort($axis);
+        $axis = [];
+        foreach ($query->getArrayResult() as $code) {
+            $axis[$code['id']] = $code['label'];
+        }
 
         return $axis;
     }
@@ -237,21 +223,6 @@ class AttributeRepository extends EntityRepository implements
             );
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAvailableAttributesAsLabelChoice()
-    {
-        $attributes = $this->getAvailableAttributesAsLabel();
-
-        $choices = [];
-        foreach ($attributes as $attribute) {
-            $choices[$attribute->getId()] = $attribute->getLabel();
-        }
-
-        return $choices;
     }
 
     /**

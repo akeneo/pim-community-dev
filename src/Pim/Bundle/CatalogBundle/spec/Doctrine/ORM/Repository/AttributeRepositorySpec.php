@@ -63,22 +63,27 @@ class AttributeRepositorySpec extends ObjectBehavior
 
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('a')->willReturn($queryBuilder);
-        $queryBuilder->select('a.id, a.code, t.label, t.locale')->willReturn($queryBuilder);
+        $queryBuilder->select('a.id')->willReturn($queryBuilder);
+        $queryBuilder->addSelect('COALESCE(t.label, CONCAT(\'[\', a.code, \']\')) as label')->willReturn($queryBuilder);
         $queryBuilder->from('attribute', 'a')->willReturn($queryBuilder);
         $queryBuilder->leftJoin('a.translations', 't')->willReturn($queryBuilder);
         $queryBuilder->andWhere($in)->willReturn($queryBuilder);
         $queryBuilder->andWhere($notScopable)->willReturn($queryBuilder);
         $queryBuilder->andWhere($notLocalizable)->willReturn($queryBuilder);
+        $queryBuilder->andWhere('t.locale = :locale')->willReturn($queryBuilder);
+        $queryBuilder->setParameter('locale', 'en_US')->willReturn($queryBuilder);
+        $queryBuilder->orderBy('t.label')->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
         $query->getArrayResult()->willReturn([
-            ['id' => 11, 'label' => 'size', 'code' => 'size', 'locale' => 'en_US'],
-            ['id' => 11, 'label' => 'taille', 'code' => 'size', 'locale' => 'fr_FR'],
-            ['id' => 10, 'label' => '', 'code' => 'color', 'locale' => 'en_US'],
+            ['id' => 11, 'label' => 'a'],
+            ['id' => 12, 'label' => 'b'],
+            ['id' => 10, 'label' => 's'],
         ]);
 
         $this->findAvailableAxis('en_US')->shouldReturn([
-            10 => '[color]',
-            11 => 'size',
+            11 => 'a',
+            12 => 'b',
+            10 => 's',
         ]);
     }
 }

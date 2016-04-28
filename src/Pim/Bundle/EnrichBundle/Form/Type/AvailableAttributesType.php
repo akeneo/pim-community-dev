@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Enrich\Repository\ChoicesProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
@@ -22,7 +22,7 @@ class AvailableAttributesType extends AbstractType
     /** @var string */
     protected $attributeClass;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var ChoicesProviderInterface */
     protected $attributeRepository;
 
     /** @var UserContext */
@@ -37,22 +37,19 @@ class AvailableAttributesType extends AbstractType
     /**
      * Constructor
      *
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param UserContext                  $userContext
-     * @param TranslatorInterface          $translator
-     * @param string                       $attributeClass
-     * @param string                       $dataClass
+     * @param ChoicesProviderInterface $attributeRepository
+     * @param TranslatorInterface      $translator
+     * @param string                   $attributeClass
+     * @param string                   $dataClass
      */
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
-        UserContext $userContext,
+        ChoicesProviderInterface $attributeRepository,
         TranslatorInterface $translator,
         $attributeClass,
         $dataClass
     ) {
         $this->attributeClass      = $attributeClass;
         $this->attributeRepository = $attributeRepository;
-        $this->userContext         = $userContext;
         $this->translator          = $translator;
         $this->dataClass           = $dataClass;
     }
@@ -69,7 +66,6 @@ class AvailableAttributesType extends AbstractType
                 'repository'         => $this->attributeRepository,
                 'repository_options' => [
                     'excluded_attribute_ids' => $options['excluded_attributes'],
-                    'locale_code'            => $this->userContext->getCurrentLocaleCode(),
                 ],
                 'multiple'           => true,
                 'expanded'           => false,

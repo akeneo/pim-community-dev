@@ -65,4 +65,4 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_catalog.repository.group_type->findTypes(false, @pim_user.context.user->getCurrentLocaleCode())'
+                            choices:  '@pim_enrich.repository.group_type->findChoices'

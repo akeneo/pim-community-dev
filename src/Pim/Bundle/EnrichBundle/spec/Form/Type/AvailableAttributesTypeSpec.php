@@ -3,24 +3,20 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Enrich\Repository\ChoicesProviderInterface;
 use Prophecy\Argument;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Test\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class AvailableAttributesTypeSpec extends ObjectBehavior
 {
     function let(
-        AttributeRepositoryInterface $attributeRepository,
-        UserContext $userContext,
-        TranslatorInterface $translator,
-        FormBuilderInterface $builder
+        ChoicesProviderInterface $attributeRepository,
+        TranslatorInterface $translator
     ) {
         $this->beConstructedWith(
             $attributeRepository,
-            $userContext,
             $translator,
             'Pim\Bundle\CatalogBundle\Entity\Attribute',
             'Pim\Component\Enrich\Model\AvailableAttributes'
@@ -32,9 +28,8 @@ class AvailableAttributesTypeSpec extends ObjectBehavior
         $this->getName()->shouldReturn('pim_available_attributes');
     }
 
-    function it_builds_the_form($builder, $attributeRepository, $userContext)
+    function it_builds_the_form(FormBuilderInterface $builder, $attributeRepository)
     {
-        $userContext->getCurrentLocaleCode()->willReturn('en_US');
         $this->buildForm($builder, ['excluded_attributes' => 'excluded attributes']);
         $builder->add(
             'attributes',
@@ -43,7 +38,6 @@ class AvailableAttributesTypeSpec extends ObjectBehavior
                 'repository'         => $attributeRepository,
                 'repository_options' => [
                     'excluded_attribute_ids' => 'excluded attributes',
-                    'locale_code'            => 'en_US',
                 ],
                 'multiple'           => true,
                 'expanded'           => false,

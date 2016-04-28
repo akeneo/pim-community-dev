@@ -66,7 +66,7 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_catalog.repository.attribute->getAvailableAttributesAsLabelChoice'
+                            choices:  '@pim_enrich.repository.attribute->findChoices'
         mass_actions:
             mass_edit:
                 type: edit

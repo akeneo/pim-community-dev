@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
+use Pim\Component\Enrich\Repository\ChoicesProviderInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\EntityToIdentifierTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -57,7 +57,7 @@ class LightEntityType extends AbstractType
             ->setDefaults(['repository_options' => []])
             ->setRequired(['repository'])
             ->setNormalizer('choices', function (Options $options, $value) {
-                return $options['repository']->getChoices($options['repository_options']);
+                return $options['repository']->findChoices($options['repository_options']);
             })
             ->setNormalizer('repository', function (Options $options, $value) {
                 if (!$value instanceof ObjectRepository) {
@@ -68,7 +68,7 @@ class LightEntityType extends AbstractType
                 }
                 if (!$value instanceof ChoicesProviderInterface) {
                     throw new UnexpectedTypeException(
-                        '\Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface',
+                        'Pim\Component\Enrich\Repository\ChoicesProviderInterface',
                         $value
                     );
                 }

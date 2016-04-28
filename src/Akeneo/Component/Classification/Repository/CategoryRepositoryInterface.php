@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Gedmo\Tree\RepositoryInterface as TreeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Helper\ResultParser;
 
 /**
  * Category repository interface
@@ -174,13 +173,4 @@ interface CategoryRepositoryInterface extends
      * @return array Multi-dimensional array representing the tree
      */
     public function getFilledTree(CategoryInterface $root, Collection $categories);
-
-    /**
-     * Find trees for a locale
-     *
-     * @param string $locale
-     *
-     * @return array
-     */
-    public function findTree($locale);
 }
