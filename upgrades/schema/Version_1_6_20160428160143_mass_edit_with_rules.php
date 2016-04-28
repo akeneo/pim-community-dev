@@ -35,7 +35,7 @@ class Version20160428160143 extends AbstractMigration
             ('update_product_value_with_permission_and_rules', 'Mass update products values with permission check & rules application', 'update_product_value_with_permission_and_rules', 0, 'Akeneo Mass Edit Connector', 'a:3:{s:7:\"filters\";a:0:{}s:18:\"realTimeVersioning\";b:1;s:7:\"actions\";a:0:{}}', 'mass_edit'),
             ('add_product_value_with_permission_and_rules', 'Mass add products values with permission check & rules application', 'add_product_value_with_permission_and_rules', 0, 'Akeneo Mass Edit Connector', 'a:3:{s:7:\"filters\";a:0:{}s:18:\"realTimeVersioning\";b:1;s:7:\"actions\";a:0:{}}', 'mass_edit'),
             ('edit_common_attributes_with_permission_and_rules', 'Mass edit common product attributes & rules application', 'edit_common_attributes_with_permission_and_rules', 0, 'Akeneo Mass Edit Connector', 'a:3:{s:7:\"filters\";a:0:{}s:18:\"realTimeVersioning\";b:1;s:7:\"actions\";a:0:{}}', 'mass_edit'),
-            ('add_to_variant_group_with_rules', 'Mass add products to variant group & apply rules', 'add_to_variant_group_with_rules', 0, 'Akeneo Mass Edit Connector', 'a:3:{s:7:\"filters\";a:0:{}s:7:\"actions\";a:0:{}s:18:\"realTimeVersioning\";b:1;}', 'mass_edit');
+            ('add_to_variant_group_with_rules', 'Mass add products to variant group & rules application', 'add_to_variant_group_with_rules', 0, 'Akeneo Mass Edit Connector', 'a:3:{s:7:\"filters\";a:0:{}s:7:\"actions\";a:0:{}s:18:\"realTimeVersioning\";b:1;}', 'mass_edit');
 SQL
         );
 
