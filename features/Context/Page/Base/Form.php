@@ -89,6 +89,8 @@ class Form extends Base
         }, "Findind $tab tab");
 
         $tabs->clickLink($tab);
+
+        return true;
     }
 
     /**
