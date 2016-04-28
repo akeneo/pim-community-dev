@@ -130,8 +130,10 @@ class WebUser extends RawMinkContext
      */
     public function iVisitTheTab($tab)
     {
-        $this->getCurrentPage()->visitTab($tab);
-        $this->wait();
+        $this->spin(function () use ($tab) {
+            return $this->getCurrentPage()->visitTab($tab);
+
+        }, sprintf('Cannot visit "%s" tab', $tab));
     }
 
     /**
@@ -218,8 +220,9 @@ class WebUser extends RawMinkContext
      */
     public function iVisitTheGroup($group)
     {
-        $this->getCurrentPage()->visitGroup($group);
-        $this->wait();
+        $this->spin(function () use ($group) {
+            return $this->getCurrentPage()->visitGroup($group);
+        }, sprintf('Cannot visit "%s" group', $group));
     }
 
     /**
