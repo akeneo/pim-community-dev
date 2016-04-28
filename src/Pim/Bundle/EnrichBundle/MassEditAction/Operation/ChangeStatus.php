@@ -14,6 +14,17 @@ class ChangeStatus extends AbstractMassEditOperation
     /** @var bool Whether or not to enable products */
     protected $toEnable = false;
 
+    /** @var string The background job code to launch */
+    protected $batchJobCode;
+
+    /**
+     * @param string $batchJobCode
+     */
+    public function __construct($batchJobCode)
+    {
+        $this->batchJobCode = $batchJobCode;
+    }
+
     /**
      * @param bool $toEnable
      *
@@ -84,6 +95,6 @@ class ChangeStatus extends AbstractMassEditOperation
      */
     public function getBatchJobCode()
     {
-        return 'update_product_value';
+        return $this->batchJobCode;
     }
 }

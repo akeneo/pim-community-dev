@@ -240,3 +240,10 @@
 - Remove method `getAvailableAttributesAsLabelChoice` from `Pim\Component\Catalog\AttributeRepositoryInterface`
 - Rename method `findAllAxis`in `findAvailableAxes` from `Pim\Component\Catalog\AttributeRepositoryInterface`
 - Rename method `findAllAxisQB` in `findAllAxesQB` from `Pim\Component\Catalog\AttributeRepositoryInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements`, add batch job code (string)

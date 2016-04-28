@@ -17,7 +17,7 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         AttributeRequirementFactory $factory
     ) {
-        $this->beConstructedWith($channelRepository, $attributeRepository, $factory);
+        $this->beConstructedWith($channelRepository, $attributeRepository, $factory, 'set_attribute_requirements');
     }
 
     function it_is_a_mass_edit_operation()
