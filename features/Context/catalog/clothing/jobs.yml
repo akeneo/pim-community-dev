@@ -282,7 +282,7 @@ jobs:
     add_to_variant_group_with_rules:
         connector: Akeneo Mass Edit Connector
         alias:     add_to_variant_group_with_rules
-        label:     Mass add products to variant group & apply rules
+        label:     Mass add products to variant group & rules application
         type:      mass_edit
     set_attribute_requirements:
         connector: Akeneo Mass Edit Connector
