@@ -27,10 +27,10 @@ class BooleanPresenter implements PresenterInterface
      */
     public function present($value, array $options = [])
     {
-        if (in_array($value, [true, 'true'], true)) {
+        if (in_array($value, [true, 'true', '1', 1], true)) {
             return 'true';
         }
-        if (in_array($value, [false, 'false'], true)) {
+        if (in_array($value, [false, 'false', '0', 0], true)) {
             return 'false';
         }
 
