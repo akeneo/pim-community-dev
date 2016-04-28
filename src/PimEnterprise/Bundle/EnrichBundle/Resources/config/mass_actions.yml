@@ -1,13 +1,6 @@
 parameters:
     pimee_enrich.mass_edit_action.publish.class:                    PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Publish
     pimee_enrich.mass_edit_action.unpublish.class:                  PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Unpublish
-    pim_enrich.mass_edit_action.edit_common_attributes.class:       PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
-    pim_enrich.mass_edit_action.classify.class:                     PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify
-    pim_enrich.mass_edit_action.change_status.class:                PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus
-    pim_enrich.mass_edit_action.change_family.class:                PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily
-    pim_enrich.mass_edit_action.add_to_groups.class:                PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups
-    pim_enrich.mass_edit_action.add_to_variant_group.class:         PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup
-
     pimee_enrich.mass_edit_tasklet.publish_product.class:           PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\PublishProductTasklet
     pimee_enrich.mass_edit_tasklet.unpublish_product.class:         PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\UnpublishProductTasklet
 
@@ -34,17 +27,6 @@ services:
                 acl: pim_enrich_product_edit_attributes
                 datagrid: product-grid
 
-    # Overriden products operation to add permission checks when try to classify products
-    pim_enrich.mass_edit_action.classify:
-        public: false
-        class: %pim_enrich.mass_edit_action.classify.class%
-        tags:
-            -
-                name: pim_enrich.mass_edit_action
-                alias: classify
-                acl: pim_enrich_product_categories_view
-                datagrid: product-grid
-
     pim_enrich.mass_edit_tasklet.publish_product:
         class: %pimee_enrich.mass_edit_tasklet.publish_product.class%
         arguments:
@@ -68,3 +50,86 @@ services:
             - '@security.token_storage'
             - '@security.authorization_checker'
             - '@pimee_workflow.doctrine.query.published_product_query_factory'
+
+    # We override mass edit operations services to inject a different background job which
+    # take permissions in account & apply rules
+    pim_enrich.mass_edit_action.change_status:
+        public: false
+        class: %pim_enrich.mass_edit_action.change_status.class%
+        arguments:
+            - 'update_product_value_with_permission_and_rules'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: change-status
+                acl: pim_enrich_product_change_state
+                datagrid: product-grid
+                form_type: pim_enrich_mass_change_status
+
+    pim_enrich.mass_edit_action.edit_common_attributes:
+        public: false
+        class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
+        arguments:
+            - '@pim_catalog.builder.product'
+            - '@pim_user.context.user'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_catalog.localization.localizer.registry'
+            - '@pim_enrich.filter.product_values_edit_data'
+            - '%tmp_storage_dir%'
+            - 'edit_common_attributes_with_permission_and_rules'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: edit-common-attributes
+                acl: pim_enrich_product_edit_attributes
+                datagrid: product-grid
+
+    pim_enrich.mass_edit_action.classify:
+        public: false
+        class: %pim_enrich.mass_edit_action.classify.class%
+        arguments:
+            - 'add_product_value_with_permission_and_rules'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: classify
+                acl: pim_enrich_product_categories_view
+                datagrid: product-grid
+
+    pim_enrich.mass_edit_action.change_family:
+        public: false
+        class: %pim_enrich.mass_edit_action.change_family.class%
+        arguments:
+            - 'update_product_value_with_permission_and_rules'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: change-family
+                acl: pim_enrich_product_change_family
+                datagrid: product-grid
+
+    pim_enrich.mass_edit_action.add_to_groups:
+        class: %pim_enrich.mass_edit_action.add_to_groups.class%
+        arguments:
+            - 'add_product_value_with_permission_and_rules'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: add-to-groups
+                acl: pim_enrich_product_add_to_groups
+                datagrid: product-grid
+
+    pim_enrich.mass_edit_action.add_to_variant_group:
+        class: %pim_enrich.mass_edit_action.add_to_variant_group.class%
+        arguments:
+            - 'add_to_variant_group_with_rules'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: add-to-variant-group
+                acl: pim_enrich_product_add_to_variant_group
+                datagrid: product-grid
