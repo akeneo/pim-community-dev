@@ -35,7 +35,7 @@ interface PresenterRegistryInterface
     /**
      * Get the first presenter supporting a field code
      *
-     * @param $code
+     * @param string $code
      *
      * @return PresenterInterface|null
      */

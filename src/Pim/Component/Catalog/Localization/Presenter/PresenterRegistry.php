@@ -49,19 +49,6 @@ class PresenterRegistry implements PresenterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getPresenterByFieldCode($code)
-    {
-        $result = $this->getPresenter($code, self::TYPE_PRODUCT_FIELD);
-        if (null !== $result) {
-            return $result;
-        }
-
-        return $this->getPresenterByAttributeCode($code);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPresenterByAttributeCode($code)
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($code);
@@ -83,6 +70,14 @@ class PresenterRegistry implements PresenterRegistryInterface
     public function getAttributeOptionPresenter($optionName)
     {
         return $this->getPresenter($optionName, self::TYPE_ATTRIBUTE_OPTION);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPresenterByFieldCode($code)
+    {
+        return $this->getPresenter($code, self::TYPE_PRODUCT_FIELD);
     }
 
     /**
