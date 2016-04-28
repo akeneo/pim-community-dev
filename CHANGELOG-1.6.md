@@ -211,3 +211,10 @@
 - Remove `Pim\Bundle\InstallerBundle\DataFixtures\*`
 - Remove `Pim\Bundle\InstallerBundle\FixtureLoader\*`
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter`, add `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements`, add batch job code (string)
