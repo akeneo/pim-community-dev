@@ -49,7 +49,8 @@ class RuleExtension extends \Twig_Extension
     }
 
     /**
-     * Transform the mixed input coming from a rule action to a string, using a presenter for localized attributes
+     * Transform the mixed input coming from a rule action to a string, using a presenter for localized attributes.
+     * The value can be an attribute value, a field value, or an array of these values.
      *
      * Example with a localized metric:
      * input: ['value' => 10, 'unit' => 'GRAM'], 'weight'
@@ -75,6 +76,9 @@ class RuleExtension extends \Twig_Extension
     public function presentRuleActionValue($value, $code)
     {
         $presenter = $this->presenterRegistry->getPresenterByFieldCode($code);
+        if (null === $presenter) {
+            $presenter = $this->presenterRegistry->getPresenterByAttributeCode($code);
+        }
 
         if (is_array($value)) {
             if (isset($value['originalFilename'])) {
@@ -96,10 +100,6 @@ class RuleExtension extends \Twig_Extension
 
         if (null !== $presenter) {
             return $presenter->present($value, ['locale' => $this->localeResolver->getCurrentLocale()]);
-        }
-
-        if (is_bool($value)) {
-            return $value ? 'true' : 'false';
         }
 
         return $value;

@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Twig;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use PhpSpec\Formatter\Presenter\Presenter;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
@@ -43,11 +44,6 @@ class RuleExtensionSpec extends ObjectBehavior
         $this->presentRuleActionValue('toto', 'unknown')->shouldReturn('toto');
     }
 
-    function it_presents_rule_action_with_boolean_value()
-    {
-        $this->presentRuleActionValue(true, 'unknown')->shouldReturn('true');
-    }
-
     function it_presents_rule_action_with_array_value()
     {
         $this->presentRuleActionValue(['foo', 'bar'], 'unknown')->shouldReturn('foo, bar');
@@ -58,7 +54,8 @@ class RuleExtensionSpec extends ObjectBehavior
         $localeResolver,
         PresenterInterface $presenter
     ) {
-        $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn($presenter);
+        $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
+        $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $presenter->present('toto', ['locale' => 'en_US'])->willReturn('expected');
 
@@ -70,7 +67,8 @@ class RuleExtensionSpec extends ObjectBehavior
         $localeResolver,
         PresenterInterface $presenter
     ) {
-        $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn($presenter);
+        $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
+        $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $presenter->present(true, ['locale' => 'en_US'])->willReturn('expected');
 
@@ -82,7 +80,8 @@ class RuleExtensionSpec extends ObjectBehavior
         $localeResolver,
         PresenterInterface $presenter
     ) {
-        $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn($presenter);
+        $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
+        $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $presenter->present(['foo', 'bar'], ['locale' => 'en_US'])->willReturn('foobar');
 
@@ -94,11 +93,21 @@ class RuleExtensionSpec extends ObjectBehavior
         $localeResolver,
         PresenterInterface $presenter
     ) {
-        $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn($presenter);
+        $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
+        $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $presenter->present(['foo', 'bar'], ['locale' => 'en_US'])->willReturn(['presented foo', 'presented bar']);
 
         $this->presentRuleActionValue(['foo', 'bar'], 'attribute_code')->shouldReturn('presented foo, presented bar');
+    }
+
+    function it_presents_rule_action_with_field(
+        $presenterRegistry,
+        PresenterInterface $presenter
+    ) {
+        $presenterRegistry->getPresenterByFieldCode('enabled')->willReturn($presenter);
+        $presenter->present(false, Argument::any())->willReturn('false');
+        $this->presentRuleActionValue(false, 'enabled')->shouldReturn('false');
     }
 
     function it_appends_locale_and_scope()
