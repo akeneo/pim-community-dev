@@ -27,8 +27,12 @@ class BooleanPresenterSpec extends ObjectBehavior
     {
         $this->present(true)->shouldReturn('true');
         $this->present('true')->shouldReturn('true');
+        $this->present('1')->shouldReturn('true');
+        $this->present(1)->shouldReturn('true');
         $this->present(false)->shouldReturn('false');
         $this->present('false')->shouldReturn('false');
+        $this->present('0')->shouldReturn('false');
+        $this->present(0)->shouldReturn('false');
         $this->present('yolo')->shouldReturn('');
     }
 }
