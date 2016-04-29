@@ -137,11 +137,17 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             ->willReturn(['normalized_media1', 'normalized_media2']);
 
         $serializer
-            ->normalize($product, 'flat',
+            ->normalize(
+                $product,
+                'flat',
                 [
-                    'scopeCode'   => 'mobile',
-                    'localeCodes' => '',
-                    'locale'      => 'en_US',
+                    'scopeCode'    => 'mobile',
+                    'localeCodes'  => '',
+                    'locale'       => 'en_US',
+                    'filter_types' => [
+                        'pim.transform.product_value.flat',
+                        'pim.transform.product_value.flat.quick_export'
+                    ]
                 ]
             )
             ->willReturn(['normalized_product']);
@@ -181,11 +187,17 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $product->getValues()->willReturn([]);
 
         $serializer
-            ->normalize($product, 'flat',
+            ->normalize(
+                $product,
+                'flat',
                 [
                     'scopeCode'   => 'mobile',
                     'localeCodes' => '',
                     'locale'      => 'en_US',
+                    'filter_types' => [
+                        'pim.transform.product_value.flat',
+                        'pim.transform.product_value.flat.quick_export'
+                    ]
                 ]
             )
             ->willReturn(['normalized_product']);
@@ -282,11 +294,17 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $product->getValues()->willReturn([$number, $metricValue, $priceValue, $dateValue]);
 
         $serializer
-            ->normalize($product, 'flat',
+            ->normalize(
+                $product,
+                'flat',
                 [
                     'scopeCode'   => 'mobile',
                     'localeCodes' => '',
                     'locale'      => 'en_US',
+                    'filter_types' => [
+                        'pim.transform.product_value.flat',
+                        'pim.transform.product_value.flat.quick_export'
+                    ]
                 ]
             )
             ->willReturn(['10.50', '10.00 GRAM', '10.00 EUR', '10/25/15']);
@@ -344,11 +362,17 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $product->getValues()->willReturn([$number, $metricValue, $priceValue]);
 
         $serializer
-            ->normalize($product, 'flat',
+            ->normalize(
+                $product,
+                'flat',
                 [
                     'scopeCode'   => 'mobile',
                     'localeCodes' => '',
-                    'locale'      => 'fr_FR'
+                    'locale'      => 'fr_FR',
+                    'filter_types' => [
+                        'pim.transform.product_value.flat',
+                        'pim.transform.product_value.flat.quick_export'
+                    ]
                 ]
             )
             ->willReturn(['10,50', '10,00 GRAM', '10,00 EUR', '25/10/2015']);

@@ -149,7 +149,7 @@ class ProductController
         $this->productBuilder->addMissingAssociations($product);
 
         $normalizationContext = $this->userContext->toArray() + [
-            'filter_type'                => 'pim.internal_api.product_value.view',
+            'filter_types'               => ['pim.internal_api.product_value.view'],
             'disable_grouping_separator' => true
         ];
 
@@ -197,7 +197,7 @@ class ProductController
             $this->productSaver->save($product);
 
             $normalizationContext = $this->userContext->toArray() + [
-                'filter_type'                => 'pim.internal_api.product_value.view',
+                'filter_types'               => ['pim.internal_api.product_value.view'],
                 'disable_grouping_separator' => true
             ];
 

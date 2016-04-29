@@ -182,11 +182,17 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      */
     protected function getNormalizerContext()
     {
-        $this->normalizerContext = [
-            'scopeCode'   => $this->channelCode,
-            'localeCodes' => $this->getLocaleCodes($this->channelCode),
-            'locale'      => $this->locale,
-        ];
+        if (null === $this->normalizerContext) {
+            $this->normalizerContext = [
+                'scopeCode'    => $this->channelCode,
+                'localeCodes'  => $this->getLocaleCodes($this->channelCode),
+                'locale'       => $this->locale,
+                'filter_types' => [
+                    'pim.transform.product_value.flat',
+                    'pim.transform.product_value.flat.quick_export'
+                ]
+            ];
+        }
 
         return $this->normalizerContext;
     }

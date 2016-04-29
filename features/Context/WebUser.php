@@ -2507,6 +2507,9 @@ class WebUser extends RawMinkContext
         // Force to retrieve its job executions
         $jobInstance->getJobExecutions()->setInitialized(false);
         $jobExecution = $jobInstance->getJobExecutions()->last();
+        if (false === $jobExecution) {
+            throw new \InvalidArgumentException(sprintf('No job execution found for job with code "%s"', $code));
+        }
 
         $this->openPage('massEditJob show', ['id' => $jobExecution->getId()]);
 
