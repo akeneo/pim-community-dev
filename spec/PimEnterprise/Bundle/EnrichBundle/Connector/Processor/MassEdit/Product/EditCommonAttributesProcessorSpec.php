@@ -100,7 +100,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $validator->validate($product)->willReturn($violations);
 
         $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
-        $product->isAttributeEditable($attribute)->willReturn(true);
+        $product->getId()->willReturn(42);
+        $productRepository->hasAttributeInFamily(42, 'categories')->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup(42, 'categories')->willReturn(false);
+
         $productUpdater->update($product, $values)->shouldBeCalled();
 
         $this->process($product);
@@ -158,7 +161,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $validator->validate($product)->willReturn($violations);
 
         $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
-        $product->isAttributeEditable($attribute)->willReturn(true);
+        $product->getId()->willReturn(42);
+        $productRepository->hasAttributeInFamily(42, 'categories')->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup(42, 'categories')->willReturn(false);
+
         $productUpdater->update($product, $values)->shouldBeCalled();
 
         $this->process($product);

@@ -16,7 +16,7 @@ class TextPresenterSpec extends ObjectBehavior
 
     function it_supports_change_if_it_has_a_text_key()
     {
-        $this->supportsChange('pim_catalog_textarea')->shouldBe(true);
+        $this->supportsChange('pim_catalog_text')->shouldBe(true);
     }
 
     function it_presents_text_change_using_the_injected_renderer(
@@ -27,7 +27,7 @@ class TextPresenterSpec extends ObjectBehavior
         $value->getData()->willReturn('bar');
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('color');
-        $renderer->renderDiff(['bar'], ['foo'])->willReturn('diff between bar and foo');
+        $renderer->renderDiff('bar', 'foo')->willReturn('diff between bar and foo');
 
         $this->setRenderer($renderer);
         $this->present($value, ['data' => 'foo'])->shouldReturn('diff between bar and foo');
@@ -41,7 +41,7 @@ class TextPresenterSpec extends ObjectBehavior
         $value->getData()->willReturn('<p>foo</p> <p>bar</p>');
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('color');
-        $renderer->renderDiff(['<p>foo</p>', '<p>bar</p>'], ['<p>foo</p>'])->willReturn('diff between bar and foo');
+        $renderer->renderDiff('<p>foo</p> <p>bar</p>', '<p>foo</p>')->willReturn('diff between bar and foo');
 
         $this->setRenderer($renderer);
         $this->present($value, ['data' => '<p>foo</p>'])->shouldReturn('diff between bar and foo');
@@ -55,7 +55,7 @@ class TextPresenterSpec extends ObjectBehavior
         $value->getData()->willReturn('<p>foo</p><p>bar</p>');
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('color');
-        $renderer->renderDiff(['<p>foo</p>', '<p>bar</p>'], ['<p>foo</p>'])->willReturn('diff between bar and foo');
+        $renderer->renderDiff('<p>foo</p><p>bar</p>', '<p>foo</p>')->willReturn('diff between bar and foo');
 
         $this->setRenderer($renderer);
         $this->present($value, ['data' => '<p>foo</p>'])->shouldReturn('diff between bar and foo');
