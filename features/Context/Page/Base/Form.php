@@ -427,7 +427,9 @@ class Form extends Base
      */
     public function getHistoryRows()
     {
-        return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
+        return $this->spin(function() {
+            return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
+        }, sprintf('Cannot find the history rows.'));
     }
 
     /**
