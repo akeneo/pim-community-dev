@@ -3,6 +3,8 @@
 namespace Pim\Component\Catalog\Builder;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -34,11 +36,13 @@ interface ProductBuilderInterface
      * It makes sure that if an attribute is localizable/scopable, then all values in the required locales/channels
      * exist. If the attribute is not scopable or localizable, makes sure that a single value exists.
      *
-     * @param ProductInterface $product
+     * @param ProductInterface   $product
+     * @param ChannelInterface[] $channels
+     * @param LocaleInterface[]  $locales
      *
      * @return ProductBuilderInterface
      */
-    public function addMissingProductValues(ProductInterface $product);
+    public function addMissingProductValues(ProductInterface $product, array $channels = null, array $locales = null);
 
     /**
      * Add empty associations for each association types when they don't exist yet
