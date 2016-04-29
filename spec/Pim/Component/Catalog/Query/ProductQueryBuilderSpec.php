@@ -43,11 +43,18 @@ class ProductQueryBuilderSpec extends ObjectBehavior
 
     function it_adds_a_field_filter($repository, $filterRegistry, FieldFilterInterface $filter)
     {
-        $repository->findOneBy(['code' => 'id'])->willReturn(null);
+        $repository->findOneByIdentifier('id')->willReturn(null);
         $filterRegistry->getFieldFilter('id')->willReturn($filter);
         $filter->supportsOperator('=')->willReturn(true);
         $filter->setQueryBuilder(Argument::any())->shouldBeCalled();
-        $filter->addFieldFilter('id', '=', '42', 'en_US', 'print')->shouldBeCalled();
+        $filter->addFieldFilter(
+            'id',
+            '=',
+            '42',
+            'en_US',
+            'print',
+            ['locale' => 'en_US', 'scope' => 'print']
+        )->shouldBeCalled();
 
         $this->addFilter('id', '=', '42', []);
     }
@@ -58,7 +65,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         AttributeFilterInterface $filter,
         AttributeInterface $attribute
     ) {
-        $repository->findOneBy(['code' => 'sku'])->willReturn($attribute);
+        $repository->findOneByIdentifier('sku')->willReturn($attribute);
         $filterRegistry->getAttributeFilter($attribute)->willReturn($filter);
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);

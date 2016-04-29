@@ -459,3 +459,12 @@ services:
         class: %pim_catalog.doctrine.query.sorter.is_associated.class%
         tags:
             - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.completeness:
+        class: %pim_catalog.doctrine.query.filter.completeness.class%
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - ['completeness']
+            - ['<', '<=', '=', '>=', '>', '!=']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }

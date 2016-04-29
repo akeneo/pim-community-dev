@@ -17,8 +17,6 @@ class CompletenessJoin
     protected $qb;
 
     /**
-     * Instanciate the utility
-     *
      * @param QueryBuilder $qb
      */
     public function __construct(QueryBuilder $qb)
@@ -31,44 +29,55 @@ class CompletenessJoin
      *
      * @param string $completenessAlias the join alias
      * @param string $locale            the locale
-     * @param sting  $scope             the scope
+     * @param string $scope             the scope
      *
      * @return CompletenessJoin
      */
     public function addJoins($completenessAlias, $locale, $scope)
     {
-        $rootAlias         = $this->qb->getRootAlias();
+        $rootAlias         = $this->qb->getRootAliases()[0];
         $localeAlias       = $completenessAlias.'Locale';
         $channelAlias      = $completenessAlias.'Channel';
-        $rootEntity        = current($this->qb->getRootEntities());
+
+        $rootEntity          = $this->qb->getRootEntities()[0];
         $completenessMapping = $this->qb->getEntityManager()
             ->getClassMetadata($rootEntity)
             ->getAssociationMapping('completenesses');
         $completenessClass = $completenessMapping['targetEntity'];
 
+        $joinCondition = sprintf('%s.product = %s.id', $completenessAlias, $rootAlias);
+
         $this->qb
-            ->leftJoin(
-                'PimCatalogBundle:Locale',
-                $localeAlias,
-                'WITH',
-                $localeAlias.'.code = :cLocaleCode'
-            )
             ->leftJoin(
                 'PimCatalogBundle:Channel',
                 $channelAlias,
                 'WITH',
                 $channelAlias.'.code = :cScopeCode'
             )
+            ->setParameter('cScopeCode', $scope);
+
+        $joinCondition .= sprintf(' AND %s.channel = %s.id', $completenessAlias, $channelAlias);
+
+        if (null !== $locale) {
+            $this->qb
+                ->leftJoin(
+                    'PimCatalogBundle:Locale',
+                    $localeAlias,
+                    'WITH',
+                    $localeAlias.'.code = :cLocaleCode'
+                )
+                ->setParameter('cLocaleCode', $locale);
+
+            $joinCondition .= sprintf(' AND %s.locale = %s.id', $completenessAlias, $localeAlias);
+        }
+
+        $this->qb
             ->leftJoin(
                 $completenessClass,
                 $completenessAlias,
                 'WITH',
-                $completenessAlias.'.locale = '.$localeAlias.'.id AND '.
-                $completenessAlias.'.channel = '.$channelAlias.'.id AND '.
-                $completenessAlias.'.product = '.$rootAlias.'.id'
-            )
-            ->setParameter('cLocaleCode', $locale)
-            ->setParameter('cScopeCode', $scope);
+                $joinCondition
+            );
 
         return $this;
     }
