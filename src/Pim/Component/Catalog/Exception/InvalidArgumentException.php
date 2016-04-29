@@ -56,19 +56,19 @@ class InvalidArgumentException extends \InvalidArgumentException
     }
 
     /**
-     * @param string $attribute
+     * @param string $name
      * @param string $action
      * @param string $type
      * @param string $data
      *
      * @return InvalidArgumentException
      */
-    public static function floatExpected($attribute, $action, $type, $data)
+    public static function floatExpected($name, $action, $type, $data)
     {
         return new self(
             sprintf(
                 'Attribute or field "%s" expects a float as data, "%s" given (for %s %s).',
-                $attribute,
+                $name,
                 $data,
                 $action,
                 $type
@@ -77,19 +77,19 @@ class InvalidArgumentException extends \InvalidArgumentException
     }
 
     /**
-     * @param string $attribute
+     * @param string $name
      * @param string $action
      * @param string $type
      * @param string $data
      *
      * @return InvalidArgumentException
      */
-    public static function integerExpected($attribute, $action, $type, $data)
+    public static function integerExpected($name, $action, $type, $data)
     {
         return new self(
             sprintf(
                 'Attribute or field "%s" expects an integer as data, "%s" given (for %s %s).',
-                $attribute,
+                $name,
                 $data,
                 $action,
                 $type
@@ -108,7 +108,13 @@ class InvalidArgumentException extends \InvalidArgumentException
     public static function numericExpected($name, $action, $type, $data)
     {
         return new self(
-            sprintf('Attribute or field "%s" expects a numeric as data (for %s %s).', $name, $data, $action, $type)
+            sprintf(
+                'Attribute or field "%s" expects a numeric as data, "%s" given (for %s %s).',
+                $name,
+                $data,
+                $action,
+                $type
+            )
         );
     }
 
@@ -155,19 +161,19 @@ class InvalidArgumentException extends \InvalidArgumentException
     }
 
     /**
-     * @param string $attribute
+     * @param string $name
      * @param string $action
      * @param string $type
      * @param string $data
      *
      * @return InvalidArgumentException
      */
-    public static function arrayOfArraysExpected($attribute, $action, $type, $data)
+    public static function arrayOfArraysExpected($name, $action, $type, $data)
     {
         return new self(
             sprintf(
                 'Attribute or field "%s" expects an array of arrays as data, "%s" given (for %s %s).',
-                $attribute,
+                $name,
                 $data,
                 $action,
                 $type
@@ -233,7 +239,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     }
 
     /**
-     * @param string $attribute
+     * @param string $name
      * @param string $key
      * @param string $action
      * @param string $type
@@ -241,12 +247,12 @@ class InvalidArgumentException extends \InvalidArgumentException
      *
      * @return InvalidArgumentException
      */
-    public static function arrayNumericKeyExpected($attribute, $key, $action, $type, $data)
+    public static function arrayNumericKeyExpected($name, $key, $action, $type, $data)
     {
         return new self(
             sprintf(
                 'Attribute or field "%s" expects an array with numeric data for the key "%s", "%s" given (for %s %s).',
-                $attribute,
+                $name,
                 $key,
                 $data,
                 $action,
@@ -314,6 +320,25 @@ class InvalidArgumentException extends \InvalidArgumentException
         return new self(
             sprintf(
                 'Attribute or field "%s" expects a valid scope and locale (for %s %s).',
+                $name,
+                $action,
+                $type
+            )
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param string $action
+     * @param string $type
+     *
+     * @return InvalidArgumentException
+     */
+    public static function scopeExpected($name, $action, $type)
+    {
+        return new self(
+            sprintf(
+                'Attribute or field "%s" expects a valid scope (for %s %s).',
                 $name,
                 $action,
                 $type

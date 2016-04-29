@@ -39,6 +39,7 @@ class CompletenessSorterSpec extends ObjectBehavior
             ->willReturn(['targetEntity' => 'CompletenessClass'])
         ;
         $qb->getRootAlias()->willReturn('r');
+        $qb->getRootAliases()->willReturn(['r']);
 
         $qb->getRootEntities()->willReturn(['rootEntity']);
         $qb->getEntityManager()->willReturn($em);
@@ -65,9 +66,9 @@ class CompletenessSorterSpec extends ObjectBehavior
                 'CompletenessClass',
                 'sorterCompleteness',
                 'WITH',
-                'sorterCompleteness.locale = sorterCompletenessLocale.id AND '.
+                'sorterCompleteness.product = r.id AND '.
                 'sorterCompleteness.channel = sorterCompletenessChannel.id AND '.
-                'sorterCompleteness.product = r.id'
+                'sorterCompleteness.locale = sorterCompletenessLocale.id'
             )
             ->shouldBeCalled()
             ->willReturn($qb);
@@ -77,6 +78,6 @@ class CompletenessSorterSpec extends ObjectBehavior
         $qb->addOrderBy('sorterCompleteness.ratio', 'DESC')->shouldBeCalled();
         $qb->addOrderBy('r.id')->shouldBeCalled();
 
-        $this->addFieldSorter('completeness', 'DESC');
+        $this->addFieldSorter('completeness', 'DESC', 'en_US', 'mobile');
     }
 }

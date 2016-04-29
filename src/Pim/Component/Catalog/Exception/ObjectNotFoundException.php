@@ -12,9 +12,9 @@ namespace Pim\Component\Catalog\Exception;
 class ObjectNotFoundException extends \Exception
 {
     /**
-     * @param string    $message
-     * @param int       $code
-     * @param Exception $previous
+     * @param string     $message
+     * @param int        $code
+     * @param \Exception $previous
      */
     public function __construct($message = 'Object was not found.', $code = 0, $previous = null)
     {

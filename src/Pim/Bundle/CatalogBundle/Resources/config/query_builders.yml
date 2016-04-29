@@ -73,14 +73,6 @@ services:
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
-    pim_catalog.doctrine.query.filter.completeness:
-        class: %pim_catalog.doctrine.query.filter.completeness.class%
-        arguments:
-            - ['completeness']
-            - ['<', '<=', '=', '>=', '>', '!=']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
     pim_catalog.doctrine.query.filter.family:
         class: %pim_catalog.doctrine.query.filter.family.class%
         arguments:

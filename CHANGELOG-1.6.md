@@ -22,6 +22,8 @@
 - PIM-5577: The completeness is now calculated every time a product is saved, ie during mass edit, product import and on edit/save of variant groups.
 - Call validation in the controller when adding/removing attributes to the family.
 - Simplify installation process and the loading of catalogs in Behat by using the import system and `akeneo:batch:job` commands.
+- PIM-5653: When using the Product Query Builder, it is now possible to filter on completeness without specifying a locale. Products with a matching completeness for at least one of the locales of the scope will be selected.
+- PIM-5653: Introduce a new storage-agnostic Product Reader using the PQB
 
 ## BC breaks
 
@@ -189,3 +191,4 @@
 - Remove `Pim\Bundle\InstallerBundle\Command\LoadDataFixturesDoctrineCommand`, `Pim\Bundle\InstallerBundle\Command\LoadFixturesCommand`
 - Remove `Pim\Bundle\InstallerBundle\DataFixtures\*`
 - Remove `Pim\Bundle\InstallerBundle\FixtureLoader\*`
+- Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter`, add `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`

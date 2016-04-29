@@ -19,8 +19,6 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
     protected $supportedFields;
 
     /**
-     * Instanciate the base filter
-     *
      * @param array $supportedFields
      * @param array $supportedOperators
      */
@@ -34,6 +32,9 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * If locale is omitted, all products having a matching completeness for
+     * the specified scope (no matter on which locale) will be selected.
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
@@ -63,8 +64,8 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
             throw InvalidArgumentException::numericExpected($field, 'filter', 'completeness', gettype($value));
         }
 
-        if (null === $locale || null === $scope) {
-            throw InvalidArgumentException::localeAndScopeExpected($field, 'filter', 'completeness');
+        if (null === $scope) {
+            throw InvalidArgumentException::scopeExpected($field, 'filter', 'completeness');
         }
     }
 

@@ -3,8 +3,11 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\ODM\MongoDB\Query\Expr;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Prophecy\Argument;
 
 /**
@@ -12,10 +15,10 @@ use Prophecy\Argument;
  */
 class CompletenessFilterSpec extends ObjectBehavior
 {
-    function let(Builder $queryBuilder)
+    function let(ChannelRepositoryInterface $channelRepository, Builder $qb)
     {
-        $this->beConstructedWith(['completeness'], ['=', '<', '>', '>=', '<=', '!=']);
-        $this->setQueryBuilder($queryBuilder);
+        $this->beConstructedWith($channelRepository, ['completeness'], ['=', '<', '>', '>=', '<=', '!=']);
+        $this->setQueryBuilder($qb);
     }
 
     function it_is_a_field_filter()
@@ -30,63 +33,131 @@ class CompletenessFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_an_equals_filter_on_completeness_in_the_query($queryBuilder)
+    function it_adds_an_equals_filter_on_completeness_in_the_query($qb, Expr $expr)
     {
-        $queryBuilder->field('normalizedData.completenesses.mobile-en_US')->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->equals(100)->shouldBeCalled();
+        $qb->expr()->willReturn($expr);
+        $expr->field('normalizedData.completenesses.mobile-en_US')
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $expr->equals(100)
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $qb->addOr($expr)->shouldBeCalled();
 
         $this->addFieldFilter('completeness', '=', 100, 'en_US', 'mobile');
     }
 
-    function it_adds_a_not_equals_filter_on_completeness_in_the_query($queryBuilder)
+    function it_adds_a_not_equals_filter_on_completeness_in_the_query($qb, Expr $expr)
     {
-        $queryBuilder->field('normalizedData.completenesses.mobile-en_US')->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->exists(true)->shouldBeCalled();
-        $queryBuilder->notEqual(100)->shouldBeCalled();
+        $qb->expr()->willReturn($expr);
+        $expr->field('normalizedData.completenesses.mobile-en_US')
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $expr->exists(true)
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $expr->notEqual(100)
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $expr->addAnd($expr)
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $qb->addOr($expr)->shouldBeCalled();
 
         $this->addFieldFilter('completeness', '!=', 100, 'en_US', 'mobile');
     }
 
-    function it_adds_a_lower_than_filter_on_completeness_in_the_query($queryBuilder)
+    function it_adds_a_lower_than_filter_on_completeness_in_the_query($qb, Expr $expr)
     {
-        $queryBuilder->field('normalizedData.completenesses.mobile-en_US')->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->lt(100)->shouldBeCalled();
+        $qb->expr()->willReturn($expr);
+        $expr->field('normalizedData.completenesses.mobile-en_US')
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $expr->lt(100)
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $qb->addOr($expr)->shouldBeCalled();
 
         $this->addFieldFilter('completeness', '<', 100, 'en_US', 'mobile');
     }
 
-    function it_adds_a_greater_than_filter_on_completeness_in_the_query($queryBuilder)
+    function it_adds_a_greater_than_filter_on_completeness_in_the_query($qb, Expr $expr)
     {
-        $queryBuilder->field('normalizedData.completenesses.mobile-en_US')->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->gt(55)->shouldBeCalled();
+        $qb->expr()->willReturn($expr);
+        $expr->field('normalizedData.completenesses.mobile-en_US')
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $expr->gt(55)
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $qb->addOr($expr)->shouldBeCalled();
 
         $this->addFieldFilter('completeness', '>', 55, 'en_US', 'mobile');
     }
 
-    function it_adds_a_greater_or_equal_than_filter_on_completeness_in_the_query($queryBuilder)
+    function it_adds_a_greater_or_equal_than_filter_on_completeness_in_the_query($qb, Expr $expr)
     {
-        $queryBuilder->field('normalizedData.completenesses.mobile-en_US')->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->gte(55)->shouldBeCalled();
+        $qb->expr()->willReturn($expr);
+        $expr->field('normalizedData.completenesses.mobile-en_US')
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $expr->gte(55)
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $qb->addOr($expr)->shouldBeCalled();
 
         $this->addFieldFilter('completeness', '>=', 55, 'en_US', 'mobile');
     }
 
-    function it_adds_a_lower_or_equal_than_filter_on_completeness_in_the_query($queryBuilder)
+    function it_adds_a_lower_or_equal_than_filter_on_completeness_in_the_query($qb, Expr $expr)
     {
-        $queryBuilder->field('normalizedData.completenesses.mobile-en_US')->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->lte(60)->shouldBeCalled();
+        $qb->expr()->willReturn($expr);
+        $expr->field('normalizedData.completenesses.mobile-en_US')
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $expr->lte(60)
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $qb->addOr($expr)->shouldBeCalled();
 
         $this->addFieldFilter('completeness', '<=', 60, 'en_US', 'mobile');
     }
 
-    function it_throws_an_exception_when_the_locale_and_scope_are_not_provided()
+    function it_filters_on_completeness_on_any_locale(
+        $channelRepository,
+        $qb,
+        ChannelInterface $channel,
+        Expr $expr
+    ) {
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
+        $channel->getLocaleCodes()->willReturn(['en_US', 'fr_FR']);
+
+        $qb->expr()->willReturn($expr);
+
+        $expr->field('normalizedData.completenesses.mobile-en_US')
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $expr->lte(60)
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $qb->addOr($expr)->shouldBeCalled();
+
+        $expr->field('normalizedData.completenesses.mobile-fr_FR')
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $expr->lte(60)
+            ->shouldBeCalled()
+            ->willReturn($expr);
+        $qb->addOr($expr)->shouldBeCalled();
+
+        $this->addFieldFilter('completeness', '<=', 60, null, 'mobile');
+    }
+
+    function it_throws_an_exception_when_scope_is_not_provided()
     {
         $this
             ->shouldThrow('Pim\Component\Catalog\Exception\InvalidArgumentException')
             ->duringAddFieldFilter('completeness', '=', 100);
-        $this
-            ->shouldThrow('Pim\Component\Catalog\Exception\InvalidArgumentException')
-            ->duringAddFieldFilter('completeness', '=', 100, null, 'ecommerce');
         $this
             ->shouldThrow('Pim\Component\Catalog\Exception\InvalidArgumentException')
             ->duringAddFieldFilter('completeness', '=', 100, 'fr_FR', null);
