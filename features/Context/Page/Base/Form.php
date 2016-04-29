@@ -7,6 +7,7 @@ use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\TimeoutException;
 
 /**
  * Basic form page
@@ -153,36 +154,44 @@ class Form extends Base
      */
     public function visitGroup($group)
     {
-        $groups = $this->spin(function () {
-            return $this->find('css', $this->elements['Groups']['css']);
+        $this->spin(function () use ($group) {
+            $groups = $this->find('css', $this->elements['Groups']['css']);
+
+            if (!$groups) {
+                $groups = $this->getElement('Form Groups');
+
+                $groupsContainer = $this->spin(function () use ($groups, $group) {
+                    return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
+                }, sprintf('Cannot find the group %s', $group));
+
+                $button = null;
+
+                if ($groupsContainer) {
+                    $button = $groupsContainer->getParent();
+                }
+
+                if (!$button) {
+                    $labels = array_map(function ($element) {
+                        return $element->getText();
+                    }, $groups->findAll('css', '.group-label'));
+
+                    throw new \Exception(sprintf('Could not find group "%s". Available groups are %s',
+                        $group,
+                        implode(', ', $labels)
+                    ));
+                }
+
+                $button->click();
+
+                return true;
+            } else {
+                $groups->clickLink($group);
+
+                return true;
+            }
+
+            return false;
         }, sprintf('Cannot find the group selector.'));
-
-        if (!$groups) {
-            $groups = $this->getElement('Form Groups');
-
-            $groupsContainer = $this->spin(function () use ($groups, $group) {
-                return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
-            }, sprintf('Cannot find the group %s', $group));
-
-            $button = null;
-
-            if ($groupsContainer) {
-                $button = $groupsContainer->getParent();
-            }
-
-            if (!$button) {
-                $labels = array_map(function ($element) {
-                    return $element->getText();
-                }, $groups->findAll('css', '.group-label'));
-                throw new \Exception(sprintf('Could not find group "%s". Available groups are %s',
-                    $group,
-                    implode(', ', $labels)
-                ));
-            }
-            $button->click();
-        } else {
-            $groups->clickLink($group);
-        }
 
         return true;
     }

@@ -365,12 +365,9 @@ class ProductEditForm extends Form
             $this->getSession()->executeScript($script);
         }
 
-        $link = $fieldContainer->find('css', 'ul.select2-choices');
-        if (null === $link) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml())
-            );
-        }
+        $link = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', 'ul.select2-choices');
+        }, sprintf('ccCould not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()));
 
         foreach ($this->listToArray($values) as $value) {
             $link->click();
