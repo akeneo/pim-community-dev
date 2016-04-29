@@ -482,7 +482,7 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 2"
-    And I should see the text "conditions[0]: Attribute or field \"number_in_stock\" expects a numeric as data (for string filter)."
+    And I should see the text "conditions[0]: Attribute or field \"number_in_stock\" expects a numeric as data, \"string\" given (for filter number)."
     And I should see the text "actions[0]: this value should be a valid number."
     When I am on the "number_in_stock" attribute page
     And I visit the "Rules" tab

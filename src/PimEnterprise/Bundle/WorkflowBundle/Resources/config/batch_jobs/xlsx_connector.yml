@@ -8,7 +8,7 @@ connector:
                 export:
                     title: pimee_workflow.jobs.xlsx_published_product_export.export.title
                     services:
-                        reader:    pimee_workflow.reader.doctrine.published_product
+                        reader:    pimee_workflow.reader.published_product
                         processor: pim_base_connector.processor.product_to_flat_array
                         writer:    pim_connector.writer.file.xlsx_product
                     parameters:
