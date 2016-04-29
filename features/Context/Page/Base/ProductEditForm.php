@@ -357,6 +357,10 @@ class ProductEditForm extends Form
     {
         $field = $fieldContainer->find('css', '.form-field');
 
+        $link = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', 'ul.select2-choices');
+        }, sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()));
+
         // clear multi select first
         $fieldClasses = $field->getAttribute('class');
         if (preg_match('/akeneo-multi-select(-reference-data)?-field/', $fieldClasses, $matches)) {
@@ -364,10 +368,6 @@ class ProductEditForm extends Form
             $script          = sprintf('$("%s").select2("val", "");$("%1$s").trigger("change");', $select2Selector);
             $this->getSession()->executeScript($script);
         }
-
-        $link = $this->spin(function () use ($fieldContainer) {
-            return $fieldContainer->find('css', 'ul.select2-choices');
-        }, sprintf('ccCould not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()));
 
         foreach ($this->listToArray($values) as $value) {
             $link->click();
