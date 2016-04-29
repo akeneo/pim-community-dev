@@ -47,6 +47,7 @@ services:
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.product_value.view }
             - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
+            - { name: pim_catalog.filter.collection, type: pim.transform.product_value.flat.quick_export }
 
     pimee_catalog.filter.product_value_locale_right:
         class: %pimee_catalog.filter.product_value_locale_right.class%
@@ -56,6 +57,7 @@ services:
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.product_value.view }
             - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
+            - { name: pim_catalog.filter.collection, type: pim.transform.product_value.flat.quick_export }
 
     pimee_catalog.filter.product_right_view:
         class: %pimee_catalog.filter.product_right_view.class%

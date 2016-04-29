@@ -30,6 +30,7 @@ class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implemen
     protected $localeRepository;
 
     /**
+     * @param TokenStorageInterface         $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param LocaleRepositoryInterface     $localeRepository
      */
