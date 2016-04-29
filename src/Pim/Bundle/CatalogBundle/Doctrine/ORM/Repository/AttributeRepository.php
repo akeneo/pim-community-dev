@@ -83,45 +83,6 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Create query builder for choices
-     *
-     * @param array $options
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function getChoicesQB(array $options)
-    {
-        if (!isset($options['excluded_attribute_ids'])) {
-            throw new \InvalidArgumentException('Option "excluded_attribute_ids" is required');
-        }
-
-        if (!isset($options['locale_code'])) {
-            throw new \InvalidArgumentException('Option "locale_code" is required');
-        }
-
-        $qb = $this->createQueryBuilder('a');
-        $qb
-            ->select('a.id')
-            ->addSelect('COALESCE(at.label, CONCAT(\'[\', a.code, \']\')) as attribute_label')
-            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\')) as group_label')
-            ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :localeCode')
-            ->leftJoin('a.group', 'g')
-            ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
-            ->orderBy('g.sortOrder, a.sortOrder')
-            ->setParameter('localeCode', $options['locale_code']);
-
-        if (!empty($options['excluded_attribute_ids'])) {
-            $qb->andWhere(
-                $qb->expr()->notIn('a.id', $options['excluded_attribute_ids'])
-            );
-        }
-
-        return $qb;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function findUniqueAttributeCodes()

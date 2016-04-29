@@ -66,7 +66,7 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_enrich.repository.attribute->findChoices'
+                            choices:  '@pim_enrich.repository.attribute->findTranslatedLabels'
         mass_actions:
             mass_edit:
                 type: edit

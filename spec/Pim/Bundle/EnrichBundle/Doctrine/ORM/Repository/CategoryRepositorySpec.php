@@ -41,9 +41,9 @@ class CategoryRepositorySpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CategoryRepository');
     }
 
-    function it_is_a_group_repository()
+    function it_provides_translated_data()
     {
-        $this->shouldImplement('Pim\Component\Enrich\Repository\ChoicesProviderInterface');
+        $this->shouldImplement('Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface');
     }
 
     function it_is_a_doctrine_repository()

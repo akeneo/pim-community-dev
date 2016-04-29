@@ -5,14 +5,14 @@ namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Enrich\Repository\ChoicesProviderInterface;
+use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeRepository extends EntityRepository implements ChoicesProviderInterface
+class AttributeRepository extends EntityRepository implements TranslatedLabelsProviderInterface
 {
     /** @var UserContext */
     protected $userContext;
@@ -32,7 +32,7 @@ class AttributeRepository extends EntityRepository implements ChoicesProviderInt
     /**
      * {@inheritdoc}
      */
-    public function findChoices(array $options = [])
+    public function findTranslatedLabels(array $options = [])
     {
         $queryBuilder = $this->createQueryBuilder('a')
             ->select('a.id')

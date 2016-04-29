@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Enrich\Repository\ChoicesProviderInterface;
+use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\Test\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,7 +12,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 class AvailableAttributesTypeSpec extends ObjectBehavior
 {
     function let(
-        ChoicesProviderInterface $attributeRepository,
+        TranslatedLabelsProviderInterface $attributeRepository,
         TranslatorInterface $translator
     ) {
         $this->beConstructedWith(

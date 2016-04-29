@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\StringToBooleanTransformer;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\BindAssociationTargetsSubscriber;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
-use Pim\Component\Enrich\Repository\ChoicesProviderInterface;
+use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,7 +25,7 @@ class ProductEditType extends AbstractType
     /** @var ProductFormViewInterface */
     protected $productFormView;
 
-    /** @var ChoicesProviderInterface */
+    /** @var TranslatedLabelsProviderInterface */
     protected $familyRepository;
 
     /** @var string */
@@ -38,12 +38,12 @@ class ProductEditType extends AbstractType
      * Constructor
      *
      * @param ProductFormViewInterface $productFormView
-     * @param ChoicesProviderInterface $familyRepository
+     * @param TranslatedLabelsProviderInterface $familyRepository
      * @param string                   $categoryClass
      */
     public function __construct(
         ProductFormViewInterface $productFormView,
-        ChoicesProviderInterface $familyRepository,
+        TranslatedLabelsProviderInterface $familyRepository,
         $categoryClass
     ) {
         $this->productFormView  = $productFormView;

@@ -28,9 +28,9 @@ class AttributeRepositorySpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository');
     }
 
-    function it_is_a_group_repository()
+    function it_provides_translated_data()
     {
-        $this->shouldImplement('Pim\Component\Enrich\Repository\ChoicesProviderInterface');
+        $this->shouldImplement('Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface');
     }
 
     function it_is_a_doctrine_repository()
@@ -61,7 +61,7 @@ class AttributeRepositorySpec extends ObjectBehavior
             ['id' => 11, 'group_label' => '[group_other_code]', 'attribute_label' => '[group_attribute_code]'],
         ]);
 
-        $this->findChoices([
+        $this->findTranslatedLabels([
             'locale_code' => 'en_US',
             'excluded_attribute_ids' => [10],
         ])->shouldReturn([

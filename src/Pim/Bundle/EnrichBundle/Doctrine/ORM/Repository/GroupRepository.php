@@ -5,14 +5,14 @@ namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Enrich\Repository\ChoicesProviderInterface;
+use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupRepository extends EntityRepository implements ChoicesProviderInterface
+class GroupRepository extends EntityRepository implements TranslatedLabelsProviderInterface
 {
     /** @var UserContext */
     protected $userContext;
@@ -32,17 +32,16 @@ class GroupRepository extends EntityRepository implements ChoicesProviderInterfa
     /**
      * {@inheritdoc}
      */
-    public function findChoices(array $options = [])
+    public function findTranslatedLabels(array $options = [])
     {
         $queryBuilder = $this->createQueryBuilder('g')
             ->select('g.id')
             ->addSelect('COALESCE(t.label, CONCAT(\'[\', g.code, \']\')) as label')
             ->leftJoin('g.translations', 't')
-            ->andWhere('g.locale = :locale')
+            ->andWhere('t.locale = :locale')
             ->setParameter('locale', $this->userContext->getCurrentLocaleCode())
-            ->orderBy('g.label')
+            ->orderBy('t.label')
             ->getQuery();
-
 
         $choices = [];
         foreach ($queryBuilder->getArrayResult() as $code) {

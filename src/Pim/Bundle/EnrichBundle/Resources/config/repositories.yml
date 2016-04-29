@@ -10,6 +10,7 @@ parameters:
     pim_enrich.repository.group_type.class: Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupTypeRepository
     pim_enrich.repository.attribute.class: Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository
     pim_enrich.repository.family.class: Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyRepository
+    pim_enrich.repository.attribute_group.class: Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupRepository
 
 services:
     pim_enrich.repository.sequential_edit:
@@ -64,6 +65,13 @@ services:
 
     pim_enrich.repository.family:
         class: '%pim_enrich.repository.family.class%'
+        arguments:
+            - '@pim_user.context.user'
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.attribute.class%'
+
+    pim_enrich.repository.attribute_group:
+        class: '%pim_enrich.repository.attribute_group.class%'
         arguments:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'

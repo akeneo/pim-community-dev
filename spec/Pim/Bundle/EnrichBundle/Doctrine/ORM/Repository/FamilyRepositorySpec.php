@@ -27,9 +27,9 @@ class FamilyRepositorySpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyRepository');
     }
 
-    function it_is_a_family_repository()
+    function it_provides_translated_data()
     {
-        $this->shouldImplement('Pim\Component\Enrich\Repository\ChoicesProviderInterface');
+        $this->shouldImplement('Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface');
     }
 
     function it_is_a_doctrine_repository()
@@ -53,7 +53,7 @@ class FamilyRepositorySpec extends ObjectBehavior
             ['id' => 11, 'label' => '[family_other_code]'],
         ]);
 
-        $this->findChoices(['locale_code' => 'en_US'])->shouldReturn([
+        $this->findTranslatedLabels(['locale_code' => 'en_US'])->shouldReturn([
             10 => 'family en',
             11 => '[family_other_code]',
         ]);

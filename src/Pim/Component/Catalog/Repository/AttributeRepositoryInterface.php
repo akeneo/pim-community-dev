@@ -64,15 +64,6 @@ interface AttributeRepositoryInterface extends
     public function findAllAxisQB();
 
     /**
-     * Get available attributes as label as a choice
-     *
-     * @deprecated only used in grid, will be removed in 1.6
-     *
-     * @return array
-     */
-    public function getAvailableAttributesAsLabelChoice();
-
-    /**
      * Get attribute as array indexed by code
      *
      * @param bool   $withLabel translated label should be joined

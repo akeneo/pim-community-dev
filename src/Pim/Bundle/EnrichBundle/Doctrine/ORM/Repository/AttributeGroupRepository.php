@@ -3,11 +3,11 @@
 namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
-use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
 
-class CategoryRepository extends NestedTreeRepository implements TranslatedLabelsProviderInterface
+class AttributeGroupRepository extends EntityRepository implements TranslatedLabelsProviderInterface
 {
     /** @var UserContext */
     protected $userContext;
@@ -29,18 +29,17 @@ class CategoryRepository extends NestedTreeRepository implements TranslatedLabel
      */
     public function findTranslatedLabels(array $options = [])
     {
-        $query = $this->childrenQueryBuilder(null, true, 'created', 'DESC')
-            ->select('node.id')
-            ->addSelect('COALESCE(t.label, CONCAT(\'[\', node.code, \']\')) as label')
-            ->leftJoin('node.translations', 't')
-            ->where('t.locale = :locale')
+        $queryBuilder = $this->createQueryBuilder('g')
+            ->select('g.id')
+            ->addSelect('COALESCE(t.label, CONCAT(\'[\', g.code, \']\')) as label')
+            ->leftJoin('g.translations', 't')
+            ->andWhere('t.locale = :locale')
             ->setParameter('locale', $this->userContext->getCurrentLocaleCode())
             ->orderBy('t.label')
             ->getQuery();
 
-
         $choices = [];
-        foreach ($query->getArrayResult() as $code) {
+        foreach ($queryBuilder->getArrayResult() as $code) {
             $choices[$code['id']] = $code['label'];
         }
 

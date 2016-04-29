@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Enrich\Repository\ChoicesProviderInterface;
+use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
@@ -22,7 +22,7 @@ class AvailableAttributesType extends AbstractType
     /** @var string */
     protected $attributeClass;
 
-    /** @var ChoicesProviderInterface */
+    /** @var TranslatedLabelsProviderInterface */
     protected $attributeRepository;
 
     /** @var UserContext */
@@ -37,13 +37,13 @@ class AvailableAttributesType extends AbstractType
     /**
      * Constructor
      *
-     * @param ChoicesProviderInterface $attributeRepository
+     * @param TranslatedLabelsProviderInterface $attributeRepository
      * @param TranslatorInterface      $translator
      * @param string                   $attributeClass
      * @param string                   $dataClass
      */
     public function __construct(
-        ChoicesProviderInterface $attributeRepository,
+        TranslatedLabelsProviderInterface $attributeRepository,
         TranslatorInterface $translator,
         $attributeClass,
         $dataClass

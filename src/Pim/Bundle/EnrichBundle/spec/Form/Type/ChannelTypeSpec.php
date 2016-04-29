@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
-use Pim\Component\Enrich\Repository\ChoicesProviderInterface;
+use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ChannelTypeSpec extends ObjectBehavior
@@ -15,7 +15,7 @@ class ChannelTypeSpec extends ObjectBehavior
         LocaleRepositoryInterface $localeRepository,
         LocaleHelper $localeHelper,
         ColorsProvider $provider,
-        ChoicesProviderInterface $categoryRepository
+        TranslatedLabelsProviderInterface $categoryRepository
     ) {
         $this->beConstructedWith(
             $localeRepository,

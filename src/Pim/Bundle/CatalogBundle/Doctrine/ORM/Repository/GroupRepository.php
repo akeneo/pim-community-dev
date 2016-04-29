@@ -35,25 +35,6 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function getChoices()
-    {
-        $groups = $this
-            ->createQueryBuilder($this->getAlias())
-            ->addOrderBy($this->getAlias() .'.code', 'ASC')
-            ->getQuery()
-            ->getResult();
-
-        $choices = [];
-        foreach ($groups as $group) {
-            $choices[$group->getId()] = $group->getLabel();
-        }
-
-        return $choices;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function countVariantGroupAxis(AttributeInterface $attribute)
     {
         $qb = $this->createQueryBuilder('g');

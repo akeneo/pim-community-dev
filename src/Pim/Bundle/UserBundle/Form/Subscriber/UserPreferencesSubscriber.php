@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Component\Enrich\Repository\ChoicesProviderInterface;
+use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -25,16 +25,16 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     /** @var LocaleProviderInterface */
     protected $localeProvider;
 
-    /** @var ChoicesProviderInterface */
+    /** @var TranslatedLabelsProviderInterface */
     protected $categoryRepository;
 
     /**
      * @param LocaleProviderInterface  $localeProvider
-     * @param ChoicesProviderInterface $categoryRepository
+     * @param TranslatedLabelsProviderInterface $categoryRepository
      */
     public function __construct(
         LocaleProviderInterface $localeProvider,
-        ChoicesProviderInterface $categoryRepository
+        TranslatedLabelsProviderInterface $categoryRepository
     ) {
         $this->localeProvider     = $localeProvider;
         $this->categoryRepository = $categoryRepository;

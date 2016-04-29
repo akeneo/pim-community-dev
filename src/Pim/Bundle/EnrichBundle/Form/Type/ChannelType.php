@@ -8,7 +8,7 @@ use Pim\Bundle\EnrichBundle\Helper\SortHelper;
 use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Component\Enrich\Repository\ChoicesProviderInterface;
+use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -33,7 +33,7 @@ class ChannelType extends AbstractType
     /** @var ColorsProvider */
     protected $provider;
 
-    /** @var ChoicesProviderInterface */
+    /** @var TranslatedLabelsProviderInterface */
     protected $categoryRepository;
 
     /** @var string */
@@ -48,7 +48,7 @@ class ChannelType extends AbstractType
      * @param LocaleRepositoryInterface $localeRepository
      * @param LocaleHelper              $localeHelper
      * @param ColorsProvider            $provider
-     * @param ChoicesProviderInterface  $categoryRepository
+     * @param TranslatedLabelsProviderInterface  $categoryRepository
      * @param string                    $categoryClass
      * @param string                    $dataClass
      */
@@ -56,7 +56,7 @@ class ChannelType extends AbstractType
         LocaleRepositoryInterface $localeRepository,
         LocaleHelper $localeHelper,
         ColorsProvider $provider,
-        ChoicesProviderInterface $categoryRepository,
+        TranslatedLabelsProviderInterface $categoryRepository,
         $categoryClass,
         $dataClass
     ) {

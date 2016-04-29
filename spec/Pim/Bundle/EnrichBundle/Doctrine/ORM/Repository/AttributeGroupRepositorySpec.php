@@ -10,11 +10,11 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Prophecy\Argument;
 
-class GroupTypeRepositorySpec extends ObjectBehavior
+class AttributeGroupRepositorySpec extends ObjectBehavior
 {
     function let(UserContext $userContext, EntityManager $em, ClassMetadata $classMetadata)
     {
-        $classMetadata->name = 'group_type';
+        $classMetadata->name = 'attribute_group';
 
         $userContext->getCurrentLocaleCode()->willReturn('en_US');
         $em->getClassMetadata('groupTypeClass')->willReturn($classMetadata);
@@ -24,7 +24,7 @@ class GroupTypeRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupTypeRepository');
+        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupRepository');
     }
 
     function it_provides_translated_data()
@@ -37,21 +37,19 @@ class GroupTypeRepositorySpec extends ObjectBehavior
         $this->shouldHaveType('Doctrine\ORM\EntityRepository');
     }
 
-    function it_finds_group_types_to_build_select($em, QueryBuilder $queryBuilder, AbstractQuery $query)
+    function it_finds_attribute_groups_to_build_select($em, QueryBuilder $queryBuilder, AbstractQuery $query)
     {
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('g')->willReturn($queryBuilder);
         $queryBuilder->select('g.id')->willReturn($queryBuilder);
         $queryBuilder->addSelect('COALESCE(t.label, CONCAT(\'[\', g.code, \']\')) as label')->willReturn($queryBuilder);
-        $queryBuilder->from('group_type', 'g')->willReturn($queryBuilder);
+        $queryBuilder->from('attribute_group', 'g')->willReturn($queryBuilder);
         $queryBuilder->leftJoin('g.translations', 't')->willReturn($queryBuilder);
-        $queryBuilder->andWhere('g.variant = :is_variant')->willReturn($queryBuilder);
         $queryBuilder->andWhere('t.locale = :locale')->willReturn($queryBuilder);
-        $queryBuilder->orderBy('t.label')->willReturn($queryBuilder);
         $queryBuilder->setParameter('locale', 'en_US')->willReturn($queryBuilder);
+        $queryBuilder->orderBy('t.label')->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
         $query->getArrayResult()->willReturn([
-            ['id' => 10, 'label' => 'group fr'],
             ['id' => 10, 'label' => 'group en'],
             ['id' => 11, 'label' => '[group_other_code]'],
         ]);
