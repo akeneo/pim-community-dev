@@ -157,20 +157,17 @@ class Form extends Base
         $this->spin(function () use ($group) {
             $groups = $this->find('css', $this->elements['Groups']['css']);
 
-            if (!$groups) {
+            if (null === $groups) {
                 $groups = $this->getElement('Form Groups');
 
-                $groupsContainer = $this->spin(function () use ($groups, $group) {
-                    return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
-                }, sprintf('Cannot find the group %s', $group));
-
+                $groupsContainer = $groups->find('css', sprintf('.group-label:contains("%s")', $group));
                 $button = null;
 
-                if ($groupsContainer) {
+                if (null !== $groupsContainer) {
                     $button = $groupsContainer->getParent();
                 }
 
-                if (!$button) {
+                if (null === $button) {
                     $labels = array_map(function ($element) {
                         return $element->getText();
                     }, $groups->findAll('css', '.group-label'));

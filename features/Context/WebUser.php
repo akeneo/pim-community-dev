@@ -220,9 +220,7 @@ class WebUser extends RawMinkContext
      */
     public function iVisitTheGroup($group)
     {
-        $this->spin(function () use ($group) {
-            return $this->getCurrentPage()->visitGroup($group);
-        }, sprintf('Cannot visit "%s" group', $group));
+        $this->getCurrentPage()->visitGroup($group);
     }
 
     /**
