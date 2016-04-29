@@ -15,7 +15,6 @@ use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationExcep
 use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationException;
 use Akeneo\Component\FileTransformer\Transformation\TransformationRegistry;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
-use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

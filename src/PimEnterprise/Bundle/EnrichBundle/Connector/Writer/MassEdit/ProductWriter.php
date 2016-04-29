@@ -31,10 +31,10 @@ class ProductWriter extends BaseProductWriter
     protected $authorizationChecker;
 
     /**
-     * @param VersionManager                 $versionManager
-     * @param BulkSaverInterface             $productSaver
-     * @param BulkObjectDetacherInterface    $detacher
-     * @param AuthorizationCheckerInterface  $authorizationChecker
+     * @param VersionManager                $versionManager
+     * @param BulkSaverInterface            $productSaver
+     * @param BulkObjectDetacherInterface   $detacher
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         VersionManager $versionManager,

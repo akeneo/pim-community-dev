@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Akeneo\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
+use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Present change on metric data

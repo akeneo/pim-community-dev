@@ -49,6 +49,7 @@ class RuleRelationController
 
     /**
      * Get all rule relations for a given type
+     *
      * @param string $relationType
      *
      * @return JsonResponse

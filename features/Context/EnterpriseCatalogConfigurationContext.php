@@ -3,7 +3,6 @@
 namespace Context;
 
 use Akeneo\Component\Console\CommandLauncher;
-use Context\Loader\ProductAssetLoader;
 
 /**
  * A context for initializing catalog configuration

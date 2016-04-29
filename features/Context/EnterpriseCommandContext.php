@@ -2,7 +2,6 @@
 
 namespace Context;
 
-use Akeneo\Component\Console\CommandResult;
 use Behat\Gherkin\Node\TableNode;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;

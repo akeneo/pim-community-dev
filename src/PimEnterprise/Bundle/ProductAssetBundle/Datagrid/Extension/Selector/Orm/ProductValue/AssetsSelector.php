@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Selector\Orm\ProductValue;
 
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;

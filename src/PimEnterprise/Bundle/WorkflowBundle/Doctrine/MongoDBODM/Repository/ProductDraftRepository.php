@@ -260,7 +260,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
      *
      * @param UserInterface $user
      *
-     * @return integer[]
+     * @return int[]
      */
     protected function getGrantedCategoryIds(UserInterface $user)
     {

@@ -32,7 +32,7 @@ class AddCategoryPermissionsSubscriber implements EventSubscriberInterface
     /** @var string */
     protected $categoryClass;
 
-    /** @var boolean */
+    /** @var bool */
     protected $withOwnerPermission;
 
     /**
@@ -40,7 +40,7 @@ class AddCategoryPermissionsSubscriber implements EventSubscriberInterface
      *
      * @param CategoryAccessManager $accessManager
      * @param string                $categoryClass
-     * @param boolean               $withOwnerPermission
+     * @param bool                  $withOwnerPermission
      */
     public function __construct(CategoryAccessManager $accessManager, $categoryClass, $withOwnerPermission)
     {

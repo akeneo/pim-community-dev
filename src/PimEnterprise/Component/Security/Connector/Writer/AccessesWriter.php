@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace PimEnterprise\Component\Security\Connector\Writer;
 
 use Pim\Component\Connector\Writer\Doctrine\BaseWriter;

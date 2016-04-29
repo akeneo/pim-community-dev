@@ -2,8 +2,6 @@
 
 namespace Context\Page\Product;
 
-use Context\Page\Product\Edit;
-
 /**
  * Show product page
  *

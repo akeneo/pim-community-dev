@@ -200,10 +200,10 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     /**
      * Get granted category ids
      *
-     * @param Group[]   $groups
-     * @param integer[] $categoryIds
+     * @param Group[] $groups
+     * @param int[]   $categoryIds
      *
-     * @return integer[]
+     * @return int[]
      */
     public function getCategoryIdsWithExistingAccess($groups, $categoryIds)
     {
@@ -226,7 +226,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
      * @param UserInterface $user
      * @param string        $accessLevel
      *
-     * @return integer[]
+     * @return int[]
      */
     public function getGrantedCategoryIds(UserInterface $user, $accessLevel)
     {
@@ -263,7 +263,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
      * @param UserInterface $user
      * @param string        $accessLevel
      *
-     * @return integer[]
+     * @return int[]
      */
     public function getRevokedCategoryIds(UserInterface $user, $accessLevel)
     {
@@ -284,7 +284,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
      * @param UserInterface $user
      * @param string        $accessLevel
      *
-     * @return integer[]
+     * @return int[]
      */
     public function getRevokedAttributeIds(UserInterface $user, $accessLevel)
     {
@@ -413,7 +413,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
      *
      * @param QueryBuilder $qb
      *
-     * @return integer[]
+     * @return int[]
      */
     protected function hydrateAsIds(QueryBuilder $qb)
     {

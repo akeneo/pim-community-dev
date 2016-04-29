@@ -80,7 +80,7 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
      * Save many objects
      *
      * @param ReferenceInterface[] $references
-     * @param array                $options The saving options
+     * @param array                $options    The saving options
      */
     public function saveAll(array $references, array $options = [])
     {

@@ -32,11 +32,11 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
     protected $tokenStorage;
 
     /**
-     * @param PropertyAdderInterface              $propertyAdder
-     * @param ValidatorInterface                  $validator
-     * @param UserManager                         $userManager
-     * @param AuthorizationCheckerInterface       $authorizationChecker
-     * @param TokenStorageInterface               $tokenStorage
+     * @param PropertyAdderInterface        $propertyAdder
+     * @param ValidatorInterface            $validator
+     * @param UserManager                   $userManager
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param TokenStorageInterface         $tokenStorage
      */
     public function __construct(
         PropertyAdderInterface $propertyAdder,

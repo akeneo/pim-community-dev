@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Akeneo\Bundle\FileMetadataBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
@@ -23,7 +22,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class AkeneoFileMetadataExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {

@@ -23,7 +23,6 @@ use PimEnterprise\Component\Security\Attributes;
  */
 class AttributeGroupViewRightFilter extends AbstractAuthorizationFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
-
     /**
      * {@inheritdoc}
      */

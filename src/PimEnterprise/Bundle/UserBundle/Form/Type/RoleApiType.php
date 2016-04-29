@@ -19,6 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * Override from Pim\UserBundle to use the User override class in the EE.
  *
  * @author Clement Gautier <clement.gautier@akeneo.com>
+ *
  * @deprecated To be removed when UserBundle from oro will be moved to Pim namespace
  */
 class RoleApiType extends AbstractType

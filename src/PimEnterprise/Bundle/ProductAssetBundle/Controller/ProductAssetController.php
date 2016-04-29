@@ -323,8 +323,6 @@ class ProductAssetController extends Controller
         return new JsonResponse();
     }
 
-
-
     /**
      * Remove an asset
      *
@@ -772,9 +770,9 @@ class ProductAssetController extends Controller
     /**
      * Set flash message
      *
-     * @param string  $type       the flash type
-     * @param string  $message    the flash message
-     * @param array   $parameters the flash message parameters
+     * @param string $type       the flash type
+     * @param string $message    the flash message
+     * @param array  $parameters the flash message parameters
      */
     protected function addFlashMessage($type, $message, array $parameters = [])
     {

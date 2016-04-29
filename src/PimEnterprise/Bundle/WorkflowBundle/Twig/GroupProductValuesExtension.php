@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use Doctrine\Common\Collections\Collection;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
-use PimEnterprise\Bundle\WorkflowBundle\Twig\SortProductValuesHelper;
 
 /**
  * Twig extension to group and sort product values to prepare them for display
@@ -63,7 +62,7 @@ class GroupProductValuesExtension extends \Twig_Extension
      * Group product values
      *
      * @param Collection|\Pim\Component\Catalog\Model\ProductValueInterface[] $values
-     * @param string                                                             $locale
+     * @param string                                                          $locale
      *
      * @return array
      */

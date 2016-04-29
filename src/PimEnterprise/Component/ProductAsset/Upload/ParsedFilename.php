@@ -15,6 +15,7 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * @see FilenameParserInterface
+ *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
 class ParsedFilename implements ParsedFilenameInterface
@@ -102,7 +103,7 @@ class ParsedFilename implements ParsedFilenameInterface
         $localeCodes   = array_map(function (LocaleInterface $locale) {
             return $locale->getCode();
         }, $this->availableLocales);
-        $patternLocale = join('|', $localeCodes);
+        $patternLocale = implode('|', $localeCodes);
 
         $pattern = sprintf('/^
             (?:

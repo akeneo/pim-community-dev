@@ -3,6 +3,7 @@
 namespace PimEnterprise\Behat\Decorator\WidgetDecorator;
 
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use Pim\Behat\Decorator\ElementDecorator;
 
 /**
@@ -15,10 +16,11 @@ class ProposalWidgetDecorator extends ElementDecorator
     /**
      * @param string $user
      * @param string $product
-     * @return mixed
      *
-     * @throws \Context\Spin\TimeoutException
+     * @throws TimeoutException
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function followProposalLink($user, $product)
     {

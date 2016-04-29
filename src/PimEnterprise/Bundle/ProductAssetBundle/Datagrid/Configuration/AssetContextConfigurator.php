@@ -15,7 +15,6 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Asset grid context configurator

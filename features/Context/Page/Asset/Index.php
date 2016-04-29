@@ -55,7 +55,6 @@ class Index extends Grid
         return $this->find('css', '.ui-dialog');
     }
 
-
     /**
      * @return NodeElement|mixed|null
      */

@@ -12,31 +12,29 @@ use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
-use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Context\Spin\SpinCapableTrait;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
-use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
-use PimEnterprise\Component\Workflow\Model\ProductDraft;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
-use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\ProductAsset\Model\Asset;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\Tag;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
+use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Yaml\Parser;
-use Context\Spin\SpinCapableTrait;
 
 /**
  * A context for creating entities
@@ -421,6 +419,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param string|array $data
      *
      * @throws \Exception
+     *
      * @return TagInterface
      *
      *
@@ -901,7 +900,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $manager->save($ruleDefinition);
         }
     }
-
 
     /**
      * @param string $code

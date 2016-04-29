@@ -11,9 +11,6 @@
 
 namespace PimEnterprise\Component\Workflow\Model;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

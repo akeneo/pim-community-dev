@@ -8,7 +8,6 @@ use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor as BaseProcessor;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -32,12 +31,12 @@ class EditCommonAttributesProcessor extends BaseProcessor
     protected $authorizationChecker;
 
     /**
-     * @param ValidatorInterface                  $validator
-     * @param AttributeRepositoryInterface        $attributeRepository
-     * @param ObjectUpdaterInterface              $productUpdater
-     * @param UserManager                         $userManager
-     * @param TokenStorageInterface               $tokenStorage
-     * @param AuthorizationCheckerInterface       $authorizationChecker
+     * @param ValidatorInterface            $validator
+     * @param AttributeRepositoryInterface  $attributeRepository
+     * @param ObjectUpdaterInterface        $productUpdater
+     * @param UserManager                   $userManager
+     * @param TokenStorageInterface         $tokenStorage
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         ValidatorInterface $validator,

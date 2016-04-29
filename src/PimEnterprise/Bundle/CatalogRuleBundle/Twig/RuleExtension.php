@@ -84,14 +84,14 @@ class RuleExtension extends \Twig_Extension
             if (null !== $presenter) {
                 $value = $presenter->present($value, ['locale' => $this->localeResolver->getCurrentLocale()]);
 
-                return is_array($value) ? join(', ', $value) : $value;
+                return is_array($value) ? implode(', ', $value) : $value;
             }
 
             foreach ($value as $index => $val) {
                 $value[$index] = $this->presentRuleActionValue($val, $code);
             }
 
-            return join(', ', $value);
+            return implode(', ', $value);
         }
 
         if (null !== $presenter) {
@@ -129,7 +129,7 @@ class RuleExtension extends \Twig_Extension
         }
 
         if (!empty($append)) {
-            $value .= sprintf(' [ %s ]', join(' | ', $append));
+            $value .= sprintf(' [ %s ]', implode(' | ', $append));
         }
 
         return $value;

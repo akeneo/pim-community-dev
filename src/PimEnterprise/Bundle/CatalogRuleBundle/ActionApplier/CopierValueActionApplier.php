@@ -20,6 +20,7 @@ use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface
  * Copier value action applier
  *
  * @author Julien Sanchez <julien@akeneo.com>
+ *
  * @deprecated will be removed in 1.6 please use
  *             PimEnterprise\Component\CatalogRule\ActionApplier\CopierActionApplier
  */

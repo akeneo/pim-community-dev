@@ -12,8 +12,6 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess;

@@ -80,7 +80,7 @@ class AssetVariationSaver implements SaverInterface, BulkSaverInterface
      * Save many objects
      *
      * @param VariationInterface[] $variations
-     * @param array                $options The saving options
+     * @param array                $options    The saving options
      */
     public function saveAll(array $variations, array $options = [])
     {

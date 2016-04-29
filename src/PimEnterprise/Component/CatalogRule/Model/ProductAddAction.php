@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Component\CatalogRule\Model;
 
-use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
-
 /**
  * Add action is used in product rules.
  * An add action is used to add data to a collection in a product

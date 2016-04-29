@@ -17,7 +17,6 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Calculation of the count of impacted products by the rules

@@ -11,7 +11,6 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Command;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
