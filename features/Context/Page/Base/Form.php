@@ -148,16 +148,21 @@ class Form extends Base
      *
      * @throws ElementNotFoundException
      * @throws \Exception
+     *
+     * @return bool
      */
     public function visitGroup($group)
     {
-        $groups = $this->find('css', $this->elements['Groups']['css']);
+        $groups = $this->spin(function () {
+            return $this->find('css', $this->elements['Groups']['css']);
+        }, sprintf('Cannot find the group selector.'));
+
         if (!$groups) {
             $groups = $this->getElement('Form Groups');
 
             $groupsContainer = $this->spin(function () use ($groups, $group) {
                 return $groups->find('css', sprintf('.group-label:contains("%s")', $group));
-            }, sprintf('Finding the group %s', $group));
+            }, sprintf('Cannot find the group %s', $group));
 
             $button = null;
 
