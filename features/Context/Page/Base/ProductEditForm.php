@@ -79,8 +79,8 @@ class ProductEditForm extends Form
             }
         }
 
-        // Close select2
-        $selector->click();
+        // Close select2 if open
+        $this->getDriver()->executeScript("jQuery('.select2-drop-mask').click();");
 
         return isset($results[$attribute]) ? $results[$attribute] : null;
     }
