@@ -113,6 +113,8 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
             }
         }
 
+        $qb->groupBy(sprintf('%s.id', $this->getAlias()));
+
         return $qb->getQuery()->getArrayResult();
     }
 
