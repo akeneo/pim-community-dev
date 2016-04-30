@@ -24,6 +24,7 @@
 - Simplify installation process and the loading of catalogs in Behat by using the import system and `akeneo:batch:job` commands.
 - PIM-5653: When using the Product Query Builder, it is now possible to filter on completeness without specifying a locale. Products with a matching completeness for at least one of the locales of the scope will be selected.
 - PIM-5653: Introduce a new storage-agnostic Product Reader using the PQB
+- Integrates the AkeneoMeasureBundle in our main repository
 
 ## BC breaks
 
