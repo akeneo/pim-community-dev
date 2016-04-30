@@ -18,8 +18,7 @@ class MeasureConverterSpec extends ObjectBehavior
             throw new \Exception(sprintf('Config file "%s" does not exist', $filename));
         }
 
-        $config = Yaml::parse($filename);
-
+        $config = Yaml::parse(file_get_contents($filename));
         $this->beConstructedWith($config);
     }
 
