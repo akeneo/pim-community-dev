@@ -416,3 +416,30 @@ measures_config:
             POUND:
                 convert: [{'mul': 0.45359237}]
                 symbol: lb
+    Pressure:
+        standard: BAR
+        units:
+            BAR:
+                convert: [{'mul': 1}]
+                symbol: Bar
+            PASCAL:
+                convert: [{'mul': 0.00001}]
+                symbol: Pa
+            HECTOPASCAL:
+                convert: [{'mul': 0.001}]
+                symbol: hPa
+            MILLIBAR:
+                convert: [{'mul': 0.001}]
+                symbol: mBar
+            ATM:
+                convert: [{'mul': 0.986923}]
+                symbol: atm
+            PSI:
+                convert: [{'mul': 14.50376985373022}]
+                symbol: PSI
+            TORR:
+                convert: [{'mul': 750.06375541921}]
+                symbol: Torr
+            MMHG:
+                convert: [{'mul': 750.06375541921}]
+                symbol: mmHg
