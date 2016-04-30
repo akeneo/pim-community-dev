@@ -1,3 +1,6 @@
+# 0.4.1 (2016-03-16) 
+ - Update symbol for Decibel
+
 # 0.4.0 (2015-08-30)
  - fix deprecated use of Yaml:parse() to allow Symfony upgrade
 
