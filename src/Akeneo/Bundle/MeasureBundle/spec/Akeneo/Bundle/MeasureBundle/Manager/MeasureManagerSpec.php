@@ -14,7 +14,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class MeasureManagerSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $filename = realpath(dirname(__FILE__) .'/../Resources/config/measure-test.yml');
         if (!file_exists($filename)) {
@@ -26,7 +26,7 @@ class MeasureManagerSpec extends ObjectBehavior
         $this->setMeasureConfig($config['measures_config']);
     }
 
-    function it_throws_an_exception_when_try_to_get_symbols_of_unknown_family()
+    public function it_throws_an_exception_when_try_to_get_symbols_of_unknown_family()
     {
         $this
             ->shouldThrow(
@@ -35,20 +35,20 @@ class MeasureManagerSpec extends ObjectBehavior
             ->during('getUnitSymbolsForFamily', array('foo'));
     }
 
-    function it_returns_unit_symbols_list_from_a_family()
+    public function it_returns_unit_symbols_list_from_a_family()
     {
         $this
             ->getUnitSymbolsForFamily(WeightFamilyInterface::FAMILY)
             ->shouldReturn(
                 array(
                     'MILLIGRAM' => 'mg',
-                    'GRAM' => 'g',
-                    'KILOGRAM' => 'kg'
+                    'GRAM'      => 'g',
+                    'KILOGRAM'  => 'kg'
                 )
             );
     }
 
-    function it_returns_standard_unit_for_a_family()
+    public function it_returns_standard_unit_for_a_family()
     {
         $this
             ->getStandardUnitForFamily(WeightFamilyInterface::FAMILY)

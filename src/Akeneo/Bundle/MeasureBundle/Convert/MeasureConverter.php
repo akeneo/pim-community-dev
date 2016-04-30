@@ -39,9 +39,9 @@ class MeasureConverter
      * Set a family for the converter
      * @param string $family
      *
+     * @throws UnknownFamilyMeasureException
      * @return MeasureConverter
      *
-     * @throws UnknownFamilyMeasureException
      */
     public function setFamily($family)
     {
@@ -76,10 +76,10 @@ class MeasureConverter
      * @param string $baseUnit Base unit for value
      * @param double $value    Value to convert
      *
-     * @return double
-     *
      * @throws UnknownOperatorException
      * @throws UnknownMeasureException
+     * @return double
+     *
      */
     public function convertBaseToStandard($baseUnit, $value)
     {
@@ -144,10 +144,10 @@ class MeasureConverter
      * @param string $finalUnit Final unit for value
      * @param double $value     Value to convert
      *
-     * @return double
-     *
      * @throws UnknownOperatorException
      * @throws UnknownMeasureException
+     * @return double
+     *
      */
     public function convertStandardToResult($finalUnit, $value)
     {

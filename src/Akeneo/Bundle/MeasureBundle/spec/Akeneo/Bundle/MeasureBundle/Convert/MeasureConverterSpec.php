@@ -11,7 +11,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class MeasureConverterSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $filename = realpath(dirname(__FILE__) .'/../Resources/config/measure-test.yml');
         if (!file_exists($filename)) {
@@ -22,12 +22,12 @@ class MeasureConverterSpec extends ObjectBehavior
         $this->beConstructedWith($config);
     }
 
-    function it_allows_to_define_the_family()
+    public function it_allows_to_define_the_family()
     {
         $this->setFamily('Length')->shouldReturnAnInstanceOf('Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter');
     }
 
-    function it_throws_an_exception_if_an_unknown_family_is_set()
+    public function it_throws_an_exception_if_an_unknown_family_is_set()
     {
         $this
             ->shouldThrow(
@@ -36,7 +36,7 @@ class MeasureConverterSpec extends ObjectBehavior
             ->during('setFamily', array('foo'));
     }
 
-    function it_converts_a_value_from_a_base_unit_to_a_final_unit()
+    public function it_converts_a_value_from_a_base_unit_to_a_final_unit()
     {
         $this->setFamily('Weight');
         $this->convert(
@@ -46,7 +46,7 @@ class MeasureConverterSpec extends ObjectBehavior
         )->shouldReturn((double) 1000000);
     }
 
-    function it_converts_a_value_to_a_standard_unit()
+    public function it_converts_a_value_to_a_standard_unit()
     {
         $this->setFamily('Weight');
         $this->convertBaseToStandard(
@@ -55,7 +55,7 @@ class MeasureConverterSpec extends ObjectBehavior
         )->shouldReturn((double) 1);
     }
 
-    function it_converts_a_standard_value_to_a_final_unit()
+    public function it_converts_a_standard_value_to_a_final_unit()
     {
         $this->setFamily('Weight');
         $this->convertStandardToResult(
@@ -64,7 +64,7 @@ class MeasureConverterSpec extends ObjectBehavior
         )->shouldReturn((double) 0.01);
     }
 
-    function it_throws_an_exception_if_the_unit_measure_does_not_exist()
+    public function it_throws_an_exception_if_the_unit_measure_does_not_exist()
     {
         $this->setFamily('Weight');
         $this

@@ -78,8 +78,8 @@ class MeasureManager
      *
      * @param string $family
      *
-     * @return array
      * @throws \InvalidArgumentException
+     * @return array
      */
     protected function getFamilyConfig($family)
     {

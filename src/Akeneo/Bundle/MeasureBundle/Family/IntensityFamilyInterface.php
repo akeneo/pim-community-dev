@@ -10,7 +10,7 @@ namespace Akeneo\Bundle\MeasureBundle\Family;
  * @license http://opensource.org/licenses/MIT MIT
  */
 interface IntensityFamilyInterface
-{    
+{
     /**
      * Family measure name
      * @staticvar string
