@@ -1,3 +1,8 @@
+# 0.5.0 (2016-04-30)
+ - Use phpspec and not phpunit anymore, thanks to @fitn
+ - Fix missing family constants, thanks to @danielsan80
+ - Add a new pressure family, thanks to @gplanchat
+
 # 0.4.1 (2016-03-16) 
  - Update symbol for Decibel
 
