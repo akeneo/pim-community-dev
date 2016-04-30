@@ -82,7 +82,7 @@ measures_config:
         units:
             DECIBEL:
                 convert: [{'mul': 1}]
-                symbol: d
+                symbol: dB
     Frequency:
         standard: HERTZ
         units:
