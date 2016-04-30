@@ -6,6 +6,9 @@ php:
   - "5.3"
   - "hhvm"
 
+# Allow to use container infrastructure
+sudo: false
+
 before_script:
   - composer self-update
   - composer update
