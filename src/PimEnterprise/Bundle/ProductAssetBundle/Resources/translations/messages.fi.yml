@@ -111,16 +111,9 @@ pimee_product_asset:
       unique: Koodin tulee olla uniikki.
       new_generation: Loimme sinulle uuden koodin.
   jobs:
-    csv_asset_import.title: Resurssien tuonti csv-muodossa
-    csv_asset_export.title: Resurssien vienti csv-muotoon
-    csv_asset_variation_export.title: Resurssien variaatioiden vienti csv-muotoon
-    csv_tag_import.title: Asiasanojen tuonti csv-muodossa
-    csv_asset_category_import.title: Resurssikategorioiden tuonti csv-muodossa
-    csv_asset_configuration_import.title: Resurssikanavien konfiguraation tuonti csv-muodossa
-    yml_asset_configuration_export.title: Resurssikanavien konfiguraatioiden vienti Yaml -muodossa
-    csv_asset_category_export.title: Resurssikategorioiden vienti csv-muodossa
-    yml_asset_channel_configuration_import.title: Resurssikanavien konfiguraation tuonti Yaml muodossa
     assets_mass_upload.title: Resurssien massatuonti
+    yml_asset_channel_configuration_import.title: Resurssikanavien konfiguraation tuonti Yaml muodossa
+    yml_asset_configuration_export.title: Resurssikanavien konfiguraatioiden vienti Yaml -muodossa
   steps:
     channel_configuration.processor.title: Prosessikanavien konfiguraatiot
   notAvailable:

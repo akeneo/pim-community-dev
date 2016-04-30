@@ -76,10 +76,15 @@ pimee_catalog_rule:
       export.title: Export des règles
     impacted_product_count:
       title: Produits impactés par les règles
+    csv_product_import_with_rules:
+      title: Import de produits en CSV avec règles
+    xlsx_product_import_with_rules:
+      title: Import de produits en XLSX avec règles
   steps:
     product_rule_definition_reader.title: "Lecteur de règles d'import produits"
     rule_definition_processor.title: "Processeur de règles d'import produits"
     product_rule_definition_writer.title: "Ecriture des règles d'import produits"
+    rules_execution.title: Exécution des règles
   notification:
     mass_edit_rule:
       success: Calcul des produits impactés par les règles terminé
