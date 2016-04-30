@@ -11,5 +11,11 @@ namespace Akeneo\Bundle\MeasureBundle\Family;
  */
 class DecibelFamilyInterface
 {
+    /**
+     * Family measure name
+     * @staticvar string
+     */
+    const FAMILY = 'Decibel';
+    
     const DECIBEL = 'DECIBEL';
 }
