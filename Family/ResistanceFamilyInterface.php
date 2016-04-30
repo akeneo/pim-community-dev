@@ -12,6 +12,12 @@ namespace Akeneo\Bundle\MeasureBundle\Family;
 interface ResistanceFamilyInterface
 {
     /**
+     * Family measure name
+     * @staticvar string
+     */
+    const FAMILY = 'Resistance';
+    
+    /**
      * @staticvar string
      */
     const MILLIOHM = 'MILLIOHM';
