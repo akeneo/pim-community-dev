@@ -200,3 +200,41 @@ Extend converter
 ================
 
 This bundle is extensible and we can imaginate config recovering from database or services or use converter for currencies for example.
+
+Akeneo PIM
+----------
+
+Originally written to be used in [Akeneo PIM](https://www.akeneo.com/).
+
+This extraction aims to make it usable outside of the Akeneo PIM project.
+
+Please consider that this process is still in a very experimental stage.
+
+We don't have all the tests and automation which could ensure that this component will work smoothly outside of the Akeneo PIM full stack.
+
+Documentation
+-------------
+
+Documentation is available on [docs.akeneo.com](http://docs.akeneo.com)
+
+Contributing
+------------
+
+This bundle is developed in our [main repository](https://github.com/akeneo/pim-community-dev).
+
+If you want to contribute (and we will be pleased if you do!), you'l find more information on [this page](http://docs.akeneo.com/latest/contributing/index.html).
+
+About versioning, the version 0.6.x is developed in akeneo/pim-community-dev 1.6.x.
+
+For older versions,
+ - akeneo/pim-community-dev 1.1.x uses akeneo/measure-bundle 0.1.x
+ - akeneo/pim-community-dev 1.2.x uses akeneo/measure-bundle 0.2.x
+ - akeneo/pim-community-dev 1.3.x uses akeneo/measure-bundle 0.3.x
+ - akeneo/pim-community-dev 1.4.x uses akeneo/measure-bundle 0.4.x
+ - akeneo/pim-community-dev 1.5.x uses akeneo/measure-bundle 0.5.x
+ - akeneo/pim-community-dev 1.6.x re-integrates this bundle in our main repository
+
+OSL Licence
+-----------
+
+Licence can be found [Here](https://github.com/akeneo/pim-community-dev/blob/master/LICENCE.txt).
