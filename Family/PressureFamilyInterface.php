@@ -3,7 +3,7 @@
 namespace Akeneo\Bundle\MeasureBundle\Family;
 
 /**
- * Area measures constants
+ * Pressure measures constants
  *
  * @author    Grégory Planchat <gregory@luni.fr>
  * @license   http://opensource.org/licenses/MIT MIT
