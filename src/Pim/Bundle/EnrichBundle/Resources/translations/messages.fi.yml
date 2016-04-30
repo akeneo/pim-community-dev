@@ -524,7 +524,6 @@ Required: Vaadittu
 Unique: Ainutlaatuinen
 Not required: Ei vaadittu
 Translatable: Käännettävissä
-Scopable: Scopable
 Localizable: Lokalisoitavissa
 Unique value: Yksilöllinen arvo
 Attribute group: Attribuuttiryhmä
@@ -552,7 +551,6 @@ Family: Perhe
 Available locales: Saatavilla olevat alueet
 Locale specific: Aluespesifi
 default: Oletusarvo
-Axis: Akseli
 Add attributes: Lisää attribuutteja
 Translate from: Käännä kielestä
 switch_on: Kyllä
@@ -573,7 +571,6 @@ Choose a unit: Valitse yksikkö
 No matches found: Vastaavuuksia ei löydy
 Category tree: Kategoriahierarkia
 Completeness: Valmistumisaste
-Attribute used as label: Attribuutti käytössä otsikkona
 Global: Globaali
 Channel: Kanava
 Expand all channels: Laajenna kaikki kanavat
@@ -603,7 +600,6 @@ None: Ei yhtään
 E-mail: Sähköposti
 URL: URL-osoite
 Regular expression: Tavallinen virke
-Minimum input length: Input vähimmäispituus
 Default: Oletusarvo
 Attributes: Attribuutit
 Title: Nimike
