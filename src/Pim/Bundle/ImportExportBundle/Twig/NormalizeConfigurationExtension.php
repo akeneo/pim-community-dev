@@ -63,12 +63,14 @@ class NormalizeConfigurationExtension extends \Twig_Extension
 
     /**
      * Normalize value to print intelligible data to user
+     * When value is an array, use $labels to map values on intelligible labels
      *
      * @param mixed $value
+     * @param array $labels
      *
      * @return string
      */
-    public function normalizeValueFilter($value)
+    public function normalizeValueFilter($value, $labels = [])
     {
         if (is_bool($value)) {
             return $value ? 'Yes' : 'No';
@@ -76,6 +78,10 @@ class NormalizeConfigurationExtension extends \Twig_Extension
 
         if (null === $value) {
             return 'N/A';
+        }
+
+        if (is_array($value)) {
+            return $this->normalizeArrayValue($value, $labels);
         }
 
         return (string) $value;
@@ -102,6 +108,25 @@ class NormalizeConfigurationExtension extends \Twig_Extension
         }
 
         return $this->normalizeValueFilter($value);
+    }
+
+    /**
+     * Normalize an array value to print intelligible data to user
+     *
+     * @param array $value
+     * @param array $labels
+     *
+     * @return string
+     */
+    protected function normalizeArrayValue(array $value, array $labels = [])
+    {
+        if (empty($labels)) {
+            return implode(', ', $value);
+        }
+
+        return implode(', ', array_map(function ($key) use ($labels) {
+            return array_key_exists($key, $labels) ? $labels[$key] : $key;
+        }, $value));
     }
 
     /**
