@@ -75,9 +75,8 @@ class ConnectorRegistry
      *
      * @param string $jobConnector
      * @param string $jobType
-     * @param string $jobAlias
-     * @param string $jobTitle
-     * @param string $stepTitle
+     * @param string $jobName
+     * @param string $stepName
      * @param string $stepClass
      * @param array  $services
      * @param array  $parameters
@@ -87,22 +86,21 @@ class ConnectorRegistry
     public function addStepToJob(
         $jobConnector,
         $jobType,
-        $jobAlias,
-        $jobTitle,
-        $stepTitle,
+        $jobName,
+        $stepName,
         $stepClass,
         array $services,
         array $parameters
     ) {
-        if (!isset($this->jobs[$jobType][$jobConnector][$jobAlias])) {
-            $this->jobs[$jobType][$jobConnector][$jobAlias] = $this->jobFactory->createJob($jobTitle);
+        if (!isset($this->jobs[$jobType][$jobConnector][$jobName])) {
+            $this->jobs[$jobType][$jobConnector][$jobName] = $this->jobFactory->createJob($jobName);
         }
 
         /** @var Job $job */
-        $job = $this->jobs[$jobType][$jobConnector][$jobAlias];
+        $job = $this->jobs[$jobType][$jobConnector][$jobName];
 
-        $step = $this->stepFactory->createStep($stepTitle, $stepClass, $services, $parameters);
-        $job->addStep($stepTitle, $step);
+        $step = $this->stepFactory->createStep($stepName, $stepClass, $services, $parameters);
+        $job->addStep($stepName, $step);
     }
 
     /**
@@ -110,23 +108,23 @@ class ConnectorRegistry
      *
      * @param string $jobConnector The connector
      * @param string $jobType      The job type
-     * @param string $jobAlias     The job alias
+     * @param string $jobName     The job alias
      * @param string $template     Reference to the template (format: bundle:section:template.format.engine)
      */
-    public function setJobShowTemplate($jobConnector, $jobType, $jobAlias, $template)
+    public function setJobShowTemplate($jobConnector, $jobType, $jobName, $template)
     {
-        if (!isset($this->jobs[$jobType][$jobConnector][$jobAlias])) {
+        if (!isset($this->jobs[$jobType][$jobConnector][$jobName])) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Job %s - %s - %s is not defined',
                     $jobConnector,
                     $jobType,
-                    $jobAlias
+                    $jobName
                 )
             );
         }
 
-        $job = $this->jobs[$jobType][$jobConnector][$jobAlias];
+        $job = $this->jobs[$jobType][$jobConnector][$jobName];
         $job->setShowTemplate($template);
     }
 
@@ -135,23 +133,23 @@ class ConnectorRegistry
      *
      * @param string $jobConnector The connector
      * @param string $jobType      The job type
-     * @param string $jobAlias     The job alias
+     * @param string $jobName     The job alias
      * @param string $template     Reference to the template (format: bundle:section:template.format.engine)
      */
-    public function setJobEditTemplate($jobConnector, $jobType, $jobAlias, $template)
+    public function setJobEditTemplate($jobConnector, $jobType, $jobName, $template)
     {
-        if (!isset($this->jobs[$jobType][$jobConnector][$jobAlias])) {
+        if (!isset($this->jobs[$jobType][$jobConnector][$jobName])) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Job %s - %s - %s is not defined',
                     $jobConnector,
                     $jobType,
-                    $jobAlias
+                    $jobName
                 )
             );
         }
 
-        $job = $this->jobs[$jobType][$jobConnector][$jobAlias];
+        $job = $this->jobs[$jobType][$jobConnector][$jobName];
         $job->setEditTemplate($template);
     }
 
@@ -190,12 +188,12 @@ class ConnectorRegistry
 
     /**
      * @param array  $connector
-     * @param string $jobAlias
+     * @param string $jobName
      *
      * @return Job|null
      */
-    private function getConnectorJob($connector, $jobAlias)
+    private function getConnectorJob($connector, $jobName)
     {
-        return isset($connector[$jobAlias]) ? $connector[$jobAlias] : null;
+        return isset($connector[$jobName]) ? $connector[$jobName] : null;
     }
 }
