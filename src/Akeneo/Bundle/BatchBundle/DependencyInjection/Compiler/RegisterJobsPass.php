@@ -89,8 +89,8 @@ class RegisterJobsPass implements CompilerPassInterface
             )
         );
 
-        foreach ($config['jobs'] as $alias => $job) {
-            foreach ($job['steps'] as $step) {
+        foreach ($config['jobs'] as $jobName => $job) {
+            foreach ($job['steps'] as $stepName => $step) {
                 $services = array();
                 foreach ($step['services'] as $setter => $serviceId) {
                     $services[$setter]= new Reference($serviceId);
@@ -106,9 +106,8 @@ class RegisterJobsPass implements CompilerPassInterface
                     array(
                         $config['name'],
                         $job['type'],
-                        $alias,
-                        $job['title'],
-                        $step['title'],
+                        $jobName,
+                        $stepName,
                         $step['class'],
                         $services,
                         $parameters
