@@ -151,7 +151,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAvailableAxis($locale)
+    public function findAvailableAxes($locale)
     {
         $query = $this->findAllAxisQB()
             ->select('a.id')

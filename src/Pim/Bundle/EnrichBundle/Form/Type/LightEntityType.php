@@ -68,7 +68,7 @@ class LightEntityType extends AbstractType
                 }
                 if (!$value instanceof TranslatedLabelsProviderInterface) {
                     throw new UnexpectedTypeException(
-                        'Pim\Component\Enrich\Repository\ChoicesProviderInterface',
+                        'Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface',
                         $value
                     );
                 }

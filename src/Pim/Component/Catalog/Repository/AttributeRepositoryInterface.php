@@ -165,5 +165,5 @@ interface AttributeRepositoryInterface extends
      *
      * @return array
      */
-    public function findAvailableAxis($locale);
+    public function findAvailableAxes($locale);
 }

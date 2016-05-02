@@ -80,7 +80,7 @@ class AttributeRepositorySpec extends ObjectBehavior
             ['id' => 10, 'label' => 's'],
         ]);
 
-        $this->findAvailableAxis('en_US')->shouldReturn([
+        $this->findAvailableAxes('en_US')->shouldReturn([
             11 => 'a',
             12 => 'b',
             10 => 's',
