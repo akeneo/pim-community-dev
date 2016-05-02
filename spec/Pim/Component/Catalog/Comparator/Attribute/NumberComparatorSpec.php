@@ -61,4 +61,20 @@ class NumberComparatorSpec extends ObjectBehavior
 
         $this->compare($changes, $originals)->shouldReturn(null);
     }
+
+    function it_returns_new_value_even_if_it_is_zero_if_original_was_null()
+    {
+        $originals = [];
+        $changes = ['data' => '0', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+
+        $this->compare($changes, $originals)->shouldReturn($changes);
+    }
+
+    function it_returns_null_if_there_is_no_value_set()
+    {
+        $originals = [];
+        $changes = ['data' => null, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+
+        $this->compare($changes, $originals)->shouldReturn(null);
+    }
 }
