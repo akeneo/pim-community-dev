@@ -138,12 +138,12 @@ class ConnectorRegistry
 
     /**
      * @param array  $connector
-     * @param string $jobAlias
+     * @param string $jobName
      *
      * @return Job|null
      */
-    private function getConnectorJob($connector, $jobAlias)
+    private function getConnectorJob($connector, $jobName)
     {
-        return isset($connector[$jobAlias]) ? $connector[$jobAlias] : null;
+        return isset($connector[$jobName]) ? $connector[$jobName] : null;
     }
 }
