@@ -4,6 +4,11 @@
 
 - PIM-5666: Fix product value saving with value '0'
 - PIM-5738: fix malformed query failing with sql_mode=only_full_group_by
+- PIM-5728: Fix bug in price and metric datagrid filters
+- PIM-5727: Fix permission issue on add-attribute extension on edit common attributes step
+- PIM-5754: Add labels to simple and multi select fields
+- PIM-5763: Add Boolean presenter for fields
+- PIM-5622: Fix NOT IN operator behavior for ORM groups filter
 
 ## Technical improvements
 
