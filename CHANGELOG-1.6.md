@@ -115,3 +115,12 @@
 - Remove deprecated `Pim\Bundle\BaseConnectorBundle\Reader\DummyReader`
 - Remove deprecated `Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface`
 - Remove deprecated `Pim\Bundle\BaseConnectorBundle\Validator\Import\SkipImportValidator`
+- Change constructor of `PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager`
+    remove `Doctrine\Common\Persistence\ObjectManager`
+    remove `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`
+    remove `Symfony\Component\EventDispatcher\EventDispatcherInterface`
+    remove parameter `$categoryClass`
+    That class does not extends `Pim\Bundle\CatalogBundle\Manager\CategoryManager` anymore because it has been removed en CE.
+- Change constructor of `PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType`
+    add  `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
+    remove parameter `$categoryClass`
