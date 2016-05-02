@@ -53,9 +53,7 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
             ),
             'stepExecutions' => $this->normalizeStepExecutions($object->getStepExecutions(), $format, $context),
             'isRunning'      => $object->isRunning(),
-            'status'         => $this->translator->trans(
-                sprintf('pim_import_export.batch_status.%d', $object->getStatus()->getValue())
-            )
+            'status'         => $object->getStatus()->getValue()
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Akeneo\Component\Batch\Model\JobExecution;
 use Behat\Behat\Context\Step;
 use Behat\Behat\Context\Step\Then;
 use Behat\Behat\Exception\BehaviorException;
@@ -1693,6 +1694,15 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheJobToFinish($code)
     {
+        $this->spin(function () use ($code) {
+            $jobInstance  = $this->getFixturesContext()->getJobInstance($code);
+            $jobExecution = $jobInstance->getJobExecutions()->first();
+
+            return in_array($jobExecution->getStatus(), ['COMPLETED', 'STOPPED', 'FAILED']);
+        }, 'Cannot get job execution status');
+
+
+        /*
         $condition = '$("#status").length && /(COMPLETED|STOPPED|FAILED|TERMINÉ|ARRÊTÉ|EN ÉCHEC)$/.test($("#status").text().trim())';
 
         try {
@@ -1742,6 +1752,7 @@ class WebUser extends RawMinkContext
             // Call the wait method again to trigger timeout failure
             $this->wait($condition);
         }
+        */
     }
 
     /**
