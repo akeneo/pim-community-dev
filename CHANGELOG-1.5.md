@@ -1,5 +1,14 @@
 # 1.5.x
 
+## Bug fixes
+
+- PIM-5666: Fix product value saving with value '0'
+- PIM-5728: Fix bug in price and metric datagrid filters
+- PIM-5727: Fix permission issue on add-attribute extension on edit common attributes step
+- PIM-5754: Add labels to simple and multi select fields
+- PIM-5763: Add Boolean presenter for fields
+- PIM-5622: Fix NOT IN operator behavior for ORM groups filter
+
 ## Technical improvements
 
 - PIM-5762: Removed unused category filters on product datagrids
@@ -12,8 +21,11 @@
 - PIM-5697: Fix import form when a file extension is not allowed
 - PIM-5695: Do not format price with currency if data is null
 - PIM-5643: Fix default system locale
+<<<<<<< HEAD
 - PIM-5728: Fix bug in price and metric datagrid filters
 - PIM-5666: Fix product value saving with value '0'
+=======
+>>>>>>> b63eade... Fix changelog for 1.5
 
 # 1.5.1 (2016-03-09)
 
