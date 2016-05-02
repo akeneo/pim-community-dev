@@ -115,6 +115,15 @@
 - Remove deprecated `Pim\Bundle\BaseConnectorBundle\Reader\DummyReader`
 - Remove deprecated `Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface`
 - Remove deprecated `Pim\Bundle\BaseConnectorBundle\Validator\Import\SkipImportValidator`
+- Remove deprecated `PimEnterprise/Component/CatalogRule/Validator/ExistingFieldValidator`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/Model/ProductSetValueActionInterface`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/Model/ProductSetValueAction`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/Model/ProductCopyValueActionInterface`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/Model/ProductCopyValueAction`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/Denormalizer/ProductRule/SetValueActionDenormalizer`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/Denormalizer/ProductRule/CopyValueActionDenormalizer`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/ActionApplier/SetterValueActionApplier`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/ActionApplier/CopierValueActionApplier`
 - Change constructor of `PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager`
     remove `Doctrine\Common\Persistence\ObjectManager`
     remove `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`
