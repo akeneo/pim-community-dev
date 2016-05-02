@@ -100,10 +100,7 @@ class GroupController
      */
     public function indexAction()
     {
-        $groupTypes = $this->groupTypeRepository->findTypeIds(
-            false,
-            $this->userContext->getCurrentLocaleCode()
-        );
+        $groupTypes = $this->groupTypeRepository->findTypeIds(false);
 
         return [
             'groupTypes' => $groupTypes

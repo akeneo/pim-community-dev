@@ -1,6 +1,6 @@
 parameters:
     pim_enrich.repository.sequential_edit.class:  Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository
-    ## Searchable reositories
+    ## Searchable repositories
     pim_enrich.repository.family.search.class:    Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository
     pim_enrich.repository.attribute.search.class: Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository
 
@@ -21,7 +21,7 @@ services:
         tags:
             - { name: 'pim_repository' }
 
-    ## Searchable reositories
+    ## Searchable repositories
     pim_enrich.repository.family.search:
         class: '%pim_enrich.repository.family.search.class%'
         arguments:

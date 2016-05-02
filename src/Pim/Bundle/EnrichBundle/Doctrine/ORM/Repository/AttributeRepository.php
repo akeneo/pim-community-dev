@@ -44,7 +44,7 @@ class AttributeRepository extends EntityRepository implements TranslatedLabelsPr
             ->orderBy('g.sortOrder, a.sortOrder')
             ->setParameter('locale_code', $this->userContext->getCurrentLocaleCode());
 
-        if (isset ($options['excluded_attribute_ids']) && !empty($options['excluded_attribute_ids'])) {
+        if (isset($options['excluded_attribute_ids']) && !empty($options['excluded_attribute_ids'])) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->notIn('a.id', $options['excluded_attribute_ids'])
             );

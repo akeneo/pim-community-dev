@@ -99,10 +99,7 @@ class VariantGroupController extends GroupController
      */
     public function indexAction()
     {
-        $groupTypes = $this->groupTypeRepository->findTypeIds(
-            true,
-            $this->userContext->getCurrentLocaleCode()
-        );
+        $groupTypes = $this->groupTypeRepository->findTypeIds(true);
 
         return [
             'groupTypes' => $groupTypes

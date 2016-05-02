@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,9 +24,6 @@ class AvailableAttributesType extends AbstractType
     /** @var TranslatedLabelsProviderInterface */
     protected $attributeRepository;
 
-    /** @var UserContext */
-    protected $userContext;
-
     /** @var TranslatorInterface */
     protected $translator;
 
@@ -38,9 +34,9 @@ class AvailableAttributesType extends AbstractType
      * Constructor
      *
      * @param TranslatedLabelsProviderInterface $attributeRepository
-     * @param TranslatorInterface      $translator
-     * @param string                   $attributeClass
-     * @param string                   $dataClass
+     * @param TranslatorInterface               $translator
+     * @param string                            $attributeClass
+     * @param string                            $dataClass
      */
     public function __construct(
         TranslatedLabelsProviderInterface $attributeRepository,
