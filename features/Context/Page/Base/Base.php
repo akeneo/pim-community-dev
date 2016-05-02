@@ -99,7 +99,7 @@ class Base extends Page
     {
         $this->spin(function () use ($locator) {
             return parent::findField($locator);
-        })->setValue($value);
+        }, sprintf('Cannot find field "%s"', $locator))->setValue($value);
     }
 
     /**
@@ -158,7 +158,7 @@ class Base extends Page
         if (!$subtitle || !$separator || !$name) {
             $titleElt = $this->spin(function () {
                 return $this->getElement('Product title')->find('css', '.product-label');
-            }, "Could not find the page title");
+            }, 'Could not find the page title');
 
             return $titleElt->getText();
         }
@@ -210,7 +210,7 @@ class Base extends Page
     {
         // Search with exact name at first
         $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
-        
+
         if (null === $button) {
             $button = $this->find('xpath', sprintf("//a[text() = '%s']", $locator));
         }

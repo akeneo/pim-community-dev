@@ -19,7 +19,7 @@ trait SpinCapableTrait
      *
      * @return mixed
      */
-    public function spin($callable, $message = null)
+    public function spin($callable, $message)
     {
         $start   = microtime(true);
         $timeout = FeatureContext::getTimeout() / 1000.0;
@@ -45,10 +45,6 @@ trait SpinCapableTrait
             !$result &&
             !$previousException instanceof TimeoutException
         );
-
-        if (null === $message) {
-            $message = (null !== $previousException) ? $previousException->getMessage() : 'no message';
-        }
 
         if (!$result) {
             $infos = sprintf('Spin : timeout of %d excedeed, with message : %s', $timeout, $message);

@@ -325,7 +325,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             parent::clickLink($link);
 
             return true;
-        });
+        }, sprintf('Cannot click on the link "%s"', $link));
     }
 
     /**
@@ -337,7 +337,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             parent::assertNumElements($num, $element);
 
             return true;
-        });
+        }, sprintf('Spining for asserting "%d" num elements', $num));
     }
 
     /**

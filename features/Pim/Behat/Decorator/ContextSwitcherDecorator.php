@@ -28,7 +28,7 @@ class ContextSwitcherDecorator extends ElementDecorator
 
         $toggle = $this->spin(function () use ($dropdown) {
             return $dropdown->find('css', '.dropdown-toggle');
-        });
+        }, 'Cannot find ".dropdown-toggle" element in locale switcher');
         $toggle->click();
 
         $option = $this->spin(function () use ($dropdown, $localeCode) {
@@ -38,7 +38,7 @@ class ContextSwitcherDecorator extends ElementDecorator
     }
 
     /**
-     * @param string $locale
+     * @param string $localeCode
      *
      * @return bool
      */
@@ -72,7 +72,7 @@ class ContextSwitcherDecorator extends ElementDecorator
 
         $toggle = $this->spin(function () use ($dropdown) {
             return $dropdown->find('css', '.dropdown-toggle');
-        });
+        }, 'Cannot find ".dropdown-toggle" element in scope switcher');
         $toggle->click();
 
         $option = $this->spin(function () use ($dropdown, $scopeCode) {

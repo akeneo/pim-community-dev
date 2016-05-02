@@ -109,7 +109,7 @@ class TreeContext extends PimContext
             try {
                 $checkbox = $this->spin(function () use ($node) {
                     return $node->find('css', '.jstree-checkbox');
-                });
+                }, 'Cannot find ".jstree-checkbox" element in JS tree');
             } catch (\Exception $e) {
                 $checkbox = null;
             }
