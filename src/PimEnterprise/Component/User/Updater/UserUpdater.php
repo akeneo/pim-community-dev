@@ -3,7 +3,6 @@
 namespace PimEnterprise\Component\User\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\User\Updater\UserUpdater as BaseUserUpdater;

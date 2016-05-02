@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraint;
  *
  * @deprecated will be removed in 1.6 please use ExistingFilterField, ExistingAddField, ExistingSetField or
  *             ExistingCopierField
+ *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class ExistingField extends Constraint

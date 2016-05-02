@@ -20,6 +20,7 @@ use PimEnterprise\Component\CatalogRule\Model\FieldImpactActionInterface;
  * for a scope and a locale.
  *
  * For example : set description-fr_FR-ecommerce to 'foo'
+ *
  * @deprecated will be removed in 1.6 please use
  *             PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface
  *

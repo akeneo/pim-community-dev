@@ -12,7 +12,6 @@
 namespace Akeneo\Component\RuleEngine\ActionApplier;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
-use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 
 /**
  * Action applier registry interface

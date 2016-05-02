@@ -156,7 +156,7 @@ class ProductDraftController
      * @param Request $request
      * @param mixed   $id
      * @param string  $code
-     * @param string  $action either "approve" or "refuse"
+     * @param string  $action  either "approve" or "refuse"
      *
      * @throws NotFoundHttpException
      * @throws \LogicException
@@ -214,7 +214,7 @@ class ProductDraftController
      *
      * @param Request $request
      * @param mixed   $id
-     * @param string  $action either "approve" or "refuse"
+     * @param string  $action  either "approve" or "refuse"
      *
      * @throws \LogicException
      * @throws AccessDeniedHttpException

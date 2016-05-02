@@ -20,6 +20,7 @@ use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
  * Setter value action applier
  *
  * @author Julien Sanchez <julien@akeneo.com>
+ *
  * @deprecated will be removed in 1.6 please use
  *             PimEnterprise\Component\CatalogRule\ActionApplier\SetterActionApplier
  */

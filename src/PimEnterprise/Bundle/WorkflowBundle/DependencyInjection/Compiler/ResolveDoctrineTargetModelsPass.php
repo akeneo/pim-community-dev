@@ -26,18 +26,12 @@ class ResolveDoctrineTargetModelsPass extends AbstractResolveDoctrineTargetModel
     protected function getParametersMapping()
     {
         return [
-            'PimEnterprise\Component\Workflow\Model\PublishedProductInterface'             =>
-                'pimee_workflow.entity.published_product.class',
-            'PimEnterprise\Component\Workflow\Model\PublishedProductValueInterface'        =>
-                'pimee_workflow.entity.published_product_value.class',
-            'PimEnterprise\Component\Workflow\Model\PublishedProductMetricInterface'       =>
-                'pimee_workflow.entity.published_product_metric.class',
-            'PimEnterprise\Component\Workflow\Model\PublishedProductPriceInterface'        =>
-                'pimee_workflow.entity.published_product_price.class',
-            'PimEnterprise\Component\Workflow\Model\PublishedProductCompletenessInterface' =>
-                'pimee_workflow.entity.published_product_completeness.class',
-            'PimEnterprise\Component\Workflow\Model\PublishedProductAssociationInterface'  =>
-                'pimee_workflow.entity.published_product_association.class',
+            'PimEnterprise\Component\Workflow\Model\PublishedProductInterface'             => 'pimee_workflow.entity.published_product.class',
+            'PimEnterprise\Component\Workflow\Model\PublishedProductValueInterface'        => 'pimee_workflow.entity.published_product_value.class',
+            'PimEnterprise\Component\Workflow\Model\PublishedProductMetricInterface'       => 'pimee_workflow.entity.published_product_metric.class',
+            'PimEnterprise\Component\Workflow\Model\PublishedProductPriceInterface'        => 'pimee_workflow.entity.published_product_price.class',
+            'PimEnterprise\Component\Workflow\Model\PublishedProductCompletenessInterface' => 'pimee_workflow.entity.published_product_completeness.class',
+            'PimEnterprise\Component\Workflow\Model\PublishedProductAssociationInterface'  => 'pimee_workflow.entity.published_product_association.class',
         ];
     }
 }

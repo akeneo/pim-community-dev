@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Formatter\Property\ProductValue;
 
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;

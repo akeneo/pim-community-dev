@@ -142,7 +142,6 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
         foreach ($familyReqs[$channel->getCode()] as $requirement) {
             $fieldName = $this->getNormalizedFieldName($requirement->getAttribute(), $channel, $locale);
 
-
             $attribute = $requirement->getAttribute();
             $shouldExistInLocale = !$attribute->isLocaleSpecific() || $attribute->hasLocaleSpecific($locale);
 

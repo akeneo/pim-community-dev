@@ -350,8 +350,8 @@ class CategoryAccessManager
     /**
      * Delete accesses on categories
      *
-     * @param integer[] $categoryIds
-     * @param Group     $group
+     * @param int[] $categoryIds
+     * @param Group $group
      */
     protected function removeAccesses($categoryIds, Group $group)
     {
@@ -362,7 +362,7 @@ class CategoryAccessManager
     /**
      * Add accesses on categories, a null permission will be resolved as false
      *
-     * @param integer[] $categoryIds
+     * @param int[]     $categoryIds
      * @param Group     $group
      * @param bool|null $view
      * @param bool|null $edit
@@ -393,7 +393,7 @@ class CategoryAccessManager
     /**
      * Update accesses on categories, if a permission is null we don't update
      *
-     * @param integer[] $categoryIds
+     * @param int[]     $categoryIds
      * @param Group     $group
      * @param bool|null $view
      * @param bool|null $edit

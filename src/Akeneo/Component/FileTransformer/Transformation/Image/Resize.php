@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Akeneo\Component\FileTransformer\Transformation\Image;
 
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageHeightException;
@@ -16,7 +15,6 @@ use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\Image
 use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterface;
 use Akeneo\Component\FileTransformer\Transformation\AbstractTransformation;
 use Imagine\Gd\Imagine;
-use Imagine\Image\Box;
 
 /**
  * Transform the size of an image without scaling

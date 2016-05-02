@@ -32,9 +32,9 @@ class ProductVersionController
     protected $versionClass;
 
     /**
-     * @param ManagerRegistry          $doctrine
-     * @param string                   $versionClass
-     * @param ProductReverter          $reverter
+     * @param ManagerRegistry $doctrine
+     * @param string          $versionClass
+     * @param ProductReverter $reverter
      */
     public function __construct(
         ManagerRegistry $doctrine,
@@ -70,10 +70,11 @@ class ProductVersionController
     /**
      * Find an entity or throw a 404
      *
-     * @param string  $className Example: 'PimCatalogBundle:Category'
-     * @param integer $id        The id of the entity
+     * @param string $className Example: 'PimCatalogBundle:Category'
+     * @param int    $id        The id of the entity
      *
      * @throws NotFoundHttpException
+     *
      * @return object
      */
     protected function findOr404($className, $id)

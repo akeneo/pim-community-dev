@@ -62,9 +62,9 @@ class RefuseNotificationSubscriber extends AbstractProposalStateNotificationSubs
         $this->send($event, $messageInfos);
     }
 
-   /**
-    * {@inheritdoc}
-    */
+    /**
+     * {@inheritdoc}
+     */
     protected function send(GenericEvent $event, array $messageInfos)
     {
         $productDraft = $event->getSubject();

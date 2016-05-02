@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository as BaseAttributeSearchableRepository;
 
 /**

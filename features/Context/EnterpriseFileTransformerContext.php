@@ -4,7 +4,6 @@ namespace Context;
 
 use Akeneo\Component\FileTransformer\Transformation\TransformationInterface;
 use Behat\Gherkin\Node\TableNode;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Pim\Behat\Context\PimContext;
 use Symfony\Component\Process\ExecutableFinder;
 
@@ -37,7 +36,6 @@ class EnterpriseFileTransformerContext extends PimContext
 
         $this->imageFile = $file;
     }
-
 
     /**
      * @Then /^the result file should be the same than "([^"]*)"$/

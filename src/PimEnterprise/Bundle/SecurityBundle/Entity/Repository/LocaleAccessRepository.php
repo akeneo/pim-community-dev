@@ -87,7 +87,7 @@ class LocaleAccessRepository extends EntityRepository implements IdentifiableObj
     {
         list($localeCode, $userGroupName) = explode('.', $identifier);
 
-        /**
+        /*
          * We need to get the Locale class to create a join between locale accesses and locales. We can not easily
          * inject it because of circular references and EntityRepository extension.
          * The least worst solution is to use the association mapping, to get the target entity.

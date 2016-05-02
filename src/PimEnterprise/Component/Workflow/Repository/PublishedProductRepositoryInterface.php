@@ -40,7 +40,7 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
     /**
      * Fetch a published product by the working copy product id
      *
-     * @param string|integer $originalProductId
+     * @param string|int $originalProductId
      *
      * @return PublishedProductInterface
      */
@@ -49,7 +49,7 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
     /**
      * Fetch a published product by the version
      *
-     * @param string|integer $versionId
+     * @param string|int $versionId
      *
      * @return PublishedProductInterface
      */
@@ -78,7 +78,7 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      * Get the ID's of all published products.
      * The keys of the array are the ID of the original product.
      *
-     * @param integer[] $originalIds
+     * @param int[] $originalIds
      *
      * @return array [ original product ID => published product ID ]
      */

@@ -3,7 +3,6 @@
 namespace PimEnterprise\Behat\Context;
 
 use Akeneo\Component\Batch\Model\JobInstance;
-use Behat\Behat\Context\Step;
 use Pim\Behat\Context\JobContext as BaseJobContext;
 
 class JobContext extends BaseJobContext

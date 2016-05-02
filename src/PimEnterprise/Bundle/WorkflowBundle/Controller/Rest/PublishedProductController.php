@@ -91,11 +91,12 @@ class PublishedProductController
     /**
      * Publish a product
      *
-     * @param Request        $request
+     * @param Request $request
      *
      * @AclAncestor("pimee_workflow_published_product_index")
      *
      * @throws AccessDeniedException
+     *
      * @return JsonResponse
      */
     public function publishAction(Request $request)
@@ -115,11 +116,12 @@ class PublishedProductController
     /**
      * Unpublish a product
      *
-     * @param Request        $request
+     * @param Request $request
      *
      * @AclAncestor("pimee_workflow_published_product_index")
      *
      * @throws AccessDeniedException
+     *
      * @return JsonResponse
      */
     public function unpublishAction(Request $request)
@@ -139,11 +141,11 @@ class PublishedProductController
     /**
      * Find a published product by its original product id or return a 404 response
      *
-     * @param integer|string $publishedProductId
+     * @param int|string $publishedProductId
      *
      * @throws NotFoundHttpException
-     * @return PublishedProductInterface
      *
+     * @return PublishedProductInterface
      */
     protected function findPublishedOr404($publishedProductId)
     {
@@ -162,11 +164,11 @@ class PublishedProductController
     /**
      * Find a published product by its original product id or return a 404 response
      *
-     * @param integer|string $originalProductId
+     * @param int|string $originalProductId
      *
      * @throws NotFoundHttpException
-     * @return PublishedProductInterface
      *
+     * @return PublishedProductInterface
      */
     protected function findPublishedByOriginalIdOr404($originalProductId)
     {
@@ -185,11 +187,11 @@ class PublishedProductController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param integer|string $originalProductId
+     * @param int|string $originalProductId
      *
      * @throws NotFoundHttpException
-     * @return PublishedProductInterface
      *
+     * @return PublishedProductInterface
      */
     protected function findOr404($originalProductId)
     {

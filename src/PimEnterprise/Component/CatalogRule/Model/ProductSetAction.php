@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Component\CatalogRule\Model;
 
-use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
-
 /**
  * Set action is used in product rules.
  * A set action is used to set data to a product value

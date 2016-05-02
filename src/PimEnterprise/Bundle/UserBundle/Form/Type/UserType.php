@@ -10,7 +10,6 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;

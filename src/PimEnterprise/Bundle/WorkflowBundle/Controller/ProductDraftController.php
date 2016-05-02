@@ -153,7 +153,7 @@ class ProductDraftController
     /**
      * @param Request    $request
      * @param int|string $id
-     * @param string     $action either "approve" or "refuse"
+     * @param string     $action  either "approve" or "refuse"
      *
      * @throws \LogicException
      * @throws NotFoundHttpException

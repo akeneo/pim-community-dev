@@ -15,7 +15,6 @@ use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Pim\Component\Connector\Exception\MissingIdentifierException;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\Security\Model\JobProfileAccessInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

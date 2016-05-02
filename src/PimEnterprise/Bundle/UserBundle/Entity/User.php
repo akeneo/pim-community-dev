@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\UserBundle\Entity\User as BaseUser;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
@@ -25,7 +24,7 @@ class User extends BaseUser implements UserInterface
     /** @var int The delay in days to send an email before the expiration of an asset */
     protected $assetDelayReminder = 5;
 
-     /** @var CategoryInterface */
+    /** @var CategoryInterface */
     protected $defaultAssetTree;
 
     /** @var bool Be notified when the user receives a proposal to review */

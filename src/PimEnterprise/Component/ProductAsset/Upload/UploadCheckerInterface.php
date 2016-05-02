@@ -33,8 +33,6 @@ interface UploadCheckerInterface
      * @param ParsedFilenameInterface $parsedFilename
      *
      * @throws UploadException
-     *
-     * @return null
      */
     public function validateFilenameFormat(ParsedFilenameInterface $parsedFilename);
 
@@ -46,8 +44,6 @@ interface UploadCheckerInterface
      * @param string                  $tmpScheduleDir Temporary directory for scheduled files
      *
      * @throws UploadException
-     *
-     * @return null
      */
     public function validateUpload(ParsedFilenameInterface $parsedFilename, $tmpUploadDir, $tmpScheduleDir);
 }

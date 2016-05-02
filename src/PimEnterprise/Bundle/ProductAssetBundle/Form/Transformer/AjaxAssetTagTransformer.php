@@ -128,7 +128,6 @@ class AjaxAssetTagTransformer implements DataTransformerInterface
      * @throws \LogicException
      *
      * @return object
-     *
      */
     protected function reverseTransformSimple($value)
     {

@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Factory\AttributeFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
@@ -30,7 +29,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class ProductDraftChangesExtension extends \Twig_Extension
 {
-     /** @var IdentifiableObjectRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
      protected $attributeRepository;
 
     /** @var \Diff_Renderer_Html_Array */
@@ -52,11 +51,11 @@ class ProductDraftChangesExtension extends \Twig_Extension
     protected $twig;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface       $attributeRepository
-     * @param RendererInterface       $renderer
-     * @param TranslatorInterface     $translator
-     * @param ProductBuilderInterface $productBuilder
-     * @param AttributeFactory        $attributeFactory
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param RendererInterface                     $renderer
+     * @param TranslatorInterface                   $translator
+     * @param ProductBuilderInterface               $productBuilder
+     * @param AttributeFactory                      $attributeFactory
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,

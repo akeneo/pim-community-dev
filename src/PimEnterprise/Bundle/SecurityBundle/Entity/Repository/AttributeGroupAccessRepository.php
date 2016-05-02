@@ -155,7 +155,7 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
      * @param UserInterface $user
      * @param string        $accessLevel
      *
-     * @return integer[]
+     * @return int[]
      */
     public function getGrantedAttributeGroupIds(UserInterface $user, $accessLevel)
     {
@@ -170,7 +170,7 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
      * @param UserInterface $user
      * @param string        $accessLevel
      *
-     * @return integer[]
+     * @return int[]
      */
     public function getRevokedAttributeGroupIds(UserInterface $user, $accessLevel)
     {
@@ -191,7 +191,7 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
      * @param UserInterface $user
      * @param string        $accessLevel
      *
-     * @return integer[]
+     * @return int[]
      */
     public function getRevokedAttributeIds(UserInterface $user, $accessLevel)
     {
@@ -218,9 +218,9 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
      *
      * @param UserInterface $user
      * @param string        $accessLevel
-     * @param integer[]     $filterableIds
+     * @param int[]         $filterableIds
      *
-     * @return integer[]
+     * @return int[]
      */
     public function getGrantedAttributeIds(UserInterface $user, $accessLevel, array $filterableIds = [])
     {
@@ -258,7 +258,7 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
      *
      * @param QueryBuilder $qb
      *
-     * @return integer[]
+     * @return int[]
      */
     protected function hydrateAsIds(QueryBuilder $qb)
     {
@@ -323,6 +323,6 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
             ->setParameter('attributeGroupCode', $attributeGroupCode)
             ->setParameter('userGroupName', $userGroupName);
 
-         return $qb->getQuery()->getOneOrNullResult();
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

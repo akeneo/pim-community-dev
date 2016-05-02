@@ -20,11 +20,11 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
-use PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -106,7 +106,7 @@ class ProductDraftManager
      * @param AttributeInterface    $attribute
      * @param LocaleInterface|null  $locale
      * @param ChannelInterface|null $channel
-     * @param array                 $context ['comment' => string|null]
+     * @param array                 $context      ['comment' => string|null]
      *
      * @throws DraftNotReviewableException If the $productDraft is not ready to be reviewed or if no permission
      *                                     to approve the given change.
@@ -157,7 +157,7 @@ class ProductDraftManager
      * not all changes can be approved, a "partial approval" is done instead.
      *
      * @param ProductDraftInterface $productDraft
-     * @param array                 $context ['comment' => string|null]
+     * @param array                 $context      ['comment' => string|null]
      *
      * @throws DraftNotReviewableException If the $productDraft is not ready to be reviewed.
      */
@@ -199,10 +199,10 @@ class ProductDraftManager
      * @param AttributeInterface    $attribute
      * @param LocaleInterface|null  $locale
      * @param ChannelInterface|null $channel
-     * @param array                 $context ['comment' => string|null]
+     * @param array                 $context      ['comment' => string|null]
      *
      * @throws DraftNotReviewableException If the $productDraft is not ready to be reviewed or if no permission to
-     * refuse the given change.
+     *                                     refuse the given change.
      */
     public function refuseChange(
         ProductDraftInterface $productDraft,

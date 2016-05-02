@@ -135,7 +135,6 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      * @throws \LogicException
      *
      * @return array
-     *
      */
     protected function retrieveChannelTransformationsConfiguration(ChannelInterface $channel)
     {
@@ -157,7 +156,6 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      * @throws \LogicException
      *
      * @return FileInfoInterface
-     *
      */
     protected function retrieveSourceFileInfo(VariationInterface $variation)
     {

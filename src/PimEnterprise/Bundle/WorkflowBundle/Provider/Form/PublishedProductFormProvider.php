@@ -12,9 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Provider\Form;
 
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
-use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Form provider for published product

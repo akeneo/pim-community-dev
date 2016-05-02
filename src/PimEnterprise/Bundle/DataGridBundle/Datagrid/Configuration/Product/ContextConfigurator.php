@@ -34,7 +34,7 @@ class ContextConfigurator extends BaseContextConfigurator
     /** @var AttributeGroupAccessRepository */
     protected $accessRepository;
 
-    /** @param integer[] */
+    /** @param int[] */
     protected $grantedGroupIds;
 
     /** @var UserContext */
@@ -75,7 +75,7 @@ class ContextConfigurator extends BaseContextConfigurator
      *
      * @param string[] $attributeCodes
      *
-     * @return integer[]
+     * @return int[]
      */
     protected function getAttributeIds($attributeCodes = null)
     {
@@ -88,7 +88,7 @@ class ContextConfigurator extends BaseContextConfigurator
     /**
      * Get allowed group ids
      *
-     * @return integer[]
+     * @return int[]
      */
     protected function getGrantedGroupIds()
     {

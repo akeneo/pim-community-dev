@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Behat\Context;
 
-use Behat\Behat\Context\Step;
 use Pim\Behat\Context\PimContext;
 
 class DashboardContext extends PimContext

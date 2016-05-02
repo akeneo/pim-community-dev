@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes as BaseEditCommonAttributes;
 
 /**

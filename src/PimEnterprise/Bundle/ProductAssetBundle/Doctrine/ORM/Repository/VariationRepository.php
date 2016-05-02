@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
 

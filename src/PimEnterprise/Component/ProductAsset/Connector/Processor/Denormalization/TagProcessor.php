@@ -118,7 +118,7 @@ class TagProcessor extends AbstractProcessor
     {
         $tag = $this->findObject($this->repository, ['code' => $tag]);
 
-        return (null === $tag ? $this->tagFactory->createTag() : null);
+        return null === $tag ? $this->tagFactory->createTag() : null;
     }
 
     /**

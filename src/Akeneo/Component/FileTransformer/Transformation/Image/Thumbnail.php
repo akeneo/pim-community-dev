@@ -8,13 +8,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Akeneo\Component\FileTransformer\Transformation\Image;
 
 use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterface;
 use Akeneo\Component\FileTransformer\Transformation\AbstractTransformation;
-use Imagine\Image\Box;
-use Imagine\Imagick\Imagine;
 
 /**
  * Transform an image to a thumbnail
