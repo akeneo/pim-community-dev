@@ -952,7 +952,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iMassEditEntities($entities)
     {
         return [
-            new Step\Then('I change the page size to 100'),
             new Step\Then(sprintf('I select rows %s', $entities)),
             new Step\Then('I press mass-edit button')
         ];
@@ -1025,7 +1024,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iMassDelete($entities)
     {
         return [
-            new Step\Then('I change the page size to 100'),
             new Step\Then(sprintf('I select rows %s', $entities)),
             new Step\Then('I press mass-delete button')
         ];
