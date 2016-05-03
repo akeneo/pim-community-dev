@@ -8,14 +8,15 @@ use Akeneo\Component\Batch\Job\BatchStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Pim\Bundle\ImportExportBundle\Provider\JobLabelProvider;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class StepExecutionNormalizerSpec extends ObjectBehavior
 {
-    function let(TranslatorInterface $translator, PresenterInterface $presenter)
+    function let(TranslatorInterface $translator, PresenterInterface $presenter, JobLabelProvider $labelProvider)
     {
-        $this->beConstructedWith($translator, $presenter);
+        $this->beConstructedWith($translator, $presenter, $labelProvider);
     }
 
     function it_is_a_normalizer()
@@ -31,11 +32,11 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_step_execution(
         $translator,
         $presenter,
+        $labelProvider,
         StepExecution $stepExecution,
         BatchStatus $status
     ) {
-        $stepExecution->getStepName()->willReturn('export');
-        $translator->trans('export')->willReturn('Export step');
+        $labelProvider->getStepLabel($stepExecution)->willReturn('Export step');
 
         $stepExecution->getSummary()->willReturn(['read' => 12, 'write' => 50]);
         $translator->trans('job_execution.summary.read')->willReturn('Read');
@@ -49,20 +50,16 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
         $stepExecution->getStartTime()->willReturn($date);
         $stepExecution->getEndTime()->willReturn(null);
 
-        $stepExecution->getWarnings()->willReturn(
-            new ArrayCollection(
-                [
-                    new Warning(
-                        $stepExecution->getWrappedObject(),
-                        'a_warning',
-                        'warning_reason',
-                        ['foo' => 'bar'],
-                        ['a' => 'A', 'b' => 'B', 'c' => 'C']
-                    )
-                ]
-            )
+        $warning = new Warning(
+            $stepExecution->getWrappedObject(),
+            'a_warning',
+            'warning_reason',
+            ['foo' => 'bar'],
+            ['a' => 'A', 'b' => 'B', 'c' => 'C']
         );
-        $translator->trans('a_warning')->willReturn('Reader');
+
+        $stepExecution->getWarnings()->willReturn(new ArrayCollection([$warning]));
+        $labelProvider->getStepWarningLabel($warning)->willReturn('Reader');
         $translator->trans(12)->willReturn(12);
         $translator->trans(50)->willReturn(50);
         $translator->trans('warning_reason', ['foo' => 'bar'])->willReturn('WARNING!');
