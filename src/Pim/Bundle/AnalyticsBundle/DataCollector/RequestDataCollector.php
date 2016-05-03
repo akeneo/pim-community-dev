@@ -6,7 +6,7 @@ use Akeneo\Component\Analytics\DataCollectorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Class RequestDataCollector
+ * Returns the IP address of the PIM host
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

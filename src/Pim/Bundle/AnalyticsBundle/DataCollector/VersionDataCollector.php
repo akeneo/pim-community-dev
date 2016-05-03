@@ -3,10 +3,16 @@
 namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
+use Pim\Bundle\AnalyticsBundle\Provider\StorageVersionProvider;
 use Pim\Bundle\CatalogBundle\VersionProviderInterface;
 
 /**
- * Class VersionDataCollector
+ * Returns basic data about the PIM
+ * - edition (CE or EE)
+ * - version
+ * - storage (ORM or MongoDB)
+ * - environment (prod, dev, test)
+ * - date of installation
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -14,9 +20,6 @@ use Pim\Bundle\CatalogBundle\VersionProviderInterface;
  */
 class VersionDataCollector implements DataCollectorInterface
 {
-    /** @var VersionProviderInterface */
-    protected $versionProvider;
-
     /** @var string */
     protected $catalogStorage;
 
@@ -25,6 +28,9 @@ class VersionDataCollector implements DataCollectorInterface
 
     /** @var string */
     protected $installTime;
+
+    /** @var VersionProviderInterface */
+    protected $versionProvider;
 
     /**
      * @param VersionProviderInterface $versionProvider

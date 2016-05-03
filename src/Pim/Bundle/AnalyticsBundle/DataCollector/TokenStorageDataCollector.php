@@ -6,7 +6,7 @@ use Akeneo\Component\Analytics\DataCollectorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
- * Class TokenStorageDataCollector
+ * Returns the ID of the current user
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
