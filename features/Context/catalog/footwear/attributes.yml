@@ -85,6 +85,7 @@ attributes:
         type:  pim_catalog_text
         useableAsGridFilter: true
         maxCharacters:       255
+        sortOrder:           0
     price:
         labels:
             en_US: Price
@@ -278,6 +279,7 @@ attributes:
         group: other
         decimalsAllowed:     false
         negativeAllowed:     false
+        sortOrder:           1
     destocking_date:
         labels:
             en_US: Destocking date
@@ -365,7 +367,8 @@ attributes:
     123:
         labels:
             en_US: Attribute 123
-        type:  pim_catalog_text
+        type:                pim_catalog_text
         useableAsGridFilter: true
-        group: other
-        maxCharacters: 255
+        group:               other
+        maxCharacters:       255
+        sortOrder:           2
