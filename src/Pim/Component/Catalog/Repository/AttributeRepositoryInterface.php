@@ -61,7 +61,7 @@ interface AttributeRepositoryInterface extends
      *
      * @return QueryBuilder
      */
-    public function findAllAxisQB();
+    public function findAllAxesQB();
 
     /**
      * Get attribute as array indexed by code

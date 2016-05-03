@@ -5,10 +5,8 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -54,9 +52,6 @@ class GroupController
     /** @var RemoverInterface */
     protected $groupRemover;
 
-    /** @var UserContext */
-    protected $userContext;
-
     /**
      * @param Request                      $request
      * @param EngineInterface              $templating
@@ -66,7 +61,6 @@ class GroupController
      * @param FormInterface                $groupForm
      * @param GroupFactory                 $groupFactory
      * @param RemoverInterface             $groupRemover
-     * @param UserContext                  $userContext
      */
     public function __construct(
         Request $request,
@@ -76,8 +70,7 @@ class GroupController
         HandlerInterface $groupHandler,
         FormInterface $groupForm,
         GroupFactory $groupFactory,
-        RemoverInterface $groupRemover,
-        UserContext $userContext
+        RemoverInterface $groupRemover
     ) {
         $this->request             = $request;
         $this->templating          = $templating;
@@ -87,7 +80,6 @@ class GroupController
         $this->groupForm           = $groupForm;
         $this->groupFactory        = $groupFactory;
         $this->groupRemover        = $groupRemover;
-        $this->userContext         = $userContext;
     }
 
     /**

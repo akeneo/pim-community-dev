@@ -22,7 +22,7 @@ class AvailableAttributesType extends AbstractType
     protected $attributeClass;
 
     /** @var TranslatedLabelsProviderInterface */
-    protected $attributeRepository;
+    protected $attributeProvider;
 
     /** @var TranslatorInterface */
     protected $translator;
@@ -33,21 +33,21 @@ class AvailableAttributesType extends AbstractType
     /**
      * Constructor
      *
-     * @param TranslatedLabelsProviderInterface $attributeRepository
+     * @param TranslatedLabelsProviderInterface $attributeProvider
      * @param TranslatorInterface               $translator
      * @param string                            $attributeClass
      * @param string                            $dataClass
      */
     public function __construct(
-        TranslatedLabelsProviderInterface $attributeRepository,
+        TranslatedLabelsProviderInterface $attributeProvider,
         TranslatorInterface $translator,
         $attributeClass,
         $dataClass
     ) {
-        $this->attributeClass      = $attributeClass;
-        $this->attributeRepository = $attributeRepository;
-        $this->translator          = $translator;
-        $this->dataClass           = $dataClass;
+        $this->attributeClass    = $attributeClass;
+        $this->attributeProvider = $attributeProvider;
+        $this->translator        = $translator;
+        $this->dataClass         = $dataClass;
     }
 
     /**
@@ -59,7 +59,7 @@ class AvailableAttributesType extends AbstractType
             'attributes',
             'light_entity',
             [
-                'repository'         => $this->attributeRepository,
+                'repository'         => $this->attributeProvider,
                 'repository_options' => [
                     'excluded_attribute_ids' => $options['excluded_attributes'],
                 ],

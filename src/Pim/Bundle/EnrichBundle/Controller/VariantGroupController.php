@@ -5,7 +5,6 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -13,7 +12,6 @@ use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Manager\VariantGroupAttributesResolver;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Pim\Component\Enrich\Model\AvailableAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -53,7 +51,6 @@ class VariantGroupController extends GroupController
      * @param FormInterface                  $groupForm
      * @param GroupFactory                   $groupFactory
      * @param RemoverInterface               $groupRemover
-     * @param UserContext                    $userContext
      * @param FormFactoryInterface           $formFactory
      * @param AttributeRepositoryInterface   $attributeRepository
      * @param VariantGroupAttributesResolver $groupAttrResolver
@@ -67,7 +64,6 @@ class VariantGroupController extends GroupController
         FormInterface $groupForm,
         GroupFactory $groupFactory,
         RemoverInterface $groupRemover,
-        UserContext $userContext,
         FormFactoryInterface $formFactory,
         AttributeRepositoryInterface $attributeRepository,
         VariantGroupAttributesResolver $groupAttrResolver
@@ -80,8 +76,7 @@ class VariantGroupController extends GroupController
             $groupHandler,
             $groupForm,
             $groupFactory,
-            $groupRemover,
-            $userContext
+            $groupRemover
         );
 
         $this->formFactory         = $formFactory;

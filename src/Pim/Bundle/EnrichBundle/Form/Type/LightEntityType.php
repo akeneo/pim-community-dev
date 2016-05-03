@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\EntityToIdentifierTransformer;
+use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -132,7 +132,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllAxisQB()
+    public function findAllAxesQB()
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -153,7 +153,7 @@ class AttributeRepository extends EntityRepository implements
      */
     public function findAvailableAxes($locale)
     {
-        $query = $this->findAllAxisQB()
+        $query = $this->findAllAxesQB()
             ->select('a.id')
             ->addSelect('COALESCE(t.label, CONCAT(\'[\', a.code, \']\')) as label')
             ->leftJoin('a.translations', 't')

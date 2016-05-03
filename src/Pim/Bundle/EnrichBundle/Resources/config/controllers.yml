@@ -221,7 +221,6 @@ services:
             - '@pim_enrich.form.group'
             - '@pim_catalog.factory.group'
             - '@pim_catalog.remover.group'
-            - '@pim_user.context.user'
 
     pim_enrich.controller.association_type:
         scope: request
@@ -258,7 +257,6 @@ services:
             - '@pim_enrich.form.variant_group'
             - '@pim_catalog.factory.group'
             - '@pim_catalog.remover.group'
-            - '@pim_user.context.user'
             - '@form.factory'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.resolver.variant_group_attributes'

@@ -230,4 +230,6 @@
 - Remove class `Pim\Bundle\CatalogBundle\Manager\GroupManager`
 - Remove method `findAllAxis` from `Pim\Component\Catalog\RepositoryAttributeGroupRepositoryInterface`
 - Remove method `getChoices` from `Pim\Component\Catalog\GroupRepositoryInterface`
-- Remove method `findAllAxis` and `getAvailableAttributesAsLabelChoice` from `Pim\Component\Catalog\AttributeRepositoryInterface`
+- Remove method `getAvailableAttributesAsLabelChoice` from `Pim\Component\Catalog\AttributeRepositoryInterface`
+- Rename method `findAllAxis`in `findAvailableAxes` from `Pim\Component\Catalog\AttributeRepositoryInterface`
+- Rename method `findAllAxisQB` in `findAllAxesQB` from `Pim\Component\Catalog\AttributeRepositoryInterface`

@@ -26,7 +26,7 @@ class ProductEditType extends AbstractType
     protected $productFormView;
 
     /** @var TranslatedLabelsProviderInterface */
-    protected $familyRepository;
+    protected $familyProvider;
 
     /** @var string */
     protected $categoryClass;
@@ -38,17 +38,17 @@ class ProductEditType extends AbstractType
      * Constructor
      *
      * @param ProductFormViewInterface $productFormView
-     * @param TranslatedLabelsProviderInterface $familyRepository
+     * @param TranslatedLabelsProviderInterface $familyProvider
      * @param string                   $categoryClass
      */
     public function __construct(
         ProductFormViewInterface $productFormView,
-        TranslatedLabelsProviderInterface $familyRepository,
+        TranslatedLabelsProviderInterface $familyProvider,
         $categoryClass
     ) {
-        $this->productFormView  = $productFormView;
-        $this->familyRepository = $familyRepository;
-        $this->categoryClass    = $categoryClass;
+        $this->productFormView = $productFormView;
+        $this->familyProvider  = $familyProvider;
+        $this->categoryClass   = $categoryClass;
     }
 
     /**
@@ -95,7 +95,7 @@ class ProductEditType extends AbstractType
                 'family',
                 'light_entity',
                 [
-                    'repository' => $this->familyRepository,
+                    'repository' => $this->familyProvider,
                     'required'   => false,
                 ]
             );

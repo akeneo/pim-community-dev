@@ -34,7 +34,7 @@ class ChannelType extends AbstractType
     protected $provider;
 
     /** @var TranslatedLabelsProviderInterface */
-    protected $categoryRepository;
+    protected $categoryProvider;
 
     /** @var string */
     protected $categoryClass;
@@ -45,27 +45,27 @@ class ChannelType extends AbstractType
     /**
      * Inject locale manager, locale helper and colors provider in the constructor
      *
-     * @param LocaleRepositoryInterface $localeRepository
-     * @param LocaleHelper              $localeHelper
-     * @param ColorsProvider            $provider
-     * @param \Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface  $categoryRepository
-     * @param string                    $categoryClass
-     * @param string                    $dataClass
+     * @param LocaleRepositoryInterface         $localeRepository
+     * @param LocaleHelper                      $localeHelper
+     * @param ColorsProvider                    $provider
+     * @param TranslatedLabelsProviderInterface $categoryProvider
+     * @param string                            $categoryClass
+     * @param string                            $dataClass
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
         LocaleHelper $localeHelper,
         ColorsProvider $provider,
-        TranslatedLabelsProviderInterface $categoryRepository,
+        TranslatedLabelsProviderInterface $categoryProvider,
         $categoryClass,
         $dataClass
     ) {
-        $this->localeRepository   = $localeRepository;
-        $this->localeHelper       = $localeHelper;
-        $this->provider           = $provider;
-        $this->categoryRepository = $categoryRepository;
-        $this->categoryClass      = $categoryClass;
-        $this->dataClass          = $dataClass;
+        $this->localeRepository = $localeRepository;
+        $this->localeHelper     = $localeHelper;
+        $this->provider         = $provider;
+        $this->categoryProvider = $categoryProvider;
+        $this->categoryClass    = $categoryClass;
+        $this->dataClass        = $dataClass;
     }
 
     /**
@@ -221,7 +221,7 @@ class ChannelType extends AbstractType
                 'required'   => true,
                 'select2'    => true,
                 'multiple'   => false,
-                'repository' => $this->categoryRepository
+                'repository' => $this->categoryProvider
             ]
         );
 
