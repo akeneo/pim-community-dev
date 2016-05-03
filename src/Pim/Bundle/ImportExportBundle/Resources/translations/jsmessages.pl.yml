@@ -1,0 +1,4 @@
+job_execution:
+  summary:
+    display_item: Pokaż element
+    hide_item: Ukryj element
