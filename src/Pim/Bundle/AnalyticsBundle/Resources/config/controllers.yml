@@ -1,5 +1,5 @@
 parameters:
-    pim_analytics.controller.data.class: Pim\Bundle\AnalyticsBundle\Controller\DataController
+    pim_analytics.controller.data.class:        Pim\Bundle\AnalyticsBundle\Controller\DataController
     pim_analytics.controller.system_info.class: Pim\Bundle\AnalyticsBundle\Controller\SystemInfoController
 
 services:
