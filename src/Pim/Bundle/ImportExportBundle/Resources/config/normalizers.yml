@@ -7,6 +7,7 @@ services:
         class: %pim_import_export.normalizer.job_execution.class%
         arguments:
             - '@translator'
+            - '@pim_import_export.provider.job_label'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
@@ -16,6 +17,7 @@ services:
         arguments:
             - '@translator'
             - '@pim_catalog.localization.presenter.datetime'
+            - '@pim_import_export.provider.job_label'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
