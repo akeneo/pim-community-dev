@@ -1,0 +1,23 @@
+An identifier attribute already exists.: Atrybut identyfikujący już istnieje.
+Attribute code may contain only letters, numbers and underscore: Kod atrybutu może składać się jedynie z liter, cyfr lub znaku podkreślenia
+Attribute code may contain only letters (at least one), numbers and underscores: Kod atrybutu może zawierać tylko litery (co najmniej jedną), liczby i znaki podkreślenia
+This attribute type can't be used as a grid filter: Atrybut tego typu nie może być filtrem
+This code is not available: Ten kod nie jest dostępny
+This attribute type must be required: Typ atrubutu jest wymagany
+This attribute type can't be required: Ten typ atrybutu nie może być wymagany
+This attribute type can't have unique value: Ten typ atrybutu nie może zawierać unikalnych wartości
+No default value may be specified for this attribute type: Dla tego typu atrybutu nie może zostać określona wartość domyślna
+This value should be Yes or No: Wartość powinna być Tak lub Nie
+This value should not be blank: Wartość nie może być pusta
+Option code may contain only letters, numbers and underscores: Kod opcji może zawierać tylko litery, cyfry i znaki podkreślenia
+Option code may contain only letters (at least one), numbers and underscores: Kod opcji może zawierać tylko litery (co najmniej jedną), liczby i znaki podkreślenia
+This color is already used by another channel: Kolor jest już wykorzystywany przez inny kanał
+This value should not be a decimal.: Wartość ta nie powinna być liczą dziesiętną.
+"The value %value% is already set on another product for the unique attribute %attribute%": 'Wartość %value% jest już wykorzystana w innym produkcie w unikatowym atrybucie %attribute%'
+regex.comma_or_semicolon.message: To pole nie powinno zawierać żadnych przecinków ani średników.
+file.extensions.message: 'Rozszerzenie tego pliku nie jest dozwolone (dozwolone rozszerzenia to: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": 'Ten typ wartości oczekuje zastosowania {{ decimal_separator }} do oddzielenia miejsc dziesiętnych.'
+This type of value expects the use of dot (.) to separate decimals.: Ten typ wartości oczekuje zastosowania kropki (.) do oddzielania wartości dziesiętnych.
+This type of value expects the use of comma (,) to separate decimals.: Ten typ wartości oczekuje zastosowania przecinka (,) do oddzielania wartości dziesiętnych.
+This type of value expects the use of arabic decimal separator (٫) to separate decimals.: Ten typ wartości oczekuje zastosowania arabskiego separatora dziesiętnego (٫) do oddzielania wartości dziesiętnych.
+"This type of value expects the use of the format {{ date_format }} for dates.": 'Ten typ wartości oczekuje zastosowania formatu daty w postaci {{ date_format }} .'
