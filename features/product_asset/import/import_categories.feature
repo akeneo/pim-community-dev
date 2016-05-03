@@ -4,7 +4,7 @@ Feature: Import categories
   As an asset manager
   I need to be able to import categories
 
-  Scenario: Successfully import new assets categories
+  Scenario: Successfully import new assets categories in CSV
     Given the "clothing" catalog configuration
     And I am logged in as "Pamela"
     And the following CSV file to import:
@@ -125,3 +125,29 @@ Feature: Import categories
     Then I should see the permission Allowed to view assets with user groups All
     And I should see the permission Allowed to edit assets with user groups All
     And I should not see "Allowed to own assets"
+
+  Scenario: Successfully import new assets categories in XLSX
+    Given the "clothing" catalog configuration
+    And I am logged in as "Pamela"
+    And the following XLSX file to import:
+      """
+      code;parent;label-de_DE;label-en_US;label-fr_FR
+      asset_main_catalog;;;Asset main catalog;Catalogue principal d'Assets
+      images;asset_main_catalog;;images;images
+      others;images;;Other picture;Autre images
+      back;images;;Back picture;image de dos
+      """
+    And the following job "xlsx_clothing_asset_category_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "xlsx_clothing_asset_category_import" import job page
+    And I launch the import job
+    And I wait for the "xlsx_clothing_asset_category_import" job to finish
+    And I should see "read lines 4"
+    And I should see "processed 2"
+    And I should see "created 2"
+    Then there should be the following assets categories:
+      | code               | label-de_DE | label-en_US        | label-fr_FR                  | parent             |
+      | asset_main_catalog |             | Asset main catalog | Catalogue principal d'Assets |                    |
+      | images             |             | images             | images                       | asset_main_catalog |
+      | others             |             | Other picture      | Autre images                 | images             |
+      | back               |             | Back picture       | image de dos                 | images             |

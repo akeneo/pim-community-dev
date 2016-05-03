@@ -68,7 +68,7 @@ class ImportProposalsSubscriberSpec extends ObjectBehavior
 
         $jobExecutionEvent->getJobExecution()->willReturn($jobExecution);
         $jobInstance->getAlias()->willReturn('csv_product_proposal_import');
-        $jobInstance->getCode()->willReturn('clothing_product_proposal_import');
+        $jobInstance->getCode()->willReturn('csv_clothing_product_proposal_import');
 
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getUser()->willReturn('mary');
@@ -83,7 +83,7 @@ class ImportProposalsSubscriberSpec extends ObjectBehavior
             'f' => [
                 'author' => [
                     'value' => [
-                        'clothing_product_proposal_import'
+                        'csv_clothing_product_proposal_import'
                     ]
                 ]
             ],

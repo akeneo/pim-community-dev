@@ -13,11 +13,11 @@ Feature: Import categories
     autumn_collection;2014_collection;Autumn collection
     black_tshirts;tshirts;Black tshirts
     """
-    And the following job "clothing_category_import" configuration:
+    And the following job "csv_clothing_category_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_category_import" import job page
+    When I am on the "csv_clothing_category_import" import job page
     And I launch the import job
-    And I wait for the "clothing_category_import" job to finish
+    And I wait for the "csv_clothing_category_import" job to finish
     Then there should be the following categories:
       | code              | label             | parent            |
       | 2014_collection   | 2014 collection   |                   |
@@ -46,11 +46,11 @@ Feature: Import categories
     2015_jeans;2015_collection;2015 jeans
     2015_tees;2015_collection;2015 tees
     """
-    And the following job "clothing_category_import" configuration:
+    And the following job "csv_clothing_category_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_category_import" import job page
+    When I am on the "csv_clothing_category_import" import job page
     And I launch the import job
-    And I wait for the "clothing_category_import" job to finish
+    And I wait for the "csv_clothing_category_import" job to finish
     Then there should be the following categories:
       | code            | label           | parent          |
       | 2015_collection | 2015 collection |                 |

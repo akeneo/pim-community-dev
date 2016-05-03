@@ -59,6 +59,8 @@ xlsx_variant_group_export;All;All
 xlsx_group_export;All;All
 xlsx_group_import;IT support,Manager,Redactor;IT support
 xlsx_variant_group_import;IT support,Manager,Redactor;IT support
+xlsx_asset_import;IT support,Manager,Redactor;IT support,Manager
+xlsx_asset_category_import;IT support,Manager,Redactor;IT support,Manager
 xlsx_attribute_export;IT support,Manager,Redactor;IT support,Manager
 xlsx_option_export;IT support,Manager,Redactor;IT support,Manager
 xlsx_family_export;IT support,Manager,Redactor;IT support,Manager

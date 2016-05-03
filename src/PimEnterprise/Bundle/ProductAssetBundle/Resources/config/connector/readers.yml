@@ -10,3 +10,12 @@ services:
 
     pimee_product_asset.reader.file.csv_channel_configuration:
         alias: pim_connector.reader.file.csv
+
+    pimee_product_asset.reader.file.xlsx_tag:
+        alias: pim_connector.reader.file.xlsx
+
+    pimee_product_asset.reader.file.xlsx_asset:
+        alias: pim_connector.reader.file.xlsx
+
+    pimee_product_asset.reader.file.xlsx_asset_category:
+        alias: pim_connector.reader.file.xlsx_category

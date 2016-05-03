@@ -104,6 +104,45 @@ connector:
                         reader:    pimee_product_asset.reader.orm.variation
                         processor: pimee_product_asset.processor.normalization.variation.flat
                         writer:    pimee_product_asset.writer.file.csv_asset_variation
+        xlsx_asset_import:
+            title: pimee_product_asset.jobs.xlsx_asset_import.title
+            type:  import
+            steps:
+                validation:
+                    title: pim_connector.jobs.xlsx_product_import.validation.title
+                    class: %pim_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import_tags:
+                    title: pimee_product_asset.jobs.xlsx_tag_import.title
+                    class: %pimee_product_asset.step.tag.class%
+                    services:
+                        reader:    pimee_product_asset.reader.file.xlsx_tag
+                        processor: pimee_product_asset.processor.denormalization.tag.flat
+                        writer:    pimee_product_asset.writer.doctrine.tag
+                import_asset:
+                    title:         pimee_product_asset.jobs.xlsx_asset_import.title
+                    services:
+                        reader:    pimee_product_asset.reader.file.xlsx_asset
+                        processor: pimee_product_asset.processor.denormalization.asset.flat
+                        writer:    pimee_product_asset.writer.doctrine.asset
+        xlsx_asset_category_import:
+            title: pimee_product_asset.jobs.xlsx_asset_category_import.title
+            type:  import
+            steps:
+                validation:
+                    title: pim_connector.jobs.xlsx_product_import.validation.title
+                    class: %pim_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import_asset_category:
+                    title:         pimee_product_asset.jobs.xlsx_asset_category_import.title
+                    services:
+                        reader:    pimee_product_asset.reader.file.xlsx_asset_category
+                        processor: pimee_product_asset.processor.denormalization.category.flat
+                        writer:    pimee_product_asset.writer.doctrine.category
+                    parameters:
+                        batchSize: 1
         xlsx_asset_export:
             title: pimee_product_asset.jobs.xlsx_asset_export.title
             type:  export

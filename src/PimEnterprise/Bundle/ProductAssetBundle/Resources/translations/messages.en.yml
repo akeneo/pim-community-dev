@@ -121,6 +121,9 @@ pimee_product_asset:
         csv_asset_category_import.title: Asset category import in CSV
         csv_asset_configuration_import.title: Asset channel configuration import in CSV
         csv_asset_category_export.title: Asset category export in CSV
+        xlsx_tag_import.title: Tag import in XLSX
+        xlsx_asset_import.title: Asset import in XLSX
+        xlsx_asset_category_import.title: Asset category import in XLSX
         xlsx_asset_export.title: Asset export in XLSX
         xlsx_asset_category_export.title: Asset category export in XLSX
         xlsx_asset_variation_export.title: Asset category export in XLSX

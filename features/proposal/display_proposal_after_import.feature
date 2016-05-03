@@ -21,14 +21,14 @@ Feature: Display proposals after import
       my-jacket;My jacket
       my-jacket2;My jacket2
       """
-    And the following job "clothing_product_proposal_import" configuration:
+    And the following job "csv_clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
 
   Scenario: Successfully display a notification for owner
     Given I am logged in as "Mary"
-    And I am on the "clothing_product_proposal_import" import job page
+    And I am on the "csv_clothing_product_proposal_import" import job page
     And I launch the import job
-    And I wait for the "clothing_product_proposal_import" job to finish
+    And I wait for the "csv_clothing_product_proposal_import" job to finish
     And I logout
     And I am logged in as "Julia"
     When I am on the dashboard index page
@@ -39,9 +39,9 @@ Feature: Display proposals after import
 
   Scenario: Successfully display a notification for author
     Given I am logged in as "Julia"
-    And I am on the "clothing_product_proposal_import" import job page
+    And I am on the "csv_clothing_product_proposal_import" import job page
     And I launch the import job
-    And I wait for the "clothing_product_proposal_import" job to finish
+    And I wait for the "csv_clothing_product_proposal_import" job to finish
     When I am on the dashboard index page
     Then I should have 2 new notifications
     And I should see notifications:

@@ -1,5 +1,5 @@
 connector:
-    name: Akeneo Product XLSX Connector
+    name: Akeneo XLSX Connector
     jobs:
         xlsx_published_product_export:
             title: pimee_workflow.jobs.xlsx_published_product_export.title

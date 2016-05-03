@@ -19,11 +19,11 @@ Feature: Import proposals
     not-found-product;My desc;My description;First comment
     my-jacket2;;Description;
     """
-    And the following job "clothing_product_proposal_import" configuration:
+    And the following job "csv_clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_product_proposal_import" import job page
+    When I am on the "csv_clothing_product_proposal_import" import job page
     And I launch the import job
-    And I wait for the "clothing_product_proposal_import" job to finish
+    And I wait for the "csv_clothing_product_proposal_import" job to finish
     Then there should be 1 proposal
     And I should see:
     """
@@ -39,11 +39,11 @@ Feature: Import proposals
     my-jacket;1;My desc
     my-jacket2;0;My desc
     """
-    And the following job "clothing_product_proposal_import" configuration:
+    And the following job "csv_clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_product_proposal_import" import job page
+    When I am on the "csv_clothing_product_proposal_import" import job page
     And I launch the import job
-    And I wait for the "clothing_product_proposal_import" job to finish
+    And I wait for the "csv_clothing_product_proposal_import" job to finish
     Then there should be 2 proposals
 
   Scenario: Fail to create a proposal if data does not contain an identifier column
@@ -54,11 +54,11 @@ Feature: Import proposals
     My desc;My description;First comment
     my-jacket2;;Description;
     """
-    And the following job "clothing_product_proposal_import" configuration:
+    And the following job "csv_clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_product_proposal_import" import job page
+    When I am on the "csv_clothing_product_proposal_import" import job page
     And I launch the import job
-    And I wait for the "clothing_product_proposal_import" job to finish
+    And I wait for the "csv_clothing_product_proposal_import" job to finish
     Then there should be 0 proposal
     And I should see:
     """
@@ -78,11 +78,11 @@ Feature: Import proposals
     sku;description-en_US-mobile;description-en_US-tablet;comment
     my-jacket;My desc;My description;First comment
     """
-    And the following job "clothing_product_proposal_import" configuration:
+    And the following job "csv_clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_product_proposal_import" import job page
+    When I am on the "csv_clothing_product_proposal_import" import job page
     And I launch the import job
-    And I wait for the "clothing_product_proposal_import" job to finish
+    And I wait for the "csv_clothing_product_proposal_import" job to finish
     Then there should be 0 proposal
     And I should see "skipped proposal (no differences) 1"
 
@@ -93,10 +93,10 @@ Feature: Import proposals
     sku;description-en_US-mobile;description-en_US-tablet;comment
     unknow;My desc;My description;First comment
     """
-    And the following job "clothing_product_proposal_import" configuration:
+    And the following job "csv_clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
-    When I am on the "clothing_product_proposal_import" import job page
+    When I am on the "csv_clothing_product_proposal_import" import job page
     And I launch the import job
-    And I wait for the "clothing_product_proposal_import" job to finish
+    And I wait for the "csv_clothing_product_proposal_import" job to finish
     Then I should see "skipped 1"
     And I should see "Product \"unknow\" does not exist"
