@@ -46,4 +46,22 @@ class ProposalWidgetDecorator extends ElementDecorator
 
         $nodeElement->click();
     }
+
+    /**
+     * @return array
+     */
+    public function getProposalsToReview()
+    {
+        $proposalElements = $this->findAll('css', 'tbody tr');
+        $proposals = [];
+        foreach ($proposalElements as $proposalElement) {
+            $cells = $proposalElement->findAll('css', 'td');
+            $proposals[] = [
+                'author' => $cells[1]->getText(),
+                'product' => $cells[2]->getText(),
+            ];
+        }
+
+        return $proposals;
+    }
 }
