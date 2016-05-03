@@ -970,15 +970,28 @@ job_execution.summary:
 
 pim_mass_edit_execution_show:  Mass edit executions | Details
 
-edit_common_attributes.steps.edit_common_attributes_processor.title: Edit common attributes
-update_product_value.steps.update_product_value_processor.title: Update product value
-add_to_variant_group_clean.steps.excluded.title: Excluded product
-add_to_variant_group_clean.steps.duplicated.title: Duplicated Axis
-add_to_variant_group.steps.excluded.title: Excluded product
-add_to_variant_group.steps.duplicated.title: Duplicated Axis
-add_to_variant_group.steps.cleaner.warning.description: "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"
-edit_common_attributes: Edit common attributes
-edit_common_attributes_clean: Clean files for common attributes
+# Background jobs & steps
+batch_jobs:
+    add_product_value:
+        perform:
+            label: Add product value
+    update_product_value:
+        perform:
+            label: Update product value
+    edit_common_attributes:
+        perform:
+            label: Edit common attributes
+        clean:
+            label: Clean files for common attributes
+    add_to_variant_group:
+        perform:
+            label: Add to variant group
+            warning:
+                excluded:
+                    label: Excluded product
+                duplicated:
+                    label: Duplicated Axis
+                    description: "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"
 
 mass_edit report:
     overview: Mass edit reports
