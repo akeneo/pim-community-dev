@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
+use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\Test\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

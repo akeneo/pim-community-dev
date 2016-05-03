@@ -43,7 +43,7 @@ class CategoryRepositorySpec extends ObjectBehavior
 
     function it_provides_translated_data()
     {
-        $this->shouldImplement('Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface');
+        $this->shouldImplement('Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface');
     }
 
     function it_is_a_doctrine_repository()

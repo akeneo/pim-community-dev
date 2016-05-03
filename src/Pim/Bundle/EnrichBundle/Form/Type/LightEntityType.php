@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
+use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\EntityToIdentifierTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -68,7 +68,7 @@ class LightEntityType extends AbstractType
                 }
                 if (!$value instanceof TranslatedLabelsProviderInterface) {
                     throw new UnexpectedTypeException(
-                        'Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface',
+                        'Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface',
                         $value
                     );
                 }

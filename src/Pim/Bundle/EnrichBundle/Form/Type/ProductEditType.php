@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\StringToBooleanTransformer;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\BindAssociationTargetsSubscriber;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
-use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
+use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

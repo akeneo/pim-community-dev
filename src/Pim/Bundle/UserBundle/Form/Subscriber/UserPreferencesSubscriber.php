@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
+use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

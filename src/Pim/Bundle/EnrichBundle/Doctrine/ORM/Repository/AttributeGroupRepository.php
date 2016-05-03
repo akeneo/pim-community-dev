@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface;
+use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 
 class AttributeGroupRepository extends EntityRepository implements TranslatedLabelsProviderInterface
 {

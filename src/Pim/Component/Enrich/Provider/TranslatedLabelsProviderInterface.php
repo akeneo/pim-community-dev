@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Enrich\Repository;
+namespace Pim\Component\Enrich\Provider;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
