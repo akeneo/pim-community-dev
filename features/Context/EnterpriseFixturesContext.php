@@ -565,44 +565,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     public function iShouldSeeTheFollowingProposalsOnTheWidget(TableNode $table)
     {
         $expectedProposals = $table->getHash();
-        $actualProposals = $this->getSession()->getPage()->findAll('css', '#proposal-widget tbody tr');
+        $this->spin(function () use ($expectedProposals) {
+            $actualProposals = $this->getCurrentPage()->getElement('Proposal widget')->getProposalsToReview();
 
-        $expectedCount = count($expectedProposals);
-        $actualCount   = count($actualProposals);
-        if ($expectedCount !== $actualCount) {
-            throw new \Exception(
-                sprintf(
-                    'Expecting %d proposals, actually saw %d',
-                    $expectedCount,
-                    $actualCount
-                )
-            );
-        }
-
-        foreach ($expectedProposals as $key => $proposal) {
-            $cells = $actualProposals[$key]->findAll('css', 'td');
-            if ($cells[1]->getText() !== $proposal['author']) {
-                throw new \Exception(
-                    sprintf(
-                        'Proposal #%d author is expected to be "%s", actually is "%s"',
-                        $key + 1,
-                        $proposal['author'],
-                        $cells[1]->getText()
-                    )
-                );
-            }
-
-            if ($cells[2]->getText() !== $proposal['product']) {
-                throw new \Exception(
-                    sprintf(
-                        'Proposal #%d product is expected to be "%s", actually is "%s"',
-                        $key + 1,
-                        $proposal['product'],
-                        $cells[2]->getText()
-                    )
-                );
-            }
-        }
+            return $expectedProposals == $actualProposals;
+        }, sprintf('Failed to find the following proposals "%s"', print_r($expectedProposals, true)));
     }
 
     /**
