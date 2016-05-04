@@ -15,15 +15,6 @@ services:
     ##
     # Product form view overriding
     ##
-    pim_enrich.form.type.product_value:
-        class: '%pim_enrich.form.type.product_value.class%'
-        arguments:
-            - '%pim_catalog.entity.product_value.class%'
-            - '@pim_enrich.form.subscriber.add_value_field_subscriber'
-            - '@pim_enrich.form.type.product.view'
-        tags:
-            - { name: form.type, alias: pim_product_value }
-
     pim_enrich.form.type.product_edit:
         class: '%pim_enrich.form.type.product_edit.class%'
         arguments:
