@@ -127,7 +127,7 @@ extensions:
         position: 110
 
     pim-product-edit-form-attributes:
-        module: pim/form/common/attributes
+        module: pim/product-edit-form/attributes
         parent: pim-product-edit-form-form-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_edit_attributes

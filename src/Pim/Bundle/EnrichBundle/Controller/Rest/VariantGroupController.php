@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
@@ -53,6 +54,9 @@ class VariantGroupController
     /** @var NormalizerInterface */
     protected $violationNormalizer;
 
+    /** @var CollectionFilterInterface */
+    protected $variantGroupDataFilter;
+
     /**
      * @param EntityRepository            $repository
      * @param NormalizerInterface         $normalizer
@@ -62,6 +66,7 @@ class VariantGroupController
      * @param AttributeConverterInterface $attributeConverter
      * @param ValidatorInterface          $validator
      * @param NormalizerInterface         $violationNormalizer
+     * @param CollectionFilterInterface   $variantGroupDataFilter
      */
     public function __construct(
         GroupRepositoryInterface $repository,
@@ -72,17 +77,19 @@ class VariantGroupController
         UserContext $userContext,
         AttributeConverterInterface $attributeConverter,
         ValidatorInterface $validator,
-        NormalizerInterface $violationNormalizer
+        NormalizerInterface $violationNormalizer,
+        CollectionFilterInterface $variantGroupDataFilter
     ) {
-        $this->repository          = $repository;
-        $this->normalizer          = $normalizer;
-        $this->updater             = $updater;
-        $this->saver               = $saver;
-        $this->remover             = $remover;
-        $this->userContext         = $userContext;
-        $this->attributeConverter  = $attributeConverter;
-        $this->validator           = $validator;
-        $this->violationNormalizer = $violationNormalizer;
+        $this->repository             = $repository;
+        $this->normalizer             = $normalizer;
+        $this->updater                = $updater;
+        $this->saver                  = $saver;
+        $this->remover                = $remover;
+        $this->userContext            = $userContext;
+        $this->attributeConverter     = $attributeConverter;
+        $this->validator              = $validator;
+        $this->violationNormalizer    = $violationNormalizer;
+        $this->variantGroupDataFilter = $variantGroupDataFilter;
     }
 
     /**
@@ -147,6 +154,7 @@ class VariantGroupController
 
         $data = json_decode($request->getContent(), true);
         $data = $this->convertLocalizedAttributes($data);
+        $data = $this->variantGroupDataFilter->filterCollection($data, null);
 
         $this->updater->update($variantGroup, $data);
 
