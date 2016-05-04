@@ -3,11 +3,10 @@
 namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
-use Pim\Bundle\AnalyticsBundle\Provider\StorageVersionProvider;
 use Pim\Bundle\CatalogBundle\VersionProviderInterface;
 
 /**
- * Returns basic data about the PIM
+ * Returns basic data about the PIM and its host server
  * - edition (CE or EE)
  * - version
  * - storage (ORM or MongoDB)
@@ -56,7 +55,7 @@ class VersionDataCollector implements DataCollectorInterface
             'pim_version'        => $this->versionProvider->getPatch(),
             'pim_storage_driver' => $this->catalogStorage,
             'pim_environment'    => $this->environment,
-            'pim_install_time'   => $this->installTime
+            'pim_install_time'   => $this->installTime,
         ];
     }
 }

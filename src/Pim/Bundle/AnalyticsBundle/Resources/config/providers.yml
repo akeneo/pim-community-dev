@@ -1,0 +1,9 @@
+parameters:
+    pim_analytics.provider.storage_version.class: Pim\Bundle\AnalyticsBundle\Provider\StorageVersionProvider
+    pim_analytics.provider.server_version.class:  Pim\Bundle\AnalyticsBundle\Provider\ServerVersionProvider
+
+services:
+    pim_analytics.provider.server_version:
+        class: '%pim_analytics.provider.server_version.class%'
+        arguments:
+            - '@request_stack'

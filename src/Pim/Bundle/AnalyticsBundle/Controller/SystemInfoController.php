@@ -27,27 +27,41 @@ class SystemInfoController
     }
 
     /**
-     * @param string $_format
+     * Displays PIM system info
      *
      * @return Response
      */
-    public function indexAction($_format)
+    public function indexAction()
     {
         $data    = $this->dataCollector->collect('system_info_report');
         $content = $this->templating->render(
-            sprintf('PimAnalyticsBundle:SystemInfo:index.%s.twig', $_format),
+            'PimAnalyticsBundle:SystemInfo:index.html.twig',
+            ['data' => $data]
+        );
+
+        return new Response($content);
+    }
+
+    /**
+     * Downloads a complete report of PIM system info as a text file
+     *
+     * @return Response
+     */
+    public function downloadAction()
+    {
+        $data    = $this->dataCollector->collect('system_info_advanced_report');
+        $content = $this->templating->render(
+            'PimAnalyticsBundle:SystemInfo:index.txt.twig',
             ['data' => $data]
         );
 
         $response = new Response($content);
-        if ('txt' === $_format) {
-            $response->headers->set('Content-Type', 'text/plain');
-            $response->headers->set('Content-Disposition', sprintf(
-                '%s; filename="akeneo-pim-system-info_%s.txt"',
-                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                date('Y-m-d_H:i')
-            ));
-        }
+        $response->headers->set('Content-Type', 'text/plain');
+        $response->headers->set('Content-Disposition', sprintf(
+            '%s; filename="akeneo-pim-system-info_%s.txt"',
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            date('Y-m-d_H:i')
+        ));
 
         return $response;
     }

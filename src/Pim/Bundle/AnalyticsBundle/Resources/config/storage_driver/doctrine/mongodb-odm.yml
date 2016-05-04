@@ -1,0 +1,6 @@
+services:
+    pim_analytics.provider.storage_version:
+        class: '%pim_analytics.provider.storage_version.class%'
+        arguments:
+            - '%mongodb_server%'
+            - '%mongodb_database%'
