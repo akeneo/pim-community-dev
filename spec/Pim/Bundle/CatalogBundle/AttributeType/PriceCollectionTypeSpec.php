@@ -41,11 +41,6 @@ class PriceCollectionTypeSpec extends ObjectBehavior
         $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_PRICE);
     }
 
-    function it_prepares_value_form_alias($value)
-    {
-        $this->prepareValueFormAlias($value)->shouldReturn('pim_enrich_price_collection');
-    }
-
     function it_prepares_value_form_options($attribute, $value)
     {
         $attribute->getLabel()->willReturn('Random label');

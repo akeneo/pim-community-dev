@@ -22,9 +22,6 @@ class MetricType extends AbstractAttributeType
     /** @var MeasureManager $manager */
     protected $manager;
 
-    /** @var MetricFactory $metricFactory */
-    protected $metricFactory;
-
     /** @var TranslatorInterface $translator */
     protected $translator;
 
@@ -35,7 +32,6 @@ class MetricType extends AbstractAttributeType
      * @param string                     $formType          the form type
      * @param ConstraintGuesserInterface $constraintGuesser the form type
      * @param MeasureManager             $manager           the measure manager
-     * @param MetricFactory              $metricFactory     the metric factory
      * @param TranslatorInterface        $translator        the translator for units
      */
     public function __construct(
@@ -43,13 +39,11 @@ class MetricType extends AbstractAttributeType
         $formType,
         ConstraintGuesserInterface $constraintGuesser,
         MeasureManager $manager,
-        MetricFactory $metricFactory,
         TranslatorInterface $translator
     ) {
         parent::__construct($backendType, $formType, $constraintGuesser);
 
-        $this->manager = $manager;
-        $this->metricFactory = $metricFactory;
+        $this->manager    = $manager;
         $this->translator = $translator;
     }
 
@@ -78,18 +72,6 @@ class MetricType extends AbstractAttributeType
         $options['default_unit'] = [$options['default_unit']];
 
         return $options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValueFormData(ProductValueInterface $value)
-    {
-        if (!is_null($value->getData())) {
-            return $value->getData();
-        };
-
-        return $this->metricFactory->createMetric($value->getAttribute()->getMetricFamily());
     }
 
     /**
