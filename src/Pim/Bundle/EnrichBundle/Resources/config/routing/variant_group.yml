@@ -18,7 +18,7 @@ pim_enrich_variant_group_rest_remove_attribute:
     path: /rest/{code}/{attributeId}
     defaults: { _controller: pim_enrich.controller.rest.variant_group_attribute:removeAttributeAction, _format: json }
     requirements:
-        code: '[0-9a-f]+'
+        code: '[a-zA-Z0-9_]+'
         attributeId: '\d+'
         _format: json
     methods: [DELETE]

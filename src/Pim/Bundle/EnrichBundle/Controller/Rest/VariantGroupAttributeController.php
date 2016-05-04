@@ -87,7 +87,6 @@ class VariantGroupAttributeController
     protected function findVariantGroupOr404($code)
     {
         $group = $this->groupRepository->findOneByIdentifier($code);
-
         if (null === $group || false === $group->getType()->isVariant()) {
             throw new NotFoundHttpException(
                 sprintf('Variant group with id %d could not be found.', $id)

@@ -265,13 +265,7 @@ define(
                         FetcherRegistry.getFetcher('attribute').fetch(attributeCode).then(function (attribute) {
                             $.ajax({
                                 type: 'DELETE',
-                                url: Routing.generate(
-                                    this.config.removeAttributeRoute,
-                                    {
-                                        id: this.getFormData().meta.id,
-                                        attributeId: attribute.id
-                                    }
-                                ),
+                                url: this.generateRemoveAttributeUrl(attribute),
                                 contentType: 'application/json'
                             }).then(function () {
                                 this.triggerExtensions('add-attribute:update:available-attributes');
@@ -293,6 +287,21 @@ define(
                         }.bind(this));
                     }.bind(this)
                 );
+            },
+
+            /**
+             * Generate the remove attribute url
+             *
+             * @return {String}
+             */
+            generateRemoveAttributeUrl: function (attribute) {
+                return Routing.generate(
+                    this.config.removeAttributeRoute,
+                    {
+                        code: this.getFormData().code,
+                        attributeId: attribute.id
+                    }
+                )
             },
 
             /**

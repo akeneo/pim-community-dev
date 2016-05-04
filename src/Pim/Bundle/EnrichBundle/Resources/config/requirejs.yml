@@ -219,6 +219,7 @@ config:
         pim/product-edit-form/meta/groups:                         pimenrich/js/product/form/meta/groups
         pim/product-edit-form/status-switcher:                     pimenrich/js/product/form/status-switcher
         pim/product-edit-form/download-pdf:                        pimenrich/js/product/form/download-pdf
+        pim/product-edit-form/attributes:                          pimenrich/js/product/form/attributes
 
         # Product edit form
         pim/field-manager:                  pimenrich/js/product/field-manager
@@ -239,6 +240,7 @@ config:
         pim/variant-group-edit-form/properties/general:     pimenrich/js/variant-group/form/properties/general
         pim/variant-group-edit-form/properties/translation: pimenrich/js/variant-group/form/properties/translation
         pim/variant-group-edit-form/meta/product-count:     pimenrich/js/variant-group/form/meta/product-count
+        pim/variant-group-edit-form/add-attribute:          pimenrich/js/variant-group/form/attributes/add-attribute
 
         # Common
         pim/common/tab/history:         pimenrich/js/form/common/tab/history

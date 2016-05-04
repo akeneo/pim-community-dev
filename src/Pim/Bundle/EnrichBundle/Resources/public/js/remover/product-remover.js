@@ -12,11 +12,9 @@ define([
         Routing
     ) {
         return _.extend(BaseRemover, {
+
             /**
-             * Get the entity url
-             * @param {Integer} id
-             *
-             * @return {String}
+             * {@inheritdoc}
              */
             getUrl: function (id) {
                 return Routing.generate(module.config().url, {id: id})

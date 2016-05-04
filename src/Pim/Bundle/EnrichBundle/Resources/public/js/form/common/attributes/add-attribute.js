@@ -244,15 +244,13 @@ define(
                 });
             },
 
+            /**
+             * Get all attribute to exlude
+             *
+             * @return {Promise}
+             */
             getExcludedAttributes: function () {
-                var entity = this.getFormData();
-
-                return AttributeManager.getAttributes(entity).then(function(entityAttributes) {
-                    return _.union(
-                        entityAttributes,
-                        _.isArray(entity.axis) ? entity.axis : []
-                    );
-                });
+                return AttributeManager.getAttributes(this.getFormData());
             }
         });
     }

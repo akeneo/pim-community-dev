@@ -22,8 +22,7 @@ define([
             remove: function (code) {
                 return $.ajax({
                     type: 'DELETE',
-                    url: this.getUrl(code),
-                    data: { _method: 'DELETE' }
+                    url: this.getUrl(code)
                 }).then(function (entity) {
                     mediator.trigger('pim_enrich:form:entity:post_remove', code);
 
