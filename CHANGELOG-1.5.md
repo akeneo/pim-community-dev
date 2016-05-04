@@ -9,6 +9,7 @@
 - PIM-5754: Add labels to simple and multi select fields
 - PIM-5763: Add Boolean presenter for fields
 - PIM-5622: Fix NOT IN operator behavior for ORM groups filter
+- PIM-5756: Fix empty min and max numbers on attributes import
 
 ## Technical improvements
 
