@@ -1,8 +1,8 @@
 {
-    "name": "akeneo/batch",
+    "name": "akeneo/storage-utils",
     "type": "library",
-    "description": "Akeneo Batch",
-    "keywords": ["Akeneo", "Batch", "Job", "Reader", "Writer", "Processor"],
+    "description": "Akeneo Storage Utils",
+    "keywords": ["Akeneo", "Persistence"],
     "license": "OSL-3.0",
     "authors": [
         {
@@ -12,13 +12,10 @@
     ],
     "require": {
         "php": ">=5.4.4",
-        "symfony/event-dispatcher": "^2.3",
-        "symfony/property-access": "^2.3",
-        "doctrine/common": "^2.1",
-        "akeneo/storage-utils": "0.6.x-dev"
+        "symfony/event-dispatcher": "^2.3"
     },
     "autoload": {
-        "psr-4": { "Akeneo\\Component\\Batch\\": "" }
+        "psr-4": { "Akeneo\\Component\\StorageUtils\\": "" }
     },
     "minimum-stability": "stable",
     "extra": {

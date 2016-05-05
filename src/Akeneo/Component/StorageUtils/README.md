@@ -1,11 +1,7 @@
-Batch Library
-=============
+Storage Utils Library
+=====================
 
-Batch architecture library inspired by Spring Batch.
-
-See http://docs.spring.io/spring-batch/reference/html/domain.html for an explanation of the Domain Language objects you will find.
-
-A [Symfony Bundle](https://github.com/akeneo/BatchBundle) also exists to integrate this component in your Symfony project.
+Interfaces and classes to abstract accesses to the storage (saver, remover, updater, repository).
 
 Akeneo PIM
 ----------
