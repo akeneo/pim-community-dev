@@ -57,6 +57,11 @@ suites:
         psr4_prefix: Akeneo\Bundle\ClassificationBundle
         spec_path: src/Akeneo/Bundle/ClassificationBundle
         src_path: src/Akeneo/Bundle/ClassificationBundle
+    StorageUtilsBundle:
+        namespace: Akeneo\Bundle\StorageUtilsBundle
+        psr4_prefix: Akeneo\Bundle\StorageUtilsBundle
+        spec_path: src/Akeneo/Bundle/StorageUtilsBundle
+        src_path: src/Akeneo/Bundle/StorageUtilsBundle
 
 
     ## Pim Component
