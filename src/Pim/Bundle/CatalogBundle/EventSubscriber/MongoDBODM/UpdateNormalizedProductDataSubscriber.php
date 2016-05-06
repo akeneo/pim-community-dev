@@ -24,9 +24,6 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
     /** @var string */
     protected $logFile;
 
-    /** @var string */
-    protected $productClass;
-
     /** @var array */
     protected $queryGenerators = [];
 
@@ -39,16 +36,11 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
 
     /**
      * @param CommandLauncher $commandLauncher
-     * @param string          $productClass
      * @param string          $logFile
      */
-    public function __construct(
-        CommandLauncher $commandLauncher,
-        $productClass,
-        $logFile
-    ) {
+    public function __construct(CommandLauncher $commandLauncher, $logFile)
+    {
         $this->commandLauncher = $commandLauncher;
-        $this->productClass    = $productClass;
         $this->logFile         = $logFile;
     }
 

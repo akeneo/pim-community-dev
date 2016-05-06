@@ -58,7 +58,7 @@ class ProductRelatedEntityRemovalSubscriber implements EventSubscriber
         $entities       = $unitOfWork->getScheduledEntityDeletions();
         $pendingUpdates = $this->getPendingUpdates($entities);
 
-        if (null !== $pendingUpdates && $pendingUpdates['entityName'] && !empty($pendingUpdates['ids'])) {
+        if (null !== $pendingUpdates && isset($pendingUpdates['entityName']) && !empty($pendingUpdates['ids'])) {
             $command = sprintf(
                 'pim:product:remove-related-entity %s %s',
                 $pendingUpdates['entityName'],

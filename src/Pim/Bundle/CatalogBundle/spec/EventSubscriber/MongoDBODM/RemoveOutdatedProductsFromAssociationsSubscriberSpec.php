@@ -29,12 +29,12 @@ class RemoveOutdatedProductsFromAssociationsSubscriberSpec extends ObjectBehavio
         $this->getSubscribedEvents()->shouldReturn(
             [
                 StorageEvents::POST_REMOVE      => 'removeAssociatedProduct',
-                ProductEvents::POST_MASS_REMOVE => 'removeAssociatedProducts'
+                ProductEvents::POST_MASS_REMOVE => 'removeAssociatedProducts',
             ]
         );
     }
 
-    function it_removed_associated_product(
+    function it_removes_associated_product_in_background(
         $launcher,
         $logFile,
         RemoveEvent $event,
@@ -48,7 +48,7 @@ class RemoveOutdatedProductsFromAssociationsSubscriberSpec extends ObjectBehavio
         $this->removeAssociatedProduct($event);
     }
 
-    function it_removed_associated_products_on_many_products(
+    function it_removes_associated_products_on_many_products_in_background(
         $launcher,
         $logFile,
         RemoveEvent $event
