@@ -23,10 +23,12 @@ Documentation
 
 Documentation is available on [docs.akeneo.com](http://docs.akeneo.com)
 
-Contributing
-------------
+Issues & Contributing
+---------------------
 
 This bundle is developed in our [main repository](https://github.com/akeneo/pim-community-dev).
+
+If you encounter any bug, please check if it's [already known](https://github.com/akeneo/pim-community-dev/issues) before to create a new issue.
 
 If you want to contribute (and we will be pleased if you do!), you'll find more information on [this page](http://docs.akeneo.com/latest/contributing/index.html).
 
