@@ -1,11 +1,7 @@
-Batch Bundle
-============
+Storage Utils Bundle
+====================
 
-Batch architecture bundle inspired by Spring Batch.
-
-See http://docs.spring.io/spring-batch/reference/html/domain.html for an explanation of the Domain Language objects you will find.
-
-Based on the [Batch component](https://github.com/akeneo/batch).
+Utils for Doctrine\DBAL, Doctrine\ORM and Doctrine\MongoDBODM.
 
 Akeneo PIM
 ----------
