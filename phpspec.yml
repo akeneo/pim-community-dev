@@ -92,5 +92,10 @@ suites:
         psr4_prefix: Pim\Bundle\AnalyticsBundle
         spec_path: src/Pim/Bundle/AnalyticsBundle
         src_path: src/Pim/Bundle/AnalyticsBundle
+    BaseConnectorBundle:
+        namespace: Pim\Bundle\BaseConnectorBundle
+        psr4_prefix: Pim\Bundle\BaseConnectorBundle
+        spec_path: src/Pim/Bundle/BaseConnectorBundle
+        src_path: src/Pim/Bundle/BaseConnectorBundle
 extensions:
     - Akeneo\SkipExampleExtension
