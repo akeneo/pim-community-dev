@@ -9,6 +9,11 @@ suites:
         psr4_prefix: Pim\Component\Enrich
         spec_path: src/Pim/Component/Enrich
         src_path: src/Pim/Component/Enrich
+    Connector:
+        namespace: Pim\Component\Connector
+        psr4_prefix: Pim\Component\Connector
+        spec_path: src/Pim/Component/Connector
+        src_path: src/Pim/Component/Connector
 
 extensions:
     - Akeneo\SkipExampleExtension
