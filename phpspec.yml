@@ -162,6 +162,18 @@ suites:
         psr4_prefix: Pim\Bundle\VersioningBundle
         spec_path: src/Pim/Bundle/VersioningBundle
         src_path: src/Pim/Bundle/VersioningBundle
+    WebServiceBundle:
+        namespace: Pim\Bundle\WebServiceBundle
+        psr4_prefix: Pim\Bundle\WebServiceBundle
+        spec_path: src/Pim/Bundle/WebServiceBundle
+        src_path: src/Pim/Bundle/WebServiceBundle
+
+    ## Oro bundle
+    WebServiceBundle:
+        namespace: Oro\Bundle\FilterBundle
+        psr4_prefix: Oro\Bundle\FilterBundle
+        spec_path: src/Oro/Bundle/FilterBundle
+        src_path: src/Oro/Bundle/FilterBundle
 
 extensions:
     - Akeneo\SkipExampleExtension
