@@ -35,6 +35,21 @@ define(['module', 'jquery', 'underscore'], function (module, $, _) {
         },
 
         /**
+         * Warm up the cache on first load
+         */
+        warmUp: function () {
+            if (!this.warm) {
+                _.each(this.fetchers, function (fetcher, code) {
+                    if (undefined === fetcher.options.warmup || fetcher.options.warmup) {
+                        this.getFetcher(code).fetchAll();
+                    }
+                }.bind(this));
+
+                this.warm = true;
+            }
+        },
+
+        /**
          * Get the related fetcher for the given collection name
          *
          * @param {String} entityType
