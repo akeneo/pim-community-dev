@@ -112,6 +112,11 @@ suites:
         psr4_prefix: Pim\Bundle\EnrichBundle
         spec_path: src/Pim/Bundle/EnrichBundle
         src_path: src/Pim/Bundle/EnrichBundle
+    FilterBundle:
+        namespace: Pim\Bundle\FilterBundle
+        psr4_prefix: Pim\Bundle\FilterBundle
+        spec_path: src/Pim/Bundle/FilterBundle
+        src_path: src/Pim/Bundle/FilterBundle
 
 extensions:
     - Akeneo\SkipExampleExtension
