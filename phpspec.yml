@@ -20,6 +20,16 @@ suites:
         psr4_prefix: Akeneo\Component\Classification
         spec_path: src/Akeneo/Component/Classification
         src_path: src/Akeneo/Component/Classification
+    Console:
+        namespace: Akeneo\Component\Console
+        psr4_prefix: Akeneo\Component\Console
+        spec_path: src/Akeneo/Component/Console
+        src_path: src/Akeneo/Component/Console
+    FileStorage:
+        namespace: Akeneo\Component\FileStorage
+        psr4_prefix: Akeneo\Component\FileStorage
+        spec_path: src/Akeneo/Component/FileStorage
+        src_path: src/Akeneo/Component/FileStorage
 
     ## Pim Component
     ReferenceData:
