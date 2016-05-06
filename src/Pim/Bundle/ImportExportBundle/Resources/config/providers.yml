@@ -6,4 +6,4 @@ services:
         class: %pim_import_export.provider.job_label.class%
         arguments:
             - '@translator'
-            - '@service_container'
+            - 'batch_jobs'

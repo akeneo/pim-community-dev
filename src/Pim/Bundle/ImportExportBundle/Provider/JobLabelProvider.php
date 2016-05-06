@@ -2,13 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Provider;
 
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Model\Warning;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -23,87 +16,79 @@ class JobLabelProvider
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var ContainerInterface */
-    protected $container;
+    /** @var string */
+    protected $keyPrefix;
 
     /**
      * @param TranslatorInterface $translator
-     * @param ContainerInterface  $container
+     * @param string              $keyPrefix
      */
-    public function __construct(TranslatorInterface $translator, ContainerInterface $container)
+    public function __construct(TranslatorInterface $translator, $keyPrefix)
     {
         $this->translator = $translator;
-        $this->container = $container;
+        $this->keyPrefix = $keyPrefix;
     }
 
     /**
-     * Get the Job label with the given $jobExecution.
-     * Example: "csv_product_import.label"
+     * Get the Job label with the given $jobName.
+     * Example: "batch_jobs.csv_product_import.label"
      *
-     * @param JobExecution $jobExecution
-     *
-     * @return string
-     */
-    public function getJobLabel(JobExecution $jobExecution)
-    {
-        $job = $this->getJob($jobExecution->getJobInstance());
-        $id = sprintf('%s.label', $job->getName());
-
-        return $this->translator->trans($id);
-    }
-
-    /**
-     * Get the Step label with the given $stepExecution, base on the Job name.
-     * Example: "csv_product_import.perform.label"
-     *
-     * @param StepExecution $stepExecution
+     * @param string $jobName
      *
      * @return string
      */
-    public function getStepLabel(StepExecution $stepExecution)
+    public function getJobLabel($jobName)
     {
-        $job = $this->getJob($stepExecution->getJobExecution()->getJobInstance());
-        $id = sprintf('%s.%s.label', $job->getName(), $stepExecution->getStepName());
-
-        return $this->translator->trans($id);
-    }
-
-    /**
-     * Get the Step label with the given $stepWarning, base on the Job and Step name.
-     * Example: "csv_product_import.perform.warning.duplicated.label"
-     *
-     * @param Warning $stepWarning
-     *
-     * @return string
-     */
-    public function getStepWarningLabel(Warning $stepWarning)
-    {
-        $job = $this->getJob($stepWarning->getStepExecution()->getJobExecution()->getJobInstance());
         $id = sprintf(
-            '%s.%s.warning.%s.label',
-            $job->getName(),
-            $stepWarning->getStepExecution()->getStepName(),
-            $stepWarning->getName()
+            '%s.%s.label',
+            $this->keyPrefix,
+            $jobName
         );
 
         return $this->translator->trans($id);
     }
 
     /**
-     * @param JobInstance $jobInstance
+     * Get the Step label with the given $stepName, base on the $jobName.
+     * Example: "batch_jobs.csv_product_import.perform.label"
      *
-     * @return JobInterface
+     * @param string $jobName
+     * @param string $stepName
+     *
+     * @return string
      */
-    protected function getJob(JobInstance $jobInstance)
+    public function getStepLabel($jobName, $stepName)
     {
-        return $this->getConnectorRegistry()->getJob($jobInstance);
+        $id = sprintf(
+            '%s.%s.%s.label',
+            $this->keyPrefix,
+            $jobName,
+            $stepName
+        );
+
+        return $this->translator->trans($id);
     }
 
     /**
-     * @return ConnectorRegistry
+     * Get the Step label with the given $stepName, base on the $jobName and $stepName.
+     * Example: "csv_product_import.perform.warning.duplicated.label"
+     *
+     * @param string $jobName
+     * @param string $stepName
+     * @param string $warningName
+     *
+     * @return string
      */
-    protected function getConnectorRegistry()
+    public function getStepWarningLabel($jobName, $stepName, $warningName)
     {
-        return $this->container->get('akeneo_batch.connectors');
+        $id = sprintf(
+            '%s.%s.%s.warning.%s.label',
+            $this->keyPrefix,
+            $jobName,
+            $stepName,
+            $warningName
+        );
+
+        return $this->translator->trans($id);
     }
 }

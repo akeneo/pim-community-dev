@@ -1,63 +1,5 @@
 pim_base_connector:
-
-    ## Job titles
-    jobs:
-        csv_product_export:
-            title: Product export in CSV
-            export.title: Product export
-        csv_category_export:
-            title: Category export in CSV
-            export.title: Category export
-        csv_attribute_export:
-            title: Attribute export in CSV
-            export.title: Attribute export
-        csv_attribute_option_export:
-            title: Attribute option export in CSV
-            export.title: Attribute option export
-        csv_association_type_export:
-            title: Association type export in CSV
-            export.title: Association type export
-        csv_group_export:
-            title: Group export in CSV
-            export.title: Group export
-        csv_variant_group_export:
-            title: Variant group export in CSV
-            export.title: Variant group export
-        csv_family_export:
-            title: Family export in CSV
-            export.title: Family export
-        csv_product_import:
-            title: Product import in CSV
-            validation.title: File validation
-            import.title: Product import
-            import_associations.title: Association import
-        csv_category_import:
-            title: Category import in CSV
-            validation.title: File validation
-            import.title: Category import
-        csv_attribute_import:
-            title: Attribute import in CSV
-            validation.title: File validation
-            import.title: Attribute import
-        csv_attribute_option_import:
-            title: Attribute option import in CSV
-            validation.title: File validation
-            import.title: Attribute option import
-        csv_association_type_import:
-            title: Association type import in CSV
-            validation.title: File validation
-            import.title: Association type import
-        csv_group_import:
-            title: Group import in CSV
-            validation.title: File validation
-            import.title: Group import
-        csv_variant_group_import:
-            title: Variant group import in CSV
-            validation.title: File validation
-            import.title: Variant group import
-
     steps:
-
         dummy_reader.title:                  Dummy reader
         product_reader.title:                Product extraction
         entity_reader.title:                 Entity extraction
@@ -152,3 +94,58 @@ pim_base_connector:
         copyValuesToProducts:
             label: Copy variant group values to products
             help: Means that the products are automatically updated with variant group values, can be switched off to only update variant group
+
+batch_jobs:
+    csv_product_export:
+        label: Product export in CSV
+        export.label: Product export
+    csv_category_export:
+        label: Category export in CSV
+        export.label: Category export
+    csv_attribute_export:
+        label: Attribute export in CSV
+        export.label: Attribute export
+    csv_attribute_option_export:
+        label: Attribute option export in CSV
+        export.label: Attribute option export
+    csv_association_type_export:
+        label: Association type export in CSV
+        export.label: Association type export
+    csv_group_export:
+        label: Group export in CSV
+        export.label: Group export
+    csv_variant_group_export:
+        label: Variant group export in CSV
+        export.label: Variant group export
+    csv_family_export:
+        label: Family export in CSV
+        export.label: Family export
+    csv_product_import:
+        label: Product import in CSV
+        validation.label: File validation
+        import.label: Product import
+        import_associations.label: Association import
+    csv_category_import:
+        label: Category import in CSV
+        validation.label: File validation
+        import.label: Category import
+    csv_attribute_import:
+        label: Attribute import in CSV
+        validation.label: File validation
+        import.label: Attribute import
+    csv_attribute_option_import:
+        label: Attribute option import in CSV
+        validation.label: File validation
+        import.label: Attribute option import
+    csv_association_type_import:
+        label: Association type import in CSV
+        validation.label: File validation
+        import.label: Association type import
+    csv_group_import:
+        label: Group import in CSV
+        validation.label: File validation
+        import.label: Group import
+    csv_variant_group_import:
+        label: Variant group import in CSV
+        validation.label: File validation
+        import.label: Variant group import

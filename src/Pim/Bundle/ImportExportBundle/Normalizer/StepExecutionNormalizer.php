@@ -54,7 +54,10 @@ class StepExecutionNormalizer implements NormalizerInterface
         }
 
         return [
-            'label'     => $this->labelProvider->getStepLabel($object),
+            'label'     => $this->labelProvider->getStepLabel(
+                $object->getJobExecution()->getJobInstance()->getAlias(),
+                $object->getStepName()
+            ),
             'status'    => $this->normalizeStatus($object->getStatus()->getValue()),
             'summary'   => $this->normalizeSummary($object->getSummary()),
             'startedAt' => $this->presenter->present($object->getStartTime(), $context),
@@ -98,7 +101,11 @@ class StepExecutionNormalizer implements NormalizerInterface
 
         foreach ($selectedWarnings as $warning) {
             $result[] =  [
-                'label'  => $this->labelProvider->getStepWarningLabel($warning),
+                'label'  => $this->labelProvider->getStepWarningLabel(
+                    $warning->getStepExecution()->getJobExecution()->getJobInstance()->getAlias(),
+                    $warning->getStepExecution()->getStepName(),
+                    $warning->getName()
+                ),
                 'reason' => $this->translator->trans($warning->getReason(), $warning->getReasonParameters()),
                 'item'   => $warning->getItem(),
             ];
