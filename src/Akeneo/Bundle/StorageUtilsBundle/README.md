@@ -1,11 +1,7 @@
-Batch Library
-=============
+Storage Utils Bundle
+====================
 
-Batch architecture library inspired by Spring Batch.
-
-See http://docs.spring.io/spring-batch/reference/html/domain.html for an explanation of the Domain Language objects you will find.
-
-A [Symfony Bundle](https://github.com/akeneo/BatchBundle) also exists to integrate this component in your Symfony project.
+Utils for Doctrine\DBAL, Doctrine\ORM and Doctrine\MongoDBODM.
 
 Akeneo PIM
 ----------
@@ -26,7 +22,7 @@ Documentation is available on [docs.akeneo.com](http://docs.akeneo.com)
 Issues & Contributing
 ---------------------
 
-This library is developed in our [main repository](https://github.com/akeneo/pim-community-dev).
+This bundle is developed in our [main repository](https://github.com/akeneo/pim-community-dev).
 
 If you encounter any bug, please check if it's [already known](https://github.com/akeneo/pim-community-dev/issues) before to create a new issue.
 

@@ -12,6 +12,8 @@
     ],
     "require": {
         "php": ">=5.4.4",
+        "akeneo/storage-utils-bundle": "0.6.x-dev",
+        "akeneo/storage-utils": "0.6.x-dev",
         "akeneo/batch": "0.6.x-dev",
         "symfony/config": "^2.3",
         "symfony/console": "^2.3",
@@ -29,7 +31,7 @@
         "monolog/monolog": "^1.1.0"
     },
     "autoload": {
-        "psr-4": { "Akeneo\\Bundle\\BatchBundle": "" }
+        "psr-4": { "Akeneo\\Bundle\\BatchBundle\\": "" }
     },
     "minimum-stability": "stable",
     "extra": {

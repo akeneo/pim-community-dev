@@ -12,6 +12,22 @@ Allows to :
 [![Code Coverage](https://scrutinizer-ci.com/g/akeneo/MeasureBundle/badges/coverage.png?s=3ad7d541f469ab7984879589b3e294aeee52da39)](https://scrutinizer-ci.com/g/akeneo/MeasureBundle/)
 [![Build Status](https://travis-ci.org/akeneo/MeasureBundle.png?branch=0.1)](https://travis-ci.org/akeneo/MeasureBundle)
 
+Akeneo PIM
+----------
+
+Originally written to be used in [Akeneo PIM](https://www.akeneo.com/).
+
+This extraction aims to make it usable outside of the Akeneo PIM project.
+
+Please consider that this process is still in a very experimental stage.
+
+We don't have all the tests and automation which could ensure that this component will work smoothly outside of the Akeneo PIM full stack.
+
+Documentation
+-------------
+
+Documentation is available on [docs.akeneo.com](http://docs.akeneo.com)
+
 General operation
 =================
 
@@ -201,28 +217,14 @@ Extend converter
 
 This bundle is extensible and we can imaginate config recovering from database or services or use converter for currencies for example.
 
-Akeneo PIM
-----------
-
-Originally written to be used in [Akeneo PIM](https://www.akeneo.com/).
-
-This extraction aims to make it usable outside of the Akeneo PIM project.
-
-Please consider that this process is still in a very experimental stage.
-
-We don't have all the tests and automation which could ensure that this component will work smoothly outside of the Akeneo PIM full stack.
-
-Documentation
--------------
-
-Documentation is available on [docs.akeneo.com](http://docs.akeneo.com)
-
-Contributing
-------------
+Issues & Contributing
+---------------------
 
 This bundle is developed in our [main repository](https://github.com/akeneo/pim-community-dev).
 
-If you want to contribute (and we will be pleased if you do!), you'l find more information on [this page](http://docs.akeneo.com/latest/contributing/index.html).
+If you encounter any bug, please check if it's [already known](https://github.com/akeneo/pim-community-dev/issues) before to create a new issue.
+
+If you want to contribute (and we will be pleased if you do!), you'll find more information on [this page](http://docs.akeneo.com/latest/contributing/index.html).
 
 About versioning, the version 0.6.x is developed in akeneo/pim-community-dev 1.6.x.
 

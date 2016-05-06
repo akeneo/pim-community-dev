@@ -16,13 +16,12 @@
         "bin-dir": "bin"
     },
     "autoload": {
-        "psr-0": { "Akeneo\\Bundle\\MeasureBundle": "" }
+        "psr-4": { "Akeneo\\Bundle\\MeasureBundle\\": "" }
     },
-    "target-dir": "Akeneo/Bundle/MeasureBundle",
     "minimum-stability": "stable",
     "extra": {
         "branch-alias": {
-            "dev-master": "0.5.x-dev"
+            "dev-master": "0.6.x-dev"
         }
     }
 }
