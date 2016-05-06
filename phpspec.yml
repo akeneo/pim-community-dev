@@ -107,10 +107,11 @@ suites:
         psr4_prefix: Pim\Bundle\DashboardBundle
         spec_path: src/Pim/Bundle/DashboardBundle
         src_path: src/Pim/Bundle/DashboardBundle
-    DataGridBundle:
-        namespace: Pim\Bundle\DataGridBundle
-        psr4_prefix: Pim\Bundle\DataGridBundle
-        spec_path: src/Pim/Bundle/DataGridBundle
-        src_path: src/Pim/Bundle/DataGridBundle
+    EnrichBundle:
+        namespace: Pim\Bundle\EnrichBundle
+        psr4_prefix: Pim\Bundle\EnrichBundle
+        spec_path: src/Pim/Bundle/EnrichBundle
+        src_path: src/Pim/Bundle/EnrichBundle
+
 extensions:
     - Akeneo\SkipExampleExtension
