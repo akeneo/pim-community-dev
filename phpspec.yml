@@ -137,6 +137,11 @@ suites:
         psr4_prefix: Pim\Bundle\NotificationBundle
         spec_path: src/Pim/Bundle/NotificationBundle
         src_path: src/Pim/Bundle/NotificationBundle
+    PdfGeneratorBundle:
+        namespace: Pim\Bundle\PdfGeneratorBundle
+        psr4_prefix: Pim\Bundle\PdfGeneratorBundle
+        spec_path: src/Pim/Bundle/PdfGeneratorBundle
+        src_path: src/Pim/Bundle/PdfGeneratorBundle
 
 extensions:
     - Akeneo\SkipExampleExtension
