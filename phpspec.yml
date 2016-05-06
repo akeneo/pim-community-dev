@@ -1,2 +1,9 @@
+suites:
+    ReferenceData:
+        namespace: Pim\Component\ReferenceData
+        psr4_prefix: Pim\Component\ReferenceData
+        spec_path: src/Pim/Component/ReferenceData
+        src_path: src/Pim/Component/ReferenceData
+
 extensions:
     - Akeneo\SkipExampleExtension
