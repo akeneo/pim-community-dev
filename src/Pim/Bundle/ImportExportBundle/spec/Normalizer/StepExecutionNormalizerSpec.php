@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\ImportExportBundle\Normalizer;
 
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Model\Warning;
 use Akeneo\Component\Batch\Job\BatchStatus;
@@ -33,10 +35,16 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
         $translator,
         $presenter,
         $labelProvider,
+        JobInstance $jobInstance,
+        JobExecution $jobExecution,
         StepExecution $stepExecution,
         BatchStatus $status
     ) {
-        $labelProvider->getStepLabel($stepExecution)->willReturn('Export step');
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getStepName()->willReturn('such_step');
+        $jobInstance->getAlias()->willReturn('wow_job');
+        $labelProvider->getStepLabel('wow_job', 'such_step')->willReturn('Export step');
 
         $stepExecution->getSummary()->willReturn(['read' => 12, 'write' => 50]);
         $translator->trans('job_execution.summary.read')->willReturn('Read');
@@ -59,7 +67,7 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
         );
 
         $stepExecution->getWarnings()->willReturn(new ArrayCollection([$warning]));
-        $labelProvider->getStepWarningLabel($warning)->willReturn('Reader');
+        $labelProvider->getStepWarningLabel('wow_job', 'such_step', 'a_warning')->willReturn('Reader');
         $translator->trans(12)->willReturn(12);
         $translator->trans(50)->willReturn(50);
         $translator->trans('warning_reason', ['foo' => 'bar'])->willReturn('WARNING!');

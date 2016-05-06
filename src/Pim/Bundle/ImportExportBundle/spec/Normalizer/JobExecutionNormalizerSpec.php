@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use PhpSpec\ObjectBehavior;
@@ -35,6 +36,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         $serializer,
         $translator,
         $labelProvider,
+        JobInstance $jobInstance,
         JobExecution $jobExecution,
         StepExecution $exportExecution,
         StepExecution $cleanExecution,
@@ -45,11 +47,13 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
                 ['message' => 'error', 'messageParameters' => ['foo' => 'bar']]
             ]
         );
+        $jobInstance->getAlias()->willReturn('wow_job');
         $translator->trans('error', ['foo' => 'bar'])->willReturn('Such error');
-        $labelProvider->getJobLabel($jobExecution)->willReturn('Wow job');
+        $labelProvider->getJobLabel('wow_job')->willReturn('Wow job');
 
         $jobExecution->isRunning()->willReturn(true);
         $jobExecution->getStatus()->willReturn($status);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
         $status->getValue()->willReturn(1);
         $translator->trans('pim_import_export.batch_status.1')->willReturn('COMPLETED');
 
