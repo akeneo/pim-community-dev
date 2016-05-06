@@ -14,6 +14,11 @@ suites:
         psr4_prefix: Pim\Component\Connector
         spec_path: src/Pim/Component/Connector
         src_path: src/Pim/Component/Connector
+    Catalog:
+        namespace: Pim\Component\Catalog
+        psr4_prefix: Pim\Component\Catalog
+        spec_path: src/Pim/Component/Catalog
+        src_path: src/Pim/Component/Catalog
 
 extensions:
     - Akeneo\SkipExampleExtension
