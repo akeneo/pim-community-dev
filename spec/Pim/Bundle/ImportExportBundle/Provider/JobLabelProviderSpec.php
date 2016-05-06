@@ -7,7 +7,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class JobLabelProviderSpec extends ObjectBehavior
 {
-    function let(TranslatorInterface $translator) {
+    function let(TranslatorInterface $translator)
+    {
         $this->beConstructedWith($translator, 'batch_jobs');
     }
 
