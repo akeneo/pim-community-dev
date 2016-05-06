@@ -40,7 +40,7 @@ class StorageVersionProvider
         $version = $this->getSQLVersion();
 
         if (null !== $this->mongoServer && null !== $this->mongoDatabase) {
-            array_merge(
+            $version = array_merge(
                 $version,
                 $this->getMongoDBVersion()
             );
