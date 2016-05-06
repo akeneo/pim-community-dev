@@ -35,6 +35,11 @@ suites:
         psr4_prefix: Akeneo\Component\Localization
         spec_path: src/Akeneo/Component/Localization
         src_path: src/Akeneo/Component/Localization
+    StorageUtils:
+        namespace: Akeneo\Component\StorageUtils
+        psr4_prefix: Akeneo\Component\StorageUtils
+        spec_path: src/Akeneo/Component/StorageUtils
+        src_path: src/Akeneo/Component/StorageUtils
 
     ## Pim Component
     ReferenceData:
