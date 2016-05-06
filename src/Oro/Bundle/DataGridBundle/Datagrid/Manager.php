@@ -17,14 +17,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Manager implements ManagerInterface
 {
     /** @var ContainerInterface */
-    private $serviceLocator;
+    private $container;
 
     /**
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {
-        $this->serviceLocator = $container;
+        $this->container = $container;
     }
 
     /**
@@ -55,7 +55,7 @@ class Manager implements ManagerInterface
      */
     final protected function getDatagridBuilder()
     {
-        return $this->serviceLocator->get('oro_datagrid.datagrid.builder');
+        return $this->container->get('oro_datagrid.datagrid.builder');
     }
 
     /**
@@ -65,7 +65,7 @@ class Manager implements ManagerInterface
      */
     final protected function getConfigurationProvider()
     {
-        return $this->serviceLocator->get('oro_datagrid.configuration.provider.chain');
+        return $this->container->get('oro_datagrid.configuration.provider.chain');
     }
 
     /**
@@ -75,6 +75,6 @@ class Manager implements ManagerInterface
      */
     final protected function getRequestParameters()
     {
-        return $this->serviceLocator->get('oro_datagrid.datagrid.request_params');
+        return $this->container->get('oro_datagrid.datagrid.request_params');
     }
 }

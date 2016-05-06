@@ -24,7 +24,7 @@ class ResponseHistoryListener
     /**
      * @var ContainerInterface
      */
-    private $serviceLocator;
+    private $container;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -32,7 +32,7 @@ class ResponseHistoryListener
     ) {
         $this->user = !$tokenStorage->getToken() || is_string($tokenStorage->getToken()->getUser())
             ? null : $tokenStorage->getToken()->getUser();
-        $this->serviceLocator = $container;
+        $this->container = $container;
     }
 
     /**
@@ -112,7 +112,7 @@ class ResponseHistoryListener
      */
     final protected function getEntityManager()
     {
-        return $this->serviceLocator->get('doctrine.orm.entity_manager');
+        return $this->container->get('doctrine.orm.entity_manager');
     }
 
     /**
@@ -120,7 +120,7 @@ class ResponseHistoryListener
      */
     final protected function getTitleService()
     {
-        return $this->serviceLocator->get('oro_navigation.title_service');
+        return $this->container->get('oro_navigation.title_service');
     }
 
     /**
@@ -128,6 +128,6 @@ class ResponseHistoryListener
      */
     final protected function getItemFactory()
     {
-        return $this->serviceLocator->get('oro_navigation.item.factory');
+        return $this->container->get('oro_navigation.item.factory');
     }
 }

@@ -18,11 +18,11 @@ use Twig_Function_Method;
 class FilterExtension extends Twig_Extension
 {
     /** @var ContainerInterface */
-    private $serviceLocator;
+    private $container;
 
     public function __construct(ContainerInterface $container)
     {
-        $this->serviceLocator = $container;
+        $this->container = $container;
     }
 
     /**
@@ -67,7 +67,7 @@ class FilterExtension extends Twig_Extension
      */
     final protected function getDatagridManager()
     {
-        return $this->serviceLocator->get('oro_datagrid.datagrid.manager');
+        return $this->container->get('oro_datagrid.datagrid.manager');
     }
 
     /**
@@ -75,6 +75,6 @@ class FilterExtension extends Twig_Extension
      */
     final protected function getFiltersConfigurator()
     {
-        return $this->serviceLocator->get('pim_datagrid.datagrid.product.filters_configurator');
+        return $this->container->get('pim_datagrid.datagrid.product.filters_configurator');
     }
 }

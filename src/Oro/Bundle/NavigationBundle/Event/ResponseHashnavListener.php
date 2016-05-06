@@ -13,11 +13,11 @@ class ResponseHashnavListener
     /**
      * @var ContainerInterface
      */
-    private $serviceLocator;
+    private $container;
 
     public function __construct(ContainerInterface $container)
     {
-        $this->serviceLocator = $container;
+        $this->container = $container;
     }
 
     /**
@@ -61,7 +61,7 @@ class ResponseHashnavListener
      */
     final protected function getTokenStorage()
     {
-        return $this->serviceLocator->get('security.token_storage');
+        return $this->container->get('security.token_storage');
     }
 
     /**
@@ -69,6 +69,6 @@ class ResponseHashnavListener
      */
     final protected function getTemplating()
     {
-        return $this->serviceLocator->get('templating');
+        return $this->container->get('templating');
     }
 }

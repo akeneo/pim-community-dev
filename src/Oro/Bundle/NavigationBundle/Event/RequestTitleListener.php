@@ -12,7 +12,7 @@ class RequestTitleListener
     /**
      * @var ContainerInterface
      */
-    private $serviceLocator;
+    private $container;
 
     /**
      * Injection
@@ -21,7 +21,7 @@ class RequestTitleListener
      */
     public function __construct(ContainerInterface $container)
     {
-        $this->serviceLocator = $container;
+        $this->container = $container;
     }
 
     /**
@@ -53,6 +53,6 @@ class RequestTitleListener
      */
     final protected function getTitleService()
     {
-        return $this->serviceLocator->get('oro_navigation.title_service');
+        return $this->container->get('oro_navigation.title_service');
     }
 }

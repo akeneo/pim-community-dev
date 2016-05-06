@@ -14,14 +14,14 @@ class MetadataExtension extends Twig_Extension
     const ROUTE = 'oro_datagrid_index';
 
     /** @var ContainerInterface */
-    private $serviceLocator;
+    private $container;
 
     /**
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {
-        $this->serviceLocator = $container;
+        $this->container = $container;
     }
 
     /**
@@ -97,7 +97,7 @@ class MetadataExtension extends Twig_Extension
      */
     final protected function getDatagridManager()
     {
-        return $this->serviceLocator->get('oro_datagrid.datagrid.manager');
+        return $this->container->get('oro_datagrid.datagrid.manager');
     }
 
     /**
@@ -105,7 +105,7 @@ class MetadataExtension extends Twig_Extension
      */
     final protected function getRequestParameters()
     {
-        return $this->serviceLocator->get('oro_datagrid.datagrid.request_params');
+        return $this->container->get('oro_datagrid.datagrid.request_params');
     }
 
     /**
@@ -113,6 +113,6 @@ class MetadataExtension extends Twig_Extension
      */
     final protected function getRouter()
     {
-        return $this->serviceLocator->get('router');
+        return $this->container->get('router');
     }
 }
