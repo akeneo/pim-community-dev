@@ -81,7 +81,7 @@ class YamlReaderSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalledTimes(3);
 
         $this->setFilePath(
-            realpath(__DIR__ . '/../../../../../../features/Context/fixtures/fake_products_with_code.yml')
+            realpath(__DIR__ . '/../../fixtures/fake_products_with_code.yml')
         );
         $this->setStepExecution($stepExecution);
         $this->read()->shouldReturn([
@@ -104,7 +104,7 @@ class YamlReaderSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldNotBeCalled();
 
         $this->setFilePath(
-            realpath(__DIR__ . '/../../../../../../features/Context/fixtures/fake_products_with_code.yml')
+            realpath(__DIR__ . '/../../fixtures/fake_products_with_code.yml')
         );
         $this->read()->shouldReturn([
             'sku' => 'mug_akeneo'
@@ -126,7 +126,7 @@ class YamlReaderSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
 
         $this->setFilePath(
-            realpath(__DIR__ . '/../../../../../../features/Context/fixtures/fake_products_with_code.yml')
+            realpath(__DIR__ . '/../../fixtures/fake_products_with_code.yml')
         );
         $this->setStepExecution($stepExecution);
         $this->read()->shouldReturn([
@@ -148,7 +148,7 @@ class YamlReaderSpec extends ObjectBehavior
         $this->beConstructedWith(true, 'sku');
 
         $this->setFilePath(
-            realpath(__DIR__ . '/../../../../../../features/Context/fixtures/fake_products_without_code.yml')
+            realpath(__DIR__ . '/../../fixtures/fake_products_without_code.yml')
         );
         $this->read()->shouldReturn([
             'mug_akeneo_blue' => [
@@ -172,7 +172,7 @@ class YamlReaderSpec extends ObjectBehavior
         $this->beConstructedWith(false, false);
 
         $this->setFilePath(
-            realpath(__DIR__ . '/../../../../../../features/Context/fixtures/fake_products_with_code.yml')
+            realpath(__DIR__ . '/../../fixtures/fake_products_with_code.yml')
         );
         $this->read()->shouldReturn([
             'sku' => 'mug_akeneo'

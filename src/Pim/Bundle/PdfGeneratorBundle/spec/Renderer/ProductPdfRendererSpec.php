@@ -26,7 +26,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
         CacheManager $cacheManager,
         FilterManager $filterManager
     ) {
-        $path = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
         $this->beConstructedWith(
             $templating,
             $pdfBuilder,
@@ -34,7 +33,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             $cacheManager,
             $filterManager,
             self::TEMPLATE_NAME,
-            $path
+            '/tmp/'
         );
     }
 
@@ -56,7 +55,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
     ) {
         $blender->getAttributes()->willReturn([$color]);
 
-        $path = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
         $color->getGroup()->willReturn($design);
         $design->getLabel()->willReturn('Design');
 
@@ -69,7 +67,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'scope'             => 'ecommerce',
             'groupedAttributes' => ['Design' => ['color' => $color]],
             'imageAttributes'   => [],
-            'uploadDir'         => $path . DIRECTORY_SEPARATOR,
+            'uploadDir'         => '/tmp/' . DIRECTORY_SEPARATOR,
             'customFont'        => null
         ])->shouldBeCalled();
 
@@ -89,7 +87,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
         FileInfoInterface $fileInfo,
         CacheManager $cacheManager
     ) {
-        $path = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
         $blender->getAttributes()->willReturn([$mainImage]);
         $blender->getValue("main_image", "en_US", "ecommerce")->willReturn($productValue);
 
@@ -112,7 +109,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
                 'scope'             => 'ecommerce',
                 'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
                 'imageAttributes'   => ['main_image' => $mainImage],
-                'uploadDir'         => $path . DIRECTORY_SEPARATOR,
+                'uploadDir'         => '/tmp/' . DIRECTORY_SEPARATOR,
                 'customFont'        => null
             ]
         )->shouldBeCalled();

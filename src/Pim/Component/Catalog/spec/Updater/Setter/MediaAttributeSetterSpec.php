@@ -74,7 +74,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 
         $data = [
             'originalFilename' => 'akeneo',
-            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath' => realpath(__DIR__.'/../../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
         $attribute->getCode()->willReturn('front_view');
@@ -119,7 +119,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = [
-            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath' => realpath(__DIR__.'/../../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
         $this->shouldThrow(
@@ -188,7 +188,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 
         $data = [
             'originalFilename' => 'akeneo',
-            'filePath'         => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath'         => realpath(__DIR__ . '/../../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
         $repository->findOneByIdentifier(Argument::any())->willReturn(null);
