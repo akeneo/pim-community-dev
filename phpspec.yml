@@ -30,6 +30,11 @@ suites:
         psr4_prefix: Akeneo\Component\FileStorage
         spec_path: src/Akeneo/Component/FileStorage
         src_path: src/Akeneo/Component/FileStorage
+    Localization:
+        namespace: Akeneo\Component\Localization
+        psr4_prefix: Akeneo\Component\Localization
+        spec_path: src/Akeneo/Component/Localization
+        src_path: src/Akeneo/Component/Localization
 
     ## Pim Component
     ReferenceData:
