@@ -97,5 +97,10 @@ suites:
         psr4_prefix: Pim\Bundle\BaseConnectorBundle
         spec_path: src/Pim/Bundle/BaseConnectorBundle
         src_path: src/Pim/Bundle/BaseConnectorBundle
+    CatalogBundle:
+        namespace: Pim\Bundle\CatalogBundle
+        psr4_prefix: Pim\Bundle\CatalogBundle
+        spec_path: src/Pim/Bundle/CatalogBundle
+        src_path: src/Pim/Bundle/CatalogBundle
 extensions:
     - Akeneo\SkipExampleExtension
