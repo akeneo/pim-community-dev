@@ -142,6 +142,11 @@ suites:
         psr4_prefix: Pim\Bundle\PdfGeneratorBundle
         spec_path: src/Pim/Bundle/PdfGeneratorBundle
         src_path: src/Pim/Bundle/PdfGeneratorBundle
+    ReferenceDataBundle:
+        namespace: Pim\Bundle\ReferenceDataBundle
+        psr4_prefix: Pim\Bundle\ReferenceDataBundle
+        spec_path: src/Pim/Bundle/ReferenceDataBundle
+        src_path: src/Pim/Bundle/ReferenceDataBundle
 
 extensions:
     - Akeneo\SkipExampleExtension
