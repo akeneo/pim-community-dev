@@ -1,5 +1,5 @@
 suites:
-    ## Akeneo Component
+    ## Akeneo Components
     Analytics:
         namespace: Akeneo\Component\Analytics
         psr4_prefix: Akeneo\Component\Analytics
@@ -46,7 +46,7 @@ suites:
         spec_path: src/Akeneo/Component/Versioning
         src_path: src/Akeneo/Component/Versioning
 
-    ## Akeneo Bundle
+    ## Akeneo Bundles
     BatchBundle:
         namespace: Akeneo\Bundle\BatchBundle
         psr4_prefix: Akeneo\Bundle\BatchBundle
@@ -68,7 +68,7 @@ suites:
         spec_path: src/Akeneo/Bundle/MeasureBundle
         src_path: src/Akeneo/Bundle/MeasureBundle
 
-    ## Pim Component
+    ## Pim Components
     ReferenceData:
         namespace: Pim\Component\ReferenceData
         psr4_prefix: Pim\Component\ReferenceData
@@ -90,7 +90,7 @@ suites:
         spec_path: src/Pim/Component/Catalog
         src_path: src/Pim/Component/Catalog
 
-    ## Akeneo Bundle
+    ## Akeneo Bundles
     AnalyticsBundle:
         namespace: Pim\Bundle\AnalyticsBundle
         psr4_prefix: Pim\Bundle\AnalyticsBundle
@@ -177,8 +177,8 @@ suites:
         spec_path: src/Pim/Bundle/WebServiceBundle
         src_path: src/Pim/Bundle/WebServiceBundle
 
-    ## Oro bundle
-    WebServiceBundle:
+    ## Oro bundles
+    OroFilterBundle:
         namespace: Oro\Bundle\FilterBundle
         psr4_prefix: Oro\Bundle\FilterBundle
         spec_path: src/Oro/Bundle/FilterBundle
