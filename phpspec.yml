@@ -10,6 +10,16 @@ suites:
         psr4_prefix: Akeneo\Component\Batch
         spec_path: src/Akeneo/Component/Batch
         src_path: src/Akeneo/Component/Batch
+    Buffer:
+        namespace: Akeneo\Component\Buffer
+        psr4_prefix: Akeneo\Component\Buffer
+        spec_path: src/Akeneo/Component/Buffer
+        src_path: src/Akeneo/Component/Buffer
+    Classification:
+        namespace: Akeneo\Component\Classification
+        psr4_prefix: Akeneo\Component\Classification
+        spec_path: src/Akeneo/Component/Classification
+        src_path: src/Akeneo/Component/Classification
 
     ## Pim Component
     ReferenceData:
