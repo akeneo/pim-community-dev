@@ -132,6 +132,11 @@ suites:
         psr4_prefix: Pim\Bundle\LocalizationBundle
         spec_path: src/Pim/Bundle/LocalizationBundle
         src_path: src/Pim/Bundle/LocalizationBundle
+    NotificationBundle:
+        namespace: Pim\Bundle\NotificationBundle
+        psr4_prefix: Pim\Bundle\NotificationBundle
+        spec_path: src/Pim/Bundle/NotificationBundle
+        src_path: src/Pim/Bundle/NotificationBundle
 
 extensions:
     - Akeneo\SkipExampleExtension
