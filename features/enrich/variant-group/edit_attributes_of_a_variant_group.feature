@@ -23,60 +23,64 @@ Feature: Edit attributes of a variant group
       | tshirts | description  | l                | de_DE  | print     |
       | jackets | description  | m                | en_US  | ecommerce |
     And I am logged in as "Julia"
-    And I am on the "tshirts" variant group page
-    And I visit the "Attributes" tab
 
   Scenario: Successfully display attributes of a variant group
+    Given I am on the "tshirts" variant group page
+    And I visit the "Attributes" tab
     Then I should see the Name and Description fields
     When I visit the "Additional information" group
     Then I should see the Manufacturer field
 
   Scenario: Successfully edit a simple attribute of a variant group
+    Given I am on the "tshirts" variant group page
+    And I visit the "Attributes" tab
     When I visit the "Additional information" group
     And I fill in the following information:
       | Manufacturer | Lacoste |
     And I press the "Save" button
+    And I reload the page
     Then the field Manufacturer should contain "Lacoste"
 
   Scenario: Successfully edit a localizable attribute of a variant group
-    Given I switch the locale to "fr_FR"
-    And I fill in the following information:
-      | Nom | French name |
+    Given I am on the "tshirts" variant group page
+    And I visit the "Attributes" tab
+    And I change the Nom for scope ecommerce and locale fr_FR to "French name"
     And I press the "Save" button
-    And I switch the locale to "en_US"
-    And I fill in the following information:
-      | Name | English name |
+    And I change the Name for scope ecommerce and locale en_US to "English name"
     And I press the "Save" button
+    And I reload the page
     When I switch the locale to "fr_FR"
+    And I switch the scope to "ecommerce"
     Then the field Nom should contain "French name"
     When I switch the locale to "en_US"
     Then the field Name should contain "English name"
 
   Scenario: Successfully edit a localizable and scopable attribute of a variant group
-    Given I switch the locale to "de_DE"
-    And I expand the "Beschreibung" attribute
-    And I fill in the following information:
-      | ecommerce Beschreibung | German ecommerce description |
-      | print Beschreibung     | German print description     |
-    And I press the "Save" button
-    And I switch the locale to "en_US"
-    And I expand the "Description" attribute
-    And I fill in the following information:
-      | ecommerce Description | British ecommerce description |
-      | tablet Description    | British tablet description    |
-    And I press the "Save" button
+    Given I am on the "tshirts" variant group page
+    And I visit the "Attributes" tab
+    And I change the Beschreibung for scope ecommerce and locale de_DE to "German ecommerce description"
+    And I change the Beschreibung for scope print and locale de_DE to "German print description"
+    And I save the variant group
+    And I change the Description for scope ecommerce and locale en_GB to "British ecommerce description"
+    And I change the Description for scope tablet and locale en_GB to "British tablet description"
+    And I save the variant group
+    And I reload the page
     When I switch the locale to "de_DE"
-    Then the field ecommerce Beschreibung should contain "German ecommerce description"
-    Then the field print Beschreibung should contain "German print description"
-    When I switch the locale to "en_US"
-    Then the field ecommerce Description should contain "British ecommerce description"
-    And the field tablet Description should contain "British tablet description"
+    And I switch the scope to "print"
+    Then the variant group Beschreibung should be "German print description"
+    When I switch the scope to "ecommerce"
+    Then the variant group Beschreibung should be "German ecommerce description"
+    When I switch the locale to "en_GB"
+    Then the variant group Description should be "British ecommerce description"
+    When I switch the scope to "tablet"
+    Then the variant group Description should be "British tablet description"
 
   Scenario: Display a message when variant group has no attributes
     Given I am on the "jackets" variant group page
     And I visit the "Attributes" tab
+    And I switch the scope to "tablet"
     And I switch the locale to "fr_FR"
-    Then I should see "This variant group has no attributes in this locale"
+    Then I should see the text "This localizable field is not available for locale 'fr_FR' and channel 'tablet'"
     When I am on the "sweaters" variant group page
     And I visit the "Attributes" tab
-    Then I should see "This variant group has no attributes yet"
+    Then I should see the text "This variant group has no attributes yet"

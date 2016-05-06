@@ -57,13 +57,13 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory
     ) {
-        $this->pqbClass = $pqbClass;
-        $this->om = $om;
-        $this->productClass = $productClass;
+        $this->pqbClass            = $pqbClass;
+        $this->om                  = $om;
+        $this->productClass        = $productClass;
         $this->attributeRepository = $attributeRepository;
-        $this->filterRegistry = $filterRegistry;
-        $this->sorterRegistry = $sorterRegistry;
-        $this->cursorFactory = $cursorFactory;
+        $this->filterRegistry      = $filterRegistry;
+        $this->sorterRegistry      = $sorterRegistry;
+        $this->cursorFactory       = $cursorFactory;
     }
 
     /**

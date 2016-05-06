@@ -208,8 +208,10 @@ class Grid extends Index
             $select2 = $filter->find('css', '.select2-input');
 
             if (false !== $operator) {
-                $filter->find('css', 'button.dropdown-toggle')->click();
-                $filter->find('css', sprintf('[data-value="%s"]', $operator))->click();
+                if (null === $filter->find('css', sprintf('li.active [data-value="%s"]', $operator))) {
+                    $filter->find('css', 'button.dropdown-toggle')->click();
+                    $filter->find('css', sprintf('[data-value="%s"]', $operator))->click();
+                }
             }
 
             if (null !== $results && null !== $select2) {
@@ -219,13 +221,17 @@ class Grid extends Index
                     $filter->find('css', '[data-value="empty"]')->click();
                 } else {
                     $values = explode(',', $value);
+                    array_walk($values, 'trim');
+
                     foreach ($values as $value) {
                         $driver->getWebDriverSession()
                             ->element('xpath', $select2->getXpath())
                             ->postValue(['value' => [$value]]);
-                        sleep(2);
-                        $results->find('css', 'li')->click();
-                        sleep(2);
+                        $element = $this->spin(function () use ($results) {
+                            return $results->find('css', '.select2-result-label');
+                        }, 'Unable to find Select2 result label.');
+
+                        $element->click();
                     }
                 }
             } elseif ($value !== false) {

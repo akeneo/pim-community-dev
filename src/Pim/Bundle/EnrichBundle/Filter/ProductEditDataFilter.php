@@ -24,7 +24,6 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /** @var array */
     protected $acls = [
         'family'       => 'pim_enrich_product_change_family',
-        'groups'       => 'pim_enrich_product_add_to_groups',
         'categories'   => 'pim_enrich_product_categories_view',
         'enabled'      => 'pim_enrich_product_change_state',
         'associations' => 'pim_enrich_associations_view'
@@ -104,7 +103,8 @@ class ProductEditDataFilter implements CollectionFilterInterface
                 $isAllowed = $this->isAllowedToUpdateFamily($product);
                 break;
             case 'groups':
-                $isAllowed = $this->isAllowedToUpdateGroups($product);
+                // We don't update groups from the PEF side
+                $isAllowed = false;
                 break;
             case 'categories':
                 $isAllowed = $this->isAllowedToClassify($product);
@@ -133,18 +133,6 @@ class ProductEditDataFilter implements CollectionFilterInterface
     protected function isAllowedToUpdateFamily(ProductInterface $product)
     {
         return $this->checkAclForType('family');
-    }
-
-    /**
-     * Return whether the current user is allowed to update groups of the product
-     *
-     * @param ProductInterface $product
-     *
-     * @return bool
-     */
-    protected function isAllowedToUpdateGroups(ProductInterface $product)
-    {
-        return $this->checkAclForType('groups');
     }
 
     /**

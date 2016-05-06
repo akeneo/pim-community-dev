@@ -25,8 +25,8 @@ class FamilyTransformer
 
         if (isset($normalizedData['family'])) {
             $family = $normalizedData['family'];
-            $result['familyLabel'] = isset($family['label'][$locale]) ?
-                $family['label'][$locale] : '['.$family['code'].']';
+            $result['familyLabel'] = isset($family['labels'][$locale]) ?
+                $family['labels'][$locale] : '['.$family['code'].']';
             if (isset($family['attributeAsLabel']) && $family['attributeAsLabel'] !== null) {
                 $attributeCode = $family['attributeAsLabel'];
                 if (isset($result[$attributeCode])) {

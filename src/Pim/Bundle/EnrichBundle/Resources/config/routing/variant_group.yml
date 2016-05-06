@@ -9,31 +9,18 @@ pim_enrich_variant_group_create:
     defaults: { _controller: pim_enrich.controller.variant_group:createAction }
 
 pim_enrich_variant_group_edit:
-    path: /{id}/edit
+    path: /{code}/edit
     defaults: { _controller: pim_enrich.controller.variant_group:editAction }
     requirements:
-        id: \d+
+        code: '[a-zA-Z0-9_]+'
 
-pim_enrich_variant_group_remove:
-    path: /{id}/remove
-    defaults: { _controller: pim_enrich.controller.variant_group:removeAction }
+pim_enrich_variant_group_rest_remove_attribute:
+    path: /rest/{code}/{attributeId}
+    defaults: { _controller: pim_enrich.controller.rest.variant_group_attribute:removeAttributeAction, _format: json }
     requirements:
-        id: \d+
-    methods: [DELETE]
-
-pim_enrich_variant_group_add_attributes:
-    path: /{id}/attributes
-    defaults: { _controller: pim_enrich.controller.variant_group_attribute:addAttributesAction }
-    requirements:
-        id: \d+
-    methods: [POST]
-
-pim_enrich_variant_group_remove_attribute:
-    path: /{groupId}/attribute/{attributeId}/remove
-    defaults: { _controller: pim_enrich.controller.variant_group_attribute:removeAttributeAction }
-    requirements:
-        groupId: \d+
-        attributeId: \d+
+        code: '[a-zA-Z0-9_]+'
+        attributeId: '\d+'
+        _format: json
     methods: [DELETE]
 
 pim_enrich_variant_group_rest_index:
@@ -42,8 +29,22 @@ pim_enrich_variant_group_rest_index:
     methods: [GET]
 
 pim_enrich_variant_group_rest_get:
-    path: /rest/{identifier}
+    path: /rest/{code}
     defaults: { _controller: pim_enrich.controller.rest.variant_group:getAction, _format: json }
     requirements:
-        identifier: '[a-zA-Z0-9_]+'
+        code: '[a-zA-Z0-9_]+'
     methods: [GET]
+
+pim_enrich_variant_group_rest_post:
+    path: /rest/{code}
+    defaults: { _controller: pim_enrich.controller.rest.variant_group:postAction, _format: json }
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+    methods: [POST]
+
+pim_enrich_variant_group_rest_remove:
+    path: /rest/{code}
+    defaults: { _controller: pim_enrich.controller.rest.variant_group:removeAction }
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+    methods: [DELETE]

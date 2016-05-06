@@ -333,8 +333,8 @@ define([
              * @returns {string}
              */
             getLabel: function () {
-                return this.attribute.label[this.context.uiLocale] ?
-                    this.attribute.label[this.context.uiLocale] :
+                return this.attribute.labels[this.context.uiLocale] ?
+                    this.attribute.labels[this.context.uiLocale] :
                     '[' + this.attribute.code + ']';
             }
         });

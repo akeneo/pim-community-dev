@@ -18,14 +18,14 @@ class GroupsTransformerSpec extends ObjectBehavior
                 'groups' => [
                     [
                         'code'  => 'akeneo_related',
-                        'label' => [
+                        'labels' => [
                             'en_US' => 'Akeneo related',
                             'fr_FR' => 'Akeneo liés'
                         ]
                     ],
                     [
                         'code'  => 'akeneo_tshirt',
-                        'label' => [
+                        'labels' => [
                             'en_US' => 'Akeneo tshirt',
                             'fr_FR' => 'Tshirt Akeneo'
                         ]

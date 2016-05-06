@@ -67,7 +67,7 @@
     padding-top: 5px;
     border: 1px solid #ccc;
     background-color: white;
-  
+
     &:hover {
       background-color: darken(white, 10%);
     }
@@ -236,24 +236,6 @@
 
 }
 
-.btn.delete-product {
-  background-color: @color-new-red;
-  color: #fff;
-  padding: 0 10px 0 44px;
-  border-radius: 2px;
-
-  i {
-    .icon-button();
-    background-color: darken(@color-new-red, 10%);
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
-  }
-
-  &:hover {
-    background-color: darken(@color-new-red, 10%);
-  }
-}
-
 .btn.cancel {
   background-color: @color-new-grey;
 
@@ -293,6 +275,7 @@
 
 .btn-status {
   background-color: #a1a9b7;
+  padding: 0;
 }
 
 .filter-box {
@@ -349,7 +332,7 @@
     font-weight: normal;
     overflow: hidden;
     .transition();
-  
+
     &:hover, &:active, &:focus {
       background-image: none;
       border: solid 1px @color-new-grey;
@@ -394,7 +377,7 @@
 
   .selection-dropdown {
     .btn {
-      
+
       background-color: #a1a9b7;
       color: #fff;
     }

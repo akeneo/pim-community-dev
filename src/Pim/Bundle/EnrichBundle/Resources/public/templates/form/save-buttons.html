@@ -1,0 +1,19 @@
+<% if (primaryButton) { %>
+    <button class="btn btn-primary <%- primaryButton.className || '' %>">
+        <%- primaryButton.label %>
+    </button>
+<%  } %>
+<% if (secondaryButtons && secondaryButtons.length) { %>
+    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu right-align">
+        <% _.each(secondaryButtons, function (btn) { %>
+            <li>
+                <button type="button" class="<%- btn.className || '' %>">
+                    <%- btn.label %>
+                </button>
+            </li>
+        <% }) %>
+    </ul>
+<% } %>

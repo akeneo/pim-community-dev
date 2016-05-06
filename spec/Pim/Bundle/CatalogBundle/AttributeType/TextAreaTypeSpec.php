@@ -37,7 +37,7 @@ class TextAreaTypeSpec extends ObjectBehavior
     function it_prepares_the_product_value_form_alias($value, $attribute)
     {
         $attribute->isWysiwygEnabled()->willReturn(true);
-        $this->prepareValueFormAlias($value)->shouldReturn('pim_wysiwyg');
+        $this->prepareValueFormAlias($value)->shouldReturn('textarea');
 
         $attribute->isWysiwygEnabled()->willReturn(false);
         $this->prepareValueFormAlias($value)->shouldReturn('textarea');

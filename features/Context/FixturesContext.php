@@ -953,8 +953,11 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
     {
-        $this->getMainContext()->getSubcontext('hook')->clearUOW();
-        $product = $this->getProduct($identifier);
+        $product = $this->spin(function () use ($identifier) {
+            $this->getMainContext()->getSubcontext('hook')->clearUOW();
+
+            return $this->getProduct($identifier);
+        });
 
         foreach ($table->getRowsHash() as $rawCode => $value) {
             $infos = $this->getFieldExtractor()->extractColumnInfo($rawCode);
@@ -1104,11 +1107,9 @@ class FixturesContext extends BaseFixturesContext
      */
     public function getProduct($sku)
     {
-        $product = $this->getProductRepository()->findOneByIdentifier($sku);
-
-        if (!$product) {
-            throw new \InvalidArgumentException(sprintf('Could not find a product with sku "%s"', $sku));
-        }
+        $product = $this->spin(function () use ($sku) {
+            return $this->getProductRepository()->findOneByIdentifier($sku);
+        }, sprintf('Could not find a product with sku "%s"', $sku));
 
         $this->refresh($product);
 

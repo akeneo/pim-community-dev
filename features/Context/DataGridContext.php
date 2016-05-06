@@ -684,17 +684,21 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldNotSeeEntities($entities)
     {
-        if ($this->datagrid->isGridEmpty()) {
-            return;
-        }
+        $entitiesArray = $this->getMainContext()->listToArray($entities);
 
-        foreach ($this->getMainContext()->listToArray($entities) as $entity) {
-            if ($this->datagrid->hasRow($entity)) {
-                throw $this->createExpectationException(
-                    sprintf('Entity "%s" should not be seen', $entity)
-                );
+        $this->spin(function () use ($entitiesArray) {
+            if ($this->datagrid->isGridEmpty()) {
+                return true;
             }
-        }
+
+            foreach ($entitiesArray as $entity) {
+                if ($this->datagrid->hasRow($entity)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }, sprintf('Expected not to see "%s"', $entities));
     }
 
     /**

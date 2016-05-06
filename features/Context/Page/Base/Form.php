@@ -4,9 +4,11 @@ namespace Context\Page\Base;
 
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\Element;
+use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\TimeoutException;
 
 /**
  * Basic form page
@@ -40,7 +42,7 @@ class Form extends Base
                 'Available attributes list'       => ['css' => '.pimmultiselect .ui-multiselect-checkboxes'],
                 'Available attributes search'     => ['css' => '.pimmultiselect input[type="search"]'],
                 'Available attributes add button' => ['css' => '.pimmultiselect a.btn:contains("Add")'],
-                'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid'],
+                'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid, .tab-container .history'],
                 'Save'                            => ['css' => 'button.btn-submit'],
                 'Panel sidebar'                   => [
                     'css'        => '.edit-form > .content',
@@ -75,7 +77,6 @@ class Form extends Base
     public function visitTab($tab)
     {
         $tabs = $this->spin(function () {
-
             $tabs = $this->find('css', $this->elements['Tabs']['css']);
             if (!$tabs) {
                 $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
@@ -85,8 +86,7 @@ class Form extends Base
             }
 
             return $tabs;
-
-        }, "Findind $tab tab");
+        }, sprintf('Unable to find the tab "%s"', $tab));
 
         $tabs->clickLink($tab);
     }
@@ -118,15 +118,11 @@ class Form extends Base
      */
     public function getFormTab($tab)
     {
-        try {
-            $node = $this->spin(function () use ($tab) {
-                return $this->getElement('Form tabs')->find('css', sprintf('a:contains("%s")', $tab));
-            });
-        } catch (\Exception $e) {
-            $node = null;
-        }
+        $element = $this->getElement('Form tabs');
 
-        return $node;
+        return $this->spin(function () use ($element, $tab) {
+            return $element->find('css', sprintf('a:contains("%s")', $tab));
+        }, sprintf('Expecting to see tab "%s", not found', $tab));
     }
 
     /**
@@ -203,37 +199,21 @@ class Form extends Base
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function findField($name)
-    {
-        if ($tab = $this->find('css', $this->elements['Active tab']['css'])) {
-            return $tab->findField($name);
-        }
-
-        return parent::findField($name);
-    }
-
-    /**
      * Find field container
      *
-     * @param string $label
-     *
-     * @throws ElementNotFoundException
+     * @param string $name
      *
      * @return NodeElement
      */
     public function findFieldContainer($name)
     {
-        $label = $this->find('css', sprintf('label:contains("%s")', $name));
-        if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-        }
+        $label = $this->spin(function () use ($name) {
+            return $this->find('css', sprintf('label:contains("%s")', $name));
+        }, sprintf('Label containing text "%s" not found'), $name);
 
-        $field = $label->getParent()->find('css', 'input,textarea');
-        if (!$field) {
-            throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
-        }
+        $field = $this->spin(function () use ($label) {
+            return $label->getParent()->find('css', 'input,textarea');
+        }, sprintf('Can not find any input or textearea sibling of "%s" label', $name));
 
         return $field->getParent();
     }
@@ -588,12 +568,12 @@ class Form extends Base
     /**
      * Extracts and return the label NodeElement, identified by $field content and $element
      *
-     * @param string  $field
-     * @param Element $element
+     * @param string           $field
+     * @param ElementInterface $element
      *
      * @return \Behat\Mink\Element\NodeElement
      */
-    protected function extractLabelElement($field, $element)
+    protected function extractLabelElement($field, ElementInterface $element = null)
     {
         $subLabelContent = null;
         $channel         = null;
@@ -789,7 +769,7 @@ class Form extends Base
      * @param NodeElement $label
      * @param string      $value
      */
-    protected function fillSelectField(NodeElement$label, $value)
+    protected function fillSelectField(NodeElement $label, $value)
     {
         $field = $label->getParent()->find('css', 'select');
 

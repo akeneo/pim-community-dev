@@ -155,9 +155,9 @@ class Base extends Page
         $separator = $elt->find('css', '.separator');
         $name      = $elt->find('css', '.product-name');
 
-        if (!$subtitle || !$separator || !$name) {
+        if (null === $subtitle || null === $separator || null === $name) {
             $titleElt = $this->spin(function () {
-                return $this->getElement('Product title')->find('css', '.product-label');
+                return $this->getElement('Product title')->find('css', '.object-label');
             }, "Could not find the page title");
 
             return $titleElt->getText();
@@ -210,7 +210,7 @@ class Base extends Page
     {
         // Search with exact name at first
         $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
-        
+
         if (null === $button) {
             $button = $this->find('xpath', sprintf("//a[text() = '%s']", $locator));
         }
