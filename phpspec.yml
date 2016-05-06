@@ -4,6 +4,11 @@ suites:
         psr4_prefix: Pim\Component\ReferenceData
         spec_path: src/Pim/Component/ReferenceData
         src_path: src/Pim/Component/ReferenceData
+    Enrich:
+        namespace: Pim\Component\Enrich
+        psr4_prefix: Pim\Component\Enrich
+        spec_path: src/Pim/Component/Enrich
+        src_path: src/Pim/Component/Enrich
 
 extensions:
     - Akeneo\SkipExampleExtension
