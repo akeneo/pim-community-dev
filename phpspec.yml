@@ -46,7 +46,7 @@ suites:
         spec_path: src/Akeneo/Component/Versioning
         src_path: src/Akeneo/Component/Versioning
 
-    ## Akeneo Component
+    ## Akeneo Bundle
     BatchBundle:
         namespace: Akeneo\Bundle\BatchBundle
         psr4_prefix: Akeneo\Bundle\BatchBundle
@@ -86,5 +86,11 @@ suites:
         spec_path: src/Pim/Component/Catalog
         src_path: src/Pim/Component/Catalog
 
+    ## Akeneo Bundle
+    AnalyticsBundle:
+        namespace: Pim\Bundle\AnalyticsBundle
+        psr4_prefix: Pim\Bundle\AnalyticsBundle
+        spec_path: src/Pim/Bundle/AnalyticsBundle
+        src_path: src/Pim/Bundle/AnalyticsBundle
 extensions:
     - Akeneo\SkipExampleExtension
