@@ -5,6 +5,11 @@ suites:
         psr4_prefix: Akeneo\Component\Analytics
         spec_path: src/Akeneo/Component/Analytics
         src_path: src/Akeneo/Component/Analytics
+    Batch:
+        namespace: Akeneo\Component\Batch
+        psr4_prefix: Akeneo\Component\Batch
+        spec_path: src/Akeneo/Component/Batch
+        src_path: src/Akeneo/Component/Batch
 
     ## Pim Component
     ReferenceData:
