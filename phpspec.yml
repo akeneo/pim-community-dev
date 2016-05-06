@@ -46,6 +46,14 @@ suites:
         spec_path: src/Akeneo/Component/Versioning
         src_path: src/Akeneo/Component/Versioning
 
+    ## Akeneo Component
+    BatchBundle:
+        namespace: Akeneo\Bundle\BatchBundle
+        psr4_prefix: Akeneo\Bundle\BatchBundle
+        spec_path: src/Akeneo/Bundle/BatchBundle
+        src_path: src/Akeneo/Bundle/BatchBundle
+
+
     ## Pim Component
     ReferenceData:
         namespace: Pim\Component\ReferenceData
