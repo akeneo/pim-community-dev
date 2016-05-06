@@ -152,6 +152,11 @@ suites:
         psr4_prefix: Pim\Bundle\UIBundle
         spec_path: src/Pim/Bundle/UIBundle
         src_path: src/Pim/Bundle/UIBundle
+    UserBundle:
+        namespace: Pim\Bundle\UserBundle
+        psr4_prefix: Pim\Bundle\UserBundle
+        spec_path: src/Pim/Bundle/UserBundle
+        src_path: src/Pim/Bundle/UserBundle
 
 extensions:
     - Akeneo\SkipExampleExtension
