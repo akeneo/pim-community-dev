@@ -127,6 +127,11 @@ suites:
         psr4_prefix: Pim\Bundle\InstallerBundle
         spec_path: src/Pim/Bundle/InstallerBundle
         src_path: src/Pim/Bundle/InstallerBundle
+    LocalizationBundle:
+        namespace: Pim\Bundle\LocalizationBundle
+        psr4_prefix: Pim\Bundle\LocalizationBundle
+        spec_path: src/Pim/Bundle/LocalizationBundle
+        src_path: src/Pim/Bundle/LocalizationBundle
 
 extensions:
     - Akeneo\SkipExampleExtension
