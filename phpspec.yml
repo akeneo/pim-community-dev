@@ -122,6 +122,11 @@ suites:
         psr4_prefix: Pim\Bundle\ImportExportBundle
         spec_path: src/Pim/Bundle/ImportExportBundle
         src_path: src/Pim/Bundle/ImportExportBundle
+    InstallerBundle:
+        namespace: Pim\Bundle\InstallerBundle
+        psr4_prefix: Pim\Bundle\InstallerBundle
+        spec_path: src/Pim/Bundle/InstallerBundle
+        src_path: src/Pim/Bundle/InstallerBundle
 
 extensions:
     - Akeneo\SkipExampleExtension
