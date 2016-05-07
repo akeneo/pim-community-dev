@@ -7,6 +7,8 @@ See http://docs.spring.io/spring-batch/reference/html/domain.html for an explana
 
 Based on the [Batch component](https://github.com/akeneo/batch).
 
+[![Build Status](https://api.travis-ci.org/akeneo/BatchBundle.png?branch=master)](https://travis-ci.org/akeneo/BatchBundle)
+
 Akeneo PIM
 ----------
 

@@ -3,6 +3,7 @@
     "type": "library",
     "description": "Akeneo Batch",
     "keywords": ["Akeneo", "Batch", "Job", "Reader", "Writer", "Processor"],
+    "homepage": "https://github.com/akeneo/batch",
     "license": "OSL-3.0",
     "authors": [
         {
@@ -16,6 +17,12 @@
         "symfony/property-access": "^2.3",
         "doctrine/common": "^2.1",
         "akeneo/storage-utils": "0.6.x-dev"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "2.5.*"
+    },
+    "config": {
+        "bin-dir": "bin"
     },
     "autoload": {
         "psr-4": { "Akeneo\\Component\\Batch\\": "" }

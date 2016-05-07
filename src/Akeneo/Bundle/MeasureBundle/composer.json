@@ -4,7 +4,13 @@
     "description": "Akeneo Measure Bundle",
     "keywords": ["Akeneo", "Measure", "Convert"],
     "homepage": "https://github.com/akeneo/MeasureBundle",
-    "license": "MIT",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Akeneo",
+            "homepage": "http://www.akeneo.com"
+        }
+    ],
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": ">=2.1.0"
