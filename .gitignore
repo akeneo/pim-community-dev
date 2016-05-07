@@ -21,7 +21,7 @@ build/
 vendor
 composer.phar
 /cov
-/bin
+bin
 behat.yml
 phpspec.yml
 web/uploads/*
@@ -33,3 +33,4 @@ composer.lock
 .php_cs.cache
 node_modules/
 .grunt/
+

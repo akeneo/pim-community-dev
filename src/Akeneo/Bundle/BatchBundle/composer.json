@@ -29,7 +29,9 @@
         "symfony/yaml": "^2.3",
         "symfony/framework-bundle": "^2.3",
         "doctrine/orm": "^2.1.3",
-        "monolog/monolog": "^1.1.0"
+        "monolog/monolog": "^1.1.0",
+        "twig/extensions": "1.2.0",
+        "symfony/swiftmailer-bundle": "2.3.8"
     },
     "require-dev": {
         "phpspec/phpspec": "2.5.*"
