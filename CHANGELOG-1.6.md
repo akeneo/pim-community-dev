@@ -29,6 +29,10 @@
 
 ## BC breaks
 
+- `Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/Filter/DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
+- `Pim/Bundle/CatalogBundle/Doctrine/ORM/Filter/DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
+- Change constructor of `Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/Filter/DateFilter`. Remove the third parameter `supportedFields`
+- Change constructor of `Pim/Bundle/CatalogBundle/Doctrine/ORM/Filter/DateFilter`. Remove the third parameter `supportedFields`
 - Remove `Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager`
 - Remove methods `getTreesQB` and `getAllChildrenQueryBuilder` in `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
 - Remove method `getItemIdsInCategory` in `Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface`
