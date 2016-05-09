@@ -55,7 +55,7 @@ define(
 
                 if ($target.hasClass('select-field')) {
                     options = self.initOptions(options);
-                    $target.select2('destroy').select2(options);
+                    $target.select2(options);
                 }
 
                 return $target;
