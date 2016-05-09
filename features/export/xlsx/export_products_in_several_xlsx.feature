@@ -36,24 +36,24 @@ Feature: Export products
       | sandal-green  | name        | Green sandal    | en_GB  |        |
       | sandal-grey   | name        | Grey sandal     | en_GB  |        |
 
-  Scenario: Successfully export products to into several files
+  Scenario: Successfully export products into several files
     Given the following job "xlsx_tablet_product_export" configuration:
       | filePath      | %tmp%/xlsx_tablet_product_export/xlsx_tablet_product_export.xlsx |
       | linesPerFiles | 3                                                                |
     And I launched the completeness calculator
     And I am logged in as "Julia"
-    And I am on the "xlsx_tablet_product_export" export job page
+    When I am on the "xlsx_tablet_product_export" export job page
     And I launch the export job
     And I wait for the "xlsx_tablet_product_export" job to finish
-    When I press the "Download generated files" button
+    And I press the "Download generated files" button
     Then I should see the text "xlsx_tablet_product_export_1.xlsx"
     And I should see the text "xlsx_tablet_product_export_2.xlsx"
-    And exported xlsx file of "xlsx_tablet_product_export" should contain:
-      | sku           | categories                 | description-en_GB-tablet | description-en_US-tablet | enabled | family  | name-en_GB   | name-en_US   | price-EUR | price-GBP | price-USD |
-      | sandal-white  | men_2013,men_2014,men_2015 | White sandal             | White sandal             | 1       | tshirts | White sandal | White sandal | 10.00     | 9.00      | 15.00     |
-      | sandal-black  | men_2013,men_2014,men_2015 | Black sandal             | Black sandal             | 1       | tshirts | Black sandal | Black sandal | 10.00     | 9.00      | 15.00     |
-
-
-
-
-    Then I wait 5000 seconds
+    And exported xlsx file 1 of "xlsx_tablet_product_export" should contain:
+      | sku           | categories                 | description-en_GB-tablet | description-en_US-tablet | enabled | family  | groups | name-en_GB    | name-en_US    | price-EUR | price-GBP | price-USD |
+      | sandal-white  | men_2013,men_2014,men_2015 | White sandal             | White sandal             | 1       | sandals |        | White sandal  | White sandal  | 10.00     | 9.00      | 15.00     |
+      | sandal-black  | men_2013,men_2014,men_2015 | Black sandal             | Black sandal             | 1       | sandals |        | Black sandal  | Black sandal  | 10.00     | 9.00      | 15.00     |
+      | sandal-yellow | men_2013,men_2014,men_2015 | Yellow sandal            | Yellow sandal            | 1       | sandals |        | Yellow sandal | Yellow sandal | 10.00     | 9.00      | 15.00     |
+    And exported xlsx file 2 of "xlsx_tablet_product_export" should contain:
+      | sku          | categories                 | description-en_GB-tablet | description-en_US-tablet | enabled | family  | groups | name-en_GB    | name-en_US    | price-EUR | price-GBP | price-USD |
+      | sandal-green | men_2013,men_2014,men_2015 | Green sandal             | Green sandal             | 1       | sandals |        | Green sandal  | Green sandal  | 10.00     | 9.00      | 15.00     |
+      | sandal-grey  | men_2013,men_2014,men_2015 | Grey sandal              | Grey sandal              | 1       | sandals |        | Grey sandal   | Grey sandal   | 10.00     | 9.00      | 15.00     |

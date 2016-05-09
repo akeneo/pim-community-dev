@@ -4,6 +4,7 @@ namespace Pim\Behat\Context\Domain\Spread;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
+use Box\Spout\Common\Exception\UnsupportedTypeException;
 use Box\Spout\Common\Type;
 use Box\Spout\Reader\ReaderFactory;
 use Pim\Behat\Context\PimContext;
@@ -14,11 +15,12 @@ class XlsxFileContext extends PimContext
      * @param string    $code
      * @param TableNode $expectedLines
      *
-     * @Then /^exported xlsx file of "([^"]*)" should contain:$/
+     * @Then /^exported xlsx file( \d+)? of "([^"]*)" should contain:$/
      */
-    public function exportedXlsxFileOfShouldContain($code, TableNode $expectedLines)
+    public function exportedXlsxFileOfShouldContain($number = null, $code, $expectedLines)
     {
-        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+        $number = '' === $number ? null : trim($number);
+        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code, $number);
 
         $reader = ReaderFactory::create(Type::XLSX);
         $reader->open($path);
@@ -108,6 +110,7 @@ class XlsxFileContext extends PimContext
      * @param array  $actualLines
      * @param string $path
      *
+     * @throws UnsupportedTypeException
      * @throws \Exception
      */
     protected function compareFile(array $expectedLines, array $actualLines, $path)
