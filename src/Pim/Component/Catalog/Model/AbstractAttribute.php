@@ -1050,4 +1050,22 @@ abstract class AbstractAttribute implements AttributeInterface
             AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS
         ]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIsDisplayable($value)
+    {
+        $this->setProperty('is_displayable', $value);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDisplayable()
+    {
+        return $this->getProperty('is_displayable');
+    }
 }

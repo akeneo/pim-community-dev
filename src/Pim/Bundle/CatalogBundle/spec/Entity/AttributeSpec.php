@@ -12,4 +12,11 @@ class AttributeSpec extends ObjectBehavior
         $this->setAttributeType('pim_catalog_identifier');
         $this->isRequired()->shouldReturn(true);
     }
+
+    function it_is_displayable()
+    {
+        $this->setIsDisplayable(true)->shouldReturn($this);
+        $this->isDisplayable()->shouldReturn(true);
+        $this->getProperty('is_displayable')->shouldReturn(true);
+    }
 }

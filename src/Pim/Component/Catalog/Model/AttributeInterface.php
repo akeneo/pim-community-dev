@@ -635,4 +635,14 @@ interface AttributeInterface extends
      * @return bool
      */
     public function isBackendTypeReferenceData();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIsDisplayable($value);
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDisplayable();
 }

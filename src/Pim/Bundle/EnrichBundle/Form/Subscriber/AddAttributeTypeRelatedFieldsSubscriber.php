@@ -100,10 +100,10 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     /**
      * Customize the attribute form
      *
-     * @param Form               $form
+     * @param FormInterface      $form
      * @param AttributeInterface $attribute
      */
-    protected function customizeForm(Form $form, AttributeInterface $attribute)
+    protected function customizeForm(FormInterface $form, AttributeInterface $attribute)
     {
         $attTypeClass = $this->attTypeRegistry->get($attribute->getAttributeType());
         $fields       = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);
