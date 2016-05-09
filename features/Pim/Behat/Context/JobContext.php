@@ -137,7 +137,7 @@ class JobContext extends PimContext
             $filePath = current($archives);
         } else {
             foreach ($archives as $keyArchive => $path) {
-                if (0 === strpos($keyArchive, sprintf('%s_%s', $code, $number))) {
+                if (0 === strpos($keyArchive, sprintf('%s_%s.', $code, $number))) {
                     $filePath = $path;
                 }
             }
