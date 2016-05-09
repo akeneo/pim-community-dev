@@ -20,6 +20,7 @@
 - PIM-5432: Export the products updated for a period
 - PIM-5604: Introduce "remove from categories" action in products mass edit
 - PIM-5681: Introduce a new command to purge entity versions stored in the PIM (see pim:versioning:purge command)
+- PIM-5781: Add new data on the "system information" screen (data volumetry, information about the operating system)
 
 ## Scalability improvements
 
@@ -43,6 +44,7 @@
 - PIM-5657: Introduce a `JobTemplateProvider` that holds the job template codes to use for creating, showing, editing job profiles. The provider uses configuration files in order to retrieve overridden templates for specific job names
 - TIP-458: Move the Converters from Processors to Readers. Now, all the readers return a standard format as output, and all the processors get a standard format as input.
 - TIP-459: Standardize the denormalization Processors, to use SimpleProcessor in most of the cases.
+- PIM-5781: Introduce a new command to get system information from the command line
 
 ## BC breaks
 

@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 /**
- * Returns the structure of the PIM catalog
+ * Collects the structure of the PIM catalog:
  * - number of channels
  * - number of products
  * - number of attributes

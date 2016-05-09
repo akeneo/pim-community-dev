@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Command to display system information provided by the data collectors.
+ * Displays system information provided by the data collectors through command line.
  *
  * @author    Damien Carcel <damien.carcel@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -25,7 +25,7 @@ class SystemInfoCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:system:information')
-            ->setDescription('Display Akeneo PIM system information');
+            ->setDescription('Displays Akeneo PIM system information');
     }
 
     /**
@@ -33,26 +33,34 @@ class SystemInfoCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dataCollector = $this->getContainer()->get('pim_analytics.data_collector.chained');
-        $translator    = $this->getContainer()->get('translator');
+        $translator = $this->getContainer()->get('translator');
+        $systemInfoStyle = new SystemInfoStyle($input, $output);
 
-        $collectedData = $dataCollector->collect('system_info_advanced_report');
+        $systemInfoStyle->title($translator->trans('pim_analytics.system_info.title'));
+        $systemInfoStyle->table([], $this->formatCollectedData($translator, $this->getCollectedData()));
+    }
 
-        $decorator = new SystemInfoStyle($input, $output);
-
-        $decorator->title($translator->trans('pim_analytics.system_info.title'));
-        $decorator->table([], $this->formatCollectedData($collectedData, $translator));
+    /**
+     * Gets all the collected data from the system.
+     *
+     * @return array
+     */
+    protected function getCollectedData()
+    {
+        return $this->getContainer()
+            ->get('pim_analytics.data_collector.chained')
+            ->collect('system_info_report');
     }
 
     /**
      * Formats the collected data to be ready to display by the Table component.
      *
-     * @param array               $collectedData
      * @param TranslatorInterface $translator
+     * @param array               $collectedData
      *
      * @return array
      */
-    protected function formatCollectedData(array $collectedData, TranslatorInterface $translator)
+    protected function formatCollectedData(TranslatorInterface $translator, array $collectedData)
     {
         $formattedData = [];
 

@@ -1,6 +1,10 @@
 services:
-    pim_analytics.provider.storage_version:
-        class: '%pim_analytics.provider.storage_version.class%'
+    pim_analytics.data_collector.storage:
+        class: '%pim_analytics.data_collector.storage.class%'
         arguments:
+            - '%pim_catalog_product_storage_driver%'
             - '%mongodb_server%'
             - '%mongodb_database%'
+        tags:
+            - { name: pim_analytics.data_collector, type: system_info_report }
+            - { name: pim_analytics.data_collector, type: system_info_report }

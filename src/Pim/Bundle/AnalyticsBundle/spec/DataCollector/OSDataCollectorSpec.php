@@ -18,6 +18,6 @@ class OSDataCollectorSpec extends ObjectBehavior
 
     function it_collects_php_version_and_os_version()
     {
-        $this->collect()->shouldHaveCount(2);
+        $this->collect()->shouldHaveCount(3);
     }
 }

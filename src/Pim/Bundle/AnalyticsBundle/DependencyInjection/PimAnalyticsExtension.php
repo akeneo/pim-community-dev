@@ -25,10 +25,9 @@ class PimAnalyticsExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
         $container->prependExtensionConfig('pim_notification', $config);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ .'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('controllers.yml');
         $loader->load('data_collectors.yml');
-        $loader->load('providers.yml');
         $loader->load('twig.yml');
 
         $this->loadStorageDriverFiles($container);
@@ -44,7 +43,7 @@ class PimAnalyticsExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
         $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
-        if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
+        if (file_exists(__DIR__.'/../Resources/config/'.$storageConfig)) {
             $loader->load($storageConfig);
         }
     }
