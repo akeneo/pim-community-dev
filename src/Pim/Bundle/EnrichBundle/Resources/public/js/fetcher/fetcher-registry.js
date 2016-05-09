@@ -4,7 +4,6 @@ define(['module', 'jquery', 'underscore'], function (module, $, _) {
     return {
         fetchers: {},
         initializePromise: null,
-        warm: false,
 
         /**
          * @return Promise
@@ -36,21 +35,6 @@ define(['module', 'jquery', 'underscore'], function (module, $, _) {
         },
 
         /**
-         * Warm up the cache on first load
-         */
-        warmUp: function () {
-            if (!this.warm) {
-                _.each(this.fetchers, function (fetcher, code) {
-                    if (undefined === fetcher.options.warmup || fetcher.options.warmup) {
-                        this.getFetcher(code).fetchAll();
-                    }
-                }.bind(this));
-
-                this.warm = true;
-            }
-        },
-
-        /**
          * Get the related fetcher for the given collection name
          *
          * @param {String} entityType
@@ -75,7 +59,6 @@ define(['module', 'jquery', 'underscore'], function (module, $, _) {
          * Clear all fetchers cache
          */
         clearAll: function () {
-            this.warm = false;
             _.each(this.fetchers, function (fetcher) {
                 fetcher.loadedModule.clear();
             });
