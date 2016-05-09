@@ -35,8 +35,13 @@
 - Remove properties editTemplate, showTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Remove methods setShowTemplate, setEditTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Change constructor of `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`. Add `Akeneo\Bundle\BatchBundle\Connector\JobTemplateProviderInterface`
+- Change constructor of `Pim/Component/Connector/Writer/File/CsvWriter` . Add parameter `Pim/Component/Connector/Writer/File/ColumnSorterInterface`
+- Change constructor of `Pim/Component/Connector/Writer/File/CsvProductWriter` . Add parameter `Pim/Component/Connector/Writer/File/ColumnSorterInterface`
+- Change constructor of `Pim/Component/Connector/Writer/File/CsvVariantGroupWriter` . Add parameter `Pim/Component/Connector/Writer/File/ColumnSorterInterface`
+- Change constructor of `Pim/Component/Connector/Writer/File/XlsxSimpleWriter` . Add parameter `Pim/Component/Connector/Writer/File/ColumnSorterInterface`
+- Change constructor of `Pim/Component/Connector/Writer/File/XlsxProductWriter` . Add parameter `Pim/Component/Connector/Writer/File/ColumnSorterInterface`
+- Change constructor of `Pim/Component/Connector/Writer/File/XlsxVariantGroupWriter` . Add parameter `Pim/Component/Connector/Writer/File/ColumnSorterInterface` 
 - Remove method `setAvailableLocales` in `Pim/Component/Catalog/Model/AttributeInterface` and `Pim/Component/Catalog/Model/AbstractAttribute`
-- Remove method `setAvailableLocales` in `Pim/Component/Catalog/Model/AttributeInterface.php` and `Pim/Component/Catalog/Model/AbstractAttribute.php`
 - `Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/Filter/DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
 - `Pim/Bundle/CatalogBundle/Doctrine/ORM/Filter/DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
 - Change constructor of `Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/Filter/DateFilter`. Remove the third parameter `supportedFields`

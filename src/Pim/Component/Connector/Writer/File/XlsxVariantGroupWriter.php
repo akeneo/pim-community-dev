@@ -24,6 +24,9 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
     /** @var BulkFileExporter */
     protected $fileExporter;
 
+    /** @var ColumnSorterInterface */
+    protected $columnSorter;
+
     /** @var array */
     protected $writtenFiles;
 
@@ -31,16 +34,19 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
      * @param BulkFileExporter          $fileExporter
+     * @param ColumnSorterInterface     $columnSorter
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
-        BulkFileExporter $fileExporter
+        BulkFileExporter $fileExporter,
+        ColumnSorterInterface $columnSorter
     ) {
         parent::__construct($filePathResolver);
 
         $this->flatRowBuffer = $flatRowBuffer;
         $this->fileExporter  = $fileExporter;
+        $this->columnSorter  = $columnSorter;
     }
 
     /**
@@ -84,7 +90,7 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
         $writer = WriterFactory::create(Type::XLSX);
         $writer->openToFile($this->getPath());
 
-        $headers = $this->flatRowBuffer->getHeaders();
+        $headers = $this->columnSorter->sort($this->flatRowBuffer->getHeaders());
         $hollowItem = array_fill_keys($headers, '');
         $writer->addRow($headers);
         foreach ($this->flatRowBuffer->getBuffer() as $incompleteItem) {

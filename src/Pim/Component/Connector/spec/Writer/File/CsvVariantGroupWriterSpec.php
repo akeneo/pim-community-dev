@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Connector\Writer\File;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
+use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Prophecy\Argument;
@@ -14,9 +15,10 @@ class CsvVariantGroupWriterSpec extends ObjectBehavior
     function let(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
-        BulkFileExporter $fileExporter
+        BulkFileExporter $fileExporter,
+        ColumnSorterInterface $columnSorter
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $fileExporter);
+        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $fileExporter, $columnSorter);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.csv');

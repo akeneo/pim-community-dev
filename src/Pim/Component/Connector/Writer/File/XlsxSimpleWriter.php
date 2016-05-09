@@ -20,15 +20,23 @@ class XlsxSimpleWriter extends AbstractFileWriter
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;
 
+    /** @var ColumnSorterInterface */
+    protected $columnSorter;
+
     /**
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
+     * @param ColumnSorterInterface     $columnSorter
      */
-    public function __construct(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer)
-    {
+    public function __construct(
+        FilePathResolverInterface $filePathResolver,
+        FlatItemBuffer $flatRowBuffer,
+        ColumnSorterInterface $columnSorter
+    ) {
         parent::__construct($filePathResolver);
 
         $this->flatRowBuffer = $flatRowBuffer;
+        $this->columnSorter = $columnSorter;
     }
 
     /**
@@ -52,7 +60,7 @@ class XlsxSimpleWriter extends AbstractFileWriter
         $writer = WriterFactory::create(Type::XLSX);
         $writer->openToFile($this->getPath());
 
-        $headers    = $this->flatRowBuffer->getHeaders();
+        $headers = $this->columnSorter->sort($this->flatRowBuffer->getHeaders());
         $hollowItem = array_fill_keys($headers, '');
         $writer->addRow($headers);
         foreach ($this->flatRowBuffer->getBuffer() as $incompleteItem) {

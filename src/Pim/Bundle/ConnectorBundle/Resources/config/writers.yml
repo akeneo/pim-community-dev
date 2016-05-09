@@ -18,6 +18,8 @@ parameters:
     pim_connector.writer.file.xlsx_variant_group.class:            Pim\Component\Connector\Writer\File\XlsxVariantGroupWriter
     pim_connector.writer.file.product.flat_item_buffer.class:      Pim\Component\Connector\Writer\File\FlatItemBuffer
     pim_connector.writer.file.product.bulk_file_exporter.class:    Pim\Component\Connector\Writer\File\BulkFileExporter
+    pim_connector.writer.file.default.column_sorter.class:         Pim\Component\Connector\Writer\File\DefaultColumnSorter
+    pim_connector.writer.file.product.column_sorter.class:         Pim\Component\Connector\Writer\File\ProductColumnSorter
 
 services:
     # Dummy writer
@@ -174,6 +176,7 @@ services:
         arguments:
             - '@pim_connector.writer.file.file_path_resolver'
             - '@pim_connector.writer.file.product.flat_item_buffer'
+            - '@pim_connector.writer.file.default.column_sorter'
 
     pim_connector.writer.file.csv_product:
         class: %pim_connector.writer.file.csv_product.class%
@@ -181,6 +184,7 @@ services:
             - '@pim_connector.writer.file.file_path_resolver'
             - '@pim_connector.writer.file.product.flat_item_buffer'
             - '@pim_connector.writer.file.product.bulk_file_exporter'
+            - '@pim_connector.writer.file.product.column_sorter'
 
     pim_connector.writer.file.csv_variant_group:
         class: %pim_connector.writer.file.csv_variant_group.class%
@@ -188,6 +192,7 @@ services:
             - '@pim_connector.writer.file.file_path_resolver'
             - '@pim_connector.writer.file.product.flat_item_buffer'
             - '@pim_connector.writer.file.product.bulk_file_exporter'
+            - '@pim_connector.writer.file.default.column_sorter'
 
     pim_connector.writer.file.csv_category:
         alias: pim_connector.writer.file.csv
@@ -213,6 +218,7 @@ services:
         arguments:
              - '@pim_connector.writer.file.file_path_resolver'
              - '@pim_connector.writer.file.product.flat_item_buffer'
+             - '@pim_connector.writer.file.default.column_sorter'
 
     pim_connector.writer.file.xlsx_product:
         class: %pim_connector.writer.file.xlsx_product.class%
@@ -220,6 +226,7 @@ services:
              - '@pim_connector.writer.file.file_path_resolver'
              - '@pim_connector.writer.file.product.flat_item_buffer'
              - '@pim_connector.writer.file.product.bulk_file_exporter'
+             - '@pim_connector.writer.file.product.column_sorter'
 
     pim_connector.writer.file.xlsx_variant_group:
         class: %pim_connector.writer.file.xlsx_variant_group.class%
@@ -227,6 +234,7 @@ services:
              - '@pim_connector.writer.file.file_path_resolver'
              - '@pim_connector.writer.file.product.flat_item_buffer'
              - '@pim_connector.writer.file.product.bulk_file_exporter'
+             - '@pim_connector.writer.file.default.column_sorter'
 
     pim_connector.writer.file.xlsx_group:
         alias: pim_connector.writer.file.xlsx
@@ -245,3 +253,17 @@ services:
 
     pim_connector.writer.file.xlsx_association_type:
         alias: pim_connector.writer.file.xlsx
+
+    # Column sorter
+    pim_connector.writer.file.default.column_sorter:
+        class: '%pim_connector.writer.file.default.column_sorter.class%'
+        arguments:
+            - '@pim_connector.array_converter.flat.product.field_splitter'
+            - ['code','label']
+
+    pim_connector.writer.file.product.column_sorter:
+        class: '%pim_connector.writer.file.product.column_sorter.class%'
+        arguments:
+            - '@pim_connector.array_converter.flat.product.field_splitter'
+            - '@pim_catalog.repository.product'
+            - ['label']
