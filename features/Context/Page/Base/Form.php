@@ -658,16 +658,6 @@ class Form extends Base
         if ($label->hasAttribute('for')) {
             $for = $label->getAttribute('for');
 
-            if (0 === strpos($for, 's2id_')) {
-                if ($label->getParent()->find('css', '.select2-container-multi')) {
-                    return 'multiSelect2';
-                } elseif ($label->getParent()->find('css', 'select')) {
-                    return 'select';
-                }
-
-                return 'simpleSelect2';
-            }
-
             if (null !== $this->find('css', sprintf('#date_selector_%s', $for))) {
                 return 'datepicker';
             }
