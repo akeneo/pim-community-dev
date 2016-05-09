@@ -16,6 +16,7 @@ Feature: Browse imports
     And the rows should be sorted ascending by Code
     And I should be able to sort the rows by Code, Label, Connector and Status
 
+  @ce
   Scenario: Successfully filter import jobs with values
     Then I should be able to use the following filters:
       | filter    | value                | result                                                                                                                                                |
