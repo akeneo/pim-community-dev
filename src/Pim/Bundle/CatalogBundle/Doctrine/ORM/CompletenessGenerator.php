@@ -617,7 +617,7 @@ MAIN_SQL;
      *
      * @param string $className
      *
-     * @return array
+     * @return ClassMetadataInfo
      */
     protected function getClassMetadata($className)
     {
@@ -629,11 +629,17 @@ MAIN_SQL;
      */
     public function schedule(ProductInterface $product)
     {
-        foreach ($product->getCompletenesses() as $completeness) {
-            $this->manager->remove($completeness);
-        }
+        $sql = '
+            DELETE c FROM pim_catalog_completeness c
+            JOIN %product_table% p ON p.id = c.product_id
+            WHERE p.id = :product_id';
 
-        $product->getCompletenesses()->clear();
+        $sql = $this->applyTableNames($sql);
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('product_id', $product->getId());
+
+        $stmt->execute();
     }
 
     /**
@@ -643,8 +649,8 @@ MAIN_SQL;
     {
         $sql = '
             DELETE c FROM pim_catalog_completeness c
-              JOIN %product_table% p ON p.id = c.product_id
-             WHERE p.family_id = :family_id';
+            JOIN %product_table% p ON p.id = c.product_id
+            WHERE p.family_id = :family_id';
 
         $sql = $this->applyTableNames($sql);
 
