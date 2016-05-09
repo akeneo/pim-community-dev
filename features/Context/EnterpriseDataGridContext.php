@@ -52,23 +52,10 @@ class EnterpriseDataGridContext extends BaseDataGridContext
      * @throws ExpectationException
      *
      * @Then /^I should see published products? (.*)$/
+     * @Then /^I should see assets? (.+)$/
      */
     public function iShouldSeeEntities($elements)
     {
-        parent::iShouldSeeEntities($elements);
-    }
-
-    /**
-     * @param string $elements
-     *
-     * @throws ExpectationException
-     *
-     * @Then /^I should see assets? (.+)$/
-     */
-    public function iShouldSeeAsset($elements)
-    {
-        $this->getCurrentPage()->getCurrentGrid()->setPageSize(100);
-        $this->wait();
         parent::iShouldSeeEntities($elements);
     }
 
