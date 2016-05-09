@@ -106,6 +106,8 @@ class DateTimeFilter extends AbstractFilter implements FieldFilterInterface
      * @param string $type
      * @param mixed  $value
      *
+     * @throws InvalidArgumentException
+     *
      * @return mixed $value
      */
     protected function formatValues($type, $value)

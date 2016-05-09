@@ -6,8 +6,6 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class DateTimeFilterSpec extends ObjectBehavior
@@ -132,7 +130,8 @@ class DateTimeFilterSpec extends ObjectBehavior
         $this->addFieldFilter('updated_at', 'NOT EMPTY', null);
     }
 
-    function it_adds_a_between_filter_on_an_field_in_the_query($qb, Expr $expr) {
+    function it_adds_a_between_filter_on_an_field_in_the_query($qb, Expr $expr)
+    {
         $qb->getRootAliases()->willReturn(['p']);
         $qb->expr()->willReturn($expr);
         $expr->literal('2014-03-15 12:03:00')->willReturn('2014-03-15 12:03:00');
@@ -145,7 +144,6 @@ class DateTimeFilterSpec extends ObjectBehavior
 
     function it_adds_a_not_between_filter_on_an_field_in_the_query(
         $qb,
-        Expr $expr,
         Expr $expr,
         Expr\Comparison $ltComp,
         Expr\Comparison $gtComp,

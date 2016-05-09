@@ -24,7 +24,8 @@ class DateTimeFilter extends AbstractFilter implements FieldFilterInterface
      * @param array $supportedFields
      * @param array $supportedOperators
      */
-    public function __construct(array $supportedFields = [], array $supportedOperators = []) {
+    public function __construct(array $supportedFields = [], array $supportedOperators = [])
+    {
         $this->supportedFields     = $supportedFields;
         $this->supportedOperators  = $supportedOperators;
     }
@@ -42,12 +43,7 @@ class DateTimeFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        if (Operators::IS_EMPTY === $operator) {
-            $value = null;
-        } else {
-            $value = $this->formatValues($field, $value);
-        }
-
+        $value = Operators::IS_EMPTY === $operator ? null : $this->formatValues($field, $value);
         $field = current($this->qb->getRootAliases()) . '.' . $field;
 
         if (Operators::NOT_BETWEEN === $operator) {
@@ -69,6 +65,8 @@ class DateTimeFilter extends AbstractFilter implements FieldFilterInterface
      *
      * @param string $type
      * @param mixed  $value
+     *
+     * @throws InvalidArgumentException
      *
      * @return mixed $value
      */

@@ -155,7 +155,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
      *
      * @throws InvalidArgumentException
      *
-     * @return integer
+     * @return int|null
      */
     protected function formatSingleValue($type, $value)
     {
