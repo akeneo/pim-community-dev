@@ -10,10 +10,10 @@ Feature: Assign assets to a product
       | sku   |
       | shirt |
     And I generate missing variations
-    And I am logged in as "Julia"
 
   Scenario: Succesfully assign assets to a product
-    Given I am on the "shirt" product page
+    Given I am logged in as "Julia"
+    And I am on the "shirt" product page
     And I add available attributes Front view
     And I start to manage assets for "Front view"
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
@@ -39,7 +39,8 @@ Feature: Assign assets to a product
     Then the "Front view" asset gallery should contain akene, dog
 
   Scenario: Display assets thumbnails for current scope and locale
-    Given I am on the "paint" asset page
+    Given I am logged in as "Julia"
+    And I am on the "paint" asset page
     And I visit the "Variations" tab
     And I upload the reference file akene.jpg
     And I save the asset
@@ -73,7 +74,8 @@ Feature: Assign assets to a product
 
   @skip @info Unskip when Firefox will be updated on CI workers
   Scenario: Successfully filter product assets by category in asset picker
-    Given I am on the "shirt" product page
+    Given I am logged in as "Julia"
+    And I am on the "shirt" product page
     And I add available attributes Front view
     And I start to manage assets for "Front view"
     When I select the "Asset main catalog" tree
