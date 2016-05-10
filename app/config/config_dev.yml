@@ -15,9 +15,13 @@ monolog:
             type:  stream
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
+            channels: [!event]
         firephp:
             type:  firephp
             level: info
+        console:
+            type:   console
+            channels: [!event, !doctrine]
 
 oro_assetic:
     css_debug:      ~
