@@ -373,12 +373,13 @@ class FixturesContext extends BaseFixturesContext
             $this->refresh($attribute);
 
             foreach ($data as $method => $value) {
+                $matches = null;
                 switch ($method) {
                     case 'code':
                         // Untestable method
                         break;
-                    case 'label-en_US':
-                        assertEquals($value, $attribute->getTranslation('en_US')->getLabel());
+                    case (preg_match('/^label-(?<locale>.*)$/', $method, $matches) ? true : false):
+                        assertEquals($value, $attribute->getTranslation($matches['locale'])->getLabel());
                         break;
                     case 'type':
                         assertEquals($this->getAttributeType($value), $attribute->getAttributeType());
@@ -387,10 +388,16 @@ class FixturesContext extends BaseFixturesContext
                         assertEquals('1' === $value, $attribute->isLocalizable());
                         break;
                     case 'scopable':
-                        assertEquals('1' === $value, $attribute->isLocalizable());
+                        assertEquals('1' === $value, $attribute->isScopable());
                         break;
-                    case 'group':
-                        assertEquals($value, $attribute->getGroup()->getCode());
+                    case 'wysiwyg_enabled':
+                        assertEquals('1' === $value, $attribute->isWysiwygEnabled());
+                        break;
+                    case 'decimals_allowed':
+                        assertEquals('1' === $value, $attribute->isDecimalsAllowed());
+                        break;
+                    case 'negative_allowed':
+                        assertEquals('1' === $value, $attribute->isDecimalsAllowed());
                         break;
                     case 'useable_as_grid_filter':
                         assertEquals('1' === $value, $attribute->isUseableAsGridFilter());
@@ -398,16 +405,18 @@ class FixturesContext extends BaseFixturesContext
                     case 'unique':
                         assertEquals('1' === $value, $attribute->isUnique());
                         break;
+                    case 'group':
+                        assertEquals($value, $attribute->getGroup()->getCode());
+                        break;
                     case 'allowed_extensions':
-                        if ('' !== $value) {
+                        if ('' === $value) {
+                            assertEmpty($attribute->getAllowedExtensions());
+                        } else {
                             assertEquals(explode(',', $value), $attribute->getAllowedExtensions());
                         }
                         break;
-                    case 'metric_family':
-                        assertEquals($value, $attribute->getMetricFamily());
-                        break;
-                    case 'default_metric_unit':
-                        assertEquals($value, $attribute->getDefaultMetricUnit());
+                    case 'available_locales':
+                        assertEquals(explode(',', $value), $attribute->getAvailableLocales()->toArray());
                         break;
                     case 'reference_data_name':
                         if ('' === $value) {
@@ -429,6 +438,33 @@ class FixturesContext extends BaseFixturesContext
                         } else {
                             assertEquals($value, $attribute->getNumberMax());
                         }
+                        break;
+                    case 'metric_family':
+                        assertEquals($value, $attribute->getMetricFamily());
+                        break;
+                    case 'default_metric_unit':
+                        assertEquals($value, $attribute->getDefaultMetricUnit());
+                        break;
+                    case 'sort_order':
+                        assertEquals($value, $attribute->getSortOrder());
+                        break;
+                    case 'max_characters':
+                        assertEquals($value, $attribute->getMaxCharacters());
+                        break;
+                    case 'validation_rule':
+                        assertEquals($value, $attribute->getValidationRule());
+                        break;
+                    case 'validation_regexp':
+                        assertEquals($value, $attribute->getValidationRegexp());
+                        break;
+                    case 'max_file_size':
+                        assertEquals($value, $attribute->getMaxFileSize());
+                        break;
+                    case 'date_min':
+                        assertEquals($value, $attribute->getDateMin()->format('Y-m-d'));
+                        break;
+                    case 'date_max':
+                        assertEquals($value, $attribute->getDateMax()->format('Y-m-d'));
                         break;
                     default:
                         throw new \Exception(sprintf(
