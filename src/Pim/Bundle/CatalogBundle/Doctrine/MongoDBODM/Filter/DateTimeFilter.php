@@ -4,68 +4,52 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
- * Date filter
+ * Datetime filter
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author    Yohan Blain <yohan.blain@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateFilter extends AbstractAttributeFilter implements AttributeFilterInterface
+class DateTimeFilter extends AbstractFilter implements FieldFilterInterface
 {
-    const DATETIME_FORMAT = 'Y-m-d';
+    const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
     /** @var array */
-    protected $supportedAttributes;
+    protected $supportedFields;
 
     /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributes
-     * @param array                    $supportedOperators
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
-        array $supportedAttributes = [],
+        array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
+        $this->supportedFields    = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AttributeInterface $attribute)
+    public function supportsField($field)
     {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
+        return in_array($field, $this->supportedFields);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(
-        AttributeInterface $attribute,
-        $operator,
-        $value,
-        $locale = null,
-        $scope = null,
-        $options = []
-    ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'date');
-
-        if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
-            $value = null;
-        } else {
-            $value = $this->formatValues($attribute->getCode(), $value);
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
+    {
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
+            $value = $this->formatValues($field, $value);
         }
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
         $this->applyFilter($field, $operator, $value);
@@ -122,6 +106,8 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
      * @param string $type
      * @param mixed  $value
      *
+     * @throws InvalidArgumentException
+     *
      * @return mixed $value
      */
     protected function formatValues($type, $value)
@@ -155,7 +141,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
      *
      * @throws InvalidArgumentException
      *
-     * @return int|null
+     * @return integer
      */
     protected function formatSingleValue($type, $value)
     {
@@ -179,8 +165,6 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                     $value
                 );
             }
-
-            $dateTime->setTime(0, 0, 0);
 
             return $dateTime->getTimestamp();
         }

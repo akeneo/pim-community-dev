@@ -26,9 +26,14 @@
 - PIM-5653: Introduce a new storage-agnostic Product Reader using the PQB
 - PIM-5742: Schedule completeness for ORM is now performed directly through SQL
 - Integrates the AkeneoMeasureBundle in our main repository
+- TIP-245: Add datetime filters in the Product Query Builder, allowing to select products on "created at" and "updated at" fields.
 
 ## BC breaks
 
+- `Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/Filter/DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
+- `Pim/Bundle/CatalogBundle/Doctrine/ORM/Filter/DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
+- Change constructor of `Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/Filter/DateFilter`. Remove the third parameter `supportedFields`
+- Change constructor of `Pim/Bundle/CatalogBundle/Doctrine/ORM/Filter/DateFilter`. Remove the third parameter `supportedFields`
 - Remove `Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager`
 - Remove methods `getTreesQB` and `getAllChildrenQueryBuilder` in `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
 - Remove method `getItemIdsInCategory` in `Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface`
