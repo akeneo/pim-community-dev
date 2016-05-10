@@ -181,13 +181,3 @@ pim_assets_collection: Assets collection
 
 pim_enrich_attribute_form:
     isEditable: Is editable
-    code: Code
-    attributeType: Attribute Type
-    reference_data_name: Reference data name
-    scopable: Scope
-    localizable: Localizable
-    unique: Unique value
-    availableLocales: Available locales
-    locale_specific: Locale specific
-    group: Attribute group
-    useableAsGridFilter: Use in grid
