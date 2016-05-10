@@ -8,13 +8,14 @@ parameters:
 
     pim_connector.job_parameters.constraints.simple_csv_import.class:         Pim\Component\Connector\Job\JobParameters\Constraints\SimpleCsvImport
     pim_connector.job_parameters.constraints.simple_xlsx_import.class:        Pim\Component\Connector\Job\JobParameters\Constraints\SimpleXlsxImport
+    pim_connector.job_parameters.constraints.simple_yaml_import.class:        Pim\Component\Connector\Job\JobParameters\Constraints\SimpleYamlImport
     pim_connector.job_parameters.constraints.product_csv_import.class:        Pim\Component\Connector\Job\JobParameters\Constraints\ProductCsvImport
     pim_connector.job_parameters.constraints.product_xlsx_import.class:       Pim\Component\Connector\Job\JobParameters\Constraints\ProductCsvImport
     pim_connector.job_parameters.constraints.variant_group_csv_import.class:  Pim\Component\Connector\Job\JobParameters\Constraints\VariantGroupCsvImport
     pim_connector.job_parameters.constraints.variant_group_xlsx_import.class: Pim\Component\Connector\Job\JobParameters\Constraints\VariantGroupCsvImport
 
 services:
-    # Validation Constraints for Exports
+    # Validation constraints for Exports ------------------------------------------------------------------------------
     pim_connector.job_parameters.constraints.simple_csv_export:
         class: %pim_connector.job_parameters.constraints.simple_csv_export.class%
         arguments:
@@ -79,7 +80,7 @@ services:
         tags:
             - { name: akeneo_batch.job_parameters.constraints }
 
-    # Validation Constraints for Imports
+    # Validation constraints for Imports ------------------------------------------------------------------------------
     pim_connector.job_parameters.constraints.simple_csv_import:
         class: %pim_connector.job_parameters.constraints.simple_csv_import.class%
         arguments:

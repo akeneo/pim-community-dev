@@ -3,11 +3,11 @@
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -91,6 +91,9 @@ class JobProfileController
     /** @var JobParametersFactory */
     protected $jobParametersFactory;
 
+    /** @var JobParametersValidator */
+    protected $jobParametersValidator;
+
     /**
      * @param Request                      $request
      * @param EngineInterface              $templating
@@ -107,6 +110,7 @@ class JobProfileController
      * @param TokenStorageInterface        $tokenStorage
      * @param JobTemplateProviderInterface $jobTemplateProvider
      * @param JobParametersFactory         $jobParametersFactory
+     * @param JobParametersValidator       $jobParametersValidator
      * @param string                       $jobType
      */
     public function __construct(
@@ -125,6 +129,7 @@ class JobProfileController
         TokenStorageInterface $tokenStorage,
         JobTemplateProviderInterface $jobTemplateProvider,
         JobParametersFactory $jobParametersFactory,
+        JobParametersValidator $jobParametersValidator,
         $jobType
     ) {
         $this->connectorRegistry     = $connectorRegistry;
@@ -145,6 +150,7 @@ class JobProfileController
         $this->jobInstanceRepository = $jobInstanceRepository;
         $this->jobTemplateProvider   = $jobTemplateProvider;
         $this->jobParametersFactory  = $jobParametersFactory;
+        $this->jobParametersValidator = $jobParametersValidator;
         $this->tokenStorage          = $tokenStorage;
     }
 
@@ -215,14 +221,11 @@ class JobProfileController
         $uploadAllowed = false;
         $uploadForm = null;
         $job = $jobInstance->getJob();
-        foreach ($job->getSteps() as $step) {
-            if (method_exists($step, 'getReader')) {
-                $reader = $step->getReader();
-                if ($reader instanceof UploadedFileAwareInterface) {
-                    $uploadAllowed = true;
-                    $uploadForm = $this->createUploadForm()->createView();
-                }
-            }
+
+        $rawConfiguration = $jobInstance->getRawConfiguration();
+        if (isset($rawConfiguration['uploadAllowed']) && true === $rawConfiguration['uploadAllowed']) {
+            $uploadAllowed = true;
+            $uploadForm = $this->createUploadForm()->createView();
         }
 
         return $this->templating->renderResponse(
@@ -334,7 +337,7 @@ class JobProfileController
         }
 
         if ($this->validateUpload($jobInstance)) {
-            $jobExecution = $this->launchJob(true, $jobInstance);
+            $jobExecution = $this->launchJob($jobInstance);
 
             return $this->redirectToReportView($jobExecution->getId());
         }
@@ -360,7 +363,7 @@ class JobProfileController
         }
 
         if ($this->validate($jobInstance)) {
-            $jobExecution = $this->launchJob(false, $jobInstance);
+            $jobExecution = $this->launchJob($jobInstance);
 
             return $this->redirectToReportView($jobExecution->getId());
         }
@@ -377,7 +380,10 @@ class JobProfileController
      */
     protected function validate(JobInstance $jobInstance)
     {
-        $violations = $this->validator->validate($jobInstance, ['Default', 'Execution']);
+        $violations = $this->validateJobInstance($jobInstance, ['Default', 'Execution']);
+        foreach ($violations as $violation) {
+            $this->request->getSession()->getFlashBag()->add('error', new Message($violation->getMessage()));
+        }
 
         return 0 === $violations->count();
     }
@@ -391,29 +397,51 @@ class JobProfileController
      */
     protected function validateUpload(JobInstance $jobInstance)
     {
-        $uploadViolations = $this->validator->validate($jobInstance, ['Default', 'UploadExecution']);
+        $fileInfo = $this->getFileInfo();
+        if (null === $fileInfo) {
+            return false;
+        }
 
+        $this->configureUploadJob($jobInstance, $fileInfo);
+        $uploadViolations = $this->validateJobInstance($jobInstance, ['Default', 'UploadExecution']);
         if (0 === $uploadViolations->count()) {
-            $fileInfo = $this->getFileInfo();
-            if (null === $fileInfo) {
-                return false;
-            }
+            return true;
+        }
 
-            return $this->configureUploadJob($jobInstance, $fileInfo);
+        foreach ($uploadViolations as $violation) {
+            $this->request->getSession()->getFlashBag()->add('error', new Message($violation->getMessage()));
         }
 
         return false;
     }
 
     /**
+     * @param JobInstance $jobInstance
+     * @param array       $validationGroups
+     *
+     * @return ConstraintViolationListInterface
+     */
+    protected function validateJobInstance(JobInstance $jobInstance, array $validationGroups)
+    {
+        $rawConfiguration = $jobInstance->getRawConfiguration();
+        $job = $this->connectorRegistry->getJob($jobInstance);
+        $jobParameters = $this->jobParametersFactory->create($job, $rawConfiguration);
+
+        return $this->jobParametersValidator->validate(
+            $job,
+            $jobParameters,
+            $validationGroups
+        );
+    }
+
+    /**
      * Allow to validate and run the job
      *
-     * @param bool        $isUpload
      * @param JobInstance $jobInstance
      *
      * @return JobInstance
      */
-    protected function launchJob($isUpload, JobInstance $jobInstance)
+    protected function launchJob(JobInstance $jobInstance)
     {
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EXECUTE, new GenericEvent($jobInstance));
 
@@ -459,41 +487,14 @@ class JobProfileController
      *
      * @param JobInstance       $jobInstance
      * @param FileInfoInterface $fileInfo
-     *
-     * @return bool
      */
     protected function configureUploadJob(JobInstance $jobInstance, FileInfoInterface $fileInfo)
     {
-        $success = false;
-
-        $job = $jobInstance->getJob();
         $uploadedFile = $fileInfo->getUploadedFile();
         $file = $uploadedFile->move(sys_get_temp_dir(), $uploadedFile->getClientOriginalName());
-
-        foreach ($job->getSteps() as $step) {
-            if (method_exists($step, 'getReader')) {
-                $reader = $step->getReader();
-
-                if ($reader instanceof UploadedFileAwareInterface) {
-                    $constraints = $reader->getUploadedFileConstraints();
-                    $this->fileError = $this->validator->validate($fileInfo, $constraints);
-
-                    if ($this->fileError->count() !== 0) {
-                        foreach ($this->fileError as $error) {
-                            $this->request->getSession()->getFlashBag()
-                                ->add('error', new Message($error->getMessage()));
-                        }
-
-                        return false;
-                    } else {
-                        $reader->setUploadedFile($file);
-                        $success = true;
-                    }
-                }
-            }
-        }
-
-        return $success;
+        $rawConfiguration = $jobInstance->getRawConfiguration();
+        $rawConfiguration['filePath'] = $file->getRealPath();
+        $jobInstance->setRawConfiguration($rawConfiguration);
     }
 
     /**

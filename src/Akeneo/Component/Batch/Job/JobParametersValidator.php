@@ -3,6 +3,7 @@
 namespace Akeneo\Component\Batch\Job;
 
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintsRegistry;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**

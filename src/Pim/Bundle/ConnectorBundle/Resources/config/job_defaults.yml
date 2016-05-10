@@ -8,6 +8,7 @@ parameters:
 
     pim_connector.job_parameters.defaults.simple_csv_import.class:         Pim\Component\Connector\Job\JobParameters\Defaults\SimpleCsvImport
     pim_connector.job_parameters.defaults.simple_xlsx_import.class:        Pim\Component\Connector\Job\JobParameters\Defaults\SimpleXlsxImport
+    pim_connector.job_parameters.defaults.simple_yaml_import.class:        Pim\Component\Connector\Job\JobParameters\Defaults\SimpleYamlImport
     pim_connector.job_parameters.defaults.product_csv_import.class:        Pim\Component\Connector\Job\JobParameters\Defaults\ProductCsvImport
     pim_connector.job_parameters.defaults.product_xlsx_import.class:       Pim\Component\Connector\Job\JobParameters\Defaults\ProductCsvImport
     pim_connector.job_parameters.defaults.variant_group_csv_import.class:  Pim\Component\Connector\Job\JobParameters\Defaults\VariantGroupCsvImport

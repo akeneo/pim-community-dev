@@ -2,13 +2,11 @@
 
 namespace Pim\Component\Connector\Reader\File;
 
-use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Pim\Component\Catalog\Validator\Constraints\File as AssertFile;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -21,7 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CsvReader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
-    UploadedFileAwareInterface,
     StepExecutionAwareInterface,
     FlushableInterface
 {
@@ -66,42 +63,6 @@ class CsvReader extends AbstractConfigurableStepElement implements
         }
 
         return $this->fileIterator->current();
-    }
-
-    /**
-     * Get uploaded file constraints
-     *
-     * @return array
-     */
-    public function getUploadedFileConstraints()
-    {
-        // TODO : to double check and fix
-
-        return [
-            new Assert\NotBlank(),
-            new AssertFile(
-                [
-                    'allowedExtensions' => ['csv', 'zip']
-                ]
-            )
-        ];
-    }
-
-    /**
-     * Set uploaded file
-     *
-     * @param File $uploadedFile
-     *
-     * @return CsvReader
-     */
-    public function setUploadedFile(File $uploadedFile)
-    {
-        // TODO : to double check and fix
-
-        $this->filePath     = $uploadedFile->getRealPath();
-        $this->fileIterator = null;
-
-        return $this;
     }
 
     /**

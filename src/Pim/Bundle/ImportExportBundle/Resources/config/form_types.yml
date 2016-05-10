@@ -12,6 +12,7 @@ parameters:
 
     pim_import_export.form.type.job_parameters.form_options.simple_csv_import.class:         Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\SimpleCsvImport
     pim_import_export.form.type.job_parameters.form_options.simple_xlsx_import.class:        Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\SimpleXlsxImport
+    pim_import_export.form.type.job_parameters.form_options.simple_yaml_import.class:        Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\SimpleYamlImport
     pim_import_export.form.type.job_parameters.form_options.product_csv_import.class:        Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\ProductCsvImport
     pim_import_export.form.type.job_parameters.form_options.product_xlsx_import.class:       Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\ProductCsvImport
     pim_import_export.form.type.job_parameters.form_options.variant_group_csv_import.class:  Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\VariantGroupCsvImport

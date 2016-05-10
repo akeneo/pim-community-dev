@@ -12,13 +12,13 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
- * Constraints for simple Xlsx import
+ * Constraints for simple Yaml import
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleXlsxImport implements ConstraintsInterface
+class SimpleYamlImport implements ConstraintsInterface
 {
     /** @var array */
     protected $supportedJobNames;
@@ -43,12 +43,11 @@ class SimpleXlsxImport implements ConstraintsInterface
                         new NotBlank(['groups' => ['Execution', 'UploadExecution']]),
                         new FileExtension(
                             [
-                                'allowedExtensions' => ['xlsx', 'zip'],
+                                'allowedExtensions' => ['yml', 'yaml'],
                                 'groups' => ['Execution', 'UploadExecution']
                             ]
                         )
                     ],
-                    'withHeader' => new NotBlank(),
                     'uploadAllowed' => [
                         new Type('bool'),
                         new IsTrue(['groups' => 'UploadExecution']),

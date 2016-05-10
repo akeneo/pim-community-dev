@@ -4,8 +4,10 @@ namespace Pim\Component\Connector\Job\JobParameters\Constraints;
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintsInterface;
+use Pim\Component\Catalog\Validator\Constraints\FileExtension;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -37,7 +39,15 @@ class SimpleCsvImport implements ConstraintsInterface
         return new Collection(
             [
                 'fields' => [
-                    'filePath' => new NotBlank(['groups' => 'Execution']),
+                    'filePath' => [
+                        new NotBlank(['groups' => ['Execution', 'UploadExecution']]),
+                        new FileExtension(
+                            [
+                                'allowedExtensions' => ['csv', 'zip'],
+                                'groups' => ['Execution', 'UploadExecution']
+                            ]
+                        )
+                    ],
                     'delimiter' => [
                         new NotBlank(),
                         new Choice(
@@ -60,7 +70,10 @@ class SimpleCsvImport implements ConstraintsInterface
                     ],
                     'withHeader' => new NotBlank(),
                     'escape' => new NotBlank(),
-                    'uploadAllowed' => new Type('bool'),
+                    'uploadAllowed' => [
+                        new Type('bool'),
+                        new IsTrue(['groups' => 'UploadExecution']),
+                    ]
                 ]
             ]
         );

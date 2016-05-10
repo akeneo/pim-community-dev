@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
-use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Pim\Component\Catalog\Validator\Constraints\File as AssertFile;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Yaml\Yaml;
@@ -21,7 +19,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class YamlReader extends FileReader implements
     ItemReaderInterface,
-    UploadedFileAwareInterface,
     StepExecutionAwareInterface,
     FlushableInterface
 {
@@ -87,35 +84,6 @@ class YamlReader extends FileReader implements
     /**
      * {@inheritdoc}
      */
-    public function getUploadedFileConstraints()
-    {
-        return [
-            new Assert\NotBlank(),
-            new AssertFile(
-                [
-                    'allowedExtensions' => ['yml', 'yaml']
-                ]
-            )
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return YamlReader
-     */
-    public function setUploadedFile(File $uploadedFile)
-    {
-        // TODO: to fix!!
-        $this->filePath = $uploadedFile->getRealPath();
-        $this->yaml = null;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function read()
     {
         if (null === $this->yaml) {
@@ -136,7 +104,7 @@ class YamlReader extends FileReader implements
             return $data;
 
         } else {
-            // TODO: because if not used in the context of an ItemStep, the previous read file will be returned...
+            // if not used in the context of an ItemStep, the previous read file will be returned
             $this->flush();
         }
 
@@ -164,28 +132,6 @@ class YamlReader extends FileReader implements
         }
 
         return $this->multiple ? [$fileData] : $fileData;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_base_connector.import.yamlFilePath.label',
-                    'help'  => 'pim_base_connector.import.yamlFilePath.help'
-                ]
-            ],
-            'uploadAllowed' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_base_connector.import.uploadAllowed.label',
-                    'help'  => 'pim_base_connector.import.uploadAllowed.help'
-                ]
-            ],
-        ];
     }
 
     /**

@@ -16,7 +16,6 @@ services:
                 - 'pim_installer.jobs.fixtures_attribute_csv.title'
                 - 'pim_installer.jobs.fixtures_attribute_options_csv.title'
                 - 'pim_installer.jobs.fixtures_family_csv.title'
-                - 'pim_installer.jobs.fixtures_job_yml.title'
                 - 'pim_installer.jobs.fixtures_user_csv.title'
                 - 'pim_installer.jobs.fixtures_user_role_csv.title'
                 - 'pim_installer.jobs.fixtures_user_group_csv.title'
@@ -39,5 +38,13 @@ services:
             - '@pim_connector.job_parameters.defaults.simple_csv_import'
             -
                 - 'pim_installer.jobs.fixtures_variant_group_csv.title'
+        tags:
+            - { name: akeneo_batch.job_parameters.defaults }
+
+    pim_installer.job_parameters.defaults.simple_yaml_import:
+        class: %pim_connector.job_parameters.defaults.simple_yaml_import.class%
+        arguments:
+            -
+                - 'pim_installer.jobs.fixtures_job_yml.title'
         tags:
             - { name: akeneo_batch.job_parameters.defaults }
