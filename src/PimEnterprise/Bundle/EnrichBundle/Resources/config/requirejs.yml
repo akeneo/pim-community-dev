@@ -40,6 +40,7 @@ config:
         pimee/product-edit-form/attributes/read-only-attribute-group: pimenterpriseenrich/js/product/form/attributes/read-only-attribute-group
         pimee/product-edit-form/attributes/read-only-locale:          pimenterpriseenrich/js/product/form/attributes/read-only-locale
         pimee/product-edit-form/attributes/smart-attribute:           pimenterpriseenrich/js/product/form/attributes/smart-attribute
+        pimee/product-edit-form/attributes/attribute-editable:        pimenterpriseenrich/js/product/form/attributes/attribute-editable
         pimee/product-edit-form/meta/owner-groups:                    pimenterpriseenrich/js/product/form/meta/owner-groups
         pimee/product-edit-form/panel/history/revert:                 pimenterpriseenrich/js/product/form/panel/history/revert
         pimee/product-edit-form/save:                                 pimenterpriseenrich/js/product/form/save

@@ -103,3 +103,9 @@ extensions:
         targetZone: buttons
         aclResourceId: pim_enrich_product_change_state
         position: 110
+
+    pim-product-edit-form-attribute-editable:
+        module: pimee/product-edit-form/attributes/attribute-editable
+        parent: pim-product-edit-form-attributes
+        targetZone: other-actions
+        position: 90
