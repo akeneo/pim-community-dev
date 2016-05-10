@@ -6,10 +6,10 @@ Feature: Classify an asset in the trees I have access
 
   Background:
     Given the "clothing" catalog configuration
-    And I am logged in as "Pamela"
 
   Scenario: Associate an asset to categories
-    Given I edit the "mugs" asset
+    Given I am logged in as "Pamela"
+    And I edit the "mugs" asset
     When I visit the "Categories" tab
     And I should see the text "Asset main catalog 0"
     And I expand the "Asset main catalog" category
@@ -20,14 +20,16 @@ Feature: Classify an asset in the trees I have access
     Then I should see the text "Asset main catalog 2"
 
   Scenario: Show only granted categories
-    Given I edit the "mugs" asset
+    Given I am logged in as "Pamela"
+    And I edit the "mugs" asset
     When I visit the "Categories" tab
     And I expand the "Asset main catalog" category
     Then I should not see "Technical documents"
     But I should see the text "Client documents"
 
   Scenario: See only granted trees
-    Given the following assets categories:
+    Given I am logged in as "Pamela"
+    And the following assets categories:
       | code            | label-en_US     | parent          |
       | 2016_collection | 2016 Collection |                 |
       | 2016_images     | Images          | 2016_collection |

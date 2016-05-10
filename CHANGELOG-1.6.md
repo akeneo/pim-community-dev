@@ -4,6 +4,7 @@
 
 - PIM-5096: Adds XLSX quick export to the product grid and published product grid
 - PIM-5356: Add the following XLSX job export: assets, asset categories and asset variations
+- PIM-5640: Locale and attribute group permissions are now applied on quick export content
 - PIM-5357: Add the following XLSX job import: assets and asset categories
 
 ## Technical improvements

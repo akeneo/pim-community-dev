@@ -80,7 +80,7 @@ class PublishedProductController
                 [
                     'locales'                    => $locales,
                     'channels'                   => $channels,
-                    'filter_type'                => 'pim.internal_api.product_value.view',
+                    'filter_types'               => ['pim.internal_api.product_value.view'],
                     'locale'                     => $this->userContext->getUiLocale()->getCode(),
                     'disable_grouping_separator' => true,
                 ]

@@ -139,7 +139,7 @@ class ProductDraftController
         $this->manager->markAsReady($productDraft, $comment);
 
         $normalizationContext = $this->userContext->toArray() + [
-            'filter_type'                => 'pim.internal_api.product_value.view',
+            'filter_types'               => ['pim.internal_api.product_value.view'],
             'disable_grouping_separator' => true
         ];
 
@@ -198,7 +198,7 @@ class ProductDraftController
         }
 
         $normalizationContext = $this->userContext->toArray() + [
-            'filter_type'                => 'pim.internal_api.product_value.view',
+            'filter_types'               => ['pim.internal_api.product_value.view'],
             'disable_grouping_separator' => true
         ];
 
@@ -240,7 +240,7 @@ class ProductDraftController
         }
 
         $normalizationContext = $this->userContext->toArray() + [
-            'filter_type'                => 'pim.internal_api.product_value.view',
+            'filter_types'               => ['pim.internal_api.product_value.view'],
             'disable_grouping_separator' => true
         ];
 
@@ -275,7 +275,7 @@ class ProductDraftController
         ]);
 
         $normalizationContext = $this->userContext->toArray() + [
-            'filter_type'                => 'pim.internal_api.product_value.view',
+            'filter_types'               => ['pim.internal_api.product_value.view'],
             'disable_grouping_separator' => true
         ];
 
