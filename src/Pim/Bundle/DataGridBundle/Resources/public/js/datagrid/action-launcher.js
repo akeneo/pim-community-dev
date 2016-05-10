@@ -184,7 +184,9 @@ define([
             if (this.runAction) {
                 this.action.run();
 
-                //  skip launcher functionality, if action was executed
+                this.$el.closest('.btn-group').removeClass('open');
+
+                // skip launcher functionality, if action was executed
                 return false;
             }
 
