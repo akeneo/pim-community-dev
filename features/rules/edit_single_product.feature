@@ -606,8 +606,13 @@ Feature: Read a single product by applying rules
     And I am on the "my-jacket" product page
     When I open the "Completeness" panel
     Then I should see the completeness:
-      | channel | locale | state   | missing_values                                                                          | ratio |
-      | tablet  | fr_FR  | warning | description weather_conditions price rating side_view size main_color gallery side_view | 20%   |
+      | channel | locale | state   | missing_values                                                                             | ratio |
+      | mobile  | en_US  | warning | Price, Size, Main color, gallery                                                           | 33%   |
+      | tablet  | en_US  | warning | Description, Weather conditions, Price, Rating, Side view, Size, Main color, gallery       | 20%   |
+      | mobile  | de_DE  | warning | Name, Price, Size, Main color, gallery                                                     | 17%   |
+      | tablet  | de_DE  | warning | Name, Description, Weather conditions, Price, Rating, Side view, Size, Main color, gallery | 10%   |
+      | mobile  | fr_FR  | warning | Price, Size, Main color, gallery                                                           | 33%   |
+      | tablet  | fr_FR  | warning | Description, Weather conditions, Price, Rating, Side view, Size, Main color, gallery       | 20%   |
     And the following product rule definitions:
       """
       set_name:
@@ -626,6 +631,11 @@ Feature: Read a single product by applying rules
     Then the product rule "set_name" is executed
     When I am on the "my-jacket" product page
     When I open the "Completeness" panel
-    And I should see the completeness:
-      | channel | locale | state   | missing_values                                                              | ratio |
-      | tablet  | en_US  | warning | weather_conditions price rating side_view size main_color gallery side_view | 30%   |
+    Then I should see the completeness:
+      | channel | locale | state   | missing_values                                                                             | ratio |
+      | mobile  | en_US  | warning | Price, Size, Main color, gallery                                                           | 33%   |
+      | tablet  | en_US  | warning | Weather conditions, Price, Rating, Side view, Size, Main color, gallery                    | 30%   |
+      | mobile  | de_DE  | warning | Name, Price, Size, Main color, gallery                                                     | 17%   |
+      | tablet  | de_DE  | warning | Name, Description, Weather conditions, Price, Rating, Side view, Size, Main color, gallery | 10%   |
+      | mobile  | fr_FR  | warning | Price, Size, Main color, gallery                                                           | 33%   |
+      | tablet  | fr_FR  | warning | Description, Weather conditions, Price, Rating, Side view, Size, Main color, gallery       | 20%   |
