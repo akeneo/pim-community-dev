@@ -13,10 +13,10 @@ class AttributeSpec extends ObjectBehavior
         $this->isRequired()->shouldReturn(true);
     }
 
-    function it_is_displayable()
+    function it_is_editable()
     {
-        $this->setIsDisplayable(true)->shouldReturn($this);
-        $this->isDisplayable()->shouldReturn(true);
-        $this->getProperty('is_displayable')->shouldReturn(true);
+        $this->setIsEditable(true)->shouldReturn($this);
+        $this->IsEditable()->shouldReturn(true);
+        $this->getProperty('is_editable')->shouldReturn(true);
     }
 }

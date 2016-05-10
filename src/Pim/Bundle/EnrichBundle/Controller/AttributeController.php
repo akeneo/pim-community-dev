@@ -212,24 +212,20 @@ class AttributeController
     /**
      * Edit attribute form
      *
-     * @param Request $request
-     * @param int     $id
+     * @param int $id
      *
      * @Template("PimEnrichBundle:Attribute:form.html.twig")
      * @AclAncestor("pim_enrich_attribute_edit")
      *
      * @return array
      */
-    public function editAction(Request $request, $id)
+    public function editAction($id)
     {
         $attribute = $this->findAttributeOr404($id);
         if ($this->attributeHandler->process($attribute)) {
-            $this->request->getSession()->getFlashBag()
+            $this->request->getSession()
+                ->getFlashBag()
                 ->add('success', new Message('flash.attribute.updated'));
-
-            return new RedirectResponse(
-                $this->router->generate('pim_enrich_attribute_edit', ['id' => $attribute->getId()])
-            );
         }
 
         return [
