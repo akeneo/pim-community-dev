@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer\Structured;
+namespace spec\Pim\Component\ReferenceData\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;

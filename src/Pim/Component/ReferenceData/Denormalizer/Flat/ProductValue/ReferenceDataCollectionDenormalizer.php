@@ -1,19 +1,20 @@
 <?php
 
-namespace Pim\Component\Connector\Denormalizer\Flat\ProductValue;
+namespace Pim\Component\ReferenceData\Denormalizer\Flat\ProductValue;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Connector\Denormalizer\Flat\ProductValue\AbstractValueDenormalizer;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
-use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceDataDenormalizer extends AbstractValueDenormalizer
+class ReferenceDataCollectionDenormalizer extends AbstractValueDenormalizer
 {
-    /** @var ReferenceDataRepositoryResolverInterface  */
+    /** @var ReferenceDataRepositoryResolverInterface */
     protected $repositoryResolver;
 
     /**
@@ -34,25 +35,35 @@ class ReferenceDataDenormalizer extends AbstractValueDenormalizer
      */
     public function denormalize($data, $referenceDataClass, $format = null, array $context = [])
     {
+        $collection = new ArrayCollection();
         if (null === $this->repositoryResolver || empty($data)) {
-            return null;
+            return $collection;
         }
 
         if (!$context['value'] instanceof ProductValueInterface) {
-            throw new InvalidParameterException(
+            throw new \InvalidArgumentException(
                 'Value is not an instance of Pim\Component\Catalog\Model\ProductValueInterface.'
             );
         }
 
         $attribute = $context['value']->getAttribute();
         if (null === $attribute) {
-            throw new InvalidParameterException(
+            throw new \InvalidArgumentException(
                 'Denormalizer\'s context expected to have an attribute, none found.'
             );
         }
 
         $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
 
-        return $repository->findOneBy(['code' => $data]);
+        $codes = explode(',', $data);
+        foreach ($codes as $code) {
+            $referenceData = $repository->findOneBy(['code' => trim($code)]);
+
+            if (null !== $referenceData) {
+                $collection->add($referenceData);
+            }
+        }
+
+        return $collection;
     }
 }

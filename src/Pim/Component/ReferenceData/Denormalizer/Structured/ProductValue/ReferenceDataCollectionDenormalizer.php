@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Component\Catalog\Denormalizer\Structured\ProductValue;
+namespace Pim\Component\ReferenceData\Denormalizer\Structured\ProductValue;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Routing\Exception\InvalidParameterException;
+use Pim\Component\Catalog\Denormalizer\Structured\ProductValue\AbstractValueDenormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
@@ -39,7 +39,7 @@ class ReferenceDataCollectionDenormalizer extends AbstractValueDenormalizer
         }
 
         if (false === is_array($data)) {
-            throw new InvalidParameterException(sprintf('Data expected to be an array.'));
+            throw new \InvalidArgumentException(sprintf('Data expected to be an array.'));
         }
 
         $referenceDataColl = new ArrayCollection();

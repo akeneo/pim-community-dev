@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Denormalizer\Flat\ProductValue;
+namespace spec\Pim\Component\ReferenceData\Denormalizer\Flat\ProductValue;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
@@ -46,7 +46,7 @@ class ReferenceDataCollectionDenormalizerSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_context_value_is_not_a_product_value_inteface()
     {
-        $this->shouldThrow('Symfony\Component\Routing\Exception\InvalidParameterException')
+        $this->shouldThrow('\InvalidArgumentException')
             ->during(
                 'denormalize',
                 [
@@ -60,7 +60,7 @@ class ReferenceDataCollectionDenormalizerSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_there_is_no_attribute_in_context(ProductValueInterface $productValue)
     {
-        $this->shouldThrow('Symfony\Component\Routing\Exception\InvalidParameterException')
+        $this->shouldThrow('\InvalidArgumentException')
             ->during(
                 'denormalize',
                 [

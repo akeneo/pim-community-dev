@@ -1,8 +1,0 @@
-parameters:
-    pim_reference_data.normalizer.configuration.class: Pim\Bundle\ReferenceDataBundle\Normalizer\ConfigurationNormalizer
-
-services:
-    pim_reference_data.normalizer.configuration:
-        class: %pim_reference_data.normalizer.configuration.class%
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }

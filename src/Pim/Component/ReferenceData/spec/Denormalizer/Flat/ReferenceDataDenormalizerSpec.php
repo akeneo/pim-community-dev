@@ -1,9 +1,10 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Denormalizer\Structured\ProductValue;
+namespace spec\Pim\Component\ReferenceData\Denormalizer\Flat\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
@@ -17,7 +18,7 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Denormalizer\Structured\ProductValue\AbstractValueDenormalizer');
+        $this->shouldHaveType('Pim\Component\Connector\Denormalizer\Flat\ProductValue\AbstractValueDenormalizer');
     }
 
     function it_is_a_denormalizer()
@@ -27,42 +28,43 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
 
     function it_supports_denormalization_of_reference_data_values_from_json()
     {
-        $this->supportsDenormalization([], 'pim_reference_data_simpleselect', 'json')->shouldReturn(true);
-        $this->supportsDenormalization([], 'pim_catalog_text', 'json')->shouldReturn(false);
-        $this->supportsDenormalization([], 'pim_reference_data_simpleselect', 'csv')->shouldReturn(false);
+        $this->supportsDenormalization([], 'pim_reference_data_simpleselect', 'json')->shouldReturn(false);
+        $this->supportsDenormalization([], 'pim_catalog_text', 'csv')->shouldReturn(false);
+        $this->supportsDenormalization([], 'pim_reference_data_multiselect', 'csv')->shouldReturn(false);
+        $this->supportsDenormalization([], 'pim_reference_data_simpleselect', 'csv')->shouldReturn(true);
     }
 
     function it_returns_null_if_data_is_empty()
     {
-        $this->denormalize('', 'pim_reference_data_simpleselect', 'json')->shouldReturn(null);
-        $this->denormalize(null, 'pim_reference_data_simpleselect', 'json')->shouldReturn(null);
-        $this->denormalize([], 'pim_reference_data_simpleselect', 'json')->shouldReturn(null);
+        $this->denormalize('', 'pim_reference_data_simpleselect', 'csv')->shouldReturn(null);
+        $this->denormalize(null, 'pim_reference_data_simpleselect', 'csv')->shouldReturn(null);
+        $this->denormalize([], 'pim_reference_data_simpleselect', 'csv')->shouldReturn(null);
     }
 
-    function it_throws_an_exception_if_there_is_no_attribute_in_context()
+    function it_throws_an_exception_if_context_value_is_not_a_product_value_interface()
     {
-        $this->shouldThrow('Symfony\Component\Routing\Exception\InvalidParameterException')
+        $this->shouldThrow('\InvalidArgumentException')
             ->during(
                 'denormalize',
                 [
                     'battlecruiser',
                     'pim_reference_data_simpleselect',
-                    'json',
-                    ['foo' => 'bar']
+                    'csv',
+                    ['value' => 'not_a_product_value']
                 ]
             );
     }
 
-    function it_throws_an_exception_if_context_attribute_is_not_an_attribute()
+    function it_throws_an_exception_if_there_is_no_attribute_in_context(ProductValueInterface $productValue)
     {
-        $this->shouldThrow('Symfony\Component\Routing\Exception\InvalidParameterException')
+        $this->shouldThrow('\InvalidArgumentException')
             ->during(
                 'denormalize',
                 [
                     'battlecruiser',
                     'pim_reference_data_simpleselect',
                     'json',
-                    ['attribute' => 'bar']
+                    ['value' => $productValue]
                 ]
             );
     }
@@ -71,9 +73,11 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
         $resolver,
         AttributeInterface $attribute,
         ReferenceDataInterface $battlecruiser,
-        ReferenceDataRepository $referenceDataRepo
+        ReferenceDataRepository $referenceDataRepo,
+        ProductValueInterface $productValue
     ) {
         $attribute->getReferenceDataName()->willReturn('starship');
+        $productValue->getAttribute()->willReturn($attribute);
         $resolver->resolve('starship')->willReturn($referenceDataRepo);
         $referenceDataRepo->findOneBy(['code' => 'battlecruiser'])->willReturn($battlecruiser);
 
@@ -81,8 +85,8 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
             ->denormalize(
                 'battlecruiser',
                 'pim_reference_data_simpleselect',
-                'json',
-                ['attribute' => $attribute]
+                'csv',
+                ['value' => $productValue]
             )
             ->shouldReturn($battlecruiser);
     }

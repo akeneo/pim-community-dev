@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Denormalizer\Structured\ProductValue;
+namespace spec\Pim\Component\ReferenceData\Denormalizer\Structured\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -43,7 +43,7 @@ class ReferenceDataCollectionDenormalizerSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_data_is_not_an_array(AttributeInterface $attribute)
     {
-        $this->shouldThrow('Symfony\Component\Routing\Exception\InvalidParameterException')
+        $this->shouldThrow('\InvalidArgumentException')
             ->during(
                 'denormalize',
                 [
@@ -54,7 +54,7 @@ class ReferenceDataCollectionDenormalizerSpec extends ObjectBehavior
                 ]
             );
 
-        $this->shouldThrow('Symfony\Component\Routing\Exception\InvalidParameterException')
+        $this->shouldThrow('\InvalidArgumentException')
             ->during(
                 'denormalize',
                 [
