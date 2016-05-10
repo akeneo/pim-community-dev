@@ -1,4 +1,4 @@
-# 1.4.*
+# 1.4.24 (2016-05-10)
 
 ## Bug fix
 - PIM-5752: find option by identifier and not by code
