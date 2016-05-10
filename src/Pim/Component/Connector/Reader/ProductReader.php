@@ -12,9 +12,10 @@ use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Connector\Reader\Doctrine\ProductExportBuilder\FilterConfiguratorRegistry;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Storage-agnostic product reader using the Product Query Builder
@@ -46,35 +47,35 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var ProductExportBuilderOptionsResolver */
-    protected $optionsResolver;
-
-    /** @var ProductExportBuilderFiltersResolver */
-    protected $filtersResolver;
+    /** @var FilterConfiguratorRegistry */
+    protected $registry;
 
     /** @var CursorInterface */
     protected $products;
 
     /**
      * TODO: remove this (and the getter/setter) with nidup's PR
-     *
+     * @var string
+     */
+    protected $completeness;
+
+    /**
+     * TODO: remove this (and the getter/setter) with nidup's PR
+     * @var string
+     */
+    protected $enabled;
+
+    /**
+     * TODO: remove this (and the getter/setter) with nidup's PR
      * @var string
      */
     protected $channelCode;
 
     /**
      * TODO: remove this (and the getter/setter) with nidup's PR
-     *
      * @var ChannelInterface
      */
     protected $channel;
-
-    /**
-     * TODO: remove this with nidup's PR
-     *
-     * @var array
-     */
-    protected $uiOptions;
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
@@ -82,8 +83,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * @param CompletenessManager                 $completenessManager
      * @param MetricConverter                     $metricConverter
      * @param ObjectDetacherInterface             $objectDetacher
-     * @param ProductExportBuilderOptionsResolver $optionsResolver
-     * @param ProductExportBuilderFiltersResolver $filtersResolver,
+     * @param FilterConfiguratorRegistry          $registry
      * @param bool                                $generateCompleteness
      */
     public function __construct(
@@ -92,8 +92,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         ObjectDetacherInterface $objectDetacher,
-        ProductExportBuilderOptionsResolver $optionsResolver,
-        ProductExportBuilderFiltersResolver $filtersResolver,
+        FilterConfiguratorRegistry $registry,
         $generateCompleteness
     ) {
         $this->pqbFactory           = $pqbFactory;
@@ -101,9 +100,10 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $this->completenessManager  = $completenessManager;
         $this->metricConverter      = $metricConverter;
         $this->objectDetacher       = $objectDetacher;
-        $this->optionsResolver      = $optionsResolver;
-        $this->filtersResolver      = $filtersResolver;
-        $this->generateCompleteness = (bool) $generateCompleteness;
+        $this->registry             = $registry;
+        $this->generateCompleteness = (bool)$generateCompleteness;
+        $this->enabled              = 'enabled';
+        $this->completeness         = 'at_least_one_selected_locale';
     }
 
     /**
@@ -128,7 +128,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     public function getEnabled()
     {
-        return $this->uiOptions['enabled'];
+        return $this->enabled;
     }
 
     /**
@@ -136,7 +136,23 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     public function setEnabled($enabled)
     {
-        $this->uiOptions['enabled'] = $enabled;
+        $this->enabled = $enabled;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompleteness()
+    {
+        return $this->completeness;
+    }
+
+    /**
+     * @param string $completeness
+     */
+    public function setCompleteness($completeness)
+    {
+        $this->completeness = $completeness;
     }
 
     /**
@@ -181,21 +197,23 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     {
         $this->channel = $this->getChannelByCode($this->channelCode);
 
-        $uiOptions = $this->optionsResolver->resolve($this->uiOptions);
-        $filters = array_merge(
-            $this->getDefaultFilters($this->channel),
-            $this->filtersResolver->resolve($uiOptions)
-        );
+        $resolver = new OptionsResolver();
+        foreach ($this->registry->all() as $configurator) {
+            $configurator->configure($resolver);
+        }
 
-        $pqb = $this->pqbFactory->create(['default_scope' => $this->channel->getCode()]);
+        $filters = $resolver->resolve($this->buildUiOptions());
+        $pqb     = $this->pqbFactory->create(['default_scope' => $this->channel->getCode()]);
 
         foreach ($filters as $filter) {
-            $pqb->addFilter(
-                $filter['field'],
-                $filter['operator'],
-                $filter['value'],
-                $filter['context']
-            );
+            if (null !== $filter) {
+                $pqb->addFilter(
+                    $filter['field'],
+                    $filter['operator'],
+                    $filter['value'],
+                    $filter['context']
+                );
+            }
         }
 
         if ($this->generateCompleteness) {
@@ -251,32 +269,20 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     }
 
     /**
-     * TODO: will be progressively removed with the coming stories about the Product Export Builder
-     *
-     * Return the filters to be applied on the PQB instance.
-     *
-     * @param ChannelInterface $channel
+     * Will be removed with nidup's PR
      *
      * @return array
      */
-    protected function getDefaultFilters(ChannelInterface $channel)
+    private function buildUiOptions()
     {
-        $filters = [
-            [
-                'field'    => 'completeness',
-                'operator' => Operators::EQUALS,
-                'value'    => 100,
-                'context'  => []
-            ],
-            [
-                'field'    => 'categories.id',
-                'operator' => Operators::IN_CHILDREN_LIST,
-                'value'    => [$channel->getCategory()->getId()],
-                'context'  => []
-            ]
-        ];
+        $uiOptions = [];
 
-        return $filters;
+        $uiOptions['enabled'] = $this->enabled;
+        $uiOptions['completeness'] = $this->completeness;
+        // TODO: will be changed by the product export builder story about categories PIM-5421
+        $uiOptions['categories'] = [$this->channel->getCategory()->getId()];
+
+        return $uiOptions;
     }
 
     /**
