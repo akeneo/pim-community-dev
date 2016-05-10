@@ -98,8 +98,12 @@ class MetricPresenterSpec extends ObjectBehavior
         $metricPresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ProductValueInterface $value
+        ProductValueInterface $value,
+        AttributeInterface $attribute
     ) {
+        $value->getData()->willReturn(null);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->willReturn('size');
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
         $renderer->renderDiff('', '150,123456 trans_kilogram')->willReturn("150,123456 trans_kilogram");
         $metricPresenter

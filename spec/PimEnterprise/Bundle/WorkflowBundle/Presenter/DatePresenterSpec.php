@@ -39,7 +39,6 @@ class DatePresenterSpec extends ObjectBehavior
         $datePresenter->present($date, ['locale' => 'en_US'])->willReturn('01/20/2012');
         $datePresenter->present('2012-04-25', ['locale' => 'en_US'])->willReturn('04/25/2012');
         $value->getData()->willReturn($date);
-        $date->format('F, d Y')->willReturn('January, 20 2012');
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('update');
 
@@ -81,7 +80,6 @@ class DatePresenterSpec extends ObjectBehavior
         $datePresenter->present($date, ['locale' => 'en_US'])->willReturn('2012/20/01');
         $datePresenter->present(null, ['locale' => 'en_US'])->willReturn('');
         $value->getData()->willReturn($date);
-        $date->format('F, d Y')->willReturn('January, 20 2012');
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('update');
 
