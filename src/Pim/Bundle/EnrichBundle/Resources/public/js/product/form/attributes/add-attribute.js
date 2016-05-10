@@ -81,7 +81,54 @@ define(
              * Initialize select2 and format elements.
              */
             initializeSelectWidget: function () {
-                var $select = this.$('input[type="hidden"]');
+                var $select = this.$('select.select-field');
+                var ArrayData = $.fn.select2.amd.require('select2/data/array');
+                var Utils = $.fn.select2.amd.require('select2/utils');
+
+                var attributesAdapter = function ($element, options) {
+                    attributesAdapter.__super__.constructor.call(this, $element, options);
+                };
+
+                Utils.Extend(attributesAdapter, ArrayData);
+
+                attributesAdapter.prototype.query = function (params, callback) {
+                    clearTimeout(this.queryTimer);
+                    this.queryTimer = setTimeout(function () {
+                        var page = 1;
+                        if (params.context && params.context.page) {
+                            page = params.context.page;
+                        }
+                        var searchParameters = this.getSelectSearchParameters(params.term, page);
+
+                        AttributeManager.getAttributesForProduct(this.getFormData())
+                            .then(function (productAttributes) {
+                                searchParameters.options.excluded_identifiers = productAttributes;
+
+                                return FetcherRegistry.getFetcher('attribute').search(searchParameters);
+                            })
+                            .then(function (attributes) {
+                                var choices = _.chain(attributes)
+                                    .map(function (attribute) {
+                                        var attributeGroup = ChoicesFormatter.formatOne(attribute.group);
+                                        var attributeChoice = ChoicesFormatter.formatOne(attribute);
+                                        attributeChoice.group = attributeGroup;
+
+                                        return attributeChoice;
+                                    })
+                                    .value();
+
+                                callback({
+                                    results: choices,
+                                    pagination: {
+                                        more: choices.length === this.resultsPerPage
+                                    },
+                                    context: {
+                                        page: page + 1
+                                    }
+                                });
+                            }.bind(this));
+                    }.bind(this), 400);
+                }.bind(this);
 
                 var opts = {
                     dropdownCssClass: 'bigdrop add-attribute',
@@ -89,7 +136,7 @@ define(
                      * Format result (attribute list) method of select2.
                      * This way we can display attributes and their attribute group beside them.
                      */
-                    formatResult: function (item) {
+                    templateResult: function (item) {
                         var line = _.findWhere(this.attributeViews, {attributeCode: item.id});
 
                         if (undefined === line || null === line) {
@@ -107,48 +154,8 @@ define(
                         return line.attributeView.render().$el;
                     }.bind(this),
 
-                    /**
-                     * The query function called by select2 when searching for attributes.
-                     *
-                     * We prepare the query (ask for server to exlude product attributes), and
-                     * handles its response with ChoicesFormatter (for i18n label translation)
-                     */
-                    query: function (options) {
-                        clearTimeout(this.queryTimer);
-                        this.queryTimer = setTimeout(function () {
-                            var page = 1;
-                            if (options.context && options.context.page) {
-                                page = options.context.page;
-                            }
-                            var searchParameters = this.getSelectSearchParameters(options.term, page);
-
-                            AttributeManager.getAttributesForProduct(this.getFormData())
-                                .then(function (productAttributes) {
-                                    searchParameters.options.excluded_identifiers = productAttributes;
-
-                                    return FetcherRegistry.getFetcher('attribute').search(searchParameters);
-                                })
-                                .then(function (attributes) {
-                                    var choices = _.chain(attributes)
-                                        .map(function (attribute) {
-                                            var attributeGroup = ChoicesFormatter.formatOne(attribute.group);
-                                            var attributeChoice = ChoicesFormatter.formatOne(attribute);
-                                            attributeChoice.group = attributeGroup;
-
-                                            return attributeChoice;
-                                        })
-                                        .value();
-
-                                    options.callback({
-                                        results: choices,
-                                        more: choices.length === this.resultsPerPage,
-                                        context: {
-                                            page: page + 1
-                                        }
-                                    });
-                                }.bind(this));
-                        }.bind(this), 400);
-                    }.bind(this)
+                    ajax: {}, // needed to enable infinite scroll
+                    dataAdapter: attributesAdapter
                 };
 
                 opts = $.extend(true, this.defaultOptions, opts);
@@ -161,8 +168,8 @@ define(
                 });
 
                 // On select2 "selecting" event, we bypass the selection to handle it ourself.
-                $select.on('select2-selecting', function (event) {
-                    var attributeCode = event.val;
+                $select.on('select2:selecting', function (event) {
+                    var attributeCode = event.params.args.data.id;
                     var alreadySelected = _.contains(this.selection, attributeCode);
 
                     if (alreadySelected) {
@@ -178,14 +185,6 @@ define(
                     event.preventDefault();
                 }.bind(this));
 
-                $select.on('select2-open', function () {
-                    this.selection = [];
-                    this.attributeViews = [];
-                    this.updateSelectedCounter();
-                }.bind(this));
-
-                var $menu = this.$('.select2-drop');
-
                 this.footerView = new AttributeFooter({
                     buttonTitle: this.defaultOptions.buttonTitle
                 });
@@ -197,7 +196,14 @@ define(
                     }
                 }.bind(this));
 
-                $menu.append(this.footerView.render().$el);
+                $select.on('select2:open', function () {
+                    this.selection = [];
+                    this.attributeViews = [];
+                    this.updateSelectedCounter();
+
+                    var $menu = $('.bigdrop.add-attribute');
+                    $menu.append(this.footerView.render().$el);
+                }.bind(this));
             },
 
             /**
