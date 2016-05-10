@@ -210,17 +210,21 @@ class Grid extends Index
             $results = $this->getElement('Select2 results');
             $select2 = $filter->find('css', '.select2-input');
 
+            if (in_array($value, ['empty', 'is empty'])) {
+                $operator = 'empty';
+            }
+
+            if (null !== $results && null !== $select2) {
+                $driver->executeScript("jQuery('.select2-drop-mask').click();");
+            }
+
             if (false !== $operator) {
                 $filter->find('css', 'button.dropdown-toggle')->click();
                 $filter->find('css', sprintf('[data-value="%s"]', $operator))->click();
             }
 
             if (null !== $results && null !== $select2) {
-                if (in_array($value, ['empty', 'is empty'])) {
-                    // Allow passing 'empty' as value too (for backwards compability with existing scenarios)
-                    $filter->find('css', 'button.dropdown-toggle')->click();
-                    $filter->find('css', '[data-value="empty"]')->click();
-                } else {
+                if (!in_array($value, ['empty', 'is empty'])) {
                     $values = explode(',', $value);
                     foreach ($values as $value) {
                         $driver->getWebDriverSession()

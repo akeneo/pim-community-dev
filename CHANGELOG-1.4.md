@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.24 (2016-05-10)
 
 ## Improvements
 - PIM-5753: Add a `priority` tag parameter for `ValueConverterRegistry` to allow ordering of array converters.
