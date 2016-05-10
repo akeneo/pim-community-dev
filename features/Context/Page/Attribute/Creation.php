@@ -54,7 +54,7 @@ class Creation extends Form
      *
      * @param string $name
      */
-    public function addOption($name)
+    public function addOption($name, array $labels = [])
     {
         if (!$this->getElement('attribute_option_table')->find('css', '.attribute_option_code')) {
             $this->getElement('add_option_button')->click();
@@ -65,6 +65,10 @@ class Creation extends Form
         $row  = end($rows);
 
         $row->find('css', '.attribute_option_code')->setValue($name);
+
+        foreach ($labels as $locale => $label) {
+            $row->find('css', sprintf('.attribute-option-value[data-locale="%s"]', $locale))->setValue($label);
+        }
         $row->find('css', '.btn.update-row')->click();
     }
 

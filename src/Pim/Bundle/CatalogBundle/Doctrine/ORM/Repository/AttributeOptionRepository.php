@@ -49,7 +49,7 @@ class AttributeOptionRepository extends EntityRepository implements
             ->setParameter('attribute', $collectionId);
         if ($search) {
             $qb->andWhere('v.value like :search OR o.code LIKE :search')
-                ->setParameter('search', "$search%");
+                ->setParameter('search', "%$search%");
         }
 
         if (isset($options['ids'])) {
