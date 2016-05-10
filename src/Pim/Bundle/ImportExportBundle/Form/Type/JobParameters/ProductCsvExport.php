@@ -69,8 +69,8 @@ class ProductCsvExport implements FormsOptionsInterface
                     'choices'  => $this->channelRepository->getLabelsIndexedByCode(),
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_base_connector.export.channel.label',
-                    'help'     => 'pim_base_connector.export.channel.help'
+                    'label'    => 'pim_connector.export.channel.label',
+                    'help'     => 'pim_connector.export.channel.help',
                 ]
             ],
             'decimalSeparator' => [

@@ -46,6 +46,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
                         '%filename%' => basename($writer->getPath()),
                     ]
                 );
+                // TODO: fix this to access to file path from the job execution parameters
                 $this->filesystem->put($key, file_get_contents($writer->getPath()));
             }
         }

@@ -14,6 +14,7 @@ use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
@@ -49,15 +50,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /** @var CursorInterface */
     protected $products;
 
-    /** @var string */
-    protected $channelCode;
-
-    /** @var ChannelInterface */
-    protected $channel;
-
-    /** @var string */
-    protected $enabled;
-
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
@@ -80,75 +72,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $this->metricConverter      = $metricConverter;
         $this->objectDetacher       = $objectDetacher;
         $this->generateCompleteness = (bool) $generateCompleteness;
-        $this->enabled              = 'enabled'; // enabled by default to be compatible with former/custom exports
-    }
-
-    /**
-     * @param string $channelCode
-     */
-    public function setChannel($channelCode)
-    {
-        $this->channelCode = $channelCode;
-        $this->channel     = null;
-    }
-
-    /**
-     * @return string
-     */
-    public function getChannel()
-    {
-        return $this->channelCode;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * @param string $enabled
-     */
-    public function setEnabled($enabled)
-    {
-        $this->enabled = $enabled;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'channel' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => $this->channelRepository->getLabelsIndexedByCode(),
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_connector.export.channel.label',
-                    'help'     => 'pim_connector.export.channel.help',
-                    'attr'     => ['data-tab' => 'content']
-                ],
-            ],
-            'enabled' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => [
-                        'enabled'  => 'pim_connector.export.status.choice.enabled',
-                        'disabled' => 'pim_connector.export.status.choice.disabled',
-                        'all'      => 'pim_connector.export.status.choice.all'
-                    ],
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_connector.export.status.label',
-                    'help'     => 'pim_connector.export.status.help',
-                    'attr'     => ['data-tab' => 'content']
-                ]
-            ],
-        ];
     }
 
     /**
@@ -156,10 +79,13 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     public function initialize()
     {
-        $this->channel = $this->getChannelByCode($this->channelCode);
+        $channel = $this->getConfiguredChannel();
+        $parameters = $this->stepExecution->getJobParameters();
+        $enabled = $parameters->getParameter('enabled');
 
-        $pqb     = $this->pqbFactory->create(['default_scope' => $this->channel->getCode()]);
-        $filters = $this->getFilters($this->channel, $this->rawToStandardProductStatus($this->enabled));
+	// TODO TIP-303: check format here
+        $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
+        $filters = $this->getFilters($channel, $this->rawToStandardProductStatus($enabled));
 
         foreach ($filters as $filter) {
             $pqb->addFilter(
@@ -170,8 +96,9 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
             );
         }
 
+
         if ($this->generateCompleteness) {
-            $this->completenessManager->generateMissingForChannel($this->channel);
+            $this->completenessManager->generateMissingForChannel($channel);
         }
 
         $this->products = $pqb->execute();
@@ -192,7 +119,8 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
 
         if (null !== $product) {
             $this->objectDetacher->detach($product);
-            $this->metricConverter->convert($product, $this->channel);
+            $channel = $this->getConfiguredChannel();
+            $this->metricConverter->convert($product, $channel);
         }
 
         return $product;
@@ -207,16 +135,17 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     }
 
     /**
-     * @param string $code
-     *
      * @throws ObjectNotFoundException
+     *
      * @return ChannelInterface
      */
-    protected function getChannelByCode($code)
+    protected function getConfiguredChannel()
     {
-        $channel = $this->channelRepository->findOneByIdentifier($code);
+        $parameters = $this->stepExecution->getJobParameters();
+        $channelCode = $parameters->getParameter('channel');
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
-            throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $code));
+            throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $channelCode));
         }
 
         return $channel;
@@ -263,7 +192,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * Convert the UI product status to the standard product status
      *
      * @param string $rawStatus
-     *
+     * TODO TIP-303: check if still useful?
      * @return bool|null
      */
     protected function rawToStandardProductStatus($rawStatus)
