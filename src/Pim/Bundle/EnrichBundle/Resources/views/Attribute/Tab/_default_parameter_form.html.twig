@@ -1,0 +1,8 @@
+{% form_theme form 'PimEnrichBundle:Attribute/Tab:_form_theme.html.twig' %}
+
+
+{% for form_type in form.children %}
+    {% if form_type.vars.name in allowed_form_types %}
+        {{ form_row(form_type, { 'label': ('pim_enrich_attribute_form.'~form_type.vars.name)|trans }) }}
+    {% endif %}
+{% endfor %}

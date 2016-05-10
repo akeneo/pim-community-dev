@@ -4,6 +4,7 @@ parameters:
     pim_enrich.view_element.attribute.tab.history.template:   'PimEnrichBundle:Form:Tab/history.html.twig'
 
 services:
+    ## Tabs
     pim_enrich.view_element.attribute.tab.parameter:
         parent: pim_enrich.view_element.base
         arguments:
@@ -30,3 +31,33 @@ services:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_attribute_history'}] ]
         tags:
             - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.form_tab, position: 110 }
+
+    ## sub forms
+    pim_enrich.view_element.attribute.general_parameters:
+        class: '%pim_enrich.view_element.base.class%'
+        arguments:
+            - ''
+            - 'PimEnrichBundle:Attribute:Tab/_default_parameter_form.html.twig'
+            -
+                allowed_form_types:
+                    - code
+                    - attributeType
+                    - reference_data_name
+                    - scopable
+                    - localizable
+                    - unique
+                    - availableLocales
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.general_parameters, position: 90 }
+
+    pim_enrich.view_element.attribute.backend_parameter:
+        class: '%pim_enrich.view_element.base.class%'
+        arguments:
+            - ''
+            - 'PimEnrichBundle:Attribute:Tab/_default_parameter_form.html.twig'
+            -
+                allowed_form_types:
+                    - group
+                    - useableAsGridFilter
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.backend_parameter, position: 90 }
