@@ -57,7 +57,7 @@ define(
                 });
 
                 familyModal.on('ok', function () {
-                    var selectedFamily = familyModal.$('.family-select2').select2('val') || null;
+                    var selectedFamily = familyModal.$('.family-select2').val() || null;
 
                     this.getFormModel().set('family', selectedFamily);
                     ProductManager.generateMissing(this.getFormData()).then(function (product) {
@@ -88,7 +88,7 @@ define(
                                 }
                             };
                         },
-                        results: function (families) {
+                        processResults: function (families) {
                             var data = {
                                 more: 20 === _.keys(families).length,
                                 results: []
@@ -114,12 +114,13 @@ define(
                                         text: i18n.getLabel(family.label, UserContext.get('catalogLocale'), family.code)
                                     });
                                 });
+                        } else {
+                            callback([]);
                         }
-
                     }
                 };
 
-                initSelect2.init(familyModal.$('.family-select2'), options).select2('val', []);
+                initSelect2.init(familyModal.$('.family-select2'), options);
                 familyModal.$('.modal-body').css({'line-height': '25px', 'height': 130});
             }
         });
