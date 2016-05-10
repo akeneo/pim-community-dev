@@ -63,21 +63,4 @@ class CsvVariantGroupWriter extends CsvWriter
             );
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfiguration(array $config)
-    {
-        // TODO: to be fixed!
-        parent::setConfiguration($config);
-
-        if (!isset($config['mainContext'])) {
-            return;
-        }
-
-        foreach ($config['mainContext'] as $key => $value) {
-            $this->filePathResolverOptions['parameters']['%' . $key . '%'] = $value;
-        }
-    }
 }

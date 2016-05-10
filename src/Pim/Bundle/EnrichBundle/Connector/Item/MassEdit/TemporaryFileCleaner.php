@@ -21,18 +21,11 @@ class TemporaryFileCleaner extends AbstractConfigurableStepElement implements St
     protected $stepExecution;
 
     /**
-     * @param array $configuration
-     *
      * @throws \InvalidArgumentException If 'actions' index is missing from $configuration
      */
-    public function execute(array $configuration)
+    public function execute()
     {
-        if (!array_key_exists('actions', $configuration)) {
-            throw new \InvalidArgumentException('Missing configuration \'actions\'.');
-        }
-
-        $actions = $configuration['actions'];
-
+        $actions = $this->getConfiguredActions();
         foreach ($actions as $action) {
             if (isset($action['value']['filePath']) && is_file($action['value']['filePath'])) {
                 unlink($action['value']['filePath']);
@@ -43,18 +36,20 @@ class TemporaryFileCleaner extends AbstractConfigurableStepElement implements St
     /**
      * {@inheritdoc}
      */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
 
         return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    protected function getConfiguredActions()
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+
+        return $jobParameters->getParameter('actions');
     }
 }

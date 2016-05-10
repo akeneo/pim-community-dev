@@ -26,7 +26,7 @@ class MassEditStep extends AbstractStep
     protected function doExecute(StepExecution $stepExecution)
     {
         $this->cleaner->setStepExecution($stepExecution);
-        $this->cleaner->execute($this->configuration);
+        $this->cleaner->execute();
     }
 
     /**

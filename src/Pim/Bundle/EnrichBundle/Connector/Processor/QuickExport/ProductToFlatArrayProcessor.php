@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
-use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
@@ -13,9 +12,6 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -35,26 +31,14 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
+    /** @var string */
+    protected $uploadDirectory;
+
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var  ObjectDetacherInterface */
     protected $objectDetacher;
-
-    /** @var string */
-    protected $uploadDirectory;
-
-    /** @var string */
-    protected $channelCode;
-
-    /** @var string */
-    protected $locale;
-
-    /** @var array */
-    protected $normalizerContext;
-
-    /** @var array */
-    protected $mainContext;
 
     /**
      * @param SerializerInterface        $serializer
@@ -81,14 +65,6 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         $this->userProvider      = $userProvider;
         $this->tokenStorage      = $tokenStorage;
         $this->uploadDirectory   = $uploadDirectory;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function initialize()
-    {
-        $this->setChannelCodeFromJobConfiguration();
     }
 
     /**
@@ -130,71 +106,34 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     }
 
     /**
-     * @param string $channelCode
-     */
-    public function setChannelCode($channelCode)
-    {
-        $this->channelCode = $channelCode;
-    }
-
-    /**
-     * @return string
-     */
-    public function getChannelCode()
-    {
-        return $this->channelCode;
-    }
-
-    /**
-     * @param string $uiLocale
-     */
-    public function setLocale($uiLocale)
-    {
-        $this->locale = $uiLocale;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return ['mainContext' => [],];
-    }
-
-    /**
-     * @param array $context
-     */
-    public function setMainContext($context)
-    {
-        $this->mainContext = $context;
-    }
-
-    /**
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
     protected function getNormalizerContext()
     {
-        if (null === $this->normalizerContext) {
-            $this->normalizerContext = [
-                'scopeCode'    => $this->channelCode,
-                'localeCodes'  => $this->getLocaleCodes($this->channelCode),
-                'locale'       => $this->locale,
-                'filter_types' => [
-                    'pim.transform.product_value.flat',
-                    'pim.transform.product_value.flat.quick_export'
-                ]
-            ];
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $mainContext = $jobParameters->getParameter('mainContext');
+
+        if (!isset($mainContext['scope'])) {
+            throw new \InvalidArgumentException('No channel found');
         }
 
-        return $this->normalizerContext;
+        if (!isset($mainContext['ui_locale'])) {
+            throw new \InvalidArgumentException('No UI locale found');
+        }
+
+        $normalizerContext = [
+            'scopeCode'   => $mainContext['scope'],
+            'localeCodes' => $this->getLocaleCodes($mainContext['scope']),
+            'locale'      => $mainContext['ui_locale'],
+            'filter_types' => [
+                'pim.transform.product_value.flat',
+                'pim.transform.product_value.flat.quick_export'
+            ]
+        ];
+
+        return $normalizerContext;
     }
 
     /**
@@ -228,27 +167,6 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         }
 
         return $media;
-    }
-
-    /**
-     * Set the channel in parameter from the job configuration
-     *
-     * @throws InvalidArgumentException
-     */
-    protected function setChannelCodeFromJobConfiguration()
-    {
-        $configuration = $this->getConfiguration();
-
-        if (!isset($configuration['mainContext']['scope'])) {
-            throw new InvalidArgumentException('No channel found');
-        }
-
-        if (!isset($configuration['mainContext']['ui_locale'])) {
-            throw new InvalidArgumentException('No UI locale found');
-        }
-
-        $this->setChannelCode($configuration['mainContext']['scope']);
-        $this->setLocale($configuration['mainContext']['ui_locale']);
     }
 
     /**

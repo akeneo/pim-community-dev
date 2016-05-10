@@ -72,6 +72,8 @@ class VariantGroupCleaner
      * @param StepExecution $stepExecution
      *
      * @return array
+     *
+     * TODO: re-write this, we can't change the immutable configuration
      */
     public function clean(array $configuration, StepExecution $stepExecution)
     {

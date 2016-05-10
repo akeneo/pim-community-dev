@@ -33,12 +33,6 @@ class FilteredVariantGroupProductReader extends AbstractConfigurableStepElement 
     /** @var string */
     protected $channel;
 
-    /** @var array */
-    protected $filters;
-
-    /** @var array */
-    protected $actions;
-
     /**
      * @param FilteredProductReader $reader
      * @param VariantGroupCleaner   $cleaner
@@ -47,8 +41,6 @@ class FilteredVariantGroupProductReader extends AbstractConfigurableStepElement 
     {
         $this->productReader = $reader;
         $this->cleaner = $cleaner;
-        $this->filters = [];
-        $this->actions = [];
         $this->isExecuted = false;
     }
 

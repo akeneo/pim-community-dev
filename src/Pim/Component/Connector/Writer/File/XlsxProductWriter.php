@@ -113,21 +113,4 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     {
         return $this->writtenFiles;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfiguration(array $config)
-    {
-        // TODO: to be double checked and fixed
-        parent::setConfiguration($config);
-
-        if (!isset($config['mainContext'])) {
-            return;
-        }
-
-        foreach ($config['mainContext'] as $key => $value) {
-            $this->filePathResolverOptions['parameters']['%' . $key . '%'] = $value;
-        }
-    }
 }

@@ -64,21 +64,4 @@ class CsvProductWriter extends CsvWriter
             );
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfiguration(array $config)
-    {
-        // TODO: to fix!
-        parent::setConfiguration($config);
-
-        if (!isset($config['mainContext'])) {
-            return;
-        }
-
-        foreach ($config['mainContext'] as $key => $value) {
-            $this->filePathResolverOptions['parameters']['%' . $key . '%'] = $value;
-        }
-    }
 }

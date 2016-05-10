@@ -26,7 +26,6 @@ services:
                 - 'pim_connector.jobs.csv_association_type_export.title'
                 - 'pim_connector.jobs.csv_attribute_option_export.title'
                 - 'pim_connector.jobs.csv_category_export.title'
-                - 'csv_product_quick_export'
         tags:
             - { name: akeneo_batch.job_parameters.defaults }
 
@@ -40,7 +39,6 @@ services:
                 - 'pim_connector.jobs.xlsx_association_type_export.title'
                 - 'pim_connector.jobs.xlsx_attribute_option_export.title'
                 - 'pim_connector.jobs.xlsx_category_export.title'
-                - 'xlsx_product_quick_export'
         tags:
             - { name: akeneo_batch.job_parameters.defaults }
 

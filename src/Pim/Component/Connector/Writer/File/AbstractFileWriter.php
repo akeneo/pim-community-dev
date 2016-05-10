@@ -67,10 +67,17 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
      */
     public function getPath()
     {
-        // TODO: why we need this?
         if (null === $this->resolvedFilePath) {
             $parameters = $this->stepExecution->getJobParameters();
             $filePath = $parameters->getParameter('filePath');
+
+            if ($parameters->hasParameter('mainContext')){
+                $mainContext = $parameters->getParameter('mainContext');
+                foreach ($mainContext as $key => $value) {
+                    $this->filePathResolverOptions['parameters']['%' . $key . '%'] = $value;
+                }
+            }
+
             $this->resolvedFilePath = $this->filePathResolver->resolve($filePath, $this->filePathResolverOptions);
         }
 
