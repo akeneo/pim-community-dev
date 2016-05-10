@@ -16,16 +16,9 @@ class AttributeUpdaterSpec extends ObjectBehavior
 {
     function let(
         AttributeGroupRepositoryInterface $attrGroupRepo,
-        ConfigurationRegistryInterface $registry,
         LocaleRepositoryInterface $localeRepository
-    )
-    {
-        $this->beConstructedWith(
-            $attrGroupRepo,
-            ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect'],
-            $localeRepository,
-            $registry
-        );
+    ) {
+        $this->beConstructedWith($attrGroupRepo, $localeRepository);
     }
 
     function it_is_initializable()

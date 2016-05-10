@@ -16,6 +16,7 @@ parameters:
     pim_catalog.validator.constraint.scopable_value.class:                 Pim\Component\Catalog\Validator\Constraints\ScopableValueValidator
     pim_catalog.validator.constraint.localizable_value.class:              Pim\Component\Catalog\Validator\Constraints\LocalizableValueValidator
     pim_catalog.validator.constraint.attribute_type_for_option.class:      Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOptionValidator
+    pim_catalog.validator.constraint.is_reference_data_configured.class:   Pim\Component\Catalog\Validator\Constraints\IsReferenceDataConfiguredValidator
     pim_catalog.validator.constraint_guesser.chained.class:                Pim\Component\Catalog\Validator\ChainedAttributeConstraintGuesser
     pim_catalog.validator.constraint_guesser.email.class:                  Pim\Component\Catalog\Validator\ConstraintGuesser\EmailGuesser
     pim_catalog.validator.constraint_guesser.file.class:                   Pim\Component\Catalog\Validator\ConstraintGuesser\FileGuesser
@@ -144,6 +145,14 @@ services:
         class: %pim_catalog.validator.constraint.attribute_type_for_option.class%
         tags:
             - { name: validator.constraint_validator, alias: pim_attribute_type_for_option_validator }
+
+    pim_catalog.validator.constraint.is_reference_data_configured:
+        class: %pim_catalog.validator.constraint.is_reference_data_configured.class%
+        arguments:
+            - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect']
+            - '@?pim_reference_data.registry'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_is_reference_data_configured_validator }
 
     # Attribute constraint guesser
     pim_catalog.validator.constraint_guesser.chained_attribute:

@@ -14,7 +14,7 @@ class AppKernel extends Kernel
 {
     /**
      * Registers your custom bundles
-     * 
+     *
      * @return array
      */
     protected function registerProjectBundles()
@@ -24,7 +24,7 @@ class AppKernel extends Kernel
             new Acme\Bundle\AppBundle\AcmeAppBundle(),
         ];
     }
-    
+
     /**
      * {@inheritdoc}
      */

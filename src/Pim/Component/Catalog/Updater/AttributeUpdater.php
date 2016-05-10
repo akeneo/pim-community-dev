@@ -8,7 +8,6 @@ use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -27,32 +26,20 @@ class AttributeUpdater implements ObjectUpdaterInterface
     /** @var PropertyAccessor */
     protected $accessor;
 
-    /** @var ConfigurationRegistryInterface */
-    protected $registry;
-
-    /** @var array */
-    protected $referenceDataType;
-
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
     /**
      * @param AttributeGroupRepositoryInterface $attrGroupRepo
-     * @param array                             $referenceDataType
      * @param LocaleRepositoryInterface         $localeRepository
-     * @param ConfigurationRegistryInterface    $registry
      */
     public function __construct(
         AttributeGroupRepositoryInterface $attrGroupRepo,
-        array $referenceDataType,
-        LocaleRepositoryInterface $localeRepository,
-        ConfigurationRegistryInterface $registry = null
+        LocaleRepositoryInterface $localeRepository
     ) {
         $this->attrGroupRepo     = $attrGroupRepo;
-        $this->accessor          = PropertyAccess::createPropertyAccessor();
-        $this->registry          = $registry;
-        $this->referenceDataType = $referenceDataType;
         $this->localeRepository  = $localeRepository;
+        $this->accessor          = PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -68,8 +55,6 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 )
             );
         }
-
-        $this->checkIfReferenceDataExists($data);
 
         foreach ($data as $field => $value) {
             $this->setData($attribute, $field, $value);
@@ -122,27 +107,6 @@ class AttributeUpdater implements ObjectUpdaterInterface
         $attributeGroup = $this->attrGroupRepo->findOneByIdentifier($code);
 
         return $attributeGroup;
-    }
-
-    /**
-     * @param string $value
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function checkIfReferenceDataExists($value)
-    {
-        if (isset($value['attributeType']) && in_array($value['attributeType'], $this->referenceDataType)) {
-            if (!$this->registry->has($value['reference_data_name'])) {
-                $references = array_keys($this->registry->all());
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Reference data "%s" does not exist. Allowed values are: %s',
-                        $value['reference_data_name'],
-                        implode(', ', $references)
-                    )
-                );
-            }
-        }
     }
 
     /**
