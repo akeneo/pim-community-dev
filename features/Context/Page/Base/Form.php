@@ -88,6 +88,12 @@ class Form extends Base
             return $tabs->findLink($tab);
         }, sprintf('Could not find a tab named "%s"', $tab));
 
+        $this->spin(function () {
+            $loading = $this->find('css', '#loading-wrapper');
+
+            return null === $loading || !$loading->isVisible();
+        }, sprintf('Could not visit tab %s because of loading wrapper', $tab));
+
         $tabDom->click();
     }
 
@@ -769,6 +775,7 @@ class Form extends Base
         foreach ($remainingValues as $value) {
             if (trim($value)) {
                 $label->click();
+                $this->getDriver()->executeScript("jQuery('.select2-drop-mask').click();");
                 $label->click();
 
                 $option = $this->spin(function () use ($value) {
