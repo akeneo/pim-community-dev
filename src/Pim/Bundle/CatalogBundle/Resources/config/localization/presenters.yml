@@ -47,6 +47,13 @@ services:
         tags:
             - { name: pim_catalog.localization.presenter, type: 'product_value' }
 
+    pim_catalog.localization.presenter.product_value.boolean:
+        class: %pim_catalog.localization.presenter.boolean.class%
+        arguments:
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: pim_catalog.localization.presenter, type: 'product_value' }
+
     # Product fields
     pim_catalog.localization.presenter.datetime:
         class: %pim_catalog.localization.presenter.date.class%
@@ -56,7 +63,7 @@ services:
         tags:
             - { name: pim_catalog.localization.presenter, type: 'product_field' }
 
-    pim_catalog.localization.presenter.boolean:
+    pim_catalog.localization.presenter.product_field.boolean:
         class: %pim_catalog.localization.presenter.boolean.class%
         arguments:
             - ['enabled']

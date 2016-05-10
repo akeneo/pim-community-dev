@@ -362,88 +362,6 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
-     * @throws \Exception
-     *
-     * @Then /^there should be the following attributes:$/
-     */
-    public function thereShouldBeTheFollowingAttributes(TableNode $table)
-    {
-        foreach ($table->getHash() as $data) {
-            $attribute = $this->getAttribute($data['code']);
-            $this->refresh($attribute);
-
-            foreach ($data as $method => $value) {
-                switch ($method) {
-                    case 'code':
-                        // Untestable method
-                        break;
-                    case 'label-en_US':
-                        assertEquals($value, $attribute->getTranslation('en_US')->getLabel());
-                        break;
-                    case 'type':
-                        assertEquals($this->getAttributeType($value), $attribute->getAttributeType());
-                        break;
-                    case 'localizable':
-                        assertEquals('1' === $value, $attribute->isLocalizable());
-                        break;
-                    case 'scopable':
-                        assertEquals('1' === $value, $attribute->isLocalizable());
-                        break;
-                    case 'group':
-                        assertEquals($value, $attribute->getGroup()->getCode());
-                        break;
-                    case 'useable_as_grid_filter':
-                        assertEquals('1' === $value, $attribute->isUseableAsGridFilter());
-                        break;
-                    case 'unique':
-                        assertEquals('1' === $value, $attribute->isUnique());
-                        break;
-                    case 'allowed_extensions':
-                        if ('' !== $value) {
-                            assertEquals(explode(',', $value), $attribute->getAllowedExtensions());
-                        }
-                        break;
-                    case 'metric_family':
-                        assertEquals($value, $attribute->getMetricFamily());
-                        break;
-                    case 'default_metric_unit':
-                        assertEquals($value, $attribute->getDefaultMetricUnit());
-                        break;
-                    case 'reference_data_name':
-                        if ('' === $value) {
-                            assertNull($attribute->getReferenceDataName());
-                        } else {
-                            assertEquals($value, $attribute->getReferenceDataName());
-                        }
-                        break;
-                    case 'number_min':
-                        if ('' === $value) {
-                            assertNull($attribute->getNumberMin());
-                        } else {
-                            assertEquals($value, $attribute->getNumberMin());
-                        }
-                        break;
-                    case 'number_max':
-                        if ('' === $value) {
-                            assertNull($attribute->getNumberMax());
-                        } else {
-                            assertEquals($value, $attribute->getNumberMax());
-                        }
-                        break;
-                    default:
-                        throw new \Exception(sprintf(
-                            "The attribute method '%s' is not testable, please add it in %s",
-                            $method,
-                            get_class($this)
-                        ));
-                }
-            }
-        }
-    }
-
-    /**
-     * @param TableNode $table
-     *
      * @Then /^there should be the following families:$/
      */
     public function thereShouldBeTheFollowingFamilies(TableNode $table)
@@ -1620,7 +1538,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @return string
      */
-    protected function getAttributeType($type)
+    public function getAttributeType($type)
     {
         if (!isset($this->attributeTypes[$type])) {
             throw new \InvalidArgumentException(

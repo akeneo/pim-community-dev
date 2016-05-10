@@ -145,7 +145,7 @@ Feature: Import attributes
     And the following CSV file to import:
       """
       type;code;label-de_DE;label-en_US;label-fr_FR;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;available_locales;sort_order;max_characters;validation_rule;validation_regexp;wysiwyg_enabled;number_min;number_max;decimals_allowed;negative_allowed;date_min;date_max;metric_family;default_metric_unit;max_file_size;allowed_extensions
-      pim_catalog_simpleselect;manufacturer;Meine große Code;My awesome code;Mon super code;marketing;0;1;;;;;0;0;en_US,fr_FR;3;300;validation_rule;;1;3;5;true;true;2000-12-12;2015-08-08;;EUR;452;jpg
+      pim_catalog_simpleselect;manufacturer;Meine große Code;My awesome code;Mon super code;marketing;0;1;;;;;0;0;en_US,fr_FR;3;300;rule;;1;3;5;true;true;2000-12-12;2015-08-08;;EUR;452;jpg
       """
     And the following job "footwear_attribute_import" configuration:
       | filePath | %file to import% |
@@ -156,7 +156,7 @@ Feature: Import attributes
     Then I should see "processed 1"
     And there should be the following attributes:
       | type         | code         | label-en_US     | label-de_DE      | label-fr_FR    | group     | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit | reference_data_name | localizable | scopable | available_locales | sort_order | max_characters | validation_rule | validation_regexp | wysiwyg_enabled | number_min | number_max | decimals_allowed | negative_allowed | date_min   | date_max   | metric_family | default_metric_unit | max_file_size | allowed_extensions |
-      | simpleselect | manufacturer | My awesome code | Meine große Code | Mon super code | marketing | 0      | 1                      | 0           | 0        |                    |               |                     |                     | 0           | 0        | en_US,fr_FR       | 3          | 300            | validation_rule |                   | 1               | 3          | 5          | true             | true             | 2000-12-12 | 2015-08-08 |               | EUR                 | 452           | jpg                |
+      | simpleselect | manufacturer | My awesome code | Meine große Code | Mon super code | marketing | 0      | 1                      | 0           | 0        |                    |               |                     |                     | 0           | 0        | en_US,fr_FR       | 3          | 300            | rule            |                   | 1               | 3          | 5          | 1                | 1                | 2000-12-12 | 2015-08-08 |               | EUR                 | 452           | jpg                |
 
   Scenario: Fail to import attribute with invalid date format
     Given the "footwear" catalog configuration
@@ -164,7 +164,7 @@ Feature: Import attributes
     And the following CSV file to import:
       """
       type;code;label-de_DE;label-en_US;label-fr_FR;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;available_locales;sort_order;max_characters;validation_rule;validation_regexp;wysiwyg_enabled;number_min;number_max;decimals_allowed;negative_allowed;date_min;date_max;metric_family;default_metric_unit;max_file_size;allowed_extensions
-      pim_catalog_simpleselect;manufacturer;Meine große Code;My awesome code;Mon super code;marketing;0;1;;family;;;0;0;en_US,fr_FR;3;300;validation_rule;;1;3;5;true;true;2000/12/12;2015/08/08;;EUR;452;jpg
+      pim_catalog_simpleselect;manufacturer;Meine große Code;My awesome code;Mon super code;marketing;0;1;;family;;;0;0;en_US,fr_FR;3;300;rule;;1;3;5;true;true;2000/12/12;2015/08/08;;EUR;452;jpg
       """
     And the following job "footwear_attribute_import" configuration:
       | filePath | %file to import% |
@@ -181,7 +181,7 @@ Feature: Import attributes
     And the following CSV file to import:
       """
       type;code;label-de_DE;label-en_US;label-fr_FR;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;available_locales;sort_order;max_characters;validation_rule;validation_regexp;wysiwyg_enabled;number_min;number_max;decimals_allowed;negative_allowed;date_min;date_max;metric_family;default_metric_unit;max_file_size;allowed_extensions
-      pim_catalog_simpleselect;manufacturer;Meine große Code;My awesome code;Mon super code;marketing;0;1;;family;;;0;0;en_US,fr_FR;3;300;validation_rule;;1;3;5;true;true;2000-99-12;2015/08/08;;EUR;452;jpg
+      pim_catalog_simpleselect;manufacturer;Meine große Code;My awesome code;Mon super code;marketing;0;1;;family;;;0;0;en_US,fr_FR;3;300;rule;;1;3;5;true;true;2000-99-12;2015/08/08;;EUR;452;jpg
       """
     And the following job "footwear_attribute_import" configuration:
       | filePath | %file to import% |
@@ -198,8 +198,8 @@ Feature: Import attributes
     And the following CSV file to import:
       """
       type;code;label-de_DE;label-en_US;label-fr_FR;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;available_locales;sort_order;max_characters;validation_rule;validation_regexp;wysiwyg_enabled;number_min;number_max;decimals_allowed;negative_allowed;date_min;date_max;metric_family;default_metric_unit;max_file_size;allowed_extensions
-      pim_catalog_image;media_code;Meine große Code;My awesome code;Mon super code;marketing;0;1;;family;;;0;0;en_US,fr_FR;3;300;validation_rule;;1;3;5;true;true;2000-08-08;2015-08-08;;EUR;not an int;jpg
-      pim_catalog_image;media_code;Meine große Code;My awesome code;Mon super code;not a group;0;1;;family;;;0;0;en_US,fr_FR;3;300;validation_rule;;1;3;5;true;true;2000-08-08;2015-08-08;;EUR;not an int;jpg
+      pim_catalog_image;media_code;Meine große Code;My awesome code;Mon super code;marketing;0;1;;family;;;0;0;en_US,fr_FR;3;300;rule;;1;3;5;true;true;2000-08-08;2015-08-08;;EUR;not an int;jpg
+      pim_catalog_image;media_code;Meine große Code;My awesome code;Mon super code;not a group;0;1;;family;;;0;0;en_US,fr_FR;3;300;rule;;1;3;5;true;true;2000-08-08;2015-08-08;;EUR;not an int;jpg
       """
     And the following job "footwear_attribute_import" configuration:
       | filePath | %file to import% |
@@ -217,7 +217,7 @@ Feature: Import attributes
     And the following CSV file to import:
       """
       type;code;label-de_DE;label-en_US;label-fr_FR;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;available_locales;sort_order;max_characters;validation_rule;validation_regexp;wysiwyg_enabled;number_min;number_max;decimals_allowed;negative_allowed;date_min;date_max;metric_family;default_metric_unit;max_file_size;allowed_extensions
-      pim_catalog_simpleselect;myawesomecode;Meine große Code;My awesome code;Mon super code;marketing;0;1;;;;;0;0;en_US,fr_FR;3;300;validation_rule;;1;3;5;true;true;2000-12-12;2015-08-08;;EUR;452;jpg
+      pim_catalog_simpleselect;myawesomecode;Meine große Code;My awesome code;Mon super code;marketing;0;1;;;;;0;0;en_US,fr_FR;3;300;rule;;1;3;5;true;true;2000-12-12;2015-08-08;;EUR;452;jpg
       """
     And the following job "footwear_attribute_import" configuration:
       | filePath | %file to import% |
@@ -228,7 +228,7 @@ Feature: Import attributes
     Then I should see "created 1"
     And there should be the following attributes:
       | type         | code          | label-en_US     | label-de_DE      | label-fr_FR    | group     | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit | reference_data_name | localizable | scopable | available_locales | sort_order | max_characters | validation_rule | validation_regexp | wysiwyg_enabled | number_min | number_max | decimals_allowed | negative_allowed | date_min   | date_max   | metric_family | default_metric_unit | max_file_size | allowed_extensions |
-      | simpleselect | myawesomecode | My awesome code | Meine große Code | Mon super code | marketing | 0      | 1                      | 0           | 0        |                    |               |                     |                     | 0           | 0        | en_US,fr_FR       | 3          | 300            | validation_rule |                   | 1               | 3          | 5          | true             | true             | 2000-12-12 | 2015-08-08 |               | EUR                 | 452           | jpg                |
+      | simpleselect | myawesomecode | My awesome code | Meine große Code | Mon super code | marketing | 0      | 1                      | 0           | 0        |                    |               |                     |                     | 0           | 0        | en_US,fr_FR       | 3          | 300            | rule            |                   | 1               | 3          | 5          | 1                | 1                | 2000-12-12 | 2015-08-08 |               | EUR                 | 452           | jpg                |
 
   Scenario: Fail to update an attribute with new immutable values
     Given the "footwear" catalog configuration

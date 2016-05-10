@@ -332,7 +332,7 @@ class FixturesContext extends PimContext
     /**
      * @param object $object
      */
-    protected function refresh($object)
+    public function refresh($object)
     {
         if (is_object($object)) {
             $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
