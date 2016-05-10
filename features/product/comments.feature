@@ -6,7 +6,6 @@ Feature: Leave a comment on a product
 
   Background:
     Given the "footwear" catalog configuration
-    And I am logged in as "Julia"
     And the following product:
       | sku        |
       | rangers    |
@@ -20,7 +19,8 @@ Feature: Leave a comment on a product
       | high-heels | 5 | Mary   | Should be associated with red heel.                            |        | 28-Aug-14  |
 
   Scenario: Successfully add a new comment on a product
-    Given I am on the "rangers" product page
+    Given I am logged in as "Julia"
+    And I am on the "rangers" product page
     And I open the "Comments" panel
     Then I should see "No comment for now"
     When I add a new comment "My comment"
@@ -30,7 +30,8 @@ Feature: Leave a comment on a product
       | rangers | 1 | Julia  | My comment |        |
 
   Scenario: View the list of comments on a product
-    Given I am on the "high-heels" product page
+    Given I am logged in as "Julia"
+    And I am on the "high-heels" product page
     And I open the "Comments" panel
     Then I should see the following product comments:
       | product    | # | author | message                                                        | parent |
@@ -41,7 +42,8 @@ Feature: Leave a comment on a product
       | high-heels | 5 | Mary   | Should be associated with red heel.                            |        |
 
   Scenario: Successfully reply to an existing comment
-    Given I am on the "high-heels" product page
+    Given I am logged in as "Julia"
+    And I am on the "high-heels" product page
     And I open the "Comments" panel
     When I reply to the comment "Should be associated with red heel." of "Mary" with "No, with black heels."
     Then I should see the following product comments:
@@ -54,7 +56,8 @@ Feature: Leave a comment on a product
       | high-heels | 6 | Julia  | No, with black heels.                                          | 5      |
 
   Scenario: Successfully remove my own comments
-    Given I am on the "rangers" product page
+    Given I am logged in as "Julia"
+    And I am on the "rangers" product page
     And I open the "Comments" panel
     And I add a new comment "My comment"
     When I delete the "My comment" comment
@@ -63,7 +66,8 @@ Feature: Leave a comment on a product
     Then I should not see "My comment"
 
   Scenario: Not being able to remove a comment that is not mine
-    Given I am on the "high-heels" product page
+    Given I am logged in as "Julia"
+    And I am on the "high-heels" product page
     And I open the "Comments" panel
     Then I should not see the link to delete the "Should be associated with red heel." comment of "Mary"
 
