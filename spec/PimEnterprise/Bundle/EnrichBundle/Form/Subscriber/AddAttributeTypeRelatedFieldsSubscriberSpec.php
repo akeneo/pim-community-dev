@@ -55,7 +55,9 @@ class AddAttributeTypeRelatedFieldsSubscriberSpec extends ObjectBehavior
         $attributeText->buildAttributeFormTypes($factory, $attribute)->willReturn([]);
 
         $event->getForm()->willReturn($form);
-        $form->add('isDisplayable', 'switch')->shouldBeCalled();
+        $form->add('isDisplayable', 'switch', [
+            'required' => false
+        ])->shouldBeCalled();
 
         $this->preSetData($event);
     }

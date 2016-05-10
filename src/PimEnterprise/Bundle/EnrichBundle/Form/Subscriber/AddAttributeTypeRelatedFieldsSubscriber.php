@@ -29,6 +29,11 @@ class AddAttributeTypeRelatedFieldsSubscriber extends BaseAddAttributeTypeRelate
     {
         parent::preSetData($event);
 
-        $event->getForm()->add('isDisplayable', 'switch');
+        $form = $event->getForm();
+
+        $form->add('isDisplayable', 'switch', [
+            'required' => false,
+            'data' => true
+        ]);
     }
 }

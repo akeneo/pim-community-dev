@@ -1,0 +1,18 @@
+services:
+    pim_enrich.view_element.attribute.general_parameters:
+        class: '%pim_enrich.view_element.base.class%'
+        arguments:
+            - ''
+            - 'PimEnrichBundle:Attribute:Tab/_default_parameter_form.html.twig'
+            -
+                allowed_form_types:
+                    - code
+                    - attributeType
+                    - reference_data_name
+                    - scopable
+                    - localizable
+                    - unique
+                    - availableLocales
+                    - isDisplayable
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.general_parameters, position: 90 }
