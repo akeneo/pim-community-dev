@@ -31,9 +31,8 @@ class AddAttributeTypeRelatedFieldsSubscriber extends BaseAddAttributeTypeRelate
 
         $form = $event->getForm();
 
-        $form->add('isDisplayable', 'switch', [
+        $form->add('isEditable', 'switch', [
             'required' => false,
-            'data' => true
         ]);
     }
 }

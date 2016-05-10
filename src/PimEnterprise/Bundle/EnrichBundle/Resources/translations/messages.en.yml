@@ -180,7 +180,7 @@ job_execution.summary:
 pim_assets_collection: Assets collection
 
 pim_enrich_attribute_form:
-    isDisplayable: Is displayable
+    isEditable: Is editable
     code: Code
     attributeType: Attribute Type
     reference_data_name: Reference data name
