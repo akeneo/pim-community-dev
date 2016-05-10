@@ -62,6 +62,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getData()->willReturn(null);
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
+        $simpleAttribute->getBackendType()->willReturn('decimal');
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '']);
     }
 
@@ -79,6 +80,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getData()->willReturn(12);
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
+        $simpleAttribute->getBackendType()->willReturn('decimal');
         $this->normalize($value, 'flat', $context)->shouldReturn(['simple' => 12]);
     }
 

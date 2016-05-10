@@ -1,3 +1,11 @@
+# 1.4.24 (2016-05-10)
+
+## Improvements
+- PIM-5753: Add a `priority` tag parameter for `ValueConverterRegistry` to allow ordering of array converters.
+
+## BC Breaks
+- ValueConverterRegistryInterface: added parameter `$priority` in `register` method to allow priority queue
+
 # 1.4.23 (2016-04-14)
 
 ## Scalability improvements

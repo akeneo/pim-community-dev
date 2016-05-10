@@ -1384,7 +1384,10 @@ class WebUser extends RawMinkContext
     public function iCreateTheFollowingAttributeOptions(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->getCurrentPage()->addOption($data['Code']);
+            $code = $data['Code'];
+            unset($data['Code']);
+
+            $this->getCurrentPage()->addOption($code, $data);
             $this->wait();
         }
     }
