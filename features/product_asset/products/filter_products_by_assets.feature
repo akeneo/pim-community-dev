@@ -23,6 +23,6 @@ Feature: Filter products by assets
     And the grid should contain 2 elements
     Then I should see the filter "Front view"
     When I should be able to use the following filters:
-      | filter     | value                | result |
-      | Front view | in list paint        | shirt  |
-      | Front view | in list paint, akene | shirt  |
+      | filter     | value               | result |
+      | Front view | in list paint       | shirt  |
+      | Front view | in list paint,akene | shirt  |
