@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
@@ -31,12 +32,16 @@ class DatePresenterSpec extends ObjectBehavior
         $localeResolver,
         RendererInterface $renderer,
         ProductValueInterface $value,
+        AttributeInterface $attribute,
         \DateTime $date
     ) {
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $datePresenter->present($date, ['locale' => 'en_US'])->willReturn('01/20/2012');
         $datePresenter->present('2012-04-25', ['locale' => 'en_US'])->willReturn('04/25/2012');
         $value->getData()->willReturn($date);
+        $date->format('F, d Y')->willReturn('January, 20 2012');
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->willReturn('update');
 
         $renderer->renderDiff('01/20/2012', '04/25/2012')->willReturn('diff between two dates');
 
@@ -48,12 +53,15 @@ class DatePresenterSpec extends ObjectBehavior
         $datePresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ProductValueInterface $value
+        ProductValueInterface $value,
+        AttributeInterface $attribute
     ) {
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $datePresenter->present(null, ['locale' => 'en_US'])->willReturn('');
         $datePresenter->present('2012-04-25', ['locale' => 'en_US'])->willReturn('04/25/2012');
         $value->getData()->willReturn(null);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->willReturn('update');
 
         $renderer->renderDiff('', '04/25/2012')->willReturn('diff between two dates');
 
@@ -66,12 +74,16 @@ class DatePresenterSpec extends ObjectBehavior
         $localeResolver,
         RendererInterface $renderer,
         ProductValueInterface $value,
+        AttributeInterface $attribute,
         \DateTime $date
     ) {
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $datePresenter->present($date, ['locale' => 'en_US'])->willReturn('2012/20/01');
         $datePresenter->present(null, ['locale' => 'en_US'])->willReturn('');
         $value->getData()->willReturn($date);
+        $date->format('F, d Y')->willReturn('January, 20 2012');
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->willReturn('update');
 
         $renderer->renderDiff('2012/20/01', '')->willReturn('diff between two dates');
 

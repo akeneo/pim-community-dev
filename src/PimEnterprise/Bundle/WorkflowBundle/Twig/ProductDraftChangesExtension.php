@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
@@ -199,6 +199,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($code);
         $newAttribute = $this->attributeFactory->createAttribute($attribute->getAttributeType());
+        $newAttribute->setCode($code);
         $value = $this->productBuilder->createProductValue($newAttribute);
 
         if (null !== $attribute->getReferenceDataName()) {

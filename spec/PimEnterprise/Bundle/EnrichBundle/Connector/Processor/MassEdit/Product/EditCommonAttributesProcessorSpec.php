@@ -2,16 +2,28 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+<<<<<<< HEAD
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
+=======
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+>>>>>>> 1.4
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
+<<<<<<< HEAD
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+=======
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+>>>>>>> 1.4
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -67,8 +79,12 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+<<<<<<< HEAD
         $productRepository->hasAttributeInFamily(10, 'categories')->willReturn(true);
         $productRepository->hasAttributeInVariantGroup(10, 'categories')->willReturn(false);
+=======
+        $productRepository->hasAttributeInFamily($product, 'categories')->willReturn(true);
+>>>>>>> 1.4
 
         $values = [
             'categories' => [
@@ -98,7 +114,15 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $validator->validate($product)->willReturn($violations);
         $product->getId()->willReturn(10);
 
+<<<<<<< HEAD
         $product->isAttributeEditable($attribute)->willReturn(true);
+=======
+        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
+        $product->getId()->willReturn(42);
+        $productRepository->hasAttributeInFamily(42, 'categories')->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup(42, 'categories')->willReturn(false);
+
+>>>>>>> 1.4
         $productUpdater->update($product, $values)->shouldBeCalled();
 
         $this->process($product);
@@ -126,8 +150,12 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+<<<<<<< HEAD
         $productRepository->hasAttributeInFamily(10, 'categories')->willReturn(true);
         $productRepository->hasAttributeInVariantGroup(10, 'categories')->willReturn(false);
+=======
+        $productRepository->hasAttributeInFamily($product, 'categories')->willReturn(true);
+>>>>>>> 1.4
 
         $values = [
             'categories' => [
@@ -157,7 +185,15 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $validator->validate($product)->willReturn($violations);
         $product->getId()->willReturn(10);
 
+<<<<<<< HEAD
         $product->isAttributeEditable($attribute)->willReturn(true);
+=======
+        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
+        $product->getId()->willReturn(42);
+        $productRepository->hasAttributeInFamily(42, 'categories')->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup(42, 'categories')->willReturn(false);
+
+>>>>>>> 1.4
         $productUpdater->update($product, $values)->shouldBeCalled();
 
         $this->process($product);

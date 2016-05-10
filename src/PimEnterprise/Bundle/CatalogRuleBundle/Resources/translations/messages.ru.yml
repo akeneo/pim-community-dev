@@ -7,6 +7,8 @@ pimee_catalog_rule:
         code: Код
         actions: Действие
   attribute:
+    tab:
+      rule.title: Правила
     grid:
       is_smart.label: Smart
   product:
