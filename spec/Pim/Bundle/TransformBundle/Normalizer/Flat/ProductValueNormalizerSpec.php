@@ -81,7 +81,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('decimal');
-        $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12']);
+        $this->normalize($value, 'flat', $context)->shouldReturn(['simple' => 12]);
     }
 
     function it_normalizes_a_value_with_a_float_data_with_decimals_allowed(
