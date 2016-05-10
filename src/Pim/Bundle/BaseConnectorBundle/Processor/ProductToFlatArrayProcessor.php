@@ -29,9 +29,6 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var array Normalizer context */
-    protected $normalizerContext;
-
     /** @var array */
     protected $mediaAttributeTypes;
 
@@ -107,16 +104,14 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
         $decimalSeparator = $parameters->getParameter('decimalSeparator');
         $dateFormat = $parameters->getParameter('dateFormat');
 
-        if (null === $this->normalizerContext) {
-            $this->normalizerContext = [
-                'scopeCode'         => $channel,
-                'localeCodes'       => $channel->getLocaleCodes(),
-                'decimal_separator' => $decimalSeparator,
-                'date_format'       => $dateFormat,
-            ];
-        }
+        $normalizerContext = [
+            'scopeCode'         => $channel->getCode(),
+            'localeCodes'       => $channel->getLocaleCodes(),
+            'decimal_separator' => $decimalSeparator,
+            'date_format'       => $dateFormat,
+        ];
 
-        return $this->normalizerContext;
+        return $normalizerContext;
     }
 
     /**
