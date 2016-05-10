@@ -41,6 +41,7 @@ class AssetRepositorySpec extends ObjectBehavior
 
         $qb->getQuery()->willReturn($query);
 
+        $qb->groupBy("asset.id")->shouldBeCalled();
         $query->getArrayResult()->shouldBeCalled();
 
         $this->findBySearch();
@@ -61,6 +62,7 @@ class AssetRepositorySpec extends ObjectBehavior
 
         $qb->getQuery()->willReturn($query);
 
+        $qb->groupBy("asset.id")->shouldBeCalled();
         $query->getArrayResult()->shouldBeCalled();
 
         $this->findBySearch('my-search');
@@ -81,6 +83,7 @@ class AssetRepositorySpec extends ObjectBehavior
 
         $qb->getQuery()->willReturn($query);
 
+        $qb->groupBy("asset.id")->shouldBeCalled();
         $query->getArrayResult()->shouldBeCalled();
         $qb->setMaxResults(15)->willReturn($qb);
         $qb->setFirstResult(30)->willReturn($qb);

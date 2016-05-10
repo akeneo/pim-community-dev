@@ -63,6 +63,6 @@ class NumberPresenter extends AbstractProductValuePresenter
     {
         $options = ['locale' => $this->localeResolver->getCurrentLocale()];
 
-        return $this->numberPresenter->present(array_pop($change), $options);
+        return $this->numberPresenter->present($change['data'], $options);
     }
 }

@@ -1,8 +1,12 @@
 user:
+  email:
+    notifications: Уведомления по эл. почте
+  asset_delay_reminder: Напоминание о задержке активов (в днях)
   proposals:
     notifications:
       "yes": true
       "no": false
+Default asset tree: Дерево активов по умолчанию
 pimee_user:
   user:
     tab:

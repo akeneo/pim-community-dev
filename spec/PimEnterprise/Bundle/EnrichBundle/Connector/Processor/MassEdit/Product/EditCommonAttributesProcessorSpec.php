@@ -11,7 +11,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -67,7 +66,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $productRepository->hasAttributeInFamily(10, 'categories')->willReturn(true);
+        $productRepository->hasAttributeInFamily($product, 'categories')->willReturn(true);
         $productRepository->hasAttributeInVariantGroup(10, 'categories')->willReturn(false);
 
         $values = [
@@ -97,8 +96,11 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
         $product->getId()->willReturn(10);
-
         $product->isAttributeEditable($attribute)->willReturn(true);
+        $product->getId()->willReturn(42);
+        $productRepository->hasAttributeInFamily(42, 'categories')->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup(42, 'categories')->willReturn(false);
+
         $productUpdater->update($product, $values)->shouldBeCalled();
 
         $this->process($product);
@@ -126,7 +128,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $productRepository->hasAttributeInFamily(10, 'categories')->willReturn(true);
+        $productRepository->hasAttributeInFamily($product, 'categories')->willReturn(true);
         $productRepository->hasAttributeInVariantGroup(10, 'categories')->willReturn(false);
 
         $values = [
@@ -158,6 +160,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(10);
 
         $product->isAttributeEditable($attribute)->willReturn(true);
+        $product->getId()->willReturn(42);
+        $productRepository->hasAttributeInFamily(42, 'categories')->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup(42, 'categories')->willReturn(false);
         $productUpdater->update($product, $values)->shouldBeCalled();
 
         $this->process($product);

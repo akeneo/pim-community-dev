@@ -39,9 +39,9 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And I change the "Name" to "My awesome name"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then I should see "Proposal created 1"
-    And I should see "skipped products 1"
-    And I should see "processed 1"
+    Then I should see the text "Proposal created 1"
+    And I should see the text "skipped products 1"
+    And I should see the text "processed 1"
     When I logout
     And I am logged in as "Julia"
     And I edit the "viewable" product
@@ -49,7 +49,8 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     Then the grid should contain 0 elements
     When I edit the "editable" product
     And I visit the "Proposals" tab
-    Then the grid should contain 1 elements
+    Then I should see the text "My awesome name"
+    And the grid should contain 1 elements
     When I edit the "owned" product
     And I visit the "Proposals" tab
     Then the grid should contain 0 elements
