@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintsInterface;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -36,7 +37,7 @@ class SimpleMassEdit implements ConstraintsInterface
         return new Collection(
             [
                 'fields' => [
-                    'filters' => new NotBlank(),
+                    'filters' => new NotNull(),
                     'actions' => new NotBlank(),
                     'realTimeVersioning' => new Type('bool'),
                 ]
