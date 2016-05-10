@@ -317,12 +317,12 @@ Feature: Execute a job
     And I am on the "SKU-001" product page
     When I open the "Completeness" panel
     And I should see the completeness:
-      | channel | locale | state   | missing_values                                        | ratio |
-      | mobile  | en_US  | warning | color                                                 | 80%   |
-      | tablet  | en_US  | warning | weather_conditions rating side_view color             | 56%   |
+      | channel | locale | state   | missing_values                               | ratio |
+      | mobile  | en_US  | warning | Color                                        | 80%   |
+      | tablet  | en_US  | warning | Weather conditions, Rating, Side view, Color | 56%   |
     And I am on the "SKU-002" product page
     When I open the "Completeness" panel
     And I should see the completeness:
-      | channel | locale | state   | missing_values                                  | ratio |
-      | mobile  | en_US  | success |                                                 | 100%  |
-      | tablet  | en_US  | warning | weather_conditions rating side_view             | 67%   |
+      | channel | locale | state   | missing_values                        | ratio |
+      | mobile  | en_US  | success |                                       | 100%  |
+      | tablet  | en_US  | warning | Weather conditions, Rating, Side view | 67%   |

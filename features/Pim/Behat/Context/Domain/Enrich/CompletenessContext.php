@@ -2,7 +2,9 @@
 
 namespace Pim\Behat\Context\Domain\Enrich;
 
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
 
 /**
@@ -14,49 +16,173 @@ use Pim\Behat\Context\PimContext;
  */
 class CompletenessContext extends PimContext
 {
+    use SpinCapableTrait;
+
     /**
-     * @param string $locale   en_US, fr_FR, etc.
+     * @param string $attribute
+     * @param string $locale
+     * @param string $channel
+     *
+     * @Then /^I click on the missing "([^"]*)" value for "([^"]*)" locale and "([^"]*)" channel/
+     */
+    public function iClickOnTheMissingValueForLocaleAndChannel($attribute, $locale, $channel)
+    {
+        $link = $this->spin(function () use ($attribute, $locale, $channel) {
+            return $this->getCurrentPage()->getElement('Completeness')->find(
+                'css',
+                sprintf(
+                    '.missing-attributes [data-attribute="%s"][data-locale="%s"][data-channel="%s"]',
+                    $attribute,
+                    $locale,
+                    $channel
+                )
+            );
+        }, sprintf("Can't find missing '%s' value link for %s/%s", $attribute, $locale, $channel));
+
+        $link->click();
+    }
+
+    /**
+     * @param string $localeCode en_US, fr_FR, etc.
      * @param int    $position
      *
      * @Given /^I should see the "([^"]*)" completeness in position ([0-9]+)$/
      */
-    public function iShouldSeeTheCompletenessInPositionNth($locale, $position)
+    public function iShouldSeeTheCompletenessInPositionNth($localeCode, $position)
     {
-        $completeness = $this->getCurrentPage()->getElement('Completeness')->findNthCompleteness($position);
-        if ($completeness->getLocale() !== $locale) {
-            throw new ExpectationException(
-                sprintf(
-                    '"%s" completeness found in position %s in tab. "%s" expected.',
-                    $completeness->getLocale(),
-                    $position,
-                    $locale
-                ),
-                $this->getSession()
-            );
-        }
+        $this->spin(function () use ($localeCode, $position) {
+            $completenessData = $this->getCurrentPage()->getElement('Completeness')->getCompletenessData();
+
+            return (int) $position === $completenessData[$localeCode]['position'];
+        }, sprintf(
+            '"%s" completeness not found in position %s in tab.',
+            $localeCode,
+            $position
+        ));
     }
 
     /**
-     * @param string $locale
+     * @param string $localeCode
      *
      * @Given /^The completeness "([^"]*)" should be (closed|opened)$/
      */
-    public function theCompletenessShouldBeOpenedOrClosed($locales, $state)
+    public function theCompletenessShouldBeOpenedOrClosed($localeCode, $state)
     {
-        $completenessPanel = $this->getCurrentPage()->getElement('Completeness');
+        $isOpened = ('opened' === $state);
 
-        $locales = explode(',', $locales);
-        foreach ($locales as $locale) {
-            $locale = trim($locale);
+        $this->spin(function () use ($localeCode, $isOpened) {
+            $completenessData = $this->getCurrentPage()->getElement('Completeness')->getCompletenessData();
 
-            $completeness = $completenessPanel->findCompletenessForLocale($locale);
-            $condition    = 'closed' === $state ? 'true' : 'false';
-            if ($completeness->getState() !== $condition) {
-                throw new ExpectationException(
-                    sprintf('Expected to see "%s" completeness %s.', $locale, $state),
-                    $this->getSession()
-                );
+            return $isOpened === $completenessData[$localeCode]['opened'];
+        }, sprintf('Expected to see "%s" completeness %s. But it was not', $localeCode, $state));
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^I should see the completeness:$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeTheCompleteness(TableNode $table)
+    {
+        $table = $table->getHash();
+
+        $this->spin(function () use ($table) {
+            $completenessData = $this->convertStructuredToFlat(
+                $this->getCurrentPage()->getElement('Completeness')->getCompletenessData()
+            );
+
+            foreach ($table as $index => $expected) {
+                //Expected missing values need to be converted into array to be compared
+                $expected['missing_values'] = '' !== $expected['missing_values'] ?
+                    explode(', ', $expected['missing_values']) :
+                    [];
+                $expected = array_merge($completenessData[$index], $expected);
+
+                if ($completenessData[$index] !== $expected) {
+                    return false;
+                }
+            }
+
+            return true;
+        }, sprintf(
+            'Expected completeness %s does not match %s',
+            var_export($table, true),
+            var_export($this->convertStructuredToFlat(
+                $this->getCurrentPage()->getElement('Completeness')->getCompletenessData()
+            ), true)
+        ));
+    }
+
+    /**
+     * Convert the completeness data from DOM structure to flat format to ease comparison.
+     *
+     * Input:
+     *
+     * [
+     *     'en_US' => [
+     *          'opened'   => true,
+     *          'position' => 1,
+     *          'data'     => [
+     *              'mobile' => [
+     *                  'ratio'          => '33%',
+     *                  'state'          => 'warning',
+     *                  'missing_values' => [
+     *                      'price' => 'Price',
+     *                      'size'  => 'Size',
+     *                  ],
+     *              ],
+     *              'tablet' => [
+     *                  'ratio'          => '100%',
+     *                  'state'          => 'success',
+     *                  'missing_values' => [],
+     *              ],
+     *          ],
+     *      ],
+     * ]
+     *
+     * Output:
+     *
+     * [
+     *     [
+     *         'channel'        => 'mobile',
+     *         'locale'         => 'en_US',
+     *         'state'          => 'warning',
+     *         'missing_values' => [
+     *             'Price',
+     *             'Size',
+     *          ],
+     *          'ratio' => '33%',
+     *     ],
+     *     [
+     *         'channel'        => 'tablet',
+     *         'locale'         => 'en_US',
+     *         'state'          => 'success',
+     *         'missing_values' => [],
+     *         'ratio'          => '100%',
+     *     ]
+     * ]
+     *
+     * @param array $structuredCompleteness
+     *
+     * @return array
+     */
+    protected function convertStructuredToFlat(array $structuredCompleteness)
+    {
+        $flatCompleteness = [];
+        foreach ($structuredCompleteness as $localeCode => $localeBlock) {
+            foreach ($localeBlock['data'] as $scopeCode => $scopeBlock) {
+                $flatCompleteness[] = [
+                    'channel'        => $scopeCode,
+                    'locale'         => $localeCode,
+                    'state'          => $scopeBlock['state'],
+                    'missing_values' => array_values($scopeBlock['missing_values']),
+                    'ratio'          => $scopeBlock['ratio']
+                ];
             }
         }
+
+        return $flatCompleteness;
     }
 }

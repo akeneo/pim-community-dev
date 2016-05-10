@@ -147,15 +147,15 @@ Feature: Edit common attributes of many products at once
     Given I am on the "sneakers" product page
     When I open the "Completeness" panel
     Then I should see the completeness:
-      | channel | locale | state   | missing_values                                                        | ratio |
-      | mobile  | en_US  | warning | name price size color                                                 | 20%   |
-      | tablet  | en_US  | warning | name description weather_conditions price rating side_view size color | 11%   |
+      | channel | locale | state   | missing_values                                                               | ratio |
+      | mobile  | en_US  | warning | Name, Price, Size, Color                                                     | 20%   |
+      | tablet  | en_US  | warning | Name, Description, Weather conditions, Price, Rating, Side view, Size, Color | 11%   |
     And I am on the "sandals" product page
     When I open the "Completeness" panel
     Then I should see the completeness:
-      | channel | locale | state   | missing_values                                     | ratio |
-      | mobile  | en_US  | warning | name price size color                              | 20%   |
-      | tablet  | en_US  | warning | name description price rating side_view size color | 13%   |
+      | channel | locale | state   | missing_values                                           | ratio |
+      | mobile  | en_US  | warning | Name, Price, Size, Color                                 | 20%   |
+      | tablet  | en_US  | warning | Name, Description, Price, Rating, Side view, Size, Color | 13%   |
     Then I am on the products page
     And I mass-edit products sandals, sneakers
     And I choose the "Edit common attributes" operation
@@ -171,12 +171,12 @@ Feature: Edit common attributes of many products at once
     Then I am on the "sneakers" product page
     When I open the "Completeness" panel
     And I should see the completeness:
-      | channel | locale | state   | missing_values                     | ratio |
-      | mobile  | en_US  | warning | color                              | 80%   |
-      | tablet  | en_US  | warning | description rating side_view color | 44%   |
+      | channel | locale | state   | missing_values                                            | ratio |
+      | mobile  | en_US  | warning | Color                                                     | 80%   |
+      | tablet  | en_US  | warning | Description, Weather conditions, Rating, Side view, Color | 44%   |
     And I am on the "sandals" product page
     When I open the "Completeness" panel
     And I should see the completeness:
-      | channel | locale | state   | missing_values                     | ratio |
-      | mobile  | en_US  | warning | color                              | 80%   |
-      | tablet  | en_US  | warning | description rating side_view color | 50%   |
+      | channel | locale | state   | missing_values                        | ratio |
+      | mobile  | en_US  | warning | Color                                 | 80%   |
+      | tablet  | en_US  | warning | Description, Rating, Side view, Color | 50%   |

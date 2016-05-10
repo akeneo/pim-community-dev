@@ -1880,80 +1880,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Then /^I should see the completeness summary$/
-     */
-    public function iShouldSeeTheCompletenessSummary()
-    {
-        $this->getCurrentPage()->findCompletenessContent();
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Then /^I should see the completeness:$/
-     *
-     * @throws ExpectationException
-     */
-    public function iShouldSeeTheCompleteness(TableNode $table)
-    {
-        $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.completeness-block');
-        }, sprintf('Can\'t find completeness block in panel'));
-
-        $collapseSwitchers = $this->getCurrentPage()->findAll('css', '.completeness-block header .btn');
-
-        foreach ($collapseSwitchers as $switcher) {
-            /** @var NodeElement $switcher */
-            if ('true' === $switcher->getParent()->getParent()->getAttribute('data-closed')) {
-                $switcher->click();
-            }
-        }
-
-        foreach ($table->getHash() as $data) {
-            $channel = $data['channel'];
-            $locale  = $data['locale'];
-
-            try {
-                $this->getCurrentPage()->checkCompletenessState($channel, $locale, $data['state']);
-                $this->getCurrentPage()->checkCompletenessRatio($channel, $locale, $data['ratio']);
-                if (isset($data['missing_values'])) {
-                    $this->getCurrentPage()->checkCompletenessMissingValues($channel, $locale, $data['missing_values']);
-                }
-            } catch (\InvalidArgumentException $e) {
-                throw $this->createExpectationException($e->getMessage());
-            }
-        }
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Then /^I should see the missing completeness labels:$/
-     *
-     * @throws ExpectationException
-     */
-    public function iShouldSeeTheMissingCompletenessLabels(TableNode $table)
-    {
-        $page = $this->getCurrentPage();
-        $collapseSwitchers = $this->spin(function () use ($page) {
-            return $page->findAll('css', '.completeness-block header .btn');
-        }, 'Unable to find completenesses block');
-
-        foreach ($collapseSwitchers as $switcher) {
-            if ('true' === $switcher->getParent()->getParent()->getAttribute('data-closed')) {
-                $switcher->click();
-            }
-        }
-
-        foreach ($table->getHash() as $data) {
-            $expectedLabel = $data['expected_label'];
-            if (isset($expectedLabel)) {
-                $this->getCurrentPage()->checkCompletenessMissingValuesLabels($data['channel'], $data['locale'], $data['missing_value'], $expectedLabel);
-            }
-        }
-    }
-
-    /**
      * @param string $channel
      * @param string $ratio
      *
@@ -1995,24 +1921,6 @@ class WebUser extends RawMinkContext
                 $actual
             )
         );
-    }
-
-    /**
-     * @param string $attribute
-     * @param string $locale
-     * @param string $channel
-     *
-     * @Then /^I click on the missing "([^"]*)" value for "([^"]*)" locale and "([^"]*)" channel/
-     */
-    public function iClickOnTheMissingValueForLocaleAndChannel($attribute, $locale, $channel)
-    {
-        $cell = $this->getCurrentPage()->findCompletenessCell($channel, $locale);
-
-        $link = $this->spin(function () use ($attribute, $cell) {
-            return $cell->find('css', sprintf(".missing-attributes [data-attribute='%s']", $attribute));
-        }, sprintf("Can't find missing '%s' value link for %s/%s", $attribute, $locale, $channel));
-
-        $link->click();
     }
 
     /**
