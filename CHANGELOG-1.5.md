@@ -9,6 +9,7 @@
 - PIM-5763: Add Boolean presenter for fields
 - PIM-5622: Fix NOT IN operator behavior for ORM groups filter
 - PIM-5756: Fix empty min and max numbers on attributes import
+- PIM-5655: Hide dropdown menu after action
 
 ## Technical improvements
 
@@ -22,11 +23,6 @@
 - PIM-5697: Fix import form when a file extension is not allowed
 - PIM-5695: Do not format price with currency if data is null
 - PIM-5643: Fix default system locale
-<<<<<<< HEAD
-- PIM-5728: Fix bug in price and metric datagrid filters
-- PIM-5666: Fix product value saving with value '0'
-=======
->>>>>>> b63eade... Fix changelog for 1.5
 
 # 1.5.1 (2016-03-09)
 
