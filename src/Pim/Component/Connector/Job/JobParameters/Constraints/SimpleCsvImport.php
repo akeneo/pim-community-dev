@@ -68,7 +68,7 @@ class SimpleCsvImport implements ConstraintsInterface
                             )
                         ]
                     ],
-                    'withHeader' => new NotBlank(),
+                    'withHeader' => new Type('bool'),
                     'escape' => new NotBlank(),
                     'uploadAllowed' => [
                         new Type('bool'),

@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Job\JobParameters\ConstraintsInterface;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Constraints for simple CSV export
@@ -57,7 +58,7 @@ class SimpleCsvExport implements ConstraintsInterface
                             )
                         ]
                     ],
-                    'withHeader' => new NotBlank(),
+                    'withHeader' => new Type('bool'),
                 ]
             ]
         );

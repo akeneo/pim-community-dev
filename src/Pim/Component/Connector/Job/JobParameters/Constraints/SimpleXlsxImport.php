@@ -48,7 +48,7 @@ class SimpleXlsxImport implements ConstraintsInterface
                             ]
                         )
                     ],
-                    'withHeader' => new NotBlank(),
+                    'withHeader' => new Type('bool'),
                     'uploadAllowed' => [
                         new Type('bool'),
                         new IsTrue(['groups' => 'UploadExecution']),
