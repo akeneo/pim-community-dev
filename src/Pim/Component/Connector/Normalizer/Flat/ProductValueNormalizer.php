@@ -59,7 +59,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     public function normalize($entity, $format = null, array $context = [])
     {
         $data = $entity->getData();
-        $fieldName = $this->getFieldValue($entity);
+        $fieldName = $this->getFieldName($entity);
         if ($this->filterLocaleSpecific($entity)) {
             return [];
         }
@@ -140,7 +140,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      *
      * @return string
      */
-    protected function getFieldValue($value)
+    protected function getFieldName(ProductValueInterface $value)
     {
         // TODO : should be extracted
         $suffix = '';

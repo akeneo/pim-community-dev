@@ -8,6 +8,7 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
@@ -20,6 +21,8 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Serializer\Serializer;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
@@ -29,13 +32,17 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         StepExecution $stepExecution,
         ProductBuilderInterface $productBuilder,
-        ObjectDetacherInterface $objectDetacher
+        ObjectDetacherInterface $objectDetacher,
+        UserProviderInterface $userProvider,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->beConstructedWith(
             $serializer,
             $channelRepository,
             $productBuilder,
             $objectDetacher,
+            $userProvider,
+            $tokenStorage,
             'upload/path/'
         );
         $this->setStepExecution($stepExecution);
@@ -97,6 +104,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $serializer,
         $productBuilder,
         $objectDetacher,
+        $userProvider,
+        $stepExecution,
+        JobExecution $jobExecution,
+        UserInterface $user,
         ChannelInterface $channel,
         ProductInterface $product,
         FileInfoInterface $media1,
@@ -105,6 +116,11 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductValueInterface $value2,
         AttributeInterface $attribute
     ) {
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('michel');
+        $userProvider->loadUserByUsername('michel')->willReturn($user);
+        $user->getRoles()->willReturn(['ROLE_MICHEL']);
+
         $this->setLocale('en_US');
 
         $productBuilder->addMissingProductValues($product)->shouldBeCalled();
@@ -121,11 +137,17 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             ->willReturn(['normalized_media1', 'normalized_media2']);
 
         $serializer
-            ->normalize($product, 'flat',
+            ->normalize(
+                $product,
+                'flat',
                 [
-                    'scopeCode'   => 'mobile',
-                    'localeCodes' => '',
-                    'locale'      => 'en_US',
+                    'scopeCode'    => 'mobile',
+                    'localeCodes'  => '',
+                    'locale'       => 'en_US',
+                    'filter_types' => [
+                        'pim.transform.product_value.flat',
+                        'pim.transform.product_value.flat.quick_export'
+                    ]
                 ]
             )
             ->willReturn(['normalized_product']);
@@ -145,22 +167,37 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_without_media(
         $productBuilder,
         $objectDetacher,
+        $userProvider,
+        $stepExecution,
+        JobExecution $jobExecution,
+        UserInterface $user,
         ChannelInterface $channel,
         ChannelRepositoryInterface $channelRepository,
         ProductInterface $product,
         Serializer $serializer
     ) {
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('michel');
+        $userProvider->loadUserByUsername('michel')->willReturn($user);
+        $user->getRoles()->willReturn(['ROLE_MICHEL']);
+
         $productBuilder->addMissingProductValues($product)->shouldBeCalled();
 
         $this->setLocale('en_US');
         $product->getValues()->willReturn([]);
 
         $serializer
-            ->normalize($product, 'flat',
+            ->normalize(
+                $product,
+                'flat',
                 [
                     'scopeCode'   => 'mobile',
                     'localeCodes' => '',
                     'locale'      => 'en_US',
+                    'filter_types' => [
+                        'pim.transform.product_value.flat',
+                        'pim.transform.product_value.flat.quick_export'
+                    ]
                 ]
             )
             ->willReturn(['normalized_product']);
@@ -174,12 +211,21 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_something_goes_wrong_with_media_normalization(
         $serializer,
+        $userProvider,
+        $stepExecution,
+        JobExecution $jobExecution,
+        UserInterface $user,
         ProductInterface $product,
         FileInfoInterface $media,
         ProductValueInterface $value,
         ProductValueInterface $value2,
         AttributeInterface $attribute
     ) {
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('michel');
+        $userProvider->loadUserByUsername('michel')->willReturn($user);
+        $user->getRoles()->willReturn(['ROLE_MICHEL']);
+
         $product->getValues()->willReturn([$value]);
         $product->getIdentifier()->willReturn($value2);
 
@@ -204,6 +250,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_with_english_attributes(
         $channelRepository,
         $serializer,
+        $userProvider,
+        $stepExecution,
+        JobExecution $jobExecution,
+        UserInterface $user,
         ChannelInterface $channel,
         ProductInterface $product,
         ProductValueInterface $number,
@@ -215,6 +265,11 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         AttributeInterface $date,
         ProductValueInterface $dateValue
     ) {
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('michel');
+        $userProvider->loadUserByUsername('michel')->willReturn($user);
+        $user->getRoles()->willReturn(['ROLE_MICHEL']);
+
         $this->setLocale('en_US');
 
         $attribute->getAttributeType()->willReturn('pim_catalog_number');
@@ -239,11 +294,17 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $product->getValues()->willReturn([$number, $metricValue, $priceValue, $dateValue]);
 
         $serializer
-            ->normalize($product, 'flat',
+            ->normalize(
+                $product,
+                'flat',
                 [
                     'scopeCode'   => 'mobile',
                     'localeCodes' => '',
                     'locale'      => 'en_US',
+                    'filter_types' => [
+                        'pim.transform.product_value.flat',
+                        'pim.transform.product_value.flat.quick_export'
+                    ]
                 ]
             )
             ->willReturn(['10.50', '10.00 GRAM', '10.00 EUR', '10/25/15']);
@@ -262,6 +323,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_with_french_attribute(
         $channelRepository,
         $serializer,
+        $userProvider,
+        $stepExecution,
+        JobExecution $jobExecution,
+        UserInterface $user,
         ChannelInterface $channel,
         ProductInterface $product,
         ProductValueInterface $number,
@@ -271,6 +336,11 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductPriceInterface $price,
         ProductValueInterface $priceValue
     ) {
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('michel');
+        $userProvider->loadUserByUsername('michel')->willReturn($user);
+        $user->getRoles()->willReturn(['ROLE_MICHEL']);
+
         $this->setLocale('fr_FR');
 
         $attribute->getAttributeType()->willReturn('pim_catalog_number');
@@ -292,11 +362,17 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $product->getValues()->willReturn([$number, $metricValue, $priceValue]);
 
         $serializer
-            ->normalize($product, 'flat',
+            ->normalize(
+                $product,
+                'flat',
                 [
                     'scopeCode'   => 'mobile',
                     'localeCodes' => '',
-                    'locale'      => 'fr_FR'
+                    'locale'      => 'fr_FR',
+                    'filter_types' => [
+                        'pim.transform.product_value.flat',
+                        'pim.transform.product_value.flat.quick_export'
+                    ]
                 ]
             )
             ->willReturn(['10,50', '10,00 GRAM', '10,00 EUR', '25/10/2015']);

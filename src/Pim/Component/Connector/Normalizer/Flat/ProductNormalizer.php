@@ -3,7 +3,6 @@
 namespace Pim\Component\Connector\Normalizer\Flat;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
@@ -39,9 +38,6 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /** @var array */
     protected $results = [];
 
-    /** @var array $fields */
-    protected $fields = [];
-
     /** @var CollectionFilterInterface */
     protected $filter;
 
@@ -62,12 +58,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     {
         $context = $this->resolveContext($context);
 
-        if (isset($context['fields']) && !empty($context['fields'])) {
-            $this->fields  = array_fill_keys($context['fields'], '');
-            $this->results = $this->fields;
-        } else {
-            $this->results = $this->serializer->normalize($object->getIdentifier(), $format, $context);
-        }
+        $this->results = $this->serializer->normalize($object->getIdentifier(), $format, $context);
 
         $this->normalizeFamily($object->getFamily());
         $this->normalizeGroups($object->getGroupCodes());
@@ -106,33 +97,17 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      */
     protected function normalizeValues(ProductInterface $product, $format = null, array $context = [])
     {
-        if (empty($this->fields)) {
-            $values = $this->getFilteredValues($product, $context);
-            $context['metric_format'] = 'multiple_fields';
+        $values = $this->getFilteredValues($product, $context);
 
-            $normalizedValues = [];
-            foreach ($values as $value) {
-                $normalizedValues = array_replace(
-                    $normalizedValues,
-                    $this->serializer->normalize($value, $format, $context)
-                );
-            }
-            ksort($normalizedValues);
-            $this->results = array_replace($this->results, $normalizedValues);
-        } else {
-            // TODO only used for quick export, find a way to homogenize this part
-            $values = $product->getValues();
-            $context['metric_format'] = 'single_field';
-
-            foreach ($values as $value) {
-                $fieldValue = $this->getFieldValue($value);
-                if (AttributeTypes::PRICE_COLLECTION === $value->getAttribute()->getAttributeType()
-                    || isset($this->fields[$fieldValue])) {
-                    $normalizedValue = $this->serializer->normalize($value, $format, $context);
-                    $this->results = array_replace($this->results, $normalizedValue);
-                }
-            }
+        $normalizedValues = [];
+        foreach ($values as $value) {
+            $normalizedValues = array_replace(
+                $normalizedValues,
+                $this->serializer->normalize($value, $format, $context)
+            );
         }
+        ksort($normalizedValues);
+        $this->results = array_replace($this->results, $normalizedValues);
     }
 
     /**
@@ -149,14 +124,17 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
             return $product->getValues();
         }
 
-        $values = $this->filter->filterCollection(
-            $product->getValues(),
-            isset($context['filter_type']) ? $context['filter_type'] : 'pim.transform.product_value.flat',
-            [
-                'channels' => [$context['scopeCode']],
-                'locales'  => $context['localeCodes']
-            ]
-        );
+        $values = $product->getValues();
+        foreach ($context['filter_types'] as $filterType) {
+            $values = $this->filter->filterCollection(
+                $values,
+                $filterType,
+                [
+                    'channels' => [$context['scopeCode']],
+                    'locales'  => $context['localeCodes']
+                ]
+            );
+        }
 
         return $values;
     }
@@ -246,6 +224,14 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      */
     protected function resolveContext(array $context)
     {
-        return array_merge(['scopeCode' => null, 'localeCodes' => []], $context);
+        return array_merge(
+            [
+                'scopeCode'     => null,
+                'localeCodes'   => [],
+                'metric_format' => 'multiple_fields',
+                'filter_types'  => ['pim.transform.product_value.flat']
+            ],
+            $context
+        );
     }
 }

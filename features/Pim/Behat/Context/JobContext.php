@@ -125,6 +125,10 @@ class JobContext extends PimContext
     {
         $jobInstance = $this->getFixturesContext()->getJobInstance($code);
         $jobExecution = $jobInstance->getJobExecutions()->first();
+        if (false === $jobExecution) {
+            throw new \InvalidArgumentException(sprintf('No job execution found for job with code "%s"', $code));
+        }
+
         $archiver = $this->getMainContext()->getContainer()->get('pim_base_connector.archiver.file_writer_archiver');
         $archives = $archiver->getArchives($jobExecution);
 
