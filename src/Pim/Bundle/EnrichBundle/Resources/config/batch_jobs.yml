@@ -40,11 +40,23 @@ connector:
         csv_product_quick_export:
             type: quick_export
             steps:
-                perform:
+                export:
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.product
                         processor: pim_enrich.connector.processor.quick_export.product_to_flat_array
                         writer:    pim_connector.writer.file.csv_product
+                    parameters:
+                        batch_size: 1000
+        csv_product_grid_context_quick_export:
+            type: quick_export
+            steps:
+                export:
+                    services:
+                        reader:    pim_enrich.connector.reader.mass_edit.product
+                        processor: pim_enrich.connector.processor.quick_export.product_to_flat_array
+                        writer:    pim_connector.writer.file.csv_product
+                    parameters:
+                        batch_size: 1000
         xlsx_product_quick_export:
              type:  quick_export
              steps:
@@ -53,6 +65,18 @@ connector:
                          reader:    pim_enrich.connector.reader.mass_edit.product
                          processor: pim_enrich.connector.processor.quick_export.product_to_flat_array
                          writer:    pim_connector.writer.file.xlsx_product
+                     parameters:
+                         batch_size: 1000
+        xlsx_product_grid_context_quick_export:
+             type:  quick_export
+             steps:
+                 export:
+                     services:
+                         reader:    pim_enrich.connector.reader.mass_edit.product
+                         processor: pim_enrich.connector.processor.quick_export.product_to_flat_array
+                         writer:    pim_connector.writer.file.xlsx_product
+                     parameters:
+                          batch_size: 1000
         add_to_variant_group:
             type:  mass_edit
             steps:

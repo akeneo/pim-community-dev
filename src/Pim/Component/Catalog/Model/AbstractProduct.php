@@ -420,6 +420,22 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function getAttributeByCode($attributeCode)
+    {
+        $attribute = null;
+
+        foreach ($this->values as $value) {
+            if ($attributeCode === $value->getAttribute()->getCode()) {
+                $attribute = $value->getAttribute();
+            }
+        }
+
+        return $attribute;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getValues()
     {
         $values = new ArrayCollection();

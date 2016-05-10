@@ -11,7 +11,6 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
@@ -19,6 +18,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -34,7 +34,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $objectDetacher,
         UserProviderInterface $userProvider,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        FieldSplitter $fieldSplitter
     ) {
         $this->beConstructedWith(
             $serializer,
@@ -43,6 +44,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             $objectDetacher,
             $userProvider,
             $tokenStorage,
+            $fieldSplitter,
             'upload/path/'
         );
         $this->setStepExecution($stepExecution);
@@ -63,10 +65,18 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $stepExecution,
         JobParameters $jobParameters
     ) {
-        $configuration = ['filters' => [], 'mainContext' => ['scope' => 'ecommerce', 'ui_locale' => 'en_US']];
+        $configuration = [
+            'filters'             => [],
+            'mainContext'         => [
+                'scope'     => 'ecommerce',
+                'ui_locale' => 'en_US',
+            ],
+            'selected_properties' => [],
+        ];
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($configuration['filters']);
         $jobParameters->get('mainContext')->willReturn($configuration['mainContext']);
+        $jobParameters->get('selected_properties')->willReturn($configuration['selected_properties']);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
@@ -91,10 +101,18 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         AttributeInterface $attribute,
         JobParameters $jobParameters
     ) {
-        $configuration = ['filters' => [], 'mainContext' => ['scope' => 'mobile', 'ui_locale' => 'en_US']];
+        $configuration = [
+            'filters'             => [],
+            'mainContext'         => [
+                'scope'     => 'mobile',
+                'ui_locale' => 'en_US',
+            ],
+            'selected_properties' => null,
+        ];
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($configuration['filters']);
         $jobParameters->get('mainContext')->willReturn($configuration['mainContext']);
+        $jobParameters->get('selected_properties')->willReturn($configuration['selected_properties']);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('michel');
@@ -125,7 +143,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                     'filter_types' => [
                         'pim.transform.product_value.flat',
                         'pim.transform.product_value.flat.quick_export'
-                    ]
+                    ],
+                    'selected_properties' => null,
                 ]
             )
             ->willReturn(['normalized_product']);
@@ -154,10 +173,18 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         Serializer $serializer,
         JobParameters $jobParameters
     ) {
-        $configuration = ['filters' => [], 'mainContext' => ['scope' => 'mobile', 'ui_locale' => 'en_US']];
+        $configuration = [
+            'filters'     => [],
+            'mainContext' => [
+                'scope'     => 'mobile',
+                'ui_locale' => 'en_US',
+            ],
+            'selected_properties'     => null,
+        ];
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($configuration['filters']);
         $jobParameters->get('mainContext')->willReturn($configuration['mainContext']);
+        $jobParameters->get('selected_properties')->willReturn($configuration['selected_properties']);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('michel');
@@ -179,7 +206,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                     'filter_types' => [
                         'pim.transform.product_value.flat',
                         'pim.transform.product_value.flat.quick_export'
-                    ]
+                    ],
+                    'selected_properties' => null,
                 ]
             )
             ->willReturn(['normalized_product']);
@@ -203,10 +231,18 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         AttributeInterface $attribute,
         JobParameters $jobParameters
     ) {
-        $configuration = ['filters' => [], 'mainContext' => ['scope' => 'mobile', 'ui_locale' => 'en_US']];
+        $configuration = [
+            'filters'     => [],
+            'mainContext' => [
+                'scope'     => 'mobile',
+                'ui_locale' => 'en_US',
+            ],
+            'selected_properties'     => null,
+        ];
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($configuration['filters']);
         $jobParameters->get('mainContext')->willReturn($configuration['mainContext']);
+        $jobParameters->get('selected_properties')->willReturn($configuration['selected_properties']);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('michel');
@@ -253,10 +289,19 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductValueInterface $dateValue,
         JobParameters $jobParameters
     ) {
-        $configuration = ['filters' => [], 'mainContext' => ['scope' => 'mobile', 'ui_locale' => 'en_US']];
+        $configuration = [
+            'filters'     => [],
+            'mainContext' => [
+                'scope'     => 'mobile',
+                'ui_locale' => 'en_US',
+            ],
+            'selected_properties'     => null,
+        ];
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($configuration['filters']);
         $jobParameters->get('mainContext')->willReturn($configuration['mainContext']);
+        $jobParameters->get('selected_properties')->willReturn($configuration['selected_properties']);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('michel');
@@ -295,7 +340,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                     'filter_types' => [
                         'pim.transform.product_value.flat',
                         'pim.transform.product_value.flat.quick_export'
-                    ]
+                    ],
+                    'selected_properties' => null,
                 ]
             )
             ->willReturn(['10.50', '10.00 GRAM', '10.00 EUR', '10/25/15']);
@@ -327,10 +373,19 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductValueInterface $priceValue,
         JobParameters $jobParameters
     ) {
-        $configuration = ['filters' => [], 'mainContext' => ['scope' => 'mobile', 'ui_locale' => 'fr_FR']];
+        $configuration = [
+            'filters'     => [],
+            'mainContext' => [
+                'scope'     => 'mobile',
+                'ui_locale' => 'fr_FR',
+            ],
+            'selected_properties'     => null,
+        ];
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($configuration['filters']);
         $jobParameters->get('mainContext')->willReturn($configuration['mainContext']);
+        $jobParameters->get('selected_properties')->willReturn($configuration['selected_properties']);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('michel');
@@ -366,7 +421,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                     'filter_types' => [
                         'pim.transform.product_value.flat',
                         'pim.transform.product_value.flat.quick_export'
-                    ]
+                    ],
+                    'selected_properties' => null,
                 ]
             )
             ->willReturn(['10,50', '10,00 GRAM', '10,00 EUR', '25/10/2015']);

@@ -77,19 +77,38 @@ class ProductExportController
      */
     public function indexAction()
     {
-        $jobCode     = $this->request->get('_jobCode');
-        $jobInstance = $this->jobInstanceRepo->findOneBy(['code' => $jobCode]);
+        $displayedColumnsOnly = (bool) $this->request->get('_displayedColumnsOnly');
+        $jobCode              = $this->request->get('_jobCode');
+        $jobInstance          = $this->jobInstanceRepo->findOneByIdentifier(['code' => $jobCode]);
 
         if (null === $jobInstance) {
             throw new \RuntimeException(sprintf('Jobinstance "%s" is not well configured', $jobCode));
         }
 
-        $filters       = $this->gridFilterAdapter->adapt($this->request);
+        $filters          = $this->gridFilterAdapter->adapt($this->request);
         $rawConfiguration = $jobInstance->getRawConfiguration();
+        $mainContext      = $this->getContextParameters();
+
         $dynamicConfiguration = [
             'filters'     => $filters,
-            'mainContext' => $this->getContextParameters()
+            'mainContext' => $mainContext
         ];
+        
+        if ($displayedColumnsOnly) {
+            if (isset($this->request->get('product-grid')['_parameters'])) {
+                $columns = explode(',', $this->request->get('product-grid')['_parameters']['view']['columns']);
+            } else {
+                $columns = array_keys($this->datagridManager->getConfigurationForGrid('product-grid')['columns']);
+            }
+
+            $dynamicConfiguration = array_merge(
+                $dynamicConfiguration,
+                [
+                    'selected_properties' => $columns
+                ]
+            );
+        }
+
         $configuration = array_merge($rawConfiguration, $dynamicConfiguration);
 
         $this->jobLauncher->launch($jobInstance, $this->getUser(), $configuration);

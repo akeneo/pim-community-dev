@@ -98,7 +98,9 @@ Toggle status:                  Toggle status
 
 # Quick export labels
 pim.grid.mass_action.quick_export.csv_all: CSV (All attributes)
+pim.grid.mass_action.quick_export.csv_grid_context: CSV (Grid context)
 pim.grid.mass_action.quick_export.xlsx_all: XLSX (All attributes)
+pim.grid.mass_action.quick_export.xlsx_grid_context: XLSX (Grid context)
 pim.grid.mass_action.delete:               Delete
 pim.grid.mass_action.mass_edit:            Mass Edit
 pim.grid.mass_action.sequential_edit:      Sequential Edit

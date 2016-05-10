@@ -21,6 +21,7 @@ services:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export'
             -
                 - 'csv_product_quick_export'
+                - 'csv_product_grid_context_quick_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
@@ -30,5 +31,6 @@ services:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export'
             -
                 - 'xlsx_product_quick_export'
+                - 'xlsx_product_grid_context_quick_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
