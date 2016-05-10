@@ -46,17 +46,35 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /** @var StepExecution */
     protected $stepExecution;
 
+    /** @var ProductExportBuilderOptionsResolver */
+    protected $optionsResolver;
+
+    /** @var ProductExportBuilderFiltersResolver */
+    protected $filtersResolver;
+
     /** @var CursorInterface */
     protected $products;
 
-    /** @var string */
+    /**
+     * TODO: remove this (and the getter/setter) with nidup's PR
+     *
+     * @var string
+     */
     protected $channelCode;
 
-    /** @var ChannelInterface */
+    /**
+     * TODO: remove this (and the getter/setter) with nidup's PR
+     *
+     * @var ChannelInterface
+     */
     protected $channel;
 
-    /** @var string */
-    protected $enabled;
+    /**
+     * TODO: remove this with nidup's PR
+     *
+     * @var array
+     */
+    protected $uiOptions;
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
@@ -64,6 +82,8 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * @param CompletenessManager                 $completenessManager
      * @param MetricConverter                     $metricConverter
      * @param ObjectDetacherInterface             $objectDetacher
+     * @param ProductExportBuilderOptionsResolver $optionsResolver
+     * @param ProductExportBuilderFiltersResolver $filtersResolver,
      * @param bool                                $generateCompleteness
      */
     public function __construct(
@@ -72,6 +92,8 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         ObjectDetacherInterface $objectDetacher,
+        ProductExportBuilderOptionsResolver $optionsResolver,
+        ProductExportBuilderFiltersResolver $filtersResolver,
         $generateCompleteness
     ) {
         $this->pqbFactory           = $pqbFactory;
@@ -79,8 +101,9 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $this->completenessManager  = $completenessManager;
         $this->metricConverter      = $metricConverter;
         $this->objectDetacher       = $objectDetacher;
+        $this->optionsResolver      = $optionsResolver;
+        $this->filtersResolver      = $filtersResolver;
         $this->generateCompleteness = (bool) $generateCompleteness;
-        $this->enabled              = 'enabled'; // enabled by default to be compatible with former/custom exports
     }
 
     /**
@@ -105,7 +128,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     public function getEnabled()
     {
-        return $this->enabled;
+        return $this->uiOptions['enabled'];
     }
 
     /**
@@ -113,7 +136,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     public function setEnabled($enabled)
     {
-        $this->enabled = $enabled;
+        $this->uiOptions['enabled'] = $enabled;
     }
 
     /**
@@ -158,8 +181,13 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     {
         $this->channel = $this->getChannelByCode($this->channelCode);
 
-        $pqb     = $this->pqbFactory->create(['default_scope' => $this->channel->getCode()]);
-        $filters = $this->getFilters($this->channel, $this->rawToStandardProductStatus($this->enabled));
+        $uiOptions = $this->optionsResolver->resolve($this->uiOptions);
+        $filters = array_merge(
+            $this->getDefaultFilters($this->channel),
+            $this->filtersResolver->resolve($uiOptions)
+        );
+
+        $pqb = $this->pqbFactory->create(['default_scope' => $this->channel->getCode()]);
 
         foreach ($filters as $filter) {
             $pqb->addFilter(
@@ -223,14 +251,15 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     }
 
     /**
+     * TODO: will be progressively removed with the coming stories about the Product Export Builder
+     *
      * Return the filters to be applied on the PQB instance.
      *
      * @param ChannelInterface $channel
-     * @param bool             $status
      *
      * @return array
      */
-    protected function getFilters(ChannelInterface $channel, $status)
+    protected function getDefaultFilters(ChannelInterface $channel)
     {
         $filters = [
             [
@@ -246,15 +275,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
                 'context'  => []
             ]
         ];
-
-        if (null !== $status) {
-            $filters[] = [
-                'field'    => 'enabled',
-                'operator' => Operators::EQUALS,
-                'value'    => $status,
-                'context'  => []
-            ];
-        }
 
         return $filters;
     }
