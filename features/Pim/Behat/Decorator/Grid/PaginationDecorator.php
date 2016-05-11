@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Behat\Decorator\GridDecorator;
+namespace Pim\Behat\Decorator\Grid;
 
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;

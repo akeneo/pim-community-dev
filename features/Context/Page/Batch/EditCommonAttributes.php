@@ -37,7 +37,7 @@ class EditCommonAttributes extends ProductEditForm
                 'Grid toolbar'              => [
                     'css'        => '.grid-toolbar',
                     'decorators' => [
-                        'Pim\Behat\Decorator\GridDecorator\PaginationDecorator',
+                        'Pim\Behat\Decorator\Grid\PaginationDecorator',
                     ],
                 ],
             ]

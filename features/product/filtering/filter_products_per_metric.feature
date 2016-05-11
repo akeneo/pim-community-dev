@@ -23,16 +23,16 @@ Feature: Filter products per metric
 
   Scenario: Successfully filter products by metric
     Given I am on the products page
-    Then I should not see the filter Weight
+    Then I should not see the filter weight
     And the grid should contain 4 elements
     And I should see products postit and book
     And I should be able to use the following filters:
-      | filter | value            | result          |
-      | Weight | >= 200 Gram      | book            |
-      | Weight | > 120 Gram       | book            |
-      | Weight | = 120 Gram       | postit          |
-      | Weight | < 200 Gram       | postit          |
-      | Weight | <= 120 Gram      | postit          |
-      | Weight | <= 0.25 Kilogram | postit and book |
-      | Weight | > 4 Kilogram     |                 |
-      | Weight | empty            | mug and pen     |
+      | filter | operator | value         | result          |
+      | weight | >=       | 200 Gram      | book            |
+      | weight | >        | 120 Gram      | book            |
+      | weight | =        | 120 Gram      | postit          |
+      | weight | <        | 200 Gram      | postit          |
+      | weight | <=       | 120 Gram      | postit          |
+      | weight | <=       | 0.25 Kilogram | postit and book |
+      | weight | >        | 4 Kilogram    |                 |
+      | weight | is empty |               | mug and pen     |

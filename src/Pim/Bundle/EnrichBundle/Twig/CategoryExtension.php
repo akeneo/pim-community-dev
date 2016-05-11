@@ -352,6 +352,7 @@ class CategoryExtension extends \Twig_Extension
 
         return [
             'id'       => $tree->getId(),
+            'code'     => $tree->getCode(),
             'label'    => $label,
             'selected' => ($tree->getId() === $selectedTreeId) ? 'true' : 'false'
         ];

@@ -41,8 +41,8 @@ oro_datagrid.select.visible: "All visible"
 oro_datagrid.select.none: "None"
 pim.grid.ajax_choice_filter.label_empty: is empty
 pim.grid.choice_filter:
-    label_empty:   Is empty
-    label_in_list: In list
+    label_empty:   is empty
+    label_in_list: in list
 
 # Column configuration
 Available Columns:                 Available Columns

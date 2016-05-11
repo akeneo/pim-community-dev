@@ -19,8 +19,8 @@ Feature: Browse export executions
     And the rows should be sorted descending by Date
     And I should be able to sort the rows by Code, Label, Job, Date and Status
     And I should be able to use the following filters:
-      | filter | value                   | result                                                   |
-      | Code   | product                 | csv_footwear_product_export, csv_footwear_product_export |
-      | Label  | category                | csv_footwear_category_export                             |
-      | Job    | Attribute export in CSV | csv_footwear_attribute_export                            |
-      | Status | STOPPING                |                                                          |
+      | filter | operator | value                   | result                                                   |
+      | code   | contains | product                 | csv_footwear_product_export, csv_footwear_product_export |
+      | label  | contains | category                | csv_footwear_category_export                             |
+      | alias  |          | Attribute export in CSV | csv_footwear_attribute_export                            |
+      | status |          | STOPPING                |                                                          |

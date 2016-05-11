@@ -27,8 +27,8 @@ Feature: Delete an attribute
     Then the grid should contain 1 elements
     And I should see products caterpillar_1
     Then I should be able to use the following filters:
-      | filter      | value          | result        |
-      | name        | My caterpillar | caterpillar_1 |
+      | filter | operator | value          | result        |
+      | name   | contains | My caterpillar | caterpillar_1 |
     When I am on the attributes page
     Then I click on the "delete" action of the row which contains "name"
     And I confirm the deletion
@@ -39,5 +39,5 @@ Feature: Delete an attribute
     Then the grid should contain 1 elements
     And I should see products caterpillar_1
     Then I should be able to use the following filters:
-      | filter | value          | result |
-      | name   | My caterpillar |        |
+      | filter | operator | value          | result |
+      | name   | contains | My caterpillar |        |

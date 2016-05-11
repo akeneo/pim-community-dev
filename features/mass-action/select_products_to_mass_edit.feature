@@ -58,9 +58,9 @@ Feature: When I mass edit I should be able to see how many items will be edited
       | sandals   | weight                   | 500 GRAM                |
       | pump      | weight                   | 500 GRAM                |
       | highheels | weight                   | 500 GRAM                |
-    When I show the filter "Description"
-    And I filter by "Channel" with value "Tablet"
-    And I filter by "Description" with value "A beautiful description"
+    When I show the filter "description"
+    And I filter by "scope" with operator "" and value "Tablet"
+    And I filter by "description" with operator "contains" and value "A beautiful description"
     And I select all products
     When I press mass-edit button
     Then I should see "Mass Edit (2 products)"

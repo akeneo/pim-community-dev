@@ -57,15 +57,16 @@ class TreeContext extends PimContext
      */
     public function iShouldSeeTheNodeUnderTheNode($not, $child, $parent)
     {
-        $parentNode = $this->getCurrentPage()
-            ->getElement('Category tree')
-            ->findNodeInTree($parent);
+        $categoryTree = $this->getCurrentPage()
+            ->getElement('Category tree');
 
-        $this->getCurrentPage()
-            ->getElement('Category tree')
-            ->expandNode($parent);
+        $parentNode = $categoryTree->findNodeInTree($parent);
 
-        $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
+        if(!$parentNode->isOpen()) {
+            $parentNode->open();
+        }
+
+        $childNode = $parentNode->find('css', sprintf('li[data-code="%s"]', $child));
 
         if ($not && $childNode) {
             throw $this->getMainContext()->createExpectationException(
@@ -106,21 +107,7 @@ class TreeContext extends PimContext
         if ($right) {
             $node->rightClick();
         } else {
-            try {
-                $checkbox = $this->spin(function () use ($node) {
-                    $result = $node->find('css', '.jstree-checkbox');
-
-                    return (null !== $result && $result->isVisible()) ? $result : null;
-                });
-            } catch (TimeoutException $e) {
-                $checkbox = null;
-            }
-
-            if (null !== $checkbox) {
-                $checkbox->click();
-            } else {
-                $node->click();
-            }
+            $node->select();
             $this->wait();
         }
     }

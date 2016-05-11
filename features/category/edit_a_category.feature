@@ -22,7 +22,7 @@ Feature: Edit a category
   Scenario: Go to category edit page from the category tree
     Given I am on the categories page
     And I select the "2014 collection" tree
-    And I click on the "Summer collection" category
+    And I click on the "summer_collection" category
     Then I should be on the category "summer_collection" edit page
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes

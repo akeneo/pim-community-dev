@@ -14,9 +14,9 @@ Feature: Browse currencies
     And the rows should be sorted ascending by Code
     And I should be able to sort the rows by Code and Activated
     And I should be able to use the following filters:
-      | filter    | value | result      |
-      | Code      | EU    | EUR and XEU |
-      | Activated | yes   | USD and EUR |
+      | filter    | operator | value | result      |
+      | code      | contains | EU    | EUR and XEU |
+      | activated |          | yes   | USD and EUR |
 
   Scenario: Successfully activate a currency
     Given I filter by "Code" with value "GBP"
