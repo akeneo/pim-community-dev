@@ -497,7 +497,7 @@ class Grid extends Index
                 return $this->getElement('Grid toolbar')->find('css', '.filter-item');
             }
 
-            return $this->getElement('Filters')->find('css', sprintf('.filter-item:contains("%s")', $filterName));
+            return $this->getElement('Filters')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
         }, sprintf('Couldn\'t find a filter with name "%s"', $filterName));
 
         return $filter;
