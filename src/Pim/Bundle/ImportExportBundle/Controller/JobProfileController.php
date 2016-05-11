@@ -233,8 +233,8 @@ class JobProfileController
             [
                 'form'             => $form->createView(),
                 'jobInstance'      => $jobInstance,
-                'violations'       => $this->validator->validate($jobInstance, ['Default', 'Execution']),
-                'uploadViolations' => $this->validator->validate($jobInstance, ['Default', 'UploadExecution']),
+                'violations'       => $this->validateJobInstance($jobInstance, ['Default', 'Execution']),
+                'uploadViolations' => $this->validateJobInstance($jobInstance, ['Default', 'UploadExecution']),
                 'uploadAllowed'    => $uploadAllowed,
                 'uploadForm'       => $uploadForm,
             ]
@@ -320,7 +320,7 @@ class JobProfileController
     }
 
     /**
-     * Launch a job from uploaded file
+     * Launch a job with an uploaded file
      *
      * @param int $id
      *
@@ -336,11 +336,16 @@ class JobProfileController
             return $this->redirectToIndexView();
         }
 
-        if ($this->validateUpload($jobInstance)) {
+        $isConfigured = $this->configureWithUploadFile($jobInstance);
+        $violations = $this->validateJobInstance($jobInstance, ['Default', 'UploadExecution']);
+
+        if ($isConfigured && $violations->count() === 0) {
             $jobExecution = $this->launchJob($jobInstance);
 
             return $this->redirectToReportView($jobExecution->getId());
         }
+
+        $this->addViolationFlashMessages($violations);
 
         return $this->redirectToShowView($id);
     }
@@ -362,57 +367,26 @@ class JobProfileController
             return $this->redirectToIndexView();
         }
 
-        if ($this->validate($jobInstance)) {
+        $violations = $this->validateJobInstance($jobInstance, ['Default', 'Execution']);
+        if ($violations->count() === 0) {
             $jobExecution = $this->launchJob($jobInstance);
 
             return $this->redirectToReportView($jobExecution->getId());
         }
 
+        $this->addViolationFlashMessages($violations);
+
         return $this->redirectToShowView($id);
     }
 
     /**
-     * Validate if the job is correct or not
-     *
-     * @param JobInstance $jobInstance
-     *
-     * @return bool
+     * @param ConstraintViolationListInterface $violations
      */
-    protected function validate(JobInstance $jobInstance)
+    protected function addViolationFlashMessages(ConstraintViolationListInterface $violations)
     {
-        $violations = $this->validateJobInstance($jobInstance, ['Default', 'Execution']);
         foreach ($violations as $violation) {
             $this->request->getSession()->getFlashBag()->add('error', new Message($violation->getMessage()));
         }
-
-        return 0 === $violations->count();
-    }
-
-    /**
-     * Validate if the job is correct from an uploaded file
-     *
-     * @param JobInstance $jobInstance
-     *
-     * @return bool
-     */
-    protected function validateUpload(JobInstance $jobInstance)
-    {
-        $fileInfo = $this->getFileInfo();
-        if (null === $fileInfo) {
-            return false;
-        }
-
-        $this->configureUploadJob($jobInstance, $fileInfo);
-        $uploadViolations = $this->validateJobInstance($jobInstance, ['Default', 'UploadExecution']);
-        if (0 === $uploadViolations->count()) {
-            return true;
-        }
-
-        foreach ($uploadViolations as $violation) {
-            $this->request->getSession()->getFlashBag()->add('error', new Message($violation->getMessage()));
-        }
-
-        return false;
     }
 
     /**
@@ -427,11 +401,20 @@ class JobProfileController
         $job = $this->connectorRegistry->getJob($jobInstance);
         $jobParameters = $this->jobParametersFactory->create($job, $rawConfiguration);
 
-        return $this->jobParametersValidator->validate(
+        /** @var ConstraintViolationListInterface $jobParamsViolations */
+        $jobParamsViolations = $this->jobParametersValidator->validate(
             $job,
             $jobParameters,
             $validationGroups
         );
+
+        /** @var ConstraintViolationListInterface $jobInstanceViolations */
+        $jobInstanceViolations = $this->validator->validate($jobInstance, $validationGroups);
+        foreach ($jobInstanceViolations as $violation) {
+            $jobParamsViolations->add($violation);
+        }
+
+        return $jobParamsViolations;
     }
 
     /**
@@ -483,18 +466,26 @@ class JobProfileController
     }
 
     /**
-     * Configure job instance for uploaded file
+     * Configure job instance with uploaded file, returns true if well configured
      *
-     * @param JobInstance       $jobInstance
-     * @param FileInfoInterface $fileInfo
+     * @param JobInstance $jobInstance
+     *
+     * @return boolean
      */
-    protected function configureUploadJob(JobInstance $jobInstance, FileInfoInterface $fileInfo)
+    protected function configureWithUploadFile(JobInstance $jobInstance)
     {
+        $fileInfo = $this->getFileInfo();
+        if (null === $fileInfo) {
+            return false;
+        }
+
         $uploadedFile = $fileInfo->getUploadedFile();
         $file = $uploadedFile->move(sys_get_temp_dir(), $uploadedFile->getClientOriginalName());
         $rawConfiguration = $jobInstance->getRawConfiguration();
         $rawConfiguration['filePath'] = $file->getRealPath();
         $jobInstance->setRawConfiguration($rawConfiguration);
+
+        return true;
     }
 
     /**

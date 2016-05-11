@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -39,6 +40,9 @@ class JobInstanceProcessor extends AbstractProcessor
     /** @var JobParametersValidator */
     protected $jobParamsValidator;
 
+    /** @var JobParametersFactory */
+    protected $jobParamsFactory;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param StandardArrayConverterInterface       $converter
@@ -47,6 +51,7 @@ class JobInstanceProcessor extends AbstractProcessor
      * @param ValidatorInterface                    $validator
      * @param ObjectDetacherInterface               $objectDetacher
      * @param JobParametersValidator                $jobParamsValidator
+     * @param JobParametersFactory                  $jobParamsFactory
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -55,7 +60,8 @@ class JobInstanceProcessor extends AbstractProcessor
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
-        JobParametersValidator $jobParamsValidator
+        JobParametersValidator $jobParamsValidator,
+        JobParametersFactory $jobParamsFactory
     ) {
         parent::__construct($repository);
 
@@ -65,6 +71,7 @@ class JobInstanceProcessor extends AbstractProcessor
         $this->validator      = $validator;
         $this->objectDetacher = $objectDetacher;
         $this->jobParamsValidator = $jobParamsValidator;
+        $this->jobParamsFactory = $jobParamsFactory;
     }
 
     /**
@@ -89,7 +96,7 @@ class JobInstanceProcessor extends AbstractProcessor
 
         $rawConfiguration = $entity->getRawConfiguration();
         if (!empty($rawConfiguration)) {
-            $parameters = new JobParameters($rawConfiguration);
+            $parameters = $this->jobParamsFactory->create($entity->getJob(), $rawConfiguration);
             $violations = $this->jobParamsValidator->validate($entity->getJob(), $parameters);
             if ($violations->count() > 0) {
                 $this->objectDetacher->detach($entity);

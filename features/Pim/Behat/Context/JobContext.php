@@ -2,9 +2,13 @@
 
 namespace Pim\Behat\Context;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 
 class JobContext extends PimContext
 {
@@ -28,7 +32,35 @@ class JobContext extends PimContext
             $configuration[$property] = $value;
         }
 
-        $jobInstance->setRawConfiguration($configuration);
+        /** @var ConnectorRegistry $connectorRegistry */
+        $connectorRegistry = $this->getMainContext()->getContainer()->get('akeneo_batch.connectors');
+        $job = $connectorRegistry->getJob($jobInstance);
+
+        /** @var JobParametersFactory $jobParamsFactory */
+        $jobParamsFactory = $this->getMainContext()->getContainer()->get('akeneo_batch.job_parameters_factory');
+        $jobParams = $jobParamsFactory->create($job, $configuration);
+
+        /** @var JobParametersValidator $jobParamsValidator */
+        $jobParamsValidator = $this->getMainContext()->getContainer()->get('akeneo_batch.job_parameters.validator');
+        $violations = $jobParamsValidator->validate($job, $jobParams, ['Default']);
+
+        if ($violations->count() > 0) {
+            $messages = [];
+            /** @var ConstraintViolationInterface $violation */
+            foreach ($violations as $violation) {
+                $messages[] = $violation->getMessage();
+            }
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The parameters "%s" are not valid for the job "%s" due to violations "%s"',
+                    print_r($jobParams->getParameters(), true),
+                    $job->getName(),
+                    implode(', ', $messages)
+                )
+            );
+        }
+        $jobInstance->setRawConfiguration($jobParams->getParameters());
+
         $saver = $this->getMainContext()->getContainer()->get('akeneo_batch.saver.job_instance');
         $saver->save($jobInstance);
     }
