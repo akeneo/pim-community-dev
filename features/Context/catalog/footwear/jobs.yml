@@ -165,7 +165,8 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
-            copyValues: true
+            copyValues:    true
+            filePath:      /tmp/footwear_variant_group.csv
     xlsx_footwear_variant_group_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_variant_group_import

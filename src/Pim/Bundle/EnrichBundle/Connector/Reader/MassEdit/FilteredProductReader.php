@@ -3,10 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -32,9 +30,6 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
 
     /** @var bool */
     protected $isExecuted;
-
-    /** @var JobRepositoryInterface */
-    protected $jobRepository;
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory

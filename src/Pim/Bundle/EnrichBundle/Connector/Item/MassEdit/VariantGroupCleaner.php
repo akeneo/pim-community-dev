@@ -68,23 +68,21 @@ class VariantGroupCleaner
     }
 
     /**
-     * @param array         $configuration
      * @param StepExecution $stepExecution
+     * @param array         $filters
+     * @param array         $actions
      *
-     * @return array
-     *
-     * TODO: re-write this, we can't change the immutable configuration
+     * @return array|null
      */
-    public function clean(array $configuration, StepExecution $stepExecution)
+    public function clean(StepExecution $stepExecution, $filters, $actions)
     {
-        $actions = $configuration['actions'];
         $variantGroupCode = $actions['value'];
         $variantGroup = $this->groupRepository->findOneByIdentifier($variantGroupCode);
 
         $axisAttributeCodes = $this->getAxisAttributeCodes($variantGroup);
         $eligibleProductIds = $this->productRepository->getEligibleProductIdsForVariantGroup($variantGroup->getId());
 
-        $cursor = $this->getProductsCursor($configuration['filters']);
+        $cursor = $this->getProductsCursor($filters);
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
         list($productAttributeAxis, $acceptedIds) = $this->filterDuplicateAxisCombinations(
@@ -97,13 +95,13 @@ class VariantGroupCleaner
         $excludedIds = $this->addSkippedMessageForDuplicatedProducts($stepExecution, $productAttributeAxis);
         $acceptedIds = array_diff($acceptedIds, $excludedIds);
 
-        $configuration['filters'] = [['field' => 'id', 'operator' => 'IN', 'value' => $acceptedIds]];
+        $filters = [['field' => 'id', 'operator' => 'IN', 'value' => $acceptedIds]];
 
         if (0 === count($acceptedIds)) {
             return null;
         }
 
-        return $configuration;
+        return $filters;
     }
 
     /**
