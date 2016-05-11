@@ -7,6 +7,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Context\FeatureContext;
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Decorator\ElementDecorator;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -41,9 +42,24 @@ class Base extends Page
         $element = parent::getElement($name);
 
         if (isset($this->elements[$name]['decorators'])) {
-            foreach ($this->elements[$name]['decorators'] as $decorator) {
-                $element = new $decorator($element);
-            }
+            $element = $this->decorate($element, $this->elements[$name]['decorators']);
+        }
+
+        return $element;
+    }
+
+    /**
+     * Decorates an element
+     *
+     * @param NodeElement $element
+     * @param array       $decorators
+     *
+     * @return ElementDecorator
+     */
+    protected function decorate(NodeElement $element, array $decorators)
+    {
+        foreach ($decorators as $decorator) {
+            $element = new $decorator($element);
         }
 
         return $element;

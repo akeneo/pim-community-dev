@@ -24,6 +24,49 @@ class Grid extends Index
     const FILTER_IS_EMPTY         = 'empty';
     const FILTER_IN_LIST          = 'in';
 
+    protected $filterDecorators = [
+        'boolean' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+        ],
+        'choice' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+        ],
+        'date' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+        ],
+        'datetime' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+        ],
+        'metric' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+        ],
+        'multichoice' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+        ],
+        'number' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+        ],
+        'price' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+        ],
+        'product_completeness' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+        ],
+        'product_scope' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+        ],
+        'select2-choice' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+        ],
+        'select2-rest-choice' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+        ],
+        'string' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\StringDecorator',
+        ],
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -164,80 +207,18 @@ class Grid extends Index
     }
 
     /**
-     * @param string               $filterName The name of the filter
-     * @param string               $value      The value to filter by
-     * @param bool|string          $operator   If false, no operator will be selected
-     * @param DriverInterface|null $driver     Required to filter by multiple choices
+     * @param string      $filterName The name of the filter
+     * @param bool|string $operator   If false, no operator will be selected
+     * @param string      $value      The value to filter by
      *
      * @throws \InvalidArgumentException
      */
-    public function filterBy($filterName, $value, $operator = false, DriverInterface $driver = null)
+    public function filterBy($filterName, $operator, $value)
     {
         $filter = $this->getFilter($filterName);
-        $this->openFilter($filter);
 
-        if ($elt = $filter->find('css', 'select')) {
-            if ($elt->getText() === "between not between more than less than is empty") {
-                $this->filterByDate($filter, $value, $operator);
-            } elseif ($elt->getParent()->find('css', 'button.ui-multiselect')) {
-                if (!$driver || !$driver instanceof Selenium2Driver) {
-                    throw new \InvalidArgumentException('Selenium2Driver is required to filter by a choice filter');
-                }
-                $values = explode(',', $value);
-
-                foreach ($values as $value) {
-                    $driver->executeScript(
-                        sprintf(
-                            "$('.ui-multiselect-menu:visible input[title=\"%s\"]').click().trigger('click');",
-                            $value
-                        )
-                    );
-                    sleep(1);
-                }
-
-                // Uncheck the 'All' option
-                if (!in_array('All', $values)) {
-                    $driver->executeScript(
-                        "var all = $('.ui-multiselect-menu:visible input[title=\"All\"]');" .
-                        "if (all.length && all.is(':checked')) { all.click().trigger('click'); }"
-                    );
-                }
-            }
-        } elseif ($elt = $filter->find('css', 'div.filter-criteria')) {
-            $results = $this->getElement('Select2 results');
-            $select2 = $filter->find('css', '.select2-input');
-
-            if (false !== $operator) {
-                $filter->find('css', 'button.dropdown-toggle')->click();
-                $filter->find('css', sprintf('[data-value="%s"]', $operator))->click();
-            }
-
-            if (null !== $results && null !== $select2) {
-                if (in_array($value, ['empty', 'is empty'])) {
-                    // Allow passing 'empty' as value too (for backwards compability with existing scenarios)
-                    $filter->find('css', 'button.dropdown-toggle')->click();
-                    $filter->find('css', '[data-value="empty"]')->click();
-                } else {
-                    $values = explode(',', $value);
-                    foreach ($values as $value) {
-                        $driver->getWebDriverSession()
-                            ->element('xpath', $select2->getXpath())
-                            ->postValue(['value' => [$value]]);
-                        sleep(2);
-                        $results->find('css', 'li')->click();
-                        sleep(2);
-                    }
-                }
-            } elseif ($value !== false) {
-                $elt->fillField('value', $value);
-            }
-
-            $filter->find('css', 'button.filter-update')->click();
-        } else {
-            throw new \InvalidArgumentException(
-                sprintf('Filtering by "%s" is not yet implemented"', $filterName)
-            );
-        }
+        $filter->open();
+        $filter->filter($operator, $value);
     }
 
     /**
@@ -500,6 +481,11 @@ class Grid extends Index
             return $this->getElement('Filters')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
         }, sprintf('Couldn\'t find a filter with name "%s"', $filterName));
 
+        $filterType = $filter->getAttribute('data-type');
+        if (isset($this->filterDecorators[$filterType])) {
+            $filter = $this->decorate($filter, $this->filterDecorators[$filterType]);
+        }
+
         return $filter;
     }
 
@@ -700,20 +686,6 @@ class Grid extends Index
         }
 
         return $cells[$position];
-    }
-
-    /**
-     * Open the filter
-     *
-     * @param NodeElement $filter
-     */
-    public function openFilter(NodeElement $filter)
-    {
-        $element = $this->spin(function () use ($filter) {
-            return $filter->find('css', 'button');
-        }, 'Impossible to open filter or maybe its type is not yet implemented');
-
-        $element->click();
     }
 
     /**

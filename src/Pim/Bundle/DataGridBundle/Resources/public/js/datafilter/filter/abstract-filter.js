@@ -111,6 +111,10 @@ function($, _, Backbone, app) {
             if (_.has(options, 'name')) {
                 this.$el.attr('data-name', options.name);
             }
+            if (_.has(options, 'type')) {
+                this.$el.attr('data-type', options.type);
+            }
+
             this.defaultEnabled = this.enabled;
 
             // init empty value object if it was not initialized so far

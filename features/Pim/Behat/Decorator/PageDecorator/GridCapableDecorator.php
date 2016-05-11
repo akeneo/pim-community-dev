@@ -25,7 +25,7 @@ class GridCapableDecorator extends ElementDecorator
 
     /** @var array */
     protected $decorators = [
-        'Pim\Behat\Decorator\GridDecorator\PaginationDecorator',
+        'Pim\Behat\Decorator\Grid\PaginationDecorator',
     ];
 
     /**

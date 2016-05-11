@@ -31,27 +31,21 @@ Feature: Filter products
     Then the grid should contain 6 elements
     And I should see products postit, book, book2, ebook, chair and 01234
     And I should be able to use the following filters:
-      | filter | value                 | result                                   |
-      | SKU    | book                  | book, ebook and book2                    |
-      | Name   | post                  | postit                                   |
-      | Info   | book                  | book, ebook and book2                    |
-      | Status | Enabled               | postit, ebook, book2 and chair and 01234 |
-      | Status | Disabled              | book                                     |
-      | SKU    | contains book         | book, book2 and ebook                    |
-      | SKU    | does not contain book | postit and chair and 01234               |
-      | SKU    | starts with boo       | book and book2                           |
-      | SKU    | starts with 0         | 01234                                    |
-      | SKU    | is equal to book      | book                                     |
-      | SKU    | ends with book        | book and ebook                           |
-      | SKU    | in list book          | book                                     |
-      | SKU    | in list postit, book2 | postit and book2                         |
-      | Name   | empty                 |                                          |
-
-#      | Name    | contains chair/       | chair                          |
-#      | Name    | contains /            | chair                          |
-#      | Name    | does not contains /   | book, ebook, book2 and postit  |
-#      | Info    | does not contains .   | book, ebook, book2 and postit  |
-#      | Info    | contains .            | chair                          |
+      | filter | operator         | value          | result                                   |
+      | sku    | contains         | book           | book, ebook and book2                    |
+      | name   | contains         | post           | postit                                   |
+      | info   | contains         | book           | book, ebook and book2                    |
+      | status |                  | Enabled        | postit, ebook, book2 and chair and 01234 |
+      | status |                  | Disabled       | book                                     |
+      | sku    | contains         | book           | book, book2 and ebook                    |
+      | sku    | does not contain | book           | postit and chair and 01234               |
+      | sku    | starts with      | boo            | book and book2                           |
+      | sku    | starts with      | 0              | 01234                                    |
+      | sku    | is equal to      | book           | book                                     |
+      | sku    | ends with        | book           | book and ebook                           |
+      | sku    | in list          | book           | book                                     |
+      | sku    | in list          | postit, book2  | postit and book2                         |
+      | name   | empty            |                |                                          |
 
   Scenario: Successfully hide/show filters
     Given I am on the products page
