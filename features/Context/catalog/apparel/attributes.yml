@@ -81,6 +81,7 @@ attributes:
         numberMax:           1000
         sortOrder:           1
         decimalsAllowed:     true
+        sortOrder:           1
     customer_rating:
         labels:
             en_US: Customer rating
@@ -804,6 +805,7 @@ attributes:
             - de_DE
             - fr_FR
         useableAsGridFilter: true
+        sortOrder:           4
     datasheet:
         labels:
             en_US: Datasheet

@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Localization\Presenter;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
@@ -16,6 +17,8 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 class PresenterRegistry implements PresenterRegistryInterface
 {
     const TYPE_PRODUCT_VALUE = 'product_value';
+
+    const TYPE_PRODUCT_FIELD = 'product_field';
 
     const TYPE_ATTRIBUTE_OPTION = 'attribute_option';
 
@@ -67,6 +70,14 @@ class PresenterRegistry implements PresenterRegistryInterface
     public function getAttributeOptionPresenter($optionName)
     {
         return $this->getPresenter($optionName, self::TYPE_ATTRIBUTE_OPTION);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPresenterByFieldCode($code)
+    {
+        return $this->getPresenter($code, self::TYPE_PRODUCT_FIELD);
     }
 
     /**

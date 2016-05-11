@@ -362,6 +362,8 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
+     * @throws \Exception
+     *
      * @Then /^there should be the following attributes:$/
      */
     public function thereShouldBeTheFollowingAttributes(TableNode $table)
@@ -370,24 +372,106 @@ class FixturesContext extends BaseFixturesContext
             $attribute = $this->getAttribute($data['code']);
             $this->refresh($attribute);
 
-            assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
-            assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
-            assertEquals(($data['localizable'] == 1), $attribute->isLocalizable());
-            assertEquals(($data['scopable'] == 1), $attribute->isScopable());
-            assertEquals($data['group'], $attribute->getGroup()->getCode());
-            assertEquals(($data['useable_as_grid_filter'] == 1), $attribute->isUseableAsGridFilter());
-            assertEquals(($data['unique'] == 1), $attribute->isUnique());
-            if ($data['allowed_extensions'] != '') {
-                assertEquals(explode(',', $data['allowed_extensions']), $attribute->getAllowedExtensions());
-            }
-            assertEquals($data['metric_family'], $attribute->getMetricFamily());
-            assertEquals($data['default_metric_unit'], $attribute->getDefaultMetricUnit());
-
-            if (isset($data['reference_data_name'])) {
-                if ('' === $data['reference_data_name']) {
-                    assertNull($attribute->getReferenceDataName());
-                } else {
-                    assertEquals($data['reference_data_name'], $attribute->getReferenceDataName());
+            foreach ($data as $method => $value) {
+                $matches = null;
+                switch ($method) {
+                    case 'code':
+                        // Untestable method
+                        break;
+                    case (preg_match('/^label-(?<locale>.*)$/', $method, $matches) ? true : false):
+                        assertEquals($value, $attribute->getTranslation($matches['locale'])->getLabel());
+                        break;
+                    case 'type':
+                        assertEquals($this->getAttributeType($value), $attribute->getAttributeType());
+                        break;
+                    case 'localizable':
+                        assertEquals('1' === $value, $attribute->isLocalizable());
+                        break;
+                    case 'scopable':
+                        assertEquals('1' === $value, $attribute->isScopable());
+                        break;
+                    case 'wysiwyg_enabled':
+                        assertEquals('1' === $value, $attribute->isWysiwygEnabled());
+                        break;
+                    case 'decimals_allowed':
+                        assertEquals('1' === $value, $attribute->isDecimalsAllowed());
+                        break;
+                    case 'negative_allowed':
+                        assertEquals('1' === $value, $attribute->isDecimalsAllowed());
+                        break;
+                    case 'useable_as_grid_filter':
+                        assertEquals('1' === $value, $attribute->isUseableAsGridFilter());
+                        break;
+                    case 'unique':
+                        assertEquals('1' === $value, $attribute->isUnique());
+                        break;
+                    case 'group':
+                        assertEquals($value, $attribute->getGroup()->getCode());
+                        break;
+                    case 'allowed_extensions':
+                        if ('' === $value) {
+                            assertEmpty($attribute->getAllowedExtensions());
+                        } else {
+                            assertEquals(explode(',', $value), $attribute->getAllowedExtensions());
+                        }
+                        break;
+                    case 'available_locales':
+                        assertEquals(explode(',', $value), $attribute->getAvailableLocales()->toArray());
+                        break;
+                    case 'reference_data_name':
+                        if ('' === $value) {
+                            assertNull($attribute->getReferenceDataName());
+                        } else {
+                            assertEquals($value, $attribute->getReferenceDataName());
+                        }
+                        break;
+                    case 'number_min':
+                        if ('' === $value) {
+                            assertNull($attribute->getNumberMin());
+                        } else {
+                            assertEquals($value, $attribute->getNumberMin());
+                        }
+                        break;
+                    case 'number_max':
+                        if ('' === $value) {
+                            assertNull($attribute->getNumberMax());
+                        } else {
+                            assertEquals($value, $attribute->getNumberMax());
+                        }
+                        break;
+                    case 'metric_family':
+                        assertEquals($value, $attribute->getMetricFamily());
+                        break;
+                    case 'default_metric_unit':
+                        assertEquals($value, $attribute->getDefaultMetricUnit());
+                        break;
+                    case 'sort_order':
+                        assertEquals($value, $attribute->getSortOrder());
+                        break;
+                    case 'max_characters':
+                        assertEquals($value, $attribute->getMaxCharacters());
+                        break;
+                    case 'validation_rule':
+                        assertEquals($value, $attribute->getValidationRule());
+                        break;
+                    case 'validation_regexp':
+                        assertEquals($value, $attribute->getValidationRegexp());
+                        break;
+                    case 'max_file_size':
+                        assertEquals($value, $attribute->getMaxFileSize());
+                        break;
+                    case 'date_min':
+                        assertEquals($value, $attribute->getDateMin()->format('Y-m-d'));
+                        break;
+                    case 'date_max':
+                        assertEquals($value, $attribute->getDateMax()->format('Y-m-d'));
+                        break;
+                    default:
+                        throw new \Exception(sprintf(
+                            "The attribute method '%s' is not testable, please add it in %s",
+                            $method,
+                            get_class($this)
+                        ));
                 }
             }
         }
