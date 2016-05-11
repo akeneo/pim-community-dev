@@ -5,7 +5,7 @@ namespace Pim\Behat\Decorator\Grid\Filter;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 
-class StringDecorator extends ElementDecorator
+class ChoiceDecorator extends ElementDecorator
 {
     use SpinCapableTrait;
 
@@ -17,19 +17,11 @@ class StringDecorator extends ElementDecorator
      */
     public function filter($operator, $value)
     {
-        $this->find('css', '.dropdown-toggle')->click();
-        $this->find('css', sprintf('.dropdown-menu .choice_value:contains("%s")', $operator))->click();
-
         $field = $this->spin(function () {
-            return $this->find('css', '.select-field');
+            return $this->find('css', '.filter-select');
         }, sprintf('Cannot find the value field for the filter "%s"', $this->getAttribute('data-name')));
 
-        if ('in list' === $operator) {
-            $field = $this->decorate($field, ['Pim\Behat\Decorator\Field\Select2Decorator']);
-        }
-
+        $field = $this->decorate($field, ['Pim\Behat\Decorator\Field\MultiSelectDecorator']);
         $field->setValue($value);
-
-        $this->find('css', '.filter-update')->click();
     }
 }
