@@ -16,6 +16,17 @@ use Pim\Component\Catalog\Model\ChannelInterface;
  */
 class AttributeRequirementFactory
 {
+    /** @var string */
+    protected $attrRequirementClass;
+
+    /**
+     * @param string $attrRequirementClass
+     */
+    public function __construct($attrRequirementClass)
+    {
+        $this->attrRequirementClass = $attrRequirementClass;
+    }
+
     /**
      * Create and configure an attribute requirement instance
      *
@@ -27,7 +38,7 @@ class AttributeRequirementFactory
      */
     public function createAttributeRequirement(AttributeInterface $attribute, ChannelInterface $channel, $required)
     {
-        $requirement = new AttributeRequirement();
+        $requirement = new $this->attrRequirementClass();
         $requirement->setAttribute($attribute);
         $requirement->setChannel($channel);
         $requirement->setRequired($required);
