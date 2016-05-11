@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Normalizer\Flat;
 
 use Akeneo\Component\Batch\Model\JobInstance;
-use Pim\Component\Catalog\Normalizer\Structured\JobInstanceNormalizer as BaseNormalizer;
+use Akeneo\Component\Batch\Normalizer\Structured\JobInstanceNormalizer as BaseNormalizer;
 
 /**
  * A normalizer to transform a job instance entity into a array

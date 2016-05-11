@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer\Structured;
+namespace spec\Akeneo\Component\Batch\Normalizer\Structured;
 
 use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
@@ -9,7 +9,7 @@ class JobInstanceNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Normalizer\Structured\JobInstanceNormalizer');
+        $this->shouldHaveType('Akeneo\Component\Batch\Normalizer\Structured\JobInstanceNormalizer');
     }
 
     function it_is_a_normalizer()

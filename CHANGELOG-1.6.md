@@ -266,3 +266,7 @@
 - Move class `Pim\Component\Catalog\Denormalizer\Structured\ProductValue\ReferenceDataCollectionDenormalizer` to `Pim\Component\ReferenceData\Denormalizer\Structured\ProductValue\ReferenceDataCollectionDenormalizer`
 - Move class `Pim\Component\Connector\Denormalizer\Flat\ProductValue\ReferenceDataDenormalizer` to `Pim\Component\ReferenceData\Denormalizer\Flat\ProductValue\ReferenceDataDenormalizer`
 - Move class `Pim\Component\Connector\Denormalizer\Flat\ProductValue\ReferenceDataCollectionDenormalizer` to `Pim\Component\ReferenceData\Denormalizer\Flat\ProductValue\ReferenceDataCollectionDenormalizer`
+- Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`, add `Symfony\Component\Security\Core\User\UserProviderInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
+- Context option `filter_type` of `Pim\Component\Connector\Normalizer\Flat\ProductNormalizer` changed to `filter_types` and now accepts an array of filter names instead of just one filter name
+- Context option `filter_type` of `Pim\Component\Catalog\Normalizer\Structured\ProductNormalizer` changed to `filter_types` and  now accepts an array of filter names instead of just one filter name
+- Move class `Pim\Component\Catalog\Normalizer\Structured\JobInstanceNormalizer` to `Akeneo\Component\Batch\Normalizer\Structured\JobInstanceNormalizer`
