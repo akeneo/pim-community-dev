@@ -76,7 +76,7 @@ define(
                             data: function (term) {
                                 return {search: term};
                             },
-                            results: function (data) {
+                            processResults: function (data) {
                                 return data;
                             }
                         },
@@ -91,13 +91,15 @@ define(
                                     var selected = _.findWhere(response.results, {id: id});
                                     callback(selected);
                                 });
+                            } else {
+                                callback([]);
                             }
                         }.bind(this),
                         placeholder: ' ',
                         allowClear: true
                     };
 
-                    initSelect2.init(this.$('input.select-field'), options);
+                    initSelect2.init(this.$('select.select-field'), options);
                 }.bind(this));
             },
 
