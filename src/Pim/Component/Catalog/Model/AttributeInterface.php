@@ -639,10 +639,10 @@ interface AttributeInterface extends
     /**
      * {@inheritdoc}
      */
-    public function setIsEditable($value);
+    public function setIsReadOnly($value);
 
     /**
      * {@inheritdoc}
      */
-    public function isEditable();
+    public function isReadOnly();
 }

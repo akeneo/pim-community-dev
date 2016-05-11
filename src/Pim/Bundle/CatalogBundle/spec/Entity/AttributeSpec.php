@@ -15,8 +15,8 @@ class AttributeSpec extends ObjectBehavior
 
     function it_is_editable()
     {
-        $this->setIsEditable(true)->shouldReturn($this);
-        $this->IsEditable()->shouldReturn(true);
+        $this->setIsReadOnly(true)->shouldReturn($this);
+        $this->isReadOnly()->shouldReturn(true);
         $this->getProperty('is_editable')->shouldReturn(true);
     }
 }
