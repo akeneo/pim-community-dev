@@ -137,7 +137,7 @@ class JobProfileAccessManager
     protected function getJobProfileAccess(JobInstance $jobProfile, Group $group)
     {
         $access = $this->repository
-            ->findOneby(
+            ->findOneBy(
                 [
                     'jobProfile' => $jobProfile,
                     'userGroup'  => $group
