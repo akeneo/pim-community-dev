@@ -1,5 +1,9 @@
+<% if (item.group) { %>
 <div class="select2-result-label-attribute">
     <input data-code="<%- item.id %>" type="checkbox" <%- checked ? 'checked="checked"' : '' %> />
     <span class="attribute-label"><%- item.text %></span>
-    <span class="group-label"><%- item.group.text %></span>
+    <span class="group-label"><%- item.group ? item.group.text : ''%></span>
 </div>
+<% } else { %>
+    <span><%- item.text %></span>
+<% } %>

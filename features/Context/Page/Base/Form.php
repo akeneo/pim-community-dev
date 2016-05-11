@@ -658,16 +658,6 @@ class Form extends Base
         if ($label->hasAttribute('for')) {
             $for = $label->getAttribute('for');
 
-            if (0 === strpos($for, 's2id_')) {
-                if ($label->getParent()->find('css', '.select2-container-multi')) {
-                    return 'multiSelect2';
-                } elseif ($label->getParent()->find('css', 'select')) {
-                    return 'select';
-                }
-
-                return 'simpleSelect2';
-            }
-
             if (null !== $this->find('css', sprintf('#date_selector_%s', $for))) {
                 return 'datepicker';
             }
@@ -675,6 +665,14 @@ class Form extends Base
             $field = $this->find('css', sprintf('#%s', $for));
 
             if ($field->getTagName() === 'select') {
+                if ($field->hasClass('select2')) {
+                    if ($field->hasAttribute('multiple')) {
+                        return 'multiSelect2';
+                    }
+
+                    return 'simpleSelect2';
+                }
+
                 return 'select';
             }
 
@@ -701,7 +699,7 @@ class Form extends Base
     protected function fillMultiSelect2Field(NodeElement $label, $value)
     {
         $allValues          = explode(',', $value);
-        $selectedValues     = $label->getParent()->findAll('css', '.select2-search-choice');
+        $selectedValues     = $label->getParent()->findAll('css', '.select2-selection__choice');
         $selectedTextValues = array_map(function ($selectedValue) {
             return $selectedValue->getText();
         }, $selectedValues);
@@ -711,7 +709,7 @@ class Form extends Base
 
         foreach ($selectedValues as $selectedValue) {
             if (false === in_array($selectedValue->getText(), $allValues)) {
-                $closeButton = $selectedValue->find('css', 'a');
+                $closeButton = $selectedValue->find('css', '.select2-selection__choice__remove');
 
                 if (!$closeButton) {
                     throw new \InvalidArgumentException(
@@ -729,23 +727,18 @@ class Form extends Base
 
         $allValues = array_filter($allValues);
 
-        if (1 === count($allValues) && null !== $label->getParent()->find('css', 'select')) {
-            $value = array_shift($allValues);
-            $this->fillSelectField($label, $value);
-        }
-
         // Fill in remaining values
         $remainingValues = array_diff($allValues, $selectedTextValues);
         foreach ($remainingValues as $value) {
             if (trim($value)) {
-                $label->click();
-                $label->click();
+                $link = $this->spin(function () use ($label) {
+                    return $label->getParent()->find('css', '.select2-container');
+                }, sprintf('Could not find link to open select2 for "%s', $label->getText()));
+
+                $link->click();
 
                 $option = $this->spin(function () use ($value) {
-                    return $this->find(
-                        'css',
-                        sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', trim($value))
-                    );
+                    return $this->find('css', sprintf('.select2-results__options li[role="treeitem"]:contains("%s")', trim($value)));
                 }, sprintf('Could not find option "%s" for "%s"', trim($value), $label->getText()));
 
                 $option->click();
@@ -764,12 +757,11 @@ class Form extends Base
     protected function fillSelect2Field(NodeElement $label, $value)
     {
         if (trim($value)) {
-            if (null !== $link = $label->getParent()->find('css', 'a.select2-choice')) {
+            if (null !== $link = $label->getParent()->find('css', '.select2-container')) {
                 $link->click();
-                $this->getSession()->wait($this->getTimeout(), '!$.active');
 
                 $field = $this->spin(function () use ($value) {
-                    return $this->find('css', sprintf('#select2-drop li:contains("%s")', $value));
+                    return $this->find('css', sprintf('.select2-results__options li[role="treeitem"]:contains("%s")', $value));
                 });
 
                 $field->click();
