@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\Flash\Message;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Builder\ProductTemplateBuilderInterface;
 use Pim\Component\Catalog\Manager\VariantGroupAttributesResolver;
 use Pim\Component\Catalog\Model\GroupInterface;
@@ -49,6 +50,9 @@ class VariantGroupAttributeController
     /** @var VariantGroupAttributesResolver */
     protected $groupAttrResolver;
 
+    /** @var LocaleResolver */
+    protected $localeResolver;
+
     /**
      * @param RouterInterface                 $router
      * @param FormFactoryInterface            $formFactory
@@ -57,6 +61,7 @@ class VariantGroupAttributeController
      * @param AttributeRepositoryInterface    $attributeRepository
      * @param ProductTemplateBuilderInterface $templateBuilder
      * @param VariantGroupAttributesResolver  $groupAttrResolver
+     * @param LocaleResolver                  $localeResolver
      */
     public function __construct(
         RouterInterface $router,
@@ -65,7 +70,8 @@ class VariantGroupAttributeController
         SaverInterface $groupSaver,
         AttributeRepositoryInterface $attributeRepository,
         ProductTemplateBuilderInterface $templateBuilder,
-        VariantGroupAttributesResolver $groupAttrResolver
+        VariantGroupAttributesResolver $groupAttrResolver,
+        LocaleResolver $localeResolver
     ) {
         $this->router              = $router;
         $this->formFactory         = $formFactory;
@@ -74,6 +80,7 @@ class VariantGroupAttributeController
         $this->attributeRepository = $attributeRepository;
         $this->templateBuilder     = $templateBuilder;
         $this->groupAttrResolver   = $groupAttrResolver;
+        $this->localeResolver      = $localeResolver;
     }
 
     /**
@@ -99,7 +106,11 @@ class VariantGroupAttributeController
             $group->setProductTemplate($template);
         }
 
-        $this->templateBuilder->addAttributes($template, $availableAttributes->getAttributes());
+        $this->templateBuilder->addAttributes(
+            $template,
+            $availableAttributes->getAttributes(),
+            $this->localeResolver->getCurrentLocale()
+        );
         $this->groupSaver->save($group, ['copy_values_to_products' => false]);
         $this->addFlash($request, 'success', 'flash.variant group.attributes_added');
 

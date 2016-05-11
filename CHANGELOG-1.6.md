@@ -108,7 +108,7 @@
 - Change constructor of `Pim\Bundle\FilterBundle\Form\Type\Filter\PriceFilterType`. Replace `Pim\Bundle\CatalogBundle\Manager\CurrencyManager` argument by `Pim\Component\Catalog\Repository\CurrencyRepositoryInterface`.
 - Move namespace `Pim\Bundle\CatalogBundle\Validator` to `Pim\Component\Catalog\Validator`
 - Move `Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes` to `Pim\Component\Catalog\AttributeTypes`
-- Method `getCategoryIds` of `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface` has been removed
+- Remove method `getCategoryIds` in `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
 - Installer fixtures now support csv format for channels setup and not anymore the yml format
 - Installer fixtures does not support anymore the yml format for association types
 - Installer fixtures now support csv format for attribute groups setup and not anymore the yml format
@@ -129,16 +129,16 @@
 - Remove deprecated argument $propertyCopier from constructor of `Pim\Component\Catalog\Updater\ProductUpdater` and allow to inject supported fields
 - Remove argument $em from constructor of `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and inject `Akeneo\Component\StorageUtils\Saver\SaverInterface` and `Akeneo\Component\StorageUtils\Remover\RemoverInterface`. Replace `Doctrine\ORM\EntityRepository` by `Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface` and remove `Pim\Bundle\NotificationBundle\Factory\NotificationFactory`.
 - Rename createFamily to create in the `Pim\Bundle\CatalogBundle\Factory\FamilyFactory`
-- Removed createUser from the `Oro\Bundle\UserBundle\Entity\UserManager`. You can now use the SimpleFactory to create new users
-- Removed `Pim\Component\Catalog\Factory\ChannelFactory` and replaced it by `Akeneo\Component\StorageUtils\Factory\SimpleFactory`
-- Removed `Akeneo\Component\Classification\Factory\CategoryFactory` and replaced it by `Akeneo\Component\StorageUtils\Factory\SimpleFactory`
-- Removed `Pim\Bundle\CatalogBundle\Factory\AssociationTypeFactory` and replaced it by `Akeneo\Component\StorageUtils\Factory\SimpleFactory`
-- Removed `Pim\Component\Connector\Processor\Denormalization\AssociationTypeProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
-- Removed `Pim\Component\Connector\Processor\Denormalization\AttributeGroupProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
-- Removed `Pim\Component\Connector\Processor\Denormalization\CategoryProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
-- Removed `Pim\Component\Connector\Processor\Denormalization\FamilyProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
-- Removed `Pim\Component\Connector\Processor\Denormalization\ChannelProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
-- Inverted the two first arguments or the constructor of `Pim\Component\Connector\Processor\Denormalization\AttributeProcessor`
+- Remove createUser from the `Oro\Bundle\UserBundle\Entity\UserManager`. You can now use the SimpleFactory to create new users
+- Remove `Pim\Component\Catalog\Factory\ChannelFactory` and replaced it by `Akeneo\Component\StorageUtils\Factory\SimpleFactory`
+- Remove `Akeneo\Component\Classification\Factory\CategoryFactory` and replaced it by `Akeneo\Component\StorageUtils\Factory\SimpleFactory`
+- Remove `Pim\Bundle\CatalogBundle\Factory\AssociationTypeFactory` and replaced it by `Akeneo\Component\StorageUtils\Factory\SimpleFactory`
+- Remove `Pim\Component\Connector\Processor\Denormalization\AssociationTypeProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
+- Remove `Pim\Component\Connector\Processor\Denormalization\AttributeGroupProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
+- Remove `Pim\Component\Connector\Processor\Denormalization\CategoryProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
+- Remove `Pim\Component\Connector\Processor\Denormalization\FamilyProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
+- Remove `Pim\Component\Connector\Processor\Denormalization\ChannelProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
+- Invert the two first arguments or the constructor of `Pim\Component\Connector\Processor\Denormalization\AttributeProcessor`
 - `Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface` now extends `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
 - Remove deprecated class `Akeneo\Bundle\BatchBundle\Connector\Connector`
 - Remove deprecated class `Akeneo\Bundle\BatchBundle\Entity\FieldMapping`
@@ -271,4 +271,7 @@
 - Context option `filter_type` of `Pim\Component\Catalog\Normalizer\Structured\ProductNormalizer` changed to `filter_types` and  now accepts an array of filter names instead of just one filter name
 - Move class `Pim\Component\Catalog\Normalizer\Structured\JobInstanceNormalizer` to `Akeneo\Component\Batch\Normalizer\Structured\JobInstanceNormalizer`
 - Change constructor of `Pim\Component\Catalog\Factory\AttributeRequirementFactory` to inject `%pim_catalog.entity.attribute_requirement.class%`
-- Change constructor of `Pim\Component\Catalog\Localization\Presenter\MetricPresenter` replace argument `Symfony\Component\Translation\TranslatorInterface` by `Akeneo\Component\Localization\Presenter\PresenterInterface`
+- Change constructor of `Pim\Component\Catalog\Localization\Presenter\MetricPresenter`, replace argument `Symfony\Component\Translation\TranslatorInterface` by `Akeneo\Component\Localization\Presenter\PresenterInterface`
+- Change constructor of `Pim\Component\Catalog\Builder\ProductTemplateBuilder`, remove argument `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver`
+- Add `$locale` argument to method `addAttributes` in `Pim\Component\Catalog\Builder\ProductTemplateBuilderInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\VariantGroupAttributeController`, add `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver` argument

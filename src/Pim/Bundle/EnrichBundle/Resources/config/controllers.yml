@@ -302,6 +302,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.builder.product_template'
             - '@pim_catalog.resolver.variant_group_attributes'
+            - '@pim_enrich.resolver.locale'
 
     pim_enrich.controller.job_tracker:
         scope: request
