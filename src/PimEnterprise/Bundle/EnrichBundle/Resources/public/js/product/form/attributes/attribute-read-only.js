@@ -20,7 +20,7 @@ define(
             },
             addFieldExtension: function (event) {
                 var attribute = event.field.attribute;
-                if (!attribute.is_editable) {
+                if (attribute.is_read_only) {
                     event.field.setEditable(false);
 
                     return;

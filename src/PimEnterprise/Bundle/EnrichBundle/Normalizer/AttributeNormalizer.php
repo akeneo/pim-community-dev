@@ -68,7 +68,7 @@ class AttributeNormalizer extends BaseAttributeNormalizer
                 'max_file_size'         => $attribute->getMaxFileSize(),
                 'sort_order'            => $attribute->getSortOrder(),
                 'group_code'            => $groupCode,
-                'is_editable'           => $attribute->isEditable()
+                'is_read_only'          => $attribute->isReadOnly()
             ];
 
         // This normalizer is used in the PEF attributes loading and in the add_attributes widget. The attributes

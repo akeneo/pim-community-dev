@@ -180,4 +180,4 @@ job_execution.summary:
 pim_assets_collection: Assets collection
 
 pim_enrich_attribute_form:
-    isEditable: Is editable
+    isReadOnly: Is read only

@@ -11,7 +11,8 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 
-use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber as BaseAddAttributeTypeRelatedFieldsSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
+    as BaseAddAttributeTypeRelatedFieldsSubscriber;
 use Symfony\Component\Form\FormEvent;
 
 /**
@@ -31,7 +32,7 @@ class AddAttributeTypeRelatedFieldsSubscriber extends BaseAddAttributeTypeRelate
 
         $form = $event->getForm();
 
-        $form->add('isEditable', 'switch', [
+        $form->add('isReadOnly', 'switch', [
             'required' => false,
         ]);
     }

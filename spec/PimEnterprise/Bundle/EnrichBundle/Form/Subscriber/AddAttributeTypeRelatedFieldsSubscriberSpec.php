@@ -55,7 +55,7 @@ class AddAttributeTypeRelatedFieldsSubscriberSpec extends ObjectBehavior
         $attributeText->buildAttributeFormTypes($factory, $attribute)->willReturn([]);
 
         $event->getForm()->willReturn($form);
-        $form->add('isEditable', 'switch', [
+        $form->add('isReadOnly', 'switch', [
             'required' => false,
         ])->shouldBeCalled();
 

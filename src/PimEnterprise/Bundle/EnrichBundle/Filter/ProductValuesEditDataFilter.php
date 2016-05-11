@@ -64,7 +64,7 @@ class ProductValuesEditDataFilter extends BaseProductValuesEditDataFilter
                 return false;
             }
 
-            if (!$attribute->isEditable()) {
+            if ($attribute->isReadOnly()) {
                 return false;
             }
 

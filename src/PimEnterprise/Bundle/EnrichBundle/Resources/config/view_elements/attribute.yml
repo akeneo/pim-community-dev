@@ -13,6 +13,6 @@ services:
                     - localizable
                     - unique
                     - availableLocales
-                    - isEditable
+                    - isReadOnly
         tags:
             - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.general_parameters, position: 90 }
