@@ -123,7 +123,7 @@ class CreateJobCommand extends ContainerAwareCommand
      */
     protected function getJobParametersValidator()
     {
-        return $this->getContainer()->get('akeneo_batch.job_parameters.validator');
+        return $this->getContainer()->get('akeneo_batch.job.job_parameters_validator');
     }
 
     /**

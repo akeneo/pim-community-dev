@@ -41,7 +41,7 @@ class JobContext extends PimContext
         $jobParams = $jobParamsFactory->create($job, $configuration);
 
         /** @var JobParametersValidator $jobParamsValidator */
-        $jobParamsValidator = $this->getMainContext()->getContainer()->get('akeneo_batch.job_parameters.validator');
+        $jobParamsValidator = $this->getMainContext()->getContainer()->get('akeneo_batch.job.job_parameters_validator');
         $violations = $jobParamsValidator->validate($job, $jobParams, ['Default']);
 
         if ($violations->count() > 0) {

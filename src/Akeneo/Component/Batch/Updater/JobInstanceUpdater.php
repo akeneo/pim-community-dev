@@ -2,7 +2,7 @@
 
 namespace Akeneo\Component\Batch\Updater;
 
-// TODO bad use of BatchBundle ... anyway the ConnectorRegistry is too complex
+// TODO TIP-303: bad use of BatchBundle ... anyway the ConnectorRegistry is too complex
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobParameters;
@@ -24,7 +24,7 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
     /** @var JobParametersFactory */
     protected $jobParametersFactory;
 
-    /** @var ContainerInterface TODO: to fix circular reference, the way we load the whole Job in DI is realllly problematic */
+    /** @var ContainerInterface TODO TIP-303: to fix circular reference, the way we load the whole Job in DI is realllly problematic */
     protected $container;
 
     /**

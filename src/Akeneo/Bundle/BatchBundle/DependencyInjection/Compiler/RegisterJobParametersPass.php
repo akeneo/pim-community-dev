@@ -19,10 +19,10 @@ class RegisterJobParametersPass implements CompilerPassInterface
     const DEFAULT_PRIORITY = 100;
 
     /** @staticvar string The registry id */
-    const REGISTRY_ID = 'akeneo_batch.job_parameters.%s_registry';
+    const REGISTRY_ID = 'akeneo_batch.job.job_parameters.%s_registry';
 
     /** @staticvar string */
-    const SERVICE_TAG = 'akeneo_batch.job_parameters.%s';
+    const SERVICE_TAG = 'akeneo_batch.job.job_parameters.%s';
 
     /** @var string */
     protected $type;

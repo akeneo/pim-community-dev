@@ -87,7 +87,7 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         $job = $this->getConnectorRegistry()->getJob($jobInstance);
-        // TODO: this way to configure is really weird, setters must die...
+        // TODO TIP-303: this way to configure is really weird, setters must die...
         $jobInstance->setJob($job);
 
         $jobParamsFactory = $this->getJobParametersFactory();
@@ -289,7 +289,7 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function getJobParametersValidator()
     {
-        return $this->getContainer()->get('akeneo_batch.job_parameters.validator');
+        return $this->getContainer()->get('akeneo_batch.job.job_parameters_validator');
     }
 
     /**

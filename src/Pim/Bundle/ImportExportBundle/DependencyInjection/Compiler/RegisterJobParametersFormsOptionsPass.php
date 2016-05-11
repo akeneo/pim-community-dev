@@ -19,10 +19,10 @@ class RegisterJobParametersFormsOptionsPass implements CompilerPassInterface
     const DEFAULT_PRIORITY = 100;
 
     /** @staticvar string The registry id */
-    const REGISTRY_ID = 'pim_import_export.form.type.job_parameters.form_options_registry';
+    const REGISTRY_ID = 'pim_import_export.job_parameters.form_configuration_provider_registry';
 
     /** @staticvar string */
-    const SERVICE_TAG = 'pim_import_export.form.type.job_parameters.form_options';
+    const SERVICE_TAG = 'pim_import_export.job_parameters.form_configuration_provider';
 
     /** @var ReferenceFactory */
     protected $factory;

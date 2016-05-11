@@ -19,7 +19,7 @@ use Doctrine\Common\Collections\Collection;
  * In Akeneo Batch: the responsibility is not the same, we're able to store a JobInstance, run the Job, run it again
  * with the same config, then change the config, then run it...
  *
- * TODO: we need to double think about this
+ * TODO TIP-303: we need to double think about this
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -164,7 +164,7 @@ class JobInstance
     }
 
     /**
-     * TODO: job name in spring batch
+     * TODO TIP-303: job name in spring batch
      *
      * Get alias
      *
@@ -225,7 +225,7 @@ class JobInstance
 
     /**
      * This configuration can be used to create a JobParameters, stored like this in a legacy way
-     * TODO: we should rename and extract this configuration to be able to use JobParameters from whatever source
+     * TODO TIP-303: we should rename and extract this configuration to be able to use JobParameters from whatever source
      *
      * @param array $configuration
      *
@@ -240,7 +240,7 @@ class JobInstance
 
     /**
      * This configuration can be used to create a JobParameters, stored like this in a legacy way
-     * TODO: we should rename and extract this configuration to be able to use JobParameters from whatever source
+     * TODO TIP-303: we should rename and extract this configuration to be able to use JobParameters from whatever source
      *
      * @return array
      */
@@ -250,7 +250,7 @@ class JobInstance
     }
 
     /**
-     * TODO: such weird, we should only provide the "job name"
+     * TODO TIP-303: such weird, we should only provide the "job name"
      *
      * Set job
      *
@@ -266,7 +266,7 @@ class JobInstance
     }
 
     /**
-     * TODO: such weird, we should only provide the "job name"
+     * TODO TIP-303: such weird, we should only provide the "job name"
      *
      * Get job
      *
@@ -310,7 +310,7 @@ class JobInstance
     }
 
     /**
-     * TODO: job name in spring batch
+     * TODO TIP-303: job name in spring batch
      *
      * Set alias
      *

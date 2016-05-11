@@ -7,8 +7,8 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
-use Pim\Component\Connector\Job\JobParameters\Defaults\ProductCsvExport;
-use Pim\Component\Connector\Job\JobParameters\Defaults\SimpleCsvExport;
+use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvExport;
+use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\Connector\Writer\File\CsvWriter;
 
 /**
@@ -57,10 +57,10 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
         );
         $this->filesystem->put($key, '');
 
-        // TODO: not convinced at all by this config ... need to separate config and exec concern?
+        // TODO TIP-303: not convinced at all by this config ... need to separate config and exec concern?
         $jobExecution = new JobExecution();
-        $default = new ProductCsvExport(new SimpleCsvExport([]), []);
-        $params = $default->getParameters();
+        $provider = new ProductCsvExport(new SimpleCsvExport([]), []);
+        $params = $provider->getDefaultValues();
         $params ['filePath'] = $this->filesystem->getAdapter()->getPathPrefix() . $key;
         $jobParameters = new JobParameters($params);
         $jobExecution->setJobParameters($jobParameters);

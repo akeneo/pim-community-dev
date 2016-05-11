@@ -33,8 +33,8 @@ use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Job\JobParameters\Defaults\ProductCsvImport;
-use Pim\Component\Connector\Job\JobParameters\Defaults\SimpleCsvExport;
+use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
+use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
@@ -101,8 +101,8 @@ class FixturesContext extends BaseFixturesContext
         $processor = $this->getContainer()->get('pim_connector.processor.denormalization.product.flat');
         // TODO: not convinced at all by this config ... need to separate config and exec concern?
         $jobExecution = new JobExecution();
-        $default = new ProductCsvImport(new SimpleCsvExport([]), []);
-        $params = $default->getParameters();
+        $provider = new ProductCsvImport(new SimpleCsvExport([]), []);
+        $params = $provider->getDefaultValues();
         $params['enabledComparison'] = false;
         $params['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $params['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;

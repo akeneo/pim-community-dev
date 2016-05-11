@@ -3,6 +3,6 @@ Pim\Component\Connector\Writer\File\AbstractFileWriter:
         filePath:
             - NotBlank:
                 groups: [Execution]
-            # TODO: check this constraints then drop this file
+            # TODO TIP-303: check this constraints then drop this file
             - Pim\Bundle\ImportExportBundle\Validator\Constraints\WritableDirectory:
                 groups: [Execution]

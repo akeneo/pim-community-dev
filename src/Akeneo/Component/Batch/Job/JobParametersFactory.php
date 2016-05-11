@@ -2,7 +2,7 @@
 
 namespace Akeneo\Component\Batch\Job;
 
-use Akeneo\Component\Batch\Job\JobParameters\DefaultParametersRegistry;
+use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderRegistry;
 
 /**
  * Allow to create immutable JobParameters with passed parameters completed by default values
@@ -13,17 +13,17 @@ use Akeneo\Component\Batch\Job\JobParameters\DefaultParametersRegistry;
  */
 class JobParametersFactory
 {
-    /** @var DefaultParametersRegistry */
+    /** @var DefaultValuesProviderRegistry */
     protected $defaultRegistry;
 
     /** @var string */
     protected $jobParametersClass;
 
     /**
-     * @param DefaultParametersRegistry $registry
-     * @param string                    $jobParametersClass
+     * @param DefaultValuesProviderRegistry $registry
+     * @param string                        $jobParametersClass
      */
-    public function __construct(DefaultParametersRegistry $registry, $jobParametersClass)
+    public function __construct(DefaultValuesProviderRegistry $registry, $jobParametersClass)
     {
         $this->defaultRegistry = $registry;
         $this->jobParametersClass = $jobParametersClass;
@@ -37,8 +37,8 @@ class JobParametersFactory
      */
     public function create(JobInterface $job, array $parameters = [])
     {
-        $defaults = $this->defaultRegistry->getDefaultParameters($job);
-        $parameters = array_merge($defaults->getParameters(), $parameters);
+        $defaults = $this->defaultRegistry->get($job);
+        $parameters = array_merge($defaults->getDefaultValues(), $parameters);
 
         return new $this->jobParametersClass($parameters);
     }

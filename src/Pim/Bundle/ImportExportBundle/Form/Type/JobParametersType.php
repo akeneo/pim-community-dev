@@ -3,8 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
 use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Job\JobParameters\ConstraintsRegistry;
-use Pim\Bundle\ImportExportBundle\Form\Type\JobParameters\FormsOptionsRegistry;
+use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderRegistry;
+use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,19 +22,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class JobParametersType extends AbstractType implements DataMapperInterface
 {
-    /** @var FormsOptionsRegistry */
-    protected $formsOptionsRegistry;
+    /** @var FormConfigurationProviderRegistry */
+    protected $configProviderRegistry;
 
-    /** @var ConstraintsRegistry */
-    protected $constraintsRegistry;
+    /** @var ConstraintCollectionProviderRegistry */
+    protected $constraintProviderRegistry;
 
     /**
-     * @param FormsOptionsRegistry $formsOptionsRegistry
+     * @param FormConfigurationProviderRegistry    $configProviderRegistry
+     * @param ConstraintCollectionProviderRegistry $constraintProviderRegistry
      */
-    public function __construct(FormsOptionsRegistry $formsOptionsRegistry, ConstraintsRegistry $constraintsRegistry)
-    {
-        $this->formsOptionsRegistry = $formsOptionsRegistry;
-        $this->constraintsRegistry = $constraintsRegistry;
+    public function __construct(
+        FormConfigurationProviderRegistry $configProviderRegistry,
+        ConstraintCollectionProviderRegistry $constraintProviderRegistry
+    ) {
+        $this->configProviderRegistry = $configProviderRegistry;
+        $this->constraintProviderRegistry = $constraintProviderRegistry;
     }
 
     /**
@@ -44,30 +47,23 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     {
         $builder->setDataMapper($this);
         $factory = $builder->getFormFactory();
-        $formOptionsRegistry = $this->formsOptionsRegistry;
-        // TODO: constraints registry could be injected in the form options registry?
-        // TODO: re-work the following form options building (copy/pasted from dropped ConfigurationFormType)
-        // TODO: move the whole FormType, DataTransformer, Registry in the EnrichBundle to prepare the drop of
-        //       ImportExportBundle
-        $constraintsRegistry = $this->constraintsRegistry;
+        $configProviderRegistry = $this->configProviderRegistry;
+        $constraintProviderRegistry = $this->constraintProviderRegistry;
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($factory, $formOptionsRegistry, $constraintsRegistry) {
+            function (FormEvent $event) use ($factory, $configProviderRegistry, $constraintProviderRegistry) {
                 $form   = $event->getForm();
                 $jobInstance = $form->getRoot()->getData();
                 if (null == $jobInstance->getId()) {
                     return;
                 }
-                $formOptions = $formOptionsRegistry->getFormsOptions($jobInstance->getJob());
-                $configs = $formOptions->getOptions();
+                $configProvider = $configProviderRegistry->get($jobInstance->getJob());
+                $configs = $configProvider->getFormConfiguration();
 
                 $job = $jobInstance->getJob();
-                $constraints = $constraintsRegistry->getConstraints($job);
-                $fieldConstraints = [];
-                if (!$constraints instanceof JobParameters\EmptyConstraints) {
-                    $collection = $constraints->getConstraints();
-                    $fieldConstraints = $collection->fields;
-                }
+                $constraintProvider = $constraintProviderRegistry->get($job);
+                $collection = $constraintProvider->getConstraintCollection();
+                $fieldConstraints = $collection->fields;
 
                 foreach ($configs as $parameter => $config) {
                     if (isset($config['system']) && true === $config['system']) {
@@ -106,6 +102,7 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     {
         $resolver->setDefaults(
             [
+                // TODO TIP-303: to inject
                 'data_class' => 'Akeneo\\Component\\Batch\\Job\\JobParameters',
             ]
         );
@@ -130,6 +127,7 @@ class JobParametersType extends AbstractType implements DataMapperInterface
         foreach ($forms as $form) {
             $parameters[$form->getName()] = $form->getData();
         }
+        // TODO TIP-303: no new here
         $data = new JobParameters($parameters);
     }
 

@@ -205,7 +205,7 @@ services:
             - '@akeneo_batch.updater.job_instance'
             - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@akeneo_batch.job_parameters.validator'
+            - '@akeneo_batch.job.job_parameters_validator'
             - '@akeneo_batch.job_parameters_factory'
 
     pim_connector.processor.normalization.group.flat:

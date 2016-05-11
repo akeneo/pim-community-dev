@@ -2,7 +2,7 @@
 
 namespace Akeneo\Component\Batch\Job;
 
-use Akeneo\Component\Batch\Job\JobParameters\ConstraintsRegistry;
+use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderRegistry;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -20,14 +20,14 @@ class JobParametersValidator
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var ConstraintsRegistry */
+    /** @var ConstraintCollectionProviderRegistry */
     protected $registry;
 
     /**
-     * @param ValidatorInterface  $validator
-     * @param ConstraintsRegistry $registry
+     * @param ValidatorInterface                   $validator
+     * @param ConstraintCollectionProviderRegistry $registry
      */
-    public function __construct(ValidatorInterface $validator, ConstraintsRegistry $registry)
+    public function __construct(ValidatorInterface $validator, ConstraintCollectionProviderRegistry $registry)
     {
         $this->validator = $validator;
         $this->registry = $registry;
@@ -43,9 +43,10 @@ class JobParametersValidator
      */
     public function validate(Job $job, JobParameters $jobParameters, $groups = null)
     {
-        $constraints = $this->registry->getConstraints($job)->getConstraints();
+        $provider = $this->registry->get($job);
+        $collection = $provider->getConstraintCollection();
         $parameters = $jobParameters->getParameters();
-        $errors = $this->validator->validateValue($parameters, $constraints, $groups);
+        $errors = $this->validator->validateValue($parameters, $collection, $groups);
 
         return $errors;
     }

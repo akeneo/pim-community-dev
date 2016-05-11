@@ -11,4 +11,4 @@ Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader:
                 type: "bool"
             - IsTrue:
                 groups: [UploadExecution]
-# TODO: add constraint class + drop this file
+# TODO TIP-303: add constraint class + drop this file

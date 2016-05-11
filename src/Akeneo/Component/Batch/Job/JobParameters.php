@@ -55,6 +55,8 @@ class JobParameters
     }
 
     /**
+     * TODO TIP-303: implements ArrayAccess?
+     *
      * @return array
      */
     public function getParameters()
