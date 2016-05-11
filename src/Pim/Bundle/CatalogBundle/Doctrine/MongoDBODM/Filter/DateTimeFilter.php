@@ -159,7 +159,7 @@ class DateTimeFilter extends AbstractFilter implements FieldFilterInterface
             if (!$dateTime || 0 < $dateTime->getLastErrors()['warning_count']) {
                 throw InvalidArgumentException::expected(
                     $type,
-                    'a string with the format ' . static::DATETIME_FORMAT,
+                    'a string with the format yyyy-mm-dd H:i:s',
                     'filter',
                     'date',
                     $value
