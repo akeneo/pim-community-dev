@@ -9,12 +9,18 @@ use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use Prophecy\Argument;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FilterExtensionSpec extends ObjectBehavior
 {
-    function let(Manager $manager, FiltersConfigurator $configurator)
-    {
-        $this->beConstructedWith($manager, $configurator);
+    function let(
+        ContainerInterface $container,
+        FiltersConfigurator $configurator,
+        Manager $manager
+    ) {
+        $container->get('oro_datagrid.datagrid.manager')->willReturn($manager);
+        $container->get('pim_datagrid.datagrid.product.filters_configurator')->willReturn($configurator);
+        $this->beConstructedWith($container);
     }
 
     function it_is_a_twig_extension()

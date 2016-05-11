@@ -158,7 +158,6 @@ class AppKernel extends Kernel
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
-            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
         ];
     }
 
