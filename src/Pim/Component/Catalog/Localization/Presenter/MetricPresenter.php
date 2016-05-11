@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Localization\Presenter;
 
 use Akeneo\Component\Localization\Factory\NumberFactory;
 use Akeneo\Component\Localization\Presenter\NumberPresenter;
-use Symfony\Component\Translation\TranslatorInterface;
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
 
 /**
  * Metric presenter, able to render metric data readable for a human
@@ -15,19 +15,22 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class MetricPresenter extends NumberPresenter
 {
-    /** @var TranslatorInterface */
-    protected $translator;
+    /** @var PresenterInterface */
+    protected $translatablePresenter;
 
     /**
-     * @param NumberFactory       $numberFactory
-     * @param array               $attributeTypes
-     * @param TranslatorInterface $translator
+     * @param NumberFactory      $numberFactory
+     * @param array              $attributeTypes
+     * @param PresenterInterface $translatablePresenter
      */
-    public function __construct(NumberFactory $numberFactory, array $attributeTypes, TranslatorInterface $translator)
-    {
+    public function __construct(
+        NumberFactory $numberFactory,
+        array $attributeTypes,
+        PresenterInterface $translatablePresenter
+    ) {
         parent::__construct($numberFactory, $attributeTypes);
 
-        $this->translator = $translator;
+        $this->translatablePresenter = $translatablePresenter;
     }
 
     /**
@@ -40,7 +43,9 @@ class MetricPresenter extends NumberPresenter
         }
 
         $amount = isset($value['data']) ? parent::present($value['data'], $options) : null;
-        $unit = isset($value['unit']) ? $this->translator->trans($value['unit'], [], 'measures') : null;
+        $unit   = isset($value['unit'])
+            ? $this->translatablePresenter->present($value['unit'], ['domain' => 'measures'])
+            : null;
 
         return trim(sprintf('%s %s', $amount, $unit));
     }

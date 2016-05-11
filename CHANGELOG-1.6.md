@@ -271,3 +271,4 @@
 - Context option `filter_type` of `Pim\Component\Catalog\Normalizer\Structured\ProductNormalizer` changed to `filter_types` and  now accepts an array of filter names instead of just one filter name
 - Move class `Pim\Component\Catalog\Normalizer\Structured\JobInstanceNormalizer` to `Akeneo\Component\Batch\Normalizer\Structured\JobInstanceNormalizer`
 - Change constructor of `Pim\Component\Catalog\Factory\AttributeRequirementFactory` to inject `%pim_catalog.entity.attribute_requirement.class%`
+- Change constructor of `Pim\Component\Catalog\Localization\Presenter\MetricPresenter` replace argument `Symfony\Component\Translation\TranslatorInterface` by `Akeneo\Component\Localization\Presenter\PresenterInterface`
