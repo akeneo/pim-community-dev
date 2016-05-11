@@ -10,11 +10,11 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber as CEUserPreferencesSubscriber;
 use Pim\Bundle\UserBundle\Form\Type\UserType as BaseUserType;
+use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use PimEnterprise\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber as EEUserPreferencesSubscriber;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,18 +31,18 @@ class UserType extends BaseUserType
     /** @var EEUserPreferencesSubscriber */
     protected $eeSubscriber;
 
-    /** @var ChoicesProviderInterface */
-    protected $categoryRepository;
+    /** @var TranslatedLabelsProviderInterface */
+    protected $categoryProvider;
 
     /**
-     * @param TokenStorageInterface       $tokenStorage
-     * @param Request                     $request
-     * @param CEUserPreferencesSubscriber $ceSubscriber
-     * @param RoleRepository              $roleRepository
-     * @param GroupRepository             $groupRepository
-     * @param EventDispatcherInterface    $eventDispatcher
-     * @param EEUserPreferencesSubscriber $eeSubscriber
-     * @param ChoicesProviderInterface    $categoryRepository
+     * @param TokenStorageInterface             $tokenStorage
+     * @param Request                           $request
+     * @param CEUserPreferencesSubscriber       $ceSubscriber
+     * @param RoleRepository                    $roleRepository
+     * @param GroupRepository                   $groupRepository
+     * @param EventDispatcherInterface          $eventDispatcher
+     * @param EEUserPreferencesSubscriber       $eeSubscriber
+     * @param TranslatedLabelsProviderInterface $categoryProvider
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -52,7 +52,7 @@ class UserType extends BaseUserType
         GroupRepository $groupRepository,
         EventDispatcherInterface $eventDispatcher,
         EEUserPreferencesSubscriber $eeSubscriber,
-        ChoicesProviderInterface $categoryRepository
+        TranslatedLabelsProviderInterface $categoryProvider
     ) {
         parent::__construct(
             $tokenStorage,
@@ -63,8 +63,8 @@ class UserType extends BaseUserType
             $eventDispatcher
         );
 
-        $this->eeSubscriber       = $eeSubscriber;
-        $this->categoryRepository = $categoryRepository;
+        $this->eeSubscriber     = $eeSubscriber;
+        $this->categoryProvider = $categoryProvider;
     }
 
     /**
@@ -107,7 +107,7 @@ class UserType extends BaseUserType
             'light_entity',
             [
                 'select2'    => true,
-                'repository' => $this->categoryRepository
+                'repository' => $this->categoryProvider
             ]
         );
     }

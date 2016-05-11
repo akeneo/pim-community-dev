@@ -12,6 +12,6 @@ services:
     pimee_product_asset.manager.category:
         class: '%pim_catalog.manager.category.class%'
         arguments:
-            - '@pim_catalog.repository.category'
+            - '@pimee_product_asset.repository.category'
             - '@pimee_security.repository.category_access'
             - '@security.authorization_checker'
