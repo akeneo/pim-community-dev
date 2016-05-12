@@ -27,6 +27,7 @@ class Grid extends Index
     protected $filterDecorators = [
         'boolean' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\BooleanDecorator'
         ],
         'choice' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
@@ -614,7 +615,7 @@ class Grid extends Index
         $searchField->setValue($filterName);
 
         $filterElement = $this->spin(function () use ($manageFilters, $filterName) {
-            $filterElement = $manageFilters->find('css', sprintf('label:contains("%s")', $filterName));
+            $filterElement = $manageFilters->find('css', sprintf('input[value="%s"]', $filterName));
             if (null === $filterElement || !$filterElement->isVisible()) {
                 return false;
             }
