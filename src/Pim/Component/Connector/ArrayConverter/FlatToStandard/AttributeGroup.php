@@ -80,7 +80,7 @@ class AttributeGroup implements ArrayConverterInterface
             }
             $convertedItem['label'][$matches['locale']] = $data;
         } else {
-            $convertedItem[$field] = explode(',', $data);
+            $convertedItem[$field] = empty($data) ? [] : explode(',', $data);
         }
 
         return $convertedItem;

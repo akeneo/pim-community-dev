@@ -44,7 +44,7 @@ class AttributeGroupNormalizerSpec extends ObjectBehavior
 
         $this->normalize($group)->shouldReturn([
             'code'       => 'code',
-            'sortOrder'  => 1,
+            'sort_order' => 1,
             'attributes' => ['type', 'size', 'price']
         ]);
     }
