@@ -46,6 +46,7 @@ class Grid extends Index
         ],
         'number' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\NumberDecorator',
         ],
         'price' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
