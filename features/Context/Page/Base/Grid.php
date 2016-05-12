@@ -27,11 +27,11 @@ class Grid extends Index
     protected $filterDecorators = [
         'boolean' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
-            'Pim\Behat\Decorator\Grid\Filter\BooleanDecorator'
+            'Pim\Behat\Decorator\Grid\Filter\BooleanDecorator',
         ],
         'choice' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
-            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator'
+            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
         ],
         'date' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
@@ -55,6 +55,7 @@ class Grid extends Index
         ],
         'product_completeness' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\CompletenessDecorator',
         ],
         'product_scope' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
