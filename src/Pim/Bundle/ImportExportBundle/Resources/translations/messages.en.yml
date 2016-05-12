@@ -146,6 +146,7 @@ History: History
 pane.accordion:
     properties: Properties
     global_settings: Global settings
+    filters: Filters
 
 # Popin titles
 popin.create:

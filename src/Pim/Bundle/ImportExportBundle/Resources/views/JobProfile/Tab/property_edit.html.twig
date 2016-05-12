@@ -7,8 +7,12 @@
 
     {% set globalSettings %}
         {% for step in form.job.steps %}
-            {% for child in step.children %}
-                {{ form_widget(child) }}
+            {% for stepElement in step.children %}
+                {% for field in stepElement.children %}
+                    {% if field.vars.attr['data-tab'] is not defined %}
+                        {{ form_row(field) }}
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
         {% endfor %}
     {% endset %}

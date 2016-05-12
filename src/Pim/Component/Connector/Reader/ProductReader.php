@@ -130,6 +130,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
                     'select2'  => true,
                     'label'    => 'pim_connector.export.channel.label',
                     'help'     => 'pim_connector.export.channel.help',
+                    'attr'     => ['data-tab' => 'content']
                 ],
             ],
             'enabled' => [
@@ -144,6 +145,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
                     'select2'  => true,
                     'label'    => 'pim_connector.export.status.label',
                     'help'     => 'pim_connector.export.status.help',
+                    'attr'     => ['data-tab' => 'content']
                 ]
             ],
         ];

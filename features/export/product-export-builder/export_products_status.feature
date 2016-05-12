@@ -1,8 +1,8 @@
 @javascript
-Feature: Export products according to their status
+Feature: Export products according to their statuses
   In order to use the enriched product data
   As a product manager
-  I need to be able to export the product according their status
+  I need to be able to export the products according to their statuses
 
   Background:
     Given an "footwear" catalog configuration
@@ -41,7 +41,7 @@ Feature: Export products according to their status
     SNKRS-1R;summer_collection;0;rangers;;Black rangers
     """
 
-  Scenario: Export products no matter their status
+  Scenario: Export products no matter their statuses
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
       | enabled  | all                                     |
