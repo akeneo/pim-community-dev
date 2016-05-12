@@ -25,7 +25,7 @@
                 });
     </script>
 
-    <div id="pimee_import_export-job_profile-tab-permission" class="tab-pane buffer-top">
+    <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane buffer-top">
         {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }, false, 'permission') }}
     </div>
 {% endif %}
