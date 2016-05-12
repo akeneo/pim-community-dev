@@ -134,8 +134,8 @@ Feature: List all rules
       | Action    | Then true is set into enabled                                       |
 
     And I should be able to use the following filters:
-      | filter | value       | result           |
-      | Code   | description | copy_description |
+      | filter | operator | value       | result           |
+      | code   | contains | description | copy_description |
 
   Scenario: Successfully delete a rule
     When I click on the "Delete" action of the row which contains "copy_description"

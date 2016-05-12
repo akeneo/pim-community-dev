@@ -71,6 +71,6 @@ Feature: Enforce no permissions for an asset category
     And I fill in "Allowed to view assets" with "" on the current page
     And I save the category
     And I should see the flash message "Tree successfully updated"
-    Then I should see the "Images" category under the "Asset main catalog" category
-    And I should see the "Print" category under the "Asset main catalog" category
-    And I expand the "Asset main catalog" category
+    Then I should see the "images" category under the "asset_main_catalog" category
+    And I should see the "print" category under the "asset_main_catalog" category
+    And I expand the "asset_main_catalog" category

@@ -34,9 +34,9 @@ Feature: Classify many products at once for the tree I have access
     Then I should not see "Boots"
     And I should not see "Master catalog"
     When I select the "Shoes" tree
-    And I expand the "Shoes" category
-    And I click on the "Vintage" category
-    And I click on the "Classy" category
+    And I expand the "shoes" category
+    And I click on the "vintage" category
+    And I click on the "classy" category
     And I move on to the next step
     And I wait for the "classify" mass-edit job to finish
     And I am on the products page

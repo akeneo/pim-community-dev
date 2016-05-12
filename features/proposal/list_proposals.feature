@@ -42,15 +42,15 @@ Feature: List proposals
     And the rows should be sorted descending by proposed at
     And I should be able to sort the rows by author and proposed at
     And I should be able to use the following filters:
-      | filter        | value             | result                  |
-      | Author        | Julia             | jacket                  |
-      | Author        | Sandra,Mary       | sweater, tshirt         |
-      | Product label | tshirt            | tshirt                  |
-      | Product label | tshirt,jacket     | tshirt, jacket          |
-      | Attribute     | Name              | tshirt, sweater, jacket |
-      | Attribute     | Description       | tshirt                  |
-      | Attribute     | Price             | jacket                  |
-      | Attribute     | Description,Price | tshirt, jacket          |
+      | filter    | operator | value             | result                  |
+      | author    |          | Julia             | jacket                  |
+      | author    |          | Sandra,Mary       | sweater, tshirt         |
+      | product   |          | tshirt            | tshirt                  |
+      | product   |          | tshirt,jacket     | tshirt, jacket          |
+      | attribute |          | Name              | tshirt, sweater, jacket |
+      | attribute |          | Description       | tshirt                  |
+      | attribute |          | Price             | jacket                  |
+      | attribute |          | Description,Price | tshirt, jacket          |
 
   Scenario: Successfully approve or reject a proposal
     Given I am logged in as "Peter"

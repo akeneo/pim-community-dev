@@ -11,31 +11,31 @@ Feature: Filter product assets
 
   Scenario: Successfully filter product assets
     And I should be able to use the following filters:
-      | filter      | value                             | result                                                                                                      |
-      | Code        | contains ma                       | man_wall, machine                                                                                           |
-      | Code        | is equal to bridge                | bridge                                                                                                      |
-      | Tags        | in list women                     | mouette                                                                                                     |
-      | Tags        | in list lacework,men              | eagle, minivan                                                                                              |
-      | Tags        | is empty                          | photo                                                                                                       |
-      | End of use  | between 01/01/2006 and 01/01/2008 | paint, dog                                                                                                  |
-      | End of use  | more than 09/01/2015              | autumn, tiger                                                                                               |
-      | End of use  | less than 01/01/2030              | dog, autumn, paint, akene                                                                                   |
-      | Description | contains animal                   | dog, mouette                                                                                                |
-      | Description | does not contain water            | paint, chicagoskyline, akene, dog, machine, minivan, mouette, tiger                                         |
+      | filter      | operator         | value                     | result                                                              |
+      | code        | contains         | ma                        | man_wall, machine                                                   |
+      | code        | is equal to      | bridge                    | bridge                                                              |
+      | tags        | in list          | women                     | mouette                                                             |
+      | tags        | in list          | lacework, men             | eagle, minivan                                                      |
+      | tags        | is empty         |                           | photo                                                               |
+      | endOfUseAt  | between          | 01/01/2006 and 01/01/2008 | paint, dog                                                          |
+      | endOfUseAt  | more than        | 09/01/2015                | autumn, tiger                                                       |
+      | endOfUseAt  | less than        | 01/01/2030                | dog, autumn, paint, akene                                           |
+      | description | contains         | animal                    | dog, mouette                                                        |
+      | description | does not contain | water                     | paint, chicagoskyline, akene, dog, machine, minivan, mouette, tiger |
 
   Scenario: Successfully filter product assets by category
     When I select the "Asset main catalog" tree
     Then the grid should contain 15 elements
     When I uncheck the "Include sub-categories" switch
-    And I expand the "Images" category
+    And I expand the "images" category
     Then I should be able to use the following filters:
-      | filter         | value  | result                                          |
-      | asset category | images | paint, chicagoskyline, akene, autumn and bridge |
-      | asset category | other  | autumn, bridge, dog, eagle and machine          |
-      | asset category | situ   | paint, man_wall, minivan, mouette and mountain  |
+      | filter   | operator | value  | result                                          |
+      | category |          | images | paint, chicagoskyline, akene, autumn and bridge |
+      | category |          | other  | autumn, bridge, dog, eagle and machine          |
+      | category |          | situ   | paint, man_wall, minivan, mouette and mountain  |
     When I check the "Include sub-categories" switch
     Then I should be able to use the following filters:
-      | filter         | value  | result                                                                                                     |
-      | asset category | images | paint, chicagoskyline, akene, autumn, bridge, dog, eagle, machine, man_wall, minivan, mouette and mountain |
-    When I filter by "asset category" with value "unclassified"
+      | filter   | operator | value  | result                                                                                                     |
+      | category |          | images | paint, chicagoskyline, akene, autumn, bridge, dog, eagle, machine, man_wall, minivan, mouette and mountain |
+    When I filter by "category" with operator "unclassified" and value ""
     Then I should see assets mugs, photo and tiger

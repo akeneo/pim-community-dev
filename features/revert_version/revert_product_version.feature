@@ -84,9 +84,9 @@ Feature: Revert a product to a previous version
     And I edit the "sandals" product
     And I visit the "Categories" tab
     And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
-    And I click on the "Winter collection" category
-    And I click on the "Summer collection" category
+    And I expand the "2014_collection" category
+    And I click on the "winter_collection" category
+    And I click on the "summer_collection" category
     And I press the "Save" button
     And the history of the product "sandals" has been built
     Then I open the history

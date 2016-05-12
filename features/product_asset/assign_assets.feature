@@ -83,14 +83,14 @@ Feature: Assign assets to a product
     When I disable the inclusion of sub-categories
     And I expand the "Images" category
     Then I should be able to use the following filters:
-      | filter         | value  | result                                          |
-      | asset category | images | paint, chicagoskyline, akene, autumn and bridge |
-      | asset category | other  | autumn, bridge, dog, eagle and machine          |
-      | asset category | situ   | paint, man_wall, minivan, mouette and mountain  |
+      | filter         | operator | value  | result                                          |
+      | asset category |          | images | paint, chicagoskyline, akene, autumn and bridge |
+      | asset category |          | other  | autumn, bridge, dog, eagle and machine          |
+      | asset category |          | situ   | paint, man_wall, minivan, mouette and mountain  |
     When I enable the inclusion of sub-categories
     Then I should be able to use the following filters:
-      | filter         | value  | result                                                                                                     |
-      | asset category | images | paint, chicagoskyline, akene, autumn, bridge, dog, eagle, machine, man_wall, minivan, mouette and mountain |
+      | filter         | operator | value  | result                                                                                                     |
+      | asset category |          | images | paint, chicagoskyline, akene, autumn, bridge, dog, eagle, machine, man_wall, minivan, mouette and mountain |
     When I filter by "asset category" with value "unclassified"
     Then I should see assets mugs, photo and tiger
 
@@ -101,7 +101,7 @@ Feature: Assign assets to a product
     And I add available attributes Front view
     And I start to manage assets for "Front view"
     Then I should see the text "Asset main catalog"
-    And I confirm the asset modification
+    And I cancel the asset modification
     And I save the product
     When I am on the "Administrator" role page
     And I remove rights to List asset categories in the asset picker
@@ -110,6 +110,6 @@ Feature: Assign assets to a product
     And I add available attributes Front view
     And I start to manage assets for "Front view"
     Then I should not see the text "Asset main catalog"
-    And I confirm the asset modification
+    And I cancel the asset modification
     And I save the product
     And I reset the "Administrator" rights
