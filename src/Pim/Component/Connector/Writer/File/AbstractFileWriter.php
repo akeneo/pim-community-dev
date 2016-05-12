@@ -48,19 +48,6 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     }
 
     /**
-     * Get the file path
-     *
-     * @return string
-     */
-    public function getFilePath()
-    {
-        // TODO TIP-303: why we need this?
-        $parameters = $this->stepExecution->getJobParameters();
-
-        return $parameters->getParameter('filePath');
-    }
-
-    /**
      * Get the file path in which to write the data
      *
      * @return string
@@ -69,10 +56,10 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     {
         if (null === $this->resolvedFilePath) {
             $parameters = $this->stepExecution->getJobParameters();
-            $filePath = $parameters->getParameter('filePath');
+            $filePath = $parameters->get('filePath');
 
-            if ($parameters->hasParameter('mainContext')){
-                $mainContext = $parameters->getParameter('mainContext');
+            if ($parameters->has('mainContext')){
+                $mainContext = $parameters->get('mainContext');
                 foreach ($mainContext as $key => $value) {
                     $this->filePathResolverOptions['parameters']['%' . $key . '%'] = $value;
                 }

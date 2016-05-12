@@ -119,7 +119,7 @@ class YamlReader extends FileReader implements
     protected function getFileData()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->getParameter('filePath');
+        $filePath = $jobParameters->get('filePath');
         $fileData = current(Yaml::parse(file_get_contents($filePath)));
         if (null === $fileData) {
             return null;

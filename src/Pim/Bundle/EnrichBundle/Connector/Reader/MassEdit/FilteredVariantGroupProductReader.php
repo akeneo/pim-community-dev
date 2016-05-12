@@ -40,8 +40,8 @@ class FilteredVariantGroupProductReader extends FilteredProductReader
     {
         if (null === $this->cleanedFilters) {
             $jobParameters = $this->stepExecution->getJobParameters();
-            $filters = $jobParameters->getParameter('filters');
-            $actions = $jobParameters->getParameter('actions');
+            $filters = $jobParameters->get('filters');
+            $actions = $jobParameters->get('actions');
             $this->cleanedFilters = $this->cleaner->clean($this->stepExecution, $filters, $actions);
             var_dump($filters);
             var_dump($this->cleanedFilters);

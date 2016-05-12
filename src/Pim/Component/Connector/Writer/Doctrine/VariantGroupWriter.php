@@ -40,7 +40,7 @@ class VariantGroupWriter extends BaseWriter
     public function write(array $variantGroups)
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $isCopyValues = $jobParameters->getParameter('copyValues');
+        $isCopyValues = $jobParameters->get('copyValues');
         if ($isCopyValues) {
             $this->copyValuesToProducts($variantGroups);
         }

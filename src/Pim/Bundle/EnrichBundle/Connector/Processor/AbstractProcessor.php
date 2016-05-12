@@ -71,6 +71,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     {
         $jobParameters = $this->stepExecution->getJobParameters();
 
-        return $jobParameters->getParameter('actions');
+        return $jobParameters->get('actions');
     }
 }

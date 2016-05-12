@@ -101,6 +101,6 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
     {
         $jobParameters = $this->stepExecution->getJobParameters();
 
-        return $jobParameters->getParameter('filters');
+        return $jobParameters->get('filters');
     }
 }

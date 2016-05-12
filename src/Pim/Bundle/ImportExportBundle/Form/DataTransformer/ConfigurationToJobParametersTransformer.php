@@ -28,6 +28,7 @@ class ConfigurationToJobParametersTransformer implements DataTransformerInterfac
             return new JobParameters([]);
         }
 
+        // TODO TIP-303: inject the class, avoid the direct instanciation
         return new JobParameters($configuration);
     }
 
@@ -40,6 +41,6 @@ class ConfigurationToJobParametersTransformer implements DataTransformerInterfac
      */
     public function reverseTransform($jobParameters)
     {
-        return $jobParameters->getParameters();
+        return $jobParameters->all();
     }
 }

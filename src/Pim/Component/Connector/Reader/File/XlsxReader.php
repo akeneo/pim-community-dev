@@ -46,7 +46,7 @@ class XlsxReader extends AbstractConfigurableStepElement implements
     {
         if (null === $this->fileIterator) {
             $jobParameters = $this->stepExecution->getJobParameters();
-            $filePath = $jobParameters->getParameter('filePath');
+            $filePath = $jobParameters->get('filePath');
             $this->fileIterator = $this->fileIteratorFactory->create($filePath);
             $this->fileIterator->rewind();
         }

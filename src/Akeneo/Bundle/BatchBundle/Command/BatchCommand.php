@@ -120,7 +120,7 @@ class BatchCommand extends ContainerAwareCommand
                     'Job instance "%s" running the job "%s" with parameters "%s" is invalid because of "%s"',
                     $code,
                     $job->getName(),
-                    print_r($jobParameters->getParameters(), true),
+                    print_r($jobParameters->all(), true),
                     $this->getErrorMessages($errors)
                 )
             );

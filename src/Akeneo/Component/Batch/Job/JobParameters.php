@@ -15,7 +15,7 @@ namespace Akeneo\Component\Batch\Job;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobParameters
+class JobParameters implements \IteratorAggregate, \Countable
 {
     /** @var array */
     protected $parameters;
@@ -29,23 +29,27 @@ class JobParameters
     }
 
     /**
+     * Checks if the parameter is defined
+     *
      * @param string $key
      *
      * @return bool
      */
-    public function hasParameter($key)
+    public function has($key)
     {
         return array_key_exists($key, $this->parameters);
     }
 
     /**
+     * Returns the parameter value
+     *
      * @param string $key
      *
      * @return mixed
      *
      * @throws UndefinedJobParameterException
      */
-    public function getParameter($key)
+    public function get($key)
     {
         if (!array_key_exists($key, $this->parameters)) {
             throw new UndefinedJobParameterException(sprintf('Parameter "%s" is undefined', $key));
@@ -55,12 +59,28 @@ class JobParameters
     }
 
     /**
-     * TODO TIP-303: implements ArrayAccess?
+     * Returns the parameters array
      *
      * @return array
      */
-    public function getParameters()
+    public function all()
     {
         return $this->parameters;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->parameters);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        return count($this->parameters);
     }
 }

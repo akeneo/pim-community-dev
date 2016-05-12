@@ -53,13 +53,13 @@ class JobContext extends PimContext
             throw new \InvalidArgumentException(
                 sprintf(
                     'The parameters "%s" are not valid for the job "%s" due to violations "%s"',
-                    print_r($jobParams->getParameters(), true),
+                    print_r($jobParams->all(), true),
                     $job->getName(),
                     implode(', ', $messages)
                 )
             );
         }
-        $jobInstance->setRawConfiguration($jobParams->getParameters());
+        $jobInstance->setRawConfiguration($jobParams->all());
 
         $saver = $this->getMainContext()->getContainer()->get('akeneo_batch.saver.job_instance');
         $saver->save($jobInstance);

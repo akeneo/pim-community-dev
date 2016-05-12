@@ -85,7 +85,7 @@ class ProductAssociationProcessor extends AbstractProcessor
         }
 
         $parameters = $this->stepExecution->getJobParameters();
-        $enabledComparison = $parameters->getParameter('enabledComparison');
+        $enabledComparison = $parameters->get('enabledComparison');
         if ($enabledComparison) {
             $convertedItem = $this->filterIdenticalData($product, $convertedItem);
 

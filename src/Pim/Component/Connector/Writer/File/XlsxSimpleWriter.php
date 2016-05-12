@@ -47,7 +47,7 @@ class XlsxSimpleWriter extends AbstractFileWriter
         }
 
         $parameters = $this->stepExecution->getJobParameters();
-        $withHeader = $parameters->getParameter('withHeader');
+        $withHeader = $parameters->get('withHeader');
         $this->flatRowBuffer->write($items, $withHeader);
     }
 

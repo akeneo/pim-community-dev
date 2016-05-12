@@ -64,7 +64,7 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
         }
 
         $parameters = $this->stepExecution->getJobParameters();
-        $withHeader = $parameters->getParameter('withHeader');
+        $withHeader = $parameters->get('withHeader');
         $this->flatRowBuffer->write($products, $withHeader);
         $this->mediaCopier->exportAll($media, $exportDirectory);
 

@@ -79,7 +79,7 @@ class CreateJobCommand extends ContainerAwareCommand
 
         /** @var JobParameters $jobParameters */
         $jobParameters = $this->getJobParametersFactory()->create($job, $rawConfig);
-        $jobInstance->setRawConfiguration($jobParameters->getParameters());
+        $jobInstance->setRawConfiguration($jobParameters->all());
 
         $violations = $this->getJobParametersValidator()->validate($job, $jobParameters);
         if (count($violations) > 0) {

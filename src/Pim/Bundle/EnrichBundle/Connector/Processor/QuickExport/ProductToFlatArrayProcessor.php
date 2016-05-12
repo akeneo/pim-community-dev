@@ -116,7 +116,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     protected function getNormalizerContext()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $mainContext = $jobParameters->getParameter('mainContext');
+        $mainContext = $jobParameters->get('mainContext');
 
         if (!isset($mainContext['scope'])) {
             throw new \InvalidArgumentException('No channel found');

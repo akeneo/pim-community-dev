@@ -172,7 +172,7 @@ class JobProfileController
             if ($form->isValid()) {
                 $job = $this->connectorRegistry->getJob($jobInstance);
                 $jobParameters = $this->jobParametersFactory->create($job);
-                $jobInstance->setRawConfiguration($jobParameters->getParameters());
+                $jobInstance->setRawConfiguration($jobParameters->all());
 
                 $this->entityManager->persist($jobInstance);
                 $this->entityManager->flush();

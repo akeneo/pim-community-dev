@@ -67,8 +67,8 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
         $data['media'] = $this->prepareVariantGroupMedia($item);
 
         $parameters = $this->stepExecution->getJobParameters();
-        $decimalSeparator = $parameters->getParameter('decimalSeparator');
-        $dateFormat = $parameters->getParameter('dateFormat');
+        $decimalSeparator = $parameters->get('decimalSeparator');
+        $dateFormat = $parameters->get('dateFormat');
         $data['variant_group'] = $this->normalizer->normalize(
             $item,
             $this->format,

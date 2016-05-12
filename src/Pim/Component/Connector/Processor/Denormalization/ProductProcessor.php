@@ -113,7 +113,7 @@ class ProductProcessor extends AbstractProcessor
         }
 
         $jobParameters = $this->stepExecution->getJobParameters();
-        $enabledComparison = $jobParameters->getParameter('enabledComparison');
+        $enabledComparison = $jobParameters->get('enabledComparison');
         if ($enabledComparison) {
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
 
@@ -154,8 +154,8 @@ class ProductProcessor extends AbstractProcessor
         $jobParameters = $this->stepExecution->getJobParameters();
 
         return $this->localizedConverter->convertToDefaultFormats($convertedItem, [
-            'decimal_separator' => $jobParameters->getParameter('decimalSeparator'),
-            'date_format'       => $jobParameters->getParameter('dateFormat')
+            'decimal_separator' => $jobParameters->get('decimalSeparator'),
+            'date_format'       => $jobParameters->get('dateFormat')
         ]);
     }
 
@@ -293,9 +293,9 @@ class ProductProcessor extends AbstractProcessor
         $jobParameters = $this->stepExecution->getJobParameters();
 
         return [
-            $jobParameters->getParameter('familyColumn') => 'family',
-            $jobParameters->getParameter('categoriesColumn') => 'categories',
-            $jobParameters->getParameter('groupsColumn') => 'groups'
+            $jobParameters->get('familyColumn') => 'family',
+            $jobParameters->get('categoriesColumn') => 'categories',
+            $jobParameters->get('groupsColumn') => 'groups'
         ];
     }
 
@@ -306,6 +306,6 @@ class ProductProcessor extends AbstractProcessor
     {
         $jobParameters = $this->stepExecution->getJobParameters();
 
-        return ['enabled' => $jobParameters->getParameter('enabled')];
+        return ['enabled' => $jobParameters->get('enabled')];
     }
 }

@@ -39,7 +39,7 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
         $container->get('akeneo_batch.connectors')->willReturn($registry);
         $registry->getJob($jobInstance)->willReturn($job);
         $jobParametersFactory->create($job, ['filePath' => 'currencies.csv'])->willReturn($jobParameters);
-        $jobParameters->getParameters()->willReturn(['filePath' => 'currencies.csv']);
+        $jobParameters->all()->willReturn(['filePath' => 'currencies.csv']);
 
         $jobInstance->setAlias('fixtures_currency_csv')->shouldBeCalled();
         $jobInstance->setCode('fixtures_currency_csv')->shouldBeCalled();

@@ -56,7 +56,7 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     public function write(array $items)
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $isWithHeader = $parameters->getParameter('withHeader');
+        $isWithHeader = $parameters->get('withHeader');
         $this->buffer->write($items, $isWithHeader);
     }
 
@@ -116,8 +116,8 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     protected function writeToCsvFile($csvFile, array $data)
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $delimiter = $parameters->getParameter('delimiter');
-        $enclosure = $parameters->getParameter('enclosure');
+        $delimiter = $parameters->get('delimiter');
+        $enclosure = $parameters->get('enclosure');
         if (false === fputcsv($csvFile, $data, $delimiter, $enclosure)) {
             fclose($csvFile);
             throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);

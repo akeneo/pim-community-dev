@@ -50,6 +50,6 @@ class TemporaryFileCleaner extends AbstractConfigurableStepElement implements St
     {
         $jobParameters = $this->stepExecution->getJobParameters();
 
-        return $jobParameters->getParameter('actions');
+        return $jobParameters->get('actions');
     }
 }

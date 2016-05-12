@@ -127,6 +127,6 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     {
         $jobParameters = $this->stepExecution->getJobParameters();
 
-        return $jobParameters->getParameter('filters');
+        return $jobParameters->get('filters');
     }
 }

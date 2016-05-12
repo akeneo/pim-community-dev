@@ -126,7 +126,7 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     public function mapDataToForms($data, $forms)
     {
         foreach ($forms as $form) {
-            $form->setData($data->getParameter($form->getName()));
+            $form->setData($data->get($form->getName()));
         }
     }
 

@@ -46,9 +46,9 @@ class CsvReader extends AbstractConfigurableStepElement implements
     {
         if (null === $this->fileIterator) {
             $jobParameters = $this->stepExecution->getJobParameters();
-            $filePath = $jobParameters->getParameter('filePath');
-            $delimiter = $jobParameters->getParameter('delimiter');
-            $enclosure = $jobParameters->getParameter('enclosure');
+            $filePath = $jobParameters->get('filePath');
+            $delimiter = $jobParameters->get('delimiter');
+            $enclosure = $jobParameters->get('enclosure');
             $this->fileIterator = $this->fileIteratorFactory->create($filePath, [
                 'fieldDelimiter' => $delimiter,
                 'fieldEnclosure' => $enclosure

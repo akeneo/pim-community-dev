@@ -57,7 +57,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     public function write(array $items)
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $realTimeVersioning = $jobParameters->getParameter('realTimeVersioning');
+        $realTimeVersioning = $jobParameters->get('realTimeVersioning');
         $this->versionManager->setRealTimeVersioning($realTimeVersioning);
         foreach ($items as $item) {
             $this->incrementCount($item);

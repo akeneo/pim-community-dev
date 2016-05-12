@@ -48,7 +48,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
 
             if ($this->isReaderUsable($reader)) {
                 $jobParameters = $jobExecution->getJobParameters();
-                $filePath = $jobParameters->getParameter('filePath');
+                $filePath = $jobParameters->get('filePath');
                 $key = strtr(
                     $this->getRelativeArchivePath($jobExecution),
                     [

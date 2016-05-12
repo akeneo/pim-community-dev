@@ -25,7 +25,7 @@ class JobParametersValidatorSpec extends ObjectBehavior
     ) {
         $registry->get($job)->willReturn($provider);
         $provider->getConstraintCollection()->willReturn(['fields' => 'my constraints']);
-        $jobParameters->getParameters()->willReturn(['my params']);
+        $jobParameters->all()->willReturn(['my params']);
         $validator
             ->validate(['my params'], ['fields' => 'my constraints'], ['MyValidationGroup', 'Default'])
             ->shouldBeCalled();

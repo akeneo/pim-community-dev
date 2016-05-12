@@ -142,7 +142,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     protected function getConfiguredChannel()
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $channelCode = $parameters->getParameter('channel');
+        $channelCode = $parameters->get('channel');
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
             throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $channelCode));

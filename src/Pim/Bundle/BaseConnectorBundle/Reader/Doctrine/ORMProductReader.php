@@ -152,7 +152,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     {
         if (null === $this->channel) {
             $parameters = $this->stepExecution->getJobParameters();
-            $channelCode = $parameters->getParameter('channel');
+            $channelCode = $parameters->get('channel');
             $this->channel = $this->channelRepository->findOneByIdentifier($channelCode);
         }
 

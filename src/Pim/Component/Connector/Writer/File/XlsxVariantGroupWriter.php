@@ -63,7 +63,7 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
         }
 
         $parameters = $this->stepExecution->getJobParameters();
-        $withHeader = $parameters->getParameter('withHeader');
+        $withHeader = $parameters->get('withHeader');
         $this->flatRowBuffer->write($variantGroups, $withHeader);
         $this->fileExporter->exportAll($media, $exportDirectory);
 

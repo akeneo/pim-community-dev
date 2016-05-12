@@ -27,7 +27,7 @@ class JobParametersFactorySpec extends ObjectBehavior
         $jobParameters = $this->create($job, ['my_defined_field' => 'my defined value']);
 
         $jobParameters->shouldReturnAnInstanceOf('Akeneo\Component\Batch\Job\JobParameters');
-        $jobParameters->getParameters()->shouldBe(
+        $jobParameters->all()->shouldBe(
             [
                 'my_default_field' => 'my default value',
                 'my_defined_field' => 'my defined value',

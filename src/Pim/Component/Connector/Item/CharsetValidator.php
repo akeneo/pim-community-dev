@@ -49,7 +49,7 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
     public function validate()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->getParameter('filePath');
+        $filePath = $jobParameters->get('filePath');
         $file = new \SplFileInfo($filePath);
         if (!in_array($file->getExtension(), $this->whiteListExtension)) {
             $this->validateEncoding();
@@ -70,7 +70,7 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
     protected function validateEncoding()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->getParameter('filePath');
+        $filePath = $jobParameters->get('filePath');
         $handle = fopen($filePath, 'r');
         if (false === $handle) {
             throw new \Exception(sprintf('Unable to read the file "%s".', $filePath));
