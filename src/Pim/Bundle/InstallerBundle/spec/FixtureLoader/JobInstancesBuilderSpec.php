@@ -18,9 +18,9 @@ class JobInstancesBuilderSpec extends ObjectBehavior
 
     function it_builds_job_instances($fileLocator, $yamlReader, $processor, JobInstance $jobInstance)
     {
+
         $fileLocator->locate('@my/path/community/fixtures_jobs.yml')
             ->willReturn('/home/nico/project/my/path/community/fixtures_jobs.yml');
-        $yamlReader->setFilePath('/home/nico/project/my/path/community/fixtures_jobs.yml')->shouldBeCalled();
         $rawJobInstance = [
             'order' => '10',
             'connector' => 'Data fixtures',
@@ -31,6 +31,7 @@ class JobInstancesBuilderSpec extends ObjectBehavior
                 'filePath' => 'currencies.csv'
             ]
         ];
+        $yamlReader->setStepExecution(Argument::any())->shouldBeCalled();
         $yamlReader->read()->willReturn($rawJobInstance, null);
         unset($rawJobInstance['order']);
         $processor->process($rawJobInstance)->willReturn($jobInstance);
