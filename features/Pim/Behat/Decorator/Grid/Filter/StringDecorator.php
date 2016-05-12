@@ -17,13 +17,11 @@ class StringDecorator extends ElementDecorator
      */
     public function filter($operator, $value)
     {
-        // We need to spin here because the click can fail because of the loading mask
-        $this->spin(function () use ($operator) {
-            $this->find('css', '.dropdown-toggle')->click();
-
-            $this->find('css', sprintf('.dropdown-menu .choice_value:contains("%s")', $operator))->click();
-            return $this->find('css', '.dropdown-toggle')->getText() === $operator;
-        }, sprintf('Cannot click on the operator %s', $operator));
+        $operatorDropdown = $this->decorate(
+            $this->find('css', '.dropdown-toggle'),
+            ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
+        );
+        $operatorDropdown->setValue($operator);
 
         if ('is empty' !== $operator) {
             $field = $this->spin(function () {

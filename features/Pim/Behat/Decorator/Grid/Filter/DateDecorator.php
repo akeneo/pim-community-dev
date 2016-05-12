@@ -17,6 +17,7 @@ class DateDecorator extends ElementDecorator
      */
     public function filter($operator, $value)
     {
+        // We set the operator
         $this->find('css', '.filter-select-oro')->selectOption($operator);
 
         if (false !== strstr($value, 'and')) {
@@ -43,6 +44,7 @@ class DateDecorator extends ElementDecorator
                 break;
         }
 
+        // We submit the filter
         $this->spin(function () {
             $this->find('css', '.filter-update')->click();
 

@@ -19,20 +19,16 @@ class MetricDecorator extends ElementDecorator
     {
         $dropdowns = $this->findAll('css', '.dropdown-toggle');
 
-        $operatorDropdown = $dropdowns[0];
+        // We set the operator
+        $operatorDropdown = $this->decorate(
+            $dropdowns[0],
+            ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
+        );
+        $operatorDropdown->setValue($operator);
+
         $unitDropdown = $dropdowns[1];
 
-        $operatorDropdown->click();
-        $operatorChoices = $operatorDropdown->getParent()->findAll('css', '.dropdown-menu .choice_value');
-
-        // We can't use contains("%s") here, as ">=" contains ">" too, the css selector is not strict enough,
-        // we need to do a perfect match on the label
-        foreach ($operatorChoices as $choice) {
-            if ($operator === $choice->getText()) {
-                $choice->click();
-            }
-        }
-
+        // We set the value
         if ('is empty' !== $operator) {
             list($numericValue, $unitValue) = explode(' ', $value);
 
@@ -44,6 +40,7 @@ class MetricDecorator extends ElementDecorator
             )->click();
         }
 
+        // We submit the filter
         $this->spin(function () {
             $this->find('css', '.filter-update')->click();
 

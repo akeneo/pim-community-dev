@@ -19,7 +19,10 @@ class PriceDecorator extends ElementDecorator
     {
         $dropdowns = $this->findAll('css', '.dropdown-toggle');
 
-        $operatorDropdown = $dropdowns[0];
+        $operatorDropdown = $this->decorate(
+            $dropdowns[0],
+            ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
+        );
         $currencyDropdown = $dropdowns[1];
 
         // Split '10.5 EUR' -> $data = 10.5; $currency = 'EUR'
@@ -52,16 +55,7 @@ class PriceDecorator extends ElementDecorator
         $currencyChoice->click();
 
         // Change the operator
-        $operatorDropdown->click();
-        $operatorChoices  = $operatorDropdown->getParent()->findAll('css', '.dropdown-menu .choice_value');
-
-        // We can't use contains("%s") here, as ">=" contains ">" too, the css selector is not strict enough,
-        // we need to do a perfect match on the label
-        foreach ($operatorChoices as $choice) {
-            if ($operator === $choice->getText()) {
-                $choice->click();
-            }
-        }
+        $operatorDropdown->setValue($operator);
 
         // Update the filter
         $this->spin(function () {
