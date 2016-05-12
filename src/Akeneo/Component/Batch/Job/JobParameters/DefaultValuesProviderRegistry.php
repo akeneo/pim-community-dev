@@ -16,17 +16,12 @@ class DefaultValuesProviderRegistry
     /** @var DefaultValuesProviderInterface[] */
     protected $providers = [];
 
-    /** @var boolean */
-    protected $isStrict;
-
     /**
      * @param DefaultValuesProviderInterface $parameters
-     * @param boolean                    $isStrict
      */
-    public function register(DefaultValuesProviderInterface $parameters, $isStrict = true)
+    public function register(DefaultValuesProviderInterface $parameters)
     {
         $this->providers[] = $parameters;
-        $this->isStrict = $isStrict;
     }
 
     /**
@@ -42,13 +37,6 @@ class DefaultValuesProviderRegistry
             if ($provider->supports($job)) {
                 return $provider;
             }
-        }
-
-        // TODO TIP-303: delete this strict mode which is only used for debug purpose
-        if ($this->isStrict) {
-            throw new NonExistingServiceException(
-                sprintf('No default value provider has been defined for the Job "%s"', $job->getName())
-            );
         }
 
         return $this->getProviderFromStepElements($job);

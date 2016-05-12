@@ -17,14 +17,14 @@ use Akeneo\Component\Batch\Job\JobInterface;
 class BackwardCompatibleDefaultValuesProvider implements DefaultValuesProviderInterface
 {
     /** @var array */
-    protected $default;
+    protected $defaultValues;
 
     /**
-     * @param array $default
+     * @param array $defaultValues
      */
-    public function __construct(array $default)
+    public function __construct(array $defaultValues)
     {
-        $this->default = $default;
+        $this->defaultValues = $defaultValues;
     }
 
     /**
@@ -32,7 +32,7 @@ class BackwardCompatibleDefaultValuesProvider implements DefaultValuesProviderIn
      */
     public function getDefaultValues()
     {
-        return $this->default;
+        return $this->defaultValues;
     }
 
     /**

@@ -16,17 +16,12 @@ class ConstraintCollectionProviderRegistry
     /** @var ConstraintCollectionProviderInterface[] */
     protected $providers = [];
 
-    /** @var boolean */
-    protected $isStrict;
-
     /**
      * @param ConstraintCollectionProviderInterface $provider
-     * @param boolean                               $isStrict
      */
-    public function register(ConstraintCollectionProviderInterface $provider, $isStrict = true)
+    public function register(ConstraintCollectionProviderInterface $provider)
     {
         $this->providers[] = $provider;
-        $this->isStrict = $isStrict;
     }
 
     /**
@@ -42,13 +37,6 @@ class ConstraintCollectionProviderRegistry
             if ($provider->supports($job)) {
                 return $provider;
             }
-        }
-
-        // TODO TIP-303: delete this strict mode which is only used for debug purpose
-        if ($this->isStrict) {
-            throw new NonExistingServiceException(
-                sprintf('No constraint provider has been defined for the Job "%s"', $job->getName())
-            );
         }
 
         return new DefaultConstraintCollectionProvider();
