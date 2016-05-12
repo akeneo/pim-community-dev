@@ -74,5 +74,5 @@ Feature: Filter products
   Scenario: View only attribute filters that are usable as grid filters
     Given I am on the products page
     Then I should see the available filters sku, family, enabled
-    And I should see the available filters name, Image, info
-    And I should not see the available filters Description
+    And I should see the available filters name, image, info
+    And I should not see the available filters description

@@ -488,10 +488,7 @@ class Grid extends Index
     public function isFilterAvailable($filterName)
     {
         $this->clickFiltersList();
-
-        $filterElement = $this
-            ->getElement('Manage filters')
-            ->find('css', sprintf('label:contains("%s")', $filterName));
+        $filterElement = $this->getElement('Manage filters')->find('css', sprintf('input[value="%s"]', $filterName));
 
         return null !== $filterElement;
     }
