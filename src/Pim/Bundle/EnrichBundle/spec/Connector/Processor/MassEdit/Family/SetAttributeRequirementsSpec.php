@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
@@ -27,23 +28,6 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
             $channelRepository,
             $factory
         );
-        $this->setConfiguration(
-            [
-                'filters' => [],
-                'actions' => [
-                    [
-                        'attribute_code' => 'color',
-                        'channel_code'   => 'mobile',
-                        'is_required'    => true
-                    ],
-                    [
-                        'attribute_code' => 'color',
-                        'channel_code'   => 'ecommerce',
-                        'is_required'    => false
-                    ]
-                ]
-            ]
-        );
     }
 
     function it_is_a_processor_and_a_step_element()
@@ -64,9 +48,26 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         ChannelInterface $channelMobile,
         ChannelInterface $channelEcommerce,
         AttributeRequirementInterface $attrReqColorMobile,
-        AttributeRequirementInterface $attrReqColorEcom
+        AttributeRequirementInterface $attrReqColorEcom,
+        JobParameters $jobParameters
     ) {
-
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn([]);
+        $jobParameters->get('actions')->willReturn(
+            [
+                [
+                    'attribute_code' => 'color',
+                    'channel_code'   => 'mobile',
+                    'is_required'    => true
+                ],
+                [
+                    'attribute_code' => 'color',
+                    'channel_code'   => 'ecommerce',
+                    'is_required'    => false
+                ]
+            ]
+        );
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($family)->willReturn($violations);

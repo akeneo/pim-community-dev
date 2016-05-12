@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
@@ -30,15 +31,20 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobExecution $jobExecution
+        JobExecution $jobExecution,
+        JobParameters $jobParameters
     ) {
-        $this->setStepExecution($stepExecution);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $configuration = [
             'filters' => [],
             'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
         ];
-        $this->setConfiguration($configuration);
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
@@ -55,13 +61,18 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         StepExecution $stepExecution,
         ConstraintViolationListInterface $violations,
-        JobExecution $jobExecution
+        JobExecution $jobExecution,
+        JobParameters $jobParameters
     ) {
         $configuration = [
             'filters' => [],
             'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
         ];
-        $this->setConfiguration($configuration);
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $validator->validate($product)->willReturn($violations);
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
@@ -74,11 +85,6 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
 
         $this->process($product);
-    }
-
-    function it_returns_the_configuration_fields()
-    {
-        $this->getConfigurationFields()->shouldReturn(['actions' => []]);
     }
 
     function it_sets_the_step_execution(StepExecution $stepExecution)
