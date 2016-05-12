@@ -1,16 +1,8 @@
 parameters:
-    pimee_catalog.filter.product_edit_data.class:        PimEnterprise\Bundle\EnrichBundle\Filter\ProductEditDataFilter
-    pimee_catalog.filter.product_values_edit_data.class: PimEnterprise\Bundle\EnrichBundle\Filter\ProductValuesEditDataFilter
+    pimee_catalog.filter.product_edit_data.class:      PimEnterprise\Bundle\EnrichBundle\Filter\ProductEditDataFilter
+    pim_catalog.filter.product_values_edit_data.class: PimEnterprise\Bundle\EnrichBundle\Filter\ProductValuesEditDataFilter
 
 services:
     pimee_enrich.filter.product_edit_data:
-        class: %pimee_catalog.filter.product_edit_data.class%
+        class: '%pimee_catalog.filter.product_edit_data.class%'
         parent: pim_enrich.filter.product_edit_data
-
-    pim_enrich.filter.product_values_edit_data:
-        class: %pimee_catalog.filter.product_values_edit_data.class%
-        arguments:
-            - '@pim_catalog.filter.chained'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.repository.channel'
