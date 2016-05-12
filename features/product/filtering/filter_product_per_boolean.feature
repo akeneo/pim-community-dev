@@ -22,8 +22,8 @@ Feature: Filter products by boolean field
     And I should see products pants, shirt, shoes, hat and socks
     And I should be able to use the following filters:
       | filter   | operator | value | result               |
-      | Handmade |          | yes   | pants and socks      |
-      | Handmade |          | no    | shirt, shoes and hat |
+      | handmade |          | yes   | pants and socks      |
+      | handmade |          | no    | shirt, shoes and hat |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3406
   Scenario: Successfully filter products by boolean value for boolean attributes
@@ -43,9 +43,9 @@ Feature: Filter products by boolean field
     Then the grid should contain 5 elements
     And I should see products pants, shirt, shoes, hat and socks
     And I should be able to use the following filters:
-      | filter | operator | value    | result               |
-      | Status |          | Enabled  | pants, shirt and hat |
-      | Status |          | Disabled | shoes and socks      |
+      | filter  | operator | value    | result               |
+      | enabled |          | Enabled  | pants, shirt and hat |
+      | enabled |          | Disabled | shoes and socks      |
 
   @jira https://akeneo.atlassian.net/browse/PIM-5334
   Scenario: Successfully filter products by boolean value for boolean attributes and refresh the grid

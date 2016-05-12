@@ -37,7 +37,6 @@ Feature: Filter products
       | info    | contains         | book          | book, ebook and book2                    |
       | enabled |                  | Enabled       | postit, ebook, book2 and chair and 01234 |
       | enabled |                  | Disabled      | book                                     |
-      | sku     | contains         | book          | book, book2 and ebook                    |
       | sku     | does not contain | book          | postit and chair and 01234               |
       | sku     | starts with      | boo           | book and book2                           |
       | sku     | starts with      | 0             | 01234                                    |
@@ -49,24 +48,24 @@ Feature: Filter products
 
   Scenario: Successfully hide/show filters
     Given I am on the products page
-    Then I should see the filters SKU, Family and Status
-    Then I should not see the filters Name, Image and Info
-    When I show the filter "Name"
-    And I show the filter "Info"
-    And I hide the filter "SKU"
-    Then I should see the filters Name, Info, Family and Status
-    And I should not see the filters Image, SKU
+    Then I should see the filters sku, family and enabled
+    Then I should not see the filters name, image and info
+    When I show the filter "name"
+    And I show the filter "info"
+    And I hide the filter "sku"
+    Then I should see the filters name, info, family and enabled
+    And I should not see the filters Image, sku
 
   Scenario: Successfully reset the filters
     Given I am on the products page
-    Then I filter by "status" with operator "" and value "Enabled"
+    Then I filter by "enabled" with operator "" and value "Enabled"
     And the grid should contain 5 elements
     When I reset the grid
     Then the grid should contain 6 elements
 
   Scenario: Successfully refresh the grid
     Given I am on the products page
-    Then I filter by "status" with operator "" and value "Enabled"
+    Then I filter by "enabled" with operator "" and value "Enabled"
     And the grid should contain 5 elements
     When I refresh the grid
     Then the grid should contain 5 elements
@@ -74,6 +73,6 @@ Feature: Filter products
   @jira https://akeneo.atlassian.net/browse/PIM-5208
   Scenario: View only attribute filters that are usable as grid filters
     Given I am on the products page
-    Then I should see the available filters SKU, Family, Status
-    And I should see the available filters Name, Image, Info
+    Then I should see the available filters sku, family, enabled
+    And I should see the available filters name, Image, info
     And I should not see the available filters Description
