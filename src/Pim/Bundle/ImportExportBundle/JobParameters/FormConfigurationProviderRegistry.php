@@ -47,7 +47,7 @@ class FormConfigurationProviderRegistry
             }
         }
 
-        // TODO TIP-303: to drop
+        // TODO TIP-303: delete this strict mode which is only used for debug purpose
         if ($this->isStrict) {
             throw new NonExistingServiceException(
                 sprintf('No form configuration provider has been defined for the Job "%s"', $job->getName())

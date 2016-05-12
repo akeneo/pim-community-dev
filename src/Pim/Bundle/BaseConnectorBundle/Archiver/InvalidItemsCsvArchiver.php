@@ -57,7 +57,7 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
         );
         $this->filesystem->put($key, '');
 
-        // TODO TIP-303: not convinced at all by this config ... need to separate config and exec concern?
+        // TODO TIP-303: will become useless once PIM-5564 merged
         $jobExecution = new JobExecution();
         $provider = new ProductCsvExport(new SimpleCsvExport([]), []);
         $params = $provider->getDefaultValues();

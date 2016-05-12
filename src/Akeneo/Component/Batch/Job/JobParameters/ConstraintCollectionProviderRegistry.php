@@ -44,7 +44,7 @@ class ConstraintCollectionProviderRegistry
             }
         }
 
-        // TODO TIP-303: delete this strict mode only used for debug
+        // TODO TIP-303: delete this strict mode which is only used for debug purpose
         if ($this->isStrict) {
             throw new NonExistingServiceException(
                 sprintf('No constraint provider has been defined for the Job "%s"', $job->getName())

@@ -160,7 +160,7 @@ class JobInstance
     }
 
     /**
-     * TODO TIP-303: job name in spring batch, may be changed once TIP-384 merged
+     * TODO TIP-303, rename to getJobName as in spring batch once TIP-384 merged
      *
      * Get alias
      *
@@ -246,8 +246,6 @@ class JobInstance
     }
 
     /**
-     * TODO TIP-303: such weird, we should only provide the "job name"
-     *
      * Set job
      *
      * @param Job $job
@@ -310,7 +308,7 @@ class JobInstance
     }
 
     /**
-     * TODO TIP-303: job name in spring batch, may be changed once TIP-384 merged
+     * TODO TIP-303, rename to setJobName as in spring batch once TIP-384 merged
      *
      * Set alias
      *

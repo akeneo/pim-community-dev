@@ -44,7 +44,7 @@ class DefaultValuesProviderRegistry
             }
         }
 
-        // TODO TIP-303: to delete only for debug!
+        // TODO TIP-303: delete this strict mode which is only used for debug purpose
         if ($this->isStrict) {
             throw new NonExistingServiceException(
                 sprintf('No default value provider has been defined for the Job "%s"', $job->getName())
