@@ -227,23 +227,6 @@ class Grid extends Index
     }
 
     /**
-     * @param NodeElement $filter
-     * @param string      $value
-     * @param string      $operator
-     */
-    protected function filterByDate($filter, $value, $operator)
-    {
-        $elt = $filter->find('css', 'select');
-        if ('empty' === $operator) {
-            $elt->selectOption('is empty');
-        } else {
-            $elt->selectOption($operator);
-        }
-
-        $filter->find('css', 'button.filter-update')->click();
-    }
-
-    /**
      * Count all rows in the grid
      *
      * @return int
@@ -757,89 +740,6 @@ class Grid extends Index
     protected function getRows()
     {
         return $this->getGridContent()->findAll('xpath', '/tr');
-    }
-
-    /**
-     * @param string $filterName The name of the price filter
-     * @param string $action     Type of filtering (>, >=, etc.)
-     * @param number $value      Value to filter
-     * @param string $currency   Currency on which to filter
-     */
-    public function filterPerPrice($filterName, $action, $value, $currency)
-    {
-        $filter = $this->getFilter($filterName);
-        $this->openFilter($filter);
-
-        if (null !== $value) {
-            $criteriaElt = $filter->find('css', 'div.filter-criteria');
-            $criteriaElt->fillField('value', $value);
-        }
-
-        $buttons        = $filter->findAll('css', '.currencyfilter button.dropdown-toggle');
-        $actionButton   = array_shift($buttons);
-        $currencyButton = array_shift($buttons);
-
-        // Open the dropdown menu with currency list and click on $currency line
-        $currencyButton->click();
-        $currencyButton->getParent()->find('css', sprintf('ul a:contains("%s")', $currency))->click();
-
-        // Open the dropdown menu with action list and click on $action line
-        $actionButton->click();
-        $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
-
-        $filter->find('css', 'button.filter-update')->click();
-    }
-
-    /**
-     * @param string $filterName The name of the metric filter
-     * @param string $action     Type of filtering (>, >=, etc.)
-     * @param float  $value      Value to filter
-     * @param string $unit       Unit on which to filter
-     */
-    public function filterPerMetric($filterName, $action, $value, $unit)
-    {
-        $filter = $this->getFilter($filterName);
-        $this->openFilter($filter);
-
-        $criteriaElt = $filter->find('css', 'div.filter-criteria');
-        $criteriaElt->fillField('value', $value);
-
-        $buttons      = $filter->findAll('css', '.metricfilter button.dropdown-toggle');
-        $actionButton = array_shift($buttons);
-        $unitButton   = array_shift($buttons);
-
-        // Open the dropdown menu with unit list and click on $unit line
-        $unitButton->click();
-        $unitButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $unit))->click();
-
-        // Open the dropdown menu with action list and click on $action line
-        $actionButton->click();
-        $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
-
-        $filter->find('css', 'button.filter-update')->click();
-    }
-
-    /**
-     * @param string $filterName The name of the number filter
-     * @param string $action     Type of filtering (>, >=, etc.)
-     * @param float  $value      Value to filter
-     */
-    public function filterPerNumber($filterName, $action, $value)
-    {
-        $filter = $this->getFilter($filterName);
-        $this->openFilter($filter);
-
-        $criteriaElt = $filter->find('css', 'div.filter-criteria');
-        $criteriaElt->fillField('value', $value);
-
-        $buttons      = $filter->findAll('css', '.filter-criteria button.dropdown-toggle');
-        $actionButton = array_shift($buttons);
-
-        // Open the dropdown menu with action list and click on $action line
-        $actionButton->click();
-        $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
-
-        $filter->find('css', 'button.filter-update')->click();
     }
 
     /**

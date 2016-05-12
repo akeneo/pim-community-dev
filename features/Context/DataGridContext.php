@@ -116,60 +116,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         ));
     }
 
-
-    /**
-     * @param string $filterName
-     * @param string $action
-     * @param string $value
-     * @param string $currency
-     *
-     * @When /^I filter by "([^"]*)" with value "(>|>=|=|<|<=) (\d+[.]?\d*) ([A-Z]{3})"$/
-     */
-    public function iFilterByPrice($filterName, $action, $value, $currency)
-    {
-        $this->datagrid->filterPerPrice($filterName, $action, $value, $currency);
-        $this->wait();
-    }
-
-    /**
-     * @param string $filterName
-     * @param string $action
-     * @param string $value
-     * @param string $unit
-     *
-     * @Then /^I filter by "([^"]*)" with value "(>|>=|=|<|<=) (\d+[.]?\d*) ([a-zA-Z_]{1,2}|[a-zA-Z_]{4,})"$/
-     */
-    public function iFilterByMetric($filterName, $action, $value, $unit)
-    {
-        $this->datagrid->filterPerMetric($filterName, $action, $value, $unit);
-        $this->wait();
-    }
-
-    /**
-     * @param string $filterName
-     * @param string $currency
-     *
-     * @Then /^I filter by price "([^"]*)" with empty value on "([^"]*)" currency$/
-     */
-    public function iFilterByPriceWithEmptyValue($filterName, $currency)
-    {
-        $this->datagrid->filterPerPrice($filterName, 'is empty', null, $currency);
-        $this->wait();
-    }
-
-    /**
-     * @param string $filterName
-     * @param string $action
-     * @param string $value
-     *
-     * @Then /^I filter by "([^"]*)" with value "(>|>=|=|<|<=) (\d+[.]?\d*)"$/
-     */
-    public function iFilterByNumber($filterName, $action, $value)
-    {
-        $this->datagrid->filterPerNumber($filterName, $action, $value);
-        $this->wait();
-    }
-
     /**
      * @param string $code
      *
@@ -1123,35 +1069,5 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function getCurrentPage()
     {
         return $this->getNavigationContext()->getCurrentPage();
-    }
-
-    /**
-     * @param string $filterName
-     * @param mixed  $values
-     * @param string $operator
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function filterByDate($filterName, $values, $operator)
-    {
-        if (!is_array($values)) {
-            $values = [$values, $values];
-        }
-
-        $filter = $this->datagrid->getFilter($filterName);
-
-        $this->datagrid->openFilter($filter);
-
-        $criteriaElt = $filter->find('css', '.filter-criteria');
-        $criteriaElt->find('css', 'select.filter-select-oro')->selectOption($operator);
-
-        $datepickers = $filter->findAll('css', '.date-visual-element');
-        foreach ($datepickers as $i => $datepicker) {
-            if ($datepicker->isVisible()) {
-                $datepicker->setValue($values[$i]);
-            }
-        }
-
-        $filter->find('css', 'button.filter-update')->click();
     }
 }
