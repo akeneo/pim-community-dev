@@ -117,24 +117,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $code
-     *
-     * @Given /^I filter by "category" with value "([^"]*)"$/
-     */
-    public function iFilterByCategory($code)
-    {
-        $this->wait();
-        if (strtolower($code) === 'unclassified') {
-            $this->getCurrentPage()->clickUnclassifiedCategoryFilterLink();
-        } else {
-            $category = $this->getFixturesContext()->getCategory($code);
-            $this->getCurrentPage()->clickCategoryFilterLink($category);
-        }
-
-        $this->wait();
-    }
-
-    /**
      * @param string $filterName
      * @param string $value
      *
@@ -142,6 +124,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theFilterShouldBeSetTo($filterName, $value)
     {
+        // TODO 417: rework
         $filter = $this->datagrid->getFilter($filterName);
         $this->spin(function () use ($filter, $value) {
             return $filter->find('css', sprintf('.filter-criteria-hint:contains("%s")', $value));

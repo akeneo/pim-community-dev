@@ -58,5 +58,5 @@ Feature: Filter products by date field
     Then the filter "release" should be set to operator "between" and value "05/01/2014 and 05/03/2014"
     And the filter "created_at" should be reset
     When I refresh current page
-    Then the filter "release" should be set to "between 05/01/2014 and 05/03/2014"
+    Then the filter "release" should be set to operator "between" and value "05/01/2014 and 05/03/2014"
     And the filter "created_at" should be reset

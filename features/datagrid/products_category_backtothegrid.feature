@@ -16,14 +16,14 @@ Feature: Product category back to the grid
 
   @unstable
   Scenario: Successfully restore category filter without hashnav
-    Given I filter by "category" with value "summer_collection"
+    Given I filter by "category" with operator "" and value "summer_collection"
     And I am on the products page
     Then I should see products purple-sneakers and black-sneakers
     And I should not see products black-boots
 
   @unstable
   Scenario: Successfully restore category filter with hashnav
-    Given I filter by "category" with value "winter_collection"
+    Given I filter by "category" with operator "" and value "winter_collection"
     And I click on the "black-sneakers" row
     And I click back to grid
     Then I should see product black-sneakers
@@ -31,14 +31,14 @@ Feature: Product category back to the grid
 
   @unstable
   Scenario: Successfully restore unclassified category filter without hashnav
-    Given I filter by "category" with value "unclassified"
+    Given I filter by "category" with operator "unclassified" and value ""
     And I am on the products page
     Then I should see products black-boots
     And I should not see products purple-sneakers and black-sneakers
 
   @unstable
   Scenario: Successfully restore unclassified category filter with hashnav
-    Given I filter by "category" with value "unclassified"
+    Given I filter by "category" with operator "unclassified" and value ""
     And I click on the "black-boots" row
     And I click back to grid
     Then I should see products black-boots
@@ -57,7 +57,7 @@ Feature: Product category back to the grid
 
   @jira https://akeneo.atlassian.net/browse/PIM-5638
   Scenario: Successfully apply category's filter on product grid without affecting other grids
-    Given I filter by "category" with value "winter_collection"
+    Given I filter by "category" with operator "" and value "winter_collection"
     And I click on import profile
     When I refresh the grid
     Then I should not see "Server error"
