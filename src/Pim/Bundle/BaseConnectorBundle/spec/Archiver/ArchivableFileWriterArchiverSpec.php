@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Archiver;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
@@ -14,17 +15,21 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
 use Prophecy\Argument;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ArchivableFileWriterArchiverSpec extends ObjectBehavior
 {
     function let(
         ZipFilesystemFactory $factory,
         Filesystem $filesystem,
-        LocalAdapter $adapter
+        LocalAdapter $adapter,
+        ContainerInterface $container,
+        ConnectorRegistry $registry
     ) {
         $filesystem->getAdapter()->willReturn($adapter);
         $adapter->getPathPrefix()->willReturn(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'archivist');
-        $this->beConstructedWith($factory, $filesystem);
+        $this->beConstructedWith($factory, $filesystem, $container);
+        $container->get('akeneo_batch.connectors')->willReturn($registry);
     }
 
     function it_is_initializable()
@@ -33,16 +38,17 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_doesnt_create_a_file_when_writer_is_invalid(
+        $filesystem,
+        $registry,
         CsvWriter $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
-        ItemStep $step,
-        $filesystem
+        ItemStep $step
     ) {
+        $registry->getJob($jobInstance)->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
-        $jobInstance->getJob()->willReturn($job);
         $jobInstance->getType()->willReturn('type');
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
@@ -61,15 +67,16 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_returns_true_for_the_supported_job(
+        $registry,
         CsvWriter $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
         ItemStep $step
     ) {
+        $registry->getJob($jobInstance)->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
-        $jobInstance->getJob()->willReturn($job);
         $jobInstance->getType()->willReturn('type');
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
@@ -81,15 +88,16 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_returns_false_for_the_unsupported_job(
+        $registry,
         ItemWriterInterface $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
         ItemStep $step
     ) {
+        $registry->getJob($jobInstance)->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
-        $jobInstance->getJob()->willReturn($job);
         $jobInstance->getType()->willReturn('type');
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
@@ -100,14 +108,15 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
 
     function it_doesnt_create_a_file_if_step_is_not_an_item_step(
         $filesystem,
+        $registry,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
         AbstractStep $step
     ) {
+        $registry->getJob($jobInstance)->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
-        $jobInstance->getJob()->willReturn($job);
         $jobInstance->getType()->willReturn('type');
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
@@ -118,6 +127,7 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_creates_a_file_if_writer_is_correct(
+        $registry,
         CsvWriter $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -129,9 +139,9 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $file1 = tempnam(sys_get_temp_dir(), 'spec');
         $file2 = tempnam(sys_get_temp_dir(), 'spec');
 
+        $registry->getJob($jobInstance)->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
-        $jobInstance->getJob()->willReturn($job);
         $jobInstance->getType()->willReturn('type');
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);

@@ -14,6 +14,8 @@ use Symfony\Component\Filesystem\Filesystem;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @deprecated will be removed in 1.6, please use Pim\Component\Connector\Writer\File\CsvWriter
+ *
+ * TODO TIP-303: deprecated class and spec to drop
  */
 class CsvWriter extends FileWriter implements ArchivableWriterInterface
 {
