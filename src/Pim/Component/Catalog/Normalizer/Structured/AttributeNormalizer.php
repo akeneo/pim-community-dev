@@ -53,27 +53,29 @@ class AttributeNormalizer implements NormalizerInterface
         $results = array_merge(
             $results,
             [
-                'group'                   => ($object->getGroup()) ? $object->getGroup()->getCode() : null,
-                'unique'                  => (int) $object->isUnique(),
-                'useable_as_grid_filter'  => (int) $object->isUseableAsGridFilter(),
-                'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
-                'metric_family'           => $object->getMetricFamily(),
-                'default_metric_unit'     => $object->getDefaultMetricUnit(),
-                'reference_data_name'     => $object->getReferenceDataName(),
-                'available_locales'       => $this->normalizeAvailableLocales($object),
-                'max_characters'          => null === $object->getMaxCharacters() ? '' : (int) $object->getMaxCharacters(),
-                'validation_rule'         => (string) $object->getValidationRule(),
-                'validation_regexp'       => (string) $object->getValidationRegexp(),
-                'wysiwyg_enabled'         => (string) $object->isWysiwygEnabled(),
-                'number_min'              => (string) $object->getNumberMin(),
-                'number_max'              => (string) $object->getNumberMax(),
-                'decimals_allowed'        => (string) $object->isDecimalsAllowed(),
-                'negative_allowed'        => (string) $object->isNegativeAllowed(),
-                'date_min'                => $this->normalizeDate($object->getDateMin()),
-                'date_max'                => $this->normalizeDate($object->getDateMax()),
-                'max_file_size'           => (string) $object->getMaxFileSize(),
-                'minimum_input_length'    => null === $object->getMinimumInputLength()  ? '' : (int) $object->getMinimumInputLength(),
-                'sort_order'              => (int) $object->getSortOrder()
+                'group'                  => ($object->getGroup()) ? $object->getGroup()->getCode() : null,
+                'unique'                 => (int) $object->isUnique(),
+                'useable_as_grid_filter' => (int) $object->isUseableAsGridFilter(),
+                'allowed_extensions'     => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
+                'metric_family'          => $object->getMetricFamily(),
+                'default_metric_unit'    => $object->getDefaultMetricUnit(),
+                'reference_data_name'    => $object->getReferenceDataName(),
+                'available_locales'      => $this->normalizeAvailableLocales($object),
+                'max_characters'         =>
+                    null === $object->getMaxCharacters() ? '' : (int) $object->getMaxCharacters(),
+                'validation_rule'        => (string) $object->getValidationRule(),
+                'validation_regexp'      => (string) $object->getValidationRegexp(),
+                'wysiwyg_enabled'        => (string) $object->isWysiwygEnabled(),
+                'number_min'             => (string) $object->getNumberMin(),
+                'number_max'             => (string) $object->getNumberMax(),
+                'decimals_allowed'       => (string) $object->isDecimalsAllowed(),
+                'negative_allowed'       => (string) $object->isNegativeAllowed(),
+                'date_min'               => $this->normalizeDate($object->getDateMin()),
+                'date_max'               => $this->normalizeDate($object->getDateMax()),
+                'max_file_size'          => (string) $object->getMaxFileSize(),
+                'minimum_input_length'   =>
+                    null === $object->getMinimumInputLength()  ? '' : (int) $object->getMinimumInputLength(),
+                'sort_order'             => (int) $object->getSortOrder()
             ]
         );
         if (isset($context['versioning'])) {
@@ -169,10 +171,10 @@ class AttributeNormalizer implements NormalizerInterface
 
     /**
      * Normalize date property
-     * 
+     *
      * @param \DateTime|null when null returns '' (empty string)
-     * 
-     * @return string 
+     *
+     * @return string
      */
     protected function normalizeDate($date = null)
     {
