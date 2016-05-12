@@ -1,2 +1,14 @@
 <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane buffer-top">
+    {% set filtersSettings %}
+        {% for step in form.job.steps %}
+            {% for stepElement in step.children %}
+                {% for field in stepElement.children %}
+                    {% if field.vars.attr['data-tab'] is defined and 'content' == field.vars.attr['data-tab'] %}
+                        {{ form_row(field) }}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+    {% endset %}
+    {{ elements.accordion({ 'pane.accordion.filters': filtersSettings }, 3) }}
 </div>

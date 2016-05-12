@@ -14,7 +14,6 @@ use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
@@ -56,6 +55,9 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /** @var ChannelInterface */
     protected $channel;
 
+    /** @var string */
+    protected $enabled;
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
@@ -78,10 +80,11 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $this->metricConverter      = $metricConverter;
         $this->objectDetacher       = $objectDetacher;
         $this->generateCompleteness = (bool) $generateCompleteness;
+        $this->enabled              = 'enabled'; // enabled by default to be compatible with former/custom exports
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $channelCode
      */
     public function setChannel($channelCode)
     {
@@ -90,11 +93,27 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getChannel()
     {
         return $this->channelCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param string $enabled
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
     }
 
     /**
@@ -111,8 +130,24 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
                     'select2'  => true,
                     'label'    => 'pim_connector.export.channel.label',
                     'help'     => 'pim_connector.export.channel.help',
+                    'attr'     => ['data-tab' => 'content']
                 ],
-            ]
+            ],
+            'enabled' => [
+                'type'    => 'choice',
+                'options' => [
+                    'choices'  => [
+                        'enabled'  => 'pim_connector.export.status.choice.enabled',
+                        'disabled' => 'pim_connector.export.status.choice.disabled',
+                        'all'      => 'pim_connector.export.status.choice.all'
+                    ],
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_connector.export.status.label',
+                    'help'     => 'pim_connector.export.status.help',
+                    'attr'     => ['data-tab' => 'content']
+                ]
+            ],
         ];
     }
 
@@ -122,7 +157,18 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     public function initialize()
     {
         $this->channel = $this->getChannelByCode($this->channelCode);
-        $pqb           = $this->getProductQueryBuilder($this->channel);
+
+        $pqb     = $this->pqbFactory->create(['default_scope' => $this->channel->getCode()]);
+        $filters = $this->getFilters($this->channel, $this->rawToStandardProductStatus($this->enabled));
+
+        foreach ($filters as $filter) {
+            $pqb->addFilter(
+                $filter['field'],
+                $filter['operator'],
+                $filter['value'],
+                $filter['context']
+            );
+        }
 
         if ($this->generateCompleteness) {
             $this->completenessManager->generateMissingForChannel($this->channel);
@@ -161,33 +207,9 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     }
 
     /**
-     * Return the product query builder instance with filters configured.
-     *
-     * @param ChannelInterface $channel
-     *
-     * @return ProductQueryBuilderInterface
-     */
-    protected function getProductQueryBuilder(ChannelInterface $channel)
-    {
-        $pqb = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
-
-        foreach ($this->getFilters($channel) as $filter) {
-            $pqb->addFilter(
-                $filter['field'],
-                $filter['operator'],
-                $filter['value'],
-                $filter['context']
-            );
-        }
-
-        return $pqb;
-    }
-
-    /**
      * @param string $code
      *
      * @throws ObjectNotFoundException
-     *
      * @return ChannelInterface
      */
     protected function getChannelByCode($code)
@@ -204,18 +226,13 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * Return the filters to be applied on the PQB instance.
      *
      * @param ChannelInterface $channel
+     * @param bool             $status
      *
      * @return array
      */
-    protected function getFilters(ChannelInterface $channel)
+    protected function getFilters(ChannelInterface $channel, $status)
     {
-        return [
-            [
-                'field'    => 'enabled',
-                'operator' => Operators::EQUALS,
-                'value'    => true,
-                'context'  => []
-            ],
+        $filters = [
             [
                 'field'    => 'completeness',
                 'operator' => Operators::EQUALS,
@@ -229,5 +246,39 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
                 'context'  => []
             ]
         ];
+
+        if (null !== $status) {
+            $filters[] = [
+                'field'    => 'enabled',
+                'operator' => Operators::EQUALS,
+                'value'    => $status,
+                'context'  => []
+            ];
+        }
+
+        return $filters;
+    }
+
+    /**
+     * Convert the UI product status to the standard product status
+     *
+     * @param string $rawStatus
+     *
+     * @return bool|null
+     */
+    protected function rawToStandardProductStatus($rawStatus)
+    {
+        switch ($rawStatus) {
+            case 'enabled':
+                $status = true;
+                break;
+            case 'disabled':
+                $status = false;
+                break;
+            default:
+                $status = null;
+        }
+
+        return $status;
     }
 }
