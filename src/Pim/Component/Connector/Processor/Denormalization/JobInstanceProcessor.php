@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
@@ -11,6 +12,7 @@ use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -43,6 +45,9 @@ class JobInstanceProcessor extends AbstractProcessor
     /** @var JobParametersFactory */
     protected $jobParamsFactory;
 
+    /** @var ContainerInterface */
+    private $container;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param StandardArrayConverterInterface       $converter
@@ -52,6 +57,7 @@ class JobInstanceProcessor extends AbstractProcessor
      * @param ObjectDetacherInterface               $objectDetacher
      * @param JobParametersValidator                $jobParamsValidator
      * @param JobParametersFactory                  $jobParamsFactory
+     * @param ContainerInterface                    $container
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -61,7 +67,8 @@ class JobInstanceProcessor extends AbstractProcessor
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
         JobParametersValidator $jobParamsValidator,
-        JobParametersFactory $jobParamsFactory
+        JobParametersFactory $jobParamsFactory,
+        ContainerInterface $container
     ) {
         parent::__construct($repository);
 
@@ -72,6 +79,7 @@ class JobInstanceProcessor extends AbstractProcessor
         $this->objectDetacher = $objectDetacher;
         $this->jobParamsValidator = $jobParamsValidator;
         $this->jobParamsFactory = $jobParamsFactory;
+        $this->container = $container;
     }
 
     /**
@@ -96,8 +104,9 @@ class JobInstanceProcessor extends AbstractProcessor
 
         $rawConfiguration = $entity->getRawConfiguration();
         if (!empty($rawConfiguration)) {
-            $parameters = $this->jobParamsFactory->create($entity->getJob(), $rawConfiguration);
-            $violations = $this->jobParamsValidator->validate($entity->getJob(), $parameters);
+            $job = $this->getConnectorRegistry()->getJob($entity);
+            $parameters = $this->jobParamsFactory->create($job, $rawConfiguration);
+            $violations = $this->jobParamsValidator->validate($job, $parameters);
             if ($violations->count() > 0) {
                 $this->objectDetacher->detach($entity);
                 $this->skipItemWithConstraintViolations($item, $violations);
@@ -110,7 +119,7 @@ class JobInstanceProcessor extends AbstractProcessor
     /**
      * @param array $convertedItem
      *
-     * @return mixed
+     * @return JobInstance
      */
     protected function findOrCreateObject(array $convertedItem)
     {
@@ -120,5 +129,16 @@ class JobInstanceProcessor extends AbstractProcessor
         }
 
         return $entity;
+    }
+
+    /**
+     * Should be changed with TIP-418, here we work around a circular reference due to the way we instanciate the whole
+     * Job classes in the DIC
+     *
+     * @return ConnectorRegistry
+     */
+    protected final function getConnectorRegistry()
+    {
+        return $this->container->get('akeneo_batch.connectors');
     }
 }

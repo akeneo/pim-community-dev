@@ -48,7 +48,6 @@ class ConnectorRegistrySpec extends ObjectBehavior
         $jobInstance->getRawConfiguration()->willReturn($rawConfiguration);
 
         $job->setConfiguration($rawConfiguration)->shouldBeCalled();
-        $jobInstance->setJob($job)->shouldBeCalled();
 
         $this->getJob($jobInstance)->shouldReturn($job);
     }

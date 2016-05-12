@@ -207,6 +207,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@akeneo_batch.job.job_parameters_validator'
             - '@akeneo_batch.job_parameters_factory'
+            - '@service_container'
 
     pim_connector.processor.normalization.group.flat:
         class: %pim_connector.processor.normalization.simple.class%

@@ -2,7 +2,6 @@
 
 namespace Akeneo\Component\Batch\Updater;
 
-// TODO TIP-303: bad use of BatchBundle ... anyway the ConnectorRegistry is too complex
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobParameters;
@@ -24,8 +23,8 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
     /** @var JobParametersFactory */
     protected $jobParametersFactory;
 
-    /** @var ContainerInterface TODO TIP-303: to fix circular reference, the way we load the whole Job in DI is realllly problematic */
-    protected $container;
+    /** @var ContainerInterface */
+    private $container;
 
     /**
      * @param JobParametersFactory $jobParametersFactory
@@ -92,9 +91,12 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
     }
 
     /**
+     * Should be changed with TIP-418, here we work around a circular reference due to the way we instanciate the whole
+     * Job classes in the DIC
+     *
      * @return ConnectorRegistry
      */
-    protected function getConnectorRegistry()
+    protected final function getConnectorRegistry()
     {
         return $this->container->get('akeneo_batch.connectors');
     }

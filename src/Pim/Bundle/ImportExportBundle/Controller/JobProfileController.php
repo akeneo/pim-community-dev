@@ -170,7 +170,8 @@ class JobProfileController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $jobParameters = $this->jobParametersFactory->create($jobInstance->getJob());
+                $job = $this->connectorRegistry->getJob($jobInstance);
+                $jobParameters = $this->jobParametersFactory->create($job);
                 $jobInstance->setRawConfiguration($jobParameters->getParameters());
 
                 $this->entityManager->persist($jobInstance);
@@ -219,7 +220,6 @@ class JobProfileController
         $form = $this->formFactory->create($this->jobInstanceType, $jobInstance, ['disabled' => true]);
         $uploadAllowed = false;
         $uploadForm = null;
-        $job = $jobInstance->getJob();
 
         $rawConfiguration = $jobInstance->getRawConfiguration();
         if (isset($rawConfiguration['uploadAllowed']) && true === $rawConfiguration['uploadAllowed']) {
@@ -528,7 +528,6 @@ class JobProfileController
                 )
             );
         }
-        $jobInstance->setJob($job);
 
         return $jobInstance;
     }

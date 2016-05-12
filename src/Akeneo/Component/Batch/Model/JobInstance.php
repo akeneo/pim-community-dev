@@ -9,17 +9,16 @@ use Doctrine\Common\Collections\Collection;
 /**
  * Batch domain object representing a uniquely identifiable configured job.
  *
- * In spring batch:
- * "Batch domain object representing a uniquely identifiable job run. JobInstance can be restarted multiple times in
- * case of execution failure and it's lifecycle ends with first successful execution. Trying to execute an existing
- * JobIntance that has already completed successfully will result in error. Error will be raised also for an attempt
- * to restart a failed JobInstance if the Job is not restartable.
- * cf https://docs.spring.io/spring-batch/apidocs/org/springframework/batch/core/JobInstance.html"
+ * Cf https://docs.spring.io/spring-batch/apidocs/org/springframework/batch/core/JobInstance.html
  *
- * In Akeneo Batch: the responsibility is not the same, we're able to store a JobInstance, run the Job, run it again
- * with the same config, then change the config, then run it...
+ * Please note the following difference between Spring Batch and Akeneo Batch,
  *
- * TODO TIP-303: we need to double think about this
+ * In Spring Batch: a JobInstance can be restarted multiple times in case of execution failure and it's lifecycle ends
+ * with first successful execution. Trying to execute an existing JobInstance that has already completed successfully
+ * will result in error. Error will be raised also for an attempt to restart a failed JobInstance if the Job is not restartable.
+ *
+ * In Akeneo Batch: the behavior is not the same, we store a JobInstance, we can run the Job then run it again with the
+ * same config, change the config, then run it again.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -61,9 +60,6 @@ class JobInstance
 
     /** @var array */
     protected $rawConfiguration = array();
-
-    /** @var Job */
-    protected $job;
 
     /** @var Collection|JobExecution[] */
     protected $jobExecutions;
@@ -164,7 +160,7 @@ class JobInstance
     }
 
     /**
-     * TODO TIP-303: job name in spring batch
+     * TODO TIP-303: job name in spring batch, may be changed once TIP-384 merged
      *
      * Get alias
      *
@@ -257,24 +253,28 @@ class JobInstance
      * @param Job $job
      *
      * @return JobInstance
+     *
+     * @deprecated will be removed in 1.7, this has been used to configure the job instance in a weird way to be able
+     *             to access to the Job from the JobInstance in an execution context only, to access to the Job, we
+     *             must use ConnectorRegistry->getJob($jobInstance)
      */
     public function setJob($job)
     {
-        $this->job = $job;
-
-        return $this;
+        trigger_error('please use ConnectorRegistry->getJob($jobInstance) instead', E_USER_NOTICE);
     }
 
     /**
-     * TODO TIP-303: such weird, we should only provide the "job name"
-     *
      * Get job
      *
      * @return Job
+     *
+     * @deprecated will be removed in 1.7, this has been used to configure the job instance in a weird way to be able
+     *             to access to the Job from the JobInstance in an execution context only, to access to the Job, we
+     *             must use ConnectorRegistry->getJob($jobInstance)
      */
     public function getJob()
     {
-        return $this->job;
+        trigger_error('please use ConnectorRegistry->getJob($jobInstance) instead', E_USER_NOTICE);
     }
 
     /**
@@ -310,7 +310,7 @@ class JobInstance
     }
 
     /**
-     * TODO TIP-303: job name in spring batch
+     * TODO TIP-303: job name in spring batch, may be changed once TIP-384 merged
      *
      * Set alias
      *

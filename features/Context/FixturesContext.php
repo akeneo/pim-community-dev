@@ -605,7 +605,6 @@ class FixturesContext extends BaseFixturesContext
             $jobInstance->setLabel($data['label']);
 
             $job = $registry->getJob($jobInstance);
-            $jobInstance->setJob($job);
             $this->getContainer()->get('akeneo_batch.saver.job_instance')->save($jobInstance);
         }
     }

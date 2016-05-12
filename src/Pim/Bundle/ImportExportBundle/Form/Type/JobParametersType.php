@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderRegistry;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderRegistry;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,16 +30,28 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     /** @var ConstraintCollectionProviderRegistry */
     protected $constraintProviderRegistry;
 
+    /** @var ContainerInterface */
+    private $container;
+
+    /** @var string */
+    protected $jobParamsClass;
+
     /**
      * @param FormConfigurationProviderRegistry    $configProviderRegistry
      * @param ConstraintCollectionProviderRegistry $constraintProviderRegistry
+     * @param ContainerInterface                   $container
+     * @param string                               $jobParamsClass
      */
     public function __construct(
         FormConfigurationProviderRegistry $configProviderRegistry,
-        ConstraintCollectionProviderRegistry $constraintProviderRegistry
+        ConstraintCollectionProviderRegistry $constraintProviderRegistry,
+        ContainerInterface $container,
+        $jobParamsClass
     ) {
         $this->configProviderRegistry = $configProviderRegistry;
         $this->constraintProviderRegistry = $constraintProviderRegistry;
+        $this->container = $container;
+        $this->jobParamsClass = $jobParamsClass;
     }
 
     /**
@@ -57,10 +71,9 @@ class JobParametersType extends AbstractType implements DataMapperInterface
                 if (null == $jobInstance->getId()) {
                     return;
                 }
-                $configProvider = $configProviderRegistry->get($jobInstance->getJob());
+                $job = $this->getConnectorRegistry()->getJob($jobInstance);
+                $configProvider = $configProviderRegistry->get($job);
                 $configs = $configProvider->getFormConfiguration();
-
-                $job = $jobInstance->getJob();
                 $constraintProvider = $constraintProviderRegistry->get($job);
                 $collection = $constraintProvider->getConstraintCollection();
                 $fieldConstraints = $collection->fields;
@@ -102,8 +115,7 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     {
         $resolver->setDefaults(
             [
-                // TODO TIP-303: to inject
-                'data_class' => 'Akeneo\\Component\\Batch\\Job\\JobParameters',
+                'data_class' => $this->jobParamsClass,
             ]
         );
     }
@@ -127,8 +139,7 @@ class JobParametersType extends AbstractType implements DataMapperInterface
         foreach ($forms as $form) {
             $parameters[$form->getName()] = $form->getData();
         }
-        // TODO TIP-303: no new here
-        $data = new JobParameters($parameters);
+        $data = new $this->jobParamsClass($parameters);
     }
 
     /**
@@ -137,5 +148,16 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     public function getName()
     {
         return 'pim_import_export_job_parameters';
+    }
+
+    /**
+     * Should be changed with TIP-418, here we work around a circular reference due to the way we instanciate the whole
+     * Job classes in the DIC
+     *
+     * @return ConnectorRegistry
+     */
+    protected final function getConnectorRegistry()
+    {
+        return $this->container->get('akeneo_batch.connectors');
     }
 }

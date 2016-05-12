@@ -87,9 +87,6 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         $job = $this->getConnectorRegistry()->getJob($jobInstance);
-        // TODO TIP-303: this way to configure is really weird, setters must die...
-        $jobInstance->setJob($job);
-
         $jobParamsFactory = $this->getJobParametersFactory();
         if ($config = $input->getOption('config')) {
             $rawConfiguration = $this->decodeConfiguration($config);
@@ -115,8 +112,6 @@ class BatchCommand extends ContainerAwareCommand
         // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
         // in order to be able to have a working UniqueEntity validation
         $defaultJobInstance = $this->getDefaultEntityManager()->merge($jobInstance);
-        $defaultJobInstance->setJob($job);
-
         $paramsValidator = $this->getJobParametersValidator();
         $errors = $paramsValidator->validate($job, $jobParameters, ['Default', 'Execution']);
         if (count($errors) > 0) {
