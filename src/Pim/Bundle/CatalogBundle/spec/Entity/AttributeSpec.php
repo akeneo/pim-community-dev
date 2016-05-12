@@ -17,6 +17,6 @@ class AttributeSpec extends ObjectBehavior
     {
         $this->setIsReadOnly(true)->shouldReturn($this);
         $this->isReadOnly()->shouldReturn(true);
-        $this->getProperty('is_editable')->shouldReturn(true);
+        $this->getProperty('is_read_only')->shouldReturn(true);
     }
 }
