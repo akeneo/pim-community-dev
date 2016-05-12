@@ -32,7 +32,7 @@ services:
         tags:
             - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.form_tab, position: 110 }
 
-    ## sub forms
+    ## Sub forms
     pim_enrich.view_element.attribute.general_parameters:
         class: '%pim_enrich.view_element.base.class%'
         arguments:

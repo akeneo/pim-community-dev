@@ -24,7 +24,7 @@ class FormExtensionSpec extends ObjectBehavior
         $this->getFunctions()->shouldBeArray();
     }
 
-    function it_sort_form_types(FormView $formType, FormView $number, FormView $date, FormView $switch, FormView $text)
+    function it_sorts_form_types(FormView $formType, FormView $number, FormView $date, FormView $switch, FormView $text)
     {
         $formType->children = [
             $number,
