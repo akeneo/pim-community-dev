@@ -23,7 +23,7 @@ class XlsxSimpleWriter extends AbstractFileWriter
     protected $columnSorter;
 
     /** @var int */
-    protected $linesPerFiles;
+    protected $linesPerFile;
 
     /** @var int */
     protected $defaultLinesPerFile;
@@ -69,7 +69,7 @@ class XlsxSimpleWriter extends AbstractFileWriter
     {
         $pathPattern = $this->getPath();
         if ($this->areSeveralFilesNeeded()) {
-            $pathPattern = $this->getCustomFilePath($this->getPath());
+            $pathPattern = $this->getNumberedFilePath($this->getPath());
         }
 
         $headers = $this->columnSorter->sort($this->flatRowBuffer->getHeaders());
@@ -78,7 +78,7 @@ class XlsxSimpleWriter extends AbstractFileWriter
         $fileCount = 1;
         $writtenLinesCount = 0;
         foreach ($this->flatRowBuffer->getBuffer() as $count => $incompleteItem) {
-            if (0 === $writtenLinesCount % $this->getLinesPerFiles()) {
+            if (0 === $writtenLinesCount % $this->getLinesPerFile()) {
                 $filePath = $this->resolveFilePath($pathPattern, $fileCount);
 
                 $writtenLinesCount = 0;
@@ -94,9 +94,8 @@ class XlsxSimpleWriter extends AbstractFileWriter
                 $this->stepExecution->incrementSummaryInfo('write');
             }
 
-            if (0 === $writtenLinesCount % $this->getLinesPerFiles() || $this->flatRowBuffer->count() === $count + 1) {
+            if (0 === $writtenLinesCount % $this->getLinesPerFile() || $this->flatRowBuffer->count() === $count + 1) {
                 $writer->close();
-                $writtenLinesCount = 0;
                 $fileCount++;
             }
         }
@@ -108,7 +107,7 @@ class XlsxSimpleWriter extends AbstractFileWriter
      */
     protected function areSeveralFilesNeeded()
     {
-        return $this->flatRowBuffer->count() > $this->getLinesPerFiles();
+        return $this->flatRowBuffer->count() > $this->getLinesPerFile();
     }
 
     /**
@@ -139,14 +138,14 @@ class XlsxSimpleWriter extends AbstractFileWriter
      * Return the given file path with %fileNb% placeholder just before the extension of the file
      * ie: in -> '/path/myFile.txt' ; out -> '/path/myFile%fileNb%.txt'
      *
-     * @param string $fullFilePath
+     * @param string $originalFilePath
      *
      * @return string
      */
-    protected function getCustomFilePath($fullFilePath)
+    protected function getNumberedFilePath($originalFilePath)
     {
-        $extension = '.' . pathinfo($fullFilePath, PATHINFO_EXTENSION);
-        $filePath  = strstr($fullFilePath, $extension, true);
+        $extension = '.' . pathinfo($originalFilePath, PATHINFO_EXTENSION);
+        $filePath  = strstr($originalFilePath, $extension, true);
 
         return $filePath . '%fileNb%' . $extension;
     }

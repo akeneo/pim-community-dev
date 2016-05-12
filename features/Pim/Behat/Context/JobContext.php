@@ -132,6 +132,7 @@ class JobContext extends PimContext
     public function getJobInstancePath($code, $number = null)
     {
         $archives = $this->getJobInstanceArchives($code);
+        $filePath = null;
 
         if (null === $number) {
             $filePath = current($archives);

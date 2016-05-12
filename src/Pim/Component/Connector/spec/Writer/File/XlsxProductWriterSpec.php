@@ -157,7 +157,7 @@ class XlsxProductWriterSpec extends ObjectBehavior
                         'help'  => 'pim_connector.export.withHeader.help'
                     ]
                 ];
-                $expectedLinesPerFiles = [
+                $expectedLinesPerFile = [
                     'type'    => 'integer',
                     'options' => [
                         'label'       => 'pim_connector.export.lines_per_files.label',
@@ -165,15 +165,15 @@ class XlsxProductWriterSpec extends ObjectBehavior
                         'empty_data'  => 10000,
                     ]
                 ];
-                $constraints = $config['linesPerFiles']['options']['constraints'];
-                unset($config['linesPerFiles']['options']['constraints']);
+                $constraints = $config['linesPerFile']['options']['constraints'];
+                unset($config['linesPerFile']['options']['constraints']);
 
-                if ($expectedLinesPerFiles !== $config['linesPerFiles']) {
-                    throw new FailureException('LinesPerFiles configuration doesn\'t match expecting one');
+                if ($expectedLinesPerFile !== $config['linesPerFile']) {
+                    throw new FailureException('LinesPerFile configuration doesn\'t match expecting one');
                 }
 
                 if (!$constraints[0] instanceof GreaterThan || 1 !== $constraints[0]->value) {
-                    throw new FailureException('Expecting to get a GreaterThan 1 constraint for linesPerFiles');
+                    throw new FailureException('Expecting to get a GreaterThan 1 constraint for linesPerFile');
                 }
 
                 if ($expectedFilePath !== $config['filePath']) {

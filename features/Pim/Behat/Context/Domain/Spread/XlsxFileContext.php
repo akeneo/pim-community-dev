@@ -12,12 +12,13 @@ use Pim\Behat\Context\PimContext;
 class XlsxFileContext extends PimContext
 {
     /**
+     * @param int|null  $number
      * @param string    $code
      * @param TableNode $expectedLines
      *
      * @Then /^exported xlsx file( \d+)? of "([^"]*)" should contain:$/
      */
-    public function exportedXlsxFileOfShouldContain($number = null, $code, $expectedLines)
+    public function exportedXlsxFileOfShouldContain($number = null, $code, TableNode $expectedLines)
     {
         $number = '' === $number ? null : trim($number);
         $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code, $number);

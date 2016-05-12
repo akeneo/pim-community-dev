@@ -30,7 +30,7 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
     protected $writtenFiles;
 
     /** @var int */
-    protected $linesPerFiles;
+    protected $linesPerFile;
 
     /** @var int */
     protected $defaultLinesPerFile;
@@ -100,7 +100,7 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
     {
         $pathPattern = $this->getPath();
         if ($this->areSeveralFilesNeeded()) {
-            $pathPattern = $this->getCustomFilePath($this->getPath());
+            $pathPattern = $this->getNumberedFilePath($this->getPath());
         }
 
         $headers = $this->columnSorter->sort($this->flatRowBuffer->getHeaders());
@@ -109,7 +109,7 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
         $fileCount = 1;
         $writtenLinesCount = 0;
         foreach ($this->flatRowBuffer->getBuffer() as $count => $incompleteItem) {
-            if (0 === $writtenLinesCount % $this->getLinesPerFiles()) {
+            if (0 === $writtenLinesCount % $this->getLinesPerFile()) {
                 $filePath = $this->resolveFilePath($pathPattern, $fileCount);
 
                 $writtenLinesCount = 0;
@@ -125,10 +125,9 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
                 $this->stepExecution->incrementSummaryInfo('write');
             }
 
-            if (0 === $writtenLinesCount % $this->getLinesPerFiles() || $this->flatRowBuffer->count() === $count + 1) {
+            if (0 === $writtenLinesCount % $this->getLinesPerFile() || $this->flatRowBuffer->count() === $count + 1) {
                 $writer->close();
                 $this->writtenFiles[$filePath] = basename($filePath);
-                $writtenLinesCount = 0;
                 $fileCount++;
             }
         }
@@ -145,17 +144,17 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
     /**
      * @return int
      */
-    public function getLinesPerFiles()
+    public function getLinesPerFile()
     {
-        return $this->linesPerFiles;
+        return $this->linesPerFile;
     }
 
     /**
-     * @param int $linesPerFiles
+     * @param int $linesPerFile
      */
-    public function setLinesPerFiles($linesPerFiles)
+    public function setLinesPerFile($linesPerFile)
     {
-        $this->linesPerFiles = $linesPerFiles;
+        $this->linesPerFile = $linesPerFile;
     }
 
     /**
@@ -163,7 +162,7 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
      */
     protected function areSeveralFilesNeeded()
     {
-        return $this->flatRowBuffer->count() > $this->getLinesPerFiles();
+        return $this->flatRowBuffer->count() > $this->getLinesPerFile();
     }
 
     /**
@@ -194,14 +193,14 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
      * Return the given file path with %fileNb% placeholder just before the extension of the file
      * ie: in -> '/path/myFile.txt' ; out -> '/path/myFile%fileNb%.txt'
      *
-     * @param string $fullFilePath
+     * @param string $originalFilePath
      *
      * @return string
      */
-    protected function getCustomFilePath($fullFilePath)
+    protected function getNumberedFilePath($originalFilePath)
     {
-        $extension = '.' . pathinfo($fullFilePath, PATHINFO_EXTENSION);
-        $filePath  = strstr($fullFilePath, $extension, true);
+        $extension = '.' . pathinfo($originalFilePath, PATHINFO_EXTENSION);
+        $filePath  = strstr($originalFilePath, $extension, true);
 
         return $filePath . '%fileNb%' . $extension;
     }
