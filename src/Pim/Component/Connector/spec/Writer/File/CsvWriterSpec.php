@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
+use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Buffer\BufferInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
@@ -19,9 +21,6 @@ class CsvWriterSpec extends ObjectBehavior
     function let(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer, ColumnSorterInterface $columnSorter)
     {
         $this->beConstructedWith($filePathResolver, $flatRowBuffer, $columnSorter);
-
-        $filePathResolver->resolve(Argument::any(), Argument::type('array'))
-            ->willReturn('/tmp/export/export.csv');
     }
 
     function it_is_a_configurable_step()
@@ -34,9 +33,14 @@ class CsvWriterSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\Batch\Item\ItemWriterInterface');
     }
 
-    function it_prepares_the_export($flatRowBuffer)
-    {
-        $this->setWithHeader(true);
+    function it_prepares_the_export(
+        $flatRowBuffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('withHeader')->willReturn(true);
 
         $items = [
             [
@@ -54,44 +58,26 @@ class CsvWriterSpec extends ObjectBehavior
         $this->write($items);
     }
 
-    function it_writes_the_csv_file($flatRowBuffer, BufferInterface $buffer, $columnSorter)
-    {
+    function it_writes_the_csv_file(
+        $flatRowBuffer,
+	$columnSorter,
+        BufferInterface $buffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('enclosure')->willReturn('"');
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn('my/file/path');
+        $jobParameters->has('mainContext')->willReturn(false);
+
         $flatRowBuffer->getHeaders()->willReturn(['id', 'family']);
         $flatRowBuffer->getBuffer()->willReturn($buffer);
 
         $columnSorter->sort(['id', 'family'])->willReturn(['id', 'family']);
 
         $this->flush();
-    }
-
-    function it_has_configuration()
-    {
-        $this->getConfigurationFields()->shouldReturn([
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help'
-                ]
-            ],
-            'delimiter' => [
-                'options' => [
-                    'label' => 'pim_connector.export.delimiter.label',
-                    'help'  => 'pim_connector.export.delimiter.help'
-                ]
-            ],
-            'enclosure' => [
-                'options' => [
-                    'label' => 'pim_connector.export.enclosure.label',
-                    'help'  => 'pim_connector.export.enclosure.help'
-                ]
-            ],
-            'withHeader' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.export.withHeader.label',
-                    'help'  => 'pim_connector.export.withHeader.help'
-                ]
-            ],
-        ]);
     }
 }

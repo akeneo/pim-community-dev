@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -49,21 +50,21 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
-    function it_has_no_extra_configuration()
-    {
-        $this->getConfigurationFields()->shouldHaveCount(1);
-    }
-
     function it_updates_an_existing_product(
         $arrayConverter,
         $productRepository,
         $productUpdater,
         $productValidator,
         $productAssocFilter,
+        $stepExecution,
         ProductInterface $product,
         AssociationInterface $association,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
@@ -127,8 +128,13 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productAssocFilter,
         $stepExecution,
         $productDetacher,
-        ProductInterface $product
+        $stepExecution,
+        ProductInterface $product,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
@@ -195,9 +201,13 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productAssocFilter,
         $stepExecution,
         $productDetacher,
+        $stepExecution,
         AssociationInterface $association,
-        ProductInterface $product
+        ProductInterface $product,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
@@ -270,8 +280,13 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productAssocFilter,
         $stepExecution,
         $productDetacher,
-        ProductInterface $product
+        $stepExecution,
+        ProductInterface $product,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);

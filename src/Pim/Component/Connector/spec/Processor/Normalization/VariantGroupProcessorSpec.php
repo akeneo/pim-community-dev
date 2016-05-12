@@ -3,6 +3,8 @@
 namespace spec\Pim\Component\Connector\Processor\Normalization;
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
+use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
@@ -16,19 +18,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class VariantGroupProcessorSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer, DenormalizerInterface $denormalizer)
+    function let(NormalizerInterface $normalizer, DenormalizerInterface $denormalizer, StepExecution $stepExecution)
     {
         $this->beConstructedWith(
             $normalizer,
             $denormalizer,
-            ['.', ','],
-            [
-                ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
-                ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy'],
-            ],
             'upload/path/',
             'csv'
         );
+        $this->setStepExecution($stepExecution);
     }
 
     function it_is_initializable()
@@ -41,41 +39,16 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
     }
 
-    function it_provides_configuration_fields()
-    {
-        $this->getConfigurationFields()->shouldReturn(
-            [
-                'decimalSeparator' => [
-                    'type'    => 'choice',
-                    'options' => [
-                        'choices'  => ['.', ','],
-                        'required' => true,
-                        'select2'  => true,
-                        'label'    => 'pim_connector.export.decimalSeparator.label',
-                        'help'     => 'pim_connector.export.decimalSeparator.help'
-                    ]
-                ],
-                'dateFormat' => [
-                    'type'    => 'choice',
-                    'options' => [
-                        'choices'  => [
-                            ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
-                            ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy'],
-                        ],
-                        'required' => true,
-                        'select2'  => true,
-                        'label'    => 'pim_connector.export.dateFormat.label',
-                        'help'     => 'pim_connector.export.dateFormat.help'
-                    ]
-                ],
-            ]
-        );
-    }
-
     function it_processes_variant_group_without_product_template(
         $normalizer,
-        GroupInterface $variantGroup
+        $stepExecution,
+        GroupInterface $variantGroup,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $variantGroup->getProductTemplate()->willReturn(null);
         $variantGroup->getCode()->willReturn('my_variant_group');
 
@@ -99,12 +72,18 @@ class VariantGroupProcessorSpec extends ObjectBehavior
     function it_processes_variant_group_without_media(
         $normalizer,
         $denormalizer,
+        $stepExecution,
         ArrayCollection $productValuesCollection,
         ArrayCollection $emptyCollection,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
-        ProductValueInterface $productValue
+        ProductValueInterface $productValue,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $variantGroup->getCode()->willReturn('my_variant_group');
 
@@ -135,14 +114,20 @@ class VariantGroupProcessorSpec extends ObjectBehavior
     function it_processes_a_variant_group_with_several_media(
         $normalizer,
         $denormalizer,
+        $stepExecution,
         ArrayCollection $productValuesCollection,
         ArrayCollection $mediaCollection,
         FileInfoInterface $media1,
         FileInfoInterface $media2,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
-        ProductValueInterface $productValue
+        ProductValueInterface $productValue,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $variantGroup->getCode()->willReturn('my_variant_group');
 
@@ -189,13 +174,19 @@ class VariantGroupProcessorSpec extends ObjectBehavior
     function it_throws_an_exception_if_media_of_variant_group_is_not_found(
         $normalizer,
         $denormalizer,
+        $stepExecution,
         ArrayCollection $productValuesCollection,
         ArrayCollection $mediaCollection,
         FileInfoInterface $media,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
-        ProductValueInterface $productValue
+        ProductValueInterface $productValue,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $variantGroup->getCode()->willReturn('my_variant_group');
 

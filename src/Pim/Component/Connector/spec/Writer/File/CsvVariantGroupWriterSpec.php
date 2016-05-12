@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
@@ -29,11 +30,17 @@ class CsvVariantGroupWriterSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Connector\Writer\File\CsvVariantGroupWriter');
     }
 
-    function it_prepares_the_export($flatRowBuffer, $fileExporter, StepExecution $stepExecution)
-    {
+    function it_prepares_the_export(
+        $flatRowBuffer,
+        $fileExporter,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
         $this->setStepExecution($stepExecution);
-
-        $this->setWithHeader(true);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn('my/file/path');
+        $jobParameters->has('mainContext')->willReturn(false);
 
         $variant1 = [
             'code'        => 'jackets',
