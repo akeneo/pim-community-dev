@@ -197,7 +197,6 @@ Feature: Execute a job
     And import directory of "csv_footwear_product_import" contains the following media:
       | fanatic-freewave-76.gif |
       | fanatic-freewave-76.txt |
-    And I am logged in as "Julia"
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -229,7 +228,6 @@ Feature: Execute a job
     And import directory of "csv_footwear_product_import" contains the following media:
       | fanatic-freewave-76.gif |
       | fanatic-freewave-76.txt |
-    And I am logged in as "Julia"
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish

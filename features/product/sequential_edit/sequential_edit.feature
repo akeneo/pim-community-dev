@@ -6,7 +6,6 @@ Feature: Edit sequentially some products
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "Mary"
     And the following products:
       | sku          | family   |
       | blue_sandal  | sandals  |

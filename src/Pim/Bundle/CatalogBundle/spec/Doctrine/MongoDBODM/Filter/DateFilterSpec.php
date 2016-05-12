@@ -209,7 +209,7 @@ class DateFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::expected(
                 'release_date',
-                'a string with the format Y-m-d',
+                'a string with the format yyyy-mm-dd',
                 'filter',
                 'date',
                 'not a valid date format'

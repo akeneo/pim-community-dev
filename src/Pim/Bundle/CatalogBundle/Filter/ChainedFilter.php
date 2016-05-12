@@ -48,7 +48,9 @@ class ChainedFilter implements CollectionFilterInterface, ObjectFilterInterface
     {
         if (isset($this->objectFilters[$type])) {
             foreach ($this->objectFilters[$type] as $filter) {
-                if ($filter->supportsObject($object, $type, $options) && $filter->filterObject($object, $options)) {
+                if ($filter->supportsObject($object, $type, $options) &&
+                    $filter->filterObject($object, $type, $options)
+                ) {
                     return true;
                 }
             }

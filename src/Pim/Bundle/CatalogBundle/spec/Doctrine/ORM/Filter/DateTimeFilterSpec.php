@@ -172,7 +172,7 @@ class DateTimeFilterSpec extends ObjectBehavior
     function it_throws_an_error_if_data_is_not_a_valid_date_format()
     {
         $this->shouldThrow(
-            InvalidArgumentException::expected('updated_at', 'a string with the format Y-m-d H:i:s', 'filter', 'date', 'not a valid date format')
+            InvalidArgumentException::expected('updated_at', 'a string with the format yyyy-mm-dd H:i:s', 'filter', 'date', 'not a valid date format')
         )->during('addFieldFilter', ['updated_at', '>', ['not a valid date format', 'WRONG']]);
     }
 

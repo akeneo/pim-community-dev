@@ -13,7 +13,7 @@ parameters:
 services:
     # Dispatchers
     pim_datagrid.extension.mass_action.dispatcher:
-        class: %pim_datagrid.extension.mass_action.dispatcher.class%
+        class: '%pim_datagrid.extension.mass_action.dispatcher.class%'
         arguments:
             - '@pim_datagrid.extension.mass_action.handler.registry'
             - '@oro_datagrid.datagrid.manager'
@@ -22,7 +22,7 @@ services:
 
     # Handlers
     pim_datagrid.extension.mass_action.handler.export:
-        class: %pim_datagrid.extension.mass_action.handler.export.class%
+        class: '%pim_datagrid.extension.mass_action.handler.export.class%'
         arguments:
             - '@pim_datagrid.datasource.result_record.hydrator.object'
             - '@event_dispatcher'
@@ -30,7 +30,7 @@ services:
             - { name: pim_datagrid.extension.mass_action.handler, alias: quick_export }
 
     pim_datagrid.extension.mass_action.handler.product_export:
-        class: %pim_datagrid.extension.mass_action.handler.export.class%
+        class: '%pim_datagrid.extension.mass_action.handler.export.class%'
         arguments:
             - '@pim_datagrid.datasource.result_record.hydrator.object_id'
             - '@event_dispatcher'
@@ -38,7 +38,7 @@ services:
             - { name: pim_datagrid.extension.mass_action.handler, alias: product_quick_export }
 
     pim_datagrid.extension.mass_action.handler.sequential_edit:
-        class: %pim_datagrid.extension.mass_action.handler.sequential_edit.class%
+        class: '%pim_datagrid.extension.mass_action.handler.sequential_edit.class%'
         arguments:
             - '@pim_datagrid.datasource.result_record.hydrator.object_id'
             - '@event_dispatcher'
@@ -46,7 +46,7 @@ services:
             - { name: pim_datagrid.extension.mass_action.handler, alias: sequential_edit }
 
     pim_datagrid.extension.mass_action.handler.edit:
-        class: %pim_datagrid.extension.mass_action.handler.edit.class%
+        class: '%pim_datagrid.extension.mass_action.handler.edit.class%'
         arguments:
             - '@pim_datagrid.datasource.result_record.hydrator.orm.object'
             - '@event_dispatcher'
@@ -54,7 +54,7 @@ services:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_edit }
 
     pim_datagrid.extension.mass_action.handler.product_edit:
-        class: %pim_datagrid.extension.mass_action.handler.edit.class%
+        class: '%pim_datagrid.extension.mass_action.handler.edit.class%'
         arguments:
             - '@pim_datagrid.datasource.result_record.hydrator.object'
             - '@event_dispatcher'
@@ -62,7 +62,7 @@ services:
             - { name: pim_datagrid.extension.mass_action.handler, alias: product_mass_edit }
 
     pim_datagrid.extension.mass_action.handler.delete:
-        class: %pim_datagrid.extension.mass_action.handler.delete.class%
+        class: '%pim_datagrid.extension.mass_action.handler.delete.class%'
         arguments:
             - '@pim_datagrid.datasource.result_record.hydrator.object_id'
             - '@translator'
@@ -71,14 +71,14 @@ services:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_delete }
 
     pim_datagrid.extension.mass_action.handler.product_delete:
-        class: %pim_datagrid.extension.mass_action.handler.product_delete.class%
+        class: '%pim_datagrid.extension.mass_action.handler.product_delete.class%'
         parent: pim_datagrid.extension.mass_action.handler.delete
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: product_mass_delete }
 
     # Mass actions
     pim_datagrid.extension.mass_action.type.export:
-        class: %pim_datagrid.extension.mass_action.type.export.class%
+        class: '%pim_datagrid.extension.mass_action.type.export.class%'
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: export }
@@ -90,17 +90,17 @@ services:
             - { name: oro_datagrid.extension.mass_action.type, type: edit }
 
     pim_datagrid.extension.mass_action.type.delete:
-        class: %pim_datagrid.extension.mass_action.type.delete.class%
+        class: '%pim_datagrid.extension.mass_action.type.delete.class%'
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: delete }
 
     # Handler registry
     pim_datagrid.extension.mass_action.handler.registry:
-        class: %pim_datagrid.extension.mass_action.handler.registry.class%
+        class: '%pim_datagrid.extension.mass_action.handler.registry.class%'
 
     pim_datagrid.extension.mass_action.util.product_fields_builder:
-        class: %pim_datagrid.extension.mass_action.util.product_fields_builder.class%
+        class: '%pim_datagrid.extension.mass_action.util.product_fields_builder.class%'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.attribute'

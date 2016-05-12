@@ -343,7 +343,7 @@ class DateFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('release_date');
 
         $this->shouldThrow(
-            InvalidArgumentException::expected('release_date', 'a string with the format Y-m-d', 'filter', 'date', 'not a valid date format')
+            InvalidArgumentException::expected('release_date', 'a string with the format yyyy-mm-dd', 'filter', 'date', 'not a valid date format')
         )->during('addAttributeFilter', [$attribute, '>', ['not a valid date format', 'WRONG']]);
     }
 

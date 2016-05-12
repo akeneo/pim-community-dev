@@ -6,51 +6,40 @@ use Doctrine\ORM\EntityManager;
 use Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory;
 use Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem;
 use Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\User;
 
 class ResponseHistoryListener
 {
     /**
-     * @var null|\Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory
+     * @var User|String
      */
-    protected $navItemFactory = null;
+    protected $user = null;
 
     /**
-     * @var \Symfony\Component\Security\Core\User\User|String
+     * @var ContainerInterface
      */
-    protected $user  = null;
-
-    /**
-     * @var \Doctrine\ORM\EntityManager|null
-     */
-    protected $em = null;
-
-    /**
-     * @var TitleServiceInterface
-     */
-    protected $titleService = null;
+    private $container;
 
     public function __construct(
-        ItemFactory $navigationItemFactory,
         TokenStorageInterface $tokenStorage,
-        EntityManager $entityManager,
-        TitleServiceInterface $titleService
+        ContainerInterface $container
     ) {
-        $this->navItemFactory = $navigationItemFactory;
-        $this->user = !$tokenStorage->getToken() ||  is_string($tokenStorage->getToken()->getUser())
-                      ? null : $tokenStorage->getToken()->getUser();
-        $this->em = $entityManager;
-        $this->titleService = $titleService;
+        $this->user = !$tokenStorage->getToken() || is_string($tokenStorage->getToken()->getUser())
+            ? null : $tokenStorage->getToken()->getUser();
+        $this->container = $container;
     }
 
     /**
-     * Process onReslonse event, updates user history information
+     * Process onResponse event, updates user history information
      *
      * @param  FilterResponseEvent $event
+     *
      * @return bool|void
      */
     public function onResponse(FilterResponseEvent $event)
@@ -70,28 +59,28 @@ class ResponseHistoryListener
         }
 
         $postArray = [
-            'url'      => $request->getRequestUri(),
-            'user'     => $this->user,
+            'url'  => $request->getRequestUri(),
+            'user' => $this->user,
         ];
 
         /** @var $historyItem  NavigationHistoryItem */
-        $historyItem = $this->em->getRepository('Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem')
-                                ->findOneBy($postArray);
+        $historyItem = $this->getEntityManager()->getRepository('Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem')
+            ->findOneBy($postArray);
         if (!$historyItem) {
             /** @var $historyItem \Oro\Bundle\NavigationBundle\Entity\NavigationItemInterface */
-            $historyItem = $this->navItemFactory->createItem(
+            $historyItem = $this->getItemFactory()->createItem(
                 NavigationHistoryItem::NAVIGATION_HISTORY_ITEM_TYPE,
                 $postArray
             );
         }
 
-        $historyItem->setTitle($this->titleService->getSerialized());
+        $historyItem->setTitle($this->getTitleService()->getSerialized());
 
         // force update
         $historyItem->doUpdate();
 
-        $this->em->persist($historyItem);
-        $this->em->flush($historyItem);
+        $this->getEntityManager()->persist($historyItem);
+        $this->getEntityManager()->flush($historyItem);
 
         return true;
     }
@@ -101,6 +90,7 @@ class ResponseHistoryListener
      *
      * @param  Response $response
      * @param  Request  $request
+     *
      * @return bool
      */
     private function matchRequest(Response $response, Request $request)
@@ -115,5 +105,29 @@ class ResponseHistoryListener
             || $route[0] == '_'
             || $route == 'oro_default'
             || is_null($this->user));
+    }
+
+    /**
+     * @return EntityManager
+     */
+    final protected function getEntityManager()
+    {
+        return $this->container->get('doctrine.orm.entity_manager');
+    }
+
+    /**
+     * @return TitleServiceInterface
+     */
+    final protected function getTitleService()
+    {
+        return $this->container->get('oro_navigation.title_service');
+    }
+
+    /**
+     * @return ItemFactory
+     */
+    final protected function getItemFactory()
+    {
+        return $this->container->get('oro_navigation.item.factory');
     }
 }
