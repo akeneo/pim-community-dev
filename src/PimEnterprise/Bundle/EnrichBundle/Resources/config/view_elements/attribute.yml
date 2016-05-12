@@ -8,8 +8,8 @@ services:
                 allowed_form_types:
                     - code
                     - attributeType
-                    - reference_data_name
                     - scopable
+                    - reference_data_name
                     - localizable
                     - unique
                     - availableLocales
