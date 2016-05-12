@@ -54,10 +54,11 @@ class Grid extends Index
         ],
         'product_completeness' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
-            'Pim\Behat\Decorator\Grid\Filter\CompletenessDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
         ],
         'product_scope' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
         ],
         'select2-choice' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
