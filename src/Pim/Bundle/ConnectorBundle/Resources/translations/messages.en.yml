@@ -26,6 +26,21 @@ pim_connector:
         csv_family_export:
             title: Family export in CSV
             export.title: Family export
+        csv_channel_export:
+            title: Channel export in CSV
+            export.title: Channel export
+        csv_locale_export:
+            title: Locale export in CSV
+            export.title: Locale export
+        csv_attribute_group_export:
+            title: Attribute group export in CSV
+            export.title: Attribute group export
+        csv_currency_export:
+            title: Currency export in CSV
+            export.title: Currency export
+        csv_group_type_export:
+            title: Group type export in CSV
+            export.title: Group type export
         csv_product_import:
             title: Product import in CSV
             validation.title: File validation
@@ -59,6 +74,26 @@ pim_connector:
             title: Variant group import in CSV
             validation.title: File validation
             import.title: Variant group import
+        csv_channel_import:
+            title: Channel import in CSV
+            validation.title: File validation
+            import.title: Channel import
+        csv_locale_import:
+            title: Locale import in CSV
+            validation.title: File validation
+            import.title: Locale import
+        csv_attribute_group_import:
+            title: Attribute group import in CSV
+            validation.title: File validation
+            import.title: Attribute group import
+        csv_currency_import:
+            title: Currency import in CSV
+            validation.title: File validation
+            import.title: Currency import
+        csv_group_type_import:
+            title: Group type import in CSV
+            validation.title: File validation
+            import.title: Group type import
         xlsx_category_import:
             title: Category import in XLSX
             validation.title: File validation
@@ -116,6 +151,41 @@ pim_connector:
         xlsx_association_type_export:
             title: Association type export in XLSX
             export.title: Association type export in XLSX
+        xlsx_channel_import:
+            title: Channel import in XLSX
+            validation.title: File validation
+            import.title: Channel import
+        xlsx_channel_export:
+            title: Channel export in XLSX
+            export.title: Channel export
+        xlsx_locale_import:
+            title: Locale import in XLSX
+            validation.title: File validation
+            import.title: Locale import
+        xlsx_locale_export:
+            title: Locale export in XLSX
+            export.title: Locale export
+        xlsx_attribute_group_import:
+            title: Attribute group import in XLSX
+            validation.title: File validation
+            import.title: Attribute group import
+        xlsx_attribute_group_export:
+            title: Attribute group export in XLSX
+            export.title: Attribute group export
+        xlsx_currency_import:
+            title: Currency import in XLSX
+            validation.title: File validation
+            import.title: Currency import
+        xlsx_currency_export:
+            title: Currency export in XLSX
+            export.title: Currency export
+        xlsx_group_type_import:
+            title: Group type import in XLSX
+            validation.title: File validation
+            import.title: Group type import
+        xlsx_group_type_export:
+            title: Group type export in XLSX
+            export.title: Group type export
 
     steps:
 
@@ -141,6 +211,11 @@ pim_connector:
         heterogeneous_processor.title:    CSV product serializer
         homogeneous_processor.title:      CSV entity serializer
         transformer_processor.title:      Transformation
+        group_type_processor.title:       Group type
+        currency_processor.title:         Currency
+        attribute_group_processor.title:  Attribute group
+        locale_processor.title:           Locale
+        channel_processor.title:          Channel
 
         dummy_writer.title:                  Dummy writer
         file_writer.title:                   Output

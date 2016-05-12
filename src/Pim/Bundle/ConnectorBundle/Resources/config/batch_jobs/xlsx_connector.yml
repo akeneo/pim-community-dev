@@ -169,6 +169,83 @@ connector:
                         writer:    pim_connector.writer.doctrine.variant_group
                     parameters:
                         batchSize: 1
+        xlsx_channel_import:
+            title: pim_connector.jobs.xlsx_channel_import.title
+            type:  import
+            steps:
+                validation:
+                    title: pim_connector.jobs.xlsx_channel_import.validation.title
+                    class: %pim_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import:
+                    title:     pim_connector.jobs.xlsx_channel_import.import.title
+                    services:
+                        reader:    pim_connector.reader.file.xlsx_channel
+                        processor: pim_connector.processor.denormalization.channel.flat
+                        writer:    pim_connector.writer.doctrine.channel
+        xlsx_locale_import:
+            title: pim_connector.jobs.xlsx_locale_import.title
+            type:  import
+            steps:
+                validation:
+                    title: pim_connector.jobs.xlsx_locale_import.validation.title
+                    class: %pim_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import:
+                    title:     pim_connector.jobs.xlsx_locale_import.import.title
+                    services:
+                        reader:    pim_connector.reader.file.xlsx_locale
+                        processor: pim_connector.processor.denormalization.locale.flat
+                        writer:    pim_connector.writer.doctrine.locale
+        xlsx_attribute_group_import:
+            title: pim_connector.jobs.xlsx_attribute_group_import.title
+            type:  import
+            steps:
+                validation:
+                    title: pim_connector.jobs.xlsx_attribute_group_import.validation.title
+                    class: %pim_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import:
+                    title:     pim_connector.jobs.xlsx_attribute_group_import.import.title
+                    services:
+                        reader:    pim_connector.reader.file.xlsx_attribute_group
+                        processor: pim_connector.processor.denormalization.attribute_group.flat
+                        writer:    pim_connector.writer.doctrine.attribute_group
+        xlsx_currency_import:
+            title: pim_connector.jobs.xlsx_currency_import.title
+            type:  import
+            steps:
+                validation:
+                    title: pim_connector.jobs.xlsx_currency_import.validation.title
+                    class: %pim_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import:
+                    title:     pim_connector.jobs.xlsx_currency_import.import.title
+                    services:
+                        reader:    pim_connector.reader.file.xlsx_currency
+                        processor: pim_connector.processor.denormalization.currency.flat
+                        writer:    pim_connector.writer.doctrine.currency
+        xlsx_group_type_import:
+            title: pim_connector.jobs.xlsx_group_type_import.title
+            type:  import
+            steps:
+                validation:
+                    title: pim_connector.jobs.xlsx_group_type_import.validation.title
+                    class: %pim_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import:
+                    title:     pim_connector.jobs.xlsx_group_type_import.import.title
+                    services:
+                        reader:    pim_connector.reader.file.xlsx_group_type
+                        processor: pim_connector.processor.denormalization.group_type.flat
+                        writer:    pim_connector.writer.doctrine.group_type
+                    parameters:
+                        batch_size: 1
         xlsx_family_export:
             title: pim_connector.jobs.xlsx_family_export.title
             type:  export
@@ -229,3 +306,53 @@ connector:
                         writer:    pim_connector.writer.file.xlsx_association_type
                     parameters:
                         batch_size: 10
+        xlsx_channel_export:
+            title: pim_connector.jobs.xlsx_channel_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_connector.jobs.xlsx_channel_export.export.title
+                    services:
+                        reader:    pim_connector.reader.orm.channel
+                        processor: pim_connector.processor.normalization.channel.flat
+                        writer:    pim_connector.writer.file.xlsx_channel
+        xlsx_locale_export:
+            title: pim_connector.jobs.xlsx_locale_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_connector.jobs.xlsx_locale_export.export.title
+                    services:
+                        reader:    pim_connector.reader.orm.locale
+                        processor: pim_connector.processor.normalization.locale.flat
+                        writer:    pim_connector.writer.file.xlsx_locale
+        xlsx_attribute_group_export:
+            title: pim_connector.jobs.xlsx_attribute_group_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_connector.jobs.xlsx_attribute_group_export.export.title
+                    services:
+                        reader:    pim_connector.reader.orm.attribute_group
+                        processor: pim_connector.processor.normalization.attribute_group.flat
+                        writer:    pim_connector.writer.file.xlsx_attribute_group
+        xlsx_currency_export:
+            title: pim_connector.jobs.xlsx_currency_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_connector.jobs.xlsx_currency_export.export.title
+                    services:
+                        reader:    pim_connector.reader.orm.currency
+                        processor: pim_connector.processor.normalization.currency.flat
+                        writer:    pim_connector.writer.file.xlsx_currency
+        xlsx_group_type_export:
+            title: pim_connector.jobs.xlsx_group_type_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_connector.jobs.xlsx_group_type_export.export.title
+                    services:
+                        reader:    pim_connector.reader.orm.group_type
+                        processor: pim_connector.processor.normalization.group_type.flat
+                        writer:    pim_connector.writer.file.xlsx_group_type

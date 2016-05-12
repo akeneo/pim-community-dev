@@ -20,3 +20,6 @@ Pim\Bundle\CatalogBundle\Entity\Locale:
         channels:
             targetEntity: Pim\Component\Catalog\Model\ChannelInterface
             mappedBy: locales
+            cascade:
+                - persist
+                - detach

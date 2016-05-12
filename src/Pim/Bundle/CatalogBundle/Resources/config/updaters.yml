@@ -148,6 +148,7 @@ services:
         class: %pim_catalog.updater.attribute_group.class%
         arguments:
             - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.manager.attribute_group'
 
     pim_catalog.updater.group_type:
         class: %pim_catalog.updater.group_type.class%
