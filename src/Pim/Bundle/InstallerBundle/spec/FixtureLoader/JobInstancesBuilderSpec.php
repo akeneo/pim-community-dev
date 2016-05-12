@@ -18,7 +18,6 @@ class JobInstancesBuilderSpec extends ObjectBehavior
 
     function it_builds_job_instances($fileLocator, $yamlReader, $processor, JobInstance $jobInstance)
     {
-
         $fileLocator->locate('@my/path/community/fixtures_jobs.yml')
             ->willReturn('/home/nico/project/my/path/community/fixtures_jobs.yml');
         $rawJobInstance = [
