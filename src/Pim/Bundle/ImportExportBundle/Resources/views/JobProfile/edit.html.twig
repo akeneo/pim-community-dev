@@ -28,40 +28,15 @@
 
         {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
 
-        {{ elements.form_errors(form) }}
-
-        {% set navbarTabs = ['General properties'] %}
-        {% if resource_granted('pim_importexport_' ~ form.vars.value.type ~ '_profile_history') %}
-            {% set navbarTabs = navbarTabs|merge(['History']) %}
-        {% endif %}
-
-        {{ elements.form_navbar(navbarTabs, '') }}
+        {{ elements.form_navbar(view_element_aliases(viewElementsAliases)) }}
 
         <div class="row-fluid tab-content">
-            <div class="tab-pane active" id="general-properties">
 
-                {% set properties %}
-                    {{ form_row(form.code) }}
-                    {{ form_row(form.label) }}
-                {% endset %}
-                {{ elements.accordion({ 'pane.accordion.properties': properties }, 1) }}
+            {{ elements.form_errors(form) }}
 
-                {% set globalSettings %}
-                    {% for step in form.job.steps %}
-                        {% for child in step.children %}
-                            {{ form_widget(child) }}
-                        {% endfor %}
-                    {% endfor %}
-                {% endset %}
-                {{ elements.accordion({ 'pane.accordion.global_settings': globalSettings }, 2) }}
-            </div>
+            {{ view_elements(viewElementsAliases) }}
 
-            {% if resource_granted('pim_importexport_' ~ form.vars.value.type ~ '_profile_history') %}
-                <div class="tab-pane" id="history">
-                    {{ dataGrid.renderHistoryGrid(form.vars.value) }}
-                </div>
-            {% endif %}
-        </div>
+       </div>
 
     {{ form_end(form) }}
 {% endblock %}

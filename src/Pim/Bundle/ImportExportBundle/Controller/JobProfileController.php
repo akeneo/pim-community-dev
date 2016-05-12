@@ -14,6 +14,7 @@ use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
+use Pim\Bundle\ImportExportBundle\JobTemplate\JobTemplateProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -76,27 +77,28 @@ class JobProfileController
     /** @var EntityManagerInterface */
     protected $entityManager;
 
-    /** @var JobInstanceRepository */
-    protected $jobInstanceRepository;
+    /** @var JobTemplateProviderInterface */
+    protected $jobTemplateProvider;
 
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
     /**
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ConnectorRegistry        $connectorRegistry
-     * @param JobInstanceType          $jobInstanceType
-     * @param JobInstanceFactory       $jobInstanceFactory
-     * @param JobLauncherInterface     $simpleJobLauncher
-     * @param EntityManagerInterface   $entityManager
-     * @param JobInstanceRepository    $jobInstanceRepository
-     * @param TokenStorageInterface    $tokenStorage
-     * @param string                   $jobType
+     * @param Request                      $request
+     * @param EngineInterface              $templating
+     * @param RouterInterface              $router
+     * @param FormFactoryInterface         $formFactory
+     * @param ValidatorInterface           $validator
+     * @param EventDispatcherInterface     $eventDispatcher
+     * @param ConnectorRegistry            $connectorRegistry
+     * @param JobInstanceType              $jobInstanceType
+     * @param JobInstanceFactory           $jobInstanceFactory
+     * @param JobLauncherInterface         $simpleJobLauncher
+     * @param EntityManagerInterface       $entityManager
+     * @param JobInstanceRepository        $jobInstanceRepository
+     * @param TokenStorageInterface        $tokenStorage
+     * @param JobTemplateProviderInterface $jobTemplateProvider
+     * @param string                       $jobType
      */
     public function __construct(
         Request $request,
@@ -112,6 +114,7 @@ class JobProfileController
         EntityManagerInterface $entityManager,
         JobInstanceRepository $jobInstanceRepository,
         TokenStorageInterface $tokenStorage,
+        JobTemplateProviderInterface $jobTemplateProvider,
         $jobType
     ) {
         $this->connectorRegistry     = $connectorRegistry;
@@ -130,6 +133,7 @@ class JobProfileController
         $this->validator             = $validator;
         $this->entityManager         = $entityManager;
         $this->jobInstanceRepository = $jobInstanceRepository;
+        $this->jobTemplateProvider   = $jobTemplateProvider;
         $this->tokenStorage          = $tokenStorage;
     }
 
@@ -166,7 +170,7 @@ class JobProfileController
         }
 
         return $this->templating->renderResponse(
-            sprintf('PimImportExportBundle:%sProfile:create.html.twig', ucfirst($this->getJobType())),
+            $this->jobTemplateProvider->getCreateTemplate($jobInstance),
             [
                 'form' => $form->createView()
             ]
@@ -206,12 +210,8 @@ class JobProfileController
             }
         }
 
-        if (null === $template = $job->getShowTemplate()) {
-            $template = sprintf('PimImportExportBundle:%sProfile:show.html.twig', ucfirst($this->getJobType()));
-        }
-
         return $this->templating->renderResponse(
-            $template,
+            $this->jobTemplateProvider->getShowTemplate($jobInstance),
             [
                 'form'             => $form->createView(),
                 'jobInstance'      => $jobInstance,
@@ -260,12 +260,8 @@ class JobProfileController
 
         $this->eventDispatcher->dispatch(JobProfileEvents::POST_EDIT, new GenericEvent($jobInstance));
 
-        if (null === $template = $jobInstance->getJob()->getEditTemplate()) {
-            $template = sprintf('PimImportExportBundle:%sProfile:edit.html.twig', ucfirst($this->getJobType()));
-        }
-
         return $this->templating->renderResponse(
-            $template,
+            $this->jobTemplateProvider->getEditTemplate($jobInstance),
             [
                 'jobInstance' => $jobInstance,
                 'form'        => $form->createView(),

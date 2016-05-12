@@ -22,6 +22,8 @@
 
 {{ elements.page_header(title, buttons, null, left) }}
 
+{{ elements.form_navbar(view_element_aliases(viewElementsAliases)) }}
+
 {% if uploadForm is defined and uploadForm is not empty and uploadAllowed and uploadViolations|length == 0 %}
     {{ form_start(uploadForm, {
         'id': 'pim_importexport_import_upload',

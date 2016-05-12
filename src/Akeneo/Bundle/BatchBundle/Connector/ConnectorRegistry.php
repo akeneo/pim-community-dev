@@ -106,56 +106,6 @@ class ConnectorRegistry
     }
 
     /**
-     * Set job show template
-     *
-     * @param string $jobConnector The connector
-     * @param string $jobType      The job type
-     * @param string $jobAlias     The job alias
-     * @param string $template     Reference to the template (format: bundle:section:template.format.engine)
-     */
-    public function setJobShowTemplate($jobConnector, $jobType, $jobAlias, $template)
-    {
-        if (!isset($this->jobs[$jobType][$jobConnector][$jobAlias])) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Job %s - %s - %s is not defined',
-                    $jobConnector,
-                    $jobType,
-                    $jobAlias
-                )
-            );
-        }
-
-        $job = $this->jobs[$jobType][$jobConnector][$jobAlias];
-        $job->setShowTemplate($template);
-    }
-
-    /**
-     * Set job edit template
-     *
-     * @param string $jobConnector The connector
-     * @param string $jobType      The job type
-     * @param string $jobAlias     The job alias
-     * @param string $template     Reference to the template (format: bundle:section:template.format.engine)
-     */
-    public function setJobEditTemplate($jobConnector, $jobType, $jobAlias, $template)
-    {
-        if (!isset($this->jobs[$jobType][$jobConnector][$jobAlias])) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Job %s - %s - %s is not defined',
-                    $jobConnector,
-                    $jobType,
-                    $jobAlias
-                )
-            );
-        }
-
-        $job = $this->jobs[$jobType][$jobConnector][$jobAlias];
-        $job->setEditTemplate($template);
-    }
-
-    /**
      * @param string $connector
      * @param string $type
      *

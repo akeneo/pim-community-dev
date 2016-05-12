@@ -7,6 +7,7 @@
 - PIM-5593: The context is now kept in the associations tab of the product edit form
 - PIM-5099: The catalog structure can now be exported in XLSX format (families, attributes, attribute options, association types and categories)
 - PIM-5097: The catalog structure can now be imported in XLSX format (families, attributes, attribute options, association types and categories)
+- PIM-5657: It is now possible to add custom tabs within the job profile and edit pages
 
 ## Scalability improvements
 
@@ -27,9 +28,13 @@
 - PIM-5742: Schedule completeness for ORM is now performed directly through SQL
 - Integrates the AkeneoMeasureBundle in our main repository
 - TIP-245: Add datetime filters in the Product Query Builder, allowing to select products on "created at" and "updated at" fields.
+- PIM-5657: Introduce a `JobTemplateProvider` that holds the job template codes to use for creating, showing, editing job profiles. The provider uses configuration files in order to retrieve overridden templates for specific job names
 
 ## BC breaks
 
+- Remove properties editTemplate, showTemplate from `src\Akeneo\Component\Batch\Job\Job`.
+- Remove methods setShowTemplate, setEditTemplate from `src\Akeneo\Component\Batch\Job\Job`.
+- Change constructor of `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`. Add `Akeneo\Bundle\BatchBundle\Connector\JobTemplateProviderInterface`
 - `Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/Filter/DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
 - `Pim/Bundle/CatalogBundle/Doctrine/ORM/Filter/DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
 - Change constructor of `Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/Filter/DateFilter`. Remove the third parameter `supportedFields`
@@ -199,6 +204,3 @@
 - Remove `Pim\Bundle\InstallerBundle\DataFixtures\*`
 - Remove `Pim\Bundle\InstallerBundle\FixtureLoader\*`
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter`, add `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`
-- Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`, add `Symfony\Component\Security\Core\User\UserProviderInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
-- Context option `filter_type` of `Pim\Component\Connector\Normalizer\Flat\ProductNormalizer` changed to `filter_types` and now accepts an array of filter names instead of just one filter name
-- Context option `filter_type` of `Pim\Component\Catalog\Normalizer\Structured\ProductNormalizer` changed to `filter_types` and  now accepts an array of filter names instead of just one filter name
