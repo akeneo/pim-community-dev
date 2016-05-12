@@ -2,10 +2,13 @@
 
 namespace Pim\Behat\Decorator\Grid\Filter;
 
+use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 
 class MetricDecorator extends ElementDecorator
 {
+    use SpinCapableTrait;
+
     /**
      * Sets operator and value in the filter
      *
@@ -41,6 +44,10 @@ class MetricDecorator extends ElementDecorator
             )->click();
         }
 
-        $this->find('css', '.filter-update')->click();
+        $this->spin(function () {
+            $this->find('css', '.filter-update')->click();
+
+            return true;
+        }, 'Cannot update the filter');
     }
 }

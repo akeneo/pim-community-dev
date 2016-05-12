@@ -18,7 +18,7 @@ Feature: Filter products
     And I am on the products page
 
   Scenario: Successfully filter uncomplete products
-    And I filter by "complete" with operator "" and value "no"
+    And I filter by "completeness" with operator "" and value "no"
     Then the grid should contain 5 elements
     And I should see products BOOTBXS, BOOTWXS, BOOTBS, BOOTBL, BOOTRXS
     And I filter by "channel" with operator "" and value "Mobile"
@@ -26,7 +26,7 @@ Feature: Filter products
     And I should see products BOOTWXS, BOOTBS, BOOTBL, BOOTRXS
 
   Scenario: Successfully filter complete products
-    And I filter by "complete" with operator "" and value "yes"
+    And I filter by "completeness" with operator "" and value "yes"
     Then the grid should contain 0 elements
     And I filter by "channel" with operator "" and value "Mobile"
     Then the grid should contain 1 elements

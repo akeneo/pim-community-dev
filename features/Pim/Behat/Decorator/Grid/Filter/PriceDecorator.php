@@ -17,7 +17,6 @@ class PriceDecorator extends ElementDecorator
      */
     public function filter($operator, $value)
     {
-
         $dropdowns = $this->findAll('css', '.dropdown-toggle');
 
         $operatorDropdown = $dropdowns[0];
@@ -64,7 +63,11 @@ class PriceDecorator extends ElementDecorator
             }
         }
 
-        // Update the field
-        $this->find('css', '.filter-update')->click();
+        // Update the filter
+        $this->spin(function () {
+            $this->find('css', '.filter-update')->click();
+
+            return true;
+        }, 'Cannot update the filter');
     }
 }

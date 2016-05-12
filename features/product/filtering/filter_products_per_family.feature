@@ -25,7 +25,7 @@ Feature: Filter products per family
   Scenario: Successfully filter products by a single family
     Given I am on the products page
     And the grid should contain 7 elements
-    Then I should see the filter "family"
+    Then I should see the filter family
     And I should be able to use the following filters:
       | filter | operator | value            | result                               |
       | family | in list  | computers        | PC and Laptop                        |
@@ -58,6 +58,6 @@ Feature: Filter products per family
       | code20 | code20fr    | code20en    | code20de    |
       | code21 | code21fr    | code21en    | code21de    |
     And I am on the products page
-    And I should see the filter "family"
+    And I should see the filter family
     When I press the "Family:" button
     Then I should see 20 items in the autocomplete

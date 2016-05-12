@@ -37,6 +37,10 @@ class StringDecorator extends ElementDecorator
             $field->setValue($value);
         }
 
-        $this->find('css', '.filter-update')->click();
+        $this->spin(function () {
+            $this->find('css', '.filter-update')->click();
+
+            return true;
+        }, 'Cannot update the filter');
     }
 }

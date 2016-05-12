@@ -31,7 +31,7 @@ Feature: Filter products
     Given I am on the products page
     Then the grid should contain 4 elements
     And I should see products BOOK, MUG-1, MUG-2 and POSTIT
-    And I should see the filters Groups
+    And I should see the filters groups
 
   Scenario: Successfully filter by group
     Given I am on the products page
