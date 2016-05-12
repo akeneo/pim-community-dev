@@ -98,6 +98,7 @@ Feature: Assign assets to a product
     And I add available attributes Front view
     And I start to manage assets for "Front view"
     Then I should see the text "Asset main catalog"
+    And I press the "Cancel" button in the popin
     And I save the product
     When I am on the "Administrator" role page
     And I remove rights to List asset categories in the asset picker
@@ -106,5 +107,6 @@ Feature: Assign assets to a product
     And I add available attributes Front view
     And I start to manage assets for "Front view"
     Then I should not see the text "Asset main catalog"
+    And I press the "Cancel" button in the popin
     And I save the product
     And I reset the "Administrator" rights
