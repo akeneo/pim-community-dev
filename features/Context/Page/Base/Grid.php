@@ -42,6 +42,7 @@ class Grid extends Index
         ],
         'metric' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\MetricDecorator',
         ],
         'multichoice' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
