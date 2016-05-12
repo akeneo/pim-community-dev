@@ -1,0 +1,2 @@
+parameters:
+    pim_connector.array_converter.flat.attribute.class: PimEnterprise\Component\Connector\ArrayConverter\Flat\AttributeStandardConverter
