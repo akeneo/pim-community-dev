@@ -4,6 +4,7 @@ namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -37,7 +38,10 @@ class SimpleCsvExport implements ConstraintCollectionProviderInterface
         return new Collection(
             [
                 'fields' => [
-                    'filePath' => new NotBlank(['groups' => 'Execution']),
+                    'filePath' => [
+                        new NotBlank(['groups' => 'Execution']),
+                        new WritableDirectory(['groups' => 'Execution'])
+                    ],
                     'delimiter' => [
                         new NotBlank(),
                         new Choice(

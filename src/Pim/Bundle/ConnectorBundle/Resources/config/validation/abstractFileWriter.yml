@@ -1,8 +1,0 @@
-Pim\Component\Connector\Writer\File\AbstractFileWriter:
-    properties:
-        filePath:
-            - NotBlank:
-                groups: [Execution]
-            # TODO TIP-303: check this constraints then drop this file
-            - Pim\Bundle\ImportExportBundle\Validator\Constraints\WritableDirectory:
-                groups: [Execution]
