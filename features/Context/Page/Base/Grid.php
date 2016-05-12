@@ -35,6 +35,7 @@ class Grid extends Index
         ],
         'date' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\DateDecorator'
         ],
         'datetime' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
