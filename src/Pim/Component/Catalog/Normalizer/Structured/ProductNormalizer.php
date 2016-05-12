@@ -68,6 +68,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
         $defaultContext = [
             'only_associations'    => false,
             'exclude_associations' => false,
+            'filter_types'         => ['pim.transform.product_value.structured']
         ];
 
         $context = array_merge($defaultContext, $context);
@@ -117,15 +118,12 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      */
     protected function normalizeValues(ArrayCollection $values, $format, array $context = [])
     {
-        $values = $this->filter->filterCollection(
-            $values,
-            isset($context['filter_type']) ? $context['filter_type'] : 'pim.transform.product_value.structured',
-            $context
-        );
+        foreach ($context['filter_types'] as $filterType) {
+            $values = $this->filter->filterCollection($values, $filterType, $context);
+        }
 
         $data = [];
         foreach ($values as $value) {
-            /* @var ProductValueInterface $value */
             $data[$value->getAttribute()->getCode()][] = $this->serializer->normalize($value, $format, $context);
         }
 

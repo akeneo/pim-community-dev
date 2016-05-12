@@ -2,7 +2,7 @@
 namespace Oro\Bundle\NavigationBundle\Event;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -11,19 +11,13 @@ class ResponseHashnavListener
     const HASH_NAVIGATION_HEADER = 'x-oro-hash-navigation';
 
     /**
-     * @var TokenStorageInterface
+     * @var ContainerInterface
      */
-    protected $tokenStorage;
+    private $container;
 
-    /**
-     * @var EngineInterface
-     */
-    protected $templating;
-
-    public function __construct(TokenStorageInterface $tokenStorage, EngineInterface $templating)
+    public function __construct(ContainerInterface $container)
     {
-        $this->tokenStorage = $tokenStorage;
-        $this->templating = $templating;
+        $this->container = $container;
     }
 
     /**
@@ -40,7 +34,7 @@ class ResponseHashnavListener
             $isFullRedirect = $response->headers->get('oroFullRedirect', false);
             if ($response->isRedirect()) {
                 $location = $response->headers->get('location');
-                if (!is_object($this->tokenStorage->getToken())) {
+                if (!is_object($this->getTokenStorage()->getToken())) {
                     $isFullRedirect = true;
                 }
             }
@@ -50,7 +44,7 @@ class ResponseHashnavListener
             }
             if ($location) {
                 $event->setResponse(
-                    $this->templating->renderResponse(
+                    $this->getTemplating()->renderResponse(
                         'OroNavigationBundle:HashNav:redirect.html.twig',
                         [
                             'full_redirect' => $isFullRedirect,
@@ -60,5 +54,21 @@ class ResponseHashnavListener
                 );
             }
         }
+    }
+
+    /**
+     * @return TokenStorageInterface
+     */
+    final protected function getTokenStorage()
+    {
+        return $this->container->get('security.token_storage');
+    }
+
+    /**
+     * @return EngineInterface
+     */
+    final protected function getTemplating()
+    {
+        return $this->container->get('templating');
     }
 }

@@ -739,7 +739,6 @@ class Form extends Base
         foreach ($remainingValues as $value) {
             if (trim($value)) {
                 $label->click();
-                $label->click();
 
                 $option = $this->spin(function () use ($value) {
                     return $this->find(

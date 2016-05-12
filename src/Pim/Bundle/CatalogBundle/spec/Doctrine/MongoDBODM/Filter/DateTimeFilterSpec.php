@@ -113,7 +113,7 @@ class DateTimeFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::expected(
                 'updated',
-                'a string with the format Y-m-d H:i:s',
+                'a string with the format yyyy-mm-dd H:i:s',
                 'filter',
                 'date',
                 'not a valid date format'
