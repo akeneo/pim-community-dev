@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints\GreaterThan;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class XlsxSimpleWriter extends AbstractFileWriter
+class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInterface
 {
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;
@@ -27,6 +27,9 @@ class XlsxSimpleWriter extends AbstractFileWriter
 
     /** @var int */
     protected $defaultLinesPerFile;
+
+    /** @var array */
+    protected $writtenFiles = [];
 
     /**
      * @param FilePathResolverInterface $filePathResolver
@@ -96,11 +99,20 @@ class XlsxSimpleWriter extends AbstractFileWriter
 
             if (0 === $writtenLinesCount % $this->getLinesPerFile() || $this->flatRowBuffer->count() === $count + 1) {
                 $writer->close();
+                $this->writtenFiles[$filePath] = basename($filePath);
                 $fileCount++;
             }
         }
     }
 
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWrittenFiles()
+    {
+        return $this->writtenFiles;
+    }
 
     /**
      * @return bool
