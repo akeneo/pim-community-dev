@@ -1,8 +1,8 @@
 @javascript
-Feature: Import categories
-  In order to reuse the categories of my products
+Feature: Import families
+  In order to reuse the families of my products
   As a product manager
-  I need to be able to import categories
+  I need to be able to import families
 
   Scenario: Successfully import new family in CSV
     Given the "footwear" catalog configuration

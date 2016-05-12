@@ -247,3 +247,33 @@ services:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']
+
+    pim_connector.processor.normalization.channel.flat:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_serializer.normalizer.flat.channel'
+            - 'flat'
+
+    pim_connector.processor.normalization.locale.flat:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_serializer.normalizer.flat.locale'
+            - 'flat'
+
+    pim_connector.processor.normalization.attribute_group.flat:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_serializer.normalizer.flat.attribute_group'
+            - 'flat'
+
+    pim_connector.processor.normalization.currency.flat:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_serializer.normalizer.flat.currency'
+            - 'flat'
+
+    pim_connector.processor.normalization.group_type.flat:
+        class: '%pim_connector.processor.normalization.class:%'
+        arguments:
+            - '@pim_serializer.normalizer.flat.group_type'
+            - 'flat'

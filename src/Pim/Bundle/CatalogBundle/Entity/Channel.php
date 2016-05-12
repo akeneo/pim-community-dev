@@ -136,7 +136,9 @@ class Channel implements ChannelInterface
      */
     public function addCurrency(CurrencyInterface $currency)
     {
-        $this->currencies[] = $currency;
+        if (!$this->hasCurrency($currency)) {
+            $this->currencies[] = $currency;
+        }
 
         return $this;
     }
@@ -201,6 +203,14 @@ class Channel implements ChannelInterface
     public function hasLocale(LocaleInterface $locale)
     {
         return $this->locales->contains($locale);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasCurrency(CurrencyInterface $currency)
+    {
+        return $this->currencies->contains($currency);
     }
 
     /**

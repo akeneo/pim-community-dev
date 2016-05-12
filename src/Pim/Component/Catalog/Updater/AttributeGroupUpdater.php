@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Manager\AttributeGroupManager;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
@@ -20,12 +21,21 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var AttributeGroupManager */
+    protected $attributeGroupManager;
+
     /**
+     * AttributeGroupUpdater constructor.
+     *
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param AttributeGroupManager                 $attributeGroupManager
      */
-    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
-    {
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        AttributeGroupManager $attributeGroupManager
+    ) {
         $this->attributeRepository = $attributeRepository;
+        $this->attributeGroupManager = $attributeGroupManager;
     }
 
     /**
@@ -74,6 +84,12 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
         } elseif ('sort_order' == $field) {
             $attributeGroup->setSortOrder($data);
         } elseif ('attributes' == $field) {
+
+            $attributes = $attributeGroup->getAttributes();
+            foreach ($attributes as $attribute) {
+                $this->attributeGroupManager->removeAttribute($attributeGroup, $attribute);
+            }
+
             foreach ($data as $attributeCode) {
                 $attribute = $this->findAttribute($attributeCode);
                 if (null !== $attribute) {
