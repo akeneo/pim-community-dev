@@ -4,7 +4,7 @@ namespace Akeneo\Component\Batch\Job;
 
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderRegistry;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Validate a JobParameters depending on the Job we're editing or launching
@@ -34,19 +34,19 @@ class JobParametersValidator
     }
 
     /**
-     * @param Job           $job
+     * @param JobInterface  $job
      * @param JobParameters $jobParameters
      * @param array         $groups
      *
      * @return ConstraintViolationListInterface A list of constraint violations. If the
      *                                          list is empty, validation succeeded.
      */
-    public function validate(Job $job, JobParameters $jobParameters, $groups = null)
+    public function validate(JobInterface $job, JobParameters $jobParameters, $groups = null)
     {
         $provider = $this->registry->get($job);
         $collection = $provider->getConstraintCollection();
         $parameters = $jobParameters->getParameters();
-        $errors = $this->validator->validateValue($parameters, $collection, $groups);
+        $errors = $this->validator->validate($parameters, $collection, $groups);
 
         return $errors;
     }
