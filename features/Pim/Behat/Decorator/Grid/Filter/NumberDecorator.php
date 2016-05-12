@@ -14,8 +14,6 @@ class NumberDecorator extends ElementDecorator
      */
     public function filter($operator, $value)
     {
-        $operator = 'empty' === $operator ? 'is empty' : $operator;
-
         $operatorDropdown = $this->find('css', '.dropdown-toggle');
         $operatorDropdown->click();
         $operatorChoices = $operatorDropdown->getParent()->findAll('css', '.dropdown-menu .choice_value');

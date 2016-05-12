@@ -19,8 +19,6 @@ class MetricDecorator extends ElementDecorator
         $operatorDropdown = $dropdowns[0];
         $unitDropdown = $dropdowns[1];
 
-        $operator = 'empty' === $operator ? 'is empty' : $operator;
-
         $operatorDropdown->click();
         $operatorChoices = $operatorDropdown->getParent()->findAll('css', '.dropdown-menu .choice_value');
 
