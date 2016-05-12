@@ -637,12 +637,12 @@ interface AttributeInterface extends
     public function isBackendTypeReferenceData();
 
     /**
-     * {@inheritdoc}
+     * @param bool $value
      */
     public function setIsReadOnly($value);
 
     /**
-     * {@inheritdoc}
+     * @return bool
      */
     public function isReadOnly();
 }
