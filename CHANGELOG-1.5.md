@@ -1,5 +1,8 @@
 # 1.5.x
 
+## Technical improvements
+
+- PIM-5762: Removed unused category filters on product datagrids
 - Upgrade "akeneo/measure-bundle" from "0.4.1" to "0.5.0", details in the release note https://github.com/akeneo/MeasureBundle/releases/tag/0.5.0
 
 # 1.5.2 (2016-04-25)
@@ -9,6 +12,7 @@
 - PIM-5697: Fix import form when a file extension is not allowed
 - PIM-5695: Do not format price with currency if data is null
 - PIM-5643: Fix default system locale
+- PIM-5666: Fix product value saving with value '0'
 
 # 1.5.1 (2016-03-09)
 
