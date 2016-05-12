@@ -5,6 +5,7 @@ namespace Pim\Behat\Context\Domain\Enrich;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\SpinException;
 use Pim\Behat\Context\PimContext;
 
 /**
@@ -94,25 +95,29 @@ class CompletenessContext extends PimContext
             );
 
             foreach ($table as $index => $expected) {
-                //Expected missing values need to be converted into array to be compared
-                $expected['missing_values'] = '' !== $expected['missing_values'] ?
-                    explode(', ', $expected['missing_values']) :
-                    [];
+                if (isset($expected['missing_values'])) {
+                    // Expected missing values need to be converted to array to be compared
+                    $expected['missing_values'] = '' !== $expected['missing_values'] ?
+                        explode(', ', $expected['missing_values']) :
+                        [];
+                }
+
+                // This allows to omit columns in the table
                 $expected = array_merge($completenessData[$index], $expected);
 
-                if ($completenessData[$index] !== $expected) {
-                    return false;
+                if ($completenessData[$index] !== $expected ||
+                    $completenessData[$index]['missing_values'] !== $expected['missing_values']
+                ) {
+                    throw new SpinException(sprintf(
+                        'Expected completeness %s does not match %s',
+                        var_export($expected, true),
+                        var_export($completenessData[$index], true)
+                    ));
                 }
             }
 
             return true;
-        }, sprintf(
-            'Expected completeness %s does not match %s',
-            var_export($table, true),
-            var_export($this->convertStructuredToFlat(
-                $this->getCurrentPage()->getElement('Completeness')->getCompletenessData()
-            ), true)
-        ));
+        }, 'Completeness assertion failed');
     }
 
     /**

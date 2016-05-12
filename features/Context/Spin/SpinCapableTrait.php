@@ -46,6 +46,10 @@ trait SpinCapableTrait
             !$previousException instanceof TimeoutException
         );
 
+        if ($previousException instanceof SpinException) {
+            $message = $previousException->getMessage();
+        }
+
         if (null === $message) {
             $message = (null !== $previousException) ? $previousException->getMessage() : 'no message';
         }
