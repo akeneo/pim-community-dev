@@ -5,6 +5,7 @@ parameters:
 services:
     pim_import_export.repository.job_instance:
         class: '%pim_import_export.repository.job_instance.class%'
+        deprecated: 'The "%service_id%" service is deprecated and will be moved to Pim\Bundle\ImportExportBundle\Doctrine\ORM\Repository'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: ['%akeneo_batch.entity.job_instance.class%']
@@ -13,6 +14,7 @@ services:
 
     pim_import_export.repository.job_execution:
         class: '%pim_import_export.repository.job_execution.class%'
+        deprecated: 'The "%service_id%" service is deprecated and will be moved to Pim\Bundle\ImportExportBundle\Doctrine\ORM\Repository in 1.4'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: ['%akeneo_batch.entity.job_execution.class%']

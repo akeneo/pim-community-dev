@@ -50,26 +50,26 @@ services:
         calls:
             - [setRequest, ['@?request=']]
 
-    # deprecated, will be removed in 1.6, please use pim_datagrid.datagrid.configuration.product.context_configurator
     pim_datagrid.datagrid.product.context_configurator:
         alias: pim_datagrid.datagrid.configuration.product.context_configurator
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.6, please use @pim_datagrid.datagrid.configuration.product.context_configurator'
 
-    # deprecated, will be removed in 1.6, please use pim_datagrid.datagrid.configuration.product.columns_configurator
     pim_datagrid.datagrid.product.columns_configurator:
         alias: pim_datagrid.datagrid.configuration.product.columns_configurator
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.6, please use @pim_datagrid.datagrid.configuration.product.columns_configurator'
 
-    # deprecated, will be removed in 1.6, please use pim_datagrid.datagrid.configuration.product.filters_configurator
     pim_datagrid.datagrid.product.filters_configurator:
         alias: pim_datagrid.datagrid.configuration.product.filters_configurator
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.6, please use @pim_datagrid.datagrid.configuration.product.filters_configurator'
 
-    # deprecated, will be removed in 1.6, please use pim_datagrid.datagrid.configuration.product.sorters_configurator
     pim_datagrid.datagrid.product.sorters_configurator:
         alias: pim_datagrid.datagrid.configuration.product.sorters_configurator
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.6, please use @pim_datagrid.datagrid.configuration.product.sorters_configurator'
 
-    # deprecated, will be removed in 1.6, please use pim_datagrid.datagrid.configuration.product.group_columns_configurator
     pim_datagrid.datagrid.product.group_columns_configurator:
         alias: pim_datagrid.datagrid.configuration.product.group_columns_configurator
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.6, please use @pim_datagrid.datagrid.configuration.product.group_columns_configurator'
 
-    # deprecated, will be removed in 1.6, please use pim_datagrid.datagrid.request.parameters_extractor
     pim_datagrid.datagrid.request_parameters_extractor:
         alias: pim_datagrid.datagrid.request.parameters_extractor
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.6, please use @pim_datagrid.datagrid.request.parameters_extractor'

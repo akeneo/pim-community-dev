@@ -2,9 +2,9 @@ parameters:
     pim_notification.manager.notification.class: Pim\Bundle\NotificationBundle\Manager\NotificationManager
 
 services:
-    # deprecated: will be removed in 1.7
     pim_notification.manager.notification:
         class: '%pim_notification.manager.notification.class%'
+        deprecated: 'The "%service_id%" service is deprecated and will be remove in 1.7, please look at each method to know the replacement'
         arguments:
             - '@pim_notification.repository.user_notification'
             - '@pim_notification.factory.user_notification'

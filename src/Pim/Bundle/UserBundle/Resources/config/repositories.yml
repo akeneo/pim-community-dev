@@ -6,6 +6,7 @@ parameters:
 services:
     pim_user.repository.role:
         class: '%pim_user.repository.role.class%'
+        deprecated: 'The "%service_id%" service is deprecated and will be moved to Pim\Bundle\UserBundle\Doctrine\ORM\Repository in 1.4'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: ['%pim_user.entity.role.class%']
@@ -14,6 +15,7 @@ services:
 
     pim_user.repository.group:
         class: '%pim_user.repository.group.class%'
+        deprecated: 'The "%service_id%" service is deprecated and will be moved to Pim\Bundle\UserBundle\Doctrine\ORM\Repository in 1.4'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: ['%pim_user.entity.group.class%']

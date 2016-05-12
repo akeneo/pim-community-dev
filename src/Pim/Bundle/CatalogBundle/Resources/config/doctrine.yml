@@ -3,14 +3,14 @@ parameters:
     doctrine.orm.cache.apc.class: Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
 
 services:
-    # deprecated: will be removed in 1.6
     pim_catalog.event_subscriber.resolve_target_repository:
         alias: akeneo_storage_utils.event_subscriber.resolve_target_repository
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.6'
 
-    # deprecated: will be removed in 1.6
     pim_catalog.doctrine.smart_manager_registry:
         alias: akeneo_storage_utils.doctrine.smart_manager_registry
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.6'
 
-    # deprecated: will be removed in 1.6
     pim_catalog.doctrine.table_name_builder:
         alias: akeneo_storage_utils.doctrine.table_name_builder
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.6'
