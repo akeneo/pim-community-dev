@@ -1,0 +1,31 @@
+{% if form.permissions is defined %}
+    <script type="text/javascript">
+        require(
+                ['jquery', 'pimee/manage-permissions'],
+                function ($, managePermissions) {
+                    'use strict';
+
+                    $(function () {
+                        var options = {
+                            elementId: '#{{form.permissions.vars.id}}',
+                            changeBlockLabel: '{{ 'Changes'|trans }}',
+                            grantMessage: 'permission-changes.job profile.grant',
+                            revokeMessage: 'permission-changes.job profile.revoke',
+                            update: {
+                                add: {
+                                    '{{ form.permissions.edit.vars.id }}': ['{{ form.permissions.execute.vars.id }}']
+                                },
+                                remove: {
+                                    '{{ form.permissions.execute.vars.id }}': ['{{ form.permissions.edit.vars.id }}'],
+                                }
+                            }
+                        };
+                        managePermissions(options);
+                    });
+                });
+    </script>
+
+    <div id="pimee_import_export-job_profile-tab-permission" class="tab-pane buffer-top">
+        {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }, false, 'permission') }}
+    </div>
+{% endif %}

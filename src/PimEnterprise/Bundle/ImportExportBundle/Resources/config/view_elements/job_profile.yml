@@ -1,0 +1,47 @@
+parameters:
+   pimee_import_export.view_element.job_profile.tab.permission.template: 'PimImportExportBundle:JobProfile:Tab/permission.html.twig'
+
+services:
+   pimee_import_export.view_element.job_profile.import.tab.permission_show:
+       parent: pim_enrich.view_element.base
+       arguments:
+           - 'pimee_import_export.job_profile.tab.permission'
+           - %pimee_import_export.view_element.job_profile.tab.permission.template%
+       calls:
+           - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
+           - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pimee_importexport_import_profile_edit_permissions'}] ]
+       tags:
+           - { name: pim_enrich.view_element, type: pim_import_export_jobInstance.import, position: 110 }
+
+   pimee_import_export.view_element.job_profile.import.tab.permission_edit:
+       parent: pim_enrich.view_element.base
+       arguments:
+           - 'pimee_import_export.job_profile.tab.permission'
+           - %pimee_import_export.view_element.job_profile.tab.permission.template%
+       calls:
+           - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
+           - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pimee_importexport_import_profile_edit_permissions'}] ]
+       tags:
+           - { name: pim_enrich.view_element, type: pim_import_export_jobInstance.import.form_tab, position: 110 }
+
+   pimee_import_export.view_element.job_profile.export.tab.permission_show:
+       parent: pim_enrich.view_element.base
+       arguments:
+           - 'pimee_import_export.job_profile.tab.permission'
+           - %pimee_import_export.view_element.job_profile.tab.permission.template%
+       calls:
+           - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
+           - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pimee_importexport_export_profile_edit_permissions'}] ]
+       tags:
+           - { name: pim_enrich.view_element, type: pim_import_export_jobInstance.export, position: 110 }
+
+   pimee_import_export.view_element.job_profile.export.tab.permission_edit:
+       parent: pim_enrich.view_element.base
+       arguments:
+           - 'pimee_import_export.job_profile.tab.permission'
+           - %pimee_import_export.view_element.job_profile.tab.permission.template%
+       calls:
+           - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
+           - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pimee_importexport_export_profile_edit_permissions'}] ]
+       tags:
+           - { name: pim_enrich.view_element, type: pim_import_export_jobInstance.export.form_tab, position: 110 }
