@@ -16,27 +16,44 @@ class MultiSelectDecorator extends ElementDecorator
         // We have to find the one that is visible and active.
         $multiSelectWidgets = $this->spin(function () {
             return $this->getBody()->findAll('css', '.select-filter-widget.dropdown-menu');
-        }, sprintf('Could not find any multiselect widget for filter "%s"', $this->getAttribute('data-name')));
+        }, sprintf('Could not find any multiselect widget for filter "%s"', $value));
 
         $widget = null;
         foreach ($multiSelectWidgets as $multiSelectWidget) {
-            $widget = $multiSelectWidget->isVisible() ? $multiSelectWidget : null;
+            $widget = $multiSelectWidget->isVisible() ? $multiSelectWidget : $widget;
         }
 
         if (null === $widget) {
             throw new \Exception(
-                sprintf('Could not find the multiselect widget for filter "%s"', $this->getAttribute('data-name'))
+                sprintf('Could not find the multiselect widget for filter "%s"', $value)
             );
         }
 
+
+        $values = '' !== $value ? explode(', ', $value) : [];
+
         // The search input for a multiselect is optional
         $search = $widget->find('css', 'input[type="search"]');
-        if (null !== $search) {
-            $search->setValue($value);
+        foreach ($values as $value) {
+            if (null !== $search) {
+                $search->setValue($value);
+            }
+
+            $option = $widget->find('css', sprintf('li label:contains("%s")', $value));
+            $option->click();
         }
 
-        $option = $widget->find('css', sprintf('li label:contains("%s")', $value));
-        $option->click();
+        // uncheck all choices before doing anything
+        $all = $widget->find('css', 'li input[checked="checked"][value=""]');
+
+        if (null !== $all && $value !== 'All') {
+            echo "remove all";
+            if (null !== $search) {
+                $search->setValue('All');
+            }
+
+            $all->click();
+        }
     }
 
     /**

@@ -43,6 +43,7 @@ class Grid extends Index
         ],
         'multichoice' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
         ],
         'number' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
@@ -461,6 +462,7 @@ class Grid extends Index
      */
     public function getFilter($filterName)
     {
+        // We find the node element
         $filter = $this->spin(function () use ($filterName) {
             if (strtolower($filterName) === 'channel') {
                 return $this->getElement('Grid toolbar')->find('css', '.filter-item');
@@ -469,6 +471,7 @@ class Grid extends Index
             return $this->getElement('Filters')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
         }, sprintf('Couldn\'t find a filter with name "%s"', $filterName));
 
+        // We decorate it
         $filterType = $filter->getAttribute('data-type');
         if (isset($this->filterDecorators[$filterType])) {
             $filter = $this->decorate($filter, $this->filterDecorators[$filterType]);
@@ -500,11 +503,7 @@ class Grid extends Index
      */
     public function showFilter($filterName)
     {
-        try {
-            if (!$this->getFilter($filterName)->isVisible()) {
-                $this->clickOnFilterToManage($filterName);
-            }
-        } catch (TimeoutException $e) {
+        if (!$this->getFilter($filterName)->isVisible()) {
             $this->clickOnFilterToManage($filterName);
         }
     }
@@ -595,21 +594,27 @@ class Grid extends Index
             $this->clickFiltersList();
         }
 
-        $searchField   = $this->spin(function () use ($manageFilters) {
-            return $manageFilters->find('css', 'input[type="search"]');
-        }, 'Cannot find manage filters search field');
-        $searchField->setValue($filterName);
-
-        $filterElement = $this->spin(function () use ($manageFilters, $filterName) {
+        $this->spin(function () use ($manageFilters, $filterName) {
             $filterElement = $manageFilters->find('css', sprintf('input[value="%s"]', $filterName));
-            if (null === $filterElement || !$filterElement->isVisible()) {
-                return false;
+
+            if (null !== $filterElement && $filterElement->isVisible()) {
+                $filterElement->click();
+
+                return true;
             }
 
-            return $filterElement;
-        }, sprintf('Impossible to activate filter "%s"', $filterName));
+            if (null !== $searchField = $manageFilters->find('css', 'input[type="search"]')) {
+                $searchField->setValue($filterName);
+            }
 
-        $filterElement->click();
+            if (null !== $filterElement && $filterElement->isVisible()) {
+                $filterElement->click();
+
+                return true;
+            }
+
+            return false;
+        }, sprintf('Impossible to activate filter "%s"', $filterName));
     }
 
     /**
