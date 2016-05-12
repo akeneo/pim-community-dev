@@ -46,9 +46,6 @@ class ConnectorRegistrySpec extends ObjectBehavior
         $jobInstance->getType()->willReturn('fixtures');
         $jobInstance->getAlias()->willReturn('fixtures_category_csv');
         $jobInstance->getRawConfiguration()->willReturn($rawConfiguration);
-
-        $job->setConfiguration($rawConfiguration)->shouldBeCalled();
-
         $this->getJob($jobInstance)->shouldReturn($job);
     }
 
