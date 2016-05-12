@@ -1,0 +1,2 @@
+parameters:
+    pim_serializer.normalizer.flat.attribute.class: PimEnterprise\Component\Connector\Normalizer\Flat\AttributeNormalizer
