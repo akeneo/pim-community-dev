@@ -45,7 +45,7 @@ Feature: Filter products
       | sku     | ends with        | book          | book and ebook                           |
       | sku     | in list          | book          | book                                     |
       | sku     | in list          | postit, book2 | postit and book2                         |
-      | name    | empty            |               |                                          |
+      | name    | is empty         |               |                                          |
 
   Scenario: Successfully hide/show filters
     Given I am on the products page
@@ -59,14 +59,14 @@ Feature: Filter products
 
   Scenario: Successfully reset the filters
     Given I am on the products page
-    Then I filter by "Status" with value "Enabled"
+    Then I filter by "status" with operator "" and value "Enabled"
     And the grid should contain 5 elements
     When I reset the grid
     Then the grid should contain 6 elements
 
   Scenario: Successfully refresh the grid
     Given I am on the products page
-    Then I filter by "Status" with value "Enabled"
+    Then I filter by "status" with operator "" and value "Enabled"
     And the grid should contain 5 elements
     When I refresh the grid
     Then the grid should contain 5 elements

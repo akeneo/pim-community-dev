@@ -15,42 +15,42 @@ Feature: Filter products with multiples multiselect filters
       | color   | Color   | multiselect | yes                    |
       | company | Company | multiselect | yes                    |
     And the following "color" attribute options: Black and Green
-    And the following "company" attribute options: Black and White and Red
+    And the following "company" attribute options: RedHat, Canonical and Suze
     And the following products:
-      | sku    | family    | company | color |
-      | BOOK   | library   |         |       |
-      | MUG-1  | furniture | white   | green |
-      | MUG-2  | furniture | red     | green |
-      | MUG-3  | furniture | red     | green |
-      | MUG-4  | furniture | red     | green |
-      | MUG-5  | furniture |         | green |
-      | POST-1 | furniture | red     |       |
-      | POST-2 | furniture | red     |       |
-      | POST-3 | furniture | black   |       |
+      | sku    | family    | company   | color |
+      | BOOK   | library   |           |       |
+      | MUG-1  | furniture | canonical | green |
+      | MUG-2  | furniture | suze      | green |
+      | MUG-3  | furniture | suze      | green |
+      | MUG-4  | furniture | suze      | green |
+      | MUG-5  | furniture |           | green |
+      | POST-1 | furniture | suze      |       |
+      | POST-2 | furniture | suze      |       |
+      | POST-3 | furniture | redhat    |       |
     And I am logged in as "Mary"
     And I am on the products page
 
   Scenario: Successfully filter products with the sames attributes
-    Given I show the filter "Company"
-    And I filter by "Company" with value "Red"
+    Given I show the filter "company"
+    And I filter by "company" with operator "in list" value "Suze"
     Then I should be able to use the following filters:
-      | filter | value    | result                 |
-      | Color  | green    | MUG-2, MUG-3 and MUG-4 |
-      | Color  | is empty | POST-1 and POST-2      |
+      | filter | operator | value | result                 |
+      | color  | in list  | green | MUG-2, MUG-3 and MUG-4 |
+      | color  | is empty |       | POST-1 and POST-2      |
 
   Scenario: Successfully filter product without commons attributes
-    Given I show the filter "Color"
-    And I filter by "Color" with value "Green"
+    Given I show the filter "color"
+    And I filter by "color" with operator "in list" value "Green"
     Then I should be able to use the following filters:
-      | filter  | value    | result |
-      | Company | White    | MUG-1  |
-      | Company | is empty | MUG-5  |
+      | filter  | operator | value     | result |
+      | company | in list  | Canonical | MUG-1  |
+      | company | is empty |           | MUG-5  |
 
   Scenario: Successfully filter only one product
     Given I am on the products page
-    When I show the filter "Company"
-    And I filter by "Company" with value "White"
-    And I show the filter "Color"
-    And I filter by "Color" with value "Green"
+    When I show the filter "company"
+    And I filter by "company" with value "Canonical"
+    And I show the filter "color"
+    And I filter by "color" with value "Green"
     Then the grid should contain 1 elements
     And I should see entities "MUG-1"

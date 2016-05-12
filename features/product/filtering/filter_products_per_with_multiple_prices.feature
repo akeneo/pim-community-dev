@@ -27,45 +27,45 @@ Feature: Filter products with multiples prices filters
       | POST-3 | furniture | 30 EUR    |        |
     And I am logged in as "Mary"
     And I am on the products page
-    And I show the filter "Transport"
-    And I show the filter "Margin"
+    And I show the filter "transport"
+    And I show the filter "margin"
 
   Scenario: Successfully filter products with the sames attributes
-    Given I filter by "Transport" with value "= 15 EUR"
+    Given I filter by "transport" with operator "=" and value "15 EUR"
     And I should be able to use the following filters:
-      | filter | value       | result                 |
-      | Margin | > 7 EUR     |                        |
-      | Margin | >= 7.01 EUR |                        |
-      | Margin | < 7 EUR     |                        |
-      | Margin | <= 6.99 EUR |                        |
-      | Margin | > 6 EUR     | MUG-2, MUG-3 and MUG-4 |
-      | Margin | > 6.99 EUR  | MUG-2, MUG-3 and MUG-4 |
-      | Margin | < 8 EUR     | MUG-2, MUG-3 and MUG-4 |
-      | Margin | < 7.01 EUR  | MUG-2, MUG-3 and MUG-4 |
-      | Margin | >= 7 EUR    | MUG-2, MUG-3 and MUG-4 |
-      | Margin | <= 7 EUR    | MUG-2, MUG-3 and MUG-4 |
-      | Margin | = 7 EUR     | MUG-2, MUG-3 and MUG-4 |
-      | Margin | = 0 EUR     |                        |
-      | Margin | > 0 EUR     | MUG-2, MUG-3 and MUG-4 |
-    And I hide the filter "Transport"
-    And I hide the filter "Margin"
+      | filter | opertor | value    | result                 |
+      | margin | >       | 7 EUR    |                        |
+      | margin | >=      | 7.01 EUR |                        |
+      | margin | <       | 7 EUR    |                        |
+      | margin | <=      | 6.99 EUR |                        |
+      | margin | >       | 6 EUR    | MUG-2, MUG-3 and MUG-4 |
+      | margin | >       | 6.99 EUR | MUG-2, MUG-3 and MUG-4 |
+      | margin | <       | 8 EUR    | MUG-2, MUG-3 and MUG-4 |
+      | margin | <       | 7.01 EUR | MUG-2, MUG-3 and MUG-4 |
+      | margin | >=      | 7 EUR    | MUG-2, MUG-3 and MUG-4 |
+      | margin | <=      | 7 EUR    | MUG-2, MUG-3 and MUG-4 |
+      | margin | =       | 7 EUR    | MUG-2, MUG-3 and MUG-4 |
+      | margin | =       | 0 EUR    |                        |
+      | margin | >       | 0 EUR    | MUG-2, MUG-3 and MUG-4 |
+    And I hide the filter "transport"
+    And I hide the filter "margin"
 
   Scenario: Successfully filter product without commons attributes
-    Given I filter by "Margin" with value "= 7 EUR"
+    Given I filter by "margin" with operator "=" and value "7 EUR"
     And I should be able to use the following filters:
-      | filter    | value        | result                        |
-      | Transport | > 15 EUR     |                               |
-      | Transport | >= 15.01 EUR |                               |
-      | Transport | < 15 EUR     | MUG-1                         |
-      | Transport | <= 14.99 EUR | MUG-1                         |
-      | Transport | > 14 EUR     | MUG-2, MUG-3 and MUG-4        |
-      | Transport | > 14.99 EUR  | MUG-2, MUG-3 and MUG-4        |
-      | Transport | < 16 EUR     | MUG-1, MUG-2, MUG-3 and MUG-4 |
-      | Transport | < 15.01 EUR  | MUG-1, MUG-2, MUG-3 and MUG-4 |
-      | Transport | >= 15 EUR    | MUG-2, MUG-3 and MUG-4        |
-      | Transport | <= 15 EUR    | MUG-1, MUG-2, MUG-3 and MUG-4 |
-      | Transport | = 15 EUR     | MUG-2, MUG-3 and MUG-4        |
-      | Transport | = 0 EUR      |                               |
-      | Transport | > 0 EUR      | MUG-1, MUG-2, MUG-3 and MUG-4 |
-    And I hide the filter "Transport"
-    And I hide the filter "Margin"
+      | filter    | opertor | value     | result                        |
+      | transport | >       | 15 EUR    |                               |
+      | transport | >=      | 15.01 EUR |                               |
+      | transport | <       | 15 EUR    | MUG-1                         |
+      | transport | <=      | 14.99 EUR | MUG-1                         |
+      | transport | >       | 14 EUR    | MUG-2, MUG-3 and MUG-4        |
+      | transport | >       | 14.99 EUR | MUG-2, MUG-3 and MUG-4        |
+      | transport | <       | 16 EUR    | MUG-1, MUG-2, MUG-3 and MUG-4 |
+      | transport | <       | 15.01 EUR | MUG-1, MUG-2, MUG-3 and MUG-4 |
+      | transport | >=      | 15 EUR    | MUG-2, MUG-3 and MUG-4        |
+      | transport | <=      | 15 EUR    | MUG-1, MUG-2, MUG-3 and MUG-4 |
+      | transport | =       | 15 EUR    | MUG-2, MUG-3 and MUG-4        |
+      | transport | =       | 0 EUR     |                               |
+      | transport | >       | 0 EUR     | MUG-1, MUG-2, MUG-3 and MUG-4 |
+    And I hide the filter "transport"
+    And I hide the filter "margin"

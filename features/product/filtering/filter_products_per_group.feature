@@ -35,13 +35,13 @@ Feature: Filter products
 
   Scenario: Successfully filter by group
     Given I am on the products page
-    When I filter by "Groups" with value "Mug"
+    When I filter by "groups" with operator "" and value "Mug"
     Then the grid should contain 2 elements
     And I should see products MUG-1 and MUG-2
     And I should not see products BOOK and POSTIT
 
   Scenario: Successfully filter by a group without products linked
     Given I am on the products page
-    When I filter by "Groups" with value "Empty"
+    When I filter by "groups" with operator "" and value ""
     Then the grid should contain 0 element
     And I should not see products BOOK, MUG-1, MUG-2 and POSTIT

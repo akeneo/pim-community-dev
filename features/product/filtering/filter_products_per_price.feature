@@ -23,23 +23,23 @@ Feature: Filter products per price
 
   Scenario: Successfully filter products by price
     Given I am on the products page
-    Then I should see the filter SKU
-    And I should not see the filter Price
+    Then I should see the filter sku
+    And I should not see the filter price
     And the grid should contain 4 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | value       | result          |
-      | Price  | >= 20 EUR   | book            |
-      | Price  | > 22.5 EUR  |                 |
-      | Price  | >= 22.5 EUR | book            |
-      | Price  | > 12.5 EUR  | book            |
-      | Price  | >= 12.5 EUR | book, postit    |
-      | Price  | = 12.5 EUR  | postit          |
-      | Price  | < 20 EUR    | postit          |
-      | Price  | < 10.5 EUR  |                 |
-      | Price  | <= 13 EUR   | postit          |
-      | Price  | <= 23 EUR   | postit and book |
-      | Price  | > 40.5 EUR  |                 |
-    When I show the filter "Price"
-    And I filter by price "Price" with empty value on "EUR" currency
+      | filter | operator | value    | result          |
+      | price  | >=       | 20 EUR   | book            |
+      | price  | >        | 22.5 EUR |                 |
+      | price  | >=       | 22.5 EUR | book            |
+      | price  | >        | 12.5 EUR | book            |
+      | price  | >=       | 12.5 EUR | book, postit    |
+      | price  | =        | 12.5 EUR | postit          |
+      | price  | <        | 20 EUR   | postit          |
+      | price  | <        | 10.5 EUR |                 |
+      | price  | <=       | 13 EUR   | postit          |
+      | price  | <=       | 23 EUR   | postit and book |
+      | price  | >        | 40.5 EUR |                 |
+    When I show the filter "price"
+    And I filter by "price" with operator "empty" and value "EUR"
     And I should see product mug and pen

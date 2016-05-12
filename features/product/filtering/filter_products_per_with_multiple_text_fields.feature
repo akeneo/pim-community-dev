@@ -27,38 +27,38 @@ Feature: Filter products with multiples text fields filters
       | POST-3 | furniture | black color    | indigo |
     And I am logged in as "Mary"
     And I am on the products page
-    And I show the filter "Description"
-    And I show the filter "Name"
+    And I show the filter "description"
+    And I show the filter "name"
 
   Scenario: Successfully filter products with the sames attributes
-    Given I filter by "Description" with value "Red"
+    Given I filter by "description" with value "Red"
     And I should be able to use the following filters:
-      | filter | value                  | result                 |
-      | Name   | empty                  | POST-1 and POST-2      |
-      | Name   | contains in            | MUG-2, MUG-3 and MUG-4 |
-      | Name   | starts with in         | MUG-2 and MUG-3        |
-      | Name   | ends with nk           | MUG-4                  |
-      | Name   | ends with NK           | MUG-4                  |
-      | Name   | does not contain in    |                        |
-      | Name   | does not contain green | MUG-2, MUG-3 and MUG-4 |
-      | Name   | is equal to in         |                        |
-      | Name   | is equal to pink       | MUG-4                  |
-    And I hide the filter "Description"
-    And I hide the filter "Name"
+      | filter | operator         | value  | result                 |
+      | name   | is empty         |        | POST-1 and POST-2      |
+      | name   | contains         | in     | MUG-2, MUG-3 and MUG-4 |
+      | name   | starts with      | in     | MUG-2 and MUG-3        |
+      | name   | ends with        | nk     | MUG-4                  |
+      | name   | ends with        | NK     | MUG-4                  |
+      | name   | does not contain | in     |                        |
+      | name   | does not contain | green  | MUG-2, MUG-3 and MUG-4 |
+      | name   | is equal to      | in     |                        |
+      | name   | is equal to      | pink   | MUG-4                  |
+    And I hide the filter "description"
+    And I hide the filter "name"
 
   Scenario: Successfully filter product without commons attributes
-    Given I filter by "Name" with value "indigo"
+    Given I filter by "name" with value "indigo"
     And I should be able to use the following filters:
-      | filter      | value                  | result          |
-      | Description | empty                  | MUG-5           |
-      | Description | contains color         | POST-3          |
-      | Description | contains red           | MUG-2 and MUG-3 |
-      | Description | starts with color      |                 |
-      | Description | starts with b          | POST-3          |
-      | Description | ends with or           | POST-3          |
-      | Description | ends with OR           | POST-3          |
-      | Description | does not contain bl    | MUG-2 and MUG-3 |
-      | Description | is equal to red        |                 |
-      | Description | is equal to red handle | MUG-2 and MUG-3 |
-    And I hide the filter "Description"
-    And I hide the filter "Name"
+      | filter      | operator         | value      | result          |
+      | description | is empty         |            | MUG-5           |
+      | description | contains         | color      | POST-3          |
+      | description | contains         | red        | MUG-2 and MUG-3 |
+      | description | starts with      | color      |                 |
+      | description | starts with      | b          | POST-3          |
+      | description | ends with        | or         | POST-3          |
+      | description | ends with        | OR         | POST-3          |
+      | description | does not contain | bl         | MUG-2 and MUG-3 |
+      | description | is equal to      | red        |                 |
+      | description | is equal to      | red handle | MUG-2 and MUG-3 |
+    And I hide the filter "description"
+    And I hide the filter "name"

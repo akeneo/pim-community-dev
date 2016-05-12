@@ -24,14 +24,14 @@ Feature: Filter products per option
     Given I am on the products page
     And the grid should contain 3 elements
     Then I should be able to use the following filters:
-      | filter | value    | result          |
-      | size   | M        | Sweat           |
-      | size   | is empty | Shirt and Shoes |
+      | filter | operator | value | result          |
+      | size   | in list  | M     | Sweat           |
+      | size   | is empty |       | Shirt and Shoes |
 
   Scenario: Successfully filter products by a multi option
     Given I am on the products page
     And the grid should contain 3 elements
     Then I should be able to use the following filters:
-      | filter | value    | result          |
-      | color  | Black    | Shoes           |
-      | color  | is empty | Shirt and Sweat |
+      | filter | operator | value    | result          |
+      | color  | in list  | Black    | Shoes           |
+      | color  | is empty |          | Shirt and Sweat |

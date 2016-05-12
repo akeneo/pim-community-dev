@@ -22,8 +22,8 @@ Feature: Filter products by date field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter  | value | result       |
-      | release | empty | book and mug |
+      | filter  | operator | value | result       |
+      | release | is empty |       | book and mug |
 
   Scenario: Successfully filter products by date attributes
     Given the following products:
@@ -37,11 +37,11 @@ Feature: Filter products by date field
     Then the grid should contain 5 elements
     And I should see products postit, book, mug, tshirt and pen
     And I should be able to use the following filters:
-      | filter  | value                                 | result               |
-      | release | more than 05/02/2014                  | mug, tshirt and pen  |
-      | release | less than 05/03/2014                  | postit and book      |
-      | release | between 05/02/2014 and 05/03/2014     | book, mug and tshirt |
-      | release | not between 05/02/2014 and 05/03/2014 | postit and pen       |
+      | filter  | operator    | value                     | result               |
+      | release | more than   | 05/02/2014                | mug, tshirt and pen  |
+      | release | less than   | 05/03/2014                | postit and book      |
+      | release | between     | 05/02/2014 and 05/03/2014 | book, mug and tshirt |
+      | release | not between | 05/02/2014 and 05/03/2014 | postit and pen       |
 
   Scenario: Filter products by date attributes and keep the appropriate default filter values
     Given the following products:
@@ -50,13 +50,13 @@ Feature: Filter products by date field
       | pen    | 2014-05-06 |
     And I am on the products page
     And I show the filter "release"
-    When I filter by "release" with value "between 05/01/2014 and 05/03/2014"
-    Then the filter "release" should be set to "between 05/01/2014 and 05/03/2014"
-    And the filter "Created at" should be set to "All"
+    When I filter by "release" with operator "between" and value "05/01/2014 and 05/03/2014"
+    Then the filter "release" should be set to operator "between" and value "05/01/2014 and 05/03/2014"
+    And the filter "created_at" should be reset
     When I click on the "book" row
     And I click back to grid
-    Then the filter "release" should be set to "between 05/01/2014 and 05/03/2014"
-    And the filter "Created at" should be set to "All"
+    Then the filter "release" should be set to operator "between" and value "05/01/2014 and 05/03/2014"
+    And the filter "created_at" should be reset
     When I refresh current page
     Then the filter "release" should be set to "between 05/01/2014 and 05/03/2014"
-    And the filter "Created at" should be set to "All"
+    And the filter "created_at" should be reset
