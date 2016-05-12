@@ -9,6 +9,7 @@ use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Context\AttributeValidationContext;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
 use Pim\Behat\Context\Domain\Enrich\CompletenessContext;
@@ -67,6 +68,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('domain-attribute-tab', new AttributeTabContext());
         $this->useContext('domain-completeness', new CompletenessContext());
         $this->useContext('storage-product', new ProductStorage());
+        $this->useContext('attribute-validation', new AttributeValidationContext());
 
         $this->setTimeout($parameters);
     }

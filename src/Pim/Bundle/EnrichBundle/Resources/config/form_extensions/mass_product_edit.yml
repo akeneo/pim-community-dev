@@ -24,7 +24,6 @@ extensions:
         module: pim/mass-product-edit-form/add-attribute
         parent: pim-mass-product-edit-form-attributes
         targetZone: other-actions
-        aclResourceId: pim_enrich_product_add_attribute
         position: 90
 
     pim-mass-product-edit-form-validation:

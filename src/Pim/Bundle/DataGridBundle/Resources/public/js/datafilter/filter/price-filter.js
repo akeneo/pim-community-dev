@@ -131,7 +131,7 @@ define(
             /**
              * Empty value object
              *
-             * @property {0bject}
+             * @property {Object}
              */
             emptyValue: {
                 currency: '',
@@ -195,14 +195,13 @@ define(
              */
             setValue: function(value) {
                 value = this._formatRawValue(value);
-                if (this._isValueValid(value)) {
-                    if (this._isNewValueUpdated(value)) {
-                        var oldValue = this.value;
-                        this.value = app.deepClone(value);
-                        this._updateDOMValue();
-                        this._onValueUpdated(this.value, oldValue);
-                    }
+                if (this._isNewValueUpdated(value)) {
+                    var oldValue = this.value;
+                    this.value = app.deepClone(value);
+                    this._updateDOMValue();
+                    this._onValueUpdated(this.value, oldValue);
                 }
+
                 return this;
             },
 
@@ -219,6 +218,16 @@ define(
                         parentDiv.find('input[name="value"]').show();
                     }
                 }
+            },
+
+            /**
+             * @inheritDoc
+             */
+            reset: function() {
+                this.setValue(this.emptyValue);
+                this.trigger('update');
+
+                return this;
             }
         });
     }
