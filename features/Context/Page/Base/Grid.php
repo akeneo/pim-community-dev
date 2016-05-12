@@ -50,6 +50,7 @@ class Grid extends Index
         ],
         'price' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\PriceDecorator',
         ],
         'product_completeness' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
