@@ -128,7 +128,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productAssocFilter,
         $stepExecution,
         $productDetacher,
-        $stepExecution,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -201,7 +200,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productAssocFilter,
         $stepExecution,
         $productDetacher,
-        $stepExecution,
         AssociationInterface $association,
         ProductInterface $product,
         JobParameters $jobParameters
@@ -280,7 +278,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productAssocFilter,
         $stepExecution,
         $productDetacher,
-        $stepExecution,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
