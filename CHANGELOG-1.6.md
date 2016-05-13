@@ -275,3 +275,5 @@
 - Change constructor of `Pim\Component\Catalog\Builder\ProductTemplateBuilder`, remove argument `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver`
 - Add `$locale` argument to method `addAttributes` in `Pim\Component\Catalog\Builder\ProductTemplateBuilderInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\VariantGroupAttributeController`, add `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver` argument
+- Change constructor of `Pim\Component\Catalog\Denormalizer\Structured\ProductValuesDenormalizer`, remove argument `%pim_catalog.entity.attribute.class%` and
+    replace argument `Doctrine\Common\Persistence\ManagerRegistry` by `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`

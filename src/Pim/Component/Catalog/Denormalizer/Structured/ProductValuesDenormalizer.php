@@ -19,11 +19,11 @@ class ProductValuesDenormalizer implements DenormalizerInterface
     /** @staticvar string */
     const PRODUCT_VALUES_TYPE = 'ProductValue[]';
 
-    /** @var DenormalizerInterface */
-    protected $denormalizer;
-
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
+
+    /** @var DenormalizerInterface */
+    protected $denormalizer;
 
     /** @var string */
     protected $valueClass;
@@ -31,30 +31,19 @@ class ProductValuesDenormalizer implements DenormalizerInterface
     /** @var string[] */
     protected $supportedFormats = ['json'];
 
-    /** @var SmartManagerRegistry */
-    protected $registry;
-
-    /** @var string */
-    protected $attributeClass;
-
     /**
-     * Constructor
-     *
-     * @param DenormalizerInterface $denormalizer
-     * @param SmartManagerRegistry  $registry
-     * @param string                $valueClass
-     * @param string                $attributeClass
+     * @param DenormalizerInterface        $denormalizer
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param string                       $valueClass
      */
     public function __construct(
         DenormalizerInterface $denormalizer,
-        SmartManagerRegistry $registry,
-        $valueClass,
-        $attributeClass
+        AttributeRepositoryInterface $attributeRepository,
+        $valueClass
     ) {
-        $this->denormalizer   = $denormalizer;
-        $this->registry       = $registry;
-        $this->valueClass     = $valueClass;
-        $this->attributeClass = $attributeClass;
+        $this->denormalizer        = $denormalizer;
+        $this->attributeRepository = $attributeRepository;
+        $this->valueClass          = $valueClass;
     }
 
     /**
@@ -63,10 +52,9 @@ class ProductValuesDenormalizer implements DenormalizerInterface
     public function denormalize($data, $class, $format = null, array $context = [])
     {
         $values = new ArrayCollection();
-        $attributeRepo = $this->registry->getRepository($this->attributeClass);
 
         foreach ($data as $attributeCode => $valuesData) {
-            $attribute = $attributeRepo->findOneByIdentifier($attributeCode);
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
             foreach ($valuesData as $valueData) {
                 $value = $this->denormalizer->denormalize(
