@@ -90,4 +90,3 @@ Feature: Add products to a variant group
     And I check the row "duplicate-sandal"
     And I press the "Save" button
     Then I should see "Products: 3"
-    And the row "duplicate-sandal" should not be checked
