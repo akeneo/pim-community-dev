@@ -243,7 +243,8 @@ class ProductReaderSpec extends ObjectBehavior
                         'required' => true,
                         'select2'  => true,
                         'label'    => 'pim_connector.export.channel.label',
-                        'help'     => 'pim_connector.export.channel.help'
+                        'help'     => 'pim_connector.export.channel.help',
+                        'attr'     => ['data-tab' => 'content'],
                     ]
                 ],
                 'enabled' => [
@@ -258,6 +259,7 @@ class ProductReaderSpec extends ObjectBehavior
                         'select2'  => true,
                         'label'    => 'pim_connector.export.status.label',
                         'help'     => 'pim_connector.export.status.help',
+                        'attr'     => ['data-tab' => 'content'],
                     ]
                 ],
             ]
