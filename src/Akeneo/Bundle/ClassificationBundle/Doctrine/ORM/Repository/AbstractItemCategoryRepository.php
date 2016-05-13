@@ -115,11 +115,9 @@ abstract class AbstractItemCategoryRepository implements
      */
     public function applyFilterByUnclassified($qb)
     {
-        $rootAlias = $qb->getRootAlias();
-        $alias     = uniqid('filterCategory');
+        $this->joinQueryBuilderOnCategories($qb);
 
-        $qb->leftJoin($rootAlias . '.categories', $alias);
-        $qb->andWhere($qb->expr()->isNull($alias . '.id'));
+        $qb->andWhere($qb->expr()->isNull(CategoryFilterableRepositoryInterface::JOIN_ALIAS . '.id'));
     }
 
     /**
@@ -128,20 +126,23 @@ abstract class AbstractItemCategoryRepository implements
     public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true)
     {
         $rootAlias    = $qb->getRootAlias();
-        $alias        = uniqid('filterCategory');
         $filterCatIds = uniqid('filterCatIds');
 
         if ($include) {
-            $qb->leftJoin($rootAlias.'.categories', $alias);
-            $qb->andWhere($qb->expr()->in($alias.'.id', ':' . $filterCatIds));
+            $this->joinQueryBuilderOnCategories($qb);
+            $qb->andWhere($qb->expr()->in(
+                CategoryFilterableRepositoryInterface::JOIN_ALIAS . '.id',
+                ':' . $filterCatIds
+            ));
         } else {
+            $alias = uniqid('filterCategory');
             $rootAliasIn = uniqid($rootAlias);
             $rootEntity = current($qb->getRootEntities());
             $qbIn = $qb->getEntityManager()->createQueryBuilder();
             $qbIn
                 ->select($rootAliasIn.'.id')
                 ->from($rootEntity, $rootAliasIn, $rootAliasIn . '.id')
-                ->leftJoin($rootAliasIn . '.categories', $alias)
+                ->innerJoin($rootAliasIn . '.categories', $alias)
                 ->where($qbIn->expr()->in($alias . '.id', ':' . $filterCatIds));
 
             $qb->andWhere($qb->expr()->notIn($rootAlias . '.id', $qbIn->getDQL()));
@@ -154,17 +155,17 @@ abstract class AbstractItemCategoryRepository implements
      */
     public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds)
     {
-        $rootAlias    = $qb->getRootAlias();
-        $alias        = uniqid('filterCategory');
         $filterCatIds = uniqid('filterCatIdsOrUnclassified');
 
-        $qb->leftJoin($rootAlias . '.categories', $alias);
+        $this->joinQueryBuilderOnCategories($qb);
+
         $qb->andWhere(
             $qb->expr()->orX(
-                $qb->expr()->in($alias . '.id', ':' . $filterCatIds),
-                $qb->expr()->isNull($alias . '.id')
+                $qb->expr()->in(CategoryFilterableRepositoryInterface::JOIN_ALIAS . '.id', ':' . $filterCatIds),
+                $qb->expr()->isNull(CategoryFilterableRepositoryInterface::JOIN_ALIAS . '.id')
             )
         );
+
         $qb->setParameter($filterCatIds, $categoryIds);
     }
 
@@ -209,5 +210,25 @@ abstract class AbstractItemCategoryRepository implements
             'categoryAssocTable' => $categoryAssoc['joinTable']['name'],
             'relation'           => key($categoryAssoc['relationToSourceKeyColumns']),
         ];
+    }
+
+    /**
+     * @param mixed $qb
+     */
+    protected function joinQueryBuilderOnCategories($qb)
+    {
+        $joins = $qb->getDqlPart('join');
+        $rootAlias = $qb->getRootAlias();
+
+        // Ensure that we did not joined it already
+        if (isset($joins[$rootAlias])) {
+            foreach ($joins[$rootAlias] as $join) {
+                if (CategoryFilterableRepositoryInterface::JOIN_ALIAS === $join->getAlias()) {
+                    return;
+                }
+            }
+        }
+
+        $qb->leftJoin($qb->getRootAlias().'.categories', CategoryFilterableRepositoryInterface::JOIN_ALIAS);
     }
 }

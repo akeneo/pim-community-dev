@@ -13,6 +13,7 @@
 
 ## Technical improvements
 
+- PIM-5762: Removed unused category filters on product datagrids
 - Upgrade "akeneo/measure-bundle" from "0.4.1" to "0.5.0", details in the release note https://github.com/akeneo/MeasureBundle/releases/tag/0.5.0
 
 # 1.5.2 (2016-04-25)
