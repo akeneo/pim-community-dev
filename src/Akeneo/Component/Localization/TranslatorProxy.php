@@ -1,50 +1,37 @@
 <?php
 
-namespace Akeneo\Component\Localization\Presenter;
+namespace Akeneo\Component\Localization;
 
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Class TranslatablePresenter
+ * Symfony Translator proxy for the Localization component.
  *
  * @author    Damien Carcel <damien.carcel@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TranslatablePresenter implements PresenterInterface
+class TranslatorProxy
 {
-    /** @var string[] */
-    protected $attributeTypes;
-
     /** @var TranslatorInterface */
     protected $translator;
 
     /**
      * @param TranslatorInterface $translator
-     * @param string[]            $attributeTypes
      */
-    public function __construct(TranslatorInterface $translator, array $attributeTypes)
+    public function __construct(TranslatorInterface $translator)
     {
-        $this->translator     = $translator;
-        $this->attributeTypes = $attributeTypes;
+        $this->translator = $translator;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function present($value, array $options = [])
+    public function trans($value, array $options = [])
     {
         $parameters = isset($options['parameters']) ? $options['parameters'] : [];
         $domain     = isset($options['domain']) ? $options['domain'] : [];
 
         return $this->translator->trans($value, $parameters, $domain);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($attributeType)
-    {
-        return in_array($attributeType, $this->attributeTypes);
     }
 }

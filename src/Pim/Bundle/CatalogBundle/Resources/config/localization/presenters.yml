@@ -7,8 +7,6 @@ parameters:
     pim_catalog.localization.presenter.date.class:     Akeneo\Component\Localization\Presenter\DatePresenter
     pim_catalog.localization.presenter.boolean.class:  Akeneo\Component\Localization\Presenter\BooleanPresenter
 
-    pim_catalog.localization.presenter.translatable.class: Akeneo\Component\Localization\Presenter\TranslatablePresenter
-
 services:
     pim_catalog.localization.presenter.registry:
         class: %pim_catalog.localization.presenter.registry.class%
@@ -29,7 +27,7 @@ services:
         arguments:
             - '@pim_catalog.localization.factory.number'
             - ['pim_catalog_metric']
-            - '@pim_catalog.localization.presenter.translatable'
+            - '@pim_catalog.localization.translator.proxy'
         tags:
             - { name: pim_catalog.localization.presenter, type: 'product_value' }
 
@@ -88,9 +86,3 @@ services:
             - ['date_min', 'date_max']
         tags:
             - { name: pim_catalog.localization.presenter, type: 'attribute_option' }
-
-    pim_catalog.localization.presenter.translatable:
-        class: %pim_catalog.localization.presenter.translatable.class%
-        arguments:
-            - '@translator'
-            - ['pim_catalog_metric']

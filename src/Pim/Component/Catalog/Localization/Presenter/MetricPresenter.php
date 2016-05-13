@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Localization\Presenter;
 
 use Akeneo\Component\Localization\Factory\NumberFactory;
 use Akeneo\Component\Localization\Presenter\NumberPresenter;
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Component\Localization\TranslatorProxy;
 
 /**
  * Metric presenter, able to render metric data readable for a human
@@ -15,22 +15,22 @@ use Akeneo\Component\Localization\Presenter\PresenterInterface;
  */
 class MetricPresenter extends NumberPresenter
 {
-    /** @var PresenterInterface */
-    protected $translatablePresenter;
+    /** @var TranslatorProxy */
+    protected $translatorProxy;
 
     /**
-     * @param NumberFactory      $numberFactory
-     * @param array              $attributeTypes
-     * @param PresenterInterface $translatablePresenter
+     * @param NumberFactory   $numberFactory
+     * @param array           $attributeTypes
+     * @param TranslatorProxy $translatorProxy
      */
     public function __construct(
         NumberFactory $numberFactory,
         array $attributeTypes,
-        PresenterInterface $translatablePresenter
+        TranslatorProxy $translatorProxy
     ) {
         parent::__construct($numberFactory, $attributeTypes);
 
-        $this->translatablePresenter = $translatablePresenter;
+        $this->translatorProxy = $translatorProxy;
     }
 
     /**
@@ -44,7 +44,7 @@ class MetricPresenter extends NumberPresenter
 
         $amount = isset($value['data']) ? parent::present($value['data'], $options) : null;
         $unit   = isset($value['unit'])
-            ? $this->translatablePresenter->present($value['unit'], ['domain' => 'measures'])
+            ? $this->translatorProxy->trans($value['unit'], ['domain' => 'measures'])
             : null;
 
         return trim(sprintf('%s %s', $amount, $unit));
