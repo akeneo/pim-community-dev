@@ -17,8 +17,9 @@ class TreeContext extends PimContext
      */
     public function iSelectTheTree($tree)
     {
-        $this->getCurrentPage()->selectTree($tree);
-        $this->wait(); //TODO remove this wait
+        $this->spin(function() use ($tree) {
+            return $this->getCurrentPage()->selectTree($tree);
+        }, sprintf('Cannot select tree "%s"', $tree));
     }
 
     /**
@@ -108,7 +109,7 @@ class TreeContext extends PimContext
             try {
                 $checkbox = $this->spin(function () use ($node) {
                     return $node->find('css', '.jstree-checkbox');
-                });
+                }, 'Cannot find ".jstree-checkbox" element in JS tree');
             } catch (\Exception $e) {
                 $checkbox = null;
             }

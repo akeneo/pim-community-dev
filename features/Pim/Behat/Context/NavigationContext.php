@@ -103,7 +103,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
 
         $this->spin(function () {
             return $this->getSession()->getPage()->find('css', '.title-box');
-        });
+        }, 'Cannot find ".title-box" element in login page');
 
         $this->getSession()->getPage()->fillField('_username', $username);
         $this->getSession()->getPage()->fillField('_password', $username);
@@ -300,7 +300,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     {
         $pinButton = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.minimize-button');
-        });
+        }, 'Cannot find ".minimize-button" to pin current page');
 
         $pinButton->click();
     }
@@ -314,7 +314,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     {
         $pinnedItem = $this->spin(function () use ($label) {
             return $this->getCurrentPage()->find('css', sprintf('.pin-bar a[title="%s"]', $label));
-        });
+        }, sprintf('Cannot find "%s" pin item', $label));
 
         $pinnedItem->click();
     }
@@ -375,7 +375,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
             assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
 
             return true;
-        });
+        }, 'Spining to assert address');
     }
 
     /**

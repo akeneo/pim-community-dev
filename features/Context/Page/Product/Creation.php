@@ -28,7 +28,7 @@ class Creation extends Form
     {
         $selectContainer = $this->spin(function () use ($modal) {
             return $modal->find('css', '.select2-container');
-        });
+        }, 'Cannot find ".select2-container" in modal');
 
         $placeholder = $selectContainer->find('css', sprintf('.select2-chosen:contains("%s")', $locator));
 

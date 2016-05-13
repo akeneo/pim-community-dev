@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Akeneo\Component\Batch\Model\JobExecution;
 use Behat\Behat\Context\Step;
 use Behat\Behat\Context\Step\Then;
 use Behat\Behat\Exception\BehaviorException;
@@ -130,8 +131,10 @@ class WebUser extends RawMinkContext
      */
     public function iVisitTheTab($tab)
     {
-        $this->getCurrentPage()->visitTab($tab);
-        $this->wait();
+        $this->spin(function () use ($tab) {
+            return $this->getCurrentPage()->visitTab($tab);
+
+        }, sprintf('Cannot visit "%s" tab', $tab));
     }
 
     /**
@@ -176,7 +179,7 @@ class WebUser extends RawMinkContext
         $this->getCurrentPage()->getElement('Panel sidebar')->openPanel('History');
         $this->getMainContext()->executeScript("$('.panel-pane.history-panel').css({'height': '90%'});");
 
-        $expandButton = $this->getMainContext()->spin(function () {
+        $this->getMainContext()->spin(function () {
             $expandHistory = $this->getCurrentPage()->find('css', '.expand-history');
 
             if ($expandHistory && $expandHistory->isValid()) {
@@ -186,7 +189,7 @@ class WebUser extends RawMinkContext
             }
 
             return false;
-        });
+        }, 'Cannot expand history');
 
         $this->wait();
     }
@@ -198,7 +201,7 @@ class WebUser extends RawMinkContext
     {
         $actualVersions = $this->spin(function () {
             return $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.product-version');
-        });
+        }, 'Cannot find ".history-panel tbody tr.product-version" element');
 
         if ((int) $expectedCount !== count($actualVersions)) {
             throw new \Exception(
@@ -219,7 +222,6 @@ class WebUser extends RawMinkContext
     public function iVisitTheGroup($group)
     {
         $this->getCurrentPage()->visitGroup($group);
-        $this->wait();
     }
 
     /**
@@ -637,7 +639,7 @@ class WebUser extends RawMinkContext
             $this->getCurrentPage()->compareFieldValue($fieldName, $expected);
 
             return true;
-        });
+        }, sprintf('Cannot compare product value for "%s" field', $fieldName));
     }
 
     /**
@@ -819,7 +821,7 @@ class WebUser extends RawMinkContext
             try {
                 $field = $this->spin(function () use ($field, $language) {
                     return $this->getCurrentPage()->getFieldLocator($field, $this->getLocaleCode($language));
-                });
+                }, sprintf('Cannot find "%s" field', $field));
             } catch (\BadMethodCallException $e) {
                 // Use default $field if current page does not provide a getFieldLocator method
             }
@@ -1055,7 +1057,7 @@ class WebUser extends RawMinkContext
 
         $addButton = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.modal .btn.ok');
-        });
+        }, 'Cannot find ".modal .btn.ok" element in attribute modal');
 
         $addButton->click();
 
@@ -1437,7 +1439,7 @@ class WebUser extends RawMinkContext
             return $this
                 ->getCurrentPage()
                 ->find('css', sprintf('.ui-dialog button:contains("%1$s"), .modal a:contains("%1$s")', $buttonLabel));
-        });
+        }, sprintf('Cannot find "%s" button label in modal', $buttonLabel));
 
         $buttonElement->press();
         $this->wait();
@@ -1525,7 +1527,7 @@ class WebUser extends RawMinkContext
     {
         $switch = $this->spin(function () {
             return $this->getCurrentPage()->findById('nested_switch_input');
-        });
+        }, 'Cannot find the switch button to include sub categories');
 
         $on = 'en' === $status;
         if ($switch->isChecked() !== $on) {
@@ -1692,6 +1694,15 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheJobToFinish($code)
     {
+        $this->spin(function () use ($code) {
+            $jobInstance  = $this->getFixturesContext()->getJobInstance($code);
+            $jobExecution = $jobInstance->getJobExecutions()->first();
+
+            return in_array($jobExecution->getStatus(), ['COMPLETED', 'STOPPED', 'FAILED']);
+        }, 'Cannot get job execution status');
+
+
+        /*
         $condition = '$("#status").length && /(COMPLETED|STOPPED|FAILED|TERMINÉ|ARRÊTÉ|EN ÉCHEC)$/.test($("#status").text().trim())';
 
         try {
@@ -1741,6 +1752,7 @@ class WebUser extends RawMinkContext
             // Call the wait method again to trigger timeout failure
             $this->wait($condition);
         }
+        */
     }
 
     /**

@@ -144,7 +144,7 @@ class FixturesContext extends PimContext
         try {
             return $this->spin(function () use ($entityName, $criteria) {
                 return $this->getRepository($this->getEntities()[$entityName])->findOneBy($criteria);
-            });
+            }, sprintf('Cannot find entity "%s"', $entityName));
         } catch (TimeoutException $exception) {
             return null;
         }

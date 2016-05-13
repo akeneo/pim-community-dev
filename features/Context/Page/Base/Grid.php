@@ -928,7 +928,7 @@ class Grid extends Index
             $this->pressButton('Sequential Edit');
 
             return true;
-        });
+        }, 'Cannot find "Sequential Edit" button');
     }
 
     /**

@@ -34,7 +34,7 @@ class JsTreeDecorator extends ElementDecorator
         if ($node->hasClass('jstree-closed')) {
             $nodeElement = $this->spin(function () use ($node) {
                 return $node->find('css', 'ins');
-            });
+            }, 'Cannot find "ins" element to expand node');
 
             $nodeElement->click();
         }

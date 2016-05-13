@@ -48,9 +48,9 @@
         {% block job_execution_summary %}
         <!-- Step execution information -->
         <% _.each(jobExecution.stepExecutions, function (stepExecution) { %>
-            <tr>
+            <tr data-job-status="<%- stepExecution.status %>">
                 <td><%= stepExecution.label %></td>
-                <td><%= stepExecution.status %></td>
+                <td><%= _.__('pim_import_export.batch_status.' + stepExecution.status) %></td>
                 <td>
                     <table class="table-striped table-bordered table-hover">
                         <% _.each(stepExecution.summary, function (value, key) { %>
@@ -125,7 +125,7 @@
 
     <script type="text/template" id="job-execution-status">
         {% block job_execution_status %}
-        <li><%= statusLabel %>: <%= jobExecution.status %></li>
+        <li><%= statusLabel %>: <%= _.__('pim_import_export.batch_status.' + jobExecution.status) %></li>
         {% endblock %}
     </script>
 
