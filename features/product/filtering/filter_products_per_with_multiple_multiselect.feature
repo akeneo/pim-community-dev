@@ -32,7 +32,7 @@ Feature: Filter products with multiples multiselect filters
 
   Scenario: Successfully filter products with the sames attributes
     Given I show the filter "company"
-    And I filter by "company" with operator "in list" value "Suze"
+    And I filter by "company" with operator "in list" and value "Suze"
     Then I should be able to use the following filters:
       | filter | operator | value | result                 |
       | color  | in list  | green | MUG-2, MUG-3 and MUG-4 |
@@ -40,7 +40,7 @@ Feature: Filter products with multiples multiselect filters
 
   Scenario: Successfully filter product without commons attributes
     Given I show the filter "color"
-    And I filter by "color" with operator "in list" value "Green"
+    And I filter by "color" with operator "in list" and value "Green"
     Then I should be able to use the following filters:
       | filter  | operator | value     | result |
       | company | in list  | Canonical | MUG-1  |
@@ -49,8 +49,8 @@ Feature: Filter products with multiples multiselect filters
   Scenario: Successfully filter only one product
     Given I am on the products page
     When I show the filter "company"
-    And I filter by "company" with value "Canonical"
+    And I filter by "company" with operator "in list" and value "Canonical"
     And I show the filter "color"
-    And I filter by "color" with value "Green"
+    And I filter by "color" with operator "in list" and value "Green"
     Then the grid should contain 1 elements
     And I should see entities "MUG-1"

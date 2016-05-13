@@ -2,16 +2,23 @@
 
 namespace Pim\Behat\Decorator\Grid\Filter;
 
+use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 
 class BaseDecorator extends ElementDecorator
 {
+    use SpinCapableTrait;
+
     /**
      * Opens the filter
      */
     public function open()
     {
-        $this->find('css', '.filter-criteria-selector')->click();
+        $filter = $this->spin(function () {
+            return $this->find('css', '.filter-criteria-selector');
+        }, 'Cannot open the filter');
+
+        $filter->click();
     }
 
     /**

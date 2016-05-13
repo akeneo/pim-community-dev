@@ -31,7 +31,7 @@ Feature: Filter products with multiples text fields filters
     And I show the filter "name"
 
   Scenario: Successfully filter products with the sames attributes
-    Given I filter by "description" with value "Red"
+    Given I filter by "description" with operator "contains" and value "Red"
     And I should be able to use the following filters:
       | filter | operator         | value  | result                 |
       | name   | is empty         |        | POST-1 and POST-2      |
@@ -47,7 +47,7 @@ Feature: Filter products with multiples text fields filters
     And I hide the filter "name"
 
   Scenario: Successfully filter product without commons attributes
-    Given I filter by "name" with value "indigo"
+    Given I filter by "name" with operator "contains" and value "indigo"
     And I should be able to use the following filters:
       | filter      | operator         | value      | result          |
       | description | is empty         |            | MUG-5           |

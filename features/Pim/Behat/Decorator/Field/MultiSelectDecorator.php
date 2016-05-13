@@ -47,7 +47,6 @@ class MultiSelectDecorator extends ElementDecorator
         $all = $widget->find('css', 'li input[checked="checked"][value=""]');
 
         if (null !== $all && $value !== 'All') {
-            echo "remove all";
             if (null !== $search) {
                 $search->setValue('All');
             }

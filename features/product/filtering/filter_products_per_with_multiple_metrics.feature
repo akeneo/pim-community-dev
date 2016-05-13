@@ -43,7 +43,7 @@ Feature: Filter products with multiples metrics filters
 
   Scenario: Successfully filter product without commons attributes
     Given I show the filter "weight"
-    And I filter by "weight" with value "> 100 Gram"
+    And I filter by "weight" with operator ">" and value "100 Gram"
     Then I should be able to use the following filters:
       | filter    | operator | value   | result                        |
       | packaging | =        | 10 Gram | MUG-1                         |
@@ -54,8 +54,9 @@ Feature: Filter products with multiples metrics filters
       | packaging | <        | 11 Gram | MUG-1                         |
       | packaging | is empty |         | MUG-5                         |
 
-  @unstable
   Scenario: Successfully filter only one product
+    Given I show the filter "packaging"
+    Given I show the filter "weight"
     Given I filter by "packaging" with operator "=" and value "10 Gram"
     And I filter by "weight" with operator "=" and value "200 Gram"
     Then the grid should contain 1 elements
