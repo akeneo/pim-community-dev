@@ -24,48 +24,47 @@ class ExportProfilesContext extends PimContext
      */
     public function exportedFileOfShouldContain($code, PyStringNode $csv)
     {
-        $config = $this->getFixturesContext()->getJobInstance($code)->getRawConfiguration();
-
         $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
-
         if (!is_file($path)) {
             throw $this->getMainContext()->createExpectationException(
                 sprintf('File "%s" doesn\'t exist', $path)
             );
         }
 
-        $delimiter = isset($config['delimiter']) ? $config['delimiter'] : ';';
-        $enclosure = isset($config['enclosure']) ? $config['enclosure'] : '"';
-        $escape    = isset($config['escape'])    ? $config['escape']    : '\\';
+        $config =  $this->getCsvJobConfiguration($code);
+        $csvFile = $this->getCsvFile($path, $config);
 
-        $csvFile = new \SplFileObject($path);
-        $csvFile->setFlags(
-            \SplFileObject::READ_CSV   |
-            \SplFileObject::READ_AHEAD |
-            \SplFileObject::SKIP_EMPTY |
-            \SplFileObject::DROP_NEW_LINE
-        );
-        $csvFile->setCsvControl($delimiter, $enclosure, $escape);
+        $expectedLines = $this->getExpectedLines($csv, $config);
+        $actualLines = $this->getActualLines($csvFile, $config);
 
-        $expectedLines = [];
-        foreach ($csv->getLines() as $line) {
-            if (!empty($line)) {
-                $expectedLines[] = explode($delimiter, str_replace($enclosure, '', $line));
-            }
-        }
-
-        $actualLines = [];
-        while ($data = $csvFile->fgetcsv()) {
-            if (!empty($data)) {
-                $actualLines[] = array_map(
-                    function ($item) use ($enclosure) {
-                        return str_replace($enclosure, '', $item);
-                    },
-                    $data
-                );
-            }
-        }
         $this->compareFile($expectedLines, $actualLines, $path);
+    }
+
+    /**
+     * @param string       $code
+     * @param PyStringNode $csv
+     *
+     * @Then /^exported file of "([^"]*)" should contains the following headers:$/
+     *
+     * @throws ExpectationException
+     * @throws \Exception
+     */
+    public function exportedFileOfShouldContainsTheFollowingHeaders($code, PyStringNode $csv)
+    {
+        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+        if (!is_file($path)) {
+            throw $this->getMainContext()->createExpectationException(
+                sprintf('File "%s" doesn\'t exist', $path)
+            );
+        }
+
+        $config = $this->getCsvJobConfiguration($code);
+        $csvFile = $this->getCsvFile($path, $config);
+
+        $expectedLines = $this->getExpectedLines($csv, $config);
+        $actualLines = $this->getActualLines($csvFile, $config);
+
+        $this->compareFileHeadersOrder($expectedLines[0], $actualLines[0]);
     }
 
     /**
@@ -195,5 +194,94 @@ class ExportProfilesContext extends PimContext
                 );
             }
         }
+    }
+
+    /**
+     * @param PyStringNode $csv
+     * @param array $config
+     *
+     * @return array
+     */
+    protected function getExpectedLines(PyStringNode $csv, $config)
+    {
+        $expectedLines = [];
+        foreach ($csv->getLines() as $line) {
+            if (!empty($line)) {
+                $expectedLines[] = explode($config['delimiter'], str_replace($config['enclosure'], '', $line));
+            }
+        }
+
+        return $expectedLines;
+    }
+
+    /**
+     * @param \SplFileObject $csvFile
+     * @param array $config
+     *
+     * @return array
+     */
+    protected function getActualLines(\SplFileObject $csvFile, array $config)
+    {
+        $actualLines = [];
+        while ($data = $csvFile->fgetcsv()) {
+            if (!empty($data)) {
+                $actualLines[] = array_map(
+                    function ($item) use ($config) {
+                        return str_replace($config['enclosure'], '', $item);
+                    },
+                    $data
+                );
+            }
+        }
+
+        return $actualLines;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return array
+     */
+    protected function getCsvJobConfiguration($code)
+    {
+        $config = $this->getFixturesContext()->getJobInstance($code)->getRawConfiguration();
+        $config['delimiter'] = isset($config['delimiter']) ? $config['delimiter'] : ';';
+        $config['enclosure'] = isset($config['enclosure']) ? $config['enclosure'] : '"';
+        $config['escape'] = isset($config['escape']) ? $config['escape'] : '\\';
+
+        return $config;
+    }
+
+    /**
+     * @param string $path
+     * @param array $config
+     *
+     * @return \SplFileObject
+     */
+    protected function getCsvFile($path, array $config)
+    {
+        $csvFile = new \SplFileObject($path);
+        $csvFile->setFlags(
+            \SplFileObject::READ_CSV |
+            \SplFileObject::READ_AHEAD |
+            \SplFileObject::SKIP_EMPTY |
+            \SplFileObject::DROP_NEW_LINE
+        );
+        $csvFile->setCsvControl($config['delimiter'], $config['enclosure'], $config['escape']);
+
+        return $csvFile;
+    }
+
+    /**
+     * @param array $expectedHeaders
+     * @param array $actualHeaders
+     */
+    protected function compareFileHeadersOrder(array $expectedHeaders, array $actualHeaders)
+    {
+        assertEquals(
+            $expectedHeaders[0],
+            $actualHeaders[0],
+            sprintf('Expecting to see headers order like %d , found %d', $expectedHeaders[0], $actualHeaders[0])
+        );
     }
 }

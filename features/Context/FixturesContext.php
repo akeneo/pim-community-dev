@@ -394,6 +394,7 @@ class FixturesContext extends BaseFixturesContext
             }
             assertEquals($data['metric_family'], $attribute->getMetricFamily());
             assertEquals($data['default_metric_unit'], $attribute->getDefaultMetricUnit());
+            assertEquals($data['sort_order'], $attribute->getSortOrder());
 
             if (isset($data['reference_data_name'])) {
                 if ('' === $data['reference_data_name']) {

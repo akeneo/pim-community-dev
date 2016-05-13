@@ -75,10 +75,6 @@ class FlatItemBuffer
         $headers = array_merge($this->headers, $keys);
         $headers = array_unique($headers);
 
-        $identifier = array_shift($headers);
-        natsort($headers);
-        array_unshift($headers, $identifier);
-
         $this->headers = $headers;
     }
 }

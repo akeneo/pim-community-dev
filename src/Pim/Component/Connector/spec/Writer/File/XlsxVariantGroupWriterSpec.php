@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Connector\Writer\File;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Buffer\BufferInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
@@ -12,9 +13,13 @@ use Prophecy\Argument;
 
 class XlsxVariantGroupWriterSpec extends ObjectBehavior
 {
-    function let(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer, BulkFileExporter $mediaCopier)
-    {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier);
+    function let(
+        FilePathResolverInterface $filePathResolver,
+        FlatItemBuffer $flatRowBuffer,
+        BulkFileExporter $mediaCopier,
+        ColumnSorterInterface $columnSorter
+    ) {
+        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier, $columnSorter);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.xlsx');
@@ -148,10 +153,12 @@ class XlsxVariantGroupWriterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_writes_the_xlsx_file($flatRowBuffer, BufferInterface $buffer)
+    function it_writes_the_xlsx_file($flatRowBuffer, BufferInterface $buffer, $columnSorter)
     {
         $flatRowBuffer->getHeaders()->willReturn(['id', 'family']);
         $flatRowBuffer->getBuffer()->willReturn($buffer);
+
+        $columnSorter->sort(['id','family'])->willReturn(['id','family']);
 
         $this->flush();
     }

@@ -27,20 +27,26 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     /** @var array */
     protected $writtenFiles;
 
+    /** @var ColumnSorterInterface */
+    protected $columnSorter;
+
     /**
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
      * @param BulkFileExporter          $mediaCopier
+     * @param ColumnSorterInterface     $columnSorter
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
-        BulkFileExporter $mediaCopier
+        BulkFileExporter $mediaCopier,
+        ColumnSorterInterface $columnSorter
     ) {
         parent::__construct($filePathResolver);
 
         $this->flatRowBuffer = $flatRowBuffer;
         $this->mediaCopier   = $mediaCopier;
+        $this->columnSorter  = $columnSorter;
         $this->writtenFiles  = [];
     }
 
@@ -85,7 +91,7 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
         $writer = WriterFactory::create(Type::XLSX);
         $writer->openToFile($this->getPath());
 
-        $headers = $this->flatRowBuffer->getHeaders();
+        $headers = $this->columnSorter->sort($this->flatRowBuffer->getHeaders());
         $hollowItem = array_fill_keys($headers, '');
         $writer->addRow($headers);
         foreach ($this->flatRowBuffer->getBuffer() as $incompleteItem) {

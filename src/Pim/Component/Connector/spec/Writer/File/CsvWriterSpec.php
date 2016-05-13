@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\Buffer\BufferInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Prophecy\Argument;
@@ -15,9 +16,9 @@ class CsvWriterSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Connector\Writer\File\CsvWriter');
     }
 
-    function let(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer)
+    function let(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer, ColumnSorterInterface $columnSorter)
     {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer);
+        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $columnSorter);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.csv');
@@ -53,10 +54,12 @@ class CsvWriterSpec extends ObjectBehavior
         $this->write($items);
     }
 
-    function it_writes_the_csv_file($flatRowBuffer, BufferInterface $buffer)
+    function it_writes_the_csv_file($flatRowBuffer, BufferInterface $buffer, $columnSorter)
     {
         $flatRowBuffer->getHeaders()->willReturn(['id', 'family']);
         $flatRowBuffer->getBuffer()->willReturn($buffer);
+
+        $columnSorter->sort(['id', 'family'])->willReturn(['id', 'family']);
 
         $this->flush();
     }
