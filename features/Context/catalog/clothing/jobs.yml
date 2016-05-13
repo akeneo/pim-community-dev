@@ -401,6 +401,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath: /tmp/asset.xlsx
     xlsx_clothing_asset_category_export:
         connector: Akeneo Product Asset Connector
@@ -409,6 +410,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/asset_category.xlsx
     xlsx_clothing_asset_variation_export:
         connector: Akeneo Product Asset Connector
@@ -417,4 +419,5 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath: /tmp/asset-variation.xlsx
