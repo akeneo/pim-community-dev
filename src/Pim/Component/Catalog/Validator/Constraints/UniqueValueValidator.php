@@ -2,11 +2,9 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Validator\UniqueValuesSet;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -31,52 +29,42 @@ class UniqueValueValidator extends ConstraintValidator
      */
     public function __construct(ProductRepositoryInterface $repository, UniqueValuesSet $uniqueValueSet)
     {
-        $this->repository = $repository;
+        $this->repository      = $repository;
         $this->uniqueValuesSet = $uniqueValueSet;
     }
 
     /**
+     * {@inheritdoc}
+     *
      * Validates if the product value exists in database or if we already tried to validate such value for another
      * product to handle bulk updates
      *
      * It means that we make this validator stateful which is a bad news, the good one is we ensure this validation
      * for any processes (other option was to mess the import as we did with previous implementation)
      *
-     * Due to constraint guesser, the constraint is applied on :
-     * - ProductValueInterface data when applied through form
-     * - ProductValueInterface when applied directly through validator
+     * Due to constraint guesser, the constraint is applied on ProductValueInterface when applied directly through
+     * validator
      *
      * The constraint guesser should be re-worked in a future version to avoid such behavior
      *
-     * @param ProductValueInterface|mixed $data
-     * @param Constraint                  $constraint
-     *
      * @see Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UniqueValueGuesser
      */
-    public function validate($data, Constraint $constraint)
+    public function validate($productValue, Constraint $constraint)
     {
-        if (empty($data)) {
-            return;
-        }
-
-        if (is_object($data) && $data instanceof ProductValueInterface) {
-            $productValue = $data;
-        } else {
-            $productValue = $this->getProductValueFromForm();
-        }
-
         if ($productValue instanceof ProductValueInterface && $productValue->getAttribute()->isUnique()) {
-            $valueAlreadyExists = $this->alreadyExists($productValue);
+            $valueAlreadyExists    = $this->alreadyExists($productValue);
             $valueAlreadyProcessed = $this->hasAlreadyValidatedTheSameValue($productValue);
 
             if ($valueAlreadyExists || $valueAlreadyProcessed) {
-                $valueData = $this->formatData($productValue->getData());
+                $valueData     = $this->formatData($productValue->getData());
                 $attributeCode = $productValue->getAttribute()->getCode();
+
                 if (null !== $valueData && '' !== $valueData) {
-                    $this->context->buildViolation(
-                        $constraint->message,
-                        ['%value%' => $valueData, '%attribute%' => $attributeCode]
-                    )->addViolation();
+                    $this->context
+                        ->buildViolation($constraint->message)
+                        ->setParameter('%value%', $valueData)
+                        ->setParameter('%attribute%', $attributeCode)
+                        ->addViolation();
                 }
             }
         }
@@ -111,47 +99,14 @@ class UniqueValueValidator extends ConstraintValidator
     }
 
     /**
-     * @param $mixed $data
+     * @param mixed $productValueData
      *
      * @return string
      */
-    protected function formatData($data)
+    protected function formatData($productValueData)
     {
-        return ($data instanceof \DateTime) ? $data->format('Y-m-d') : (string) $data;
-    }
-
-    /**
-     * Get product value from form
-     *
-     * @return ProductValueInterface|null
-     */
-    protected function getProductValueFromForm()
-    {
-        $root = $this->context->getRoot();
-        if (!$root instanceof Form) {
-            return;
-        }
-
-        preg_match(
-            '/children\[values\].children\[(\w+)\].children\[\w+\].data/',
-            $this->context->getPropertyPath(),
-            $matches
-        );
-        if (!isset($matches[1])) {
-            return;
-        }
-
-        $product = $this->context->getRoot()->getData();
-        if (!$product instanceof ProductInterface) {
-            return;
-        }
-
-        $value = $product->getValue($matches[1]);
-
-        if (false === $value) {
-            return;
-        }
-
-        return $value;
+        return ($productValueData instanceof \DateTime) ?
+            $productValueData->format('Y-m-d') :
+            (string) $productValueData;
     }
 }
