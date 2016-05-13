@@ -635,7 +635,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $filterName
      * @param string $value
      *
-     * @Then /^I filter by "(.*(?<!category))" with operator "(.*)" and value "(.*)"$/
+     * @Then /^I filter by "(.*)" with operator "(.*)" and value "(.*)"$/
      */
     public function iFilterBy($filterName, $operator, $value)
     {

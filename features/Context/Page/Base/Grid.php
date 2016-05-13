@@ -25,6 +25,10 @@ class Grid extends Index
     const FILTER_IN_LIST          = 'in';
 
     protected $filterDecorators = [
+        'tree' => [
+            'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\CategoryDecorator',
+        ],
         'boolean' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Grid\Filter\BooleanDecorator',
@@ -215,7 +219,7 @@ class Grid extends Index
 
     /**
      * @param string      $filterName The name of the filter
-     * @param bool|string $operator   If false, no operator will be selected
+     * @param bool|string $operator   The orpertor
      * @param string      $value      The value to filter by
      *
      * @throws \InvalidArgumentException
@@ -226,6 +230,31 @@ class Grid extends Index
 
         $filter->open();
         $filter->filter($operator, $value);
+    }
+
+    /**
+     * Get grid filter from label name
+     *
+     * @param string $filterName
+     *
+     * @return NodeElement
+     */
+    public function getFilter($filterName)
+    {
+        // We find the node element
+        $filter = $this->spin(function () use ($filterName) {
+            $filter = $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
+
+            return $filter;
+        }, sprintf('Couldn\'t find a filter with name "%s"', $filterName));
+
+        // We decorate it
+        $filterType = $filter->getAttribute('data-type');
+        if (isset($this->filterDecorators[$filterType])) {
+            $filter = $this->decorate($filter, $this->filterDecorators[$filterType]);
+        }
+
+        return $filter;
     }
 
     /**
@@ -452,33 +481,6 @@ class Grid extends Index
             },
             sprintf('Column %s is not sortable', $columnName)
         );
-    }
-
-    /**
-     * Get grid filter from label name
-     *
-     * @param string $filterName
-     *
-     * @return NodeElement
-     */
-    public function getFilter($filterName)
-    {
-        // We find the node element
-        $filter = $this->spin(function () use ($filterName) {
-            if (strtolower($filterName) === 'channel') {
-                return $this->getElement('Grid toolbar')->find('css', '.filter-item');
-            }
-
-            return $this->getElement('Filters')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
-        }, sprintf('Couldn\'t find a filter with name "%s"', $filterName));
-
-        // We decorate it
-        $filterType = $filter->getAttribute('data-type');
-        if (isset($this->filterDecorators[$filterType])) {
-            $filter = $this->decorate($filter, $this->filterDecorators[$filterType]);
-        }
-
-        return $filter;
     }
 
     /**

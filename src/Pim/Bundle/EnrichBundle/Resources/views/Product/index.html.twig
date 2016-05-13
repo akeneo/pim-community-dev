@@ -54,7 +54,7 @@
         </script>
 
         <div class="row-fluid has-sidebar">
-            <div id="tree" data-datalocale="{{ dataLocale.code }}" data-relatedentity="product"></div>
+            <div id="tree" data-datalocale="{{ dataLocale.code }}" data-name="category" data-type="tree" class="filter-item" data-relatedentity="product"></div>
             <div id="product-grid">
                 {{ dataGrid.renderStatefulGrid(gridAlias, { dataLocale: dataLocale.code }, {}, defaultView, 'pim_enrich_categorytree') }}
             </div>
