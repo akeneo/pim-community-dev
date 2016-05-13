@@ -45,7 +45,6 @@ class ProductWriterSpec extends ObjectBehavior
     function it_saves_items(
         $productSaver,
         $stepExecution,
-        $stepExecution,
         ProductInterface $product1,
         ProductInterface $product2,
         JobParameters $jobParameters
