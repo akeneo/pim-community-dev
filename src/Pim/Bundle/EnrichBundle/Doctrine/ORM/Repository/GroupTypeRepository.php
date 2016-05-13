@@ -50,7 +50,7 @@ class GroupTypeRepository extends EntityRepository implements TranslatedLabelsPr
         }
 
         $choices = [];
-        foreach ($queryBuilder->getQuery()->getArrayResult() as $code) {
+;        foreach ($queryBuilder->getQuery()->getArrayResult() as $code) {
             $choices[$code['id']] = $code['label'];
         }
 

@@ -75,4 +75,4 @@ services:
         arguments:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.attribute.class%'
+            - '%pim_catalog.entity.attribute_group.class%'

@@ -30,7 +30,7 @@ class AttributeGroupRepository extends EntityRepository implements TranslatedLab
     public function findTranslatedLabels(array $options = [])
     {
         $queryBuilder = $this->createQueryBuilder('g')
-            ->select('g.id')
+            ->select('g.code')
             ->addSelect('COALESCE(t.label, CONCAT(\'[\', g.code, \']\')) as label')
             ->leftJoin('g.translations', 't')
             ->andWhere('t.locale = :locale')
@@ -40,7 +40,7 @@ class AttributeGroupRepository extends EntityRepository implements TranslatedLab
 
         $choices = [];
         foreach ($queryBuilder->getArrayResult() as $code) {
-            $choices[$code['id']] = $code['label'];
+            $choices[$code['code']] = $code['label'];
         }
 
         return $choices;
