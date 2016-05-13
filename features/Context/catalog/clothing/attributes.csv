@@ -4,7 +4,7 @@ name;pim_catalog_text;info;;;1;2;Name;Nom;;;1;;;;;;;;;;;
 manufacturer;pim_catalog_simpleselect;info;;;1;3;Manufacturer;;;;;;;;;;;;;;;
 weather_conditions;pim_catalog_multiselect;info;;;1;4;Weather conditions;;;;;;;;;;;;;;;
 description;pim_catalog_textarea;info;;;1;5;Description;Description;;;1;1;1000;;;;;;;;;
-comment;pim_catalog_text;other;;;1;;Comment;;;;;;255;;;;;;;;;
+comment;pim_catalog_text;other;;;1;1;Comment;;;;;;255;;;;;;;;;
 price;pim_catalog_price_collection;marketing;;;1;1;Price;;;;;;;1;200;1;;;;;;
 rating;pim_catalog_simpleselect;marketing;;;1;2;Rating;;;;;;;;;;;;;;;
 side_view;pim_catalog_image;media;;;;1;Side view;;;;;;;;;;;1;gif,png,jpeg,jpg;;;
