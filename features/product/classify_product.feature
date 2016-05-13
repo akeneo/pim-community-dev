@@ -40,10 +40,9 @@ Feature: Classify a product in the trees I have access
 
   @jira https://akeneo.atlassian.net/browse/PIM-5402
   Scenario: Display only granted categories in the PEF
-    Given I edit the "Slippers" category
-    And I visit the "Permissions" tab
-    Then I fill in "Allowed to view products" with "" on the current page
-    And I save the category
+    Given the following product category accesses:
+      | product category | user group | access |
+      | slippers         | Manager    | none   |
     When I edit the "rangers" product
     And I visit the "Categories" tab
     Then I should see the text "Boots"

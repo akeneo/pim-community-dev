@@ -26,6 +26,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  * Override category filter to apply permissions on categories
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
+ *
+ * @deprecated Will be removed in 1.6
  */
 class CategoryFilter extends BaseCategoryFilter
 {

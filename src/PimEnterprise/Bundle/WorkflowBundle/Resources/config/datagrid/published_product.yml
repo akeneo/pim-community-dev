@@ -165,9 +165,3 @@ datagrid:
                     ftype:     date
                     data_name: updated
                     label:     Updated At
-            default:
-                category:
-                    value:
-                        treeId: %pim_filter.product_category_filter.class%::UNKNOWN_TREE
-                        categoryId: %pim_filter.product_category_filter.class%::ALL_CATEGORY
-                    type: %pim_filter.product_category_filter.class%::DEFAULT_TYPE
