@@ -81,9 +81,8 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     {
         $channel = $this->getConfiguredChannel();
         $parameters = $this->stepExecution->getJobParameters();
-        $enabled = $parameters->getParameter('enabled');
+        $enabled = $parameters->get('enabled');
 
-	// TODO TIP-303: check format here
         $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
         $filters = $this->getFilters($channel, $this->rawToStandardProductStatus($enabled));
 

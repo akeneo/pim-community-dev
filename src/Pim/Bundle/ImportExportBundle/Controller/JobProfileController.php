@@ -226,12 +226,14 @@ class JobProfileController
             $uploadAllowed = true;
             $uploadForm = $this->createUploadForm()->createView();
         }
+        $job = $this->connectorRegistry->getJob($jobInstance);
 
         return $this->templating->renderResponse(
             $this->jobTemplateProvider->getShowTemplate($jobInstance),
             [
                 'form'             => $form->createView(),
                 'jobInstance'      => $jobInstance,
+                'job'              => $job,
                 'violations'       => $this->validateJobInstance($jobInstance, ['Default', 'Execution']),
                 'uploadViolations' => $this->validateJobInstance($jobInstance, ['Default', 'UploadExecution']),
                 'uploadAllowed'    => $uploadAllowed,
@@ -276,11 +278,13 @@ class JobProfileController
         }
 
         $this->eventDispatcher->dispatch(JobProfileEvents::POST_EDIT, new GenericEvent($jobInstance));
+        $job = $this->connectorRegistry->getJob($jobInstance);
 
         return $this->templating->renderResponse(
             $this->jobTemplateProvider->getEditTemplate($jobInstance),
             [
                 'jobInstance' => $jobInstance,
+                'job'         => $job,
                 'form'        => $form->createView(),
             ]
         );

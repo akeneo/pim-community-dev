@@ -57,6 +57,7 @@ class ProductReaderSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('channel')->willReturn('mobile');
+        $jobParameters->get('enabled')->willReturn('enabled');
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -106,9 +107,12 @@ class ProductReaderSpec extends ObjectBehavior
         CursorInterface $cursor,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3
+        ProductInterface $product3,
+        JobParameters $jobParameters
     ) {
-        $this->setEnabled('disabled');
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('mobile');
+        $jobParameters->get('enabled')->willReturn('disabled');
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -139,7 +143,6 @@ class ProductReaderSpec extends ObjectBehavior
         $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
 
-        $this->setChannel('mobile');
         $this->initialize();
         $this->read()->shouldReturn($product1);
         $this->read()->shouldReturn($product2);
@@ -159,9 +162,12 @@ class ProductReaderSpec extends ObjectBehavior
         CursorInterface $cursor,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3
+        ProductInterface $product3,
+        JobParameters $jobParameters
     ) {
-        $this->setEnabled('all');
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('mobile');
+        $jobParameters->get('enabled')->willReturn('all');
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -192,7 +198,6 @@ class ProductReaderSpec extends ObjectBehavior
         $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
 
-        $this->setChannel('mobile');
         $this->initialize();
         $this->read()->shouldReturn($product1);
         $this->read()->shouldReturn($product2);
@@ -212,6 +217,7 @@ class ProductReaderSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('channel')->willReturn('mobile');
+        $jobParameters->get('enabled')->willReturn('enabled');
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);

@@ -46,6 +46,7 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
             new NotBlank(['groups' => 'Execution']),
             new Channel()
         ];
+        $constraintFields['enabled'] = new NotBlank(['groups' => 'Execution']);
 
         return new Collection(['fields' => $constraintFields]);
     }

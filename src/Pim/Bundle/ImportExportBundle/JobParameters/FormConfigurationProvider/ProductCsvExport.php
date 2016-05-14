@@ -72,6 +72,22 @@ class ProductCsvExport implements FormConfigurationProviderInterface
                     'select2'  => true,
                     'label'    => 'pim_connector.export.channel.label',
                     'help'     => 'pim_connector.export.channel.help',
+                    'attr'     => ['data-tab' => 'content']
+                ]
+            ],
+            'enabled' => [
+                'type'    => 'choice',
+                'options' => [
+                    'choices'  => [
+                        'enabled'  => 'pim_connector.export.status.choice.enabled',
+                        'disabled' => 'pim_connector.export.status.choice.disabled',
+                        'all'      => 'pim_connector.export.status.choice.all'
+                    ],
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_connector.export.status.label',
+                    'help'     => 'pim_connector.export.status.help',
+                    'attr'     => ['data-tab' => 'content']
                 ]
             ],
             'decimalSeparator' => [
