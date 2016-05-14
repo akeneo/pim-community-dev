@@ -37,8 +37,8 @@ class JobParametersFactory
      */
     public function create(JobInterface $job, array $parameters = [])
     {
-        $defaults = $this->defaultRegistry->get($job);
-        $parameters = array_merge($defaults->getDefaultValues(), $parameters);
+        $provider = $this->defaultRegistry->get($job);
+        $parameters = array_merge($provider->getDefaultValues(), $parameters);
 
         return new $this->jobParametersClass($parameters);
     }

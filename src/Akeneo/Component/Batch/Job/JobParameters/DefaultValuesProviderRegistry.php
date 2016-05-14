@@ -17,11 +17,11 @@ class DefaultValuesProviderRegistry
     protected $providers = [];
 
     /**
-     * @param DefaultValuesProviderInterface $parameters
+     * @param DefaultValuesProviderInterface $provider
      */
-    public function register(DefaultValuesProviderInterface $parameters)
+    public function register(DefaultValuesProviderInterface $provider)
     {
-        $this->providers[] = $parameters;
+        $this->providers[] = $provider;
     }
 
     /**

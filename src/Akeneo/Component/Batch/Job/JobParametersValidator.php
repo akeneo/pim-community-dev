@@ -45,6 +45,10 @@ class JobParametersValidator
     {
         $provider = $this->registry->get($job);
         $collection = $provider->getConstraintCollection();
+
+        // TODO TIP-303 new kind of Constraint!?
+        //$errors = $this->validator->validate($jobParameters, $collection, $groups);
+
         $parameters = $jobParameters->all();
         $errors = $this->validator->validate($parameters, $collection, $groups);
 
