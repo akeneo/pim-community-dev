@@ -1,0 +1,238 @@
+pim_connector:
+  jobs:
+    csv_product_export:
+      title: Eksport produktów do CSV
+      export.title: Eksport produktów
+    csv_category_export:
+      title: Eksport kategorii do CSV
+      export.title: Eksport kategorii
+    csv_attribute_export:
+      title: Eksport atrybutów do CSV
+      export.title: Eksport atrybutów
+    csv_attribute_option_export:
+      title: Eksport opcji atrybutów do CSV
+      export.title: Eksport opcji atrybutów
+    csv_association_type_export:
+      title: Eksport typów powiązań do CSV
+      export.title: Eksport typów powiązań
+    csv_group_export:
+      title: Eksport grup do CSV
+      export.title: Eksport grup
+    csv_variant_group_export:
+      title: Eksport grup wariantów do CSV
+      export.title: Eksport grup wariantów
+    csv_family_export:
+      title: Eksport rodzin do pliku CSV
+      export.title: Eksport rodziny
+    csv_product_import:
+      title: Import produktów z CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import Produktu
+      import_associations.title: Import Powiązań
+    csv_category_import:
+      title: Import kategorii z CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import kategorii
+    csv_attribute_import:
+      title: Import atrybutów z CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import atrybutu
+    csv_attribute_option_import:
+      title: Import ustawień atrybutów do CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import ustawień atrybutów
+    csv_association_type_import:
+      title: Import typów powiązań z CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import typów powiązań
+    csv_family_import:
+      title: Import rodziny z pliku CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import rodziny
+    csv_group_import:
+      title: Import grup z CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import grup
+    csv_variant_group_import:
+      title: Import grup wariantów z CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import grup wariantów
+    xlsx_category_import:
+      title: Import kategorii z XLSX
+      validation.title: Sprawdzanie pliku
+      import.title: Import kategorii
+    xlsx_association_type_import:
+      title: Import typów powiązań z XSLX
+      validation.title: Sprawdzanie pliku
+      import.title: Import typów powiązań
+    xlsx_attribute_import:
+      title: Import atrybutów z pliku XSLX
+      validation.title: Sprawdzanie pliku
+      import.title: Import atrybutu
+    xlsx_attribute_option_import:
+      title: Import ustawień atrybutów z pliku XLSX
+      validation.title: Sprawdzanie pliku
+      import.title: Import ustawień atrybutów
+    xlsx_family_import:
+      title: Import rodziny z pliku XSLX
+      validation.title: Sprawdzanie pliku
+      import.title: Import rodziny
+    xlsx_product_export:
+      title: Eksport produktów do XLSX
+      export.title: Eksport produktów
+    xlsx_product_import:
+      title: Import produktów z XSLX
+      validation.title: Sprawdzanie pliku
+      import.title: Import Produktu
+      import_associations.title: Import Powiązań
+    xlsx_group_export:
+      title: Eksport grup do XLSX
+      export.title: Eksport grup
+    xlsx_variant_group_export:
+      title: Eksport grup wariantów do XLSX
+      export.title: Eksport grup wariantów
+    xlsx_group_import:
+      title: Import grup z XLSX
+      validation.title: Sprawdzanie pliku
+      import.title: Import grup
+    xlsx_variant_group_import:
+      title: Import grup wariantów z XLSX
+      validation.title: Sprawdzanie pliku
+      import.title: Import grup wariantów
+    xlsx_family_export:
+      title: Eksport rodzin do pliku XLSX
+      export.title: Eksport rodziny
+    xlsx_category_export:
+      title: Eksport kategorii do XLSX
+      export.title: Eksport kategorii
+    xlsx_attribute_export:
+      title: Eksport atrybutów do XLSX
+      export.title: Eksport atrybutów do XLSX
+    xlsx_attribute_option_export:
+      title: Eksport opcji atrybutów do XLSX
+      export.title: Eksport opcji atrybutów do XLSX
+    xlsx_association_type_export:
+      title: Eksport typów powiązań do XLSX
+      export.title: Eksport typów powiązań do XLSX
+  steps:
+    dummy_reader.title: Pozorny mechanizm odczytu
+    product_reader.title: Odczyt produktu
+    entity_reader.title: Odczyt encji
+    csv_reader:
+      title: Czytnik CSV
+      invalid_item_columns_count: 'Oczekiwano %totalColumnsCount% kolumn, w pliku %csvPath%:%lineno% znaleziono %itemColumnsCount%'
+    csv_product_reader.title: Czytnik produktów z CSV
+    csv_category_reader.title: Czytnik kategorii z CSV
+    csv_variant_group .title: Czytnik grup wariantów z CSV
+    dummy_processor.title: Pozorny mechanizm przetwarzania
+    product_processor.title: Tworzenie produktu
+    variant_group_processor.title: Tworzenie grupy wariantów / aktualizacja
+    category_processor.title: Tworzenie kategorii
+    association_processor.title: Tworzenie powiązania
+    product_association_processor.title: Tworzenie powiązania
+    group_processor.title: Tworzenie grupy
+    attribute_processor.title: Tworzenie atrybutu
+    attribute_option_processor.title: Tworzenie ustawień atrybutu
+    heterogeneous_processor.title: Serializator produktu CSV
+    homogeneous_processor.title: Serializator encji CSV
+    transformer_processor.title: Transformacja
+    dummy_writer.title: Pozorny zapis
+    file_writer.title: Wyjście
+    product_writer.title: Magazyn produktów
+    category_writer.title: Magazyn kategorii
+    variant_group_writer.title: Magazyn grup wariantów
+    csv_writer.title: Zapis Csv
+  export:
+    delimiter:
+      label: Separator
+      help: Jeden znak używany do rozdzielenia poszczególnych pól
+    enclosure:
+      label: Ogranicznik wartości pola
+      help: Znak użyty do rozgraniczenia wartości pola
+    withHeader:
+      label: Z nagłówkiem
+      help: Drukować, czy nie nazwę kolumny
+    filePath:
+      label: Ścieżka do pliku
+      help: Gdzie zapisać utworzony plik w systemie plików
+    channel:
+      label: Kanał
+      help: Kanał, który chcesz wyeksportować
+    status:
+      label: Status
+      choice:
+        enabled: Włączony
+        disabled: Nieaktywny
+        all: Wszystkie
+    decimalSeparator:
+      label: Separator dziesiętny
+      help: Określ separator dziesiętny
+    dateFormat:
+      label: Format daty
+      help: Określ format pola Data
+    header:
+      label: Nagłówek
+  import:
+    enabled:
+      label: Włącz produkt
+      help: Czy zaimportowane produkty mają zostać włączone, czy nie
+    categoriesColumn:
+      label: Kolumna Kategorii
+      help: Nazwa kolumny kategorii
+    familyColumn:
+      label: Kolumna rodziny
+      help: Nazwa kolumny rodziny produktu
+    groupsColumn:
+      label: Kolumna grup
+      help: Nazwa kolumny grup
+    filePath:
+      label: Plik
+      help: Plik CSV do importu
+    yamlFilePath:
+      label: Plik
+      help: Plik YAML do importu
+    uploadAllowed:
+      label: Zezwól na załadowanie pliku
+      help: Czy zezwolić na wgrywanie plików bezpośrednio, czy nie
+    delimiter:
+      label: Separator
+      help: Znak użyty do rozgraniczenia poszczególnych pól w pliku CSV
+    enclosure:
+      label: Ogranicznik wartości pola
+      help: Znak użyty do rozgraniczenia wartości pola
+    escape:
+      label: Znak ucieczki
+      help: Znak ucieczki powodujący inną niż domyślna interpretację znaku lub sekwencji znaków po nim następujących
+    circularRefsChecked:
+      label: Sprawdzanie odwołań cyklicznych
+      help: Gdy włączony, dane zostaną sprawdzone pod kątem zawartości cyklicznych odwołań pomiędzy kategoriami
+    realTimeVersioning:
+      label: Aktualizacja historii w czasie rzeczywistym
+      help: Oznacza że historia dla produktu będzie aktualizowana automatycznie, wyłącz w celu poprawy wydajności
+    copyValuesToProducts:
+      label: Skopiuj wartości z grup wariantów na produkty
+      help: Oznacza, że produkty zostaną automatycznie zaktualizowane o wartości z grup wariantów, wyłącz w celu aktualizacji tylko samych grup wariantów
+    enabledComparison:
+      label: Porównaj wartości
+      help: Włącza porównanie wartości istniejących z importowanymi. Przyśpiesza proces importu, jeżeli wartości importowane są bardzo podobne do istniejących
+    decimalSeparator:
+      label: Separator dziesiętny
+      help: Znak użyty do rozgraniczenia wartości dziesiętnych
+    dateFormat:
+      label: Format daty
+      help: Określ format daty dla kolumn w pliku, np. DD/MM/RRRR dla 30/04/2014.
+job_execution.summary:
+  read: odczytano
+  read_lines: odczytane wiersze
+  write: zapisano
+  skip: pominięte
+  create: utworzono
+  process: przetworzono
+  update_products: zaktualizowane produkty
+  process_products: produkty przetworzone
+  skip_products: pominięte produkty
+  displayed: pierwsze ostrzeżenie wyświetlone
+  charset_validator:
+    title: 'Strona kodowa pliku:'
+    skipped: pominięte, rozszerzenie na białej liście
+  product_skipped_no_diff: produkt pominięty (brak różnic)

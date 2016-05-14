@@ -136,6 +136,12 @@ pim_connector:
     channel:
       label: Канал
       help: Канал, который вы хотите экспортировать
+    status:
+      label: Статус
+      choice:
+        enabled: Включено
+        disabled: Отключено
+        all: Все
     decimalSeparator:
       label: Десятичный разделитель
       help: Введите десятичный разделитель

@@ -17,6 +17,10 @@ pim_import_export:
     output: Скачать созданный файл|скачать созданные файлы
     input: 'скачать файл чтения|скачать  файлы чтения'
     invalid: Скачать недопустимые значения
+  job_profile:
+    tab:
+      property.title: Общие свойства
+      history.title: История
 pim_title.export_profile.index: Управление профилями экспорта
 pim_title.export_profile.edit: 'Профиль экспорта %job.label% | Редактировать'
 pim_title.export_profile.show: 'Профиль экспорта %job.label% | Показать'

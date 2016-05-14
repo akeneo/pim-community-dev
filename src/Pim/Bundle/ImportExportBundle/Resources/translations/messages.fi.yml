@@ -26,6 +26,10 @@ pim_import_export:
       warning: 'Vienti <strong>%label%</strong> päättynyt joillain varoituksilla'
       success: 'Vienti <strong>%label%</strong> valmis'
   list: Valitse työ
+  job_profile:
+    tab:
+      property.title: Yleiset ominaisuudet
+      history.title: Historia
 pim_title.export_profile.index: Profiilien viennin hallinta
 pim_title.export_profile.edit: 'Vie profiilit %job.label% | Muokkaa'
 pim_title.export_profile.show: 'Vie profiilit %job.label% | Näytä'
