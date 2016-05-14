@@ -2,13 +2,17 @@
 
 namespace Akeneo\Bundle\BatchBundle\Command;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
+use Akeneo\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Create a JobInstance
@@ -19,6 +23,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CreateJobCommand extends ContainerAwareCommand
 {
+    const EXIT_SUCCESS_CODE = 0;
+    const EXIT_ERROR_CODE = 1;
+
     /**
      * {@inheritdoc}
      */
@@ -31,7 +38,7 @@ class CreateJobCommand extends ContainerAwareCommand
             ->addArgument('job', InputArgument::REQUIRED, 'Job name')
             ->addArgument('type', InputArgument::REQUIRED, 'Job type')
             ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
-            ->addArgument('config', InputArgument::REQUIRED, 'Job instance config')
+            ->addArgument('config', InputArgument::OPTIONAL, 'Job default parameters')
             ->addArgument('label', InputArgument::OPTIONAL, 'Job instance label');
     }
 
@@ -41,22 +48,90 @@ class CreateJobCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $connector = $input->getArgument('connector');
-        $job = $input->getArgument('job');
+        $jobName = $input->getArgument('job');
         $type = $input->getArgument('type');
         $code = $input->getArgument('code');
         $label = $input->getArgument('label');
         $label = $label ? $label : $code;
         $jsonConfig = $input->getArgument('config');
-        $rawConfig = json_decode($jsonConfig, true);
+        $rawConfig = null === $jsonConfig ? [] : json_decode($jsonConfig, true);
 
         $factory = $this->getJobInstanceFactory();
         $jobInstance = $factory->createJobInstance($type);
         $jobInstance->setConnector($connector);
-        $jobInstance->setAlias($job);
+        $jobInstance->setAlias($jobName);
         $jobInstance->setCode($code);
         $jobInstance->setLabel($label);
         $jobInstance->setRawConfiguration($rawConfig);
+
+        /** @var Job */
+        $job = $this->getConnectorRegitry()->getJob($jobInstance);
+        if (null === $job) {
+            $output->writeln(
+                sprintf(
+                    '<error>Job "%s" does not exists.</error>',
+                    $jobName
+                )
+            );
+
+            return self::EXIT_ERROR_CODE;
+        }
+
+        /** @var JobParameters $jobParameters */
+        $jobParameters = $this->getJobParametersFactory()->create($job, $rawConfig);
+        $jobInstance->setRawConfiguration($jobParameters->all());
+
+        $violations = $this->getJobParametersValidator()->validate($job, $jobParameters);
+        if (count($violations) > 0) {
+            $output->writeln(
+                sprintf(
+                    '<error>A validation error occurred with the job configuration "%s".</error>',
+                    $this->getErrorMessages($violations)
+                )
+            );
+
+            return self::EXIT_ERROR_CODE;
+        }
+
+        $violations = $this->getValidator()->validate($jobInstance);
+        if (count($violations) > 0) {
+            $output->writeln(
+                sprintf(
+                    '<error>A validation error occurred while creating the job instance "%s".</error>',
+                    $this->getErrorMessages($violations)
+                )
+            );
+
+            return self::EXIT_ERROR_CODE;
+        }
+
         $this->getJobInstanceSaver()->save($jobInstance);
+
+        return self::EXIT_SUCCESS_CODE;
+    }
+
+    /**
+     * @return ValidatorInterface
+     */
+    protected function getValidator()
+    {
+        return $this->getContainer()->get('validator');
+    }
+
+    /**
+     * @return JobParametersValidator
+     */
+    protected function getJobParametersValidator()
+    {
+        return $this->getContainer()->get('akeneo_batch.job.job_parameters_validator');
+    }
+
+    /**
+     * @return JobParametersFactory
+     */
+    protected function getJobParametersFactory()
+    {
+        return $this->getContainer()->get('akeneo_batch.job_parameters_factory');
     }
 
     /**
@@ -73,5 +148,29 @@ class CreateJobCommand extends ContainerAwareCommand
     protected function getJobInstanceSaver()
     {
         return $this->getContainer()->get('akeneo_batch.saver.job_instance');
+    }
+
+    /**
+     * @return ConnectorRegistry
+     */
+    protected function getConnectorRegitry()
+    {
+        return $this->getContainer()->get('akeneo_batch.connectors');
+    }
+
+    /**
+     * @param ConstraintViolationListInterface $errors
+     *
+     * @return string
+     */
+    protected function getErrorMessages(ConstraintViolationListInterface $errors)
+    {
+        $errorsStr = '';
+
+        foreach ($errors as $error) {
+            $errorsStr .= sprintf("\n  - %s", $error);
+        }
+
+        return $errorsStr;
     }
 }

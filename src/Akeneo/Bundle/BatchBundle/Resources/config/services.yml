@@ -1,7 +1,5 @@
 parameters:
     akeneo_batch.connectors.class:                            Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry
-    akeneo_batch.job_repository.class:                        Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository
-    akeneo_batch.job_factory.class:                           Akeneo\Component\Batch\Job\JobFactory
     akeneo_batch.step_factory.class:                          Akeneo\Component\Batch\Step\StepFactory
     akeneo_batch.job_instance_factory.class:                  Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory
     akeneo_batch.logger_subscriber.class:                     Akeneo\Bundle\BatchBundle\EventListener\LoggerSubscriber
@@ -21,20 +19,6 @@ services:
         arguments:
             - @akeneo_batch.job_factory
             - @akeneo_batch.step_factory
-
-    akeneo_batch.job_repository:
-        class: %akeneo_batch.job_repository.class%
-        arguments:
-            - @doctrine.orm.entity_manager
-            - '%akeneo_batch.entity.job_execution.class%'
-            - '%akeneo_batch.entity.job_instance.class%'
-            - '%pim_import_export.repository.job_instance.class%'
-
-    akeneo_batch.job_factory:
-        class: %akeneo_batch.job_factory.class%
-        arguments:
-            - @event_dispatcher
-            - @akeneo_batch.job_repository
 
     akeneo_batch.job_instance_factory:
         class: %akeneo_batch.job_instance_factory.class%

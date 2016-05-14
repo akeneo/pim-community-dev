@@ -7,7 +7,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Entity job
+ * Batch domain object representing a uniquely identifiable configured job.
+ *
+ * Cf https://docs.spring.io/spring-batch/apidocs/org/springframework/batch/core/JobInstance.html
+ *
+ * Please note the following difference between Spring Batch and Akeneo Batch,
+ *
+ * In Spring Batch: a JobInstance can be restarted multiple times in case of execution failure and it's lifecycle ends
+ * with first successful execution. Trying to execute an existing JobInstance that has already completed successfully
+ * will result in error. Error will be raised also for an attempt to restart a failed JobInstance if the Job is not restartable.
+ *
+ * In Akeneo Batch: the behavior is not the same, we store a JobInstance, we can run the Job then run it again with the
+ * same config, change the config, then run it again.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -49,9 +60,6 @@ class JobInstance
 
     /** @var array */
     protected $rawConfiguration = array();
-
-    /** @var Job */
-    protected $job;
 
     /** @var Collection|JobExecution[] */
     protected $jobExecutions;
@@ -152,6 +160,8 @@ class JobInstance
     }
 
     /**
+     * TODO TIP-303, rename to getJobName as in spring batch once TIP-384 merged
+     *
      * Get alias
      *
      * @return string
@@ -210,7 +220,8 @@ class JobInstance
     }
 
     /**
-     * Set job configuration
+     * This configuration can be used to create a JobParameters, stored like this in a legacy way
+     * TODO TIP-303: we should rename and extract this configuration to be able to use JobParameters from whatever source
      *
      * @param array $configuration
      *
@@ -224,7 +235,8 @@ class JobInstance
     }
 
     /**
-     * Get raw configuration
+     * This configuration can be used to create a JobParameters, stored like this in a legacy way
+     * TODO TIP-303: we should rename and extract this configuration to be able to use JobParameters from whatever source
      *
      * @return array
      */
@@ -239,37 +251,28 @@ class JobInstance
      * @param Job $job
      *
      * @return JobInstance
+     *
+     * @deprecated will be removed in 1.7, this has been used to configure the job instance in a weird way to be able
+     *             to access to the Job from the JobInstance in an execution context only, to access to the Job, we
+     *             must use ConnectorRegistry->getJob($jobInstance)
      */
     public function setJob($job)
     {
-        $this->job = $job;
-
-        if ($job) {
-            //TODO: FIXME to get only the jobConfiguration instead of merging it
-            //with the jobConfiguration:
-            //$this->rawConfiguration = $job->getConfiguration();
-            // Waiting for the ImportExport fixes on the right uses of the configuration
-            // See https://magecore.atlassian.net/browse/BAP-2601
-            $jobConfiguration = $job->getConfiguration();
-
-            if (is_array($this->rawConfiguration) && count($this->rawConfiguration) > 0) {
-                $this->rawConfiguration = array_merge($this->rawConfiguration, $jobConfiguration);
-            } else {
-                $this->rawConfiguration = $jobConfiguration;
-            }
-        }
-
-        return $this;
+        trigger_error('please use ConnectorRegistry->getJob($jobInstance) instead', E_USER_NOTICE);
     }
 
     /**
      * Get job
      *
      * @return Job
+     *
+     * @deprecated will be removed in 1.7, this has been used to configure the job instance in a weird way to be able
+     *             to access to the Job from the JobInstance in an execution context only, to access to the Job, we
+     *             must use ConnectorRegistry->getJob($jobInstance)
      */
     public function getJob()
     {
-        return $this->job;
+        trigger_error('please use ConnectorRegistry->getJob($jobInstance) instead', E_USER_NOTICE);
     }
 
     /**
@@ -305,7 +308,10 @@ class JobInstance
     }
 
     /**
+     * TODO TIP-303, rename to setJobName as in spring batch once TIP-384 merged
+     *
      * Set alias
+     *
      * Throws logic exception if alias property is already set.
      *
      * @param string $alias

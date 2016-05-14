@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Job;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -94,7 +95,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createJobExecution(JobInstance $jobInstance)
+    public function createJobExecution(JobInstance $jobInstance, JobParameters $jobParameters)
     {
         if (null !== $jobInstance->getId()) {
             $jobInstance = $this->jobManager->merge($jobInstance);
@@ -102,8 +103,10 @@ class DoctrineJobRepository implements JobRepositoryInterface
             $this->jobManager->persist($jobInstance);
         }
 
+        /** @var JobExecution */
         $jobExecution = new $this->jobExecutionClass();
         $jobExecution->setJobInstance($jobInstance);
+        $jobExecution->setJobParameters($jobParameters);
 
         $this->updateJobExecution($jobExecution);
 

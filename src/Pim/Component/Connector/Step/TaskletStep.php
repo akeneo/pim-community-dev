@@ -13,9 +13,6 @@ use Pim\Component\Connector\Step\TaskletInterface;
  */
 class TaskletStep extends AbstractStep
 {
-    /** @var array */
-    protected $configuration;
-
     /** @var TaskletInterface */
     protected $tasklet;
 
@@ -26,24 +23,6 @@ class TaskletStep extends AbstractStep
     {
         $this->tasklet->setStepExecution($stepExecution);
         $this->tasklet->execute($this->configuration);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfiguration()
-    {
-        return $this->configuration;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfiguration(array $config)
-    {
-        $this->configuration = $config;
-
-        return $this;
     }
 
     /**

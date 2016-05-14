@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Item\InvalidItemException;
@@ -10,7 +11,6 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -60,43 +60,17 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
     function it_is_configurable(
         JobExecution $jobExecution,
-        $stepExecution
+        $stepExecution,
+        JobParameters $jobParameters
     ) {
-        $this->setConfiguration(['filters' => [], 'mainContext' => ['scope' => 'ecommerce', 'ui_locale' => 'en_US']]);
-        $this->getChannelCode()->shouldReturn(null);
-        $this->setChannelCode('print');
-        $this->getChannelCode()->shouldReturn('print');
+        $configuration = ['filters' => [], 'mainContext' => ['scope' => 'ecommerce', 'ui_locale' => 'en_US']];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('mainContext')->willReturn($configuration['mainContext']);
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
         $this->initialize();
-        $this->getChannelCode()->shouldReturn('ecommerce');
-    }
-
-    function it_returns_the_configuration_fields()
-    {
-        $this->getConfigurationFields()->shouldReturn(['mainContext' => []]);
-    }
-
-    function it_throw_an_exception_if_there_is_no_channel(
-        $stepExecution,
-        JobExecution $jobExecution
-    ) {
-        $configuration = ['filters' => [], 'mainContext' => ['scope' => null]];
-        $this->setConfiguration($configuration);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-
-        $this->shouldThrow(new InvalidArgumentException('No channel found'))->duringInitialize();
-    }
-
-    function it_throw_an_exception_if_there_is_no_ui_locale(
-        $stepExecution,
-        JobExecution $jobExecution
-    ) {
-        $configuration = ['filters' => [], 'mainContext' => ['scope' => 'ecommerce']];
-        $this->setConfiguration($configuration);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-
-        $this->shouldThrow(new InvalidArgumentException('No UI locale found'))->duringInitialize();
     }
 
     function it_returns_flat_data_with_media(
@@ -114,14 +88,18 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         FileInfoInterface $media2,
         ProductValueInterface $value1,
         ProductValueInterface $value2,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        JobParameters $jobParameters
     ) {
+        $configuration = ['filters' => [], 'mainContext' => ['scope' => 'mobile', 'ui_locale' => 'en_US']];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('mainContext')->willReturn($configuration['mainContext']);
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('michel');
         $userProvider->loadUserByUsername('michel')->willReturn($user);
         $user->getRoles()->willReturn(['ROLE_MICHEL']);
-
-        $this->setLocale('en_US');
 
         $productBuilder->addMissingProductValues($product)->shouldBeCalled();
 
@@ -154,7 +132,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
 
-        $this->setChannelCode('mobile');
         $objectDetacher->detach($product)->shouldBeCalled();
         $this->process($product)->shouldReturn(
             [
@@ -174,8 +151,14 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ChannelInterface $channel,
         ChannelRepositoryInterface $channelRepository,
         ProductInterface $product,
-        Serializer $serializer
+        Serializer $serializer,
+        JobParameters $jobParameters
     ) {
+        $configuration = ['filters' => [], 'mainContext' => ['scope' => 'mobile', 'ui_locale' => 'en_US']];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('mainContext')->willReturn($configuration['mainContext']);
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('michel');
         $userProvider->loadUserByUsername('michel')->willReturn($user);
@@ -183,7 +166,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
         $productBuilder->addMissingProductValues($product)->shouldBeCalled();
 
-        $this->setLocale('en_US');
         $product->getValues()->willReturn([]);
 
         $serializer
@@ -204,7 +186,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
 
-        $this->setChannelCode('mobile');
         $objectDetacher->detach($product)->shouldBeCalled();
         $this->process($product)->shouldReturn(['media' => [], 'product' => ['normalized_product']]);
     }
@@ -219,8 +200,14 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         FileInfoInterface $media,
         ProductValueInterface $value,
         ProductValueInterface $value2,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        JobParameters $jobParameters
     ) {
+        $configuration = ['filters' => [], 'mainContext' => ['scope' => 'mobile', 'ui_locale' => 'en_US']];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('mainContext')->willReturn($configuration['mainContext']);
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('michel');
         $userProvider->loadUserByUsername('michel')->willReturn($user);
@@ -263,14 +250,18 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductPriceInterface $price,
         ProductValueInterface $priceValue,
         AttributeInterface $date,
-        ProductValueInterface $dateValue
+        ProductValueInterface $dateValue,
+        JobParameters $jobParameters
     ) {
+        $configuration = ['filters' => [], 'mainContext' => ['scope' => 'mobile', 'ui_locale' => 'en_US']];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('mainContext')->willReturn($configuration['mainContext']);
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('michel');
         $userProvider->loadUserByUsername('michel')->willReturn($user);
         $user->getRoles()->willReturn(['ROLE_MICHEL']);
-
-        $this->setLocale('en_US');
 
         $attribute->getAttributeType()->willReturn('pim_catalog_number');
         $number->getDecimal('10.50');
@@ -311,7 +302,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
 
-        $this->setChannelCode('mobile');
         $this->process($product)->shouldReturn(
             [
                 'media'   => [],
@@ -334,14 +324,18 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         MetricInterface $metric,
         ProductValueInterface $metricValue,
         ProductPriceInterface $price,
-        ProductValueInterface $priceValue
+        ProductValueInterface $priceValue,
+        JobParameters $jobParameters
     ) {
+        $configuration = ['filters' => [], 'mainContext' => ['scope' => 'mobile', 'ui_locale' => 'fr_FR']];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('mainContext')->willReturn($configuration['mainContext']);
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('michel');
         $userProvider->loadUserByUsername('michel')->willReturn($user);
         $user->getRoles()->willReturn(['ROLE_MICHEL']);
-
-        $this->setLocale('fr_FR');
 
         $attribute->getAttributeType()->willReturn('pim_catalog_number');
         $number->getDecimal('10.50');
@@ -379,7 +373,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
 
-        $this->setChannelCode('mobile');
         $this->process($product)->shouldReturn(
             [
                 'media'   => [],

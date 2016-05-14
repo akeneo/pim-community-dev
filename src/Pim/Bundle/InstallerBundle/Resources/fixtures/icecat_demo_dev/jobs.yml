@@ -40,7 +40,6 @@ jobs:
             delimiter:           ;
             enclosure:           '"'
             escape:              '\'
-            circularRefsChecked: true
     csv_category_export:
         connector: Akeneo CSV Connector
         alias:     csv_category_export
@@ -221,6 +220,7 @@ jobs:
         configuration:
             withHeader: true
             filePath:   /tmp/product.xlsx
+            channel:    mobile
     xlsx_group_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_group_export
@@ -268,7 +268,6 @@ jobs:
         configuration:
             filePath:            /tmp/category.xlsx
             uploadAllowed:       true
-            circularRefsChecked: true
     xlsx_association_type_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_association_type_import

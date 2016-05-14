@@ -18,7 +18,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 class Job implements JobInterface
 {
@@ -140,37 +139,6 @@ class Job implements JobInterface
     public function getJobRepository()
     {
         return $this->jobRepository;
-    }
-
-    /**
-     * Get the steps configuration
-     *
-     * @return array
-     */
-    public function getConfiguration()
-    {
-        $result = array();
-        foreach ($this->steps as $step) {
-            foreach ($step->getConfiguration() as $key => $value) {
-                if (!isset($result[$key]) || $value) {
-                    $result[$key] = $value;
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Set the steps configuration
-     *
-     * @param array $config
-     */
-    public function setConfiguration(array $config)
-    {
-        foreach ($this->steps as $step) {
-            $step->setConfiguration($config);
-        }
     }
 
     /**

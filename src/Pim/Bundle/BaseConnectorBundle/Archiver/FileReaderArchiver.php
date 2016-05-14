@@ -2,12 +2,14 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
 use Pim\Component\Connector\Reader\File\CsvReader;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Archive files read by job execution to provide them through a download button
@@ -18,12 +20,16 @@ use Pim\Component\Connector\Reader\File\CsvReader;
  */
 class FileReaderArchiver extends AbstractFilesystemArchiver
 {
+    /** @var ContainerInterface */
+    private $container;
+
     /**
      * @param Filesystem $filesystem
      */
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem, ContainerInterface $container)
     {
         $this->filesystem = $filesystem;
+        $this->container = $container;
     }
 
     /**
@@ -33,20 +39,23 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      */
     public function archive(JobExecution $jobExecution)
     {
-        foreach ($jobExecution->getJobInstance()->getJob()->getSteps() as $step) {
+        $job = $this->getConnectorRegistry()->getJob($jobExecution->getJobInstance());
+        foreach ($job->getSteps() as $step) {
             if (!$step instanceof ItemStep) {
                 continue;
             }
             $reader = $step->getReader();
 
             if ($this->isReaderUsable($reader)) {
+                $jobParameters = $jobExecution->getJobParameters();
+                $filePath = $jobParameters->get('filePath');
                 $key = strtr(
                     $this->getRelativeArchivePath($jobExecution),
                     [
-                        '%filename%' => basename($reader->getFilePath()),
+                        '%filename%' => basename($filePath),
                     ]
                 );
-                $this->filesystem->put($key, file_get_contents($reader->getFilePath()));
+                $this->filesystem->put($key, file_get_contents($filePath));
             }
         }
     }
@@ -80,12 +89,24 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      */
     public function supports(JobExecution $jobExecution)
     {
-        foreach ($jobExecution->getJobInstance()->getJob()->getSteps() as $step) {
+        $job = $this->getConnectorRegistry()->getJob($jobExecution->getJobInstance());
+        foreach ($job->getSteps() as $step) {
             if ($step instanceof ItemStep && $this->isReaderUsable($step->getReader())) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Should be changed with TIP-418, here we work around a circular reference due to the way we instanciate the whole
+     * Job classes in the DIC
+     *
+     * @return ConnectorRegistry
+     */
+    protected final function getConnectorRegistry()
+    {
+        return $this->container->get('akeneo_batch.connectors');
     }
 }

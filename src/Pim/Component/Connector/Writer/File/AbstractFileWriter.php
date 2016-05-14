@@ -23,9 +23,6 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     /** @var FilePathResolverInterface */
     protected $filePathResolver;
 
-    /** @var string */
-    protected $filePath;
-
     /** @var StepExecution */
     protected $stepExecution;
 
@@ -51,31 +48,6 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     }
 
     /**
-     * Set the file path
-     *
-     * @param string $filePath
-     *
-     * @return AbstractFileWriter
-     */
-    public function setFilePath($filePath)
-    {
-        $this->filePath = $filePath;
-        $this->resolvedFilePath = null;
-
-        return $this;
-    }
-
-    /**
-     * Get the file path
-     *
-     * @return string
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
-    }
-
-    /**
      * Get the file path in which to write the data
      *
      * @return string
@@ -83,25 +55,20 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     public function getPath()
     {
         if (null === $this->resolvedFilePath) {
-            $this->resolvedFilePath = $this->filePathResolver->resolve($this->filePath, $this->filePathResolverOptions);
+            $parameters = $this->stepExecution->getJobParameters();
+            $filePath = $parameters->get('filePath');
+
+            if ($parameters->has('mainContext')){
+                $mainContext = $parameters->get('mainContext');
+                foreach ($mainContext as $key => $value) {
+                    $this->filePathResolverOptions['parameters']['%' . $key . '%'] = $value;
+                }
+            }
+
+            $this->resolvedFilePath = $this->filePathResolver->resolve($filePath, $this->filePathResolverOptions);
         }
 
         return $this->resolvedFilePath;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help'
-                ]
-            ]
-        ];
     }
 
     /**

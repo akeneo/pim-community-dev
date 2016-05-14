@@ -14,46 +14,11 @@ use Akeneo\Component\Batch\Item\ItemReaderInterface;
  */
 class FileReader extends AbstractConfigurableStepElement implements ItemReaderInterface
 {
-    /** @var string */
-    protected $filePath;
-
-    /**
-     * Get the file path
-     *
-     * @return string
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
-    }
-
-    /**
-     * Set the file path
-     *
-     * @param string $filePath
-     *
-     * @return FileReader
-     */
-    public function setFilePath($filePath)
-    {
-        $this->filePath = $filePath;
-
-        return $this;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function read()
     {
         throw new \Exception('Not implemented yet.');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [];
     }
 }

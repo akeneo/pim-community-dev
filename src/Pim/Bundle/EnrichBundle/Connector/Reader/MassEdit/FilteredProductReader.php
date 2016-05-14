@@ -3,10 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -33,22 +31,12 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     /** @var bool */
     protected $isExecuted;
 
-    /** @var string */
-    protected $channel;
-
-    /** @var JobRepositoryInterface */
-    protected $jobRepository;
-
-    /** @var array */
-    protected $filters;
-
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      */
     public function __construct(ProductQueryBuilderFactoryInterface $pqbFactory)
     {
         $this->pqbFactory = $pqbFactory;
-        $this->filters = [];
         $this->isExecuted = false;
     }
 
@@ -57,14 +45,14 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
      */
     public function read()
     {
-        $configuration = $this->getConfiguration();
-        if (null === $configuration['filters']) {
+        $filters = $this->getConfiguredFilters();
+        if (null === $filters) {
             return null;
         }
 
         if (!$this->isExecuted) {
             $this->isExecuted = true;
-            $this->products   = $this->getProductsCursor($configuration['filters']);
+            $this->products   = $this->getProductsCursor($filters);
         }
 
         $result = $this->products->current();
@@ -133,36 +121,12 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     }
 
     /**
-     * {@inheritdoc}
+     * @return array|null
      */
-    public function getConfigurationFields()
+    protected function getConfiguredFilters()
     {
-        return ['filters' => []];
-    }
+        $jobParameters = $this->stepExecution->getJobParameters();
 
-    /**
-     * @param array $filters
-     */
-    public function setFilters(array $filters)
-    {
-        $this->filters = $filters;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setChannel($channel)
-    {
-        $this->channel = $channel;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChannel()
-    {
-        return $this->channel;
+        return $jobParameters->get('filters');
     }
 }

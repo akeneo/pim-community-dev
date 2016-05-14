@@ -4,8 +4,8 @@ namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
+use Pim\Bundle\ImportExportBundle\Form\DataTransformer\ConfigurationToJobParametersTransformer;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobAliasSubscriber;
-use Pim\Bundle\ImportExportBundle\Form\Subscriber\RemoveDuplicateJobConfigurationSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -68,7 +68,7 @@ class JobInstanceType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      *
-     * @return \Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+     * @return JobInstanceType
      */
     protected function addCodeField(FormBuilderInterface $builder)
     {
@@ -84,7 +84,7 @@ class JobInstanceType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      *
-     * @return \Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+     * @return JobInstanceType
      */
     protected function addLabelField(FormBuilderInterface $builder)
     {
@@ -98,7 +98,7 @@ class JobInstanceType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      *
-     * @return \Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+     * @return JobInstanceType
      */
     protected function addConnectorField(FormBuilderInterface $builder)
     {
@@ -121,7 +121,7 @@ class JobInstanceType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      *
-     * @return \Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+     * @return JobInstanceType
      */
     protected function addAliasField(FormBuilderInterface $builder)
     {
@@ -157,21 +157,23 @@ class JobInstanceType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      *
-     * @return \Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+     * @return JobInstanceType
      */
     protected function addJobConfigurationField(FormBuilderInterface $builder)
     {
+        // TODO: TIP-303: rename this field to parameters
         $builder
             ->add(
-                'job',
-                'pim_import_export_job_configuration',
+                'configuration',
+                'pim_import_export_job_parameters',
                 [
-                    'required'     => false,
-                    'by_reference' => false,
+                    'required'      => true,
+                    'by_reference'  => false,
+                    'property_path' => 'rawConfiguration',
                 ]
             )
-            ->get('job')
-            ->addEventSubscriber(new RemoveDuplicateJobConfigurationSubscriber());
+            ->get('configuration')
+            ->addModelTransformer(new ConfigurationToJobParametersTransformer());
 
         return $this;
     }
@@ -189,7 +191,7 @@ class JobInstanceType extends AbstractType
      *
      * @param string $jobType
      *
-     * @return \Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+     * @return JobInstanceType
      */
     public function setJobType($jobType)
     {

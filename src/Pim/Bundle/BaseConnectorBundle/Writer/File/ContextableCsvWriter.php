@@ -10,6 +10,8 @@ namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @deprecated will be removed in 1.6, this behavior is now handled by Pim\Component\Connector\Writer\File\FilePathResolver
+ *
+ * TODO TIP-303: deprecated class and spec to drop
  */
 class ContextableCsvWriter extends CsvWriter
 {

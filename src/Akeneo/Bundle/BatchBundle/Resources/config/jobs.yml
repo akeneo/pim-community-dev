@@ -1,0 +1,40 @@
+parameters:
+    akeneo_batch.job_parameters_factory.class:              Akeneo\Component\Batch\Job\JobParametersFactory
+    akeneo_batch.job_repository.class:                      Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository
+    akeneo_batch.job_factory.class:                         Akeneo\Component\Batch\Job\JobFactory
+    akeneo_batch.job.job_parameters.default_values_provider_registry.class:        Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderRegistry
+    akeneo_batch.job.job_parameters.constraint_collection_provider_registry.class: Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderRegistry
+    akeneo_batch.job.job_parameters_validator.class:                               Akeneo\Component\Batch\Job\JobParametersValidator
+
+services:
+    akeneo_batch.job_repository:
+        class: %akeneo_batch.job_repository.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - '%akeneo_batch.entity.job_execution.class%'
+            - '%akeneo_batch.entity.job_instance.class%'
+            - '%pim_import_export.repository.job_instance.class%'
+
+    akeneo_batch.job_factory:
+        class: %akeneo_batch.job_factory.class%
+        arguments:
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+
+    akeneo_batch.job_parameters_factory:
+        class: %akeneo_batch.job_parameters_factory.class%
+        arguments:
+            - '@akeneo_batch.job.job_parameters.default_values_provider_registry'
+            - %akeneo_batch.job.job_parameters.class%
+
+    akeneo_batch.job.job_parameters.default_values_provider_registry:
+        class: %akeneo_batch.job.job_parameters.default_values_provider_registry.class%
+
+    akeneo_batch.job.job_parameters.constraint_collection_provider_registry:
+        class: %akeneo_batch.job.job_parameters.constraint_collection_provider_registry.class%
+
+    akeneo_batch.job.job_parameters_validator:
+        class: %akeneo_batch.job.job_parameters_validator.class%
+        arguments:
+            - '@validator'
+            - '@akeneo_batch.job.job_parameters.constraint_collection_provider_registry'
