@@ -161,6 +161,7 @@ class JobInstanceType extends AbstractType
      */
     protected function addJobConfigurationField(FormBuilderInterface $builder)
     {
+        // TODO: TIP-303: rename this field to parameters
         $builder
             ->add(
                 'configuration',
