@@ -5,7 +5,7 @@ Feature: Browse users
   I need to be able to see users
 
   Background:
-    Given the "default" catalog configuration
+    Given the "clothing" catalog configuration
     And I am logged in as "Peter"
 
   Scenario: Successfully display users

@@ -5,7 +5,7 @@ Feature: Browse roles
   I need to be able to see user roles
 
   Background:
-    Given the "default" catalog configuration
+    Given the "clothing" catalog configuration
     And I am logged in as "Peter"
 
   Scenario: Successfully display roles
