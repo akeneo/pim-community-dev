@@ -7,7 +7,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SystemAwareResolver implements ContainerAwareInterface
 {
-    /**W
+    const PARAMETER_REGEX = '#%([\w\._]+)%#';
+    const STATIC_METHOD_REGEX = '#%([\w\._]+)%::([\w\._]+)#';
+    const STATIC_METHOD_CLEAN_REGEX = '#([^\'"%:\s]+)::([\w\._]+)#';
+    const SERVICE_METHOD = '#@([\w\._]+)->([\w\._]+)(\((.*)\))*#';
+    const SERVICE = '#@([\w\._]+)#';
+
+    /**
      * @var ContainerInterface
      */
     protected $container;
@@ -81,15 +87,15 @@ class SystemAwareResolver implements ContainerAwareInterface
         }
 
         switch (true) {
-            case preg_match('#%([\w\._]+)%#', $val, $match):
+            case preg_match(static::PARAMETER_REGEX, $val, $match):
                 $val = $this->container->getParameter($match[1]);
                 break;
             // static call class:method or class::const
-            case preg_match('#%([\w\._]+)%::([\w\._]+)#', $val, $match):
+            case preg_match(static::STATIC_METHOD_REGEX, $val, $match):
                 // with class as param
                 $class = $this->container->getParameter($match[1]);
                 // fall-through
-            case preg_match('#([^\'"%:\s]+)::([\w\._]+)#', $val, $match):
+            case preg_match(static::STATIC_METHOD_CLEAN_REGEX, $val, $match):
                 // with class real name
                 $class = isset($class) ? $class : $match[1];
 
@@ -106,20 +112,12 @@ class SystemAwareResolver implements ContainerAwareInterface
                     }
                 }
                 break;
-            // service method call @service->method
-            case preg_match('#@([\w\._]+)->([\w\._]+)#', $val, $match):
-                $service = $match[1];
-                $method  = $match[2];
-                $val     = $this->container
-                    ->get($service)
-                    ->$method(
-                        $datagridName,
-                        $key,
-                        $this->parentNode
-                    );
+            // service method call @service->method, @service->method(argument), @service->method(@other.service->method)
+            case preg_match(static::SERVICE_METHOD, $val, $match):
+                $val = $this->executeMethod($val, [$datagridName, $key, $this->parentNode]);
                 break;
             // service pass @service
-            case preg_match('#@([\w\._]+)#', $val, $match):
+            case preg_match(static::SERVICE, $val, $match):
                 $service = $match[1];
                 $val = $this->container->get($service);
                 break;
@@ -140,5 +138,36 @@ class SystemAwareResolver implements ContainerAwareInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+    }
+
+    /**
+     * @param string $expression
+     * @param array  $optionsArguments
+     *
+     * @return mixed
+     */
+    protected function executeMethod($expression, array $optionsArguments = [])
+    {
+        preg_match(static::SERVICE_METHOD, $expression, $matches);
+        $service   = $matches[1];
+        $method    = $matches[2];
+        $arguments = [];
+
+        if (isset($matches[4]) && !empty($matches[4])) {
+            $arguments = explode(',', $matches[4]);
+
+            $newArguments = [];
+            foreach ($arguments as $argument) {
+                if (0 === strpos(trim($argument), '@')) {
+                    $newArguments[] = $this->executeMethod($argument);
+                } else {
+                    $newArguments[] = $argument;
+                }
+            }
+
+            $arguments = array_merge($newArguments, $optionsArguments);
+        }
+
+        return call_user_func_array([$this->container->get($service), $method], $arguments);
     }
 }

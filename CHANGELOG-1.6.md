@@ -211,3 +211,32 @@
 - Remove `Pim\Bundle\InstallerBundle\DataFixtures\*`
 - Remove `Pim\Bundle\InstallerBundle\FixtureLoader\*`
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter`, add `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`
+- Remove `Pim\Bundle\CatalogBundle\Manager\CategoryManager`
+- Remove `Pim\Bundle\CatalogBundle\Manager\GroupManager`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\GroupController`
+    replace `Pim\Bundle\CatalogBundle\Manager\GroupManager` by `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\VariantGroupController`
+    replace `Pim\Bundle\CatalogBundle\Manager\GroupManager` by `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface`
+    add `Pim\Bundle\UserBundle\Context\UserContext`
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType`
+    replace `Pim\Bundle\CatalogBundle\Manager\CategoryManager` by `Pim\Component\Catalog\Repository\CategoryRepositoryInterface`
+    remove the parameter `$categoryClass`
+    remove method `getTrees()`
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType`
+    replace `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`
+    remove `Pim\Bundle\UserBundle\Context\UserContext`
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\ChannelType`
+    replace `Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface` by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\ProductEditType`
+    replace `Pim\Component\Catalog\Repository\FamilyRepositoryInterface` by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`
+- Change constructor of `Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber`
+    replace `Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface` by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` remove `Pim\Bundle\CatalogBundle\Manager\GroupManager`
+- Remove interface `Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface` (replace by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`)
+- Remove class `Pim\Bundle\CatalogBundle\Manager\CategoryManager`
+- Remove class `Pim\Bundle\CatalogBundle\Manager\GroupManager`
+- Remove method `findAllAxis` from `Pim\Component\Catalog\RepositoryAttributeGroupRepositoryInterface`
+- Remove method `getChoices` from `Pim\Component\Catalog\GroupRepositoryInterface`
+- Remove method `getAvailableAttributesAsLabelChoice` from `Pim\Component\Catalog\AttributeRepositoryInterface`
+- Rename method `findAllAxis`in `findAvailableAxes` from `Pim\Component\Catalog\AttributeRepositoryInterface`
+- Rename method `findAllAxisQB` in `findAllAxesQB` from `Pim\Component\Catalog\AttributeRepositoryInterface`

@@ -1,0 +1,73 @@
+<?php
+
+namespace spec\Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
+
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Prophecy\Argument;
+
+class AttributeRepositorySpec extends ObjectBehavior
+{
+    function let(UserContext $userContext, EntityManager $em, ClassMetadata $classMetadata)
+    {
+        $classMetadata->name = 'attribute';
+
+        $userContext->getCurrentLocaleCode()->willReturn('en_US');
+        $em->getClassMetadata('groupClass')->willReturn($classMetadata);
+
+        $this->beConstructedWith($userContext, $em, 'groupClass');
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository');
+    }
+
+    function it_provides_translated_data()
+    {
+        $this->shouldImplement('Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface');
+    }
+
+    function it_is_a_doctrine_repository()
+    {
+        $this->shouldHaveType('Doctrine\ORM\EntityRepository');
+    }
+
+    function it_finds_attributes_to_build_select($em, QueryBuilder $queryBuilder, AbstractQuery $query, Expr $expr)
+    {
+        $queryBuilder->expr()->willReturn($expr);
+        $expr->notIn('a.id', [10])->willReturn($expr);
+
+        $em->createQueryBuilder()->willReturn($queryBuilder);
+        $queryBuilder->select('a')->willReturn($queryBuilder);
+        $queryBuilder->select('a.id')->willReturn($queryBuilder);
+        $queryBuilder->addSelect('COALESCE(at.label, CONCAT(\'[\', a.code, \']\')) as attribute_label')->willReturn($queryBuilder);
+        $queryBuilder->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\')) as group_label')->willReturn($queryBuilder);
+        $queryBuilder->from('attribute', 'a')->willReturn($queryBuilder);
+        $queryBuilder->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :locale_code')->willReturn($queryBuilder);
+        $queryBuilder->leftJoin('a.group', 'g')->willReturn($queryBuilder);
+        $queryBuilder->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :locale_code')->willReturn($queryBuilder);
+        $queryBuilder->andWhere($expr)->willReturn($queryBuilder);
+        $queryBuilder->orderBy('g.sortOrder, a.sortOrder')->willReturn($queryBuilder);
+        $queryBuilder->setParameter('locale_code', 'en_US')->willReturn($queryBuilder);
+        $queryBuilder->getQuery()->willReturn($query);
+        $query->getArrayResult()->willReturn([
+            ['id' => 10, 'group_label' => 'group fr', 'attribute_label' => 'attribute fr'],
+            ['id' => 11, 'group_label' => '[group_other_code]', 'attribute_label' => '[group_attribute_code]'],
+        ]);
+
+        $this->findTranslatedLabels([
+            'locale_code' => 'en_US',
+            'excluded_attribute_ids' => [10],
+        ])->shouldReturn([
+            'group fr' => [10 => 'attribute fr'],
+            '[group_other_code]' => [11 => '[group_attribute_code]'],
+        ]);
+    }
+
+}
