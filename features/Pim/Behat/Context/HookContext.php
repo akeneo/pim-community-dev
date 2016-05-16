@@ -10,6 +10,11 @@ use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Context\FeatureContext;
 use Context\SelectiveORMPurger;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Pim\Bundle\InstallerBundle\CommandExecutor;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Parser;
 
@@ -51,27 +56,39 @@ class HookContext extends PimContext
      */
     public function purgeDatabase()
     {
-        $excludedTablesFile = __DIR__ . '/' . $this->excludedTablesFile;
-        if (file_exists($excludedTablesFile)) {
-            $parser         = new Parser();
-            $excludedTables = $parser->parse(file_get_contents($excludedTablesFile));
-            $excludedTables = $excludedTables['excluded_tables'];
-        } else {
-            $excludedTables = [];
-        }
+//        $excludedTablesFile = __DIR__ . '/' . $this->excludedTablesFile;
+//        if (file_exists($excludedTablesFile)) {
+//            $parser         = new Parser();
+//            $excludedTables = $parser->parse(file_get_contents($excludedTablesFile));
+//            $excludedTables = $excludedTables['excluded_tables'];
+//        } else {
+//            $excludedTables = [];
+//        }
 
         if ('doctrine/mongodb-odm' === $this->getParameter('pim_catalog_product_storage_driver')) {
             $purgers[]        = new MongoDBPurger($this->getService('doctrine_mongodb')->getManager());
-            $excludedTables[] = 'pim_catalog_product';
-            $excludedTables[] = 'pim_catalog_product_value';
-            $excludedTables[] = 'pim_catalog_media';
+//            $excludedTables[] = 'pim_catalog_product';
+//            $excludedTables[] = 'pim_catalog_product_value';
+//            $excludedTables[] = 'pim_catalog_media';
         }
 
-        $purgers[] = new SelectiveORMPurger($this->getService('doctrine')->getManager(), $excludedTables);
+        $purgers[] = new ORMPurger($this->getService('doctrine')->getManager());
 
         foreach ($purgers as $purger) {
             $purger->purge();
         }
+
+        $commandExecutor = new CommandExecutor(
+            new ArrayInput([]),
+            new NullOutput(),
+            new Application($this->kernel)
+        );
+
+        $commandExecutor->runCommand('doctrine:fixtures:load', [
+            '--no-interaction' => true,
+            '--append'         => true,
+            '--fixtures'       => [$this->kernel->getBundle('PimInstallerBundle')->getPath() . '/DataFixtures/ORM/Base']
+        ]);
     }
 
     /**
