@@ -37,7 +37,7 @@ class Select2Decorator extends ElementDecorator
 
         foreach ($values as $value) {
             $value = trim($value);
-            
+
             $this->getSession()->executeScript(
                 sprintf(
                     '$(\'#%s input[type="text"]\').val(\'%s\').trigger(\'input\');',
