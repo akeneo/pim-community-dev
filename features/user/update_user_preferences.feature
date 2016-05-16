@@ -11,8 +11,8 @@ Feature: Update user preferences
   Scenario: Successfully delete a tree used by a user
     Given I edit the "Julia" user
     And I visit the "Additional" tab
-    Then I should see "Default tree"
-    And I should see "2013 collection"
+    Then I should see the text "Default tree"
+    And I should see the text "2013 collection"
     When I edit the "tablet" channel
     And I change the "Category tree" to "2014 collection"
     And I save the channel
@@ -22,23 +22,19 @@ Feature: Update user preferences
     And I confirm the deletion
     And I edit the "Julia" user
     And I visit the "Additional" tab
-    Then I should see "Default tree"
-    And I should see "2014 collection"
-    And I should not see "2013 collection"
+    Then I should see the text "Default tree 2014 collection"
 
   Scenario: Successfully delete a channel used by a user
     Given I edit the "Peter" user
     And I visit the "Additional" tab
-    Then I should see "Catalog scope"
-    And I should see "Print"
+    Then I should see the text "Catalog scope"
+    And I should see the text "Print"
     When I edit the "Print" channel
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "Peter" user
     And I visit the "Additional" tab
-    Then I should see "Catalog scope"
-    And I should see "Ecommerce"
-    And I should not see "Print"
+    Then I should see the text "Catalog scope Ecommerce"
 
   Scenario: Successfully disable a locale used by a user
     Given I edit the "Julia" user
@@ -47,13 +43,11 @@ Feature: Update user preferences
     And I save the user
     And I should see the flash message "User saved"
     When I visit the "Additional Information" tab
-    Then I should see "Catalog locale"
-    And I should see "fr_FR"
+    Then I should see the text "Catalog locale"
+    And I should see the text "fr_FR"
     When I edit the "ecommerce" channel
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "Julia" user
     And I visit the "Additional" tab
-    Then I should see "Catalog locale"
-    And I should see "de_DE"
-    And I should not see "fr_FR"
+    Then I should see the text "Catalog locale de_DE"
