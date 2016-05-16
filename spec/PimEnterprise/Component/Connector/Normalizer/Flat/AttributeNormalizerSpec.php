@@ -46,6 +46,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getMaxFileSize()->willReturn(null);
         $attribute->getMinimumInputLength()->willReturn(null);
         $attribute->isReadOnly()->willReturn(false);
+        $attribute->getSortOrder()->willReturn(0);
     }
 
     function it_is_initializable()
@@ -91,6 +92,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'date_max'               => '',
                 'max_file_size'          => '',
                 'minimum_input_length'   => '',
+                'sort_order'             => 0,
                 'localizable'            => 1,
                 'scopable'               => 0,
                 'is_read_only'           => 0,
@@ -127,6 +129,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getDateMin()->willReturn(null);
         $attribute->getDateMax()->willReturn(null);
         $attribute->getMaxFileSize()->willReturn(0);
+        $attribute->getSortOrder()->willReturn(1);
         $this->normalize($attribute, null, ['versioning' => true])->shouldReturn(
             [
                 'type'                   => 'Yes/No',
@@ -151,10 +154,10 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'date_max'               => '',
                 'max_file_size'          => '0',
                 'minimum_input_length'   => '',
+                'sort_order'             => 1,
                 'localizable'            => true,
                 'scope'                  => 'Channel',
                 'options'                => 'Code:size,en_US:big,fr_FR:grand',
-                'sort_order'             => 1,
                 'required'               => 0,
                 'is_read_only'           => 0,
             ]
