@@ -52,11 +52,11 @@ Feature: Filter products by date field
     And I show the filter "release"
     When I filter by "release" with operator "between" and value "05/01/2014 and 05/03/2014"
     Then the filter "release" should be set to operator "between" and value "05/01/2014 and 05/03/2014"
-    And the filter "created_at" should be reset
+    And I filter by "created" with operator "" and value ""
     When I click on the "book" row
     And I click back to grid
     Then the filter "release" should be set to operator "between" and value "05/01/2014 and 05/03/2014"
-    And the filter "created_at" should be reset
+    And I filter by "created" with operator "" and value ""
     When I refresh current page
     Then the filter "release" should be set to operator "between" and value "05/01/2014 and 05/03/2014"
-    And the filter "created_at" should be reset
+    And I filter by "created" with operator "" and value ""

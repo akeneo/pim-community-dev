@@ -120,9 +120,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $filterName
      * @param string $value
      *
-     * @Then /^the filter "([^"]*)" should be set to "([^"]*)"$/
+     * @Then /^the filter "([^"]*)" should be set to operator "([^"]*)" and value "([^"]*)"$/
      */
-    public function theFilterShouldBeSetTo($filterName, $value)
+    public function theFilterShouldBeSetTo($filterName, $operator, $value)
     {
         // TODO 417: rework
         $filter = $this->datagrid->getFilter($filterName);

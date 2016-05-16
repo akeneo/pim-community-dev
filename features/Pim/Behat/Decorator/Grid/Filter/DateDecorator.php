@@ -22,13 +22,15 @@ class DateDecorator extends ElementDecorator
 
         if (false !== strstr($value, 'and')) {
             $dates = explode(' and ', $value);
-        } else {
+        } elseif ('' !== $value) {
             $dates = [$value];
+        } else {
+            $dates = [];
         }
 
         // Depending on the operator, we won't fill the same inputs
         $inputStart = $this->find('css', 'input[name="start"]');
-        $inputEnd = $this->find('css', 'input[name="end"]');
+        $inputEnd   = $this->find('css', 'input[name="end"]');
 
         switch ($operator) {
             case 'between':
@@ -42,6 +44,9 @@ class DateDecorator extends ElementDecorator
             case 'less than':
                 $inputEnd->setValue($dates[0]);
                 break;
+            default:
+                $inputStart->setValue('');
+                $inputEnd->setValue('');
         }
 
         // We submit the filter
