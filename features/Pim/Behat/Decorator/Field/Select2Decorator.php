@@ -11,6 +11,7 @@ class Select2Decorator extends ElementDecorator
 
     public function setValue($value)
     {
+        $this->open();
         $values = explode(', ', $value);
 
         // TODO: handle choices deletion, see vendor/akeneo/pim-community-dev/features/Context/Page/Base/Form.php:709

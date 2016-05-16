@@ -25,8 +25,6 @@ class Select2ChoiceDecorator extends ElementDecorator
         $field->close();
 
         if ('is empty' !== $operator) {
-            // We close then reopen the widget to be sure we are always in the same state
-            $field->open();
             $field->setValue($value);
         }
 

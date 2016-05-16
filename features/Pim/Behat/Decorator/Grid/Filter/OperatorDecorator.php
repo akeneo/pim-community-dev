@@ -23,7 +23,8 @@ class OperatorDecorator extends ElementDecorator
             foreach ($operatorChoices as $choice) {
                 if ($value === $choice->getText()) {
                     $choice->click();
-                    return true;
+
+                    return $this->getText() === $value;
                 }
             }
 
