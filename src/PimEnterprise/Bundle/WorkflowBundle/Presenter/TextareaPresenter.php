@@ -11,19 +11,21 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+
 /**
- * Present data without pre-transformation
+ * Present textarea data
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class DefaultPresenter extends AbstractProductValuePresenter
+class TextareaPresenter extends AbstractProductValuePresenter
 {
     /**
      * {@inheritdoc}
      */
     public function supportsChange($attributeType)
     {
-        return true;
+        return AttributeTypes::TEXTAREA === $attributeType;
     }
 
     /**
@@ -31,7 +33,7 @@ class DefaultPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeData($data)
     {
-        return $data;
+        return $this->explodeText($data);
     }
 
     /**
@@ -39,6 +41,20 @@ class DefaultPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        return $change['data'];
+        return $this->explodeText($change['data']);
+    }
+
+    /**
+     * Explode text into separated paragraphs
+     *
+     * @param string $text
+     *
+     * @return array
+     */
+    protected function explodeText($text)
+    {
+        preg_match_all('/<p>(.*?)<\/p>/', $text, $matches);
+
+        return !empty($matches[0]) ? $matches[0] : [$text];
     }
 }

@@ -5,7 +5,8 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
-use Pim\Component\Catalog\Model\MetricInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\Metric;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use Prophecy\Argument;
@@ -41,9 +42,12 @@ class MetricPresenterSpec extends ObjectBehavior
         $localeResolver,
         RendererInterface $renderer,
         ProductValueInterface $value,
-        MetricInterface $metric
+        AttributeInterface $attribute,
+        Metric $metric
     ) {
         $value->getData()->willReturn($metric);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->willReturn('size');
         $metric->getData()->willReturn(50.123);
         $metric->getUnit()->willReturn('KILOGRAM');
         $localeResolver->getCurrentLocale()->willReturn('en_US');
@@ -69,9 +73,12 @@ class MetricPresenterSpec extends ObjectBehavior
         $metricPresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ProductValueInterface $value
+        ProductValueInterface $value,
+        AttributeInterface $attribute
     ) {
         $value->getData()->willReturn(null);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->willReturn('size');
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $metricPresenter->present(null, ['locale' => 'en_US'])->willReturn(null);
         $metricPresenter
@@ -91,8 +98,12 @@ class MetricPresenterSpec extends ObjectBehavior
         $metricPresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ProductValueInterface $value
+        ProductValueInterface $value,
+        AttributeInterface $attribute
     ) {
+        $value->getData()->willReturn(null);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->willReturn('size');
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
         $renderer->renderDiff('', '150,123456 trans_kilogram')->willReturn("150,123456 trans_kilogram");
         $metricPresenter

@@ -17,9 +17,8 @@ class ProposalWidgetDecorator extends ElementDecorator
      * @param string $user
      * @param string $product
      *
-     * @throws TimeoutException
+     * @throws \Context\Spin\TimeoutException
      * @throws \Exception
-     *
      * @return mixed
      */
     public function followProposalLink($user, $product)

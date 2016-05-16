@@ -1,4 +1,10 @@
-# 1.5.x
+# 1.5.3 (2016-05-13)
+
+## Bug fixes
+
+- PIM-5762: Fix category permission issues on datagrids
+
+# 1.5.2 (2016-04-25)
 
 ## Bug fixes
 

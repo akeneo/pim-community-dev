@@ -8,3 +8,11 @@ pimee_catalog_rule:
         actions: Действие
         impacted_product_count:
           no_yet_calculated: не подсчитана
+  attribute:
+    tab:
+      rule.title: Правила
+    grid:
+      is_smart.label: Smart
+  product:
+    tooltip:
+      loading.title: Загрузка...

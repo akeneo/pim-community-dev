@@ -112,8 +112,15 @@ pimee_product_asset:
       new_generation: Hemos generado un nuevo código por usted.
   jobs:
     assets_mass_upload.title: Carga masiva de recursos
-    yml_asset_channel_configuration_import.title: Importar configuraciones de recursos por canal en Yaml
+    csv_asset_import.title: Importar recursos en CSV
+    csv_asset_export.title: Exportar recursos en CSV
+    csv_asset_variation_export.title: Exportar las variaciones de recursos en CSV
+    csv_tag_import.title: Importar etiquetas en CSV
+    csv_asset_category_import.title: Importar categorías de recursos en CSV
+    csv_asset_configuration_import.title: Importar configuración de recursos por canal en CSV
     yml_asset_configuration_export.title: Exportar configuraciones de recursos por canal en YAML
+    csv_asset_category_export.title: Exportar categoría de recursos en CSV
+    yml_asset_channel_configuration_import.title: Importar configuración de recursos por canal en CSV
   steps:
     channel_configuration.processor.title: Configuración de procesos de canal
   notAvailable:

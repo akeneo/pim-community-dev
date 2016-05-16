@@ -16,7 +16,7 @@ use Pim\Component\Catalog\AttributeTypes;
 /**
  * Present text data
  *
- * @author Gildas Quemener <gildas@akeneo.com>
+ * @author Julien Sanchez <julien@akeneo.com>
  */
 class TextPresenter extends AbstractProductValuePresenter
 {
@@ -25,7 +25,7 @@ class TextPresenter extends AbstractProductValuePresenter
      */
     public function supportsChange($attributeType)
     {
-        return AttributeTypes::TEXTAREA === $attributeType;
+        return AttributeTypes::TEXT === $attributeType;
     }
 
     /**
@@ -33,7 +33,7 @@ class TextPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeData($data)
     {
-        return $this->explodeText($data);
+        return $data;
     }
 
     /**
@@ -41,20 +41,6 @@ class TextPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        return $this->explodeText($change['data']);
-    }
-
-    /**
-     * Explode text into separated paragraphs
-     *
-     * @param string $text
-     *
-     * @return array
-     */
-    protected function explodeText($text)
-    {
-        preg_match_all('/<p>(.*?)<\/p>/', $text, $matches);
-
-        return !empty($matches[0]) ? $matches[0] : [$text];
+        return $change['data'];
     }
 }

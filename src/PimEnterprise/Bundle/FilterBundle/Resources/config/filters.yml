@@ -2,8 +2,10 @@ parameters:
     pimee_filter.product_draft_attribute_choice_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\AttributeChoiceFilter
     pimee_filter.product_draft_choice_filter.class:           PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\ChoiceFilter
     pimee_filter.product_draft_date_filter.class:             Pim\Bundle\FilterBundle\Filter\ProductValue\DateRangeFilter
-    pim_filter.product_category_filter.class:                 PimEnterprise\Bundle\FilterBundle\Filter\CategoryFilter
     pimee_filter.product_permission_filter.class:             PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter
+
+    # deprecated: will be removed in 1.6, use pim_filter.category_filter.class instead
+    pim_filter.product_category_filter.class:                 PimEnterprise\Bundle\FilterBundle\Filter\CategoryFilter
 
 services:
     pimee_filter.product_draft_choice_filter:
@@ -39,26 +41,7 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_permission }
 
-    pim_filter.product_category_filter:
-        class: %pim_filter.product_category_filter.class%
-        arguments:
-            - '@form.factory'
-            - '@pim_filter.product_utility'
-            - '@pim_catalog.repository.category'
-            - '@security.authorization_checker'
-            - '@pimee_security.repository.category_access'
-            - '@security.token_storage'
-        tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: product_category }
-
     pimee_filter.published_product_category_filter:
-        class: %pim_filter.product_category_filter.class%
-        arguments:
-            - '@form.factory'
-            - '@pim_filter.product_utility'
-            - '@pim_catalog.repository.category'
-            - '@security.authorization_checker'
-            - '@pimee_security.repository.category_access'
-            - '@security.token_storage'
+        parent: pim_filter.product_category_filter
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: published_product_category }

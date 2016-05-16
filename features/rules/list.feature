@@ -55,6 +55,9 @@ Feature: List all rules
             operator: IN
             value:
               - tees
+          - field:    enabled
+            operator: =
+            value:    false
         actions:
           - type:   set
             field:  description
@@ -94,6 +97,9 @@ Feature: List all rules
             to_field:    name
             from_locale: en_US
             to_locale:   de_DE
+          - type:        set
+            field:       enabled
+            value:       true
       """
     And I am logged in as "Julia"
     And I am on the rules page
@@ -116,6 +122,7 @@ Feature: List all rules
     And the row "update_tees_collection" should contain the texts:
       | column    | value                                                               |
       | Condition | If categories.code in tees                                          |
+      | Condition | If enabled equals false                                             |
       | Action    | Then une belle description is set into description [ fr \| mobile ] |
       | Action    | Then 800 is set into number_in_stock [ tablet ]                     |
       | Action    | Then 05/26/2015 is set into release_date [ mobile ]                 |
@@ -124,6 +131,7 @@ Feature: List all rules
       | Action    | Then 10 Centimeter is set into length                               |
       | Action    | Then name [ en ] is copied into name [ fr ]                         |
       | Action    | Then name [ en ] is copied into name [ de ]                         |
+      | Action    | Then true is set into enabled                                       |
 
     And I should be able to use the following filters:
       | filter | value       | result           |
