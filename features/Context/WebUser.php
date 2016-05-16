@@ -653,8 +653,10 @@ class WebUser extends RawMinkContext
      */
     public function theFieldShouldContain($label, $expected)
     {
-        $this->wait();
-        $field = $this->getCurrentPage()->findField($label);
+        $page  = $this->getCurrentPage();
+        $field = $this->spin(function () use ($page, $label) {
+            return $page->findField($label);
+        }, sprintf('Field "%s" not found.', $label));
 
         if ($field->hasClass('select2-focusser')) {
             for ($i = 0; $i < 2; ++$i) {
@@ -1354,7 +1356,10 @@ class WebUser extends RawMinkContext
     public function iCreateTheFollowingAttributeOptions(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->getCurrentPage()->addOption($data['Code']);
+            $code = $data['Code'];
+            unset($data['Code']);
+
+            $this->getCurrentPage()->addOption($code, $data);
             $this->wait();
         }
     }

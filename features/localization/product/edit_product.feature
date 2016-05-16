@@ -65,9 +65,7 @@ Feature: Edit a product with localized attributes
     And I fill in the following information:
       | Langage de l'interface | anglais (Royaume-Uni) |
     And I save the user
-    And I follow "Enrich"
-    And I follow "Products"
-    And I click on the "foo" row
+    And I am on the "foo" product page
     Then the field Date should contain "28/05/2015"
 
   Scenario: Successfully show datetimepicker in my UI locale

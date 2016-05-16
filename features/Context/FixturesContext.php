@@ -376,38 +376,6 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
-     * @Then /^there should be the following attributes:$/
-     */
-    public function thereShouldBeTheFollowingAttributes(TableNode $table)
-    {
-        foreach ($table->getHash() as $data) {
-            $attribute = $this->getAttribute($data['code']);
-            assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
-            assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
-            assertEquals(($data['localizable'] == 1), $attribute->isLocalizable());
-            assertEquals(($data['scopable'] == 1), $attribute->isScopable());
-            assertEquals($data['group'], $attribute->getGroup()->getCode());
-            assertEquals(($data['useable_as_grid_filter'] == 1), $attribute->isUseableAsGridFilter());
-            assertEquals(($data['unique'] == 1), $attribute->isUnique());
-            if ($data['allowed_extensions'] != '') {
-                assertEquals(explode(',', $data['allowed_extensions']), $attribute->getAllowedExtensions());
-            }
-            assertEquals($data['metric_family'], $attribute->getMetricFamily());
-            assertEquals($data['default_metric_unit'], $attribute->getDefaultMetricUnit());
-
-            if (isset($data['reference_data_name'])) {
-                if ('' === $data['reference_data_name']) {
-                    assertNull($attribute->getReferenceDataName());
-                } else {
-                    assertEquals($data['reference_data_name'], $attribute->getReferenceDataName());
-                }
-            }
-        }
-    }
-
-    /**
-     * @param TableNode $table
-     *
      * @Then /^there should be the following families:$/
      */
     public function thereShouldBeTheFollowingFamilies(TableNode $table)
@@ -1568,7 +1536,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @return string
      */
-    protected function getAttributeType($type)
+    public function getAttributeType($type)
     {
         if (!isset($this->attributeTypes[$type])) {
             throw new \InvalidArgumentException(

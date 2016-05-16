@@ -16,9 +16,10 @@ define(
         'routing',
         'pim/attribute-option/create',
         'pim/security-context',
-        'pim/initselect2'
+        'pim/initselect2',
+        'pim/user-context'
     ],
-    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext, initSelect2) {
+    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext, initSelect2, UserContext) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             choicePromise: null,
@@ -74,7 +75,12 @@ define(
                             url: choiceUrl,
                             cache: true,
                             data: function (term) {
-                                return {search: term};
+                                return {
+                                    search: term,
+                                    options: {
+                                        locale: UserContext.get('catalogLocale')
+                                    }
+                                };
                             },
                             results: function (data) {
                                 return data;

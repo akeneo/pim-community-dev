@@ -1,7 +1,7 @@
 pim_base_connector:
   jobs:
     csv_product_export:
-      title: Exportar productos a CSV
+      title: Exportar producto en CSV
       export.title: Exportar productos
     csv_category_export:
       title: Exportar categorías a CSV

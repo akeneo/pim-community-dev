@@ -76,21 +76,21 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
             case 'number_min':
             case 'number_max':
             case 'max_file_size':
-                $convertedItem[$field] = '' === $data ? null : (float) $data;
+                $convertedItem[$field] = ('' === $data) ? null : (float) $data;
                 break;
             case 'sort_order':
             case 'max_characters':
-                $convertedItem[$field] = (int) $data;
+                $convertedItem[$field] = ('' === $data) ? null : (int) $data;
                 break;
             case 'options':
             case 'available_locales':
-                $convertedItem[$field] = '' === $data ? [] : explode(',', $data);
+                $convertedItem[$field] = ('' === $data) ? [] : explode(',', $data);
                 break;
             case in_array($field, $booleanFields):
                 $convertedItem[$field] = (bool) $data;
                 break;
             case 'reference_data_name':
-                $convertedItem[$field] = '' === $data ? null : $data;
+                $convertedItem[$field] = ('' === $data) ? null : $data;
                 break;
             default:
                 $convertedItem[$field] = (string) $data;

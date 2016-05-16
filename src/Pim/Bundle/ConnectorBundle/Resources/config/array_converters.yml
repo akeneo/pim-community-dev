@@ -213,7 +213,7 @@ services:
         arguments:
             - ['pim_catalog_date', 'pim_catalog_boolean', 'pim_catalog_number']
         tags:
-            - { name: 'pim_connector.array_converter.flat.product.value_converter' }
+            - { name: 'pim_connector.array_converter.flat.product.value_converter', priority: 150 }
 
     pim_connector.array_converter.flat.product.value_converter.media:
         class: %pim_connector.array_converter.flat.product.value_converter.media.class%
@@ -250,7 +250,7 @@ services:
 
     # columns mergers
     pim_connector.array_converter.flat.product.columns_merger:
-        class: %pim_connector.array_converter.flat.product.columns_merger.class%
+        class: '%pim_connector.array_converter.flat.product.columns_merger.class%'
         arguments:
             - '@pim_connector.array_converter.flat.product.attribute_column_info_extractor'
 

@@ -8,7 +8,6 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface as MongoProductRepositoryInterface;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -22,6 +21,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AssociationRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 /**
@@ -48,6 +48,12 @@ class ProductRepository extends DocumentRepository implements
 
     /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
+
+    /** @var FamilyRepositoryInterface */
+    protected $familyRepository;
+
+    /** @var FamilyRepositoryInterface */
+    protected $groupRepository;
 
     /**
      * Set the EntityManager
@@ -85,6 +91,34 @@ class ProductRepository extends DocumentRepository implements
     public function setCategoryRepository(CategoryRepositoryInterface $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
+
+        return $this;
+    }
+
+    /**
+     * Set family repository
+     *
+     * @param FamilyRepositoryInterface $familyRepository
+     *
+     * @return ProductRepositoryInterface
+     */
+    public function setFamilyRepository(FamilyRepositoryInterface $familyRepository)
+    {
+        $this->familyRepository = $familyRepository;
+
+        return $this;
+    }
+
+    /**
+     * Sets group repository
+     *
+     * @param GroupRepositoryInterface $groupRepository
+     *
+     * @return ProductRepositoryInterface
+     */
+    public function setGroupRepository(GroupRepositoryInterface $groupRepository)
+    {
+        $this->groupRepository = $groupRepository;
 
         return $this;
     }
@@ -585,20 +619,6 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * Set family repository
-     *
-     * @param FamilyRepositoryInterface $familyRepository
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setFamilyRepository(FamilyRepositoryInterface $familyRepository)
-    {
-        $this->familyRepository = $familyRepository;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      *
      * TODO: find a way to do it efficiently
@@ -746,6 +766,49 @@ class ProductRepository extends DocumentRepository implements
         }
 
         return $products;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAttributeInFamily($productId, $attributeCode)
+    {
+        $product = $this->getProductAsArray($productId);
+
+        if (!isset($product['family'])) {
+            return false;
+        }
+
+        return $this->familyRepository->hasAttribute($product['family'], $attributeCode);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAttributeInVariantGroup($productId, $attributeCode)
+    {
+        $product = $this->getProductAsArray($productId);
+
+        if (!isset($product['groupIds'])) {
+            return false;
+        }
+
+        return $this->groupRepository->hasAttribute($product['groupIds'], $attributeCode);
+    }
+
+    /**
+     * @param mixed $productId
+     *
+     * @return array
+     */
+    protected function getProductAsArray($productId)
+    {
+        $query = $this->createQueryBuilder()
+            ->field('_id')->equals($productId)
+            ->hydrate(false)
+            ->getQuery();
+
+        return $query->getSingleResult();
     }
 
     /**

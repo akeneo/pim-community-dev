@@ -1,3 +1,29 @@
+# 1.4.24 (2016-05-10)
+
+## Improvements
+- PIM-5753: Add a `priority` tag parameter for `ValueConverterRegistry` to allow ordering of array converters.
+
+## BC Breaks
+- ValueConverterRegistryInterface: added parameter `$priority` in `register` method to allow priority queue
+
+# 1.4.23 (2016-04-14)
+
+## Scalability improvements
+- PIM-5507 : Memory leak during mass edit attributes, mass publish
+
+## BC Breaks
+- Changed constructor `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor`
+- Added method `hasAttribute` to `Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface`
+- Added method `hasAttribute` to `Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface`
+- Added method `hasAttributeInFamily` to `Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface`
+- Added method `hasAttributeInVariantGroup` to `Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface`
+
+## Bug fixes
+
+- PIM-5725: Fix reference data name of the attribute in case this attribute is not a reference data
+- PIM-5699: Fix 'is equal to' operator in export / import history grid filter
+- PIM-5650: Fix events binding on PEF grid refresh.
+
 # 1.4.22 (2016-03-23)
 
 ## Improvements

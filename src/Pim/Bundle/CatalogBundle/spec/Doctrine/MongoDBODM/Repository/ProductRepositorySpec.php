@@ -2,15 +2,20 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\MongoDB\Collection;
 use Doctrine\MongoDB\Cursor;
 use Doctrine\MongoDB\CursorInterface;
 use Doctrine\MongoDB\Query\Query;
+use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
-use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Prophecy\Argument;
 
 /**
  * @require Doctrine\MongoDB\Collection
@@ -64,5 +69,115 @@ class ProductRepositorySpec extends ObjectBehavior
         $cursor->count()->shouldBeCalled();
 
         $this->countAll();
+    }
+
+    function it_has_attribute_repository(AttributeRepositoryInterface $attributeRepository)
+    {
+        $this->setAttributeRepository($attributeRepository)->shouldReturn($this);
+    }
+
+    function it_has_category_repository(CategoryRepositoryInterface $categoryRepository)
+    {
+        $this->setCategoryRepository($categoryRepository)->shouldReturn($this);
+    }
+
+    function it_has_family_repository(FamilyRepositoryInterface $familyRepository)
+    {
+        $this->setFamilyRepository($familyRepository)->shouldReturn($this);
+    }
+
+    function it_has_group_repository(GroupRepositoryInterface $groupRepository)
+    {
+        $this->setGroupRepository($groupRepository)->shouldReturn($this);
+    }
+
+    function it_checks_if_the_product_has_an_attribute_in_its_variant_group(
+        GroupRepositoryInterface $groupRepository,
+        DocumentManager $dm,
+        Builder $builder,
+        Query $query
+    ) {
+        $this->setGroupRepository($groupRepository);
+
+        $dm->createQueryBuilder('foobar')->willReturn($builder);
+        $builder->field('_id')->willReturn($builder);
+        $builder->equals(10)->willReturn($builder);
+        $builder->hydrate(false)->willReturn($builder);
+        $builder->getQuery()->willReturn($query);
+
+        $query->getSingleResult()->willReturn([
+            'groupIds' => [10, 11]
+        ]);
+
+        $groupRepository->hasAttribute([10, 11], 'attribute_code')->willReturn(true);
+
+        $this->hasAttributeInVariantGroup(10, 'attribute_code')->shouldReturn(true);
+    }
+
+    function it_checks_if_the_product_has_an_attribute_in_its_variant_group_but_it_doesnt_have_one(
+        GroupRepositoryInterface $groupRepository,
+        DocumentManager $dm,
+        Builder $builder,
+        Query $query
+    ) {
+        $this->setGroupRepository($groupRepository);
+
+        $dm->createQueryBuilder('foobar')->willReturn($builder);
+        $builder->field('_id')->willReturn($builder);
+        $builder->equals(10)->willReturn($builder);
+        $builder->hydrate(false)->willReturn($builder);
+        $builder->getQuery()->willReturn($query);
+
+        $query->getSingleResult()->willReturn([
+            'groupIds' => null
+        ]);
+
+        $groupRepository->hasAttribute([10, 11], 'attribute_code')->willReturn(false);
+
+        $this->hasAttributeInVariantGroup(10, 'attribute_code')->shouldReturn(false);
+    }
+
+    function it_checks_if_the_product_has_an_attribute_in_its_family(
+        FamilyRepositoryInterface $familyRepository,
+        DocumentManager $dm,
+        Builder $builder,
+        Query $query
+    ) {
+        $this->setFamilyRepository($familyRepository);
+
+        $dm->createQueryBuilder('foobar')->willReturn($builder);
+        $builder->field('_id')->willReturn($builder);
+        $builder->equals(10)->willReturn($builder);
+        $builder->hydrate(false)->willReturn($builder);
+        $builder->getQuery()->willReturn($query);
+
+        $query->getSingleResult()->willReturn([
+            'family' => 10
+        ]);
+
+        $familyRepository->hasAttribute(10, 'attribute_code')->willReturn(true);
+
+        $this->hasAttributeInFamily(10, 'attribute_code')->shouldReturn(true);
+    }
+
+    function it_checks_if_the_product_has_an_attribute_in_its_family_but_it_does_not_have_one(
+        FamilyRepositoryInterface $familyRepository,
+        DocumentManager $dm,
+        Builder $builder,
+        Query $query
+    ) {
+        $this->setFamilyRepository($familyRepository);
+
+        $dm->createQueryBuilder('foobar')->willReturn($builder);
+        $builder->field('_id')->willReturn($builder);
+        $builder->equals(10)->willReturn($builder);
+        $builder->hydrate(false)->willReturn($builder);
+        $builder->getQuery()->willReturn($query);
+
+        $query->getSingleResult()->willReturn([]);
+
+        $familyRepository->hasAttribute(Argument::cetera())->shouldNotBeCalled();
+
+        $this->hasAttributeInFamily(10, 'attribute_code')->shouldReturn(false);
     }
 }

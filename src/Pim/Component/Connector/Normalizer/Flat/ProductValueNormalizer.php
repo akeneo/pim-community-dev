@@ -53,8 +53,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
 
     /**
      * {@inheritdoc}
-     *
-     * @param ProductValueInterface $entity
      */
     public function normalize($entity, $format = null, array $context = [])
     {
@@ -71,11 +69,15 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         }
 
         $type = $entity->getAttribute()->getAttributeType();
+        $backendType = $entity->getAttribute()->getBackendType();
 
         if (AttributeTypes::BOOLEAN === $type) {
             $result = [$fieldName => (string) (int) $data];
         } elseif (is_null($data)) {
             $result = [$fieldName => ''];
+            if ('metric' === $backendType) {
+                $result[$fieldName . '-unit'] = '';
+            }
         } elseif (is_int($data)) {
             $result = [$fieldName => (string) $data];
         } elseif (is_float($data) || 'decimal' === $entity->getAttribute()->getBackendType()) {
@@ -86,7 +88,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         } elseif (is_object($data)) {
             // TODO: Find a way to have proper currency-suffixed keys for normalized price data
             // even when an empty collection is passed
-            $backendType = $entity->getAttribute()->getBackendType();
             if ('prices' === $backendType && $data instanceof Collection && $data->isEmpty()) {
                 $result = [];
             } elseif ('options' === $backendType && $data instanceof Collection && $data->isEmpty() === false) {

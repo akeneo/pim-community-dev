@@ -137,24 +137,12 @@ define(
             /**
              * Empty value object
              *
-             * @property {0bject}
+             * @property {Object}
              */
             emptyValue: {
                 unit:  '',
                 type:  '',
                 value: ''
-            },
-
-            /**
-             * Check if all properties of the value have been specified or all are empty (for reseting filter)
-             *
-             * @param value
-             * @return boolean
-             */
-            _isValueValid: function(value) {
-                return (value.unit && value.type && !_.isUndefined(value.value)) ||
-                       (!value.unit && !value.type && _.isUndefined(value.value)) ||
-                       value.type === 'empty';
             },
 
             /**
@@ -201,14 +189,13 @@ define(
              */
             setValue: function(value) {
                 value = this._formatRawValue(value);
-                if (this._isValueValid(value)) {
-                    if (this._isNewValueUpdated(value)) {
-                        var oldValue = this.value;
-                        this.value = app.deepClone(value);
-                        this._updateDOMValue();
-                        this._onValueUpdated(this.value, oldValue);
-                    }
+                if (this._isNewValueUpdated(value)) {
+                    var oldValue = this.value;
+                    this.value = app.deepClone(value);
+                    this._updateDOMValue();
+                    this._onValueUpdated(this.value, oldValue);
                 }
+
                 return this;
             },
 
@@ -223,6 +210,16 @@ define(
                 } else {
                     parentDiv.find('input[name="value"], .btn-group:eq(1)').show();
                 }
+            },
+
+            /**
+             * @inheritDoc
+             */
+            reset: function() {
+                this.setValue(this.emptyValue);
+                this.trigger('update');
+
+                return this;
             }
         });
     }

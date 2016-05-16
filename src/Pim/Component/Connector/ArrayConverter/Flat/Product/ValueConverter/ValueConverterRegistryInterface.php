@@ -15,10 +15,11 @@ interface ValueConverterRegistryInterface
      * Register a converter.
      *
      * @param ValueConverterInterface $converter
+     * @param int                     $priority FIFO order : converter with lower priority is inspected first.
      *
      * @return ValueConverterRegistry
      */
-    public function register(ValueConverterInterface $converter);
+    public function register(ValueConverterInterface $converter, $priority);
 
     /**
      * @param string $attributeType

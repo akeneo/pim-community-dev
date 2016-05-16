@@ -759,7 +759,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $row = $this->spin(function () use ($row) {
             return $this->datagrid->getRow($row);
-        });
+        }, sprintf('Row with "%s", not found.', $row));
 
         $row->click();
     }
