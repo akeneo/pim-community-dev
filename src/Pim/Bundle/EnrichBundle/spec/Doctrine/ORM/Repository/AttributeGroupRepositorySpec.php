@@ -41,7 +41,7 @@ class AttributeGroupRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('g')->willReturn($queryBuilder);
-        $queryBuilder->select('g.id')->willReturn($queryBuilder);
+        $queryBuilder->select('g.code')->willReturn($queryBuilder);
         $queryBuilder->addSelect('COALESCE(t.label, CONCAT(\'[\', g.code, \']\')) as label')->willReturn($queryBuilder);
         $queryBuilder->from('attribute_group', 'g')->willReturn($queryBuilder);
         $queryBuilder->leftJoin('g.translations', 't')->willReturn($queryBuilder);
@@ -50,8 +50,8 @@ class AttributeGroupRepositorySpec extends ObjectBehavior
         $queryBuilder->orderBy('t.label')->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
         $query->getArrayResult()->willReturn([
-            ['id' => 10, 'label' => 'group en'],
-            ['id' => 11, 'label' => '[group_other_code]'],
+            ['code' => 10, 'label' => 'group en'],
+            ['code' => 11, 'label' => '[group_other_code]'],
         ]);
 
         $this->findTranslatedLabels()->shouldReturn([
