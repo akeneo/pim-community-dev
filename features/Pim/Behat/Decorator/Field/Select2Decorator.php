@@ -12,7 +12,7 @@ class Select2Decorator extends ElementDecorator
     public function setValue($value)
     {
         $this->open();
-        $values = explode(', ', $value);
+        $values = explode(',', $value);
 
         // TODO: handle choices deletion, see vendor/akeneo/pim-community-dev/features/Context/Page/Base/Form.php:709
 
@@ -36,6 +36,8 @@ class Select2Decorator extends ElementDecorator
         }
 
         foreach ($values as $value) {
+            $value = trim($value);
+            
             $this->getSession()->executeScript(
                 sprintf(
                     '$(\'#%s input[type="text"]\').val(\'%s\').trigger(\'input\');',
