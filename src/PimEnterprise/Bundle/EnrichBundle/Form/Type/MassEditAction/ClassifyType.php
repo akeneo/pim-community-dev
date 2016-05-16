@@ -2,8 +2,11 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType as BaseClassifyType;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -19,21 +22,32 @@ class ClassifyType extends BaseClassifyType
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
+    /** @var CategoryManager */
+    protected $categoryManager;
+
     /**
-     * @param CategoryManager       $categoryManager
-     * @param TokenStorageInterface $tokenStorage
-     * @param string                $categoryClass
-     * @param string                $dataClass
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param CategoryManager             $categoryManager
+     * @param TokenStorageInterface       $tokenStorage
+     * @param string                      $dataClass
      */
     public function __construct(
+        CategoryRepositoryInterface $categoryRepository,
         CategoryManager $categoryManager,
         TokenStorageInterface $tokenStorage,
-        $categoryClass,
         $dataClass
     ) {
-        parent::__construct($categoryManager, $categoryClass, $dataClass);
+        parent::__construct($categoryRepository, $dataClass);
 
         $this->tokenStorage = $tokenStorage;
-        $this->trees        = $categoryManager->getAccessibleTrees($this->tokenStorage->getToken()->getUser());
+        $this->categoryManager = $categoryManager;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['trees'] = $this->categoryManager->getAccessibleTrees($this->tokenStorage->getToken()->getUser());
     }
 }

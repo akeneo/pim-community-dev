@@ -13,23 +13,6 @@ use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
 class ClassifySpec extends ObjectBehavior
 {
-    function let(
-        CategoryManager $categoryManager,
-        BulkSaverInterface $productSaver,
-        AuthorizationCheckerInterface $authorizationChecker,
-        TokenInterface $token,
-        UserInterface $user,
-        CategoryRepositoryInterface $categoryRepository,
-        TokenStorageInterface $tokenStorage
-    ) {
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
-
-        $categoryManager->getEntityRepository()->willReturn($categoryRepository);
-
-        $this->beConstructedWith($categoryManager, $productSaver, $authorizationChecker);
-    }
-
     function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify');
