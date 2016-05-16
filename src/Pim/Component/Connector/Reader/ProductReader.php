@@ -29,9 +29,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbFactory;
 
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
     /** @var CompletenessManager */
     protected $completenessManager;
 
@@ -52,7 +49,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param ChannelRepositoryInterface          $channelRepository
      * @param CompletenessManager                 $completenessManager
      * @param MetricConverter                     $metricConverter
      * @param ObjectDetacherInterface             $objectDetacher
@@ -60,14 +56,12 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         ObjectDetacherInterface $objectDetacher,
         $generateCompleteness
     ) {
         $this->pqbFactory           = $pqbFactory;
-        $this->channelRepository    = $channelRepository;
         $this->completenessManager  = $completenessManager;
         $this->metricConverter      = $metricConverter;
         $this->objectDetacher       = $objectDetacher;
@@ -79,14 +73,10 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     public function initialize()
     {
-        $channel = $this->getConfiguredChannel();
         $parameters = $this->stepExecution->getJobParameters();
-        $enabled = $parameters->get('enabled');
+        $pqb = $this->pqbFactory->create();
 
-        $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
-        $filters = $this->getFilters($channel, $this->rawToStandardProductStatus($enabled));
-
-        foreach ($filters as $filter) {
+        foreach ($parameters->get('filters') as $filter) {
             $pqb->addFilter(
                 $filter['field'],
                 $filter['operator'],
@@ -95,9 +85,8 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
             );
         }
 
-
         if ($this->generateCompleteness) {
-            $this->completenessManager->generateMissingForChannel($channel);
+            $this->completenessManager->generateMissingForChannel($parameters->get('channel'));
         }
 
         $this->products = $pqb->execute();
@@ -118,7 +107,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
 
         if (null !== $product) {
             $this->objectDetacher->detach($product);
-            $channel = $this->getConfiguredChannel();
+            $channel = $this->stepExecution->getJobParameters()->get('channel');
             $this->metricConverter->convert($product, $channel);
         }
 
@@ -131,82 +120,5 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
-    }
-
-    /**
-     * @throws ObjectNotFoundException
-     *
-     * @return ChannelInterface
-     */
-    protected function getConfiguredChannel()
-    {
-        $parameters = $this->stepExecution->getJobParameters();
-        $channelCode = $parameters->get('channel');
-        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
-        if (null === $channel) {
-            throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $channelCode));
-        }
-
-        return $channel;
-    }
-
-    /**
-     * Return the filters to be applied on the PQB instance.
-     *
-     * @param ChannelInterface $channel
-     * @param bool             $status
-     *
-     * @return array
-     */
-    protected function getFilters(ChannelInterface $channel, $status)
-    {
-        $filters = [
-            [
-                'field'    => 'completeness',
-                'operator' => Operators::EQUALS,
-                'value'    => 100,
-                'context'  => []
-            ],
-            [
-                'field'    => 'categories.id',
-                'operator' => Operators::IN_CHILDREN_LIST,
-                'value'    => [$channel->getCategory()->getId()],
-                'context'  => []
-            ]
-        ];
-
-        if (null !== $status) {
-            $filters[] = [
-                'field'    => 'enabled',
-                'operator' => Operators::EQUALS,
-                'value'    => $status,
-                'context'  => []
-            ];
-        }
-
-        return $filters;
-    }
-
-    /**
-     * Convert the UI product status to the standard product status
-     *
-     * @param string $rawStatus
-     * TODO TIP-303: check if still useful?
-     * @return bool|null
-     */
-    protected function rawToStandardProductStatus($rawStatus)
-    {
-        switch ($rawStatus) {
-            case 'enabled':
-                $status = true;
-                break;
-            case 'disabled':
-                $status = false;
-                break;
-            default:
-                $status = null;
-        }
-
-        return $status;
     }
 }

@@ -1,0 +1,27 @@
+parameters:
+    pim_enrich.connector.job.job_configurators.simple_mass_edit.class:     Pim\Bundle\EnrichBundle\Connector\Job\JobConfigurators\SimpleMassEditJobConfigurator
+    pim_enrich.connector.job.job_configurators.product_quick_export.class: Pim\Bundle\EnrichBundle\Connector\Job\JobConfigurators\ProductQuickExportJobConfigurator
+
+services:
+    pim_enrich.connector.job.job_configurators.simple_mass_edit:
+        class: %pim_enrich.connector.job.job_configurators.simple_mass_edit.class%
+        arguments:
+            -
+                - 'update_product_value'
+                - 'add_product_value'
+                - 'edit_common_attributes'
+                - 'set_attribute_requirements'
+                - 'add_to_variant_group'
+                - 'csv_product_quick_export'
+                - 'xlsx_product_quick_export'
+        tags:
+            - { name: akeneo_batch.job_configurator}
+
+    pim_enrich.connector.job.job_configurators.product_csv_quick_export:
+        class: %pim_enrich.connector.job.job_configurators.product_quick_export.class%
+        arguments:
+            -
+                - 'csv_product_quick_export'
+                - 'xlsx_product_quick_export'
+        tags:
+            - { name: akeneo_batch.job_configurator}

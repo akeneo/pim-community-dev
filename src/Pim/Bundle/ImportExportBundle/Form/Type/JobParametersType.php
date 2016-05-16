@@ -3,9 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderRegistry;
-use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderRegistry;
+use Akeneo\Component\Batch\Job\JobConfiguratorRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
@@ -24,11 +22,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class JobParametersType extends AbstractType implements DataMapperInterface
 {
-    /** @var FormConfigurationProviderRegistry */
-    protected $configProviderRegistry;
-
-    /** @var ConstraintCollectionProviderRegistry */
-    protected $constraintProviderRegistry;
+    /** @var JobConfiguratorRegistry */
+    protected $jobConfiguratorRegistry;
 
     /** @var ContainerInterface */
     private $container;
@@ -37,19 +32,16 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     protected $jobParamsClass;
 
     /**
-     * @param FormConfigurationProviderRegistry    $configProviderRegistry
-     * @param ConstraintCollectionProviderRegistry $constraintProviderRegistry
-     * @param ContainerInterface                   $container
-     * @param string                               $jobParamsClass
+     * @param JobConfiguratorRegistry $constraintProviderRegistry
+     * @param ContainerInterface      $container
+     * @param string                  $jobParamsClass
      */
     public function __construct(
-        FormConfigurationProviderRegistry $configProviderRegistry,
-        ConstraintCollectionProviderRegistry $constraintProviderRegistry,
+        JobConfiguratorRegistry $jobConfiguratorRegistry,
         ContainerInterface $container,
         $jobParamsClass
     ) {
-        $this->configProviderRegistry = $configProviderRegistry;
-        $this->constraintProviderRegistry = $constraintProviderRegistry;
+        $this->jobConfiguratorRegistry = $jobConfiguratorRegistry;
         $this->container = $container;
         $this->jobParamsClass = $jobParamsClass;
     }
@@ -61,48 +53,34 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     {
         $builder->setDataMapper($this);
         $factory = $builder->getFormFactory();
-        $configProviderRegistry = $this->configProviderRegistry;
-        $constraintProviderRegistry = $this->constraintProviderRegistry;
+        $jobConfiguratorRegistry = $this->jobConfiguratorRegistry;
+
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($factory, $configProviderRegistry, $constraintProviderRegistry) {
+            function (FormEvent $event) use ($factory, $jobConfiguratorRegistry) {
                 $form   = $event->getForm();
                 $jobInstance = $form->getRoot()->getData();
                 if (null == $jobInstance->getId()) {
                     return;
                 }
                 $job = $this->getConnectorRegistry()->getJob($jobInstance);
-                $configProvider = $configProviderRegistry->get($job);
-                $configs = $configProvider->getFormConfiguration();
-                $constraintProvider = $constraintProviderRegistry->get($job);
-                $collection = $constraintProvider->getConstraintCollection();
-                $fieldConstraints = $collection->fields;
 
-                foreach ($configs as $parameter => $config) {
-                    if (isset($config['system']) && true === $config['system']) {
+                $resolver = new OptionsResolver();
+                $resolver->setRequired('fields');
+
+                foreach ($jobConfiguratorRegistry->getConfiguratorsForJob($job) as $configurator) {
+                    $configurator->configure($resolver);
+                }
+
+                $options = $resolver->resolve([]);
+                $fields = $options['fields'];
+
+                foreach ($fields as $field) {
+                    if (isset($field['system']) && true === $field['system']) {
                         continue;
                     }
-                    $config = array_merge(
-                        [
-                            'type'    => 'text',
-                            'options' => [],
-                        ],
-                        $config
-                    );
-                    $options = array_merge(
-                        [
-                            'auto_initialize' => false,
-                            'required'        => false,
-                            'label'           => ucfirst($parameter),
-                        ],
-                        $config['options']
-                    );
 
-                    if (isset($fieldConstraints[$parameter])) {
-                        $options['constraints'] = $fieldConstraints[$parameter]->constraints;
-                    }
-
-                    $form->add($factory->createNamed($parameter, $config['type'], null, $options));
+                    $form->add($factory->createNamed($field['name'], $field['type'], null, $field['options']));
                 }
             }
         );

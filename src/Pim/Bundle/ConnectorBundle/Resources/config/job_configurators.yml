@@ -1,0 +1,105 @@
+parameters:
+    # Exports
+    pim_connector.job.job_configurator.simple_csv_export.class:         Pim\Component\Connector\Job\JobConfigurator\SimpleCsvExportJobConfigurator
+    pim_connector.job.job_configurator.simple_xlsx_export.class:        Pim\Component\Connector\Job\JobConfigurator\SimpleXlsxExportJobConfigurator
+    pim_connector.job.job_configurator.product_export.class:        Pim\Component\Connector\Job\JobConfigurator\ProductExportJobConfigurator
+    pim_connector.job.job_configurator.variant_group_export.class:  Pim\Component\Connector\Job\JobConfigurator\VariantGroupExportJobConfigurator
+
+    # Imports
+    pim_connector.job.job_configurator.simple_csv_import.class:         Pim\Component\Connector\Job\JobConfigurator\SimpleCsvImportJobConfigurator
+    pim_connector.job.job_configurator.simple_xlsx_import.class:        Pim\Component\Connector\Job\JobConfigurator\SimpleXlsxImportJobConfigurator
+    pim_connector.job.job_configurator.simple_yaml_import.class:        Pim\Component\Connector\Job\JobConfigurator\SimpleYamlImportJobConfigurator
+    pim_connector.job.job_configurator.product_import.class:       Pim\Component\Connector\Job\JobConfigurator\ProductImportJobConfigurator
+    pim_connector.job.job_configurator.variant_group_import.class:  Pim\Component\Connector\Job\JobConfigurator\VariantGroupImportJobConfigurator
+
+services:
+    # Exports
+    pim_connector.job.job_configurator.simple_csv_export:
+        class: %pim_connector.job.job_configurator.simple_csv_export.class%
+        arguments:
+            -
+                - 'pim_connector.jobs.csv_attribute_export.title'
+                - 'pim_connector.jobs.csv_family_export.title'
+                - 'pim_connector.jobs.csv_group_export.title'
+                - 'pim_connector.jobs.csv_association_type_export.title'
+                - 'pim_connector.jobs.csv_attribute_option_export.title'
+                - 'pim_connector.jobs.csv_category_export.title'
+        tags:
+            - { name: akeneo_batch.job_configurator }
+
+    pim_connector.job.job_configurator.simple_xlsx_export:
+        class: %pim_connector.job.job_configurator.simple_xlsx_export.class%
+        arguments:
+            -
+                - 'pim_connector.jobs.xlsx_attribute_export.title'
+                - 'pim_connector.jobs.xlsx_family_export.title'
+                - 'pim_connector.jobs.xlsx_group_export.title'
+                - 'pim_connector.jobs.xlsx_association_type_export.title'
+                - 'pim_connector.jobs.xlsx_attribute_option_export.title'
+                - 'pim_connector.jobs.xlsx_category_export.title'
+        tags:
+            - { name: akeneo_batch.job_configurator }
+
+    pim_connector.job.job_configurator.product_export:
+        class: %pim_connector.job.job_configurator.product_export.class%
+        arguments:
+            - '@pim_catalog.repository.channel'
+            -
+                - 'pim_connector.jobs.csv_product_export.title'
+                - 'pim_connector.jobs.xlsx_product_export.title'
+        tags:
+            - { name: akeneo_batch.job_configurator }
+
+    pim_connector.job.job_configurator.variant_group_export:
+        class: %pim_connector.job.job_configurator.variant_group_export.class%
+        arguments:
+            -
+                - 'pim_connector.jobs.csv_variant_group_export.title'
+                - 'pim_connector.jobs.xlsx_variant_group_export.title'
+        tags:
+            - { name: akeneo_batch.job_configurator }
+
+    # Imports
+    pim_connector.job.job_configurator.simple_csv_import:
+        class: %pim_connector.job.job_configurator.simple_csv_import.class%
+        arguments:
+            -
+                - 'pim_connector.jobs.csv_attribute_import.title'
+                - 'pim_connector.jobs.csv_family_import.title'
+                - 'pim_connector.jobs.csv_group_import.title'
+                - 'pim_connector.jobs.csv_association_type_import.title'
+                - 'pim_connector.jobs.csv_attribute_option_import.title'
+                - 'pim_connector.jobs.csv_category_import.title'
+        tags:
+            - { name: akeneo_batch.job_configurator }
+
+    pim_connector.job.job_configurator.simple_xlsx_import:
+        class: %pim_connector.job.job_configurator.simple_xlsx_import.class%
+        arguments:
+            -
+                - 'pim_connector.jobs.xlsx_attribute_import.title'
+                - 'pim_connector.jobs.xlsx_family_import.title'
+                - 'pim_connector.jobs.xlsx_group_import.title'
+                - 'pim_connector.jobs.xlsx_association_type_import.title'
+                - 'pim_connector.jobs.xlsx_attribute_option_import.title'
+                - 'pim_connector.jobs.xlsx_category_import.title'
+        tags:
+            - { name: akeneo_batch.job_configurator }
+
+    pim_connector.job.job_configurator.product_import:
+        class: %pim_connector.job.job_configurator.product_import.class%
+        arguments:
+            -
+                - 'pim_connector.jobs.csv_product_import.title'
+                - 'pim_connector.jobs.xlsx_product_import.title'
+        tags:
+            - { name: akeneo_batch.job_configurator }
+
+    pim_connector.job.job_configurator.variant_group_import:
+        class: %pim_connector.job.job_configurator.variant_group_import.class%
+        arguments:
+            -
+                - 'pim_connector.jobs.csv_variant_group_import.title'
+                - 'pim_connector.jobs.xlsx_variant_group_import.title'
+        tags:
+            - { name: akeneo_batch.job_configurator }
