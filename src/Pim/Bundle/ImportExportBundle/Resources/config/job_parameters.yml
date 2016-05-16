@@ -3,6 +3,7 @@ parameters:
 
     pim_import_export.job_parameters.form_configuration_provider.simple_csv_export.class:         Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\SimpleCsvExport
     pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_export.class:        Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\SimpleXlsxExport
+    pim_import_export.job_parameters.form_configuration_provider.simple_yaml_export.class:        Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\SimpleYamlExport
     pim_import_export.job_parameters.form_configuration_provider.product_csv_export.class:        Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\ProductCsvExport
     pim_import_export.job_parameters.form_configuration_provider.product_xlsx_export.class:       Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\ProductCsvExport
     pim_import_export.job_parameters.form_configuration_provider.variant_group_csv_export.class:  Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\VariantGroupCsvExport

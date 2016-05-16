@@ -128,7 +128,6 @@ class FileWriterArchiverSpec extends ObjectBehavior
 
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
-        $jobInstance->getJob()->willReturn($job);
         $jobInstance->getType()->willReturn('type');
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
