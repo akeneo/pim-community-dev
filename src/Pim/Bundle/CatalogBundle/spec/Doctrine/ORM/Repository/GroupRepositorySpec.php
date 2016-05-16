@@ -2,20 +2,31 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Doctrine\ORM\Query\Expr;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
 
 class GroupRepositorySpec extends ObjectBehavior
 {
     function let(EntityManager $em, ClassMetadata $classMetadata)
     {
+        $classMetadata->name = 'group';
+
         $this->beConstructedWith($em, $classMetadata);
+    }
+
+    function it_is_a_group_repository()
+    {
+        $this->shouldImplement('Pim\Component\Catalog\Repository\GroupRepositoryInterface');
+    }
+
+    function it_is_a_doctrine_repository()
+    {
+        $this->shouldHaveType('Doctrine\ORM\EntityRepository');
     }
 
     function it_is_initializable()
@@ -58,7 +69,6 @@ class GroupRepositorySpec extends ObjectBehavior
         AbstractQuery $query1,
         AbstractQuery $query2
     ) {
-
         $em->createQueryBuilder()->will(new ReturnPromise([$queryBuilder1, $queryBuilder2]));
 
         $queryBuilder1->select('g')->willReturn($queryBuilder1);

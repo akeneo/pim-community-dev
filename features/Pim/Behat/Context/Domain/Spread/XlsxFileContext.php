@@ -30,6 +30,25 @@ class XlsxFileContext extends PimContext
     }
 
     /**
+     * @param string    $code
+     * @param TableNode $expectedLines
+     *
+     * @Then /^exported xlsx file of "([^"]*)" should contains the following headers:$/
+     */
+    public function exportedXlsxFileOfShouldContainsTheFollowingHeaders($code, TableNode $expectedLines)
+    {
+        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+
+        $reader = ReaderFactory::create(Type::XLSX);
+        $reader->open($path);
+        $sheet = current(iterator_to_array($reader->getSheetIterator()));
+        $actualLines = iterator_to_array($sheet->getRowIterator());
+        $reader->close();
+
+        $this->compareXlsxFileHeadersOrder(array_values($expectedLines->getRows()), array_values($actualLines));
+    }
+
+    /**
      * @param string $fileName
      * @param int    $rows
      *
@@ -122,5 +141,18 @@ class XlsxFileContext extends PimContext
                 );
             }
         }
+    }
+
+    /**
+     * @param array $expectedHeaders
+     * @param array $actualHeaders
+     */
+    protected function compareXlsxFileHeadersOrder(array $expectedHeaders, array $actualHeaders)
+    {
+        assertEquals(
+            $expectedHeaders[0],
+            $actualHeaders[0],
+            sprintf('Expecting to see headers order like %d , found %d', $expectedHeaders[0], $actualHeaders[0])
+        );
     }
 }

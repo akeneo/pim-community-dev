@@ -2,8 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -20,28 +19,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ClassifyType extends AbstractType
 {
     /** @var string */
-    protected $categoryClass;
-
-    /** @var CategoryManager */
-    protected $categoryManager;
-
-    /** @var string */
     protected $dataClass;
 
-    /** @var CategoryInterface[] */
-    protected $trees;
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
 
     /**
-     * @param CategoryManager $categoryManager
-     * @param string          $categoryClass
-     * @param string          $dataClass
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param string                      $dataClass
      */
-    public function __construct(CategoryManager $categoryManager, $categoryClass, $dataClass)
+    public function __construct(CategoryRepositoryInterface $categoryRepository, $dataClass)
     {
-        $this->categoryManager = $categoryManager;
-        $this->categoryClass   = $categoryClass;
-        $this->dataClass       = $dataClass;
-        $this->trees           = $categoryManager->getEntityRepository()->findBy(['parent' => null]);
+        $this->categoryRepository = $categoryRepository;
+        $this->dataClass          = $dataClass;
     }
 
     /**
@@ -49,29 +39,29 @@ class ClassifyType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add(
-                'trees',
-                'oro_entity_identifier',
-                [
-                    'class'    => $this->categoryClass,
-                    'required' => false,
-                    'mapped'   => false,
-                    'multiple' => true,
-                ]
-            );
+        $categoryClassName = $this->categoryRepository->getClassName();
 
-        $builder
-            ->add(
-                'categories',
-                'oro_entity_identifier',
-                [
-                    'class'    => $this->categoryClass,
-                    'required' => true,
-                    'mapped'   => true,
-                    'multiple' => true,
-                ]
-            );
+        $builder->add(
+            'trees',
+            'oro_entity_identifier',
+            [
+                'class'    => $categoryClassName,
+                'required' => false,
+                'mapped'   => false,
+                'multiple' => true,
+            ]
+        );
+
+        $builder->add(
+            'categories',
+            'oro_entity_identifier',
+            [
+                'class'    => $categoryClassName,
+                'required' => true,
+                'mapped'   => true,
+                'multiple' => true,
+            ]
+        );
     }
 
     /**
@@ -79,7 +69,7 @@ class ClassifyType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['trees'] = $this->getTrees();
+        $view->vars['trees'] = $this->categoryRepository->findBy(['parent' => null]);
     }
 
     /**
@@ -87,11 +77,9 @@ class ClassifyType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            [
-                'data_class' => $this->dataClass
-            ]
-        );
+        $resolver->setDefaults([
+            'data_class' => $this->dataClass
+        ]);
     }
 
     /**
@@ -100,13 +88,5 @@ class ClassifyType extends AbstractType
     public function getName()
     {
         return 'pim_enrich_mass_classify';
-    }
-
-    /**
-     * @return CategoryInterface[]
-     */
-    public function getTrees()
-    {
-        return $this->trees;
     }
 }

@@ -85,63 +85,6 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getChoices(array $options)
-    {
-        $qb = $this->getChoicesQB($options);
-        $result = $qb->getQuery()->getArrayResult();
-
-        // Build choices list
-        $attributes = [];
-        foreach ($result as $key => $attribute) {
-            $attributes[$attribute['group_label']][$attribute['id']] = $attribute['attribute_label'];
-            unset($result[$key]);
-        }
-
-        return $attributes;
-    }
-
-    /**
-     * Create query builder for choices
-     *
-     * @param array $options
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function getChoicesQB(array $options)
-    {
-        if (!isset($options['excluded_attribute_ids'])) {
-            throw new \InvalidArgumentException('Option "excluded_attribute_ids" is required');
-        }
-
-        if (!isset($options['locale_code'])) {
-            throw new \InvalidArgumentException('Option "locale_code" is required');
-        }
-
-        $qb = $this->createQueryBuilder('a');
-        $qb
-            ->select('a.id')
-            ->addSelect('COALESCE(at.label, CONCAT(\'[\', a.code, \']\')) as attribute_label')
-            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\')) as group_label')
-            ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :localeCode')
-            ->leftJoin('a.group', 'g')
-            ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
-            ->orderBy('g.sortOrder, a.sortOrder')
-            ->setParameter('localeCode', $options['locale_code']);
-
-        if (!empty($options['excluded_attribute_ids'])) {
-            $qb->andWhere(
-                $qb->expr()->notIn('a.id', $options['excluded_attribute_ids'])
-            );
-        }
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findUniqueAttributeCodes()
     {
         $codes = $this
@@ -189,7 +132,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllAxisQB()
+    public function findAllAxesQB()
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -208,11 +151,23 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllAxis()
+    public function findAvailableAxes($locale)
     {
-        $qb = $this->findAllAxisQB();
+        $query = $this->findAllAxesQB()
+            ->select('a.id')
+            ->addSelect('COALESCE(t.label, CONCAT(\'[\', a.code, \']\')) as label')
+            ->leftJoin('a.translations', 't')
+            ->andWhere('t.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->orderBy('t.label')
+            ->getQuery();
 
-        return $qb->getQuery()->getResult();
+        $axis = [];
+        foreach ($query->getArrayResult() as $code) {
+            $axis[$code['id']] = $code['label'];
+        }
+
+        return $axis;
     }
 
     /**
@@ -229,21 +184,6 @@ class AttributeRepository extends EntityRepository implements
             );
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAvailableAttributesAsLabelChoice()
-    {
-        $attributes = $this->getAvailableAttributesAsLabel();
-
-        $choices = [];
-        foreach ($attributes as $attribute) {
-            $choices[$attribute->getId()] = $attribute->getLabel();
-        }
-
-        return $choices;
     }
 
     /**

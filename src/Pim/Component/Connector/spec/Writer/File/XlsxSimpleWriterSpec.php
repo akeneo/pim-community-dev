@@ -5,15 +5,16 @@ namespace spec\Pim\Component\Connector\Writer\File;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Buffer\BufferInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Prophecy\Argument;
 
 class XlsxSimpleWriterSpec extends ObjectBehavior
 {
-    function let(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer)
+    function let(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer, ColumnSorterInterface $columnSorter)
     {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer);
+        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $columnSorter);
 
         $filePathResolver
             ->resolve(Argument::any(), Argument::type('array'))
@@ -73,10 +74,22 @@ class XlsxSimpleWriterSpec extends ObjectBehavior
         $this->write($groups);
     }
 
-    function it_writes_the_xlsx_file($flatRowBuffer, BufferInterface $buffer)
+    function it_writes_the_xlsx_file($flatRowBuffer, BufferInterface $buffer, $columnSorter)
     {
         $flatRowBuffer->getHeaders()->willReturn(['code', 'type', 'label-en_US', 'label-de_DE']);
         $flatRowBuffer->getBuffer()->willReturn($buffer);
+
+        $columnSorter->sort([
+            'code',
+            'type',
+            'label-en_US',
+            'label-de_DE'
+        ])->willReturn([
+            'code',
+            'label-en_US',
+            'label-de_DE',
+            'type'
+        ]);
 
         $this->flush();
     }

@@ -54,34 +54,6 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getChoices(array $options)
-    {
-        if (!isset($options['localeCode'])) {
-            throw new \InvalidArgumentException('Option "localeCode" is required');
-        }
-
-        $qb = $this->_em->createQueryBuilder()
-            ->select('f.id')
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', f.code, \']\')) as label')
-            ->from('Pim\Bundle\CatalogBundle\Entity\Family', 'f')
-            ->leftJoin('f.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
-            ->orderBy('label')
-            ->setParameter('localeCode', $options['localeCode']);
-
-        $result  = $qb->getQuery()->getArrayResult();
-        $choices = [];
-
-        foreach ($result as $key => $family) {
-            $choices[$family['id']] = $family['label'];
-            unset($result[$key]);
-        }
-
-        return $choices;
-    }
-
-    /**
      * @param int $id
      *
      * @return \Doctrine\ORM\QueryBuilder

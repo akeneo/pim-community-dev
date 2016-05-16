@@ -57,4 +57,4 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices:  '@pim_catalog.repository.attribute_group->getAttributeGroupChoices'
+                            choices:  '@pim_enrich.repository.attribute_group->findTranslatedLabels'

@@ -36,18 +36,17 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
         $this->fieldChecker->checkFieldsFilling($item, ['code']);
 
         $convertedItem = ['labels' => []];
+        $booleanFields = [
+            'localizable',
+            'useable_as_grid_filter',
+            'unique',
+            'required',
+            'scopable',
+            'wysiwyg_enabled',
+            'decimals_allowed',
+            'negative_allowed',
+        ];
         foreach ($item as $field => $data) {
-            $booleanFields = [
-                'localizable',
-                'useable_as_grid_filter',
-                'unique',
-                'required',
-                'scopable',
-                'wysiwyg_enabled',
-                'decimals_allowed',
-                'negative_allowed',
-            ];
-
             $convertedItem = $this->convertFields($field, $booleanFields, $data, $convertedItem);
         }
 
@@ -80,6 +79,7 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
                 break;
             case 'sort_order':
             case 'max_characters':
+            case 'minimum_input_length':
                 $convertedItem[$field] = ('' === $data) ? null : (int) $data;
                 break;
             case 'options':
@@ -89,6 +89,8 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
             case in_array($field, $booleanFields):
                 $convertedItem[$field] = (bool) $data;
                 break;
+            case 'date_min':
+            case 'date_max':
             case 'reference_data_name':
                 $convertedItem[$field] = ('' === $data) ? null : $data;
                 break;

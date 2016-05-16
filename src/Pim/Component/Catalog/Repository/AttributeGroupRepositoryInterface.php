@@ -28,15 +28,6 @@ interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepository
     public function getIdToLabelOrderedBySortOrder();
 
     /**
-     * Get the attribute group choices
-     *
-     * @deprecated only used in grid, will be removed in 1.6
-     *
-     * @return array
-     */
-    public function getAttributeGroupChoices();
-
-    /**
      * Get the default attribute group
      *
      * @return null|AttributeGroupInterface

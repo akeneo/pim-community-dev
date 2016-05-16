@@ -28,13 +28,6 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
     public function getChoicesByType(GroupTypeInterface $type);
 
     /**
-     * Get groups
-     *
-     * @return array
-     */
-    public function getChoices();
-
-    /**
      * Return the number of groups containing the provided attribute
      *
      * @param AttributeInterface $attribute

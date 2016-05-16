@@ -17,6 +17,9 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     /** @var FlatItemBuffer */
     protected $buffer;
 
+    /** @var ColumnSorterInterface */
+    protected $columnSorter;
+
     /** @var string */
     protected $delimiter = ';';
 
@@ -35,12 +38,17 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     /**
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
+     * @param ColumnSorterInterface     $columnSorter
      */
-    public function __construct(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer)
-    {
+    public function __construct(
+        FilePathResolverInterface $filePathResolver,
+        FlatItemBuffer $flatRowBuffer,
+        ColumnSorterInterface $columnSorter
+    ) {
         parent::__construct($filePathResolver);
 
         $this->buffer = $flatRowBuffer;
+        $this->columnSorter = $columnSorter;
     }
 
     /**
@@ -126,7 +134,7 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     {
         $csvFile = $this->createCsvFile();
 
-        $headers = $this->buffer->getHeaders();
+        $headers = $this->columnSorter->sort($this->buffer->getHeaders());
         $hollowItem = array_fill_keys($headers, '');
         $this->writeToCsvFile($csvFile, $headers);
         foreach ($this->buffer->getBuffer() as $incompleteItem) {

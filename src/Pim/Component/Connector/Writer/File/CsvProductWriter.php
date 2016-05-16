@@ -18,13 +18,15 @@ class CsvProductWriter extends CsvWriter
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
      * @param BulkFileExporter          $mediaCopier
+     * @param ColumnSorterInterface     $columnSorter
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
-        BulkFileExporter $mediaCopier
+        BulkFileExporter $mediaCopier,
+        ColumnSorterInterface $columnSorter
     ) {
-        parent::__construct($filePathResolver, $flatRowBuffer);
+        parent::__construct($filePathResolver, $flatRowBuffer, $columnSorter);
 
         $this->mediaCopier = $mediaCopier;
     }

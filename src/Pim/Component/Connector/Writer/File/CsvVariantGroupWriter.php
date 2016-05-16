@@ -18,13 +18,15 @@ class CsvVariantGroupWriter extends CsvWriter
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
      * @param BulkFileExporter          $fileExporter
+     * @param ColumnSorterInterface     $columnSorter
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
-        BulkFileExporter $fileExporter
+        BulkFileExporter $fileExporter,
+        ColumnSorterInterface $columnSorter
     ) {
-        parent::__construct($filePathResolver, $flatRowBuffer);
+        parent::__construct($filePathResolver, $flatRowBuffer, $columnSorter);
 
         $this->fileExporter = $fileExporter;
     }

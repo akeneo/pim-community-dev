@@ -16,7 +16,6 @@ use Pim\Component\Catalog\Model\FamilyInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 interface FamilyRepositoryInterface extends
-    ChoicesProviderInterface,
     IdentifiableObjectRepositoryInterface,
     ObjectRepository
 {
