@@ -1,22 +1,21 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider;
+namespace Pim\Component\Connector\Job\JobConfigurator;
 
+use Akeneo\Component\Batch\Job\JobConfiguratorInterface;
 use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Symfony\Component\Validator\Constraints\Collection;
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Type;
 
 /**
- * Constraints for simple mass edit
+ * DefaultParameters for variant group CSV export
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleMassEdit implements ConstraintCollectionProviderInterface
+class VariantGroupExportJobConfigurator implements JobConfiguratorInterface
 {
     /** @var array */
     protected $supportedJobNames;
@@ -32,17 +31,16 @@ class SimpleMassEdit implements ConstraintCollectionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getConstraintCollection()
+    public function configure(OptionsResolver $resolver)
     {
-        return new Collection(
-            [
-                'fields' => [
-                    'filters' => new NotNull(),
-                    'actions' => new NotBlank(),
-                    'realTimeVersioning' => new Type('bool'),
-                ]
+        $resolver->setDefaults([
+            'decimalSeparator' => LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR,
+            'dateFormat' => LocalizerInterface::DEFAULT_DATE_FORMAT,
+            'fields' => [
+                'decimalSeparator' => new NotBlank(),
+                'dateFormat' => new NotBlank(),
             ]
-        );
+        ]);
     }
 
     /**
