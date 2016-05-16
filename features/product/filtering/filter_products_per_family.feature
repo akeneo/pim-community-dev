@@ -31,7 +31,7 @@ Feature: Filter products per family
       | family | in list  | computers        | PC and Laptop                        |
       | family | in list  | hi_fi, computers | Amplifier, CD changer, PC and Laptop |
       | family | in list  | washing_machines | Whirlpool and Electrolux             |
-      | family |          | is empty         | Mug                                  |
+      | family | is empty |                  | Mug                                  |
 
   Scenario: Successfully filter 20 first families on search input
     Given the following families:

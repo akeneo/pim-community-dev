@@ -17,17 +17,20 @@ class Select2ChoiceDecorator extends ElementDecorator
      */
     public function filter($operator, $value)
     {
-        if ('is empty' !== $operator) {
-            $field = $this->spin(function () {
-                return $this->find('css', '.select-field');
-            }, sprintf('Cannot find the value field for the filter "%s"', $this->getAttribute('data-name')));
+        $field = $this->spin(function () {
+            return $this->find('css', '.select-field');
+        }, sprintf('Cannot find the value field for the filter "%s"', $this->getAttribute('data-name')));
 
-            $field = $this->decorate($field, ['Pim\Behat\Decorator\Field\Select2Decorator']);
+        $field = $this->decorate($field, ['Pim\Behat\Decorator\Field\Select2Decorator']);
+        $field->close();
+
+        if ('is empty' !== $operator) {
+            // We close then reopen the widget to be sure we are always in the same state
+            $field->open();
             $field->setValue($value);
         }
 
         $operatorDropdown = $this->find('css', '.dropdown-toggle');
-
         if (null !== $operatorDropdown) {
             $operatorDropdown = $this->decorate(
                 $operatorDropdown,

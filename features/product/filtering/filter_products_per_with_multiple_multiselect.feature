@@ -35,7 +35,7 @@ Feature: Filter products with multiples multiselect filters
     And I filter by "company" with operator "in list" and value "Suze"
     Then I should be able to use the following filters:
       | filter | operator | value | result                 |
-      | color  | in list  | green | MUG-2, MUG-3 and MUG-4 |
+      | color  | in list  | Green | MUG-2, MUG-3 and MUG-4 |
       | color  | is empty |       | POST-1 and POST-2      |
 
   Scenario: Successfully filter product without commons attributes

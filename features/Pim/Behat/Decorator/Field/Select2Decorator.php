@@ -13,10 +13,6 @@ class Select2Decorator extends ElementDecorator
     {
         $values = explode(', ', $value);
 
-        // We close then reopen the widget to be sure we are always in the same state
-        $this->closeSelect2();
-        $this->find('css', '.select2-choices')->click();
-
         // TODO: handle choices deletion, see vendor/akeneo/pim-community-dev/features/Context/Page/Base/Form.php:709
 
         // The select2 plugin can put many widgets in the DOM.
@@ -59,7 +55,12 @@ class Select2Decorator extends ElementDecorator
         }
     }
 
-    public function closeSelect2()
+    public function open()
+    {
+        $this->find('css', '.select2-choices')->click();
+    }
+
+    public function close()
     {
         $dropMask = $this->getBody()->find('css', '#select2-drop-mask');
 
