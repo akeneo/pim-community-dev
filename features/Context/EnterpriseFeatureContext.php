@@ -226,11 +226,6 @@ class EnterpriseFeatureContext extends FeatureContext
             return $assetCollectionPicker->find('css', '.add-asset');
         }, 'Did not find the manage asset button');
         $manageAssets->click();
-
-        $this->spin(function () {
-            return $this->getSession()->getPage()
-                ->find('css', '#grid-asset-picker-grid[data-rendered="true"]');
-        });
     }
 
     /**

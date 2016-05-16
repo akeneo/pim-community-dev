@@ -17,7 +17,6 @@ Feature: Edit asset collection of many products at once
     And I am logged in as "Julia"
     And I am on the products page
 
-
   Scenario: Allow editing all attributes on configuration screen
     Given I mass-edit products boots, sneakers and sandals
     And I choose the "Edit common attributes" operation
