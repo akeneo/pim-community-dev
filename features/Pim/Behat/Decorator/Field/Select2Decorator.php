@@ -11,8 +11,7 @@ class Select2Decorator extends ElementDecorator
 
     public function setValue($value)
     {
-        $values            = explode(', ', $value);
-        $autocompleteField = $this->find('css', '.select2-input');
+        $values = explode(', ', $value);
 
         // We close then reopen the widget to be sure we are always in the same state
         $this->closeSelect2();
@@ -40,7 +39,13 @@ class Select2Decorator extends ElementDecorator
         }
 
         foreach ($values as $value) {
-            $autocompleteField->setValue($value);
+            $this->getSession()->executeScript(
+                sprintf(
+                    '$(\'#%s input[type="text"]\').val(\'%s\').trigger(\'input\');',
+                    $this->getAttribute('id'),
+                    $value
+                )
+            );
 
             $result = $this->spin(function () use ($widget, $value) {
                 return $widget->find('css', sprintf('.select2-result-label:contains("%s")', $value));
@@ -51,9 +56,6 @@ class Select2Decorator extends ElementDecorator
             ));
 
             $result->click();
-
-
-//            $autocompleteField->setValue($value);
         }
     }
 

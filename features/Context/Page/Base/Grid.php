@@ -71,6 +71,7 @@ class Grid extends Index
         ],
         'select2-rest-choice' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\Select2ChoiceDecorator',
         ],
         'string' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',

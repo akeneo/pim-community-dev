@@ -17,18 +17,29 @@ class Select2ChoiceDecorator extends ElementDecorator
      */
     public function filter($operator, $value)
     {
-        $operator = ucfirst($operator);
+        $operatorDropdown = $this->find('css', '.dropdown-toggle');
 
-        $field = $this->spin(function () {
-            return $this->find('css', '.select-field');
-        }, sprintf('Cannot find the value field for the filter "%s"', $this->getAttribute('data-name')));
+        if (null !== $operatorDropdown) {
+            $operatorDropdown = $this->decorate(
+                $operatorDropdown,
+                ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
+            );
+            $operatorDropdown->setValue($operator);
+        }
 
-        $field = $this->decorate($field, ['Pim\Behat\Decorator\Field\Select2Decorator']);
-        $field->setValue($value);
+        if ('is empty' !== $operator) {
+            $field = $this->spin(function () {
+                return $this->find('css', '.select-field');
+            }, sprintf('Cannot find the value field for the filter "%s"', $this->getAttribute('data-name')));
 
-        $this->find('css', '.dropdown-toggle')->click();
-        $this->find('css', sprintf('.dropdown-menu .operator_choice:contains("%s")', $operator))->click();
+            $field = $this->decorate($field, ['Pim\Behat\Decorator\Field\Select2Decorator']);
+            $field->setValue($value);
+        }
 
-        $this->find('css', '.filter-update')->click();
+        $this->spin(function () {
+            $this->find('css', '.filter-update')->click();
+
+            return true;
+        }, 'Cannot update the filter');
     }
 }
