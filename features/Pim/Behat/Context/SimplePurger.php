@@ -1,6 +1,6 @@
 <?php
 
-namespace Context;
+namespace Pim\Behat\Context;
 
 use Doctrine\Common\DataFixtures\Purger\PurgerInterface;
 use Doctrine\DBAL\Connection;
@@ -12,24 +12,22 @@ use Doctrine\DBAL\Connection;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DbSessionPurger implements PurgerInterface
+class SimplePurger implements PurgerInterface
 {
     /** @var Connection */
     protected $connection;
 
-    /** @var string */
-    protected $sessionTable;
+    /** @var string[] */
+    protected $tables;
 
     /**
-     * Construct new session purger instance.
-     *
      * @param Connection $connection
-     * @param string     $sesionTable
+     * @param string[]   $tables
      */
-    public function __construct(Connection $connection, $sessionTable)
+    public function __construct(Connection $connection, array $tables)
     {
-        $this->connection   = $connection;
-        $this->sessionTable = $sessionTable;
+        $this->connection = $connection;
+        $this->tables     = $tables;
     }
 
     /**
@@ -37,7 +35,9 @@ class DbSessionPurger implements PurgerInterface
      */
     public function purge()
     {
-        $truncateSql = sprintf("TRUNCATE %s", $this->sessionTable);
-        $this->connection->exec($truncateSql);
+        foreach ($this->tables as $table) {
+            $sql = 'DELETE FROM ' . $table;
+            $this->connection->exec($sql);
+        }
     }
 }
