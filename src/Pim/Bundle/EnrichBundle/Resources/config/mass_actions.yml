@@ -28,6 +28,8 @@ services:
     pim_enrich.mass_edit_action.change_status:
         public: false
         class: %pim_enrich.mass_edit_action.change_status.class%
+        arguments:
+            - 'update_product_value'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -50,6 +52,7 @@ services:
             - '@pim_catalog.localization.localizer.registry'
             - '@pim_enrich.filter.product_values_edit_data'
             - %tmp_storage_dir%
+            - 'edit_common_attributes'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -60,6 +63,8 @@ services:
     pim_enrich.mass_edit_action.classify:
         public: false
         class: %pim_enrich.mass_edit_action.classify.class%
+        arguments:
+            - 'add_product_value'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -70,6 +75,8 @@ services:
     pim_enrich.mass_edit_action.change_family:
         public: false
         class: %pim_enrich.mass_edit_action.change_family.class%
+        arguments:
+            - 'update_product_value'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -79,6 +86,8 @@ services:
 
     pim_enrich.mass_edit_action.add_to_groups:
         class: %pim_enrich.mass_edit_action.add_to_groups.class%
+        arguments:
+            - 'add_product_value'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -88,6 +97,8 @@ services:
 
     pim_enrich.mass_edit_action.add_to_variant_group:
         class: %pim_enrich.mass_edit_action.add_to_variant_group.class%
+        arguments:
+            - 'add_to_variant_group'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -103,6 +114,7 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.factory.attribute_requirement'
+            - 'set_attribute_requirements'
         tags:
             -
                 name: pim_enrich.mass_edit_action

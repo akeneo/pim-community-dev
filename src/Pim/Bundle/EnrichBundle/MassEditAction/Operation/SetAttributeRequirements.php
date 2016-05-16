@@ -37,19 +37,25 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     /** @var array */
     protected $attributes;
 
+    /** @var string The background job code to launch */
+    protected $batchJobCode;
+
     /**
      * @param ChannelRepositoryInterface   $channelRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param AttributeRequirementFactory  $factory
+     * @param string                       $batchJobCode
      */
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        AttributeRequirementFactory $factory
+        AttributeRequirementFactory $factory,
+        $batchJobCode
     ) {
         $this->channelRepository   = $channelRepository;
         $this->attributeRepository = $attributeRepository;
         $this->factory             = $factory;
+        $this->batchJobCode        = $batchJobCode;
         $this->attRequirements     = new ArrayCollection();
     }
 
@@ -183,6 +189,6 @@ class SetAttributeRequirements extends AbstractMassEditOperation
      */
     public function getBatchJobCode()
     {
-        return 'set_attribute_requirements';
+        return $this->batchJobCode;
     }
 }

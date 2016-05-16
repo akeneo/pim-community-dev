@@ -66,6 +66,9 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var string */
     protected $errors;
 
+    /** @var string The background job code to launch */
+    protected $batchJobCode;
+
     /**
      * @param ProductBuilderInterface      $productBuilder
      * @param UserContext                  $userContext
@@ -77,6 +80,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      * @param LocalizerRegistryInterface   $localizerRegistry
      * @param CollectionFilterInterface    $productValuesFilter
      * @param string                       $tmpStorageDir
+     * @param string                       $batchJobCode
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
@@ -88,7 +92,8 @@ class EditCommonAttributes extends AbstractMassEditOperation
         AttributeConverterInterface $localizedConverter,
         LocalizerRegistryInterface $localizerRegistry,
         CollectionFilterInterface $productValuesFilter,
-        $tmpStorageDir
+        $tmpStorageDir,
+        $batchJobCode
     ) {
         $this->productBuilder      = $productBuilder;
         $this->userContext         = $userContext;
@@ -100,6 +105,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $this->localizedConverter  = $localizedConverter;
         $this->localizerRegistry   = $localizerRegistry;
         $this->productValuesFilter = $productValuesFilter;
+        $this->batchJobCode        = $batchJobCode;
 
         $this->values = '';
     }
@@ -197,7 +203,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      */
     public function getBatchJobCode()
     {
-        return 'edit_common_attributes';
+        return $this->batchJobCode;
     }
 
     /**
