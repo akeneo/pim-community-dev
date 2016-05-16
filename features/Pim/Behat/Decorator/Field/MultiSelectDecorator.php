@@ -44,7 +44,7 @@ class MultiSelectDecorator extends ElementDecorator
         }
 
         // uncheck all choices before doing anything
-        $all = $widget->find('css', 'li input[checked="checked"][value=""]');
+        $all = $widget->find('css', 'li input[type="checkbox"][checked="checked"][value=""]');
 
         if (null !== $all && $value !== 'All') {
             if (null !== $search) {
