@@ -1,6 +1,7 @@
 parameters:
     pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export.class:         Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport
     pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export.class:        Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxExport
+    pim_connector.job.job_parameters.constraint_collection_provider.simple_yaml_export.class:        Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleYamlExport
     pim_connector.job.job_parameters.constraint_collection_provider.product_csv_export.class:        Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductCsvExport
     pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_export.class:       Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductCsvExport
     pim_connector.job.job_parameters.constraint_collection_provider.variant_group_csv_export.class:  Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\VariantGroupCsvExport
