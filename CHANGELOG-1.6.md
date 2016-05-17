@@ -32,6 +32,7 @@
 
 ## BC breaks
 
+- Add method `getLastJobExecution` to interface `Akeneo\Component\Batch\Job\JobRepositoryInterface`
 - Remove properties editTemplate, showTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Remove methods setShowTemplate, setEditTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Change constructor of `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`. Add `Akeneo\Bundle\BatchBundle\Connector\JobTemplateProviderInterface`

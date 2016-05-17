@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Job;
 
+use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
@@ -131,5 +132,23 @@ class DoctrineJobRepository implements JobRepositoryInterface
     {
         $this->jobManager->persist($stepExecution);
         $this->jobManager->flush($stepExecution);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLastJobExecution(JobInstance $jobInstance, $status)
+    {
+        return $this->jobManager->createQueryBuilder()
+            ->select('j')
+            ->from($this->jobExecutionClass, 'j')
+            ->where('j.jobInstance = :job_instance')
+            ->andWhere('j.status = :status')
+            ->setParameter('job_instance', $jobInstance->getId())
+            ->setParameter('status', $status)
+            ->orderBy('j.startTime', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

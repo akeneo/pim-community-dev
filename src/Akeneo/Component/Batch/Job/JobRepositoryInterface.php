@@ -45,4 +45,14 @@ interface JobRepositoryInterface
      * @return StepExecution
      */
     public function updateStepExecution(StepExecution $stepExecution);
+
+    /**
+     * Get the last job execution
+     *
+     * @param JobInstance $jobInstance
+     * @param int         $status
+     *
+     * @return JobExecution|null
+     */
+    public function getLastJobExecution(JobInstance $jobInstance, $status);
 }
