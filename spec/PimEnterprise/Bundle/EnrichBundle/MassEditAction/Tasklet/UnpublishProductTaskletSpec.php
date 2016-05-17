@@ -150,11 +150,6 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
         $this->execute($configuration);
     }
 
-    function it_returns_the_configuration_fields()
-    {
-        $this->getConfigurationFields()->shouldReturn([]);
-    }
-
     function it_sets_the_step_execution(StepExecution $stepExecution)
     {
         $this->setStepExecution($stepExecution)->shouldReturn($this);

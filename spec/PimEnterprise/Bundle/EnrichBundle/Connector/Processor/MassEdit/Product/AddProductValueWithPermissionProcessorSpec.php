@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
@@ -23,7 +24,8 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         UserManager $userManager,
         AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $productFieldUpdater,
@@ -32,6 +34,7 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
             $authorizationChecker,
             $tokenStorage
         );
+        $this->setStepExecution($stepExecution);
     }
 
     function it_is_a_configurable_step_element()
@@ -50,14 +53,18 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $tokenStorage,
         $userManager,
         $validator,
+        $stepExecution,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         UserInterface $userJulia,
-        ProductInterface $product
+        ProductInterface $product,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
         $configuration = ['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]];
-        $this->setConfiguration($configuration);
-        $this->setStepExecution($stepExecution);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -77,15 +84,20 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $authorizationChecker,
         $tokenStorage,
         $userManager,
+        $stepExecution,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         UserInterface $userJulia,
-        ProductInterface $product
+        ProductInterface $product,
+        JobParameters $jobParameters
     ) {
         $configuration  = [
             'filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]
         ];
-        $this->setConfiguration($configuration);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
