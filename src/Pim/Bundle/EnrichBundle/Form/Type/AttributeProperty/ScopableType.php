@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -19,7 +20,7 @@ class ScopableType extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
+        return ChoiceType::class;
     }
 
     /**
@@ -43,7 +44,7 @@ class ScopableType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_scopable';
     }

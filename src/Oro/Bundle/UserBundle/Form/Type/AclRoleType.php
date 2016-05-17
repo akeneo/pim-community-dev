@@ -5,6 +5,7 @@ namespace Oro\Bundle\UserBundle\Form\Type;
 use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeType;
 use Oro\Bundle\SecurityBundle\Form\Type\PrivilegeCollectionType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -30,7 +31,7 @@ class AclRoleType extends AbstractType
     {
         $builder->add(
             'label',
-            'text',
+            TextType::class,
             [
                 'required' => true,
                 'label'    => 'Role'
@@ -93,7 +94,7 @@ class AclRoleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'oro_user_role_form';
     }

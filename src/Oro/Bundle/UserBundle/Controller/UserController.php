@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -56,7 +57,7 @@ class UserController extends Controller
      *
      * @return JsonResponse|Response
      */
-    public function apigenAction($id)
+    public function apigenAction(Request $request, $id)
     {
         $userRepository = $this->container->get('pim_user.repository.user');
         $user           = $userRepository->findOneBy(['id' => $id]);
@@ -73,7 +74,7 @@ class UserController extends Controller
         $em->persist($api);
         $em->flush();
 
-        return $this->getRequest()->isXmlHttpRequest()
+        return $request->isXmlHttpRequest()
             ? new JsonResponse($api->getApiKey())
             : $this->forward('OroUserBundle:User:view', ['user' => $user]);
     }

@@ -3,6 +3,8 @@
 namespace Pim\Bundle\DataGridBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -32,9 +34,9 @@ class DatagridViewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('label', 'text', ['required' => true])
-            ->add('order', 'hidden')
-            ->add('filters', 'hidden');
+            ->add('label', TextType::class, ['required' => true])
+            ->add('order', HiddenType::class)
+            ->add('filters', HiddenType::class);
     }
 
     /**
@@ -52,7 +54,7 @@ class DatagridViewType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_datagrid_view';
     }

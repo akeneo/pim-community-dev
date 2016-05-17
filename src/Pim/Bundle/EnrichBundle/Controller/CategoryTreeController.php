@@ -355,7 +355,7 @@ class CategoryTreeController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function removeAction($id)
+    public function removeAction(Request $request, $id)
     {
         if (false === $this->securityFacade->isGranted($this->buildAclName('category_remove'))) {
             throw new AccessDeniedException();
@@ -367,7 +367,7 @@ class CategoryTreeController extends Controller
 
         $this->categoryRemover->remove($category, ['flush' => true]);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
             return $this->redirectToRoute($this->buildRouteName('categorytree_index'), $params);

@@ -9,6 +9,10 @@ use Pim\Bundle\UserBundle\Event\UserFormBuilderEvent;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -119,7 +123,7 @@ class UserType extends AbstractType
             )
             ->add(
                 'plainPassword',
-                'repeated',
+                RepeatedType::class,
                 [
                     'type'           => 'password',
                     'required'       => true,
@@ -171,7 +175,7 @@ class UserType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_user_user';
     }
@@ -186,14 +190,14 @@ class UserType extends AbstractType
         $builder
             ->add(
                 'username',
-                'text',
+                TextType::class,
                 [
                     'required' => true,
                 ]
             )
             ->add(
                 'email',
-                'email',
+                EmailType::class,
                 [
                     'label'    => 'E-mail',
                     'required' => true,
@@ -201,7 +205,7 @@ class UserType extends AbstractType
             )
             ->add(
                 'namePrefix',
-                'text',
+                TextType::class,
                 [
                     'label'    => 'Name prefix',
                     'required' => false,
@@ -209,7 +213,7 @@ class UserType extends AbstractType
             )
             ->add(
                 'firstName',
-                'text',
+                TextType::class,
                 [
                     'label'    => 'First name',
                     'required' => true,
@@ -217,7 +221,7 @@ class UserType extends AbstractType
             )
             ->add(
                 'middleName',
-                'text',
+                TextType::class,
                 [
                     'label'    => 'Middle name',
                     'required' => false,
@@ -225,7 +229,7 @@ class UserType extends AbstractType
             )
             ->add(
                 'lastName',
-                'text',
+                TextType::class,
                 [
                     'label'    => 'Last name',
                     'required' => true,
@@ -233,7 +237,7 @@ class UserType extends AbstractType
             )
             ->add(
                 'nameSuffix',
-                'text',
+                TextType::class,
                 [
                     'label'    => 'Name suffix',
                     'required' => false,
@@ -249,7 +253,7 @@ class UserType extends AbstractType
             )
             ->add(
                 'imageFile',
-                'file',
+                FileType::class,
                 [
                     'label'    => 'Avatar',
                     'required' => false,

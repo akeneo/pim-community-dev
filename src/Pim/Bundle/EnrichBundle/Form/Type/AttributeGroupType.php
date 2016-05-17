@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -48,7 +49,7 @@ class AttributeGroupType extends AbstractType
                     'property_path'     => 'translations'
                 ]
             )
-            ->add('sort_order', 'hidden')
+            ->add('sort_order', HiddenType::class)
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
 
         foreach ($this->subscribers as $subscriber) {
@@ -71,7 +72,7 @@ class AttributeGroupType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_attributegroup';
     }

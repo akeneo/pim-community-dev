@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -34,7 +35,7 @@ class SetAttributeRequirementsType extends AbstractType
         $builder
             ->add(
                 'attributeRequirements',
-                'collection',
+                CollectionType::class,
                 [
                     'type'    => 'pim_enrich_attribute_requirement',
                     'options' => [
@@ -60,7 +61,7 @@ class SetAttributeRequirementsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_mass_set_attribute_requirements';
     }

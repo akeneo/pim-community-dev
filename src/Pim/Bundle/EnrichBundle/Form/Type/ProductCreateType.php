@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -36,7 +37,7 @@ class ProductCreateType extends AbstractType
         $builder
             ->add(
                 'values',
-                'collection',
+                CollectionType::class,
                 [
                     'type'               => 'pim_product_value',
                     'allow_add'          => true,
@@ -62,7 +63,7 @@ class ProductCreateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_product_create';
     }

@@ -3,6 +3,7 @@
 namespace Akeneo\Bundle\FileStorageBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,7 +32,7 @@ class FileInfoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('uploadedFile', 'file', ['required' => false]);
+        $builder->add('uploadedFile', FileType::class, ['required' => false]);
     }
 
     /**
@@ -49,7 +50,7 @@ class FileInfoType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'akeneo_file_storage_file_info';
     }

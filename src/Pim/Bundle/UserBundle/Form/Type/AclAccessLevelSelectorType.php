@@ -5,6 +5,7 @@ namespace Pim\Bundle\UserBundle\Form\Type;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Pim\Bundle\UserBundle\Form\Transformer\AccessLevelToBooleanTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -33,13 +34,13 @@ class AclAccessLevelSelectorType extends AbstractType
      */
     public function getParent()
     {
-        return 'checkbox';
+        return CheckboxType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_acl_access_level_selector';
     }

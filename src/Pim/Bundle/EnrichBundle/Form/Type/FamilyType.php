@@ -7,6 +7,7 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFamilyFieldsSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -115,7 +116,7 @@ class FamilyType extends AbstractType
      */
     protected function addAttributeRequirementsField(FormBuilderInterface $builder)
     {
-        $builder->add('attributeRequirements', 'collection', ['type' => 'pim_enrich_attribute_requirement']);
+        $builder->add('attributeRequirements', CollectionType::class, ['type' => 'pim_enrich_attribute_requirement']);
 
         return $this;
     }
@@ -151,7 +152,7 @@ class FamilyType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_family';
     }

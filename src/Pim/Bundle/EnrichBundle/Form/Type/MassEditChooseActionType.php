@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,7 +24,7 @@ class MassEditChooseActionType extends AbstractType
         $builder
             ->add(
                 'operationAlias',
-                'choice',
+                ChoiceType::class,
                 [
                     'choices'  => $options['operations'],
                     'expanded' => true,
@@ -47,7 +48,7 @@ class MassEditChooseActionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_mass_edit_choose_action';
     }

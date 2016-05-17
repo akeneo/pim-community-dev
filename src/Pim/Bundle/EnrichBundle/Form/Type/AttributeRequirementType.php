@@ -3,6 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -36,9 +38,9 @@ class AttributeRequirementType extends AbstractType
         if ($options['keep_non_required']) {
             // Hidden value is used to store 1 or 0 and send the "uncheck" value
             // (which is impossible to do with a checkbox)
-            $builder->add('required', 'hidden');
+            $builder->add('required', HiddenType::class);
         } else {
-            $builder->add('required', 'checkbox');
+            $builder->add('required', CheckboxType::class);
         }
     }
 
@@ -66,7 +68,7 @@ class AttributeRequirementType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_attribute_requirement';
     }

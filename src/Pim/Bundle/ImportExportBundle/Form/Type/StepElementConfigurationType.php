@@ -72,7 +72,7 @@ class StepElementConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_import_export_step_element_configuration';
     }

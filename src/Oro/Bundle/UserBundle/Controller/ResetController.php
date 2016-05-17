@@ -5,6 +5,7 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class ResetController extends Controller
 {
@@ -21,9 +22,9 @@ class ResetController extends Controller
     /**
      * Request reset user password
      */
-    public function sendEmailAction()
+    public function sendEmailAction(Request $request)
     {
-        $username = $this->getRequest()->request->get('username');
+        $username = $request->request->get('username');
         $user = $this->get('oro_user.manager')->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
