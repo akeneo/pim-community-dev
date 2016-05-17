@@ -32,9 +32,6 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
-    /** @var array */
-    protected $filters;
-
     /**
      * @param FamilyRepositoryInterface $familyRepository
      */
@@ -49,10 +46,10 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
      */
     public function read()
     {
-        $configuration = $this->getConfiguration();
+        $filters = $this->getConfiguredFilters();
         if (!$this->isExecuted) {
             $this->isExecuted = true;
-            $this->families = $this->getFamilies($configuration['filters']);
+            $this->families = $this->getFamilies($filters);
         }
 
         $result = $this->families->current();
@@ -65,22 +62,6 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
         }
 
         return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return ['filters' => []];
-    }
-
-    /**
-     * @param array $filters
-     */
-    public function setFilters($filters)
-    {
-        $this->filters = $filters;
     }
 
     /**
@@ -111,5 +92,15 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
         $familiesIds = $filter['value'];
 
         return new ArrayCollection($this->familyRepository->findByIds($familiesIds));
+    }
+
+    /**
+     * @return array|null
+     */
+    protected function getConfiguredFilters()
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+
+        return $jobParameters->get('filters');
     }
 }

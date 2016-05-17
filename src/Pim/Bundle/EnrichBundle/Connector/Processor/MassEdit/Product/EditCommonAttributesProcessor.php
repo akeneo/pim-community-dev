@@ -50,11 +50,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      */
     public function process($product)
     {
-        $configuration = $this->getJobConfiguration();
-
-        if (!array_key_exists('actions', $configuration)) {
-            throw new InvalidArgumentException('Missing configuration for \'actions\'.');
-        }
+        $actions = $this->getConfiguredActions();
 
         if (!$this->isProductEditable($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
@@ -62,7 +58,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             return null;
         }
 
-        $product = $this->updateProduct($product, $configuration['actions']);
+        $product = $this->updateProduct($product, $actions);
         if (null !== $product && !$this->isProductValid($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
 

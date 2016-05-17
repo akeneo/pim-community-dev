@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
@@ -22,9 +23,6 @@ class AddProductValueProcessorSpec extends ObjectBehavior
             $propertyAdder,
             $validator
         );
-        $this->setConfiguration(
-            ['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]]
-        );
     }
 
     function it_adds_values_to_product(
@@ -32,8 +30,15 @@ class AddProductValueProcessorSpec extends ObjectBehavior
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobExecution $jobExecution
+        JobExecution $jobExecution,
+        JobParameters $jobParameters
     ) {
+        $configuration = ['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]];
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
@@ -50,8 +55,15 @@ class AddProductValueProcessorSpec extends ObjectBehavior
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobExecution $jobExecution
+        JobExecution $jobExecution,
+        JobParameters $jobParameters
     ) {
+        $configuration = ['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]];
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
         $violations = new ConstraintViolationList([$violation, $violation]);
         $validator->validate($product)->willReturn($violations);
@@ -64,11 +76,6 @@ class AddProductValueProcessorSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
 
         $this->process($product);
-    }
-
-    function it_returns_the_configuration_fields()
-    {
-        $this->getConfigurationFields()->shouldReturn(['actions' => []]);
     }
 
     function it_sets_the_step_execution(StepExecution $stepExecution)
