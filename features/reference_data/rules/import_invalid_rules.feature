@@ -29,10 +29,10 @@ Feature: Import rules
                     - kevlar
                     - chiffon
             actions:
-                - type:  set_value
+                - type:  set
                   field: sleeve_color
                   value: green
-                - type:  set_value
+                - type:  set
                   field: sleeve_fabric
                   value:
                     - kevlar

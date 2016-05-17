@@ -21,7 +21,7 @@ Feature: Display warning message on attributes coming from rules on variant attr
             value:    My nice tshirt
             locale:   en_US
         actions:
-          - type:   set_value
+          - type:   set
             field:  description
             value:  une belle description
             locale: fr_FR

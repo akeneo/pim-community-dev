@@ -1,5 +1,4 @@
 parameters:
-    pimee_catalog_rule.validator.existing_field.class: PimEnterprise\Component\CatalogRule\Validator\ExistingFieldValidator
     pimee_catalog_rule.validator.existing_filter_field.class: PimEnterprise\Component\CatalogRule\Validator\ExistingFilterFieldValidator
     pimee_catalog_rule.validator.existing_set_field.class: PimEnterprise\Component\CatalogRule\Validator\ExistingSetFieldValidator
     pimee_catalog_rule.validator.existing_copy_fields.class: PimEnterprise\Component\CatalogRule\Validator\ExistingCopyFieldsValidator
@@ -10,14 +9,6 @@ parameters:
     pimee_catalog_rule.validator.property_action.class: PimEnterprise\Component\CatalogRule\Validator\PropertyActionValidator
 
 services:
-    # deprecated, will be removed in 1.6, please use pimee_catalog_rule.validator.existing_(filter|set|copy|add)_field(s) instead
-    pimee_catalog_rule.validator.existing_field:
-        class: %pimee_catalog_rule.validator.existing_field.class%
-        arguments:
-            - '@pim_catalog.query.filter.registry'
-        tags:
-            - { name: validator.constraint_validator, alias: pimee_field_validator }
-
     pimee_catalog_rule.validator.existing_filter_field:
         class: %pimee_catalog_rule.validator.existing_filter_field.class%
         arguments:
@@ -72,6 +63,6 @@ services:
         arguments:
             - '@akeneo_rule_engine.action_applier.registry'
             - '@pim_catalog.builder.product'
-            - '@pim_validator'
+            - '@pim_catalog.validator.product'
         tags:
             - { name: validator.constraint_validator, alias: pimee_property_action_validator }

@@ -5,11 +5,6 @@ parameters:
     pimee_catalog_rule.denormalizer.product_rule.action.class:    PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ActionDenormalizer
     pimee_catalog_rule.denormalizer.product_rule.condition.class: PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ConditionDenormalizer
 
-    # deprecated, will be removed in 1.6, please use pimee_catalog_rule.denormalizer.product_rule.action.class
-    pimee_catalog_rule.denormalizer.product_rule.set_value_action.class:  PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\SetValueActionDenormalizer
-    # deprecated, will be removed in 1.6, please use pimee_catalog_rule.denormalizer.product_rule.action.class
-    pimee_catalog_rule.denormalizer.product_rule.copy_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\CopyValueActionDenormalizer
-
 services:
     pimee_catalog_rule.denormalizer.product_rule.chained:
         class: %pimee_catalog_rule.denormalizer.product_rule.chained.class%
@@ -19,22 +14,6 @@ services:
         class: %pimee_catalog_rule.denormalizer.product_rule.condition.class%
         arguments:
             - %pimee_catalog_rule.model.product_condition.class%
-        tags:
-            - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
-
-    # deprecated, will be removed in 1.6, please use pimee_catalog_rule.denormalizer.product_rule.set_action
-    pimee_catalog_rule.denormalizer.product_rule.set_value_action:
-        class: %pimee_catalog_rule.denormalizer.product_rule.set_value_action.class%
-        arguments:
-            - %pimee_catalog_rule.model.set_value_action.class%
-        tags:
-            - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
-
-    # deprecated, will be removed in 1.6, please use pimee_catalog_rule.denormalizer.product_rule.copy_action
-    pimee_catalog_rule.denormalizer.product_rule.copy_value_action:
-        class: %pimee_catalog_rule.denormalizer.product_rule.copy_value_action.class%
-        arguments:
-            - %pimee_catalog_rule.model.copy_value_action.class%
         tags:
             - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
 
