@@ -35,7 +35,7 @@ class CategoryDecorator extends ElementDecorator
             $values = '' !== $value ? explode(', ', $value) : [];
 
             foreach ($values as $value) {
-                $this->findNodeInTree($value)->click();
+                $this->findNodeInTree($value)->find('css', 'a')->click();
             }
         }
     }

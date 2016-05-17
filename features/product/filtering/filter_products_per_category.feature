@@ -22,10 +22,10 @@ Feature: Filter products by category
     When I uncheck the "Include sub-categories" switch
     Then I should be able to use the following filters:
       | filter   | operator     | value        | result                         |
-      | category |              | 2015 women's collection   | purple-tshirt and green-tshirt |
-      | category |              | 2015 men's collection     |                                |
+      | category |              | women_2015   | purple-tshirt and green-tshirt |
+      | category |              | men_2015     |                                |
       | category | unclassified |              | akeneo-mug                     |
     When I check the "Include sub-categories" switch
     Then I should be able to use the following filters:
       | filter   | operator | value    | result     |
-      | category |          | 2015 men's collection | blue-jeans |
+      | category |          | men_2015 | blue-jeans |
