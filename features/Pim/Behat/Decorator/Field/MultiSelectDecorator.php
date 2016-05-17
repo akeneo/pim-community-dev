@@ -29,17 +29,19 @@ class MultiSelectDecorator extends ElementDecorator
             );
         }
 
-
-        $values = '' !== $value ? explode(', ', $value) : [];
+        $values = '' !== $value ? explode(',', $value) : [];
 
         // The search input for a multiselect is optional
         $search = $widget->find('css', 'input[type="search"]');
         foreach ($values as $value) {
+            $value = trim($value);
             if (null !== $search) {
                 $search->setValue($value);
             }
 
-            $option = $widget->find('css', sprintf('li label:contains("%s")', $value));
+            $option = $this->spin(function () use ($widget, $value) {
+                return $widget->find('css', sprintf('li label:contains("%s")', $value));
+            }, sprintf('Cannot find option "%s"', $value));
             $option->click();
         }
 

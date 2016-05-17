@@ -12,6 +12,6 @@ Feature: Browse locales
     And the rows should be sorted ascending by Code
     And I should be able to sort the rows by Code and Activated
     And I should be able to use the following filters:
-      | filter    | value | result          |
-      | Code      | as    | as_IN           |
-      | Activated | yes   | en_US and fr_FR |
+      | filter    | operator | value | result          |
+      | code      | contains | as    | as_IN           |
+      | activated |          | yes   | en_US and fr_FR |
