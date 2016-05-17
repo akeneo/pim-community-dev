@@ -7,6 +7,7 @@ use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Writer\WriterInterface;
 use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * XLSX VariantGroup writer
@@ -32,9 +33,6 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
     /** @var int */
     protected $linesPerFile;
 
-    /** @var int */
-    protected $defaultLinesPerFile;
-
     /**
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
@@ -51,11 +49,11 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
     ) {
         parent::__construct($filePathResolver);
 
-        $this->flatRowBuffer       = $flatRowBuffer;
-        $this->fileExporter        = $fileExporter;
-        $this->columnSorter        = $columnSorter;
-        $this->defaultLinesPerFile = $defaultLinesPerFile;
-        $this->writtenFiles        = [];
+        $this->flatRowBuffer = $flatRowBuffer;
+        $this->fileExporter  = $fileExporter;
+        $this->columnSorter  = $columnSorter;
+        $this->linesPerFile  = $defaultLinesPerFile;
+        $this->writtenFiles  = [];
     }
 
     /**

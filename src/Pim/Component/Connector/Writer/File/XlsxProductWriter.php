@@ -7,6 +7,7 @@ use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Writer\WriterInterface;
 use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Write product data into a XLSX file on the local filesystem
@@ -29,9 +30,6 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     /** @var int */
     protected $linesPerFile;
 
-    /** @var int */
-    protected $defaultLinesPerFile;
-
     /** @var BulkFileExporter */
     protected $fileExporter;
 
@@ -51,11 +49,11 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     ) {
         parent::__construct($filePathResolver);
 
-        $this->flatRowBuffer       = $flatRowBuffer;
-        $this->fileExporter        = $fileExporter;
-        $this->columnSorter        = $columnSorter;
-        $this->defaultLinesPerFile = $defaultLinesPerFile;
-        $this->writtenFiles        = [];
+        $this->flatRowBuffer = $flatRowBuffer;
+        $this->fileExporter  = $fileExporter;
+        $this->columnSorter  = $columnSorter;
+        $this->linesPerFile  = $defaultLinesPerFile;
+        $this->writtenFiles  = [];
     }
 
     /**

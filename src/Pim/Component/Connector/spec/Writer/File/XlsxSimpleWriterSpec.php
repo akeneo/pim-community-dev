@@ -12,7 +12,7 @@ use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\Type as ConstraintsType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class XlsxSimpleWriterSpec extends ObjectBehavior
 {

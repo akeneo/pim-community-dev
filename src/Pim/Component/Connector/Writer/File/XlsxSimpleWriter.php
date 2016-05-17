@@ -6,6 +6,7 @@ use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Writer\WriterInterface;
 use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Write simple data into a XLSX file on the local filesystem
@@ -25,9 +26,6 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
     /** @var int */
     protected $linesPerFile;
 
-    /** @var int */
-    protected $defaultLinesPerFile;
-
     /** @var array */
     protected $writtenFiles = [];
 
@@ -45,9 +43,9 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
     ) {
         parent::__construct($filePathResolver);
 
-        $this->flatRowBuffer       = $flatRowBuffer;
-        $this->columnSorter        = $columnSorter;
-        $this->defaultLinesPerFile = $defaultLinesPerFile;
+        $this->flatRowBuffer = $flatRowBuffer;
+        $this->columnSorter  = $columnSorter;
+        $this->linesPerFile  = $defaultLinesPerFile;
     }
 
     /**
