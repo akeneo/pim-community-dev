@@ -101,17 +101,9 @@ class Grid extends Index
     {
         $value = str_replace('"', '', $value);
 
-        try {
-            $gridRow = $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
-        } catch (TimeoutException $e) {
-            $gridRow = null;
-        }
-
-        if (null === $gridRow) {
-            throw new \InvalidArgumentException(
-                sprintf('Couldn\'t find a row for value "%s"', $value)
-            );
-        }
+        $gridRow = $this->spin(function() use ($value){
+            return $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
+        });
 
         return $gridRow->getParent();
     }
@@ -214,6 +206,9 @@ class Grid extends Index
 
             if (null !== $results && null !== $select2) {
                 if (in_array($value, ['empty', 'is empty'])) {
+                    // Remove select2 drop mask, who making trouble for switching filter
+                    $driver->executeScript('$("#select2-drop-mask").remove();');
+
                     // Allow passing 'empty' as value too (for backwards compability with existing scenarios)
                     $filter->find('css', 'button.dropdown-toggle')->click();
                     $filter->find('css', '[data-value="empty"]')->click();
@@ -223,9 +218,11 @@ class Grid extends Index
                         $driver->getWebDriverSession()
                             ->element('xpath', $select2->getXpath())
                             ->postValue(['value' => [$value]]);
-                        sleep(2);
-                        $results->find('css', 'li')->click();
-                        sleep(2);
+
+                        $label = $this->spin(function () use ($results) {
+                            return $results->find('css', '.select2-result-label');
+                        }, 'Unable to find Select2 result label.');
+                        $label->click();
                     }
                 }
             } elseif ($value !== false) {
