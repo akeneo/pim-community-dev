@@ -92,13 +92,6 @@ services:
             - { name: kernel.event_subscriber }
 
     # Import & Export
-    pimee_security.event_subscriber.import_export.add_category_permissions:
-        class: %pimee_security.event_subscriber.import_export.add_category_permissions.class%
-        arguments:
-            - '@pimee_security.manager.category_access'
-        tags:
-            - { name: doctrine.event_subscriber }
-
     pimee_security.event_subscriber.import_export.add_product_category_permissions:
         class: %pimee_security.event_subscriber.import_export.add_category_permissions.class%
         arguments:
