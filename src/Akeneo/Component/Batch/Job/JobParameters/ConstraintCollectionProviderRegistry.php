@@ -39,6 +39,11 @@ class ConstraintCollectionProviderRegistry
             }
         }
 
+        throw new NonExistingServiceException(
+            sprintf('No contraint collection provider has been defined for the Job "%s"', $job->getName())
+        );
+
+        // TODO TIP-303, re-work the backward compatibility
         return new DefaultConstraintCollectionProvider();
     }
 }

@@ -39,6 +39,11 @@ class DefaultValuesProviderRegistry
             }
         }
 
+        throw new NonExistingServiceException(
+            sprintf('No default values provider has been defined for the Job "%s"', $job->getName())
+        );
+
+        // TODO TIP-303, re-work the backward compatibility
         return $this->getProviderFromStepElements($job);
     }
 

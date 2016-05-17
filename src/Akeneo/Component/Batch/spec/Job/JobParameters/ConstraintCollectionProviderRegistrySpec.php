@@ -4,6 +4,7 @@ namespace spec\Akeneo\Component\Batch\Job\JobParameters;
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Akeneo\Component\Batch\Job\JobParameters\NonExistingServiceException;
 use PhpSpec\ObjectBehavior;
 
 class ConstraintCollectionProviderRegistrySpec extends ObjectBehavior
@@ -15,9 +16,16 @@ class ConstraintCollectionProviderRegistrySpec extends ObjectBehavior
         $this->get($job)->shouldReturn($provider);
     }
 
-    function it_gets_a_default_provider_for_a_job_when_there_is_no_registered_provider(JobInterface $job)
+    function it_throws_an_exception_when_there_is_no_registered_provider(JobInterface $job)
     {
-        $defaultProviderClass = 'Akeneo\Component\Batch\Job\JobParameters\DefaultConstraintCollectionProvider';
-        $this->get($job)->shouldReturnAnInstanceOf($defaultProviderClass);
+        $job->getName()->willReturn('myname');
+        $this->shouldThrow(
+            new NonExistingServiceException(
+                'No contraint collection provider has been defined for the Job "myname"'
+            )
+        )->during(
+            'get',
+            [$job]
+        );
     }
 }
