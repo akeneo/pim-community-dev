@@ -9,6 +9,11 @@ class Select2Decorator extends ElementDecorator
 {
     use SpinCapableTrait;
 
+    /**
+     * Set the given value to the select2 field
+     *
+     * @param string $value
+     */
     public function setValue($value)
     {
         $this->open();
@@ -58,11 +63,17 @@ class Select2Decorator extends ElementDecorator
         }
     }
 
+    /**
+     * Open the select2 dropdown
+     */
     public function open()
     {
         $this->find('css', '.select2-choices')->click();
     }
 
+    /**
+     * Close the select2 dropdown
+     */
     public function close()
     {
         $dropMask = $this->getBody()->find('css', '#select2-drop-mask');

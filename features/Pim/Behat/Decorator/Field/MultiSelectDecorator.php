@@ -10,6 +10,11 @@ class MultiSelectDecorator extends ElementDecorator
 {
     use SpinCapableTrait;
 
+    /**
+     * Set the given value to the multi select
+     *
+     * @param string $value
+     */
     public function setValue($value)
     {
         // The multiselect plugin can put many widgets in the DOM.
@@ -45,7 +50,7 @@ class MultiSelectDecorator extends ElementDecorator
             $option->click();
         }
 
-        // uncheck all choices before doing anything
+        // uncheck the "all" choice to avoid filtering problems
         $all = $widget->find('css', 'li input[type="checkbox"][checked="checked"][value=""]');
 
         if (null !== $all && $value !== 'All') {

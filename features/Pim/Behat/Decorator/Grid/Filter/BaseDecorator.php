@@ -26,6 +26,6 @@ class BaseDecorator extends ElementDecorator
      */
     public function remove()
     {
-
+        $this->find('css', '.disable-filter')->click();
     }
 }

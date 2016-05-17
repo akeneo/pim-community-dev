@@ -516,8 +516,9 @@ class Grid extends Index
      */
     public function hideFilter($filterName)
     {
-        if ($this->getFilter($filterName)->isVisible()) {
-            $this->clickOnFilterToManage($filterName);
+        $filter = $this->getFilter($filterName);
+        if ($filter->isVisible()) {
+            $filter->remove();
         }
     }
 

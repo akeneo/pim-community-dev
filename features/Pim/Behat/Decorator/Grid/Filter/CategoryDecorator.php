@@ -10,14 +10,6 @@ class CategoryDecorator extends ElementDecorator
     use SpinCapableTrait;
 
     /**
-     * Opens the filter
-     */
-    public function open()
-    {
-
-    }
-
-    /**
      * Sets operator and value in the filter
      *
      * @param string $operator
@@ -38,5 +30,21 @@ class CategoryDecorator extends ElementDecorator
                 $this->findNodeInTree($value)->find('css', 'a')->click();
             }
         }
+    }
+
+    /**
+     * Open the filter
+     */
+    public function open()
+    {
+        //Nothing to do, the category is not a regular filter
+    }
+
+    /**
+     * Close the filter
+     */
+    public function close()
+    {
+        //Nothing to do, the category is not a regular filter
     }
 }

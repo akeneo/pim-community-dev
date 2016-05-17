@@ -124,7 +124,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theFilterShouldBeSetTo($filterName, $operator, $value)
     {
-        // TODO 417: rework
         $filter = $this->datagrid->getFilter($filterName);
         $this->spin(function () use ($filter, $value) {
             return $filter->find('css', sprintf('.filter-criteria-hint:contains("%s")', $value));
