@@ -13,6 +13,11 @@ parameters:
     pim_connector.reader.file.file_iterator_factory.class:  Pim\Component\Connector\Reader\File\FileIteratorFactory
     pim_connector.reader.file.media_path_transformer.class: Pim\Component\Connector\Reader\File\Product\MediaPathTransformer
 
+    pim_connector.reader.doctrine.product_export_builder.filter_configurator_registry.class: Pim\Component\Connector\Reader\Doctrine\ProductExportBuilder\FilterConfiguratorRegistry
+    pim_connector.reader.doctrine.product_export_builder.category_configurator.class: Pim\Component\Connector\Reader\Doctrine\ProductExportBuilder\CategoryConfigurator
+    pim_connector.reader.doctrine.product_export_builder.completeness_configurator.class: Pim\Component\Connector\Reader\Doctrine\ProductExportBuilder\CompletenessConfigurator
+    pim_connector.reader.doctrine.product_export_builder.status_configurator.class: Pim\Component\Connector\Reader\Doctrine\ProductExportBuilder\StatusConfigurator
+
 services:
     pim_connector.reader.product:
         class: %pim_connector.reader.product.class%
@@ -22,6 +27,7 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
             - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_connector.reader.doctrine.product_export_builder.filter_configurator_registry'
             - true
 
     pim_connector.reader.file.csv_iterator_factory:
@@ -132,3 +138,22 @@ services:
 
     pim_connector.reader.file.xlsx_category:
         alias: pim_connector.reader.file.xlsx
+
+    # Product Export Builder
+    pim_connector.reader.doctrine.product_export_builder.filter_configurator_registry:
+        class: %pim_connector.reader.doctrine.product_export_builder.filter_configurator_registry.class%
+
+    pim_connector.reader.doctrine.product_export_builder.category_configurator:
+        class: %pim_connector.reader.doctrine.product_export_builder.category_configurator.class%
+        tags:
+            - { name: pim_connector.product_export_builder.filter_configurator }
+
+    pim_connector.reader.doctrine.product_export_builder.completeness_configurator:
+        class: %pim_connector.reader.doctrine.product_export_builder.completeness_configurator.class%
+        tags:
+            - { name: pim_connector.product_export_builder.filter_configurator }
+
+    pim_connector.reader.doctrine.product_export_builder.status_configurator:
+        class: %pim_connector.reader.doctrine.product_export_builder.status_configurator.class%
+        tags:
+            - { name: pim_connector.product_export_builder.filter_configurator }
