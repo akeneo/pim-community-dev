@@ -12,8 +12,8 @@ Feature: Export families
     And I am on the "csv_footwear_family_export" export job page
     When I launch the export job
     And I wait for the "csv_footwear_family_export" job to finish
-    Then I should see "Read 4"
-    And I should see "Written 4"
+    Then I should see "Read 5"
+    And I should see "Written 5"
     And exported file of "csv_footwear_family_export" should contain:
       """
       code;label-en_US;attributes;attribute_as_label;requirements-mobile;requirements-tablet
@@ -21,6 +21,7 @@ Feature: Export families
       heels;Heels;color,description,heel_color,manufacturer,name,price,side_view,size,sku,sole_color,sole_fabric,top_view;name;color,heel_color,name,price,size,sku,sole_color;color,description,heel_color,name,price,side_view,size,sku,sole_color
       sneakers;Sneakers;color,description,lace_color,manufacturer,name,price,rating,side_view,size,sku,top_view,weather_conditions;name;color,name,price,size,sku;color,description,name,price,rating,side_view,size,sku,weather_conditions
       sandals;Sandals;color,description,manufacturer,name,price,rating,side_view,size,sku;name;color,name,price,size,sku;color,description,name,price,rating,side_view,size,sku
+      led_tvs;"LED TVs";color,description,manufacturer,name,price,rating,side_view,size,sku;name;color,name,price,size,sku;color,description,name,price,rating,side_view,size,sku
       """
 
   Scenario: Successfully export families CSV
@@ -34,8 +35,8 @@ Feature: Export families
     And I am on the "csv_footwear_family_export" export job page
     When I launch the export job
     And I wait for the "csv_footwear_family_export" job to finish
-    Then I should see "Read 5"
-    And I should see "Written 5"
+    Then I should see "Read 6"
+    And I should see "Written 6"
     And exported file of "csv_footwear_family_export" should contain:
       """
       code;label-en_US;attributes;attribute_as_label;requirements-mobile;requirements-tablet
@@ -43,6 +44,7 @@ Feature: Export families
       heels;Heels;color,description,heel_color,manufacturer,name,price,side_view,size,sku,sole_color,sole_fabric,top_view;name;color,heel_color,name,price,size,sku,sole_color;color,description,heel_color,name,price,side_view,size,sku,sole_color
       sneakers;Sneakers;color,description,lace_color,manufacturer,name,price,rating,side_view,size,sku,top_view,weather_conditions;name;color,name,price,size,sku;color,description,name,price,rating,side_view,size,sku,weather_conditions
       sandals;Sandals;color,description,manufacturer,name,price,rating,side_view,size,sku;name;color,name,price,size,sku;color,description,name,price,rating,side_view,size,sku
+      led_tvs;"LED TVs";color,description,manufacturer,name,price,rating,side_view,size,sku;name;color,name,price,size,sku;color,description,name,price,rating,side_view,size,sku
       tractors;;sku;sku;sku;sku
       """
 
@@ -57,12 +59,13 @@ Feature: Export families
     And I am on the "xlsx_footwear_family_export" export job page
     When I launch the export job
     And I wait for the "xlsx_footwear_family_exportt" job to finish
-    Then I should see "Read 5"
-    And I should see "Written 5"
+    Then I should see "Read 6"
+    And I should see "Written 6"
     And exported xlsx file of "xlsx_footwear_family_export" should contain:
       | code     | label-en_US | attributes                                                                                                 | attribute_as_label | requirements-mobile                             | requirements-tablet                                                       |
       | boots    | Boots       | color,description,lace_color,manufacturer,name,price,rating,side_view,size,sku,top_view,weather_conditions | name               | color,name,price,size,sku                       | color,description,name,price,rating,side_view,size,sku,weather_conditions |
       | heels    | Heels       | color,description,heel_color,manufacturer,name,price,side_view,size,sku,sole_color,sole_fabric,top_view    | name               | color,heel_color,name,price,size,sku,sole_color | color,description,heel_color,name,price,side_view,size,sku,sole_color     |
       | sneakers | Sneakers    | color,description,lace_color,manufacturer,name,price,rating,side_view,size,sku,top_view,weather_conditions | name               | color,name,price,size,sku                       | color,description,name,price,rating,side_view,size,sku,weather_conditions |
       | sandals  | Sandals     | color,description,manufacturer,name,price,rating,side_view,size,sku                                        | name               | color,name,price,size,sku                       | color,description,name,price,rating,side_view,size,sku                    |
+      | led_tvs  | LED TVs     | color,description,manufacturer,name,price,rating,side_view,size,sku                                        | name               | color,name,price,size,sku                       | color,description,name,price,rating,side_view,size,sku                    |
       | tractors |             | sku                                                                                                        | sku                | sku                                             | sku                                                                       |
