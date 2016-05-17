@@ -33,10 +33,10 @@ Feature: Apply a mass action on all entities
   Scenario: Edit family of all products, filtered by category and completeness
     Given I launched the completeness calculator
     When I am on the products page
-    And I filter by "category" with operator "" and value "2014_collection"
-    And I filter by "category" with operator "" and value "winter_collection"
-    And I filter by "Channel" with value "Mobile"
-    And I filter by "Complete" with value "yes"
+    And I filter by "category" with operator "" and value "2014 collection"
+    And I filter by "category" with operator "" and value "Winter collection"
+    And I filter by "scope" with operator "" and value "Mobile"
+    And I filter by "completeness" with operator "" and value "yes"
     When I select all products
     And I press mass-edit button
     And I choose the "Change the family of products" operation
