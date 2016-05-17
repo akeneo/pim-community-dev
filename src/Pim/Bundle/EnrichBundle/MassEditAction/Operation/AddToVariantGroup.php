@@ -16,6 +16,17 @@ class AddToVariantGroup extends AbstractMassEditOperation
     /** @var GroupInterface */
     protected $group;
 
+    /** @var string The background job code to launch */
+    protected $batchJobCode;
+
+    /**
+     * @param string $batchJobCode
+     */
+    public function __construct($batchJobCode)
+    {
+        $this->batchJobCode = $batchJobCode;
+    }
+
     /**
      * @param GroupInterface $group
      */
@@ -72,7 +83,7 @@ class AddToVariantGroup extends AbstractMassEditOperation
      */
     public function getBatchJobCode()
     {
-        return 'add_to_variant_group';
+        return $this->batchJobCode;
     }
 
     /**

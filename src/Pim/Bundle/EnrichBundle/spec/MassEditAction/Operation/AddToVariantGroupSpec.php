@@ -7,6 +7,11 @@ use Pim\Component\Catalog\Model\GroupInterface;
 
 class AddToVariantGroupSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith('add_to_variant_group');
+    }
+
     function it_is_a_mass_edit_action()
     {
         $this->shouldImplement('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');
