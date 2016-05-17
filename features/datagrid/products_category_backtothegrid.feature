@@ -57,7 +57,7 @@ Feature: Product category back to the grid
 
   @jira https://akeneo.atlassian.net/browse/PIM-5638
   Scenario: Successfully apply category's filter on product grid without affecting other grids
-    Given I filter by "category" with operator "" and value "Winter collection"
+    Given I filter by "category" with operator "" and value "winter_collection"
     And I click on import profile
     When I refresh the grid
     Then I should not see "Server error"
