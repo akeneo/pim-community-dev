@@ -52,6 +52,7 @@ class HookContext extends PimContext
         }
 
         $purgers[] = new ORMPurger($this->getService('doctrine')->getManager());
+
         $purgers[] = new SimplePurger(
             $this->getService('database_connection'),
             [
@@ -67,6 +68,15 @@ class HookContext extends PimContext
         foreach ($purgers as $purger) {
             $purger->purge();
         }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearAclCache()
+    {
+        $aclManager = $this->getService('oro_security.acl.manager');
+        $aclManager->clearCache();
     }
 
     /**
