@@ -105,19 +105,7 @@ class TreeContext extends PimContext
         if ($right) {
             $node->rightClick();
         } else {
-            try {
-                $checkbox = $this->spin(function () use ($node) {
-                    return $node->find('css', '.jstree-checkbox');
-                });
-            } catch (\Exception $e) {
-                $checkbox = null;
-            }
-
-            if (null !== $checkbox) {
-                $checkbox->click();
-            } else {
-                $node->click();
-            }
+            $node->select();
             $this->wait();
         }
     }

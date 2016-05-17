@@ -46,10 +46,10 @@ Feature: Display the product history
     And I press the "Save" button in the popin
     And I wait to be on the "boots" product page
     And I visit the "Categories" tab
-    And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
-    And I expand the "Winter collection" category
-    And I click on the "Winter boots" category
+    And I select the "2014_collection" tree
+    And I expand the "2014_collection" category
+    And I expand the "winter_collection" category
+    And I click on the "winter_boots" category
     And I save the product
     When I open the history
     Then there should be 2 update
@@ -79,13 +79,13 @@ Feature: Display the product history
     And I wait to be on the "boots" product page
     And I visit the "Categories" tab
     And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
-    And I click on the "2014 men's collection" category
+    And I expand the "2014_collection" category
+    And I click on the "men_2014" category
     And I select the "2015 collection" tree
-    And I expand the "2015 collection" category
-    And I expand the "2015 men's collection" category
-    And I click on the "2015 men's autumn collection" category
-    And I click on the "2015 men's winter collection" category
+    And I expand the "2015_collection" category
+    And I expand the "men_2015" category
+    And I click on the "men_2015_autumn" category
+    And I click on the "men_2015_winter" category
     And I save the product
     When I open the history
     Then there should be 2 update
