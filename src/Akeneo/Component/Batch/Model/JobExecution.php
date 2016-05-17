@@ -5,6 +5,7 @@ namespace Akeneo\Component\Batch\Model;
 use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -66,6 +67,9 @@ class JobExecution
 
     /** @var string */
     private $logFile;
+
+    /** @var JobParameters */
+    private $jobParameters;
 
     /**
      * Constructor
@@ -564,5 +568,21 @@ class JobExecution
         }
 
         return $formattedDate;
+    }
+
+    /**
+     * @param JobParameters $jobParameters
+     */
+    public function setJobParameters(JobParameters $jobParameters)
+    {
+        $this->jobParameters = $jobParameters;
+    }
+
+    /**
+     * @return JobParameters
+     */
+    public function getJobParameters()
+    {
+        return $this->jobParameters;
     }
 }
