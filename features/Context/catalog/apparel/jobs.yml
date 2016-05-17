@@ -51,6 +51,7 @@ jobs:
         type:      import
         configuration:
             uploadAllowed: true
+            filePath:   /tmp/apparel_asset_channel_configuration_import.yml
     apparel_asset_channel_configuration_export:
         connector: Akeneo Product Asset Connector
         alias: yml_asset_channel_configuration_export
@@ -59,7 +60,6 @@ jobs:
         configuration:
             filePath:      /tmp/asset_channel_configurations.yml
             uploadAllowed: true
-            multiple:      false
     edit_common_attributes_with_permission:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes_with_permission
