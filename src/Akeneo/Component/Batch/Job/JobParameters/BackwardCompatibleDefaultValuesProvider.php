@@ -13,6 +13,8 @@ use Akeneo\Component\Batch\Job\JobInterface;
  *
  * @deprecated will be removed in 1.7, this class is only used for backward compatibility, please register your own
  *             DefaultValuesProviderInterface in the DefaultValuesProviderRegistry
+ *
+ * TODO TIP-303: re-work BC strategy
  */
 class BackwardCompatibleDefaultValuesProvider implements DefaultValuesProviderInterface
 {

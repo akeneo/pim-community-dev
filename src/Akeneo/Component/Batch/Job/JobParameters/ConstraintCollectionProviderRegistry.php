@@ -44,6 +44,6 @@ class ConstraintCollectionProviderRegistry
         );
 
         // TODO TIP-303, re-work the backward compatibility
-        return new DefaultConstraintCollectionProvider();
+        return new EmptyConstraintCollectionProvider();
     }
 }

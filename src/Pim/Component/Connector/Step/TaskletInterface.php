@@ -15,8 +15,6 @@ interface TaskletInterface extends StepExecutionAwareInterface
 {
     /**
      * Execute the tasklet
-     *
-     * @param array $configuration
      */
-    public function execute(array $configuration);
+    public function execute();
 }

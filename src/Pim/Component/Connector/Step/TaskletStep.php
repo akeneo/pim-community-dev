@@ -22,7 +22,7 @@ class TaskletStep extends AbstractStep
     protected function doExecute(StepExecution $stepExecution)
     {
         $this->tasklet->setStepExecution($stepExecution);
-        $this->tasklet->execute($this->configuration);
+        $this->tasklet->execute();
     }
 
     /**

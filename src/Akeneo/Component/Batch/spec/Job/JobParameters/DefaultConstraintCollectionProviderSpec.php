@@ -4,7 +4,7 @@ namespace spec\Akeneo\Component\Batch\Job\JobParameters;
 
 use PhpSpec\ObjectBehavior;
 
-class DefaultConstraintCollectionProviderSpec extends ObjectBehavior
+class EmptyConstraintCollectionProviderSpec extends ObjectBehavior
 {
     function it_is_a_contraint_collection_provider()
     {
