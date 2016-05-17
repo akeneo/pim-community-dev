@@ -44,6 +44,16 @@ pim_enrich:
     mass_edit_action:
         product:
             not_editable: You don't have the permission to edit the products "%identifiers%".
+            page_title: Products
+            page_subtitle: Mass Edit (1 product)|Mass Edit (%count% products)
+            title: Choose operation
+            subtitle: Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products
+            confirm: You are about to update a product with the following information, please confirm.|You are about to update %count% products with the following information, please confirm.
+            steps:
+                first: Choose products
+                second: Choose operation
+                third: Configure
+                fourth: Confirm
         publish:
             label: Publish products
             description: Publish the selected products, the current published data will be erased by the current working copy.
@@ -82,21 +92,6 @@ pim_enrich:
         edit_common_attributes:
             message:
                 error: You're not the owner of the product, you can't edit it.
-
-# Mass edit operations
-pim_enrich.mass_edit_action:
-    limit_exceeded: Please choose less than %limit% items to edit
-    product:
-        page_title: Products
-        page_subtitle: Mass Edit (1 product)|Mass Edit (%count% products)
-        title: Choose operation
-        subtitle: Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products
-        confirm: You are about to update a product with the following information, please confirm.|You are about to update %count% products with the following information, please confirm.
-        steps:
-            first: Choose products
-            second: Choose operation
-            third: Configure
-            fourth: Confirm
 
 flash.product.updated: Product working copy has been updated
 flash.product_draft.updated: Draft has been successfully saved
@@ -154,6 +149,22 @@ pimee_enrich:
             options:
                 width: %value%px width
                 height: %value%px height
+
+add_product_value_with_permission_and_rules:
+    title: Add product value with permission check & rules application
+    steps.perform: Add product value
+update_product_value_with_permission_and_rules:
+    title: Update product value with permission check & rules application
+    steps.perform: Update product value
+edit_common_attributes_with_permission_and_rules:
+    title: Edit common attributes with permission check & rules application
+    steps.perform: Edit common attributes
+    steps.edit_common_attributes_processor.title: Edit common attributes
+add_to_variant_group_with_rules:
+    title: Add products to variant group with rules application
+    steps.perform: Add products to variant group
+    steps.excluded.title: Excluded product
+    steps.duplicated.title: Duplicated Axis
 
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Add product value with permission
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Update product value with permission

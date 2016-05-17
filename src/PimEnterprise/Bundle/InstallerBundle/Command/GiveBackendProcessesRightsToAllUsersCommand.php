@@ -61,15 +61,18 @@ class GiveBackendProcessesRightsToAllUsersCommand extends ContainerAwareCommand
     protected function getJobInstanceCodes()
     {
         return [
-            'update_product_value',
             'add_product_value',
             'add_product_value_with_permission',
-            'update_product_value_with_permission',
+            'add_product_value_with_permission_and_rules',
+            'update_product_value',
+            'update_product_value_with_permission_and_rules',
             'publish_product',
             'unpublish_product',
             'edit_common_attributes',
             'edit_common_attributes_with_permission',
+            'edit_common_attributes_with_permission_and_rules',
             'add_to_variant_group',
+            'add_to_variant_group_with_rules',
             'set_attribute_requirements',
             'approve_product_draft',
             'refuse_product_draft',

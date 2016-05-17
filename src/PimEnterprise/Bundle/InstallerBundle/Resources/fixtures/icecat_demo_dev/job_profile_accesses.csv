@@ -25,15 +25,19 @@ csv_asset_export;IT support,Manager,Redactor;IT support,Manager
 csv_asset_variation_export;IT support,Manager,Redactor;IT support,Manager
 yml_asset_channel_configuration_import;IT support,Manager,Redactor;IT support,Manager
 yml_asset_channel_configuration_export;IT support,Manager,Redactor;IT support,Manager
-update_product_value;All;
 add_product_value;All;
 add_product_value_with_permission;All;
+add_product_value_with_permission_and_rules;All;
+update_product_value;All;
 update_product_value_with_permission;All;
+update_product_value_with_permission_and_rules;All;
 publish_product;All;
 unpublish_product;All;
 edit_common_attributes;All;
 edit_common_attributes_with_permission;All;
+edit_common_attributes_with_permission_and_rules;All;
 add_to_variant_group;All;
+add_to_variant_group_with_rules;All;
 set_attribute_requirements;All;
 approve_product_draft;All;
 refuse_product_draft;All;
