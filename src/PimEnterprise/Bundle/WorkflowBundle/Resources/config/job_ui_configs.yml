@@ -1,0 +1,50 @@
+parameters: ~
+
+services:
+    # Form options for Exports ---------------------------------------------------------------------------------------
+    pimee_workflow.job_parameters.form_configuration_provider.product_csv_export:
+        class: %pim_import_export.job_parameters.form_configuration_provider.product_csv_export.class%
+        arguments:
+            - '@pim_import_export.job_parameters.form_configuration_provider.simple_csv_export'
+            - '@pim_catalog.repository.channel'
+            -
+                - 'pimee_workflow.jobs.csv_published_product_export.title'
+            - %pim_catalog.localization.decimal_separators%
+            - %pim_catalog.localization.date_formats%
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }
+
+    pimee_workflow.job_parameters.form_configuration_provider.product_xlsx_export:
+        class: %pim_import_export.job_parameters.form_configuration_provider.product_xlsx_export.class%
+        arguments:
+            - '@pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_export'
+            - '@pim_catalog.repository.channel'
+            -
+                - 'pimee_workflow.jobs.xlsx_published_product_export.title'
+            - %pim_catalog.localization.decimal_separators%
+            - %pim_catalog.localization.date_formats%
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }
+
+    # Form options for Imports ---------------------------------------------------------------------------------------
+    pimee_workflow.job_parameters.form_configuration_provider.product_csv_import:
+        class: %pim_import_export.job_parameters.form_configuration_provider.product_csv_import.class%
+        arguments:
+            - '@pim_import_export.job_parameters.form_configuration_provider.simple_csv_import'
+            -
+                - 'pimee_workflow.jobs.csv_product_proposal_import.title'
+            - %pim_catalog.localization.decimal_separators%
+            - %pim_catalog.localization.date_formats%
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }
+
+    pimee_workflow.job_parameters.form_configuration_provider.product_xlsx_import:
+        class: %pim_import_export.job_parameters.form_configuration_provider.product_xlsx_import.class%
+        arguments:
+            - '@pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_import'
+            -
+                - 'pimee_workflow.jobs.xlsx_product_proposal_import.title'
+            - %pim_catalog.localization.decimal_separators%
+            - %pim_catalog.localization.date_formats%
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }

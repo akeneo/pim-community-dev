@@ -72,15 +72,7 @@ abstract class AbstractProductPublisherTasklet extends AbstractConfigurableStepE
     /**
      * {@inheritdoc}
      */
-    abstract public function execute(array $configuration);
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
+    abstract public function execute();
 
     /**
      * {@inheritdoc}

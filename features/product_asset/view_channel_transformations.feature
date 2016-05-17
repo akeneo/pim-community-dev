@@ -9,7 +9,7 @@ Feature: View channel variations' configurations
 
   @javascript
   Scenario: View the channel variations' configurations
-    Given the following CSV file to import:
+    Given the following YAML file to import:
     """
     asset_channel_configurations:
         tablet:

@@ -1,0 +1,58 @@
+parameters: ~
+
+services:
+    # Form options for Exports ---------------------------------------------------------------------------------------
+    pimee_product_asset.job_parameters.form_configuration_provider.simple_yaml_export:
+        class: %pim_import_export.job_parameters.form_configuration_provider.simple_yaml_export.class%
+        arguments:
+            -
+                - 'pimee_product_asset.jobs.yml_asset_configuration_export.title'
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }
+
+    pimee_product_asset.job_parameters.form_configuration_provider.simple_csv_export:
+        class: %pim_import_export.job_parameters.form_configuration_provider.simple_csv_export.class%
+        arguments:
+            -
+                - 'pimee_product_asset.jobs.csv_asset_export.title'
+                - 'pimee_product_asset.jobs.csv_asset_category_export.title'
+                - 'pimee_product_asset.jobs.csv_asset_variation_export.title'
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }
+
+    pimee_product_asset.job_parameters.form_configuration_provider.simple_xlsx_export:
+        class: %pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_export.class%
+        arguments:
+            -
+                - 'pimee_product_asset.jobs.xlsx_asset_export.title'
+                - 'pimee_product_asset.jobs.xlsx_asset_category_export.title'
+                - 'pimee_product_asset.jobs.xlsx_asset_variation_export.title'
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }
+
+    # Form options for Imports ---------------------------------------------------------------------------------------
+    pimee_product_asset.job_parameters.form_configuration_provider.simple_yaml_import:
+        class: %pim_import_export.job_parameters.form_configuration_provider.simple_yaml_import.class%
+        arguments:
+            -
+                - 'pimee_product_asset.jobs.yml_asset_channel_configuration_import.title'
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }
+
+    pimee_product_asset.job_parameters.form_configuration_provider.simple_csv_import:
+        class: %pim_import_export.job_parameters.form_configuration_provider.simple_csv_import.class%
+        arguments:
+            -
+                - 'pimee_product_asset.jobs.csv_asset_import.title'
+                - 'pimee_product_asset.jobs.csv_asset_category_import.title'
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }
+
+    pimee_product_asset.job_parameters.form_configuration_provider.simple_xlsx_import:
+        class: %pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_import.class%
+        arguments:
+            -
+                - 'pimee_product_asset.jobs.xlsx_asset_import.title'
+                - 'pimee_product_asset.jobs.xlsx_asset_category_import.title'
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }

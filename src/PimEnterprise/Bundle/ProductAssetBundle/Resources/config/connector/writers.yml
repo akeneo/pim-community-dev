@@ -40,3 +40,9 @@ services:
 
     pimee_product_asset.writer.file.xlsx_asset_variation:
         alias: pim_connector.writer.file.xlsx
+
+    pimee_product_asset.writer.file.yaml_asset_channel_configuration:
+        class: %pim_connector.writer.file.yaml.class%
+        arguments:
+            - '@pim_connector.writer.file.file_path_resolver'
+            - 'asset_channel_configurations'

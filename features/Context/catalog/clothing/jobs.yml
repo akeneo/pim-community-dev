@@ -16,6 +16,7 @@ jobs:
             realTimeVersioning: true
             decimalSeparator:   .
             dateFormat:         yyyy-MM-dd
+            filePath:           /tmp/csv_clothing_product_import.csv
     csv_clothing_product_import_with_rules:
         connector: Akeneo CSV Connector
         alias:     csv_product_import_with_rules
@@ -59,8 +60,6 @@ jobs:
         alias:     yml_rule_export
         label:     Clothing rule export
         type:      export
-        configuration:
-            header: rules
     csv_clothing_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
@@ -82,7 +81,6 @@ jobs:
             delimiter:           ;
             enclosure:           '"'
             escape:              '\'
-            circularRefsChecked: true
     csv_clothing_category_export:
         connector: Akeneo CSV Connector
         alias:     csv_category_export
@@ -191,13 +189,13 @@ jobs:
         type:      import
         configuration:
             uploadAllowed:    true
-            multiple:         false
             delimiter:        ;
             enclosure:        '"'
             escape:           '\'
             enabled:          true
             decimalSeparator: .
             dateFormat:       MM/dd/yyyy
+            filePath:         '/tmp/csv_clothing_product_proposal_import.csv'
     xlsx_clothing_product_proposal_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_proposal_import
@@ -205,10 +203,10 @@ jobs:
         type:      import
         configuration:
             uploadAllowed:    true
-            multiple:         false
             enabled:          true
             decimalSeparator: .
             dateFormat:       MM/dd/yyyy
+            filePath:         '/tmp/xlsx_clothing_product_proposal_import.xlsx'
     add_product_value:
         connector: Akeneo Mass Edit Connector
         alias:     add_product_value
@@ -375,9 +373,6 @@ jobs:
         type: export
         configuration:
             filePath:      /tmp/asset_channel_configurations.yml
-            uploadAllowed: true
-            multiple:
-            header: asset_channel_configurations
     apply_assets_mass_upload:
         connector: Akeneo Product Asset Connector
         alias:     apply_assets_mass_upload

@@ -20,7 +20,7 @@ connector:
                     services:
                         reader:    pimee_catalog_rule.reader.doctrine.rule_definition
                         processor: pimee_catalog_rule.processor.normalization.rule_definition
-                        writer:    pim_connector.writer.file.yaml
+                        writer:    pimee_catalog_rule.writer.file.yaml_rule_definition
         rule_impacted_product_count:
             title: pimee_catalog_rule.jobs.impacted_product_count.title
             type:  mass_edit_rule

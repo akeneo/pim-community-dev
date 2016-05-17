@@ -58,10 +58,10 @@ class MassUploadTasklet implements TaskletInterface
         return $this;
     }
 
-    /*
+    /**
      * {@inheritdoc}
      */
-    public function execute(array $configuration)
+    public function execute()
     {
         $jobExecution = $this->stepExecution->getJobExecution();
 

@@ -1,0 +1,47 @@
+parameters:
+    pim_connector.job.job_parameters.default_values_provider.impacted_product_count.class: PimEnterprise\Component\CatalogRule\Connector\Job\JobParameters\DefaultValuesProvider\ImpactedProductCount
+
+services:
+    # Default Parameters for Exports ----------------------------------------------------------------------------------
+    pimee_catalog_rule.job.job_parameters.default_values_provider.simple_yaml_export:
+        class: %pim_connector.job.job_parameters.default_values_provider.simple_yaml_export.class%
+        arguments:
+            -
+                - 'pimee_catalog_rule.jobs.yml_rule_export.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    # Default Parameters for Imports ----------------------------------------------------------------------------------
+    pimee_catalog_rule.job.job_parameters.default_values_provider.simple_yaml_import:
+        class: %pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class%
+        arguments:
+            -
+                - 'pimee_catalog_rule.jobs.yml_rule_import.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_catalog_rule.job.job_parameters.default_values_provider.product_csv_import:
+        class: %pim_connector.job.job_parameters.default_values_provider.product_csv_import.class%
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
+            -
+                - 'pimee_catalog_rule.jobs.csv_product_import_with_rules.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_catalog_rule.job.job_parameters.default_values_provider.product_xlsx_import:
+        class: %pim_connector.job.job_parameters.default_values_provider.product_xlsx_import.class%
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
+            -
+                - 'pimee_catalog_rule.jobs.xlsx_product_import_with_rules.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_catalog_rule.job.job_parameters.default_values_provider.impacted_product_count:
+        class: %pim_connector.job.job_parameters.default_values_provider.impacted_product_count.class%
+        arguments:
+            -
+                - 'pimee_catalog_rule.jobs.impacted_product_count.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

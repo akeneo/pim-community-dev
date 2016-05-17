@@ -49,14 +49,14 @@ class AssetProcessor extends Processor
     public function process($asset)
     {
         $normalizedAsset = $this->assetNormalizer->normalize($asset);
-
+        $parameters = $this->stepExecution->getJobParameters();
         return $this->serializer->serialize(
             $normalizedAsset,
             'csv',
             [
-                'delimiter'     => $this->delimiter,
-                'enclosure'     => $this->enclosure,
-                'withHeader'    => $this->withHeader,
+                'delimiter'     => $parameters->get('delimiter'),
+                'enclosure'     => $parameters->get('enclosure'),
+                'withHeader'    => $parameters->get('withHeader'),
                 'heterogeneous' => false,
                 'locales'       => $this->localeRepository->getActivatedLocaleCodes(),
             ]

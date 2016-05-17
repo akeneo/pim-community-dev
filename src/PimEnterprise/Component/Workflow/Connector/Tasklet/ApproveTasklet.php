@@ -28,11 +28,13 @@ class ApproveTasklet extends AbstractReviewTasklet
     /**
      * {@inheritdoc}
      */
-    public function execute(array $configuration)
+    public function execute()
     {
         $this->initSecurityContext($this->stepExecution);
-        $productDrafts = $this->draftRepository->findByIds($configuration['draftIds']);
-        $context = ['comment' => $configuration['comment']];
+
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $productDrafts = $this->draftRepository->findByIds($jobParameters->get('draftIds'));
+        $context       = ['comment' => $jobParameters->get('comment')];
 
         $this->processDrafts($productDrafts, $context);
     }
@@ -75,7 +77,7 @@ class ApproveTasklet extends AbstractReviewTasklet
      * Approve a draft
      *
      * @param ProductDraftInterface $productDraft
-     * @param array                 $comment
+     * @param array                 $context
      *
      * @throws DraftNotReviewableException If draft cannot be approved
      */

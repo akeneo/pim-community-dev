@@ -69,12 +69,4 @@ class RulesExecutor extends AbstractConfigurableStepElement implements ItemWrite
             }
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
 }

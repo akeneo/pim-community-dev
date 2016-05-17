@@ -32,6 +32,8 @@ class PimEnterpriseInstallerExtension extends BasePimInstallerExtension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('fixture_loader.yml');
+        $loader->load('job_constraints.yml');
+        $loader->load('job_defaults.yml');
         $loader->load('services.yml');
     }
 }

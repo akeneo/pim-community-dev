@@ -1,0 +1,26 @@
+parameters: ~
+
+services:
+    # Validation constraints for Imports ------------------------------------------------------------------------------
+    pimee_installer.job.job_parameters.constraint_collection_provider.simple_csv_import:
+        class: %pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import.class%
+        arguments:
+            -
+                - 'pim_installer.jobs.fixtures_attribute_group_access_csv.title'
+                - 'pim_installer.jobs.fixtures_product_category_access_yml.title'
+                - 'pim_installer.jobs.fixtures_asset_category_csv.title'
+                - 'pim_installer.jobs.fixtures_job_profile_yml.title'
+                - 'pim_installer.jobs.fixtures_locale_csv.title'
+                - 'pimee_product_asset.jobs.fixtures_asset_csv.title'
+                - 'pim_installer.jobs.fixtures_asset_category_access_yml.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pimee_installer.job_parameters.constraints.simple_yaml_import:
+        class: %pim_connector.job.job_parameters.constraint_collection_provider.simple_yaml_import.class%
+        arguments:
+            -
+                - 'pim_installer.jobs.fixtures_locale_yml.title'
+                - 'pimee_product_asset.jobs.fixtures_asset_channel_configurations_yml.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

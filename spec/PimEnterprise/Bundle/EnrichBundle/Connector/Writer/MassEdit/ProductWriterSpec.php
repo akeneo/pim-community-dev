@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -19,7 +20,8 @@ class ProductWriterSpec extends ObjectBehavior
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         BulkObjectDetacherInterface $detacher,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $versionManager,
@@ -27,6 +29,7 @@ class ProductWriterSpec extends ObjectBehavior
             $detacher,
             $authorizationChecker
         );
+        $this->setStepExecution($stepExecution);
     }
 
     function it_is_initializable()
@@ -49,53 +52,41 @@ class ProductWriterSpec extends ObjectBehavior
         $this->shouldHaveType('\Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
     }
 
-    function it_provides_configuration_fields()
-    {
-        $this->getConfigurationFields()->shouldReturn([
-            'realTimeVersioning' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.import.realTimeVersioning.label',
-                    'help'  => 'pim_connector.import.realTimeVersioning.help'
-                ]
-            ]
-        ]);
-    }
-
-    function it_is_configurable()
-    {
-        $this->isRealTimeVersioning()->shouldReturn(true);
-
-        $this->setRealTimeVersioning(false);
-
-        $this->isRealTimeVersioning()->shouldReturn(false);
-    }
-
     function it_saves_items(
         $productSaver,
-        StepExecution $stepExecution,
+        $stepExecution,
         ProductInterface $product1,
-        ProductInterface $product2
+        ProductInterface $product2,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('realTimeVersioning')->willReturn(true);
+
         $items = [$product1, $product2];
 
         $product1->getId()->willReturn('45');
         $product2->getId()->willReturn(null);
 
-        $this->setStepExecution($stepExecution);
+        $stepExecution->incrementSummaryInfo('proposal')->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(1);
+
         $productSaver->saveAll($items)->shouldBeCalled();
         $this->write($items);
     }
 
     function it_increments_summary_info_with_permission(
         $authorizationChecker,
+        $stepExecution,
         TokenStorageInterface $tokenStorage,
-        StepExecution $stepExecution,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
-        ProductInterface $product4
+        ProductInterface $product4,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('realTimeVersioning')->willReturn(true);
+
         $product1->getId()->willReturn('45');
         $tokenStorage->getToken()->willReturn('token');
         $product2->getId()->willReturn(null);
@@ -107,7 +98,6 @@ class ProductWriterSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(2);
         $stepExecution->incrementSummaryInfo('proposal')->shouldBeCalledTimes(2);
 
-        $this->setStepExecution($stepExecution);
         $this->write([$product1, $product2, $product3, $product4]);
     }
 }
