@@ -3,17 +3,19 @@
 namespace spec\Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\ImportExportBundle\Provider\JobLabelProvider;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class JobExecutionNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, TranslatorInterface $translator)
+    function let(SerializerInterface $serializer, TranslatorInterface $translator, JobLabelProvider $labelProvider)
     {
-        $this->beConstructedWith($translator);
+        $this->beConstructedWith($translator, $labelProvider);
 
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
@@ -31,23 +33,27 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_job_execution_instance(
+        $serializer,
+        $translator,
+        $labelProvider,
+        JobInstance $jobInstance,
         JobExecution $jobExecution,
         StepExecution $exportExecution,
         StepExecution $cleanExecution,
-        BatchStatus $status,
-        $serializer,
-        $translator
+        BatchStatus $status
     ) {
         $jobExecution->getFailureExceptions()->willReturn(
             [
                 ['message' => 'error', 'messageParameters' => ['foo' => 'bar']]
             ]
         );
+        $jobInstance->getAlias()->willReturn('wow_job');
         $translator->trans('error', ['foo' => 'bar'])->willReturn('Such error');
+        $labelProvider->getJobLabel('wow_job')->willReturn('Wow job');
 
-        $jobExecution->getLabel()->willReturn('Wow job');
         $jobExecution->isRunning()->willReturn(true);
         $jobExecution->getStatus()->willReturn($status);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
         $status->getValue()->willReturn(1);
         $translator->trans('pim_import_export.batch_status.1')->willReturn('COMPLETED');
 

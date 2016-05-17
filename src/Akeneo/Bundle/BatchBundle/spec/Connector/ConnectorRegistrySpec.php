@@ -15,24 +15,22 @@ class ConnectorRegistrySpec extends ObjectBehavior
     {
         $this->beConstructedWith($jobFactory, $stepFactory);
 
-        $jobTitle = 'pim_installer.jobs.fixtures_category_csv.title';
-        $jobFactory->createJob($jobTitle)->willReturn($job);
-        $stepTitle = 'pim_connector.jobs.fixtures_category_csv.validation.title';
+        $jobName = 'fixtures_category_csv';
+        $jobFactory->createJob($jobName)->willReturn($job);
+        $stepName = 'validation';
         $stepClass = 'Pim\\Component\\Connector\\Step\\ValidatorStep';
         $stepServices = [];
         $stepParameters = [];
-        $stepFactory->createStep($stepTitle, $stepClass, $stepServices, $stepParameters)->willReturn($step);
-        $job->addStep($stepTitle, $step)->shouldBeCalled();
+        $stepFactory->createStep($stepName, $stepClass, $stepServices, $stepParameters)->willReturn($step);
+        $job->addStep($stepName, $step)->shouldBeCalled();
 
         $connector = 'Data fixtures';
         $jobType = 'fixtures';
-        $jobAlias = 'fixtures_category_csv';
         $this->addStepToJob(
             $connector,
             $jobType,
-            $jobAlias,
-            $jobTitle,
-            $stepTitle,
+            $jobName,
+            $stepName,
             $stepClass,
             $stepServices,
             $stepParameters
