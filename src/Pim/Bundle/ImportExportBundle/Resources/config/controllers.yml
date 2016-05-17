@@ -23,6 +23,8 @@ services:
             - '@pim_import_export.repository.job_instance'
             - '@security.token_storage'
             - '@pim_import_export.provider.job_template'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.job.job_parameters_validator'
             - export
 
     pim_import_export.controller.import_profile:
@@ -43,6 +45,8 @@ services:
             - '@pim_import_export.repository.job_instance'
             - '@security.token_storage'
             - '@pim_import_export.provider.job_template'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.job.job_parameters_validator'
             - import
 
     pim_import_export.controller.export_execution:
