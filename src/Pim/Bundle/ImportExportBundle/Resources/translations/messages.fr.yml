@@ -27,6 +27,10 @@ pim_import_export:
       warning: "L'import de <strong>%label%</strong> est terminé mais il y a des avertissements"
       success: "L'import de <strong>%label%</strong> est terminé"
   list: Sélectionner un job
+  job_profile:
+    tab:
+      property.title: Propriétés générales
+      history.title: Historique
 pim_title.export_profile.index: "Gestion de profils d'export"
 pim_title.export_profile.edit: "Profile d'export %job.label% | Edition"
 pim_title.export_profile.show: "Profile d'export %job.label% | Visualisation"
