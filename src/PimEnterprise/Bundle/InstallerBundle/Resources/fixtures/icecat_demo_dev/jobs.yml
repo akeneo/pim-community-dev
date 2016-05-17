@@ -83,7 +83,6 @@ jobs:
             delimiter:           ;
             enclosure:           '"'
             escape:              '\'
-            circularRefsChecked: true
     csv_category_export:
         connector: Akeneo CSV Connector
         alias:     csv_category_export
@@ -206,7 +205,6 @@ jobs:
         type:      import
         configuration:
             uploadAllowed: true
-            multiple:      false
     yml_rule_export:
         connector: Akeneo Rule Engine Connector
         alias:     yml_rule_export
@@ -223,7 +221,6 @@ jobs:
         configuration:
             filePath:           /tmp/product_draft.csv
             uploadAllowed:      true
-            multiple:           false
             delimiter:          ;
             enclosure:          '"'
             escape:             '\'
@@ -400,7 +397,6 @@ jobs:
         configuration:
             filePath:      /tmp/asset_channel_configurations.yml
             uploadAllowed: true
-            multiple:      false
             header:        asset_channel_configurations
     csv_family_import:
         connector: Akeneo CSV Connector
@@ -483,7 +479,6 @@ jobs:
         configuration:
             filePath:      /tmp/product_draft.xlsx
             uploadAllowed: true
-            multiple:      false
             enabled:       true
     xlsx_category_import:
         connector: Akeneo XLSX Connector
@@ -493,7 +488,6 @@ jobs:
         configuration:
             filePath:            /tmp/category.xlsx
             uploadAllowed:       true
-            circularRefsChecked: true
     xlsx_association_type_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_association_type_import
