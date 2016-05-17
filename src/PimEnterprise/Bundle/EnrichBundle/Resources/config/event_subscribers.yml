@@ -3,8 +3,6 @@ parameters:
     pimee_enrich.form.subscriber.category_permissions.class:        PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\CategoryPermissionsSubscriber
     pimee_enrich.form.subscriber.locale_permissions.class:          PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\LocalePermissionsSubscriber
 
-    pim_enrich.form.subscriber.add_attribute_type.class:            PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
-
 services:
     pimee_enrich.form.subscriber.attribute_group_permissions:
         class: '%pimee_enrich.form.subscriber.attribute_group_permissions.class%'

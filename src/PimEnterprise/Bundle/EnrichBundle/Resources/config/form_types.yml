@@ -1,4 +1,5 @@
 parameters:
+    ## Form Types
     pimee_enrich.form.type.attribute_group_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupPermissionsType
     pimee_enrich.form.type.category_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\CategoryPermissionsType
     pimee_enrich.form.type.locale_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\LocalePermissionsType
@@ -6,6 +7,9 @@ parameters:
     pimee_enrich.form.type.classify.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType
     pimee_enrich.form.type.unpublish.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\UnpublishType
     pimee_enrich.form.type.locale.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\LocaleType
+
+    ## Form extensions
+    pimee_enrich.form.extension.attribute.class: PimEnterprise\Bundle\EnrichBundle\Form\Extension\AttributeTypeExtension
 
 services:
     ##
@@ -107,3 +111,8 @@ services:
         class: '%pimee_enrich.form.type.locale_permissions.class%'
         tags:
             - { name: form.type, alias: pimee_enrich_locale_permissions }
+
+    pimee_enrich.form.extension.attribute:
+        class: '%pimee_enrich.form.extension.attribute.class%'
+        tags:
+            - { name: form.type_extension, alias: pim_enrich_attribute }
