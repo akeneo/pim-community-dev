@@ -45,8 +45,13 @@ class DateDecorator extends ElementDecorator
                 $inputEnd->setValue($dates[0]);
                 break;
             default:
-                $inputStart->setValue('');
-                $inputEnd->setValue('');
+                if ($inputStart->isVisible()) {
+                    $inputStart->setValue('');
+                }
+                if ($inputEnd->isVisible()) {
+                    $inputEnd->setValue('');
+                }
+                break;
         }
 
         // We submit the filter

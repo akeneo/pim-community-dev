@@ -16,30 +16,10 @@ class Select2Decorator extends ElementDecorator
      */
     public function setValue($value)
     {
-        $this->open();
         $values = explode(',', $value);
+        $this->prune();
 
-        // TODO: handle choices deletion, see vendor/akeneo/pim-community-dev/features/Context/Page/Base/Form.php:709
-
-        // The select2 plugin can put many widgets in the DOM.
-        // We have to find the one that is visible and active.
-        $select2Widgets = $this->spin(function () {
-            return $this->getBody()->findAll('css', '.select2-drop');
-        }, sprintf('Could not find any select2 widget for filter "%s"', $this->getAttribute('data-name')));
-
-        $widget = null;
-        foreach ($select2Widgets as $select2Widget) {
-            if ($select2Widget->isVisible()) {
-                $widget = $select2Widget;
-            }
-        }
-
-        if (null === $widget) {
-            throw new \Exception(
-                sprintf('Could not find the select2 widget for filter "%s"', $this->getAttribute('data-name'))
-            );
-        }
-
+        $widget = $this->getWidget();
         foreach ($values as $value) {
             $value = trim($value);
 
@@ -63,6 +43,14 @@ class Select2Decorator extends ElementDecorator
         }
     }
 
+    public function prune()
+    {
+        $elements = array_reverse($this->findAll('css', '.select2-choices li.select2-search-choice'));
+        foreach ($elements as $element) {
+            $element->find('css', '.select2-search-choice-close')->click();
+        }
+    }
+
     /**
      * Open the select2 dropdown
      */
@@ -81,6 +69,24 @@ class Select2Decorator extends ElementDecorator
         if (null !== $dropMask) {
             $dropMask->click();
         }
+    }
+
+    public function getWidget()
+    {
+        return $this->spin(function() {
+            $this->open();
+
+            $select2Widgets = $this->getBody()->findAll('css', '.select2-drop');
+
+            $widget = null;
+            foreach ($select2Widgets as $select2Widget) {
+                if ($select2Widget->isVisible()) {
+                    $widget = $select2Widget;
+                }
+            }
+
+            return $widget;
+        }, 'Could not find the select2 widget drop');
     }
 
     /**
