@@ -39,9 +39,4 @@ class RuleDefinitionWriterSpec extends ObjectBehavior
 
         $this->write($items);
     }
-
-    function it_returns_configuration_fields()
-    {
-        $this->getConfigurationFields()->shouldReturn([]);
-    }
 }

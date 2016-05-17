@@ -62,12 +62,4 @@ class ProductLoaderProcessor extends AbstractConfigurableStepElement implements 
 
         return $item[$identifierProperties[0]];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
 }
