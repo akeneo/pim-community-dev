@@ -23,9 +23,6 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
  */
 class ODMProductReader extends AbstractConfigurableStepElement implements ProductReaderInterface
 {
-    /** @var string */
-    protected $channel;
-
     /** @var StepExecution */
     protected $stepExecution;
 
@@ -99,16 +96,16 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
 
         if (!$this->executed) {
             $this->executed = true;
-            if (!is_object($this->channel)) {
-                $this->channel = $this->channelRepository->findOneByIdentifier($this->channel);
-            }
+            $jobParameters = $this->stepExecution->getJobParameters();
+            $channelCode = $jobParameters->get('channel');
+            $channel = $this->channelRepository->findOneByIdentifier($channelCode);
 
             if ($this->missingCompleteness) {
-                $this->completenessManager->generateMissingForChannel($this->channel);
+                $this->completenessManager->generateMissingForChannel($channel);
             }
 
             $this->query = $this->repository
-                ->buildByChannelAndCompleteness($this->channel)
+                ->buildByChannelAndCompleteness($channel)
                 ->getQuery();
 
             $this->products = $this->getQuery()->execute();
@@ -121,47 +118,12 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
         $result = $this->products->current();
 
         if ($result) {
-            $this->metricConverter->convert($result, $this->channel);
+            $this->metricConverter->convert($result, $channel);
             $this->stepExecution->incrementSummaryInfo('read');
             $this->products->next();
         }
 
         return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'channel' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => $this->channelRepository->getLabelsIndexedByCode(),
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_base_connector.export.channel.label',
-                    'help'     => 'pim_base_connector.export.channel.help'
-                ]
-            ]
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setChannel($channel)
-    {
-        $this->channel = $channel;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChannel()
-    {
-        return $this->channel;
     }
 
     /**

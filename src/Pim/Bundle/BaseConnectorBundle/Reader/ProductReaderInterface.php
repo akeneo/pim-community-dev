@@ -14,17 +14,4 @@ use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
  */
 interface ProductReaderInterface extends ItemReaderInterface, StepExecutionAwareInterface
 {
-    /**
-     * Set channel
-     *
-     * @param string $channel
-     */
-    public function setChannel($channel);
-
-    /**
-     * Get channel
-     *
-     * @return string
-     */
-    public function getChannel();
 }

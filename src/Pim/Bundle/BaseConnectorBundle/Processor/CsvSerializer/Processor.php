@@ -24,15 +24,6 @@ abstract class Processor extends AbstractConfigurableStepElement implements
     ItemProcessorInterface,
     StepExecutionAwareInterface
 {
-    /** @var string */
-    protected $delimiter = ';';
-
-    /** @var string */
-    protected $enclosure = '"';
-
-    /** @var bool */
-    protected $withHeader = true;
-
     /** @var StepExecution */
     protected $stepExecution;
 
@@ -52,94 +43,6 @@ abstract class Processor extends AbstractConfigurableStepElement implements
     {
         $this->serializer       = $serializer;
         $this->localeRepository = $localeRepository;
-    }
-
-    /**
-     * Set the csv delimiter character
-     *
-     * @param string $delimiter
-     */
-    public function setDelimiter($delimiter)
-    {
-        $this->delimiter = $delimiter;
-    }
-
-    /**
-     * Get the csv delimiter character
-     *
-     * @return string
-     */
-    public function getDelimiter()
-    {
-        return $this->delimiter;
-    }
-
-    /**
-     * Set the csv enclosure character
-     *
-     * @param string $enclosure
-     */
-    public function setEnclosure($enclosure)
-    {
-        $this->enclosure = $enclosure;
-    }
-
-    /**
-     * Get the csv enclosure character
-     *
-     * @return string
-     */
-    public function getEnclosure()
-    {
-        return $this->enclosure;
-    }
-
-    /**
-     * Set whether or not to print a header row into the csv
-     *
-     * @param bool $withHeader
-     */
-    public function setWithHeader($withHeader)
-    {
-        $this->withHeader = $withHeader;
-    }
-
-    /**
-     * Get whether or not to print a header row into the csv
-     *
-     * @return bool
-     */
-    public function isWithHeader()
-    {
-        return $this->withHeader;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'delimiter' => [
-                'options' => [
-                    'label' => 'pim_base_connector.export.delimiter.label',
-                    'help'  => 'pim_base_connector.export.delimiter.help'
-                ]
-            ],
-            'enclosure' => [
-                'options' => [
-                    'label' => 'pim_base_connector.export.enclosure.label',
-                    'help'  => 'pim_base_connector.export.enclosure.help'
-                ]
-            ],
-            'withHeader' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_base_connector.export.withHeader.label',
-                    'help'  => 'pim_base_connector.export.withHeader.help'
-                ]
-            ],
-        ];
     }
 
     /**

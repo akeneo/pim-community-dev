@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Archiver;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
@@ -12,11 +13,17 @@ use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
 use Prophecy\Argument;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FileWriterArchiverSpec extends ObjectBehavior
 {
-    function let(Filesystem $filesystem) {
-        $this->beConstructedWith($filesystem);
+    function let(
+        Filesystem $filesystem,
+        ContainerInterface $container,
+        ConnectorRegistry $registry
+    ) {
+        $this->beConstructedWith($filesystem, $container);
+        $container->get('akeneo_batch.connectors')->willReturn($registry);
     }
 
     function it_is_initializable()
@@ -26,18 +33,20 @@ class FileWriterArchiverSpec extends ObjectBehavior
 
     function it_creates_a_file_when_writer_is_valid(
         $filesystem,
+        $registry,
         CsvWriter $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
         ItemStep $step
     ) {
+        $registry->getJob($jobInstance)->willReturn($job);
+
         $pathname = tempnam(sys_get_temp_dir(), 'spec');
         $filename = basename($pathname);
 
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
-        $jobInstance->getJob()->willReturn($job);
         $jobInstance->getType()->willReturn('type');
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
@@ -61,15 +70,16 @@ class FileWriterArchiverSpec extends ObjectBehavior
 
     function it_doesnt_create_a_file_when_writer_is_invalid(
         $filesystem,
+        $registry,
         ItemWriterInterface $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
         ItemStep $step
     ) {
+        $registry->getJob($jobInstance)->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
-        $jobInstance->getJob()->willReturn($job);
         $jobInstance->getType()->willReturn('type');
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
@@ -86,15 +96,16 @@ class FileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_doesnt_create_a_file_if_step_is_not_an_item_step(
+        $registry,
         $filesystem,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
         AbstractStep $step
     ) {
+        $registry->getJob($jobInstance)->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
-        $jobInstance->getJob()->willReturn($job);
         $jobInstance->getType()->willReturn('type');
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
@@ -105,17 +116,18 @@ class FileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_supports_a_compatible_job(
+        $registry,
         CsvWriter $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
         ItemStep $step
     ) {
+        $registry->getJob($jobInstance)->willReturn($job);
         $pathname = tempnam(sys_get_temp_dir(), 'spec');
 
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
-        $jobInstance->getJob()->willReturn($job);
         $jobInstance->getType()->willReturn('type');
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
@@ -129,15 +141,16 @@ class FileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_does_not_support_a_incompatible_job(
+        $registry,
         ItemWriterInterface $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
         ItemStep $step
     ) {
+        $registry->getJob($jobInstance)->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
-        $jobInstance->getJob()->willReturn($job);
         $jobInstance->getType()->willReturn('type');
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);

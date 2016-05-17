@@ -127,29 +127,10 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
         }
 
         if (null !== $product) {
-            $this->metricConverter->convert($product, $this->channel);
+            $this->metricConverter->convert($product, $this->getChannel());
         }
 
         return $product;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'channel' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => $this->channelRepository->getLabelsIndexedByCode(),
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_base_connector.export.channel.label',
-                    'help'     => 'pim_base_connector.export.channel.help'
-                ]
-            ]
-        ];
     }
 
     /**
@@ -167,16 +148,14 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     /**
      * {@inheritdoc}
      */
-    public function setChannel($channel)
-    {
-        $this->channel = $channel;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getChannel()
     {
+        if (null === $this->channel) {
+            $parameters = $this->stepExecution->getJobParameters();
+            $channelCode = $parameters->get('channel');
+            $this->channel = $this->channelRepository->findOneByIdentifier($channelCode);
+        }
+
         return $this->channel;
     }
 
@@ -207,16 +186,12 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
      */
     protected function getIds()
     {
-        if (!is_object($this->channel)) {
-            $this->channel = $this->channelRepository->findOneByIdentifier($this->channel);
-        }
-
         if ($this->missingCompleteness) {
-            $this->completenessManager->generateMissingForChannel($this->channel);
+            $this->completenessManager->generateMissingForChannel($this->getChannel());
         }
 
         $this->query = $this->repository
-            ->buildByChannelAndCompleteness($this->channel);
+            ->buildByChannelAndCompleteness($this->getChannel());
 
         $rootAlias = current($this->query->getRootAliases());
         $rootIdExpr = sprintf('%s.id', $rootAlias);
