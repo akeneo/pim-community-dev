@@ -24,5 +24,4 @@ Feature: List categories
     Given I am on the categories page
     Then I should not see "Please select a category on the left or Create a new category"
     When I click on the "summer_collection" category
-    Then I should not see "Server error"
-    Then I reset the "Administrator" rights
+    Then I should not see the text "Server error"

@@ -28,7 +28,6 @@ Feature: Apply ACL permissions on mass edit actions
     And I should see the text "Add to a variant group"
     And I should not see "Change the family of products"
     And I should not see "Change status (enable / disable)"
-    Then I reset the "Catalog manager" rights
 
   Scenario: View all mass edit operations
     Given I am on the products page

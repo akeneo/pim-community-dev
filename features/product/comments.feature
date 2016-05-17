@@ -78,4 +78,3 @@ Feature: Leave a comment on a product
     And I save the role
     When I am on the "rangers" product page
     Then I should not see "Comments"
-    And I reset the "Administrator" rights

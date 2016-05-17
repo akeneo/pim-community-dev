@@ -49,7 +49,6 @@ Feature: Edit a family
     Then the field Code should be disabled
     And the field Attribute used as label should be disabled
     And the field English (United States) should be disabled
-    And I reset the "Administrator" rights
 
   @javascript
   Scenario: Disable attribute fields when the user can't edit a family
@@ -61,4 +60,3 @@ Feature: Edit a family
     Then attribute "name" should be required in channels mobile and tablet
     When I switch the attribute "Name" requirement in channel "Tablet"
     Then attribute "name" should be required in channels mobile and tablet
-    And I reset the "Administrator" rights

@@ -53,7 +53,6 @@ Feature: Edit a product
     And I save the role
     When I am on the "sandal" product page
     Then I should not see "Attributes"
-    And I reset the "Administrator" rights
 
   @jira https://akeneo.atlassian.net/browse/PIM-3615
   Scenario: Successfully have attributes set to the default scope (For Sandra => mobile and Julia => ecommerce).
