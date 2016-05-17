@@ -11,9 +11,6 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer as BaseAttributeNormalizer;
-use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
-use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -21,13 +18,33 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class AttributeNormalizer extends BaseAttributeNormalizer
+class AttributeNormalizer implements NormalizerInterface
 {
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
+    /**
+     * @param NormalizerInterface $normalizer
+     */
+    public function __construct(NormalizerInterface $normalizer)
+    {
+        $this->normalizer = $normalizer;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function normalize($attribute, $format = null, array $context = [])
     {
-        return parent::normalize($attribute, $format, $context) + ['is_read_only' => $attribute->isReadOnly()];
+        return $this->normalizer
+            ->normalize($attribute, $format, $context) + ['is_read_only' => $attribute->getProperty('is_read_only')];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsNormalization($data, $format = null)
+    {
+        return $this->normalizer->supportsNormalization($data, $format);
     }
 }

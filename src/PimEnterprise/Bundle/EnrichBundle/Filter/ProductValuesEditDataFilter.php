@@ -12,28 +12,36 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Filter;
 
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\EnrichBundle\Filter\ProductValuesEditDataFilter as BaseProductValuesEditDataFilter;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Product edit data filter
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProductValuesEditDataFilter extends BaseProductValuesEditDataFilter
+class ProductValuesEditDataFilter implements ObjectFilterInterface
 {
     /**
      * {@inheritdoc}
      */
-    protected function acceptValue(AttributeInterface $attribute, $value, array $options = [])
+    public function filterObject($attribute, $type, array $options = [])
     {
-        if ($attribute->isReadOnly()) {
-            return false;
+        if (!$this->supportsObject($attribute, $type, $options)) {
+            throw new \LogicException('This filter only handles objects of type "AttributeInterface"');
         }
 
-        return parent::acceptValue($attribute, $value, $options);
+        if ($attribute->getProperty('is_read_only')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsObject($object, $type, array $options = [])
+    {
+        return $object instanceof AttributeInterface;
     }
 }
