@@ -1,0 +1,50 @@
+parameters: ~
+
+services:
+    # Default parameters depending on Job
+    pim_installer.job_parameters.defaults.simple_csv_import:
+        class: %pim_connector.job.job_parameters.default_values_provider.simple_csv_import.class%
+        arguments:
+            -
+                - 'pim_installer.jobs.fixtures_category_csv.title'
+                - 'pim_installer.jobs.fixtures_attribute_group_csv.title'
+                - 'pim_installer.jobs.fixtures_channel_csv.title'
+                - 'pim_installer.jobs.fixtures_locale_csv.title'
+                - 'pim_installer.jobs.fixtures_currency_csv.title'
+                - 'pim_installer.jobs.fixtures_group_type_csv.title'
+                - 'pim_installer.jobs.fixtures_association_type_csv.title'
+                - 'pim_installer.jobs.fixtures_attribute_csv.title'
+                - 'pim_installer.jobs.fixtures_attribute_options_csv.title'
+                - 'pim_installer.jobs.fixtures_family_csv.title'
+                - 'pim_installer.jobs.fixtures_user_csv.title'
+                - 'pim_installer.jobs.fixtures_user_role_csv.title'
+                - 'pim_installer.jobs.fixtures_user_group_csv.title'
+                - 'pim_installer.jobs.fixtures_group_csv.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_installer.job_parameters.defaults.product_csv_import:
+        class: %pim_connector.job.job_parameters.default_values_provider.product_csv_import.class%
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
+            -
+                - 'pim_installer.jobs.fixtures_product_csv.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_installer.job_parameters.defaults.variant_group_csv_import:
+        class: %pim_connector.job.job_parameters.default_values_provider.variant_group_csv_import.class%
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
+            -
+                - 'pim_installer.jobs.fixtures_variant_group_csv.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_installer.job_parameters.defaults.simple_yaml_import:
+        class: %pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class%
+        arguments:
+            -
+                - 'pim_installer.jobs.fixtures_job_yml.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
