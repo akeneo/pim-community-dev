@@ -15,6 +15,6 @@ Feature: Filter group types
     Then the grid should contain 4 elements
     And I should see group types related and special
     And I should be able to use the following filters:
-      | filter | value | result  |
-      | Code   | rel   | related |
-      | Label  | Spec  | special |
+      | filter | operator | value | result  |
+      | code   | contains | rel   | related |
+      | label  | contains | Spec  | special |

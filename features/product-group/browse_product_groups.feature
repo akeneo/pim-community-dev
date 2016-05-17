@@ -25,7 +25,7 @@ Feature: Browse product groups
     And the rows should be sorted ascending by Code
     And I should be able to sort the rows by Code, Label and Type
     And I should be able to use the following filters:
-      | filter | value  | result                        |
-      | Code   | 2      | CROSS_SELL_2                  |
-      | Label  | Cross  | CROSS_SELL_1                  |
-      | Type   | X_SELL | CROSS_SELL_1 and CROSS_SELL_2 |
+      | filter | operator | value  | result                        |
+      | code   | contains | 2      | CROSS_SELL_2                  |
+      | label  | contains | Cross  | CROSS_SELL_1                  |
+      | type   |          | X_SELL | CROSS_SELL_1 and CROSS_SELL_2 |
