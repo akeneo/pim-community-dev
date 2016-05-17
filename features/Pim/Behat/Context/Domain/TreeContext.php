@@ -64,7 +64,7 @@ class TreeContext extends PimContext
             ->getElement('Category tree')
             ->expandNode($parent);
 
-        $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
+        $childNode = $parentNode->getParent()->find('css', sprintf('li[data-code="%s"]', $child));
 
         if ($not && $childNode) {
             throw $this->getMainContext()->createExpectationException(
