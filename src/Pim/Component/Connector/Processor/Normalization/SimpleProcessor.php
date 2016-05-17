@@ -40,12 +40,4 @@ class SimpleProcessor extends AbstractConfigurableStepElement implements ItemPro
     {
         return $this->normalizer->normalize($item, $this->format);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
 }

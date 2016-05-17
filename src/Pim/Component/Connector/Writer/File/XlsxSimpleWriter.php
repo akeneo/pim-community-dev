@@ -14,9 +14,6 @@ use Box\Spout\Writer\WriterFactory;
  */
 class XlsxSimpleWriter extends AbstractFileWriter
 {
-    /** @var bool */
-    protected $withHeader;
-
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;
 
@@ -49,7 +46,9 @@ class XlsxSimpleWriter extends AbstractFileWriter
             $this->localFs->mkdir($exportFolder);
         }
 
-        $this->flatRowBuffer->write($items, $this->isWithHeader());
+        $parameters = $this->stepExecution->getJobParameters();
+        $withHeader = $parameters->get('withHeader');
+        $this->flatRowBuffer->write($items, $withHeader);
     }
 
     /**
@@ -73,43 +72,5 @@ class XlsxSimpleWriter extends AbstractFileWriter
         }
 
         $writer->close();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help',
-                ],
-            ],
-            'withHeader' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.export.withHeader.label',
-                    'help'  => 'pim_connector.export.withHeader.help',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @return bool
-     */
-    public function isWithHeader()
-    {
-        return $this->withHeader;
-    }
-
-    /**
-     * @param bool $withHeader
-     */
-    public function setWithHeader($withHeader)
-    {
-        $this->withHeader = $withHeader;
     }
 }

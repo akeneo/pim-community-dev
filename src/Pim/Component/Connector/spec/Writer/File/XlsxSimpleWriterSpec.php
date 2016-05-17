@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Buffer\BufferInterface;
 use PhpSpec\ObjectBehavior;
@@ -36,11 +37,17 @@ class XlsxSimpleWriterSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\Batch\Item\ItemWriterInterface');
     }
 
-    function it_prepares_items_to_write($flatRowBuffer, StepExecution $stepExecution)
-    {
+    function it_prepares_items_to_write(
+        $flatRowBuffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
         $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn(true);
+        $jobParameters->has('mainContext')->willReturn(false);
 
-        $this->setWithHeader(true);
         $groups = [
             [
                 'code'        => 'promotion',
@@ -74,8 +81,19 @@ class XlsxSimpleWriterSpec extends ObjectBehavior
         $this->write($groups);
     }
 
-    function it_writes_the_xlsx_file($flatRowBuffer, BufferInterface $buffer, $columnSorter)
-    {
+    function it_writes_the_xlsx_file(
+        $flatRowBuffer,
+        $columnSorter,
+        BufferInterface $buffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn(true);
+        $jobParameters->has('mainContext')->willReturn(false);
+
         $flatRowBuffer->getHeaders()->willReturn(['code', 'type', 'label-en_US', 'label-de_DE']);
         $flatRowBuffer->getBuffer()->willReturn($buffer);
 
@@ -92,24 +110,5 @@ class XlsxSimpleWriterSpec extends ObjectBehavior
         ]);
 
         $this->flush();
-    }
-
-    function it_has_configuration()
-    {
-        $this->getConfigurationFields()->shouldReturn([
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help'
-                ]
-            ],
-            'withHeader' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.export.withHeader.label',
-                    'help'  => 'pim_connector.export.withHeader.help'
-                ]
-            ],
-        ]);
     }
 }

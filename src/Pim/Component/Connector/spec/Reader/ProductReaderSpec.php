@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Reader;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -39,13 +40,6 @@ class ProductReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
-    function it_is_configurable()
-    {
-        $this->getChannel()->shouldReturn(null);
-        $this->setChannel('mobile');
-        $this->getChannel()->shouldReturn('mobile');
-    }
-
     function it_reads_enabled_products(
         $pqbFactory,
         $channelRepository,
@@ -58,8 +52,13 @@ class ProductReaderSpec extends ObjectBehavior
         CursorInterface $cursor,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3
+        ProductInterface $product3,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('mobile');
+        $jobParameters->get('enabled')->willReturn('enabled');
+
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
         $channelRoot->getId()->willReturn(42);
@@ -89,7 +88,6 @@ class ProductReaderSpec extends ObjectBehavior
         $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
 
-        $this->setChannel('mobile');
         $this->initialize();
         $this->read()->shouldReturn($product1);
         $this->read()->shouldReturn($product2);
@@ -109,9 +107,12 @@ class ProductReaderSpec extends ObjectBehavior
         CursorInterface $cursor,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3
+        ProductInterface $product3,
+        JobParameters $jobParameters
     ) {
-        $this->setEnabled('disabled');
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('mobile');
+        $jobParameters->get('enabled')->willReturn('disabled');
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -142,7 +143,6 @@ class ProductReaderSpec extends ObjectBehavior
         $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
 
-        $this->setChannel('mobile');
         $this->initialize();
         $this->read()->shouldReturn($product1);
         $this->read()->shouldReturn($product2);
@@ -162,9 +162,12 @@ class ProductReaderSpec extends ObjectBehavior
         CursorInterface $cursor,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3
+        ProductInterface $product3,
+        JobParameters $jobParameters
     ) {
-        $this->setEnabled('all');
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('mobile');
+        $jobParameters->get('enabled')->willReturn('all');
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -195,7 +198,6 @@ class ProductReaderSpec extends ObjectBehavior
         $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
 
-        $this->setChannel('mobile');
         $this->initialize();
         $this->read()->shouldReturn($product1);
         $this->read()->shouldReturn($product2);
@@ -207,10 +209,16 @@ class ProductReaderSpec extends ObjectBehavior
         $pqbFactory,
         $channelRepository,
         $completenessManager,
+        $stepExecution,
         ChannelInterface $channel,
         CategoryInterface $channelRoot,
-        ProductQueryBuilderInterface $pqb
+        ProductQueryBuilderInterface $pqb,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('mobile');
+        $jobParameters->get('enabled')->willReturn('enabled');
+
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
         $channel->getCode()->willReturn('mobile');
@@ -218,51 +226,6 @@ class ProductReaderSpec extends ObjectBehavior
 
         $completenessManager->generateMissingForChannel($channel)->shouldBeCalledTimes(1);
 
-        $this->setChannel('mobile');
         $this->initialize();
-    }
-
-    function it_exposes_the_channel_and_status_fields($channelRepository)
-    {
-        $channelRepository->getLabelsIndexedByCode()->willReturn(
-            [
-                'foo' => 'Foo',
-                'bar' => 'Bar',
-            ]
-        );
-
-        $this->getConfigurationFields()->shouldReturn(
-            [
-                'channel' => [
-                    'type'    => 'choice',
-                    'options' => [
-                        'choices'  => [
-                            'foo' => 'Foo',
-                            'bar' => 'Bar',
-                        ],
-                        'required' => true,
-                        'select2'  => true,
-                        'label'    => 'pim_connector.export.channel.label',
-                        'help'     => 'pim_connector.export.channel.help',
-                        'attr'     => ['data-tab' => 'content'],
-                    ]
-                ],
-                'enabled' => [
-                    'type'    => 'choice',
-                    'options' => [
-                        'choices'  => [
-                            'enabled' => 'pim_connector.export.status.choice.enabled',
-                            'disabled' => 'pim_connector.export.status.choice.disabled',
-                            'all' => 'pim_connector.export.status.choice.all'
-                        ],
-                        'required' => true,
-                        'select2'  => true,
-                        'label'    => 'pim_connector.export.status.label',
-                        'help'     => 'pim_connector.export.status.help',
-                        'attr'     => ['data-tab' => 'content'],
-                    ]
-                ],
-            ]
-        );
     }
 }
