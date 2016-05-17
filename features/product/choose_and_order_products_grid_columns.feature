@@ -42,4 +42,4 @@ Feature: Choose and order product grids columns
     Then I should see the columns Sku, Family and Name
     Then I should be able to use the following filters:
       | filter   | operator | value             | result                 |
-      | category |          | Summer collection | sandal one, sandal two |
+      | category |          | summer_collection | sandal one, sandal two |

@@ -16,7 +16,7 @@ Feature: Classify a product
     Given I edit the "tea" product
     When I visit the "Categories" tab
     And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
+    And I expand the "2014_collection" category
     And I click on the "summer_collection" category
     And I click on the "winter_collection" category
     And I press the "Save" button
@@ -26,7 +26,7 @@ Feature: Classify a product
     Given I edit the "tea" product
     When I visit the "Categories" tab
     And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
+    And I expand the "2014_collection" category
     And I click on the "summer_collection" category
     Then I should see 1 category count
     And I click on the "winter_collection" category
@@ -55,7 +55,7 @@ Feature: Classify a product
     Given I edit the "tea" product
     When I visit the "Categories" tab
     And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
+    And I expand the "2014_collection" category
     And I click on the "summer_collection" category
     And I click on the "winter_collection" category
     When I visit the "Attributes" tab
