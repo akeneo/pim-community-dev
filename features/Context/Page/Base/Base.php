@@ -226,7 +226,7 @@ class Base extends Page
     {
         // Search with exact name at first
         $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
-        
+
         if (null === $button) {
             $button = $this->find('xpath', sprintf("//a[text() = '%s']", $locator));
         }
@@ -383,10 +383,10 @@ class Base extends Page
      * Drags an element on another one.
      * Works better than the standard dragTo.
      *
-     * @param NodeElement $element
-     * @param NodeElement $dropZone
+     * @param $element
+     * @param $dropZone
      */
-    public function dragElementTo(NodeElement $element, NodeElement $dropZone)
+    public function dragElementTo($element, $dropZone)
     {
         $session = $this->getSession()->getDriver()->getWebDriverSession();
 
