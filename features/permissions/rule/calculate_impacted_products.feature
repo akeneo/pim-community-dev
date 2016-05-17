@@ -32,4 +32,3 @@ Feature: Manage permissions to calculate impacted product by a rule
     And I save the userRole
     When I am on the rules page
     Then I should not see the text "Calculate the matching products for the rules"
-    And I reset the "Administrator" rights

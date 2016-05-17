@@ -159,7 +159,6 @@ class EnterpriseAssetContext extends RawMinkContext
         $steps[] = new Step\Then('I save the role');
         $steps[] = new Step\Then(sprintf('I am on the %s page', $page));
         $steps[] = new Step\Then(sprintf('I should not see the "%s" button', $button));
-        $steps[] = new Step\Then('I reset the "Administrator" rights');
 
         return $steps;
     }
