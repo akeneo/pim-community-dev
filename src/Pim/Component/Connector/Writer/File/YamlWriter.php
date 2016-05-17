@@ -20,6 +20,16 @@ class YamlWriter extends AbstractFileWriter
     protected $header;
 
     /**
+     * @param FilePathResolverInterface $filePathResolver
+     * @param string                    $header
+     */
+    public function __construct(FilePathResolverInterface $filePathResolver, $header = null)
+    {
+        parent::__construct($filePathResolver);
+        $this->header = $header;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function write(array $items)
@@ -45,34 +55,12 @@ class YamlWriter extends AbstractFileWriter
     }
 
     /**
-     * @return string
-     */
-    public function getHeader()
-    {
-        return $this->header;
-    }
-
-    /**
-     * @param string $header
-     *
-     * @return YamlWriter
-     */
-    public function setHeader($header)
-    {
-        $this->header = $header;
-
-        return $this;
-    }
-
-    /**
      * @param array $data
      */
     protected function incrementSummaryInfo(array $data)
     {
         if (null !== $this->header) {
-            foreach ($data[$this->header] as $item) {
-                $this->stepExecution->incrementSummaryInfo('write');
-            }
+            $this->stepExecution->incrementSummaryInfo('write');
         } else {
             foreach ($data as $item) {
                 $this->stepExecution->incrementSummaryInfo('write');
