@@ -99,7 +99,7 @@ class CatalogConfigurationContext extends RawMinkContext
         // install the catalog via the job instances
         $jobInstances = $this->getFixtureJobLoader()->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
-            $command->execute(
+            $exitCode = $command->execute(
                 [
                     'command'    => $batchJobCommand->getName(),
                     'code'       => $jobInstance->getCode(),
@@ -107,6 +107,9 @@ class CatalogConfigurationContext extends RawMinkContext
                     '-v'         => true
                 ]
             );
+            if (0 !== $exitCode) {
+                throw new \Exception(sprintf('Catalog not installable! "%s"', $command->getDisplay()));
+            }
         }
 
         // delete the job instances
