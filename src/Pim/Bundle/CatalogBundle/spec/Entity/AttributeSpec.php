@@ -12,11 +12,4 @@ class AttributeSpec extends ObjectBehavior
         $this->setAttributeType('pim_catalog_identifier');
         $this->isRequired()->shouldReturn(true);
     }
-
-    function it_is_editable()
-    {
-        $this->setIsReadOnly(true)->shouldReturn($this);
-        $this->isReadOnly()->shouldReturn(true);
-        $this->getProperty('is_read_only')->shouldReturn(true);
-    }
 }

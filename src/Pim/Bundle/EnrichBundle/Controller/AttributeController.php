@@ -219,11 +219,11 @@ class AttributeController
      *
      * @return array
      */
-    public function editAction($id)
+    public function editAction(Request $request, $id)
     {
         $attribute = $this->findAttributeOr404($id);
         if ($this->attributeHandler->process($attribute)) {
-            $this->request->getSession()
+            $request->getSession()
                 ->getFlashBag()
                 ->add('success', new Message('flash.attribute.updated'));
         }

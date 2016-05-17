@@ -1050,22 +1050,4 @@ abstract class AbstractAttribute implements AttributeInterface
             AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS
         ]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setIsReadOnly($value)
-    {
-        $this->setProperty('is_read_only', $value);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isReadOnly()
-    {
-        return (bool) $this->getProperty('is_read_only');
-    }
 }

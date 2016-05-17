@@ -5,10 +5,6 @@
     {% endif %}
     {% endspaceless %}
 
-    {% set generalParameters %}
-        {{ view_elements(form.vars.id ~ '.general_parameters') }}
-    {% endset %}
-
     {% set validationParameters %}
         {% set validationFields = ['dateMin', 'dateMax', 'negativeAllowed', 'decimalsAllowed', 'numberMin',
         'numberMax', 'maxCharacters', 'wysiwygEnabled', 'metricFamily', 'defaultMetricUnit', 'maxFileSize',
@@ -25,15 +21,14 @@
         {% endfor %}
     {% endset %}
 
-    {% set backendParameters %}
-        {{ view_elements(form.vars.id ~ '.backend_parameter') }}
-    {% endset %}
+    {% set general_parameters_title = view_element_aliases('pim_enrich_attribute_form.general_parameters') %}
+    {% set backend_parameters_title = view_element_aliases('pim_enrich_attribute_form.backend_parameters') %}
 
-    {% set panes = {'pane.accordion.general_parameters': generalParameters} %}
-    {% if validationParameters|trim is not empty %}
-        {% set panes = panes|merge({'pane.accordion.validation_parameters': validationParameters}) %}
-    {% endif %}
-    {% set panes = panes|merge({'pane.accordion.backend_parameters': backendParameters}) %}
-
-    {{ elements.accordion(panes) }}
+    {{
+        elements.accordion({
+            general_parameters_title: view_elements('pim_enrich_attribute_form.general_parameters'),
+            'pane.accordion.validation_parameters': validationParameters,
+            backend_parameters_title: view_elements('pim_enrich_attribute_form.backend_parameters')
+        })
+    }}
 </div>

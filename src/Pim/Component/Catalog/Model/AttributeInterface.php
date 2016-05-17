@@ -635,14 +635,4 @@ interface AttributeInterface extends
      * @return bool
      */
     public function isBackendTypeReferenceData();
-
-    /**
-     * @param bool $value
-     */
-    public function setIsReadOnly($value);
-
-    /**
-     * @return bool
-     */
-    public function isReadOnly();
 }
