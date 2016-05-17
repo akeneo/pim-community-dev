@@ -26,12 +26,12 @@ services:
         class: %pim_import_export.job_parameters.form_configuration_provider.simple_csv_export.class%
         arguments:
             -
-                - 'pim_connector.jobs.csv_attribute_export.title'
-                - 'pim_connector.jobs.csv_family_export.title'
-                - 'pim_connector.jobs.csv_group_export.title'
-                - 'pim_connector.jobs.csv_association_type_export.title'
-                - 'pim_connector.jobs.csv_attribute_option_export.title'
-                - 'pim_connector.jobs.csv_category_export.title'
+                - 'csv_attribute_export'
+                - 'csv_family_export'
+                - 'csv_group_export'
+                - 'csv_association_type_export'
+                - 'csv_attribute_option_export'
+                - 'csv_category_export'
         tags:
             - { name: pim_import_export.job_parameters.form_configuration_provider }
 
@@ -39,12 +39,12 @@ services:
         class: %pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_export.class%
         arguments:
             -
-                - 'pim_connector.jobs.xlsx_attribute_export.title'
-                - 'pim_connector.jobs.xlsx_family_export.title'
-                - 'pim_connector.jobs.xlsx_group_export.title'
-                - 'pim_connector.jobs.xlsx_association_type_export.title'
-                - 'pim_connector.jobs.xlsx_attribute_option_export.title'
-                - 'pim_connector.jobs.xlsx_category_export.title'
+                - 'xlsx_attribute_export'
+                - 'xlsx_family_export'
+                - 'xlsx_group_export'
+                - 'xlsx_association_type_export'
+                - 'xlsx_attribute_option_export'
+                - 'xlsx_category_export'
                 - 'xlsx_product_quick_export'
         tags:
             - { name: pim_import_export.job_parameters.form_configuration_provider }
@@ -55,7 +55,7 @@ services:
             - '@pim_import_export.job_parameters.form_configuration_provider.simple_csv_export'
             - '@pim_catalog.repository.channel'
             -
-                - 'pim_connector.jobs.csv_product_export.title'
+                - 'jobs.csv_product_export'
             - %pim_catalog.localization.decimal_separators%
             - %pim_catalog.localization.date_formats%
         tags:
@@ -67,7 +67,7 @@ services:
             - '@pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_export'
             - '@pim_catalog.repository.channel'
             -
-                - 'pim_connector.jobs.xlsx_product_export.title'
+                - 'xlsx_product_export'
             - %pim_catalog.localization.decimal_separators%
             - %pim_catalog.localization.date_formats%
         tags:
@@ -78,7 +78,7 @@ services:
         arguments:
             - '@pim_import_export.job_parameters.form_configuration_provider.simple_csv_export'
             -
-                - 'pim_connector.jobs.csv_variant_group_export.title'
+                - 'csv_variant_group_export'
             - %pim_catalog.localization.decimal_separators%
             - %pim_catalog.localization.date_formats%
         tags:
@@ -89,7 +89,7 @@ services:
         arguments:
             - '@pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_export'
             -
-                - 'pim_connector.jobs.xlsx_variant_group_export.title'
+                - 'xlsx_variant_group_export'
             - %pim_catalog.localization.decimal_separators%
             - %pim_catalog.localization.date_formats%
         tags:
@@ -100,12 +100,12 @@ services:
         class: %pim_import_export.job_parameters.form_configuration_provider.simple_csv_import.class%
         arguments:
             -
-                - 'pim_connector.jobs.csv_attribute_import.title'
-                - 'pim_connector.jobs.csv_family_import.title'
-                - 'pim_connector.jobs.csv_group_import.title'
-                - 'pim_connector.jobs.csv_association_type_import.title'
-                - 'pim_connector.jobs.csv_attribute_option_import.title'
-                - 'pim_connector.jobs.csv_category_import.title'
+                - 'csv_attribute_import'
+                - 'csv_family_import'
+                - 'csv_group_import'
+                - 'csv_association_type_import'
+                - 'csv_attribute_option_import'
+                - 'csv_category_import'
         tags:
             - { name: pim_import_export.job_parameters.form_configuration_provider }
 
@@ -113,12 +113,12 @@ services:
         class: %pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_import.class%
         arguments:
             -
-                - 'pim_connector.jobs.xlsx_attribute_import.title'
-                - 'pim_connector.jobs.xlsx_family_import.title'
-                - 'pim_connector.jobs.xlsx_group_import.title'
-                - 'pim_connector.jobs.xlsx_association_type_import.title'
-                - 'pim_connector.jobs.xlsx_attribute_option_import.title'
-                - 'pim_connector.jobs.xlsx_category_import.title'
+                - 'xlsx_attribute_import'
+                - 'xlsx_family_import'
+                - 'xlsx_group_import'
+                - 'xlsx_association_type_import'
+                - 'xlsx_attribute_option_import'
+                - 'xlsx_category_import'
         tags:
             - { name: pim_import_export.job_parameters.form_configuration_provider }
 
@@ -127,7 +127,7 @@ services:
         arguments:
             - '@pim_import_export.job_parameters.form_configuration_provider.simple_csv_import'
             -
-                - 'pim_connector.jobs.csv_product_import.title'
+                - 'csv_product_import'
             - %pim_catalog.localization.decimal_separators%
             - %pim_catalog.localization.date_formats%
         tags:
@@ -138,7 +138,7 @@ services:
         arguments:
             - '@pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_import'
             -
-                - 'pim_connector.jobs.xlsx_product_import.title'
+                - 'xlsx_product_import'
             - %pim_catalog.localization.decimal_separators%
             - %pim_catalog.localization.date_formats%
         tags:
@@ -149,7 +149,7 @@ services:
         arguments:
             - '@pim_import_export.job_parameters.form_configuration_provider.simple_csv_import'
             -
-                - 'pim_connector.jobs.csv_variant_group_import.title'
+                - 'csv_variant_group_import'
             - %pim_catalog.localization.decimal_separators%
             - %pim_catalog.localization.date_formats%
         tags:
@@ -160,7 +160,7 @@ services:
         arguments:
             - '@pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_import'
             -
-                - 'pim_connector.jobs.xlsx_variant_group_import.title'
+                - 'xlsx_variant_group_import'
             - %pim_catalog.localization.decimal_separators%
             - %pim_catalog.localization.date_formats%
         tags:

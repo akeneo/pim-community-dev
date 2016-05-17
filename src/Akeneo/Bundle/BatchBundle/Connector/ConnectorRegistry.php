@@ -73,9 +73,8 @@ class ConnectorRegistry
      *
      * @param string $jobConnector
      * @param string $jobType
-     * @param string $jobAlias
-     * @param string $jobTitle
-     * @param string $stepTitle
+     * @param string $jobName
+     * @param string $stepName
      * @param string $stepClass
      * @param array  $services
      * @param array  $parameters
@@ -85,22 +84,21 @@ class ConnectorRegistry
     public function addStepToJob(
         $jobConnector,
         $jobType,
-        $jobAlias,
-        $jobTitle,
-        $stepTitle,
+        $jobName,
+        $stepName,
         $stepClass,
         array $services,
         array $parameters
     ) {
-        if (!isset($this->jobs[$jobType][$jobConnector][$jobAlias])) {
-            $this->jobs[$jobType][$jobConnector][$jobAlias] = $this->jobFactory->createJob($jobTitle);
+        if (!isset($this->jobs[$jobType][$jobConnector][$jobName])) {
+            $this->jobs[$jobType][$jobConnector][$jobName] = $this->jobFactory->createJob($jobName);
         }
 
         /** @var Job $job */
-        $job = $this->jobs[$jobType][$jobConnector][$jobAlias];
+        $job = $this->jobs[$jobType][$jobConnector][$jobName];
 
-        $step = $this->stepFactory->createStep($stepTitle, $stepClass, $services, $parameters);
-        $job->addStep($stepTitle, $step);
+        $step = $this->stepFactory->createStep($stepName, $stepClass, $services, $parameters);
+        $job->addStep($stepName, $step);
     }
 
     /**
