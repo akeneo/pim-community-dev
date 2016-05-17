@@ -700,56 +700,12 @@ class Form extends Base
      */
     protected function fillMultiSelect2Field(NodeElement $label, $value)
     {
-        $allValues          = explode(',', $value);
-        $selectedValues     = $label->getParent()->findAll('css', '.select2-search-choice');
-        $selectedTextValues = array_map(function ($selectedValue) {
-            return $selectedValue->getText();
-        }, $selectedValues);
+        $field = $this->decorate(
+            $label->getParent()->find('css', '.select2-container'),
+            ['Pim\Behat\Decorator\Field\Select2Decorator']
+        );
 
-        // Delete tag from right to left to prevent select2 DOM change
-        $selectedValues = array_reverse($selectedValues);
-
-        foreach ($selectedValues as $selectedValue) {
-            if (false === in_array($selectedValue->getText(), $allValues)) {
-                $closeButton = $selectedValue->find('css', 'a');
-
-                if (!$closeButton) {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'Could not find "%s" close button for "%s"',
-                            trim($selectedValue->getText()),
-                            $label->getText()
-                        )
-                    );
-                }
-
-                $closeButton->click();
-            }
-        }
-
-        $allValues = array_filter($allValues);
-
-        if (1 === count($allValues) && null !== $label->getParent()->find('css', 'select')) {
-            $value = array_shift($allValues);
-            $this->fillSelectField($label, $value);
-        }
-
-        // Fill in remaining values
-        $remainingValues = array_diff($allValues, $selectedTextValues);
-        foreach ($remainingValues as $value) {
-            if (trim($value)) {
-                $label->click();
-
-                $option = $this->spin(function () use ($value) {
-                    return $this->find(
-                        'css',
-                        sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', trim($value))
-                    );
-                }, sprintf('Could not find option "%s" for "%s"', trim($value), $label->getText()));
-
-                $option->click();
-            }
-        }
+        $field->setValue($value);
     }
 
     /**
