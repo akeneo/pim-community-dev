@@ -60,7 +60,9 @@ class YamlWriter extends AbstractFileWriter
     protected function incrementSummaryInfo(array $data)
     {
         if (null !== $this->header) {
-            $this->stepExecution->incrementSummaryInfo('write');
+            foreach ($data[$this->header] as $item) {
+                $this->stepExecution->incrementSummaryInfo('write');
+            }
         } else {
             foreach ($data as $item) {
                 $this->stepExecution->incrementSummaryInfo('write');
