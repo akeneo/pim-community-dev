@@ -1,0 +1,67 @@
+parameters: ~
+
+services:
+    # Default Parameters for Exports ----------------------------------------------------------------------------------
+    pimee_product_asset.job.job_parameters.default_values_provider.simple_csv_export:
+        class: %pim_connector.job.job_parameters.default_values_provider.simple_csv_export.class%
+        arguments:
+            -
+                - 'pimee_product_asset.jobs.csv_asset_export.title'
+                - 'pimee_product_asset.jobs.csv_asset_category_export.title'
+                - 'pimee_product_asset.jobs.csv_asset_variation_export.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_product_asset.job.job_parameters.default_values_provider.simple_xlsx_export:
+        class: %pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export.class%
+        arguments:
+            -
+                - 'pimee_product_asset.jobs.xlsx_asset_export.title'
+                - 'pimee_product_asset.jobs.xlsx_asset_category_export.title'
+                - 'pimee_product_asset.jobs.xlsx_asset_variation_export.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_product_asset.job.job_parameters.default_values_provider.simple_yaml_export:
+        class: %pim_connector.job.job_parameters.default_values_provider.simple_yaml_export.class%
+        arguments:
+            -
+                - 'pimee_product_asset.jobs.yml_asset_configuration_export.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    # Default Parameters for Imports ----------------------------------------------------------------------------------
+    pimee_product_asset.job.job_parameters.default_values_provider.simple_csv_import:
+        class: %pim_connector.job.job_parameters.default_values_provider.simple_csv_import.class%
+        arguments:
+            -
+                - 'pimee_product_asset.jobs.csv_asset_import.title'
+                - 'pimee_product_asset.jobs.csv_asset_category_import.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_product_asset.job.job_parameters.default_values_provider.simple_xlsx_import:
+        class: %pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import.class%
+        arguments:
+            -
+                - 'pimee_product_asset.jobs.xlsx_asset_import.title'
+                - 'pimee_product_asset.jobs.xlsx_asset_category_import.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_product_asset.job.job_parameters.default_values_provider.simple_yaml_import:
+        class: %pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class%
+        arguments:
+            -
+                - 'pimee_product_asset.jobs.yml_asset_channel_configuration_import.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    # Mass upload -----------------------------------------------------------------------------------------------------
+    pimee_product_asset.job.job_parameters.default_values_provider.asset_mass_upload:
+        class: %akeneo_batch.job.job_parameters.empty_values_provider.class%
+        arguments:
+            -
+                - 'pimee_product_asset.jobs.assets_mass_upload.title'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
