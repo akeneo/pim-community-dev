@@ -48,12 +48,4 @@ class ChannelConfigurationProcessor extends Processor
     {
         return $normalizedChannels = $this->channelNormalizer->normalize($channelConf);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
 }
