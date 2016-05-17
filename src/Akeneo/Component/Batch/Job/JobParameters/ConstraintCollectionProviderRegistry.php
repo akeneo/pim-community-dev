@@ -27,9 +27,9 @@ class ConstraintCollectionProviderRegistry
     /**
      * @param JobInterface $job
      *
-     * @return ConstraintCollectionProviderInterface
-     *
      * @throws NonExistingServiceException
+     *
+     * @return ConstraintCollectionProviderInterface
      */
     public function get(JobInterface $job)
     {

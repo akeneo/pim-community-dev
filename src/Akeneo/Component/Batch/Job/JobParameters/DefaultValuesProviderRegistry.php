@@ -27,9 +27,9 @@ class DefaultValuesProviderRegistry
     /**
      * @param JobInterface $job
      *
-     * @return DefaultValuesProviderInterface
-     *
      * @throws NonExistingServiceException
+     *
+     * @return DefaultValuesProviderInterface
      */
     public function get(JobInterface $job)
     {
