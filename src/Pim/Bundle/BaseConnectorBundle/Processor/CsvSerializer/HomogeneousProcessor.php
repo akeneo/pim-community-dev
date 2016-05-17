@@ -16,13 +16,14 @@ class HomogeneousProcessor extends Processor
      */
     public function process($item)
     {
+        $parameters = $this->stepExecution->getJobParameters();
         return $this->serializer->serialize(
             $item,
             'csv',
             [
-                'delimiter'     => $this->delimiter,
-                'enclosure'     => $this->enclosure,
-                'withHeader'    => $this->withHeader,
+                'delimiter'     => $parameters->get('delimiter'),
+                'enclosure'     => $parameters->get('enclosure'),
+                'withHeader'    => $parameters->get('withHeader'),
                 'heterogeneous' => false,
                 'locales'       => $this->localeRepository->getActivatedLocaleCodes(),
             ]
