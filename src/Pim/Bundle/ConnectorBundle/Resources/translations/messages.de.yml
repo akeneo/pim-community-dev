@@ -58,18 +58,23 @@ pim_connector:
       validation.title: Dateivalidierung
       import.title: Variantengruppen-Import
     xlsx_category_import:
+      title: Kategorie-Import aus XLSX-Datei
       validation.title: Dateivalidierung
       import.title: Kategorie-Import
     xlsx_association_type_import:
+      title: Verbindungstyp-Import aus XLSX-Datei
       validation.title: Dateivalidierung
       import.title: Verbindungstyp-Import
     xlsx_attribute_import:
+      title: Attribut-Import aus XLSX-Datei
       validation.title: Dateivalidierung
       import.title: Attribut-Import
     xlsx_attribute_option_import:
+      title: Attributoptionen-Import aus XLSX-Datei
       validation.title: Dateivalidierung
       import.title: Attribut-Option import
     xlsx_family_import:
+      title: Produktfamilien-Import aus XLSX-Datei
       validation.title: Dateivalidierung
       import.title: Produktfamilien-Import
     xlsx_product_export:
@@ -81,18 +86,34 @@ pim_connector:
       import.title: Produkt import
       import_associations.title: Produktverbindungen-Import
     xlsx_group_export:
+      title: Gruppen-Export als XLSX-Datei
       export.title: Gruppen-Export
     xlsx_variant_group_export:
+      title: Variantengruppen-Export als XLSX-Datei
       export.title: Variantengruppen-Export
     xlsx_group_import:
+      title: Gruppen-Import aus XLSX-Datei
       validation.title: Dateivalidierung
       import.title: Gruppen-Import
     xlsx_variant_group_import:
+      title: Variantengruppen-Import aus XLSX-Datei
       validation.title: Dateivalidierung
+      import.title: Variantengruppen-Import
     xlsx_family_export:
+      title: Produktfamilien-Eport in XLSX-Datei
       export.title: Exportiere Produktfamilie
     xlsx_category_export:
+      title: Kategorie-Export in XLSX-Datei
       export.title: Kategorie export
+    xlsx_attribute_export:
+      title: Attribut-Export in XLSX-Datei
+      export.title: Attribut-Export in XLSX-Datei
+    xlsx_attribute_option_export:
+      title: Attributoptionen-Export in XLSX-Datei
+      export.title: Attributoptionen-Export in XLSX-Datei
+    xlsx_association_type_export:
+      title: Beziehungstyp-Export in XLSX-Datei
+      export.title: Beziehungstyp-Export in XLSX-Datei
   steps:
     dummy_reader.title: Dummy-Leser
     product_reader.title: Produktextraktion
