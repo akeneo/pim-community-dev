@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Component\Workflow\Connector\Tasklet;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
@@ -26,7 +27,8 @@ class ApproveTaskletSpec extends ObjectBehavior
         UserProviderInterface $userProvider,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
-        ProductDraftChangesPermissionHelper $permissionHelper
+        ProductDraftChangesPermissionHelper $permissionHelper,
+        StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $productDraftRepository,
@@ -36,6 +38,7 @@ class ApproveTaskletSpec extends ObjectBehavior
             $tokenStorage,
             $permissionHelper
         );
+        $this->setStepExecution($stepExecution);
     }
 
     function it_approves_valid_proposals(
@@ -46,13 +49,19 @@ class ApproveTaskletSpec extends ObjectBehavior
         $tokenStorage,
         $permissionHelper,
         UserInterface $userJulia,
-        StepExecution $stepExecution,
+        $stepExecution,
         JobExecution $jobExecution,
         ProductDraftInterface $productDraft1,
         ProductDraftInterface $productDraft2,
         ProductInterface $product1,
-        ProductInterface $product2
+        ProductInterface $product2,
+        JobParameters $jobParameters
     ) {
+        $configuration = ['draftIds' => [1, 2], 'comment' => null];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('draftIds')->willReturn($configuration['draftIds']);
+        $jobParameters->get('comment')->willReturn($configuration['comment']);
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
         $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
@@ -77,7 +86,7 @@ class ApproveTaskletSpec extends ObjectBehavior
         $productDraftManager->approve($productDraft1, ['comment' => null])->shouldBeCalled();
         $productDraftManager->approve($productDraft2, ['comment' => null])->shouldBeCalled();
 
-        $this->execute(['draftIds' => [1, 2], 'comment' => null]);
+        $this->execute();
     }
 
     function it_skips_proposals_if_not_ready(
@@ -87,14 +96,20 @@ class ApproveTaskletSpec extends ObjectBehavior
         $authorizationChecker,
         $tokenStorage,
         $permissionHelper,
+        $stepExecution,
         UserInterface $userJulia,
-        StepExecution $stepExecution,
         JobExecution $jobExecution,
         ProductDraftInterface $productDraft1,
         ProductDraftInterface $productDraft2,
         ProductInterface $product1,
-        ProductInterface $product2
+        ProductInterface $product2,
+        JobParameters $jobParameters
     ) {
+        $configuration = ['draftIds' => [1, 2], 'comment' => null];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('draftIds')->willReturn($configuration['draftIds']);
+        $jobParameters->get('comment')->willReturn($configuration['comment']);
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
         $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
@@ -121,7 +136,7 @@ class ApproveTaskletSpec extends ObjectBehavior
         $productDraftManager->approve($productDraft1, ['comment' => null])->shouldNotBeCalled();
         $productDraftManager->approve($productDraft2, ['comment' => null])->shouldBeCalled();
 
-        $this->execute(['draftIds' => [1, 2], 'comment' => null]);
+        $this->execute();
     }
 
     function it_skips_proposals_if_user_does_not_own_the_product(
@@ -131,14 +146,20 @@ class ApproveTaskletSpec extends ObjectBehavior
         $authorizationChecker,
         $tokenStorage,
         $permissionHelper,
+        $stepExecution,
         UserInterface $userJulia,
-        StepExecution $stepExecution,
         JobExecution $jobExecution,
         ProductDraftInterface $productDraft1,
         ProductDraftInterface $productDraft2,
         ProductInterface $product1,
-        ProductInterface $product2
+        ProductInterface $product2,
+        JobParameters $jobParameters
     ) {
+        $configuration = ['draftIds' => [1, 2], 'comment' => null];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('draftIds')->willReturn($configuration['draftIds']);
+        $jobParameters->get('comment')->willReturn($configuration['comment']);
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
         $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
@@ -165,7 +186,7 @@ class ApproveTaskletSpec extends ObjectBehavior
         $productDraftManager->approve($productDraft1, ['comment' => null])->shouldNotBeCalled();
         $productDraftManager->approve($productDraft2, ['comment' => null])->shouldBeCalled();
 
-        $this->execute(['draftIds' => [1, 2], 'comment' => null]);
+        $this->execute();
     }
 
     function it_skips_with_warning_proposals_if_user_cannot_edit_the_attributes(
@@ -175,14 +196,20 @@ class ApproveTaskletSpec extends ObjectBehavior
         $authorizationChecker,
         $tokenStorage,
         $permissionHelper,
+        $stepExecution,
         UserInterface $userJulia,
-        StepExecution $stepExecution,
         JobExecution $jobExecution,
         ProductDraftInterface $productDraft1,
         ProductDraftInterface $productDraft2,
         ProductInterface $product1,
-        ProductInterface $product2
+        ProductInterface $product2,
+        JobParameters $jobParameters
     ) {
+        $configuration = ['draftIds' => [1, 2], 'comment' => null];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('draftIds')->willReturn($configuration['draftIds']);
+        $jobParameters->get('comment')->willReturn($configuration['comment']);
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
         $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
@@ -209,6 +236,6 @@ class ApproveTaskletSpec extends ObjectBehavior
         $productDraftManager->approve($productDraft1, ['comment' => null])->shouldNotBeCalled();
         $productDraftManager->approve($productDraft2, ['comment' => null])->shouldBeCalled();
 
-        $this->execute(['draftIds' => [1, 2], 'comment' => null]);
+        $this->execute();
     }
 }
