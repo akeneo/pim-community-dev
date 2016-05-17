@@ -101,7 +101,7 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         $paginator->next()->willReturn();
         $paginator->current()->willReturn([$product1, $product2]);
 
-        $this->clean($configuration, $stepExecution);
+        $this->clean($stepExecution, $configuration['filters'], $configuration['actions']);
     }
 
     function it_checks_if_products_have_duplicated_axis(
@@ -184,11 +184,8 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         $paginator->next()->willReturn();
         $paginator->current()->willReturn($productPage);
 
-        $this->clean($configuration, $stepExecution)->shouldReturn(
-            [
-                'filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [1, 2, 3, 4]]],
-                'actions' => ['value'  => 'variant_group_code']
-            ]
+        $this->clean($stepExecution, $configuration['filters'], $configuration['actions'])->shouldReturn(
+            [['field' => 'id', 'operator' => 'IN', 'value' => [1, 2, 3, 4]]]
         );
     }
 
@@ -291,11 +288,8 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         $productQueryBuilder->addFilter('id', 'IN', [1, 2], ['locale' => null, 'scope' => null])->shouldBeCalledTimes(1);
         $productQueryBuilder->execute()->willReturn($cursor);
 
-        $this->clean($configuration, $stepExecution)->shouldReturn(
-            [
-                'filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [2 => 3, 3 => 4]]],
-                'actions' => ['value'  => 'variant_group_code']
-            ]
+        $this->clean($stepExecution, $configuration['filters'], $configuration['actions'])->shouldReturn(
+            [['field' => 'id', 'operator' => 'IN', 'value' => [2 => 3, 3 => 4]]]
         );
     }
 }

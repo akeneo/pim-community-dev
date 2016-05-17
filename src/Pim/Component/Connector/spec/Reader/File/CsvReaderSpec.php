@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Connector\Reader\File;
 
+use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
@@ -9,72 +11,29 @@ use Prophecy\Argument;
 
 class CsvReaderSpec extends ObjectBehavior
 {
-    function let(FileIteratorFactory $fileIteratorFactory)
+    function let(FileIteratorFactory $fileIteratorFactory, StepExecution $stepExecution)
     {
         $this->beConstructedWith($fileIteratorFactory);
+        $this->setStepExecution($stepExecution);
     }
 
-    function it_is_configurable()
-    {
-        $this->setFilePath('/path/to/file/');
-        $this->setDelimiter(';');
-        $this->setEnclosure('-');
-        $this->setEscape('\\');
-        $this->setUploadAllowed(true);
+    function it_reads_csv_file(
+        $fileIteratorFactory,
+        $stepExecution,
+        FileIteratorInterface $fileIterator,
+        JobParameters $jobParameters
+    ) {
+        $filePath = $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv';
 
-        $this->getFilePath()->shouldReturn('/path/to/file/');
-        $this->getDelimiter()->shouldReturn(';');
-        $this->getEnclosure()->shouldReturn('-');
-        $this->getEscape()->shouldReturn('\\');
-        $this->isUploadAllowed()->shouldReturn(true);
-    }
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enclosure')->willReturn('"');
+        $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('filePath')->willReturn($filePath);
 
-    function it_gives_configuration_field()
-    {
-        $this->getConfigurationFields()->shouldReturn([
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.import.filePath.label',
-                    'help'  => 'pim_connector.import.filePath.help'
-                ]
-            ],
-            'uploadAllowed' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.import.uploadAllowed.label',
-                    'help'  => 'pim_connector.import.uploadAllowed.help'
-                ]
-            ],
-            'delimiter' => [
-                'options' => [
-                    'label' => 'pim_connector.import.delimiter.label',
-                    'help'  => 'pim_connector.import.delimiter.help'
-                ]
-            ],
-            'enclosure' => [
-                'options' => [
-                    'label' => 'pim_connector.import.enclosure.label',
-                    'help'  => 'pim_connector.import.enclosure.help'
-                ]
-            ],
-            'escape' => [
-                'options' => [
-                    'label' => 'pim_connector.import.escape.label',
-                    'help'  => 'pim_connector.import.escape.help'
-                ]
-            ],
-        ]);
-    }
-
-    function it_reads_csv_file($fileIteratorFactory, FileIteratorInterface $fileIterator)
-    {
         $data = [
             'sku'  => 'SKU-001',
             'name' => 'door',
         ];
-
-        $filePath = $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv';
-        $this->setFilePath($filePath);
 
         $fileIteratorFactory->create($filePath, [
             'fieldDelimiter' => ';',
@@ -85,6 +44,8 @@ class CsvReaderSpec extends ObjectBehavior
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->valid()->willReturn(true);
         $fileIterator->current()->willReturn($data);
+
+        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
 
         $this->read()->shouldReturn($data);
     }

@@ -47,13 +47,7 @@ class AddProductToVariantGroupProcessor extends AbstractProcessor
      */
     public function process($product)
     {
-        $configuration = $this->getJobConfiguration();
-
-        if (!array_key_exists('actions', $configuration)) {
-            throw new InvalidArgumentException('Missing configuration for \'actions\'.');
-        }
-
-        $actions = $configuration['actions'];
+        $actions = $this->getConfiguredActions();
         $variantGroup = $actions['value'];
         $variantGroup = $this->groupRepository->findOneByIdentifier($variantGroup);
 

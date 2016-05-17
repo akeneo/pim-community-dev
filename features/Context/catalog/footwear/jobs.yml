@@ -5,7 +5,7 @@ jobs:
         label:     CSV footwear product import
         type:      import
         configuration:
-            filePath:           ''
+            filePath:           '/tmp/footwear_products.csv'
             uploadAllowed:      true
             delimiter:          ;
             enclosure:          '"'
@@ -37,7 +37,6 @@ jobs:
             delimiter:           ;
             enclosure:           '"'
             escape:              '\'
-            circularRefsChecked: true
     csv_footwear_category_export:
         connector: Akeneo CSV Connector
         alias:     csv_category_export
@@ -166,7 +165,8 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
-            copyValues: true
+            copyValues:    true
+            filePath:      /tmp/footwear_variant_group.csv
     xlsx_footwear_variant_group_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_variant_group_import
@@ -233,6 +233,7 @@ jobs:
             groupsColumn:       groups
             realTimeVersioning: true
             decimalSeparator:   ,
+            filePath:           /tmp/footwear_products-fr.xlsx
     xlsx_footwear_product_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_import
@@ -246,7 +247,8 @@ jobs:
             groupsColumn:       groups
             realTimeVersioning: true
             decimalSeparator:   .
-            dateFormat: yyyy-MM-dd
+            dateFormat:         yyyy-MM-dd
+            filePath:           /tmp/footwear_products.xlsx
     xlsx_footwear_category_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_category_import
@@ -254,7 +256,6 @@ jobs:
         type:      import
         configuration:
             uploadAllowed:       true
-            circularRefsChecked: true
     xlsx_footwear_association_type_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_association_type_import

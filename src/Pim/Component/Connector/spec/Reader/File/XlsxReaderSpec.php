@@ -2,63 +2,44 @@
 
 namespace spec\Pim\Component\Connector\Reader\File;
 
+use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 
 class XlsxReaderSpec extends ObjectBehavior
 {
-    function let(FileIteratorFactory $fileIteratorFactory)
+    function let(FileIteratorFactory $fileIteratorFactory, StepExecution $stepExecution)
     {
         $this->beConstructedWith($fileIteratorFactory);
+        $this->setStepExecution($stepExecution);
     }
 
-    function it_is_configurable()
-    {
-        $this->setFilePath('/path/to/file/');
-        $this->setUploadAllowed(true);
+    function it_read_csv_file(
+        $fileIteratorFactory,
+        $stepExecution,
+        FileIteratorInterface $fileIterator,
+        JobParameters $jobParameters
+    ) {
+        $filePath = __DIR__ . DIRECTORY_SEPARATOR . '..' .
+            DIRECTORY_SEPARATOR . '..' .
+            DIRECTORY_SEPARATOR . '..' .
+            DIRECTORY_SEPARATOR . '..' .
+            DIRECTORY_SEPARATOR . '..' .
+            DIRECTORY_SEPARATOR . '..' .
+            DIRECTORY_SEPARATOR . 'features' .
+            DIRECTORY_SEPARATOR . 'Context' .
+            DIRECTORY_SEPARATOR . 'fixtures' .
+            DIRECTORY_SEPARATOR . 'product_with_carriage_return.xlsx';
 
-        $this->getFilePath()->shouldReturn('/path/to/file/');
-        $this->isUploadAllowed()->shouldReturn(true);
-    }
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filePath')->willReturn($filePath);
 
-    function it_gives_configuration_field()
-    {
-        $this->getConfigurationFields()->shouldReturn([
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.import.filePath.label',
-                    'help'  => 'pim_connector.import.filePath.help'
-                ]
-            ],
-            'uploadAllowed' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.import.uploadAllowed.label',
-                    'help'  => 'pim_connector.import.uploadAllowed.help'
-                ]
-            ],
-        ]);
-    }
-
-    function it_read_csv_file($fileIteratorFactory, FileIteratorInterface $fileIterator)
-    {
         $data = [
             'sku'  => 'SKU-001',
             'name' => 'door',
         ];
-
-        $filePath = __DIR__ . DIRECTORY_SEPARATOR . '..' .
-                    DIRECTORY_SEPARATOR . '..' .
-                    DIRECTORY_SEPARATOR . '..' .
-                    DIRECTORY_SEPARATOR . '..' .
-                    DIRECTORY_SEPARATOR . '..' .
-                    DIRECTORY_SEPARATOR . '..' .
-                    DIRECTORY_SEPARATOR . 'features' .
-                    DIRECTORY_SEPARATOR . 'Context' .
-                    DIRECTORY_SEPARATOR . 'fixtures' .
-                    DIRECTORY_SEPARATOR . 'product_with_carriage_return.xlsx';
-        $this->setFilePath($filePath);
 
         $fileIteratorFactory->create($filePath)->willReturn($fileIterator);
 
@@ -66,6 +47,8 @@ class XlsxReaderSpec extends ObjectBehavior
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->valid()->willReturn(true);
         $fileIterator->current()->willReturn($data);
+
+        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
 
         $this->read()->shouldReturn($data);
     }

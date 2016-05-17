@@ -15,9 +15,6 @@ use Box\Spout\Writer\WriterFactory;
  */
 class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
 {
-    /** @var bool */
-    protected $withHeader;
-
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;
 
@@ -66,7 +63,9 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
             $media[]    = $item['media'];
         }
 
-        $this->flatRowBuffer->write($products, $this->isWithHeader());
+        $parameters = $this->stepExecution->getJobParameters();
+        $withHeader = $parameters->get('withHeader');
+        $this->flatRowBuffer->write($products, $withHeader);
         $this->mediaCopier->exportAll($media, $exportDirectory);
 
         foreach ($this->mediaCopier->getCopiedMedia() as $copy) {
@@ -113,59 +112,5 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     public function getWrittenFiles()
     {
         return $this->writtenFiles;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help',
-                ],
-            ],
-            'withHeader' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.export.withHeader.label',
-                    'help'  => 'pim_connector.export.withHeader.help',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @return bool
-     */
-    public function isWithHeader()
-    {
-        return $this->withHeader;
-    }
-
-    /**
-     * @param bool $withHeader
-     */
-    public function setWithHeader($withHeader)
-    {
-        $this->withHeader = $withHeader;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfiguration(array $config)
-    {
-        parent::setConfiguration($config);
-
-        if (!isset($config['mainContext'])) {
-            return;
-        }
-
-        foreach ($config['mainContext'] as $key => $value) {
-            $this->filePathResolverOptions['parameters']['%' . $key . '%'] = $value;
-        }
     }
 }

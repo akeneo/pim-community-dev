@@ -25,12 +25,6 @@ class JobInstanceSpec extends ObjectBehavior
         $clone->getId()->shouldReturn(null);
     }
 
-    function it_sets_the_job(Job $job)
-    {
-        $job->getConfiguration()->shouldBeCalled();
-        $this->setJob($job);
-    }
-
     function it_throws_logic_exception_when_changes_alias()
     {
         $this->beConstructedWith('connector', 'type', 'oldalias');

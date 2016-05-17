@@ -15,9 +15,6 @@ use Box\Spout\Writer\WriterFactory;
  */
 class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
 {
-    /** @var bool */
-    protected $withHeader;
-
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;
 
@@ -65,7 +62,9 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
             $media[]         = $item['media'];
         }
 
-        $this->flatRowBuffer->write($variantGroups, $this->isWithHeader());
+        $parameters = $this->stepExecution->getJobParameters();
+        $withHeader = $parameters->get('withHeader');
+        $this->flatRowBuffer->write($variantGroups, $withHeader);
         $this->fileExporter->exportAll($media, $exportDirectory);
 
         foreach ($this->fileExporter->getCopiedMedia() as $copy) {
@@ -104,44 +103,6 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
 
         $writer->close();
         $this->writtenFiles[$this->getPath()] = basename($this->getPath());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help',
-                ],
-            ],
-            'withHeader' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.export.withHeader.label',
-                    'help'  => 'pim_connector.export.withHeader.help',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @return bool
-     */
-    public function isWithHeader()
-    {
-        return $this->withHeader;
-    }
-
-    /**
-     * @param bool $withHeader
-     */
-    public function setWithHeader($withHeader)
-    {
-        $this->withHeader = $withHeader;
     }
 
     /**

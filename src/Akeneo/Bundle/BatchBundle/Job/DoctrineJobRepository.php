@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Job;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -16,6 +17,8 @@ use Doctrine\ORM\EntityManager;
  * batch.
  *
  * Inspired by Spring Batch org.springframework.batch.core.job.JobRepository
+ *
+ * TODO TIP-385: re-wite this implementation to avoid to open a dedicated connection like this
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -94,7 +97,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createJobExecution(JobInstance $jobInstance)
+    public function createJobExecution(JobInstance $jobInstance, JobParameters $jobParameters)
     {
         if (null !== $jobInstance->getId()) {
             $jobInstance = $this->jobManager->merge($jobInstance);
@@ -102,8 +105,10 @@ class DoctrineJobRepository implements JobRepositoryInterface
             $this->jobManager->persist($jobInstance);
         }
 
+        /** @var JobExecution */
         $jobExecution = new $this->jobExecutionClass();
         $jobExecution->setJobInstance($jobInstance);
+        $jobExecution->setJobParameters($jobParameters);
 
         $this->updateJobExecution($jobExecution);
 

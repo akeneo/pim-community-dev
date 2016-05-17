@@ -21,8 +21,6 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.builder.product'
             - ['pim_catalog_file', 'pim_catalog_image']
-            - %pim_catalog.localization.decimal_separators%
-            - %pim_catalog.localization.date_formats%
 
     pim_base_connector.processor.job_instance: @pim_connector.processor.denormalization.job_instance.flat
 

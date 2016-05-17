@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Buffer\BufferInterface;
 use PhpSpec\ObjectBehavior;
@@ -40,30 +41,18 @@ class XlsxProductWriterSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\Batch\Item\ItemWriterInterface');
     }
 
-    function it_has_configuration()
-    {
-        $this->getConfigurationFields()->shouldReturn([
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help'
-                ]
-            ],
-            'withHeader' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.export.withHeader.label',
-                    'help'  => 'pim_connector.export.withHeader.help'
-                ]
-            ],
-        ]);
-    }
-
-    function it_prepares_the_export($flatRowBuffer, $mediaCopier, StepExecution $stepExecution)
-    {
+    function it_prepares_the_export(
+        $flatRowBuffer,
+        $mediaCopier,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
         $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn('my/file/path');
+        $jobParameters->has('mainContext')->willReturn(false);
 
-        $this->setWithHeader(true);
         $items = $this->getItemToExport();
 
         $flatRowBuffer->write([
@@ -122,8 +111,19 @@ class XlsxProductWriterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_writes_the_xlsx_file($flatRowBuffer, BufferInterface $buffer, $columnSorter)
-    {
+    function it_writes_the_xlsx_file(
+        $flatRowBuffer,
+	$columnSorter,
+        BufferInterface $buffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn('my/file/path');
+        $jobParameters->has('mainContext')->willReturn(false);
+
         $flatRowBuffer->getHeaders()->willReturn(['id', 'family']);
         $flatRowBuffer->getBuffer()->willReturn($buffer);
 

@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -30,11 +31,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         );
     }
 
-    function it_returns_the_configuration_fields()
-    {
-        $this->getConfigurationFields()->shouldReturn(['actions' => []]);
-    }
-
     function it_sets_the_step_execution(StepExecution $stepExecution)
     {
         $this->setStepExecution($stepExecution)->shouldReturn($this);
@@ -47,7 +43,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobExecution $jobExecution
+        JobExecution $jobExecution,
+        JobParameters $jobParameters
     ) {
         $normalizedValues = json_encode(
             [
@@ -69,9 +66,11 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 'attribute_channel' => null,
             ]
         ];
-        $this->setConfiguration($configuration);
-
         $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->incrementSummaryInfo("skipped_products")->shouldBeCalled();
         $stepExecution->addWarning(
@@ -99,7 +98,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        LocalizerInterface $localizer
+        JobParameters $jobParameters
     ) {
         $values = [
             'number' => [
@@ -120,9 +119,11 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 'attribute_channel' => null,
             ]
         ];
-        $this->setConfiguration($configuration);
-
         $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
@@ -145,7 +146,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         ConstraintViolationListInterface $violations,
         StepExecution $stepExecution,
-        JobExecution $jobExecution
+        JobExecution $jobExecution,
+        JobParameters $jobParameters
     ) {
         $values = [
             'categories' => [
@@ -166,7 +168,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 'attribute_channel' => null,
             ]
         ];
-        $this->setConfiguration($configuration);
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $validator->validate($product)->willReturn($violations);

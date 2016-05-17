@@ -21,11 +21,12 @@ interface JobRepositoryInterface
     /**
      * Create a JobExecution object
      *
-     * @param JobInstance $job
+     * @param JobInstance   $job
+     * @param JobParameters $jobParameters
      *
      * @return JobExecution
      */
-    public function createJobExecution(JobInstance $job);
+    public function createJobExecution(JobInstance $job, JobParameters $jobParameters);
 
     /**
      * Update a JobExecution

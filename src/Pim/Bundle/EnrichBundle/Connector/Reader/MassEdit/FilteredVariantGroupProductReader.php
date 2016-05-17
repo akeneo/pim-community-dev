@@ -2,11 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Doctrine\ORM\EntityNotFoundException;
-use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\VariantGroupCleaner;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -16,66 +13,39 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilteredVariantGroupProductReader extends AbstractConfigurableStepElement implements ProductReaderInterface
+class FilteredVariantGroupProductReader extends FilteredProductReader
 {
-    /** @var FilteredProductReader */
-    protected $productReader;
-
     /** @var VariantGroupCleaner */
     protected $cleaner;
 
-    /** @var StepExecution */
-    protected $stepExecution;
-
-    /** @var bool */
-    protected $isExecuted;
-
-    /** @var string */
-    protected $channel;
-
     /** @var array */
-    protected $filters;
-
-    /** @var array */
-    protected $actions;
+    protected $cleanedFilters;
 
     /**
-     * @param FilteredProductReader $reader
-     * @param VariantGroupCleaner   $cleaner
+     * @param ProductQueryBuilderFactoryInterface $pqbFactory
+     * @param VariantGroupCleaner                 $cleaner
      */
-    public function __construct(FilteredProductReader $reader, VariantGroupCleaner $cleaner)
+    public function __construct(ProductQueryBuilderFactoryInterface $pqbFactory, VariantGroupCleaner $cleaner)
     {
-        $this->productReader = $reader;
+        parent::__construct($pqbFactory);
         $this->cleaner = $cleaner;
-        $this->filters = [];
-        $this->actions = [];
-        $this->isExecuted = false;
     }
 
     /**
-     * {@inheritdoc}
+     * Build filters to exclude products
+     *
+     * @return array|null
      */
-    public function read()
+    protected function getConfiguredFilters()
     {
-        if (!$this->isExecuted) {
-            $this->isExecuted = true;
-            $configuration = $this->cleaner->clean($this->getConfiguration(), $this->stepExecution);
-            if (null === $configuration) {
-                return null;
-            }
-            $this->productReader->setConfiguration($configuration);
-            $this->productReader->setStepExecution($this->stepExecution);
+        if (null === $this->cleanedFilters) {
+            $jobParameters = $this->stepExecution->getJobParameters();
+            $filters = $jobParameters->get('filters');
+            $actions = $jobParameters->get('actions');
+            $this->cleanedFilters = $this->cleaner->clean($this->stepExecution, $filters, $actions);
         }
 
-        return $this->productReader->read();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
+        return $this->cleanedFilters;
     }
 
     /**
@@ -84,47 +54,6 @@ class FilteredVariantGroupProductReader extends AbstractConfigurableStepElement 
     public function initialize()
     {
         $this->isExecuted = false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return ['filters' => [], 'actions' => []];
-    }
-
-    /**
-     * @param array $filters
-     */
-    public function setFilters(array $filters)
-    {
-        $this->filters = $filters;
-    }
-
-    /**
-     * @param array $actions
-     */
-    public function setActions(array $actions)
-    {
-        $this->actions = $actions;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setChannel($channel)
-    {
-        $this->channel = $channel;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChannel()
-    {
-        return $this->channel;
+        $this->cleanedFilters = null;
     }
 }

@@ -19,9 +19,6 @@ class VariantGroupWriter extends BaseWriter
     /** @var ProductTemplateApplierInterface */
     protected $productTplApplier;
 
-    /** @var bool */
-    protected $copyValues = true;
-
     /**
      * @param BulkSaverInterface              $groupSaver
      * @param BulkObjectDetacherInterface     $detacher
@@ -42,47 +39,13 @@ class VariantGroupWriter extends BaseWriter
      */
     public function write(array $variantGroups)
     {
-        if ($this->isCopyValues()) {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $isCopyValues = $jobParameters->get('copyValues');
+        if ($isCopyValues) {
             $this->copyValuesToProducts($variantGroups);
         }
 
         parent::write($variantGroups);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'copyValues' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.import.copyValuesToProducts.label',
-                    'help'  => 'pim_connector.import.copyValuesToProducts.help'
-                ]
-            ]
-        ];
-    }
-
-    /**
-     * Set copy values on products behavior
-     *
-     * @param bool $apply
-     */
-    public function setCopyValues($apply)
-    {
-        $this->copyValues = $apply;
-    }
-
-    /**
-     * Is copy values on products
-     *
-     * @return bool
-     */
-    public function isCopyValues()
-    {
-        return $this->copyValues;
     }
 
     /**

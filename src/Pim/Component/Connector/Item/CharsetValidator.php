@@ -22,9 +22,6 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var string */
-    protected $filePath;
-
     /** @var int */
     protected $maxErrors;
 
@@ -51,8 +48,9 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
      */
     public function validate()
     {
-        $file = new \SplFileInfo($this->filePath);
-
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('filePath');
+        $file = new \SplFileInfo($filePath);
         if (!in_array($file->getExtension(), $this->whiteListExtension)) {
             $this->validateEncoding();
         } else {
@@ -71,9 +69,11 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
      */
     protected function validateEncoding()
     {
-        $handle = fopen($this->filePath, 'r');
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('filePath');
+        $handle = fopen($filePath, 'r');
         if (false === $handle) {
-            throw new \Exception(sprintf('Unable to read the file "%s".', $this->filePath));
+            throw new \Exception(sprintf('Unable to read the file "%s".', $filePath));
         }
 
         $errors = [];
@@ -95,7 +95,7 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
                 sprintf('The lines %s are erroneous.', implode(', ', $errors));
 
             throw new CharsetException(
-                sprintf('The file "%s" is not correctly encoded in %s. ', $this->filePath, $this->charset) .
+                sprintf('The file "%s" is not correctly encoded in %s. ', $filePath, $this->charset) .
                 $message
             );
         }
@@ -109,36 +109,5 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.import.filePath.label',
-                    'help'  => 'pim_connector.import.filePath.help'
-                ]
-            ],
-        ];
-    }
-
-    /**
-     * @param string $filePath
-     */
-    public function setFilePath($filePath)
-    {
-        $this->filePath = $filePath;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
     }
 }

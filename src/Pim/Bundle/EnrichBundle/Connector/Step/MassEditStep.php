@@ -17,9 +17,6 @@ use Pim\Bundle\EnrichBundle\Step\MassEditRemoveTemporaryMediaStep;
  */
 class MassEditStep extends AbstractStep
 {
-    /** @var array */
-    protected $configuration;
-
     /** @var StepExecutionAwareInterface */
     protected $cleaner;
 
@@ -29,33 +26,7 @@ class MassEditStep extends AbstractStep
     protected function doExecute(StepExecution $stepExecution)
     {
         $this->cleaner->setStepExecution($stepExecution);
-        $this->cleaner->execute($this->configuration);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfiguration()
-    {
-        return $this->configuration;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfiguration(array $config)
-    {
-        $this->configuration = $config;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurableStepElements()
-    {
-        return [];
+        $this->cleaner->execute();
     }
 
     /**

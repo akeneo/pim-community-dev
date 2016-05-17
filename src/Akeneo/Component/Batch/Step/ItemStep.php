@@ -3,6 +3,8 @@
 namespace Akeneo\Component\Batch\Step;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\FlushableInterface;
+use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
@@ -106,63 +108,6 @@ class ItemStep extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    public function getConfiguration()
-    {
-        $stepElements = array(
-            $this->reader,
-            $this->writer,
-            $this->processor
-        );
-        $configuration = array();
-
-        foreach ($stepElements as $stepElement) {
-            if ($stepElement instanceof AbstractConfigurableStepElement) {
-                foreach ($stepElement->getConfiguration() as $key => $value) {
-                    if (!isset($configuration[$key]) || $value) {
-                        $configuration[$key] = $value;
-                    }
-                }
-            }
-        }
-
-        return $configuration;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfiguration(array $config)
-    {
-        $stepElements = array(
-            $this->reader,
-            $this->writer,
-            $this->processor
-        );
-
-        foreach ($stepElements as $stepElement) {
-            if ($stepElement instanceof AbstractConfigurableStepElement) {
-                $stepElement->setConfiguration($config);
-            }
-        }
-    }
-
-    /**
-     * Get the configurable step elements
-     *
-     * @return array
-     */
-    public function getConfigurableStepElements()
-    {
-        return array(
-            'reader'    => $this->getReader(),
-            'processor' => $this->getProcessor(),
-            'writer'    => $this->getWriter()
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function doExecute(StepExecution $stepExecution)
     {
         $itemsToWrite  = array();
@@ -208,11 +153,11 @@ class ItemStep extends AbstractStep
     protected function initializeStepElements(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
-        foreach ($this->getConfigurableStepElements() as $element) {
+        foreach ($this->getStepElements() as $element) {
             if ($element instanceof StepExecutionAwareInterface) {
                 $element->setStepExecution($stepExecution);
             }
-            if (method_exists($element, 'initialize')) {
+            if ($element instanceof InitializableInterface) {
                 $element->initialize();
             }
         }
@@ -223,11 +168,21 @@ class ItemStep extends AbstractStep
      */
     public function flushStepElements()
     {
-        foreach ($this->getConfigurableStepElements() as $element) {
-            if (method_exists($element, 'flush')) {
+        foreach ($this->getStepElements() as $element) {
+            if ($element instanceof FlushableInterface) {
                 $element->flush();
             }
         }
+    }
+
+    /**
+     * @deprecated will be removed in 1.7
+     *
+     * @return array
+     */
+    public function getConfigurableStepElements()
+    {
+        return $this->getStepElements();
     }
 
     /**
@@ -284,6 +239,20 @@ class ItemStep extends AbstractStep
             $e->getMessage(),
             $e->getMessageParameters(),
             $e->getItem()
+        );
+    }
+
+    /**
+     * Get the configurable step elements
+     *
+     * @return array
+     */
+    protected function getStepElements()
+    {
+        return array(
+            'reader'    => $this->getReader(),
+            'processor' => $this->getProcessor(),
+            'writer'    => $this->getWriter()
         );
     }
 }

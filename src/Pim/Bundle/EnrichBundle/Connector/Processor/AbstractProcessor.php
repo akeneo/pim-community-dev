@@ -24,9 +24,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var array */
-    protected $actions = [];
-
     /**
      * {@inheritdoc}
      */
@@ -35,22 +32,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
         $this->stepExecution = $stepExecution;
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return ['actions' => [],];
-    }
-
-    /**
-     * @param array $actions
-     */
-    public function setActions(array $actions)
-    {
-        $this->actions = $actions;
     }
 
     /**
@@ -84,12 +65,12 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     }
 
     /**
-     * Return the job configuration
-     *
-     * @return array
+     * @return array|null
      */
-    protected function getJobConfiguration()
+    protected function getConfiguredActions()
     {
-        return $this->getConfiguration();
+        $jobParameters = $this->stepExecution->getJobParameters();
+
+        return $jobParameters->get('actions');
     }
 }

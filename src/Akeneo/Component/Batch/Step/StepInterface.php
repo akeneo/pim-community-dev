@@ -15,8 +15,6 @@ use Akeneo\Component\Batch\Model\StepExecution;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
- *
- * TODO: this interface should not enforce step configuration, not the same concern!
  */
 interface StepInterface
 {
@@ -35,25 +33,4 @@ interface StepInterface
      * @throws JobInterruptedException if the step is interrupted externally
      */
     public function execute(StepExecution $stepExecution);
-
-    /**
-     * Provide the configuration of the step
-     *
-     * @return array
-     */
-    public function getConfiguration();
-
-    /**
-     * Set the configuration for the step
-     *
-     * @param array $config
-     */
-    public function setConfiguration(array $config);
-
-    /**
-     * Get the configurable step elements
-     *
-     * @return array
-     */
-    public function getConfigurableStepElements();
 }
