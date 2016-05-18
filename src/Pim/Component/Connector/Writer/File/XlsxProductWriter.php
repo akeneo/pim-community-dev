@@ -6,8 +6,6 @@ use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Writer\WriterInterface;
-use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Write product data into a XLSX file on the local filesystem
@@ -27,9 +25,6 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     /** @var ColumnSorterInterface */
     protected $columnSorter;
 
-    /** @var int */
-    protected $linesPerFile;
-
     /** @var BulkFileExporter */
     protected $fileExporter;
 
@@ -38,21 +33,18 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
      * @param FlatItemBuffer            $flatRowBuffer
      * @param BulkFileExporter          $fileExporter
      * @param ColumnSorterInterface     $columnSorter
-     * @param int                       $defaultLinesPerFile
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
         BulkFileExporter $fileExporter,
-        ColumnSorterInterface $columnSorter,
-        $defaultLinesPerFile
+        ColumnSorterInterface $columnSorter
     ) {
         parent::__construct($filePathResolver);
 
         $this->flatRowBuffer = $flatRowBuffer;
         $this->fileExporter  = $fileExporter;
         $this->columnSorter  = $columnSorter;
-        $this->linesPerFile  = $defaultLinesPerFile;
         $this->writtenFiles  = [];
     }
 
@@ -101,13 +93,16 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
             $pathPattern = $this->getNumberedFilePath($this->getPath());
         }
 
+        $parameters = $this->stepExecution->getJobParameters();
+        $linesPerFile = $parameters->get('linesPerFile');
+
         $headers = $this->columnSorter->sort($this->flatRowBuffer->getHeaders());
         $hollowItem = array_fill_keys($headers, '');
 
         $fileCount = 1;
         $writtenLinesCount = 0;
         foreach ($this->flatRowBuffer->getBuffer() as $count => $incompleteItem) {
-            if (0 === $writtenLinesCount % $this->getLinesPerFile()) {
+            if (0 === $writtenLinesCount % $linesPerFile) {
                 $filePath = $this->resolveFilePath($pathPattern, $fileCount);
 
                 $writtenLinesCount = 0;
@@ -123,7 +118,7 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
                 $this->stepExecution->incrementSummaryInfo('write');
             }
 
-            if (0 === $writtenLinesCount % $this->getLinesPerFile() || $this->flatRowBuffer->count() === $count + 1) {
+            if (0 === $writtenLinesCount % $linesPerFile || $this->flatRowBuffer->count() === $count + 1) {
                 $writer->close();
                 $this->writtenFiles[$filePath] = basename($filePath);
                 $fileCount++;
@@ -144,7 +139,9 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
      */
     protected function areSeveralFilesNeeded()
     {
-        return $this->flatRowBuffer->count() > $this->getLinesPerFile();
+        $parameters = $this->stepExecution->getJobParameters();
+
+        return $this->flatRowBuffer->count() > $parameters->get('linesPerFile');
     }
 
     /**

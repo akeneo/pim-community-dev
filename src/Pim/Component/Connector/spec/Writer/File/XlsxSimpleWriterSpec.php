@@ -95,8 +95,10 @@ class XlsxSimpleWriterSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn(true);
+        $jobParameters->get('linesPerFile')->willReturn(10000);
         $jobParameters->has('mainContext')->willReturn(false);
 
+        $flatRowBuffer->count()->willReturn(10);
         $flatRowBuffer->getHeaders()->willReturn(['code', 'type', 'label-en_US', 'label-de_DE']);
         $flatRowBuffer->getBuffer()->willReturn($buffer);
 

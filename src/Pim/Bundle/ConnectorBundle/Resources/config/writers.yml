@@ -219,7 +219,6 @@ services:
              - '@pim_connector.writer.file.file_path_resolver'
              - '@pim_connector.writer.file.product.flat_item_buffer'
              - '@pim_connector.writer.file.default.column_sorter'
-             - 10000
 
     pim_connector.writer.file.xlsx_product:
         class: %pim_connector.writer.file.xlsx_product.class%
@@ -228,7 +227,6 @@ services:
              - '@pim_connector.writer.file.product.flat_item_buffer'
              - '@pim_connector.writer.file.product.bulk_file_exporter'
              - '@pim_connector.writer.file.product.column_sorter'
-             - 10000
 
     pim_connector.writer.file.xlsx_variant_group:
         class: %pim_connector.writer.file.xlsx_variant_group.class%
@@ -237,7 +235,6 @@ services:
              - '@pim_connector.writer.file.product.flat_item_buffer'
              - '@pim_connector.writer.file.product.bulk_file_exporter'
              - '@pim_connector.writer.file.default.column_sorter'
-             - 10000
 
     pim_connector.writer.file.xlsx_group:
         alias: pim_connector.writer.file.xlsx

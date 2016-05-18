@@ -31,8 +31,9 @@ class SimpleXlsxExport implements DefaultValuesProviderInterface
     public function getDefaultValues()
     {
         return [
-            'filePath'   => null,
-            'withHeader' => true,
+            'filePath'     => null,
+            'withHeader'   => true,
+            'linesPerFile' => 10000,
         ];
     }
 

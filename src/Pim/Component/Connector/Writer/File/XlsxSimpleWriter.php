@@ -5,8 +5,6 @@ namespace Pim\Component\Connector\Writer\File;
 use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Writer\WriterInterface;
-use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Write simple data into a XLSX file on the local filesystem
@@ -23,9 +21,6 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
     /** @var ColumnSorterInterface */
     protected $columnSorter;
 
-    /** @var int */
-    protected $linesPerFile;
-
     /** @var array */
     protected $writtenFiles = [];
 
@@ -33,19 +28,16 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
      * @param ColumnSorterInterface     $columnSorter
-     * @param int                       $defaultLinesPerFile
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
-        ColumnSorterInterface $columnSorter,
-        $defaultLinesPerFile
+        ColumnSorterInterface $columnSorter
     ) {
         parent::__construct($filePathResolver);
 
         $this->flatRowBuffer = $flatRowBuffer;
         $this->columnSorter  = $columnSorter;
-        $this->linesPerFile  = $defaultLinesPerFile;
     }
 
     /**
@@ -76,10 +68,13 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
         $headers = $this->columnSorter->sort($this->flatRowBuffer->getHeaders());
         $hollowItem = array_fill_keys($headers, '');
 
+        $parameters = $this->stepExecution->getJobParameters();
+        $linesPerFile = $parameters->get('linesPerFile');
+
         $fileCount = 1;
         $writtenLinesCount = 0;
         foreach ($this->flatRowBuffer->getBuffer() as $count => $incompleteItem) {
-            if (0 === $writtenLinesCount % $this->getLinesPerFile()) {
+            if (0 === $writtenLinesCount % $linesPerFile) {
                 $filePath = $this->resolveFilePath($pathPattern, $fileCount);
 
                 $writtenLinesCount = 0;
@@ -95,7 +90,7 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
                 $this->stepExecution->incrementSummaryInfo('write');
             }
 
-            if (0 === $writtenLinesCount % $this->getLinesPerFile() || $this->flatRowBuffer->count() === $count + 1) {
+            if (0 === $writtenLinesCount % $linesPerFile || $this->flatRowBuffer->count() === $count + 1) {
                 $writer->close();
                 $this->writtenFiles[$filePath] = basename($filePath);
                 $fileCount++;
@@ -117,7 +112,9 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
      */
     protected function areSeveralFilesNeeded()
     {
-        return $this->flatRowBuffer->count() > $this->getLinesPerFile();
+        $parameters = $this->stepExecution->getJobParameters();
+
+        return $this->flatRowBuffer->count() > $parameters->get('linesPerFile');
     }
 
     /**

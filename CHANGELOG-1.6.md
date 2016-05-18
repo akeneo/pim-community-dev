@@ -38,9 +38,9 @@
 - Change constructor of `Pim\Component\Connector\Writer\File\CsvWriter` . Add parameter `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
 - Change constructor of `Pim\Component\Connector\Writer\File\CsvProductWriter` . Add parameter `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
 - Change constructor of `Pim\Component\Connector\Writer\File\CsvVariantGroupWriter` . Add parameter `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\XlsxSimpleWriter` . Add `Pim\Component\Connector\Writer\File\ColumnSorterInterface` and `$defaultLinesPerFile` parameters
-- Change constructor of `Pim\Component\Connector\Writer\File\XlsxProductWriter` . Add `Pim\Component\Connector\Writer\File\ColumnSorterInterface` and `$defaultLinesPerFile` parameters
-- Change constructor of `Pim\Component\Connector\Writer\File\XlsxVariantGroupWriter` . Add `Pim\Component\Connector\Writer\File\ColumnSorterInterface` and `$defaultLinesPerFile` parameters 
+- Change constructor of `Pim\Component\Connector\Writer\File\XlsxSimpleWriter` . Add `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
+- Change constructor of `Pim\Component\Connector\Writer\File\XlsxProductWriter` . Add `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
+- Change constructor of `Pim\Component\Connector\Writer\File\XlsxVariantGroupWriter` . Add `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
 - Remove method `setAvailableLocales` in `Pim\Component\Catalog\Model\AttributeInterface` and `Pim\Component\Catalog\Model\AbstractAttribute`
 - `Pim\Component\Connector\Writer\File\FlatItemBuffer` implements `\Countable`
 - `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
