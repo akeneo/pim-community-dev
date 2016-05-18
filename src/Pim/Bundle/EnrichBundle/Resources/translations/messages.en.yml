@@ -999,4 +999,4 @@ pim_enrich_attribute_form:
     availableLocales: Available locales
     locale_specific: Locale specific
     group: Attribute group
-    useableAsGridFilter: Use in grid
+    useableAsGridFilter: Usable in grid

@@ -123,10 +123,16 @@ class XlsxFileContext extends PimContext
             $actualCount,
             sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
         );
-
+        
+        $headerDiff = array_diff($actualLines[0], $expectedLines[0]);
         if (0 !== count(array_diff($actualLines[0], $expectedLines[0]))) {
             throw new \Exception(
-                sprintf('Header in the file %s does not match expected one: %s', $path, implode(' | ', $actualLines[0]))
+                sprintf(
+                    "Header in the file %s does not match \n expected one: %s \n missing headers : %s",
+                    $path,
+                    implode(' | ', $actualLines[0]),
+                    implode(' | ', $headerDiff)
+                )
             );
         }
 
