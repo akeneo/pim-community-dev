@@ -28,9 +28,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var bool */
-    protected $realTimeVersioning = true;
-
     /** @var BulkSaverInterface */
     protected $productSaver;
 
@@ -57,45 +54,11 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /**
      * {@inheritdoc}
      */
-    public function getConfigurationFields()
-    {
-        return [
-            'realTimeVersioning' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.import.realTimeVersioning.label',
-                    'help'  => 'pim_connector.import.realTimeVersioning.help'
-                ]
-            ]
-        ];
-    }
-
-    /**
-     * Set real time versioning
-     *
-     * @param bool $realTime
-     */
-    public function setRealTimeVersioning($realTime)
-    {
-        $this->realTimeVersioning = $realTime;
-    }
-
-    /**
-     * Is real time versioning
-     *
-     * @return bool
-     */
-    public function isRealTimeVersioning()
-    {
-        return $this->realTimeVersioning;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function write(array $items)
     {
-        $this->versionManager->setRealTimeVersioning($this->realTimeVersioning);
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $realTimeVersioning = $jobParameters->get('realTimeVersioning');
+        $this->versionManager->setRealTimeVersioning($realTimeVersioning);
         foreach ($items as $item) {
             $this->incrementCount($item);
         }

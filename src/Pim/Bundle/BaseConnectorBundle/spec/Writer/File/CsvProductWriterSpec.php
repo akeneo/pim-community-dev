@@ -9,6 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Connector\Writer\File\FileExporterInterface;
 
+// @deprecated class, will be removed in 1.6
 class CsvProductWriterSpec extends ObjectBehavior
 {
     function let(StepExecution $stepExecution, FileExporterInterface $fileExporter)

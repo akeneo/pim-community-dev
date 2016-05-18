@@ -406,7 +406,7 @@ services:
             - '@pim_catalog.updater.product'
             - '@pim_catalog.saver.product'
             - '@pim_internal_api_serializer'
-            - '@pim_validator'
+            - '@pim_catalog.validator.product'
             - '@pim_user.context.user'
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.filter.product_edit_data'

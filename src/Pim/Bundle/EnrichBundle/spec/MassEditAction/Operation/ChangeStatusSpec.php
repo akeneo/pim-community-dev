@@ -6,6 +6,11 @@ use PhpSpec\ObjectBehavior;
 
 class ChangeStatusSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith('update_product_value');
+    }
+
     function it_is_a_mass_edit_operation()
     {
         $this->shouldImplement('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');

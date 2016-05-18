@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
@@ -37,10 +38,15 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        ProductTemplateInterface $productTemplate
+        ProductTemplateInterface $productTemplate,
+        JobParameters $jobParameters
     ) {
         $configuration = ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']];
-        $this->setConfiguration($configuration);
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -64,10 +70,14 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        ProductTemplateInterface $productTemplate
+        ProductTemplateInterface $productTemplate,
+        JobParameters $jobParameters
     ) {
         $configuration = ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']];
-        $this->setConfiguration($configuration);
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
 
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
         $violations = new ConstraintViolationList([$violation, $violation]);
@@ -87,11 +97,6 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
 
         $this->process($product);
-    }
-
-    function it_returns_the_configuration_fields()
-    {
-        $this->getConfigurationFields()->shouldReturn(['actions' => []]);
     }
 
     function it_sets_the_step_execution(StepExecution $stepExecution)

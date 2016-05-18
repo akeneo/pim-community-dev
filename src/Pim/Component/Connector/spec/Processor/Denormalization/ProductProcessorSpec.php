@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -51,11 +52,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
-    function it_has_extra_configuration()
-    {
-        $this->getConfigurationFields()->shouldHaveCount(7);
-    }
-
     function it_updates_an_existing_product(
         $arrayConverter,
         $productRepository,
@@ -63,9 +59,20 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $localizedConverter,
+        $stepExecution,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
@@ -165,9 +172,20 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $localizedConverter,
+        $stepExecution,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
@@ -269,9 +287,20 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $localizedConverter,
+        $stepExecution,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(false);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
@@ -360,7 +389,6 @@ class ProductProcessorSpec extends ObjectBehavior
             ->validate($product)
             ->willReturn($violationList);
 
-        $this->setEnabledComparison(false);
         $this
             ->process($originalData)
             ->shouldReturn($product);
@@ -374,9 +402,20 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $localizedConverter,
+        $stepExecution,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
 
@@ -475,8 +514,19 @@ class ProductProcessorSpec extends ObjectBehavior
         $arrayConverter,
         $productRepository,
         $localizedConverter,
-        ConstraintViolationListInterface $violationList
+        $stepExecution,
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
 
         $originalData = [
@@ -509,6 +559,8 @@ class ProductProcessorSpec extends ObjectBehavior
         ])->willReturn($convertedData);
         $localizedConverter->getViolations()->willReturn($violationList);
 
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
@@ -525,9 +577,20 @@ class ProductProcessorSpec extends ObjectBehavior
         $productDetacher,
         $productFilter,
         $localizedConverter,
+        $stepExecution,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
 
@@ -614,6 +677,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->willThrow(new \InvalidArgumentException('family does not exists'));
 
         $productDetacher->detach($product)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
 
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
@@ -632,9 +696,20 @@ class ProductProcessorSpec extends ObjectBehavior
         $productDetacher,
         $productFilter,
         $localizedConverter,
+        $stepExecution,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
 
@@ -727,7 +802,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->willReturn($violations);
 
         $productDetacher->detach($product)->shouldBeCalled();
-
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
@@ -743,9 +818,20 @@ class ProductProcessorSpec extends ObjectBehavior
         $productDetacher,
         $productFilter,
         $localizedConverter,
+        $stepExecution,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
         $product->getId()->willReturn(1);
@@ -830,6 +916,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->update($product, $filteredData)->shouldNotBeCalled();
 
         $productDetacher->detach($product)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('product_skipped_no_diff')->shouldBeCalled();
 
         $this
             ->process($originalData)
@@ -843,14 +930,23 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $localizedConverter,
+        $stepExecution,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn(',');
+        $jobParameters->get('dateFormat')->willReturn('dd/MM/yyyy');
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
-        $this->setDecimalSeparator(',');
-        $this->setDateFormat('dd/MM/yyyy');
 
         $originalData = [
             'sku'    => 'tshirt',
@@ -933,8 +1029,19 @@ class ProductProcessorSpec extends ObjectBehavior
         $arrayConverter,
         $localizedConverter,
         $productRepository,
-        ProductInterface $product
+        $stepExecution,
+        ProductInterface $product,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
@@ -979,6 +1086,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([$violation]);
         $localizedConverter->getViolations()->willReturn($violations);
 
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
@@ -994,12 +1103,22 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productFilter,
         $localizedConverter,
+        $stepExecution,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn(',');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
-        $this->setDecimalSeparator(',');
         $product->getId()->willReturn(42);
 
         $productBuilder->createProduct('tshirt', null)->willReturn($product);
@@ -1053,6 +1172,8 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productFilter->filter($product, $filteredData)->willReturn([]);
 
+        $stepExecution->incrementSummaryInfo('product_skipped_no_diff')->shouldBeCalled();
+
         $productUpdater
             ->update($product, $filteredData)->shouldNotBeCalled();
 
@@ -1068,9 +1189,20 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $localizedConverter,
+        $stepExecution,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
@@ -1173,9 +1305,20 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $localizedConverter,
+        $stepExecution,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
 

@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
+use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
@@ -21,19 +23,16 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function let(
         Serializer $serializer,
         ChannelRepositoryInterface $channelRepository,
-        ProductBuilderInterface $productBuilder
+        ProductBuilderInterface $productBuilder,
+        StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $serializer,
             $channelRepository,
             $productBuilder,
-            ['pim_catalog_file', 'pim_catalog_image'],
-            ['.', ','],
-            [
-                ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
-                ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy'],
-            ]
+            ['pim_catalog_file', 'pim_catalog_image']
         );
+        $this->setStepExecution($stepExecution);
     }
 
     function it_is_initializable()
@@ -46,60 +45,11 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
     }
 
-    function it_provides_configuration_fields($channelRepository)
-    {
-        $channelRepository->getLabelsIndexedByCode()->willReturn(['mobile', 'magento']);
-
-        $this->getConfigurationFields()->shouldReturn(
-            [
-                'channel' => [
-                    'type'    => 'choice',
-                    'options' => [
-                        'choices'  => ['mobile', 'magento'],
-                        'required' => true,
-                        'select2'  => true,
-                        'label'    => 'pim_base_connector.export.channel.label',
-                        'help'     => 'pim_base_connector.export.channel.help'
-                    ]
-                ],
-                'decimalSeparator' => [
-                    'type'    => 'choice',
-                    'options' => [
-                        'choices'  => ['.', ','],
-                        'required' => true,
-                        'select2'  => true,
-                        'label'    => 'pim_base_connector.export.decimalSeparator.label',
-                        'help'     => 'pim_base_connector.export.decimalSeparator.help'
-                    ]
-                ],
-                'dateFormat' => [
-                    'type'    => 'choice',
-                    'options' => [
-                        'choices'  => [
-                            ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
-                            ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy']
-                        ],
-                        'required' => true,
-                        'select2'  => true,
-                        'label'    => 'pim_base_connector.export.dateFormat.label',
-                        'help'     => 'pim_base_connector.export.dateFormat.help'
-                    ]
-                ]
-            ]
-        );
-    }
-
-    function it_is_configurable()
-    {
-        $this->getChannel()->shouldReturn(null);
-
-        $this->setChannel('mobile');
-
-        $this->getChannel()->shouldReturn('mobile');
-    }
-
     function it_returns_flat_data_with_media(
         $channelRepository,
+        $serializer,
+        $productBuilder,
+        $stepExecution,
         Filesystem $filesystem,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -111,11 +61,16 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductValueInterface $identifierValue,
         AttributeInterface $identifierAttribute,
-        $serializer,
-        $productBuilder
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('foobar');
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $localeCodes = ['en_US'];
 
+        $channel->getCode()->willReturn('foobar');
         $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
         $channel->getLocaleCodes()->willReturn($localeCodes);
         $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
@@ -159,7 +114,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
         $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
 
-        $this->setChannel('foobar');
         $this->process($product)->shouldReturn(
             [
                 'media'   => [['normalized_media1'], ['normalized_media2']],
@@ -170,20 +124,27 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
     function it_returns_flat_data_without_media(
         $productBuilder,
+        $stepExecution,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ChannelRepositoryInterface $channelRepository,
         ProductInterface $product,
-        Serializer $serializer
+        Serializer $serializer,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('foobar');
+        $jobParameters->get('decimalSeparator')->willReturn(',');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $localeCodes = ['en_US'];
 
+        $channel->getCode()->willReturn('foobar');
         $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
         $channel->getLocaleCodes()->willReturn($localeCodes);
         $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
 
         $product->getValues()->willReturn([]);
-        $this->setDecimalSeparator(',');
 
         $serializer
             ->normalize(
@@ -200,7 +161,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
         $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
 
-        $this->setChannel('foobar');
         $this->process($product)->shouldReturn(['media' => [], 'product' => ['normalized_product']]);
     }
 }

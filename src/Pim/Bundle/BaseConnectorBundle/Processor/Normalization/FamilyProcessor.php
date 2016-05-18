@@ -40,14 +40,14 @@ class FamilyProcessor extends Processor
     public function process($family)
     {
         $normalizedFamily = $this->familyNormalizer->normalize($family);
-
+        $parameters = $this->stepExecution->getJobParameters();
         return $this->serializer->serialize(
             $normalizedFamily,
             'csv',
             [
-                'delimiter'     => $this->delimiter,
-                'enclosure'     => $this->enclosure,
-                'withHeader'    => $this->withHeader,
+                'delimiter'     => $parameters->get('delimiter'),
+                'enclosure'     => $parameters->get('enclosure'),
+                'withHeader'    => $parameters->get('withHeader'),
                 'heterogeneous' => false,
                 'locales'       => $this->localeRepository->getActivatedLocaleCodes(),
             ]

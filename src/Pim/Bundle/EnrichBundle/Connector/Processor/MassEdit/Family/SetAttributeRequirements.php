@@ -47,13 +47,7 @@ class SetAttributeRequirements extends AbstractProcessor
      */
     public function process($family)
     {
-        $configuration = $this->getJobConfiguration();
-
-        if (!array_key_exists('actions', $configuration)) {
-            throw new InvalidArgumentException('Missing configuration for \'actions\'.');
-        }
-
-        $actions = $configuration['actions'];
+        $actions = $this->getConfiguredActions();
 
         foreach ($actions as $action) {
             $attribute = $this->attributeRepository->findOneByIdentifier($action['attribute_code']);

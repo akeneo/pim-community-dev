@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -32,11 +33,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         );
     }
 
-    function it_returns_the_configuration_fields()
-    {
-        $this->getConfigurationFields()->shouldReturn(['actions' => []]);
-    }
-
     function it_sets_the_step_execution(StepExecution $stepExecution)
     {
         $this->setStepExecution($stepExecution)->shouldReturn($this);
@@ -50,13 +46,31 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         ProductValueInterface $productValue,
         StepExecution $stepExecution,
-        JobExecution $jobExecution
+        JobExecution $jobExecution,
+        JobParameters $jobParameters
     ) {
         $this->setStepExecution($stepExecution);
 
         $product->getIdentifier()->shouldBeCalled()->willReturn($productValue);
         $product->getId()->willReturn(10);
         $productValue->getData()->shouldBeCalled();
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn([]);
+        $jobParameters->get('actions')->willReturn([
+            'normalized_values' => json_encode([
+                'categories' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => ['office', 'bedroom']
+                    ]
+                ]
+            ]),
+            'ui_locale'         => 'en_US',
+            'attribute_locale'  => 'en_US',
+            'attribute_channel' => null
+        ]);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
@@ -68,24 +82,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $productDetacher->detach($product)->shouldBeCalled();
-
-        $this->setConfiguration([
-            'filters' => [],
-            'actions' => [
-                'normalized_values' => json_encode([
-                    'categories' => [
-                        [
-                            'scope' => null,
-                            'locale' => null,
-                            'data' => ['office', 'bedroom']
-                        ]
-                    ]
-                ]),
-                'ui_locale'         => 'en_US',
-                'attribute_locale'  => 'en_US',
-                'attribute_channel' => null
-            ]
-        ]);
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
@@ -103,14 +99,15 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $productRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobExecution $jobExecution
+        JobExecution $jobExecution,
+        JobParameters $jobParameters
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $this->setConfiguration([
-            'filters' => [],
-            'actions' => [
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn([]);
+        $jobParameters->get('actions')->willReturn([
                 'normalized_values' => json_encode([
                     'number' => [
                         [
@@ -123,8 +120,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 'ui_locale'         => 'fr_FR',
                 'attribute_locale'  => 'en_US',
                 'attribute_channel' => null
-            ]
-        ]);
+            ]);
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
@@ -153,13 +149,15 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         ConstraintViolationListInterface $violations,
         StepExecution $stepExecution,
-        JobExecution $jobExecution
+        JobExecution $jobExecution,
+        JobParameters $jobParameters
     ) {
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $this->setStepExecution($stepExecution);
 
-        $this->setConfiguration([
-            'filters' => [],
-            'actions' => [
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn([]);
+        $jobParameters->get('actions')->willReturn([
                 'normalized_values' => json_encode([
                     'categories' => [
                         [
@@ -172,8 +170,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 'ui_locale'         => 'fr_FR',
                 'attribute_locale'  => 'en_US',
                 'attribute_channel' => null
-            ]
-        ]);
+            ]);
 
         $validator->validate($product)->willReturn($violations);
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);

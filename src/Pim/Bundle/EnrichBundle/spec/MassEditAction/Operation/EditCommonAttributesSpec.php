@@ -40,7 +40,8 @@ class EditCommonAttributesSpec extends ObjectBehavior
             $localizedConverter,
             $localizerRegistry,
             $productValuesFilter,
-            $tmpStorageDir
+            $tmpStorageDir,
+            'edit_common_attributes'
         );
     }
 

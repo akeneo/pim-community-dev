@@ -2,12 +2,14 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Archive job execution files into conventional directories
@@ -24,14 +26,19 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
     /** @var string */
     protected $directory;
 
+    /** @var ContainerInterface */
+    private $container;
+
     /**
      * @param ZipFilesystemFactory $factory
      * @param Filesystem           $filesystem
+     * @param ContainerInterface   $container
      */
-    public function __construct(ZipFilesystemFactory $factory, Filesystem $filesystem)
+    public function __construct(ZipFilesystemFactory $factory, Filesystem $filesystem, ContainerInterface $container)
     {
         $this->factory    = $factory;
         $this->filesystem = $filesystem;
+        $this->container = $container;
     }
 
     /**
@@ -39,7 +46,8 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
      */
     public function archive(JobExecution $jobExecution)
     {
-        foreach ($jobExecution->getJobInstance()->getJob()->getSteps() as $step) {
+        $job = $this->getConnectorRegistry()->getJob($jobExecution->getJobInstance());
+        foreach ($job->getSteps() as $step) {
             if (!$step instanceof ItemStep) {
                 continue;
             }
@@ -111,12 +119,24 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
      */
     public function supports(JobExecution $jobExecution)
     {
-        foreach ($jobExecution->getJobInstance()->getJob()->getSteps() as $step) {
+        $job = $this->getConnectorRegistry()->getJob($jobExecution->getJobInstance());
+        foreach ($job->getSteps() as $step) {
             if ($step instanceof ItemStep && $this->isWriterUsable($step->getWriter())) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Should be changed with TIP-418, here we work around a circular reference due to the way we instanciate the whole
+     * Job classes in the DIC
+     *
+     * @return ConnectorRegistry
+     */
+    final protected function getConnectorRegistry()
+    {
+        return $this->container->get('akeneo_batch.connectors');
     }
 }

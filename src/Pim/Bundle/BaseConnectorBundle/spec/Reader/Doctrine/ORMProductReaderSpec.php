@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
@@ -36,29 +37,22 @@ class ORMProductReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
-    function it_is_configurable(AbstractQuery $query)
-    {
-        $this->getChannel()->shouldReturn(null);
-        $this->getQuery()->shouldReturn(null);
-
-        $this->setChannel('mobile');
-        $this->setQuery($query);
-
-        $this->getChannel()->shouldReturn('mobile');
-        $this->getQuery()->shouldReturn($query);
-    }
-
     function it_reads_products_one_by_one(
         $channelRepository,
         $repository,
+        $stepExecution,
         ChannelInterface $channel,
         From $from,
         QueryBuilder $queryBuilder,
         AbstractQuery $query,
         ProductInterface $sku1,
         ProductInterface $sku2,
-        ProductInterface $sku3
+        ProductInterface $sku3,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('foobar');
+
         $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getRootAliases()->willReturn(['root']);
@@ -76,7 +70,8 @@ class ORMProductReaderSpec extends ObjectBehavior
 
         $repository->findByIds([1, 33, 789])->willReturn([$sku1, $sku2, $sku3]);
 
-        $this->setChannel('foobar');
+        $stepExecution->incrementSummaryInfo('read')->shouldBeCalled();
+
         $this->read()->shouldReturn($sku1);
     }
 
@@ -84,14 +79,19 @@ class ORMProductReaderSpec extends ObjectBehavior
         $channelRepository,
         $completenessManager,
         $repository,
+        $stepExecution,
         From $from,
         ChannelInterface $channel,
         QueryBuilder $queryBuilder,
         AbstractQuery $query,
         ProductInterface $sku1,
         ProductInterface $sku2,
-        ProductInterface $sku3
+        ProductInterface $sku3,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('foobar');
+
         $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getRootAliases()->willReturn(['root']);
@@ -111,7 +111,8 @@ class ORMProductReaderSpec extends ObjectBehavior
 
         $completenessManager->generateMissingForChannel($channel)->shouldBeCalledTimes(1);
 
-        $this->setChannel('foobar');
+        $stepExecution->incrementSummaryInfo('read')->shouldBeCalled();
+
         $this->read()->shouldReturn($sku1);
     }
 
@@ -119,14 +120,19 @@ class ORMProductReaderSpec extends ObjectBehavior
         $channelRepository,
         $repository,
         $metricConverter,
+        $stepExecution,
         ChannelInterface $channel,
         From $from,
         QueryBuilder $queryBuilder,
         AbstractQuery $query,
         ProductInterface $sku1,
         ProductInterface $sku2,
-        ProductInterface $sku3
+        ProductInterface $sku3,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('foobar');
+
         $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getRootAliases()->willReturn(['root']);
@@ -143,9 +149,10 @@ class ORMProductReaderSpec extends ObjectBehavior
         $query->getArrayResult()->willReturn(array_flip([1, 33, 789]));
 
         $repository->findByIds([1, 33, 789])->willReturn([$sku1, $sku2, $sku3]);
-        $this->setChannel('foobar');
 
         $metricConverter->convert($sku1, $channel)->shouldBeCalled();
+
+        $stepExecution->incrementSummaryInfo('read')->shouldBeCalled();
 
         $this->read()->shouldReturn($sku1);
     }
@@ -160,8 +167,12 @@ class ORMProductReaderSpec extends ObjectBehavior
         AbstractQuery $query,
         ProductInterface $sku1,
         ProductInterface $sku2,
-        ProductInterface $sku3
+        ProductInterface $sku3,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('foobar');
+
         $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getRootAliases()->willReturn(['root']);
@@ -178,42 +189,12 @@ class ORMProductReaderSpec extends ObjectBehavior
         $query->getArrayResult()->willReturn(array_flip([1, 33, 789]));
 
         $repository->findByIds([1, 33, 789])->willReturn([$sku1, $sku2, $sku3]);
-        $this->setChannel('foobar');
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
 
-        $this->setChannel('foobar');
         $this->read();
         $this->read();
         $this->read();
         $this->read();
-    }
-
-    function it_exposes_the_channel_field($channelRepository)
-    {
-        $channelRepository->getLabelsIndexedByCode()->willReturn(
-            [
-                'foo' => 'Foo',
-                'bar' => 'Bar',
-            ]
-        );
-
-        $this->getConfigurationFields()->shouldReturn(
-            [
-                'channel' => [
-                    'type'    => 'choice',
-                    'options' => [
-                        'choices'  => [
-                            'foo' => 'Foo',
-                            'bar' => 'Bar',
-                        ],
-                        'required' => true,
-                        'select2'  => true,
-                        'label'    => 'pim_base_connector.export.channel.label',
-                        'help'     => 'pim_base_connector.export.channel.help'
-                    ]
-                ]
-            ]
-        );
     }
 }

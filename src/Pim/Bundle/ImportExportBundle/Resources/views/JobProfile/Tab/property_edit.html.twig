@@ -6,14 +6,10 @@
     {{ elements.accordion({ 'pane.accordion.properties': properties }, 1) }}
 
     {% set globalSettings %}
-        {% for step in form.job.steps %}
-            {% for stepElement in step.children %}
-                {% for field in stepElement.children %}
-                    {% if field.vars.attr['data-tab'] is not defined %}
-                        {{ form_row(field) }}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
+        {% for field in form.configuration %}
+            {% if field.vars.attr['data-tab'] is not defined %}
+                {{ form_row(field) }}
+            {% endif %}
         {% endfor %}
     {% endset %}
     {{ elements.accordion({ 'pane.accordion.global_settings': globalSettings }, 2) }}
