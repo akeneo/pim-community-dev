@@ -16,7 +16,7 @@ class Select2Decorator extends ElementDecorator
      */
     public function setValue($value)
     {
-        $values = explode(',', $value);
+        $values = '' !== $value ? explode(',', $value) : [];
         $this->prune();
 
         $widget = $this->getWidget();
@@ -41,6 +41,8 @@ class Select2Decorator extends ElementDecorator
 
             $result->click();
         }
+
+        $this->close();
     }
 
     public function prune()
@@ -64,10 +66,12 @@ class Select2Decorator extends ElementDecorator
      */
     public function close()
     {
-        $dropMask = $this->getBody()->find('css', '#select2-drop-mask');
+        if (false !== strstr($this->getAttribute('class'), 'select2-dropdown-open')) {
+            $dropMask = $this->getBody()->find('css', '#select2-drop-mask');
 
-        if (null !== $dropMask) {
-            $dropMask->click();
+            if (null !== $dropMask) {
+                $dropMask->click();
+            }
         }
     }
 
