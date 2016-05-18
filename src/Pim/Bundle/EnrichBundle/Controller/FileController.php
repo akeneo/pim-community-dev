@@ -164,11 +164,14 @@ class FileController
      */
     protected function getMimeType($filename)
     {
-        $mimeType = MimeTypeGuesser::getInstance()->guess($filename);
+        $mimeType = null;
 
         $file = $this->fileInfoRepository->findOneByIdentifier($filename);
         if (null !== $file) {
             $mimeType = $file->getMimeType();
+        }
+        if (null === $mimeType && file_exists($filename)) {
+            $mimeType = MimeTypeGuesser::getInstance()->guess($filename);
         }
 
         return $mimeType;
