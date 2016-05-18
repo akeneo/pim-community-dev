@@ -1,0 +1,16 @@
+parameters:
+    pim_connector.transfer.local.archive_to_local.class: Pim\Component\Connector\Transfer\LocalTransferStepElement
+    pim_connector.transfer.local.local_to_archive.class: Pim\Component\Connector\Transfer\LocalTransferStepElement
+
+services:
+    pim_connector.transfer.local.archive_to_local:
+        class: '%pim_connector.transfer.local.archive_to_local.class%'
+        arguments:
+            - '@pim_connector.archiving_directory'
+            - true
+
+    pim_connector.transfer.local.local_to_archive:
+        class: '%pim_connector.transfer.local.local_to_archive.class%'
+        arguments:
+            - '@pim_connector.archiving_directory'
+            - false

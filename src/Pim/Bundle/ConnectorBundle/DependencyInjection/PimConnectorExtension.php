@@ -33,6 +33,7 @@ class PimConnectorExtension extends Extension
         $loader->load('readers.yml');
         $loader->load('serializer.yml');
         $loader->load('steps.yml');
+        $loader->load('transfers.yml');
         $loader->load('writers.yml');
     }
 }
