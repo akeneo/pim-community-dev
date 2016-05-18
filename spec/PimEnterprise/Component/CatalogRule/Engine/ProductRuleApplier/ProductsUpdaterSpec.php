@@ -5,15 +5,13 @@ namespace spec\PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
-use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
-use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
+use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
+use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
 use Prophecy\Argument;
 
 class ProductsUpdaterSpec extends ObjectBehavior
@@ -50,13 +48,11 @@ class ProductsUpdaterSpec extends ObjectBehavior
         $templateUpdater,
         RuleInterface $rule,
         ProductInterface $product,
-        ProductSetValueActionInterface $action,
+        ProductSetActionInterface $action,
         ActionApplierInterface $actionApplier
     ) {
         $action->getField()->willReturn('sku');
         $action->getValue()->willReturn('foo');
-        $action->getScope()->willReturn('ecommerce');
-        $action->getLocale()->willReturn('en_US');
         $rule->getActions()->willReturn([$action]);
 
         $applierRegistry->getActionApplier($action)->willReturn($actionApplier);
@@ -73,17 +69,13 @@ class ProductsUpdaterSpec extends ObjectBehavior
         $templateUpdater,
         RuleInterface $rule,
         ProductInterface $product,
-        ProductCopyValueAction $action,
+        ProductCopyActionInterface $action,
         GroupInterface $group,
         ProductTemplateInterface $productTemplate,
         ActionApplierInterface $actionApplier
     ) {
         $action->getFromField()->willReturn('sku');
         $action->getToField()->willReturn('description');
-        $action->getFromLocale()->willReturn('fr_FR');
-        $action->getToLocale()->willReturn('fr_CH');
-        $action->getFromScope()->willReturn('ecommerce');
-        $action->getToScope()->willReturn('tablet');
         $rule->getActions()->willReturn([$action]);
 
         $applierRegistry->getActionApplier($action)->willReturn($actionApplier);

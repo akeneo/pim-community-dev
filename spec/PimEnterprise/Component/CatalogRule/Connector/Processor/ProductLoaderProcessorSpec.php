@@ -22,6 +22,12 @@ class ProductLoaderProcessorSpec extends ObjectBehavior
         $this->process(['sku' => 'foo'])->shouldReturn($product);
     }
 
+    function it_does_not_process_if_already_an_object($productRepository, ProductInterface $product)
+    {
+        $productRepository->findOneByIdentifier()->shouldNotBeCalled();
+        $this->process($product)->shouldReturn($product);
+    }
+
     function it_should_return_null_when_there_is_no_product(
         $productRepository
     ) {

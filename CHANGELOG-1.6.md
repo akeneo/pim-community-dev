@@ -115,6 +115,15 @@
 - Remove deprecated `Pim\Bundle\BaseConnectorBundle\Reader\DummyReader`
 - Remove deprecated `Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface`
 - Remove deprecated `Pim\Bundle\BaseConnectorBundle\Validator\Import\SkipImportValidator`
+- Remove deprecated `PimEnterprise/Component/CatalogRule/Validator/ExistingFieldValidator`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/Model/ProductSetValueActionInterface`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/Model/ProductSetValueAction`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/Model/ProductCopyValueActionInterface`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/Model/ProductCopyValueAction`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/Denormalizer/ProductRule/SetValueActionDenormalizer`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/Denormalizer/ProductRule/CopyValueActionDenormalizer`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/ActionApplier/SetterValueActionApplier`
+- Remove deprecated `PimEnterprise/Bundle/CatalogRuleBundle/ActionApplier/CopierValueActionApplier`
 - Change constructor of `PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager`
     remove `Doctrine\Common\Persistence\ObjectManager`
     remove `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`
@@ -124,3 +133,12 @@
 - Change constructor of `PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType`
     add  `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
     remove parameter `$categoryClass`
+- Remove deprecated `PimEnterprise\Component\CatalogRule\Connector\Writer\YamlFile\RuleDefinitionWriter`
+- Remove argument array $configuration from the method `execute()` of classes
+    `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\AbstractProductPublisherTasklet`,
+    `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\PublishProductTasklet`,
+    `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\UnpublishProductTasklet`,
+    `PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet`
+	`PimEnterprise\Component\CatalogRule\Connector\Tasklet\ImpactedProductCountTasklet`
+	`PimEnterprise\Component\Workflow\Connector\Tasklet\ApproveTasklet`
+	`PimEnterprise\Component\Workflow\Connector\Tasklet\RefuseTasklet` we can access to the JobParameters from the StepExecution

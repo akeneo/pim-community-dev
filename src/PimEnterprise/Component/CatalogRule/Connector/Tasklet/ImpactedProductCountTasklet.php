@@ -61,9 +61,10 @@ class ImpactedProductCountTasklet implements TaskletInterface
     /**
      * {@inheritdoc}
      */
-    public function execute(array $configuration)
+    public function execute()
     {
-        $ruleDefinitions = $this->ruleDefinitionRepo->findBy(['id' => $configuration['ruleIds']]);
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $ruleDefinitions = $this->ruleDefinitionRepo->findBy(['id' => $jobParameters->get('ruleIds')]);
         foreach ($ruleDefinitions as $ruleDefinition) {
             $ruleSubjectSet = $this->productRuleRunner->dryRun($ruleDefinition);
             $ruleDefinition->setImpactedSubjectCount($ruleSubjectSet->getSubjectsCursor()->count());

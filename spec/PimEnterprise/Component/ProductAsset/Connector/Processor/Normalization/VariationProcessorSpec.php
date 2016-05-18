@@ -2,6 +2,8 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization;
 
+use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -13,9 +15,11 @@ class VariationProcessorSpec extends ObjectBehavior
     function let(
         SerializerInterface $serializer,
         LocaleRepositoryInterface $localeRepository,
-        NormalizerInterface $assetNormalizer
+        NormalizerInterface $assetNormalizer,
+        StepExecution $stepExecution
     ) {
         $this->beConstructedWith($serializer, $localeRepository, $assetNormalizer);
+        $this->setStepExecution($stepExecution);
     }
 
     function it_is_a_configurable_step_execution_aware_processor()
@@ -23,8 +27,19 @@ class VariationProcessorSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor');
     }
 
-    function it_processes($assetNormalizer, $serializer, $localeRepository, AssetInterface $asset)
-    {
+    function it_processes(
+        $assetNormalizer,
+        $serializer,
+        $localeRepository,
+        $stepExecution,
+        AssetInterface $asset,
+        JobParameters $jobParameters
+    ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('enclosure')->willReturn('"');
+        $jobParameters->get('withHeader')->willReturn(true);
+
         $values = [
             'asset'          => 'paint',
             'locale'         => 'en_US',

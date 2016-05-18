@@ -61,11 +61,12 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet
     /**
      * {@inheritdoc}
      */
-    public function execute(array $configuration)
+    public function execute()
     {
         $this->initSecurityContext($this->stepExecution);
 
-        $cursor = $this->getProductsCursor($configuration['filters']);
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $cursor = $this->getProductsCursor($jobParameters->get('filters'));
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
         foreach ($paginator as $productsPage) {

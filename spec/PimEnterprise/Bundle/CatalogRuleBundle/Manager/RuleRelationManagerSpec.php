@@ -12,9 +12,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AbstractAttribute;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
+use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
+use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
 use Prophecy\Argument;
 
 class RuleRelationManagerSpec extends ObjectBehavior
@@ -31,10 +31,10 @@ class RuleRelationManagerSpec extends ObjectBehavior
         $attributeRepository,
         $categoryRepository,
         RuleInterface $rule,
-        ProductCopyValueActionInterface $action1,
-        ProductSetValueActionInterface $action2,
-        ProductSetValueActionInterface $action3,
-        ProductSetValueActionInterface $action4,
+        ProductCopyActionInterface $action1,
+        ProductSetActionInterface $action2,
+        ProductSetActionInterface $action3,
+        ProductSetActionInterface $action4,
         ProductAddActionInterface $action5,
         AbstractAttribute $attribute1,
         AbstractAttribute $attribute2,

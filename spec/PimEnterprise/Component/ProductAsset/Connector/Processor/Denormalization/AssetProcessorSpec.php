@@ -36,11 +36,6 @@ class AssetProcessorSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
-    function it_has_no_extra_configuration()
-    {
-        $this->getConfigurationFields()->shouldReturn([]);
-    }
-
     function it_updates_an_existing_asset(
         $assetConverter,
         $repository,

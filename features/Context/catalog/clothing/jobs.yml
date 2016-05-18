@@ -16,6 +16,7 @@ jobs:
             realTimeVersioning: true
             decimalSeparator:   .
             dateFormat:         yyyy-MM-dd
+            filePath:           /tmp/csv_clothing_product_import.csv
     csv_clothing_product_import_with_rules:
         connector: Akeneo CSV Connector
         alias:     csv_product_import_with_rules
@@ -59,8 +60,6 @@ jobs:
         alias:     yml_rule_export
         label:     Clothing rule export
         type:      export
-        configuration:
-            header: rules
     csv_clothing_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
@@ -82,7 +81,6 @@ jobs:
             delimiter:           ;
             enclosure:           '"'
             escape:              '\'
-            circularRefsChecked: true
     csv_clothing_category_export:
         connector: Akeneo CSV Connector
         alias:     csv_category_export
@@ -191,13 +189,13 @@ jobs:
         type:      import
         configuration:
             uploadAllowed:    true
-            multiple:         false
             delimiter:        ;
             enclosure:        '"'
             escape:           '\'
             enabled:          true
             decimalSeparator: .
             dateFormat:       MM/dd/yyyy
+            filePath:         '/tmp/csv_clothing_product_proposal_import.csv'
     xlsx_clothing_product_proposal_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_proposal_import
@@ -205,19 +203,39 @@ jobs:
         type:      import
         configuration:
             uploadAllowed:    true
-            multiple:         false
             enabled:          true
             decimalSeparator: .
             dateFormat:       MM/dd/yyyy
+            filePath:         '/tmp/xlsx_clothing_product_proposal_import.xlsx'
+    add_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_product_value
+        label:     Mass add products values
+        type:      mass_edit
     add_product_value_with_permission:
         connector: Akeneo Mass Edit Connector
         alias:     add_product_value_with_permission
         label:     Mass add products values with permission check
         type:      mass_edit
+    add_product_value_with_permission_and_rules:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_product_value_with_permission_and_rules
+        label:     Mass add products values with permission check & rules application
+        type:      mass_edit
+    update_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     update_product_value
+        label:     Mass update products
+        type:      mass_edit
     update_product_value_with_permission:
         connector: Akeneo Mass Edit Connector
         alias:     update_product_value_with_permission
         label:     Mass update products values with permission check
+        type:      mass_edit
+    update_product_value_with_permission_and_rules:
+        connector: Akeneo Mass Edit Connector
+        alias:     update_product_value_with_permission_and_rules
+        label:     Mass update products values with permission check & rules application
         type:      mass_edit
     publish_product:
         connector: Akeneo Mass Edit Connector
@@ -239,30 +257,30 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/published_products_export_%locale%_%scope%.csv
-    update_product_value:
+    edit_common_attributes:
         connector: Akeneo Mass Edit Connector
-        alias:     update_product_value
-        label:     Mass update products
+        alias:     edit_common_attributes
+        label:     Mass edit common product attributes
         type:      mass_edit
     edit_common_attributes_with_permission:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes_with_permission
         label:     Mass edit common product attributes with permission check
         type:      mass_edit
-    add_product_value:
+    edit_common_attributes_with_permission_and_rules:
         connector: Akeneo Mass Edit Connector
-        alias:     add_product_value
-        label:     Mass add products values
-        type:      mass_edit
-    edit_common_attributes:
-        connector: Akeneo Mass Edit Connector
-        alias:     edit_common_attributes
-        label:     Mass edit common product attributes
+        alias:     edit_common_attributes_with_permission_and_rules
+        label:     Mass edit common product attributes & rules application
         type:      mass_edit
     add_to_variant_group:
         connector: Akeneo Mass Edit Connector
         alias:     add_to_variant_group
         label:     Mass add products to variant group
+        type:      mass_edit
+    add_to_variant_group_with_rules:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_variant_group_with_rules
+        label:     Mass add products to variant group & rules application
         type:      mass_edit
     set_attribute_requirements:
         connector: Akeneo Mass Edit Connector
@@ -355,9 +373,6 @@ jobs:
         type: export
         configuration:
             filePath:      /tmp/asset_channel_configurations.yml
-            uploadAllowed: true
-            multiple:
-            header: asset_channel_configurations
     apply_assets_mass_upload:
         connector: Akeneo Product Asset Connector
         alias:     apply_assets_mass_upload

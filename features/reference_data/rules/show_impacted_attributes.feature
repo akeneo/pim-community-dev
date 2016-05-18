@@ -33,10 +33,10 @@ Feature: On a product edit/show display impacted attributes
               - PVC
               - Nylon
         actions:
-          - type:   set_value
+          - type:   set
             field:  new_sole_color
             value:  Yellow
-          - type:   set_value
+          - type:   set
             field:  new_sole_fabric
             value:
               - PVC

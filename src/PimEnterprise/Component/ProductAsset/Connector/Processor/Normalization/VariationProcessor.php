@@ -49,14 +49,14 @@ class VariationProcessor extends Processor
     public function process($variation)
     {
         $normalizedVariation = $this->variationNormalizer->normalize($variation);
-
+        $parameters = $this->stepExecution->getJobParameters();
         return $this->serializer->serialize(
             $normalizedVariation,
             'csv',
             [
-                'delimiter'     => $this->delimiter,
-                'enclosure'     => $this->enclosure,
-                'withHeader'    => $this->withHeader,
+                'delimiter'     => $parameters->get('delimiter'),
+                'enclosure'     => $parameters->get('enclosure'),
+                'withHeader'    => $parameters->get('withHeader'),
                 'heterogeneous' => false,
                 'locales'       => $this->localeRepository->getActivatedLocaleCodes(),
             ]

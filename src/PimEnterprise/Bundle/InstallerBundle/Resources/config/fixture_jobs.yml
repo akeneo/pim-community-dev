@@ -29,7 +29,6 @@ jobs:
             delimiter: ;
             enclosure: '"'
             escape: '\'
-            circularRefsChecked: true
             uploadAllowed: true
 
     fixtures_asset_category_access_csv:

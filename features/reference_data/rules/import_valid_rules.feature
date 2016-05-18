@@ -29,17 +29,17 @@ Feature: Import rules
                     - kevlar
                     - chiffon
             actions:
-                - type:  set_value
+                - type:  set
                   field: sleeve_color
                   value: yellow
-                - type:  set_value
+                - type:  set
                   field: sleeve_fabric
                   value:
                     - kevlar
                     - chiffon
                     - satin
                     - wool
-                - type:        copy_value
+                - type:        copy
                   from_field:  zip_color
                   to_field:    zip_color
                   from_scope:  mobile

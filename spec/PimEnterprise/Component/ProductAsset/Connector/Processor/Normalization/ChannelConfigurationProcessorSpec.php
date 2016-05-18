@@ -30,11 +30,6 @@ class ChannelConfigurationProcessorSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
-    function it_has_no_extra_configuration()
-    {
-        $this->getConfigurationFields()->shouldReturn([]);
-    }
-
     function it_processes(
         $channelNormalizer,
         ChannelVariationsConfigurationInterface $channelConf

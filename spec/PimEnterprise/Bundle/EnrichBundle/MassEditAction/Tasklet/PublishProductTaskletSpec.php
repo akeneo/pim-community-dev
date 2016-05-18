@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
@@ -37,7 +38,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         UserInterface $userJulia,
-        UserInterface $userMary
+        UserInterface $userMary,
+        StepExecution $stepExecution
     ) {
         $pqb->execute()->willReturn($cursor);
         $pqb->addFilter(Argument::any(), Argument::any(), Argument::any(), Argument::any())->willReturn($pqb);
@@ -58,6 +60,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
             $authorizationChecker,
             $pqbFactory
         );
+        $this->setStepExecution($stepExecution);
     }
 
     function it_is_a_configurable_step_element()
@@ -73,11 +76,12 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $validator,
         $tokenStorage,
         $authorizationChecker,
-        StepExecution $stepExecution,
+        $stepExecution,
         JobExecution $jobExecution,
         ProductInterface $product1,
         ProductInterface $product2,
-        ConstraintViolationListInterface $violations
+        ConstraintViolationListInterface $violations,
+        JobParameters $jobParameters
     ) {
         $configuration = [
             'filters' => [
@@ -89,6 +93,10 @@ class PublishProductTaskletSpec extends ObjectBehavior
             ],
             'actions' => []
         ];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
         $productsPage = [
             [
                 $product1,
@@ -113,8 +121,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
 
         $manager->publishAll([$product1, $product2])->shouldBeCalled();
 
-        $this->setStepExecution($stepExecution);
-        $this->execute($configuration);
+        $this->execute();
     }
 
     function it_executes_a_mass_publish_operation_with_a_configuration_with_invalid_items(
@@ -124,11 +131,12 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $validator,
         $tokenStorage,
         $authorizationChecker,
-        StepExecution $stepExecution,
+        $stepExecution,
         JobExecution $jobExecution,
         ProductInterface $product1,
         ProductInterface $product2,
-        ObjectDetacherInterface $objectDetacher
+        ObjectDetacherInterface $objectDetacher,
+        JobParameters $jobParameters
     ) {
         $configuration = [
             'filters' => [
@@ -140,6 +148,10 @@ class PublishProductTaskletSpec extends ObjectBehavior
             ],
             'actions' => []
         ];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
         $productsPage = [
             [
                 $product1,
@@ -184,11 +196,12 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $validator,
         $tokenStorage,
         $authorizationChecker,
-        StepExecution $stepExecution,
+        $stepExecution,
         JobExecution $jobExecution,
         ProductInterface $product1,
         ProductInterface $product2,
-        ConstraintViolationListInterface $violations
+        ConstraintViolationListInterface $violations,
+        JobParameters $jobParameters
     ) {
         $configuration = [
             'filters' => [
@@ -200,6 +213,10 @@ class PublishProductTaskletSpec extends ObjectBehavior
             ],
             'actions' => []
         ];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
         $productsPage = [
             [
                 $product1,
@@ -227,13 +244,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
 
         $manager->publishAll([$product1])->shouldBeCalled();
 
-        $this->setStepExecution($stepExecution);
-        $this->execute($configuration);
-    }
-
-    function it_returns_the_configuration_fields()
-    {
-        $this->getConfigurationFields()->shouldReturn([]);
+        $this->execute();
     }
 
     function it_sets_the_step_execution(StepExecution $stepExecution)

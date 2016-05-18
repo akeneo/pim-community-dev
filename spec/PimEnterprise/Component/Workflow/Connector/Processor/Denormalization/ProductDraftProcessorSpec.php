@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -55,26 +56,6 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
-    function it_has_decimal_separator_and_date_format_configuration()
-    {
-        $this->getConfigurationFields()->shouldReturn([
-            'decimalSeparator' => [
-                'type'    => 'choice',
-                'options' => [
-                    'label' => 'pim_connector.import.decimalSeparator.label',
-                    'help'  => 'pim_connector.import.decimalSeparator.help'
-                ]
-            ],
-            'dateFormat' => [
-                'type'    => 'choice',
-                'options' => [
-                    'label' => 'pim_connector.import.dateFormat.label',
-                    'help'  => 'pim_connector.import.dateFormat.help'
-                ]
-            ]
-        ]);
-    }
-
     function it_creates_a_proposal(
         $arrayConverter,
         $repository,
@@ -87,8 +68,13 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         ConstraintViolationListInterface $violationList,
         ProductDraft $productDraft,
         JobExecution $jobExecution,
-        JobInstance $jobInstance
+        JobInstance $jobInstance,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 
@@ -127,9 +113,15 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $arrayConverter,
         $repository,
         $localizedConverter,
+        $stepExecution,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 
@@ -162,8 +154,13 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $repository,
         $stepExecution,
         $localizedConverter,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn(null);
 
@@ -199,8 +196,13 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobExecution $jobExecution,
-        JobInstance $jobInstance
+        JobInstance $jobInstance,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 
@@ -244,8 +246,13 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        ConstraintViolationListInterface $violationList
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
         $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 

@@ -21,15 +21,15 @@ Feature: Show localized rules
             operator: =
             value:    10.5
         actions:
-          - type:   set_value
+          - type:   set
             field:  another_decimal_number
             value:  5.56789
-          - type:   set_value
+          - type:   set
             field:  decimal_price
             value:
               - data:     12.5
                 currency: EUR
-          - type:   set_value
+          - type:   set
             field:  decimal_metric
             value:
               data: 10.5

@@ -1,0 +1,37 @@
+parameters: ~
+
+services:
+    # Form options for Exports ---------------------------------------------------------------------------------------
+    pimee_catalog_rule.job_parameters.form_configuration_provider.simple_yaml_export:
+        class: %pim_import_export.job_parameters.form_configuration_provider.simple_yaml_export.class%
+        arguments:
+            -
+                - 'pimee_catalog_rule.jobs.yml_rule_export.title'
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }
+
+    # Form options for Imports ---------------------------------------------------------------------------------------
+    pimee_catalog_rule.job_parameters.form_configuration_provider.simple_yaml_import:
+        class: %pim_import_export.job_parameters.form_configuration_provider.simple_yaml_import.class%
+        arguments:
+            -
+                - 'pimee_catalog_rule.jobs.yml_rule_import.title'
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }
+
+    pimee_catalog_rule.job_parameters.form_configuration_provider.simple_csv_import:
+        class: %pim_import_export.job_parameters.form_configuration_provider.simple_csv_import.class%
+        arguments:
+            -
+                - 'pimee_catalog_rule.jobs.csv_product_import_with_rules.title'
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }
+
+    pimee_catalog_rule.job_parameters.form_configuration_provider.simple_xlsx_import:
+        class: %pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_import.class%
+        arguments:
+            -
+                - 'pimee_catalog_rule.jobs.xlsx_product_import_with_rules.title'
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }
+

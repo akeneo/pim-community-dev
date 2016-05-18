@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -28,7 +29,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ObjectDetacherInterface $productDetacher,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $validator,
@@ -39,6 +41,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
             $tokenStorage,
             $authorizationChecker
         );
+        $this->setStepExecution($stepExecution);
     }
 
     function it_sets_values_if_user_is_a_product_owner(
@@ -47,11 +50,12 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $userManager,
         $authorizationChecker,
         $productRepository,
+        $stepExecution,
         AttributeInterface $attribute,
         ProductInterface $product,
-        StepExecution $stepExecution,
         JobExecution $jobExecution,
-        UserInterface $owner
+        UserInterface $owner,
+        JobParameters $jobParameters
     ) {
         $values = [
             'categories' => [
@@ -72,9 +76,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 'attribute_locale'  => 'en_US'
             ]
         ];
-        $this->setConfiguration($configuration);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
 
-        $this->setStepExecution($stepExecution);
         $jobExecution->getUser()->willReturn('owner');
         $userManager->findUserByUsername('owner')->willReturn($owner);
         $owner->getRoles()->willReturn([]);
@@ -100,11 +105,12 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $userManager,
         $authorizationChecker,
         $productRepository,
+        $stepExecution,
         AttributeInterface $attribute,
         ProductInterface $product,
-        StepExecution $stepExecution,
         JobExecution $jobExecution,
-        UserInterface $editor
+        UserInterface $editor,
+        JobParameters $jobParameters
     ) {
         $values = [
             'categories' => [
@@ -125,9 +131,11 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 'attribute_locale'  => 'en_US'
             ]
         ];
-        $this->setConfiguration($configuration);
 
-        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
         $jobExecution->getUser()->willReturn('editor');
         $userManager->findUserByUsername('editor')->willReturn($editor);
         $editor->getRoles()->willReturn([]);
@@ -152,10 +160,11 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $productUpdater,
         $userManager,
         $authorizationChecker,
+        $stepExecution,
         ProductInterface $product,
-        StepExecution $stepExecution,
         JobExecution $jobExecution,
-        UserInterface $anon
+        UserInterface $anon,
+        JobParameters $jobParameters
     ) {
         $values = [
             'categories' => [
@@ -174,8 +183,11 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 'current_locale'    => 'en_US'
             ]
         ];
-        $this->setConfiguration($configuration);
-        $this->setStepExecution($stepExecution);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
         $jobExecution->getUser()->willReturn('anon');
         $userManager->findUserByUsername('anon')->willReturn($anon);
         $anon->getRoles()->willReturn([]);

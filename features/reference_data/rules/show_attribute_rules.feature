@@ -26,10 +26,10 @@ Feature: Show all rules related to an attribute
               - PVC
               - Nylon
         actions:
-          - type:   set_value
+          - type:   set
             field:  sole_color
             value:  Yellow
-          - type:   set_value
+          - type:   set
             field:  sole_fabric
             value:
               - PVC

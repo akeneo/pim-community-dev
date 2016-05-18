@@ -34,7 +34,7 @@ connector:
                     services:
                         reader:    pimee_product_asset.reader.orm.csv_channel_configuration
                         processor: pimee_product_asset.processor.normalization.channel_configuration.flat
-                        writer:    pim_connector.writer.file.yaml
+                        writer:    pimee_product_asset.writer.file.yaml_asset_channel_configuration
         csv_asset_import:
             title: pimee_product_asset.jobs.csv_asset_import.title
             type:  import
