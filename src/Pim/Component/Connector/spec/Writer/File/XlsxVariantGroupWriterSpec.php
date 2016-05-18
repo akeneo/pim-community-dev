@@ -5,12 +5,15 @@ namespace spec\Pim\Component\Connector\Writer\File;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Buffer\BufferInterface;
+use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
 use Prophecy\Argument;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class XlsxVariantGroupWriterSpec extends ObjectBehavior
 {
@@ -20,7 +23,7 @@ class XlsxVariantGroupWriterSpec extends ObjectBehavior
         BulkFileExporter $mediaCopier,
         ColumnSorterInterface $columnSorter
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier, $columnSorter);
+        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier, $columnSorter, 10000);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.xlsx');
@@ -154,7 +157,9 @@ class XlsxVariantGroupWriterSpec extends ObjectBehavior
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn(true);
         $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->get('linesPerFile')->willReturn(10000);
 
+        $flatRowBuffer->count()->willReturn(100);
         $flatRowBuffer->getHeaders()->willReturn(['id', 'family']);
         $flatRowBuffer->getBuffer()->willReturn($buffer);
         $columnSorter->sort(['id','family'])->willReturn(['id','family']);

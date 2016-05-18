@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\Writer\File;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
+use Box\Spout\Writer\WriterInterface;
 
 /**
  * Write product data into a XLSX file on the local filesystem
@@ -18,31 +19,31 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;
 
-    /** @var BulkFileExporter */
-    protected $mediaCopier;
-
     /** @var array */
     protected $writtenFiles;
 
     /** @var ColumnSorterInterface */
     protected $columnSorter;
 
+    /** @var BulkFileExporter */
+    protected $fileExporter;
+
     /**
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
-     * @param BulkFileExporter          $mediaCopier
+     * @param BulkFileExporter          $fileExporter
      * @param ColumnSorterInterface     $columnSorter
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
-        BulkFileExporter $mediaCopier,
+        BulkFileExporter $fileExporter,
         ColumnSorterInterface $columnSorter
     ) {
         parent::__construct($filePathResolver);
 
         $this->flatRowBuffer = $flatRowBuffer;
-        $this->mediaCopier   = $mediaCopier;
+        $this->fileExporter  = $fileExporter;
         $this->columnSorter  = $columnSorter;
         $this->writtenFiles  = [];
     }
@@ -66,13 +67,13 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
         $parameters = $this->stepExecution->getJobParameters();
         $withHeader = $parameters->get('withHeader');
         $this->flatRowBuffer->write($products, $withHeader);
-        $this->mediaCopier->exportAll($media, $exportDirectory);
+        $this->fileExporter->exportAll($media, $exportDirectory);
 
-        foreach ($this->mediaCopier->getCopiedMedia() as $copy) {
+        foreach ($this->fileExporter->getCopiedMedia() as $copy) {
             $this->writtenFiles[$copy['copyPath']] = $copy['originalMedium']['exportPath'];
         }
 
-        foreach ($this->mediaCopier->getErrors() as $error) {
+        foreach ($this->fileExporter->getErrors() as $error) {
             $this->stepExecution->addWarning(
                 $this->getName(),
                 $error['message'],
@@ -87,23 +88,42 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
      */
     public function flush()
     {
-        $writer = WriterFactory::create(Type::XLSX);
-        $writer->openToFile($this->getPath());
+        $pathPattern = $this->getPath();
+        if ($this->areSeveralFilesNeeded()) {
+            $pathPattern = $this->getNumberedFilePath($this->getPath());
+        }
+
+        $parameters = $this->stepExecution->getJobParameters();
+        $linesPerFile = $parameters->get('linesPerFile');
 
         $headers = $this->columnSorter->sort($this->flatRowBuffer->getHeaders());
         $hollowItem = array_fill_keys($headers, '');
-        $writer->addRow($headers);
-        foreach ($this->flatRowBuffer->getBuffer() as $incompleteItem) {
+
+        $fileCount = 1;
+        $writtenLinesCount = 0;
+        foreach ($this->flatRowBuffer->getBuffer() as $count => $incompleteItem) {
+            if (0 === $writtenLinesCount % $linesPerFile) {
+                $filePath = $this->resolveFilePath($pathPattern, $fileCount);
+
+                $writtenLinesCount = 0;
+                $writer = $this->getWriter($filePath);
+                $writer->addRow($headers);
+            }
+
             $item = array_replace($hollowItem, $incompleteItem);
             $writer->addRow($item);
+            $writtenLinesCount++;
 
             if (null !== $this->stepExecution) {
                 $this->stepExecution->incrementSummaryInfo('write');
             }
-        }
 
-        $writer->close();
-        $this->writtenFiles[$this->getPath()] = basename($this->getPath());
+            if (0 === $writtenLinesCount % $linesPerFile || $this->flatRowBuffer->count() === $count + 1) {
+                $writer->close();
+                $this->writtenFiles[$filePath] = basename($filePath);
+                $fileCount++;
+            }
+        }
     }
 
     /**
@@ -112,5 +132,68 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     public function getWrittenFiles()
     {
         return $this->writtenFiles;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function areSeveralFilesNeeded()
+    {
+        $parameters = $this->stepExecution->getJobParameters();
+
+        return $this->flatRowBuffer->count() > $parameters->get('linesPerFile');
+    }
+
+    /**
+     * Return the file path including file count if needed
+     *
+     * @param string $pathPattern
+     * @param int    $currentFileCount
+     *
+     * @return string
+     */
+    protected function resolveFilePath($pathPattern, $currentFileCount)
+    {
+        $resolvedFilePath = $pathPattern;
+        if ($this->areSeveralFilesNeeded()) {
+            $resolvedFilePath = $this->filePathResolver->resolve(
+                $pathPattern,
+                array_merge_recursive(
+                    $this->filePathResolverOptions,
+                    ['parameters' => ['%fileNb%' => '_' . $currentFileCount]]
+                )
+            );
+        }
+
+        return $resolvedFilePath;
+    }
+
+    /**
+     * Return the given file path with %fileNb% placeholder just before the extension of the file
+     * ie: in -> '/path/myFile.txt' ; out -> '/path/myFile%fileNb%.txt'
+     *
+     * @param string $originalFilePath
+     *
+     * @return string
+     */
+    protected function getNumberedFilePath($originalFilePath)
+    {
+        $extension = '.' . pathinfo($originalFilePath, PATHINFO_EXTENSION);
+        $filePath  = strstr($originalFilePath, $extension, true);
+
+        return $filePath . '%fileNb%' . $extension;
+    }
+
+    /**
+     * @param string $filePath File path to open with the writer
+     *
+     * @return WriterInterface
+     */
+    protected function getWriter($filePath)
+    {
+        $writer = WriterFactory::create(Type::XLSX);
+        $writer->openToFile($filePath);
+
+        return $writer;
     }
 }

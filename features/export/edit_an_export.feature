@@ -19,17 +19,22 @@ Feature: Edit an export
   @javascript
   Scenario: Successfully update export job configuration
     Given I am on the "csv_footwear_product_export" export job edit page
-    Then I should see the Channel, Delimiter, Enclosure, With header, File path and Decimal separator fields
-    When I fill in the following information:
-      | Channel           | Tablet     |
+    Then I should see the Delimiter, Enclosure, With header, File path and Decimal separator fields
+    And I fill in the following information:
       | Delimiter         | \|         |
       | Enclosure         | '          |
       | File path         | file.csv   |
       | Decimal separator | ,          |
       | Date format       | yyyy-MM-dd |
     And I uncheck the "With header" switch
-    And I press the "Save" button
+    When I visit the "Content" tab
+    Then I should see the Channel, Status fields
+    And I fill in the following information:
+      | Channel | Tablet   |
+      | Status  | Disabled |
+    When I press the "Save" button
     Then I should see the text "Channel tablet"
+    And I should see the text "Status disabled"
     And I should see the text "File path file.csv"
     And I should see the text "Delimiter |"
     And I should see the text "Enclosure '"

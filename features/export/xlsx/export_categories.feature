@@ -1,28 +1,30 @@
-@javascript
-Feature: Export categories
-  In order to be able to access and modify category data outside PIM
+Feature: Export categories in XLSX
+  In order to be able to access and modify attributes data outside PIM
   As a product manager
-  I need to be able to import and export categories
+  I need to be able to export categories in XLSX
 
-  Scenario: Successfully export categories in CSV
-    Given a "footwear" catalog configuration
-    And the following job "csv_footwear_category_export" configuration:
-      | filePath | %tmp%/category_export/category_export.csv |
+  Background:
+    Given an "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the "csv_footwear_category_export" export job page
+
+  @javascript
+  Scenario: Successfully export categories
+    Given the following job "xlsx_footwear_category_export" configuration:
+      | filePath | %tmp%/category_export/category_export.xlsx |
+    And I am on the "xlsx_footwear_category_export" export job page
     When I launch the export job
-    And I wait for the "csv_footwear_category_export" job to finish
-    Then file "%tmp%/category_export/category_export.csv" should contain 6 rows
-    And the category order in the file "%tmp%/category_export/category_export.csv" should be following:
+    And I wait for the "xlsx_footwear_category_export" job to finish
+    Then xlsx file "%tmp%/category_export/category_export.xlsx" should contain 6 rows
+    And the category order in the xlsx file "%tmp%/category_export/category_export.xlsx" should be following:
       | 2014_collection   |
       | summer_collection |
       | sandals           |
       | winter_collection |
       | winter_boots      |
 
-  Scenario: Successfully export large number of categories with a correct written number at the end of the export in CSV
-    Given the "footwear" catalog configuration
-    And the following category:
+  @javascript
+  Scenario: Successfully export a hundred categories with a correct written number at the end of the export
+    Given the following category:
       | code    | label-en_US | parent            |
       | shoe    | Shoe        | summer_collection |
       | shoe2   | Shoe2       | summer_collection |
@@ -124,11 +126,40 @@ Feature: Export categories
       | shoe98  | shoe98      | summer_collection |
       | shoe99  | shoe99      | summer_collection |
       | shoe100 | shoe100     | summer_collection |
-    And the following job "csv_footwear_category_export" configuration:
-      | filePath | %tmp%/category_export/category_export.csv |
-    And I am logged in as "Julia"
-    And I am on the "csv_footwear_category_export" export job page
+    And the following job "xlsx_footwear_category_export" configuration:
+      | filePath | %tmp%/category_export/category_export.xlsx |
+    And I am on the "xlsx_footwear_category_export" export job page
     When I launch the export job
-    And I wait for the "csv_footwear_category_export" job to finish
+    And I wait for the "xlsx_footwear_category_export" job to finish
     Then I should see "read 105"
     Then I should see "written 105"
+
+  @javascript
+  Scenario: Successfully export categories into several files
+    Given the following categories:
+      | code          | label-en_US   | parent       |
+      | black_rangers | Black Rangers | winter_boots |
+      | grey_rangers  | Grey Rangers  | winter_boots |
+    And the following job "xlsx_footwear_category_export" configuration:
+      | filePath     | %tmp%/xlsx_footwear_category_export/xlsx_footwear_category_export.xlsx |
+      | linesPerFile | 3                                                                      |
+    When I am on the "xlsx_footwear_category_export" export job page
+    And I launch the export job
+    And I wait for the "xlsx_footwear_category_export" job to finish
+    And I press the "Download generated files" button
+    Then I should see the text "xlsx_footwear_category_export_1.xlsx"
+    And I should see the text "xlsx_footwear_category_export_2.xlsx"
+    And I should see the text "xlsx_footwear_category_export_3.xlsx"
+    And exported xlsx file 1 of "xlsx_footwear_category_export" should contain:
+      | code              | label-en_US       | parent            |
+      | 2014_collection   | 2014 collection   |                   |
+      | summer_collection | Summer collection | 2014_collection   |
+      | sandals           | Sandals           | summer_collection |
+    And exported xlsx file 2 of "xlsx_footwear_category_export" should contain:
+      | code              | label-en_US       | parent            |
+      | winter_collection | Winter collection | 2014_collection   |
+      | winter_boots      | Winter boots      | winter_collection |
+      | black_rangers     | Black Rangers     | winter_boots      |
+    And exported xlsx file 3 of "xlsx_footwear_category_export" should contain:
+      | code         | label-en_US  | parent       |
+      | grey_rangers | Grey Rangers | winter_boots |

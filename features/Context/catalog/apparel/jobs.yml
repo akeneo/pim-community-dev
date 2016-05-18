@@ -56,7 +56,9 @@ jobs:
         label:     XLSX product export for tablet
         type:      export
         configuration:
+            filePath: /tmp/products.xlsx
             channel:    tablet
+            linesPerFile: 10000
             withHeader: true
     print_product_export:
         connector: Akeneo CSV Connector
@@ -146,6 +148,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/xlsx_group_export.xlsx
     variant_group_import:
         connector: Akeneo CSV Connector
@@ -175,6 +178,7 @@ jobs:
         type:      export
         configuration:
             filePath:   /tmp/xlsx_variant_group_export.xlsx
+            linesPerFile: 10000
             withHeader: true
     attribute_import:
         connector: Akeneo CSV Connector

@@ -122,14 +122,32 @@ class JobContext extends PimContext
     }
 
     /**
-     * @param string $code
+     * @param string   $code
+     * @param int|null $number
+     *
+     * @throws \Exception
      *
      * @return string
      */
-    public function getJobInstancePath($code)
+    public function getJobInstancePath($code, $number = null)
     {
         $archives = $this->getJobInstanceArchives($code);
-        $filePath = current($archives);
+        $filePath = null;
+
+        if (null === $number) {
+            $filePath = current($archives);
+        } else {
+            foreach ($archives as $keyArchive => $path) {
+                if (0 === strpos($keyArchive, sprintf('%s_%s.', $code, $number))) {
+                    $filePath = $path;
+                }
+            }
+
+            if (null === $filePath) {
+                throw new \Exception(sprintf('There is no file number %d in generated archive', $number));
+            }
+        }
+
         $archivePath = $this->getMainContext()->getContainer()->getParameter('archive_dir');
 
         return sprintf('%s%s%s', $archivePath, DIRECTORY_SEPARATOR, $filePath);

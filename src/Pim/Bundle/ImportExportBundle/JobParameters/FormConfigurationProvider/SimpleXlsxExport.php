@@ -37,6 +37,13 @@ class SimpleXlsxExport implements FormConfigurationProviderInterface
                     'help'  => 'pim_connector.export.filePath.help'
                 ]
             ],
+            'linesPerFile' => [
+                'type'    => 'integer',
+                'options' => [
+                    'label' => 'pim_connector.export.lines_per_files.label',
+                    'help'  => 'pim_connector.export.lines_per_files.help',
+                ]
+            ],
             'withHeader' => [
                 'type'    => 'switch',
                 'options' => [

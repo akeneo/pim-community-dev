@@ -41,4 +41,5 @@ jobs:
         type: quick_export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.xlsx

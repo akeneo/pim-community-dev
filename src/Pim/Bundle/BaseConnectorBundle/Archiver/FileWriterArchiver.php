@@ -9,6 +9,7 @@ use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -47,30 +48,13 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
             $writer = $step->getWriter();
 
             if ($this->isUsableWriter($writer)) {
-                $key = strtr(
-                    $this->getRelativeArchivePath($jobExecution),
-                    [
-                        '%filename%' => basename($writer->getPath()),
-                    ]
-                );
-                $this->filesystem->put($key, file_get_contents($writer->getPath()));
+                if ($writer instanceof ArchivableWriterInterface) {
+                    $this->doArchive($jobExecution, $writer->getWrittenFiles());
+                } else {
+                    $this->doArchive($jobExecution, [$writer->getPath() => basename($writer->getPath())]);
+                }
             }
         }
-    }
-
-    /**
-     * Verify if the writer is usable or not
-     *
-     * @param ItemWriterInterface $writer
-     *
-     * @return bool
-     */
-    protected function isUsableWriter(ItemWriterInterface $writer)
-    {
-        $isDeprecatedWriter = ($writer instanceof FileWriter);
-        $isNewWriter = ($writer instanceof AbstractFileWriter);
-
-        return ($isDeprecatedWriter || $isNewWriter) && is_file($writer->getPath());
     }
 
     /**
@@ -94,6 +78,51 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
         }
 
         return false;
+    }
+
+    /**
+     * Verify if the writer is usable or not
+     *
+     * @param ItemWriterInterface $writer
+     *
+     * @return bool
+     */
+    protected function isUsableWriter(ItemWriterInterface $writer)
+    {
+        $isDeprecatedWriter = ($writer instanceof FileWriter);
+        $isNewWriter = ($writer instanceof AbstractFileWriter);
+
+        if (!($isDeprecatedWriter || $isNewWriter)) {
+            return false;
+        }
+
+        if ($writer instanceof ArchivableWriterInterface) {
+            foreach ($writer->getWrittenFiles() as $filePath => $fileName) {
+                if (!is_file($filePath)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        return is_file($writer->getPath());
+    }
+
+    /**
+     * @param JobExecution $jobExecution
+     * @param array        $filesToArchive ['filePath' => 'fileName']
+     */
+    protected function doArchive(JobExecution $jobExecution, array $filesToArchive)
+    {
+        foreach ($filesToArchive as $filePath => $fileName) {
+            $archivedFilePath = strtr(
+                $this->getRelativeArchivePath($jobExecution),
+                [
+                    '%filename%' => $fileName,
+                ]
+            );
+            $this->filesystem->put($archivedFilePath, file_get_contents($filePath));
+        }
     }
 
     /**

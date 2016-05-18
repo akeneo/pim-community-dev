@@ -49,9 +49,12 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
         $jobInstance->getAlias()->willReturn('alias');
+
         $job->getSteps()->willReturn([$step]);
+
         $step->getWriter()->willReturn($writer);
-        $writer->getWrittenFiles()->willReturn([]);
+
+        $writer->getWrittenFiles()->willReturn([$pathname => $filename]);
         $writer->getPath()->willReturn($pathname);
 
         $filesystem->put(
@@ -125,6 +128,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
     ) {
         $registry->getJob($jobInstance)->willReturn($job);
         $pathname = tempnam(sys_get_temp_dir(), 'spec');
+        $filename = basename($pathname);
 
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
@@ -132,7 +136,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
-        $writer->getWrittenFiles()->willReturn(['path_one']);
+        $writer->getWrittenFiles()->willReturn([$pathname => $filename]);
         $writer->getPath()->willReturn($pathname);
 
         $this->supports($jobExecution)->shouldReturn(true);

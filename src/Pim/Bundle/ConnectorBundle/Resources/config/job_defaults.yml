@@ -3,9 +3,9 @@ parameters:
     pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export.class:        Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport
     pim_connector.job.job_parameters.default_values_provider.simple_yaml_export.class:        Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleYamlExport
     pim_connector.job.job_parameters.default_values_provider.product_csv_export.class:        Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvExport
-    pim_connector.job.job_parameters.default_values_provider.product_xlsx_export.class:       Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvExport
+    pim_connector.job.job_parameters.default_values_provider.product_xlsx_export.class:       Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductXlsxExport
     pim_connector.job.job_parameters.default_values_provider.variant_group_csv_export.class:  Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\VariantGroupCsvExport
-    pim_connector.job.job_parameters.default_values_provider.variant_group_xlsx_export.class: Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\VariantGroupCsvExport
+    pim_connector.job.job_parameters.default_values_provider.variant_group_xlsx_export.class: Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\VariantGroupXlsxExport
 
     pim_connector.job.job_parameters.default_values_provider.simple_csv_import.class:         Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport
     pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import.class:        Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport

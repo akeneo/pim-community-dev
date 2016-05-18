@@ -47,6 +47,31 @@ class FlatItemBufferSpec extends ObjectBehavior
         $this->getHeaders()->shouldReturn(['id', 'family']);
     }
 
+    function it_counts_written_items_to_the_buffer()
+    {
+        $this->write([
+            [
+                'id' => 123,
+                'family' => 12,
+            ],
+            [
+                'id' => 165,
+                'family' => 45,
+            ],
+        ], true);
+
+        $this->count()->shouldReturn(2);
+
+        $this->write([
+            [
+                'id' => 456,
+                'family' => 12,
+            ],
+        ], true);
+
+        $this->count()->shouldReturn(3);
+    }
+
     function it_has_a_buffer($buffer)
     {
         $this->getBuffer()->shouldReturn($buffer);

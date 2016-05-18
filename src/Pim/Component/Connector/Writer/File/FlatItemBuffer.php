@@ -12,7 +12,7 @@ use Akeneo\Component\Buffer\BufferInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlatItemBuffer
+class FlatItemBuffer implements \Countable
 {
     /** @var BufferInterface */
     protected $buffer;
@@ -20,12 +20,16 @@ class FlatItemBuffer
     /** @var array */
     protected $headers = [];
 
+    /** @var int */
+    protected $count;
+
     /**
      * @param BufferFactory $bufferFactory
      */
     public function __construct(BufferFactory $bufferFactory)
     {
         $this->buffer = $bufferFactory->create();
+        $this->count  = 0;
     }
 
     /**
@@ -42,7 +46,16 @@ class FlatItemBuffer
             }
 
             $this->buffer->write($item);
+            $this->count++;
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        return $this->count;
     }
 
     /**

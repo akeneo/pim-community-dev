@@ -66,18 +66,6 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
     }
 
     /**
-     * Verify if the writer is usable or not
-     *
-     * @param ItemWriterInterface $writer
-     *
-     * @return bool
-     */
-    protected function isWriterUsable(ItemWriterInterface $writer)
-    {
-        return $writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getName()
@@ -108,6 +96,18 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
             $this->filesystem->getAdapter()->getPathPrefix() .
             $zipPath
         );
+    }
+
+    /**
+     * Verify if the writer is usable or not
+     *
+     * @param ItemWriterInterface $writer
+     *
+     * @return bool
+     */
+    protected function isWriterUsable(ItemWriterInterface $writer)
+    {
+        return $writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1;
     }
 
     /**
