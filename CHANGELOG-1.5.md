@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-5710: Fix thumbnail display after file upload in the product edit form
+
 # 1.5.3 (2016-05-13)
 
 ## Bug fixes
