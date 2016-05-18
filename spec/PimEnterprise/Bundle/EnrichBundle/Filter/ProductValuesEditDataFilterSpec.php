@@ -16,7 +16,6 @@ use Prophecy\Argument;
 
 class ProductValuesEditDataFilterSpec extends ObjectBehavior
 {
-
     function it_filters_values_data_on_attributes_read_only_true(AttributeInterface $attribute)
     {
         $attribute->getProperty('is_read_only')->willReturn(true);

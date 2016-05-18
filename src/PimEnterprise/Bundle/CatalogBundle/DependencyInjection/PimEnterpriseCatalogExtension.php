@@ -36,6 +36,7 @@ class PimEnterpriseCatalogExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('repositories.yml');
         $loader->load('serializers.yml');
+        $loader->load('updaters.yml');
         $loader->load('versions.yml');
 
         $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');

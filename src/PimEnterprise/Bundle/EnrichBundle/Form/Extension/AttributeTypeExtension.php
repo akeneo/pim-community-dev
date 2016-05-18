@@ -13,7 +13,7 @@ class AttributeTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('isReadOnly', 'switch', [
-            'required' => false,
+            'required'      => false,
             'property_path' => 'properties[is_read_only]',
         ]);
     }

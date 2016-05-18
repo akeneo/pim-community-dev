@@ -2,7 +2,7 @@
 Feature: Display available field options
   In order to create a read only attribute
   As a product manager
-  I need to see and manage the option 'Is read only'
+  I need to see and manage the option 'Read only'
 
   Background:
     Given the "clothing" catalog configuration
@@ -23,18 +23,18 @@ Feature: Display available field options
       set_description:
         priority: 10
         conditions:
-          - field:    sku
+          - field: sku
             operator: =
-            value:    my-jacket
+            value: my-jacket
         actions:
-          - type:  set
+          - type: set
             field: description
             value: My jacket
             locale: en_US
-            scope:  tablet
+            scope: tablet
       """
     And I am on the "description" attribute page
-    And I check the "Is read only" switch
+    And I check the "Read only" switch
     And I save the "attribute"
     Given the product rule "set_description" is executed
     When I am on the "my-jacket" product page

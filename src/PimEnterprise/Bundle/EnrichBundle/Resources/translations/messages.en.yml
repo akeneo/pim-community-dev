@@ -180,4 +180,4 @@ job_execution.summary:
 pim_assets_collection: Assets collection
 
 pim_enrich_attribute_form:
-    isReadOnly: Is read only
+    isReadOnly: Read only

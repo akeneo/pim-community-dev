@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
- * Product edit data filter
+ * Product values edit data filter
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
@@ -30,11 +30,7 @@ class ProductValuesEditDataFilter implements ObjectFilterInterface
             throw new \LogicException('This filter only handles objects of type "AttributeInterface"');
         }
 
-        if ($attribute->getProperty('is_read_only')) {
-            return true;
-        }
-
-        return false;
+        return (bool) $attribute->getProperty('is_read_only');
     }
 
     /**

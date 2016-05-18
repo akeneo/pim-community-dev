@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class AttributeTypeExtensionSpec extends ObjectBehavior
 {
-   
     function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\EnrichBundle\Form\Extension\AttributeTypeExtension');
@@ -19,7 +18,7 @@ class AttributeTypeExtensionSpec extends ObjectBehavior
         $this->shouldHaveType('Symfony\Component\Form\AbstractTypeExtension');
     }
     
-    function it_builds_a_form($dataTransformer, FormBuilderInterface $builder)
+    function it_builds_a_form(FormBuilderInterface $builder)
     {
         $builder->add('isReadOnly', 'switch', [
             'required' => false,

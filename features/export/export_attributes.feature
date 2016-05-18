@@ -2,7 +2,7 @@
 Feature: Display available field options
   In order to create a read only attribute
   As a product manager
-  I need to see and manage the option 'Is read only'
+  I need to see and manage the option 'Read only'
 
   Background:
     Given the "clothing" catalog configuration
@@ -19,34 +19,34 @@ Feature: Display available field options
     And I wait for the "csv_clothing_attribute_export" job to finish
     Then exported file of "csv_clothing_attribute_export" should contain:
     """
-    type;allowed_extensions;available_locales;code;date_max;date_min;decimals_allowed;default_metric_unit;group;is_read_only;label-de_DE;label-en_GB;label-en_US;label-fr_FR;localizable;max_characters;max_file_size;metric_family;minimum_input_length;negative_allowed;number_max;number_min;reference_data_name;scopable;unique;useable_as_grid_filter;validation_regexp;validation_rule;wysiwyg_enabled
-    pim_catalog_identifier;;All;sku;;;;;info;0;;;SKU;;0;0;;;0;;;;;0;1;1;;;
-    pim_catalog_text;;All;name;;;;;info;0;;;Name;Nom;1;0;;;0;;;;;0;0;1;;;
-    pim_catalog_simpleselect;;All;manufacturer;;;;;info;0;;;Manufacturer;;0;0;;;0;;;;;0;0;1;;;
-    pim_catalog_multiselect;;All;weather_conditions;;;;;info;0;;;"Weather conditions";;0;0;;;0;;;;;0;0;1;;;
-    pim_catalog_textarea;;All;description;;;;;info;0;;;Description;Description;1;1000;;;0;;;;;1;0;1;;;
-    pim_catalog_text;;All;comment;;;;;other;0;;;Comment;;0;255;;;0;;;;;0;0;1;;;
-    pim_catalog_price_collection;;All;price;;;1;;marketing;0;;;Price;;0;0;;;0;;200.0000;1.0000;;0;0;1;;;
-    pim_catalog_simpleselect;;All;rating;;;;;marketing;0;;;Rating;;0;0;;;0;;;;;0;0;1;;;
-    pim_catalog_image;gif,png,jpeg,jpg;All;side_view;;;;;media;0;;;"Side view";;0;0;1.00;;0;;;;;0;0;0;;;
-    pim_catalog_image;gif,png,jpeg,jpg;All;top_view;;;;;media;0;;;"Top view";;0;0;1.00;;0;;;;;0;0;0;;;
-    pim_catalog_file;avi;All;video;;;;;media;0;;;Video;;0;0;1.00;;0;;;;;0;0;0;;;
-    pim_catalog_file;txt,pdf,doc,docx,csv,rtf;All;datasheet;;;;;media;0;;;Datasheet;;0;0;;;0;;;;;0;0;0;;;
-    pim_catalog_simpleselect;;All;size;;;;;sizes;0;;;Size;;0;0;;;0;;;;;0;0;1;;;
-    pim_catalog_simpleselect;;All;main_color;;;;;colors;0;;;"Main color";;0;0;;;0;;;;;0;0;1;;;
-    pim_catalog_simpleselect;;All;secondary_color;;;;;colors;0;;;"Secondary color";;0;0;;;0;;;;;0;0;1;;;
-    pim_catalog_metric;;All;length;;;;CENTIMETER;sizes;0;;;Length;;0;0;;Length;0;;;;;0;0;0;;;
-    pim_catalog_metric;;All;width;;;;CENTIMETER;sizes;0;;;Width;;0;0;;Length;0;;;;;0;0;0;;;
-    pim_catalog_number;;All;number_in_stock;;;;;marketing;0;"Anzahl auf Lager";"Number in stock";"Number in stock";"Nombre en stock";0;0;;;0;;10000.0000;1.0000;;1;0;1;;;
-    pim_catalog_boolean;;All;handmade;;;;;info;0;Handgefertigt;Handmade;Handmade;"Fait main";0;0;;;0;;;;;0;0;1;;;
-    pim_catalog_date;;All;release_date;;;;;info;0;Erscheinungsdatum;"Release date";"Release date";"Date de sortie";0;0;;;0;;;;;1;0;1;;;
-    pim_catalog_text;;All;legacy_attribute;;;;;legacy;0;;;"Old attribute not used anymore";;0;0;;;0;;;;;0;0;0;;;
-    pim_reference_data_simpleselect;;All;lace_color;;;;;other;0;;;"Lace color";;0;0;;;0;;;;color;0;0;1;;;
-    pim_reference_data_simpleselect;;All;sleeve_color;;;;;other;0;;;"Sleeve color";;0;0;;;0;;;;color;0;0;1;;;
-    pim_reference_data_simpleselect;;All;zip_color;;;;;other;0;;;"Zip color";;1;0;;;0;;;;color;1;0;1;;;
-    pim_reference_data_multiselect;;All;sleeve_fabric;;;;;other;0;;;"Sleeve fabric";;0;0;;;0;;;;fabrics;0;0;1;;;
-    pim_reference_data_multiselect;;All;neck_fabric;;;;;other;0;;;"Neck fabric";;1;0;;;0;;;;fabrics;1;0;1;;;
-    pim_assets_collection;;All;front_view;;;;;media;0;Vorderansicht;;"Front view";"Vue de face";0;0;;;0;;;;assets;0;0;1;;;
-    pim_assets_collection;;All;gallery;;;;;media;0;;;gallery;;0;0;;;0;;;;assets;0;0;0;;;
-    pim_catalog_metric;;All;volume;;;;CUBIC_MILLIMETER;info;0;;;Volume;;0;0;;Volume;0;;;;;0;0;1;;;
+    code;label-de_DE;label-en_GB;label-fr_FR;label-en_US;allowed_extensions;available_locales;date_max;date_min;decimals_allowed;default_metric_unit;group;is_read_only;localizable;max_characters;max_file_size;metric_family;minimum_input_length;negative_allowed;number_max;number_min;reference_data_name;scopable;sort_order;type;unique;useable_as_grid_filter;validation_regexp;validation_rule;wysiwyg_enabled
+    sku;;;;SKU;;;;;;;info;0;0;;;;0;;;;;0;1;pim_catalog_identifier;1;1;;;
+    name;;;Nom;Name;;;;;;;info;0;1;;;;0;;;;;0;2;pim_catalog_text;0;1;;;
+    manufacturer;;;;Manufacturer;;;;;;;info;0;0;;;;0;;;;;0;3;pim_catalog_simpleselect;0;1;;;
+    weather_conditions;;;;"Weather conditions";;;;;;;info;0;0;;;;0;;;;;0;4;pim_catalog_multiselect;0;1;;;
+    description;;;Description;Description;;;;;;;info;0;1;1000;;;0;;;;;1;5;pim_catalog_textarea;0;1;;;
+    comment;;;;Comment;;;;;;;other;0;0;255;;;0;;;;;0;1;pim_catalog_text;0;1;;;
+    price;;;;Price;;;;;1;;marketing;0;0;;;;0;;200.0000;1.0000;;0;1;pim_catalog_price_collection;0;1;;;
+    rating;;;;Rating;;;;;;;marketing;0;0;;;;0;;;;;0;2;pim_catalog_simpleselect;0;1;;;
+    side_view;;;;"Side view";gif,png,jpeg,jpg;;;;;;media;0;0;;1.00;;0;;;;;0;1;pim_catalog_image;0;0;;;
+    top_view;;;;"Top view";gif,png,jpeg,jpg;;;;;;media;0;0;;1.00;;0;;;;;0;2;pim_catalog_image;0;0;;;
+    video;;;;Video;avi;;;;;;media;0;0;;1.00;;0;;;;;0;2;pim_catalog_file;0;0;;;
+    datasheet;;;;Datasheet;txt,pdf,doc,docx,csv,rtf;;;;;;media;0;0;;;;0;;;;;0;3;pim_catalog_file;0;0;;;
+    size;;;;Size;;;;;;;sizes;0;0;;;;0;;;;;0;1;pim_catalog_simpleselect;0;1;;;
+    main_color;;;;"Main color";;;;;;;colors;0;0;;;;0;;;;;0;1;pim_catalog_simpleselect;0;1;;;
+    secondary_color;;;;"Secondary color";;;;;;;colors;0;0;;;;0;;;;;0;2;pim_catalog_simpleselect;0;1;;;
+    length;;;;Length;;;;;;CENTIMETER;sizes;0;0;;;Length;0;;;;;0;10;pim_catalog_metric;0;0;;;
+    width;;;;Width;;;;;;CENTIMETER;sizes;0;0;;;Length;0;;;;;0;10;pim_catalog_metric;0;0;;;
+    number_in_stock;"Anzahl auf Lager";"Number in stock";"Nombre en stock";"Number in stock";;;;;;;marketing;0;0;;;;0;;10000.0000;1.0000;;1;2;pim_catalog_number;0;1;;;
+    handmade;Handgefertigt;Handmade;"Fait main";Handmade;;;;;;;info;0;0;;;;0;;;;;0;3;pim_catalog_boolean;0;1;;;
+    release_date;Erscheinungsdatum;"Release date";"Date de sortie";"Release date";;;;;;;info;0;0;;;;0;;;;;1;3;pim_catalog_date;0;1;;;
+    legacy_attribute;;;;"Old attribute not used anymore";;;;;;;legacy;0;0;;;;0;;;;;0;30;pim_catalog_text;0;0;;;
+    lace_color;;;;"Lace color";;;;;;;other;0;0;;;;0;;;;color;0;30;pim_reference_data_simpleselect;0;1;;;
+    sleeve_color;;;;"Sleeve color";;;;;;;other;0;0;;;;0;;;;color;0;35;pim_reference_data_simpleselect;0;1;;;
+    zip_color;;;;"Zip color";;;;;;;other;0;1;;;;0;;;;color;1;35;pim_reference_data_simpleselect;0;1;;;
+    sleeve_fabric;;;;"Sleeve fabric";;;;;;;other;0;0;;;;0;;;;fabrics;0;40;pim_reference_data_multiselect;0;1;;;
+    neck_fabric;;;;"Neck fabric";;;;;;;other;0;1;;;;0;;;;fabrics;1;45;pim_reference_data_multiselect;0;1;;;
+    front_view;Vorderansicht;;"Vue de face";"Front view";;;;;;;media;0;0;;;;0;;;;assets;0;50;pim_assets_collection;0;1;;;
+    gallery;;;;gallery;;;;;;;media;0;0;;;;0;;;;assets;0;50;pim_assets_collection;0;0;;;
+    volume;;;;Volume;;;;;;CUBIC_MILLIMETER;info;0;0;;;Volume;0;;;;;0;55;pim_catalog_metric;0;1;;;
     """
