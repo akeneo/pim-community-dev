@@ -182,6 +182,16 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/published-product.csv
+    xlsx_clothing_mobile_published_product_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_published_product_export
+        label:     Published product export for mobile in XLSX
+        type:      export
+        configuration:
+            channel:    mobile
+            withHeader: true
+            linesPerFile: 10000
+            filePath: /tmp/published-product.csv
     csv_clothing_product_proposal_import:
         connector: Akeneo CSV Connector
         alias:     csv_product_proposal_import
@@ -401,6 +411,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath: /tmp/asset.xlsx
     xlsx_clothing_asset_category_export:
         connector: Akeneo Product Asset Connector
@@ -409,6 +420,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/asset_category.xlsx
     xlsx_clothing_asset_variation_export:
         connector: Akeneo Product Asset Connector
@@ -417,4 +429,5 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath: /tmp/asset-variation.xlsx

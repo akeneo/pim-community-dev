@@ -111,6 +111,7 @@ jobs:
         type: quick_export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.xlsx
     xlsx_published_product_quick_export:
         connector: Akeneo Mass Edit Connector
@@ -119,6 +120,7 @@ jobs:
         type: quick_export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/published_products_export_%locale%_%scope%_%datetime%.xlsx
     rule_impacted_product_count:
         connector: Akeneo Rule Engine Connector

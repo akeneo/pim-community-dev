@@ -426,6 +426,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/product.xlsx
     xlsx_published_product_export:
         connector: Akeneo XLSX Connector
@@ -434,6 +435,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/published-product.xlsx
     xlsx_product_quick_export:
         connector: Akeneo Mass Edit Connector
@@ -442,6 +444,7 @@ jobs:
         type:      quick_export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.xlsx
     xlsx_published_product_quick_export:
         connector: Akeneo Mass Edit Connector
@@ -450,6 +453,7 @@ jobs:
         type:      quick_export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/published-products_export_%locale%_%scope%_%datetime%.xlsx
     rule_impacted_product_count:
         connector: Akeneo Rule Engine Connector
@@ -542,6 +546,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/group.xlsx
     xlsx_variant_group_export:
         connector: Akeneo XLSX Connector
@@ -550,6 +555,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/variant_group.xlsx
     xlsx_group_import:
         connector: Akeneo XLSX Connector
@@ -574,6 +580,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath: /tmp/family.xlsx
     xlsx_category_export:
         connector: Akeneo XLSX Connector
@@ -582,6 +589,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/category.xlsx
     xlsx_attribute_export:
         connector: Akeneo XLSX Connector
@@ -590,6 +598,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/attribute.xlsx
     xlsx_option_export:
         connector: Akeneo XLSX Connector
@@ -598,6 +607,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/option.xlsx
     xlsx_association_type_export:
         connector: Akeneo XLSX Connector
@@ -606,6 +616,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/association_type.xlsx
     xlsx_asset_export:
         connector: Akeneo Product Asset Connector
@@ -614,6 +625,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/asset.xlsx
     xlsx_asset_category_export:
         connector: Akeneo Product Asset Connector
@@ -622,6 +634,7 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/asset_category.xlsx
     xlsx_asset_variation_export:
         connector: Akeneo Product Asset Connector
@@ -630,4 +643,5 @@ jobs:
         type:      export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/asset_variation.xlsx
