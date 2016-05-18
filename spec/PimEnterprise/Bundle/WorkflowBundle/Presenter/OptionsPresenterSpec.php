@@ -2,15 +2,16 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
-use PimEnterprise\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class OptionsPresenterSpec extends ObjectBehavior
 {
-    function let(AttributeOptionRepositoryInterface $repository)
+    function let(IdentifiableObjectRepositoryInterface $repository)
     {
         $this->beConstructedWith($repository);
     }
@@ -29,12 +30,17 @@ class OptionsPresenterSpec extends ObjectBehavior
         $repository,
         RendererInterface $renderer,
         ProductValueInterface $value,
+        AttributeInterface $attribute,
         AttributeOptionInterface $red,
         AttributeOptionInterface $green,
         AttributeOptionInterface $blue
     ) {
-        $repository->findBy(['code' => ['red', 'green', 'blue']])->willReturn([$red, $green, $blue]);
+        $repository->findOneByIdentifier('color.red')->willReturn($red);
+        $repository->findOneByIdentifier('color.green')->willReturn($green);
+        $repository->findOneByIdentifier('color.blue')->willReturn($blue);
         $value->getData()->willReturn([$red, $green]);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->willReturn('color');
         $red->__toString()->willReturn('Red');
         $green->__toString()->willReturn('Green');
         $blue->__toString()->willReturn('Blue');

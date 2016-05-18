@@ -6,14 +6,11 @@ pimee_workflow:
     locale: Configuración regional
     product:
       label: Etiqueta del producto
-    attribute:
-      label: Atributo
     status:
       label: Estado
       working_copy: Copia de trabajo
       in_progress: En progreso
       ready: Esperando aprobacion
-      can_be_partially_reviewed: Puede ser revisado parcialmente
       can_not_be_approved: No puede ser revisado
       can_not_be_deleted: No puede ser borrado
     status_message:
@@ -39,20 +36,12 @@ pimee_workflow:
       remove: '%owner% ha eliminado su propuesta por el producto %product%'
     mass_review_action:
       approve: Aprobar seleccionados
-      refuse: Rechazar seleccionados
+      refuse: Rechazar elementos seleccionados
       error:
         draft_not_ready: Esta propuesta no está lista para ser aprobada
         not_product_owner: Usted no es propietario del producto asociado a esta proposición
         cannot_edit_attributes: Usted no puede editar los atributos modificados en esta propuesta
         invalid_draft: 'Esta propuesta no puede aplicarse debido al siguiente error. %error%'
-  proposal:
-    to_review: '%author.firstname% %author.lastname% ha enviado una propuesta a revisar por el producto %product.label%'
-    individual_import: '%author.firstname% %author.lastname% ha enviado propuestas a revisar desde una importación'
-    generic_import: Usted tiene propuestas provenientes de una importación a revisar
-    original_value: Original
-    new_value: Nuevo
-    no_diff: 'El valor "%value%" es el mismo entre la propuesta y la copia de trabajo.'
-    draft_in_progress: 'Hay un borrador en curso por %author% para este producto.'
   published_product:
     index: Productos publicados
     title: Producto publicado
@@ -144,4 +133,3 @@ job_execution.summary:
   proposal_updated: propuesta actualizada
   proposal_created: propuesta creada
   proposal_skipped: propuesta omitida (sin diferencias)
-published products: Productos publicados

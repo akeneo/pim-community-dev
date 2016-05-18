@@ -12,8 +12,8 @@
             } %}
         {% else %}
             {% set parameters = {
-                '%value%': action.value|present_rule_action_value(action.field)|highlight,
-                '%field%': action.field|append_locale_and_scope_context(action.locale|default, action.scope|default)|highlight
+                '%field%': action.field|append_locale_and_scope_context(action.locale|default, action.scope|default)|highlight,
+                '%value%': action.value|present_rule_action_value(action.field)|highlight
             } %}
         {% endif %}
 

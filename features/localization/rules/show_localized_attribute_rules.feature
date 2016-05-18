@@ -53,7 +53,7 @@ Feature: Show localized rules
     When I visit the "Règles" tab
     Then the row "my_rule" should contain the texts:
       | column    | value                                                 |
-      | Condition | Si decimal_number égale 10.5                          |
+      | Condition | Si decimal_number égale 10,50                         |
       | Action    | Alors 5,5679 est défini dans another_decimal_number   |
       | Action    | Alors 12,50 € est défini dans decimal_price           |
       | Action    | Alors 10,50 Centimètre est défini dans decimal_metric |

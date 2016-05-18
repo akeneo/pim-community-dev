@@ -3,7 +3,7 @@
         {{ 'pimee_catalog_rule.condition.label'|trans({
             "%field%": condition.field|highlight,
             "%operator%": ('pimee_catalog_rule.condition.operators.' ~ condition.operator)|trans,
-            "%value%": condition.value|join(', ')|append_locale_and_scope_context(condition.locale|default, condition.scope|default)|raw|highlight,
+            "%value%": condition.value|present_rule_action_value(condition.field)|append_locale_and_scope_context(condition.locale|default, condition.scope|default)|raw|highlight,
         })|raw }}
     </p>
 {% endfor %}
