@@ -1023,6 +1023,10 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function getReferenceDataName()
     {
+        if (!$this->isBackendTypeReferenceData()) {
+            return null;
+        }
+
         return $this->getProperty('reference_data_name');
     }
 

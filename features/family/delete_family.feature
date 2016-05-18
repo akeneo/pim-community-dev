@@ -19,7 +19,7 @@ Feature: Delete a family
     Given I edit the "sneakers" family
     When I press the "Delete" button
     And I confirm the deletion
-    Then the grid should contain 3 elements
+    Then the grid should contain 4 elements
     And I should not see family sneakers
 
   Scenario: Successfully delete a family used by a product

@@ -65,6 +65,7 @@ services:
         calls:
             - [setProductQueryBuilderFactory, ['@pim_catalog.query.product_query_builder_factory']]
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
+            - [setGroupRepository, ['@pim_catalog.repository.group']]
             - [setReferenceDataRegistry, ['@?pim_reference_data.registry']]
         tags:
             - { name: 'pim_repository' }

@@ -9,6 +9,8 @@ namespace Akeneo\Component\Classification\Repository;
  */
 interface CategoryFilterableRepositoryInterface
 {
+    const JOIN_ALIAS = 'CategoryFilterableRepositoryInterface';
+
     /**
      * Apply a filter by unclassified (not placed in any categories)
      *

@@ -4,6 +4,7 @@ namespace Pim\Behat\Context\Domain;
 
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use Pim\Behat\Context\PimContext;
 
 class TreeContext extends PimContext
@@ -107,9 +108,11 @@ class TreeContext extends PimContext
         } else {
             try {
                 $checkbox = $this->spin(function () use ($node) {
-                    return $node->find('css', '.jstree-checkbox');
+                    $result = $node->find('css', '.jstree-checkbox');
+
+                    return (null !== $result && $result->isVisible()) ? $result : null;
                 });
-            } catch (\Exception $e) {
+            } catch (TimeoutException $e) {
                 $checkbox = null;
             }
 

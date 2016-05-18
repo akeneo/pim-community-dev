@@ -86,9 +86,19 @@ class Form extends Base
 
             return $tabs;
 
-        }, "Findind $tab tab");
+        }, 'Could not find any tabs container element');
 
-        $tabs->clickLink($tab);
+        $tabDom = $this->spin(function () use ($tabs, $tab) {
+            return $tabs->findLink($tab);
+        }, sprintf('Could not find a tab named "%s"', $tab));
+
+        $this->spin(function () {
+            $loading = $this->find('css', '#loading-wrapper');
+
+            return null === $loading || !$loading->isVisible();
+        }, sprintf('Could not visit tab %s because of loading wrapper', $tab));
+
+        $tabDom->click();
     }
 
     /**
@@ -738,6 +748,7 @@ class Form extends Base
         $remainingValues = array_diff($allValues, $selectedTextValues);
         foreach ($remainingValues as $value) {
             if (trim($value)) {
+                $this->getDriver()->executeScript("jQuery('.select2-drop-mask').click();");
                 $label->click();
 
                 $option = $this->spin(function () use ($value) {

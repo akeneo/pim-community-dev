@@ -78,4 +78,14 @@ interface FamilyRepositoryInterface extends
      * @return int
      */
     public function countAll();
+
+    /**
+     * Checks if a family has the attribute with specified code.
+     *
+     * @param int    $id
+     * @param string $attributeCode
+     *
+     * @return bool
+     */
+    public function hasAttribute($id, $attributeCode);
 }

@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Repository;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 
@@ -106,4 +107,14 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
      * @return GroupInterface|null
      */
     public function getVariantGroupByProductTemplate(ProductTemplateInterface $productTemplate);
+
+    /**
+     * Check if a group has the attribute with specified code
+     *
+     * @param int[]  $id
+     * @param string $attributeCode
+     *
+     * @return bool
+     */
+    public function hasAttribute(array $id, $attributeCode);
 }
