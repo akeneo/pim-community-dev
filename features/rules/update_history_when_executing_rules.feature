@@ -19,9 +19,10 @@ Feature: Update product history when rules are executed
       | Name        | Black sneakers         |
       | Description | Classic black sneakers |
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
 
   Scenario: Successfully display history after executing a rule
-    And the following product rule definitions:
+    When the following product rule definitions:
       """
       set_description:
         priority: 10
@@ -36,7 +37,7 @@ Feature: Update product history when rules are executed
             locale: fr_FR
             scope:  mobile
       """
-    When the product rule "set_description" is executed
+    And the product rule "set_description" is executed
     And the history of the product "converse-sneakers" has been built
     And I am on the "converse-sneakers" product page
     And I open the history

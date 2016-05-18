@@ -30,6 +30,7 @@ Feature: Revert a product to a previous version
       | Main color  | [red]                          |
       | Main fabric | Cashmerewool, [neoprene], Silk |
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
 
   Scenario: Revert a product with simple reference data
     Given I am on the "red-heels" product page
@@ -38,17 +39,19 @@ Feature: Revert a product to a previous version
     And I fill in the following information:
       | Main color | Green |
     Then I save the product
-    And I open the history
-    And I should see history:
+    And I should not see the text "There are unsaved changes."
+    When I open the history
+    Then I should see history:
       | version | property   | value |
       | 3       | Main color | green |
     When I visit the "Attributes" tab
     And I visit the "Other" group
     And I fill in the following information:
       | Main color | [blue] |
-    Then I save the product
-    And I open the history
-    And I should see history:
+    And I save the product
+    Then I should not see the text "There are unsaved changes."
+    When I open the history
+    Then I should see history:
       | version | property   | value |
       | 4       | Main color | blue  |
     When I revert the product version number 2
@@ -61,8 +64,9 @@ Feature: Revert a product to a previous version
     And I visit the "Other" group
     And I fill in the following information:
       | Main fabric | Cashmerewool, [neoprene] |
-    Then I save the product
-    And I open the history
+    And I save the product
+    Then I should not see the text "There are unsaved changes."
+    When I open the history
     And I should see history:
       | version | property    | value                 |
       | 3       | Main fabric | cashmerewool,neoprene |

@@ -46,6 +46,7 @@ Feature: Revert product attributes to a previous version
     And I visit the "Marketing" group
     And I change the "Rating" to "2"
     And I save the product
+    Then I should not see the text "There are unsaved changes."
     And the history of the product "t-shirt" has been built
     And I open the history
     Then I should see 2 versions in the history
@@ -59,7 +60,8 @@ Feature: Revert product attributes to a previous version
     And I visit the "Marketing" group
     And I change the "Rating" to "5"
     And I save the product
-    And the history of the product "marcel" has been built
+    Then I should not see the text "There are unsaved changes."
+    When the history of the product "marcel" has been built
     And I open the history
     Then I should see 2 versions in the history
     When I revert the product version number 1

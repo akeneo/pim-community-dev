@@ -52,7 +52,9 @@ class Index extends Grid
      */
     public function getDialog()
     {
-        return $this->find('css', '.ui-dialog');
+        return $this->spin(function () {
+            return $this->find('css', '.ui-dialog');
+        }, 'UI Dialog not found.');
     }
 
     /**
@@ -60,7 +62,11 @@ class Index extends Grid
      */
     public function getLocalizableSwitch()
     {
-        return $this->getDialog()->find('css', '.has-switch');
+        $dialog = $this->getDialog();
+
+        return $this->spin(function () use ($dialog) {
+            return $dialog->find('css', '.has-switch');
+        }, 'Localizable switch not found.');
     }
 
     /**
@@ -78,11 +84,11 @@ class Index extends Grid
         if ('on' === $state) {
             $this->spin(function () use ($referenceField) {
                 return !$referenceField->isVisible();
-            });
+            }, 'Localizable switch should not be visible');
         } else {
             $this->spin(function () use ($referenceField) {
                 return $referenceField->isVisible();
-            });
+            }, 'Localizable switch should be visible');
         }
     }
 
@@ -93,8 +99,10 @@ class Index extends Grid
      */
     public function findReferenceUploadZone()
     {
-        return $this->spin(function () {
-            return $this->getDialog()->find('css', '.reference-field .asset-uploader');
+        $dialog = $this->getDialog();
+
+        return $this->spin(function () use ($dialog) {
+            return $dialog->find('css', '.reference-field .asset-uploader');
         }, 'Cannot find the reference upload zone');
     }
 

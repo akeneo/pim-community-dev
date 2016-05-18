@@ -14,4 +14,4 @@ Feature: Add assets collection
       | Code                | blue_tshirt |
       | Attribute group     | Other       |
     Then I save the attribute
-    Then I should see flash message "Attribute successfully created"
+    Then I should see the flash message "Attribute successfully created"

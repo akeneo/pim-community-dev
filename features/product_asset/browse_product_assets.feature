@@ -13,15 +13,21 @@ Feature: Browse product assets
     And I visit the "Variations" tab
     And I upload the reference file akene.jpg
     And I save the asset
+    And I should not see the text "There are unsaved changes."
+    And I should see "akene.jpg"
     And I am on the "chicagoskyline" asset page
     And I visit the "Variations" tab
     And I switch the locale to "de_DE"
     And I upload the reference file akene.jpg
     And I save the asset
+    And I should not see the text "There are unsaved changes."
+    And I should see "akene.jpg"
     And I visit the "Variations" tab
     And I switch the locale to "en_US"
     And I upload the reference file akene.jpg
     And I save the asset
+    And I should not see the text "There are unsaved changes."
+    And I should see "akene.jpg"
     And I am on the assets page
     Then the grid should contain 15 elements
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at

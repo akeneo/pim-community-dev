@@ -32,8 +32,8 @@ Feature: Send a product draft with reference data for approval
       | Lace color | Red |
     And I save the product
     And I press the Send for approval button
-    Then its status should be "Waiting for approval"
-    And I should see "Sent for approval"
+    Then I should see "Sent for approval"
+    And its status should be "Waiting for approval"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully restore the product draft status when I modify a simple select after sending it for approval
@@ -43,10 +43,12 @@ Feature: Send a product draft with reference data for approval
       | Lace color | Red |
     And I save the product
     And I press the Send for approval button
-    Then I fill in the following information:
+    Then I should see "Sent for approval"
+    When I fill in the following information:
       | Lace color  | Blue |
     And I save the product
-    Then its status should be "In progress"
+    Then I should see "Send for approval"
+    And its status should be "In progress"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully create a new product draft with multi select reference data
@@ -65,8 +67,8 @@ Feature: Send a product draft with reference data for approval
       | Sleeve fabric | Leather, Neoprene |
     And I save the product
     And I press the Send for approval button
-    Then its status should be "Waiting for approval"
-    And I should see "Sent for approval"
+    Then I should see "Sent for approval"
+    And its status should be "Waiting for approval"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully restore the product draft status when I modify a multi select after sending it for approval
@@ -76,7 +78,9 @@ Feature: Send a product draft with reference data for approval
       | Sleeve fabric | Leather, Neoprene |
     And I save the product
     And I press the Send for approval button
-    Then I fill in the following information:
+    Then I should see "Sent for approval"
+    When I fill in the following information:
       | Sleeve fabric | Leather, PVC |
     And I save the product
-    Then its status should be "In progress"
+    Then I should see "Send for approval"
+    And its status should be "In progress"

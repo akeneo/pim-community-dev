@@ -41,27 +41,31 @@ Feature: Manage notifications preferences
     Given I am logged in as "Julia"
     And I am on my profile page
     And I press the "Edit" button
-    And I visit the "Notifications" tab
-    When I uncheck the "When new proposal to review" switch
+    Then I should see the text "Edit user - Julia Stark"
+    When I visit the "Notifications" tab
+    And I uncheck the "When new proposal to review" switch
     And I save the user
-    And I logout
+    Then I should not see the text "There are unsaved changes."
+    When I logout
     And Mary proposed the following change to "tshirt":
       | field | value          |
       | Name  | Summer t-shirt |
-    When I am logged in as "Julia"
+    And I am logged in as "Julia"
     And I am on the dashboard page
     Then I should have 0 new notification
 
   Scenario: I can disable notification I receive when someone updated my proposal
     Given I am logged in as "Mary"
-    And I am on my profile page
+    When I am on my profile page
     And I press the "Edit" button
-    And I visit the "Notifications" tab
+    Then I should see the text "Edit user - Mary Smith"
+    When I visit the "Notifications" tab
     Then I should not see "When new proposal to review"
     But I should see "When proposal is accepted or rejected"
     When I uncheck the "When proposal is accepted or rejected" switch
     And I save the user
-    And I am on the "tshirt" product page
+    Then I should not see the text "There are unsaved changes."
+    When I am on the "tshirt" product page
     And I change the Name to "Star wars shirt (R2D2 version)"
     And I save the product
     And I press the "Send for approval" button

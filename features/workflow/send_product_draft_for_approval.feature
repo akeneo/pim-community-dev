@@ -24,8 +24,8 @@ Feature: Send a product draft for approval
     When I change the "Name" to "Baggy"
     And I save the product
     And I press the Send for approval button
-    Then its status should be "Waiting for approval"
-    And I should see "Sent for approval"
+    Then I should see "Sent for approval"
+    And its status should be "Waiting for approval"
 
   Scenario: Fail to send a non existing product draft for approval
     Then I should not see "Send for approval"

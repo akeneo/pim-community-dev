@@ -44,15 +44,21 @@ Feature: Assign assets to a product
     And I visit the "Variations" tab
     And I upload the reference file akene.jpg
     And I save the asset
+    And I should not see the text "There are unsaved changes."
+    And I should see "akene.jpg"
     And I am on the "chicagoskyline" asset page
     And I visit the "Variations" tab
     And I switch the locale to "de_DE"
     And I upload the reference file akene.jpg
     And I save the asset
+    And I should not see the text "There are unsaved changes."
+    And I should see "akene.jpg"
     And I visit the "Variations" tab
     And I switch the locale to "en_US"
     And I upload the reference file akene.jpg
     And I save the asset
+    And I should not see the text "There are unsaved changes."
+    And I should see "akene.jpg"
     And I am on the "shirt" product page
     And I add available attributes Front view
     When I start to manage assets for "Front view"

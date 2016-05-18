@@ -506,11 +506,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     public function getAsset($code)
     {
-        $asset = $this->getAssetRepository()->findOneByIdentifier($code);
-
-        if (null === $asset) {
-            throw new \InvalidArgumentException(sprintf('Could not find a product asset with code "%s"', $code));
-        }
+        $asset = $this->spin(function () use ($code) {
+            return $this->getAssetRepository()->findOneByIdentifier($code);
+        }, sprintf('Could not find a product asset with code "%s"', $code));
 
         $this->refresh($asset);
 

@@ -30,6 +30,7 @@ Feature: Refuse notifications
       | type  | message                                                       |
       | error | Julia Stark has rejected your proposal for the product tshirt |
     When I click on the notification "Julia Stark has rejected your proposal for the product tshirt"
+    And I wait to be on the "tshirt" product page
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from the proposal grid
@@ -46,6 +47,7 @@ Feature: Refuse notifications
       | type  | message                                                       | comment                                 |
       | error | Julia Stark has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
     When I click on the notification "Julia Stark has rejected your proposal for the product tshirt"
+    And I wait to be on the "tshirt" product page
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from the product draft page
@@ -62,6 +64,7 @@ Feature: Refuse notifications
       | type  | message                                                       |
       | error | Julia Stark has rejected your proposal for the product tshirt |
     When I click on the notification "Julia Stark has rejected your proposal for the product tshirt"
+    And I wait to be on the "tshirt" product page
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from the product draft page
@@ -79,6 +82,7 @@ Feature: Refuse notifications
       | type  | message                                                       | comment                                 |
       | error | Julia Stark has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
     When I click on the notification "Julia Stark has rejected your proposal for the product tshirt"
+    And I wait to be on the "tshirt" product page
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from mass approval
@@ -95,6 +99,7 @@ Feature: Refuse notifications
       | type  | message                                                       |
       | error | Julia Stark has rejected your proposal for the product tshirt |
     When I click on the notification "Julia Stark has rejected your proposal for the product tshirt"
+    And I wait to be on the "tshirt" product page
     Then I should be on the product "tshirt" edit page
 
   Scenario: A notification is sent when I approve a proposal from mass approval
@@ -112,4 +117,5 @@ Feature: Refuse notifications
       | type  | message                                                       | comment                                 |
       | error | Julia Stark has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
     When I click on the notification "Julia Stark has rejected your proposal for the product tshirt"
+    And I wait to be on the "tshirt" product page
     Then I should be on the product "tshirt" edit page
