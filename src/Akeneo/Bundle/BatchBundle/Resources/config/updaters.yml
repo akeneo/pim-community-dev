@@ -4,3 +4,6 @@ parameters:
 services:
     akeneo_batch.updater.job_instance:
         class: %akeneo_storage_utils.updater.base.class%
+        arguments:
+            - '@akeneo_batch.job_parameters_factory'
+            - '@service_container'

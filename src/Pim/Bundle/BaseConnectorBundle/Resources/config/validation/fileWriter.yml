@@ -1,7 +1,0 @@
-Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter:
-    properties:
-        filePath:
-            - NotBlank:
-                groups: [Execution]
-            - Pim\Bundle\ImportExportBundle\Validator\Constraints\WritableDirectory:
-                groups: [Execution]

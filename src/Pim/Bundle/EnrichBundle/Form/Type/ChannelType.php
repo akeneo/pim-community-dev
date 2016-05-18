@@ -3,12 +3,12 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\EnrichBundle\Helper\SortHelper;
 use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -33,8 +33,8 @@ class ChannelType extends AbstractType
     /** @var ColorsProvider */
     protected $provider;
 
-    /** @var ChoicesProviderInterface */
-    protected $categoryRepository;
+    /** @var TranslatedLabelsProviderInterface */
+    protected $categoryProvider;
 
     /** @var string */
     protected $categoryClass;
@@ -45,27 +45,27 @@ class ChannelType extends AbstractType
     /**
      * Inject locale manager, locale helper and colors provider in the constructor
      *
-     * @param LocaleRepositoryInterface $localeRepository
-     * @param LocaleHelper              $localeHelper
-     * @param ColorsProvider            $provider
-     * @param ChoicesProviderInterface  $categoryRepository
-     * @param string                    $categoryClass
-     * @param string                    $dataClass
+     * @param LocaleRepositoryInterface         $localeRepository
+     * @param LocaleHelper                      $localeHelper
+     * @param ColorsProvider                    $provider
+     * @param TranslatedLabelsProviderInterface $categoryProvider
+     * @param string                            $categoryClass
+     * @param string                            $dataClass
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
         LocaleHelper $localeHelper,
         ColorsProvider $provider,
-        ChoicesProviderInterface $categoryRepository,
+        TranslatedLabelsProviderInterface $categoryProvider,
         $categoryClass,
         $dataClass
     ) {
-        $this->localeRepository   = $localeRepository;
-        $this->localeHelper       = $localeHelper;
-        $this->provider           = $provider;
-        $this->categoryRepository = $categoryRepository;
-        $this->categoryClass      = $categoryClass;
-        $this->dataClass          = $dataClass;
+        $this->localeRepository = $localeRepository;
+        $this->localeHelper     = $localeHelper;
+        $this->provider         = $provider;
+        $this->categoryProvider = $categoryProvider;
+        $this->categoryClass    = $categoryClass;
+        $this->dataClass        = $dataClass;
     }
 
     /**
@@ -221,7 +221,7 @@ class ChannelType extends AbstractType
                 'required'   => true,
                 'select2'    => true,
                 'multiple'   => false,
-                'repository' => $this->categoryRepository
+                'repository' => $this->categoryProvider
             ]
         );
 

@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\File;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -17,73 +18,20 @@ class YamlReaderSpec extends ObjectBehavior
     function it_is_an_item_reader_step_execution_and_uploaded_file_aware()
     {
         $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemReaderInterface');
-        $this->shouldImplement('\Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface');
         $this->shouldImplement('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
-    function it_provides_configuration_fields()
-    {
-        $this->getConfigurationFields()->shouldReturn([
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_base_connector.import.yamlFilePath.label',
-                    'help'  => 'pim_base_connector.import.yamlFilePath.help'
-                ]
-            ],
-            'uploadAllowed' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_base_connector.import.uploadAllowed.label',
-                    'help'  => 'pim_base_connector.import.uploadAllowed.help'
-                ]
-            ]
-        ]);
-    }
-
-    function it_is_configurable(File $file)
-    {
-        $file->getRealPath()->willReturn('/path/to/file/img.jpg');
-
-        $this->getFilePath()->shouldReturn(null);
-        $this->isMultiple()->shouldReturn(false);
-        $this->getCodeField()->shouldReturn('code');
-        $this->isUploadAllowed()->shouldReturn(false);
-
-        $this->setFilePath('/path/to/file/');
-        $this->setMultiple(true);
-        $this->setCodeField('custom_code');
-        $this->setUploadAllowed(true);
-
-        $this->getFilePath()->shouldReturn('/path/to/file/');
-        $this->isMultiple()->shouldReturn(true);
-        $this->getCodeField()->shouldReturn('custom_code');
-        $this->isUploadAllowed()->shouldReturn(true);
-
-        $this->setUploadedFile($file);
-
-        $this->getFilePath()->shouldReturn('/path/to/file/img.jpg');
-    }
-
-    function it_provides_uploaded_file_constraints()
-    {
-        $constraints = $this->getUploadedFileConstraints();
-
-        $constraints[0]->shouldBeAnInstanceOf('\Symfony\Component\Validator\Constraints\NotBlank');
-        $constraints[1]->shouldBeAnInstanceOf('\Pim\Component\Catalog\Validator\Constraints\File');
-        $constraints[1]->allowedExtensions->shouldBe(['yml', 'yaml']);
-    }
-
     function it_reads_entities_from_a_yml_file_one_by_one_incrementing_summary_info_for_each_one(
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
     ) {
         $this->beConstructedWith(false, false);
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../fixtures/fake_products_with_code.yml'));
 
         $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalledTimes(3);
 
-        $this->setFilePath(
-            realpath(__DIR__ . '/../../fixtures/fake_products_with_code.yml')
-        );
-        $this->setStepExecution($stepExecution);
         $this->read()->shouldReturn([
             'sku' => 'mug_akeneo'
         ]);
@@ -97,15 +45,16 @@ class YamlReaderSpec extends ObjectBehavior
     }
 
     function it_reads_entities_from_a_yml_file_one_by_one(
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
     ) {
         $this->beConstructedWith(false, false);
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../fixtures/fake_products_with_code.yml'));
 
-        $stepExecution->incrementSummaryInfo(Argument::any())->shouldNotBeCalled();
+        $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalled();
 
-        $this->setFilePath(
-            realpath(__DIR__ . '/../../fixtures/fake_products_with_code.yml')
-        );
         $this->read()->shouldReturn([
             'sku' => 'mug_akeneo'
         ]);
@@ -119,15 +68,16 @@ class YamlReaderSpec extends ObjectBehavior
     }
 
     function it_reads_several_entities_from_a_yml_file_incrementing_summary_info(
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
     ) {
         $this->beConstructedWith(true, false);
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../fixtures/fake_products_with_code.yml'));
 
         $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
 
-        $this->setFilePath(
-            realpath(__DIR__ . '/../../fixtures/fake_products_with_code.yml')
-        );
         $this->setStepExecution($stepExecution);
         $this->read()->shouldReturn([
             'mug_akeneo' => [
@@ -143,13 +93,18 @@ class YamlReaderSpec extends ObjectBehavior
         ]);
     }
 
-    function it_reads_several_entities_without_code_from_a_yml_file()
-    {
+    function it_reads_several_entities_without_code_from_a_yml_file(
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
         $this->beConstructedWith(true, 'sku');
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filePath')
+            ->willReturn(realpath(__DIR__ . '/../../fixtures/fake_products_without_code.yml'));
 
-        $this->setFilePath(
-            realpath(__DIR__ . '/../../fixtures/fake_products_without_code.yml')
-        );
+        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+
         $this->read()->shouldReturn([
             'mug_akeneo_blue' => [
                 'color' => 'blue',
@@ -167,13 +122,18 @@ class YamlReaderSpec extends ObjectBehavior
         ]);
     }
 
-    function it_initializes_the_class()
-    {
+    function it_initializes_the_class(
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
         $this->beConstructedWith(false, false);
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filePath')
+            ->willReturn(realpath(__DIR__ . '/../../fixtures/fake_products_with_code.yml'));
 
-        $this->setFilePath(
-            realpath(__DIR__ . '/../../fixtures/fake_products_with_code.yml')
-        );
+        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+
         $this->read()->shouldReturn([
             'sku' => 'mug_akeneo'
         ]);

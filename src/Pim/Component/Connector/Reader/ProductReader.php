@@ -50,12 +50,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /** @var CursorInterface */
     protected $products;
 
-    /** @var string */
-    protected $channelCode;
-
-    /** @var ChannelInterface */
-    protected $channel;
-
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
@@ -83,49 +77,27 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /**
      * {@inheritdoc}
      */
-    public function setChannel($channelCode)
-    {
-        $this->channelCode = $channelCode;
-        $this->channel     = null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChannel()
-    {
-        return $this->channelCode;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'channel' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => $this->channelRepository->getLabelsIndexedByCode(),
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_connector.export.channel.label',
-                    'help'     => 'pim_connector.export.channel.help',
-                ],
-            ]
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function initialize()
     {
-        $this->channel = $this->getChannelByCode($this->channelCode);
-        $pqb           = $this->getProductQueryBuilder($this->channel);
+        $channel = $this->getConfiguredChannel();
+        $parameters = $this->stepExecution->getJobParameters();
+        $enabled = $parameters->get('enabled');
+
+        $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
+        $filters = $this->getFilters($channel, $this->rawToStandardProductStatus($enabled));
+
+        foreach ($filters as $filter) {
+            $pqb->addFilter(
+                $filter['field'],
+                $filter['operator'],
+                $filter['value'],
+                $filter['context']
+            );
+        }
+
 
         if ($this->generateCompleteness) {
-            $this->completenessManager->generateMissingForChannel($this->channel);
+            $this->completenessManager->generateMissingForChannel($channel);
         }
 
         $this->products = $pqb->execute();
@@ -146,7 +118,8 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
 
         if (null !== $product) {
             $this->objectDetacher->detach($product);
-            $this->metricConverter->convert($product, $this->channel);
+            $channel = $this->getConfiguredChannel();
+            $this->metricConverter->convert($product, $channel);
         }
 
         return $product;
@@ -161,40 +134,17 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     }
 
     /**
-     * Return the product query builder instance with filters configured.
-     *
-     * @param ChannelInterface $channel
-     *
-     * @return ProductQueryBuilderInterface
-     */
-    protected function getProductQueryBuilder(ChannelInterface $channel)
-    {
-        $pqb = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
-
-        foreach ($this->getFilters($channel) as $filter) {
-            $pqb->addFilter(
-                $filter['field'],
-                $filter['operator'],
-                $filter['value'],
-                $filter['context']
-            );
-        }
-
-        return $pqb;
-    }
-
-    /**
-     * @param string $code
-     *
      * @throws ObjectNotFoundException
      *
      * @return ChannelInterface
      */
-    protected function getChannelByCode($code)
+    protected function getConfiguredChannel()
     {
-        $channel = $this->channelRepository->findOneByIdentifier($code);
+        $parameters = $this->stepExecution->getJobParameters();
+        $channelCode = $parameters->get('channel');
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
-            throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $code));
+            throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $channelCode));
         }
 
         return $channel;
@@ -204,18 +154,13 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * Return the filters to be applied on the PQB instance.
      *
      * @param ChannelInterface $channel
+     * @param bool             $status
      *
      * @return array
      */
-    protected function getFilters(ChannelInterface $channel)
+    protected function getFilters(ChannelInterface $channel, $status)
     {
-        return [
-            [
-                'field'    => 'enabled',
-                'operator' => Operators::EQUALS,
-                'value'    => true,
-                'context'  => []
-            ],
+        $filters = [
             [
                 'field'    => 'completeness',
                 'operator' => Operators::EQUALS,
@@ -229,5 +174,38 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
                 'context'  => []
             ]
         ];
+
+        if (null !== $status) {
+            $filters[] = [
+                'field'    => 'enabled',
+                'operator' => Operators::EQUALS,
+                'value'    => $status,
+                'context'  => []
+            ];
+        }
+
+        return $filters;
+    }
+
+    /**
+     * Convert the UI product status to the standard product status
+     *
+     * @param string $rawStatus
+     * @return bool|null
+     */
+    protected function rawToStandardProductStatus($rawStatus)
+    {
+        switch ($rawStatus) {
+            case 'enabled':
+                $status = true;
+                break;
+            case 'disabled':
+                $status = false;
+                break;
+            default:
+                $status = null;
+        }
+
+        return $status;
     }
 }

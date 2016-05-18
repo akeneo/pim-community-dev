@@ -25,21 +25,19 @@ Feature: Display the completeness of a product
   Scenario: Successfully display the completeness of the products
     Given I am on the "sneakers" product page
     When I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the "en_US" completeness in position 1
+    Then I should see the "en_US" completeness in position 1
     And The completeness "fr_FR" should be closed
     And The completeness "en_US" should be opened
     And I should see the completeness:
-      | channel | locale | state   | missing_values        | ratio |
-      | mobile  | en_US  | success |                       | 100%  |
-      | mobile  | fr_FR  | success |                       | 100%  |
-      | tablet  | en_US  | warning | side_view             | 89%   |
-      | tablet  | fr_FR  | warning | description side_view | 78%   |
+      | channel | locale | state   | missing_values         | ratio |
+      | mobile  | en_US  | success |                        | 100%  |
+      | tablet  | en_US  | warning | Side view              | 89%   |
+      | mobile  | fr_FR  | success |                        | 100%  |
+      | tablet  | fr_FR  | warning | Description, Side view | 78%   |
     When I am on the products page
     Then I am on the "sandals" product page
     And I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the "en_US" completeness in position 1
+    Then I should see the "en_US" completeness in position 1
     And The completeness "fr_FR" should be closed
     And The completeness "en_US" should be opened
     When I switch the locale to "fr_FR"
@@ -47,40 +45,38 @@ Feature: Display the completeness of a product
     And The completeness "en_US" should be closed
     And The completeness "fr_FR" should be opened
     And I should see the completeness:
-      | channel | locale | state   | missing_values                               | ratio |
-      | mobile  | en_US  | warning | name price size                              | 40%   |
-      | mobile  | fr_FR  | warning | price size                                   | 60%   |
-      | tablet  | en_US  | warning | name description price rating side_view size | 25%   |
-      | tablet  | fr_FR  | warning | price rating side_view size                  | 50%   |
+      | channel | locale | state   | missing_values                                                | ratio |
+      | mobile  | fr_FR  | warning | [price], [size]                                               | 60%   |
+      | tablet  | fr_FR  | warning | [price], [rating], [side_view], [size]                        | 50%   |
+      | mobile  | en_US  | warning | [name], [price], [size]                                       | 40%   |
+      | tablet  | en_US  | warning | [name], [description], [price], [rating], [side_view], [size] | 25%   |
 
   @jira https://akeneo.atlassian.net/browse/PIM-5190
   Scenario: Successfully display the completeness of the products with medias after a save
     Given I am on the "sneakers" product page
     And I save the product
     When I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the "en_US" completeness in position 1
+    Then I should see the "en_US" completeness in position 1
     And The completeness "fr_FR" should be closed
     And The completeness "en_US" should be opened
     And I should see the completeness:
-      | channel | locale | state   | missing_values        | ratio |
-      | mobile  | en_US  | success |                       | 100%  |
-      | mobile  | fr_FR  | success |                       | 100%  |
-      | tablet  | en_US  | warning | side_view             | 89%   |
-      | tablet  | fr_FR  | warning | description side_view | 78%   |
+      | channel | locale | state   | missing_values         | ratio |
+      | mobile  | en_US  | success |                        | 100%  |
+      | tablet  | en_US  | warning | Side view              | 89%   |
+      | mobile  | fr_FR  | success |                        | 100%  |
+      | tablet  | fr_FR  | warning | Description, Side view | 78%   |
     When I am on the "sandals" product page
     And I save the product
     And I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the "en_US" completeness in position 1
+    Then I should see the "en_US" completeness in position 1
     And The completeness "fr_FR" should be closed
     And The completeness "en_US" should be opened
     And I should see the completeness:
-      | channel | locale | state   | missing_values                               | ratio |
-      | mobile  | en_US  | warning | name price size                              | 40%   |
-      | mobile  | fr_FR  | warning | price size                                   | 60%   |
-      | tablet  | en_US  | warning | name description price rating side_view size | 25%   |
-      | tablet  | fr_FR  | warning | price rating side_view size                  | 50%   |
+      | channel | locale | state   | missing_values                                    | ratio |
+      | mobile  | en_US  | warning | Name, Price, Size                                 | 40%   |
+      | tablet  | en_US  | warning | Name, Description, Price, Rating, Side view, Size | 25%   |
+      | mobile  | fr_FR  | warning | Price, Size                                       | 60%   |
+      | tablet  | fr_FR  | warning | Price, Rating, Side view, Size                    | 50%   |
 
   Scenario: Successfully display the completeness of the products in the grid
     Given I am on the products page
@@ -144,12 +140,10 @@ Feature: Display the completeness of a product
   Scenario: Don't display the completeness if the family is not defined
     Given I am on the "sneakers" product page
     When I open the "Completeness" panel
-    Then I should see the completeness summary
     Then I change the family of the product to ""
     Then I should see the text "No family defined. Please define a family to calculate the completeness of this product."
     Then I change the family of the product to "Sneakers"
     Then I should not see "No family defined. Please define a family to calculate the completeness of this product."
-    And I should see the completeness summary
     Then I change the family of the product to "Boots"
     Then I should see the text "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
 
@@ -165,7 +159,6 @@ Feature: Display the completeness of a product
     Then I should see the text "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
     Then I should not see "No family defined. Please define a family to calculate the completeness of this product."
     And I save the product
-    Then I should see the completeness summary
 
   Scenario: Quickly jump to a field from completeness panel
     Given I am on the "sneakers" product page

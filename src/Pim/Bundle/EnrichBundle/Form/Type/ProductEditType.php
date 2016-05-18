@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\StringToBooleanTransformer;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\BindAssociationTargetsSubscriber;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
-use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
+use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,8 +25,8 @@ class ProductEditType extends AbstractType
     /** @var ProductFormViewInterface */
     protected $productFormView;
 
-    /** @var FamilyRepositoryInterface */
-    protected $repository;
+    /** @var TranslatedLabelsProviderInterface */
+    protected $familyProvider;
 
     /** @var string */
     protected $categoryClass;
@@ -37,17 +37,17 @@ class ProductEditType extends AbstractType
     /**
      * Constructor
      *
-     * @param ProductFormViewInterface  $productFormView
-     * @param FamilyRepositoryInterface $repository
-     * @param string                    $categoryClass
+     * @param ProductFormViewInterface $productFormView
+     * @param TranslatedLabelsProviderInterface $familyProvider
+     * @param string                   $categoryClass
      */
     public function __construct(
         ProductFormViewInterface $productFormView,
-        FamilyRepositoryInterface $repository,
+        TranslatedLabelsProviderInterface $familyProvider,
         $categoryClass
     ) {
         $this->productFormView = $productFormView;
-        $this->repository      = $repository;
+        $this->familyProvider  = $familyProvider;
         $this->categoryClass   = $categoryClass;
     }
 
@@ -95,9 +95,8 @@ class ProductEditType extends AbstractType
                 'family',
                 'light_entity',
                 [
-                    'repository'         => $this->repository,
-                    'repository_options' => ['localeCode' => $options['currentLocale']],
-                    'required'           => false,
+                    'repository' => $this->familyProvider,
+                    'required'   => false,
                 ]
             );
         }

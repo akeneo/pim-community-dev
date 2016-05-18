@@ -17,14 +17,8 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     /** @var FlatItemBuffer */
     protected $buffer;
 
-    /** @var string */
-    protected $delimiter = ';';
-
-    /** @var string */
-    protected $enclosure = '"';
-
-    /** @var bool */
-    protected $withHeader = true;
+    /** @var ColumnSorterInterface */
+    protected $columnSorter;
 
     /** @var array */
     protected $headers = [];
@@ -35,72 +29,17 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     /**
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
+     * @param ColumnSorterInterface     $columnSorter
      */
-    public function __construct(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer)
-    {
+    public function __construct(
+        FilePathResolverInterface $filePathResolver,
+        FlatItemBuffer $flatRowBuffer,
+        ColumnSorterInterface $columnSorter
+    ) {
         parent::__construct($filePathResolver);
 
         $this->buffer = $flatRowBuffer;
-    }
-
-    /**
-     * Set the csv delimiter character
-     *
-     * @param string $delimiter
-     */
-    public function setDelimiter($delimiter)
-    {
-        $this->delimiter = $delimiter;
-    }
-
-    /**
-     * Get the csv delimiter character
-     *
-     * @return string
-     */
-    public function getDelimiter()
-    {
-        return $this->delimiter;
-    }
-
-    /**
-     * Set the csv enclosure character
-     *
-     * @param string $enclosure
-     */
-    public function setEnclosure($enclosure)
-    {
-        $this->enclosure = $enclosure;
-    }
-
-    /**
-     * Get the csv enclosure character
-     *
-     * @return string
-     */
-    public function getEnclosure()
-    {
-        return $this->enclosure;
-    }
-
-    /**
-     * Set whether or not to print a header row into the csv
-     *
-     * @param bool $withHeader
-     */
-    public function setWithHeader($withHeader)
-    {
-        $this->withHeader = (bool) $withHeader;
-    }
-
-    /**
-     * Get whether or not to print a header row into the csv
-     *
-     * @return bool
-     */
-    public function isWithHeader()
-    {
-        return $this->withHeader;
+        $this->columnSorter = $columnSorter;
     }
 
     /**
@@ -116,7 +55,9 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
      */
     public function write(array $items)
     {
-        $this->buffer->write($items, $this->isWithHeader());
+        $parameters = $this->stepExecution->getJobParameters();
+        $isWithHeader = $parameters->get('withHeader');
+        $this->buffer->write($items, $isWithHeader);
     }
 
     /**
@@ -126,7 +67,7 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     {
         $csvFile = $this->createCsvFile();
 
-        $headers = $this->buffer->getHeaders();
+        $headers = $this->columnSorter->sort($this->buffer->getHeaders());
         $hollowItem = array_fill_keys($headers, '');
         $this->writeToCsvFile($csvFile, $headers);
         foreach ($this->buffer->getBuffer() as $incompleteItem) {
@@ -140,38 +81,6 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
 
         fclose($csvFile);
         $this->writtenFiles[$this->getPath()] = basename($this->getPath());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return
-            array_merge(
-                parent::getConfigurationFields(),
-                [
-                    'delimiter' => [
-                        'options' => [
-                            'label' => 'pim_connector.export.delimiter.label',
-                            'help'  => 'pim_connector.export.delimiter.help'
-                        ]
-                    ],
-                    'enclosure' => [
-                        'options' => [
-                            'label' => 'pim_connector.export.enclosure.label',
-                            'help'  => 'pim_connector.export.enclosure.help'
-                        ]
-                    ],
-                    'withHeader' => [
-                        'type'    => 'switch',
-                        'options' => [
-                            'label' => 'pim_connector.export.withHeader.label',
-                            'help'  => 'pim_connector.export.withHeader.help'
-                        ]
-                    ],
-                ]
-            );
     }
 
     /**
@@ -206,7 +115,10 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
      */
     protected function writeToCsvFile($csvFile, array $data)
     {
-        if (false === fputcsv($csvFile, $data, $this->delimiter, $this->enclosure)) {
+        $parameters = $this->stepExecution->getJobParameters();
+        $delimiter = $parameters->get('delimiter');
+        $enclosure = $parameters->get('enclosure');
+        if (false === fputcsv($csvFile, $data, $delimiter, $enclosure)) {
             fclose($csvFile);
             throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
         }

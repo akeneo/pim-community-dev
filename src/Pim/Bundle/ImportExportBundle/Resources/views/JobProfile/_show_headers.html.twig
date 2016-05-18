@@ -2,7 +2,7 @@
 
 {% set left %}
     <ul class="inline">
-        <li>{{ 'Job'|trans }}: {{ jobInstance.job.name|trans }}</li>
+        <li>{{ 'Job'|trans }}: {{ job.name|trans }}</li>
         <li>{{ 'Connector'|trans }}: {{ jobInstance.connector|trans }}</li>
     </ul>
 {% endset %}
@@ -21,6 +21,8 @@
 {% endset %}
 
 {{ elements.page_header(title, buttons, null, left) }}
+
+{{ elements.form_navbar(view_element_aliases(viewElementsAliases)) }}
 
 {% if uploadForm is defined and uploadForm is not empty and uploadAllowed and uploadViolations|length == 0 %}
     {{ form_start(uploadForm, {

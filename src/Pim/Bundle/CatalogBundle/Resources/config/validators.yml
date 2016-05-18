@@ -280,7 +280,3 @@ services:
             - '@pim_catalog.validator.mapping.delegating_class_metadata_factory'
             - '@validator.validator_factory'
             - []
-
-    # deprecated will be removed in 1.6, please use pim_catalog.validator.product
-    pim_validator:
-        alias: pim_catalog.validator.product

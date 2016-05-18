@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\File;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  *
- * TODO: should be moved in Pim/Connector, not a generic concern
+ * @deprecated will be removed in 1.6, please use JobParameters uploadAllowed property + the Upload validation group
  */
 interface UploadedFileAwareInterface
 {

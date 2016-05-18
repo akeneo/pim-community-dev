@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
@@ -13,17 +14,6 @@ class FilteredFamilyReaderSpec extends ObjectBehavior
     function let(FamilyRepositoryInterface $familyRepository)
     {
         $this->beConstructedWith($familyRepository);
-        $this->setConfiguration(
-            [
-                'filters' => [
-                    [
-                        'field'    => 'id',
-                        'operator' => 'IN',
-                        'value'    => [12, 13, 14]
-                    ]
-                ]
-            ]
-        );
     }
 
     function it_reads_families(
@@ -31,8 +21,21 @@ class FilteredFamilyReaderSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         FamilyInterface $pantFamily,
-        FamilyInterface $sockFamily
+        FamilyInterface $sockFamily,
+        JobParameters $jobParameters
     ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn(
+            [
+                [
+                    'field'    => 'id',
+                    'operator' => 'IN',
+                    'value'    => [12, 13, 14]
+                ]
+            ]
+        );
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $families = [$pantFamily, $sockFamily];
         $familyRepository->findByIds([12, 13, 14])->willReturn($families);

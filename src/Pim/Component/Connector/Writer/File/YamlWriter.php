@@ -20,6 +20,16 @@ class YamlWriter extends AbstractFileWriter
     protected $header;
 
     /**
+     * @param FilePathResolverInterface $filePathResolver
+     * @param string                    $header
+     */
+    public function __construct(FilePathResolverInterface $filePathResolver, $header = null)
+    {
+        parent::__construct($filePathResolver);
+        $this->header = $header;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function write(array $items)
@@ -42,44 +52,6 @@ class YamlWriter extends AbstractFileWriter
         }
 
         $this->incrementSummaryInfo($data);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        $configuration = parent::getConfigurationFields();
-        $configuration = $configuration + [
-            'header' => [
-                'header'  => null,
-                'options' => [
-                    'label' => 'pim_connector.export.header.label'
-                ]
-            ]
-        ];
-
-        return $configuration;
-    }
-
-    /**
-     * @return string
-     */
-    public function getHeader()
-    {
-        return $this->header;
-    }
-
-    /**
-     * @param string $header
-     *
-     * @return YamlWriter
-     */
-    public function setHeader($header)
-    {
-        $this->header = $header;
-
-        return $this;
     }
 
     /**

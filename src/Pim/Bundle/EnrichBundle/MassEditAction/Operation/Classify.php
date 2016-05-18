@@ -16,11 +16,15 @@ class Classify extends AbstractMassEditOperation
     /** @var CategoryInterface[] */
     protected $categories;
 
+    /** @var string The background job code to launch */
+    protected $batchJobCode;
+
     /**
-     * Constructor.
+     * @param string $batchJobCode
      */
-    public function __construct()
+    public function __construct($batchJobCode)
     {
+        $this->batchJobCode = $batchJobCode;
         $this->categories = [];
     }
 
@@ -96,7 +100,7 @@ class Classify extends AbstractMassEditOperation
      */
     public function getBatchJobCode()
     {
-        return 'add_product_value';
+        return $this->batchJobCode;
     }
 
     /**

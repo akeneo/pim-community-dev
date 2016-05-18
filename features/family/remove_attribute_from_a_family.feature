@@ -39,8 +39,7 @@ Feature: Remove attribute from a family
     When I launched the completeness calculator
     And I am on the "bag-noname" product page
     And I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the completeness:
+    Then I should see the completeness:
       | channel    | locale                  | state    | message         | ratio |
       | e-commerce | English (United States) | warning  | 1 missing value | 50%   |
       | e-commerce | French (France)         | warning  | 1 missing value | 50%   |
@@ -52,8 +51,7 @@ Feature: Remove attribute from a family
     Then I should see flash message "Attribute successfully removed from the family"
     When I am on the "bag-noname" product page
     And I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the completeness:
+    Then I should see the completeness:
       | channel    | locale                  | state    | message            | ratio |
       | e-commerce | English (United States) |          | Not yet calculated |       |
       | e-commerce | French (France)         |          | Not yet calculated |       |
@@ -62,8 +60,7 @@ Feature: Remove attribute from a family
     When I launched the completeness calculator
     And I am on the "bag-noname" product page
     And I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the completeness:
+    Then I should see the completeness:
       | channel    | locale                  | state    | message  | ratio |
       | e-commerce | English (United States) | success  | Complete | 100%  |
       | e-commerce | French (France)         | success  | Complete | 100%  |

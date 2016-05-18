@@ -2,18 +2,20 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Buffer\BufferInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Prophecy\Argument;
 
 class XlsxSimpleWriterSpec extends ObjectBehavior
 {
-    function let(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer)
+    function let(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer, ColumnSorterInterface $columnSorter)
     {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer);
+        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $columnSorter);
 
         $filePathResolver
             ->resolve(Argument::any(), Argument::type('array'))
@@ -35,11 +37,17 @@ class XlsxSimpleWriterSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\Batch\Item\ItemWriterInterface');
     }
 
-    function it_prepares_items_to_write($flatRowBuffer, StepExecution $stepExecution)
-    {
+    function it_prepares_items_to_write(
+        $flatRowBuffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
         $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn(true);
+        $jobParameters->has('mainContext')->willReturn(false);
 
-        $this->setWithHeader(true);
         $groups = [
             [
                 'code'        => 'promotion',
@@ -73,30 +81,34 @@ class XlsxSimpleWriterSpec extends ObjectBehavior
         $this->write($groups);
     }
 
-    function it_writes_the_xlsx_file($flatRowBuffer, BufferInterface $buffer)
-    {
+    function it_writes_the_xlsx_file(
+        $flatRowBuffer,
+        $columnSorter,
+        BufferInterface $buffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn(true);
+        $jobParameters->has('mainContext')->willReturn(false);
+
         $flatRowBuffer->getHeaders()->willReturn(['code', 'type', 'label-en_US', 'label-de_DE']);
         $flatRowBuffer->getBuffer()->willReturn($buffer);
 
-        $this->flush();
-    }
-
-    function it_has_configuration()
-    {
-        $this->getConfigurationFields()->shouldReturn([
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help'
-                ]
-            ],
-            'withHeader' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.export.withHeader.label',
-                    'help'  => 'pim_connector.export.withHeader.help'
-                ]
-            ],
+        $columnSorter->sort([
+            'code',
+            'type',
+            'label-en_US',
+            'label-de_DE'
+        ])->willReturn([
+            'code',
+            'label-en_US',
+            'label-de_DE',
+            'type'
         ]);
+
+        $this->flush();
     }
 }

@@ -40,7 +40,7 @@ parameters:
 services:
     pim_enrich.controller.attribute_group:
         scope: request
-        class: %pim_enrich.controller.attribute_group.class%
+        class: '%pim_enrich.controller.attribute_group.class%'
         arguments:
             - '@request'
             - '@router'
@@ -58,7 +58,7 @@ services:
 
     pim_enrich.controller.category_tree.product:
         scope: request
-        class: %pim_enrich.controller.category_tree.class%
+        class: '%pim_enrich.controller.category_tree.class%'
         arguments:
             - '@event_dispatcher'
             - '@pim_user.context.user'
@@ -73,7 +73,7 @@ services:
 
     pim_enrich.controller.channel:
         scope: request
-        class: %pim_enrich.controller.channel.class%
+        class: '%pim_enrich.controller.channel.class%'
         arguments:
             - '@request'
             - '@router'
@@ -86,7 +86,7 @@ services:
 
     pim_enrich.controller.currency:
         scope: request
-        class: %pim_enrich.controller.currency.class%
+        class: '%pim_enrich.controller.currency.class%'
         arguments:
             - '@request'
             - '@router'
@@ -94,7 +94,7 @@ services:
 
     pim_enrich.controller.family:
         scope: request
-        class: %pim_enrich.controller.family.class%
+        class: '%pim_enrich.controller.family.class%'
         arguments:
             - '@request'
             - '@templating'
@@ -111,12 +111,12 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.family'
             - '@validator'
-            - %pim_catalog.entity.attribute.class%
-            - %pim_catalog.entity.family.class%
+            - '%pim_catalog.entity.attribute.class%'
+            - '%pim_catalog.entity.family.class%'
 
     pim_enrich.controller.locale:
         scope: request
-        class: %pim_enrich.controller.locale.class%
+        class: '%pim_enrich.controller.locale.class%'
         arguments:
             - '@request'
             - '@router'
@@ -124,7 +124,7 @@ services:
 
     pim_enrich.controller.attribute:
         scope: request
-        class: %pim_enrich.controller.attribute.class%
+        class: '%pim_enrich.controller.attribute.class%'
         arguments:
             - '@request'
             - '@router'
@@ -143,11 +143,11 @@ services:
             - '@pim_catalog.factory.attribute'
             - '@pim_catalog.factory.attribute_option'
             - '@pim_catalog.factory.attribute_option_value'
-            - %akeneo_measure.measures_config%
+            - '%akeneo_measure.measures_config%'
 
     pim_enrich.controller.attribute_option:
         scope: request
-        class: %pim_enrich.controller.attribute_option.class%
+        class: '%pim_enrich.controller.attribute_option.class%'
         arguments:
             - '@pim_internal_api_serializer'
             - '@doctrine.orm.entity_manager'
@@ -162,7 +162,7 @@ services:
 
     pim_enrich.controller.product:
         scope: request
-        class: %pim_enrich.controller.product.class%
+        class: '%pim_enrich.controller.product.class%'
         arguments:
             - '@request'
             - '@templating'
@@ -173,7 +173,6 @@ services:
             - '@translator'
             - '@event_dispatcher'
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.manager.category'
             - '@pim_catalog.repository.category'
             - '@pim_user.context.user'
             - '@pim_versioning.manager.version'
@@ -182,10 +181,10 @@ services:
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.factory.category'
-            - %pim_catalog.entity.category.class%
+            - '%pim_catalog.entity.category.class%'
 
     pim_enrich.controller.association:
-        class: %pim_enrich.controller.association.class%
+        class: '%pim_enrich.controller.association.class%'
         arguments:
             - '@pim_catalog.repository.association_type'
             - '@pim_catalog.repository.product'
@@ -194,7 +193,7 @@ services:
 
     pim_enrich.controller.mass_edit_action:
         scope: request
-        class: %pim_enrich.controller.mass_edit_action.class%
+        class: '%pim_enrich.controller.mass_edit_action.class%'
         arguments:
             - '@request'
             - '@templating'
@@ -212,12 +211,12 @@ services:
 
     pim_enrich.controller.group:
         scope: request
-        class: %pim_enrich.controller.group.class%
+        class: '%pim_enrich.controller.group.class%'
         arguments:
             - '@request'
             - '@templating'
             - '@router'
-            - '@pim_catalog.manager.group'
+            - '@pim_catalog.repository.group_type'
             - '@pim_enrich.form.handler.group'
             - '@pim_enrich.form.group'
             - '@pim_catalog.factory.group'
@@ -225,7 +224,7 @@ services:
 
     pim_enrich.controller.association_type:
         scope: request
-        class: %pim_enrich.controller.association_type.class%
+        class: '%pim_enrich.controller.association_type.class%'
         arguments:
             - '@request'
             - '@router'
@@ -237,7 +236,7 @@ services:
             - '@pim_catalog.repository.association_type'
 
     pim_enrich.controller.file:
-        class: %pim_enrich.controller.file.class%
+        class: '%pim_enrich.controller.file.class%'
         arguments:
             - '@liip_imagine.controller'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
@@ -248,23 +247,23 @@ services:
 
     pim_enrich.controller.variant_group:
         scope: request
-        class: %pim_enrich.controller.variant_group.class%
+        class: '%pim_enrich.controller.variant_group.class%'
         arguments:
             - '@request'
             - '@templating'
             - '@router'
-            - '@pim_catalog.manager.group'
+            - '@pim_catalog.repository.group_type'
             - '@pim_enrich.form.handler.variant_group'
             - '@pim_enrich.form.variant_group'
             - '@pim_catalog.factory.group'
-            - '@form.factory'
             - '@pim_catalog.remover.group'
+            - '@form.factory'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.resolver.variant_group_attributes'
 
     pim_enrich.controller.group_type:
         scope: request
-        class: %pim_enrich.controller.group_type.class%
+        class: '%pim_enrich.controller.group_type.class%'
         arguments:
             - '@request'
             - '@router'
@@ -274,7 +273,7 @@ services:
             - '@pim_catalog.remover.group_type'
 
     pim_enrich.controller.completeness:
-        class: %pim_enrich.controller.completeness.class%
+        class: '%pim_enrich.controller.completeness.class%'
         arguments:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.repository.product'
@@ -284,7 +283,7 @@ services:
 
     pim_enrich.controller.sequential_edit:
         scope: request
-        class: %pim_enrich.controller.sequential_edit.class%
+        class: '%pim_enrich.controller.sequential_edit.class%'
         arguments:
             - '@router'
             - '@pim_datagrid.extension.mass_action.dispatcher'
@@ -294,7 +293,7 @@ services:
 
     pim_enrich.controller.variant_group_attribute:
         scope: request
-        class: %pim_enrich.controller.variant_group_attribute.class%
+        class: '%pim_enrich.controller.variant_group_attribute.class%'
         arguments:
             - '@router'
             - '@form.factory'
@@ -306,7 +305,7 @@ services:
 
     pim_enrich.controller.job_tracker:
         scope: request
-        class: %pim_enrich.controller.job_tracker.class%
+        class: '%pim_enrich.controller.job_tracker.class%'
         arguments:
             - '@templating'
             - '@translator'
@@ -318,13 +317,13 @@ services:
 
     pim_enrich.controller.rest.association_type:
         scope: request
-        class: %pim_enrich.controller.rest.association_type.class%
+        class: '%pim_enrich.controller.rest.association_type.class%'
         arguments:
             - '@pim_catalog.repository.association_type'
             - '@pim_internal_api_serializer'
 
     pim_enrich.controller.rest.attribute:
-        class: %pim_enrich.controller.rest.attribute.class%
+        class: '%pim_enrich.controller.rest.attribute.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_internal_api_serializer'
@@ -333,25 +332,25 @@ services:
             - '@pim_enrich.repository.attribute.search'
 
     pim_enrich.controller.rest.attribute_group:
-        class: %pim_enrich.controller.rest.attribute_group.class%
+        class: '%pim_enrich.controller.rest.attribute_group.class%'
         arguments:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_serializer'
             - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.rest.currency:
-        class: %pim_enrich.controller.rest.currency.class%
+        class: '%pim_enrich.controller.rest.currency.class%'
         arguments:
             - '@pim_catalog.repository.currency'
 
     pim_enrich.controller.rest.channel:
-        class: %pim_enrich.controller.rest.channel.class%
+        class: '%pim_enrich.controller.rest.channel.class%'
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_serializer'
 
     pim_enrich.controller.rest.completeness:
-        class: %pim_enrich.controller.rest.completeness.class%
+        class: '%pim_enrich.controller.rest.completeness.class%'
         arguments:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.repository.product'
@@ -361,7 +360,7 @@ services:
             - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.rest.family:
-        class: %pim_enrich.controller.rest.family.class%
+        class: '%pim_enrich.controller.rest.family.class%'
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_internal_api_serializer'
@@ -369,45 +368,45 @@ services:
 
     pim_enrich.controller.rest.form_extension:
         scope: request
-        class: %pim_enrich.controller.rest.form_extension.class%
+        class: '%pim_enrich.controller.rest.form_extension.class%'
         arguments:
             - '@pim_enrich.provider.form_extension'
 
     pim_enrich.controller.rest.group:
-        class: %pim_enrich.controller.rest.group.class%
+        class: '%pim_enrich.controller.rest.group.class%'
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.repository.product'
             - '@pim_internal_api_serializer'
 
     pim_enrich.controller.rest.locale:
-        class: %pim_enrich.controller.rest.locale.class%
+        class: '%pim_enrich.controller.rest.locale.class%'
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.rest.measures:
-        class: %pim_enrich.controller.rest.measures.class%
+        class: '%pim_enrich.controller.rest.measures.class%'
         arguments:
-            - %akeneo_measure.measures_config%
+            - '%akeneo_measure.measures_config%'
 
     pim_enrich.controller.rest.media:
-        class: %pim_enrich.controller.rest.media.class%
+        class: '%pim_enrich.controller.rest.media.class%'
         arguments:
             - '@validator'
             - '@akeneo_file_storage.file_storage.path_generator'
-            - %tmp_storage_dir%
+            - '%tmp_storage_dir%'
 
     pim_enrich.controller.rest.product:
-        class: %pim_enrich.controller.rest.product.class%
+        class: '%pim_enrich.controller.rest.product.class%'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.saver.product'
             - '@pim_internal_api_serializer'
-            - '@pim_validator'
+            - '@pim_catalog.validator.product'
             - '@pim_user.context.user'
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.filter.product_edit_data'
@@ -417,14 +416,14 @@ services:
             - '@pim_catalog.comparator.filter.product'
 
     pim_enrich.controller.rest.product_category:
-        class: %pim_enrich.controller.rest.product_category.class%
+        class: '%pim_enrich.controller.rest.product_category.class%'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_category'
 
     pim_enrich.controller.rest.product_comment:
         scope: request
-        class: %pim_enrich.controller.rest.product_comment.class%
+        class: '%pim_enrich.controller.rest.product_comment.class%'
         arguments:
             - '@security.token_storage'
             - '@form.factory'
@@ -436,13 +435,13 @@ services:
             - '@validator'
 
     pim_enrich.controller.rest.variant_group:
-        class: %pim_enrich.controller.rest.variant_group.class%
+        class: '%pim_enrich.controller.rest.variant_group.class%'
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_internal_api_serializer'
 
     pim_enrich.controller.rest.versioning:
-        class: %pim_enrich.controller.rest.versioning.class%
+        class: '%pim_enrich.controller.rest.versioning.class%'
         arguments:
             - '@pim_versioning.repository.version'
             - '@pim_catalog.resolver.fqcn'

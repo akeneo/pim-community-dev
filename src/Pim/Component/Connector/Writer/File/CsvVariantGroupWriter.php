@@ -18,13 +18,15 @@ class CsvVariantGroupWriter extends CsvWriter
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
      * @param BulkFileExporter          $fileExporter
+     * @param ColumnSorterInterface     $columnSorter
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
-        BulkFileExporter $fileExporter
+        BulkFileExporter $fileExporter,
+        ColumnSorterInterface $columnSorter
     ) {
-        parent::__construct($filePathResolver, $flatRowBuffer);
+        parent::__construct($filePathResolver, $flatRowBuffer, $columnSorter);
 
         $this->fileExporter = $fileExporter;
     }
@@ -60,39 +62,5 @@ class CsvVariantGroupWriter extends CsvWriter
                 $error['medium']
             );
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfiguration(array $config)
-    {
-        parent::setConfiguration($config);
-
-        if (!isset($config['mainContext'])) {
-            return;
-        }
-
-        foreach ($config['mainContext'] as $key => $value) {
-            $this->filePathResolverOptions['parameters']['%' . $key . '%'] = $value;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return array_merge(
-            parent::getConfigurationFields(),
-            [
-                'filePath' => [
-                    'options' => [
-                        'label' => 'pim_connector.export.filePath.label',
-                        'help'  => 'pim_connector.export.filePath.help',
-                    ],
-                ],
-            ]
-        );
     }
 }

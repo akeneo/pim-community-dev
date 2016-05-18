@@ -167,6 +167,13 @@ pim_connector:
         channel:
             label: Channel
             help: The channel you want to export
+        status:
+            label: Status
+            help: The status of the products you want to export
+            choice:
+                enabled: Enabled
+                disabled: Disabled
+                all: All
         decimalSeparator:
             label: Decimal separator
             help: Determine the decimal separator

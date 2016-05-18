@@ -84,7 +84,9 @@ class ProductAssociationProcessor extends AbstractProcessor
             $this->skipItemWithMessage($item, sprintf('No product with identifier "%s" has been found', $identifier));
         }
 
-        if ($this->enabledComparison) {
+        $parameters = $this->stepExecution->getJobParameters();
+        $enabledComparison = $parameters->get('enabledComparison');
+        if ($enabledComparison) {
             $convertedItem = $this->filterIdenticalData($product, $convertedItem);
 
             if (empty($convertedItem)) {
@@ -109,42 +111,6 @@ class ProductAssociationProcessor extends AbstractProcessor
         }
 
         return $product;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'enabledComparison' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.import.enabledComparison.label',
-                    'help'  => 'pim_connector.import.enabledComparison.help'
-                ]
-            ],
-        ];
-    }
-
-    /**
-     * Set whether or not the comparison between original values and imported values should be activated
-     *
-     * @param bool $enabledComparison
-     */
-    public function setEnabledComparison($enabledComparison)
-    {
-        $this->enabledComparison = $enabledComparison;
-    }
-
-    /**
-     * Whether or not the comparison between original values and imported values is activated
-     *
-     * @return bool
-     */
-    public function isEnabledComparison()
-    {
-        return $this->enabledComparison;
     }
 
     /**

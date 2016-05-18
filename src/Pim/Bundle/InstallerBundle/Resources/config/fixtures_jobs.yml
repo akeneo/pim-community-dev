@@ -25,12 +25,6 @@ jobs:
         type:      fixtures
         configuration:
             filePath: categories.csv
-            uploadAllowed: true
-            delimiter: ;
-            enclosure: '"'
-            escape: '\'
-            circularRefsChecked: true
-            uploadAllowed: true
 
     fixtures_attribute_group_csv:
         order: 30
@@ -103,7 +97,13 @@ jobs:
         type:      fixtures
         configuration:
             filePath: variant_groups.csv
+            delimiter: ;
+            enclosure: '"'
+            escape: '\'
             decimalSeparator: .
+            dateFormat: Y-m-d
+            withHeader: true
+            copyValues: true
 
     fixtures_group_csv:
         order: 70
@@ -149,6 +149,7 @@ jobs:
         type:      fixtures
         configuration:
             filePath: products.csv
+            withHeader: true
             delimiter: ;
             enclosure: '"'
             escape: '\'
@@ -157,12 +158,9 @@ jobs:
             familyColumn: family
             groupsColumn: groups
             realTimeVersioning: true
-            mediaAttributes:
-                - 'pdf_description'
-                - 'picture'
             enabledComparison: true
             decimalSeparator: .
-            dateFormat: yyyy-MM-dd
+            dateFormat: Y-m-d
 
     fixtures_job_yml:
         order: 100

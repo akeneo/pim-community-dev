@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Writer\Doctrine;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -35,8 +36,12 @@ class VariantGroupWriterSpec extends ObjectBehavior
     function it_writes_some_variant_groups(
         GroupInterface $variantGroupOne,
         GroupInterface $variantGroupTwo,
-        $stepExecution
+        $stepExecution,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('copyValues')->willReturn(true);
+
         $variantGroupOne->getId()->willReturn(null);
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
 
@@ -58,8 +63,12 @@ class VariantGroupWriterSpec extends ObjectBehavior
         ProductInterface $productOne,
         ProductInterface $productTwo,
         $productTplApplier,
-        $stepExecution
+        $stepExecution,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('copyValues')->willReturn(true);
+
         $variantGroup->getId()->willReturn(42);
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
 
@@ -86,8 +95,12 @@ class VariantGroupWriterSpec extends ObjectBehavior
         ProductInterface $validProduct,
         ProductInterface $invalidProduct,
         $productTplApplier,
-        $stepExecution
+        $stepExecution,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('copyValues')->willReturn(true);
+
         $variantGroup->getId()->willReturn(42);
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
 
@@ -116,8 +129,12 @@ class VariantGroupWriterSpec extends ObjectBehavior
         ProductInterface $productOne,
         ProductInterface $productTwo,
         $productTplApplier,
-        $stepExecution
+        $stepExecution,
+        JobParameters $jobParameters
     ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('copyValues')->willReturn(true);
+
         $variantGroup->getId()->willReturn(42);
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
 

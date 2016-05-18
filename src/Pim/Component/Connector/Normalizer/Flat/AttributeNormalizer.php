@@ -15,6 +15,8 @@ use Pim\Component\Catalog\Normalizer\Structured\AttributeNormalizer as BaseNorma
  */
 class AttributeNormalizer extends BaseNormalizer
 {
+    const DATE_FORMAT = 'Y-m-d';
+
     /** @var string[] */
     protected $supportedFormats = ['csv'];
 
@@ -25,11 +27,11 @@ class AttributeNormalizer extends BaseNormalizer
     {
         $availableLocales = $attribute->getLocaleSpecificCodes();
 
-        if ($availableLocales) {
-            $availableLocales = implode(self::ITEM_SEPARATOR, $availableLocales);
+        if (empty($availableLocales)) {
+            return null;
         }
 
-        return $availableLocales ?: self::ALL_LOCALES;
+        return implode(self::ITEM_SEPARATOR, $availableLocales);
     }
 
     /**

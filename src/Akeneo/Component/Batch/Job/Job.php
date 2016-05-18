@@ -18,8 +18,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
- *
- * TODO: templates should be extracted, we mix concerns here
  */
 class Job implements JobInterface
 {
@@ -34,12 +32,6 @@ class Job implements JobInterface
 
     /** @var array */
     protected $steps;
-
-    /** @var string */
-    protected $showTemplate;
-
-    /** @var string */
-    protected $editTemplate;
 
     /**
      * @param string                   $name
@@ -147,85 +139,6 @@ class Job implements JobInterface
     public function getJobRepository()
     {
         return $this->jobRepository;
-    }
-
-    /**
-     * Get the steps configuration
-     *
-     * @return array
-     */
-    public function getConfiguration()
-    {
-        $result = array();
-        foreach ($this->steps as $step) {
-            foreach ($step->getConfiguration() as $key => $value) {
-                if (!isset($result[$key]) || $value) {
-                    $result[$key] = $value;
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Set the steps configuration
-     *
-     * @param array $config
-     */
-    public function setConfiguration(array $config)
-    {
-        foreach ($this->steps as $step) {
-            $step->setConfiguration($config);
-        }
-    }
-
-    /**
-     * Set the show template
-     *
-     * @param string $showTemplate
-     *
-     * @return Job
-     */
-    public function setShowTemplate($showTemplate)
-    {
-        $this->showTemplate = $showTemplate;
-
-        return $this;
-    }
-
-    /**
-     * Return the show template
-     *
-     * @return string
-     */
-    public function getShowTemplate()
-    {
-        return $this->showTemplate;
-    }
-
-    /**
-     * Set the edit template
-     *
-     * @param string $editTemplate
-     *
-     * @return Job
-     */
-    public function setEditTemplate($editTemplate)
-    {
-        $this->editTemplate = $editTemplate;
-
-        return $this;
-    }
-
-    /**
-     * Return the edit template
-     *
-     * @return string
-     */
-    public function getEditTemplate()
-    {
-        return $this->editTemplate;
     }
 
     /**

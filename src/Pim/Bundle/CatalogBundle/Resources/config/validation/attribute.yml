@@ -64,6 +64,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 max: 65535
                 groups: [pim_catalog_textarea]
         sortOrder:
+            - NotNull: ~
             - Type: numeric
             - GreaterThanOrEqual:
                 value: 0

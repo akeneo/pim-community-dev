@@ -41,7 +41,7 @@ class Edit extends ProductEditForm
                 'Status switcher'         => ['css' => '.status-switcher'],
                 'Image preview'           => ['css' => '#lbImage'],
                 'Completeness'            => [
-                    'css'        => '.completeness-block',
+                    'css'        => '.completeness-panel',
                     'decorators' => [
                         'Pim\Behat\Decorator\Completeness\PanelDecorator'
                     ]
@@ -423,18 +423,6 @@ class Edit extends ProductEditForm
     }
 
     /**
-     * Get the completeness content
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return NodeElement
-     */
-    public function findCompletenessContent()
-    {
-        return $this->getElement('Completeness', 'Completeness content not found !!!');
-    }
-
-    /**
      * @param string $message
      *
      * @throws \LogicException
@@ -609,152 +597,6 @@ class Edit extends ProductEditForm
     }
 
     /**
-     * Check completeness state
-     *
-     * @param string $channelCode
-     * @param string $localeCode
-     * @param string $state
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function checkCompletenessState($channelCode, $localeCode, $state)
-    {
-        $completenessCell = $this
-            ->findCompletenessCell($channelCode, $localeCode)
-            ->find('css', 'div.progress');
-
-        if (!$completenessCell) {
-            throw new \InvalidArgumentException(
-                sprintf('No progress found for %s:%s', $channelCode, $localeCode)
-            );
-        }
-
-        if ("" === $state) {
-            if ($completenessCell->find('css', 'div.progress')) {
-                throw new \InvalidArgumentException(
-                    sprintf('No progress bar should be visible for %s:%s', $channelCode, $localeCode)
-                );
-            }
-        } else {
-            if (!$completenessCell->find('css', sprintf('div.progress-%s', $state))) {
-                throw new \InvalidArgumentException(
-                    sprintf('Progress bar is not %s for %s:%s', $state, $channelCode, $localeCode)
-                );
-            }
-        }
-    }
-
-    /**
-     * Check completeness message
-     *
-     * @param string $channelCode
-     * @param string $localeCode
-     * @param string $info
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function checkCompletenessMissingValues($channelCode, $localeCode, $info)
-    {
-        $completenessCell = $this
-            ->findCompletenessCell($channelCode, $localeCode)
-            ->find('css', '.missing');
-
-        if ($info === '') {
-            if ($completenessCell->find('css', 'span')) {
-                throw new \InvalidArgumentException(
-                    sprintf('Expected to find no missing values for %s:%s', $channelCode, $localeCode)
-                );
-            }
-        } else {
-            $infoPassed = explode(' ', $info);
-            foreach ($infoPassed as $value) {
-                $this->spin(function () use ($completenessCell, $value) {
-                    return $completenessCell->find('css', sprintf('span[data-attribute="%s"]', $value));
-                }, sprintf('Missing value %s not found for %s:%s', $value, $channelCode, $localeCode));
-            }
-        }
-    }
-
-    /**
-     * @param string $channelCode
-     * @param string $localeCode
-     * @param string $missingValue
-     * @param string $expectedLabel
-     *
-     * @throws ExpectationException
-     */
-    public function checkCompletenessMissingValuesLabels($channelCode, $localeCode, $missingValue, $expectedLabel)
-    {
-        $completenessCell = $this->spin(function () use ($channelCode, $localeCode) {
-            return $this->findCompletenessCell($channelCode, $localeCode)->find('css', '.missing');
-        }, 'Unable to find completenesses cell');
-
-        $missingValueElement = $this->spin(function () use ($completenessCell, $missingValue) {
-            return $completenessCell->find('css', sprintf('span[data-attribute="%s"]', $missingValue));
-        }, 'Unable to find completenesses missing value element');
-
-        assertNotNull($missingValueElement);
-        $uiLabel = $missingValueElement->getText();
-        assertEquals($uiLabel, $expectedLabel);
-    }
-
-    /**
-     * Check completeness ratio
-     *
-     * @param string $channelCode
-     * @param string $localeCode
-     * @param string $ratio
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function checkCompletenessRatio($channelCode, $localeCode, $ratio)
-    {
-        $completenessCell = $this
-            ->findCompletenessCell($channelCode, $localeCode);
-
-        if ("" === $ratio) {
-            if (is_object($completenessCell->find('css', 'div.bar'))) {
-                throw new \InvalidArgumentException(
-                    sprintf('Ratio should not be found for %s:%s', $channelCode, $localeCode)
-                );
-            }
-        } elseif ($ratio !== '') {
-            $actualRatio = $completenessCell
-                ->find('css', 'div.bar')
-                ->getAttribute('data-ratio');
-
-            if ($actualRatio . '%' !== $ratio) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Expected to find ratio %s for %s:%s, found %s%%',
-                        $ratio,
-                        $channelCode,
-                        $localeCode,
-                        $actualRatio
-                    )
-                );
-            }
-        }
-    }
-
-    /**
-     * Find legend div
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return NodeElement
-     */
-    public function findCompletenessLegend()
-    {
-        $legend = $this->getElement('Completeness')->find('css', 'div#legend');
-        if (!$legend) {
-            throw new \InvalidArgumentException('Legend content not found !!!');
-        }
-
-        return $legend;
-    }
-
-    /**
      * @param string $category
      *
      * @return Edit
@@ -851,39 +693,6 @@ class Edit extends ProductEditForm
         $this->spin(function () {
             return $this->getElement('Progress bar');
         });
-    }
-
-    /**
-     * Find a completeness cell from channel and locale codes
-     *
-     * @param string $channelCode (channel code)
-     * @param string $localeCode  (locale code)
-     *
-     * @throws \Exception
-     *
-     * @return NodeElement
-     */
-    public function findCompletenessCell($channelCode, $localeCode)
-    {
-        $completenessTable = $this->findCompletenessContent();
-
-        $locale = $completenessTable
-            ->find('css', sprintf('span.locale[data-locale="%s"]', $localeCode));
-
-        if (!$locale) {
-            throw new \Exception(sprintf('Could not find completeness for locale "%s".', $localeCode));
-        }
-
-        $cell = $locale
-            ->getParent()
-            ->getParent()
-            ->find('css', sprintf('span.channel[data-channel="%s"]', $channelCode));
-
-        if (!$cell) {
-            throw new \Exception(sprintf('Could not find completeness for channel "%s".', $channelCode));
-        }
-
-        return $cell->getParent();
     }
 
     /**

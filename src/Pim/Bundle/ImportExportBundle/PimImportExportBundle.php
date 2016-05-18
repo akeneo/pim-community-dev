@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle;
 
+use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
+use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterJobParametersFormsOptionsPass;
+use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterJobTemplatePass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -13,4 +17,13 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimImportExportBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container
+            ->addCompilerPass(new RegisterJobTemplatePass())
+            ->addCompilerPass(new RegisterJobParametersFormsOptionsPass(new ReferenceFactory()));
+    }
 }

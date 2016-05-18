@@ -2,12 +2,14 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Archive files written by job execution to provide them through a download button
@@ -18,12 +20,16 @@ use Pim\Component\Connector\Writer\File\AbstractFileWriter;
  */
 class FileWriterArchiver extends AbstractFilesystemArchiver
 {
+    /** @var ContainerInterface */
+    private $container;
+
     /**
      * @param Filesystem $filesystem
      */
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem, ContainerInterface $container)
     {
         $this->filesystem = $filesystem;
+        $this->container = $container;
     }
 
     /**
@@ -33,7 +39,8 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      */
     public function archive(JobExecution $jobExecution)
     {
-        foreach ($jobExecution->getJobInstance()->getJob()->getSteps() as $step) {
+        $job = $this->getConnectorRegistry()->getJob($jobExecution->getJobInstance());
+        foreach ($job->getSteps() as $step) {
             if (!$step instanceof ItemStep) {
                 continue;
             }
@@ -79,12 +86,24 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      */
     public function supports(JobExecution $jobExecution)
     {
-        foreach ($jobExecution->getJobInstance()->getJob()->getSteps() as $step) {
+        $job = $this->getConnectorRegistry()->getJob($jobExecution->getJobInstance());
+        foreach ($job->getSteps() as $step) {
             if ($step instanceof ItemStep && $this->isUsableWriter($step->getWriter())) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Should be changed with TIP-418, here we work around a circular reference due to the way we instanciate the whole
+     * Job classes in the DIC
+     *
+     * @return ConnectorRegistry
+     */
+    final protected function getConnectorRegistry()
+    {
+        return $this->container->get('akeneo_batch.connectors');
     }
 }

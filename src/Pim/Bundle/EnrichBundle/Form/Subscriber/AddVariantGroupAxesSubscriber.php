@@ -92,7 +92,7 @@ class AddVariantGroupAxesSubscriber implements EventSubscriberInterface
             'read_only' => true,
             // only define a qb with the axes we want to avoid useless lazy loading on attribute translations
             'query_builder' => function (AttributeRepositoryInterface $repository) use ($axesIds) {
-                $qb = $repository->findAllAxisQB();
+                $qb = $repository->findAllAxesQB();
                 $qb->andWhere('a.id IN (:ids)');
                 $qb->setParameter('ids', $axesIds);
 
@@ -110,7 +110,7 @@ class AddVariantGroupAxesSubscriber implements EventSubscriberInterface
     {
         $options = [
             'query_builder' => function (AttributeRepositoryInterface $repository) {
-                return $repository->findAllAxisQB();
+                return $repository->findAllAxesQB();
             },
         ];
 

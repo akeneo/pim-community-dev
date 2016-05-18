@@ -85,10 +85,12 @@ class ProductExportController
         }
 
         $filters       = $this->gridFilterAdapter->adapt($this->request);
-        $configuration = [
+        $rawConfiguration = $jobInstance->getRawConfiguration();
+        $dynamicConfiguration = [
             'filters'     => $filters,
             'mainContext' => $this->getContextParameters()
         ];
+        $configuration = array_merge($rawConfiguration, $dynamicConfiguration);
 
         $this->jobLauncher->launch($jobInstance, $this->getUser(), $configuration);
 

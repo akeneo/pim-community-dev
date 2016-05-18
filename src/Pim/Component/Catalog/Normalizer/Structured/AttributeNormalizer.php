@@ -20,6 +20,7 @@ class AttributeNormalizer implements NormalizerInterface
     const GLOBAL_SCOPE        = 'Global';
     const CHANNEL_SCOPE       = 'Channel';
     const ALL_LOCALES         = 'All';
+    const DATE_FORMAT         = \DateTime::ISO8601;
 
     /** @var array */
     protected $supportedFormats = ['json', 'xml'];
@@ -60,7 +61,7 @@ class AttributeNormalizer implements NormalizerInterface
                 'default_metric_unit'     => $object->getDefaultMetricUnit(),
                 'reference_data_name'     => $object->getReferenceDataName(),
                 'available_locales'       => $this->normalizeAvailableLocales($object),
-                'max_characters'          => (string) $object->getMaxCharacters(),
+                'max_characters'          => null === $object->getMaxCharacters() ? '' : (int) $object->getMaxCharacters(),
                 'validation_rule'         => (string) $object->getValidationRule(),
                 'validation_regexp'       => (string) $object->getValidationRegexp(),
                 'wysiwyg_enabled'         => (string) $object->isWysiwygEnabled(),
@@ -71,7 +72,8 @@ class AttributeNormalizer implements NormalizerInterface
                 'date_min'                => $this->normalizeDate($object->getDateMin()),
                 'date_max'                => $this->normalizeDate($object->getDateMax()),
                 'max_file_size'           => (string) $object->getMaxFileSize(),
-                'minimum_input_length'    => (string) $object->getMinimumInputLength(),
+                'minimum_input_length'    => null === $object->getMinimumInputLength()  ? '' : (int) $object->getMinimumInputLength(),
+                'sort_order'              => (int) $object->getSortOrder()
             ]
         );
         if (isset($context['versioning'])) {
@@ -107,25 +109,26 @@ class AttributeNormalizer implements NormalizerInterface
     protected function getVersionedData(AttributeInterface $attribute)
     {
         return [
-            'available_locales'   => $this->normalizeAvailableLocales($attribute),
-            'localizable'         => $attribute->isLocalizable(),
-            'scope'               => $attribute->isScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
-            'options'             => $this->normalizeOptions($attribute),
-            'sort_order'          => (int) $attribute->getSortOrder(),
-            'required'            => (int) $attribute->isRequired(),
-            'max_characters'      => (string) $attribute->getMaxCharacters(),
-            'validation_rule'     => (string) $attribute->getValidationRule(),
-            'validation_regexp'   => (string) $attribute->getValidationRegexp(),
-            'wysiwyg_enabled'     => (string) $attribute->isWysiwygEnabled(),
-            'number_min'          => (string) $attribute->getNumberMin(),
-            'number_max'          => (string) $attribute->getNumberMax(),
-            'decimals_allowed'    => (string) $attribute->isDecimalsAllowed(),
-            'negative_allowed'    => (string) $attribute->isNegativeAllowed(),
-            'date_min'            => $this->normalizeDate($attribute->getDateMin()),
-            'date_max'            => $this->normalizeDate($attribute->getDateMax()),
-            'metric_family'       => (string) $attribute->getMetricFamily(),
-            'default_metric_unit' => (string) $attribute->getDefaultMetricUnit(),
-            'max_file_size'       => (string) $attribute->getMaxFileSize(),
+            'available_locales'    => $this->normalizeAvailableLocales($attribute),
+            'localizable'          => $attribute->isLocalizable(),
+            'scope'                => $attribute->isScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
+            'options'              => $this->normalizeOptions($attribute),
+            'sort_order'           => (int) $attribute->getSortOrder(),
+            'required'             => (int) $attribute->isRequired(),
+            'max_characters'       => null === $attribute->getMaxCharacters() ? '' : (int) $attribute->getMaxCharacters(),
+            'validation_rule'      => (string) $attribute->getValidationRule(),
+            'validation_regexp'    => (string) $attribute->getValidationRegexp(),
+            'wysiwyg_enabled'      => (string) $attribute->isWysiwygEnabled(),
+            'number_min'           => (string) $attribute->getNumberMin(),
+            'number_max'           => (string) $attribute->getNumberMax(),
+            'decimals_allowed'     => (string) $attribute->isDecimalsAllowed(),
+            'negative_allowed'     => (string) $attribute->isNegativeAllowed(),
+            'date_min'             => $this->normalizeDate($attribute->getDateMin()),
+            'date_max'             => $this->normalizeDate($attribute->getDateMax()),
+            'metric_family'        => (string) $attribute->getMetricFamily(),
+            'default_metric_unit'  => (string) $attribute->getDefaultMetricUnit(),
+            'max_file_size'        => (string) $attribute->getMaxFileSize(),
+            'minimum_input_length' => null === $attribute->getMinimumInputLength() ? '' : (int) $attribute->getMinimumInputLength(),
         ];
     }
 
@@ -174,7 +177,7 @@ class AttributeNormalizer implements NormalizerInterface
     protected function normalizeDate($date = null)
     {
         if (!is_null($date) && $date instanceof \DateTime) {
-            return $date->format(\DateTime::ISO8601);
+            return $date->format(static::DATE_FORMAT);
         }
 
         return '';

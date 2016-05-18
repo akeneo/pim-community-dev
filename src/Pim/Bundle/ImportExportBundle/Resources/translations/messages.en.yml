@@ -34,6 +34,12 @@ pim_import_export:
             success: Import <strong>%label%</strong> finished
     list: Select a job
 
+    job_profile:
+        tab:
+            property.title:    General properties
+            history.title:     History
+            job_content.title: Content
+
 # Page titles:
 pim_title.export_profile.index:   Export profiles management
 pim_title.export_profile.edit:    Export profiles %job.label% | Edit
@@ -140,6 +146,7 @@ History: History
 pane.accordion:
     properties: Properties
     global_settings: Global settings
+    filters: Filters
 
 # Popin titles
 popin.create:

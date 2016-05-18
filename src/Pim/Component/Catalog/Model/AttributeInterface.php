@@ -597,15 +597,6 @@ interface AttributeInterface extends
     public function getValidationRegexp();
 
     /**
-     * Set available locales
-     *
-     * @param ArrayCollection $availableLocales
-     *
-     * @return AttributeInterface
-     */
-    public function setAvailableLocales(ArrayCollection $availableLocales);
-
-    /**
      * Set decimalsAllowed
      *
      * @param bool $decimalsAllowed

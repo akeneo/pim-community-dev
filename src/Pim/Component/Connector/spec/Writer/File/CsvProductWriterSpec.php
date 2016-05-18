@@ -2,9 +2,11 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
+use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\FlatItemBufferInterface;
@@ -16,9 +18,10 @@ class CsvProductWriterSpec extends ObjectBehavior
     function let(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
-        BulkFileExporter $mediaCopier
+        BulkFileExporter $mediaCopier,
+        ColumnSorterInterface $columnSorter
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier);
+        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier, $columnSorter);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.csv');
@@ -29,9 +32,17 @@ class CsvProductWriterSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Connector\Writer\File\CsvProductWriter');
     }
 
-    function it_prepares_the_export($flatRowBuffer, $mediaCopier)
-    {
-        $this->setWithHeader(true);
+    function it_prepares_the_export(
+        $flatRowBuffer,
+        $mediaCopier,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn('my/file/path');
+        $jobParameters->has('mainContext')->willReturn(false);
 
         $flatRowBuffer->write([
             [

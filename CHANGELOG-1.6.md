@@ -7,6 +7,7 @@
 - PIM-5593: The context is now kept in the associations tab of the product edit form
 - PIM-5099: The catalog structure can now be exported in XLSX format (families, attributes, attribute options, association types and categories)
 - PIM-5097: The catalog structure can now be imported in XLSX format (families, attributes, attribute options, association types and categories)
+- PIM-5657: It is now possible to add custom tabs within the job profile and edit pages
 
 ## Scalability improvements
 
@@ -27,9 +28,20 @@
 - PIM-5742: Schedule completeness for ORM is now performed directly through SQL
 - Integrates the AkeneoMeasureBundle in our main repository
 - TIP-245: Add datetime filters in the Product Query Builder, allowing to select products on "created at" and "updated at" fields.
+- PIM-5657: Introduce a `JobTemplateProvider` that holds the job template codes to use for creating, showing, editing job profiles. The provider uses configuration files in order to retrieve overridden templates for specific job names
 
 ## BC breaks
 
+- Remove properties editTemplate, showTemplate from `src\Akeneo\Component\Batch\Job\Job`.
+- Remove methods setShowTemplate, setEditTemplate from `src\Akeneo\Component\Batch\Job\Job`.
+- Change constructor of `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`. Add `Akeneo\Bundle\BatchBundle\Connector\JobTemplateProviderInterface`
+- Change constructor of `Pim/Component/Connector/Writer/File/CsvWriter` . Add parameter `Pim/Component/Connector/Writer/File/ColumnSorterInterface`
+- Change constructor of `Pim/Component/Connector/Writer/File/CsvProductWriter` . Add parameter `Pim/Component/Connector/Writer/File/ColumnSorterInterface`
+- Change constructor of `Pim/Component/Connector/Writer/File/CsvVariantGroupWriter` . Add parameter `Pim/Component/Connector/Writer/File/ColumnSorterInterface`
+- Change constructor of `Pim/Component/Connector/Writer/File/XlsxSimpleWriter` . Add parameter `Pim/Component/Connector/Writer/File/ColumnSorterInterface`
+- Change constructor of `Pim/Component/Connector/Writer/File/XlsxProductWriter` . Add parameter `Pim/Component/Connector/Writer/File/ColumnSorterInterface`
+- Change constructor of `Pim/Component/Connector/Writer/File/XlsxVariantGroupWriter` . Add parameter `Pim/Component/Connector/Writer/File/ColumnSorterInterface` 
+- Remove method `setAvailableLocales` in `Pim/Component/Catalog/Model/AttributeInterface` and `Pim/Component/Catalog/Model/AbstractAttribute`
 - `Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/Filter/DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
 - `Pim/Bundle/CatalogBundle/Doctrine/ORM/Filter/DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
 - Change constructor of `Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/Filter/DateFilter`. Remove the third parameter `supportedFields`
@@ -199,6 +211,50 @@
 - Remove `Pim\Bundle\InstallerBundle\DataFixtures\*`
 - Remove `Pim\Bundle\InstallerBundle\FixtureLoader\*`
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter`, add `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`
+- Remove `Pim\Bundle\CatalogBundle\Manager\CategoryManager`
+- Remove `Pim\Bundle\CatalogBundle\Manager\GroupManager`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\GroupController`
+    replace `Pim\Bundle\CatalogBundle\Manager\GroupManager` by `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\VariantGroupController`
+    replace `Pim\Bundle\CatalogBundle\Manager\GroupManager` by `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface`
+    add `Pim\Bundle\UserBundle\Context\UserContext`
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType`
+    replace `Pim\Bundle\CatalogBundle\Manager\CategoryManager` by `Pim\Component\Catalog\Repository\CategoryRepositoryInterface`
+    remove the parameter `$categoryClass`
+    remove method `getTrees()`
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType`
+    replace `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`
+    remove `Pim\Bundle\UserBundle\Context\UserContext`
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\ChannelType`
+    replace `Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface` by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\ProductEditType`
+    replace `Pim\Component\Catalog\Repository\FamilyRepositoryInterface` by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`
+- Change constructor of `Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber`
+    replace `Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface` by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` remove `Pim\Bundle\CatalogBundle\Manager\GroupManager`
+- Remove interface `Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface` (replace by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`)
+- Remove class `Pim\Bundle\CatalogBundle\Manager\CategoryManager`
+- Remove class `Pim\Bundle\CatalogBundle\Manager\GroupManager`
+- Remove method `findAllAxis` from `Pim\Component\Catalog\RepositoryAttributeGroupRepositoryInterface`
+- Remove method `getChoices` from `Pim\Component\Catalog\GroupRepositoryInterface`
+- Remove method `getAvailableAttributesAsLabelChoice` from `Pim\Component\Catalog\AttributeRepositoryInterface`
+- Rename method `findAllAxis`in `findAvailableAxes` from `Pim\Component\Catalog\AttributeRepositoryInterface`
+- Rename method `findAllAxisQB` in `findAllAxesQB` from `Pim\Component\Catalog\AttributeRepositoryInterface`
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes`, add batch job code (string)
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements`, add batch job code (string)
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`, add `Symfony\Component\Security\Core\User\UserProviderInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Context option `filter_type` of `Pim\Component\Connector\Normalizer\Flat\ProductNormalizer` changed to `filter_types` and now accepts an array of filter names instead of just one filter name
 - Context option `filter_type` of `Pim\Component\Catalog\Normalizer\Structured\ProductNormalizer` changed to `filter_types` and  now accepts an array of filter names instead of just one filter name
+- Remove methods `getConfigurationFields()`, `getConfiguration()` and `setConfiguration()` from `Akeneo\Component\Batch\Item\AbstractConfigurableStepElement`
+- Remove methods `getConfiguration()` and `setConfiguration()` from `Akeneo\Component\Batch\Job\Job`
+- Add argument `Akeneo\Component\Batch\Job\JobParameters` in method `createJobExecution()` of `Akeneo\Component\Batch\Job\JobRepositoryInterface`
+- Remove methods `getConfiguration()`, `setConfiguration()` and `getConfigurableStepElements()` from `Akeneo\Component\Batch\Step\StepInterface`
+- Remove methods `getConfiguration()`, `setConfiguration()` and `getConfigurableStepElements()` from `Akeneo\Component\Batch\Step\AbstractStep`
+- Remove methods `getConfiguration()`, `setConfiguration()` from `Akeneo\Component\Batch\Step\ItemStep`
+- Injects `Symfony\Component\DependencyInjection\ContainerInterface` in constructor of `Akeneo\Component\Batch\Updater\JobInstanceUpdater`, `Pim\Bundle\BaseConnectorBundle\Archiver\ArchivableFileWriterArchiver`, `Pim\Bundle\BaseConnectorBundle\Archiver\FileReaderArchiver`, `Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver`, `Pim\Component\Connector\Processor\Denormalization\JobInstanceProcessor` (avoid a cricular reference due to ConnectorRegistry, should be fixed with TIP-418 by re-working the way we build Jobs)
+- Remove argument array $configuration from `Pim\Component\Connector\Step\TaskletInterface::execute()`, we can access to the JobParameters from the StepExecution $stepExecution

@@ -24,11 +24,6 @@ class SimpleProcessorSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Connector\Processor\Normalization\SimpleProcessor');
     }
 
-    function it_has_not_configuration()
-    {
-        $this->getConfigurationFields()->shouldReturn([]);
-    }
-
     function it_processes_items(NormalizerInterface $normalizer, GroupInterface $group)
     {
         $normalizer

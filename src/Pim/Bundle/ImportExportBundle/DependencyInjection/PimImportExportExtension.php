@@ -28,6 +28,7 @@ class PimImportExportExtension extends Extension
         $loader->load('grid.yml');
         $loader->load('forms.yml');
         $loader->load('form_types.yml');
+        $loader->load('job_parameters.yml');
         $loader->load('controllers.yml');
         $loader->load('normalizers.yml');
         $loader->load('repositories.yml');
@@ -35,5 +36,8 @@ class PimImportExportExtension extends Extension
         $loader->load('datagrid_listeners.yml');
         $loader->load('factory.yml');
         $loader->load('twig.yml');
+        $loader->load('services.yml');
+        $loader->load('view_elements.yml');
+        $loader->load('view_elements/job_profile.yml');
     }
 }

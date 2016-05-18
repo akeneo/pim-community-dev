@@ -45,21 +45,6 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
     /**
      * {@inheritdoc}
      */
-    public function getAttributeGroupChoices()
-    {
-        $groups = $this->findAllWithTranslations();
-        $choices = [];
-        foreach ($groups as $group) {
-            $choices[$group->getCode()] = $group->getLabel();
-        }
-        asort($choices);
-
-        return $choices;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findDefaultAttributeGroup()
     {
         return $this->findOneBy(['code' => AttributeGroup::DEFAULT_GROUP_CODE]);

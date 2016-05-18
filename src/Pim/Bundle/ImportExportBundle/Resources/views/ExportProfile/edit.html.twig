@@ -4,6 +4,7 @@
 
 {% set entityName = 'export profile' %}
 {% set title = (entityName ~'.edit')|trans ~ ' - ' ~ form.vars.value.label %}
+{% set viewElementsAliases = form.vars.id ~ '.export.form_tab' %}
 
 {% set indexRoute = path('pim_importexport_export_profile_index') %}
 {% if form.vars.value.id %}

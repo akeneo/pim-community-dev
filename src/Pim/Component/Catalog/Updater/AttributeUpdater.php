@@ -95,15 +95,17 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 $this->setGroup($attribute, $data);
                 break;
             case 'available_locales':
-                $this->setAvailableLocales($attribute, $data);
+                $this->setAvailableLocales($attribute, $field, $data);
                 break;
             case 'date_min':
                 $this->validateDateFormat($data);
-                $attribute->setDateMin(new \DateTime($data));
+                $date = $this->getDate($data);
+                $attribute->setDateMin($date);
                 break;
             case 'date_max':
                 $this->validateDateFormat($data);
-                $attribute->setDateMax(new \DateTime($data));
+                $date = $this->getDate($data);
+                $attribute->setDateMax($date);
                 break;
             default:
                 $this->accessor->setValue($attribute, $field, $data);
@@ -158,17 +160,20 @@ class AttributeUpdater implements ObjectUpdaterInterface
 
     /**
      * @param AttributeInterface $attribute
-     * @param array              $data
+     * @param string             $field
+     * @param array              $availableLocaleCodes
      */
-    protected function setAvailableLocales(AttributeInterface $attribute, array $data)
+    protected function setAvailableLocales(AttributeInterface $attribute, $field, array $availableLocaleCodes)
     {
-        $localeSpecificCodes = $attribute->getLocaleSpecificCodes();
-        foreach ($data as $localeCode) {
-            if (!in_array($localeCode, $localeSpecificCodes)) {
-                $locale = $this->localeRepository->findOneByIdentifier($localeCode);
-                $attribute->addAvailableLocale($locale);
+        $locales = [];
+        foreach ($availableLocaleCodes as $localeCode) {
+            $locale = $this->localeRepository->findOneByIdentifier($localeCode);
+            if (null !== $locale) {
+                $locales[] = $locale;
             }
         }
+
+        $this->accessor->setValue($attribute, $field, $locales);
     }
 
     /**
@@ -194,6 +199,10 @@ class AttributeUpdater implements ObjectUpdaterInterface
      */
     protected function validateDateFormat($data)
     {
+        if (null === $data) {
+            return;
+        }
+
         if (!preg_match('/(\d{4})-(\d{2})-(\d{2})/', $data, $dateValues)) {
             throw new \InvalidArgumentException(
                 sprintf('Attribute expects a string with the format "yyyy-mm-dd" as data, "%s" given', $data)
@@ -205,5 +214,19 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 sprintf('Invalid date, "%s" given', $data)
             );
         }
+    }
+
+    /**
+     * @param string $date
+     *
+     * @return \DateTime|null
+     */
+    protected function getDate($date)
+    {
+        if (null === $date) {
+            return null;
+        }
+
+        return new \DateTime($date);
     }
 }
