@@ -47,7 +47,8 @@ Feature: Add attributes to a variant group
     Then the english Name of "boot" should be "foo"
     When I save the variant group
     And I should see the flash message "Variant group successfully updated"
-    Then the english Name of "boot" should be ""
+    When I am on the "boot" product page
+    Then the field Name should contain ""
 
   @javascript
   Scenario: Update products when values are changed on the variant group page
@@ -61,7 +62,8 @@ Feature: Add attributes to a variant group
      | Name | bar |
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
-    Then the english Name of "boot" should be "bar"
+    When I am on the "boot" product page
+    Then the field Name should contain "bar"
 
   @javascript
   Scenario: Remove an attribute which is linked to a variant group

@@ -24,7 +24,7 @@ Feature: Remove an attribute from a variant group
     When I am on the "caterpillar_boots" variant group page
     And I remove the "Comment" attribute
     And I confirm the deletion
-    Then I should see flash message "Attribute successfully removed from the variant group"
+    Then I should see the flash message "Attribute successfully removed from the variant group"
     And I should see available attribute Comment in group "Other"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3697

@@ -25,12 +25,14 @@ Feature: Edit sequentially some products
     When I fill in the following information:
       | Name | Fur boots |
     And I press the "Save and next" button
-    Then I should be on the product "sneaker" edit page
+    Then I should not see the text "There are unsaved changes."
+    And I should be on the product "sneaker" edit page
     When I fill in the following information:
       | Name | Ultra sneaker |
     And I press the "Save and next" button
-    Then I should be on the product "white_sandal" edit page
-    Then the product "boot" should have the following values:
+    Then I should not see the text "There are unsaved changes."
+    And I should be on the product "white_sandal" edit page
+    And the product "boot" should have the following values:
       | name-en_US | Fur boots |
     And the product "sneaker" should have the following values:
       | name-en_US | Ultra sneaker |

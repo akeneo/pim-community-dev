@@ -14,7 +14,7 @@ Feature: Delete import
   Scenario: Successfully delete a CSV import job
     Given I delete the "csv_footwear_product_import" job
     When I confirm the deletion
-    Then I should see flash message "Import profile successfully removed"
+    Then I should see the flash message "Import profile successfully removed"
     And the grid should contain 16 elements
     And I should not see import profile "csv_footwear_product_import"
 

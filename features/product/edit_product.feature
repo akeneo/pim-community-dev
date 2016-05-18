@@ -33,8 +33,8 @@ Feature: Edit a product
     And I fill in the following information:
       | Name | My Sandal |
     When I press the "Save" button
-    Then I should be on the product "sandal" edit page
-    Then the product Name should be "My Sandal"
+    Then I should not see the text "There are unsaved changes."
+    And the product Name should be "My Sandal"
 
   Scenario: Successfully updates the updated date of the product
     Given I am logged in as "Mary"
@@ -44,6 +44,7 @@ Feature: Edit a product
     When I fill in the following information:
       | Name | My edited Sandal |
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
     And the product "sandal" updated date should be close to "now"
 
   Scenario: Don't see the attributes tab when the user can't edit a product
@@ -51,6 +52,7 @@ Feature: Edit a product
     And I am on the "Administrator" role page
     And I remove rights to Edit attributes of a product
     And I save the role
+    Then I should not see the text "There are unsaved changes."
     When I am on the "sandal" product page
     Then I should not see "Attributes"
 

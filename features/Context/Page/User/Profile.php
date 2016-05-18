@@ -19,20 +19,18 @@ class Profile extends Base
     /**
      * Retrieve user API key
      *
-     * @throws \Exception
-     *
      * @return null|string
      */
     public function getApiKey()
     {
-        $generateButton = $this->find('css', '#btn-apigen');
-        $apiKey         = null;
+        $generateButton = $this->spin(function () {
+            return $this->find('css', '#btn-apigen');
+        }, 'Could not find Generate API Key button.');
 
-        if ($generateButton) {
-            $apiKey = $generateButton->getParent()->find('css', 'label')->getHtml();
-            return $apiKey;
-        }
+        $generateElement = $this->spin(function () use ($generateButton) {
+            return $generateButton->getParent()->find('css', 'label');
+        }, 'Could not find API Key.');
 
-        throw new \Exception('Could not find the Generate API key button');
+        return $generateElement->getHtml();
     }
 }

@@ -117,7 +117,7 @@ class Creation extends Form
                     $row = $this->find('css', $this->elements['new_option']['css']);
 
                     return null === $row;
-                });
+                }, 'Cannot find new option button in attribute option table');
             }
 
             return true;

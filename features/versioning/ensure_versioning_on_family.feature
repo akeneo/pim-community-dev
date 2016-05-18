@@ -16,5 +16,6 @@ Feature: Ensure versioning on family
     When I fill in the following information:
       | English (United States) | My heels |
     And I press the "Save" button
-    Then I visit the "History" tab
-    Then there should be 2 update
+    Then I should not see the text "There are unsaved changes."
+    When I visit the "History" tab
+    Then there should be 2 updates

@@ -35,8 +35,9 @@ Feature: Display the product history
     And I change the "Price" to "10 EUR"
     And I change the "Price" to "20 USD"
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
     And the history of the product "boots" has been built
-    And I edit the "boots" product
+    When I edit the "boots" product
     And I open the history
     Then there should be 2 update
     And I should see history:
@@ -47,6 +48,7 @@ Feature: Display the product history
     And I visit the "Marketing" group
     And I change the "Price" to "19 USD"
     And I save the product
+    Then I should not see the text "There are unsaved changes."
     And the history of the product "boots" has been built
     When I open the history
     Then there should be 3 updates
@@ -59,6 +61,7 @@ Feature: Display the product history
     And I remove the "Price" attribute
     And I confirm the deletion
     And I save the product
+    Then I should not see the text "There are unsaved changes."
     And the history of the product "boots" has been built
     When I open the history
     Then there should be 4 updates

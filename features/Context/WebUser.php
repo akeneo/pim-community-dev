@@ -15,6 +15,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use Box\Spout\Common\Type;
 use Box\Spout\Reader\ReaderFactory;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Component\Catalog\Model\Product;
@@ -130,8 +131,10 @@ class WebUser extends RawMinkContext
      */
     public function iVisitTheTab($tab)
     {
-        $this->getCurrentPage()->visitTab($tab);
-        $this->wait();
+        $this->spin(function () use ($tab) {
+            return $this->getCurrentPage()->visitTab($tab);
+
+        }, sprintf('Cannot visit "%s" tab', $tab));
     }
 
     /**
@@ -176,7 +179,7 @@ class WebUser extends RawMinkContext
         $this->getCurrentPage()->getElement('Panel sidebar')->openPanel('History');
         $this->getMainContext()->executeScript("$('.panel-pane.history-panel').css({'height': '90%'});");
 
-        $expandButton = $this->getMainContext()->spin(function () {
+        $this->getMainContext()->spin(function () {
             $expandHistory = $this->getCurrentPage()->find('css', '.expand-history');
 
             if ($expandHistory && $expandHistory->isValid()) {
@@ -186,7 +189,7 @@ class WebUser extends RawMinkContext
             }
 
             return false;
-        });
+        }, 'Cannot expand history');
 
         $this->wait();
     }
@@ -198,7 +201,7 @@ class WebUser extends RawMinkContext
     {
         $actualVersions = $this->spin(function () {
             return $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.product-version');
-        });
+        }, 'Cannot find ".history-panel tbody tr.product-version" element');
 
         if ((int) $expectedCount !== count($actualVersions)) {
             throw new \Exception(
@@ -219,7 +222,6 @@ class WebUser extends RawMinkContext
     public function iVisitTheGroup($group)
     {
         $this->getCurrentPage()->visitGroup($group);
-        $this->wait();
     }
 
     /**
@@ -637,7 +639,7 @@ class WebUser extends RawMinkContext
             $this->getCurrentPage()->compareFieldValue($fieldName, $expected);
 
             return true;
-        });
+        }, sprintf('Cannot compare product value for "%s" field', $fieldName));
     }
 
     /**
@@ -658,62 +660,70 @@ class WebUser extends RawMinkContext
             return $page->findField($label);
         }, sprintf('Field "%s" not found.', $label));
 
-        if ($field->hasClass('select2-focusser')) {
-            for ($i = 0; $i < 2; ++$i) {
-                if (!$field->getParent()) {
-                    break;
+        $this->spin(function () use ($field, $label, $expected) {
+            if ($field->hasClass('select2-focusser')) {
+                for ($i = 0; $i < 2; ++$i) {
+                    if (!$field->getParent()) {
+                        break;
+                    }
+                    $field = $field->getParent();
                 }
-                $field = $field->getParent();
-            }
-            if ($select = $field->find('css', 'select')) {
-                $actual = $select->find('css', 'option[selected]')->getHtml();
-            } else {
-                $actual = trim($field->find('css', '.select2-chosen')->getHtml());
-            }
-        } elseif ($field->hasClass('select2-input')) {
-            for ($i = 0; $i < 4; ++$i) {
-                if (!$field->getParent()) {
-                    break;
+                if ($select = $field->find('css', 'select')) {
+                    $actual = $select->find('css', 'option[selected]')->getHtml();
+                } else {
+                    $actual = trim($field->find('css', '.select2-chosen')->getHtml());
                 }
-                $field = $field->getParent();
-            }
-            if ($select = $field->find('css', 'select')) {
-                $options = $field->findAll('css', 'option[selected]');
+            } elseif ($field->hasClass('select2-input')) {
+                for ($i = 0; $i < 4; ++$i) {
+                    if (!$field->getParent()) {
+                        break;
+                    }
+                    $field = $field->getParent();
+                }
+                if ($select = $field->find('css', 'select')) {
+                    $options = $field->findAll('css', 'option[selected]');
+                } else {
+                    $options = $field->findAll('css', 'li.select2-search-choice div');
+                }
+
+                $actual = [];
+                foreach ($options as $option) {
+                    $actual[] = $option->getHtml();
+                }
+                $expected = $this->listToArray($expected);
+                sort($actual);
+                sort($expected);
+                $actual   = implode(', ', $actual);
+                $expected = implode(', ', $expected);
+            } elseif ($field->hasClass('datepicker')) {
+                $actual = $field->getAttribute('value');
+            } elseif ((null !== $parent = $field->getParent()) && $parent->hasClass('upload-zone')) {
+                // We are dealing with an upload field
+                if (null === $filename = $parent->find('css', '.upload-filename')) {
+                    throw new \LogicException('Cannot find filename of upload field');
+                }
+                $actual = $filename->getText();
             } else {
-                $options = $field->findAll('css', 'li.select2-search-choice div');
+                $actual = $field->getValue();
             }
 
-            $actual = [];
-            foreach ($options as $option) {
-                $actual[] = $option->getHtml();
+            if ($expected != $actual) {
+                throw new SpinException(
+                    sprintf(
+                        'Expected product field "%s" to contain "%s", but got "%s".',
+                        $label,
+                        $expected,
+                        $actual
+                    )
+                );
             }
-            $expected = $this->listToArray($expected);
-            sort($actual);
-            sort($expected);
-            $actual   = implode(', ', $actual);
-            $expected = implode(', ', $expected);
-        } elseif ($field->hasClass('datepicker')) {
-            $actual = $field->getAttribute('value');
-        } elseif ((null !== $parent = $field->getParent()) && $parent->hasClass('upload-zone')) {
-            // We are dealing with an upload field
-            if (null === $filename = $parent->find('css', '.upload-filename')) {
-                throw new \LogicException('Cannot find filename of upload field');
-            }
-            $actual = $filename->getText();
-        } else {
-            $actual = $field->getValue();
-        }
 
-        if ($expected != $actual) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expected product field "%s" to contain "%s", but got "%s".',
-                    $label,
-                    $expected,
-                    $actual
-                )
-            );
-        }
+            return true;
+        }, sprintf(
+            'Expected product field "%s" to contain "%s".',
+            $label,
+            $expected
+        ));
     }
 
     /**
@@ -821,7 +831,7 @@ class WebUser extends RawMinkContext
             try {
                 $field = $this->spin(function () use ($field, $language) {
                     return $this->getCurrentPage()->getFieldLocator($field, $this->getLocaleCode($language));
-                });
+                }, sprintf('Cannot find "%s" field', $field));
             } catch (\BadMethodCallException $e) {
                 // Use default $field if current page does not provide a getFieldLocator method
             }
@@ -832,7 +842,6 @@ class WebUser extends RawMinkContext
         );
 
         $this->getCurrentPage()->fillField($field, $value);
-        $this->wait();
     }
 
     /**
@@ -1057,7 +1066,7 @@ class WebUser extends RawMinkContext
 
         $addButton = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.modal .btn.ok');
-        });
+        }, 'Cannot find ".modal .btn.ok" element in attribute modal');
 
         $addButton->click();
 
@@ -1382,7 +1391,6 @@ class WebUser extends RawMinkContext
 
             return true;
         }, sprintf("Can not find any '%s' button", $button));
-        $this->wait();
     }
 
     /**
@@ -1424,7 +1432,7 @@ class WebUser extends RawMinkContext
             return $this
                 ->getCurrentPage()
                 ->find('css', sprintf('.ui-dialog button:contains("%1$s"), .modal a:contains("%1$s")', $buttonLabel));
-        });
+        }, sprintf('Cannot find "%s" button label in modal', $buttonLabel));
 
         $buttonElement->press();
         $this->wait();
@@ -1512,7 +1520,7 @@ class WebUser extends RawMinkContext
     {
         $switch = $this->spin(function () {
             return $this->getCurrentPage()->findById('nested_switch_input');
-        });
+        }, 'Cannot find the switch button to include sub categories');
 
         $on = 'en' === $status;
         if ($switch->isChecked() !== $on) {
@@ -2436,17 +2444,21 @@ class WebUser extends RawMinkContext
      */
     public function theApiKeyShouldBe($not, $value)
     {
-        $apiKey = $this->getCurrentPage()->getApiKey();
+        $this->spin(function () use ($not, $value) {
+            $apiKey = $this->getCurrentPage()->getApiKey();
 
-        if ($not) {
-            if ($apiKey === $value) {
-                throw $this->createExpectationException('API key should not be ' . $apiKey);
+            if ($not) {
+                if ($apiKey === $value) {
+                    throw new SpinException('API key should not be ' . $apiKey);
+                }
+            } else {
+                if ($apiKey !== $value) {
+                    throw new SpinException('API key should be ' . $apiKey);
+                }
             }
-        } else {
-            if ($apiKey !== $value) {
-                throw $this->createExpectationException('API key should be ' . $apiKey);
-            }
-        }
+
+            return true;
+        }, 'Problem occurred with API Key.');
     }
 
     /**

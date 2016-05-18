@@ -16,7 +16,7 @@ Feature: Create attribute options
     Then I should see the "Options" section
     Then I should see "To manage options, please save the attribute first"
     And I save the attribute
-    Then I should see flash message "Attribute successfully created"
+    Then I should see the flash message "Attribute successfully created"
     And I wait for options to load
     And I check the "Automatic option sorting" switch
 
@@ -28,6 +28,6 @@ Feature: Create attribute options
       | green |
     Then I should see "green"
     And I save the attribute
-    Then I should see flash message "Attribute successfully updated"
+    Then I should see the flash message "Attribute successfully updated"
     And I wait for options to load
     Then I should see "green"

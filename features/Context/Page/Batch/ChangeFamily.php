@@ -32,7 +32,7 @@ class ChangeFamily extends Wizard
 
         $selectContainer = $this->spin(function () use ($select2Locator) {
             return $this->find('css', $select2Locator);
-        });
+        }, sprintf('Cannot find "%s" element', $select2Locator));
 
         if ($selectContainer) {
             $this->fillSelect2Field($selectContainer, $value);

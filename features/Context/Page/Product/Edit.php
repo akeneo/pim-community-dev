@@ -100,7 +100,7 @@ class Edit extends ProductEditForm
                 'css',
                 '*:not(.hash-loading-mask):not(.grid-container):not(.loading-mask) > .loading-mask'
             );
-        });
+        }, '".loading-mask" element is still visible');
     }
 
     /**
@@ -328,7 +328,7 @@ class Edit extends ProductEditForm
         try {
             $button = $this->spin(function () use ($field) {
                 return $this->find('css', sprintf('.field-container:contains("%s") .clear-field', $field));
-            });
+            }, sprintf('Cannot find button "%s" to remove a file', $field));
         } catch (\Exception $e) {
             $button = null;
         }
@@ -359,7 +359,7 @@ class Edit extends ProductEditForm
 
         $statusToggle = $this->spin(function () use ($el) {
             return $el->find('css', 'a.dropdown-toggle');
-        }, "Spining to get the status dropdown toggle to disable product on PEF");
+        }, 'Spining to get the status dropdown toggle to disable product on PEF');
 
         $statusToggle->click();
         $button = $el->find('css', 'ul a[data-status="disable"]');
@@ -400,7 +400,7 @@ class Edit extends ProductEditForm
         try {
             $switcher = $this->spin(function () {
                 return $this->find('css', '.status-switcher');
-            });
+            }, 'Cannot find ".status-switcher" element');
         } catch (\Exception $e) {
             $switcher = null;
         }
@@ -464,7 +464,7 @@ class Edit extends ProductEditForm
             $replyBox->find('css', '.send-comment')->click();
 
             return true;
-        });
+        }, 'Cannot find ".send-comment" element');
     }
 
     /**
@@ -662,25 +662,25 @@ class Edit extends ProductEditForm
     {
         $changeLink = $this->spin(function () {
             return $this->getElement('Meta zone')->find('css', '.product-family > .change-family');
-        });
+        }, 'Cannot find ".product-family > .change-family" element');
 
         $changeLink->click();
 
         $selectContainer = $this->spin(function () {
             return $this->getElement('Modal')->find('css', '.select2-container');
-        });
+        }, 'Cannot find ".select2-container" in family modal');
 
         $this->fillSelectField($selectContainer, $family);
 
         $validationButton = $this->spin(function () {
             return $this->find('css', '.modal .btn.ok');
-        });
+        }, 'Cannot find ".modal .btn.ok" button in family modal');
 
         $validationButton->click();
 
         return $this->spin(function () use ($family) {
             return $this->getElement('Meta zone')->find('css', '.product-family .product-family')->getHTML();
-        });
+        }, 'Cannot find ".product-family" element');
     }
 
     /**
@@ -692,7 +692,7 @@ class Edit extends ProductEditForm
     {
         $this->spin(function () {
             return $this->getElement('Progress bar');
-        });
+        }, 'Cannot find Progress bar element');
     }
 
     /**

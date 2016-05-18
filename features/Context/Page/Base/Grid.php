@@ -148,25 +148,15 @@ class Grid extends Index
      *
      * @param string $value
      *
-     * @throws \InvalidArgumentException
-     *
      * @return NodeElement
      */
     public function getRow($value)
     {
         $value = str_replace('"', '', $value);
 
-        try {
-            $gridRow = $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
-        } catch (TimeoutException $e) {
-            $gridRow = null;
-        }
-
-        if (null === $gridRow) {
-            throw new \InvalidArgumentException(
-                sprintf('Couldn\'t find a row for value "%s"', $value)
-            );
-        }
+        $gridRow = $this->spin(function () use ($value) {
+            return $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
+        }, sprintf('Couldn\'t find a row for value "%s"', $value));
 
         return $gridRow->getParent();
     }
@@ -812,7 +802,7 @@ class Grid extends Index
             $this->pressButton('Sequential Edit');
 
             return true;
-        });
+        }, 'Cannot find "Sequential Edit" button');
     }
 
     /**

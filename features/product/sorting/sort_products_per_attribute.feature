@@ -25,17 +25,13 @@ Feature: Sort products per attributes
     And I visit the "Additional" group
     When I check the "Handmade" switch
     And I press the "Save" button
-    And I am on the "red_shirt" product page
-    And I press the "Save" button
-    And I am on the "green_shirt" product page
-    And I press the "Save" button
-    And I am on the "yellow_shirt" product page
-    And I press the "Save" button
-    And I am on the "orange_shirt" product page
+    Then I should not see the text "There are unsaved changes."
+    When I am on the "orange_shirt" product page
     And I visit the "Additional" group
     When I check the "Handmade" switch
     And I press the "Save" button
-    And I am on the products page
-    And the grid should contain 5 elements
-    And I display the columns sku, label, family, status, complete, created, updated, groups and handmade
-    And I should be able to sort the rows by Handmade
+    Then I should not see the text "There are unsaved changes."
+    When I am on the products page
+    Then the grid should contain 5 elements
+    When I display the columns sku, label, family, status, complete, created, updated, groups and handmade
+    Then I should be able to sort the rows by Handmade

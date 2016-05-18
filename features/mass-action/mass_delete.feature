@@ -24,7 +24,7 @@ Feature: Delete many product at once
 
   Scenario: Display a message when try to delete none product
     Given I press mass-delete button
-    Then I should see flash message "No product selected"
+    Then I should see the flash message "No product selected"
 
   Scenario: Successfully remove many products
     Given I mass-delete products boots_S36, boots_S37 and boots_S38

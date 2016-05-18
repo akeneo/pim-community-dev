@@ -14,15 +14,19 @@ Feature: Edit a user groups and roles
     And I check "Redactor"
     And I save the user
     Then I should see the flash message "User saved"
-    And the user "admin" should be in 2 groups
-    And the user "admin" should be in the "Redactor" group
+    And the "Redactor" checkbox should be checked
+    And the "IT support" checkbox should be checked
     Given I edit the "admin" user
     And I visit the "Groups and Roles" tab
+    And the "Redactor" checkbox should be checked
+    And the "IT support" checkbox should be checked
     When I uncheck "IT support"
     And I uncheck "Redactor"
     And I save the user
     Then I should see the flash message "User saved"
-    And the user "admin" should be in 0 group
+    And the "Redactor" checkbox should not be checked
+    And the "IT support" checkbox should not be checked
+    But the "Administrator" checkbox should be checked
 
   Scenario: Successfully change a user role
     Given I edit the "admin" user
@@ -30,16 +34,16 @@ Feature: Edit a user groups and roles
     And I check "User"
     And I save the user
     Then I should see the flash message "User saved"
-    And the user "admin" should have 2 roles
-    And the user "admin" should have the "ROLE_USER" role
+    And the "User" checkbox should be checked
+    And the "Administrator" checkbox should be checked
     Given I edit the "admin" user
     And I visit the "Groups and Roles" tab
     And I uncheck "Administrator"
     And I uncheck "User"
     And I save the user
     Then the user "admin" should still have 2 roles
-    And the user "admin" should have the "ROLE_ADMINISTRATOR" role
-    And the user "admin" should have the "ROLE_USER" role
+    And the "User" checkbox should not be checked
+    And the "Administrator" checkbox should not be checked
 
   Scenario: Assign a group to a user from the group page
     Given I edit the "Redactor" user group
@@ -47,9 +51,7 @@ Feature: Edit a user groups and roles
     And I click on the "Peter" row
     And I save the group
     Then I should see the flash message "Group saved"
-    And the user "Peter" should be in 2 group
-    And the user "Peter" should be in the "Redactor" group
-    And the user "Peter" should be in the "IT support" group
+    And the row "Peter" should be checked
 
   Scenario: Assign a role to a user from the role page
     Given I edit the "Catalog manager" user role
@@ -57,8 +59,7 @@ Feature: Edit a user groups and roles
     And I click on the "Peter" row
     And I save the role
     Then I should see the flash message "Role saved"
-    And the user "Peter" should have 2 roles
-    And the user "Peter" should have the "ROLE_CATALOG_MANAGER" role
+    And the row "Peter" should be checked
 
   @jira https://akeneo.atlassian.net/browse/PIM-5201
   Scenario: Successfully remove a role from the group page
