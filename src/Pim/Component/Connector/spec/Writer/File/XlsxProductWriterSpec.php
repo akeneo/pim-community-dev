@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Connector\Writer\File;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\ArchiveDirectory;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
@@ -15,11 +16,12 @@ class XlsxProductWriterSpec extends ObjectBehavior
 {
     function let(
         FilePathResolverInterface $filePathResolver,
+        ArchiveDirectory $archiveDirectory,
         FlatItemBuffer $flatRowBuffer,
         BulkFileExporter $mediaCopier,
         FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier, $flusher);
+        $this->beConstructedWith($filePathResolver, $archiveDirectory, $flatRowBuffer, $mediaCopier, $flusher);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.xlsx');

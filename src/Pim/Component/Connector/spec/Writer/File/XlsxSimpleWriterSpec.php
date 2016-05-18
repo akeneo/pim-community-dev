@@ -3,8 +3,10 @@
 namespace spec\Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\ArchiveDirectory;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
@@ -14,10 +16,11 @@ class XlsxSimpleWriterSpec extends ObjectBehavior
 {
     function let(
         FilePathResolverInterface $filePathResolver,
+        ArchiveDirectory $archiveDirectory,
         FlatItemBuffer $flatRowBuffer,
         FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $flusher);
+        $this->beConstructedWith($filePathResolver, $archiveDirectory, $flatRowBuffer, $flusher);
 
         $filePathResolver
             ->resolve(Argument::any(), Argument::type('array'))
@@ -90,12 +93,14 @@ class XlsxSimpleWriterSpec extends ObjectBehavior
         $flusher,
         $flatRowBuffer,
         StepExecution $stepExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobExecution $jobExecution
     ) {
         $this->setStepExecution($stepExecution);
 
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
 
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('linesPerFile')->willReturn(2);
         $jobParameters->get('filePath')->willReturn('my/file/path/foo');

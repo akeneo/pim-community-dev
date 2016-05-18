@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Pim\Component\Connector\ArchiveDirectory;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -32,16 +33,22 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     /** @var Filesystem */
     protected $localFs;
 
+    /** @var ArchiveDirectory */
+    protected $archiveDirectory;
+
     /**
      * @param FilePathResolverInterface $filePathResolver
+     * @param ArchiveDirectory          $archiveDirectory
      */
-    public function __construct(FilePathResolverInterface $filePathResolver)
+    public function __construct(FilePathResolverInterface $filePathResolver, ArchiveDirectory $archiveDirectory)
     {
         $this->filePathResolver = $filePathResolver;
         $this->filePathResolverOptions = [
             'parameters' => ['%datetime%' => date('Y-m-d_H:i:s')]
         ];
         $this->localFs = new Filesystem();
+
+        $this->archiveDirectory = $archiveDirectory;
     }
 
     /**
@@ -71,4 +78,19 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     {
         $this->stepExecution = $stepExecution;
     }
+
+    /**
+     * TODO: what to do about that
+     *
+     * @return string
+     */
+    protected function getFilename()
+    {
+        if (null !== $this->getPath()) {
+            return basename($this->getPath());
+        }
+
+        return null;
+    }
+
 }

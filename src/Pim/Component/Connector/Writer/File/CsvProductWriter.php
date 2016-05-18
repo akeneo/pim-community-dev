@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
+use Pim\Component\Connector\ArchiveDirectory;
+
 /**
  * Write product data into a csv file on the local filesystem
  *
@@ -16,17 +18,19 @@ class CsvProductWriter extends CsvWriter
 
     /**
      * @param FilePathResolverInterface $filePathResolver
+     * @param ArchiveDirectory          $archiveDirectory
      * @param FlatItemBuffer            $flatRowBuffer
      * @param BulkFileExporter          $mediaCopier
      * @param ColumnSorterInterface     $columnSorter
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
+        ArchiveDirectory $archiveDirectory,
         FlatItemBuffer $flatRowBuffer,
         BulkFileExporter $mediaCopier,
         ColumnSorterInterface $columnSorter
     ) {
-        parent::__construct($filePathResolver, $flatRowBuffer, $columnSorter);
+        parent::__construct($filePathResolver, $archiveDirectory, $flatRowBuffer, $columnSorter);
 
         $this->mediaCopier = $mediaCopier;
     }
