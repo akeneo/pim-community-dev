@@ -15,6 +15,7 @@ Feature: Apply restrictions when mass editing products with variant groups
       | gold_sandals | sandals  |                   | 42   | white |
       | gold_boots   | sandals  |                   | 42   | white |
 
+  @ce
   Scenario: Add products to a variant group
     Given I am logged in as "Julia"
     And I am on the products page
@@ -32,6 +33,7 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I am on the "caterpillar_boots" variant group page
     And I should see "Products: 4"
 
+  @ce
   Scenario: Add products to a variant group with invalid axis
     Given the following families:
       | code      |
@@ -61,6 +63,7 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I am on the "caterpillar_boots" variant group page
     And I should see "Products: 2"
 
+  @ce
   Scenario: Add products to a variant group with duplicated variant axis values in selection (and not yet in variant group)
     And I am logged in as "Julia"
     And I am on the products page
