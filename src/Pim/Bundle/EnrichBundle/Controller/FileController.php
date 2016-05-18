@@ -9,6 +9,7 @@ use Liip\ImagineBundle\Controller\ImagineController;
 use Pim\Bundle\EnrichBundle\File\DefaultImageProviderInterface;
 use Pim\Bundle\EnrichBundle\File\FileTypeGuesserInterface;
 use Pim\Bundle\EnrichBundle\File\FileTypes;
+use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -75,24 +76,22 @@ class FileController
     {
         $filename = urldecode($filename);
 
-        if (self::DEFAULT_IMAGE_KEY === $filename) {
-            return $this->renderDefaultImage(FileTypes::MISC, $filter);
-        }
+        $result = $this->renderDefaultImage(FileTypes::MISC, $filter);
 
-        $file = $this->fileInfoRepository->findOneByIdentifier($filename);
-        if (null !== $file) {
-            if (FileTypes::IMAGE === $fileType = $this->fileTypeGuesser->guess($file->getMimeType())) {
+        if (self::DEFAULT_IMAGE_KEY !== $filename) {
+            $fileType = $this->fileTypeGuesser->guess($this->getMimeType($filename));
+
+            $result = $this->renderDefaultImage($fileType, $filter);
+            if (FileTypes::IMAGE === $fileType) {
                 try {
-                    return $this->imagineController->filterAction($request, $filename, $filter);
-                } catch (NotFoundHttpException $e) {
-                    return $this->renderDefaultImage(FileTypes::IMAGE, $filter);
+                    $result = $this->imagineController->filterAction($request, $filename, $filter);
+                } catch (NotFoundHttpException $exception) {
+                    $result = $this->renderDefaultImage(FileTypes::IMAGE, $filter);
                 }
             }
-
-            return $this->renderDefaultImage($fileType, $filter);
         }
 
-        return $this->renderDefaultImage(FileTypes::MISC, $filter);
+        return $result;
     }
 
     /**
@@ -153,5 +152,25 @@ class FileController
         $imageUrl = $this->defaultImageProvider->getImageUrl($fileType, $filter);
 
         return new RedirectResponse($imageUrl, 301);
+    }
+
+    /**
+     * Returns the Mime type of a file.
+     * If the file is linked to a FileInfo, returns its Mime type.
+     *
+     * @param string $filename
+     *
+     * @return string
+     */
+    protected function getMimeType($filename)
+    {
+        $mimeType = MimeTypeGuesser::getInstance()->guess($filename);
+
+        $file = $this->fileInfoRepository->findOneByIdentifier($filename);
+        if (null !== $file) {
+            $mimeType = $file->getMimeType();
+        }
+
+        return $mimeType;
     }
 }
