@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Connector\Reader;
 
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -26,6 +27,7 @@ class ProductReaderSpec extends ObjectBehavior
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         ObjectDetacherInterface $objectDetacher,
+        JobRepositoryInterface $jobRepository,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
@@ -34,6 +36,7 @@ class ProductReaderSpec extends ObjectBehavior
             $completenessManager,
             $metricConverter,
             $objectDetacher,
+            $jobRepository,
             true
         );
 

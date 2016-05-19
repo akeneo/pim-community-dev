@@ -32,6 +32,7 @@
 
 ## BC breaks
 
+- Change constructor of `Pim\Component\Connector\Reader\ProductReader`. Add `Akeneo\Component\Batch\Job\JobRepositoryInterface`.
 - Add method `getLastJobExecution` to interface `Akeneo\Component\Batch\Job\JobRepositoryInterface`
 - Remove properties editTemplate, showTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Remove methods setShowTemplate, setEditTemplate from `src\Akeneo\Component\Batch\Job\Job`.

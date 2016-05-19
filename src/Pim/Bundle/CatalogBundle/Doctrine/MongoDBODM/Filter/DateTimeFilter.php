@@ -150,6 +150,7 @@ class DateTimeFilter extends AbstractFilter implements FieldFilterInterface
         }
 
         if ($value instanceof \DateTime) {
+            $value->setTimezone(new \DateTimeZone('UTC'));
             return $value->getTimestamp();
         }
 

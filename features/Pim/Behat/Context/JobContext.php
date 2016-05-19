@@ -135,7 +135,7 @@ class JobContext extends PimContext
         $filePath = null;
 
         if (null === $number) {
-            $filePath = current($archives);
+            $filePath = end($archives);
         } else {
             foreach ($archives as $keyArchive => $path) {
                 if (0 === strpos($keyArchive, sprintf('%s_%s.', $code, $number))) {
@@ -174,7 +174,8 @@ class JobContext extends PimContext
     protected function getJobInstanceArchives($code)
     {
         $jobInstance = $this->getFixturesContext()->getJobInstance($code);
-        $jobExecution = $jobInstance->getJobExecutions()->first();
+        $this->getFixturesContext()->refresh($jobInstance);
+        $jobExecution = $jobInstance->getJobExecutions()->last();
         if (false === $jobExecution) {
             throw new \InvalidArgumentException(sprintf('No job execution found for job with code "%s"', $code));
         }
