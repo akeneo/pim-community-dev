@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Normalizer\Structured;
+namespace Akeneo\Component\Batch\Normalizer\Structured;
 
 use Akeneo\Component\Batch\Model\JobInstance;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

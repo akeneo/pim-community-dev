@@ -22,15 +22,16 @@ interface ProductTemplateBuilderInterface
     public function createProductTemplate();
 
     /**
-     * Add required value(s) that link an attribute to a product template
+     * Adds required, translated value(s), that links an attribute to a product template
      *
      * @param ProductTemplateInterface $template
      * @param AttributeInterface[]     $attributes
+     * @param string                   $locale
      */
-    public function addAttributes(ProductTemplateInterface $template, array $attributes);
+    public function addAttributes(ProductTemplateInterface $template, array $attributes, $locale);
 
     /**
-     * Delete values that link an attribute to the product template
+     * Deletes values that link an attribute to the product template
      *
      * @param ProductTemplateInterface $template
      * @param AttributeInterface       $attribute

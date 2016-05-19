@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Catalog\Updater;
 
-use \InvalidArgumentException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\GroupInterface;
@@ -52,7 +51,7 @@ class GroupUpdater implements ObjectUpdaterInterface
     public function update($group, array $data, array $options = [])
     {
         if (!$group instanceof GroupInterface) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 sprintf(
                     'Expects a "Pim\Component\Catalog\Model\GroupInterface", "%s" provided.',
                     ClassUtils::getClass($group)
@@ -71,8 +70,6 @@ class GroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $group
      * @param string         $field
      * @param mixed          $data
-     *
-     * @throws InvalidArgumentException
      */
     protected function setData(GroupInterface $group, $field, $data)
     {
@@ -105,13 +102,13 @@ class GroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $group
      * @param string         $type
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     protected function setType(GroupInterface $group, $type)
     {
         $groupType = $this->groupTypeRepository->findOneByIdentifier($type);
         if (null === $groupType) {
-            throw new InvalidArgumentException(sprintf('Type "%s" does not exist', $type));
+            throw new \InvalidArgumentException(sprintf('Type "%s" does not exist', $type));
         }
         $group->setType($groupType);
     }
@@ -119,8 +116,6 @@ class GroupUpdater implements ObjectUpdaterInterface
     /**
      * @param GroupInterface $group
      * @param array          $labels
-     *
-     * @throws InvalidArgumentException
      */
     protected function setLabels(GroupInterface $group, array $labels)
     {
@@ -135,7 +130,7 @@ class GroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $group
      * @param string[]       $attributeCodes
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     protected function setAxis(GroupInterface $group, array $attributeCodes)
     {
@@ -143,7 +138,7 @@ class GroupUpdater implements ObjectUpdaterInterface
         foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
             if (null === $attribute) {
-                throw new InvalidArgumentException(sprintf('Attribute "%s" does not exist', $attributeCode));
+                throw new \InvalidArgumentException(sprintf('Attribute "%s" does not exist', $attributeCode));
             }
             $attributes[] = $attribute;
         }

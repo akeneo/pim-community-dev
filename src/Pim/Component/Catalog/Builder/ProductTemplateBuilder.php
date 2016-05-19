@@ -40,7 +40,6 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
      * @param NormalizerInterface     $normalizer
      * @param DenormalizerInterface   $denormalizer
      * @param ProductBuilderInterface $productBuilder
-     * @param LocaleResolver          $localeResolver
      * @param string                  $productTemplateClass
      * @param string                  $productClass
      */
@@ -48,14 +47,12 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
         NormalizerInterface $normalizer,
         DenormalizerInterface $denormalizer,
         ProductBuilderInterface $productBuilder,
-        LocaleResolver $localeResolver,
         $productTemplateClass,
         $productClass
     ) {
         $this->normalizer           = $normalizer;
         $this->denormalizer         = $denormalizer;
         $this->productBuilder       = $productBuilder;
-        $this->localeResolver       = $localeResolver;
         $this->productTemplateClass = $productTemplateClass;
         $this->productClass         = $productClass;
     }
@@ -71,14 +68,15 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributes(ProductTemplateInterface $template, array $attributes)
+    public function addAttributes(ProductTemplateInterface $template, array $attributes, $locale)
     {
         $options = [
             'entity'                     => 'product',
-            'locale'                     => $this->localeResolver->getCurrentLocale(),
+            'locale'                     => $locale,
             'disable_grouping_separator' => true
         ];
-        $values     = $this->buildProductValuesFromTemplateValuesData($template, $attributes);
+
+        $values     = $this->buildProductValuesFromTemplateValuesData($template, $attributes, $locale);
         $valuesData = $this->normalizer->normalize($values, 'json', $options);
         $template->setValuesData($valuesData);
     }
@@ -100,13 +98,17 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
      *
      * @param ProductTemplateInterface $template
      * @param AttributeInterface[]     $attributes
+     * @param string                   $locale
      *
      * @return ProductValueInterface[]
      */
-    protected function buildProductValuesFromTemplateValuesData(ProductTemplateInterface $template, array $attributes)
-    {
+    protected function buildProductValuesFromTemplateValuesData(
+        ProductTemplateInterface $template,
+        array $attributes,
+        $locale
+    ) {
         $options = [
-            'locale'                     => $this->localeResolver->getCurrentLocale(),
+            'locale'                     => $locale,
             'disable_grouping_separator' => true
         ];
         $values  = $this->denormalizer->denormalize($template->getValuesData(), 'ProductValue[]', 'json', $options);

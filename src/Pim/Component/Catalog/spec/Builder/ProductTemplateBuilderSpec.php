@@ -4,7 +4,6 @@ namespace spec\Pim\Component\Catalog\Builder;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilder;
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -17,14 +16,12 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
     function let(
         NormalizerInterface $normalizer,
         DenormalizerInterface $denormalizer,
-        ProductBuilder $productBuilder,
-        LocaleResolver $localeResolver
+        ProductBuilder $productBuilder
     ) {
         $this->beConstructedWith(
             $normalizer,
             $denormalizer,
             $productBuilder,
-            $localeResolver,
             'Pim\Bundle\CatalogBundle\Entity\ProductTemplate',
             'Pim\Component\Catalog\Model\Product'
         );
@@ -44,7 +41,6 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $denormalizer,
         $normalizer,
         $productBuilder,
-        $localeResolver,
         ProductTemplateInterface $template,
         ProductValueInterface $colorValue,
         AttributeInterface $name,
@@ -57,7 +53,6 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $colorValue->setEntity(Argument::type('Pim\Component\Catalog\Model\Product'))->willReturn($colorValue);
 
         $options = ['locale' => 'en_US', 'disable_grouping_separator' => true];
-        $localeResolver->getCurrentLocale()->willReturn('en_US');
         $template->getValuesData()->willReturn(['color' => 'bar']);
         $denormalizer
             ->denormalize(['color' => 'bar'], 'ProductValue[]', 'json', $options)
@@ -81,7 +76,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
 
         $template->setValuesData(['name' => 'foo', 'color' => 'bar'])->shouldBeCalled();
 
-        $this->addAttributes($template, [$name]);
+        $this->addAttributes($template, [$name], 'en_US');
     }
 
     function it_removes_attributes_from_a_product_template(

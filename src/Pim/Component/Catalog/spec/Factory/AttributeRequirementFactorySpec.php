@@ -8,6 +8,16 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 
 class AttributeRequirementFactorySpec extends ObjectBehavior
 {
+    function let ()
+    {
+        $this->beConstructedWith('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement');
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('Pim\Component\Catalog\Factory\AttributeRequirementFactory');
+    }
+
     function it_creates_a_required_attribute_requirement(
         AttributeInterface $attribute,
         ChannelInterface $channel

@@ -1,8 +1,7 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Structured\Denormalizer;
+namespace spec\Pim\Component\Catalog\Denormalizer\Structured;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -13,14 +12,14 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
 {
     function let(
         DenormalizerInterface $denormalizer,
-        SmartManagerRegistry $registry
+        AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->beConstructedWith($denormalizer, $registry, 'ProductValue', 'Attribute');
+        $this->beConstructedWith($denormalizer, $attributeRepository, 'ProductValue');
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\ProductValuesDenormalizer');
+        $this->shouldHaveType('Pim\Component\Catalog\Denormalizer\Structured\ProductValuesDenormalizer');
     }
 
     function it_is_a_denormalizer()
@@ -37,8 +36,7 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
 
     function it_denormalizes_product_values_from_json(
         $denormalizer,
-        $registry,
-        AttributeRepositoryInterface $attributeRepository,
+        $attributeRepository,
         ProductValueInterface $nameValue,
         ProductValueInterface $colorValue,
         AttributeInterface $name,
@@ -55,8 +53,6 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($name);
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
-
-        $registry->getRepository('Attribute')->willReturn($attributeRepository);
 
         $denormalizer
             ->denormalize($data['name'][0], 'ProductValue', 'json', ['attribute' => $name])
