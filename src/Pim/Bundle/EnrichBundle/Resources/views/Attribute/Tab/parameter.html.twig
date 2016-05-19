@@ -21,14 +21,11 @@
         {% endfor %}
     {% endset %}
 
-    {% set general_parameters_title = view_element_aliases('pim_enrich_attribute_form.general_parameters') %}
-    {% set backend_parameters_title = view_element_aliases('pim_enrich_attribute_form.backend_parameters') %}
-
     {{
         elements.accordion({
-            general_parameters_title: view_elements('pim_enrich_attribute_form.general_parameters'),
+            'pane.accordion.general_parameters': view_elements('pim_enrich_attribute_form.general_parameters'),
             'pane.accordion.validation_parameters': validationParameters,
-            backend_parameters_title: view_elements('pim_enrich_attribute_form.backend_parameters')
+            'pane.accordion.backend_parameters': view_elements('pim_enrich_attribute_form.backend_parameters')
         })
     }}
 </div>
