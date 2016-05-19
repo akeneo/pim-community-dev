@@ -973,17 +973,33 @@ pim_mass_edit_execution_show:  Mass edit executions | Details
 # Background jobs & steps
 batch_jobs:
     add_product_value:
+        label: Add product value
         perform:
             label: Add product value
     update_product_value:
+        label: Update product value
         perform:
             label: Update product value
     edit_common_attributes:
+        label: Edit common attributes
         perform:
             label: Edit common attributes
         clean:
             label: Clean files for common attributes
+    set_attribute_requirements:
+        label: Set attribute requirements
+        perform:
+            label: Set attribute requirements
+    csv_product_quick_export:
+        label: Csv product quick export
+        perform:
+            label: Csv product quick export
+    xlsx_product_quick_export:
+         label: Xlsx product quick export
+         perform:
+             label: Xlsx product quick export
     add_to_variant_group:
+        label: Add to variant group
         perform:
             label: Add to variant group
             warning:

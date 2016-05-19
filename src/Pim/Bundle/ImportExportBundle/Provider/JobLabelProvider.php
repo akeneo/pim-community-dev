@@ -1,5 +1,6 @@
 <?php
 
+// TODO: move to Pim\Bundle\ImportExportBundle\JobLabel ?
 namespace Pim\Bundle\ImportExportBundle\Provider;
 
 use Symfony\Component\Translation\TranslatorInterface;

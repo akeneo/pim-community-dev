@@ -22,14 +22,10 @@ use Symfony\Component\Yaml\Parser as YamlParser;
  */
 class RegisterJobsPass implements CompilerPassInterface
 {
-    /**
-     * @var YamlParser
-     */
+    /** @var YamlParser */
     protected $yamlParser;
 
-    /**
-     * @var NodeInterface
-     */
+    /** @var NodeInterface */
     protected $jobsConfig;
 
     /**
@@ -146,12 +142,10 @@ class RegisterJobsPass implements CompilerPassInterface
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
-                            ->scalarNode('title')->end()
                             ->scalarNode('type')->end()
                             ->arrayNode('steps')
                                 ->prototype('array')
                                     ->children()
-                                        ->scalarNode('title')->end()
                                         ->scalarNode('class')
                                             ->defaultValue('Akeneo\Component\Batch\Step\ItemStep')
                                         ->end()
