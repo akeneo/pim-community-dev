@@ -62,7 +62,7 @@ Feature: Enforce no permissions for a category
       | inProtectedNode | protected_node |
     And I am logged in as "Julia"
     And I am on the products page
-    When I filter by "category" with value "unclassified"
+    When I filter by "category" with operator "unclassified" and value ""
     Then the grid should contain 2 elements
     And I should see products unclassifiedOne and unclassifiedTwo
     But I should not see products inProtectedTree and inProtectedNode
@@ -121,6 +121,6 @@ Feature: Enforce no permissions for a category
     And I fill in "Allowed to view products" with "" on the current page
     And I save the category
     And I should see the flash message "Tree successfully updated"
-    Then I should see the "Winter collection" category under the "2014 collection" category
-    And I should see the "Summer collection" category under the "2014 collection" category
-    And I expand the "2014 collection" category
+    Then I should see the "winter_collection" category under the "2014_collection" category
+    And I should see the "summer_collection" category under the "2014_collection" category
+    And I expand the "2014_collection" category

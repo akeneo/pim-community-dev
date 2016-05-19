@@ -21,8 +21,7 @@ Feature: Filter products by assets
   Scenario: Successfully filter products by assets
     Given I am on the products page
     And the grid should contain 2 elements
-    Then I should see the filter "Front view"
     When I should be able to use the following filters:
-      | filter     | value               | result |
-      | Front view | in list paint       | shirt  |
-      | Front view | in list paint,akene | shirt  |
+      | filter     | operator | value        | result |
+      | front_view | in list  | paint        | shirt  |
+      | front_view | in list  | paint, akene | shirt  |

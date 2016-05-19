@@ -43,9 +43,9 @@ Feature: Display proposal widget
     When I edit the "my-tee-shirt" product
     And I visit the "Categories" tab
     And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
-    And I expand the "Summer collection" category
-    And I click on the "Jackets" category
+    And I expand the "2014_collection" category
+    And I expand the "summer_collection" category
+    And I click on the "jackets" category
     And I save the product
     And I logout
     And I am logged in as "Julia"

@@ -24,7 +24,7 @@ Feature: Edit a user
       | Product grid filters | SKU, Name, Family |
     And I save the user
     When I am on the published index page
-    And I should see the filters Name, Family and SKU
+    And I should see the filters name, family and sku
     And I should not see the filters Status
 
   @javascript
@@ -35,5 +35,5 @@ Feature: Edit a user
       | Default asset tree | Tractors |
     And I save the user
     When I am on the assets categories page
-    And I should see "Tractors"
-    And I should see "John deere"
+    And I should see the text "Tractors"
+    And I should see the text "John deere"

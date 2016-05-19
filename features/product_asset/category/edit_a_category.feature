@@ -23,7 +23,7 @@ Feature: Edit an asset category
   Scenario: Go to category edit page from the asset category tree
     Given I am on the assets categories page
     And I select the "Asset main catalog" tree
-    And I click on the "Videos" category
+    And I click on the "videos" category
     Then I should be on the asset category "videos" edit page
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
@@ -56,8 +56,8 @@ Feature: Edit an asset category
   @javascript
   Scenario: Stay on the asset category when I save it and keep category tree open (with oro nav)
     Given I am on the assets categories page
-    And I expand the "Images" category
-    And I click on the "In situ pictures" category
+    And I expand the "images" category
+    And I click on the "situ" category
     When I fill in the following information:
       | English (United States) | Situ |
     And I save the category

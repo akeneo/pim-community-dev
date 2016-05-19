@@ -12,9 +12,9 @@ Feature: Classify an asset in the trees I have access
     And I edit the "mugs" asset
     When I visit the "Categories" tab
     And I should see the text "Asset main catalog 0"
-    And I expand the "Asset main catalog" category
-    And I click on the "Sales documents" category
-    And I click on the "Store documents" category
+    And I expand the "asset_main_catalog" category
+    And I click on the "sales_documents" category
+    And I click on the "store_documents" category
     And I press the "Save" button
     And I visit the "Categories" tab
     Then I should see the text "Asset main catalog 2"
@@ -23,7 +23,7 @@ Feature: Classify an asset in the trees I have access
     Given I am logged in as "Pamela"
     And I edit the "mugs" asset
     When I visit the "Categories" tab
-    And I expand the "Asset main catalog" category
+    And I expand the "asset_main_catalog" category
     Then I should not see "Technical documents"
     But I should see the text "Client documents"
 

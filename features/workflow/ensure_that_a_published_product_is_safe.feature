@@ -22,20 +22,20 @@ Feature: Ensure that a published product is safe
     Given I am on the "jackets" category page
     And I press the "Delete" button
     And I confirm the removal
-    Then I should see the "Jackets" category under the "Summer collection" category
+    Then I should see the "jackets" category under the "summer_collection" category
 
   Scenario: Fail to remove a category if one of these children is linked to a published product
     Given I am on the "summer_collection" category page
     And I press the "Delete" button
     And I confirm the removal
     Then I am on the "jackets" category page
-    And I should see the "Jackets" category under the "Summer collection" category
+    And I should see the "jackets" category under the "summer_collection" category
 
   Scenario: Successfully remove a category that is not linked to a published product
     Given I am on the "winter_top" category page
     And I press the "Delete" button
     And I confirm the removal
-    Then I should not see the "Winter tops" category under the "Winter collection" category
+    Then I should not see the "winter_top" category under the "winter_collection" category
 
   Scenario: Fail to remove a family that is linked to a published product
     Given I am on the "jackets" family page

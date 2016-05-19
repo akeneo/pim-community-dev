@@ -33,6 +33,6 @@ Feature: Filter product drafts
     When I visit the "Proposals" tab
     Then the grid should contain 3 elements
     And I should be able to use the following filters:
-      | filter    | value                | result              |
-      | Attribute | Name                 | Mary, Julia, Sandra |
-      | Attribute | Price                | Julia               |
+      | filter    | operator | value | result              |
+      | attribute |          | Name  | Mary, Julia, Sandra |
+      | attribute |          | Price | Julia               |

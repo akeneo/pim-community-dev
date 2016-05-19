@@ -31,12 +31,12 @@ Feature: Classify a product in the trees I have access
     Given I edit the "rangers" product
     When I visit the "Categories" tab
     And I select the "Shoes" tree
-    And I expand the "Shoes" category
-    And I click on the "Vintage" category
-    And I click on the "Classy" category
+    And I expand the "shoes" category
+    And I click on the "vintage" category
+    And I click on the "classy" category
     And I press the "Save" button
-    Then I should see "Shoes (2)"
-    And I should not see "Slippers"
+    Then I should see the text "Shoes (2)"
+    And I should not see the text "Slippers"
 
   @jira https://akeneo.atlassian.net/browse/PIM-5402
   Scenario: Display only granted categories in the PEF

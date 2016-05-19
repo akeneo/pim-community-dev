@@ -18,7 +18,7 @@ Feature: Remove an asset category
     And I confirm the deletion
     Then I should be on the asset category "images" edit page
     And I should see flash message "Category successfully removed"
-    And I should not see the "In situ pictures" category under the "Images" category
+    And I should not see the "situ" category under the "images" category
 
   Scenario: Remove an asset category with sub-categories
     Given I am on the "videos" asset category page
@@ -65,7 +65,7 @@ Feature: Remove an asset category
     Given I am on the "images" asset category page
     When I press the "Delete" button
     And I cancel the deletion
-    Then I should see the "Images" category under the "Asset main catalog" category
+    Then I should see the "images" category under the "asset_main_catalog" category
 
   @jira https://akeneo.atlassian.net/browse/PIM-4227
   Scenario: Remove an asset category with linked products limit exceeded
