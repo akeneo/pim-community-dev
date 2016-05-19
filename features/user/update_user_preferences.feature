@@ -50,10 +50,4 @@ Feature: Update user preferences
     And I confirm the deletion
     And I edit the "Julia" user
     And I visit the "Additional" tab
-<<<<<<< HEAD
     Then I should see the text "Catalog locale de_DE"
-=======
-    Then I should see the text "Catalog locale"
-    And I should see the text "de_DE"
-    And I should not see the text "fr_FR"
->>>>>>> 586788f... TIP-417: add spin
