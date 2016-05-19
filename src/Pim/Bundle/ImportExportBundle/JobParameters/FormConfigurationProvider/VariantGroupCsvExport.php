@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider;
 
 use Akeneo\Component\Batch\Job\JobInterface;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
 
@@ -54,7 +55,7 @@ class VariantGroupCsvExport implements FormConfigurationProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormConfiguration()
+    public function getFormConfiguration(JobInstance $jobInstance)
     {
         $formOptions = [
             'decimalSeparator' => [
@@ -78,7 +79,7 @@ class VariantGroupCsvExport implements FormConfigurationProviderInterface
                 ]
             ],
         ];
-        $formOptions = array_merge($formOptions, $this->simpleOptions->getFormConfiguration());
+        $formOptions = array_merge($formOptions, $this->simpleOptions->getFormConfiguration($jobInstance));
 
         return $formOptions;
     }

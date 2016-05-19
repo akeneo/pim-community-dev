@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider;
 
 use Akeneo\Component\Batch\Job\JobInterface;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -61,7 +62,7 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormConfiguration()
+    public function getFormConfiguration(JobInstance $jobInstance)
     {
         $formOptions = [
             'channel' => [
@@ -119,7 +120,7 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
                 ]
             ],
         ];
-        $formOptions = array_merge($formOptions, $this->simpleXlsxExport->getFormConfiguration());
+        $formOptions = array_merge($formOptions, $this->simpleXlsxExport->getFormConfiguration($jobInstance));
 
         return $formOptions;
     }
