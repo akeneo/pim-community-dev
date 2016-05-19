@@ -107,4 +107,4 @@ extensions:
     pim-product-edit-form-attribute-read-only:
         module: pimee/product-edit-form/attributes/attribute-read-only
         parent: pim-product-edit-form-attributes
-        position: 90
+        position: 100
