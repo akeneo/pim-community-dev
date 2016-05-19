@@ -151,21 +151,38 @@ pimee_enrich:
                 height: %value%px height
 
 add_product_value_with_permission_and_rules:
-    title: Add product value with permission check & rules application
     steps.perform: Add product value
 update_product_value_with_permission_and_rules:
-    title: Update product value with permission check & rules application
     steps.perform: Update product value
 edit_common_attributes_with_permission_and_rules:
-    title: Edit common attributes with permission check & rules application
     steps.perform: Edit common attributes
     steps.edit_common_attributes_processor.title: Edit common attributes
+
+batch_jobs:
+    add_product_value_with_permission_and_rules:
+        label: Add product value with permission check & rules application
+        perform.label: Add product value
+        execute_rules.label: Rules execution
+    update_product_value_with_permission_and_rules:
+        label: Update product value with permission check & rules application
+        perform.label: Update product value
+        execute_rules.label: Rules execution
+    edit_common_attributes_with_permission_and_rules:
+        label: Edit common attributes with permission check & rules application
+        perform.label: Edit common attributes
+        execute_rules.label: Rules execution
+        clean.label: Clean temporary files
+    add_to_variant_group_with_rules:
+        label: Add products to variant group with rules application
+        perform.label: Add products to variant group
+        execute_rules.label: Rules execution
+
 add_to_variant_group_with_rules:
-    title: Add products to variant group with rules application
     steps.perform: Add products to variant group
     steps.excluded.title: Excluded product
     steps.duplicated.title: Duplicated Axis
 
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Edit common attributes
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Add product value with permission
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Update product value with permission
 edit_common_attributes_with_permission: Edit common attributes with permission

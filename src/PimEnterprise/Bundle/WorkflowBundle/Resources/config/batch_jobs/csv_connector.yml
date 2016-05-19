@@ -2,11 +2,9 @@ connector:
     name: Akeneo CSV Connector
     jobs:
         csv_product_proposal_import:
-            title: pimee_workflow.jobs.csv_product_proposal_import.title
             type:  import
             steps:
                 import:
-                    title:     pimee_workflow.jobs.csv_product_proposal_import.import.title
                     services:
                         reader:    pimee_workflow.reader.file.csv_product_draft
                         processor: pimee_workflow.processor.denormalization.product_draft.flat
@@ -14,11 +12,9 @@ connector:
                     parameters:
                         batch_size: 10
         csv_published_product_export:
-            title: pimee_workflow.jobs.csv_published_product_export.title
             type:  export
             steps:
                 export:
-                    title:     pim_base_connector.jobs.csv_product_export.export.title
                     services:
                         reader:    pimee_workflow.reader.published_product
                         processor: pim_base_connector.processor.product_to_flat_array

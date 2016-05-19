@@ -6,7 +6,7 @@ services:
         class: %pim_import_export.job_parameters.form_configuration_provider.simple_yaml_export.class%
         arguments:
             -
-                - 'pimee_catalog_rule.jobs.yml_rule_export.title'
+                - 'yml_rule_export'
         tags:
             - { name: pim_import_export.job_parameters.form_configuration_provider }
 
@@ -15,7 +15,7 @@ services:
         class: %pim_import_export.job_parameters.form_configuration_provider.simple_yaml_import.class%
         arguments:
             -
-                - 'pimee_catalog_rule.jobs.yml_rule_import.title'
+                - 'yml_rule_import'
         tags:
             - { name: pim_import_export.job_parameters.form_configuration_provider }
 
@@ -23,7 +23,7 @@ services:
         class: %pim_import_export.job_parameters.form_configuration_provider.simple_csv_import.class%
         arguments:
             -
-                - 'pimee_catalog_rule.jobs.csv_product_import_with_rules.title'
+                - 'csv_product_import_with_rules'
         tags:
             - { name: pim_import_export.job_parameters.form_configuration_provider }
 
@@ -31,7 +31,7 @@ services:
         class: %pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_import.class%
         arguments:
             -
-                - 'pimee_catalog_rule.jobs.xlsx_product_import_with_rules.title'
+                - 'xlsx_product_import_with_rules'
         tags:
             - { name: pim_import_export.job_parameters.form_configuration_provider }
 
