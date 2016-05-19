@@ -1,7 +1,8 @@
 <?php
 
-namespace Pim\Component\Connector\Normalizer\Flat;
+namespace Pim\Component\ReferenceData\Normalizer\Flat;
 
+use Pim\Component\Connector\Normalizer\Flat\AbstractProductValueDataNormalizer;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**

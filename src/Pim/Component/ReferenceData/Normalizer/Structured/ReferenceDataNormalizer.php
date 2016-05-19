@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Normalizer\Structured;
+namespace Pim\Component\ReferenceData\Normalizer\Structured;
 
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

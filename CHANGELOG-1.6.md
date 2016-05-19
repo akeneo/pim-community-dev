@@ -259,3 +259,10 @@
 - Remove methods `getConfiguration()`, `setConfiguration()` from `Akeneo\Component\Batch\Step\ItemStep`
 - Injects `Symfony\Component\DependencyInjection\ContainerInterface` in constructor of `Akeneo\Component\Batch\Updater\JobInstanceUpdater`, `Pim\Bundle\BaseConnectorBundle\Archiver\ArchivableFileWriterArchiver`, `Pim\Bundle\BaseConnectorBundle\Archiver\FileReaderArchiver`, `Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver`, `Pim\Component\Connector\Processor\Denormalization\JobInstanceProcessor` (avoid a cricular reference due to ConnectorRegistry, should be fixed with TIP-418 by re-working the way we build Jobs)
 - Remove argument array $configuration from `Pim\Component\Connector\Step\TaskletInterface::execute()`, we can access to the JobParameters from the StepExecution $stepExecution
+- Change constructor of `Pim\Component\Catalog\Updater\AttributeUpdater`, remove `Pim\Component\ReferenceData\ConfigurationRegistryInterface` and the list of reference data types
+- Move class `Pim\Component\Catalog\Normalizer\Structured\ReferenceDataNormalizer` to `Pim\Component\ReferenceData\Normalizer\Structured\ReferenceDataNormalizer`
+- Move class `Pim\Component\Connector\Normalizer\Flat\ReferenceDataNormalizer` to `Pim\Component\ReferenceData\Normalizer\Flat\ReferenceDataNormalizer`
+- Move class `Pim\Component\Catalog\Denormalizer\Structured\ProductValue\ReferenceDataDenormalizer` to `Pim\Component\ReferenceData\Denormalizer\Structured\ProductValue\ReferenceDataDenormalizer`
+- Move class `Pim\Component\Catalog\Denormalizer\Structured\ProductValue\ReferenceDataCollectionDenormalizer` to `Pim\Component\ReferenceData\Denormalizer\Structured\ProductValue\ReferenceDataCollectionDenormalizer`
+- Move class `Pim\Component\Connector\Denormalizer\Flat\ProductValue\ReferenceDataDenormalizer` to `Pim\Component\ReferenceData\Denormalizer\Flat\ProductValue\ReferenceDataDenormalizer`
+- Move class `Pim\Component\Connector\Denormalizer\Flat\ProductValue\ReferenceDataCollectionDenormalizer` to `Pim\Component\ReferenceData\Denormalizer\Flat\ProductValue\ReferenceDataCollectionDenormalizer`

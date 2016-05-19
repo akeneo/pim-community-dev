@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Normalizer\Flat;
+namespace spec\Pim\Component\ReferenceData\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;

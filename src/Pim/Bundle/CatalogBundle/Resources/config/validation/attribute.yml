@@ -2,6 +2,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         - Pim\Component\Catalog\Validator\Constraints\SingleIdentifierAttribute: ~
+        - Pim\Component\Catalog\Validator\Constraints\IsReferenceDataConfigured: ~
         - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
                 - code

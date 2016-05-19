@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Component\Catalog\Denormalizer\Structured\ProductValue;
+namespace Pim\Component\ReferenceData\Denormalizer\Structured\ProductValue;
 
+use Pim\Component\Catalog\Denormalizer\Structured\ProductValue\AbstractValueDenormalizer;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
-use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -39,7 +39,7 @@ class ReferenceDataDenormalizer extends AbstractValueDenormalizer
         }
 
         if (false === isset($context['attribute'])) {
-            throw new InvalidParameterException(
+            throw new \InvalidArgumentException(
                 sprintf('Denormalizer\'s context expected to have an attribute, none found.')
             );
         }
@@ -47,7 +47,7 @@ class ReferenceDataDenormalizer extends AbstractValueDenormalizer
         $attribute = $context['attribute'];
 
         if (!$attribute instanceof AttributeInterface) {
-            throw new InvalidParameterException(
+            throw new \InvalidArgumentException(
                 sprintf('Attribute is not an instance of Pim\Component\Catalog\Model\AttributeInterface.')
             );
         }
