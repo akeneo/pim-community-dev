@@ -4,24 +4,25 @@ parameters:
 
 services:
     pim_import_export.form.type.job_instance:
-        class: %pim_import_export.form.type.job_instance.class%
+        class: '%pim_import_export.form.type.job_instance.class%'
         arguments:
             - '@akeneo_batch.connectors'
             - '@translator'
             - '@pim_import_export.job_label.translated_label_provider'
+            - '@akeneo_batch.job_parameters_factory'
         tags:
             - { name: form.type, alias: pim_import_export_job_instance }
         calls:
             - [addEventSubscriber, ['@pimee_import_export.form.subscriber.job_profile_permissions']]
 
     pimee_import_export.form.subscriber.job_profile_permissions:
-        class: %pimee_import_export.form.subscriber.job_profile_permissions.class%
+        class: '%pimee_import_export.form.subscriber.job_profile_permissions.class%'
         arguments:
             - '@pimee_security.manager.job_profile_access'
             - '@oro_security.security_facade'
             - '@pim_user.repository.group'
 
     pimee_import_export.form.type.job_profile_permissions:
-        class: %pimee_import_export.form.type.job_profile_permissions.class%
+        class: '%pimee_import_export.form.type.job_profile_permissions.class%'
         tags:
             - { name: form.type, alias: pimee_import_export_job_profile_permissions }
