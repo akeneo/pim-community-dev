@@ -255,7 +255,7 @@ class VariantGroupCleanerSpec extends ObjectBehavior
 
         $pqbFactory->create()->willReturn($productQueryBuilder);
 
-        $translator->trans('add_to_variant_group.perform.warning.duplicated.description')
+        $translator->trans('add_to_variant_group.steps.cleaner.warning.description')
             ->willReturn('Product can\'t be set in the selected variant group: duplicate variation axis values with'.
                 ' another product in selection');
 

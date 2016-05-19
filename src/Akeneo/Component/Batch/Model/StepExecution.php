@@ -450,6 +450,12 @@ class StepExecution
      */
     public function addWarning($name, $reason, array $reasonParameters, $item)
     {
+        // TODO TIP-440: re-work the way we build the warning names (same strategy than TIP-384)
+        $element = $this->stepName;
+        if (strpos($element, '.')) {
+            $element = substr($element, 0, strpos($element, '.'));
+        }
+
         if (is_object($item)) {
             $item = [
                 'class'  => ClassUtils::getClass($item),
@@ -461,7 +467,7 @@ class StepExecution
         $this->warnings->add(
             new Warning(
                 $this,
-                $name,
+                sprintf('%s.steps.%s.title', $element, $name),
                 $reason,
                 $reasonParameters,
                 $item

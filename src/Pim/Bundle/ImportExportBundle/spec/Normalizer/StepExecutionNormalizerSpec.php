@@ -58,16 +58,21 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
         $stepExecution->getStartTime()->willReturn($date);
         $stepExecution->getEndTime()->willReturn(null);
 
-        $warning = new Warning(
-            $stepExecution->getWrappedObject(),
-            'a_warning',
-            'warning_reason',
-            ['foo' => 'bar'],
-            ['a' => 'A', 'b' => 'B', 'c' => 'C']
+        $stepExecution->getWarnings()->willReturn(
+            new ArrayCollection(
+                [
+                    new Warning(
+                        $stepExecution->getWrappedObject(),
+                        'a_warning',
+                        'warning_reason',
+                        ['foo' => 'bar'],
+                        ['a' => 'A', 'b' => 'B', 'c' => 'C']
+                    )
+                ]
+            )
         );
+        $translator->trans('a_warning')->willReturn('Reader');
 
-        $stepExecution->getWarnings()->willReturn(new ArrayCollection([$warning]));
-        $labelProvider->getStepWarningLabel('wow_job', 'such_step', 'a_warning')->willReturn('Reader');
         $translator->trans(12)->willReturn(12);
         $translator->trans(50)->willReturn(50);
         $translator->trans('warning_reason', ['foo' => 'bar'])->willReturn('WARNING!');

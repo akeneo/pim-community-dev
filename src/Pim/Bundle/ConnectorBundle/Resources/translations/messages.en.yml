@@ -1,6 +1,6 @@
 pim_connector:
     steps:
-        dummy_reader.label:                  Dummy reader
+        dummy_reader.title:                  Dummy reader
         product_reader.title:                Product extraction
         entity_reader.title:                 Entity extraction
         csv_reader:

@@ -101,11 +101,7 @@ class StepExecutionNormalizer implements NormalizerInterface
 
         foreach ($selectedWarnings as $warning) {
             $result[] =  [
-                'label'  => $this->labelProvider->getStepWarningLabel(
-                    $warning->getStepExecution()->getJobExecution()->getJobInstance()->getAlias(),
-                    $warning->getStepExecution()->getStepName(),
-                    $warning->getName()
-                ),
+                'label'  => $this->translator->trans($warning->getName()),
                 'reason' => $this->translator->trans($warning->getReason(), $warning->getReasonParameters()),
                 'item'   => $warning->getItem(),
             ];

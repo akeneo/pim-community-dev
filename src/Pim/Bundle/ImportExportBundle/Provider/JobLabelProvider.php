@@ -69,27 +69,4 @@ class JobLabelProvider
 
         return $this->translator->trans($id);
     }
-
-    /**
-     * Get the Step label with the given $stepName, base on the $jobName and $stepName.
-     * Example: "csv_product_import.perform.warning.duplicated.label"
-     *
-     * @param string $jobName
-     * @param string $stepName
-     * @param string $warningName
-     *
-     * @return string
-     */
-    public function getStepWarningLabel($jobName, $stepName, $warningName)
-    {
-        $id = sprintf(
-            '%s.%s.%s.warning.%s.label',
-            $this->keyPrefix,
-            $jobName,
-            $stepName,
-            $warningName
-        );
-
-        return $this->translator->trans($id);
-    }
 }

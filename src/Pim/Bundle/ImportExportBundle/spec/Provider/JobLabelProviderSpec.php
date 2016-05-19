@@ -25,11 +25,4 @@ class JobLabelProviderSpec extends ObjectBehavior
         $this->getStepLabel('csv_product_import', 'perform')
             ->shouldReturn('Import Products');
     }
-
-    function it_returns_a_step_warning_label($translator)
-    {
-        $translator->trans('batch_jobs.csv_product_import.perform.warning.duplicated.label')->willReturn('Duplicated products');
-        $this->getStepWarningLabel('csv_product_import', 'perform', 'duplicated')
-            ->shouldReturn('Duplicated products');
-    }
 }

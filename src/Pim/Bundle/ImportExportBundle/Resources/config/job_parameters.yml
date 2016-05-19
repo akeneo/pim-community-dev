@@ -59,7 +59,7 @@ services:
             - '@pim_catalog.localization.presenter.datetime'
             - '@pim_enrich.resolver.locale'
             -
-                - 'jobs.csv_product_export'
+                - 'csv_product_export'
             - %pim_catalog.localization.decimal_separators%
             - %pim_catalog.localization.date_formats%
         tags:
