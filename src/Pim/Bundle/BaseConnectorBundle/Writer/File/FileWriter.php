@@ -21,7 +21,10 @@ class FileWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
-    /** @var string */
+    /**
+     * TODO: delete it, should be in the LocalTransferStepElement
+     * @var string
+     */
     protected $filePath = '/tmp/export_%datetime%.csv';
 
     /** @var StepExecution */
@@ -35,6 +38,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
 
     /**
      * Set the file path
+     * TODO: delete it, should be in the LocalTransferStepElement
      *
      * @param string $filePath
      *
@@ -49,6 +53,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
     }
 
     /**
+     * TODO: delete it, should be in the LocalTransferStepElement
      * Get the file path
      *
      * @return string
@@ -59,6 +64,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
     }
 
     /**
+     * TODO: to delete
      * Get the file path in which to write the data
      *
      * @return string
