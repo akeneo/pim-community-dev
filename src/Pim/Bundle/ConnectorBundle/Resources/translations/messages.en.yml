@@ -180,6 +180,9 @@ pim_connector:
         updated:
             label: Updated time condition
             help: The time condition of the products you want to export
+            last_execution:
+                none: This job has never been exported
+                last: Last export: %date%
             choice:
                 last_export: Updated products since last export
                 all: All

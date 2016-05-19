@@ -54,6 +54,10 @@ services:
         arguments:
             - '@pim_import_export.job_parameters.form_configuration_provider.simple_csv_export'
             - '@pim_catalog.repository.channel'
+            - '@akeneo_batch.job_repository'
+            - '@translator'
+            - '@pim_catalog.localization.presenter.datetime'
+            - '@pim_enrich.resolver.locale'
             -
                 - 'pim_connector.jobs.csv_product_export.title'
             - %pim_catalog.localization.decimal_separators%
@@ -66,6 +70,10 @@ services:
         arguments:
             - '@pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_export'
             - '@pim_catalog.repository.channel'
+            - '@akeneo_batch.job_repository'
+            - '@translator'
+            - '@pim_catalog.localization.presenter.datetime'
+            - '@pim_enrich.resolver.locale'
             -
                 - 'pim_connector.jobs.xlsx_product_export.title'
             - %pim_catalog.localization.decimal_separators%
