@@ -49,20 +49,20 @@ class CategoryExtensionSpec extends ObjectBehavior
         $categoryItemsCounter->getItemsCountInCategory(Argument::any(), false)->willReturn(5);
 
         $tree1->getId()->willReturn(1);
-        $tree1->getCode()->willReturn('selected_tree');
+        $tree1->getCode()->willReturn('tree_1');
         $tree1->getLabel()->willReturn('Selected tree');
         $tree1->hasChildren()->willReturn(false);
         $tree1->isRoot()->willReturn(true);
 
         $tree2->getId()->willReturn(2);
-        $tree2->getCode()->willReturn('master');
+        $tree2->getCode()->willReturn('tree_2');
         $tree2->getLabel()->willReturn('Master catalog');
         $tree2->hasChildren()->willReturn(false);
         $tree2->isRoot()->willReturn(true);
 
         $expected = [
-            ['id' => 1, 'code' => 'selected_tree', 'label' => 'Selected tree (5)', 'selected' => 'true'],
-            ['id' => 2, 'code' => 'master', 'label' => 'Master catalog (5)', 'selected' => 'false']
+            ['id' => 1, 'code' => 'tree_1', 'label' => 'Selected tree (5)', 'selected' => 'true'],
+            ['id' => 2, 'code' => 'tree_2', 'label' => 'Master catalog (5)', 'selected' => 'false']
         ];
 
         $this->listTreesResponse([$tree1, $tree2], 1)->shouldEqualUsingJSON($expected);
@@ -80,18 +80,20 @@ class CategoryExtensionSpec extends ObjectBehavior
         $tree1->getId()->willReturn(1);
         $tree1->getCode()->willReturn('selected_tree');
         $tree1->getLabel()->willReturn('Selected tree');
+        $tree1->getCode()->willReturn('tree_1');
         $tree1->hasChildren()->willReturn(false);
         $tree1->isRoot()->willReturn(true);
 
         $tree2->getId()->willReturn(2);
         $tree2->getCode()->willReturn('master');
         $tree2->getLabel()->willReturn('Master catalog');
+        $tree2->getCode()->willReturn('tree_2');
         $tree2->hasChildren()->willReturn(false);
         $tree2->isRoot()->willReturn(true);
 
         $expected = [
-            ['id' => 1, 'code' => 'selected_tree', 'label' => 'Selected tree', 'selected' => 'true'],
-            ['id' => 2, 'code' => 'master', 'label' => 'Master catalog', 'selected' => 'false']
+            ['id' => 1, 'code' => 'tree_1', 'label' => 'Selected tree', 'selected' => 'true'],
+            ['id' => 2, 'code' => 'tree_2', 'label' => 'Master catalog', 'selected' => 'false']
         ];
 
         $this->listTreesResponse([$tree1, $tree2], 1, false)->shouldEqualUsingJSON($expected);
