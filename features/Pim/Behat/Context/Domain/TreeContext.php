@@ -62,7 +62,7 @@ class TreeContext extends PimContext
 
         $parentNode = $categoryTree->findNodeInTree($parent);
 
-        if(!$parentNode->isOpen()) {
+        if (!$parentNode->isOpen()) {
             $parentNode->open();
         }
 

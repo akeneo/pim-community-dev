@@ -20,7 +20,7 @@ class JsNodeDecorator extends ElementDecorator
     {
         $arrow = $this->spin(function () {
             return $this->find('css', 'ins');
-        });
+        }, 'Category tree arrow not found. Can not open category tree.');
 
         $arrow->click();
 

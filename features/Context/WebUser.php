@@ -131,10 +131,7 @@ class WebUser extends RawMinkContext
      */
     public function iVisitTheTab($tab)
     {
-        $this->spin(function () use ($tab) {
-            return $this->getCurrentPage()->visitTab($tab);
-
-        }, sprintf('Cannot visit "%s" tab', $tab));
+        return $this->getCurrentPage()->visitTab($tab);
     }
 
     /**
