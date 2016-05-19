@@ -9,6 +9,11 @@ jobs:
         alias:     add_product_value_with_permission_and_rules
         label:     Mass add products values with permission check & rules application
         type:      mass_edit
+    add_to_variant_group_with_rules:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_variant_group_with_rules
+        label:     Mass add products to variant group & rules application
+        type:      mass_edit
     update_product_value_with_permission:
         connector: Akeneo Mass Edit Connector
         alias:     update_product_value_with_permission
