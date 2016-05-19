@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter;
 
 /**
  * Reorder columns before export
