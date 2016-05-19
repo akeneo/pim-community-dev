@@ -125,7 +125,7 @@ services:
             - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.reference_data:
-        class: %pim_serializer.denormalizer.flat.reference_data.class%
+        class: %pim_reference_data.denormalizer.flat.reference_data.class%
         arguments:
             - ['pim_reference_data_simpleselect']
             - '@?pim_reference_data.repository_resolver'
@@ -133,7 +133,7 @@ services:
             - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.reference_data_collection:
-        class: %pim_serializer.denormalizer.flat.reference_data_collection.class%
+        class: %pim_reference_data.denormalizer.flat.reference_data_collection.class%
         arguments:
             - ['pim_reference_data_multiselect', 'pim_assets_collection']
             - '@?pim_reference_data.repository_resolver'
