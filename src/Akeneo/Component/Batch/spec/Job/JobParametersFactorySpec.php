@@ -22,8 +22,10 @@ class JobParametersFactorySpec extends ObjectBehavior
         DefaultValuesProviderInterface $provider,
         JobInterface $job
     ) {
+        $job->getName()->willReturn('foo');
         $registry->get($job)->willReturn($provider);
         $provider->getDefaultValues()->willReturn(['my_default_field' => 'my default value']);
+
         $jobParameters = $this->create($job, ['my_defined_field' => 'my defined value']);
 
         $jobParameters->shouldReturnAnInstanceOf('Akeneo\Component\Batch\Job\JobParameters');
