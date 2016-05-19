@@ -46,11 +46,6 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
      */
     public function write(array $items)
     {
-        $exportFolder = dirname($this->getPath());
-        if (!is_dir($exportFolder)) {
-            $this->localFs->mkdir($exportFolder);
-        }
-
         $parameters = $this->stepExecution->getJobParameters();
         $withHeader = $parameters->get('withHeader');
         $this->flatRowBuffer->write($items, $withHeader);
@@ -63,12 +58,12 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
     {
         $this->flusher->setStepExecution($this->stepExecution);
 
-        $fileDirectory = $this->archiveDirectory->getAbsolute($this->stepExecution->getJobExecution());
-        $filePath = $fileDirectory . $this->getFilename();
+        $directory = $this->archiveDirectory->getAbsolute($this->stepExecution->getJobExecution());
+        $pathname = $directory . $this->getFilename();
 
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,
-            $filePath,
+            $pathname,
             $this->stepExecution->getJobParameters()->get('linesPerFile'),
             $this->filePathResolverOptions
         );
@@ -79,6 +74,8 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
     }
 
     /**
+     * TODO: should be dropped at the end
+     *
      * {@inheritdoc}
      */
     public function getWrittenFiles()

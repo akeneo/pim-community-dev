@@ -58,6 +58,8 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     }
 
     /**
+     * TODO: should be dropped at the end
+     *
      * Get the file path in which to write the data
      *
      * @return string

@@ -102,6 +102,8 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     }
 
     /**
+     * TODO: should be dropped at the end
+     *
      * {@inheritdoc}
      */
     public function getWrittenFiles()

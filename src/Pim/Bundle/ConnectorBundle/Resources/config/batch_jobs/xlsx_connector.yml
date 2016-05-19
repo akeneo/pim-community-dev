@@ -102,6 +102,10 @@ connector:
                         writer:    pim_connector.writer.file.xlsx_group
                     parameters:
                         batch_size: 10
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.archive_to_local_transfer_step_element
         xlsx_variant_group_export:
             type:  export
             steps:
@@ -148,6 +152,10 @@ connector:
                         writer:    pim_connector.writer.file.xlsx_family
                     parameters:
                         batch_size: 10
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.archive_to_local_transfer_step_element
         xlsx_category_export:
             type:  export
             steps:
@@ -158,6 +166,10 @@ connector:
                         writer:    pim_connector.writer.file.xlsx_category
                     parameters:
                         batch_size: 10
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.archive_to_local_transfer_step_element
         xlsx_attribute_export:
             type:  export
             steps:
@@ -168,6 +180,10 @@ connector:
                         writer:    pim_connector.writer.file.xlsx_attribute
                     parameters:
                         batch_size: 10
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.archive_to_local_transfer_step_element
         xlsx_attribute_option_export:
             type:  export
             steps:
@@ -178,6 +194,10 @@ connector:
                         writer:    pim_connector.writer.file.xlsx_attribute_option
                     parameters:
                         batch_size: 10
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.archive_to_local_transfer_step_element
         xlsx_association_type_export:
             type:  export
             steps:
@@ -188,3 +208,7 @@ connector:
                         writer:    pim_connector.writer.file.xlsx_association_type
                     parameters:
                         batch_size: 10
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.archive_to_local_transfer_step_element

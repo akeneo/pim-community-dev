@@ -126,6 +126,10 @@ connector:
                         reader:    pim_base_connector.reader.orm.category
                         processor: pim_connector.processor.normalization.category.flat
                         writer:    pim_connector.writer.file.csv_category
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.archive_to_local_transfer_step_element
         csv_attribute_export:
             type:  export
             steps:
@@ -134,6 +138,10 @@ connector:
                         reader:    pim_base_connector.reader.orm.attribute
                         processor: pim_connector.processor.normalization.attribute.flat
                         writer:    pim_connector.writer.file.csv_attribute
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.archive_to_local_transfer_step_element
         csv_attribute_option_export:
             type:  export
             steps:
@@ -142,6 +150,10 @@ connector:
                         reader:    pim_base_connector.reader.orm.attribute_option
                         processor: pim_connector.processor.normalization.attribute_option.flat
                         writer:    pim_connector.writer.file.csv_attribute_option
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.archive_to_local_transfer_step_element
         csv_association_type_export:
             type:  export
             steps:
@@ -150,6 +162,10 @@ connector:
                         reader:    pim_base_connector.reader.orm.association_type
                         processor: pim_connector.processor.normalization.association_type.flat
                         writer:    pim_connector.writer.file.csv_association_type
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.archive_to_local_transfer_step_element
         csv_group_export:
             type:  export
             steps:
@@ -158,6 +174,10 @@ connector:
                         reader:    pim_base_connector.reader.repository.group
                         processor: pim_connector.processor.normalization.group.flat
                         writer:    pim_connector.writer.file.csv_group
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.archive_to_local_transfer_step_element
         csv_variant_group_export:
             type:  export
             steps:
@@ -174,3 +194,7 @@ connector:
                         reader:    pim_base_connector.reader.orm.family
                         processor: pim_connector.processor.normalization.family.flat
                         writer:    pim_connector.writer.file.csv_family
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.archive_to_local_transfer_step_element

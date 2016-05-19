@@ -158,33 +158,42 @@ job_execution.summary:
         title: File encoding:
         skipped: skipped, extension in white list
     product_skipped_no_diff: skipped product (no differences)
+    transferred_files: copied
 
 # Job labels
 batch_jobs:
     csv_product_export:
         label: Product export in CSV
         export.label: Product export
+        transfer.label: Copy generated file(s) in the configured folder
     csv_category_export:
         label: Category export in CSV
         export.label: Category export
+        transfer.label: Copy generated file(s) in the configured folder
     csv_attribute_export:
         label: Attribute export in CSV
         export.label: Attribute export
+        transfer.label: Copy generated file(s) in the configured folder
     csv_attribute_option_export:
         label: Attribute option export in CSV
         export.label: Attribute option export
+        transfer.label: Copy generated file(s) in the configured folder
     csv_association_type_export:
         label: Association type export in CSV
         export.label: Association type export
+        transfer.label: Copy generated file(s) in the configured folder
     csv_group_export:
         label: Group export in CSV
         export.label: Group export
+        transfer.label: Copy generated file(s) in the configured folder
     csv_variant_group_export:
         label: Variant group export in CSV
         export.label: Variant group export
+        transfer.label: Copy generated file(s) in the configured folder
     csv_family_export:
         label: Family export in CSV
         export.label: Family export
+        transfer.label: Copy generated file(s) in the configured folder
     csv_product_import:
         label: Product import in CSV
         validation.label: File validation
@@ -241,6 +250,7 @@ batch_jobs:
     xlsx_product_export:
         label: Product export in XLSX
         export.label: Product export
+        transfer.label: Copy generated file(s) in the configured folder
     xlsx_product_import:
         label: Product import in XLSX
         validation.label: File validation
@@ -249,9 +259,11 @@ batch_jobs:
     xlsx_group_export:
         label: Group export in XLSX
         export.label: Group export
+        transfer.label: Copy generated file(s) in the configured folder
     xlsx_variant_group_export:
         label: Variant group export in XLSX
         export.label: Variant group export
+        transfer.label: Copy generated file(s) in the configured folder
     xlsx_group_import:
         label: Group import in XLSX
         validation.label: File validation
@@ -263,15 +275,20 @@ batch_jobs:
     xlsx_family_export:
         label: Family export in XLSX
         export.label: Family export
+        transfer.label: Copy generated file(s) in the configured folder
     xlsx_category_export:
         label: Category export in XLSX
         export.label: Category export
+        transfer.label: Copy generated file(s) in the configured folder
     xlsx_attribute_export:
         label: Attribute export in XLSX
         export.label: Attribute export in XLSX
+        transfer.label: Copy generated file(s) in the configured folder
     xlsx_attribute_option_export:
         label: Attribute option export in XLSX
         export.label: Attribute option export in XLSX
+        transfer.label: Copy generated file(s) in the configured folder
     xlsx_association_type_export:
         label: Association type export in XLSX
         export.label: Association type export in XLSX
+        transfer.label: Copy generated file(s) in the configured folder
