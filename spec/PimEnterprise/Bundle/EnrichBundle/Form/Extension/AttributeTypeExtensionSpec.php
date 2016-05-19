@@ -28,7 +28,6 @@ class AttributeTypeExtensionSpec extends ObjectBehavior
         $this->buildForm($builder);
     }
 
-    
     function it_extends_form_type()
     {
         $this->getExtendedType()->shouldReturn('pim_enrich_attribute');
