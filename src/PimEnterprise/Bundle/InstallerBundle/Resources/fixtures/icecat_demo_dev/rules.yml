@@ -1,126 +1,215 @@
 rules:
     camera_set_canon_brand:
+        priority: 0
         conditions:
-            - field:    family.code
-              operator: IN
-              value:
-                - camcorders
-            - field:    name
-              operator: CONTAINS
-              value:    Canon
+            -
+                field: family.code
+                operator: IN
+                value:
+                    - camcorders
+            -
+                field: name
+                operator: CONTAINS
+                value: Canon
+            -
+                field: camera_brand.code
+                operator: NOT IN
+                value:
+                    - canon_brand
         actions:
-            - type:  set
-              field: camera_brand
-              value: canon_brand
+            -
+                type: set
+                field: camera_brand
+                value: canon_brand
     camera_copy_name_to_model:
+        priority: 0
         conditions:
-            - field:    family.code
-              operator: IN
-              value:
-                - camcorders
+            -
+                field: family.code
+                operator: IN
+                value:
+                    - camcorders
+            -
+                field: camera_model_name
+                operator: EMPTY
         actions:
-            - type:       copy
-              from_field: name
-              to_field:   camera_model_name
+            -
+                type: copy
+                from_field: name
+                to_field: camera_model_name
     camera_set_camera_type:
+        priority: 0
         conditions:
-            - field:    family.code
-              operator: IN
-              value:
-                - camcorders
-            - field:    name
-              operator: CONTAINS
-              value:    Canon
+            -
+                field: family.code
+                operator: IN
+                value:
+                    - camcorders
+            -
+                field: name
+                operator: CONTAINS
+                value: Canon
+            -
+                field: camera_type.code
+                operator: NOT IN
+                value:
+                    - compact
         actions:
-            - type:  set
-              field: camera_type
-              value:  compact
+            -
+                type: set
+                field: camera_type
+                value: compact
     camera_set_autofocus:
+        priority: 0
         conditions:
-            - field:    family.code
-              operator: IN
-              value:
-                - camcorders
-            - field:    name
-              operator: CONTAINS
-              value:    Canon
+            -
+                field: family.code
+                operator: IN
+                value:
+                    - camcorders
+            -
+                field: name
+                operator: CONTAINS
+                value: Canon`
+            -
+                field: auto_focus_lock
+                operator: !=
+                value: true
         actions:
-            - type:  set
-              field: auto_focus_lock
-              value:  true
+            -
+                type: set
+                field: auto_focus_lock
+                value: true
     camera_set_autofocus_point:
+        priority: 0
         conditions:
-            - field:    family.code
-              operator: IN
-              value:
-                - camcorders
-            - field:    name
-              operator: CONTAINS
-              value:    Canon
+            -
+                field: family.code
+                operator: IN
+                value:
+                    - camcorders
+            -
+                field: name
+                operator: CONTAINS
+                value: Canon
+            -
+                field: auto_focus_points
+                operator: !=
+                value: 4
         actions:
-            - type:  set
-              field: auto_focus_points
-              value: 4
+            -
+                type: set
+                field: auto_focus_points
+                value: 4
     copy_description_print_us_to_ecommerce_us:
+        priority: 0
         conditions:
-            - field:    family.code
-              operator: IN
-              value:
-                - camcorders
+            -
+                field: family.code
+                operator: IN
+                value:
+                    - camcorders
+            -
+                field: description
+                locale: en_US
+                scope: ecommerce
+                operator: EMPTY
+            -
+                field: description
+                locale: en_US
+                scope: print
+                operator: NOT EMPTY
         actions:
-            - type:        copy
-              from_field:  description
-              to_field:    description
-              from_locale: en_US
-              from_scope:  print
-              to_locale:   en_US
-              to_scope:    ecommerce
+            -
+                type: copy
+                from_field: description
+                to_field: description
+                from_locale: en_US
+                from_scope: print
+                to_locale: en_US
+                to_scope: ecommerce
     set_purple_tshirt_ecommerce_description:
         priority: 100
         conditions:
-            - field:    sku
-              operator: CONTAINS
-              value:    AKNTS_PB
-            - field:    main_color.code
-              operator: IN
-              value:
-                - purple
+            -
+                field: sku
+                operator: CONTAINS
+                value: AKNTS_PB
+            -
+                field: main_color.code
+                operator: IN
+                value:
+                    - purple
+            -
+                field: description
+                locale: en_US
+                scope: ecommerce
+                operator: EMPTY
         actions:
-            - type:   set
-              field:  description
-              value:  My very new description for purple tshirt
-              locale: en_US
-              scope:  ecommerce
+            -
+                type: set
+                field: description
+                value: 'My very new description for purple tshirt'
+                locale: en_US
+                scope: ecommerce
     set_tshirt_price:
+        priority: 0
         conditions:
-            - field:    sku
-              operator: CONTAINS
-              value:    AKNTS_PB
-        actions:
-            - type:  set
-              field: price
-              value:
-                  - data:     12
+            -
+                field: sku
+                operator: CONTAINS
+                value: AKNTS_PB
+            -
+                field: price
+                operator: !=
+                value:
+                    data: 12
                     currency: EUR
+        actions:
+            -
+                type: set
+                field: price
+                value:
+                    -
+                        data: 12
+                        currency: EUR
     set_tshirt_weight:
+        priority: 0
         conditions:
-            - field:    sku
-              operator: CONTAINS
-              value:    AKNTS_PB
+            -
+                field: sku
+                operator: CONTAINS
+                value: AKNTS_PB
+            -
+                field: weight
+                operator: !=
+                value:
+                    data: 500
+                    unit: GRAM
         actions:
-            - type:  set
-              field: weight
-              value:
-                   data: 500
-                   unit: GRAM
+            -
+                type: set
+                field: weight
+                value:
+                    data: 500
+                    unit: GRAM
     set_tshirt_style:
+        priority: 0
         conditions:
-            - field:    sku
-              operator: CONTAINS
-              value:    AKNTS_PB
+            -
+                field: sku
+                operator: CONTAINS
+                value: AKNTS_PB
+            -
+                field: tshirt_style.code
+                operator: NOT IN
+                value:
+                    - sportwear
+                    - vneck
         actions:
-            - type:  set
-              field: tshirt_style
-              value:
-                - sportwear
-                - vneck
+            -
+                type: set
+                field: tshirt_style
+                value:
+                    - sportwear
+                    - vneck
