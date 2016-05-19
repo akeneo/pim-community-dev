@@ -20,9 +20,11 @@ class JsTreeDecorator extends ElementDecorator
      */
     public function findNodeInTree($nodeName)
     {
-        return $this->spin(function () use ($nodeName) {
-            return $this->find('css', sprintf('li a:contains("%s")', $nodeName));
+        $node = $this->spin(function () use ($nodeName) {
+            return $this->find('css', sprintf('li[data-code="%s"]', $nodeName));
         }, sprintf('Cannot find the node "%s"', $nodeName));
+
+        return $this->decorate($node, ['Pim\Behat\Decorator\TreeDecorator\JsNodeDecorator']);
     }
 
     /**
@@ -30,13 +32,9 @@ class JsTreeDecorator extends ElementDecorator
      */
     public function expandNode($nodeName)
     {
-        $node = $this->findNodeInTree($nodeName)->getParent();
-        if ($node->hasClass('jstree-closed')) {
-            $nodeElement = $this->spin(function () use ($node) {
-                return $node->find('css', 'ins');
-            });
-
-            $nodeElement->click();
+        $node = $this->findNodeInTree($nodeName);
+        if (!$node->isOpen()) {
+            $node->open();
         }
     }
 }

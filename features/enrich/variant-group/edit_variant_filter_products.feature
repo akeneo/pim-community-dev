@@ -20,12 +20,12 @@ Feature: Filter available products for a variant group
     And I should see products black_boots, white_boots and blue_boots
     And I should not see product sneakers
     And I should be able to use the following filters:
-      | filter      | value    | result                                  |
-      | In group    | no       | black_boots, white_boots and blue_boots |
-      | SKU         | bl       | black_boots and blue_boots              |
-      | Family      | Sneakers | blue_boots                              |
-      | Color       | Black    | black_boots                             |
-      | Size        | 42       | white_boots                             |
-      | Name        | bl       | black_boots and blue_boots              |
-      | Description | great    | white_boots                             |
-      | Price       | < 47 EUR | black_boots and blue_boots              |
+      | filter      | operator | value    | result                                  |
+      | in_group    |          | no       | black_boots, white_boots and blue_boots |
+      | sku         | contains | bl       | black_boots and blue_boots              |
+      | family      | in list  | Sneakers | blue_boots                              |
+      | color       | in list  | Black    | black_boots                             |
+      | size        | in list  | 42       | white_boots                             |
+      | name        | contains | bl       | black_boots and blue_boots              |
+      | description | contains | great    | white_boots                             |
+      | price       | <        | 47 EUR   | black_boots and blue_boots              |

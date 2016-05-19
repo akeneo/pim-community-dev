@@ -81,8 +81,8 @@ class ProductEditForm extends Form
             }
         }
 
-        // Close select2 if open
-        $this->getDriver()->executeScript("jQuery('.select2-drop-mask').click();");
+        // Close select2
+        $this->find('css', '#select2-drop-mask')->click();
 
         return isset($results[$attribute]) ? $results[$attribute] : null;
     }
@@ -379,16 +379,9 @@ class ProductEditForm extends Form
                     'css',
                     sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $value)
                 );
-            });
+            }, sprintf('Could not find select2 item with value %s inside %s', $value, $link->getHtml()));
 
-            // Select the value in the displayed dropdown
-            if (null !== $item) {
-                $item->click();
-            } else {
-                throw new \InvalidArgumentException(
-                    sprintf('Could not find select2 item with value %s inside %s', $value, $link->getHtml())
-                );
-            }
+            $item->click();
         }
 
         $this->getSession()->executeScript(

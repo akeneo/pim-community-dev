@@ -23,6 +23,6 @@ Feature: List categories
     And I wait 5 seconds
     Given I am on the categories page
     Then I should not see "Please select a category on the left or Create a new category"
-    When I click on the "Summer collection" category
+    When I click on the "summer_collection" category
     Then I should not see "Server error"
     Then I reset the "Administrator" rights

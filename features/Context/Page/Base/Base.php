@@ -7,6 +7,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Context\FeatureContext;
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Decorator\ElementDecorator;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -41,9 +42,24 @@ class Base extends Page
         $element = parent::getElement($name);
 
         if (isset($this->elements[$name]['decorators'])) {
-            foreach ($this->elements[$name]['decorators'] as $decorator) {
-                $element = new $decorator($element);
-            }
+            $element = $this->decorate($element, $this->elements[$name]['decorators']);
+        }
+
+        return $element;
+    }
+
+    /**
+     * Decorates an element
+     *
+     * @param NodeElement $element
+     * @param array       $decorators
+     *
+     * @return ElementDecorator
+     */
+    protected function decorate(NodeElement $element, array $decorators)
+    {
+        foreach ($decorators as $decorator) {
+            $element = new $decorator($element);
         }
 
         return $element;
@@ -210,7 +226,7 @@ class Base extends Page
     {
         // Search with exact name at first
         $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
-        
+
         if (null === $button) {
             $button = $this->find('xpath', sprintf("//a[text() = '%s']", $locator));
         }
@@ -367,10 +383,10 @@ class Base extends Page
      * Drags an element on another one.
      * Works better than the standard dragTo.
      *
-     * @param NodeElement $element
-     * @param NodeElement $dropZone
+     * @param $element
+     * @param $dropZone
      */
-    public function dragElementTo(NodeElement $element, NodeElement $dropZone)
+    public function dragElementTo($element, $dropZone)
     {
         $session = $this->getSession()->getDriver()->getWebDriverSession();
 

@@ -15,9 +15,9 @@ Feature: Classify many products at once
     Given I mass-edit products bigfoot and horseshoe
     And I choose the "Classify products in categories" operation
     And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
-    And I click on the "Winter collection" category
-    And I click on the "Summer collection" category
+    And I expand the "2014_collection" category
+    And I click on the "winter_collection" category
+    And I click on the "summer_collection" category
     And I move on to the next step
     And I wait for the "classify" mass-edit job to finish
     When I am on the products page

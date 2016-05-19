@@ -29,36 +29,37 @@ Feature: Filter products with multiples metrics filters
     And I am on the products page
 
   Scenario: Successfully filter products with the sames attributes
-    Given I show the filter "Packaging"
-    And I filter by "Packaging" with value "> 30 Gram"
+    Given I show the filter "packaging"
+    And I filter by "packaging" with operator ">" and value "30 Gram"
     Then I should be able to use the following filters:
-      | filter | value        | result                 |
-      | Weight | = 200 Gram   | MUG-2, MUG-3 and MUG-4 |
-      | Weight | >= 200 Gram  | MUG-2, MUG-3 and MUG-4 |
-      | Weight | > 199 Gram   | MUG-2, MUG-3 and MUG-4 |
-      | Weight | < 200 Gram   |                        |
-      | Weight | <= 200 Gram  | MUG-2, MUG-3 and MUG-4 |
-      | Weight | < 201 Gram   | MUG-2, MUG-3 and MUG-4 |
-      | Weight | empty        | POST-1 and POST-2      |
+      | filter | operator | value    | result                 |
+      | weight | =        | 200 Gram | MUG-2, MUG-3 and MUG-4 |
+      | weight | >=       | 200 Gram | MUG-2, MUG-3 and MUG-4 |
+      | weight | >        | 199 Gram | MUG-2, MUG-3 and MUG-4 |
+      | weight | <        | 200 Gram |                        |
+      | weight | <=       | 200 Gram | MUG-2, MUG-3 and MUG-4 |
+      | weight | <        | 201 Gram | MUG-2, MUG-3 and MUG-4 |
+      | weight | is empty |          | POST-1 and POST-2      |
 
   Scenario: Successfully filter product without commons attributes
-    Given I show the filter "Weight"
-    And I filter by "Weight" with value "> 100 Gram"
+    Given I show the filter "weight"
+    And I filter by "weight" with operator ">" and value "100 Gram"
     Then I should be able to use the following filters:
-      | filter    | value      | result                        |
-      | Packaging | = 10 Gram  | MUG-1                         |
-      | Packaging | >= 10 Gram | MUG-1, MUG-2, MUG-3 and MUG-4 |
-      | Packaging | > 9 Gram   | MUG-1, MUG-2, MUG-3 and MUG-4 |
-      | Packaging | < 10 Gram  |                               |
-      | Packaging | <= 10 Gram | MUG-1                         |
-      | Packaging | < 11 Gram  | MUG-1                         |
-      | Packaging | empty      | MUG-5                         |
+      | filter    | operator | value   | result                        |
+      | packaging | =        | 10 Gram | MUG-1                         |
+      | packaging | >=       | 10 Gram | MUG-1, MUG-2, MUG-3 and MUG-4 |
+      | packaging | >        | 9 Gram  | MUG-1, MUG-2, MUG-3 and MUG-4 |
+      | packaging | <        | 10 Gram |                               |
+      | packaging | <=       | 10 Gram | MUG-1                         |
+      | packaging | <        | 11 Gram | MUG-1                         |
+      | packaging | is empty |         | MUG-5                         |
 
-  @unstable
   Scenario: Successfully filter only one product
-    Given I filter by "Packaging" with value "= 10 Gram"
-    And I filter by "Weight" with value "= 200 Gram"
+    Given I show the filter "packaging"
+    And I show the filter "weight"
+    And I filter by "packaging" with operator "=" and value "10 Gram"
+    And I filter by "weight" with operator "=" and value "200 Gram"
     Then the grid should contain 1 elements
     And I should see entities "MUG-1"
-    And I hide the filter "Packaging"
-    And I hide the filter "Weight"
+    And I hide the filter "packaging"
+    And I hide the filter "weight"

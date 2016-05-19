@@ -24,6 +24,61 @@ class Grid extends Index
     const FILTER_IS_EMPTY         = 'empty';
     const FILTER_IN_LIST          = 'in';
 
+    protected $filterDecorators = [
+        'tree' => [
+            'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\CategoryDecorator',
+        ],
+        'boolean' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\BooleanDecorator',
+        ],
+        'choice' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
+        ],
+        'date' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\DateDecorator'
+        ],
+        'metric' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\MetricDecorator',
+        ],
+        'multichoice' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
+        ],
+        'number' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\NumberDecorator',
+        ],
+        'price' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\PriceDecorator',
+        ],
+        'product_completeness' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
+        ],
+        'product_scope' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
+        ],
+        'select2-choice' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\Select2ChoiceDecorator',
+        ],
+        'select2-rest-choice' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\Select2ChoiceDecorator',
+        ],
+        'string' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\StringDecorator',
+        ],
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -164,107 +219,43 @@ class Grid extends Index
     }
 
     /**
-     * @param string               $filterName The name of the filter
-     * @param string               $value      The value to filter by
-     * @param bool|string          $operator   If false, no operator will be selected
-     * @param DriverInterface|null $driver     Required to filter by multiple choices
+     * @param string      $filterName The name of the filter
+     * @param bool|string $operator   The orpertor
+     * @param string      $value      The value to filter by
      *
      * @throws \InvalidArgumentException
      */
-    public function filterBy($filterName, $value, $operator = false, DriverInterface $driver = null)
+    public function filterBy($filterName, $operator, $value)
     {
         $filter = $this->getFilter($filterName);
-        $this->openFilter($filter);
 
-        if ($elt = $filter->find('css', 'select')) {
-            if ($elt->getText() === "between not between more than less than is empty") {
-                $this->filterByDate($filter, $value, $operator);
-            } elseif ($elt->getParent()->find('css', 'button.ui-multiselect')) {
-                if (!$driver || !$driver instanceof Selenium2Driver) {
-                    throw new \InvalidArgumentException('Selenium2Driver is required to filter by a choice filter');
-                }
-                $values = explode(',', $value);
-
-                foreach ($values as $value) {
-                    $driver->executeScript(
-                        sprintf(
-                            "$('.ui-multiselect-menu:visible input[title=\"%s\"]').attr('checked', true).trigger('click');",
-                            $value
-                        )
-                    );
-                    $driver->executeScript(
-                        sprintf(
-                            "$('.ui-multiselect-menu:visible input[title=\"%s\"]:visible').click().trigger('click');",
-                            $value
-                        )
-                    );
-                    sleep(1);
-                }
-
-                // Uncheck the 'All' option
-                if (!in_array('All', $values)) {
-                    $driver->executeScript(
-                        "var all = $('.ui-multiselect-menu:visible input[title=\"All\"]');" .
-                        "if (all.length && all.is(':checked')) { all.click().trigger('click'); }"
-                    );
-                }
-            }
-        } elseif ($elt = $filter->find('css', 'div.filter-criteria')) {
-            $results = $this->getElement('Select2 results');
-            $select2 = $filter->find('css', '.select2-input');
-
-            if (in_array($value, ['empty', 'is empty'])) {
-                $operator = 'empty';
-            }
-
-            if (null !== $results && null !== $select2) {
-                $driver->executeScript("jQuery('.select2-drop-mask').click();");
-            }
-
-            if (false !== $operator) {
-                $filter->find('css', 'button.dropdown-toggle')->click();
-                $filter->find('css', sprintf('[data-value="%s"]', $operator))->click();
-            }
-
-            if (null !== $results && null !== $select2) {
-                if (!in_array($value, ['empty', 'is empty'])) {
-                    $values = explode(',', $value);
-                    foreach ($values as $value) {
-                        $driver->getWebDriverSession()
-                            ->element('xpath', $select2->getXpath())
-                            ->postValue(['value' => [$value]]);
-                        sleep(2);
-                        $results->find('css', 'li')->click();
-                        sleep(2);
-                    }
-                }
-            } elseif ($value !== false) {
-                $elt->fillField('value', $value);
-            }
-
-            $filter->find('css', 'button.filter-update')->click();
-        } else {
-            throw new \InvalidArgumentException(
-                sprintf('Filtering by "%s" is not yet implemented"', $filterName)
-            );
-        }
+        $filter->open();
+        $filter->filter($operator, $value);
     }
 
     /**
-     * @param NodeElement $filter
-     * @param string      $value
-     * @param string      $operator
+     * Get grid filter from label name
+     *
+     * @param string $filterName
+     *
+     * @return NodeElement
      */
-    protected function filterByDate($filter, $value, $operator)
+    public function getFilter($filterName)
     {
-        $elt = $filter->find('css', 'select');
-        if ('empty' === $operator) {
-            $elt->selectOption('is empty');
-        } else {
-            $elt->selectOption($operator);
+        // We find the node element
+        $filter = $this->spin(function () use ($filterName) {
+            $filter = $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
+
+            return $filter;
+        }, sprintf('Couldn\'t find a filter with name "%s"', $filterName));
+
+        // We decorate it
+        $filterType = $filter->getAttribute('data-type');
+        if (isset($this->filterDecorators[$filterType])) {
+            $filter = $this->decorate($filter, $this->filterDecorators[$filterType]);
         }
 
-        $filter->find('css', 'button.filter-update')->click();
+        return $filter;
     }
 
     /**
@@ -494,26 +485,6 @@ class Grid extends Index
     }
 
     /**
-     * Get grid filter from label name
-     *
-     * @param string $filterName
-     *
-     * @return NodeElement
-     */
-    public function getFilter($filterName)
-    {
-        $filter = $this->spin(function () use ($filterName) {
-            if (strtolower($filterName) === 'channel') {
-                return $this->getElement('Grid toolbar')->find('css', '.filter-item');
-            }
-
-            return $this->getElement('Filters')->find('css', sprintf('.filter-item:contains("%s")', $filterName));
-        }, sprintf('Couldn\'t find a filter with name "%s"', $filterName));
-
-        return $filter;
-    }
-
-    /**
      * @param string $filterName
      *
      * @return bool
@@ -521,10 +492,7 @@ class Grid extends Index
     public function isFilterAvailable($filterName)
     {
         $this->clickFiltersList();
-
-        $filterElement = $this
-            ->getElement('Manage filters')
-            ->find('css', sprintf('label:contains("%s")', $filterName));
+        $filterElement = $this->getElement('Manage filters')->find('css', sprintf('input[value="%s"]', $filterName));
 
         return null !== $filterElement;
     }
@@ -536,11 +504,7 @@ class Grid extends Index
      */
     public function showFilter($filterName)
     {
-        try {
-            if (!$this->getFilter($filterName)->isVisible()) {
-                $this->clickOnFilterToManage($filterName);
-            }
-        } catch (TimeoutException $e) {
+        if (!$this->getFilter($filterName)->isVisible()) {
             $this->clickOnFilterToManage($filterName);
         }
     }
@@ -552,8 +516,9 @@ class Grid extends Index
      */
     public function hideFilter($filterName)
     {
-        if ($this->getFilter($filterName)->isVisible()) {
-            $this->clickOnFilterToManage($filterName);
+        $filter = $this->getFilter($filterName);
+        if ($filter->isVisible()) {
+            $filter->remove();
         }
     }
 
@@ -631,21 +596,27 @@ class Grid extends Index
             $this->clickFiltersList();
         }
 
-        $searchField   = $this->spin(function () use ($manageFilters) {
-            return $manageFilters->find('css', 'input[type="search"]');
-        }, 'Cannot find manage filters search field');
-        $searchField->setValue($filterName);
+        $this->spin(function () use ($manageFilters, $filterName) {
+            $filterElement = $manageFilters->find('css', sprintf('input[value="%s"]', $filterName));
 
-        $filterElement = $this->spin(function () use ($manageFilters, $filterName) {
-            $filterElement = $manageFilters->find('css', sprintf('label:contains("%s")', $filterName));
-            if (null === $filterElement || !$filterElement->isVisible()) {
-                return false;
+            if (null !== $filterElement && $filterElement->isVisible()) {
+                $filterElement->click();
+
+                return true;
             }
 
-            return $filterElement;
-        }, sprintf('Impossible to activate filter "%s"', $filterName));
+            if (null !== $searchField = $manageFilters->find('css', 'input[type="search"]')) {
+                $searchField->setValue($filterName);
+            }
 
-        $filterElement->click();
+            if (null !== $filterElement && $filterElement->isVisible()) {
+                $filterElement->click();
+
+                return true;
+            }
+
+            return false;
+        }, sprintf('Impossible to activate filter "%s"', $filterName));
     }
 
     /**
@@ -713,20 +684,6 @@ class Grid extends Index
     }
 
     /**
-     * Open the filter
-     *
-     * @param NodeElement $filter
-     */
-    public function openFilter(NodeElement $filter)
-    {
-        $element = $this->spin(function () use ($filter) {
-            return $filter->find('css', 'button');
-        }, 'Impossible to open filter or maybe its type is not yet implemented');
-
-        $element->click();
-    }
-
-    /**
      * Get column headers
      *
      * @param bool $withHidden
@@ -790,89 +747,6 @@ class Grid extends Index
     protected function getRows()
     {
         return $this->getGridContent()->findAll('xpath', '/tr');
-    }
-
-    /**
-     * @param string $filterName The name of the price filter
-     * @param string $action     Type of filtering (>, >=, etc.)
-     * @param number $value      Value to filter
-     * @param string $currency   Currency on which to filter
-     */
-    public function filterPerPrice($filterName, $action, $value, $currency)
-    {
-        $filter = $this->getFilter($filterName);
-        $this->openFilter($filter);
-
-        if (null !== $value) {
-            $criteriaElt = $filter->find('css', 'div.filter-criteria');
-            $criteriaElt->fillField('value', $value);
-        }
-
-        $buttons        = $filter->findAll('css', '.currencyfilter button.dropdown-toggle');
-        $actionButton   = array_shift($buttons);
-        $currencyButton = array_shift($buttons);
-
-        // Open the dropdown menu with currency list and click on $currency line
-        $currencyButton->click();
-        $currencyButton->getParent()->find('css', sprintf('ul a:contains("%s")', $currency))->click();
-
-        // Open the dropdown menu with action list and click on $action line
-        $actionButton->click();
-        $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
-
-        $filter->find('css', 'button.filter-update')->click();
-    }
-
-    /**
-     * @param string $filterName The name of the metric filter
-     * @param string $action     Type of filtering (>, >=, etc.)
-     * @param float  $value      Value to filter
-     * @param string $unit       Unit on which to filter
-     */
-    public function filterPerMetric($filterName, $action, $value, $unit)
-    {
-        $filter = $this->getFilter($filterName);
-        $this->openFilter($filter);
-
-        $criteriaElt = $filter->find('css', 'div.filter-criteria');
-        $criteriaElt->fillField('value', $value);
-
-        $buttons      = $filter->findAll('css', '.metricfilter button.dropdown-toggle');
-        $actionButton = array_shift($buttons);
-        $unitButton   = array_shift($buttons);
-
-        // Open the dropdown menu with unit list and click on $unit line
-        $unitButton->click();
-        $unitButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $unit))->click();
-
-        // Open the dropdown menu with action list and click on $action line
-        $actionButton->click();
-        $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
-
-        $filter->find('css', 'button.filter-update')->click();
-    }
-
-    /**
-     * @param string $filterName The name of the number filter
-     * @param string $action     Type of filtering (>, >=, etc.)
-     * @param float  $value      Value to filter
-     */
-    public function filterPerNumber($filterName, $action, $value)
-    {
-        $filter = $this->getFilter($filterName);
-        $this->openFilter($filter);
-
-        $criteriaElt = $filter->find('css', 'div.filter-criteria');
-        $criteriaElt->fillField('value', $value);
-
-        $buttons      = $filter->findAll('css', '.filter-criteria button.dropdown-toggle');
-        $actionButton = array_shift($buttons);
-
-        // Open the dropdown menu with action list and click on $action line
-        $actionButton->click();
-        $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
-
-        $filter->find('css', 'button.filter-update')->click();
     }
 
     /**

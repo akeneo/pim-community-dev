@@ -33,5 +33,5 @@ Feature: Edit a user
     And I should see "Print"
     And I should see "2015 Männer-Kollektion"
     And I should see "2015 Damenkollektion"
-    And I should see the filters Name, Family and SKU
-    And I should not see the filters Status
+    And I should see the filters name, family and sku
+    And I should not see the filter enabled

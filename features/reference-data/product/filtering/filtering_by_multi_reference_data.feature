@@ -20,13 +20,13 @@ Feature: Filter products by reference data
     And I am on the products page
 
   Scenario: Successfully filter product with multi reference data filters
-    Given I show the filter "Sole color"
-    And I filter by "Sole color" with value "Red"
+    Given I show the filter "sole_color"
+    And I filter by "sole_color" with operator "in list" and value "Red"
     And I should be able to use the following filters:
-      | filter      | value                 | result |
-      | Sole fabric | Cashmerewool          | postit |
-      | Sole fabric | Silk                  | postit |
-      | Sole fabric | Cashmerewool,Silk     | postit |
-      | Sole fabric | Cashmerewool,Neoprene | postit |
-      | Sole fabric | Neoprene              |        |
-      | Sole fabric | is empty              |        |
+      | filter      | operator | value                 | result |
+      | sole_fabric | in list  | Cashmerewool          | postit |
+      | sole_fabric | in list  | Silk                  | postit |
+      | sole_fabric | in list  | Cashmerewool,Silk     | postit |
+      | sole_fabric | in list  | Cashmerewool,Neoprene | postit |
+      | sole_fabric | in list  | Neoprene              |        |
+      | sole_fabric | is empty |                       |        |
