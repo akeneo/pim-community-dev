@@ -91,6 +91,20 @@ class ProductCsvExport implements FormConfigurationProviderInterface
                     'attr'     => ['data-tab' => 'content']
                 ]
             ],
+            'updated' => [
+                'type'    => 'choice',
+                'options' => [
+                    'choices'  => [
+                        'all'         => 'pim_connector.export.updated.choice.all',
+                        'last_export' => 'pim_connector.export.updated.choice.last_export'
+                    ],
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_connector.export.updated.label',
+                    'help'     => 'pim_connector.export.updated.help',
+                    'attr'     => ['data-tab' => 'content']
+                ],
+            ],
             'decimalSeparator' => [
                 'type'    => 'choice',
                 'options' => [
