@@ -45,5 +45,5 @@ Feature: Import attributes
     And I launch the import job
     And I wait for the "csv_clothing_attribute_import" job to finish
     Then there should be the following attributes:
-      | type | code       | label-en_US  | group   | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit | reference_data_name | is_read_only | sort_order
-      | text | shortname  | Shortname    | info    | 0      | 1                      | 1           | 0        |                    |               |                     |                     | 1            | 2
+      | type | code       | label-en_US  | group   | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit | reference_data_name | is_read_only | sort_order |
+      | text | shortname  | Shortname    | info    | 0      | 1                      | 1           | 0        |                    |               |                     |                     | 1            | 2          |
