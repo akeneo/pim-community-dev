@@ -3,6 +3,7 @@
 namespace Pim\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Context for the attribute validation
@@ -23,6 +24,7 @@ class AttributeValidationContext extends PimContext
     public function thereShouldBeTheFollowingAttributes(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
+            /** @var AttributeInterface $attribute */
             $attribute = $this->getFixturesContext()->getAttribute($data['code']);
             $this->getFixturesContext()->refresh($attribute);
 
@@ -119,6 +121,9 @@ class AttributeValidationContext extends PimContext
                         break;
                     case 'date_max':
                         assertEquals($value, $attribute->getDateMax()->format('Y-m-d'));
+                        break;
+                    case 'is_read_only':
+                        assertEquals(($data['is_read_only'] == 1), $attribute->getProperty('is_read_only'));
                         break;
                     default:
                         throw new \Exception(sprintf(

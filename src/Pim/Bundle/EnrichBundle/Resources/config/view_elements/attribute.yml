@@ -3,7 +3,20 @@ parameters:
     pim_enrich.view_element.attribute.tab.value.template:     'PimEnrichBundle:Attribute:Tab/value.html.twig'
     pim_enrich.view_element.attribute.tab.history.template:   'PimEnrichBundle:Form:Tab/history.html.twig'
 
+    pim_enrich.attribute.general_parameters.allowed_form_types:
+        - code
+        - attributeType
+        - scopable
+        - reference_data_name
+        - localizable
+        - unique
+        - availableLocales
+    pim_enrich.attribute.backend_parameters.allowed_form_types:
+        - group
+        - useableAsGridFilter
+
 services:
+    ## Tabs
     pim_enrich.view_element.attribute.tab.parameter:
         parent: pim_enrich.view_element.base
         arguments:
@@ -30,3 +43,24 @@ services:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_attribute_history'}] ]
         tags:
             - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.form_tab, position: 110 }
+
+    ## Sub forms
+    pim_enrich.view_element.attribute.general_parameters:
+        class: '%pim_enrich.view_element.base.class%'
+        arguments:
+            - 'pane.accordion.general_parameters'
+            - 'PimEnrichBundle:Attribute:Tab/_default_parameter_form.html.twig'
+            -
+                allowed_form_types: %pim_enrich.attribute.general_parameters.allowed_form_types%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.general_parameters, position: 90 }
+
+    pim_enrich.view_element.attribute.backend_parameters:
+        class: '%pim_enrich.view_element.base.class%'
+        arguments:
+            - 'pane.accordion.backend_parameters'
+            - 'PimEnrichBundle:Attribute:Tab/_default_parameter_form.html.twig'
+            -
+                allowed_form_types: %pim_enrich.attribute.backend_parameters.allowed_form_types%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.backend_parameters, position: 90 }

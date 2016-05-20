@@ -9,7 +9,17 @@ class AttributeStandardConverterSpec extends ObjectBehavior
 {
     function let(FieldsRequirementChecker $fieldChecker)
     {
-        $this->beConstructedWith($fieldChecker);
+        $booleanFields = [
+            'localizable',
+            'useable_as_grid_filter',
+            'unique',
+            'required',
+            'scopable',
+            'wysiwyg_enabled',
+            'decimals_allowed',
+            'negative_allowed',
+        ];
+        $this->beConstructedWith($fieldChecker, $booleanFields);
     }
 
     function it_is_a_standard_array_converter()

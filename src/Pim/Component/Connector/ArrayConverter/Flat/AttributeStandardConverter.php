@@ -17,12 +17,17 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
     /** @var FieldsRequirementChecker */
     protected $fieldChecker;
 
+    /** @var array */
+    protected $booleanFields;
+
     /**
      * @param FieldsRequirementChecker $fieldChecker
+     * @param array                    $booleanFields
      */
-    public function __construct(FieldsRequirementChecker $fieldChecker)
+    public function __construct(FieldsRequirementChecker $fieldChecker, array $booleanFields)
     {
-        $this->fieldChecker = $fieldChecker;
+        $this->fieldChecker  = $fieldChecker;
+        $this->booleanFields = $booleanFields;
     }
 
     /**
@@ -36,18 +41,8 @@ class AttributeStandardConverter implements StandardArrayConverterInterface
         $this->fieldChecker->checkFieldsFilling($item, ['code']);
 
         $convertedItem = ['labels' => []];
-        $booleanFields = [
-            'localizable',
-            'useable_as_grid_filter',
-            'unique',
-            'required',
-            'scopable',
-            'wysiwyg_enabled',
-            'decimals_allowed',
-            'negative_allowed',
-        ];
         foreach ($item as $field => $data) {
-            $convertedItem = $this->convertFields($field, $booleanFields, $data, $convertedItem);
+            $convertedItem = $this->convertFields($field, $this->booleanFields, $data, $convertedItem);
         }
 
         return $convertedItem;

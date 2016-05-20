@@ -35,21 +35,24 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     /** @var AttributeGroupRepositoryInterface */
     protected $groupRepository;
 
+    /** @var AttributeTypeRegistry */
+    protected $attributeTypeRegistry;
+
     /**
      * Constructor
      *
-     * @param AttributeTypeRegistry             $attTypeRegistry Registry
+     * @param AttributeTypeRegistry             $attributeTypeRegistry Registry
      * @param SecurityFacade                    $securityFacade
      * @param AttributeGroupRepositoryInterface $groupRepository
      */
     public function __construct(
-        AttributeTypeRegistry $attTypeRegistry,
+        AttributeTypeRegistry $attributeTypeRegistry,
         SecurityFacade $securityFacade,
         AttributeGroupRepositoryInterface $groupRepository
     ) {
-        $this->attTypeRegistry = $attTypeRegistry;
-        $this->securityFacade  = $securityFacade;
-        $this->groupRepository = $groupRepository;
+        $this->attributeTypeRegistry = $attributeTypeRegistry;
+        $this->securityFacade        = $securityFacade;
+        $this->groupRepository       = $groupRepository;
     }
 
     /**
@@ -100,13 +103,13 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     /**
      * Customize the attribute form
      *
-     * @param Form               $form
+     * @param FormInterface      $form
      * @param AttributeInterface $attribute
      */
-    protected function customizeForm(Form $form, AttributeInterface $attribute)
+    protected function customizeForm(FormInterface $form, AttributeInterface $attribute)
     {
-        $attTypeClass = $this->attTypeRegistry->get($attribute->getAttributeType());
-        $fields       = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);
+        $attributeTypeClass = $this->attributeTypeRegistry->get($attribute->getAttributeType());
+        $fields             = $attributeTypeClass->buildAttributeFormTypes($this->factory, $attribute);
 
         foreach ($fields as $field) {
             $form->add($field);

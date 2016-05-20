@@ -77,10 +77,10 @@ class AttributeNormalizer implements NormalizerInterface
 
         // This normalizer is used in the PEF attributes loading and in the add_attributes widget. The attributes
         // loading does not need complete group normalization. This has to be cleaned.
+        $normalizedAttribute['group'] = null;
+
         if (isset($context['include_group']) && $context['include_group'] && null !== $attribute->getGroup()) {
             $normalizedAttribute['group'] = $this->normalizer->normalize($attribute->getGroup(), 'json', $context);
-        } else {
-            $normalizedAttribute['group'] = null;
         }
 
         return $normalizedAttribute;

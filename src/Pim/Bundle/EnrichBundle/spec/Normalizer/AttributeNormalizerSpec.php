@@ -19,7 +19,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $this->beConstructedWith($normalizer, $fieldProvider, $emptyValueProvider);
     }
 
-    function it_adds_the_attribute_id_to_the_normalized_attribute(
+    function it_normalizes_attribute(
         $normalizer,
         $fieldProvider,
         $emptyValueProvider,
