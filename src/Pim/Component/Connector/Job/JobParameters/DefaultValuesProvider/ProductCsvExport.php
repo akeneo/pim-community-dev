@@ -41,6 +41,7 @@ class ProductCsvExport implements DefaultValuesProviderInterface
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $parameters['channel'] = null;
         $parameters['enabled'] = 'enabled';
+        $parameters['updated'] = 'all';
 
         return $parameters;
     }

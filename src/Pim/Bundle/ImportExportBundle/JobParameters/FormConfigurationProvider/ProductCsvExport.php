@@ -2,10 +2,16 @@
 
 namespace Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider;
 
+use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\JobInterface;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * FormsOptions for product CSV export
@@ -21,6 +27,18 @@ class ProductCsvExport implements FormConfigurationProviderInterface
 
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
+
+    /** @var JobRepositoryInterface */
+    protected $jobRepository;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /** @var PresenterInterface */
+    protected $datePresenter;
+
+    /** @var LocaleResolver */
+    protected $localeResolver;
 
     /** @var string */
     protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
@@ -38,21 +56,33 @@ class ProductCsvExport implements FormConfigurationProviderInterface
     protected $supportedJobNames;
 
     /**
-     * @param FormConfigurationProviderInterface      $simpleCsvExport
-     * @param ChannelRepositoryInterface $channelRepository
-     * @param array                      $supportedJobNames
-     * @param array                      $decimalSeparators
-     * @param array                      $dateFormats
+     * @param FormConfigurationProviderInterface $simpleCsvExport
+     * @param ChannelRepositoryInterface         $channelRepository
+     * @param JobRepositoryInterface             $jobRepository
+     * @param TranslatorInterface                $translator
+     * @param PresenterInterface                 $datePresenter
+     * @param LocaleResolver                     $localeResolver
+     * @param array                              $supportedJobNames
+     * @param array                              $decimalSeparators
+     * @param array                              $dateFormats
      */
     public function __construct(
         FormConfigurationProviderInterface $simpleCsvExport,
         ChannelRepositoryInterface $channelRepository,
+        JobRepositoryInterface $jobRepository,
+        TranslatorInterface $translator,
+        PresenterInterface $datePresenter,
+        LocaleResolver $localeResolver,
         array $supportedJobNames,
         array $decimalSeparators,
         array $dateFormats
     ) {
         $this->simpleCsvExport   = $simpleCsvExport;
         $this->channelRepository = $channelRepository;
+        $this->jobRepository     = $jobRepository;
+        $this->translator        = $translator;
+        $this->datePresenter     = $datePresenter;
+        $this->localeResolver    = $localeResolver;
         $this->supportedJobNames = $supportedJobNames;
         $this->decimalSeparators = $decimalSeparators;
         $this->dateFormats       = $dateFormats;
@@ -61,7 +91,7 @@ class ProductCsvExport implements FormConfigurationProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormConfiguration()
+    public function getFormConfiguration(JobInstance $jobInstance)
     {
         $formOptions = [
             'channel' => [
@@ -90,6 +120,21 @@ class ProductCsvExport implements FormConfigurationProviderInterface
                     'attr'     => ['data-tab' => 'content']
                 ]
             ],
+            'updated' => [
+                'type'    => 'choice',
+                'options' => [
+                    'choices'  => [
+                        'all'         => 'pim_connector.export.updated.choice.all',
+                        'last_export' => 'pim_connector.export.updated.choice.last_export'
+                    ],
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_connector.export.updated.label',
+                    'help'     => 'pim_connector.export.updated.help',
+                    'info'     => $this->getLastExecution($jobInstance),
+                    'attr'     => ['data-tab' => 'content']
+                ],
+            ],
             'decimalSeparator' => [
                 'type'    => 'choice',
                 'options' => [
@@ -111,7 +156,7 @@ class ProductCsvExport implements FormConfigurationProviderInterface
                 ]
             ],
         ];
-        $formOptions = array_merge($formOptions, $this->simpleCsvExport->getFormConfiguration());
+        $formOptions = array_merge($formOptions, $this->simpleCsvExport->getFormConfiguration($jobInstance));
 
         return $formOptions;
     }
@@ -122,5 +167,27 @@ class ProductCsvExport implements FormConfigurationProviderInterface
     public function supports(JobInterface $job)
     {
         return in_array($job->getName(), $this->supportedJobNames);
+    }
+
+    /**
+     * Get last execution job
+     *
+     * @param JobInstance $jobInstance
+     *
+     * @return array
+     */
+    protected function getLastExecution(JobInstance $jobInstance)
+    {
+        $lastExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
+
+        if (null === $lastExecution) {
+            return $this->translator->trans('pim_connector.export.updated.last_execution.none');
+        }
+
+        return $this->translator->trans('pim_connector.export.updated.last_execution.last', [
+            '%date%' => $this->datePresenter->present($lastExecution->getStartTime(), [
+                'locale' => $this->localeResolver->getCurrentLocale()
+            ])
+        ]);
     }
 }

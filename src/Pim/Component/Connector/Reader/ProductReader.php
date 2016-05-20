@@ -4,6 +4,8 @@ namespace Pim\Component\Connector\Reader;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Job\BatchStatus;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
@@ -14,7 +16,6 @@ use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
@@ -41,6 +42,9 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
 
+    /** @var JobRepositoryInterface */
+    protected $jobRepository;
+
     /** @var bool */
     protected $generateCompleteness;
 
@@ -56,6 +60,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * @param CompletenessManager                 $completenessManager
      * @param MetricConverter                     $metricConverter
      * @param ObjectDetacherInterface             $objectDetacher
+     * @param JobRepositoryInterface              $jobRepository
      * @param bool                                $generateCompleteness
      */
     public function __construct(
@@ -64,6 +69,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         ObjectDetacherInterface $objectDetacher,
+        JobRepositoryInterface $jobRepository,
         $generateCompleteness
     ) {
         $this->pqbFactory           = $pqbFactory;
@@ -71,6 +77,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $this->completenessManager  = $completenessManager;
         $this->metricConverter      = $metricConverter;
         $this->objectDetacher       = $objectDetacher;
+        $this->jobRepository        = $jobRepository;
         $this->generateCompleteness = (bool) $generateCompleteness;
     }
 
@@ -82,9 +89,14 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $channel = $this->getConfiguredChannel();
         $parameters = $this->stepExecution->getJobParameters();
         $enabled = $parameters->get('enabled');
+        $updated = $parameters->get('updated');
 
         $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
-        $filters = $this->getFilters($channel, $this->rawToStandardProductStatus($enabled));
+        $filters = $this->getFilters(
+            $channel,
+            $this->rawToStandardProductStatus($enabled),
+            $this->rawToStandardProductUpdated($updated)
+        );
 
         foreach ($filters as $filter) {
             $pqb->addFilter(
@@ -155,10 +167,11 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      *
      * @param ChannelInterface $channel
      * @param bool             $status
+     * @param string           $updated
      *
      * @return array
      */
-    protected function getFilters(ChannelInterface $channel, $status)
+    protected function getFilters(ChannelInterface $channel, $status, $updated)
     {
         $filters = [
             [
@@ -180,6 +193,15 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
                 'field'    => 'enabled',
                 'operator' => Operators::EQUALS,
                 'value'    => $status,
+                'context'  => []
+            ];
+        }
+
+        if (null !== $updated) {
+            $filters[] = [
+                'field'    => 'updated',
+                'operator' => Operators::GREATER_THAN,
+                'value'    => $updated,
                 'context'  => []
             ];
         }
@@ -207,5 +229,27 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         }
 
         return $status;
+    }
+
+    /**
+     * Convert the UI product updated to the standard product updated
+     *
+     * @param string $rawUpdated
+     *
+     * @return \DateTime|null
+     */
+    protected function rawToStandardProductUpdated($rawUpdated)
+    {
+        switch ($rawUpdated) {
+            case 'last_export':
+                $jobInstance = $this->stepExecution->getJobExecution()->getJobInstance();
+                $jobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
+                $updated = null === $jobExecution ? null : $jobExecution->getStartTime();
+                break;
+            default:
+                $updated = null;
+        }
+
+        return $updated;
     }
 }

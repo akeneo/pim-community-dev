@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider;
 
 use Akeneo\Component\Batch\Job\JobInterface;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
 
 /**
@@ -28,7 +29,7 @@ class SimpleCsvExport implements FormConfigurationProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormConfiguration()
+    public function getFormConfiguration(JobInstance $jobInstance)
     {
         return [
             'filePath' => [

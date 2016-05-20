@@ -22,6 +22,7 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
             - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@akeneo_batch.job_repository'
             - true
 
     pim_connector.reader.file.csv_iterator_factory:

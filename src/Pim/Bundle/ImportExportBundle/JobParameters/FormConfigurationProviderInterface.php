@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\JobParameters;
 
 use Akeneo\Component\Batch\Job\JobInterface;
+use Akeneo\Component\Batch\Model\JobInstance;
 
 /**
  * Define form options to use to edit a JobParameters depending on the Job we want configure
@@ -14,9 +15,11 @@ use Akeneo\Component\Batch\Job\JobInterface;
 interface FormConfigurationProviderInterface
 {
     /**
+     * @param JobInstance $jobInstance
+     *
      * @return array
      */
-    public function getFormConfiguration();
+    public function getFormConfiguration(JobInstance $jobInstance);
 
     /**
      * @return boolean
