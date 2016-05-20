@@ -5,19 +5,19 @@ parameters:
 
 services:
     pimee_enrich.form.subscriber.attribute_group_permissions:
-        class: %pimee_enrich.form.subscriber.attribute_group_permissions.class%
+        class: '%pimee_enrich.form.subscriber.attribute_group_permissions.class%'
         arguments:
             - '@pimee_security.manager.attribute_group_access'
             - '@oro_security.security_facade'
 
     pimee_enrich.form.subscriber.category_permissions:
-        class: %pimee_enrich.form.subscriber.category_permissions.class%
+        class: '%pimee_enrich.form.subscriber.category_permissions.class%'
         arguments:
             - '@pimee_security.manager.category_access'
             - '@oro_security.security_facade'
 
     pimee_enrich.form.subscriber.locale_permissions:
-        class: %pimee_enrich.form.subscriber.locale_permissions.class%
+        class: '%pimee_enrich.form.subscriber.locale_permissions.class%'
         arguments:
             - '@pimee_security.manager.locale_access'
             - '@oro_security.security_facade'

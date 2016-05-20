@@ -10,3 +10,8 @@ extensions:
         parent: pim-mass-product-edit-form-attributes
         targetZone: self
         position: 100
+
+    pim-mass-product-edit-form-attribute-read-only:
+        module: pimee/product-edit-form/attributes/attribute-read-only
+        parent: pim-mass-product-edit-form-attributes
+        position: 90

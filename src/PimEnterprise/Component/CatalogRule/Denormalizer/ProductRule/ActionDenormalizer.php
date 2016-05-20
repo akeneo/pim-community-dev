@@ -29,7 +29,7 @@ class ActionDenormalizer implements DenormalizerInterface
     /**
      * @param string $actionClass should implement
      *                            \PimEnterprise\Component\CatalogRule\Model\ActionInterface
-     * @param string $actiontype
+     * @param string $actionType
      */
     public function __construct($actionClass, $actionType)
     {

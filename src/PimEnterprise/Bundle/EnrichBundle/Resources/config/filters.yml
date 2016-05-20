@@ -1,7 +1,13 @@
 parameters:
-    pimee_catalog.filter.product_edit_data.class: PimEnterprise\Bundle\EnrichBundle\Filter\ProductEditDataFilter
+    pimee_enrich.filter.product_edit_data.class: PimEnterprise\Bundle\EnrichBundle\Filter\ProductEditDataFilter
+    pimee_enrich.filter.product_values_edit_data.class: PimEnterprise\Bundle\EnrichBundle\Filter\ProductValuesEditDataFilter
 
 services:
     pimee_enrich.filter.product_edit_data:
-        class: %pimee_catalog.filter.product_edit_data.class%
+        class: '%pimee_enrich.filter.product_edit_data.class%'
         parent: pim_enrich.filter.product_edit_data
+
+    pimee_enrich.filter.product_values_edit_data:
+        class: %pimee_enrich.filter.product_values_edit_data.class%
+        tags:
+            - { name: pim_catalog.filter.object, type: pim.internal_api.attribute.edit }

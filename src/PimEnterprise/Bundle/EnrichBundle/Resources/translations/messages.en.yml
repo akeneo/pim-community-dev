@@ -178,3 +178,6 @@ job_execution.summary:
     proposal_deleted: deleted
 
 pim_assets_collection: Assets collection
+
+pim_enrich_attribute_form:
+    isReadOnly: Read only

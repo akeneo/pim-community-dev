@@ -1,0 +1,13 @@
+parameters:
+    pimee_catalog.updater.attribute.class: PimEnterprise\Component\Catalog\Updater\AttributeUpdater
+    pimee_catalog.updater.attribute.properties:
+        - is_read_only
+
+services:
+    pimee_catalog.updater.attribute:
+        class: '%pimee_catalog.updater.attribute.class%'
+        decorates: pim_catalog.updater.attribute
+        decoration_inner_name: pim_catalog.updater.attribute.base
+        arguments:
+            - '@pim_catalog.updater.attribute.base'
+            - '%pimee_catalog.updater.attribute.properties%'
