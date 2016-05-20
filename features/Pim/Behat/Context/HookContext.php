@@ -53,7 +53,7 @@ class HookContext extends PimContext
 
         $purgers[] = new ORMPurger($this->getService('doctrine')->getManager());
 
-        $purgers[] = new SimplePurger(
+        $purgers[] = new DBALPurger(
             $this->getService('database_connection'),
             [
                 'pim_session',
