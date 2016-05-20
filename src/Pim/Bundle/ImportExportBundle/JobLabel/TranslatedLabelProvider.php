@@ -1,18 +1,17 @@
 <?php
 
-// TODO: move to Pim\Bundle\ImportExportBundle\JobLabel ?
-namespace Pim\Bundle\ImportExportBundle\Provider;
+namespace Pim\Bundle\ImportExportBundle\JobLabel;
 
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Provides UI translated label for background Jobs, Steps & StepElements
+ * Provides a UI translated label for Job and Step, these label keys are build based on a convention
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class JobLabelProvider
+class TranslatedLabelProvider
 {
     /** @var TranslatorInterface */
     protected $translator;

@@ -8,7 +8,7 @@ services:
         arguments:
             - '@akeneo_batch.connectors'
             - '@translator'
-            - '@pim_import_export.provider.job_label'
+            - '@pim_import_export.job_label.translated_label_provider'
         tags:
             - { name: form.type, alias: pim_import_export_job_instance }
 

@@ -6,7 +6,7 @@ use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\DataTransformer\ConfigurationToJobParametersTransformer;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobAliasSubscriber;
-use Pim\Bundle\ImportExportBundle\Provider\JobLabelProvider;
+use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,18 +33,18 @@ class JobInstanceType extends AbstractType
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var JobLabelProvider */
+    /** @var TranslatedLabelProvider */
     protected $jobLabelProvider;
 
     /**
      * @param ConnectorRegistry   $connectorRegistry
      * @param TranslatorInterface $translator
-     * @param JobLabelProvider    $jobLabelProvider
+     * @param TranslatedLabelProvider    $jobLabelProvider
      */
     public function __construct(
         ConnectorRegistry $connectorRegistry,
         TranslatorInterface $translator,
-        JobLabelProvider $jobLabelProvider
+        TranslatedLabelProvider $jobLabelProvider
     ) {
         $this->connectorRegistry = $connectorRegistry;
         $this->translator        = $translator;

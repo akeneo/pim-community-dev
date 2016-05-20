@@ -6,4 +6,4 @@ services:
         class: %pim_import_export.datagrid.provider.job.class%
         arguments:
             - '@akeneo_batch.connectors'
-            - '@pim_import_export.provider.job_label'
+            - '@pim_import_export.job_label.translated_label_provider'

@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\ImportExportBundle\Provider;
+namespace spec\Pim\Bundle\ImportExportBundle\JobLabel;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class JobLabelProviderSpec extends ObjectBehavior
+class TranslatedLabelProviderSpec extends ObjectBehavior
 {
     function let(TranslatorInterface $translator)
     {

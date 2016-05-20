@@ -10,13 +10,13 @@ use Akeneo\Component\Batch\Job\BatchStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use Pim\Bundle\ImportExportBundle\Provider\JobLabelProvider;
+use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class StepExecutionNormalizerSpec extends ObjectBehavior
 {
-    function let(TranslatorInterface $translator, PresenterInterface $presenter, JobLabelProvider $labelProvider)
+    function let(TranslatorInterface $translator, PresenterInterface $presenter, TranslatedLabelProvider $labelProvider)
     {
         $this->beConstructedWith($translator, $presenter, $labelProvider);
     }

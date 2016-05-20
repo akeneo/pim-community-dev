@@ -1,9 +1,0 @@
-parameters:
-    pim_import_export.provider.job_label.class: Pim\Bundle\ImportExportBundle\Provider\JobLabelProvider
-
-services:
-    pim_import_export.provider.job_label:
-        class: %pim_import_export.provider.job_label.class%
-        arguments:
-            - '@translator'
-            - 'batch_jobs'

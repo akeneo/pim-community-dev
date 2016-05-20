@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Datagrid;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Pim\Bundle\ImportExportBundle\Provider\JobLabelProvider;
+use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 
 /**
  * Provider for job datagrid choice lists
@@ -21,14 +21,14 @@ class JobDatagridProvider
      */
     protected $registry;
 
-    /** @var JobLabelProvider */
+    /** @var TranslatedLabelProvider */
     protected $labelProvider;
 
     /**
      * @param ConnectorRegistry $registry
-     * @param JobLabelProvider  $labelProvider
+     * @param TranslatedLabelProvider  $labelProvider
      */
-    public function __construct(ConnectorRegistry $registry, JobLabelProvider $labelProvider)
+    public function __construct(ConnectorRegistry $registry, TranslatedLabelProvider $labelProvider)
     {
         $this->registry = $registry;
         $this->labelProvider = $labelProvider;

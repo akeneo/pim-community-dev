@@ -5,7 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Normalizer;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\ImportExportBundle\Provider\JobLabelProvider;
+use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -24,18 +24,18 @@ class StepExecutionNormalizer implements NormalizerInterface
     /** @var PresenterInterface */
     protected $presenter;
 
-    /** @var JobLabelProvider */
+    /** @var TranslatedLabelProvider */
     protected $labelProvider;
 
     /**
      * @param TranslatorInterface $translator
      * @param PresenterInterface  $presenter
-     * @param JobLabelProvider    $labelProvider
+     * @param TranslatedLabelProvider    $labelProvider
      */
     public function __construct(
         TranslatorInterface $translator,
         PresenterInterface $presenter,
-        JobLabelProvider $labelProvider
+        TranslatedLabelProvider $labelProvider
     ) {
         $this->translator    = $translator;
         $this->presenter     = $presenter;

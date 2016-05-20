@@ -279,6 +279,6 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\VariantGroupAttributeController`, add `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver` argument
 - Change constructor of `Pim\Component\Catalog\Denormalizer\Structured\ProductValuesDenormalizer`, remove argument `%pim_catalog.entity.attribute.class%` and
     replace argument `Doctrine\Common\Persistence\ManagerRegistry` by `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
-- Change constructor of `Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridProvider`, add `Pim\Bundle\ImportExportBundle\Provider\JobLabelProvider`
-- Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\JobExecutionNormalizer`, add `Pim\Bundle\ImportExportBundle\Provider\JobLabelProvider`
-- Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\StepExecutionNormalizer`, add `Pim\Bundle\ImportExportBundle\Provider\JobLabelProvider`
+- Change constructor of `Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridProvider`, add `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`
+- Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\JobExecutionNormalizer`, add `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`
+- Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\StepExecutionNormalizer`, add `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`

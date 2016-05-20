@@ -7,13 +7,13 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\ImportExportBundle\Provider\JobLabelProvider;
+use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class JobExecutionNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, TranslatorInterface $translator, JobLabelProvider $labelProvider)
+    function let(SerializerInterface $serializer, TranslatorInterface $translator, TranslatedLabelProvider $labelProvider)
     {
         $this->beConstructedWith($translator, $labelProvider);
 
