@@ -104,6 +104,7 @@ config:
                             get: pim_enrich_product_history_rest_get
 
     paths:
+        socketio:                           socket.js
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
         jstree/nested_switch:               pimenrich/js/jstree/jquery.jstree.nested_switch
@@ -164,6 +165,7 @@ config:
         pim/product-edit-form/attributes/attribute-group-selector: pimenrich/js/product/form/attributes/attribute-group-selector
         pim/product-edit-form/attributes/add-attribute:            pimenrich/js/product/form/attributes/add-attribute
         pim/product-edit-form/attributes/variant-group:            pimenrich/js/product/form/attributes/variant-group
+        pim/product-edit-form/socket:                   pimenrich/js/product/form/socket
         pim/product-edit-form/attributes/locale-specific:          pimenrich/js/product/form/attributes/locale-specific
         pim/product-edit-form/attributes/localizable:              pimenrich/js/product/form/attributes/localizable
         pim/product-edit-form/categories:                          pimenrich/js/product/form/categories

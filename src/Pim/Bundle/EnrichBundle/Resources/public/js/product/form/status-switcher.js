@@ -26,6 +26,11 @@ define(
             events: {
                 'click li a': 'updateStatus'
             },
+            configure: function () {
+                this.getRoot().on('pim_enrich:form:entity:post_fetch', this.render.bind(this));
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
             render: function () {
                 var status = this.getRoot().getFormData().enabled;
 
@@ -42,6 +47,8 @@ define(
                 var newStatus = event.currentTarget.dataset.status === 'enable';
                 this.getFormModel().set('enabled', newStatus);
                 this.getRoot().trigger('pim_enrich:form:entity:update_state');
+                mediator.trigger('pim_enrich:form:entity:update_state');
+
                 this.render();
             }
         });

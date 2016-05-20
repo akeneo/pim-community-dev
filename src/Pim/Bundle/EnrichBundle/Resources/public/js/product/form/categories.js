@@ -16,9 +16,10 @@ define(
         'text!pim/template/product/tab/categories',
         'pim/user-context',
         'routing',
-        'pim/tree/associate'
+        'pim/tree/associate',
+        'oro/mediator'
     ],
-    function ($, _, Backbone, BaseForm, formTemplate, UserContext, Routing, TreeAssociate) {
+    function ($, _, Backbone, BaseForm, formTemplate, UserContext, Routing, TreeAssociate, mediator) {
         return BaseForm.extend({
             template: _.template(formTemplate),
             className: 'tab-pane active',
@@ -46,6 +47,8 @@ define(
                     isVisible: this.isVisible.bind(this),
                     label: _.__('pim_enrich.form.product.tab.categories.title')
                 });
+
+                this.getRoot().on('pim_enrich:form:entity:post_fetch', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -116,6 +119,7 @@ define(
 
                 var categoryCodes = _.map(selectedIds, this.getCategoryCode.bind(this));
                 this.getFormModel().set('categories', categoryCodes);
+                mediator.trigger('pim_enrich:form:entity:update_state');
             },
 
             /**
