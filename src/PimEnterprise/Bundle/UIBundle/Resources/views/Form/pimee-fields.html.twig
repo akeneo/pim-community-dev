@@ -27,6 +27,9 @@
                 {% endif %}
                 {{ form_errors(form) }}
             </div>
+            {% if info is defined %}
+                <div>{{ info|trans }}</div>
+            {% endif %}
         {% endif %}
     {% endspaceless %}
 {% endblock form_info %}
