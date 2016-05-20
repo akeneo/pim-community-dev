@@ -27,65 +27,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
     {
         $attribute->getProperty('is_read_only')->willReturn(false);
 
-        $attributeNormalizer->normalize($attribute, 'json', [])->willReturn(
-            [
-                'type'                   => 'Yes/No',
-                'code'                   => 'attribute_size',
-                'group'                  => 'size',
-                'unique'                 => 1,
-                'useable_as_grid_filter' => 0,
-                'allowed_extensions'     => 'csv,xml,json',
-                'metric_family'          => 'Length',
-                'default_metric_unit'    => 'Centimenter',
-                'reference_data_name'    => 'color',
-                'available_locales'      => 'en_US,fr_FR',
-                'max_characters'         => '',
-                'validation_rule'        => '',
-                'validation_regexp'      => '',
-                'wysiwyg_enabled'        => '',
-                'number_min'             => '',
-                'number_max'             => '',
-                'decimals_allowed'       => '',
-                'negative_allowed'       => '',
-                'date_min'               => '',
-                'date_max'               => '',
-                'max_file_size'          => '',
-                'minimum_input_length'   => '',
-                'sort_order'             => 0,
-                'localizable'            => 1,
-                'scopable'               => 0,
-            ]
-        );
+        $attributeNormalizer->normalize($attribute, 'json', [])->willReturn([]);
 
-        $this->normalize($attribute, 'json', [])->shouldReturn(
-            [
-                'type'                   => 'Yes/No',
-                'code'                   => 'attribute_size',
-                'group'                  => 'size',
-                'unique'                 => 1,
-                'useable_as_grid_filter' => 0,
-                'allowed_extensions'     => 'csv,xml,json',
-                'metric_family'          => 'Length',
-                'default_metric_unit'    => 'Centimenter',
-                'reference_data_name'    => 'color',
-                'available_locales'      => 'en_US,fr_FR',
-                'max_characters'         => '',
-                'validation_rule'        => '',
-                'validation_regexp'      => '',
-                'wysiwyg_enabled'        => '',
-                'number_min'             => '',
-                'number_max'             => '',
-                'decimals_allowed'       => '',
-                'negative_allowed'       => '',
-                'date_min'               => '',
-                'date_max'               => '',
-                'max_file_size'          => '',
-                'minimum_input_length'   => '',
-                'sort_order'             => 0,
-                'localizable'            => 1,
-                'scopable'               => 0,
-                'is_read_only'           => 0,
-            ]
-        );
+        $this->normalize($attribute, 'json', [])->shouldReturn(['is_read_only' => 0]);
     }
 }

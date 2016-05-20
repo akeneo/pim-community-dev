@@ -9,12 +9,9 @@ define(
         'jquery',
         'underscore',
         'pim/form',
-        'pim/field-manager',
-        'pim/fetcher-registry',
-        'oro/mediator',
         'text!pim/template/product/tab/attributes'
     ],
-    function ($, _, BaseForm, FieldManager, FetcherRegistry, mediator, attributeTemplate) {
+    function ($, _, BaseForm, attributeTemplate) {
         return BaseForm.extend({
             template: _.template(attributeTemplate),
             configure: function () {
@@ -22,6 +19,10 @@ define(
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * {@inheritDoc}
+             */
             addFieldExtension: function (event) {
                 var attribute = event.field.attribute;
                 if (attribute.is_read_only) {
