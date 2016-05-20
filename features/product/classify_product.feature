@@ -20,6 +20,7 @@ Feature: Classify a product in the trees I have access
       | slippers | Slippers    |        |
     And the following product category accesses:
       | product category | user group | access |
+      | boots            | Manager    | view   |
       | shoes            | Manager    | view   |
       | vintage          | Manager    | view   |
       | trendy           | Manager    | view   |
