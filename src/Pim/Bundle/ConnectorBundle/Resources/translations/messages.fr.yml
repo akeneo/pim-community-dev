@@ -159,6 +159,12 @@ pim_connector:
     channel:
       label: Canal
       help: Le canal que vous souhaitez exporter
+    status:
+      label: Statut
+      choice:
+        enabled: Activé
+        disabled: Désactivé
+        all: Tous
     decimalSeparator:
       label: Séparateur de décimales
       help: Détermine le séparateur de décimale

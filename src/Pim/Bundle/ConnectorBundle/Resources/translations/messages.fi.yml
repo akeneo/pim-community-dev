@@ -136,6 +136,12 @@ pim_connector:
     channel:
       label: Kanava
       help: Kanava, jonka haluat viedä
+    status:
+      label: Status
+      choice:
+        enabled: Käytössä
+        disabled: Poistettu käytöstä
+        all: Kaikki
     decimalSeparator:
       label: Desimaalierotin
       help: Määritä desimaalierotin
