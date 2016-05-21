@@ -6,20 +6,20 @@ services:
         class: %pim_connector.job.job_parameters.default_values_provider.simple_csv_import.class%
         arguments:
             -
-                - 'pim_installer.jobs.fixtures_category_csv.title'
-                - 'pim_installer.jobs.fixtures_attribute_group_csv.title'
-                - 'pim_installer.jobs.fixtures_channel_csv.title'
-                - 'pim_installer.jobs.fixtures_locale_csv.title'
-                - 'pim_installer.jobs.fixtures_currency_csv.title'
-                - 'pim_installer.jobs.fixtures_group_type_csv.title'
-                - 'pim_installer.jobs.fixtures_association_type_csv.title'
-                - 'pim_installer.jobs.fixtures_attribute_csv.title'
-                - 'pim_installer.jobs.fixtures_attribute_options_csv.title'
-                - 'pim_installer.jobs.fixtures_family_csv.title'
-                - 'pim_installer.jobs.fixtures_user_csv.title'
-                - 'pim_installer.jobs.fixtures_user_role_csv.title'
-                - 'pim_installer.jobs.fixtures_user_group_csv.title'
-                - 'pim_installer.jobs.fixtures_group_csv.title'
+                - 'fixtures_category_csv'
+                - 'fixtures_attribute_group_csv'
+                - 'fixtures_channel_csv'
+                - 'fixtures_locale_csv'
+                - 'fixtures_currency_csv'
+                - 'fixtures_group_type_csv'
+                - 'fixtures_association_type_csv'
+                - 'fixtures_attribute_csv'
+                - 'fixtures_attribute_options_csv'
+                - 'fixtures_family_csv'
+                - 'fixtures_user_csv'
+                - 'fixtures_user_role_csv'
+                - 'fixtures_user_group_csv'
+                - 'fixtures_group_csv'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -28,7 +28,7 @@ services:
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
             -
-                - 'pim_installer.jobs.fixtures_product_csv.title'
+                - 'fixtures_product_csv'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -37,7 +37,7 @@ services:
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
             -
-                - 'pim_installer.jobs.fixtures_variant_group_csv.title'
+                - 'fixtures_variant_group_csv'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -45,6 +45,6 @@ services:
         class: %pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class%
         arguments:
             -
-                - 'pim_installer.jobs.fixtures_job_yml.title'
+                - 'fixtures_job_yml'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }

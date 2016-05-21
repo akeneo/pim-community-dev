@@ -6,6 +6,7 @@ use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\DataTransformer\ConfigurationToJobParametersTransformer;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobAliasSubscriber;
+use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,16 +33,22 @@ class JobInstanceType extends AbstractType
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var TranslatedLabelProvider */
+    protected $jobLabelProvider;
+
     /**
-     * Constructor
-     *
      * @param ConnectorRegistry   $connectorRegistry
      * @param TranslatorInterface $translator
+     * @param TranslatedLabelProvider    $jobLabelProvider
      */
-    public function __construct(ConnectorRegistry $connectorRegistry, TranslatorInterface $translator)
-    {
+    public function __construct(
+        ConnectorRegistry $connectorRegistry,
+        TranslatorInterface $translator,
+        TranslatedLabelProvider $jobLabelProvider
+    ) {
         $this->connectorRegistry = $connectorRegistry;
         $this->translator        = $translator;
+        $this->jobLabelProvider  = $jobLabelProvider;
     }
 
     /**
@@ -127,10 +134,8 @@ class JobInstanceType extends AbstractType
     {
         $choices = [];
         foreach ($this->connectorRegistry->getJobs($this->jobType) as $connector => $jobs) {
-            if ('oro_importexport' !== $connector) {
-                foreach ($jobs as $key => $job) {
-                    $choices[$connector][$key] = $job->getName();
-                }
+            foreach ($jobs as $key => $job) {
+                $choices[$connector][$key] = $this->jobLabelProvider->getJobLabel($job->getName());
             }
         }
 

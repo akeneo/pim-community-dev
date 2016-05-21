@@ -40,7 +40,7 @@ class UserRepositorySpec extends ObjectBehavior
 
     function it_get_identifier_properties()
     {
-        $expected = ['username', 'email'];
+        $expected = ['username'];
 
         $this->getIdentifierProperties()->shouldReturn($expected);
     }

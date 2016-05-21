@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Akeneo\Component\Batch\Model\JobExecution;
+use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -19,14 +20,17 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var TranslatedLabelProvider */
+    protected $labelProvider;
+
     /**
-     * Constructor
-     *
      * @param TranslatorInterface $translator
+     * @param TranslatedLabelProvider    $labelProvider
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, TranslatedLabelProvider $labelProvider)
     {
-        $this->translator = $translator;
+        $this->translator    = $translator;
+        $this->labelProvider = $labelProvider;
     }
 
     /**
@@ -44,7 +48,7 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
         }
 
         return [
-            'label'          => $object->getLabel(),
+            'label'          => $this->labelProvider->getJobLabel($object->getJobInstance()->getAlias()),
             'failures'       => array_map(
                 function ($exception) {
                     return $this->translator->trans($exception['message'], $exception['messageParameters']);

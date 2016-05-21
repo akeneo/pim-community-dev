@@ -167,7 +167,9 @@ class UserUpdater implements ObjectUpdaterInterface
                 }
                 break;
             case 'api_key':
-                $api = new UserApi();
+                if (null === $api = $user->getApi()) {
+                    $api = new UserApi();
+                }
                 $api->setApiKey($data)->setUser($user);
                 $user->setApi($api);
                 break;

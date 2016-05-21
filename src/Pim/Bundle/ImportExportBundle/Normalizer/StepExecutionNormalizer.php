@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Normalizer;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -23,16 +24,22 @@ class StepExecutionNormalizer implements NormalizerInterface
     /** @var PresenterInterface */
     protected $presenter;
 
+    /** @var TranslatedLabelProvider */
+    protected $labelProvider;
+
     /**
-     * Constructor
-     *
      * @param TranslatorInterface $translator
      * @param PresenterInterface  $presenter
+     * @param TranslatedLabelProvider    $labelProvider
      */
-    public function __construct(TranslatorInterface $translator, PresenterInterface $presenter)
-    {
-        $this->translator = $translator;
-        $this->presenter  = $presenter;
+    public function __construct(
+        TranslatorInterface $translator,
+        PresenterInterface $presenter,
+        TranslatedLabelProvider $labelProvider
+    ) {
+        $this->translator    = $translator;
+        $this->presenter     = $presenter;
+        $this->labelProvider = $labelProvider;
     }
 
     /**
@@ -47,7 +54,10 @@ class StepExecutionNormalizer implements NormalizerInterface
         }
 
         return [
-            'label'     => $this->translator->trans($object->getStepName()),
+            'label'     => $this->labelProvider->getStepLabel(
+                $object->getJobExecution()->getJobInstance()->getAlias(),
+                $object->getStepName()
+            ),
             'status'    => $this->normalizeStatus($object->getStatus()->getValue()),
             'summary'   => $this->normalizeSummary($object->getSummary()),
             'startedAt' => $this->presenter->present($object->getStartTime(), $context),

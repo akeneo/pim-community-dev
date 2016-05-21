@@ -2,22 +2,18 @@ connector:
     name: Akeneo XLSX Connector
     jobs:
         xlsx_product_import:
-            title: pim_connector.jobs.xlsx_product_import.title
             type:  import
             steps:
                 validation:
-                    title: pim_connector.jobs.xlsx_product_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:         pim_connector.jobs.xlsx_product_import.import.title
                     services:
                         reader:    pim_connector.reader.file.xlsx_product
                         processor: pim_connector.processor.denormalization.product.flat
                         writer:    pim_connector.writer.doctrine.product
                 import_associations:
-                    title:         pim_connector.jobs.xlsx_product_import.import_associations.title
                     services:
                         reader:    pim_connector.reader.file.xlsx_association_type
                         processor: pim_connector.processor.denormalization.product_association.flat
@@ -25,16 +21,13 @@ connector:
                     parameters:
                         batch_size: 1
         xlsx_category_import:
-            title: pim_connector.jobs.xlsx_category_import.title
             type:  import
             steps:
                 validation:
-                    title: pim_connector.jobs.xlsx_category_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:         pim_connector.jobs.xlsx_category_import.import.title
                     services:
                         reader:    pim_connector.reader.file.xlsx_category
                         processor: pim_connector.processor.denormalization.category.flat
@@ -42,71 +35,57 @@ connector:
                     parameters:
                         batchSize: 1
         xlsx_attribute_import:
-            title: pim_connector.jobs.xlsx_attribute_import.title
             type:  import
             steps:
                 validation:
-                    title: pim_connector.jobs.xlsx_attribute_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:         pim_connector.jobs.xlsx_attribute_import.import.title
                     services:
                         reader:    pim_connector.reader.file.xlsx_attribute
                         processor: pim_connector.processor.denormalization.attribute.flat
                         writer:    pim_connector.writer.doctrine.attribute
         xlsx_attribute_option_import:
-            title: pim_connector.jobs.xlsx_attribute_option_import.title
             type:  import
             steps:
                 validation:
-                    title: pim_connector.jobs.xlsx_attribute_option_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:         pim_connector.jobs.xlsx_attribute_option_import.import.title
                     services:
                         reader:    pim_connector.reader.file.xlsx_attribute_option
                         processor: pim_connector.processor.denormalization.attribute_option.flat
                         writer:    pim_connector.writer.doctrine.attribute_option
         xlsx_association_type_import:
-            title: pim_connector.jobs.xlsx_association_type_import.title
             type: import
             steps:
                 validation:
-                    title: pim_connector.jobs.xlsx_association_type_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:         pim_connector.jobs.xlsx_association_type_import.import.title
                     services:
                         reader:    pim_connector.reader.file.xlsx_association_type
                         processor: pim_connector.processor.denormalization.association_type.flat
                         writer:    pim_connector.writer.doctrine.association_type
         xlsx_family_import:
-            title: pim_connector.jobs.xlsx_family_import.title
             type: import
             steps:
                 validation:
-                    title: pim_connector.jobs.xlsx_family_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:         pim_connector.jobs.xlsx_family_import.import.title
                     services:
                         reader:    pim_connector.reader.file.xlsx_family
                         processor: pim_connector.processor.denormalization.family.flat
                         writer:    pim_connector.writer.doctrine.family
         xlsx_product_export:
-             title: pim_connector.jobs.xlsx_product_export.title
              type:  export
              steps:
                  export:
-                     title: pim_connector.jobs.xlsx_product_export.export.title
                      services:
                          reader:    pim_connector.reader.product
                          processor: pim_base_connector.processor.product_to_flat_array
@@ -114,11 +93,9 @@ connector:
                      parameters:
                          batch_size: 10
         xlsx_group_export:
-            title: pim_connector.jobs.xlsx_group_export.title
             type:  export
             steps:
                 export:
-                    title: pim_connector.jobs.xlsx_group_export.export.title
                     services:
                         reader:    pim_base_connector.reader.repository.group
                         processor: pim_connector.processor.normalization.group.flat
@@ -126,11 +103,9 @@ connector:
                     parameters:
                         batch_size: 10
         xlsx_variant_group_export:
-            title: pim_connector.jobs.xlsx_variant_group_export.title
             type:  export
             steps:
                 export:
-                    title: pim_connector.jobs.xlsx_variant_group_export.export.title
                     services:
                         reader:    pim_base_connector.reader.repository.variant_group
                         processor: pim_connector.processor.normalization.variant_group.flat
@@ -138,31 +113,25 @@ connector:
                     parameters:
                         batch_size: 10
         xlsx_group_import:
-            title: pim_connector.jobs.xlsx_group_import.title
             type:  import
             steps:
                 validation:
-                    title: pim_connector.jobs.xlsx_group_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:         pim_connector.jobs.xlsx_group_import.import.title
                     services:
                         reader:    pim_connector.reader.file.xlsx_group
                         processor: pim_connector.processor.denormalization.group.flat
                         writer:    pim_connector.writer.doctrine.group
         xlsx_variant_group_import:
-            title: pim_connector.jobs.xlsx_variant_group_import.title
             type:  import
             steps:
                 validation:
-                    title: pim_connector.jobs.xlsx_variant_group_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:         pim_connector.jobs.xlsx_variant_group_import.import.title
                     services:
                         reader:    pim_connector.reader.file.xlsx_variant_group
                         processor: pim_connector.processor.denormalization.variant_group.flat
@@ -170,11 +139,9 @@ connector:
                     parameters:
                         batchSize: 1
         xlsx_family_export:
-            title: pim_connector.jobs.xlsx_family_export.title
             type:  export
             steps:
                 export:
-                    title:     pim_connector.jobs.xlsx_family_export.export.title
                     services:
                         reader:    pim_base_connector.reader.orm.family
                         processor: pim_connector.processor.normalization.family.flat
@@ -182,11 +149,9 @@ connector:
                     parameters:
                         batch_size: 10
         xlsx_category_export:
-            title: pim_connector.jobs.xlsx_category_export.title
             type:  export
             steps:
                 export:
-                    title:     pim_connector.jobs.xlsx_category_export.export.title
                     services:
                         reader:    pim_base_connector.reader.orm.category
                         processor: pim_connector.processor.normalization.category.flat
@@ -194,11 +159,9 @@ connector:
                     parameters:
                         batch_size: 10
         xlsx_attribute_export:
-            title: pim_connector.jobs.xlsx_attribute_export.title
             type:  export
             steps:
                 export:
-                    title:     pim_connector.jobs.xlsx_attribute_export.export.title
                     services:
                         reader:    pim_base_connector.reader.orm.attribute
                         processor: pim_connector.processor.normalization.attribute.flat
@@ -206,11 +169,9 @@ connector:
                     parameters:
                         batch_size: 10
         xlsx_attribute_option_export:
-            title: pim_connector.jobs.xlsx_attribute_option_export.title
             type:  export
             steps:
                 export:
-                    title:     pim_connector.jobs.xlsx_attribute_option_export.export.title
                     services:
                         reader:    pim_base_connector.reader.orm.attribute_option
                         processor: pim_connector.processor.normalization.attribute_option.flat
@@ -218,11 +179,9 @@ connector:
                     parameters:
                         batch_size: 10
         xlsx_association_type_export:
-            title: pim_connector.jobs.xlsx_association_type_export.title
             type:  export
             steps:
                 export:
-                    title:     pim_connector.jobs.xlsx_association_type_export.export.title
                     services:
                         reader:    pim_base_connector.reader.orm.association_type
                         processor: pim_connector.processor.normalization.association_type.flat

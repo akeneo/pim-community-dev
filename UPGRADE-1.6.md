@@ -9,9 +9,25 @@
 We've extracted following classes and interfaces from the Catalog bundle to the Catalog component:
  - validation
 
+## Batch Bundle & Component
+
+This component has been re-work to be more focus on a more robust batch processing and to extract UI concerns.
+
+We've extracted the template concern from JobInterface.
+In 1.5, you have to declare your custom twig template to use to view or edit a job in the batch_jobs.yml.
+In 1.6, you can register them in the JobTemplateProvider through the parameters %pim_import_export.job_template.config%.
+Migration, you need to remove your 'show_template' and 'edit_template' configuration from your custom batch_jobs.yml file.
+
+We've extracted the translated labels concern from JobInterface and StepInterface.
+In 1.5, you have to declare your titles in batch_jobs.yml for jobs and steps.
+In 1.6, you only have to add a translation key following this convention,
+ - for a Job, batch_jobs.job_name.label (ex: batch_jobs.csv_product_export.label: "Product export in CSV")
+ - for a Step, batch_jobs.job_name.step_name.label (batch_jobs.csv_product_export.export.label: "Product export step")
+Migration, you need to remove your 'title' configuration from your custom batch_jobs.yml file.
+
 ## Deprecated imports
 
-We've removed `TransformBundle` and `BaseConnectorBundle` because they are deprecated since the new export system has been created.
+We've removed `TransformBundle` and `BaseConnectorBundle` because they are deprecated since the new import system has been created.
 
 ### TransformBundle
 

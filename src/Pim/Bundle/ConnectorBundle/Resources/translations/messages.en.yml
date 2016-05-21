@@ -1,124 +1,5 @@
 pim_connector:
-
-    ## Job titles
-    jobs:
-        csv_product_export:
-            title: Product export in CSV
-            export.title: Product export
-        csv_category_export:
-            title: Category export in CSV
-            export.title: Category export
-        csv_attribute_export:
-            title: Attribute export in CSV
-            export.title: Attribute export
-        csv_attribute_option_export:
-            title: Attribute option export in CSV
-            export.title: Attribute option export
-        csv_association_type_export:
-            title: Association type export in CSV
-            export.title: Association type export
-        csv_group_export:
-            title: Group export in CSV
-            export.title: Group export
-        csv_variant_group_export:
-            title: Variant group export in CSV
-            export.title: Variant group export
-        csv_family_export:
-            title: Family export in CSV
-            export.title: Family export
-        csv_product_import:
-            title: Product import in CSV
-            validation.title: File validation
-            import.title: Product import
-            import_associations.title: Association import
-        csv_category_import:
-            title: Category import in CSV
-            validation.title: File validation
-            import.title: Category import
-        csv_attribute_import:
-            title: Attribute import in CSV
-            validation.title: File validation
-            import.title: Attribute import
-        csv_attribute_option_import:
-            title: Attribute option import in CSV
-            validation.title: File validation
-            import.title: Attribute option import
-        csv_association_type_import:
-            title: Association type import in CSV
-            validation.title: File validation
-            import.title: Association type import
-        csv_family_import:
-            title: Family import in CSV
-            validation.title: File validation
-            import.title: Family import
-        csv_group_import:
-            title: Group import in CSV
-            validation.title: File validation
-            import.title: Group import
-        csv_variant_group_import:
-            title: Variant group import in CSV
-            validation.title: File validation
-            import.title: Variant group import
-        xlsx_category_import:
-            title: Category import in XLSX
-            validation.title: File validation
-            import.title: Category import
-        xlsx_association_type_import:
-            title: Association type import in XLSX
-            validation.title: File validation
-            import.title: Association type import
-        xlsx_attribute_import:
-            title: Attribute import in XLSX
-            validation.title: File validation
-            import.title: Attribute import
-        xlsx_attribute_option_import:
-            title: Attribute option import in XLSX
-            validation.title: File validation
-            import.title: Attribute option import
-        xlsx_family_import:
-            title: Family import in XLSX
-            validation.title: File validation
-            import.title: Family import
-        xlsx_product_export:
-            title: Product export in XLSX
-            export.title: Product export
-        xlsx_product_import:
-            title: Product import in XLSX
-            validation.title: File validation
-            import.title: Product import
-            import_associations.title: Association import
-        xlsx_group_export:
-            title: Group export in XLSX
-            export.title: Group export
-        xlsx_variant_group_export:
-            title: Variant group export in XLSX
-            export.title: Variant group export
-        xlsx_group_import:
-            title: Group import in XLSX
-            validation.title: File validation
-            import.title: Group import
-        xlsx_variant_group_import:
-            title: Variant group import in XLSX
-            validation.title: File validation
-            import.title: Variant Group import
-        xlsx_family_export:
-            title: Family export in XLSX
-            export.title: Family export
-        xlsx_category_export:
-            title: Category export in XLSX
-            export.title: Category export
-        xlsx_attribute_export:
-            title: Attribute export in XLSX
-            export.title: Attribute export in XLSX
-        xlsx_attribute_option_export:
-            title: Attribute option export in XLSX
-            export.title: Attribute option export in XLSX
-        xlsx_association_type_export:
-            title: Association type export in XLSX
-            export.title: Association type export in XLSX
-
     steps:
-
         dummy_reader.title:                  Dummy reader
         product_reader.title:                Product extraction
         entity_reader.title:                 Entity extraction
@@ -259,3 +140,120 @@ job_execution.summary:
         title: File encoding:
         skipped: skipped, extension in white list
     product_skipped_no_diff: skipped product (no differences)
+
+# Job labels
+batch_jobs:
+    csv_product_export:
+        label: Product export in CSV
+        export.label: Product export
+    csv_category_export:
+        label: Category export in CSV
+        export.label: Category export
+    csv_attribute_export:
+        label: Attribute export in CSV
+        export.label: Attribute export
+    csv_attribute_option_export:
+        label: Attribute option export in CSV
+        export.label: Attribute option export
+    csv_association_type_export:
+        label: Association type export in CSV
+        export.label: Association type export
+    csv_group_export:
+        label: Group export in CSV
+        export.label: Group export
+    csv_variant_group_export:
+        label: Variant group export in CSV
+        export.label: Variant group export
+    csv_family_export:
+        label: Family export in CSV
+        export.label: Family export
+    csv_product_import:
+        label: Product import in CSV
+        validation.label: File validation
+        import.label: Product import
+        import_associations.label: Association import
+    csv_category_import:
+        label: Category import in CSV
+        validation.label: File validation
+        import.label: Category import
+    csv_attribute_import:
+        label: Attribute import in CSV
+        validation.label: File validation
+        import.label: Attribute import
+    csv_attribute_option_import:
+        label: Attribute option import in CSV
+        validation.label: File validation
+        import.label: Attribute option import
+    csv_association_type_import:
+        label: Association type import in CSV
+        validation.label: File validation
+        import.label: Association type import
+    csv_family_import:
+        label: Family import in CSV
+        validation.label: File validation
+        import.label: Family import
+    csv_group_import:
+        label: Group import in CSV
+        validation.label: File validation
+        import.label: Group import
+    csv_variant_group_import:
+        label: Variant group import in CSV
+        validation.label: File validation
+        import.label: Variant group import
+    xlsx_category_import:
+        label: Category import in XLSX
+        validation.label: File validation
+        import.label: Category import
+    xlsx_association_type_import:
+        label: Association type import in XLSX
+        validation.label: File validation
+        import.label: Association type import
+    xlsx_attribute_import:
+        label: Attribute import in XLSX
+        validation.label: File validation
+        import.label: Attribute import
+    xlsx_attribute_option_import:
+        label: Attribute option import in XLSX
+        validation.label: File validation
+        import.label: Attribute option import
+    xlsx_family_import:
+        label: Family import in XLSX
+        validation.label: File validation
+        import.label: Family import
+    xlsx_product_export:
+        label: Product export in XLSX
+        export.label: Product export
+    xlsx_product_import:
+        label: Product import in XLSX
+        validation.label: File validation
+        import.label: Product import
+        import_associations.label: Association import
+    xlsx_group_export:
+        label: Group export in XLSX
+        export.label: Group export
+    xlsx_variant_group_export:
+        label: Variant group export in XLSX
+        export.label: Variant group export
+    xlsx_group_import:
+        label: Group import in XLSX
+        validation.label: File validation
+        import.label: Group import
+    xlsx_variant_group_import:
+        label: Variant group import in XLSX
+        validation.label: File validation
+        import.label: Variant Group import
+    xlsx_family_export:
+        label: Family export in XLSX
+        export.label: Family export
+    xlsx_category_export:
+        label: Category export in XLSX
+        export.label: Category export
+    xlsx_attribute_export:
+        label: Attribute export in XLSX
+        export.label: Attribute export in XLSX
+    xlsx_attribute_option_export:
+        label: Attribute option export in XLSX
+        export.label: Attribute option export in XLSX
+    xlsx_association_type_export:
+        label: Association type export in XLSX
+        export.label: Association type export in XLSX

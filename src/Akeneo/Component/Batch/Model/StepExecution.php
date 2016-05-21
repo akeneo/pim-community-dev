@@ -68,13 +68,13 @@ class StepExecution
     private $failureExceptions = null;
 
     /** @var array */
-    private $errors = array();
+    private $errors = [];
 
     /** @var ArrayCollection */
     private $warnings;
 
     /** @var array */
-    private $summary = array();
+    private $summary = [];
 
     /**
      * Constructor with mandatory properties.
@@ -92,8 +92,8 @@ class StepExecution
         $this->setStatus(new BatchStatus(BatchStatus::STARTING));
         $this->setExitStatus(new ExitStatus(ExitStatus::EXECUTING));
 
-        $this->failureExceptions = array();
-        $this->errors = array();
+        $this->failureExceptions = [];
+        $this->errors = [];
 
         $this->startTime = new \DateTime();
     }
@@ -393,13 +393,13 @@ class StepExecution
      */
     public function addFailureException(\Exception $e)
     {
-        $this->failureExceptions[] = array(
+        $this->failureExceptions[] = [
             'class'             => get_class($e),
             'message'           => $e->getMessage(),
-            'messageParameters' => $e instanceof RuntimeErrorException ? $e->getMessageParameters() : array(),
+            'messageParameters' => $e instanceof RuntimeErrorException ? $e->getMessageParameters() : [],
             'code'              => $e->getCode(),
             'trace'             => $e->getTraceAsString()
-        );
+        ];
 
         return $this;
     }
@@ -450,10 +450,12 @@ class StepExecution
      */
     public function addWarning($name, $reason, array $reasonParameters, $item)
     {
+        // TODO TIP-440: re-work the way we build the warning names (same strategy than TIP-384)
         $element = $this->stepName;
         if (strpos($element, '.')) {
             $element = substr($element, 0, strpos($element, '.'));
         }
+
         if (is_object($item)) {
             $item = [
                 'class'  => ClassUtils::getClass($item),
@@ -461,6 +463,7 @@ class StepExecution
                 'string' => method_exists($item, '__toString') ? (string) $item : '[unknown]',
             ];
         }
+
         $this->warnings->add(
             new Warning(
                 $this,
