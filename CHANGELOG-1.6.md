@@ -8,6 +8,8 @@
 - PIM-5099: The catalog structure can now be exported in XLSX format (families, attributes, attribute options, association types and categories)
 - PIM-5097: The catalog structure can now be imported in XLSX format (families, attributes, attribute options, association types and categories)
 - PIM-5657: It is now possible to add custom tabs within the job profile and edit pages
+- PIM-5701: Add CSV and XLSX import jobs for currencies, channels, locales, group types and attribute groups
+- PIM-5705: Add CSV and XLSX export jobs for currencies, channels, locales, group types and attribute groups
 
 ## Scalability improvements
 
@@ -60,14 +62,14 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\FamilyController`. Add Symfony validator.
 - Change constructor of `Pim\Component\Connector\Reader\File\CsvReader`. Add `Pim\Component\Connector\Reader\File\FileIteratorFactory`.
 - Move `Pim\Component\Connector\Reader\File\CsvProductReader` to `Pim\Component\Connector\Reader\File\Product\CsvProductReader`
-- Change constructor of `Pim\Component\Connector\Reader\File\Product\CsvProductReader`. Remove `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`. Add `Pim\Component\Connector\Reader\File\FileIteratorFactory` and `Pim\Component\Connector\Reader\File\Product\MediaPathTransformer` 
+- Change constructor of `Pim\Component\Connector\Reader\File\Product\CsvProductReader`. Remove `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`. Add `Pim\Component\Connector\Reader\File\FileIteratorFactory` and `Pim\Component\Connector\Reader\File\Product\MediaPathTransformer`
 - Change constructor of `Pim\Bundle\NotificationBundle\Controller\NotificationController`. Remove deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and add `Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface` and `Akeneo\Component\StorageUtils\Remover\RemoverInterface`.
 - Change constructor of `Pim\Bundle\NotificationBundle\EventSubscriber\JobExecutionNotifier`. Remove deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and add `Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry` and `Pim\Bundle\NotificationBundle\NotifierInterface`.
 - Change constructor of `Pim\Bundle\NotificationBundle\Twig\NotificationExtension`. Replace deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` by `Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface`.
-- Change constructor of `Pim\Bundle\EnrichBundle\Controller\FileController`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
-- Change constructor of `Pim\Bundle\EnrichBundle\Imagine\Loader\FlysystemLoader`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
-- Change constructor of `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
-- Change constructor of `Pim\Component\Connector\Writer\File\FileExporter`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\FileController`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Imagine\Loader\FlysystemLoader`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`.
+- Change constructor of `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`.
+- Change constructor of `Pim\Component\Connector\Writer\File\FileExporter`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`.
 - Move `Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry` to `Pim\Component\Catalog\AttributeTypeRegistry`
 - Move `Pim\Bundle\CatalogBundle\Factory\AttributeFactory` to `Pim\Component\Catalog\Factory\AttributeFactory`
 - Remove `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager`
@@ -184,7 +186,7 @@
 - Change constructor of `Akeneo\Bundle\BatchBundle\Job\Pim\Bundle\TransformBundle\Normalizer\Structured\FamilyNormalizer` to inject two more dependendies `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` and `Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface`
 - Move class `Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor` to `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor`
 - Remove class `Pim\Bundle\ConnectorBundle\JobLauncher\SimpleJobLauncher`  which overrides `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` we now always use `@akeneo_batch.launcher.simple_job_launcher` and not anymore `@pim_connector.launcher.simple_job_launcher`
-- Remove parameter `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface` from constructors of 
+- Remove parameter `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface` from constructors of
     `Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor`
     `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements`
     `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor`

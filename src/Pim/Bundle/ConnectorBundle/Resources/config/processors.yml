@@ -17,29 +17,29 @@ parameters:
 services:
     # Dummy processor
     pim_connector.processor.dummy_item:
-        class: %pim_connector.processor.dummy_item.class%
+        class: '%pim_connector.processor.dummy_item.class%'
 
     # Denormalization processors
     pim_connector.processor.denormalization.attribute_option.flat:
-        class: %pim_connector.processor.denormalization.attribute_option.class%
+        class: '%pim_connector.processor.denormalization.attribute_option.class%'
         arguments:
             - '@pim_connector.array_converter.flat.attribute_option'
             - '@pim_catalog.repository.attribute_option'
             - '@pim_catalog.updater.attribute_option'
             - '@validator'
-            - %pim_catalog.entity.attribute_option.class%
+            - '%pim_catalog.entity.attribute_option.class%'
 
     pim_connector.processor.denormalization.attribute_option.structured:
-        class: %pim_connector.processor.denormalization.attribute_option.class%
+        class: '%pim_connector.processor.denormalization.attribute_option.class%'
         arguments:
             - '@pim_connector.array_converter.structured.attribute_option'
             - '@pim_catalog.repository.attribute_option'
             - '@pim_catalog.updater.attribute_option'
             - '@validator'
-            - %pim_catalog.entity.attribute_option.class%
+            - '%pim_catalog.entity.attribute_option.class%'
 
     pim_connector.processor.denormalization.attribute.flat:
-        class: %pim_connector.processor.denormalization.attribute.class%
+        class: '%pim_connector.processor.denormalization.attribute.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.array_converter.flat.attribute'
@@ -48,7 +48,7 @@ services:
             - '@validator'
 
     pim_connector.processor.denormalization.association_type.flat:
-        class: %pim_connector.processor.denormalization.simple.class%
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.association_type'
             - '@pim_connector.array_converter.flat.association_type'
@@ -58,7 +58,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.product.flat:
-        class: %pim_connector.processor.denormalization.product.class%
+        class: '%pim_connector.processor.denormalization.product.class%'
         arguments:
             - '@pim_connector.array_converter.flat.product'
             - '@pim_catalog.repository.product'
@@ -70,7 +70,7 @@ services:
             - '@pim_catalog.localization.localizer.converter'
 
     pim_connector.processor.denormalization.product_association.flat:
-        class: %pim_connector.processor.denormalization.product_association.class%
+        class: '%pim_connector.processor.denormalization.product_association.class%'
         arguments:
             - '@pim_connector.array_converter.flat.product_association'
             - '@pim_catalog.repository.product'
@@ -80,7 +80,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.variant_group.flat:
-        class: %pim_connector.processor.denormalization.variant_group.class%
+        class: '%pim_connector.processor.denormalization.variant_group.class%'
         arguments:
             - '@pim_connector.array_converter.flat.variant_group'
             - '@pim_catalog.repository.group'
@@ -89,17 +89,17 @@ services:
             - '@pim_catalog.validator.product'
 
     pim_connector.processor.denormalization.group.flat:
-        class: %pim_connector.processor.denormalization.group.class%
+        class: '%pim_connector.processor.denormalization.group.class%'
         arguments:
             - '@pim_connector.array_converter.flat.group'
             - '@pim_catalog.repository.group'
             - '@pim_catalog.factory.group'
             - '@pim_catalog.updater.group'
             - '@pim_catalog.validator.product'
-            - %pim_catalog.entity.group.class%
+            - '%pim_catalog.entity.group.class%'
 
     pim_connector.processor.denormalization.category.flat:
-        class: %pim_connector.processor.denormalization.simple.class%
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.category'
             - '@pim_connector.array_converter.flat.category'
@@ -109,7 +109,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.family.flat:
-        class: %pim_connector.processor.denormalization.simple.class%
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_connector.array_converter.flat.family'
@@ -119,7 +119,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.channel.flat:
-        class: %pim_connector.processor.denormalization.simple.class%
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_connector.array_converter.flat.channel'
@@ -129,7 +129,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.locale.flat:
-        class: %pim_connector.processor.denormalization.simple.class%
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_connector.array_converter.flat.locale'
@@ -139,7 +139,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.attribute_group.flat:
-        class: %pim_connector.processor.denormalization.simple.class%
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_connector.array_converter.flat.attribute_group'
@@ -149,7 +149,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.group_type.flat:
-        class: %pim_connector.processor.denormalization.group_type.class%
+        class: '%pim_connector.processor.denormalization.group_type.class%'
         arguments:
             - '@pim_catalog.repository.group_type'
             - '@pim_connector.array_converter.flat.group_type'
@@ -158,7 +158,7 @@ services:
             - '@pim_catalog.validator.product'
 
     pim_connector.processor.denormalization.currency.flat:
-        class: %pim_connector.processor.denormalization.currency.class%
+        class: '%pim_connector.processor.denormalization.currency.class%'
         arguments:
             - '@pim_catalog.repository.currency'
             - '@pim_connector.array_converter.flat.currency'
@@ -167,7 +167,7 @@ services:
             - '@pim_catalog.validator.product'
 
     pim_connector.processor.denormalization.user.flat:
-        class: %pim_connector.processor.denormalization.simple.class%
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_user.repository.user'
             - '@pim_connector.array_converter.flat.user'
@@ -177,7 +177,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.user_group.flat:
-        class: %pim_connector.processor.denormalization.simple.class%
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_user.repository.group'
             - '@pim_connector.array_converter.flat.user_group'
@@ -187,7 +187,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.user_role.flat:
-        class: %pim_connector.processor.denormalization.simple.class%
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_user.repository.role'
             - '@pim_connector.array_converter.flat.user_role'
@@ -197,7 +197,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.job_instance.flat:
-        class: %pim_connector.processor.denormalization.job_instance.class%
+        class: '%pim_connector.processor.denormalization.job_instance.class%'
         arguments:
             - '@pim_import_export.repository.job_instance' # TODO, alias should be changed and class should be moved
             - '@pim_connector.array_converter.structured.job_instance'
@@ -210,45 +210,75 @@ services:
             - '@service_container'
 
     pim_connector.processor.normalization.group.flat:
-        class: %pim_connector.processor.normalization.simple.class%
+        class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
             - '@pim_serializer.normalizer.flat.group'
             - 'flat'
 
     pim_connector.processor.normalization.variant_group.flat:
-        class: %pim_connector.processor.normalization.csv_variant_group.class%
+        class: '%pim_connector.processor.normalization.csv_variant_group.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_serializer'
-            - %upload_dir%
+            - '%upload_dir%'
             - 'flat'
 
     pim_connector.processor.normalization.family.flat:
-        class: %pim_connector.processor.normalization.simple.class%
+        class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
             - '@pim_serializer.normalizer.flat.family'
             - 'flat'
 
     pim_connector.processor.normalization.category.flat:
-        class: %pim_connector.processor.normalization.simple.class%
+        class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
             - '@pim_serializer.normalizer.flat.category'
             - 'flat'
 
     pim_connector.processor.normalization.attribute.flat:
-        class: %pim_connector.processor.normalization.simple.class%
+        class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
             - '@pim_serializer.normalizer.flat.attribute'
             - 'flat'
 
     pim_connector.processor.normalization.attribute_option.flat:
-          class: %pim_connector.processor.normalization.simple.class%
+          class: '%pim_connector.processor.normalization.simple.class%'
           arguments:
               - '@pim_serializer.normalizer.flat.option'
               - 'flat'
 
     pim_connector.processor.normalization.association_type.flat:
-          class: %pim_connector.processor.normalization.simple.class%
+          class: '%pim_connector.processor.normalization.simple.class%'
           arguments:
               - '@pim_serializer.normalizer.flat.association_type'
               - 'flat'
+
+    pim_connector.processor.normalization.channel.flat:
+        class: '%pim_connector.processor.normalization.simple.class%'
+        arguments:
+            - '@pim_serializer.normalizer.flat.channel'
+            - 'flat'
+
+    pim_connector.processor.normalization.locale.flat:
+        class: '%pim_connector.processor.normalization.simple.class%'
+        arguments:
+            - '@pim_serializer.normalizer.flat.locale'
+            - 'flat'
+
+    pim_connector.processor.normalization.attribute_group.flat:
+        class: '%pim_connector.processor.normalization.simple.class%'
+        arguments:
+            - '@pim_serializer.normalizer.flat.attribute_group'
+            - 'flat'
+
+    pim_connector.processor.normalization.currency.flat:
+        class: '%pim_connector.processor.normalization.simple.class%'
+        arguments:
+            - '@pim_serializer.normalizer.flat.currency'
+            - 'flat'
+
+    pim_connector.processor.normalization.group_type.flat:
+        class: '%pim_connector.processor.normalization.simple.class%'
+        arguments:
+            - '@pim_serializer.normalizer.flat.group_type'
+            - 'flat'

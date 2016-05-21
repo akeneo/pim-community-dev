@@ -23,6 +23,7 @@ class ChannelNormalizerSpec extends ObjectBehavior
     function it_supports_channel_normalization_into_csv(ChannelInterface $channel)
     {
         $this->supportsNormalization($channel, 'csv')->shouldBe(true);
+        $this->supportsNormalization($channel, 'flat')->shouldBe(true);
         $this->supportsNormalization($channel, 'json')->shouldBe(false);
         $this->supportsNormalization($channel, 'xml')->shouldBe(false);
     }
@@ -37,6 +38,7 @@ class ChannelNormalizerSpec extends ObjectBehavior
     ) {
         $channel->getCode()->willReturn('ecommerce');
         $channel->getLabel()->willReturn('Ecommerce');
+        $channel->getColor()->willReturn('red');
         $channel->getCurrencies()->willReturn([$eur, $usd]);
         $eur->getCode()->willReturn('EUR');
         $usd->getCode()->willReturn('USD');
@@ -54,12 +56,12 @@ class ChannelNormalizerSpec extends ObjectBehavior
 
         $this->normalize($channel)->shouldReturn(
             [
-                'code'             => 'ecommerce',
-                'label'            => 'Ecommerce',
-                'currencies'       => 'EUR,USD',
-                'locales'          => 'en_US,fr_FR',
-                'category'         => 'Master catalog',
-                'conversion_units' => 'Weight: Kilogram, Size: Centimeter'
+                'code'       => 'ecommerce',
+                'label'      => 'Ecommerce',
+                'currencies' => 'EUR,USD',
+                'locales'    => 'en_US,fr_FR',
+                'tree'       => 'Master catalog',
+                'color'      => 'red',
             ]
         );
     }

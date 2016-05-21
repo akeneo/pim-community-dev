@@ -34,8 +34,6 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
     manyToMany:
         currencies:
             targetEntity: Pim\Component\Catalog\Model\CurrencyInterface
-            mappedBy: null
-            inversedBy: null
             joinTable:
                 name: pim_catalog_channel_currency
                 schema: null

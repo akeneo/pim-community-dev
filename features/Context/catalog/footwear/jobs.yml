@@ -155,6 +155,56 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/family.csv
+    csv_footwear_channel_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_channel_export
+        label:     CSV footwear channel export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/channel.csv
+    csv_footwear_currency_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_currency_export
+        label:     CSV footwear currency export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/currency.csv
+    csv_footwear_locale_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_locale_export
+        label:     CSV footwear locale export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/locale.csv
+    csv_footwear_group_type_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_group_type_export
+        label:     CSV footwear group type export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/group_type.csv
+    csv_footwear_attribute_group_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_group_export
+        label:     CSV footwear attribute group export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/attribute_group.csv
     csv_footwear_variant_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_variant_group_import
@@ -179,6 +229,56 @@ jobs:
         connector: Akeneo CSV Connector
         alias:     csv_family_import
         label:     CSV footwear family import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_footwear_currency_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_currency_import
+        label:     CSV footwear currency import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_footwear_channel_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_channel_import
+        label:     CSV footwear channel import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_footwear_locale_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_locale_import
+        label:     CSV footwear locale import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_footwear_group_type_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_group_type_import
+        label:     CSV footwear group_type import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_footwear_attribute_group_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_group_import
+        label:     CSV footwear attribute_group import
         type:      import
         configuration:
             uploadAllowed: true
@@ -284,6 +384,41 @@ jobs:
         type:      import
         configuration:
             uploadAllowed: true
+    xlsx_footwear_currency_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_currency_import
+        label:     XLSX footwear currency import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_channel_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_channel_import
+        label:     XLSX footwear channel import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_locale_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_locale_import
+        label:     XLSX footwear locale import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_group_type_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_type_import
+        label:     XLSX footwear group_type import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_attribute_group_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_group_import
+        label:     XLSX footwear attribute_group import
+        type:      import
+        configuration:
+            uploadAllowed: true
     xlsx_product_quick_export:
         connector: Akeneo Mass Edit Connector
         alias: xlsx_product_quick_export
@@ -337,3 +472,43 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath: /tmp/association_type.xlsx
+    xlsx_footwear_channel_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_channel_export
+        label:     XLSX footwear channel export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/channel.xlsx
+    xlsx_footwear_currency_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_currency_export
+        label:     XLSX footwear currency export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/currency.xlsx
+    xlsx_footwear_locale_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_locale_export
+        label:     XLSX footwear locale export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/locale.xlsx
+    xlsx_footwear_group_type_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_type_export
+        label:     XLSX footwear group type export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/group_type.xlsx
+    xlsx_footwear_attribute_group_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_group_export
+        label:     XLSX footwear attribute group export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/attribute_group.xlsx

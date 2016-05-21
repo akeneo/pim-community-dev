@@ -15,7 +15,24 @@ use Pim\Component\Catalog\Normalizer\Structured\ChannelNormalizer as BaseNormali
 class ChannelNormalizer extends BaseNormalizer
 {
     /** @var string[] */
-    protected $supportedFormats = ['csv'];
+    protected $supportedFormats = ['csv', 'flat'];
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param $object ChannelInterface
+     */
+    public function normalize($object, $format = null, array $context = [])
+    {
+        return [
+            'code'       => $object->getCode(),
+            'label'      => $this->normalizeLabel($object),
+            'currencies' => $this->normalizeCurrencies($object),
+            'locales'    => $this->normalizeLocales($object),
+            'tree'       => $this->normalizeCategoryTree($object),
+            'color'      => $object->getColor(),
+        ];
+    }
 
     /**
      * {@inheritdoc}
@@ -23,6 +40,7 @@ class ChannelNormalizer extends BaseNormalizer
     protected function normalizeCurrencies(ChannelInterface $channel)
     {
         $currencies = parent::normalizeCurrencies($channel);
+        asort($currencies);
 
         return implode(',', $currencies);
     }
@@ -33,6 +51,7 @@ class ChannelNormalizer extends BaseNormalizer
     protected function normalizeLocales(ChannelInterface $channel)
     {
         $locales = parent::normalizeLocales($channel);
+        asort($locales);
 
         return implode(',', $locales);
     }

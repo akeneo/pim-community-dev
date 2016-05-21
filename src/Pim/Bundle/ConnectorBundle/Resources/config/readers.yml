@@ -15,7 +15,7 @@ parameters:
 
 services:
     pim_connector.reader.product:
-        class: %pim_connector.reader.product.class%
+        class: '%pim_connector.reader.product.class%'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.repository.channel'
@@ -26,29 +26,29 @@ services:
             - true
 
     pim_connector.reader.file.csv_iterator_factory:
-        class: %pim_connector.reader.file.file_iterator_factory.class%
+        class: '%pim_connector.reader.file.file_iterator_factory.class%'
         arguments:
-            - %pim_connector.reader.file.file_iterator.class%
+            - '%pim_connector.reader.file.file_iterator.class%'
             - 'csv'
 
     pim_connector.reader.file.xlsx_iterator_factory:
-        class: %pim_connector.reader.file.file_iterator_factory.class%
+        class: '%pim_connector.reader.file.file_iterator_factory.class%'
         arguments:
-            - %pim_connector.reader.file.file_iterator.class%
+            - '%pim_connector.reader.file.file_iterator.class%'
             - 'xlsx'
 
     pim_connector.reader.file.media_path_transformer:
-        class: %pim_connector.reader.file.media_path_transformer.class%
+        class: '%pim_connector.reader.file.media_path_transformer.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
 
     # Dummy Reader
     pim_connector.reader.dummy_item:
-        class: %pim_connector.reader.dummy_item.class%
+        class: '%pim_connector.reader.dummy_item.class%'
 
     # CSV File Readers
     pim_connector.reader.file.csv:
-        class: %pim_connector.reader.file.csv.class%
+        class: '%pim_connector.reader.file.csv.class%'
         arguments:
             - '@pim_connector.reader.file.csv_iterator_factory'
 
@@ -91,20 +91,23 @@ services:
     pim_connector.reader.file.csv_currency:
         alias: pim_connector.reader.file.csv
 
+    pim_connector.reader.file.csv_group_type:
+        alias: pim_connector.reader.file.csv
+
     pim_connector.reader.file.csv_product:
-        class: %pim_connector.reader.file.csv_product.class%
+        class: '%pim_connector.reader.file.csv_product.class%'
         arguments:
             - '@pim_connector.reader.file.csv_iterator_factory'
             - '@pim_connector.reader.file.media_path_transformer'
 
     # XLSX file Readers
     pim_connector.reader.file.xlsx:
-        class: %pim_connector.reader.file.xlsx.class%
+        class: '%pim_connector.reader.file.xlsx.class%'
         arguments:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
 
     pim_connector.reader.file.xlsx_product:
-       class: %pim_connector.reader.file.xlsx_product.class%
+       class: '%pim_connector.reader.file.xlsx_product.class%'
        arguments:
            - '@pim_connector.reader.file.xlsx_iterator_factory'
            - '@pim_connector.reader.file.media_path_transformer'
@@ -129,3 +132,49 @@ services:
 
     pim_connector.reader.file.xlsx_category:
         alias: pim_connector.reader.file.xlsx
+
+    pim_connector.reader.file.xlsx_channel:
+        alias: pim_connector.reader.file.xlsx
+
+    pim_connector.reader.file.xlsx_locale:
+        alias: pim_connector.reader.file.xlsx
+
+    pim_connector.reader.file.xlsx_attribute_group:
+        alias: pim_connector.reader.file.xlsx
+
+    pim_connector.reader.file.xlsx_currency:
+        alias: pim_connector.reader.file.xlsx
+
+    pim_connector.reader.file.xlsx_group_type:
+        alias: pim_connector.reader.file.xlsx
+
+    # ORM readers
+    pim_connector.reader.orm.channel:
+        class: '%pim_base_connector.reader.orm.entity.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pim_catalog.entity.channel.class%'
+
+    pim_connector.reader.orm.locale:
+        class: '%pim_base_connector.reader.orm.entity.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pim_catalog.entity.locale.class%'
+
+    pim_connector.reader.orm.attribute_group:
+        class: '%pim_base_connector.reader.orm.entity.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pim_catalog.entity.attribute_group.class%'
+
+    pim_connector.reader.orm.currency:
+        class: '%pim_base_connector.reader.orm.entity.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pim_catalog.entity.currency.class%'
+
+    pim_connector.reader.orm.group_type:
+        class: '%pim_base_connector.reader.orm.entity.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pim_catalog.entity.group_type.class%'
