@@ -2,22 +2,18 @@ connector:
     name: Akeneo CSV Connector
     jobs:
         csv_product_import_with_rules:
-            title: pimee_catalog_rule.jobs.csv_product_import_with_rules.title
             type:  import
             steps:
                 validation:
-                    title: pim_connector.jobs.csv_product_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
-                    title:         pim_connector.jobs.csv_product_import.import.title
                     services:
                         reader:    pim_connector.reader.file.csv_product
                         processor: pim_connector.processor.denormalization.product.flat
                         writer:    pim_connector.writer.doctrine.product
                 import_associations:
-                    title:         pim_connector.jobs.csv_product_import.import_associations.title
                     services:
                         reader:    pim_connector.reader.file.csv_association
                         processor: pim_connector.processor.denormalization.product_association.flat
@@ -25,7 +21,6 @@ connector:
                     parameters:
                         batch_size: 1
                 execute_rules:
-                    title:         pimee_catalog_rule.steps.rules_execution.title
                     services:
                         reader:    pimee_catalog_rule.reader.file.csv_product_with_rule
                         processor: pimee_catalog_rule.processor.product_loader

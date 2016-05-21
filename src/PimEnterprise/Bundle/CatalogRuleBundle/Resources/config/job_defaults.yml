@@ -7,7 +7,7 @@ services:
         class: %pim_connector.job.job_parameters.default_values_provider.simple_yaml_export.class%
         arguments:
             -
-                - 'pimee_catalog_rule.jobs.yml_rule_export.title'
+                - 'yml_rule_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -16,7 +16,7 @@ services:
         class: %pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class%
         arguments:
             -
-                - 'pimee_catalog_rule.jobs.yml_rule_import.title'
+                - 'yml_rule_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -25,7 +25,7 @@ services:
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
             -
-                - 'pimee_catalog_rule.jobs.csv_product_import_with_rules.title'
+                - 'csv_product_import_with_rules'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -34,7 +34,7 @@ services:
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
             -
-                - 'pimee_catalog_rule.jobs.xlsx_product_import_with_rules.title'
+                - 'xlsx_product_import_with_rules'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -42,6 +42,6 @@ services:
         class: %pim_connector.job.job_parameters.default_values_provider.impacted_product_count.class%
         arguments:
             -
-                - 'pimee_catalog_rule.jobs.impacted_product_count.title'
+                - 'rule_impacted_product_count'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }

@@ -6,9 +6,9 @@ services:
         class: %pim_connector.job.job_parameters.default_values_provider.simple_csv_export.class%
         arguments:
             -
-                - 'pimee_product_asset.jobs.csv_asset_export.title'
-                - 'pimee_product_asset.jobs.csv_asset_category_export.title'
-                - 'pimee_product_asset.jobs.csv_asset_variation_export.title'
+                - 'csv_asset_export'
+                - 'csv_asset_category_export'
+                - 'csv_asset_variation_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -16,9 +16,9 @@ services:
         class: %pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export.class%
         arguments:
             -
-                - 'pimee_product_asset.jobs.xlsx_asset_export.title'
-                - 'pimee_product_asset.jobs.xlsx_asset_category_export.title'
-                - 'pimee_product_asset.jobs.xlsx_asset_variation_export.title'
+                - 'xlsx_asset_export'
+                - 'xlsx_asset_category_export'
+                - 'xlsx_asset_variation_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -26,7 +26,7 @@ services:
         class: %pim_connector.job.job_parameters.default_values_provider.simple_yaml_export.class%
         arguments:
             -
-                - 'pimee_product_asset.jobs.yml_asset_configuration_export.title'
+                - 'yml_asset_channel_configuration_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -35,8 +35,8 @@ services:
         class: %pim_connector.job.job_parameters.default_values_provider.simple_csv_import.class%
         arguments:
             -
-                - 'pimee_product_asset.jobs.csv_asset_import.title'
-                - 'pimee_product_asset.jobs.csv_asset_category_import.title'
+                - 'csv_asset_import'
+                - 'csv_asset_category_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -44,8 +44,8 @@ services:
         class: %pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import.class%
         arguments:
             -
-                - 'pimee_product_asset.jobs.xlsx_asset_import.title'
-                - 'pimee_product_asset.jobs.xlsx_asset_category_import.title'
+                - 'xlsx_asset_import'
+                - 'xlsx_asset_category_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -53,7 +53,7 @@ services:
         class: %pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class%
         arguments:
             -
-                - 'pimee_product_asset.jobs.yml_asset_channel_configuration_import.title'
+                - 'yml_asset_channel_configuration_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -62,6 +62,6 @@ services:
         class: %akeneo_batch.job.job_parameters.empty_values_provider.class%
         arguments:
             -
-                - 'pimee_product_asset.jobs.assets_mass_upload.title'
+                - 'apply_assets_mass_upload'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }

@@ -2,72 +2,58 @@ connector:
     name: Akeneo Product Asset Connector
     jobs:
         apply_assets_mass_upload:
-            title: pimee_product_asset.jobs.assets_mass_upload.title
             type:  mass_upload
             steps:
                 perform:
-                    title: pimee_product_asset.jobs.assets_mass_upload.title
                     class: "%pim_connector.step.tasklet.class%"
                     services:
                         tasklet: pimee_product_asset.mass_upload.tasklet
         yml_asset_channel_configuration_import:
-            title: pimee_product_asset.jobs.yml_asset_channel_configuration_import.title
             type:  import
             steps:
                 validation:
-                    title: pim_connector.jobs.csv_product_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_asset:
-                    title:         pimee_product_asset.jobs.csv_asset_configuration_import.title
                     services:
                         reader:    pim_base_connector.reader.file.yaml
                         processor: pimee_product_asset.processor.denormalization.channel_configuration.flat
                         writer:    pimee_product_asset.writer.doctrine.channel_configuration
         yml_asset_channel_configuration_export:
-            title: pimee_product_asset.jobs.yml_asset_configuration_export.title
             type:  export
             steps:
                 export:
-                    title: pimee_product_asset.jobs.yml_asset_configuration_export.title
                     services:
                         reader:    pimee_product_asset.reader.orm.csv_channel_configuration
                         processor: pimee_product_asset.processor.normalization.channel_configuration.flat
                         writer:    pimee_product_asset.writer.file.yaml_asset_channel_configuration
         csv_asset_import:
-            title: pimee_product_asset.jobs.csv_asset_import.title
             type:  import
             steps:
                 validation:
-                    title: pim_connector.jobs.csv_product_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_tags:
-                    title: pimee_product_asset.jobs.csv_tag_import.title
                     class: %pimee_product_asset.step.tag.class%
                     services:
                         reader:    pimee_product_asset.reader.file.csv_tag
                         processor: pimee_product_asset.processor.denormalization.tag.flat
                         writer:    pimee_product_asset.writer.doctrine.tag
                 import_asset:
-                    title:         pimee_product_asset.jobs.csv_asset_import.title
                     services:
                         reader:    pimee_product_asset.reader.file.csv_asset
                         processor: pimee_product_asset.processor.denormalization.asset.flat
                         writer:    pimee_product_asset.writer.doctrine.asset
         csv_asset_category_import:
-            title: pimee_product_asset.jobs.csv_asset_category_import.title
             type:  import
             steps:
                 validation:
-                    title: pim_connector.jobs.csv_product_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_asset_category:
-                    title:         pimee_product_asset.jobs.csv_asset_category_import.title
                     services:
                         reader:    pimee_product_asset.reader.file.csv_asset_category
                         processor: pimee_product_asset.processor.denormalization.category.flat
@@ -75,68 +61,55 @@ connector:
                     parameters:
                         batchSize: 1
         csv_asset_export:
-            title: pimee_product_asset.jobs.csv_asset_export.title
             type:  export
             steps:
                 export:
-                    title: pimee_product_asset.jobs.csv_asset_export.title
                     services:
                         reader:    pimee_product_asset.reader.orm.asset
                         processor: pimee_product_asset.processor.normalization.asset.flat
                         writer:    pimee_product_asset.writer.file.csv_asset
         csv_asset_category_export:
-            title: pimee_product_asset.jobs.csv_asset_category_export.title
             type:  export
             steps:
                 export:
-                    title: pimee_product_asset.jobs.csv_asset_category_export.title
                     services:
                         reader:    pimee_product_asset.reader.orm.category
                         processor: pimee_product_asset.processor.normalization.category.flat
                         writer:    pimee_product_asset.writer.file.csv_asset_category
         csv_asset_variation_export:
-            title: pimee_product_asset.jobs.csv_asset_variation_export.title
             type:  export
             steps:
                 export:
-                    title: pimee_product_asset.jobs.csv_asset_variation_export.title
                     services:
                         reader:    pimee_product_asset.reader.orm.variation
                         processor: pimee_product_asset.processor.normalization.variation.flat
                         writer:    pimee_product_asset.writer.file.csv_asset_variation
         xlsx_asset_import:
-            title: pimee_product_asset.jobs.xlsx_asset_import.title
             type:  import
             steps:
                 validation:
-                    title: pim_connector.jobs.xlsx_product_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_tags:
-                    title: pimee_product_asset.jobs.xlsx_tag_import.title
                     class: %pimee_product_asset.step.tag.class%
                     services:
                         reader:    pimee_product_asset.reader.file.xlsx_tag
                         processor: pimee_product_asset.processor.denormalization.tag.flat
                         writer:    pimee_product_asset.writer.doctrine.tag
                 import_asset:
-                    title:         pimee_product_asset.jobs.xlsx_asset_import.title
                     services:
                         reader:    pimee_product_asset.reader.file.xlsx_asset
                         processor: pimee_product_asset.processor.denormalization.asset.flat
                         writer:    pimee_product_asset.writer.doctrine.asset
         xlsx_asset_category_import:
-            title: pimee_product_asset.jobs.xlsx_asset_category_import.title
             type:  import
             steps:
                 validation:
-                    title: pim_connector.jobs.xlsx_product_import.validation.title
                     class: %pim_connector.step.validator.class%
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_asset_category:
-                    title:         pimee_product_asset.jobs.xlsx_asset_category_import.title
                     services:
                         reader:    pimee_product_asset.reader.file.xlsx_asset_category
                         processor: pimee_product_asset.processor.denormalization.category.flat
@@ -144,31 +117,25 @@ connector:
                     parameters:
                         batchSize: 1
         xlsx_asset_export:
-            title: pimee_product_asset.jobs.xlsx_asset_export.title
             type:  export
             steps:
                 export:
-                    title: pimee_product_asset.jobs.xlsx_asset_export.title
                     services:
                         reader:    pimee_product_asset.reader.orm.asset
                         processor: pimee_product_asset.processor.normalization.asset.flat
                         writer:    pimee_product_asset.writer.file.xlsx_asset
         xlsx_asset_category_export:
-            title: pimee_product_asset.jobs.xlsx_asset_category_export.title
             type:  export
             steps:
                 export:
-                    title: pimee_product_asset.jobs.xlsx_asset_category_export.title
                     services:
                         reader:    pimee_product_asset.reader.orm.category
                         processor: pimee_product_asset.processor.normalization.category.flat
                         writer:    pimee_product_asset.writer.file.xlsx_asset_category
         xlsx_asset_variation_export:
-            title: pimee_product_asset.jobs.xlsx_asset_variation_export.title
             type:  export
             steps:
                 export:
-                    title: pimee_product_asset.jobs.xlsx_asset_variation_export.title
                     services:
                         reader:    pimee_product_asset.reader.orm.variation
                         processor: pimee_product_asset.processor.normalization.variation.flat
