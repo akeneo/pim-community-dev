@@ -18,7 +18,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
      */
     public function getIdentifierProperties()
     {
-        return ['username', 'email'];
+        return ['username'];
     }
 
     /**
