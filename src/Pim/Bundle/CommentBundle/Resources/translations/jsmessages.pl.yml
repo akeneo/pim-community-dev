@@ -1,0 +1,26 @@
+btn:
+  post: Dodaj nowy komentarz
+  reply: Odpowiedz
+  cancel: Anuluj
+confirmation:
+  remove:
+    comment: Czy na pewno chcesz usunąć ten komentarz?
+flash:
+  comment:
+    create:
+      success: Twój komentarz został pomyślnie utworzony.
+      error: Wystąpił błąd podczas tworzenia twojego komentarza.
+    delete:
+      success: Twój komentarz został pomyślnie usunięty.
+      error: Wystąpił błąd podczas usuwania twojego komentarza.
+    reply:
+      success: Twoja odpowiedź została utworzona pomyślnie.
+      error: Wystąpił błąd podczas tworzenia twojej odpowiedzi.
+comment:
+  index:
+    empty: Aktualnie brak komentarzy
+  placeholder:
+    new: Napisz nowy komentarz...
+    reply: Odpowiedz na ten komentarz...
+pim_comment:
+  product.panel.comment.title: Komentarze
