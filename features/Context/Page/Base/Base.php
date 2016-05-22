@@ -127,8 +127,14 @@ class Base extends Page
     public function toggleSwitch($locator, $on = true)
     {
         $field = $this->findField($locator);
+        $parent = $field->getParent();
+
         if ($field->isChecked() != $on) {
-            $field->getParent()->find('css', 'label')->click();
+            $parent = $this->spin(function () use ($field, $parent) {
+                return $parent->find('css', 'label');
+            }, 'Could not find label in parent element');
+
+            $parent->click();
         }
     }
 

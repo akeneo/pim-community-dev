@@ -77,7 +77,9 @@ class ProductEditForm extends Form
         if ('No matches found' !== $text) {
             foreach ($groupLabels as $groupLabel) {
                 $li = $groupLabel->getParent();
-                $results[$li->find('css', '.attribute-label')->getText()] = $li;
+                if (is_object($li->find('css', '.attribute-label'))) {
+                    $results[$li->find('css', '.attribute-label')->getText()] = $li;
+                }
             }
         }
 
