@@ -273,8 +273,12 @@ class ProductEditForm extends Form
      */
     protected function fillSelectField(NodeElement $fieldContainer, $value)
     {
+        $element = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', '.select2-container');
+        }, 'Can not find the select2 container.');
+
         $field = $this->decorate(
-            $fieldContainer->getParent()->find('css', '.select2-container'),
+            $element,
             ['Pim\Behat\Decorator\Field\Select2Decorator']
         );
 
