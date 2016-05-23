@@ -169,19 +169,18 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeCurrenciesOnThePriceField($currencies, $field)
     {
-        if (null === $priceLabelField = $this->getCurrentPage()->findField($field)) {
-            throw $this->createExpectationException(sprintf('Expecting to see the price field "%s".', $field));
-        }
+        $priceLabelField = $this->spin(function () use ($field) {
+            return $this->getCurrentPage()->findField($field);
+        }, sprintf('Expecting to see the price field "%s".', $field));
+
         $currencies = explode(',', $currencies);
         $currencies = array_map('trim', $currencies);
-        $priceField = $priceLabelField->getParent();
+        $priceField = $priceLabelField->getParent()->getParent();
 
         foreach ($currencies as $currency) {
-            if (null === $priceField->find('css', sprintf('.controls input[value="%s"]', $currency))) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting to see the currency "%s" on price field "%s".', $currency, $field)
-                );
-            }
+            $this->spin(function () use ($priceField, $currency, $field) {
+                return $priceField->find('css', sprintf('input[data-currency="%s"]', $currency));
+            }, sprintf('Expecting to see the currency "%s" on price field "%s".', $currency, $field));
         }
     }
 

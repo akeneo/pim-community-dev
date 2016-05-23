@@ -17,9 +17,13 @@ class AssociationTabContext extends PimContext
      */
     public function iSelectTheAssociation($association)
     {
-        $this->getCurrentPage()
-            ->getAssociationsList()
-            ->clickLink($association);
+        $this->spin(function () use ($association) {
+            $this->getCurrentPage()
+                ->getAssociationsList()
+                ->clickLink($association);
+
+            return true;
+        }, sprintf('Cannot select the association "%s"', $association));
     }
 
     /**
@@ -31,25 +35,18 @@ class AssociationTabContext extends PimContext
      */
     public function iShouldBeOnTheAssociation($association)
     {
-        $list     = $this->getCurrentPage()->getAssociationsList();
-        $tabLabel = $this->spin(function () use ($list) {
-            $activeTab = $list->find('css', '.active');
-            if (null !== $activeTab) {
-                return $activeTab->getText();
+        $this->spin(function () use ($association) {
+            $currentTab = $this->getCurrentPage()->getAssociationsList()->find('css', '.active');
+            if (null === $currentTab) {
+                return false;
             }
 
-            return false;
-        }, 'Cannot find ".active" element');
+            $tabLabel = trim($currentTab->getText());
 
-        $tabLabel = trim($tabLabel);
-        if ($tabLabel !== $association) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expecting "%s" to be the current association type, got "%s"',
-                    $association,
-                    $tabLabel
-                )
-            );
-        }
+            return $tabLabel === $association;
+        }, sprintf(
+            sprintf('Failing to assert that current association is %s', $association),
+            $association
+        ));
     }
 }

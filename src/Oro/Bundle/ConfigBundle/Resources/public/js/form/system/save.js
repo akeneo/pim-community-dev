@@ -35,10 +35,10 @@ define([
              * {@inheritdoc}
              */
             save: function () {
-                this.getRoot().trigger('pim_enrich:form:entity:pre_save');
+                this.getRoot().trigger('pim_enrich:form:entity:pre_save', this.getFormData());
                 this.showLoadingMask();
 
-                $.post({
+                $.ajax({
                     method: 'POST',
                     url: this.getSaveUrl(),
                     contentType: 'application/json',

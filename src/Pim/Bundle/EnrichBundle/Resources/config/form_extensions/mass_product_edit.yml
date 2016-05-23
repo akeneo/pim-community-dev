@@ -26,9 +26,11 @@ extensions:
         targetZone: other-actions
         position: 90
         config:
-            trans:
+            select2:
                 placeholder: pim_enrich.form.product.mass_edit.select_attributes
                 buttonTitle: pim_enrich.form.product.mass_edit.select
+                title:       pim_enrich.form.product.mass_edit.select
+                emptyText:   pim_enrich.form.product.mass_edit.select
             searchParameters:
                 options:
                     exclude_unique: true

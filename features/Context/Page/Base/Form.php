@@ -226,8 +226,6 @@ class Form extends Base
      *
      * @param string $name
      *
-     * @throws ElementNotFoundException
-     *
      * @return NodeElement
      */
     public function findFieldContainer($name)

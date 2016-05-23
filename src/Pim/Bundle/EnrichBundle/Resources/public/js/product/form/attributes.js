@@ -25,7 +25,7 @@ define(
                 return Routing.generate(
                     this.config.removeAttributeRoute,
                     {
-                        code: this.getFormData().code,
+                        id: this.getFormData().meta.id,
                         attributeId: attribute.id
                     }
                 )

@@ -1003,13 +1003,17 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theCategoriesOfShouldBe($productCode, $categoryCodes)
     {
-        $product    = $this->getProduct($productCode);
-        $categories = $product->getCategories()->map(
-            function ($category) {
-                return $category->getCode();
-            }
-        )->toArray();
-        assertEquals($this->listToArray($categoryCodes), $categories);
+        $this->spin(function () use ($productCode, $categoryCodes) {
+            $product    = $this->getProduct($productCode);
+            $categories = $product->getCategories()->map(
+                function ($category) {
+                    return $category->getCode();
+                }
+            )->toArray();
+            assertEquals($this->listToArray($categoryCodes), $categories);
+
+            return true;
+        }, sprintf('Cannot assert that %s categories are %s', $productCode, $categoryCodes));
     }
 
     /**

@@ -167,13 +167,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldNotSeeTheTab($tab)
     {
-        try {
-            $this->getCurrentPage()->getFormTab($tab);
-        } catch (TimeoutException $e) {
-            return;
-        }
-
-        throw $this->createExpectationException(sprintf('Expecting not to see tab "%s"', $tab));
+        assertNull($this->getCurrentPage()->getFormTab($tab));
     }
 
     /**
@@ -206,19 +200,14 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeVersionsInTheHistory($expectedCount)
     {
-        $actualVersions = $this->spin(function () {
-            return $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.product-version');
-        }, 'Cannot find ".history-panel tbody tr.product-version" element');
+        $actualVersions = $this->spin(function () use ($expectedCount) {
+            $actualVersions = $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.product-version');
 
-        if ((int) $expectedCount !== count($actualVersions)) {
-            throw new \Exception(
-                sprintf(
-                    'Expecting %d versions, actually saw %d',
-                    $expectedCount,
-                    count($actualVersions)
-                )
-            );
-        }
+            return ((int) $expectedCount) === count($actualVersions);
+        }, sprintf(
+            'Fail asserting %d versions count',
+            $expectedCount
+        ));
     }
 
     /**
@@ -544,7 +533,7 @@ class WebUser extends RawMinkContext
     public function theTitleOfTheProductShouldBe($title)
     {
         $this->spin(function () use ($title) {
-            $title !== $this->getCurrentPage()->getTitle();
+            return $title === $this->getCurrentPage()->getTitle();
         }, sprintf(
             'Expected product title "%s", actually saw "%s"',
             $title,
@@ -973,7 +962,6 @@ class WebUser extends RawMinkContext
     {
         try {
             $removeLink = $this->getCurrentPage()
-                ->getElement('Attribute inputs')
                 ->getRemoveLinkFor($field);
         } catch (TimeoutException $te) {
             $removeLink = null;
@@ -2000,7 +1988,11 @@ class WebUser extends RawMinkContext
         $selectNames = ['system-locale', 'pim_user_user_form[uiLocale]'];
         $field = null;
         foreach ($selectNames as $selectName) {
-            $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);
+            try {
+                $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);
+            } catch (TimeoutException $e) {
+                // We didn't find the system locale or user locale
+            }
         }
         if (null === $field) {
             throw new \Exception(sprintf('Could not find field with name %s', json_encode($selectNames)));

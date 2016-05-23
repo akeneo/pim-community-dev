@@ -22,6 +22,7 @@ define(
         'pim/group-manager',
         'oro/navigation',
         'pim/i18n',
+        'oro/loading-mask',
         'backbone/bootstrap-modal'
     ],
     function (
@@ -37,7 +38,8 @@ define(
         FetcherRegistry,
         GroupManager,
         Navigation,
-        i18n
+        i18n,
+        LoadingMask
     ) {
         var FormView = BaseForm.extend({
             tagName: 'span',
@@ -109,6 +111,9 @@ define(
              * @param {Object} event
              */
             displayModal: function (event) {
+                var loadingMask = new LoadingMask();
+                loadingMask.render().$el.appendTo($('#container')).show();
+
                 GroupManager.getProductGroups(this.getFormData()).done(function (groups) {
                     var group = _.findWhere(groups, { code: event.currentTarget.dataset.group });
 
@@ -116,7 +121,8 @@ define(
                         this.getProductList(group.code),
                         FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
                     ).done(function (productList, identifierAttribute) {
-                        var groupModal = new Backbone.BootstrapModal({
+                        loadingMask.remove();
+                        this.groupModal = new Backbone.BootstrapModal({
                             allowCancel: true,
                             okText: _.__('pim_enrich.entity.product.meta.groups.modal.view_group'),
                             cancelText: _.__('pim_enrich.entity.product.meta.groups.modal.close'),
@@ -132,28 +138,28 @@ define(
                             })
                         });
 
-                        groupModal.on('ok', function visitGroup() {
-                            groupModal.close();
-                            Navigation.getInstance().setLocation(
-                                Routing.generate(
-                                    'VARIANT' === group.type ?
-                                        'pim_enrich_variant_group_edit' :
-                                        'pim_enrich_group_edit',
-                                    { id: group.meta.id }
-                                )
-                            );
-                        });
-                        groupModal.open();
+                        this.groupModal.on('ok', function visitGroup() {
+                            this.groupModal.close();
+                            var route = 'VARIANT' === group.type ?
+                                'pim_enrich_variant_group_edit':
+                                'pim_enrich_group_edit';
+                            var parameters = 'VARIANT' === group.type ?
+                                { code: group.code }:
+                                { id: group.meta.id };
 
-                        groupModal.$el.on('click', 'a[data-product-id]', function visitProduct(event) {
-                            groupModal.close();
+                            Navigation.getInstance().setLocation(Routing.generate(route, parameters));
+                        }.bind(this));
+                        this.groupModal.open();
+
+                        this.groupModal.$el.on('click', 'a[data-product-id]', function visitProduct(event) {
+                            this.groupModal.close();
                             Navigation.getInstance().setLocation(
                                 Routing.generate(
                                     'pim_enrich_product_edit',
                                     { id: event.currentTarget.dataset.productId }
                                 )
                             );
-                        });
+                        }.bind(this));
                     }.bind(this));
                 }.bind(this));
             }

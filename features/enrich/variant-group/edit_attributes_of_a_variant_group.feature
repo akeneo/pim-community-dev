@@ -37,7 +37,7 @@ Feature: Edit attributes of a variant group
     When I visit the "Additional information" group
     And I fill in the following information:
       | Manufacturer | Lacoste |
-    And I press the "Save" button
+    And I save the variant group
     And I reload the page
     Then the field Manufacturer should contain "Lacoste"
 
@@ -45,9 +45,9 @@ Feature: Edit attributes of a variant group
     Given I am on the "tshirts" variant group page
     And I visit the "Attributes" tab
     And I change the Nom for scope ecommerce and locale fr_FR to "French name"
-    And I press the "Save" button
+    And I save the variant group
     And I change the Name for scope ecommerce and locale en_US to "English name"
-    And I press the "Save" button
+    And I save the variant group
     And I reload the page
     When I switch the locale to "fr_FR"
     And I switch the scope to "ecommerce"
