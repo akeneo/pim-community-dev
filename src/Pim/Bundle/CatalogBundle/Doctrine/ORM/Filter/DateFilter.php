@@ -145,7 +145,6 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
         }
 
         if ($value instanceof \DateTime) {
-            $value->setTimezone(new \DateTimeZone('UTC'));
             return $value->format(static::DATETIME_FORMAT);
         }
 
