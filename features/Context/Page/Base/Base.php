@@ -26,7 +26,7 @@ class Base extends Page
         'Body'             => ['css' => 'body'],
         'Dialog'           => ['css' => 'div.modal'],
         'Title'            => ['css' => '.navbar-title'],
-        'Product title'    => ['css' => '.product-title'],
+        'Product title'    => ['css' => '.entity-title'],
         'HeadTitle'        => ['css' => 'title'],
         'Flash messages'   => ['css' => '.flash-messages-holder'],
         'Navigation Bar'   => ['css' => 'header#oroplatform-header'],

@@ -543,7 +543,7 @@ class WebUser extends RawMinkContext
     public function theTitleOfTheProductShouldBe($title)
     {
         $this->spin(function () use ($title) {
-            $title !== $this->getCurrentPage()->getTitle();
+            return $title === $this->getCurrentPage()->getTitle();
         }, sprintf(
             'Expected product title "%s", actually saw "%s"',
             $title,
@@ -965,7 +965,6 @@ class WebUser extends RawMinkContext
     {
         try {
             $removeLink = $this->getCurrentPage()
-                ->getElement('Attribute inputs')
                 ->getRemoveLinkFor($field);
         } catch (TimeoutException $te) {
             $removeLink = null;

@@ -77,7 +77,7 @@ class VariantGroupController
     public function indexAction()
     {
         return [
-            'groupTypes' => array_keys($this->groupTypeRepository->findTypeIds(true))
+            'groupTypes' => $this->groupTypeRepository->findTypeIds(true)
         ];
     }
 

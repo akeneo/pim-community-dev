@@ -45,8 +45,7 @@ define(
         return BaseForm.extend({
             template: _.template(formTemplate),
             panesTemplate: _.template(panesTemplate),
-            className: 'tab-pane active',
-            id: 'product-associations',
+            className: 'tab-pane active product-associations',
             events: {
                 'click .associations-list li': 'changeAssociationType',
                 'click .association-buttons .target-button': 'changeAssociationTargets'

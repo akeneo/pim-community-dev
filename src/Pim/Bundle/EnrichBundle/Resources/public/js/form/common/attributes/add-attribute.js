@@ -69,9 +69,9 @@ define(
                 }, meta.config);
 
                 this.config.select2.placeholder = __(this.config.select2.placeholder);
-                this.config.select2.title       = __(this.config.select2.placeholder);
-                this.config.select2.buttonTitle = __(this.config.select2.placeholder);
-                this.config.select2.emptyText   = __(this.config.select2.placeholder);
+                this.config.select2.title       = __(this.config.select2.title);
+                this.config.select2.buttonTitle = __(this.config.select2.buttonTitle);
+                this.config.select2.emptyText   = __(this.config.select2.emptyText);
             },
 
             /**
