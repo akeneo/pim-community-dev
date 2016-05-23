@@ -67,9 +67,11 @@
                                                 document.title  = newTitle;
                                                 var navigation  = Navigation.getInstance();
                                                 var navTitle    = navigation.getPinButtonsData('title');
-                                                navTitle.params = {'%product.sku%': sku};
-                                                navigation.setPinButtonsData('title', navTitle);
-                                                navigation.setPinButtonsData('title-rendered-short', newTitle);
+                                                if (navTitle) {
+                                                    navTitle.params = {'%product.sku%': sku};
+                                                    navigation.setPinButtonsData('title', navTitle);
+                                                    navigation.setPinButtonsData('title-rendered-short', newTitle);
+                                                }
 
                                                 FormBuilder.build(product.meta.form)
                                                     .then(function (form) {
