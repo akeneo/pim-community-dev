@@ -9,6 +9,7 @@ use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderRegistr
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -115,6 +116,12 @@ class JobParametersType extends AbstractType implements DataMapperInterface
             return null;
         }
 
+        $modelTransformer = null;
+        if (isset($config['model_transformer'])) {
+            $modelTransformer = $config['model_transformer'];
+            unset($config['model_transformer']);
+        }
+
         $config = array_merge(
             [
                 'type'    => 'text',
@@ -136,6 +143,19 @@ class JobParametersType extends AbstractType implements DataMapperInterface
         }
 
         $child = $factory->createNamedBuilder($parameter, $config['type'], null, $options);
+
+        if (null !== $modelTransformer) {
+            if (!$modelTransformer instanceof DataTransformerInterface) {
+                throw new \LogicException(
+                    sprintf(
+                        'Expects a Symfony\Component\Form\DataTransformerInterface, "%s" provided',
+                        get_class($modelTransformer)
+                    )
+                );
+            }
+
+            $child->addModelTransformer($modelTransformer);
+        }
 
         return $child->getForm();
     }

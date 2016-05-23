@@ -9,6 +9,8 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
+use Pim\Bundle\ImportExportBundle\Form\DataTransformer\BooleanToPBQTransformer;
+use Pim\Bundle\ImportExportBundle\Form\DataTransformer\UpdatedToPBQTransformer;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -147,6 +149,7 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
                         'help'     => 'pim_connector.export.status.help',
                         'attr'     => ['data-tab' => 'content']
                     ],
+                    'model_transformer' => new BooleanToPBQTransformer(),
                 ],
                 'updated' => [
                     'type'    => 'choice',
@@ -162,6 +165,7 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
                         'info'     => $this->getLastExecution($jobInstance),
                         'attr'     => ['data-tab' => 'content']
                     ],
+                    'model_transformer' => new UpdatedToPBQTransformer(),
                 ],
             ],
         ];
