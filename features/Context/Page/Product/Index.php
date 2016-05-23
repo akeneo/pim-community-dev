@@ -31,15 +31,15 @@ class Index extends Grid
         $this->elements = array_merge(
             $this->elements,
             [
-                'Categories tree'       => ['css' => '#tree'],
-                'Main context selector' => [
+                'Categories tree'         => ['css' => '#tree'],
+                'Main context selector'   => [
                     'css'        => '#container',
-                    'decorators' => [
-                        'Pim\Behat\Decorator\ContextSwitcherDecorator'
-                    ]
+                    'decorators' => ['Pim\Behat\Decorator\ContextSwitcherDecorator'],
                 ],
-                'Tree select'      => ['css' => '#tree_select'],
-                'Locales dropdown' => ['css' => '#locale-switcher'],
+                'Tree select'             => ['css' => '#tree_select'],
+                'Locales dropdown'        => ['css' => '#locale-switcher'],
+                'Sidebar collapse button' => ['css' => '.sidebar .sidebar-controls i.icon-double-angle-left'],
+                'Sidebar expand button'   => ['css' => '.separator.collapsed i.icon-double-angle-right'],
             ]
         );
     }
