@@ -494,7 +494,12 @@ class Grid extends Index
      */
     public function showFilter($filterName)
     {
-        if (!$this->getFilter($filterName)->isVisible()) {
+        $this->spin(function() {
+            return $this->getElement('Body')->find('css', '.filter-box');
+        }, 'The filter box is not loaded');
+
+        $filter = $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
+        if (null === $filter || !$filter->isVisible()) {
             $this->clickOnFilterToManage($filterName);
         }
     }
