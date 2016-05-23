@@ -112,7 +112,7 @@ class MediaFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
 
         $qb->field('normalizedData.picture.originalFilename')->shouldBeCalled()->willReturn($qb);
-        $qb->equals('foo')->shouldBeCalled();
+        $qb->equals(new \MongoRegex('/^foo$/i'))->shouldBeCalled();
 
         $this->addAttributeFilter($image, '=', 'foo');
     }
