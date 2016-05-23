@@ -672,7 +672,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
                 if (null !== $checkbox) {
                     $checkbox->check();
+                }
 
+                if ($checkbox->isChecked()) {
                     return true;
                 }
 

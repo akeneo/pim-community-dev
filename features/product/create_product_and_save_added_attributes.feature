@@ -17,12 +17,13 @@ Feature: Create product and save a new product value
       | SKU             | gladiator |
       | Choose a family | Sandals   |
     And I press the "Save" button in the popin
+    And I should be on the product "gladiator" edit page
     And I am on the "gladiator" product page
     And I add available attributes Rate of sale, Weight and Tmp Price
     And I visit the "Product information" group
-    And I fill in "Weight" with "0"
+    And I change the Weight to "0"
     And I visit the "Marketing" group
-    And I fill in "Rate of sale" with "0"
+    And I change the "Rate of sale" to "0"
     And I fill in the following information:
       | Tmp Price | 0 EUR |
     And I save the product

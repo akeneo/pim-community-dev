@@ -52,7 +52,8 @@ Feature: Associate a product
     And I press the "Show products" button
     And I check the rows "shoelaces, gray-boots, brown-boots and green-boots"
     When I save the product
-    Then I should see the text "4 products and 1 groups"
+    Then I should not see the text "There are unsaved changes."
+    And I should see the text "4 products and 1 groups"
     And I select the "Upsell" association
     Then I should see the text "1 products and 1 groups"
     And I select the "Substitution" association
@@ -66,7 +67,8 @@ Feature: Associate a product
     And I check the row "shoelaces"
     And I check the row "black-boots"
     When I save the product
-    Then the row "shoelaces" should be checked
+    Then I should not see the text "There are unsaved changes."
+    And the row "shoelaces" should be checked
     And the row "black-boots" should be checked
     And I should be able to sort the rows by Is associated
     And I should be able to sort the rows by SKU
