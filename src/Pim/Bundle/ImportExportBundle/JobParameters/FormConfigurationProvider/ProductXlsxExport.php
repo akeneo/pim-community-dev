@@ -105,36 +105,6 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
                     'attr'     => ['data-tab' => 'content']
                 ]
             ],
-            'enabled' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => [
-                        'enabled'  => 'pim_connector.export.status.choice.enabled',
-                        'disabled' => 'pim_connector.export.status.choice.disabled',
-                        'all'      => 'pim_connector.export.status.choice.all'
-                    ],
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_connector.export.status.label',
-                    'help'     => 'pim_connector.export.status.help',
-                    'attr'     => ['data-tab' => 'content']
-                ]
-            ],
-            'updated' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => [
-                        'all'         => 'pim_connector.export.updated.choice.all',
-                        'last_export' => 'pim_connector.export.updated.choice.last_export'
-                    ],
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_connector.export.updated.label',
-                    'help'     => 'pim_connector.export.updated.help',
-                    'info'     => $this->getLastExecution($jobInstance),
-                    'attr'     => ['data-tab' => 'content']
-                ],
-            ],
             'decimalSeparator' => [
                 'type'    => 'choice',
                 'options' => [
@@ -161,6 +131,38 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
                     'label' => 'pim_connector.export.lines_per_files.label',
                     'help'  => 'pim_connector.export.lines_per_files.help',
                 ]
+            ],
+            'filters' => [
+                'enabled' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices'  => [
+                            'enabled'  => 'pim_connector.export.status.choice.enabled',
+                            'disabled' => 'pim_connector.export.status.choice.disabled',
+                            'all'      => 'pim_connector.export.status.choice.all'
+                        ],
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_connector.export.status.label',
+                        'help'     => 'pim_connector.export.status.help',
+                        'attr'     => ['data-tab' => 'content']
+                    ],
+                ],
+                'updated' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices'  => [
+                            'all'         => 'pim_connector.export.updated.choice.all',
+                            'last_export' => 'pim_connector.export.updated.choice.last_export'
+                        ],
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_connector.export.updated.label',
+                        'help'     => 'pim_connector.export.updated.help',
+                        'info'     => $this->getLastExecution($jobInstance),
+                        'attr'     => ['data-tab' => 'content']
+                    ],
+                ],
             ],
         ];
         $formOptions = array_merge($formOptions, $this->simpleXlsxExport->getFormConfiguration($jobInstance));

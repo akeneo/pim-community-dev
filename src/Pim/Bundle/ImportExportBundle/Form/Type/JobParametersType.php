@@ -12,6 +12,8 @@ use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -66,9 +68,9 @@ class JobParametersType extends AbstractType implements DataMapperInterface
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use ($factory, $configProviderRegistry, $constraintProviderRegistry) {
-                $form   = $event->getForm();
+                $form = $event->getForm();
                 $jobInstance = $form->getRoot()->getData();
-                if (null == $jobInstance->getId()) {
+                if (null === $jobInstance->getId()) {
                     return;
                 }
                 $job = $this->getConnectorRegistry()->getJob($jobInstance);
@@ -79,33 +81,63 @@ class JobParametersType extends AbstractType implements DataMapperInterface
                 $fieldConstraints = $collection->fields;
 
                 foreach ($configs as $parameter => $config) {
-                    if (isset($config['system']) && true === $config['system']) {
-                        continue;
+                    if ('filters' === $parameter) {
+                        $filters = $factory->createNamed('filters', 'form', null, ['auto_initialize' => false]);
+                        foreach ($config as $filterName => $filterConfig) {
+                            $child = $this->buildChild($factory, $filterConfig, $fieldConstraints, $filterName);
+                            if (null !== $child) {
+                                $filters->add($child);
+                            }
+                        }
+                        $form->add($filters);
+                    } else {
+                        $child = $this->buildChild($factory, $config, $fieldConstraints, $parameter);
+                        if (null !== $child) {
+                            $form->add($child);
+                        }
                     }
-                    $config = array_merge(
-                        [
-                            'type'    => 'text',
-                            'options' => [],
-                        ],
-                        $config
-                    );
-                    $options = array_merge(
-                        [
-                            'auto_initialize' => false,
-                            'required'        => false,
-                            'label'           => ucfirst($parameter),
-                        ],
-                        $config['options']
-                    );
-
-                    if (isset($fieldConstraints[$parameter])) {
-                        $options['constraints'] = $fieldConstraints[$parameter]->constraints;
-                    }
-
-                    $form->add($factory->createNamed($parameter, $config['type'], null, $options));
                 }
             }
         );
+    }
+
+    /**
+     * @param FormFactoryInterface $factory
+     * @param array                $config
+     * @param array                $fieldConstraints
+     * @param string               $parameter
+     *
+     * @return FormInterface|null
+     */
+    protected function buildChild(FormFactoryInterface $factory, array $config, array $fieldConstraints, $parameter)
+    {
+        if (isset($config['system']) && true === $config['system']) {
+            return null;
+        }
+
+        $config = array_merge(
+            [
+                'type'    => 'text',
+                'options' => [],
+            ],
+            $config
+        );
+        $options = array_merge(
+            [
+                'auto_initialize' => false,
+                'required'        => false,
+                'label'           => ucfirst($parameter),
+            ],
+            $config['options']
+        );
+
+        if (isset($fieldConstraints[$parameter])) {
+            $options['constraints'] = $fieldConstraints[$parameter]->constraints;
+        }
+
+        $child = $factory->createNamedBuilder($parameter, $config['type'], null, $options);
+
+        return $child->getForm();
     }
 
     /**

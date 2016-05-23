@@ -5,7 +5,7 @@
                 <thead></thead>
                 <tbody>
                 {% for element in form.configuration %}
-                    {% if element.vars.attr['data-tab'] is not defined %}
+                    {% if element.vars.attr['data-tab'] is not defined and 'filters' != element.vars.name %}
                     <tr>
                         <td><b>{{ element.vars.label|trans }}</b></td>
                         <td>{{ element.vars|normalizeFieldValue|trans }} {{ getViolations(violations, element.vars.name) }}</td>

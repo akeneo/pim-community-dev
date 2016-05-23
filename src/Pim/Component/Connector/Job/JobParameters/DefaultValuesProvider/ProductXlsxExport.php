@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
  * DefaultParameters for product XLSX export
@@ -40,9 +41,16 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $parameters['channel'] = null;
-        $parameters['enabled'] = 'enabled';
-        $parameters['updated'] = 'all';
         $parameters['linesPerFile'] = 10000;
+
+        $parameters['filters'] = [
+            'enabled' => [
+                'operator' => Operators::EQUALS,
+                'value'    => true,
+                'context'  => []
+            ],
+            'updated' => null,
+        ];
 
         return $parameters;
     }
