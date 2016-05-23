@@ -37,8 +37,7 @@ class GroupTypeRepository extends EntityRepository implements TranslatedLabelsPr
         $queryBuilder = $this->createQueryBuilder('g')
             ->select('g.id')
             ->addSelect('COALESCE(t.label, CONCAT(\'[\', g.code, \']\')) as label')
-            ->leftJoin('g.translations', 't')
-            ->andWhere('t.locale = :locale')
+            ->leftJoin('g.translations', 't', 'WITH', 't.locale = :locale')
             ->setParameter('locale', $this->userContext->getCurrentLocaleCode())
             ->orderBy('t.label');
 

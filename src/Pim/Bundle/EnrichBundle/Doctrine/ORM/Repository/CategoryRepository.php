@@ -32,8 +32,7 @@ class CategoryRepository extends NestedTreeRepository implements TranslatedLabel
         $query = $this->childrenQueryBuilder(null, true, 'created', 'DESC')
             ->select('node.id')
             ->addSelect('COALESCE(t.label, CONCAT(\'[\', node.code, \']\')) as label')
-            ->leftJoin('node.translations', 't')
-            ->where('t.locale = :locale')
+            ->leftJoin('node.translations', 't', 'WITH', 't.locale = :locale')
             ->setParameter('locale', $this->userContext->getCurrentLocaleCode())
             ->orderBy('t.label')
             ->getQuery();

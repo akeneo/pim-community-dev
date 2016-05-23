@@ -44,8 +44,7 @@ class GroupRepositorySpec extends ObjectBehavior
         $queryBuilder->select('g.id')->willReturn($queryBuilder);
         $queryBuilder->addSelect('COALESCE(t.label, CONCAT(\'[\', g.code, \']\')) as label')->willReturn($queryBuilder);
         $queryBuilder->from('group', 'g')->willReturn($queryBuilder);
-        $queryBuilder->leftJoin('g.translations', 't')->willReturn($queryBuilder);
-        $queryBuilder->andWhere('t.locale = :locale')->willReturn($queryBuilder);
+        $queryBuilder->leftJoin('g.translations', 't', 'WITH', 't.locale = :locale')->willReturn($queryBuilder);
         $queryBuilder->setParameter('locale', 'en_US')->willReturn($queryBuilder);
         $queryBuilder->orderBy('t.label')->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
