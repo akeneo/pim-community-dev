@@ -14,10 +14,10 @@ Feature: Browse families
     And the rows should be sorted ascending by Code
     And I should be able to sort the rows by Code, Label and Attribute as label
     And I should be able to use the following filters:
-      | filter           | operator | value | result                             |
-      | code             | contains | a     | sandals and sneakers               |
-      | label            | contains | Boo   | boots                              |
-      | attributeAsLabel |          | Name  | boots, heels, sandals and sneakers |
+      | filter           | operator | value | result                                      |
+      | code             | contains | a     | sandals and sneakers                        |
+      | label            | contains | Boo   | boots                                       |
+      | attributeAsLabel |          | Name  | boots, heels, led_tvs, sandals and sneakers |
 
   Scenario: Successfully keep descending sorting order after refreshing the page
     Given a "footwear" catalog configuration
