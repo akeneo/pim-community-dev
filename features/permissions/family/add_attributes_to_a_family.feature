@@ -8,6 +8,7 @@ Feature: Add attribute to a family
     And I am logged in as "Peter"
 
   @jira https://akeneo.atlassian.net/browse/PIM-5147
+  @javascript
   Scenario: Successfully list available grouped attributes without any permission restriction
     Given I am on the "colors" attribute group page
     And I visit the "Permissions" tab

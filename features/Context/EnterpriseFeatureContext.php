@@ -211,8 +211,8 @@ class EnterpriseFeatureContext extends FeatureContext
 
         $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
 
-        $this->spin(function () use ($versionCount) {
-            return ($versionCount + 1) === count($this->getSession()->getPage()->findAll('css', 'tr[data-version]'));
+        $this->spin(function () use ($version) {
+            return ($version + 1) === count($this->getSession()->getPage()->findAll('css', 'tr[data-version]'));
         }, 'Revert failed');
     }
 
