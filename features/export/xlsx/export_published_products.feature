@@ -39,10 +39,11 @@ Feature: Export published products in XLSX
     When I am on the "paint" asset page
     And I visit the "Variations" tab
     And I upload the reference file akeneo.jpg
-    Then I save the asset
-    And I launched the completeness calculator
-    When I edit the "jacket-white" product
-    Then I press the "Publish" button
+    And I save the asset
+    Then I should not see the text "There are unsaved changes."
+    When I launched the completeness calculator
+    And I edit the "jacket-white" product
+    And I press the "Publish" button
     And I confirm the publishing
     When I edit the "jacket-black" product
     Then I press the "Publish" button
