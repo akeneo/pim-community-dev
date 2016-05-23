@@ -143,3 +143,4 @@
 	`PimEnterprise\Component\CatalogRule\Connector\Tasklet\ImpactedProductCountTasklet`
 	`PimEnterprise\Component\Workflow\Connector\Tasklet\ApproveTasklet`
 	`PimEnterprise\Component\Workflow\Connector\Tasklet\RefuseTasklet` we can access to the JobParameters from the StepExecution
+- Change constructor of `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType`, add `Akeneo\Component\Batch\Job\JobParametersFactory` argument 
