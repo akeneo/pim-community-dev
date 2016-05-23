@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\DataTransformer\ConfigurationToJobParametersTransformer;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobAliasSubscriber;
@@ -36,19 +37,25 @@ class JobInstanceType extends AbstractType
     /** @var TranslatedLabelProvider */
     protected $jobLabelProvider;
 
+    /** @var JobParametersFactory */
+    protected $jobParametersFactory;
+
     /**
-     * @param ConnectorRegistry   $connectorRegistry
-     * @param TranslatorInterface $translator
-     * @param TranslatedLabelProvider    $jobLabelProvider
+     * @param ConnectorRegistry       $connectorRegistry
+     * @param TranslatorInterface     $translator
+     * @param TranslatedLabelProvider $jobLabelProvider
+     * @param JobParametersFactory    $jobParametersFactory
      */
     public function __construct(
         ConnectorRegistry $connectorRegistry,
         TranslatorInterface $translator,
-        TranslatedLabelProvider $jobLabelProvider
+        TranslatedLabelProvider $jobLabelProvider,
+        JobParametersFactory $jobParametersFactory
     ) {
-        $this->connectorRegistry = $connectorRegistry;
-        $this->translator        = $translator;
-        $this->jobLabelProvider  = $jobLabelProvider;
+        $this->connectorRegistry    = $connectorRegistry;
+        $this->translator           = $translator;
+        $this->jobLabelProvider     = $jobLabelProvider;
+        $this->jobParametersFactory = $jobParametersFactory;
     }
 
     /**
@@ -68,6 +75,38 @@ class JobInstanceType extends AbstractType
         foreach ($this->subscribers as $subscriber) {
             $builder->addEventSubscriber($subscriber);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pim_import_export_jobInstance';
+    }
+
+    /**
+     * Setter for job type
+     *
+     * @param string $jobType
+     *
+     * @return JobInstanceType
+     */
+    public function setJobType($jobType)
+    {
+        $this->jobType = $jobType;
+
+        return $this;
+    }
+
+    /**
+     * Add an event subscriber
+     *
+     * @param EventSubscriberInterface $subscriber
+     */
+    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->subscribers[] = $subscriber;
     }
 
     /**
@@ -167,51 +206,26 @@ class JobInstanceType extends AbstractType
     protected function addJobConfigurationField(FormBuilderInterface $builder)
     {
         // TODO: TIP-426: rename this field to parameters
-        $builder
-            ->add(
-                'configuration',
-                'pim_import_export_job_parameters',
-                [
-                    'required'      => true,
-                    'by_reference'  => false,
-                    'property_path' => 'rawConfiguration',
-                ]
-            )
-            ->get('configuration')
-            ->addModelTransformer(new ConfigurationToJobParametersTransformer());
+        $job = $this->connectorRegistry->getJob($builder->getData());
+
+        if (null !== $job) {
+            $builder
+                ->add(
+                    'configuration',
+                    'pim_import_export_job_parameters',
+                    [
+                        'required'      => true,
+                        'by_reference'  => false,
+                        'property_path' => 'rawConfiguration',
+                    ]
+                )
+                ->get('configuration')
+                ->addModelTransformer(new ConfigurationToJobParametersTransformer(
+                    $this->jobParametersFactory,
+                    $job
+                ));
+        }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_import_export_jobInstance';
-    }
-
-    /**
-     * Setter for job type
-     *
-     * @param string $jobType
-     *
-     * @return JobInstanceType
-     */
-    public function setJobType($jobType)
-    {
-        $this->jobType = $jobType;
-
-        return $this;
-    }
-
-    /**
-     * Add an event subscriber
-     *
-     * @param EventSubscriberInterface $subscriber
-     */
-    public function addEventSubscriber(EventSubscriberInterface $subscriber)
-    {
-        $this->subscribers[] = $subscriber;
     }
 }

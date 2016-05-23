@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\DataTransformer;
 
+use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
- * Transform a configuration array to a JobParameters and conversely
+ * Transforms a configuration array to a JobParameters and conversely.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -15,28 +16,40 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  */
 class ConfigurationToJobParametersTransformer implements DataTransformerInterface
 {
+    /** @var JobParametersFactory */
+    protected $jobParametersFactory;
+
+    /** @var JobInterface */
+    protected $job;
+
     /**
-     * Transforms an configuration (array) to a job parameters (object)
+     * @param JobParametersFactory $jobParametersFactory
+     * @param JobInterface         $job
+     */
+    public function __construct(JobParametersFactory $jobParametersFactory, JobInterface $job)
+    {
+        $this->jobParametersFactory = $jobParametersFactory;
+        $this->job                  = $job;
+    }
+
+    /**
+     * {@inheritdoc}
      *
-     * @param  array|null $configuration
-     *
-     * @return JobParameters
+     * Transforms a configuration (array) to a job parameters (object).
      */
     public function transform($configuration)
     {
         if (null === $configuration) {
-            return new JobParameters([]);
+            $configuration = [];
         }
 
-        return new JobParameters($configuration);
+        return $this->jobParametersFactory->create($this->job, $configuration);
     }
 
     /**
+     * {@inheritdoc}
+     *
      * Transforms a job parameters (object) to a configuration (array).
-     *
-     * @param  object|null
-     *
-     * @return array|null
      */
     public function reverseTransform($jobParameters)
     {

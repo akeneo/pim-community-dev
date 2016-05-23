@@ -282,3 +282,4 @@
 - Change constructor of `Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridProvider`, add `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`
 - Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\JobExecutionNormalizer`, add `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`
 - Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\StepExecutionNormalizer`, add `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`
+- Change constructor of `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType`, add `Akeneo\Component\Batch\Job\JobParametersFactory` and `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` arguments

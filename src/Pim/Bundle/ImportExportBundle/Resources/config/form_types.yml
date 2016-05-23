@@ -1,19 +1,20 @@
 parameters:
-    pim_import_export.form.type.job_instance.class:                                         Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
-    pim_import_export.form.type.job_parameters.class:                                       Pim\Bundle\ImportExportBundle\Form\Type\JobParametersType
+    pim_import_export.form.type.job_instance.class:   Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
+    pim_import_export.form.type.job_parameters.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParametersType
 
 services:
     pim_import_export.form.type.job_instance:
-        class: %pim_import_export.form.type.job_instance.class%
+        class: '%pim_import_export.form.type.job_instance.class%'
         arguments:
             - '@akeneo_batch.connectors'
             - '@translator'
             - '@pim_import_export.job_label.translated_label_provider'
+            - '@akeneo_batch.job_parameters_factory'
         tags:
             - { name: form.type, alias: pim_import_export_job_instance }
 
     pim_import_export.form.type.job_parameters:
-        class: %pim_import_export.form.type.job_parameters.class%
+        class: '%pim_import_export.form.type.job_parameters.class%'
         arguments:
             - '@pim_import_export.job_parameters.form_configuration_provider_registry'
             - '@akeneo_batch.job.job_parameters.constraint_collection_provider_registry'
