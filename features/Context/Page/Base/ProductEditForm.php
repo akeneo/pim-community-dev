@@ -270,40 +270,15 @@ class ProductEditForm extends Form
      *
      * @param NodeElement $fieldContainer
      * @param string      $value
-     *
-     * @throws ExpectationException
      */
     protected function fillSelectField(NodeElement $fieldContainer, $value)
     {
-        if ('' === $value || null === $value) {
-            $emptyLink = $this->spin(function () use ($fieldContainer) {
-                return $fieldContainer->find('css', '.select2-search-choice-close');
-            }, 'Cannot find ".select2-search-choice-close" element');
-
-            $emptyLink->click();
-
-            $this->getSession()->executeScript(
-                '$(\'.field-input input[type="hidden"].select-field\').trigger(\'change\');'
-            );
-
-            return;
-        }
-
-        $link = $this->spin(function () use ($fieldContainer) {
-            return $fieldContainer->find('css', 'a.select2-choice');
-        }, sprintf('Could not find select2 widget inside "%s"', $fieldContainer->getParent()->getHtml()));
-
-        $link->click();
-
-        $item = $this->spin(function () use ($value) {
-            return $this->find('css', sprintf('.select2-results li:contains("%s")', $value));
-        }, sprintf('Cannot find "%s" in select2', $value));
-
-        $item->click();
-
-        $this->getSession()->executeScript(
-            '$(\'.field-input input[type="hidden"].select-field\').trigger(\'change\');'
+        $field = $this->decorate(
+            $fieldContainer->getParent()->find('css', '.select2-container'),
+            ['Pim\Behat\Decorator\Field\Select2Decorator']
         );
+
+        $field->setValue($value);
 
         return;
     }

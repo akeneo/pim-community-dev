@@ -58,7 +58,7 @@ class Select2Decorator extends ElementDecorator
      */
     public function open()
     {
-        $this->find('css', '.select2-choices')->click();
+        $this->find('css', '.select2-container')->click();
     }
 
     /**

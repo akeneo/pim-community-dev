@@ -237,7 +237,7 @@ class AssertionContext extends RawMinkContext
      *
      * @param $text
      *
-     * @Then /^I should see the flash message "([^"]*)"$/
+     * @Then /^I should see the flash message "(.*)"$/
      */
     public function iShouldSeeTheFlashMessage($text)
     {
