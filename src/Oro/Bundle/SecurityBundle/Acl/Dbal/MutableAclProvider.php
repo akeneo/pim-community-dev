@@ -117,6 +117,14 @@ class MutableAclProvider extends BaseMutableAclProvider
     }
 
     /**
+     * Clear ACLs internal cache
+     */
+    public function clearCache()
+    {
+        $this->cache->clearCache();
+    }
+
+    /**
      * Constructs the SQL for updating a security identity.
      *
      * @param SecurityIdentityInterface $sid

@@ -3,7 +3,6 @@
 namespace Context;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
-use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Loader\ReferenceDataLoader;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
@@ -13,6 +12,7 @@ use Doctrine\ORM\EntityManager;
 use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A context for initializing catalog configuration
@@ -23,19 +23,13 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class CatalogConfigurationContext extends RawMinkContext
 {
-    /**
-     * @var string Catalog configuration path
-     */
+    /** @var string Catalog configuration path */
     protected $catalogPath = 'catalog';
 
-    /**
-     * @var array Additional catalog configuration directories
-     */
+    /** @var array Additional catalog configuration directories */
     protected $extraDirectories = [];
 
-    /**
-     * @var ReferenceRepository Fixture reference repository
-     */
+    /** @var ReferenceRepository Fixture reference repository */
     protected $referenceRepository;
 
     /**
@@ -146,7 +140,7 @@ class CatalogConfigurationContext extends RawMinkContext
      *
      * @param string $catalog
      *
-     * @throws ExpectationException If configuration is not found
+     * @throws \InvalidArgumentException If configuration is not found
      *
      * @return string[]
      */
@@ -161,7 +155,7 @@ class CatalogConfigurationContext extends RawMinkContext
         }
 
         if (empty($files)) {
-            throw $this->getMainContext()->createExpectationException(
+            throw new \InvalidArgumentException(
                 sprintf(
                     'No configuration found for catalog "%s", looked in "%s"',
                     $catalog,
@@ -184,7 +178,7 @@ class CatalogConfigurationContext extends RawMinkContext
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager
+     * @return EntityManager
      */
     protected function getEntityManager()
     {
@@ -192,7 +186,7 @@ class CatalogConfigurationContext extends RawMinkContext
     }
 
     /**
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     * @return ContainerInterface
      */
     protected function getContainer()
     {

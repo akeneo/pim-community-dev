@@ -544,6 +544,14 @@ class AclManager extends AbstractAclManager
     }
 
     /**
+     * Clear ACLs provider cache
+     */
+    public function clearCache()
+    {
+        $this->aclProvider->clearCache();
+    }
+
+    /**
      * Updates or creates class-based ACE with the given attributes.
      *
      * @param SID $sid

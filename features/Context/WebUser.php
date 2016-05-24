@@ -1207,7 +1207,7 @@ class WebUser extends RawMinkContext
     {
         $method = $permission . 'ResourceRights';
         foreach ($this->listToArray($resources) as $resource) {
-            $this->getCurrentPage()->$method($resource, $permission);
+            $this->getCurrentPage()->$method($resource);
         }
     }
 
@@ -1217,22 +1217,6 @@ class WebUser extends RawMinkContext
     public function iGrantAllRightsToACLResources()
     {
         $this->getCurrentPage()->grantAllResourceRights();
-    }
-
-    /**
-     * @param string $role
-     *
-     * @Given /^I reset the "([^"]*)" rights$/
-     *
-     * @return Then[]
-     */
-    public function iResetTheRights($role)
-    {
-        return [
-            new Step\Then(sprintf('I am on the "%s" role page', $role)),
-            new Step\Then('I grant all rights'),
-            new Step\Then('I save the role')
-        ];
     }
 
     /**
@@ -1256,7 +1240,6 @@ class WebUser extends RawMinkContext
                 $steps[] = new Step\Then(sprintf('I should not be able to access the %s page', $forbiddenPage));
             }
         }
-        $steps[] = new Step\Then('I reset the "Administrator" rights');
 
         return $steps;
     }
@@ -1281,7 +1264,6 @@ class WebUser extends RawMinkContext
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
             $steps[] = new Step\Then(sprintf('I should not see "%s"', $data['section']));
         }
-        $steps[] = new Step\Then('I reset the "Administrator" rights');
 
         return $steps;
     }

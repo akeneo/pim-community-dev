@@ -12,10 +12,9 @@ use Behat\Behat\Hook\Annotation\BeforeScenario;
 use Behat\Behat\Hook\Annotation\BeforeStep;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
-use Context\DbSessionPurger;
 use Context\FeatureContext;
-use Context\SelectiveORMPurger;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Parser;
 
@@ -27,13 +26,6 @@ class HookContext extends PimContext
     /** @var string[] */
     protected static $errorMessages = [];
 
-    /**
-     * Path of the yaml file containing tables that should be excluded from database purge
-     *
-     * @var string
-     */
-    protected $excludedTablesFile = 'excluded_tables.yml';
-
     /** @var int */
     protected $windowWidth;
 
@@ -41,8 +33,6 @@ class HookContext extends PimContext
     protected $windowHeight;
 
     /**
-     * Constructor
-     *
      * @param int $windowWidth
      * @param int $windowHeight
      */
@@ -57,29 +47,36 @@ class HookContext extends PimContext
      */
     public function purgeDatabase()
     {
-        $excludedTablesFile = __DIR__ . '/' . $this->excludedTablesFile;
-        if (file_exists($excludedTablesFile)) {
-            $parser         = new Parser();
-            $excludedTables = $parser->parse(file_get_contents($excludedTablesFile));
-            $excludedTables = $excludedTables['excluded_tables'];
-        } else {
-            $excludedTables = [];
-        }
-
         if ('doctrine/mongodb-odm' === $this->getParameter('pim_catalog_product_storage_driver')) {
-            $purgers[]        = new MongoDBPurger($this->getService('doctrine_mongodb')->getManager());
-            $excludedTables[] = 'pim_catalog_product';
-            $excludedTables[] = 'pim_catalog_product_value';
-            $excludedTables[] = 'pim_catalog_media';
+            $purgers[] = new MongoDBPurger($this->getService('doctrine_mongodb')->getManager());
         }
 
-        $purgers[] = new SelectiveORMPurger($this->getService('doctrine')->getManager(), $excludedTables);
+        $purgers[] = new ORMPurger($this->getService('doctrine')->getManager());
 
-        $purgers[] = new DbSessionPurger($this->getService("database_connection"), 'pim_session');
+        $purgers[] = new DBALPurger(
+            $this->getService('database_connection'),
+            [
+                'pim_session',
+                'acl_entries',
+                'acl_object_identity_ancestors',
+                'acl_object_identities',
+                'acl_security_identities',
+                'acl_classes'
+            ]
+        );
 
         foreach ($purgers as $purger) {
             $purger->purge();
         }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearAclCache()
+    {
+        $aclManager = $this->getService('oro_security.acl.manager');
+        $aclManager->clearCache();
     }
 
     /**

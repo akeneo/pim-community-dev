@@ -75,4 +75,3 @@ Feature: Edit a user groups and roles
     When I logout
     And I am logged in as "Peter"
     And I am on the userRole index page
-    And I reset the "User" rights
