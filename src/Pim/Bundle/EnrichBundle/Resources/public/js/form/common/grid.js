@@ -87,7 +87,7 @@ define([
              * @param {Object} element
              */
             addElement: function (element) {
-                this.selection = _.union(this.selection, [element]);
+                this.selection = _.union(this.selection, [parseInt(element)]);
                 this.trigger('grid:selection:updated', this.selection);
             },
 
@@ -97,7 +97,7 @@ define([
              * @param {Object} element
              */
             removeElement: function (element) {
-                this.selection = _.without(this.selection, element);
+                this.selection = _.without(this.selection, parseInt(element));
                 this.trigger('grid:selection:updated', this.selection);
             },
 
