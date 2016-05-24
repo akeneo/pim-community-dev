@@ -116,20 +116,4 @@ class Select2Decorator extends ElementDecorator
             return $widget;
         }, 'Could not find the select2 widget drop');
     }
-
-    /**
-     * Get the <body> NodeElement
-     *
-     * @return NodeElement
-     */
-    protected function getBody()
-    {
-        $element = $this;
-
-        while('body' !== $element->getTagName()) {
-            $element = $element->getParent();
-        }
-
-        return $element;
-    }
 }

@@ -14,8 +14,8 @@ Feature: Product group creation
     Then I should see the Code and Type fields
     And I should not see the Axis field
     When I fill in the following information in the popin:
-      | Code | Cross  |
-      | Type | X_SELL |
+      | Code | Cross      |
+      | Type | Cross sell |
     And I press the "Save" button
     Then I am on the product groups page
     And I should see groups Cross

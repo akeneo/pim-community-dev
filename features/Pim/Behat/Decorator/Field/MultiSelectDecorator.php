@@ -60,20 +60,4 @@ class MultiSelectDecorator extends ElementDecorator
             $all->click();
         }
     }
-
-    /**
-     * Get the <body> NodeElement
-     *
-     * @return NodeElement
-     */
-    protected function getBody()
-    {
-        $element = $this;
-
-        while('body' !== $element->getTagName()) {
-            $element = $element->getParent();
-        }
-
-        return $element;
-    }
 }
