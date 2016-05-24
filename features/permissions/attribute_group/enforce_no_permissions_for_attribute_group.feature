@@ -18,5 +18,6 @@ Feature: Enforce no permissions for an attribute group
       | Allowed to edit attributes | IT support |
       | Allowed to view attributes | IT support |
     And I save the attribute group
+    And I should not see the text "There are unsaved changes"
     And I edit the "foo" product
     Then I should not see the SKU, Name and Manufacturer fields
