@@ -43,10 +43,12 @@ Feature: Edit attributes of a variant group
     And I fill in the following information:
       | Nom | French name |
     And I press the "Save" button
-    And I switch the locale to "en_US"
+    Then I should not see the text "There are unsaved changes."
+    When I switch the locale to "en_US"
     And I fill in the following information:
       | Name | English name |
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
     When I switch the locale to "fr_FR"
     Then the field Nom should contain "French name"
     When I switch the locale to "en_US"
@@ -59,12 +61,14 @@ Feature: Edit attributes of a variant group
       | ecommerce Beschreibung | German ecommerce description |
       | print Beschreibung     | German print description     |
     And I press the "Save" button
-    And I switch the locale to "en_US"
+    Then I should not see the text "There are unsaved changes."
+    When I switch the locale to "en_US"
     And I expand the "Description" attribute
     And I fill in the following information:
       | ecommerce Description | British ecommerce description |
       | tablet Description    | British tablet description    |
     And I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
     When I switch the locale to "de_DE"
     Then the field ecommerce Beschreibung should contain "German ecommerce description"
     Then the field print Beschreibung should contain "German print description"

@@ -64,9 +64,6 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $field = sprintf('%s.%s.originalFilename', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
         switch ($operator) {
-            case Operators::EQUALS:
-                $this->qb->field($field)->equals($value);
-                break;
             case Operators::NOT_EQUAL:
                 $this->qb->field($field)->exists(true);
                 $this->qb->field($field)->notEqual($value);
@@ -96,6 +93,9 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected function prepareValue($operator, $value)
     {
         switch ($operator) {
+            case Operators::EQUALS:
+                $value = new \MongoRegex(sprintf('/^%s$/i', $value));
+                break;
             case Operators::STARTS_WITH:
                 $value = new \MongoRegex(sprintf('/^%s/i', $value));
                 break;

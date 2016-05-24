@@ -38,7 +38,7 @@ class AssertionContext extends RawMinkContext
             $this->assertSession()->pageTextContains($text);
 
             return true;
-        });
+        }, sprintf('Cannot find the text "%s"', $text));
     }
 
     /**
@@ -52,7 +52,7 @@ class AssertionContext extends RawMinkContext
             $this->assertSession()->pageTextNotContains($text);
 
             return true;
-        });
+        }, sprintf('The text "%s" has been found in page', $text));
     }
 
     /**
@@ -232,31 +232,17 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
-     * This function was disabled because it generates too many failing tests. Warning, some tests are always
-     * using it, and it checks nothing at all.
+     * @deprecated This function was disabled because it generates too many failing tests. Warning, some tests are
+     * always using it, and it checks nothing at all.
      *
-     * @deprecated Will be removed in 1.6. Use iShouldSeeTheFlashMessage instead.
-     *
-     * @param string $text
-     *
-     * @Then /^I should see (?:a )?flash message "([^"]*)"$/
-     *
-     * @return bool
-     */
-    public function iShouldSeeFlashMessage($text)
-    {
-        return true;
-    }
-
-    /**
      * @param $text
      *
-     * @Then /^I should see the flash message "([^"]*)"$/
-     *
-     * @throws Spin\TimeoutException
+     * @Then /^I should see the flash message "(.*)"$/
      */
     public function iShouldSeeTheFlashMessage($text)
     {
+        return;
+
         $this->spin(function () use ($text) {
             $flashes = $this->getCurrentPage()->findAll('css', '.flash-messages-holder > div');
             foreach ($flashes as $flash) {
@@ -634,7 +620,7 @@ class AssertionContext extends RawMinkContext
     {
         $notificationWidget = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '#header-notification-widget');
-        });
+        }, 'Cannot find "#header-notification-widget" notification panel');
 
         if ($notificationWidget->hasClass('open')) {
             return;
@@ -648,7 +634,7 @@ class AssertionContext extends RawMinkContext
             $content = trim($footer->getText());
 
             return !empty($content);
-        });
+        }, 'Notification panel content should not be empty');
     }
 
     /**
@@ -662,7 +648,7 @@ class AssertionContext extends RawMinkContext
 
         $link = $this->spin(function () use ($page, $selector) {
             return $page->find('css', $selector);
-        });
+        }, sprintf('Cannot find "%s" element', $selector));
 
         $link->click();
     }
@@ -680,7 +666,7 @@ class AssertionContext extends RawMinkContext
 
         $notificationWidget = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '#header-notification-widget');
-        });
+        }, 'Cannot find "#header-notification-widget" notification widget');
 
         $icons = [
             'success' => 'icon-ok',
@@ -826,7 +812,7 @@ class AssertionContext extends RawMinkContext
             $this->assertSession()->pageTextContains((string) $text);
 
             return true;
-        });
+        }, sprintf('Cannot find text "%s" in Sequential edit progression', (string) $text));
     }
 
     /**

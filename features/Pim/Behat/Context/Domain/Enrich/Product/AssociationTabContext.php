@@ -34,7 +34,7 @@ class AssociationTabContext extends PimContext
         $list       = $this->getCurrentPage()->getAssociationsList();
         $currentTab = $this->spin(function () use ($list) {
             return $list->find('css', '.active');
-        });
+        }, 'Cannot find ".active" element');
 
         $tabLabel = trim($currentTab->getText());
         if ($tabLabel !== $association) {

@@ -15,7 +15,7 @@ Feature: Add attribute options
       | Reference data name | color     |
       | Attribute group     | Other     |
     Then I save the attribute
-    Then I should see flash message "Attribute successfully created"
+    Then I should see the flash message "Attribute successfully created"
 
   Scenario: Successfully create a multiple reference data
     Given I create a "Reference data multi select" attribute
@@ -24,4 +24,4 @@ Feature: Add attribute options
       | Reference data name | fabric    |
       | Attribute group     | Other     |
     Then I save the attribute
-    Then I should see flash message "Attribute successfully created"
+    Then I should see the flash message "Attribute successfully created"

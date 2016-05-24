@@ -22,7 +22,7 @@ Feature: Datagrid views
     And I create the view:
       | label | Sneakers only |
     Then I should be on the products page
-    And I should see a flash message "Datagrid view successfully created"
+    And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Views Sneakers only"
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
@@ -39,7 +39,7 @@ Feature: Datagrid views
     And I create the view:
       | label | Some shoes |
     Then I should be on the products page
-    And I should see a flash message "Datagrid view successfully created"
+    And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Views Some shoes"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
@@ -58,7 +58,7 @@ Feature: Datagrid views
     And I create the view:
       | label | Boots only |
     Then I should be on the products page
-    And I should see a flash message "Datagrid view successfully created"
+    And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Views Boots only"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
@@ -84,25 +84,27 @@ Feature: Datagrid views
     And I create the view:
       | label | Sneakers only |
     Then I should be on the products page
-    And I should see a flash message "Datagrid view successfully created"
+    And I should see the flash message "Datagrid view successfully created"
     When I am on my profile page
     And I press the "Edit" button
-    And I visit the "Additional" tab
+    Then I should see the text "Edit user - Mary Smith"
+    When I visit the "Additional" tab
     Then I should see the text "Default product grid view"
     And I fill in the following information:
       | Default product grid view | Sneakers only |
     And I press the "Save" button
-    Then I logout
+    Then I should not see the text "There are unsaved changes."
+    When I logout
     And I am logged in as "Julia"
     And I am on the products page
     Then I should see products black-boots, purple-sneakers and black-sneakers
-    Then I logout
+    When I logout
     And I am logged in as "Mary"
     And I am on the products page
     Then I should see the text "Views Sneakers only"
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
-    Then I press the "Reset" button
+    When I press the "Reset" button
     Then I should see products black-boots, purple-sneakers and black-sneakers
 
   Scenario: Successfully remove my default view
@@ -110,15 +112,17 @@ Feature: Datagrid views
     And I create the view:
       | label | Sneakers only |
     Then I should be on the products page
-    And I should see a flash message "Datagrid view successfully created"
+    And I should see the flash message "Datagrid view successfully created"
     When I am on my profile page
     And I press the "Edit" button
-    And I visit the "Additional" tab
+    Then I should see the text "Edit user - Mary Smith"
+    When I visit the "Additional" tab
     Then I should see the text "Default product grid view"
     And I fill in the following information:
       | Default product grid view | Sneakers only |
     And I press the "Save" button
-    And I am on the products page
+    Then I should not see the text "There are unsaved changes."
+    When I am on the products page
     Then I should see the text "Views Sneakers only"
     When I delete the view
     And I confirm the deletion

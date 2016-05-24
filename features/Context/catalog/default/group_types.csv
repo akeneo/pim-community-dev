@@ -1,3 +1,3 @@
-code;is_variant
-VARIANT;1
-X_SELL;0
+code;is_variant;label-en_US
+VARIANT;1;"Variant"
+X_SELL;0;"Cross sell"

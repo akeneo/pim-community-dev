@@ -4,7 +4,6 @@ namespace Pim\Behat\Context\Domain;
 
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
-use Context\Spin\TimeoutException;
 use Pim\Behat\Context\PimContext;
 
 class TreeContext extends PimContext
@@ -18,8 +17,9 @@ class TreeContext extends PimContext
      */
     public function iSelectTheTree($tree)
     {
-        $this->getCurrentPage()->selectTree($tree);
-        $this->wait(); //TODO remove this wait
+        $this->spin(function () use ($tree) {
+            return $this->getCurrentPage()->selectTree($tree);
+        }, sprintf('Cannot select tree "%s"', $tree));
     }
 
     /**
@@ -62,7 +62,7 @@ class TreeContext extends PimContext
 
         $parentNode = $categoryTree->findNodeInTree($parent);
 
-        if(!$parentNode->isOpen()) {
+        if (!$parentNode->isOpen()) {
             $parentNode->open();
         }
 

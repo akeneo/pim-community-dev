@@ -41,7 +41,8 @@ Feature: Update user preferences
     And I visit the "Additional" tab
     And I change the "Catalog locale" to "fr_FR"
     And I save the user
-    And I should see the flash message "User saved"
+    Then I should see the flash message "User saved"
+    And I should not see the text "There are unsaved changes."
     When I visit the "Additional Information" tab
     Then I should see the text "Catalog locale"
     And I should see the text "fr_FR"

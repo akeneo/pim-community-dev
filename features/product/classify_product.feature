@@ -20,7 +20,8 @@ Feature: Classify a product
     And I click on the "summer_collection" category
     And I click on the "winter_collection" category
     And I press the "Save" button
-    Then the categories of "tea" should be "summer_collection and winter_collection"
+    Then I should not see the text "There are unsaved changes."
+    And the categories of "tea" should be "summer_collection and winter_collection"
 
   Scenario: Count product categories
     Given I edit the "tea" product
@@ -35,7 +36,8 @@ Feature: Classify a product
     And I visit the "Categories" tab
     Then I should see 2 category count
     And I press the "Save" button
-    And I visit the "Categories" tab
+    Then I should not see the text "There are unsaved changes."
+    When I visit the "Categories" tab
     Then I should see 2 category count
 
   Scenario: Successfully save product when category code is integer

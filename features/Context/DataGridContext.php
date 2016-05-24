@@ -544,7 +544,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         $this->spin(function () use ($loadlingMask) {
             return !$loadlingMask->isVisible();
-        });
+        }, '".loading-mask" is still visible');
     }
 
     /**
@@ -651,7 +651,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $row = $this->spin(function () use ($row) {
             return $this->datagrid->getRow($row);
-        }, sprintf('Row with "%s", not found.', $row));
+        }, sprintf('Row with "%s" not found.', $row));
 
         $row->click();
     }
@@ -672,7 +672,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
                 if (null !== $checkbox) {
                     $checkbox->check();
+                }
 
+                if ($checkbox->isChecked()) {
                     return true;
                 }
 
@@ -745,7 +747,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $gridRow = $this->datagrid->getRow($row);
             $checkbox = $this->spin(function () use ($gridRow) {
                 return $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
-            });
+            }, sprintf('Cannot find the checkbox "%s"', $row));
 
             if (!$checkbox) {
                 throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
@@ -774,7 +776,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $this->getSession()->getPage()->clickLink('Refresh');
 
             return true;
-        });
+        }, 'Cannot find the button "Refresh"');
     }
 
     /**
@@ -786,7 +788,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $this->getSession()->getPage()->clickLink('Back to grid');
 
             return true;
-        });
+        }, 'Cannot find the button "Back to grid"');
     }
 
     /**
@@ -796,12 +798,12 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $collectLink = $this->spin(function () {
             return $this->getSession()->getPage()->findLink('Collect');
-        });
+        }, 'Cannot find the button "Collect"');
         $collectLink->click();
 
         $importProfileLink = $this->spin(function () {
             return $this->getSession()->getPage()->findLink('Import profiles');
-        });
+        }, 'Cannot find the button "Import profiles"');
         $importProfileLink->click();
     }
 
@@ -842,7 +844,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iMassEditEntities($entities)
     {
         return [
-            new Step\Then('I change the page size to 100'),
             new Step\Then(sprintf('I select rows %s', $entities)),
             new Step\Then('I press mass-edit button')
         ];
@@ -915,7 +916,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iMassDelete($entities)
     {
         return [
-            new Step\Then('I change the page size to 100'),
             new Step\Then(sprintf('I select rows %s', $entities)),
             new Step\Then('I press mass-delete button')
         ];

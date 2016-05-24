@@ -65,7 +65,8 @@ Feature: Mass Edit Families
     | eleventh |
     And I am logged in as "Julia"
     And I am on the families page
-    When I mass-edit families first, second, third, fourth, fifth, sixth, seventh, eigth, ninth, tenth and eleventh
+    When I change the page size to 25
+    And I mass-edit families first, second, third, fourth, fifth, sixth, seventh, eigth, ninth, tenth and eleventh
     Then I should see "Mass Edit (11 families)"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4203

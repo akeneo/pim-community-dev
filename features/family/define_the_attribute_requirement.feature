@@ -21,6 +21,7 @@ Feature: Define the attribute requirement
     And I switch the attribute "Rating" requirement in channel "Mobile"
     And I save the family
     And I should see the flash message "Family successfully updated"
+    And I should not see the text "There are unsaved changes."
     And I visit the "Attributes" tab
     Then attribute "rating" should be required in channels mobile and tablet
 
@@ -30,6 +31,7 @@ Feature: Define the attribute requirement
     And I switch the attribute "Description" requirement in channel "Tablet"
     And I save the family
     And I should see the flash message "Family successfully updated"
+    And I should not see the text "There are unsaved changes."
     And I visit the "Attributes" tab
     Then attribute "description" should not be required in channels mobile and tablet
 
@@ -50,6 +52,7 @@ Feature: Define the attribute requirement
     And I switch the attribute "Rating" requirement in channel "Mobile"
     And I save the family
     And I should see the flash message "Family successfully updated"
+    And I should not see the text "There are unsaved changes."
     When I remove the "Rating" attribute
     And I confirm the deletion
     Then I should not see the "Rating" attribute

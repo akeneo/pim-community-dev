@@ -45,7 +45,8 @@ Feature: When I mass edit I should be able to see how many items will be edited
     Then I should see "Mass Edit (10 products)"
 
   Scenario: Successfully count the number of mass-edited items by select them one by one
-    Given I mass-edit products boot, shoe_1, shoe_14
+    Given I change the page size to 50
+    When I mass-edit products boots, shoe_1, shoe_14
     Then I should see "Mass Edit (3 products)"
 
   Scenario: Successfully count the number of mass-edited items when using filters and select all action

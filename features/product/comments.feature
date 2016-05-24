@@ -74,7 +74,10 @@ Feature: Leave a comment on a product
   Scenario: Not being able to view comments if I don't have the permission
     Given I am logged in as "Peter"
     And I am on the "Administrator" role page
+    And I visit the "Permissions" tab
     And I remove rights to Comment products
     And I save the role
+    Then I should not see the text "There are unsaved changes."
     When I am on the "rangers" product page
-    Then I should not see "Comments"
+    Then I should not see the text "Comments"
+    And I reset the "Administrator" rights

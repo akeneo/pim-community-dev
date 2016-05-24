@@ -3,6 +3,7 @@
 namespace Pim\Behat\Decorator;
 
 use Behat\Mink\Element\Element;
+use Behat\Mink\Element\NodeElement;
 
 /**
  * Simple abstract class to ease the decorator pattern on Mink elements
@@ -43,6 +44,22 @@ abstract class ElementDecorator
     {
         foreach ($decorators as $decorator) {
             $element = new $decorator($element);
+        }
+
+        return $element;
+    }
+    
+    /**
+     * Get the <body> NodeElement
+     *
+     * @return NodeElement
+     */
+    protected function getBody()
+    {
+        $element = $this;
+
+        while('body' !== $element->getTagName()) {
+            $element = $element->getParent();
         }
 
         return $element;

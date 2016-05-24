@@ -6,25 +6,33 @@ Feature: Delete many product at once
 
   Background:
     Given a "footwear" catalog configuration
-    And the following products:
-      | sku          | family   | categories        | name-en_US    | price          | size |
-      | boots_S36    | boots    | winter_collection | Amazing boots | 20 EUR, 25 USD | 36   |
-      | boots_S37    | boots    | winter_collection | Amazing boots | 20 EUR, 25 USD | 37   |
-      | boots_S38    | boots    | winter_collection | Amazing boots | 20 EUR, 25 USD | 38   |
-      | boots_S39    | boots    | winter_collection | Amazing boots | 20 EUR, 25 USD | 39   |
-      | boots_S40    | boots    | winter_collection | Amazing boots | 20 EUR, 25 USD | 40   |
-      | boots_S41    | boots    | winter_collection | Amazing boots | 20 EUR, 25 USD | 41   |
-      | sneakers_S39 | sneakers | summer_collection | Sneakers      | 50 EUR, 60 USD | 39   |
-      | sneakers_S40 | sneakers | summer_collection | Sneakers      | 50 EUR, 60 USD | 40   |
-      | sneakers_S41 | sneakers | summer_collection | Sneakers      | 50 EUR, 60 USD | 41   |
-      | sneakers_S42 | sneakers | summer_collection | Sneakers      | 50 EUR, 60 USD | 42   |
-      | sneakers_S43 | sneakers | summer_collection | Sneakers      | 50 EUR, 60 USD | 43   |
     And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      sku;family;categories;name-en_US;price;size
+      boots_S36;boots;winter_collection;Amazing boots;20 EUR, 25 USD;36
+      boots_S37;boots;winter_collection;Amazing boots;20 EUR, 25 USD;37
+      boots_S38;boots;winter_collection;Amazing boots;20 EUR, 25 USD;38
+      boots_S39;boots;winter_collection;Amazing boots;20 EUR, 25 USD;39
+      boots_S40;boots;winter_collection;Amazing boots;20 EUR, 25 USD;40
+      boots_S41;boots;winter_collection;Amazing boots;20 EUR, 25 USD;41
+      sneakers_S39;sneakers;summer_collection;Sneakers;50 EUR, 60 USD;39
+      sneakers_S40;sneakers;summer_collection;Sneakers;50 EUR, 60 USD;40
+      sneakers_S41;sneakers;summer_collection;Sneakers;50 EUR, 60 USD;41
+      sneakers_S42;sneakers;summer_collection;Sneakers;50 EUR, 60 USD;42
+      sneakers_S43;sneakers;summer_collection;Sneakers;50 EUR, 60 USD;43
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    And I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     And I am on the products page
 
   Scenario: Display a message when try to delete none product
     Given I press mass-delete button
-    Then I should see flash message "No product selected"
+    Then I should see the flash message "No product selected"
+    And I should be on the products page
 
   Scenario: Successfully remove many products
     Given I mass-delete products boots_S36, boots_S37 and boots_S38
@@ -63,8 +71,8 @@ Feature: Delete many product at once
       | boots_S42 | boots  | winter_collection | Amazing boots | 20 EUR, 25 USD | 42   | red   | laces_black |
     And I launched the completeness calculator
     And I reload the page
-    And I filter by "Channel" with value "Mobile"
-    And I filter by "Complete" with value "yes"
+    And I switch the scope to "Mobile"
+    And I filter by "completeness" with operator "equals" and value "yes"
     And I select all visible products
     When I press mass-delete button
     Then I should see "Are you sure you want to delete selected products?"

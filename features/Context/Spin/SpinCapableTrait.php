@@ -19,7 +19,7 @@ trait SpinCapableTrait
      *
      * @return mixed
      */
-    public function spin($callable, $message = null)
+    public function spin($callable, $message)
     {
         $start   = microtime(true);
         $timeout = FeatureContext::getTimeout() / 1000.0;
