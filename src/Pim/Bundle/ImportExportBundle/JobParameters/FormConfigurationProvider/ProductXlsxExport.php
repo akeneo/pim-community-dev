@@ -105,6 +105,7 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
                     'attr'     => ['data-tab' => 'content']
                 ]
             ],
+            'locales' => ['type' => 'pim_import_export_product_export_locale_choice'],
             'enabled' => [
                 'type'    => 'choice',
                 'options' => [

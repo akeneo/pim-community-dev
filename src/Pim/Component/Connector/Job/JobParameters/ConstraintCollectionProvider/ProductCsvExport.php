@@ -48,6 +48,10 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
         ];
         $constraintFields['enabled'] = new NotBlank(['groups' => 'Execution']);
         $constraintFields['updated'] = new NotBlank(['groups' => 'Execution']);
+        $constraintFields['locales'] = new NotBlank([
+            'groups'  => 'Execution',
+            'message' => 'pim_connector.export.locales.validation.not_blank'
+        ]);
 
         return new Collection(['fields' => $constraintFields]);
     }

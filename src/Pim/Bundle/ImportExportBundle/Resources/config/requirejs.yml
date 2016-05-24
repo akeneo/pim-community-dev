@@ -1,3 +1,4 @@
 config:
     paths:
         pim/job-execution-view: pimimportexport/js/job-execution-view
+        pim/product-export/locales-selector: pimimportexport/js/product-export/locales-selector

@@ -106,7 +106,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
 
         $normalizerContext = [
             'scopeCode'         => $channel->getCode(),
-            'localeCodes'       => $channel->getLocaleCodes(),
+            'localeCodes'       => array_intersect($channel->getLocaleCodes(), $parameters->get('locales')),
             'decimal_separator' => $decimalSeparator,
             'date_format'       => $dateFormat,
         ];

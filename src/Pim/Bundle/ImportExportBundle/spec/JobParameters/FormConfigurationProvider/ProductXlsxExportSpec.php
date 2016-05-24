@@ -101,6 +101,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
             'mobile'    => 'Mobile',
             'ecommerce' => 'E-commerce'
         ];
+
         $channelRepository->getLabelsIndexedByCode()->willReturn($channelCodes);
 
         $result = $this->getConfiguration($channelCodes, 'Last export: 15/12/2015 16:00:50') + $baseExport;
@@ -134,6 +135,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
             'mobile'    => 'Mobile',
             'ecommerce' => 'E-commerce'
         ];
+
         $channelRepository->getLabelsIndexedByCode()->willReturn($channelCodes);
 
         $result = $this->getConfiguration($channelCodes, 'This job has never been exported') + $baseExport;
@@ -154,6 +156,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
                     'attr'     => ['data-tab' => 'content']
                 ]
             ],
+            'locales' => ['type' => 'pim_import_export_product_export_locale_choice'],
             'enabled' => [
                 'type'    => 'choice',
                 'options' => [

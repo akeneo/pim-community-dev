@@ -2,3 +2,9 @@ job_execution:
     summary:
         display_item: Display item
         hide_item: Hide item
+
+pim_connector:
+    export:
+        locales:
+            validation:
+                not_blank: One locale must be selected, please choose a locale to export.

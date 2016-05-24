@@ -28,11 +28,12 @@ class ProductXlsxExportSpec extends ObjectBehavior
         $collection =  $this->getConstraintCollection();
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
-        $fields->shouldHaveCount(6);
+        $fields->shouldHaveCount(7);
         $fields->shouldHaveKey('decimalSeparator');
         $fields->shouldHaveKey('dateFormat');
         $fields->shouldHaveKey('enabled');
         $fields->shouldHaveKey('channel');
+        $fields->shouldHaveKey('locales');
         $fields->shouldHaveKey('updated');
         $fields->shouldHaveKey('linesPerFile');
     }
