@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-5796: Add ACL on revert button
+
 # 1.5.3 (2016-05-13)
 
 ## Bug fixes

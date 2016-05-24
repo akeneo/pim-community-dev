@@ -116,3 +116,21 @@ Feature: Revert a product to a previous version
     Then I should see 2 versions in the history
     When I revert the product version number 1
     Then I should see a flash message "Product can not be reverted because it belongs to a variant group"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5796
+  Scenario: Hide revert button if user cannot revert a product
+    Given the following product:
+      | sku     |
+      | sandals |
+    And I am on the "Catalog manager" role page
+    And I remove rights to Restore a product
+    And I save the role
+    When I edit the "sandals" product
+    And I add available attributes Name
+    And I change the Name to "Sandal"
+    And I press the "Save" button
+    And the history of the product "sandals" has been built
+    Then I open the history
+    And I should see 2 versions in the history
+    But I should not see the text "Restore"
+    And I reset the "Administrator" rights
