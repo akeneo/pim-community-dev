@@ -13,6 +13,9 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated Will be removed in 1.6, please use
+ *             Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\HomogeneousProcessor
  */
 class FamilyProcessor extends Processor
 {
@@ -22,7 +25,7 @@ class FamilyProcessor extends Processor
     /**
      * @param SerializerInterface       $serializer
      * @param LocaleRepositoryInterface $localeRepository
-     * @param NormalizerInterface       $familyNormalizer
+     * @param NormalizerInterface       $familyNormalizer Not used anymore, we keep it to avoid BC break
      */
     public function __construct(
         SerializerInterface $serializer,
@@ -39,10 +42,8 @@ class FamilyProcessor extends Processor
      */
     public function process($family)
     {
-        $normalizedFamily = $this->familyNormalizer->normalize($family);
-
         return $this->serializer->serialize(
-            $normalizedFamily,
+            $family,
             'csv',
             [
                 'delimiter'     => $this->delimiter,
