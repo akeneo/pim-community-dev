@@ -96,7 +96,6 @@ Feature: Assign assets to a product
 
   Scenario: Do not see the category tree when the user has not the permission
     Given I am logged in as "Peter"
-    And I reset the "Administrator" rights
     And I am on the "shirt" product page
     And I add available attributes Front view
     And I start to manage assets for "Front view"
@@ -112,4 +111,3 @@ Feature: Assign assets to a product
     Then I should not see the text "Asset main catalog"
     And I cancel the asset modification
     And I save the product
-    And I reset the "Administrator" rights

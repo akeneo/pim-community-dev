@@ -32,4 +32,3 @@ Feature: List assets categories
     Then I should not see "Please select a category on the left or Create a new category"
     When I click on the "asset_main_catalog" category
     Then I should not see "Server error"
-    Then I reset the "Administrator" rights
