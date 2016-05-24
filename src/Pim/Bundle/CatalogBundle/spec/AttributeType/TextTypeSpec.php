@@ -27,39 +27,6 @@ class TextTypeSpec extends ObjectBehavior
         $this->buildAttributeFormTypes($factory, $name)->shouldHaveCount(7);
     }
 
-    function it_prepares_the_product_value_form($value, $name)
-    {
-        $name->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_VARCHAR);
-        $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_VARCHAR);
-    }
-
-    function it_prepares_the_product_value_form_alias($value)
-    {
-        $this->prepareValueFormAlias($value)->shouldReturn('text');
-    }
-
-    function it_prepares_the_product_value_form_options($value, $name)
-    {
-        $name->getLabel()->willReturn('name');
-        $name->isRequired()->willReturn(false);
-
-        $this->prepareValueFormOptions($value)->shouldHaveCount(4);
-    }
-
-    function it_prepares_the_product_value_form_constraints($value, $name, $guesser)
-    {
-        $guesser->supportAttribute($name)->willReturn(true);
-        $guesser->guessConstraints($name)->willReturn([]);
-
-        $this->prepareValueFormConstraints($value)->shouldHaveCount(1);
-    }
-
-    function it_prepares_the_product_value_form_data($value)
-    {
-        $value->getData()->willReturn('my data');
-        $this->prepareValueFormData($value)->shouldReturn('my data');
-    }
-
     function it_has_a_name()
     {
         $this->getName()->shouldReturn('pim_catalog_text');

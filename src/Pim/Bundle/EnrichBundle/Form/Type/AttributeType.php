@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Pim\Component\Catalog\AttributeTypeRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,9 +19,6 @@ class AttributeType extends AbstractType
     /** @var AttributeTypeRegistry */
     protected $registry;
 
-    /** @var AddAttributeTypeRelatedFieldsSubscriber Attribute subscriber */
-    protected $subscriber;
-
     /** @var string */
     protected $attributeClass;
 
@@ -36,21 +32,17 @@ class AttributeType extends AbstractType
      * Constructor
      *
      * @param AttributeTypeRegistry                   $registry
-     * @param AddAttributeTypeRelatedFieldsSubscriber $subscriber           Subscriber to add attribute type
-     *                                                                      related fields
      * @param string                                  $attributeTranslation
      * @param string                                  $attributeClass       Attribute class
      * @param string                                  $attributeGroupClass
      */
     public function __construct(
         AttributeTypeRegistry $registry,
-        AddAttributeTypeRelatedFieldsSubscriber $subscriber,
         $attributeTranslation,
         $attributeClass,
         $attributeGroupClass
     ) {
         $this->registry             = $registry;
-        $this->subscriber           = $subscriber;
         $this->attributeClass       = $attributeClass;
         $this->attributeTranslation = $attributeTranslation;
         $this->attributeGroupClass  = $attributeGroupClass;
@@ -74,20 +66,6 @@ class AttributeType extends AbstractType
         $this->addFieldUseableAsGridFilter($builder);
 
         $this->addFieldAttributeGroup($builder);
-
-        $this->addSubscriber($builder);
-    }
-
-    /**
-     * Add subscriber
-     *
-     * @param FormBuilderInterface $builder
-     */
-    protected function addSubscriber(FormBuilderInterface $builder)
-    {
-        $factory = $builder->getFormFactory();
-        $this->subscriber->setFactory($factory);
-        $builder->addEventSubscriber($this->subscriber);
     }
 
     /**

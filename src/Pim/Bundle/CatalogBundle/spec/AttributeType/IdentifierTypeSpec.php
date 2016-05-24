@@ -27,39 +27,6 @@ class IdentifierTypeSpec extends ObjectBehavior
         $this->buildAttributeFormTypes($factory, $sku)->shouldHaveCount(7);
     }
 
-    function it_prepares_the_product_value_form($value, $sku)
-    {
-        $sku->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_VARCHAR);
-        $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_VARCHAR);
-    }
-
-    function it_prepares_the_product_value_form_alias($value)
-    {
-        $this->prepareValueFormAlias($value)->shouldReturn('text');
-    }
-
-    function it_prepares_the_product_value_form_options($value, $sku)
-    {
-        $sku->getLabel()->willReturn('sku');
-        $sku->isRequired()->willReturn(true);
-
-        $this->prepareValueFormOptions($value)->shouldHaveCount(4);
-    }
-
-    function it_prepares_the_product_value_form_constraints($value, $sku, $guesser)
-    {
-        $guesser->supportAttribute($sku)->willReturn(true);
-        $guesser->guessConstraints($sku)->willReturn([]);
-
-        $this->prepareValueFormConstraints($value)->shouldHaveCount(1);
-    }
-
-    function it_prepares_the_product_value_form_data($value)
-    {
-        $value->getData()->willReturn('sku-001');
-        $this->prepareValueFormData($value)->shouldReturn('sku-001');
-    }
-
     function it_has_a_name()
     {
         $this->getName()->shouldReturn('pim_catalog_identifier');

@@ -36,41 +36,6 @@ class OptionMultiSelectTypeSpec extends ObjectBehavior
         $this->buildAttributeFormTypes($factory, $color)->shouldHaveCount(7);
     }
 
-    function it_prepares_the_product_value_form($value)
-    {
-        $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_OPTIONS);
-    }
-
-    function it_prepares_the_product_value_form_alias($value)
-    {
-        $this->prepareValueFormAlias($value)->shouldReturn('pim_ajax_entity');
-    }
-
-    function it_prepares_the_product_value_form_options($value, $color)
-    {
-        $color->getLabel()->willReturn('color');
-        $color->isRequired()->willReturn(false);
-        $color->getId()->willReturn(42);
-        $color->getMinimumInputLength()->willReturn(42);
-
-        $this->prepareValueFormOptions($value)->shouldHaveCount(8);
-    }
-
-    function it_prepares_the_product_value_form_constraints($value, $color, $guesser)
-    {
-        $guesser->supportAttribute($color)->willReturn(true);
-        $guesser->guessConstraints($color)->willReturn([]);
-
-        $this->prepareValueFormConstraints($value)->shouldHaveCount(1);
-    }
-
-    function it_prepares_the_product_value_form_data($value, $color)
-    {
-        $color->getProperty('autoOptionSorting')->willReturn(false);
-
-        $this->prepareValueFormData($value)->shouldReturnAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
-    }
-
     function it_has_a_name()
     {
         $this->getName()->shouldReturn('pim_catalog_multiselect');

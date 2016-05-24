@@ -35,50 +35,11 @@ class PriceCollectionTypeSpec extends ObjectBehavior
         $this->buildAttributeFormTypes($factory, $attribute)->shouldHaveCount(7);
     }
 
-    function it_prepares_value_form_name($attribute, $value)
-    {
-        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_PRICE);
-        $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_PRICE);
-    }
-
-    function it_prepares_value_form_options($attribute, $value)
-    {
-        $attribute->getLabel()->willReturn('Random label');
-        $attribute->isRequired()->willReturn(true);
-
-        $this->prepareValueFormOptions($value)->shouldReturn([
-            'label'           => 'Random label',
-            'required'        => true,
-            'auto_initialize' => false,
-            'label_attr'      => ['truncate' => true],
-            'type'            => 'pim_enrich_price',
-            'allow_add'       => true,
-            'allow_delete'    => false,
-            'by_reference'    => false
-        ]);
-    }
-
-    function it_prepares_value_form_constraints($guesser, $attribute, $value)
-    {
-        $guesser->supportAttribute($attribute)->willReturn(true);
-        $guesser->guessConstraints($attribute)->willReturn('test');
-
-        $this->prepareValueFormConstraints($value)->shouldReturn([
-            'constraints' => 'test'
-        ]);
-    }
-
     function it_prepares_default_value_form_constraints($guesser, $attribute, $value)
     {
         $guesser->supportAttribute($attribute)->willReturn(false);
 
         $this->prepareValueFormConstraints($value)->shouldReturn([]);
-    }
-
-    function it_prepares_value_form_data($value)
-    {
-        $value->getData()->willReturn('A value');
-        $this->prepareValueFormData($value)->shouldReturn('A value');
     }
 
     function it_has_a_name()

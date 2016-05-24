@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypeRegistry;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,7 +12,6 @@ class AttributeTypeSpec extends ObjectBehavior
 {
     function let(
         AttributeTypeRegistry $registry,
-        AddAttributeTypeRelatedFieldsSubscriber $subscriber,
         FormBuilderInterface $builder
     ) {
         $registry->getAliases()->willReturn(['text', 'number', 'email']);
@@ -21,7 +19,6 @@ class AttributeTypeSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $registry,
-            $subscriber,
             'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeTranslation',
             'Pim\Bundle\CatalogBundle\Entity\Attribute',
             'Pim\Bundle\CatalogBundle\Entity\AttributeGroup'
@@ -128,12 +125,5 @@ class AttributeTypeSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
         $this->setDefaultOptions($resolver);
-    }
-
-    function it_adds_attribute_type_related_fields_subscriber_to_the_form($builder, $subscriber)
-    {
-        $this->buildForm($builder, []);
-        $subscriber->setFactory(Argument::any())->shouldHaveBeenCalled();
-        $builder->addEventSubscriber($subscriber)->shouldHaveBeenCalled();
     }
 }

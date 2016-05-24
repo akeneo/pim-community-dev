@@ -19,41 +19,6 @@ class OptionMultiSelectType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    public function prepareValueFormOptions(ProductValueInterface $value)
-    {
-        $options = parent::prepareValueFormOptions($value);
-        $attribute = $value->getAttribute();
-        $options['class']                = 'PimCatalogBundle:AttributeOption';
-        $options['collection_id']        = $attribute->getId();
-        $options['multiple']             = true;
-        $options['minimum_input_length'] = $attribute->getMinimumInputLength();
-
-        return $options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValueFormData(ProductValueInterface $value)
-    {
-        $iterator = $value->getData()->getIterator();
-
-        if (true === $value->getAttribute()->getProperty('autoOptionSorting')) {
-            $iterator->uasort('strcasecmp');
-        } else {
-            $iterator->uasort(
-                function ($first, $second) {
-                    return $first->getSortOrder() < $second->getSortOrder() ? -1 : 1;
-                }
-            );
-        }
-
-        return new ArrayCollection(iterator_to_array($iterator));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
         return parent::defineCustomAttributeProperties($attribute) + [
