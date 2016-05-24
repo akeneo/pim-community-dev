@@ -45,18 +45,18 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      *
      * @param FlatItemBuffer $buffer
      * @param int            $maxLinesPerFile by default -1, which means there is no limit of lines
-     * @param string         $baseFilePath
+     * @param string         $basePathname
      * @param array          $filePathResolverOptions
      *
      * @return array the list of file paths that have been written
      */
-    public function flush(FlatItemBuffer $buffer, $baseFilePath, $maxLinesPerFile = -1, array $filePathResolverOptions = [])
+    public function flush(FlatItemBuffer $buffer, $basePathname, $maxLinesPerFile = -1, array $filePathResolverOptions = [])
     {
         $writtenFiles = [];
 
-        $pathPattern = $baseFilePath;
+        $basePathPattern = $basePathname;
         if ($this->areSeveralFilesNeeded($buffer, $maxLinesPerFile)) {
-            $pathPattern = $this->getNumberedFilePath($baseFilePath);
+            $basePathPattern = $this->getNumberedPathname($basePathname);
         }
 
         $headers    = $this->sortHeaders($buffer->getHeaders());
@@ -69,7 +69,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
                 $filePath = $this->resolveFilePath(
                     $buffer,
                     $maxLinesPerFile,
-                    $pathPattern,
+                    $basePathPattern,
                     $fileCount,
                     $filePathResolverOptions
                 );
@@ -175,19 +175,27 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
     }
 
     /**
-     * Return the given file path with %fileNb% placeholder just before the extension of the file
-     * ie: in -> '/path/myFile.txt' ; out -> '/path/myFile%fileNb%.txt'
+     * Return the given path name with %fileNb% placeholder. For instance:
+     *     - in -> '/path/myFile.txt' ; out -> '/path/myFile%fileNb%.txt'
+     *     - in -> '/path/myFile' ; out -> '/path/myFile%fileNb%'
      *
-     * @param string $originalFilePath
+     * @param string $originalPathname
      *
      * @return string
      */
-    protected function getNumberedFilePath($originalFilePath)
+    protected function getNumberedPathname($originalPathname)
     {
-        $extension = '.' . pathinfo($originalFilePath, PATHINFO_EXTENSION);
-        $filePath  = strstr($originalFilePath, $extension, true);
+        $fileInfo = new \SplFileInfo($originalPathname);
 
-        return $filePath . '%fileNb%' . $extension;
+        $extensionSuffix = '';
+        if ('' !== $fileInfo->getExtension()) {
+            $extensionSuffix = '.' . $fileInfo->getExtension();
+        }
+
+        return $fileInfo->getPath() . DIRECTORY_SEPARATOR .
+            $fileInfo->getBasename($extensionSuffix) .
+            '%fileNb%' . $extensionSuffix
+        ;
     }
 
     /**
