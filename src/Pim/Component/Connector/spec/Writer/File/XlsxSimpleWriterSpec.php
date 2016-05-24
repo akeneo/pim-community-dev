@@ -4,21 +4,20 @@ namespace spec\Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Buffer\BufferInterface;
-use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Prophecy\Argument;
-use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class XlsxSimpleWriterSpec extends ObjectBehavior
 {
-    function let(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer, ColumnSorterInterface $columnSorter)
-    {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $columnSorter, 10000);
+    function let(
+        FilePathResolverInterface $filePathResolver,
+        FlatItemBuffer $flatRowBuffer,
+        FlatItemBufferFlusher $flusher
+    ) {
+        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $flusher);
 
         $filePathResolver
             ->resolve(Argument::any(), Argument::type('array'))
@@ -66,53 +65,48 @@ class XlsxSimpleWriterSpec extends ObjectBehavior
             ]
         ];
 
-        $flatRowBuffer->write([
+        $flatRowBuffer->write(
             [
-                'code'        => 'promotion',
-                'type'        => 'RELATED',
-                'label-en_US' => 'Promotion',
-                'label-de_DE' => 'Förderung'
+                [
+                    'code'        => 'promotion',
+                    'type'        => 'RELATED',
+                    'label-en_US' => 'Promotion',
+                    'label-de_DE' => 'Förderung'
+                ],
+                [
+                    'code'        => 'related',
+                    'type'        => 'RELATED',
+                    'label-en_US' => 'Related',
+                    'label-de_DE' => 'Verbunden'
+                ]
             ],
-            [
-                'code'        => 'related',
-                'type'        => 'RELATED',
-                'label-en_US' => 'Related',
-                'label-de_DE' => 'Verbunden'
-            ]
-        ], true)->shouldBeCalled();
+            true
+        )->shouldBeCalled();
 
         $this->write($groups);
     }
 
     function it_writes_the_xlsx_file(
+        $flusher,
         $flatRowBuffer,
-        $columnSorter,
-        BufferInterface $buffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
         $this->setStepExecution($stepExecution);
+
+        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn(true);
-        $jobParameters->get('linesPerFile')->willReturn(10000);
+        $jobParameters->get('linesPerFile')->willReturn(2);
+        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
         $jobParameters->has('mainContext')->willReturn(false);
 
-        $flatRowBuffer->count()->willReturn(10);
-        $flatRowBuffer->getHeaders()->willReturn(['code', 'type', 'label-en_US', 'label-de_DE']);
-        $flatRowBuffer->getBuffer()->willReturn($buffer);
-
-        $columnSorter->sort([
-            'code',
-            'type',
-            'label-en_US',
-            'label-de_DE'
-        ])->willReturn([
-            'code',
-            'label-en_US',
-            'label-de_DE',
-            'type'
-        ]);
+        $flusher->flush(
+            $flatRowBuffer,
+            2,
+            Argument::type('string'),
+            Argument::type('array')
+        )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
 
         $this->flush();
     }

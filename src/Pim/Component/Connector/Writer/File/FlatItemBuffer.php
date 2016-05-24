@@ -6,7 +6,7 @@ use Akeneo\Component\Buffer\BufferFactory;
 use Akeneo\Component\Buffer\BufferInterface;
 
 /**
- * Write items into a buffer and calculate headers during a flat file export
+ * Puts items into a buffer and calculate headers during a flat file export
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -36,12 +36,12 @@ class FlatItemBuffer implements \Countable
      * Write an item into the buffer
      *
      * @param array $items
-     * @param $addHeader
+     * @param bool  $addToHeaders
      */
-    public function write(array $items, $addHeader)
+    public function write(array $items, $addToHeaders)
     {
         foreach ($items as $item) {
-            if ($addHeader) {
+            if ($addToHeaders) {
                 $this->addToHeaders(array_keys($item));
             }
 

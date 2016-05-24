@@ -22,8 +22,8 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     /** @var array */
     protected $writtenFiles;
 
-    /** @var ColumnSorterInterface */
-    protected $columnSorter;
+    /** @var FlatItemBufferFlusher */
+    protected $flusher;
 
     /** @var BulkFileExporter */
     protected $fileExporter;
@@ -32,19 +32,19 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
      * @param BulkFileExporter          $fileExporter
-     * @param ColumnSorterInterface     $columnSorter
+     * @param FlatItemBufferFlusher     $flusher
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
         BulkFileExporter $fileExporter,
-        ColumnSorterInterface $columnSorter
+        FlatItemBufferFlusher $flusher
     ) {
         parent::__construct($filePathResolver);
 
         $this->flatRowBuffer = $flatRowBuffer;
         $this->fileExporter  = $fileExporter;
-        $this->columnSorter  = $columnSorter;
+        $this->flusher       = $flusher;
         $this->writtenFiles  = [];
     }
 
@@ -88,41 +88,17 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
      */
     public function flush()
     {
-        $pathPattern = $this->getPath();
-        if ($this->areSeveralFilesNeeded()) {
-            $pathPattern = $this->getNumberedFilePath($this->getPath());
-        }
+        $this->flusher->setStepExecution($this->stepExecution);
 
-        $parameters = $this->stepExecution->getJobParameters();
-        $linesPerFile = $parameters->get('linesPerFile');
+        $writtenFiles = $this->flusher->flush(
+            $this->flatRowBuffer,
+            $this->stepExecution->getJobParameters()->get('linesPerFile'),
+            $this->getPath(),
+            $this->filePathResolverOptions
+        );
 
-        $headers = $this->columnSorter->sort($this->flatRowBuffer->getHeaders());
-        $hollowItem = array_fill_keys($headers, '');
-
-        $fileCount = 1;
-        $writtenLinesCount = 0;
-        foreach ($this->flatRowBuffer->getBuffer() as $count => $incompleteItem) {
-            if (0 === $writtenLinesCount % $linesPerFile) {
-                $filePath = $this->resolveFilePath($pathPattern, $fileCount);
-
-                $writtenLinesCount = 0;
-                $writer = $this->getWriter($filePath);
-                $writer->addRow($headers);
-            }
-
-            $item = array_replace($hollowItem, $incompleteItem);
-            $writer->addRow($item);
-            $writtenLinesCount++;
-
-            if (null !== $this->stepExecution) {
-                $this->stepExecution->incrementSummaryInfo('write');
-            }
-
-            if (0 === $writtenLinesCount % $linesPerFile || $this->flatRowBuffer->count() === $count + 1) {
-                $writer->close();
-                $this->writtenFiles[$filePath] = basename($filePath);
-                $fileCount++;
-            }
+        foreach ($writtenFiles as $writtenFile) {
+            $this->writtenFiles[$writtenFile] = basename($writtenFile);
         }
     }
 
@@ -132,68 +108,5 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     public function getWrittenFiles()
     {
         return $this->writtenFiles;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function areSeveralFilesNeeded()
-    {
-        $parameters = $this->stepExecution->getJobParameters();
-
-        return $this->flatRowBuffer->count() > $parameters->get('linesPerFile');
-    }
-
-    /**
-     * Return the file path including file count if needed
-     *
-     * @param string $pathPattern
-     * @param int    $currentFileCount
-     *
-     * @return string
-     */
-    protected function resolveFilePath($pathPattern, $currentFileCount)
-    {
-        $resolvedFilePath = $pathPattern;
-        if ($this->areSeveralFilesNeeded()) {
-            $resolvedFilePath = $this->filePathResolver->resolve(
-                $pathPattern,
-                array_merge_recursive(
-                    $this->filePathResolverOptions,
-                    ['parameters' => ['%fileNb%' => '_' . $currentFileCount]]
-                )
-            );
-        }
-
-        return $resolvedFilePath;
-    }
-
-    /**
-     * Return the given file path with %fileNb% placeholder just before the extension of the file
-     * ie: in -> '/path/myFile.txt' ; out -> '/path/myFile%fileNb%.txt'
-     *
-     * @param string $originalFilePath
-     *
-     * @return string
-     */
-    protected function getNumberedFilePath($originalFilePath)
-    {
-        $extension = '.' . pathinfo($originalFilePath, PATHINFO_EXTENSION);
-        $filePath  = strstr($originalFilePath, $extension, true);
-
-        return $filePath . '%fileNb%' . $extension;
-    }
-
-    /**
-     * @param string $filePath File path to open with the writer
-     *
-     * @return WriterInterface
-     */
-    protected function getWriter($filePath)
-    {
-        $writer = WriterFactory::create(Type::XLSX);
-        $writer->openToFile($filePath);
-
-        return $writer;
     }
 }

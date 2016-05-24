@@ -4,16 +4,12 @@ namespace spec\Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Buffer\BufferInterface;
-use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
 use Prophecy\Argument;
-use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class XlsxVariantGroupWriterSpec extends ObjectBehavior
 {
@@ -21,9 +17,9 @@ class XlsxVariantGroupWriterSpec extends ObjectBehavior
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
         BulkFileExporter $mediaCopier,
-        ColumnSorterInterface $columnSorter
+        FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier, $columnSorter, 10000);
+        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier, $flusher);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.xlsx');
@@ -146,23 +142,27 @@ class XlsxVariantGroupWriterSpec extends ObjectBehavior
     }
 
     function it_writes_the_xlsx_file(
+        $flusher,
         $flatRowBuffer,
-        $columnSorter,
         StepExecution $stepExecution,
-        BufferInterface $buffer,
         JobParameters $jobParameters
     ) {
         $this->setStepExecution($stepExecution);
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn(true);
-        $jobParameters->has('mainContext')->willReturn(false);
-        $jobParameters->get('linesPerFile')->willReturn(10000);
 
-        $flatRowBuffer->count()->willReturn(100);
-        $flatRowBuffer->getHeaders()->willReturn(['id', 'family']);
-        $flatRowBuffer->getBuffer()->willReturn($buffer);
-        $columnSorter->sort(['id','family'])->willReturn(['id','family']);
+        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('linesPerFile')->willReturn(2);
+        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
+        $jobParameters->has('mainContext')->willReturn(false);
+
+        $flusher->flush(
+            $flatRowBuffer,
+            2,
+            Argument::type('string'),
+            Argument::type('array')
+        )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
+
         $this->flush();
     }
 }
