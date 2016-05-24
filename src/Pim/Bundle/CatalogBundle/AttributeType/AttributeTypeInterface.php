@@ -23,51 +23,6 @@ use Symfony\Component\Form\FormInterface;
 interface AttributeTypeInterface extends BaseAttributeTypeInterface
 {
     /**
-     * Get the value form type name to use to ensure binding
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return string
-     */
-    public function prepareValueFormName(ProductValueInterface $value);
-
-    /**
-     * Get value form type alias to use to render value
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return string
-     */
-    public function prepareValueFormAlias(ProductValueInterface $value);
-
-    /**
-     * Get value form type options to configure the form
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return array
-     */
-    public function prepareValueFormOptions(ProductValueInterface $value);
-
-    /**
-     * Guess the constraints to apply on the form
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return array
-     */
-    public function prepareValueFormConstraints(ProductValueInterface $value);
-
-    /**
-     * Get value form type data
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return mixed
-     */
-    public function prepareValueFormData(ProductValueInterface $value);
-
-    /**
      * Build form types for custom properties of an attribute
      *
      * @param FormFactoryInterface $factory   the form factory

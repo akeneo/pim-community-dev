@@ -4,8 +4,6 @@ namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
@@ -34,15 +32,13 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Constructor
      *
-     * @param string                     $backendType       the backend type
-     * @param string                     $formType          the form type
-     * @param ConstraintGuesserInterface $constraintGuesser the form type
+     * @param string $backendType       the backend type
+     * @param string $formType          the form type
      */
-    public function __construct($backendType, $formType, ConstraintGuesserInterface $constraintGuesser)
+    public function __construct($backendType, $formType)
     {
         $this->backendType       = $backendType;
         $this->formType          = $formType;
-        $this->constraintGuesser = $constraintGuesser;
     }
 
     /**
@@ -109,77 +105,6 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
         }
 
         return $types;
-    }
-
-    /**
-     * Get the value form type name to use to ensure binding
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return string
-     */
-    public function prepareValueFormName(ProductValueInterface $value)
-    {
-        return $value->getAttribute()->getBackendType();
-    }
-
-    /**
-     * Get value form type alias to use to render value
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return string
-     */
-    public function prepareValueFormAlias(ProductValueInterface $value)
-    {
-        return $this->getFormType();
-    }
-
-    /**
-     * Get value form type options to configure the form
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return array
-     */
-    public function prepareValueFormOptions(ProductValueInterface $value)
-    {
-        return [
-            'label'           => $value->getAttribute()->getLabel(),
-            'required'        => $value->getAttribute()->isRequired(),
-            'auto_initialize' => false,
-            'label_attr'      => ['truncate' => true]
-        ];
-    }
-
-    /**
-     * Guess the constraints to apply on the form
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return array
-     */
-    public function prepareValueFormConstraints(ProductValueInterface $value)
-    {
-        if ($this->constraintGuesser->supportAttribute($attribute = $value->getAttribute())) {
-            return [
-                'constraints' => $this->constraintGuesser->guessConstraints($attribute),
-            ];
-        }
-
-        return [];
-    }
-
-    /**
-     * Get value form type data
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return mixed
-     */
-    public function prepareValueFormData(ProductValueInterface $value)
-    {
-        return $value->getData();
     }
 
     /**

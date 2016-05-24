@@ -1,7 +1,6 @@
 parameters:
     pim_enrich.form.subscriber.add_attribute_type.class:         Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
     pim_enrich.form.subscriber.add_attribute_requirements.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
-    pim_enrich.form.subscriber.add_value_field_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddProductValueFieldSubscriber
     pim_enrich.form.subscriber.family_disable_fields_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFamilyFieldsSubscriber
     pim_enrich.form.subscriber.family_attribute_label_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeAsLabelSubscriber
     pim_enrich.form.subscriber.set_attribute_group_sort_order.class: Pim\Bundle\EnrichBundle\Form\Subscriber\SetAttributeGroupSortOrderSubscriber
@@ -12,7 +11,7 @@ parameters:
 services:
     # Subscribers
     pim_enrich.form.subscriber.attribute:
-        class: '%pim_enrich.form.subscriber.add_attribute_type.class%'
+        class: %pim_enrich.form.subscriber.add_attribute_type.class%
         arguments:
             - '@pim_catalog.registry.attribute_type'
             - '@oro_security.security_facade'
@@ -22,11 +21,6 @@ services:
         class: '%pim_enrich.form.subscriber.add_attribute_requirements.class%'
         arguments:
             - '@pim_catalog.repository.channel'
-
-    pim_enrich.form.subscriber.add_value_field_subscriber:
-        class: '%pim_enrich.form.subscriber.add_value_field_subscriber.class%'
-        arguments:
-            - '@pim_enrich.form.factory.product_value'
 
     pim_enrich.form.subscriber.family_disable_fields_subscriber:
         class: '%pim_enrich.form.subscriber.family_disable_fields_subscriber.class%'

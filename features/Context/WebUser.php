@@ -640,11 +640,11 @@ class WebUser extends RawMinkContext
      */
     public function theProductFieldValueShouldBe($inputLabel, $expectedValue = '')
     {
-        $this->spin(function () use ($fieldName, $expectedValue) {
-            $this->getCurrentPage()->compareFieldValue($fieldName, $expectedValue);
+        $this->spin(function () use ($inputLabel, $expectedValue) {
+            $this->getCurrentPage()->compareFieldValue($inputLabel, $expectedValue);
 
             return true;
-        }, sprintf('Cannot compare product value for "%s" field', $fieldName));
+        }, sprintf('Cannot compare product value for "%s" field', $inputLabel));
     }
 
     /**
@@ -822,12 +822,15 @@ class WebUser extends RawMinkContext
     /**
      * @param string $field
      * @param string $value
+     * @param string $language
+     *
      *
      * @When /^I change the (?P<field>\w+) to "([^"]*)"$/
      * @When /^I change the "(?P<field>[^"]*)" to "([^"]*)"$/
+     * @When /^I change the (?P<language>\w+) (?P<field>\w+) to "(?P<value>[^"]*)"$/
      * @When /^I change the (?P<field>\w+) to an invalid value$/
      */
-    public function iChangeTheTo($field, $value = null)
+    public function iChangeTheTo($field, $value = null, $language = null)
     {
         if (null !== $language) {
             try {
@@ -838,6 +841,10 @@ class WebUser extends RawMinkContext
                 // Use default $field if current page does not provide a getFieldLocator method
             }
         }
+
+        $value = $value !== null ? $value : $this->getInvalidValueFor(
+            sprintf('%s.%s', $this->getNavigationContext()->currentPage, $field)
+        );
 
         $this->getCurrentPage()->fillField($field, $value);
     }

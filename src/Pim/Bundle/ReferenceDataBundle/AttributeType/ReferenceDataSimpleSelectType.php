@@ -43,28 +43,6 @@ class ReferenceDataSimpleSelectType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    public function prepareValueFormName(ProductValueInterface $value)
-    {
-        $referenceDataConf = $this->referenceDataRegistry->get($value->getAttribute()->getReferenceDataName());
-
-        return $referenceDataConf->getName();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValueFormOptions(ProductValueInterface $value)
-    {
-        $referenceDataConf = $this->referenceDataRegistry->get($value->getAttribute()->getReferenceDataName());
-        $options           = parent::prepareValueFormOptions($value);
-        $options['class']  = $referenceDataConf->getClass();
-
-        return $options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
         $attributes = parent::defineCustomAttributeProperties($attribute);

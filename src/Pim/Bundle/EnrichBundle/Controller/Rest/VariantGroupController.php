@@ -215,8 +215,10 @@ class VariantGroupController
     protected function convertLocalizedAttributes(array $data)
     {
         $locale         = $this->userContext->getUiLocale()->getCode();
-        $data['values'] = $this->attributeConverter
-            ->convertToDefaultFormats($data['values'], ['locale' => $locale]);
+        $data['values'] = $this->attributeConverter->convertToDefaultFormats(
+            $data['values'],
+            ['locale' => $locale]
+        );
 
         return $data;
     }

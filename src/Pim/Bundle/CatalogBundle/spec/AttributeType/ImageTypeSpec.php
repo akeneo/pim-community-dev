@@ -29,41 +29,6 @@ class ImageTypeSpec extends ObjectBehavior
         $this->buildAttributeFormTypes($factory, $attribute)->shouldHaveCount(6);
     }
 
-    function it_prepares_value_form_name($attribute, $value)
-    {
-        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_MEDIA);
-        $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_MEDIA);
-    }
-
-    function it_prepares_value_form_options($value, $attribute)
-    {
-        $attribute->getLabel()->willReturn('A label');
-        $attribute->isRequired()->willReturn(true);
-
-        $this->prepareValueFormOptions($value)->shouldReturn([
-            'label' => 'A label',
-            'required' => true,
-            'auto_initialize' => false,
-            'label_attr' => ['truncate' => true]
-        ]);
-    }
-
-    function it_prepares_value_form_constraints($guesser, $attribute, $value)
-    {
-        $guesser->supportAttribute($attribute)->willReturn(true);
-        $guesser->guessConstraints($attribute)->willReturn([]);
-
-        $this->prepareValueFormConstraints($value)->shouldReturn([
-            'constraints' => []
-        ]);
-    }
-
-    function it_prepares_value_form_data($value)
-    {
-        $value->getData()->willReturn('test');
-        $this->prepareValueFormData($value)->shouldReturn('test');
-    }
-
     function it_has_a_name()
     {
         $this->getName()->shouldReturn('pim_catalog_image');

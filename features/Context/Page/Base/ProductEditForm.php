@@ -745,7 +745,7 @@ class ProductEditForm extends Form
                 'css',
                 '*:not(.hash-loading-mask):not(.grid-container):not(.loading-mask) > .loading-mask'
             );
-        });
+        }, 'The loading mask didn\'t disapeared');
     }
 
     /**

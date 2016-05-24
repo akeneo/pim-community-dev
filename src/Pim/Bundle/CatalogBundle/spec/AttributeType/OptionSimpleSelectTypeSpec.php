@@ -28,12 +28,6 @@ class OptionSimpleSelectTypeSpec extends ObjectBehavior
         $this->buildAttributeFormTypes($factory, $attribute)->shouldHaveCount(6);
     }
 
-    function it_prepares_value_form_name($value, $attribute)
-    {
-        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_OPTION);
-        $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_OPTION);
-    }
-
     function it_prepares_value_form_alias($value)
     {
         $this->getFormType()->shouldReturn('pim_ajax_entity');
