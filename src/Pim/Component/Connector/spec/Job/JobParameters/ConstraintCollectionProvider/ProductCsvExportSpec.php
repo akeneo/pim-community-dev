@@ -28,15 +28,16 @@ class ProductCsvExportSpec extends ObjectBehavior
         $collection =  $this->getConstraintCollection();
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
-        $fields->shouldHaveCount(8);
+        $fields->shouldHaveCount(9);
         $fields->shouldHaveKey('decimalSeparator');
         $fields->shouldHaveKey('dateFormat');
         $fields->shouldHaveKey('channel');
         $fields->shouldHaveKey('enabled');
-        $fields->shouldHaveKey('updated');
         $fields->shouldHaveKey('locales');
         $fields->shouldHaveKey('families');
         $fields->shouldHaveKey('completeness');
+        $fields->shouldHaveKey('updated_since_strategy');
+        $fields->shouldHaveKey('updated_since_date');
     }
 
     function it_supports_a_job(JobInterface $job)

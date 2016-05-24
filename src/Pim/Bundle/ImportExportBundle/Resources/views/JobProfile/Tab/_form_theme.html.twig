@@ -1,0 +1,43 @@
+{% block pim_updated_since_parameter_type_row %}
+    <div class="control-group updated-since-parameter" id="{{ form.vars.id }}">
+        {{ form_label(form, null, {'label_attr': {'class': 'control-label'}}) }}
+        <div class="controls {% if errors|length > 0 %} validation-error{% endif %}">
+            {{ form_widget(form.updated_since_strategy) }}
+
+            <span class="exported-since-date-wrapper">
+                {{ form_widget(form.updated_since_date) }}
+            </span>
+
+            {{ form_errors(form.updated_since_date) }}
+
+            {% if help is defined %}
+            <div class="icons-container">
+                <i class="icon-info-sign"
+                   data-toggle="tooltip"
+                   data-placement="right"
+                   data-original-title="{{ help|trans }}">
+                </i>
+            </div>
+            {% endif %}
+
+            {% if info is defined %}
+            <div class="legend">
+                {{ info|trans }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/product-export/updated-since-selector'],
+            function($, UpdatedSelector){
+                'use strict';
+
+                $(function () {
+                    UpdatedSelector.init({{ form.vars.id }});
+                });
+            }
+        );
+    </script>
+{% endblock %}

@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterfa
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
@@ -48,7 +49,8 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
             new Channel()
         ];
         $constraintFields['enabled'] = new NotBlank(['groups' => 'Execution']);
-        $constraintFields['updated'] = new NotBlank(['groups' => 'Execution']);
+        $constraintFields['updated_since_strategy'] = new NotBlank(['groups' => 'Execution']);
+        $constraintFields['updated_since_date'] = new DateTime(['groups' => 'Execution']);
         $constraintFields['locales'] = new NotBlank([
             'groups'  => 'Execution',
             'message' => 'pim_connector.export.locales.validation.not_blank'

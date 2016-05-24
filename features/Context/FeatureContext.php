@@ -17,6 +17,7 @@ use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
 use Pim\Behat\Context\Domain\Enrich\PanelContext;
 use Pim\Behat\Context\Domain\Enrich\Product\AssociationTabContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
+use Pim\Behat\Context\Domain\Spread\ExportBuilderContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
 use Pim\Behat\Context\Domain\Spread\XlsxFileContext;
 use Pim\Behat\Context\Domain\System\PermissionsContext;
@@ -79,6 +80,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('storage-product', new ProductStorage());
         $this->useContext('attribute-validation', new AttributeValidationContext());
         $this->useContext('role', new PermissionsContext());
+        $this->useContext('export-builder', new ExportBuilderContext());
 
         $this->setTimeout($parameters);
     }

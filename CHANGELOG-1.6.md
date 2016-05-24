@@ -13,6 +13,7 @@
 - PIM-5145: It is now possible to filter product exports by locale
 - PIM-5426: It is now possible to filter product exports by completeness
 - PIM-5761: The channel no more contains any color information as it was not used anymore in the UI.
+- PIM-5431: export the products updated since a defined date
 
 ## Scalability improvements
 

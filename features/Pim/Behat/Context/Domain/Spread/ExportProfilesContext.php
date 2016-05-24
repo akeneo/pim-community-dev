@@ -24,13 +24,7 @@ class ExportProfilesContext extends PimContext
      */
     public function exportedFileOfShouldContain($code, PyStringNode $csv)
     {
-        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
-        if (!is_file($path)) {
-            throw $this->getMainContext()->createExpectationException(
-                sprintf('File "%s" doesn\'t exist', $path)
-            );
-        }
-
+        $path = $this->getExportedFile($code);
         $config =  $this->getCsvJobConfiguration($code);
         $csvFile = $this->getCsvFile($path, $config);
 
@@ -38,6 +32,21 @@ class ExportProfilesContext extends PimContext
         $actualLines = $this->getActualLines($csvFile, $config);
 
         $this->compareFile($expectedLines, $actualLines, $path);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @Then /^exported file of "([^"]*)" should be empty$/
+     *
+     * @throws \PHPUnit_Framework_AssertionFailedError
+     */
+    public function exportedFileOfShouldBeEmpty($code)
+    {
+        $path = $this->getExportedFile($code);
+        $content = trim(file_get_contents($path));
+
+        assertEmpty($content);
     }
 
     /**
@@ -51,13 +60,7 @@ class ExportProfilesContext extends PimContext
      */
     public function exportedFileOfShouldContainsTheFollowingHeaders($code, PyStringNode $csv)
     {
-        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
-        if (!is_file($path)) {
-            throw $this->getMainContext()->createExpectationException(
-                sprintf('File "%s" doesn\'t exist', $path)
-            );
-        }
-
+        $path = $this->getExportedFile($code);
         $config = $this->getCsvJobConfiguration($code);
         $csvFile = $this->getCsvFile($path, $config);
 
@@ -77,7 +80,7 @@ class ExportProfilesContext extends PimContext
      */
     public function exportedYamlFileOfShouldContain($code, PyStringNode $yaml)
     {
-        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+        $path = $this->getExportedFile($code);
 
         $actualLines = Yaml::parse(file_get_contents($path));
         $expectedLines = Yaml::parse($yaml->getRaw());
@@ -289,5 +292,24 @@ class ExportProfilesContext extends PimContext
             $actualHeaders[0],
             sprintf('Expecting to see headers order like %d , found %d', $expectedHeaders[0], $actualHeaders[0])
         );
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return string
+     *
+     * @throws ExpectationException
+     */
+    protected function getExportedFile($code)
+    {
+        $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+        if (!is_file($filePath)) {
+            throw $this->getMainContext()->createExpectationException(
+                sprintf('File "%s" doesn\'t exist', $filePath)
+            );
+        }
+
+        return $filePath;
     }
 }
