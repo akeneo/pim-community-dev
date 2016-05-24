@@ -1996,7 +1996,11 @@ class WebUser extends RawMinkContext
         $selectNames = ['system-locale', 'pim_user_user_form[uiLocale]'];
         $field = null;
         foreach ($selectNames as $selectName) {
-            $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);
+            try {
+                $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);
+            } catch (TimeoutException $e) {
+                // We didn't find the system locale or user locale
+            }
         }
         if (null === $field) {
             throw new \Exception(sprintf('Could not find field with name %s', json_encode($selectNames)));

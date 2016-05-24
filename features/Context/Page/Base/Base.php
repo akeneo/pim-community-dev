@@ -72,7 +72,7 @@ class Base extends Page
     {
         return $this->spin(function () use ($locator) {
             return parent::findField($locator);
-        }, sprintf("Can't find the field with given locator (%s)", $locator));
+        }, sprintf('Can\'t find the field with given locator (%s)', $locator));
     }
 
     /**
