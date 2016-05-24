@@ -1,0 +1,6 @@
+role;label
+IS_AUTHENTICATED_ANONYMOUSLY;Anonymous
+ROLE_ADMINISTRATOR;Administrator
+ROLE_CATALOG_MANAGER;Catalog manager
+ROLE_ASSET_MANAGER;Asset manager
+ROLE_USER;User
