@@ -44,13 +44,13 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      * Several output files are created if the buffer contains more items that maximum lines authorized per output file.
      *
      * @param FlatItemBuffer $buffer
-     * @param int            $maxLinesPerFile
+     * @param int            $maxLinesPerFile by default -1, which means there is no limit of lines
      * @param string         $baseFilePath
      * @param array          $filePathResolverOptions
      *
      * @return array the list of file paths that have been written
      */
-    public function flush(FlatItemBuffer $buffer, $maxLinesPerFile, $baseFilePath, array $filePathResolverOptions = [])
+    public function flush(FlatItemBuffer $buffer, $baseFilePath, $maxLinesPerFile = -1, array $filePathResolverOptions = [])
     {
         $writtenFiles = [];
 
@@ -129,13 +129,17 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
 
     /**
      * @param FlatItemBuffer $buffer
-     * @param int            $linesPerFile
+     * @param int            $maxLinesPerFile
      *
      * @return bool
      */
-    protected function areSeveralFilesNeeded(FlatItemBuffer $buffer, $linesPerFile)
+    protected function areSeveralFilesNeeded(FlatItemBuffer $buffer, $maxLinesPerFile)
     {
-        return $buffer->count() > $linesPerFile;
+        if (-1 === $maxLinesPerFile) {
+            return false;
+        }
+
+        return $buffer->count() > $maxLinesPerFile;
     }
 
     /**
