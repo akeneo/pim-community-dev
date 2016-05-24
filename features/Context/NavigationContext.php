@@ -30,13 +30,11 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iGoOnTheLastExecutedJobResume($code)
     {
-        $this->wait();
         $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
         $jobExecutions = $jobInstance->getJobExecutions();
 
         $url = $this->getPage('MassEditJob show')->getUrl(['id' => $jobExecutions->last()->getId()]);
         $this->getSession()->visit($this->locatePath($url));
-        $this->wait();
     }
 
     /**
