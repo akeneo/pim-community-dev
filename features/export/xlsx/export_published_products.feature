@@ -45,7 +45,7 @@ Feature: Export published products in XLSX
     And I edit the "jacket-white" product
     And I press the "Publish" button
     And I confirm the publishing
-    When I edit the "jacket-black" product
+    And I edit the "jacket-black" product
     Then I press the "Publish" button
     And I confirm the publishing
     When I edit the "jacket-blue" product

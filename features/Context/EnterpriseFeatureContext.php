@@ -190,10 +190,10 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function iShouldSeeInThePopover($search)
     {
-        $popoverContent = $this->getMainContext()->spin(function () use ($search) {
+        $this->getMainContext()->spin(function () use ($search) {
             return $this->getSession()->getPage()
                 ->find('css', sprintf('.popover .popover-content:contains("%s")', $search));
-        }, sprintf('The popover does not contain %s', $search));
+        }, sprintf('The popover does not contain "%s"', $search));
     }
 
     /**
