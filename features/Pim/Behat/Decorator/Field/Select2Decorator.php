@@ -2,6 +2,7 @@
 
 namespace Pim\Behat\Decorator\Field;
 
+use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 
@@ -45,20 +46,38 @@ class Select2Decorator extends ElementDecorator
         $this->close();
     }
 
+    /**
+     * Removes all the elements of a Select2.
+     * This function is allowed for select2 multi select and select2 simple select
+     */
     public function prune()
     {
-        $elements = array_reverse($this->findAll('css', '.select2-choices li.select2-search-choice'));
+        $elements = array_reverse($this->findAll(
+            'css',
+            '.select2-choices li.select2-search-choice,'.
+            'a.select2-choice'
+        ));
         foreach ($elements as $element) {
-            $element->find('css', '.select2-search-choice-close')->click();
+            $closeElement = $element->find('css', '.select2-search-choice-close');
+            if ($closeElement->isVisible()) {
+                $closeElement->click();
+            }
         }
     }
 
     /**
-     * Open the select2 dropdown
+     * Open the select2 dropdown.
+     * - Simple select contains an arrow to open container
+     * - Multi select just need a click on the main container to open it
      */
     public function open()
     {
-        $this->find('css', '.select2-container')->click();
+        $openerElement = $this->find('css', '.select2-arrow');
+        if (null === $openerElement) {
+            $openerElement = $this->find('css', '.select2-choices');
+        }
+
+        $openerElement->click();
     }
 
     /**
@@ -75,6 +94,11 @@ class Select2Decorator extends ElementDecorator
         }
     }
 
+    /**
+     * @return NodeElement
+     *
+     * @throws \Context\Spin\TimeoutException
+     */
     public function getWidget()
     {
         return $this->spin(function() {

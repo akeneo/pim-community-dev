@@ -657,6 +657,8 @@ class Edit extends ProductEditForm
      * Change the family of the current product
      *
      * @param string $family
+     *
+     * @return string
      */
     public function changeFamily($family)
     {
