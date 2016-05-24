@@ -143,7 +143,7 @@ class EnterpriseAssetContext extends RawMinkContext
             $iconContainer = $code->getParent()->find('css', '.icons-container');
             $this->getMainContext()->spin(function () use ($iconContainer) {
                 return (bool) $iconContainer->find('css', 'i.validation-tooltip');
-            });
+            }, 'Cannot find validation tooltip');
         }
     }
 

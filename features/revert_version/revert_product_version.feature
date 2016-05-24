@@ -115,4 +115,4 @@ Feature: Revert a product to a previous version
     And I open the history
     Then I should see 2 versions in the history
     When I revert the product version number 1
-    Then I should see a flash message "Product can not be reverted because it belongs to a variant group"
+    Then I should see the flash message "Product can not be reverted because it belongs to a variant group"

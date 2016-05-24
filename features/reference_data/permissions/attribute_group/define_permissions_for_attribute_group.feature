@@ -31,9 +31,10 @@ Feature: Define permissions for an attribute group with reference data
     And I visit the "Permissions" tab
     And I fill in the following information:
       | Allowed to edit attributes | IT support, Manager |
-    Then I save the attribute group
-    Then I logout
-    When I am logged in as "Mary"
+    And I save the attribute group
+    Then I should not see the text "There are unsaved changes."
+    When I logout
+    And I am logged in as "Mary"
     And I edit the "foo" product
     And I visit the "Other" group
     Then I should not see available attributes sole_color in group "Other"
@@ -46,9 +47,10 @@ Feature: Define permissions for an attribute group with reference data
     And I visit the "Permissions" tab
     And I fill in the following information:
       | Allowed to view attributes | IT support, Manager |
-    Then I save the attribute group
-    Then I logout
-    When I am logged in as "Mary"
+    And I save the attribute group
+    Then I should not see the text "There are unsaved changes."
+    When I logout
+    And I am logged in as "Mary"
     And I edit the "foo" product
     Then I should not see available attributes sole_color in group "Other"
     And I should not see available attributes sole_fabric in group "Other"

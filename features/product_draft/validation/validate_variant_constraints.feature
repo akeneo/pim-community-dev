@@ -16,4 +16,5 @@ Feature:
     And I visit the "Sizes" group
     And I change the "Size" to "M"
     And I save the product
-    Then I should see the text "Group \"H&M jackets\" already contains another product with values \"size: M, main_color: Black\""
+    Then I should see the flash message "Group "H&M jackets" already contains another product with values "size: M, main_color: Black""
+    And I should see the text "There are unsaved changes."

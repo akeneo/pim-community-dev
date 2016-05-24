@@ -131,7 +131,7 @@ class EnterpriseFeatureContext extends FeatureContext
     {
         $info = $this->spin(function () {
             return $this->getSession()->getPage()->find('css', '.meta .draft-status');
-        });
+        }, 'Cannot find draft status');
 
         if (false === strpos($info->getText(), $status)) {
             throw new \LogicException(
@@ -190,10 +190,10 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function iShouldSeeInThePopover($search)
     {
-        $popoverContent = $this->getMainContext()->spin(function () use ($search) {
+        $this->getMainContext()->spin(function () use ($search) {
             return $this->getSession()->getPage()
                 ->find('css', sprintf('.popover .popover-content:contains("%s")', $search));
-        }, 30, sprintf('The popover does not contain %s', $search));
+        }, sprintf('The popover does not contain "%s"', $search));
     }
 
     /**
@@ -205,7 +205,7 @@ class EnterpriseFeatureContext extends FeatureContext
             return $this->getSession()->getPage()
                 ->find('css', sprintf('tr[data-version="%s"]', $version))
                 ->find('css', 'td.actions .btn.restore');
-        });
+        }, sprintf('Cannot find product version "%s"', $version));
 
         $button->click();
         $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
@@ -226,6 +226,11 @@ class EnterpriseFeatureContext extends FeatureContext
             return $assetCollectionPicker->find('css', '.add-asset');
         }, 'Did not find the manage asset button');
         $manageAssets->click();
+
+        $this->spin(function () {
+            return $this->getSession()->getPage()
+                ->find('css', '#grid-asset-picker-grid[data-rendered="true"]');
+        }, 'Cannot find asset picker grid');
     }
 
     /**
@@ -236,7 +241,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $removeButton = $this->spin(function () use ($entity) {
             return $this->getSession()->getPage()
                 ->find('css', sprintf('.asset-basket li[data-asset="%s"] .remove-asset', $entity));
-        });
+        }, 'Cannot find button to remove asset in basket');
 
         $removeButton->click();
     }

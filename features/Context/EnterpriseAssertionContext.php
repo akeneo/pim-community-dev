@@ -58,13 +58,8 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     {
         $row = $this->spin(function () use ($version) {
             return $this->getCurrentPage()->find('css', '.history-block tr[data-version="' . $version . '"]');
-        });
+        }, sprintf('Cannot find history row for version "%d"', $version));
 
-        if (!$row) {
-            throw $this->createExpectationException(
-                sprintf('Expecting to see history row for version %s, not found', $version)
-            );
-        }
         if (!$row->find('css', '.label-published')) {
             throw $this->createExpectationException(
                 sprintf('Expecting to see version %d marked as published, but is not', $version)
@@ -155,7 +150,7 @@ class EnterpriseAssertionContext extends BaseAssertionContext
         return $this->spin(function () use ($code) {
             return $this->getSession()->getPage()
                 ->find('css', sprintf('.asset-basket li[data-asset="%s"]', $code));
-        });
+        }, sprintf('Cannot find asset "%s" in basket', $code));
     }
 
     /**

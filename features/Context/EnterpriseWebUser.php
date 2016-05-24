@@ -131,7 +131,7 @@ class EnterpriseWebUser extends BaseWebUser
                     'css',
                     sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $tag)
                 );
-            });
+            }, sprintf('Cannot find tag "%s" in select2', $tag));
             $item->click();
         }
     }
@@ -214,7 +214,7 @@ class EnterpriseWebUser extends BaseWebUser
                 }
 
                 return false;
-            });
+            }, sprintf('Cannot find tag link "%s"', $removeLink->getText()));
         }
     }
 

@@ -39,12 +39,13 @@ Feature: Publish a product
       | Main color  | blue              |
       | Main fabric | spandex, neoprene |
     And I save the product
-    And I am on the published index page
+    Then I should not see the text "There are unsaved changes."
+    When I am on the published index page
     Then the grid should contain 1 elements
     And I should see product red-heels
-    Then I am on the "red-heels" published show page
+    When I am on the "red-heels" published show page
     And I visit the "Other" group
-    And I should see the text "[red]"
+    Then I should see the text "[red]"
     And I should see the text "[spandex]"
     And I should see the text "[neoprene]"
     And I should see the text "[wool]"

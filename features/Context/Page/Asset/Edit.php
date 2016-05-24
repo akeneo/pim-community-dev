@@ -53,7 +53,9 @@ class Edit extends Form
      */
     public function changeTheEndOfUseAtTo($date)
     {
-        $field = $this->find('css', 'label:contains("End of use at")');
+        $field = $this->spin(function () {
+            return $this->find('css', 'label:contains("End of use at")');
+        }, '"End of use" field not found.');
         $this->fillDateField($field, $date);
     }
 
@@ -64,10 +66,10 @@ class Edit extends Form
      */
     public function deleteReferenceFile()
     {
-        $deleteButton = $this->find('css', 'div.reference button.delete');
-        if (!$deleteButton) {
-            throw new ElementNotFoundException($this->getSession(), 'delete reference button');
-        }
+        $deleteButton = $this->spin(function () {
+            return $this->find('css', 'div.reference button.delete');
+        }, 'Delete reference button not found.');
+
         $deleteButton->click();
 
         return true;
@@ -84,10 +86,10 @@ class Edit extends Form
     {
         $variationContainer = $this->findVariationContainer($channel);
 
-        $generateButton = $variationContainer->find('css', '.asset-generator a');
-        if (!$generateButton) {
-            throw new ElementNotFoundException($this->getSession(), 'generate variation button');
-        }
+        $generateButton = $this->spin(function () use ($variationContainer) {
+            return $variationContainer->find('css', '.asset-generator a');
+        }, 'Generate variation button not found.');
+
         $generateButton->click();
 
         return true;
@@ -103,11 +105,10 @@ class Edit extends Form
     public function deleteVariationFile($channel)
     {
         $variationContainer = $this->findVariationContainer($channel);
+        $deleteButton = $this->spin(function () use ($variationContainer) {
+            return $variationContainer->find('css', 'div.variation button.delete');
+        }, 'Delete variation button not found.');
 
-        $deleteButton = $variationContainer->find('css', 'div.variation button.delete');
-        if (!$deleteButton) {
-            throw new ElementNotFoundException($this->getSession(), 'delete variation button');
-        }
         $deleteButton->click();
 
         return true;
@@ -120,10 +121,10 @@ class Edit extends Form
      */
     public function resetVariationsFiles()
     {
-        $resetButton = $this->find('css', 'div.reference button.reset-variations');
-        if (!$resetButton) {
-            throw new ElementNotFoundException($this->getSession(), 'reset button');
-        }
+        $resetButton = $this->spin(function () {
+            return $this->find('css', 'div.reference button.reset-variations');
+        }, 'Reset button not found.');
+
         $resetButton->click();
 
         return true;

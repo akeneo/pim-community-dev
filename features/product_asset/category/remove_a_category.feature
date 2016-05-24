@@ -17,7 +17,7 @@ Feature: Remove an asset category
     When I press the "Delete" button
     And I confirm the deletion
     Then I should be on the asset category "images" edit page
-    And I should see flash message "Category successfully removed"
+    And I should see the flash message "Category successfully removed"
     And I should not see the "situ" category under the "images" category
 
   Scenario: Remove an asset category with sub-categories
@@ -25,7 +25,7 @@ Feature: Remove an asset category
     When I press the "Delete" button
     And I confirm the deletion
     Then I should be on the asset category "asset_main_catalog" edit page
-    And I should see flash message "Category successfully removed"
+    And I should see the flash message "Category successfully removed"
     And I should not see "Videos"
 
   Scenario: Remove an asset category with products linked
@@ -33,7 +33,7 @@ Feature: Remove an asset category
     When I press the "Delete" button
     And I confirm the deletion
     Then I should be on the asset category "asset_main_catalog" edit page
-    And I should see flash message "Category successfully removed"
+    And I should see the flash message "Category successfully removed"
     Then I should not see "Store documents"
     When I edit the "cgv" asset
     Then asset category of "cgv" should be "sales_documents"
@@ -43,7 +43,7 @@ Feature: Remove an asset category
     When I press the "Delete" button
     And I confirm the deletion
     Then I should be on the asset category "asset_main_catalog" edit page
-    And I should see flash message "Category successfully removed"
+    And I should see the flash message "Category successfully removed"
     Then I should not see "Images"
     And I should not see "Other picture"
     And I should not see "In situ pictures"
@@ -59,7 +59,7 @@ Feature: Remove an asset category
     When I press the "Delete" button
     And I confirm the deletion
     Then I should be redirected on the asset category tree creation page
-    And I should see flash message "Tree successfully removed"
+    And I should see the flash message "Tree successfully removed"
 
   Scenario: Cancel the removal of an asset category
     Given I am on the "images" asset category page

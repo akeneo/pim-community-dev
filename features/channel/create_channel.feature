@@ -17,4 +17,4 @@ Feature: Create a channel
     And  I visit the "Asset transformations" tab
     Then I should see "No transformation found"
     And I press the "Save" button
-    Then I should see flash message "Channel successfully saved"
+    Then I should see the flash message "Channel successfully saved"

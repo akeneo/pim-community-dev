@@ -17,4 +17,4 @@ Feature: Join an image to a product
   Scenario: Succesfully leave the image empty
     # Flash message is different from CE
     When I save the product
-    Then I should see flash message "Product working copy has been updated"
+    Then I should see the flash message "Product working copy has been updated"

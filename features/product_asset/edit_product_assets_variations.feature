@@ -57,11 +57,13 @@ Feature: Edit product assets variations
   Scenario: Successfully reset variations files
     Given I am on the "bridge" asset page
     And I visit the "Variations" tab
-    And I upload the reference file akeneo (copy).jpg
+    When I upload the reference file akeneo (copy).jpg
     And I save the asset
-    And I should see the flash message "Variation files have been generated successfully."
-    Given I reset variations files
+    Then I should see the flash message "Variation files have been generated successfully."
+    When I reset variations files
     And I confirm the action
+    Then I should not be able to generate Mobile from reference
+    And I should not be able to generate Tablet from reference
 
   Scenario: Successfully reset one variation file
     Given I am on the "bridge" asset page
