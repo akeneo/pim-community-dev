@@ -203,19 +203,14 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeVersionsInTheHistory($expectedCount)
     {
-        $actualVersions = $this->spin(function () {
-            return $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.product-version');
-        }, 'Cannot find ".history-panel tbody tr.product-version" element');
+        $actualVersions = $this->spin(function () use ($expectedCount) {
+            $actualVersions = $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.product-version');
 
-        if ((int) $expectedCount !== count($actualVersions)) {
-            throw new \Exception(
-                sprintf(
-                    'Expecting %d versions, actually saw %d',
-                    $expectedCount,
-                    count($actualVersions)
-                )
-            );
-        }
+            return ((int) $expectedCount) === count($actualVersions);
+        }, sprintf(
+            'Fail asserting %d versions count',
+            $expectedCount
+        ));
     }
 
     /**
