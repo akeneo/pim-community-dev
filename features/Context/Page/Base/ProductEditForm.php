@@ -311,7 +311,7 @@ class ProductEditForm extends Form
 
                 $item = $this->spin(function () use ($select) {
                     return $this->find('css', sprintf('#select2-drop li:contains("%s")', $select));
-                }, sprintf('Cannot find "%s" in select2 widget'));
+                }, sprintf('Cannot find "%s" in select2 widget', $value));
             }
 
             if (null === $item) {
