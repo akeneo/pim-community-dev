@@ -85,22 +85,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             return;
         }
 
+        $this->theGridToolbarCountShouldBe($count);
+
         if ($count > 10) {
             $this->getCurrentPage()->getCurrentGrid()->setPageSize(100);
         }
-
-        $this->spin(function () use ($count) {
-            assertEquals(
-                $count,
-                $actualCount = $this->datagrid->getToolbarCount()
-            );
-
-            return true;
-        }, sprintf(
-            'Expecting to see %d record(s) in the datagrid toolbar, actually saw %d',
-            $count,
-            $this->datagrid->countRows()
-        ));
 
         $this->spin(function () use ($count) {
             assertEquals(
@@ -113,6 +102,25 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             'Expecting to see %d row(s) in the datagrid, actually saw %d.',
             $count,
             $this->datagrid->countRows()
+        ));
+    }
+
+    /**
+     * @param int $count
+     *
+     * @throws TimeoutException
+     *
+     * @Then /^the grid toolbar count should be (\d+) elements?$/
+     */
+    public function theGridToolbarCountShouldBe($count)
+    {
+        $count = (int) $count;
+        $this->spin(function () use ($count) {
+            return $this->datagrid->getToolbarCount() === $count;
+        }, sprintf(
+            'Expecting to see %d record(s) in the datagrid toolbar, actually saw %d',
+            $count,
+            $this->datagrid->getToolbarCount()
         ));
     }
 
@@ -525,7 +533,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             if (!$isCategoryFilter) {
                 $steps[] = new Step\Then(sprintf('I hide the filter "%s"', $filter));
                 if (null !== $countBeforeFilter) {
-                    $steps[] = new Step\Then(sprintf('the grid should contain %d elements', $countBeforeFilter));
+                    $steps[] = new Step\Then(sprintf('the grid toolbar count should be %s elements', $countBeforeFilter));
                 }
             }
         }
