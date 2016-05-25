@@ -508,8 +508,10 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $count  = count($this->getMainContext()->listToArray($item['result']));
             $filter = $item['filter'];
             $isCategoryFilter = false !== strpos(strtolower($filter), 'category');
+            $countBeforeFilter = null;
 
             if (!$isCategoryFilter) {
+                $countBeforeFilter = $this->datagrid->getToolbarCount();
                 $steps[] = new Step\Then(sprintf('I show the filter "%s"', $filter));
             }
             $steps[] = new Step\Then(sprintf(
@@ -522,6 +524,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $steps[] = new Step\Then(sprintf('I should see entities %s', $item['result']));
             if (!$isCategoryFilter) {
                 $steps[] = new Step\Then(sprintf('I hide the filter "%s"', $filter));
+                if (null !== $countBeforeFilter) {
+                    $steps[] = new Step\Then(sprintf('the grid should contain %d elements', $countBeforeFilter));
+                }
             }
         }
 
