@@ -515,6 +515,11 @@ class Grid extends Index
         if ($filter->isVisible()) {
             $filter->remove();
         }
+        $this->spin(function () use ($filterName) {
+            $filter = $this->getFilter($filterName);
+
+            return null === $filter || !$filter->isVisible();
+        }, sprintf('The filter is already visible but show be hidden', $filterName));
     }
 
     /**
