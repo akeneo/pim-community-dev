@@ -79,3 +79,11 @@ services:
             - '@pim_enrich.factory.transformer.identifiable_model'
         tags:
             - { name: form.type, alias: pim_async_select }
+
+    pim_enrich.form.type.export_change_family:
+        class: Pim\Bundle\EnrichBundle\Form\Type\ChangeFamilyType
+        arguments:
+            - '@router'
+            - '@pim_catalog.repository.family'
+        tags:
+            - { name: form.type, alias: change_family_type }
