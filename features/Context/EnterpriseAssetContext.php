@@ -183,14 +183,10 @@ class EnterpriseAssetContext extends RawMinkContext
     protected function iUploadTheAssetFile($file = null, $channel = null)
     {
         if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(
+            $file = rtrim(
                 realpath($this->getMinkParameter('files_path')),
                 DIRECTORY_SEPARATOR
             ) . DIRECTORY_SEPARATOR . $file;
-
-            if (is_file($fullPath)) {
-                $file = $fullPath;
-            }
         }
 
         if (null === $channel) {
@@ -200,7 +196,7 @@ class EnterpriseAssetContext extends RawMinkContext
         }
 
         $field = $uploadZone->find('css', 'input[type="file"]');
-        $field->attachFile($fullPath);
+        $field->attachFile($file);
     }
 
     /**

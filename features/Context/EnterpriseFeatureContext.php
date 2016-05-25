@@ -53,7 +53,10 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function iShouldSeeThatFieldIsAModifiedValue($label)
     {
-        $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($label);
+        $icons = $this->spin(function () use ($label) {
+            return $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($label);
+        }, sprintf('Could not find field icons %s', $label));
+
         foreach ($icons as $icon) {
             if ($icon->hasClass('modified-by-draft')) {
                 return true;
