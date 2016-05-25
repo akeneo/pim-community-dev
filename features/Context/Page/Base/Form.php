@@ -75,7 +75,7 @@ class Form extends Base
      */
     public function visitTab($tab)
     {
-        $tabs = $this->spin(function () {
+        $this->spin(function () use ($tab) {
             $tabs = $this->find('css', $this->elements['Tabs']['css']);
             if (null === $tabs) {
                 $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
@@ -84,20 +84,13 @@ class Form extends Base
                 $tabs = $this->find('css', $this->elements['Form tabs']['css']);
             }
 
-            return $tabs;
-        }, 'Could not find any tabs container element');
+            $tabDom = $tabs->findLink($tab);
+            $tabDom->click();
 
-        $tabDom = $this->spin(function () use ($tabs, $tab) {
-            return $tabs->findLink($tab);
-        }, sprintf('Could not find a tab named "%s"', $tab));
+            $tabElement = $this->getFormTab($tab);
 
-        $this->spin(function () {
-            $loading = $this->find('css', '#loading-wrapper');
-
-            return null === $loading || !$loading->isVisible();
-        }, sprintf('Could not visit tab %s because of loading wrapper', $tab));
-
-        $tabDom->click();
+            return $tabElement->getParent()->hasClass('active');
+        }, sprintf('Could not go to tab "%s"', $tab));
     }
 
     /**
