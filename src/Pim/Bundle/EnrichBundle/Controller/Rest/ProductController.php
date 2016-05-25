@@ -325,7 +325,7 @@ class ProductController
         $values = $this->emptyValuesFilter->filter($product, $values);
 
         unset($data['values']);
-        $data = array_merge($data, $values);
+        $data = array_replace($data, $values);
 
         $this->productUpdater->update($product, $data);
     }

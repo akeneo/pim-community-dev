@@ -5,6 +5,7 @@
 - PIM-5710: Fix thumbnail display after file upload in the product edit form
 - PIM-5811: Fix family export with multiple locales activated
 - PIM-5726: Fix number of product displayed on Product Grid when category panel is withdrawn
+- PIM-5801: Fix save in product edit form when attribute code is only numeric
 
 # 1.5.3 (2016-05-13)
 

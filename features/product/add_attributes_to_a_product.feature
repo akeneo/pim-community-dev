@@ -39,3 +39,12 @@ Feature: Add attributes to a product
   Scenario: Successfully display unclassified attributes in group "Other"
     Given I am on the "sandals" product page
     Then I should see available attribute Comment in group "Other"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5801
+  Scenario: Successfully add an attribute with fully numeric identifier
+    Given I am on the "boots" product page
+    And I add available attribute 123
+    And I change the "Attribute 123" to "foobar"
+    When I save the product
+    Then I should not see the text "There are unsaved changes."
+    And the field Attribute 123 should contain "foobar"
