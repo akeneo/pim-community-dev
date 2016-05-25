@@ -54,6 +54,7 @@ services:
         arguments:
             - '@pim_import_export.job_parameters.form_configuration_provider.simple_csv_export'
             - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.family'
             - '@akeneo_batch.job_repository'
             - '@translator'
             - '@pim_catalog.localization.presenter.datetime'
