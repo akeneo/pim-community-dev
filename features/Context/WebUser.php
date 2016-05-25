@@ -164,13 +164,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldNotSeeTheTab($tab)
     {
-        try {
-            $this->getCurrentPage()->getFormTab($tab);
-        } catch (TimeoutException $e) {
-            return;
-        }
-
-        throw $this->createExpectationException(sprintf('Expecting not to see tab "%s"', $tab));
+        assertNull($this->getCurrentPage()->getFormTab($tab));
     }
 
     /**
