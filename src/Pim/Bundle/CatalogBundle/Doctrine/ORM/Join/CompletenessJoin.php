@@ -64,9 +64,9 @@ class CompletenessJoin
                     'PimCatalogBundle:Locale',
                     $localeAlias,
                     'WITH',
-                    $localeAlias.'.code = :cLocaleCode'
+                    sprintf('%s.code = :%scLocaleCode', $localeAlias, $localeAlias)
                 )
-                ->setParameter('cLocaleCode', $locale);
+                ->setParameter($localeAlias.'cLocaleCode', $locale);
 
             $joinCondition .= sprintf(' AND %s.locale = %s.id', $completenessAlias, $localeAlias);
         }

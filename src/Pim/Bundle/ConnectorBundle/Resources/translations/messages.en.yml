@@ -63,6 +63,14 @@ pim_connector:
                 enabled: Enabled
                 disabled: Disabled
                 all: All
+        completeness:
+            label: Completeness
+            help: The completeness of the products you want to export
+            choice:
+                at_least_one_complete: Complete on at least one selected locale
+                all_complete: Complete on all selected locales
+                all_incomplete: Not complete on all selected locales
+                all: No condition on completeness
         updated:
             label: Updated time condition
             help: The time condition of the products you want to export

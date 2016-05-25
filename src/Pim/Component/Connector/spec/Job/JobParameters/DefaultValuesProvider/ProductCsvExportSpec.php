@@ -25,13 +25,14 @@ class ProductCsvExportSpec extends ObjectBehavior
         $this->getDefaultValues()->shouldReturn(
             [
                 'decoratedParam'   => true,
-                'decimalSeparator' => ".",
-                'dateFormat'       => "yyyy-MM-dd",
+                'decimalSeparator' => '.',
+                'dateFormat'       => 'yyyy-MM-dd',
                 'channel'          => null,
                 'locales'          => [],
-                'enabled'          => "enabled",
-                'updated'          => "all",
+                'enabled'          => 'enabled',
+                'updated'          => 'all',
                 'families'         => null,
+                'completeness'     => 'at_least_one_complete',
             ]
         );
     }
