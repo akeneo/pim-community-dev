@@ -524,7 +524,7 @@
 {% endblock %}
 
 {% block pim_acl_access_level_selector_widget %}
-    <i class="icon-{{ form.vars.checked ? 'ok ' : 'remove non-' }}granted acl-permission-toggle"></i>
+    <a class="icon-{{ form.vars.checked ? 'ok ' : 'remove non-' }}granted acl-permission-toggle"></a>
     {% set attr = attr|merge({ class: 'hide' }) %}
     {{ block('checkbox_widget') }}
 {% endblock %}
