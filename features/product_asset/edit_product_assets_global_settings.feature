@@ -23,7 +23,7 @@ Feature: Edit product assets properties
   Scenario: Successfully add existing tags to an asset
     Given I am on the "blue_shirt" asset page
     And I visit the "Properties" tab
-    When I add the following tags in the "Tags" select2 : pattern, stripes, neckline
+    When I change the Tags to "solid_color, men, pattern, stripes, neckline"
     And I press the "Save" button
     Then I should be on the "blue_shirt" asset edit page
     And the field Tags should contain "solid_color, men, pattern, stripes, neckline"
@@ -31,7 +31,7 @@ Feature: Edit product assets properties
   Scenario: Successfully add a new tag to an asset
     Given I am on the "blue_shirt" asset page
     And I visit the "Properties" tab
-    When I add the following tags in the "Tags" select2 : new_tag
+    When I change the Tags to "solid_color, men, new_tag"
     And I press the "Save" button
     Then I should be on the "blue_shirt" asset edit page
     And the field Tags should contain "solid_color, men, new_tag"
@@ -39,7 +39,7 @@ Feature: Edit product assets properties
   Scenario: Successfully remove tags from an asset
     Given I am on the "blue_shirt" asset page
     And I visit the "Properties" tab
-    When I remove the following tags from the "Tags" select2 : solid_color
+    And I change the Tags to "men"
     And I press the "Save" button
     Then I should be on the "blue_shirt" asset edit page
     And the field Tags should contain "men"
