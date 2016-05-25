@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-5710: Fix thumbnail display after file upload in the product edit form
+- PIM-5811: Fix family export with multiple locales activated
 
 # 1.5.3 (2016-05-13)
 
