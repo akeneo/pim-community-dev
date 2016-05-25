@@ -43,6 +43,7 @@ class ProductCsvExport implements DefaultValuesProviderInterface
         $parameters['locales'] = [];
         $parameters['enabled'] = 'enabled';
         $parameters['updated'] = 'all';
+        $parameters['families'] = null;
 
         return $parameters;
     }
