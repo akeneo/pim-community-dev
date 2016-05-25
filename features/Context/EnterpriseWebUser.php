@@ -137,88 +137,6 @@ class EnterpriseWebUser extends BaseWebUser
     }
 
     /**
-     * @params string       $field
-     * $params string|array $tags
-     *
-     * @Given /^I set the following tags? in the "([^"]+)" select2 : ([^"]+)$/
-     */
-    public function iSetTheFollowingTagsInTheSelect2($field, $tags)
-    {
-        if (is_string($tags)) {
-            $tags = $this->convertCommaSeparatedToArray($tags);
-        }
-
-        $choices = $this->getSelect2Choices($field);
-        $this->removeTags($choices);
-
-        $this->iAddTheFollowingTagsInTheSelect2($field, $tags);
-    }
-
-    /**
-     * @params string       $field
-     * @params string|array $tags
-     *
-     * @Given /^I remove the following tags? from the "([^"]+)" select2 : ([^"]+)$/
-     */
-    public function iRemoveTheFollowingTagsFromTheSelect2($field, $tags)
-    {
-        $tags = $this->convertCommaSeparatedToArray($tags);
-        $choices = $this->getSelect2Choices($field, $tags);
-        $this->removeTags($choices);
-    }
-
-    /**
-     * @params string        $field
-     * @params string[]|null $tags
-     *
-     * @return NodeElement[]|array NodeElement[] if something is found or empty array if nothing is found
-     */
-    protected function getSelect2Choices($field, $tags = null)
-    {
-        $select2Label   = $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $field));
-        $currentChoices = $select2Label->getParent()->findAll('css', '.select2-search-choice');
-
-        if (null !== $tags) {
-            $choices = [];
-            foreach ($tags as $tag) {
-                foreach ($currentChoices as $choice) {
-                    if ($choice->getText() === $tag) {
-                        $choices[] = $choice;
-                        break;
-                    }
-                }
-            }
-
-            return $choices;
-        }
-
-        return $currentChoices;
-    }
-
-    /**
-     * Remove tags from their NodeElement. You can use getSelect2Choices() to found their NodeElement
-     *
-     * @param NodeElement[] $tagElements
-     */
-    protected function removeTags(array $tagElements)
-    {
-        foreach ($tagElements as $tag) {
-            $removeLink = $tag->find('css', '.select2-search-choice-close');
-            $removeLink->click();
-
-            $this->spin(function () use ($removeLink) {
-                try {
-                    $removeLink->getText();
-                } catch (\Exception $e) {
-                    return true;
-                }
-
-                return false;
-            }, sprintf('Cannot find tag link "%s"', $removeLink->getText()));
-        }
-    }
-
-    /**
      * @param string $vars Vars separated by ',' or ', '
      *
      * @return string[]
@@ -233,8 +151,6 @@ class EnterpriseWebUser extends BaseWebUser
     }
 
     /**
-     * @param string $button
-     *
      * @Given /^I press the Send for approval button$/
      */
     public function iPressTheSendForApprovalButton()
@@ -244,6 +160,8 @@ class EnterpriseWebUser extends BaseWebUser
     }
 
     /**
+     * @param $comment
+     *
      * @Given /^I fill in this comment in the popin: "([^"]+)"$/
      * @Given /^I fill in this comment in the popin:$/
      */
