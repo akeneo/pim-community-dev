@@ -7,6 +7,7 @@ Feature: Add attributes to a variant group
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @javascript
   Scenario: Display available attributes for a variant group
     Given the following attribute:
       | code   | label-en_US | unique | group     |
