@@ -169,6 +169,25 @@ class JobContext extends PimContext
     /**
      * @param string $code
      *
+     * @throws \Exception
+     *
+     * @return array
+     */
+    public function getAllJobInstancePaths($code)
+    {
+        $archivesCount = count($this->getJobInstanceArchives($code));
+        $filePaths = [];
+
+        for ($i = 1; $i < $archivesCount + 1; $i++) {
+            $filePaths[] = $this->getJobInstancePath($code, $i);
+        }
+
+        return $filePaths;
+    }
+
+    /**
+     * @param string $code
+     *
      * @return array
      */
     protected function getJobInstanceArchives($code)

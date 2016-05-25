@@ -36,6 +36,41 @@ class XlsxFileContext extends PimContext
      * @param string    $code
      * @param TableNode $expectedLines
      *
+     * @Then /^exported xlsx files of "([^"]*)" should contain:$/
+     */
+    public function exportedXlsxFilesOfShouldContain($code, TableNode $expectedLines)
+    {
+        $filePaths = $this->getMainContext()->getSubcontext('job')->getAllJobInstancePaths($code);
+
+        $expectedLines = $expectedLines->getRows();
+        unset($expectedLines[0]);
+
+        $reader = ReaderFactory::create(Type::XLSX);
+
+        foreach ($filePaths as $path) {
+            $reader->open($path);
+            $sheet = current(iterator_to_array($reader->getSheetIterator()));
+            $actualLines = iterator_to_array($sheet->getRowIterator());
+
+            foreach ($actualLines as $actualLine) {
+                $expectedLines = array_filter($expectedLines, function ($expected) use ($actualLine) {
+                    return count(array_diff($expected, $actualLine)) > 0;
+                });
+            }
+
+            $reader->close();
+        }
+
+        assertEmpty(
+            $expectedLines,
+            sprintf('Could not find an expected line: %s', implode(' | ', current($expectedLines)))
+        );
+    }
+
+    /**
+     * @param string    $code
+     * @param TableNode $expectedLines
+     *
      * @Then /^exported xlsx file of "([^"]*)" should contains the following headers:$/
      */
     public function exportedXlsxFileOfShouldContainsTheFollowingHeaders($code, TableNode $expectedLines)
@@ -75,6 +110,19 @@ class XlsxFileContext extends PimContext
         $rowCount = count($actualLines);
 
         assertEquals($rows, $rowCount, sprintf('Expecting file to contain %d rows, found %d.', $rows, $rowCount));
+    }
+
+    /**
+     * @param int    $number
+     * @param string $code
+     * @param int    $itemsCount
+     *
+     * @Then /^exported xlsx file (\d+) of "([^"]*)" should contain (\d+) rows?$/
+     */
+    public function exportedXlsxFileOfShouldContainItems($number, $code, $itemsCount)
+    {
+        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code, $number);
+        $this->xlsxFileShouldContainRows($path, $itemsCount);
     }
 
     /**
