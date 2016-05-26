@@ -78,13 +78,11 @@ Feature: List proposals
     Given I am logged in as "Julia"
     And I am on the "additional_materials" attribute page
     And I visit the "Values" tab
-    And I wait for options to load
     And I create the following attribute options:
       | Code   | en_US  | fr_FR  | de_DE  |
       | Blue   | Blue   | Bleu   | Blau   |
     And I am on the "weather_conditions" attribute page
     And I visit the "Values" tab
-    And I wait for options to load
     And I create the following attribute options:
       | Code   | en_US   | fr_FR  | de_DE  |
       | Blue   | Blue    | Bleu   | Blau   |
