@@ -227,13 +227,7 @@ class ItemStep extends AbstractStep
         $element,
         InvalidItemException $e
     ) {
-        if ($element instanceof AbstractConfigurableStepElement) {
-            $warningName = $element->getName();
-        } else {
-            $warningName = get_class($element);
-        }
-
-        $stepExecution->addWarning($warningName, $e->getMessage(), $e->getMessageParameters(), $e->getItem());
+        $stepExecution->addWarning($e->getMessage(), $e->getMessageParameters(), $e->getItem());
         $this->dispatchInvalidItemEvent(
             get_class($element),
             $e->getMessage(),

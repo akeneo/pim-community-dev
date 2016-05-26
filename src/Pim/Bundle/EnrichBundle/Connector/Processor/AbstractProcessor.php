@@ -60,7 +60,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
                 $violation->getMessage(),
                 $invalidValue
             );
-            $this->stepExecution->addWarning($this->getName(), $errors, [], $product);
+            $this->stepExecution->addWarning($errors, [], $product);
         }
     }
 

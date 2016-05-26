@@ -127,7 +127,7 @@ class CsvProductWriterSpec extends ObjectBehavior
             ]
         );
         $this->getWrittenFiles()->shouldReturn([]);
-        $stepExecution->addWarning('csv_product_writer', 'The media has not been found or is not currently available', [], $media)
+        $stepExecution->addWarning('The media has not been found or is not currently available', [], $media)
             ->shouldBeCalled();
     }
 
@@ -148,7 +148,7 @@ class CsvProductWriterSpec extends ObjectBehavior
             ]
         );
         $this->getWrittenFiles()->shouldReturn([]);
-        $stepExecution->addWarning('csv_product_writer', 'The media has not been copied. Copy error.', [], $media)
+        $stepExecution->addWarning('The media has not been copied. Copy error.', [], $media)
             ->shouldBeCalled();
     }
 }

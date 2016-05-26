@@ -69,7 +69,7 @@
             <% _.each(stepExecution.warnings, function (warning) { %>
                 <tr class="warning">
                     <td colspan="5">
-                        <span class="title"><%= warning.label.toUpperCase() %></span>&nbsp;
+                        <span class="title">{{ 'warning.label'|trans }}</span>&nbsp;
                         <ul>
                             <% _.each(warning.reason.split("\n"), function(warningItem) { %>
                                 <% if (warningItem) { %>
