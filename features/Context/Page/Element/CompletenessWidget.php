@@ -2,6 +2,7 @@
 
 namespace Context\Page\Element;
 
+use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 /**
@@ -13,6 +14,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
  */
 class CompletenessWidget extends Element
 {
+    use SpinCapableTrait;
+
     /** @var array */
     protected $selector = array('css' => '#completeness-widget');
 
@@ -25,10 +28,9 @@ class CompletenessWidget extends Element
      */
     public function getChannelCompleteness($channel)
     {
-        $cell = $this->find('css', sprintf('tr:contains("%s") td>b', $channel));
-        if (!$cell) {
-            throw new \InvalidArgumentException(sprintf('Could not find channel "%s"', $channel));
-        }
+        $cell = $this->spin(function () use ($channel) {
+            return $this->find('css', sprintf('tr:contains("%s") td>b', $channel));
+        }, sprintf('Could not find channel "%s"', $channel));
 
         return $cell->getText();
     }

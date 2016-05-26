@@ -1879,17 +1879,14 @@ class WebUser extends RawMinkContext
      */
     public function completenessOfShouldBe($channel, $ratio)
     {
-        $actual = $this->getCurrentPage()->getChannelCompleteness($channel);
-        assertEquals(
+        $this->spin(function () use ($channel, $ratio) {
+            return $ratio === $this->getCurrentPage()->getChannelCompleteness($channel);
+        }, sprintf(
+            'Expecting completeness ratio of channel "%s" to be "%s", actually was "%s"',
+            $channel,
             $ratio,
-            $actual,
-            sprintf(
-                'Expecting completeness ratio of channel "%s" to be "%s", actually was "%s"',
-                $channel,
-                $ratio,
-                $actual
-            )
-        );
+            $this->getCurrentPage()->getChannelCompleteness($channel)
+        ));
     }
 
     /**
