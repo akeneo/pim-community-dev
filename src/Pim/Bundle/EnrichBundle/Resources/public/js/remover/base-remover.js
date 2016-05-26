@@ -37,7 +37,7 @@ define([
              * @return {String}
              */
             getUrl: function (code) {
-                return Routing.generate(module.config().url, {code: code});
+                throw new Error('This method need to be implemented');
             }
         };
     }
