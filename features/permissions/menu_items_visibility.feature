@@ -10,12 +10,8 @@ Feature: Check menu items visibility
     When I am on the dashboard page
     Then I should see the text "System"
     When I am on the "User" role page
-    And I remove rights to List users, Create a user, Edit users and Remove a user
-    And I remove rights to List roles, Create a role, Edit roles and Remove a role
-    And I remove rights to List user groups, Create a user group, Edit user groups and Remove a user group
-    And I remove rights to System configuration
-    And I remove rights to System information
-    And I remove rights to View process tracker
+    And I visit the "Permissions" tab
+    And I revoke rights to group System
     And I save the role
-    And I am on the dashboard page
+    When I am on the dashboard page
     Then I should not see the text "System"

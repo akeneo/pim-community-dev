@@ -11,7 +11,9 @@ Feature: Proposal tab should be visible
       | black-boots | boots  |
     And I am logged in as "Peter"
     And I am on the "Administrator" role page
-    And I remove rights to View the association types of a product
+    And I visit the "Permissions" tab
+    And I revoke rights to resource View the association types of a product
     And I save the role
-    And I edit the "black-boots" product
+    Then I should not see the text "There are unsaved changes."
+    When I edit the "black-boots" product
     Then I should see the "Proposals" tab

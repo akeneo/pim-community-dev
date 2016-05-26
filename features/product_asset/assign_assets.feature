@@ -108,9 +108,12 @@ Feature: Assign assets to a product
     Then I should see the text "Asset main catalog"
     And I cancel the asset modification
     And I save the product
+    Then I should not see the text "There are unsaved changes."
     When I am on the "Administrator" role page
-    And I remove rights to List asset categories in the asset picker
+    And I visit the "Permissions" tab
+    And I revoke rights to resource List asset categories in the asset picker
     And I save the role
+    Then I should not see the text "There are unsaved changes."
     When I am on the "shirt" product page
     And I add available attributes Front view
     And I start to manage assets for "Front view"

@@ -25,10 +25,11 @@ Feature: Manage permissions to calculate impacted product by a rule
       """
     When I am on the rules page
     Then I should see the text "Calculate the matching products for the rules"
-    When I am on the "Administrator" userRole page
+    When I am on the "Administrator" role page
     And I visit the "Permissions" tab
-    And I click on the "Rules" ACL group
-    And I click on the "Calculate the matching products for the rules" ACL role
-    And I save the userRole
+    And I grant rights to group Rules
+    And I revoke rights to resource Calculate the matching products for the rules
+    And I save the Role
+    Then I should not see the text "There are unsaved changes."
     When I am on the rules page
     Then I should not see the text "Calculate the matching products for the rules"
