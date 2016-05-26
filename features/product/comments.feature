@@ -80,4 +80,3 @@ Feature: Leave a comment on a product
     Then I should not see the text "There are unsaved changes."
     When I am on the "rangers" product page
     Then I should not see the text "Comments"
-    And I reset the "Administrator" rights
