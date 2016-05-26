@@ -7,6 +7,7 @@
 - PIM-5640: Locale and attribute group permissions are now applied on quick export content
 - PIM-5357: Add the following XLSX job import: assets and asset categories
 - PIM-5582: Read only attribute
+- PIM-5427: Add possibility to filter by families for product export
 
 ## Technical improvements
 
