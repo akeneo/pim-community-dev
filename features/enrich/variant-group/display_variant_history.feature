@@ -14,7 +14,7 @@ Feature: Display the variant group history
     And I fill in the following information in the popin:
       | Code | converse_sneakers |
       | Axis | Size              |
-    And I save the variant group
+    And I press the "Save" button in the popin
     And I am on the variant groups page
     Then I should see groups converse_sneakers and caterpillar_boots
     When I am on the "converse_sneakers" variant group page
