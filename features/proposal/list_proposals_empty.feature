@@ -28,6 +28,6 @@ Feature: List proposals
     When I am logged in as "Julia"
     And I am on the proposals page
     Then the grid should contain 1 elements
-    And I filter by "Proposed at" with value "between 02/01/2012 and 02/02/2012"
+    And I filter by "createdAt" with operator "between" and value "02/01/2012 and 02/02/2012"
     Then the grid should contain 0 elements
     And I should see "There is no proposal to review. Try to change your search criteria."

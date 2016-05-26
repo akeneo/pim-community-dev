@@ -28,11 +28,11 @@ Feature: Browse smart attributes in the attribute grid
             value: Foo
             locale: en_US
       """
-    When I filter by "Type" with value "Text"
+    When I filter by "attributeType" with operator "equals" and value "Text"
     Then I should be able to use the following filters:
-      | filter | value | result       |
-      | Smart  | yes   | name         |
-      | Smart  | no    | 123, comment |
+      | filter | operator | value | result       |
+      | smart  | equals   | yes   | name         |
+      | smart  | equals   | no    | 123, comment |
 
   @info https://akeneo.atlassian.net/browse/PIM-5056
   Scenario: Successfully display the correct amount of smart attribute on grid
@@ -79,5 +79,5 @@ Feature: Browse smart attributes in the attribute grid
             value: "2015-05-26"
       """
     And the product rule "rule1" is executed
-    When I filter by "Smart" with value "yes"
+    When I filter by "smart" with operator "equals" and value "yes"
     Then the grid should contain 8 elements
