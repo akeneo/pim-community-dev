@@ -3,7 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Provider\StructureVersion;
 
 /**
- * Structure version provider interface
+ * Provide a structure version for the registred entities.
+ * It helps the backend to decide if it needs to clear it's cache
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

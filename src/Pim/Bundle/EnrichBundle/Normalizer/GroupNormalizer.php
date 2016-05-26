@@ -61,19 +61,23 @@ class GroupNormalizer implements NormalizerInterface
             $normalizedGroup['products'][] = $product->getId();
         }
 
-        $oldestLog = $this->versionManager->getOldestLogEntry($group);
-        $newestLog = $this->versionManager->getNewestLogEntry($group);
+        $firstVersion = $this->versionManager->getOldestLogEntry($group);
+        $lastVersion  = $this->versionManager->getNewestLogEntry($group);
 
-        $created = null !== $oldestLog ? $this->versionNormalizer->normalize($oldestLog, 'internal_api') : null;
-        $updated = null !== $newestLog ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null;
+        $firstVersion = null !== $firstVersion ?
+            $this->versionNormalizer->normalize($firstVersion, 'internal_api') :
+            null;
+        $lastVersion = null !== $lastVersion ?
+            $this->versionNormalizer->normalize($lastVersion, 'internal_api') :
+            null;
 
         $normalizedGroup['meta'] = [
             'id'                => $group->getId(),
             'form'              => 'pim-variant-group-edit-form',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'model_type'        => 'variant_group',
-            'created'           => $created,
-            'updated'           => $updated,
+            'created'           => $firstVersion,
+            'updated'           => $lastVersion,
         ];
 
         return $normalizedGroup;
