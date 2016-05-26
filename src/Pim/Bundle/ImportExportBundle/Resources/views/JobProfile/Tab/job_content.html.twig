@@ -6,5 +6,22 @@
             {% endif %}
         {% endfor %}
     {% endset %}
+
+    <script type="text/javascript">
+        require(
+                ['jquery', 'pim/product-export/locales-selector'],
+                function($, LocaleSelector){
+                    'use strict';
+
+                    $(function () {
+                        LocaleSelector.init(
+                            '#pim_import_export_jobInstance_configuration_channel',
+                            '#pim_import_export_jobInstance_configuration_locales'
+                        );
+                    });
+                }
+        );
+    </script>
+
     {{ elements.accordion({ 'pane.accordion.filters': filtersSettings }, 3) }}
 </div>

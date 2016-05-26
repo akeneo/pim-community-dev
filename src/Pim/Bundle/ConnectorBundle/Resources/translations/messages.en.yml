@@ -51,6 +51,11 @@ pim_connector:
         channel:
             label: Channel
             help: The channel you want to export
+        locales:
+            label: Locales
+            help: The locales you want to export
+            validation:
+                not_blank: One locale must be selected, please choose a locale to export.
         status:
             label: Status
             help: The status of the products you want to export

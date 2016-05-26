@@ -29,6 +29,10 @@ class JobContext extends PimContext
                 $value = 'yes' === $value;
             }
 
+            if ($this->isJobParameterArray($property)) {
+                $value = $this->getMainContext()->listToArray($value);
+            }
+
             $configuration[$property] = $value;
         }
 
@@ -203,5 +207,15 @@ class JobContext extends PimContext
         $archives = $archiver->getArchives($jobExecution);
 
         return $archives;
+    }
+
+    /**
+     * @param string $property
+     *
+     * @return bool
+     */
+    protected function isJobParameterArray($property)
+    {
+        return in_array($property, ['locales']);
     }
 }

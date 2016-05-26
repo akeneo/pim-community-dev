@@ -35,6 +35,11 @@ jobs:
         type:      export
         configuration:
             channel:    ecommerce
+            locales:
+                - en_US
+                - en_GB
+                - fr_FR
+                - de_DE
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
@@ -46,6 +51,9 @@ jobs:
         type:      export
         configuration:
             channel:    tablet
+            locales:
+                - en_US
+                - en_GB
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
@@ -56,6 +64,9 @@ jobs:
         label:     XLSX product export for tablet
         type:      export
         configuration:
+            locales:
+                - en_US
+                - en_GB
             filePath: /tmp/products.xlsx
             channel:    tablet
             linesPerFile: 10000
@@ -67,6 +78,9 @@ jobs:
         type:      export
         configuration:
             channel:    print
+            locales:
+                - en_US
+                - de_DE
             delimiter:  ;
             enclosure:  '"'
             withHeader: true

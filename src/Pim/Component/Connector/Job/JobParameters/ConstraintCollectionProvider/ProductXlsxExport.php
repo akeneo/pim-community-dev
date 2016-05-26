@@ -47,6 +47,12 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
             new NotBlank(['groups' => 'Execution']),
             new Channel()
         ];
+
+        $constraintFields['locales'] = new NotBlank([
+            'groups'  => 'Execution',
+            'message' => 'pim_connector.export.locales.validation.not_blank'
+        ]);
+
         $constraintFields['enabled'] = new NotBlank(['groups' => 'Execution']);
         $constraintFields['updated'] = new NotBlank(['groups' => 'Execution']);
         $constraintFields['linesPerFile'] = [

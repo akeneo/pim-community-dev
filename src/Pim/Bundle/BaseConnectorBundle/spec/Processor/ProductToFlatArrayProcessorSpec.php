@@ -67,12 +67,11 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $jobParameters->get('channel')->willReturn('foobar');
         $jobParameters->get('decimalSeparator')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-
-        $localeCodes = ['en_US'];
+        $jobParameters->get('locales')->willReturn(['fr_FR', 'en_US']);
 
         $channel->getCode()->willReturn('foobar');
         $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
-        $channel->getLocaleCodes()->willReturn($localeCodes);
+        $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
         $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
 
         $media1->getKey()->willReturn('key/to/media1.jpg');
@@ -105,7 +104,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                 'flat',
                 [
                     'scopeCode'         => 'foobar',
-                    'localeCodes'       => $localeCodes,
+                    'localeCodes'       => ['en_US'],
                     'decimal_separator' => '.',
                     'date_format'       => 'yyyy-MM-dd',
                 ]
@@ -136,14 +135,12 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $jobParameters->get('channel')->willReturn('foobar');
         $jobParameters->get('decimalSeparator')->willReturn(',');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-
-        $localeCodes = ['en_US'];
+        $jobParameters->get('locales')->willReturn(['en_US']);
 
         $channel->getCode()->willReturn('foobar');
         $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
-        $channel->getLocaleCodes()->willReturn($localeCodes);
+        $channel->getLocaleCodes()->willReturn(['en_US']);
         $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
-
         $product->getValues()->willReturn([]);
 
         $serializer
@@ -152,7 +149,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                 'flat',
                 [
                     'scopeCode' => 'foobar',
-                    'localeCodes' => $localeCodes,
+                    'localeCodes' => ['en_US'],
                     'decimal_separator' => ',',
                     'date_format'       => 'yyyy-MM-dd',
                 ]
