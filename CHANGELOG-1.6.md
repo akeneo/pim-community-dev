@@ -40,6 +40,7 @@
 
 ## BC breaks
 
+- Remove `Pim\Component\Connector\Writer\File\SimpleFileWriter` as it was not used
 - Move `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility` to `Pim\Bundle\CatalogBundle\ProductQueryUtility`
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor` . Add `Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter`
 - Change constructor of `Pim\Component\Connector\Reader\ProductReader`. Add `Akeneo\Component\Batch\Job\JobRepositoryInterface`.
