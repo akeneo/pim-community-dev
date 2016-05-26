@@ -540,14 +540,6 @@
     {{ block('hidden_widget') }}
 {% endblock %}
 
-{% block change_family_type_row %}
-    <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
-        {{ form_label(form, '', { label_attr: label_attr|merge({ class: 'control-label' })}) }}
-        <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
-            {{ form_widget(form) }}
-            {% if form.children|length == 0 %}
-                {{ block('form_info') }}
-            {% endif %}
-        </div>
-    </div>
+{% block select_family_type_row %}
+    {{ block('form_row_field') }}
 {% endblock %}

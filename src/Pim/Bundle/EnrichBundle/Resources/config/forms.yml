@@ -84,6 +84,5 @@ services:
         class: Pim\Bundle\EnrichBundle\Form\Type\ChangeFamilyType
         arguments:
             - '@router'
-            - '@pim_catalog.repository.family'
         tags:
-            - { name: form.type, alias: change_family_type }
+            - { name: form.type, alias: select_family_type }

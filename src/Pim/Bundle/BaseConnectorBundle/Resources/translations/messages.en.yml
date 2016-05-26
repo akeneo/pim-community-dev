@@ -57,6 +57,7 @@ pim_base_connector:
         families:
             label: Family
             help: The families you want to export
+            placeholder: Choose a family
     import:
         enabled:
             label: Enable the product

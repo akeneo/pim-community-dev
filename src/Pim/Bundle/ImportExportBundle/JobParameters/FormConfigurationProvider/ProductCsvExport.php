@@ -114,7 +114,7 @@ class ProductCsvExport implements FormConfigurationProviderInterface
             ],
             'locales' => ['type' => 'pim_import_export_product_export_locale_choice'],
             'families' => [
-                'type'    => 'change_family_type',
+                'type'    => 'select_family_type',
                 'options' => [
                     'repository' => $this->familyRepository,
                     'route' => 'pim_enrich_family_rest_index',
@@ -122,7 +122,10 @@ class ProductCsvExport implements FormConfigurationProviderInterface
                     'multiple' => true,
                     'label' => 'pim_base_connector.export.families.label',
                     'help' => 'pim_base_connector.export.families.help',
-                    'attr' => ['data-tab' => 'content', 'data-placeholder' => 'Choose a family']
+                    'attr' => [
+                        'data-tab' => 'content',
+                        'data-placeholder' => 'pim_base_connector.export.families.placeholder'
+                    ]
                 ]
             ],
             'enabled' => [

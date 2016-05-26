@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,17 +19,15 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class ChangeFamilyType extends AbstractType
 {
-    /** @var FamilyRepositoryInterface */
-    protected $familyRepository;
+    /** @var RouterInterface */
+    protected $router;
 
     /**
-     * @param RouterInterface           $router
-     * @param FamilyRepositoryInterface $familyRepository
+     * @param RouterInterface $router
      */
-    public function __construct(RouterInterface $router, FamilyRepositoryInterface $familyRepository)
+    public function __construct(RouterInterface $router)
     {
         $this->router = $router;
-        $this->familyRepository = $familyRepository;
     }
 
     /**
@@ -38,7 +35,7 @@ class ChangeFamilyType extends AbstractType
      */
     public function getName()
     {
-        return 'change_family_type';
+        return 'select_family_type';
     }
 
     /**
@@ -65,27 +62,27 @@ class ChangeFamilyType extends AbstractType
         if ($options['multiple']) {
             $view->vars['attr']['data-multiple'] = 'multiple';
         }
-        $view->vars['attr']['data-choices'] = json_encode($this->normalizeFamily($form->getData()));
+        $view->vars['attr']['data-choices'] = json_encode(
+            $this->normalizeFamily($options['repository'], $form->getData())
+        );
     }
 
     /**
      * Normalizes families for the select2
      *
-     * @param $familyCodes
-     *
+     * @param FamilyRepositoryInterface $familyRepository
+     * @param string                    $familyCodes
      * @return array
      */
-    protected function normalizeFamily($familyCodes)
+    protected function normalizeFamily(FamilyRepositoryInterface $familyRepository, $familyCodes)
     {
         $familyCodes = explode(',', $familyCodes);
 
         $result = [];
-        foreach ($familyCodes as $familyCode) {
-            $family = $this->familyRepository->findOneByIdentifier($familyCode);
-            if ($family instanceof FamilyInterface) {
-                $familyLabel = $family->getLabel();
-                $result[] = ['id' => $familyCode, 'text' => $familyLabel];
-            }
+        $families = $familyRepository->findBy(['code' => $familyCodes]);
+        foreach ($families as $family) {
+            $familyLabel = $family->getLabel();
+            $result[] = ['id' => $family->getCode(), 'text' => $familyLabel];
         }
 
         return $result;
