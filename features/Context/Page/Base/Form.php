@@ -230,7 +230,7 @@ class Form extends Base
             }
 
             return parent::findField($name);
-        }, sprintf('Counld not find field "%s"', $name));
+        }, sprintf('Could not find field "%s"', $name));
     }
 
     /**

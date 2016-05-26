@@ -15,4 +15,18 @@ class Edit extends Form
 {
     /** @var string */
     protected $path = '/user/profile/edit';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($session, $pageFactory, $parameters = [])
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+        $this->elements = array_merge(
+            [
+                'Locale field' => ['css' => 'pim_user_user_form[uiLocale]'],
+            ],
+            $this->elements
+        );
+    }
 }

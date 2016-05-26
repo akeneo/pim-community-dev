@@ -17,4 +17,19 @@ class Index extends Form
      * @var string
      */
     protected $path = '/system';
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($session, $pageFactory, $parameters = [])
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            [
+                'Locale field' => ['css' => 'system-locale'],
+            ],
+            $this->elements
+        );
+    }
 }
