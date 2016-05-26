@@ -659,12 +659,16 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @param string $filterName
+     * @param string $operator
      * @param string $value
      *
-     * @Then /^I filter by "(.*)" with operator "(.*)" and value "(.*)"$/
+     * @Then /^I filter by "(.*)" with(?: operator "(.*)" and) value "(.*)"$/
      */
     public function iFilterBy($filterName, $operator, $value)
     {
+        if ('' === $operator) {
+            $operator = 'equals';
+        }
         $this->datagrid->filterBy($filterName, $operator, $value);
         $this->wait();
     }
