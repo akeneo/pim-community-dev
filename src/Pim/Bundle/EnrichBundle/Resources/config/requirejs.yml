@@ -14,7 +14,6 @@ config:
 
     map:
         '*':
-            pim/remover/variant-group: pim/remover/base
             pim/saver/variant-group:   pim/saver/base
 
     config:
@@ -169,12 +168,14 @@ config:
         pim/variant-group-fetcher:          pimenrich/js/fetcher/variant-group-fetcher
 
         # Remover
-        pim/remover/base:    pimenrich/js/remover/base-remover
-        pim/remover/product: pimenrich/js/remover/product-remover
+        pim/remover/base:          pimenrich/js/remover/base-remover
+        pim/remover/product:       pimenrich/js/remover/product-remover
+        pim/remover/variant-group: pimenrich/js/remover/variant-group-remover
 
         # Saver
-        pim/saver/base:    pimenrich/js/saver/base-saver
-        pim/saver/product: pimenrich/js/saver/product-saver
+        pim/saver/base:          pimenrich/js/saver/base-saver
+        pim/saver/product:       pimenrich/js/saver/product-saver
+        pim/saver/variant-group: pimenrich/js/saver/variant-group-saver
 
         # Generator
         pim/media-url-generator:            pimenrich/js/generator/media-url-generator
