@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
 use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -179,7 +180,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      */
     protected function saveAssociatedProducts(GroupInterface $group)
     {
-        $productInGroup   = $group->getProducts();
+        $productInGroup     = $group->getProducts();
         $productsToUpdate   = $productInGroup->toArray();
         $productToUpdateIds = array_map(function ($product) {
             return $product->getId();
@@ -187,7 +188,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         if (null !== $group->getId()) {
             $pqb = $this->productQueryBuilderFactory->create();
-            $pqb->addFilter('groups.id', 'IN', [$group->getId()]);
+            $pqb->addFilter('groups.id', Operators::IN_LIST, [$group->getId()]);
             $oldProducts = $pqb->execute();
             foreach ($oldProducts as $oldProduct) {
                 if (!in_array($oldProduct->getId(), $productToUpdateIds)) {

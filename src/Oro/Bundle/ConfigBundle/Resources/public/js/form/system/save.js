@@ -35,7 +35,7 @@ define([
              * {@inheritdoc}
              */
             save: function () {
-                this.getRoot().trigger('pim_enrich:form:entity:pre_save');
+                this.getRoot().trigger('pim_enrich:form:entity:pre_save', this.getFormData());
                 this.showLoadingMask();
 
                 $.ajax({
