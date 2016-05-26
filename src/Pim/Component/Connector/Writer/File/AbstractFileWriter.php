@@ -13,6 +13,12 @@ use Symfony\Component\Filesystem\Filesystem;
  * Abstract file writer to handle file naming and configuration-related logic.
  * write() method must be implemented by children.
  *
+ * All the writers should output to files that are named with the job code.
+ * Like "csv_family_export" or "xlsx_product_export" for instance.
+ *
+ * Some writers may output to several files in case of need, like "xlsx_product_export_1",
+ * "xlsx_product_export"_2" etc..
+ *
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -80,17 +86,10 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     }
 
     /**
-     * TODO: what to do about that
-     *
      * @return string
      */
     protected function getFilename()
     {
-        if (null !== $this->getPath()) {
-            return basename($this->getPath());
-        }
-
-        return null;
+        return $this->stepExecution->getJobExecution()->getJobInstance()->getCode();
     }
-
 }
