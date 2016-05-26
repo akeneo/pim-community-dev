@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft;
 
-use PimEnterprise\Bundle\CatalogBundle\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
  * Extends ChoiceFilter in order to use a different operator that check an attribute code exists in the values

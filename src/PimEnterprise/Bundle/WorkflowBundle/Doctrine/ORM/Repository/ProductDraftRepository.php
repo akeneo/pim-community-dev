@@ -13,11 +13,11 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\CatalogBundle\Query\Filter\Operators;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

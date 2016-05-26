@@ -14,11 +14,11 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ORM\AbstractQuery;
-use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\CatalogBundle\Query\Filter\Operators;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
