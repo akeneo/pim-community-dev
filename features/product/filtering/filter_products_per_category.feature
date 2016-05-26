@@ -30,6 +30,7 @@ Feature: Filter products by category
       | filter   | value    | result     |
       | category | men_2015 | blue-jeans |
 
+  @jira https://akeneo.atlassian.net/browse/PIM-5726
   Scenario: Successfully filter products by category when hiding the category sidebar
     Given I am on the products page
     When I select the "2015 collection" tree
