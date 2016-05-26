@@ -16,30 +16,30 @@ Feature: Variant group creation
     And I fill in the following information in the popin:
       | Code | MUG   |
       | Axis | Color |
-    And I save the variant group
+    And I press the "Save" button
     Then I am on the variant groups page
     And I should see group MUG
 
   Scenario: Fail to create a variant group with an empty or invalid code
     Given I fill in the following information in the popin:
       | Axis | Size |
-    And I save the variant group
+    And I press the "Save" button
     Then I should see validation error "This value should not be blank."
     When I fill in the following information in the popin:
       | Code | =( |
-    And I save the variant group
+    And I press the "Save" button
     Then I should see validation error "Group code may contain only letters, numbers and underscores."
 
   Scenario: Fail to create a variant group with an already used code
     Given I fill in the following information in the popin:
       | Code | caterpillar_boots |
-    And I save the variant group
+    And I press the "Save" button
     Then I should see validation error "This value is already used."
 
   Scenario: Fail to create a variant group without an axis
     Given I fill in the following information in the popin:
       | Code | MUG |
-    And I save the variant group
+    And I press the "Save" button
     Then I should see "Variant group \"MUG\" must be defined with at least one axis"
 
   Scenario: Successfully create a variant group and check history
@@ -48,7 +48,7 @@ Feature: Variant group creation
     And I fill in the following information in the popin:
       | Code | MUG   |
       | Axis | Color |
-    And I save the variant group
+    And I press the "Save" button
     And I visit the "History" tab
     And I should see history:
       | version | author                          | property | value |

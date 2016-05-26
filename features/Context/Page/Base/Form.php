@@ -84,6 +84,10 @@ class Form extends Base
                 $tabs = $this->find('css', $this->elements['Form tabs']['css']);
             }
 
+            if (null === $tabs) {
+                return false;
+            }
+
             $tabDom = $tabs->findLink($tab);
             $tabDom->click();
 
