@@ -77,7 +77,7 @@ Feature: Add products to a variant group
     Then the grid should contain 3 elements
     And I should see products sandal-white-37
     And I check the row "sandal-white-37"
-    And I press the "Save" button
+    And I save the variant group
     Then the row "sandal-white-37" should be checked
     When I edit the "sandal-white-37" product
     And I open the history

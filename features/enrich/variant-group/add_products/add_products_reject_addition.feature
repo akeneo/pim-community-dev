@@ -35,8 +35,8 @@ Feature: Add products to a variant group
     And I check the row "sandal-white-38"
     And I check the row "sandal-white-39"
     And I save the variant group
-    Then I should see "Products: 3"
+    Then I should see the text "Products: 3"
     And I check the row "duplicate-sandal"
     And I save the variant group
-    Then I should see "Products: 3"
+    Then I should see the text "Products: 3"
     And the row "duplicate-sandal" should be checked

@@ -14,7 +14,7 @@ Feature: Edit a variant group
     Then the variant group property "Code" should be disabled
     And the variant group property "Axis" should be disabled
     When I fill in the variant group property "English (United States)" with "My boots"
-    And I press the "Save" button
+    And I save the variant group
     And I reload the page
     Then I should see "My boots"
 
@@ -43,8 +43,8 @@ Feature: Edit a variant group
     And I visit the "Attributes" tab
     When I add available attributes Description
     And I visit the "Products" tab
-    And I press the "Save" button
+    And I save the variant group
     And I should see the text "89%"
     And I check the row "sneakers"
-    And I press the "Save" button
+    And I save the variant group
     Then I should see the text "78%"
