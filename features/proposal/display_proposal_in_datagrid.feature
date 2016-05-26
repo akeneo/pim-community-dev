@@ -18,7 +18,8 @@ Feature: Display proposals in datagrid
       | field | value | tab       |
       | Price | EUR   | Marketing |
       | Price | 5 USD | Marketing |
-    When I am logged in as "Julia"
+    When I logout
+    And I am logged in as "Julia"
     And I edit the "my-jacket" product
     And I visit the "Proposals" tab
     Then I should see the following proposals:
@@ -30,7 +31,8 @@ Feature: Display proposals in datagrid
     And  Mary proposed the following change to "my-jacket":
       | field | value  | tab       |
       | Price | 5 USD  | Marketing |
-    When I am logged in as "Julia"
+    When I logout
+    And I am logged in as "Julia"
     And I edit the "my-jacket" product
     And I visit the "Proposals" tab
     Then I should see the following proposals:
