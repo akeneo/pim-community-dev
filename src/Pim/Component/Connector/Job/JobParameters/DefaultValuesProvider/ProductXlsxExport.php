@@ -40,6 +40,7 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $parameters['channel'] = null;
+        $parameters['locales'] = [];
         $parameters['enabled'] = 'enabled';
         $parameters['updated'] = 'all';
         $parameters['linesPerFile'] = 10000;

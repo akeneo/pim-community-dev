@@ -1,6 +1,7 @@
 parameters:
     pim_import_export.form.type.job_instance.class:   Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
     pim_import_export.form.type.job_parameters.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParametersType
+    pim_import_export.form.type.product_export.locale_choice.class: Pim\Bundle\ImportExportBundle\Form\Type\ProductExport\LocaleChoiceType
 
 services:
     pim_import_export.form.type.job_instance:
@@ -22,3 +23,10 @@ services:
             - '%akeneo_batch.job.job_parameters.class%'
         tags:
             - { name: form.type, alias: pim_import_export_job_parameters }
+
+    pim_import_export.form.type.product_export.locale_choice:
+        class: '%pim_import_export.form.type.product_export.locale_choice.class%'
+        arguments:
+            - '@pim_catalog.repository.locale'
+        tags:
+            - { name: form.type, alias: pim_import_export_product_export_locale_choice }

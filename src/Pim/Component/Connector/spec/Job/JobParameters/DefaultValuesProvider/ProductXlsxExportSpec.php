@@ -28,6 +28,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
                 'decimalSeparator' => ".",
                 'dateFormat'       => "yyyy-MM-dd",
                 'channel'          => null,
+                'locales'          => [],
                 'enabled'          => "enabled",
                 'updated'          => "all",
                 'linesPerFile'     => 10000

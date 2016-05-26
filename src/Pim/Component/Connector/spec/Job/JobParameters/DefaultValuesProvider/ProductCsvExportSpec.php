@@ -28,6 +28,7 @@ class ProductCsvExportSpec extends ObjectBehavior
                 'decimalSeparator' => ".",
                 'dateFormat'       => "yyyy-MM-dd",
                 'channel'          => null,
+                'locales'          => [],
                 'enabled'          => "enabled",
                 'updated'          => "all",
             ]

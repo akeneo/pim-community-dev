@@ -23,6 +23,8 @@ jobs:
         type:      export
         configuration:
             channel:    mobile
+            locales:
+                - en_US
             delimiter:  ;
             enclosure:  '"'
             withHeader: true

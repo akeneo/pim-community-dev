@@ -29,6 +29,10 @@ class JobContext extends PimContext
                 $value = 'yes' === $value;
             }
 
+            if ($this->isJobParameterArray($property)) {
+                $value = $this->getMainContext()->listToArray($value);
+            }
+
             $configuration[$property] = $value;
         }
 
@@ -169,6 +173,25 @@ class JobContext extends PimContext
     /**
      * @param string $code
      *
+     * @throws \Exception
+     *
+     * @return array
+     */
+    public function getAllJobInstancePaths($code)
+    {
+        $archivesCount = count($this->getJobInstanceArchives($code));
+        $filePaths = [];
+
+        for ($i = 1; $i < $archivesCount + 1; $i++) {
+            $filePaths[] = $this->getJobInstancePath($code, $i);
+        }
+
+        return $filePaths;
+    }
+
+    /**
+     * @param string $code
+     *
      * @return array
      */
     protected function getJobInstanceArchives($code)
@@ -184,5 +207,15 @@ class JobContext extends PimContext
         $archives = $archiver->getArchives($jobExecution);
 
         return $archives;
+    }
+
+    /**
+     * @param string $property
+     *
+     * @return bool
+     */
+    protected function isJobParameterArray($property)
+    {
+        return in_array($property, ['locales']);
     }
 }
