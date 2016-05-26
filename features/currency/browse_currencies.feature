@@ -19,16 +19,16 @@ Feature: Browse currencies
       | activated |          | yes   | USD and EUR |
 
   Scenario: Successfully activate a currency
-    Given I filter by "Code" with value "GBP"
+    Given I filter by "code" with operator "is equal to" and value "GBP"
     And I activate the GBP currency
-    When I hide the filter "Code"
-    And I filter by "Activated" with value "yes"
+    When I hide the filter "code"
+    And I filter by "activated" with operator "equals" and value "yes"
     Then the grid should contain 3 elements
     Then I should see currencies GBP, USD and EUR
 
   Scenario: Successfully deactivate a currency
     Given I activate the AED currency
-    Given I filter by "Activated" with value "yes"
+    Given I filter by "activated" with operator "equals" and value "yes"
     Then the grid should contain 3 elements
     And I should see currencies USD, AED and EUR
     When I deactivate the AED currency
@@ -37,7 +37,7 @@ Feature: Browse currencies
 
   @jira https://akeneo.atlassian.net/browse/PIM-4488
   Scenario: Cannot deactivate a currency linked to a channel
-    Given I filter by "Activated" with value "yes"
+    Given I filter by "activated" with operator "equals" and value "yes"
     Then the grid should contain 2 elements
     And I should see currencies USD and EUR
     When I deactivate the USD currency

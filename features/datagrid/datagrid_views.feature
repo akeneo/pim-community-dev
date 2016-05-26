@@ -18,7 +18,7 @@ Feature: Datagrid views
     Then I should see the text "Views Default view"
 
   Scenario: Successfully create a new view
-    Given I filter by "Family" with value "Sneakers"
+    Given I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
       | label | Sneakers only |
     Then I should be on the products page
@@ -28,14 +28,14 @@ Feature: Datagrid views
     But I should not see product black-boots
 
   Scenario: Successfully apply a view
-    Given I filter by "Family" with value "Boots"
+    Given I filter by "family" with operator "in list" and value "Boots"
     Then I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
     When I apply the "Default view" view
     Then I should see products black-boots, purple-sneakers and black-sneakers
 
   Scenario: Successfully update a view
-    Given I filter by "Family" with value "Boots"
+    Given I filter by "family" with operator "in list" and value "Boots"
     And I create the view:
       | label | Some shoes |
     Then I should be on the products page
@@ -43,9 +43,9 @@ Feature: Datagrid views
     And I should see the text "Views Some shoes"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
-    When I hide the filter "Family"
-    And I show the filter "Family"
-    And I filter by "Family" with value "Sneakers"
+    When I hide the filter "family"
+    And I show the filter "family"
+    And I filter by "family" with operator "in list" and value "Sneakers"
     And I update the view
     And I apply the "Some shoes" view
     Then I should be on the products page
@@ -54,7 +54,7 @@ Feature: Datagrid views
     But I should not see product black-boots
 
   Scenario: Successfully delete a view
-    Given I filter by "Family" with value "Boots"
+    Given I filter by "family" with operator "in list" and value "Boots"
     And I create the view:
       | label | Boots only |
     Then I should be on the products page
@@ -80,7 +80,7 @@ Feature: Datagrid views
     Then the page size should be 50
 
   Scenario: Successfully choose my default view
-    Given I filter by "Family" with value "Sneakers"
+    Given I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
       | label | Sneakers only |
     Then I should be on the products page
@@ -108,7 +108,7 @@ Feature: Datagrid views
     Then I should see products black-boots, purple-sneakers and black-sneakers
 
   Scenario: Successfully remove my default view
-    Given I filter by "Family" with value "Sneakers"
+    Given I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
       | label | Sneakers only |
     Then I should be on the products page

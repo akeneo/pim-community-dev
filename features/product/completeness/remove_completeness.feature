@@ -29,14 +29,14 @@ Feature: Display the completeness of a product
     And I save the family
     And I am on the products page
     And I switch the locale to "en_US"
-    And I filter by "Channel" with value "Mobile"
+    When I switch the scope to "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | -     |
     Then the row "sandals" should contain:
      | column   | value |
      | complete | 40%   |
-    And I filter by "Channel" with value "Tablet"
+    When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | -     |
@@ -44,14 +44,14 @@ Feature: Display the completeness of a product
      | column   | value |
      | complete | 25%   |
     And I switch the locale to "fr_FR"
-    And I filter by "Channel" with value "Mobile"
+    When I switch the scope to "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | -     |
     Then the row "sandals" should contain:
      | column   | value |
      | complete | 60%   |
-    And I filter by "Channel" with value "Tablet"
+    When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | -     |
@@ -84,14 +84,14 @@ Feature: Display the completeness of a product
     And I press the "Save" button
     And I am on the products page
     And I switch the locale to "en_US"
-    And I filter by "Channel" with value "Mobile"
+    When I switch the scope to "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
     Then the row "sandals" should contain:
      | column   | value |
      | complete | 40%   |
-    And I filter by "Channel" with value "Tablet"
+    When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | -     |
@@ -99,14 +99,14 @@ Feature: Display the completeness of a product
      | column   | value |
      | complete | -     |
     And I switch the locale to "fr_FR"
-    And I filter by "Channel" with value "Mobile"
+    When I switch the scope to "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
     Then the row "sandals" should contain:
      | column   | value |
      | complete | 60%   |
-    And I filter by "Channel" with value "Tablet"
+    When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 78%   |
