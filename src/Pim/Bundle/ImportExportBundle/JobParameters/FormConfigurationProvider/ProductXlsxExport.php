@@ -9,6 +9,8 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
+use Pim\Bundle\ImportExportBundle\Form\DataTransformer\BooleanToPBQTransformer;
+use Pim\Bundle\ImportExportBundle\Form\DataTransformer\UpdatedToPBQTransformer;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -105,36 +107,6 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
                     'attr'     => ['data-tab' => 'content']
                 ]
             ],
-            'enabled' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => [
-                        'enabled'  => 'pim_connector.export.status.choice.enabled',
-                        'disabled' => 'pim_connector.export.status.choice.disabled',
-                        'all'      => 'pim_connector.export.status.choice.all'
-                    ],
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_connector.export.status.label',
-                    'help'     => 'pim_connector.export.status.help',
-                    'attr'     => ['data-tab' => 'content']
-                ]
-            ],
-            'updated' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => [
-                        'all'         => 'pim_connector.export.updated.choice.all',
-                        'last_export' => 'pim_connector.export.updated.choice.last_export'
-                    ],
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_connector.export.updated.label',
-                    'help'     => 'pim_connector.export.updated.help',
-                    'info'     => $this->getLastExecution($jobInstance),
-                    'attr'     => ['data-tab' => 'content']
-                ],
-            ],
             'decimalSeparator' => [
                 'type'    => 'choice',
                 'options' => [
@@ -161,6 +133,40 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
                     'label' => 'pim_connector.export.lines_per_files.label',
                     'help'  => 'pim_connector.export.lines_per_files.help',
                 ]
+            ],
+            'filters' => [
+                'enabled' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices'  => [
+                            'enabled'  => 'pim_connector.export.status.choice.enabled',
+                            'disabled' => 'pim_connector.export.status.choice.disabled',
+                            'all'      => 'pim_connector.export.status.choice.all'
+                        ],
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_connector.export.status.label',
+                        'help'     => 'pim_connector.export.status.help',
+                        'attr'     => ['data-tab' => 'content']
+                    ],
+                    'model_transformer' => new BooleanToPBQTransformer(),
+                ],
+                'updated' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices'  => [
+                            'all'         => 'pim_connector.export.updated.choice.all',
+                            'last_export' => 'pim_connector.export.updated.choice.last_export'
+                        ],
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_connector.export.updated.label',
+                        'help'     => 'pim_connector.export.updated.help',
+                        'info'     => $this->getLastExecution($jobInstance),
+                        'attr'     => ['data-tab' => 'content']
+                    ],
+                    'model_transformer' => new UpdatedToPBQTransformer(),
+                ],
             ],
         ];
         $formOptions = array_merge($formOptions, $this->simpleXlsxExport->getFormConfiguration($jobInstance));

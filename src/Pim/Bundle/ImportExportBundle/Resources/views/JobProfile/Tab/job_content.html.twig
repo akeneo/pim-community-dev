@@ -1,8 +1,10 @@
 <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane buffer-top">
     {% set filtersSettings %}
         {% for field in form.configuration %}
-            {% if field.vars.attr['data-tab'] is defined and 'content' == field.vars.attr['data-tab'] %}
+            {% if (field.vars.attr['data-tab'] is defined and 'content' == field.vars.attr['data-tab']) %}
                 {{ form_row(field) }}
+            {% elseif 'filters' == field.vars.name %}
+                {{ form_widget(field) }}
             {% endif %}
         {% endfor %}
     {% endset %}

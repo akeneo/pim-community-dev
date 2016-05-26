@@ -88,25 +88,17 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     {
         $channel = $this->getConfiguredChannel();
         $parameters = $this->stepExecution->getJobParameters();
-        $enabled = $parameters->get('enabled');
-        $updated = $parameters->get('updated');
+        $filters = $parameters->get('filters');
+        $pqb = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
 
-        $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
-        $filters = $this->getFilters(
-            $channel,
-            $this->rawToStandardProductStatus($enabled),
-            $this->rawToStandardProductUpdated($updated)
-        );
-
-        foreach ($filters as $filter) {
+        foreach ($filters as $field => $filter) {
             $pqb->addFilter(
-                $filter['field'],
+                $field,
                 $filter['operator'],
                 $filter['value'],
                 $filter['context']
             );
         }
-
 
         if ($this->generateCompleteness) {
             $this->completenessManager->generateMissingForChannel($channel);
@@ -166,12 +158,11 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * Return the filters to be applied on the PQB instance.
      *
      * @param ChannelInterface $channel
-     * @param bool             $status
      * @param string           $updated
      *
      * @return array
      */
-    protected function getFilters(ChannelInterface $channel, $status, $updated)
+    protected function getFilters(ChannelInterface $channel, $updated)
     {
         $filters = [
             [
@@ -188,15 +179,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
             ]
         ];
 
-        if (null !== $status) {
-            $filters[] = [
-                'field'    => 'enabled',
-                'operator' => Operators::EQUALS,
-                'value'    => $status,
-                'context'  => []
-            ];
-        }
-
         if (null !== $updated) {
             $filters[] = [
                 'field'    => 'updated',
@@ -207,28 +189,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         }
 
         return $filters;
-    }
-
-    /**
-     * Convert the UI product status to the standard product status
-     *
-     * @param string $rawStatus
-     * @return bool|null
-     */
-    protected function rawToStandardProductStatus($rawStatus)
-    {
-        switch ($rawStatus) {
-            case 'enabled':
-                $status = true;
-                break;
-            case 'disabled':
-                $status = false;
-                break;
-            default:
-                $status = null;
-        }
-
-        return $status;
     }
 
     /**

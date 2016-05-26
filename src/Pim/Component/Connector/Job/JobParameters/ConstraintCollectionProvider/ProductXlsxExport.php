@@ -47,14 +47,21 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
             new NotBlank(['groups' => 'Execution']),
             new Channel()
         ];
-        $constraintFields['enabled'] = new NotBlank(['groups' => 'Execution']);
-        $constraintFields['updated'] = new NotBlank(['groups' => 'Execution']);
         $constraintFields['linesPerFile'] = [
             new NotBlank(),
             new GreaterThan(1)
         ];
 
-        return new Collection(['fields' => $constraintFields]);
+        $constraintFields['filters'] = new Collection(
+            [
+                'fields' => [
+                    'enabled' => new NotBlank(['groups' => 'Execution']),
+                    'updated' => new NotBlank(['groups' => 'Execution']),
+                ]
+            ]
+        );
+
+        return new Collection(['fields' => $constraintFields, 'allowExtraFields' => true]);
     }
 
     /**

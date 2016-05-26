@@ -7,7 +7,7 @@
 
     {% set globalSettings %}
         {% for field in form.configuration %}
-            {% if field.vars.attr['data-tab'] is not defined %}
+            {% if field.vars.attr['data-tab'] is not defined and 'filters' != field.vars.name %}
                 {{ form_row(field) }}
             {% endif %}
         {% endfor %}
