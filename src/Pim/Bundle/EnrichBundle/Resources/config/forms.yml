@@ -80,8 +80,8 @@ services:
         tags:
             - { name: form.type, alias: pim_async_select }
 
-    pim_enrich.form.type.export_change_family:
-        class: Pim\Bundle\EnrichBundle\Form\Type\ChangeFamilyType
+    pim_enrich.form.type.export_select_family:
+        class: Pim\Bundle\EnrichBundle\Form\Type\SelectFamilyType
         arguments:
             - '@router'
         tags:

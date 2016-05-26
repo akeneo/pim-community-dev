@@ -17,7 +17,7 @@ use Symfony\Component\Routing\RouterInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChangeFamilyType extends AbstractType
+class SelectFamilyType extends AbstractType
 {
     /** @var RouterInterface */
     protected $router;
