@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
+use Pim\Bundle\CatalogBundle\ProductQueryUtility;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;

@@ -6,10 +6,11 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\ProductQueryUtility;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
@@ -153,9 +154,12 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
                 $column = $product->getFamily()->getAttributeAsLabel()->getCode();
             }
 
-            $attribute = $product->getAttributeByCode($column);
+            $attribute = $this->getProductAttributeByCode($product, $column);
             if (null !== $attribute) {
-                if (AttributeTypes::PRICE_COLLECTION === $attribute->getAttributeType()) {
+                if (in_array(
+                    $attribute->getAttributeType(),
+                    [AttributeTypes::PRICE_COLLECTION, AttributeTypes::METRIC]
+                )) {
                     foreach ($normalizedProduct as $key => $value) {
                         if ($column === $this->fieldSplitter->splitFieldName($key)[0]) {
                             $filteredColumnList[] = $key;

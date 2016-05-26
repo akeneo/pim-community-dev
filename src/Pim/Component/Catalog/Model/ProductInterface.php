@@ -227,15 +227,6 @@ interface ProductInterface extends
     public function getAttributes();
 
     /**
-     * Get the attributes of the product for an attribute code
-     *
-     * @param string $attributeCode
-     *
-     * @return AttributeInterface
-     */
-    public function getAttributeByCode($attributeCode);
-
-    /**
      * Get whether or not an attribute is part of a product
      *
      * @param AttributeInterface $attribute
