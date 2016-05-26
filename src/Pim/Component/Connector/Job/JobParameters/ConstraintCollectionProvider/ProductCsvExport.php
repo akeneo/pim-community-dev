@@ -25,7 +25,7 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
 
     /**
      * @param ConstraintCollectionProviderInterface $simpleCsv
-     * @param array                $supportedJobNames
+     * @param array                                 $supportedJobNames
      */
     public function __construct(ConstraintCollectionProviderInterface $simpleCsv, array $supportedJobNames)
     {
@@ -52,6 +52,7 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
             'groups'  => 'Execution',
             'message' => 'pim_connector.export.locales.validation.not_blank'
         ]);
+        $constraintFields['families'] = [];
 
         return new Collection(['fields' => $constraintFields]);
     }

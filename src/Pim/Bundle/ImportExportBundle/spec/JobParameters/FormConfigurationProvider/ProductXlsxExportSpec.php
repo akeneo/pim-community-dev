@@ -12,6 +12,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class ProductXlsxExportSpec extends ObjectBehavior
@@ -19,6 +20,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
     function let(
         FormConfigurationProviderInterface $simpleCsvExport,
         ChannelRepositoryInterface $channelRepository,
+        FamilyRepositoryInterface $familyRepository,
         JobRepositoryInterface $jobRepository,
         TranslatorInterface $translator,
         PresenterInterface $datePresenter,
@@ -28,6 +30,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
         $this->beConstructedWith(
             $simpleCsvExport,
             $channelRepository,
+            $familyRepository,
             $jobRepository,
             $translator,
             $datePresenter,
@@ -55,6 +58,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
     function it_gets_form_configuration(
         $simpleCsvExport,
         $channelRepository,
+        $familyRepository,
         $jobRepository,
         $translator,
         $datePresenter,
@@ -104,13 +108,15 @@ class ProductXlsxExportSpec extends ObjectBehavior
 
         $channelRepository->getLabelsIndexedByCode()->willReturn($channelCodes);
 
-        $result = $this->getConfiguration($channelCodes, 'Last export: 15/12/2015 16:00:50') + $baseExport;
+        $result = $this->getConfiguration($channelCodes, 'Last export: 15/12/2015 16:00:50', $familyRepository)
+            + $baseExport;
         $this->getFormConfiguration($jobInstance)->shouldReturn($result);
     }
 
     function it_gets_form_configuration_when_job_has_never_been_exported(
         $simpleCsvExport,
         $channelRepository,
+        $familyRepository,
         $jobRepository,
         $translator,
         $datePresenter,
@@ -138,11 +144,12 @@ class ProductXlsxExportSpec extends ObjectBehavior
 
         $channelRepository->getLabelsIndexedByCode()->willReturn($channelCodes);
 
-        $result = $this->getConfiguration($channelCodes, 'This job has never been exported') + $baseExport;
+        $result = $this->getConfiguration($channelCodes, 'This job has never been exported', $familyRepository)
+            + $baseExport;
         $this->getFormConfiguration($jobInstance)->shouldReturn($result);
     }
 
-    private function getConfiguration($channelCodes, $updatedInfo)
+    private function getConfiguration($channelCodes, $updatedInfo, $familyRepository)
     {
         return [
             'channel' => [
@@ -157,6 +164,21 @@ class ProductXlsxExportSpec extends ObjectBehavior
                 ]
             ],
             'locales' => ['type' => 'pim_import_export_product_export_locale_choice'],
+            'families' => [
+                'type'    => 'select_family_type',
+                'options' => [
+                    'repository' => $familyRepository,
+                    'route' => 'pim_enrich_family_rest_index',
+                    'required' => false,
+                    'multiple' => true,
+                    'label' => 'pim_base_connector.export.families.label',
+                    'help' => 'pim_base_connector.export.families.help',
+                    'attr' => [
+                        'data-tab' => 'content',
+                        'data-placeholder' => 'pim_base_connector.export.families.placeholder'
+                    ]
+                ]
+            ],
             'enabled' => [
                 'type'    => 'choice',
                 'options' => [

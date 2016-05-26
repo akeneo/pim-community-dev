@@ -54,6 +54,10 @@ pim_base_connector:
         dateFormat:
             label: Date format
             help: Determine the format of date fields
+        families:
+            label: Family
+            help: The families you want to export
+            placeholder: Choose a family
     import:
         enabled:
             label: Enable the product

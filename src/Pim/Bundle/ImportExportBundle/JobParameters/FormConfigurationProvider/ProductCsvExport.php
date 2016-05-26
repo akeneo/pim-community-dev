@@ -11,6 +11,7 @@ use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -27,6 +28,9 @@ class ProductCsvExport implements FormConfigurationProviderInterface
 
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
+
+    /** @var FamilyRepositoryInterface */
+    protected $familyRepository;
 
     /** @var JobRepositoryInterface */
     protected $jobRepository;
@@ -58,6 +62,7 @@ class ProductCsvExport implements FormConfigurationProviderInterface
     /**
      * @param FormConfigurationProviderInterface $simpleCsvExport
      * @param ChannelRepositoryInterface         $channelRepository
+     * @param FamilyRepositoryInterface          $familyRepository
      * @param JobRepositoryInterface             $jobRepository
      * @param TranslatorInterface                $translator
      * @param PresenterInterface                 $datePresenter
@@ -69,6 +74,7 @@ class ProductCsvExport implements FormConfigurationProviderInterface
     public function __construct(
         FormConfigurationProviderInterface $simpleCsvExport,
         ChannelRepositoryInterface $channelRepository,
+        FamilyRepositoryInterface $familyRepository,
         JobRepositoryInterface $jobRepository,
         TranslatorInterface $translator,
         PresenterInterface $datePresenter,
@@ -79,6 +85,7 @@ class ProductCsvExport implements FormConfigurationProviderInterface
     ) {
         $this->simpleCsvExport   = $simpleCsvExport;
         $this->channelRepository = $channelRepository;
+        $this->familyRepository  = $familyRepository;
         $this->jobRepository     = $jobRepository;
         $this->translator        = $translator;
         $this->datePresenter     = $datePresenter;
@@ -106,6 +113,21 @@ class ProductCsvExport implements FormConfigurationProviderInterface
                 ]
             ],
             'locales' => ['type' => 'pim_import_export_product_export_locale_choice'],
+            'families' => [
+                'type'    => 'select_family_type',
+                'options' => [
+                    'repository' => $this->familyRepository,
+                    'route' => 'pim_enrich_family_rest_index',
+                    'required' => false,
+                    'multiple' => true,
+                    'label' => 'pim_base_connector.export.families.label',
+                    'help' => 'pim_base_connector.export.families.help',
+                    'attr' => [
+                        'data-tab' => 'content',
+                        'data-placeholder' => 'pim_base_connector.export.families.placeholder'
+                    ]
+                ]
+            ],
             'enabled' => [
                 'type'    => 'choice',
                 'options' => [

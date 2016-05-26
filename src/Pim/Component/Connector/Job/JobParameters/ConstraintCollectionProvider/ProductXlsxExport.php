@@ -59,6 +59,7 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
             new NotBlank(),
             new GreaterThan(1)
         ];
+        $constraintFields['families'] = [];
 
         return new Collection(['fields' => $constraintFields]);
     }

@@ -222,6 +222,7 @@ jobs:
         label:     Demo XLSX product export
         type:      export
         configuration:
+            channel:    mobile
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/product.xlsx

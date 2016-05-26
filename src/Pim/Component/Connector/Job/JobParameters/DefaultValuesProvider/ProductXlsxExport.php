@@ -44,6 +44,7 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
         $parameters['enabled'] = 'enabled';
         $parameters['updated'] = 'all';
         $parameters['linesPerFile'] = 10000;
+        $parameters['families'] = null;
 
         return $parameters;
     }
