@@ -16,7 +16,6 @@ Feature: Display the attribute history
       | Attribute group | Other     |
     And I save the attribute
     And I visit the "Values" tab
-    And I wait for options to load
     And I create the following attribute options:
       | Code        |
       | classic_box |
@@ -27,7 +26,6 @@ Feature: Display the attribute history
       | version | property | value     |
       | 1       | code     | packaging |
     And I visit the "Values" tab
-    And I wait for options to load
     And I create the following attribute options:
       | Code      |
       | collector |
