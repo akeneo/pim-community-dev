@@ -102,7 +102,6 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
         $stepExecution->addWarning(
-            'add_product_value_with_permission_processor',
             'pim_enrich.mass_edit_action.edit_common_attributes.message.error',
             [],
             $product

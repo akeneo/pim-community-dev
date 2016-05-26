@@ -180,8 +180,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
 
         $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(2);
 
-        $stepExecution->addWarning('publish_product_tasklet', Argument::any(), [], $product1)->shouldBeCalledTimes(2);
-        $stepExecution->addWarning('publish_product_tasklet', Argument::any(), [], $product2)->shouldBeCalledTimes(2);
+        $stepExecution->addWarning(Argument::any(), [], $product1)->shouldBeCalledTimes(2);
+        $stepExecution->addWarning(Argument::any(), [], $product2)->shouldBeCalledTimes(2);
 
         $manager->publishAll([])->shouldBeCalled();
 
@@ -238,7 +238,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('mass_published')->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
 
-        $stepExecution->addWarning('publish_product_tasklet', Argument::any(), [], $product2)->shouldBeCalled();
+        $stepExecution->addWarning(Argument::any(), [], $product2)->shouldBeCalled();
 
         $violations->count()->willReturn(0);
 

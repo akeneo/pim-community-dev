@@ -163,7 +163,7 @@ abstract class AbstractProductPublisherTasklet extends AbstractConfigurableStepE
                 $violation->getMessage(),
                 $invalidValue
             );
-            $this->stepExecution->addWarning($this->getName(), $errors, [], $product);
+            $this->stepExecution->addWarning($errors, [], $product);
         }
     }
 }

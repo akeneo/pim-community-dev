@@ -68,7 +68,6 @@ class UpdateProductValueWithPermissionProcessor extends BaseProcessor
             return BaseProcessor::process($product);
         } else {
             $this->stepExecution->addWarning(
-                $this->getName(),
                 'pim_enrich.mass_edit_action.edit_common_attributes.message.error',
                 [],
                 $product

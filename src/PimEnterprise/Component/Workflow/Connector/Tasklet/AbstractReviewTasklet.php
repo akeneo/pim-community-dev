@@ -122,7 +122,6 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     {
         $stepExecution->incrementSummaryInfo('skip');
         $stepExecution->addWarning(
-            $name,
             'pimee_workflow.product_draft.mass_review_action.error.' . $reason,
             $reasonParameters,
             $item

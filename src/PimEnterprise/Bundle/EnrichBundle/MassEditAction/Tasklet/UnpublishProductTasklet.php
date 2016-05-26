@@ -80,7 +80,6 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet
                     $invalidProducts[$index] = $product;
                     $this->stepExecution->incrementSummaryInfo('skipped_products');
                     $this->stepExecution->addWarning(
-                        $this->getName(),
                         'pim_enrich.mass_edit_action.unpublish.message.error',
                         [],
                         $product
