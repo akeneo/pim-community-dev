@@ -36,6 +36,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
         $fields->shouldHaveKey('locales');
         $fields->shouldHaveKey('updated');
         $fields->shouldHaveKey('linesPerFile');
+        $fields->shouldHaveKey('families');
     }
 
     function it_supports_a_job(JobInterface $job)

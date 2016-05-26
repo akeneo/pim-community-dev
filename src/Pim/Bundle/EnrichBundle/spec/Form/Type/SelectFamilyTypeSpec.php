@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\RouterInterface;
 
-class ChangeFamilyTypeSpec extends ObjectBehavior
+class SelectFamilyTypeSpec extends ObjectBehavior
 {
     function let(FormBuilderInterface $builder, RouterInterface $router, FamilyRepositoryInterface $familyRepository)
     {
@@ -19,14 +19,13 @@ class ChangeFamilyTypeSpec extends ObjectBehavior
         $builder->addEventSubscriber(Argument::any())->willReturn($builder);
 
         $this->beConstructedWith(
-            $router,
-            $familyRepository
+            $router
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Form\Type\ChangeFamilyType');
+        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Form\Type\SelectFamilyType');
     }
 
     function it_is_a_form_type()
@@ -36,7 +35,7 @@ class ChangeFamilyTypeSpec extends ObjectBehavior
 
     function it_has_a_name()
     {
-        $this->getName()->shouldReturn('change_family_type');
+        $this->getName()->shouldReturn('select_family_type');
     }
 
     function it_has_a_parent()
@@ -58,13 +57,15 @@ class ChangeFamilyTypeSpec extends ObjectBehavior
         FamilyInterface $familyMugs,
         FamilyInterface $familyWebcams
     ) {
+        $options['repository'] = $familyRepository;
         $options['multiple'] = true;
         $form->getData()->willReturn('mugs,webcams');
-        $familyRepository->findOneByIdentifier('mugs')->shouldBeCalled()->willReturn($familyMugs);
-        $familyRepository->findOneByIdentifier('webcams')->willReturn($familyWebcams);
+        $familyRepository->findBy(["code" => ["mugs", "webcams"]])->willReturn([$familyMugs, $familyWebcams]);
 
         $familyMugs->getLabel()->willReturn('Mugs');
         $familyWebcams->getLabel()->willReturn('Webcams');
+        $familyMugs->getCode()->willReturn('mugs');
+        $familyWebcams->getCode()->willReturn('webcams');
 
         $this->buildView($formView, $form, $options);
     }
