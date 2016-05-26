@@ -8,6 +8,7 @@
 - PIM-5099: The catalog structure can now be exported in XLSX format (families, attributes, attribute options, association types and categories)
 - PIM-5097: The catalog structure can now be imported in XLSX format (families, attributes, attribute options, association types and categories)
 - PIM-5657: It is now possible to add custom tabs within the job profile and edit pages
+- PIM-5427: It is now possible to filter by families for product export
 - PIM-5145: It is now possible to filter product exports by locale
 
 ## Scalability improvements
