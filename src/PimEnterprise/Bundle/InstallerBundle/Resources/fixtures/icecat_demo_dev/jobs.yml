@@ -56,7 +56,11 @@ jobs:
         label:     Demo CSV product export
         type:      export
         configuration:
-            channel:    mobile
+            channel: mobile
+            locales:
+                - en_US
+                - fr_FR
+                - de_DE
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
@@ -67,7 +71,11 @@ jobs:
         label:     Demo published CSV product export
         type:      export
         configuration:
-            channel:    mobile
+            channel: mobile
+            locales:
+                - en_US
+                - fr_FR
+                - de_DE
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
