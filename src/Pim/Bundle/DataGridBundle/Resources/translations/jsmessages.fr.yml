@@ -41,8 +41,8 @@ oro_datagrid.select.visible: Tous les visibles
 oro_datagrid.select.none: Aucun
 pim.grid.ajax_choice_filter.label_empty: est vide
 pim.grid.choice_filter:
-  label_empty: Est vide
-  label_in_list: Dans la liste
+  label_empty: est vide
+  label_in_list: dans la liste
 Available Columns: Colonnes disponibles
 Displayed Columns: Colonnes affichées
 datagrid_view.columns.min_message: Vous devez sélectionner au moins une colonne à afficher
