@@ -1,3 +1,8 @@
+# 1.4.*
+
+## Bug fixes
+- PIM-5820: Fix product value filtering by channel and locale in structured product normalizer
+
 # 1.4.24 (2016-05-10)
 
 ## Improvements
@@ -23,7 +28,6 @@
 - PIM-5725: Fix reference data name of the attribute in case this attribute is not a reference data
 - PIM-5699: Fix 'is equal to' operator in export / import history grid filter
 - PIM-5650: Fix events binding on PEF grid refresh.
-- Fix product value filtering by channel and locales in structured product normalizer
 
 # 1.4.22 (2016-03-23)
 
