@@ -30,12 +30,13 @@ class FQCNResolver
      *
      * @param string $entityType
      *
-     * @throws InvalidArgumentException
-     *
-     * @return string
+     * @return string|null
      */
     public function getFQCN($entityType)
     {
-        return $this->container->getParameter(sprintf('pim_catalog.entity.%s.class', $entityType));
+        return $this->container->getParameter(
+            sprintf('pim_catalog.entity.%s.class', $entityType),
+            ContainerInterface::NULL_ON_INVALID_REFERENCE
+        );
     }
 }

@@ -1523,15 +1523,13 @@ class WebUser extends RawMinkContext
      */
     public function theFamilyOfProductShouldBe($sku, $expectedFamily = '')
     {
-        $this->clearUOW();
-        $product = $this->getFixturesContext()->getProduct($sku);
+        $this->spin(function () use ($sku, $expectedFamily) {
+            $this->clearUOW();
+            $product      = $this->getFixturesContext()->getProduct($sku);
+            $actualFamily = $product->getFamily() ? $product->getFamily()->getCode() : '';
 
-        $actualFamily = $product->getFamily() ? $product->getFamily()->getCode() : '';
-        assertEquals(
-            $expectedFamily,
-            $actualFamily,
-            sprintf('Expecting the family of "%s" to be "%s", not "%s".', $sku, $expectedFamily, $actualFamily)
-        );
+            return $expectedFamily === $actualFamily;
+        }, sprintf('Expecting the family of "%s" to be "%s".', $sku, $expectedFamily));
     }
 
     /**

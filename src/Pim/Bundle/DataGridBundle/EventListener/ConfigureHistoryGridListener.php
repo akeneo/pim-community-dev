@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+use Pim\Bundle\CatalogBundle\Resolver\FQCNResolver;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -33,11 +34,18 @@ class ConfigureHistoryGridListener
     protected $requestParams;
 
     /**
-     * @param RequestParameters $requestParams
+     * @var FQCNResolver
      */
-    public function __construct(RequestParameters $requestParams)
+    protected $FQCNResolver;
+
+    /**
+     * @param RequestParameters $requestParams
+     * @param FQCNResolver      $FQCNResolver
+     */
+    public function __construct(RequestParameters $requestParams, FQCNResolver $FQCNResolver)
     {
         $this->requestParams = $requestParams;
+        $this->FQCNResolver  = $FQCNResolver;
     }
 
     /**
@@ -45,13 +53,15 @@ class ConfigureHistoryGridListener
      */
     public function onBuildBefore(BuildBefore $event)
     {
-        $config = $event->getConfig();
+        $config               = $event->getConfig();
+        $objectClassParameter = $this->getObjectClassParameter();
+        $objectClass          = $this->getObjectClass($objectClassParameter);
 
         $repositoryParameters = [
             'objectClass' => str_replace(
                 '_',
                 '\\',
-                $this->requestParams->get(self::GRID_PARAM_CLASS, '')
+                $objectClass
             ),
             'objectId' => $this->requestParams->get(self::GRID_PARAM_OBJECT_ID, 0),
         ];
@@ -60,5 +70,32 @@ class ConfigureHistoryGridListener
             sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::REPOSITORY_PARAMETERS_KEY),
             $repositoryParameters
         );
+    }
+
+    /**
+     * Get the object class parameter from the request.
+     * It can be an empty string, a entity type (eg product, group, attribute) or an FQCN
+     *
+     * @return string
+     */
+    protected function getObjectClassParameter()
+    {
+        return $this->requestParams->get(self::GRID_PARAM_CLASS, '');
+    }
+
+    /**
+     * Convert the object class parameter to a FQCN
+     *
+     * @param string $objectClassParameter
+     *
+     * @return string
+     */
+    protected function getObjectClass($objectClassParameter)
+    {
+        if ('' === $objectClassParameter || null === $this->FQCNResolver->getFQCN($objectClassParameter)) {
+            return $objectClassParameter;
+        }
+
+        return $this->FQCNResolver->getFQCN($objectClassParameter);
     }
 }

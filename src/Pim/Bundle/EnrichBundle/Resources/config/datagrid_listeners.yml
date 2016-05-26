@@ -127,6 +127,7 @@ services:
         class: %pim_datagrid.event_listener.configure_history_grid_listener.class%
         arguments:
             - '@oro_datagrid.datagrid.request_params'
+            - '@pim_catalog.resolver.fqcn'
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.history-grid, method: onBuildBefore }
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-history-grid, method: onBuildBefore }

@@ -193,7 +193,7 @@ extensions:
         targetZone: container
         position: 110
         config:
-            class: 'Pim\Bundle\CatalogBundle\Entity\Group'
+            class: 'group'
             title: 'pim_enrich.form.variant_group.tab.history.title'
 
     pim-variant-group-edit-form-products:

@@ -87,7 +87,7 @@ class VariantGroupEditDataFilter implements CollectionFilterInterface
     /**
      * Return whether the current user is allowed to update the given modification $type
      *
-     * @param string           $type
+     * @param string $type
      *
      * @return bool
      */

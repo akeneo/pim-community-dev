@@ -36,6 +36,8 @@ class VariantGroupViolationNormalizer implements NormalizerInterface
     public function normalize($violations, $format = null, array $context = [])
     {
         $normalizedViolations = [];
+        $accessor             = PropertyAccess::createPropertyAccessor();
+
         foreach ($violations as $violation) {
             $path = $violation->getPropertyPath();
             if (0 === strpos($path, 'translations')) {
@@ -43,7 +45,6 @@ class VariantGroupViolationNormalizer implements NormalizerInterface
 
                 $propertyPath = str_replace('.label', '', $violation->getPropertyPath());
 
-                $accessor = PropertyAccess::createPropertyAccessor();
                 $translation = $accessor->getValue($violation->getRoot(), $propertyPath);
 
                 $normalizedViolations['translations'][$translation->getLocale()] = [
