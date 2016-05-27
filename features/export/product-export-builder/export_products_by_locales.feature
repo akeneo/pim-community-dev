@@ -27,7 +27,6 @@ Feature: Export products according to a locale policy
       | filePath | %tmp%/product_export/product_export.csv |
     And I am logged in as "Julia"
 
-  @ce
   Scenario: Export only the product values from the selected locale
     Given the following job "csv_product_export" configuration:
       | locales  | fr_FR  |
@@ -42,7 +41,6 @@ Feature: Export products according to a locale policy
       complete;Yes;default;1;localized;;Complete
       """
 
-  @ce
   Scenario: Export only the product values from locale specific attributes
     Given the following job "csv_product_export" configuration:
       | locales | en_US |
@@ -57,7 +55,6 @@ Feature: Export products according to a locale policy
       complete;default;1;localized;;Complete
       """
 
-  @ce
   Scenario: Remove the locales from the channel after we set the export configuration
     Given the following job "csv_product_export" configuration:
       | locales | fr_FR, en_US |
@@ -72,7 +69,6 @@ Feature: Export products according to a locale policy
       complete;default;1;localized;;Complete
       """
 
-  @ce
   Scenario: Selecting a channel from the export profile updates the locale choices
     Given the following job "csv_product_export" configuration:
       | locales | fr_FR |
