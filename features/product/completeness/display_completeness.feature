@@ -81,14 +81,14 @@ Feature: Display the completeness of a product
   Scenario: Successfully display the completeness of the products in the grid
     Given I am on the products page
     And I switch the locale to "en_US"
-    And I switch the scope to "Mobile"
+    And I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
     Then the row "sandals" should contain:
      | column   | value |
      | complete | 40%   |
-    And I switch the scope to "Tablet"
+    And I filter by "scope" with operator "equals" and value "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 89%   |
@@ -96,14 +96,14 @@ Feature: Display the completeness of a product
      | column   | value |
      | complete | 25%   |
     And I switch the locale to "fr_FR"
-    And I switch the scope to "Mobile"
+    And I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
     Then the row "sandals" should contain:
      | column   | value |
      | complete | 60%   |
-    And I switch the scope to "Tablet"
+    And I filter by "scope" with operator "equals" and value "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 78%   |
@@ -119,20 +119,20 @@ Feature: Display the completeness of a product
     And I save the product
     And I am on the products page
     And I switch the locale to "en_US"
-    When I switch the scope to "Mobile"
+    When I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
-    When I switch the scope to "Tablet"
+    When I filter by "scope" with operator "equals" and value "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
     And I switch the locale to "fr_FR"
-    When I switch the scope to "Mobile"
+    When I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
-    When I switch the scope to "Tablet"
+    When I filter by "scope" with operator "equals" and value "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 89%   |

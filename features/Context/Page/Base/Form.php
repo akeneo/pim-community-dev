@@ -185,15 +185,11 @@ class Form extends Base
                 }
 
                 $button->click();
-
-                return true;
             } else {
                 $groups->clickLink($group);
-
-                return true;
             }
 
-            return false;
+            return true;
         }, 'Cannot find the group selector.');
 
         return true;
