@@ -290,13 +290,19 @@ class Grid extends Index
             ->getElement('Grid toolbar')
             ->find('css', 'div label.dib:contains("record")');
 
-        // If pagination not found or is empty, count rows
+        /**
+         * If pagination not found or is empty, it actually count rows
+         *
+         * TODO Remove this. We have to find another toolbar count.
+         * If there is no toolbar count, this method
+         * should even not be called or should raise a not found exception.
+         */
         if (!$pagination || !$pagination->getText()) {
             return $this->countRows();
         }
 
-        if (preg_match('/([0-9][0-9 ]*) records?$/', $pagination->getText(), $matches)) {
-            return $matches[1];
+        if (preg_match('/(?P<count>[0-9][0-9 ]*) records?$/', $pagination->getText(), $matches)) {
+            return (int) preg_replace('/[^0-9]/', '', $matches['count']);
         } else {
             throw new \InvalidArgumentException('Impossible to get count of datagrid records');
         }
@@ -494,7 +500,7 @@ class Grid extends Index
      */
     public function showFilter($filterName)
     {
-        $this->spin(function() {
+        $this->spin(function () {
             return $this->getElement('Body')->find('css', '.filter-box');
         }, 'The filter box is not loaded');
 

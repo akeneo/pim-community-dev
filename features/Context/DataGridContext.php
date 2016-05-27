@@ -85,22 +85,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             return;
         }
 
+        $this->theGridToolbarCountShouldBe($count);
+
         if ($count > 10) {
             $this->getCurrentPage()->getCurrentGrid()->setPageSize(100);
         }
-
-        $this->spin(function () use ($count) {
-            assertEquals(
-                $count,
-                $actualCount = $this->datagrid->getToolbarCount()
-            );
-
-            return true;
-        }, sprintf(
-            'Expecting to see %d record(s) in the datagrid toolbar, actually saw %d',
-            $count,
-            $this->datagrid->countRows()
-        ));
 
         $this->spin(function () use ($count) {
             assertEquals(
@@ -113,6 +102,25 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             'Expecting to see %d row(s) in the datagrid, actually saw %d.',
             $count,
             $this->datagrid->countRows()
+        ));
+    }
+
+    /**
+     * @param int $count
+     *
+     * @throws TimeoutException
+     *
+     * @Then /^the grid toolbar count should be (\d+) elements?$/
+     */
+    public function theGridToolbarCountShouldBe($count)
+    {
+        $count = (int) $count;
+        $this->spin(function () use ($count) {
+            return $this->datagrid->getToolbarCount() === $count;
+        }, sprintf(
+            'Expecting to see %d record(s) in the datagrid toolbar, actually saw %d',
+            $count,
+            $this->datagrid->getToolbarCount()
         ));
     }
 
@@ -508,8 +516,10 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $count  = count($this->getMainContext()->listToArray($item['result']));
             $filter = $item['filter'];
             $isCategoryFilter = false !== strpos(strtolower($filter), 'category');
+            $countBeforeFilter = null;
 
             if (!$isCategoryFilter) {
+                $countBeforeFilter = $this->datagrid->getToolbarCount();
                 $steps[] = new Step\Then(sprintf('I show the filter "%s"', $filter));
             }
             $steps[] = new Step\Then(sprintf(
@@ -522,6 +532,23 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $steps[] = new Step\Then(sprintf('I should see entities %s', $item['result']));
             if (!$isCategoryFilter) {
                 $steps[] = new Step\Then(sprintf('I hide the filter "%s"', $filter));
+                if (null !== $countBeforeFilter) {
+                    /**
+                     * At the end of the loop, we ensure we get back to the initial state of the loop.
+                     * To do this, we add a validation step checking if the number of initial elements in the datagrid
+                     * is the same than the number of elements in the datagrid after removing the filter.
+                     *
+                     * This has a second effect: it ensure the fact that the datagrid is well loaded. It fixes some
+                     * random features, where Metric and Price filters were closed during behat execution, when the
+                     * datagrid finished to be load.
+                     *
+                     * // TODO Refactor this using a comparison with content of the datagrid.
+                     */
+                    $steps[] = new Step\Then(sprintf(
+                        'the grid toolbar count should be %s elements',
+                        $countBeforeFilter
+                    ));
+                }
             }
         }
 
