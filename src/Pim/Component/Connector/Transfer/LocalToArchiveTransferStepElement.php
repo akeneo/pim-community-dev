@@ -39,11 +39,8 @@ class LocalToArchiveTransferStepElement implements TransferStepElementInterface
      */
     public function transfer()
     {
-        $archiveStorage = $this->archiveStorage->getAbsoluteDirectory($this->stepExecution->getJobExecution());
-        $archiveFilename = $this->stepExecution->getJobExecution()->getJobInstance()->getCode();
-
         $source = $this->stepExecution->getJobParameters()->get('filePath');
-        $dest = $archiveStorage . $archiveFilename;
+        $dest = $this->archiveStorage->getPathname($this->stepExecution->getJobExecution());
 
         $filesystem = new Filesystem();
 

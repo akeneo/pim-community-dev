@@ -51,8 +51,8 @@ class XlsxProductWriterSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn('my/file/path');
         $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
 
         $items = $this->getItemToExport();
 

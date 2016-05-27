@@ -58,12 +58,9 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
     {
         $this->flusher->setStepExecution($this->stepExecution);
 
-        $directory = $this->archiveStorage->getAbsoluteDirectory($this->stepExecution->getJobExecution());
-        $pathname = $directory . $this->getFilename();
-
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,
-            $pathname,
+            $this->archiveStorage->getPathname($this->stepExecution->getJobExecution()),
             $this->stepExecution->getJobParameters()->get('linesPerFile'),
             $this->filePathResolverOptions
         );

@@ -14,6 +14,9 @@ use League\Flysystem\FilesystemInterface;
  * Before an import, the files are copied in the archive directory in order to be processed.
  * After an export, the files are copied from the archive directory to the export destination.
  *
+ * File are named according to the job code that is launched, without any extension. It can be for example
+ * "csv_family_export" or "xlsx_family_import".
+ *
  * @author    Julien Janvier <jjanvier@gmail.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
@@ -32,7 +35,27 @@ class ArchiveStorage
     }
 
     /**
-     * Ensure the archive directory exists and  returns it. It could be for example:
+     * Get the pathname of the file for a Job Execution. It could be for example:
+     *    - /home/akeneo/pim/app/archives/export/csv_family_export/14/output/csv_family_export (an output export file)
+     *    - /home/akeneo/pim/app/archives/import/csv_family_import/15/input/csv_family_import (an input export file)
+     *    - /home/akeneo/pim/app/archives/quick_export/csv_product_quick_export/16/output/csv_product_quick_export
+     *      (an output quick export file)
+     *
+     * This pathname does not mean the file already exists when you get it. It's just the location where the file
+     * should be at the end of the import/export.
+     *
+     * @param JobExecution $jobExecution
+     *
+     * @return string
+     * @throws \LogicException
+     */
+    public function getPathname(JobExecution $jobExecution)
+    {
+        return $this->getAbsoluteDirectory($jobExecution) . $jobExecution->getJobInstance()->getCode();
+    }
+
+    /**
+     * Get the archive directory, and ensure its existence. It could be for example:
      *    - /home/akeneo/pim/app/archives/export/csv_family_export/14/output/
      *    - /home/akeneo/pim/app/archives/import/csv_family_import/15/input/
      *    - /home/akeneo/pim/app/archives/quick_export/csv_product_quick_export/16/output/
@@ -40,14 +63,14 @@ class ArchiveStorage
      * @param JobExecution $jobExecution
      *
      * @return string
-     * @throws \Exception
+     * @throws \LogicException
      */
     public function getAbsoluteDirectory(JobExecution $jobExecution)
     {
         $dir = $this->getRelative($jobExecution);
         if (false === $this->filesystem->has($dir)) {
             if (false === $this->filesystem->createDir($dir)) {
-                throw new \Exception(sprintf('Impossible to create the archive directory "%s"', $dir));
+                throw new \LogicException(sprintf('Impossible to create the archive directory "%s"', $dir));
             }
         }
 

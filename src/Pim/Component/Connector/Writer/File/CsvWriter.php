@@ -133,8 +133,7 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     private function getPathname()
     {
         if (null === $this->pathname) {
-            $directory = $this->archiveStorage->getAbsoluteDirectory($this->stepExecution->getJobExecution());
-            $this->pathname = $directory . $this->getFilename();
+            $this->pathname = $this->archiveStorage->getPathname($this->stepExecution->getJobExecution());
         }
 
        return $this->pathname;
