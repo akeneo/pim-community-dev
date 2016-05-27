@@ -11,6 +11,7 @@ use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -55,9 +56,13 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
     /** @var array */
     protected $supportedJobNames;
 
+    /** @var FamilyRepositoryInterface */
+    protected $familyRepository;
+
     /**
      * @param FormConfigurationProviderInterface $simpleXlsxExport
      * @param ChannelRepositoryInterface         $channelRepository
+     * @param FamilyRepositoryInterface          $familyRepository
      * @param JobRepositoryInterface             $jobRepository
      * @param TranslatorInterface                $translator
      * @param PresenterInterface                 $datePresenter
@@ -69,6 +74,7 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
     public function __construct(
         FormConfigurationProviderInterface $simpleXlsxExport,
         ChannelRepositoryInterface $channelRepository,
+        FamilyRepositoryInterface $familyRepository,
         JobRepositoryInterface $jobRepository,
         TranslatorInterface $translator,
         PresenterInterface $datePresenter,
@@ -86,6 +92,7 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
         $this->supportedJobNames = $supportedJobNames;
         $this->decimalSeparators = $decimalSeparators;
         $this->dateFormats       = $dateFormats;
+        $this->familyRepository = $familyRepository;
     }
 
     /**
@@ -106,6 +113,21 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
                 ]
             ],
             'locales' => ['type' => 'pim_import_export_product_export_locale_choice'],
+            'families' => [
+                'type'    => 'select_family_type',
+                'options' => [
+                    'repository' => $this->familyRepository,
+                    'route' => 'pim_enrich_family_rest_index',
+                    'required' => false,
+                    'multiple' => true,
+                    'label' => 'pim_base_connector.export.families.label',
+                    'help' => 'pim_base_connector.export.families.help',
+                    'attr' => [
+                        'data-tab' => 'content',
+                        'data-placeholder' => 'pim_base_connector.export.families.placeholder'
+                    ]
+                ]
+            ],
             'enabled' => [
                 'type'    => 'choice',
                 'options' => [

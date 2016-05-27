@@ -219,9 +219,26 @@ class Form extends Base
     }
 
     /**
+     * @param string $name
+     * {@inheritdoc}
+     */
+    public function findField($name)
+    {
+        return $this->spin(function () use ($name) {
+            if ($tab = $this->find('css', $this->elements['Active tab']['css'])) {
+                return $tab->findField($name);
+            }
+
+            return parent::findField($name);
+        }, sprintf('Could not find field "%s"', $name));
+    }
+
+    /**
      * Find field container
      *
      * @param string $name
+     *
+     * @throws ElementNotFoundException
      *
      * @return NodeElement
      */

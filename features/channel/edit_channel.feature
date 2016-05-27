@@ -40,7 +40,7 @@ Feature: Edit a channel
     And I change the "Locales" to "Breton (France)"
     And I press the "Save" button
     When I am on the locales page
-    And I filter by "Activated" with value "yes"
+    And I filter by "activated" with operator "equals" and value "yes"
     Then the grid should contain 2 elements
     And I should see locales "en_US" and "br_FR"
     When I am on the "tablet" channel page

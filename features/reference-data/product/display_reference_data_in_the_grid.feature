@@ -55,7 +55,7 @@ Feature: Display reference data in the grid
       | column      | value         |
       | Cap color   | Purple        |
       | Lace fabric | [cotton], Straw |
-    When I filter by "Channel" with value "Mobile"
+    When I switch the scope to "Mobile"
     Then the row "high-heels" should contain:
       | column      | value          |
       | Cap color   | [orange]       |

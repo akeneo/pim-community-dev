@@ -90,12 +90,14 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $parameters = $this->stepExecution->getJobParameters();
         $enabled = $parameters->get('enabled');
         $updated = $parameters->get('updated');
+        $families = $parameters->get('families');
 
         $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
         $filters = $this->getFilters(
             $channel,
             $this->rawToStandardProductStatus($enabled),
-            $this->rawToStandardProductUpdated($updated)
+            $this->rawToStandardProductUpdated($updated),
+            array_filter(explode(',', $families))
         );
 
         foreach ($filters as $filter) {
@@ -106,7 +108,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
                 $filter['context']
             );
         }
-
 
         if ($this->generateCompleteness) {
             $this->completenessManager->generateMissingForChannel($channel);
@@ -168,10 +169,11 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * @param ChannelInterface $channel
      * @param bool             $status
      * @param string           $updated
+     * @param array            $families
      *
      * @return array
      */
-    protected function getFilters(ChannelInterface $channel, $status, $updated)
+    protected function getFilters(ChannelInterface $channel, $status, $updated, $families)
     {
         $filters = [
             [
@@ -193,6 +195,15 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
                 'field'    => 'enabled',
                 'operator' => Operators::EQUALS,
                 'value'    => $status,
+                'context'  => []
+            ];
+        }
+
+        if (!empty($families)) {
+            $filters[] = [
+                'field'    => 'family.code',
+                'operator' => Operators::IN_LIST,
+                'value'    => $families,
                 'context'  => []
             ];
         }

@@ -72,7 +72,7 @@ Feature: Add attributes to a variant group
     And I add available attributes Name, Description
     And I save the variant group
     Then I am on the attributes page
-    When I filter by "Label" with value "Name"
+    When I filter by "label" with operator "is equal to" and value "Name"
     And I click on the "Delete" action of the row which contains "Name"
     And I confirm the deletion
     Then I am on the "caterpillar_boots" variant group page

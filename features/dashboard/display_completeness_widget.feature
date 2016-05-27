@@ -15,7 +15,6 @@ Feature: Display completeness widget
     And I am logged in as "Mary"
     When I am on the dashboard page
     Then I should see "Completeness Over Channels and Locales"
-    When I wait for widgets to load
     Then completeness of "Ecommerce" should be "13%"
     And "German (Germany)" completeness of "Ecommerce" should be "0%"
     And "English (United Kingdom)" completeness of "Ecommerce" should be "0%"

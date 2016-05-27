@@ -31,6 +31,7 @@ class ProductCsvExportSpec extends ObjectBehavior
                 'locales'          => [],
                 'enabled'          => "enabled",
                 'updated'          => "all",
+                'families'         => null,
             ]
         );
     }
