@@ -1879,17 +1879,14 @@ class WebUser extends RawMinkContext
      */
     public function completenessOfShouldBe($channel, $ratio)
     {
-        $actual = $this->getCurrentPage()->getChannelCompleteness($channel);
-        assertEquals(
+        $this->spin(function () use ($channel, $ratio) {
+            return $ratio === $this->getCurrentPage()->getChannelCompleteness($channel);
+        }, sprintf(
+            'Expecting completeness ratio of channel "%s" to be "%s", actually was "%s"',
+            $channel,
             $ratio,
-            $actual,
-            sprintf(
-                'Expecting completeness ratio of channel "%s" to be "%s", actually was "%s"',
-                $channel,
-                $ratio,
-                $actual
-            )
-        );
+            $this->getCurrentPage()->getChannelCompleteness($channel)
+        ));
     }
 
     /**
@@ -2031,15 +2028,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeLocaleOption($not, $locale)
     {
-        $selectNames = ['system-locale', 'pim_user_user_form[uiLocale]'];
-        $field = null;
-        foreach ($selectNames as $selectName) {
-            $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);
-        }
-        if (null === $field) {
-            throw new \Exception(sprintf('Could not find field with name %s', json_encode($selectNames)));
-        }
-
+        $field   = $this->getCurrentPage()->getElement('Locale field');
         $options = $field->findAll('css', 'option');
 
         foreach ($options as $option) {

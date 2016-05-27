@@ -15,22 +15,23 @@ Feature: Display the attribute history
       | Code            | packaging |
       | Attribute group | Other     |
     And I save the attribute
+    Then I should not see the text "There are unsaved change"
     And I visit the "Values" tab
-    And I wait for options to load
     And I create the following attribute options:
       | Code        |
       | classic_box |
     And I save the attribute
+    Then I should not see the text "There are unsaved change"
     When I visit the "History" tab
     Then there should be 2 update
     And I should see history:
       | version | property | value     |
       | 1       | code     | packaging |
     And I visit the "Values" tab
-    And I wait for options to load
     And I create the following attribute options:
       | Code      |
       | collector |
     And I save the attribute
+    Then I should not see the text "There are unsaved change"
     When I visit the "History" tab
     Then there should be 3 updates

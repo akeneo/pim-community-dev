@@ -18,7 +18,10 @@ class OperatorDecorator extends ElementDecorator
         // we need to do a perfect match on the label
         $this->spin(function () use ($value) {
             $this->click();
-            $operatorChoices = $this->getParent()->findAll('css', '.dropdown-menu .choice_value, .dropdown-menu .operator_choice');
+            $operatorChoices = $this->getParent()->findAll(
+                'css',
+                '.dropdown-menu .choice_value, .dropdown-menu .operator_choice'
+            );
 
             foreach ($operatorChoices as $choice) {
                 if ($value === $choice->getText()) {

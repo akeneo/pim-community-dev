@@ -74,7 +74,7 @@ Feature: Edit a product
     And I switch the scope to "mobile"
     Then the product Description should be "My awesome description for mobile"
     When I am on the products page
-    And I filter by "Channel" with value "E-Commerce"
+    And I switch the scope to "E-commerce"
     When I am on the "sandal" product page
     Then the product Description should be "My awesome description for ecommerce"
 
