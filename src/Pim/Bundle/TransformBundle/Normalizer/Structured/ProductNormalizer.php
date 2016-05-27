@@ -4,6 +4,7 @@ namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
@@ -103,7 +104,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     }
 
     /**
-     * Normalize the values of the product
+     * Normalizes the values of the product
      *
      * @param ArrayCollection $values
      * @param string          $format
@@ -113,11 +114,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      */
     protected function normalizeValues(ArrayCollection $values, $format, array $context = [])
     {
-        $values = $this->filter->filterCollection(
-            $values,
-            isset($context['filter_type']) ? $context['filter_type'] : 'pim.transform.product_value.structured',
-            $context
-        );
+        $values = $this->getFilteredValues($values, $context);
 
         $data = [];
         foreach ($values as $value) {
@@ -128,7 +125,33 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     }
 
     /**
-     * Normalize the associations of the product
+     * Gets filtered values
+     *
+     * @param ArrayCollection $values
+     * @param array           $context
+     *
+     * @return ArrayCollection
+     */
+    protected function getFilteredValues(ArrayCollection $values, array $context = [])
+    {
+        if (isset($context['scopeCode'])) {
+            $context['channels'] = [$context['scopeCode']];
+        }
+        if (isset($context['localeCodes'])) {
+            $context['locales'] = $context['localeCodes'];
+        }
+
+        $values = $this->filter->filterCollection(
+            $values,
+            isset($context['filter_type']) ? $context['filter_type'] : 'pim.transform.product_value.structured',
+            $context
+        );
+
+        return $values;
+    }
+
+    /**
+     * Normalizes the associations of the product
      *
      * @param Association[] $associations
      *
