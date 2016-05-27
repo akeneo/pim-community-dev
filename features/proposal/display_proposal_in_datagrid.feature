@@ -13,13 +13,11 @@ Feature: Display proposals in datagrid
       | price      | 45 USD,75 EUR |
 
   Scenario: Successfully propose to remove a price attribute
-    Given I am logged in as "Mary"
-    And Mary proposed the following change to "my-jacket":
+    Given Mary proposed the following change to "my-jacket":
       | field | value | tab       |
       | Price | EUR   | Marketing |
       | Price | 5 USD | Marketing |
-    When I logout
-    And I am logged in as "Julia"
+    When I am logged in as "Julia"
     And I edit the "my-jacket" product
     And I visit the "Proposals" tab
     Then I should see the following proposals:
@@ -27,12 +25,10 @@ Feature: Display proposals in datagrid
       | my-jacket | Mary   | price     | €75.00, $45.00 | $5.00 |
 
   Scenario: Successfully display only updated price attribute
-    Given I am logged in as "Mary"
-    And  Mary proposed the following change to "my-jacket":
+    Given  Mary proposed the following change to "my-jacket":
       | field | value  | tab       |
       | Price | 5 USD  | Marketing |
-    When I logout
-    And I am logged in as "Julia"
+    When I am logged in as "Julia"
     And I edit the "my-jacket" product
     And I visit the "Proposals" tab
     Then I should see the following proposals:
