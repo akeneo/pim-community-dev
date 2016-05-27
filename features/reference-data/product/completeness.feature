@@ -64,7 +64,7 @@ Feature: Display the completeness of a product
   Scenario: Successfully display the completeness of the products with reference data in the grid
     Given I am on the products page
     And I switch the locale to "en_US"
-    And I switch the scope to "Mobile"
+    And I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "red-heels" should contain:
       | column   | value |
       | complete | 50%   |
@@ -77,7 +77,7 @@ Feature: Display the completeness of a product
     Then the row "high-heels" should contain:
       | column   | value |
       | complete | 25%   |
-    And I switch the scope to "Tablet"
+    And I filter by "scope" with operator "equals" and value "Tablet"
     Then the row "red-heels" should contain:
       | column   | value |
       | complete | 50%   |
@@ -91,7 +91,7 @@ Feature: Display the completeness of a product
       | column   | value |
       | complete | 25%   |
     And I switch the locale to "fr_FR"
-    And I switch the scope to "Mobile"
+    And I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "red-heels" should contain:
       | column   | value |
       | complete | 100%  |
@@ -104,7 +104,7 @@ Feature: Display the completeness of a product
     Then the row "high-heels" should contain:
       | column   | value |
       | complete | 25%   |
-    And I switch the scope to "Tablet"
+    And I filter by "scope" with operator "equals" and value "Tablet"
     Then the row "red-heels" should contain:
       | column   | value |
       | complete | 75%   |
