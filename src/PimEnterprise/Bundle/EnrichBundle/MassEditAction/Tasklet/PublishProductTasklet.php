@@ -86,7 +86,6 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet
                     }
                     if (!$isAuthorized) {
                         $this->stepExecution->addWarning(
-                            $this->getName(),
                             'pim_enrich.mass_edit_action.publish.message.error',
                             [],
                             $product
