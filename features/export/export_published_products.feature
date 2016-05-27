@@ -11,9 +11,10 @@ Feature: Export published products
 
   @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Successfully export published products
-    Given the following job "csv_clothing_mobile_published_product_export" configuration:
+    Given I add the "english UK" locale to the "mobile" channel
+    And the following job "csv_clothing_mobile_published_product_export" configuration:
       | filePath | %tmp%/ecommerce_product_export/csv_clothing_mobile_published_product_export.csv |
-    And I add the "english UK" locale to the "mobile" channel
+      | locales  | fr_FR, en_US, en_GB and de_DE |
     And the following products:
       | sku          | family  | categories                 | price          | size | main_color | manufacturer |
       | jacket-white | jackets | jackets, winter_collection | 10 EUR, 15 USD | XL   | white      | Volcom       |
