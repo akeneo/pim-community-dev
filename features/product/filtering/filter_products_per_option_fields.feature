@@ -10,7 +10,7 @@ Feature: Filter products per option
       | label | type         | localizable | scopable | useable_as_grid_filter |
       | color | multiselect  | no          | no       | yes                    |
       | size  | simpleselect | no          | no       | yes                    |
-    And the following "color" attribute options: Black and White
+    And the following "color" attribute options: Black, White and Red
     And the following "size" attribute options: S, M and L
     And the following products:
       | sku   | color | size |
@@ -35,3 +35,24 @@ Feature: Filter products per option
       | filter | value    | result          |
       | color  | Black    | Shoes           |
       | color  | is empty | Shirt and Sweat |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5802
+  Scenario: Successfully keep data previsouly filled on a simple option
+    Given I am on the products page
+    And the grid should contain 3 elements
+    When I show the filter "size"
+    And I filter by "size" with value "M"
+    And I should see entities Sweat
+    And I open the "size" filter
+    Then I should see option "[M]" in filter "size"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5802
+  Scenario: Successfully keep data previsouly filled on a multi option
+    Given I am on the products page
+    And the grid should contain 3 elements
+    When I show the filter "color"
+    And I filter by "color" with value "Black"
+    And I filter by "color" with value "White"
+    And I should see entities Shoes
+    And I open the "color" filter
+    Then I should see option "[Black], [White]" in filter "color"

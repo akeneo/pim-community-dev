@@ -6,6 +6,7 @@
 - PIM-5811: Fix family export with multiple locales activated
 - PIM-5726: Fix number of product displayed on Product Grid when category panel is withdrawn
 - PIM-5801: Fix save in product edit form when attribute code is only numeric
+- PIM-5802: Keep data previously filled in select2 filter
 
 # 1.5.3 (2016-05-13)
 
