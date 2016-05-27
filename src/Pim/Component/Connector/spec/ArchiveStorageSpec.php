@@ -9,7 +9,7 @@ use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class ArchiveDirectorySpec extends ObjectBehavior
+class ArchiveStorageSpec extends ObjectBehavior
 {
     function let(Filesystem $filesystem, LocalAdapter $localAdapter)
     {
@@ -31,7 +31,7 @@ class ArchiveDirectorySpec extends ObjectBehavior
         $jobInstance->getAlias()->willReturn('csv_family_export');
         $jobExecution->getId()->willReturn(14);
 
-        $this->getAbsolute($jobExecution)->shouldReturn(
+        $this->getAbsoluteDirectory($jobExecution)->shouldReturn(
             '/path/prefix/app/archives/export/csv_family_export/14/output/'
         );
     }
@@ -49,7 +49,7 @@ class ArchiveDirectorySpec extends ObjectBehavior
         $jobInstance->getAlias()->willReturn('csv_family_export');
         $jobExecution->getId()->willReturn(14);
 
-        $this->getAbsolute($jobExecution)->shouldReturn(
+        $this->getAbsoluteDirectory($jobExecution)->shouldReturn(
             '/path/prefix/app/archives/export/csv_family_export/14/output/'
         );
     }
@@ -67,6 +67,6 @@ class ArchiveDirectorySpec extends ObjectBehavior
         $jobInstance->getAlias()->willReturn('csv_family_export');
         $jobExecution->getId()->willReturn(14);
 
-        $this->shouldThrow('\Exception')->during('getAbsolute', [$jobExecution]);
+        $this->shouldThrow('\Exception')->during('getAbsoluteDirectory', [$jobExecution]);
     }
 }

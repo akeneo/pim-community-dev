@@ -1,8 +1,8 @@
 parameters:
-    pim_connector.archiving_directory.class: Pim\Component\Connector\ArchiveDirectory
+    pim_connector.archive_storage.class: Pim\Component\Connector\ArchiveStorage
 
 services:
-    pim_connector.archiving_directory:
-        class: '%pim_connector.archiving_directory.class%'
+    pim_connector.archive_storage:
+        class: '%pim_connector.archive_storage.class%'
         arguments:
             - '@oneup_flysystem.archivist_filesystem'

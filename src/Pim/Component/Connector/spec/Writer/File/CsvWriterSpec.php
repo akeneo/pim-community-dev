@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Buffer\BufferInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArchiveDirectory;
+use Pim\Component\Connector\ArchiveStorage;
 use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
@@ -21,11 +21,11 @@ class CsvWriterSpec extends ObjectBehavior
 
     function let(
         FilePathResolverInterface $filePathResolver,
-        ArchiveDirectory $archiveDirectory,
+        ArchiveStorage $archiveStorage,
         FlatItemBuffer $flatRowBuffer,
         ColumnSorterInterface $columnSorter
     ) {
-        $this->beConstructedWith($filePathResolver, $archiveDirectory, $flatRowBuffer, $columnSorter);
+        $this->beConstructedWith($filePathResolver, $archiveStorage, $flatRowBuffer, $columnSorter);
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.csv');
     }

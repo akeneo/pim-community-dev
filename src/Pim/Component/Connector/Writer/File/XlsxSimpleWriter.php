@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Pim\Component\Connector\ArchiveDirectory;
+use Pim\Component\Connector\ArchiveStorage;
 
 /**
  * Write simple data into a XLSX file on the local filesystem
@@ -24,17 +24,17 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
 
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param ArchiveDirectory          $archiveDirectory
+     * @param ArchiveStorage            $archiveStorage
      * @param FlatItemBuffer            $flatRowBuffer
      * @param FlatItemBufferFlusher     $flusher
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
-        ArchiveDirectory $archiveDirectory,
+        ArchiveStorage $archiveStorage,
         FlatItemBuffer $flatRowBuffer,
         FlatItemBufferFlusher $flusher
     ) {
-        parent::__construct($filePathResolver, $archiveDirectory);
+        parent::__construct($filePathResolver, $archiveStorage);
 
         $this->flatRowBuffer = $flatRowBuffer;
         $this->flusher       = $flusher;
@@ -58,7 +58,7 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
     {
         $this->flusher->setStepExecution($this->stepExecution);
 
-        $directory = $this->archiveDirectory->getAbsolute($this->stepExecution->getJobExecution());
+        $directory = $this->archiveStorage->getAbsoluteDirectory($this->stepExecution->getJobExecution());
         $pathname = $directory . $this->getFilename();
 
         $writtenFiles = $this->flusher->flush(

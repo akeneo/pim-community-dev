@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Transfer;
 
 use Akeneo\Component\Batch\Model\StepExecution;
-use Pim\Component\Connector\ArchiveDirectory;
+use Pim\Component\Connector\ArchiveStorage;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -25,18 +25,18 @@ use Symfony\Component\Finder\Finder;
  */
 class ArchiveToLocalTransferStepElement implements TransferStepElementInterface
 {
-    /** @var ArchiveDirectory */
-    protected $archiveDirectory;
+    /** @var ArchiveStorage */
+    protected $archiveStorage;
 
     /** @var StepExecution */
     protected $stepExecution;
 
     /**
-     * @param ArchiveDirectory $archiveDirectory
+     * @param ArchiveStorage $archiveStorage
      */
-    public function __construct(ArchiveDirectory $archiveDirectory)
+    public function __construct(ArchiveStorage $archiveStorage)
     {
-        $this->archiveDirectory = $archiveDirectory;
+        $this->archiveStorage = $archiveStorage;
     }
 
     /**
@@ -79,10 +79,10 @@ class ArchiveToLocalTransferStepElement implements TransferStepElementInterface
      */
     protected function listArchivedFiles()
     {
-        $archiveDirectory = $this->archiveDirectory->getAbsolute($this->stepExecution->getJobExecution());
+        $archiveStorage = $this->archiveStorage->getAbsoluteDirectory($this->stepExecution->getJobExecution());
 
         $finder = new Finder();
-        $finder->in($archiveDirectory)->files()->depth('== 0');
+        $finder->in($archiveStorage)->files()->depth('== 0');
 
         return $finder;
     }

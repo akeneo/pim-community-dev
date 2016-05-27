@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Transfer;
 
 use Akeneo\Component\Batch\Model\StepExecution;
-use Pim\Component\Connector\ArchiveDirectory;
+use Pim\Component\Connector\ArchiveStorage;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -20,18 +20,18 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class LocalToArchiveTransferStepElement implements TransferStepElementInterface
 {
-    /** @var ArchiveDirectory */
-    protected $archiveDirectory;
+    /** @var ArchiveStorage */
+    protected $archiveStorage;
 
     /** @var StepExecution */
     protected $stepExecution;
 
     /**
-     * @param ArchiveDirectory $archiveDirectory
+     * @param ArchiveStorage $archiveStorage
      */
-    public function __construct(ArchiveDirectory $archiveDirectory)
+    public function __construct(ArchiveStorage $archiveStorage)
     {
-        $this->archiveDirectory = $archiveDirectory;
+        $this->archiveStorage = $archiveStorage;
     }
 
     /**
@@ -39,11 +39,11 @@ class LocalToArchiveTransferStepElement implements TransferStepElementInterface
      */
     public function transfer()
     {
-        $archiveDirectory = $this->archiveDirectory->getAbsolute($this->stepExecution->getJobExecution());
+        $archiveStorage = $this->archiveStorage->getAbsoluteDirectory($this->stepExecution->getJobExecution());
         $archiveFilename = $this->stepExecution->getJobExecution()->getJobInstance()->getCode();
 
         $source = $this->stepExecution->getJobParameters()->get('filePath');
-        $dest = $archiveDirectory . $archiveFilename;
+        $dest = $archiveStorage . $archiveFilename;
 
         $filesystem = new Filesystem();
 

@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Pim\Component\Connector\ArchiveDirectory;
+use Pim\Component\Connector\ArchiveStorage;
 
 /**
  * CSV variant group writer
@@ -18,19 +18,19 @@ class CsvVariantGroupWriter extends CsvWriter
 
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param ArchiveDirectory          $archiveDirectory
+     * @param ArchiveStorage            $archiveStorage
      * @param FlatItemBuffer            $flatRowBuffer
      * @param BulkFileExporter          $fileExporter
      * @param ColumnSorterInterface     $columnSorter
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
-        ArchiveDirectory $archiveDirectory,
+        ArchiveStorage $archiveStorage,
         FlatItemBuffer $flatRowBuffer,
         BulkFileExporter $fileExporter,
         ColumnSorterInterface $columnSorter
     ) {
-        parent::__construct($filePathResolver, $archiveDirectory, $flatRowBuffer, $columnSorter);
+        parent::__construct($filePathResolver, $archiveStorage, $flatRowBuffer, $columnSorter);
 
         $this->fileExporter = $fileExporter;
     }

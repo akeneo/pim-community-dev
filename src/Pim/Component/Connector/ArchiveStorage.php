@@ -7,7 +7,7 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use League\Flysystem\FilesystemInterface;
 
 /**
- * The archive directory is where the import and exports files are stored.
+ * The archive storage is where the import and exports files are stored.
  * It's represented by the container parameter "archive_dir" located in pim_parameters.yml.
  * By default it's "%kernel.root_dir%/archive".
  *
@@ -18,8 +18,11 @@ use League\Flysystem\FilesystemInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ArchiveDirectory
+class ArchiveStorage
 {
+    /** @var FilesystemInterface */
+    private $filesystem;
+
     /**
      * @param FilesystemInterface $filesystem
      */
@@ -39,7 +42,7 @@ class ArchiveDirectory
      * @return string
      * @throws \Exception
      */
-    public function getAbsolute(JobExecution $jobExecution)
+    public function getAbsoluteDirectory(JobExecution $jobExecution)
     {
         $dir = $this->getRelative($jobExecution);
         if (false === $this->filesystem->has($dir)) {

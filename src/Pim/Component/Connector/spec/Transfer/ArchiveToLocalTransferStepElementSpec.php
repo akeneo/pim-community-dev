@@ -8,7 +8,7 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Pim\Component\Connector\ArchiveDirectory;
+use Pim\Component\Connector\ArchiveStorage;
 use Prophecy\Exception\Prediction\FailedPredictionException;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -22,7 +22,7 @@ class ArchiveToLocalTransferStepElementSpec extends ObjectBehavior
 
     function let(
         StepExecution $stepExecution,
-        ArchiveDirectory $archiveDirectory,
+        ArchiveStorage $archiveStorage,
         JobExecution $jobExecution,
         JobParameters $jobParameters
     ) {
@@ -30,7 +30,7 @@ class ArchiveToLocalTransferStepElementSpec extends ObjectBehavior
         $this->filesystem = new Filesystem();
         $this->filesystem->mkdir($this->specWorkingDir);
 
-        $this->beConstructedWith($archiveDirectory);
+        $this->beConstructedWith($archiveStorage);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -46,14 +46,14 @@ class ArchiveToLocalTransferStepElementSpec extends ObjectBehavior
         $jobParameters,
         $stepExecution,
         $jobExecution,
-        ArchiveDirectory $archiveDirectory,
+        ArchiveStorage $archiveStorage,
         JobInstance $jobInstance
     ) {
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getCode()->willReturn('csv_family_export');
 
         $archivePathname = $this->createArchiveFile('csv_family_export');
-        $archiveDirectory->getAbsolute(Argument::any())->willReturn(dirname($archivePathname));
+        $archiveStorage->getAbsoluteDirectory(Argument::any())->willReturn(dirname($archivePathname));
 
         $jobParameters->get('filePath')->willReturn($this->specWorkingDir . 'transfer/local/path/family.csv');
         $stepExecution->incrementSummaryInfo('transferred_files')->shouldBeCalled();
@@ -69,16 +69,16 @@ class ArchiveToLocalTransferStepElementSpec extends ObjectBehavior
         $jobParameters,
         $stepExecution,
         $jobExecution,
-        ArchiveDirectory $archiveDirectory,
+        ArchiveStorage $archiveStorage,
         JobInstance $jobInstance
     ) {
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getCode()->willReturn('xlsx_family_export');
 
         $archivePathname1 = $this->createArchiveFile('xlsx_family_export_1');
-        $archiveDirectory->getAbsolute(Argument::any())->willReturn(dirname($archivePathname1));
+        $archiveStorage->getAbsoluteDirectory(Argument::any())->willReturn(dirname($archivePathname1));
         $archivePathname2 = $this->createArchiveFile('xlsx_family_export_2');
-        $archiveDirectory->getAbsolute(Argument::any())->willReturn(dirname($archivePathname2));
+        $archiveStorage->getAbsoluteDirectory(Argument::any())->willReturn(dirname($archivePathname2));
 
         $jobParameters->get('filePath')->willReturn($this->specWorkingDir . 'transfer/local/path/family.xlsx');
         $stepExecution->incrementSummaryInfo('transferred_files')->shouldBeCalled();

@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArchiveDirectory;
+use Pim\Component\Connector\ArchiveStorage;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
@@ -16,11 +16,11 @@ class XlsxSimpleWriterSpec extends ObjectBehavior
 {
     function let(
         FilePathResolverInterface $filePathResolver,
-        ArchiveDirectory $archiveDirectory,
+        ArchiveStorage $archiveStorage,
         FlatItemBuffer $flatRowBuffer,
         FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $archiveDirectory, $flatRowBuffer, $flusher);
+        $this->beConstructedWith($filePathResolver, $archiveStorage, $flatRowBuffer, $flusher);
 
         $filePathResolver
             ->resolve(Argument::any(), Argument::type('array'))

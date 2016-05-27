@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
-use Pim\Component\Connector\ArchiveDirectory;
+use Pim\Component\Connector\ArchiveStorage;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -32,17 +32,17 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
 
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param ArchiveDirectory          $archiveDirectory
+     * @param ArchiveStorage            $archiveStorage
      * @param FlatItemBuffer            $flatRowBuffer
      * @param ColumnSorterInterface     $columnSorter
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
-        ArchiveDirectory $archiveDirectory,
+        ArchiveStorage $archiveStorage,
         FlatItemBuffer $flatRowBuffer,
         ColumnSorterInterface $columnSorter
     ) {
-        parent::__construct($filePathResolver, $archiveDirectory);
+        parent::__construct($filePathResolver, $archiveStorage);
 
         $this->buffer = $flatRowBuffer;
         $this->columnSorter = $columnSorter;
@@ -133,7 +133,7 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     private function getPathname()
     {
         if (null === $this->pathname) {
-            $directory = $this->archiveDirectory->getAbsolute($this->stepExecution->getJobExecution());
+            $directory = $this->archiveStorage->getAbsoluteDirectory($this->stepExecution->getJobExecution());
             $this->pathname = $directory . $this->getFilename();
         }
 

@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
-use Pim\Component\Connector\ArchiveDirectory;
+use Pim\Component\Connector\ArchiveStorage;
 
 /**
  * XLSX VariantGroup writer
@@ -28,19 +28,19 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
 
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param ArchiveDirectory          $archiveDirectory
+     * @param ArchiveStorage            $archiveStorage
      * @param FlatItemBuffer            $flatRowBuffer
      * @param BulkFileExporter          $fileExporter
      * @param FlatItemBufferFlusher     $flusher
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
-        ArchiveDirectory $archiveDirectory,
+        ArchiveStorage $archiveStorage,
         FlatItemBuffer $flatRowBuffer,
         BulkFileExporter $fileExporter,
         FlatItemBufferFlusher $flusher
     ) {
-        parent::__construct($filePathResolver, $archiveDirectory);
+        parent::__construct($filePathResolver, $archiveStorage);
 
         $this->flatRowBuffer = $flatRowBuffer;
         $this->fileExporter  = $fileExporter;

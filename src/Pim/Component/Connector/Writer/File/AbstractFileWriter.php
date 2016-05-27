@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Pim\Component\Connector\ArchiveDirectory;
+use Pim\Component\Connector\ArchiveStorage;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -39,14 +39,14 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     /** @var Filesystem */
     protected $localFs;
 
-    /** @var ArchiveDirectory */
-    protected $archiveDirectory;
+    /** @var ArchiveStorage */
+    protected $archiveStorage;
 
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param ArchiveDirectory          $archiveDirectory
+     * @param ArchiveStorage            $archiveStorage
      */
-    public function __construct(FilePathResolverInterface $filePathResolver, ArchiveDirectory $archiveDirectory)
+    public function __construct(FilePathResolverInterface $filePathResolver, ArchiveStorage $archiveStorage)
     {
         $this->filePathResolver = $filePathResolver;
         $this->filePathResolverOptions = [
@@ -54,7 +54,7 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
         ];
         $this->localFs = new Filesystem();
 
-        $this->archiveDirectory = $archiveDirectory;
+        $this->archiveStorage = $archiveStorage;
     }
 
     /**

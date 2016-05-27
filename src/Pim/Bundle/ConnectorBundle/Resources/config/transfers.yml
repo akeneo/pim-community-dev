@@ -5,4 +5,4 @@ services:
     pim_connector.transfer.archive_to_local_transfer_step_element:
         class: '%pim_connector.transfer.archive_to_local_transfer_step_element.class%'
         arguments:
-            - '@pim_connector.archiving_directory'
+            - '@pim_connector.archive_storage'
