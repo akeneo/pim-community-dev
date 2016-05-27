@@ -257,7 +257,6 @@ class VariantGroupCleaner
                     $stepExecution->incrementSummaryInfo('skipped_products');
                     $stepExecution
                         ->addWarning(
-                            'duplicated',
                             $this->translator->trans('add_to_variant_group.steps.cleaner.warning.description'),
                             [],
                             $product
@@ -304,7 +303,6 @@ class VariantGroupCleaner
                     $stepExecution->incrementSummaryInfo('skipped_products');
                     $stepExecution
                         ->addWarning(
-                            'excluded',
                             $this->translator->trans(
                                 'pim_enrich.mass_edit_action.add-to-variant-group.already_in_variant_group_or_not_valid'
                             ),

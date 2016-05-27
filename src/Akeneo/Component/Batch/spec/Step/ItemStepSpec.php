@@ -114,7 +114,7 @@ class ItemStepSpec extends ObjectBehavior
 
         // second batch
         $processor->process('r4')->shouldBeCalled()->willThrow(new InvalidItemException('my msg', ['r4']));
-        $execution->addWarning(Argument::any(), Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
+        $execution->addWarning(Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
         $dispatcher->dispatch(Argument::any(), Argument::any())->shouldBeCalled();
 
         $processor->process(null)->shouldNotBeCalled();

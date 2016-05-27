@@ -11,7 +11,6 @@ class WarningSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             $stepExecution,
-            'my name',
             'my reason',
             ['myparam' => 'mavalue'],
             ['myitem' => 'myvalue']
@@ -27,7 +26,6 @@ class WarningSpec extends ObjectBehavior
     {
         $this->toArray()->shouldReturn(
             [
-                'name'   => 'my name',
                 'reason' => 'my reason',
                 'reasonParameters' => [
                     'myparam' => 'mavalue'

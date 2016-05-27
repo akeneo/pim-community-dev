@@ -75,7 +75,6 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
 
         foreach ($this->fileExporter->getErrors() as $error) {
             $this->stepExecution->addWarning(
-                $this->getName(),
                 $error['message'],
                 [],
                 $error['medium']

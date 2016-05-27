@@ -58,7 +58,6 @@ class StepExecutionSpec extends ObjectBehavior
     function it_adds_warning()
     {
         $this->addWarning(
-            'my name',
             'my reason',
             [],
             ['myitem']

@@ -18,9 +18,6 @@ class Warning
     private $stepExecution;
 
     /** @var string */
-    private $name;
-
-    /** @var string */
     private $reason;
 
     /** @var array */
@@ -33,15 +30,13 @@ class Warning
      * Constructor
      *
      * @param StepExecution $stepExecution
-     * @param string        $name
      * @param string        $reason
      * @param array         $reasonParameters
      * @param array         $item
      */
-    public function __construct(StepExecution $stepExecution, $name, $reason, array $reasonParameters, array $item)
+    public function __construct(StepExecution $stepExecution, $reason, array $reasonParameters, array $item)
     {
         $this->stepExecution = $stepExecution;
-        $this->name = $name;
         $this->reason = $reason;
         $this->reasonParameters = $reasonParameters;
         $this->item = $item;
@@ -77,30 +72,6 @@ class Warning
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
-
-        return $this;
-    }
-
-    /**
-     * Returns the name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Sets the name
-     *
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
 
         return $this;
     }
@@ -185,7 +156,6 @@ class Warning
     public function toArray()
     {
         return [
-            'name'             => $this->name,
             'reason'           => $this->reason,
             'reasonParameters' => $this->reasonParameters,
             'item'             => $this->item,
