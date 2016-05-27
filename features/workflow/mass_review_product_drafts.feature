@@ -100,7 +100,7 @@ Feature: Approve or refuse several product drafts at once
       | leather-jacket | ready  | user_one | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}} |
       | wool-jacket    | ready  | user_two | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}       |
     And I am on the proposals page
-    Then I filter by "Author" with value "user_one"
+    Then I filter by "author" with operator "equals" and value "user_one"
     When I select all products
     And I press "Approve all selected" on the "Bulk Action" dropdown button
     And I confirm the action
@@ -117,7 +117,7 @@ Feature: Approve or refuse several product drafts at once
       | leather-jacket | ready  | csv_clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}} | 2014-01-01 00:00:00 |
       | wool-jacket    | ready  | csv_clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}       | 2015-01-01 00:00:00 |
     And I am on the proposals page
-    And I filter by "Proposed at" with value "between 06/01/2013 and 06/01/2014"
+    And I filter by "createdAt" with operator "between" and value "06/01/2013 and 06/01/2014"
     Then the grid should contain 1 element
     When I select all products
     And I press "Approve all selected" on the "Bulk Action" dropdown button
