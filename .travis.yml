@@ -29,7 +29,7 @@ before_script:
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ "$TRAVIS_PHP_VERSION" != "7.0" ]; then ./app/console assets:install; fi;'
     - npm install -g grunt-cli
     - npm install
-    - curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
+    - curl http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -o php-cs-fixer
     - ./app/console oro:localization:dump
 
 script:
