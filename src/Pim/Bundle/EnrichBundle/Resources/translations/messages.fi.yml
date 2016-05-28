@@ -861,6 +861,23 @@ add_to_variant_group.steps.duplicated.title: Päällekkäät akselit
 add_to_variant_group.steps.cleaner.warning.description: 'Tuotetta ei voi asettaa valittuun tuotevariaatioryhmään: päällekkäiset akseliarvot toisen tuotteen kanssa'
 edit_common_attributes: Muokkaa yleisiä attribuutteja
 edit_common_attributes_clean: Puhdista tiedostot yleisille attribuuteille
+perform.steps.duplicated.title: Päällekkäät akselit
+perform.steps.excluded.title: Poissuljetut tuotteet
+batch_jobs:
+  update_product_value:
+    label: Päivitä tuotteen arvo
+    perform:
+      label: Päivitä tuotteen arvo
+  edit_common_attributes:
+    label: Muokkaa yleisiä attribuutteja
+    perform:
+      label: Muokkaa yleisiä attribuutteja
+    clean:
+      label: Puhdista tiedostot yleisille attribuuteille
+  set_attribute_requirements:
+    label: Aseta attribuuttivaatimukset
+    perform:
+      label: Aseta attribuuttivaatimukset
 mass_edit report:
   overview: Massamuokkaa vientejä
 job_tracker:
@@ -868,3 +885,12 @@ job_tracker:
     title: Prosessiseurain
   filter:
     started_at: Alkoi
+pim_enrich_attribute_form:
+  code: Koodi
+  scopable: Soveltamisala
+  localizable: Lokalisoitavissa
+  unique: Yksilöllinen arvo
+  availableLocales: Saatavilla olevat alueet
+  locale_specific: Aluespesifi
+  group: Attribuuttiryhmä
+  useableAsGridFilter: Käytettävissä ruudukossa

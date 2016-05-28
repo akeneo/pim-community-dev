@@ -1,96 +1,4 @@
 pim_connector:
-  jobs:
-    csv_product_export:
-      title: Экспорт продуктов в CSV
-      export.title: Экспорт продуктов
-    csv_category_export:
-      title: Экспорт категорий в CSV
-      export.title: Экспорт категорий
-    csv_attribute_export:
-      title: Экспорт атрибутов в CSV
-      export.title: Экспорт атрибутов
-    csv_attribute_option_export:
-      title: Экспорт выборов атрибутов в CSV
-      export.title: Экспорт выборов атрибутов
-    csv_association_type_export:
-      title: Экспорт типов ассоциаций в CSV
-      export.title: Экспорт типов ассоциаций
-    csv_group_export:
-      title: Экспорт групп в CSV
-      export.title: Экспорт групп
-    csv_variant_group_export:
-      title: Экспорт групп вариантов в CSV
-      export.title: Экспорт групп вариантов
-    csv_family_export:
-      title: Экспорт семейств в CSV
-      export.title: Экспорт семейств
-    csv_product_import:
-      title: Импорт продуктов из CSV
-      validation.title: Проверка файла
-      import.title: Импорт продуктов
-      import_associations.title: Импорт ассоциаций
-    csv_category_import:
-      title: Импорт категорий из CSV
-      validation.title: Проверка файла
-      import.title: Импорт категорий
-    csv_attribute_import:
-      title: Импорт атрибутов из CSV
-      validation.title: Проверка файла
-      import.title: Импорт атрибутов
-    csv_attribute_option_import:
-      title: Импорт выборов атрибутов из CSV
-      validation.title: Проверка файла
-      import.title: Импорт выборов атрибутов
-    csv_association_type_import:
-      title: Импорт типов ассоциаций из CSV
-      validation.title: Проверка файла
-      import.title: Импорт типов ассоциаций
-    csv_family_import:
-      title: Импорт семейств из CSV
-      validation.title: Проверка файла
-      import.title: Импорт семейств
-    csv_group_import:
-      title: Импорт групп из CSV
-      validation.title: Проверка файла
-      import.title: Импорт групп
-    csv_variant_group_import:
-      title: Импорт групп вариантов из CSV
-      validation.title: Проверка файла
-      import.title: Импорт групп вариантов
-    xlsx_category_import:
-      validation.title: Подтверждение файла
-      import.title: Импорт категории
-    xlsx_association_type_import:
-      validation.title: Подтверждение файла
-      import.title: Импорт типов ассоциаций
-    xlsx_attribute_import:
-      validation.title: Подтверждение файла
-      import.title: Импорт атрибутов
-    xlsx_attribute_option_import:
-      validation.title: Подтверждение файла
-      import.title: Импорт выборов атрибутов
-    xlsx_family_import:
-      validation.title: Подтверждение файла
-      import.title: Импорт семейств
-    xlsx_product_export:
-      export.title: Экспорт продуктов
-    xlsx_product_import:
-      validation.title: Подтверждение файла
-      import.title: Импорт продуктов
-      import_associations.title: Импорт ассоциаций
-    xlsx_group_export:
-      export.title: Экспорт групп
-    xlsx_variant_group_export:
-      export.title: Экспорт групп вариантов
-    xlsx_group_import:
-      validation.title: Подтверждение файла
-      import.title: Импорт группы
-    xlsx_variant_group_import:
-      validation.title: Подтверждение файла
-    xlsx_family_export:
-      export.title: Экспорт семейств
-    xlsx_category_export:
-      export.title: Экспорт категорий
   steps:
     dummy_reader.title: Заглушка
     product_reader.title: Извелечение продуктов
@@ -136,6 +44,17 @@ pim_connector:
     channel:
       label: Канал
       help: Канал, который вы хотите экспортировать
+    locales:
+      label: Локали
+    status:
+      label: Статус
+      choice:
+        enabled: Включено
+        disabled: Отключено
+        all: Все
+    updated:
+      choice:
+        all: Все
     decimalSeparator:
       label: Десятичный разделитель
       help: Введите десятичный разделитель
@@ -206,3 +125,95 @@ job_execution.summary:
     title: 'Кодировка файла:'
     skipped: пропущено, расширение из белого списка
   product_skipped_no_diff: пропущен продукт (без разницы)
+batch_jobs:
+  csv_product_export:
+    label: Экспорт продуктов в CSV
+    export.label: Экспорт продуктов
+  csv_category_export:
+    label: Экспорт категорий в CSV
+    export.label: Экспорт категорий
+  csv_attribute_export:
+    label: Экспорт атрибутов в CSV
+    export.label: Экспорт атрибутов
+  csv_attribute_option_export:
+    label: Экспорт выборов атрибутов в CSV
+    export.label: Экспорт выборов атрибутов
+  csv_association_type_export:
+    label: Экспорт типов ассоциаций в CSV
+    export.label: Экспорт типов ассоциаций
+  csv_group_export:
+    label: Экспорт групп в CSV
+    export.label: Экспорт групп
+  csv_variant_group_export:
+    label: Экспорт групп вариантов в CSV
+    export.label: Экспорт групп вариантов
+  csv_family_export:
+    label: Экспорт семейств в CSV
+    export.label: Экспорт семейств
+  csv_product_import:
+    label: Импорт продуктов из CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций
+  csv_category_import:
+    label: Импорт категорий из CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт категории
+  csv_attribute_import:
+    label: Импорт атрибутов из CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт атрибутов
+  csv_attribute_option_import:
+    label: Импорт выборов атрибутов из CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт выборов атрибутов
+  csv_association_type_import:
+    label: Импорт типов ассоциаций из CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт типов ассоциаций
+  csv_family_import:
+    label: Импорт семейств из CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт семейств
+  csv_group_import:
+    label: Импорт группы из CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт группы
+  csv_variant_group_import:
+    label: Импорт группы вариантов в CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт групп вариантов
+  xlsx_category_import:
+    validation.label: Подтверждение файла
+    import.label: Импорт категории
+  xlsx_association_type_import:
+    validation.label: Подтверждение файла
+    import.label: Импорт типов ассоциаций
+  xlsx_attribute_import:
+    validation.label: Подтверждение файла
+    import.label: Импорт атрибутов
+  xlsx_attribute_option_import:
+    validation.label: Подтверждение файла
+    import.label: Импорт выборов атрибутов
+  xlsx_family_import:
+    validation.label: Подтверждение файла
+    import.label: Импорт семейств
+  xlsx_product_export:
+    export.label: Экспорт продуктов
+  xlsx_product_import:
+    validation.label: Подтверждение файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций
+  xlsx_group_export:
+    export.label: Экспорт групп
+  xlsx_variant_group_export:
+    export.label: Экспорт групп вариантов
+  xlsx_group_import:
+    validation.label: Подтверждение файла
+    import.label: Импорт группы
+  xlsx_variant_group_import:
+    validation.label: Подтверждение файла
+  xlsx_family_export:
+    export.label: Экспорт семейств
+  xlsx_category_export:
+    export.label: Экспорт категорий

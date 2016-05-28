@@ -861,6 +861,23 @@ add_to_variant_group.steps.duplicated.title: Eje duplicado
 add_to_variant_group.steps.cleaner.warning.description: 'El producto no puede ser afectado al grupo de variantes seleccionado: duplicación de valores del eje de variación con otro producto en la selección'
 edit_common_attributes: Editar atributos comunes
 edit_common_attributes_clean: Limpiar archivos para los atributos comunes
+perform.steps.duplicated.title: Eje duplicado
+perform.steps.excluded.title: Producto excluido
+batch_jobs:
+  update_product_value:
+    label: Actualizar el valor del producto
+    perform:
+      label: Actualizar el valor del producto
+  edit_common_attributes:
+    label: Editar atributos comunes
+    perform:
+      label: Editar atributos comunes
+    clean:
+      label: Limpiar archivos para los atributos comunes
+  set_attribute_requirements:
+    label: Configurar requerimientos del atributo
+    perform:
+      label: Configurar requerimientos del atributo
 mass_edit report:
   overview: Reportes de edición en masa
 job_tracker:
@@ -868,3 +885,12 @@ job_tracker:
     title: Seguimiento de procesos
   filter:
     started_at: Ejecutado el
+pim_enrich_attribute_form:
+  code: Código
+  scopable: Ámbito
+  localizable: Localizable
+  unique: Valor único
+  availableLocales: Locales disponibles
+  locale_specific: Locale específico
+  group: Grupo de atributos
+  useableAsGridFilter: Se puede usar en la grilla

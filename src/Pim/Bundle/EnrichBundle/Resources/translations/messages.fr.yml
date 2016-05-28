@@ -869,6 +869,23 @@ add_to_variant_group.steps.duplicated.title: Axe dupliqué
 add_to_variant_group.steps.cleaner.warning.description: "Le produit ne peut pas être affecté au groupe de variantes : duplication de la valeur de l'axe de variation avec un autre produit de la sélection"
 edit_common_attributes: Édition des attributs communs
 edit_common_attributes_clean: Nettoyer les fichiers pour les attributs communs
+perform.steps.duplicated.title: Axe dupliqué
+perform.steps.excluded.title: Produit exclu
+batch_jobs:
+  update_product_value:
+    label: Mise à jour de la valeur produit
+    perform:
+      label: Mise à jour de la valeur produit
+  edit_common_attributes:
+    label: Modifier les attributs communs
+    perform:
+      label: Modifier les attributs communs
+    clean:
+      label: Nettoyer les fichiers pour les attributs communs
+  set_attribute_requirements:
+    label: Choisir les attributs requis
+    perform:
+      label: Choisir les attributs requis
 mass_edit report:
   overview: Rapports des éditions en masses
 job_tracker:
@@ -876,3 +893,12 @@ job_tracker:
     title: Traqueur de processus
   filter:
     started_at: Démarré à
+pim_enrich_attribute_form:
+  code: Code
+  scopable: Portée
+  localizable: Localisable
+  unique: Valeur unique
+  availableLocales: Locales disponibles
+  locale_specific: Spécifique à une locale
+  group: "Groupe d'attributs"
+  useableAsGridFilter: Utilisable dans la grille
