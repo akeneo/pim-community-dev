@@ -67,19 +67,6 @@ pimee_catalog_rule:
   product_value:
     tooltip:
       affected_by.title: 'Ciblées par une ou plusieurs règles :'
-  jobs:
-    yml_rule_import:
-      title: Import des règles en YAML
-      import.title: Import des règles
-    yml_rule_export:
-      title: Export des règles en YAML
-      export.title: Export des règles
-    impacted_product_count:
-      title: Produits impactés par les règles
-    csv_product_import_with_rules:
-      title: Import de produits en CSV avec règles
-    xlsx_product_import_with_rules:
-      title: Import de produits en XLSX avec règles
   steps:
     product_rule_definition_reader.title: "Lecteur de règles d'import produits"
     rule_definition_processor.title: "Processeur de règles d'import produits"
@@ -90,3 +77,14 @@ pimee_catalog_rule:
       success: Calcul des produits impactés par les règles terminé
 mass_edit_rule: Paramètres des règles
 job_execution.summary.rule_calculated: Nombre de règles
+batch_jobs:
+  yml_rule_import:
+    label: Import des règles en YAML
+    import.label: Import des règles
+  yml_rule_export:
+    label: Export des règles en YAML
+    export.label: Export des règles
+  csv_product_import_with_rules:
+    execute_rules.label: Exécution des règles
+  xlsx_product_import_with_rules:
+    execute_rules.label: Exécution des règles

@@ -110,12 +110,6 @@ pimee_product_asset:
       not_empty: Koodi vaaditaan. Se ei voi olla tyhjä.
       unique: Koodin tulee olla uniikki.
       new_generation: Loimme sinulle uuden koodin.
-  jobs:
-    assets_mass_upload.title: Resurssien massatuonti
-    yml_asset_channel_configuration_import.title: Resurssikanavien konfiguraation tuonti Yaml muodossa
-    yml_asset_configuration_export.title: Resurssikanavien konfiguraatioiden vienti Yaml -muodossa
-  steps:
-    channel_configuration.processor.title: Prosessikanavien konfiguraatiot
   notAvailable:
     label: ei saatavissa
   asset:
@@ -152,4 +146,30 @@ job_execution.summary:
   pimee_product_asset.mass_upload.updated: Resurssi päivitetty
 assets_mass_upload.steps:
   asset_mass_upload.title: Resurssien massatuonti
+import_asset.steps.channel_configuration_processor.title: Prosessikanavien konfiguraatiot
 mass_upload: Massatuo resursseja
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Resurssien massatuonti
+    perform.label: Massatuonti
+  yml_asset_channel_configuration_import:
+    label: Resurssikanavien konfiguraation tuonti Yaml muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import_asset.label: Resurssikanavien konfiguraation tuonti Yaml muodossa
+  yml_asset_channel_configuration_export:
+    label: Resurssikanavien konfiguraatioiden vienti Yaml -muodossa
+    export.label: Resurssikanavien konfiguraatioiden vienti Yaml -muodossa
+  csv_asset_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_tag_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_asset_category_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_asset_configuration_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_tag_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_asset_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_asset_category_import:
+    validation.label: Tiedostojen tarkistaminen

@@ -110,19 +110,6 @@ pimee_product_asset:
       not_empty: Code ist erforderlich. Feld darf nicht leer sein.
       unique: Code muss eindeutig sein.
       new_generation: Wir haben einen neuen Code für Sie generiert.
-  jobs:
-    assets_mass_upload.title: Massenupload von Assets
-    csv_asset_import.title: Asset-Import aus CSV-Datei
-    csv_asset_export.title: Asset-Export in CSV-Datei
-    csv_asset_variation_export.title: Assetvariationen-Export in CSV-Datei
-    csv_tag_import.title: Stichworte-Import aus CSV-Datei
-    csv_asset_category_import.title: Assetkategorie-Import aus CSV-Datei
-    csv_asset_configuration_import.title: Assetausgabekanalkonfiguration-Import aus CSV-Datei
-    yml_asset_configuration_export.title: Assetausgabekanalkonfiguration-Export in Yaml
-    csv_asset_category_export.title: Assetkategorie-Export in CSV-Datei
-    yml_asset_channel_configuration_import.title: Assetausgabekanalkonfiguration-Import aus CSV-Datei
-  steps:
-    channel_configuration.processor.title: Verarbeite Ausgabekanalkonfigurationen
   notAvailable:
     label: nicht verfügbar
   asset:
@@ -159,4 +146,30 @@ job_execution.summary:
   pimee_product_asset.mass_upload.updated: Asset aktualisiert
 assets_mass_upload.steps:
   asset_mass_upload.title: Massenupload von Assets
+import_asset.steps.channel_configuration_processor.title: Verarbeite Ausgabekanalkonfigurationen
 mass_upload: Massenupload von Assets
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Massenupload von Assets
+    perform.label: Massenupload
+  yml_asset_channel_configuration_import:
+    label: Assets Channel-Konfiguration in Yaml importieren
+    validation.label: Dateivalidierung
+    import_asset.label: Assets Channel-Konfiguration in Yaml importieren
+  yml_asset_channel_configuration_export:
+    label: Assetausgabekanalkonfiguration-Export in Yaml
+    export.label: Assetausgabekanalkonfiguration-Export in Yaml
+  csv_asset_import:
+    validation.label: Dateivalidierung
+  csv_tag_import:
+    validation.label: Dateivalidierung
+  csv_asset_category_import:
+    validation.label: Dateivalidierung
+  csv_asset_configuration_import:
+    validation.label: Dateivalidierung
+  xlsx_tag_import:
+    validation.label: Dateivalidierung
+  xlsx_asset_import:
+    validation.label: Dateivalidierung
+  xlsx_asset_category_import:
+    validation.label: Dateivalidierung

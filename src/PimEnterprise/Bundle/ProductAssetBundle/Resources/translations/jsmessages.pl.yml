@@ -1,0 +1,7 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage_asset:
+          cancel: Anuluj
+          confirm: Potwierdź

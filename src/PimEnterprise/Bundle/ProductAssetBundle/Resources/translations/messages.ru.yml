@@ -4,19 +4,6 @@ pimee_product_asset:
       delete: Удалить
     view:
       code: Код
-  acl:
-    asset:
-      index: Дополнить активы
-  enrich_asset:
-    button:
-      upload: Загрузить
-      delete: Удалить
-      download: Скачать
-      reset_variations: Сбросить вариации
-    view:
-      code: Код
-      download: Скачать
-      tag: Теги
   popin.create:
     is_localized: Локализуемые
   code:
@@ -28,3 +15,20 @@ pimee_product_asset:
   tabs:
     properties.title: Свойства
     categories.title: Категории
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    validation.label: Подтверждение файла
+  csv_asset_import:
+    validation.label: Подтверждение файла
+  csv_tag_import:
+    validation.label: Подтверждение файла
+  csv_asset_category_import:
+    validation.label: Подтверждение файла
+  csv_asset_configuration_import:
+    validation.label: Подтверждение файла
+  xlsx_tag_import:
+    validation.label: Подтверждение файла
+  xlsx_asset_import:
+    validation.label: Подтверждение файла
+  xlsx_asset_category_import:
+    validation.label: Подтверждение файла

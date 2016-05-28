@@ -110,19 +110,6 @@ pimee_product_asset:
       not_empty: Código requerido. No puede estar vacío.
       unique: El código debe ser único.
       new_generation: Hemos generado un nuevo código por usted.
-  jobs:
-    assets_mass_upload.title: Carga masiva de recursos
-    csv_asset_import.title: Importar recursos en CSV
-    csv_asset_export.title: Exportar recursos en CSV
-    csv_asset_variation_export.title: Exportar las variaciones de recursos en CSV
-    csv_tag_import.title: Importar etiquetas en CSV
-    csv_asset_category_import.title: Importar categorías de recursos en CSV
-    csv_asset_configuration_import.title: Importar configuración de recursos por canal en CSV
-    yml_asset_configuration_export.title: Exportar configuraciones de recursos por canal en YAML
-    csv_asset_category_export.title: Exportar categoría de recursos en CSV
-    yml_asset_channel_configuration_import.title: Importar configuración de recursos por canal en CSV
-  steps:
-    channel_configuration.processor.title: Configuración de procesos de canal
   notAvailable:
     label: no disponible
   asset:
@@ -159,4 +146,30 @@ job_execution.summary:
   pimee_product_asset.mass_upload.updated: Recurso cargado
 assets_mass_upload.steps:
   asset_mass_upload.title: Carga masiva de recursos
+import_asset.steps.channel_configuration_processor.title: Configuración de procesos de canal
 mass_upload: Cargar recursos masivamente
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Carga masiva de recursos
+    perform.label: Carga masiva
+  yml_asset_channel_configuration_import:
+    label: Importar configuraciones de recursos por canal en Yaml
+    validation.label: Validación de archivo
+    import_asset.label: Importar configuraciones de recursos por canal en Yaml
+  yml_asset_channel_configuration_export:
+    label: Exportar configuraciones de recursos por canal en YAML
+    export.label: Exportar configuraciones de recursos por canal en YAML
+  csv_asset_import:
+    validation.label: Validación de archivo
+  csv_tag_import:
+    validation.label: Validación de archivo
+  csv_asset_category_import:
+    validation.label: Validación de archivo
+  csv_asset_configuration_import:
+    validation.label: Validación de archivo
+  xlsx_tag_import:
+    validation.label: Validación de archivo
+  xlsx_asset_import:
+    validation.label: Validación de archivo
+  xlsx_asset_category_import:
+    validation.label: Validación de archivo

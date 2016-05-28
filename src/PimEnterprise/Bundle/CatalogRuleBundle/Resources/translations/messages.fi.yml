@@ -40,14 +40,14 @@ pimee_catalog_rule:
   product_value:
     tooltip:
       affected_by.title: 'Ottaa vaikutteista säännö(i)stä:'
-  jobs:
-    yml_rule_import:
-      title: Sääntöjen tuonti YAML-muodossa
-      import.title: Sääntöjen tuonti
-    yml_rule_export:
-      title: Sääntöjen vienti YAML-muodossa
-      export.title: Sääntöjen vienti
   steps:
     product_rule_definition_reader.title: Tuotteen sääntöjen tuonnin lukija
     rule_definition_processor.title: Tuotteen sääntöjen tuonnin prosessori
     product_rule_definition_writer.title: Tuotteen sääntöjen tuonnin kirjoittaja
+batch_jobs:
+  yml_rule_import:
+    label: Sääntöjen tuonti YAML-muodossa
+    import.label: Sääntöjen tuonti
+  yml_rule_export:
+    label: Sääntöjen vienti YAML-muodossa
+    export.label: Sääntöjen vienti

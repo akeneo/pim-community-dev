@@ -43,16 +43,6 @@ pimee_workflow:
       own: Обзор / публикация
       edit: Редактировать
       view: Просмотр
-  jobs:
-    csv_product_proposal_import:
-      title: Импорт предложений в CSV
-      import.title: Импорт предложений
-    approve_product_draft:
-      title: Одобрить предложение
-      perform.title: Одобрить предложение
-    refuse_product_draft:
-      title: Отклонить предложения
-      perform.title: Отклонить предложения
   steps:
     product_draft_processor.title: Процессор предложений
     approve.title: Принять предложение
@@ -110,3 +100,13 @@ job_execution.summary:
   proposal_updated: обновленное предложение
   proposal_created: созданное предложение
   proposal_skipped: пропущеннoе предложение (без изменений)
+batch_jobs:
+  csv_product_proposal_import:
+    label: Импорт предложений в CSV
+    import.label: Импорт предложений
+  approve_product_draft:
+    label: Принять предложение
+    perform.label: Принять предложение
+  refuse_product_draft:
+    label: Отклонить предложения
+    perform.label: Отклонить предложения

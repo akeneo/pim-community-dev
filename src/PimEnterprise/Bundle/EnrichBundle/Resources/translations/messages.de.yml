@@ -37,6 +37,16 @@ pim_enrich:
   mass_edit_action:
     product:
       not_editable: 'Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.'
+      page_title: Produkte
+      page_subtitle: 'Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)'
+      title: Aktion auswählen
+      subtitle: 'Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen'
+      confirm: 'Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.'
+      steps:
+        first: Produkte auswählen
+        second: Aktion auswählen
+        third: Konfigurieren
+        fourth: Bestätigen
     publish:
       label: Produkte veröffentlichen
       description: Die ausgewählten Produkte veröffentlichen, dabei werden die aktuell veröffentlichten Daten von der aktuellen Arbeitskopie überschrieben.
@@ -75,19 +85,6 @@ pim_enrich:
     edit_common_attributes:
       message:
         error: Sie sind nicht der Eigentümer dieses Produkts und können es deshalb nicht bearbeiten.
-pim_enrich.mass_edit_action:
-  limit_exceeded: 'Bitte wählen Sie weniger als %limit% Elemente für die Bearbeitung'
-  product:
-    page_title: Produkte
-    page_subtitle: 'Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)'
-    title: Aktion auswählen
-    subtitle: 'Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen'
-    confirm: 'Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.'
-    steps:
-      first: Produkte auswählen
-      second: Aktion auswählen
-      third: Konfigurieren
-      fourth: Bestätigen
 flash.product.updated: Die Arbeitskopie des Produktes wurde aktualisiert
 flash.product_draft.updated: Entwurf erfolgreich gespeichert
 flash.locale.updated: Das Gebietsschema und die Berechtigungen wurden erfolgreich aktualisiert
@@ -99,6 +96,9 @@ pimee_enrich:
     tab:
       proposal.title: Vorschläge
   category:
+    tab:
+      permission.title: Berechtigungen
+  locale:
     tab:
       permission.title: Berechtigungen
   channel:
@@ -140,6 +140,26 @@ pimee_enrich:
       options:
         width: '%value%px Breite'
         height: '%value%px Höhe'
+update_product_value_with_permission_and_rules:
+  steps.perform: Wert des Produkts aktualisieren
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Gemeinsame Attribute bearbeiten
+  steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    execute_rules.label: Regel-Ausführung
+  update_product_value_with_permission_and_rules:
+    perform.label: Wert des Produkts aktualisieren
+    execute_rules.label: Regel-Ausführung
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Gemeinsame Attribute bearbeiten
+    execute_rules.label: Regel-Ausführung
+  add_to_variant_group_with_rules:
+    execute_rules.label: Regel-Ausführung
+add_to_variant_group_with_rules:
+  steps.excluded.title: Ausgeschlossene Produkte
+  steps.duplicated.title: Doppelte Achse
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Produktwert mit Berechtigung hinzufügen
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Produktwert mit Berechtigung aktualisieren
 edit_common_attributes_with_permission: Gemeinsame Attribute mit Berechtigung bearbeiten

@@ -38,6 +38,16 @@ pim_enrich:
     product:
       not_editable: |-
         Vous n'avez pas le droit de modifier les produits "%identifiers%".
+      page_title: Produits
+      page_subtitle: 'Edition de masse (1 produit)|Edition de masse (%count% produits)'
+      title: Choisir une opération
+      subtitle: "Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné| Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés"
+      confirm: 'Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour  %count% produits avec les renseignements suivants, merci de confirmer.'
+      steps:
+        first: Choisissez des produits
+        second: Choisir une opération
+        third: Configurer
+        fourth: Confirmer
     publish:
       label: Publier les produits
       description: Publie les produits sélectionnés, les données produits déjà publiées seront écrasées par celles des copies de travail actuelles.
@@ -81,19 +91,6 @@ pim_enrich:
     edit_common_attributes:
       message:
         error: "Vous n'êtes pas le propriétaire du produit, vous ne pouvez pas le modifier."
-pim_enrich.mass_edit_action:
-  limit_exceeded: 'Veuillez sélectionner moins de %limit% produits à éditer'
-  product:
-    page_title: Produits
-    page_subtitle: 'Éditer en masse (1 produit)|Éditer en masse (%count% produits)'
-    title: Choisissez une opération
-    subtitle: "Choisissez l'opération que vous souhaitez appliquer sur le produit sélectionné|Choisissez l'opération que vous souhaitez appliquer aux %count% produits sélectionnés"
-    confirm: "Vous êtes sur le point de mettre à jour un produit avec les informations suivantes, veuillez confirmer s'il vous plaît.|Vous êtes sur le point de mettre à jour %count% produits avec les informations suivantes, veuillez confirmer s'il vous plaît."
-    steps:
-      first: "Choisissez les produits sur lesquels l'opération sera effectuée"
-      second: "Choisissez l'opération à effectuer"
-      third: "Configurez l'opération à effectuer"
-      fourth: Confirmation
 flash.product.updated: La copie de travail a bien été mise à jour
 flash.product_draft.updated: Le brouillon a bien été enregistré
 flash.locale.updated: Les locales et les permissions ont bien étés mises à jour
@@ -149,6 +146,26 @@ pimee_enrich:
       options:
         width: '%value%px de largeur'
         height: '%value%px de hauteur'
+update_product_value_with_permission_and_rules:
+  steps.perform: Mise à jour de la valeur produit
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Modifier les attributs communs
+  steps.edit_common_attributes_processor.title: Modifier les attributs communs
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    execute_rules.label: Exécution des règles
+  update_product_value_with_permission_and_rules:
+    perform.label: Mise à jour de la valeur produit
+    execute_rules.label: Exécution des règles
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Modifier les attributs communs
+    execute_rules.label: Exécution des règles
+  add_to_variant_group_with_rules:
+    execute_rules.label: Exécution des règles
+add_to_variant_group_with_rules:
+  steps.excluded.title: Produit exclu
+  steps.duplicated.title: Axe dupliqué
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Modifier les attributs communs
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Ajouter la valeur du produit avec permission
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Mettre à jour la valeur du produit avec la permission
 edit_common_attributes_with_permission: Édition des attributs communs avec permission

@@ -37,6 +37,16 @@ pim_enrich:
   mass_edit_action:
     product:
       not_editable: 'Sinulla ei ole käyttöoikeuksia muokata tuotteita "%identifiers%".'
+      page_title: Tuotteet
+      page_subtitle: 'Massamuokkaa (1 tuote) | Massamuokkaa (%count% tuotetta)'
+      title: Valitse toiminto
+      subtitle: 'Valitse toiminto, jonka haluat suorittaa valitulle tuotteelle| Valitse toiminto, jota haluat suorittaa valituille %count% tuotteille'
+      confirm: 'Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuotteita %count% seuraavilla tiedoilla, ole hyvä ja vahvista.'
+      steps:
+        first: Valitse tuotteet
+        second: Valitse toiminto
+        third: Konfiguroi
+        fourth: Vahvista
     publish:
       label: Julkaise tuotteet
       description: Julkaise valitut tuotteet, tällä hetkellä julkaistu data pyyhkiytyy julkaistavan datan alta.
@@ -75,19 +85,6 @@ pim_enrich:
     edit_common_attributes:
       message:
         error: Et ole tuotteen omistaja, et voi muokata sitä.
-pim_enrich.mass_edit_action:
-  limit_exceeded: 'Ole hyvä ja valitse alle %limit% kohdetta muokattavaksi'
-  product:
-    page_title: Tuotteet
-    page_subtitle: 'Massamuokkaa (1 tuote) | Massamuokkaa (%count% tuotetta)'
-    title: Valitse toimenpide
-    subtitle: 'Valitse toiminto, jonka haluat suorittaa valitulle tuotteelle| Valitse toiminto, jota haluat suorittaa valituille %count% tuotteille'
-    confirm: 'Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuotteita %count% seuraavilla tiedoilla, ole hyvä ja vahvista.'
-    steps:
-      first: Valitse tuotteet
-      second: Valitse toimenpide
-      third: Konfiguroi
-      fourth: Vahvista
 flash.product.updated: Tuotteen työn alla oleva kopio on päivitetty
 flash.product_draft.updated: Luonnos on tallennettu onnistuneesti
 flash.locale.updated: Alueen asetukset ja käyttöoikeudet on päivitetty
@@ -140,6 +137,20 @@ pimee_enrich:
       options:
         width: '%value%px leveys'
         height: '%value%px korkeus'
+update_product_value_with_permission_and_rules:
+  steps.perform: Päivitä tuotteen arvo
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Muokkaa yleisiä attribuutteja
+  steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
+batch_jobs:
+  update_product_value_with_permission_and_rules:
+    perform.label: Päivitä tuotteen arvo
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Muokkaa yleisiä attribuutteja
+add_to_variant_group_with_rules:
+  steps.excluded.title: Poissuljetut tuotteet
+  steps.duplicated.title: Päällekkäät akselit
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Lisää käyttöoikeudellinen tuotearvo
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Päivitä käyttöoikeudellinen tuotearvo
 edit_common_attributes_with_permission: Muokkaa yleisiä luvanvaraisia attribuutteja
