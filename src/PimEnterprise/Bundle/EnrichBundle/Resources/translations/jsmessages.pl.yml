@@ -1,0 +1,5 @@
+pimee_enrich:
+  entity:
+    product_draft:
+      modal:
+        cancel: Anuluj

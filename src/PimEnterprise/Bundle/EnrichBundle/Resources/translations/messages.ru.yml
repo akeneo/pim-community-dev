@@ -1,14 +1,5 @@
-pim_title.locale:
-  edit: 'Региональные настройки %locale.code% | Изменить'
-Permissions: Разрешения
-attribute group.permissions:
-  edit.help: Разрешить редактирование товаров в данной группе атрибутов
 pim_enrich:
   mass_edit_action:
-    publish:
-      launched_flash: Процесс публикации товара(ов) выполняется в данный момент.
-      message:
-        error: Вы не являетесь владельцем товара и не можете его опубликовать.
     published_product:
       page_title: Опубликованные продукты
 pim_enrich.mass_edit_action:
