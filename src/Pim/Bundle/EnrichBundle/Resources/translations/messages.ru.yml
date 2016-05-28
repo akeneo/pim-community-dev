@@ -721,8 +721,20 @@ oro.locale:
 Selected products successfully deleted: Выбранные продукты успешно удалены
 edit_common_attributes: Редактировать общие атрибуты
 edit_common_attributes_clean: Редактировать файлы общих атрибутов
+batch_jobs:
+  edit_common_attributes:
+    clean:
+      label: Редактировать файлы общих атрибутов
 mass_edit report:
   overview: Отчеты массового редактирования
 job_tracker:
   filter:
     started_at: Запущеннo в
+pim_enrich_attribute_form:
+  code: Код
+  scopable: Область
+  localizable: Локализуемые
+  unique: Уникальное значение
+  availableLocales: Доступные локали
+  locale_specific: Специфично для локали
+  group: Группа атрибутов

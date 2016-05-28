@@ -41,8 +41,8 @@ oro_datagrid.select.visible: Kaikki näkyvillä olevat
 oro_datagrid.select.none: Ei yhtään
 pim.grid.ajax_choice_filter.label_empty: on tyhjä
 pim.grid.choice_filter:
-  label_empty: Tyhjä
-  label_in_list: Luettelossa
+  label_empty: on tyhjä
+  label_in_list: -luettelosta
 Available Columns: Käytettävissä olevat sarakkeet
 Displayed Columns: Näytettävät sarakkeet
 datagrid_view.columns.min_message: Valitse vähintään yksi näytettävä datagrid-sarake

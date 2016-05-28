@@ -1,58 +1,4 @@
 pim_base_connector:
-  jobs:
-    csv_product_export:
-      title: Экспорт продуктов в CSV
-      export.title: Экспорт продуктов
-    csv_category_export:
-      title: Экспорт категорий в CSV
-      export.title: Экспорт категорий
-    csv_attribute_export:
-      title: Экспорт атрибутов в CSV
-      export.title: Экспорт атрибутов
-    csv_attribute_option_export:
-      title: Экспорт выборов атрибутов в CSV
-      export.title: Экспорт выборов атрибутов
-    csv_association_type_export:
-      title: Экспорт типов ассоциаций в CSV
-      export.title: Экспорт типов ассоциаций
-    csv_group_export:
-      title: Экспорт групп в CSV
-      export.title: Экспорт групп
-    csv_variant_group_export:
-      title: Экспорт групп вариантов в CSV
-      export.title: Экспорт групп вариантов
-    csv_family_export:
-      title: Экспорт семейств в CSV
-      export.title: Экспорт семейств
-    csv_product_import:
-      title: Импорт продуктов из CSV
-      validation.title: Подтверждение файла
-      import.title: Импорт продуктов
-      import_associations.title: Импорт ассоциаций
-    csv_category_import:
-      title: Импорт категорий из CSV
-      validation.title: Проверка файла
-      import.title: Импорт категории
-    csv_attribute_import:
-      title: Импорт атрибутов из CSV
-      validation.title: Проверка файла
-      import.title: Импорт атрибутов
-    csv_attribute_option_import:
-      title: Импорт выборов атрибутов из CSV
-      validation.title: Проверка файла
-      import.title: Импорт выборов атрибутов
-    csv_association_type_import:
-      title: Импорт типов ассоциаций из CSV
-      validation.title: Подтверждение файла
-      import.title: Импорт типов ассоциаций
-    csv_group_import:
-      title: Импорт группы из CSV
-      validation.title: Проверка файла
-      import.title: Импорт группы
-    csv_variant_group_import:
-      title: Импорт группы вариантов в CSV
-      validation.title: Проверка файла
-      import.title: Импорт групп вариантов
   steps:
     dummy_reader.title: Заглушка
     product_reader.title: Извелечение продукта
@@ -104,6 +50,9 @@ pim_base_connector:
     dateFormat:
       label: Формат даты
       help: Введите формат даты
+    families:
+      label: Семейство
+      placeholder: Выберите семейство
   import:
     enabled:
       label: Активировать продукт
@@ -144,3 +93,57 @@ pim_base_connector:
     copyValuesToProducts:
       label: Копировать значения из группы вариантов в продукты
       help: Это означает, что продукты будут автоматически обновлены значениями группы вариантов, можно отключить для обновления только группы вариантов
+batch_jobs:
+  csv_product_export:
+    label: Экспорт продуктов в CSV
+    export.label: Экспорт продуктов
+  csv_category_export:
+    label: Экспорт категорий в CSV
+    export.label: Экспорт категорий
+  csv_attribute_export:
+    label: Экспорт атрибутов в CSV
+    export.label: Экспорт атрибутов
+  csv_attribute_option_export:
+    label: Экспорт выборов атрибутов в CSV
+    export.label: Экспорт выборов атрибутов
+  csv_association_type_export:
+    label: Экспорт типов ассоциаций в CSV
+    export.label: Экспорт типов ассоциаций
+  csv_group_export:
+    label: Экспорт групп в CSV
+    export.label: Экспорт групп
+  csv_variant_group_export:
+    label: Экспорт групп вариантов в CSV
+    export.label: Экспорт групп вариантов
+  csv_family_export:
+    label: Экспорт семейств в CSV
+    export.label: Экспорт семейств
+  csv_product_import:
+    label: Импорт продуктов из CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций
+  csv_category_import:
+    label: Импорт категорий из CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт категории
+  csv_attribute_import:
+    label: Импорт атрибутов из CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт атрибутов
+  csv_attribute_option_import:
+    label: Импорт выборов атрибутов из CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт выборов атрибутов
+  csv_association_type_import:
+    label: Импорт типов ассоциаций из CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт типов ассоциаций
+  csv_group_import:
+    label: Импорт группы из CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт группы
+  csv_variant_group_import:
+    label: Импорт группы вариантов в CSV
+    validation.label: Подтверждение файла
+    import.label: Импорт групп вариантов
