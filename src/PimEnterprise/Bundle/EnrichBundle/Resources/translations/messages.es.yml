@@ -37,6 +37,16 @@ pim_enrich:
   mass_edit_action:
     product:
       not_editable: 'Usted no tiene el permiso para editar los productos "%identifiers%".'
+      page_title: Productos
+      page_subtitle: 'Edición masiva (1 producto) |Edición masiva (%count% de productos)'
+      title: Elegir operación
+      subtitle: 'Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados'
+      confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.'
+      steps:
+        first: Elegir productos
+        second: Elegir operación
+        third: Configurar
+        fourth: Confirmar
     publish:
       label: Productos publicados
       description: Publicar los productos seleccionados, la presente información publicada será eliminada por la copia de trabajo actual.
@@ -75,19 +85,6 @@ pim_enrich:
     edit_common_attributes:
       message:
         error: Usted no es el dueño del producto, no puede editarlo.
-pim_enrich.mass_edit_action:
-  limit_exceeded: 'Por favor seleccione menos de %limit% productos a editar'
-  product:
-    page_title: Productos
-    page_subtitle: 'Edición en masa (1 producto)|Edición en masa (%count% productos)'
-    title: Seleccione una operación
-    subtitle: 'Seleccione la operación que desea realizar en el producto seleccionado|Seleccione la operación que desea realizar en los %count% productos seleccionados'
-    confirm: 'Está a punto de actualizar un producto con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.'
-    steps:
-      first: Seleccione los productos
-      second: Seleccione la operación
-      third: Configurar
-      fourth: Confirmar
 flash.product.updated: La copia de trabajo del producto ha sido actualizada
 flash.product_draft.updated: El borrador ha sido guardado con éxito
 flash.locale.updated: El local y los permisos han sido actualizados
@@ -143,6 +140,20 @@ pimee_enrich:
       options:
         width: 'Ancho px %value%'
         height: 'Alto px %value%'
+update_product_value_with_permission_and_rules:
+  steps.perform: Actualizar el valor del producto
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Editar atributos comunes
+  steps.edit_common_attributes_processor.title: Editar atributos comunes
+batch_jobs:
+  update_product_value_with_permission_and_rules:
+    perform.label: Actualizar el valor del producto
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Editar atributos comunes
+add_to_variant_group_with_rules:
+  steps.excluded.title: Producto excluido
+  steps.duplicated.title: Eje duplicado
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Editar atributos comunes
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Agregar valores de producto con permisiones
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Actualizar el valor de producto con permisiones
 edit_common_attributes_with_permission: Editar los atributos comunes con permisiones

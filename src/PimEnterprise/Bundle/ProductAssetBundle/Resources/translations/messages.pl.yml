@@ -1,0 +1,26 @@
+pimee_product_asset:
+  popin.create:
+    is_localized: Określaj ustawienia regionalne
+  code:
+    label: Kod
+  status:
+    label: Status
+  tabs:
+    categories.title: Kategorie
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    validation.label: Sprawdzanie pliku
+  csv_asset_import:
+    validation.label: Sprawdzanie pliku
+  csv_tag_import:
+    validation.label: Sprawdzanie pliku
+  csv_asset_category_import:
+    validation.label: Sprawdzanie pliku
+  csv_asset_configuration_import:
+    validation.label: Sprawdzanie pliku
+  xlsx_tag_import:
+    validation.label: Sprawdzanie pliku
+  xlsx_asset_import:
+    validation.label: Sprawdzanie pliku
+  xlsx_asset_category_import:
+    validation.label: Sprawdzanie pliku

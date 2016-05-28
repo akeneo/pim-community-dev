@@ -1,0 +1,10 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      column:
+        actions: Akcja
+        impacted_product_count:
+          no_yet_calculated: Jeszcze nie przeliczone
+  condition:
+    operators:
+      ENDS WITH: kończy się na

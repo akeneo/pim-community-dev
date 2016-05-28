@@ -1,3 +1,7 @@
 job_profile.permissions:
   execute.label: Autorizado a ejecutar el perfil de trabajo
   edit.label: Autorizado a editar el perfil de trabajo
+pimee_import_export:
+  job_profile:
+    tab:
+      permission.title: Permisos

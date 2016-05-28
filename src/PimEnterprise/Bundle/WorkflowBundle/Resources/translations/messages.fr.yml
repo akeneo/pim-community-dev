@@ -64,25 +64,6 @@ pimee_workflow:
       own: Examiner / publier
       edit: Modifier
       view: Voir
-  jobs:
-    csv_published_product_export:
-      title: Export CSV des produits publiés
-      export.title: Export des produits publiés
-    csv_product_proposal_import:
-      title: Import des propositions de produit en CSV
-      import.title: Import des propositions de produit
-    approve_product_draft:
-      title: Approuver la proposition
-      perform.title: Approuver la proposition
-    refuse_product_draft:
-      title: Rejeter les propositions
-      perform.title: Rejeter les propositions
-    xlsx_published_product_export:
-      title: Export des produits publiés en XLSX
-      export.title: Export des produits publiés
-    xlsx_product_proposal_import:
-      title: Import des propositions en XLSX
-      import.title: Import des propositions en XLSX
   steps:
     product_draft_processor.title: Processeur de proposition
     approve.title: Approuver la proposition
@@ -145,3 +126,18 @@ job_execution.summary:
   proposal_created: proposition(s) créée(s)
   proposal_skipped: proposition(s) ignorée(s) (aucune différence)
 published products: Produits publiés
+batch_jobs:
+  csv_published_product_export:
+    label: Export CSV des produits publiés
+    export.label: Export des produits publiés
+  csv_product_proposal_import:
+    label: Import des propositions de produit en CSV
+    import.label: Import des propositions de produit
+  approve_product_draft:
+    label: Approuver la proposition
+    perform.label: Approuver la proposition
+  refuse_product_draft:
+    label: Rejeter les propositions
+    perform.label: Rejeter les propositions
+  xlsx_published_product_export:
+    export.label: Export des produits publiés

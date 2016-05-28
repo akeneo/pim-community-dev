@@ -1,11 +1,6 @@
-View the product: Посмотреть продукт
-pimee_enrich.product_history.action.revert: Вернуть к данной версии
 pimee_enrich:
   entity:
     product:
-      btn:
-        publish: Опубликовать
-        unpublish: Снять с публикации
       meta:
         draft:
           in_progress: В процессе
@@ -19,16 +14,7 @@ pimee_enrich:
               success: Предложение было успешно применено.
             reject:
               success: Это предложение было отклонено.
-      copy:
-        source:
-          working_copy: Рабочая копия
     product_draft:
       modal:
         reject_proposal: Отклонить предложение
         cancel: Отмена
-      confirmation:
-        revert:
-          content: Вы уверены, что хотите вернуть товар к данной версии?
-      copy:
-        source:
-          working_copy: Рабочая копия

@@ -110,22 +110,6 @@ pimee_product_asset:
       not_empty: Code est requis. Le champ ne peut pas être vide.
       unique: Code doit être unique.
       new_generation: Nous avons généré un nouveau code pour vous.
-  jobs:
-    assets_mass_upload.title: Téléchargement en masse de ressources
-    yml_asset_channel_configuration_import.title: Import des configurations de transformations de ressources en Yaml
-    yml_asset_configuration_export.title: Export de la configuration des canaux de ressources en Yaml
-    csv_asset_import.title: Import de ressources en CSV
-    csv_asset_export.title: Export des ressources en CSV
-    csv_asset_variation_export.title: Export des variations de ressources en CSV
-    csv_tag_import.title: Import des mots clés en CSV
-    csv_asset_category_import.title: Import des catégories de ressources en CSV
-    csv_asset_configuration_import.title: Import des configurations des transformations pour les canaux en CSV
-    csv_asset_category_export.title: Import des catégories de ressources en CSV
-    xlsx_asset_export.title: Export des ressources en XLSX
-    xlsx_asset_category_export.title: Export des catégories de ressources en XLSX
-    xlsx_asset_variation_export.title: Export des catégories de ressources en XLSX
-  steps:
-    channel_configuration.processor.title: Traiter les configurations des canaux
   notAvailable:
     label: pas disponible
   asset:
@@ -162,4 +146,30 @@ job_execution.summary:
   pimee_product_asset.mass_upload.updated: Ressource mise à jour
 assets_mass_upload.steps:
   asset_mass_upload.title: Téléchargement massif de ressources
+import_asset.steps.channel_configuration_processor.title: Traiter les configurations des canaux
 mass_upload: Téléchargement en masse de ressources
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Téléchargement massif de ressources
+    perform.label: Téléchargement massif
+  yml_asset_channel_configuration_import:
+    label: Import des configurations de transformations de ressources en Yaml
+    validation.label: Validation du fichier
+    import_asset.label: Import des configurations de transformations de ressources en Yaml
+  yml_asset_channel_configuration_export:
+    label: Export de la configuration des canaux de ressources en Yaml
+    export.label: Export de la configuration des canaux de ressources en Yaml
+  csv_asset_import:
+    validation.label: Validation du fichier
+  csv_tag_import:
+    validation.label: Validation du fichier
+  csv_asset_category_import:
+    validation.label: Validation du fichier
+  csv_asset_configuration_import:
+    validation.label: Validation du fichier
+  xlsx_tag_import:
+    validation.label: Validation du fichier
+  xlsx_asset_import:
+    validation.label: Validation du fichier
+  xlsx_asset_category_import:
+    validation.label: Validation du fichier

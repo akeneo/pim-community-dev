@@ -67,21 +67,24 @@ pimee_catalog_rule:
   product_value:
     tooltip:
       affected_by.title: 'Von Regel(n) betroffen:'
-  jobs:
-    yml_rule_import:
-      title: Regel-Import in YAML
-      import.title: Regel-Import
-    yml_rule_export:
-      title: Regel-Export in YAML
-      export.title: Regelexport
-    impacted_product_count:
-      title: Übereinstimmende Produkte für die Regeln
   steps:
     product_rule_definition_reader.title: Produktimport-Regeln Reader
     rule_definition_processor.title: Produktimport-Regeln Processor
     product_rule_definition_writer.title: Produktimport-Regeln Writer
+    rules_execution.title: Regel-Ausführung
   notification:
     mass_edit_rule:
       success: Berechnung der übereinstimmenden Produkte für die Regeln abgeschlossen
 mass_edit_rule: Regeleinstellungen
 job_execution.summary.rule_calculated: Anzahl der Regeln
+batch_jobs:
+  yml_rule_import:
+    label: Regel-Import in YAML
+    import.label: Regel-Import
+  yml_rule_export:
+    label: Regel-Export in YAML
+    export.label: Regelexport
+  csv_product_import_with_rules:
+    execute_rules.label: Regel-Ausführung
+  xlsx_product_import_with_rules:
+    execute_rules.label: Regel-Ausführung

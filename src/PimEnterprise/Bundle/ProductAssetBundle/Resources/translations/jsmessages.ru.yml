@@ -1,30 +1,4 @@
 pimee_product_asset:
-  form:
-    product:
-      asset:
-        manage: Управление активами
-        panel:
-          basket:
-            title: Корзина
-        manage_asset:
-          cancel: Отмена
-  enrich_variation:
-    popin:
-      delete:
-        title: Подтверждение удаления
-      reset:
-        title: Сбросить вариации
-        message: Вы уверен, что хотите сбросить все вариации?
   mass_upload:
-    btn:
-      cancel: Отменить загрузку
-      delete: Удалить
-      start: Начать загрузку
     action:
       delete: Удалить
-    status:
-      added: Добавлено
-      queued: Поставлено в очередь
-      uploading: Загрузка
-      error: Ошибка
-      success: Успешно
