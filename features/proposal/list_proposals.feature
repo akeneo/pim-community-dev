@@ -87,12 +87,9 @@ Feature: List proposals
       | Code   | en_US   | fr_FR  | de_DE  |
       | Blue   | Blue    | Bleu   | Blau   |
     And I logout
-    And I am logged in as "Mary"
-    And I am on the "tshirt" product page
     And Mary proposed the following change to "tshirt":
       | tab        | field               | value|
       | Additional | Weather conditions  | Blue |
-    And I logout
     And I am logged in as "Julia"
     When I am on the proposals page
     Then I should see the following proposals:
