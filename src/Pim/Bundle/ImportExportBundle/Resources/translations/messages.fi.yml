@@ -5,15 +5,10 @@ pim_import_export:
     - Valmis
   batch_status:
     1: VALMIS
-    2: ALKAEN
-    3: ALKOI
-    4: PYSÄYTYS
-    5: LOPETTANUT
     6: EPÄONNISTUNUT
     7: HYLÄTTY
     8: TUNTEMATON
   download_archive:
-    output: lataus loi tiedoston|latauksien luomat tiedostot
     input: lataus lukema tiedosto|latauksien lukemat tiedostot
     invalid: lataa virheellisiä tietoja
   notification:
@@ -120,7 +115,6 @@ Display item: Näytä kohde
 Hide item: Piilota kohde
 Collecting data about job execution...: Kerää tietoja työsuorituksesta...
 You must select a file to upload: Valitse ladattava tiedosto
-Download log: Latauslogi
 Show profile: Näytä profiili
 execution details: suorittamisen yksityiskohdat
 job_execution.summary:
