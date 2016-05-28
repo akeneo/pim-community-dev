@@ -1,0 +1,101 @@
+Close: Zamknij
+Update: Aktualizacja
+Selected Rows: Wybrane Wiersze
+"Yes": Tak
+Yes, Delete: Tak, usuń
+Yes, I Agree: Tak, zgadzam się
+Yes, do it: Tak, wykonaj to
+"No": Nie
+Ok, got it.: Ok, zrozumiałem.
+Cancel: Anuluj
+Delete Confirmation: Potwierdzenie Usuwania
+Edit: Edytuj
+Unexpected error occured. Please contact system administrator.: Wystąpił nieoczekiwany błąd. Prosimy skontaktować się z administratorem systemu.
+Now: Teraz
+Prev: Poprzednia
+Next: Następny
+Today: Dzisiaj
+Wk: Tydz.
+Done: Gotowe
+AM: AM
+A: A
+PM: PM
+P: P
+Choose Time: Wybierz Czas
+Time: Czas
+Hour: Godzina
+Minute: Minuta
+Second: Sekunda
+Millisecond: Milisekunda
+Microsecond: Mikrosekunda
+Time Zone: Strefa Czasowa
+Localized value: Przetłumaczona wartość
+Columns: Kolumny
+Datagrid Configuration: Konfiguracja Tabeli Wyników
+Apply: Zastosuj
+Action: Akcja
+Unit: Jednostka
+Currency: Waluta
+jstree:
+  all: Wszystkie produkty
+  unclassified: Niesklasyfikowane produkty
+  product:
+    all: Wszystkie produkty
+    unclassified: Niesklasyfikowane produkty
+  no_tree: Brak dostępnego drzewa
+  include_sub: Wraz z pod-kategoriami
+  loading: Wczytywanie ...
+datetimepicker:
+  days:
+    Sunday: Niedziela
+    Monday: Poniedziałek
+    Tuesday: Wtorek
+    Wednesday: Środa
+    Thursday: Czwartek
+    Friday: Piątek
+    Saturday: Sobota
+  daysShort:
+    Sun: Niedz.
+    Mon: Pon
+    Tue: Wt
+    Wed: Śr
+  daysMin:
+    Su: Nd
+    Mo: Pn
+    Tu: Wt
+    We: Śr
+    Th: Cz
+    Fr: Pt
+    Sa: So
+  months:
+    January: Styczeń
+    February: Luty
+    March: Marzec
+    April: Kwiecień
+    May: Maj
+    June: Czerwiec
+    July: Lipiec
+    August: Sierpień
+  monthsShort:
+    May: Maj
+    Jun: Czerwiec
+    Jul: Lipiec
+    Aug: Sierpień
+    Sep: Wrz
+    Oct: Paź
+    Nov: Lis
+    Dec: Gru
+oro_config:
+  form:
+    config:
+      title: Konfiguracji systemu
+      tab:
+        system:
+          title: System
+      group:
+        localization:
+          title: Ustawienia regionalne
+          system_locale: Język
+        notification:
+          title: Powiadomienia
+          system_notification: Powiadomienia o nowych wersjach
