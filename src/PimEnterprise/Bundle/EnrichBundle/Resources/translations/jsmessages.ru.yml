@@ -1,5 +1,4 @@
 View the product: Посмотреть продукт
-pimee_enrich.product_history.action.revert: Вернуть к данной версии
 pimee_enrich:
   entity:
     product:
@@ -26,9 +25,3 @@ pimee_enrich:
       modal:
         reject_proposal: Отклонить предложение
         cancel: Отмена
-      confirmation:
-        revert:
-          content: Вы уверены, что хотите вернуть товар к данной версии?
-      copy:
-        source:
-          working_copy: Рабочая копия

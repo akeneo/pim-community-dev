@@ -1,0 +1,17 @@
+pimee_product_asset:
+  enrich_asset:
+    button:
+      delete: Usuń
+    view:
+      code: Kod
+  popin.create:
+    is_localized: Określaj ustawienia regionalne
+  code:
+    label: Kod
+  status:
+    label: Status
+  createdAt:
+    label: Data utworzenia
+  tabs:
+    properties.title: Właściwości
+    categories.title: Kategorie
