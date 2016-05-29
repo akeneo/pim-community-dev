@@ -1,0 +1,29 @@
+parameters:
+    pim_connector.csv_connector: 'Akeneo CSV Connector'
+    pim_connector.csv_attribute_export_job: 'csv_attribute_export'
+    pim_connector.csv_attribute_import_job: 'csv_attribute_import'
+    pim_connector.job.simple_job.class: Akeneo\Component\Batch\Job\Job
+    pim_connector.step.item_step.class: Akeneo\Component\Batch\Step\ItemStep
+
+services:
+    pim_connector.job.csv_attribute_export:
+        class: %pim_connector.job.simple_job.class%
+        arguments:
+            - '%pim_connector.csv_attribute_export_job%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+        calls:
+            - [setSteps, [['@pim_connector.step.csv_attribute_export.export']]]
+        tags:
+            - { name: akeneo_batch.job, connector: %pim_connector.csv_connector%, type: %akeneo_batch.job.export_type% }
+
+    pim_connector.job.csv_attribute_import:
+        class: %pim_connector.job.simple_job.class%
+        arguments:
+            - '%pim_connector.csv_attribute_import_job%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+        calls:
+            - [setSteps, [['@pim_connector.step.charset_validator', '@pim_connector.step.csv_attribute_import.import']]]
+        tags:
+            - { name: akeneo_batch.job, connector: %pim_connector.csv_connector%, type: %akeneo_batch.job.import_type% }

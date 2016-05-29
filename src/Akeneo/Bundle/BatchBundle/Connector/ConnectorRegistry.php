@@ -14,6 +14,8 @@ use Akeneo\Component\Batch\Step\StepFactory;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * TODO to be dropped
  */
 class ConnectorRegistry
 {

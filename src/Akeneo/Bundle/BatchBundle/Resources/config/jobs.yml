@@ -2,11 +2,14 @@ parameters:
     akeneo_batch.job_parameters_factory.class:              Akeneo\Component\Batch\Job\JobParametersFactory
     akeneo_batch.job_repository.class:                      Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository
     akeneo_batch.job_factory.class:                         Akeneo\Component\Batch\Job\JobFactory
+    akeneo_batch.job.job_registry.class:                                           Akeneo\Component\Batch\Job\JobRegistry
     akeneo_batch.job.job_parameters.default_values_provider_registry.class:        Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderRegistry
     akeneo_batch.job.job_parameters.constraint_collection_provider_registry.class: Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderRegistry
     akeneo_batch.job.job_parameters.empty_values_provider.class:                   Akeneo\Component\Batch\Job\JobParameters\EmptyDefaultValuesProvider
     akeneo_batch.job.job_parameters.empty_constraint_collection_provider.class:    Akeneo\Component\Batch\Job\JobParameters\EmptyConstraintCollectionProvider
     akeneo_batch.job.job_parameters_validator.class:                               Akeneo\Component\Batch\Job\JobParametersValidator
+    akeneo_batch.job.import_type: import
+    akeneo_batch.job.export_type: export
 
 services:
     akeneo_batch.job_repository:
@@ -40,3 +43,6 @@ services:
         arguments:
             - '@validator'
             - '@akeneo_batch.job.job_parameters.constraint_collection_provider_registry'
+
+    akeneo_batch.job.job_registry:
+        class: %akeneo_batch.job.job_registry.class%

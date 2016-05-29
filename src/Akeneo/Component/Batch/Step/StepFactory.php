@@ -13,6 +13,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * TODO: to be dropped
  */
 class StepFactory
 {

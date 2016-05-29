@@ -1,3 +1,32 @@
 parameters:
     pim_connector.step.validator.class: Pim\Component\Connector\Step\ValidatorStep
     pim_connector.step.tasklet.class:   Pim\Component\Connector\Step\TaskletStep
+
+services:
+    pim_connector.step.charset_validator:
+        class: %pim_connector.step.validator.class%
+        arguments:
+            - 'validation'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.validator.item.charset_validator'
+
+    pim_connector.step.csv_attribute_export.export:
+        class: %pim_connector.step.item_step.class%
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_base_connector.reader.orm.attribute'
+            - '@pim_connector.processor.normalization.attribute.flat'
+            - '@pim_connector.writer.file.csv_attribute'
+
+    pim_connector.step.csv_attribute_import.import:
+        class: %pim_connector.step.item_step.class%
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_attribute'
+            - '@pim_connector.processor.denormalization.attribute.flat'
+            - '@pim_connector.writer.doctrine.attribute'

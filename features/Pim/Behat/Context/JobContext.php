@@ -5,6 +5,7 @@ namespace Pim\Behat\Context;
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
@@ -40,9 +41,9 @@ class JobContext extends PimContext
             $configuration[$property] = $value;
         }
 
-        /** @var ConnectorRegistry $connectorRegistry */
-        $connectorRegistry = $this->getMainContext()->getContainer()->get('akeneo_batch.connectors');
-        $job = $connectorRegistry->getJob($jobInstance);
+        /** @var JobRegistry $jobRegistry */
+        $jobRegistry = $this->getMainContext()->getContainer()->get('akeneo_batch.job.job_registry');
+        $job = $jobRegistry->get($jobInstance->getAlias());
 
         /** @var JobParametersFactory $jobParamsFactory */
         $jobParamsFactory = $this->getMainContext()->getContainer()->get('akeneo_batch.job_parameters_factory');

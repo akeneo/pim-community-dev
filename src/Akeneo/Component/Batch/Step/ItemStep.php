@@ -8,7 +8,9 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Basic step implementation that read items, process them and write them
@@ -35,6 +37,30 @@ class ItemStep extends AbstractStep
     protected $stepExecution = null;
 
     /**
+     * @param string                   $name
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param JobRepositoryInterface   $jobRepository
+     * @param ItemReaderInterface      $reader
+     * @param ItemProcessorInterface   $processor
+     * @param ItemWriterInterface      $writer
+     */
+    public function __construct(
+        $name,
+        EventDispatcherInterface $eventDispatcher,
+        JobRepositoryInterface $jobRepository,
+        ItemReaderInterface $reader,
+        ItemProcessorInterface $processor,
+        ItemWriterInterface $writer
+    ) {
+        $this->name = $name;
+        $this->jobRepository = $jobRepository;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->reader = $reader;
+        $this->processor = $processor;
+        $this->writer = $writer;
+    }
+
+    /**
      * Set the batch size
      *
      * @param integer $batchSize
@@ -49,19 +75,11 @@ class ItemStep extends AbstractStep
     }
 
     /**
-     * Set reader
-     *
-     * @param ItemReaderInterface $reader
-     */
-    public function setReader(ItemReaderInterface $reader)
-    {
-        $this->reader = $reader;
-    }
-
-    /**
      * Get reader
      *
-     * @return ItemReaderInterface|null
+     * @return ItemReaderInterface
+     *
+     * TODO: could be dropped, only used by archiver, to be discussed
      */
     public function getReader()
     {
@@ -69,39 +87,25 @@ class ItemStep extends AbstractStep
     }
 
     /**
-     * Set writer
-     * @param ItemWriterInterface $writer
-     */
-    public function setWriter(ItemWriterInterface $writer)
-    {
-        $this->writer = $writer;
-    }
-
-    /**
-     * Get writer
-     * @return ItemWriterInterface|null
-     */
-    public function getWriter()
-    {
-        return $this->writer;
-    }
-
-    /**
-     * Set processor
-     * @param ItemProcessorInterface $processor
-     */
-    public function setProcessor(ItemProcessorInterface $processor)
-    {
-        $this->processor = $processor;
-    }
-
-    /**
      * Get processor
-     * @return ItemProcessorInterface|null
+     * @return ItemProcessorInterface
+     *
+     * TODO: could be dropped, not used, to be discussed
      */
     public function getProcessor()
     {
         return $this->processor;
+    }
+
+    /**
+     * Get writer
+     * @return ItemWriterInterface
+     *
+     * TODO: could be dropped, only used by archiver, to be discussed
+     */
+    public function getWriter()
+    {
+        return $this->writer;
     }
 
     /**
@@ -243,9 +247,9 @@ class ItemStep extends AbstractStep
     protected function getStepElements()
     {
         return array(
-            'reader'    => $this->getReader(),
-            'processor' => $this->getProcessor(),
-            'writer'    => $this->getWriter()
+            'reader'    => $this->reader,
+            'processor' => $this->processor,
+            'writer'    => $this->writer
         );
     }
 }

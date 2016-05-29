@@ -24,10 +24,7 @@ class ItemStepSpec extends ObjectBehavior
         ItemProcessorInterface $processor,
         ItemWriterInterface $writer
     ) {
-        $this->beConstructedWith('myname', $dispatcher, $repository);
-        $this->setReader($reader);
-        $this->setProcessor($processor);
-        $this->setWriter($writer);
+        $this->beConstructedWith('myname', $dispatcher, $repository, $reader, $processor, $writer);
     }
 
     function it_provides_configurable_step_elements($reader, $processor, $writer)

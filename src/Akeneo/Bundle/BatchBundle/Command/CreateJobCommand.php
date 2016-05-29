@@ -2,10 +2,11 @@
 
 namespace Akeneo\Bundle\BatchBundle\Command;
 
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
+use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -64,8 +65,8 @@ class CreateJobCommand extends ContainerAwareCommand
         $jobInstance->setLabel($label);
         $jobInstance->setRawConfiguration($rawConfig);
 
-        /** @var Job */
-        $job = $this->getConnectorRegitry()->getJob($jobInstance);
+        /** @var JobInterface */
+        $job = $this->getJobRegistry()->get($jobInstance->getAlias());
         if (null === $job) {
             $output->writeln(
                 sprintf(
@@ -151,11 +152,11 @@ class CreateJobCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return ConnectorRegistry
+     * @return JobRegistry
      */
-    protected function getConnectorRegitry()
+    protected function getJobRegistry()
     {
-        return $this->getContainer()->get('akeneo_batch.connectors');
+        return $this->getContainer()->get('akeneo_batch.job.job_registry');
     }
 
     /**

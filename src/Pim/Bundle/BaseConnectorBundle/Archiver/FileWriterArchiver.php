@@ -4,6 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
@@ -21,16 +22,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class FileWriterArchiver extends AbstractFilesystemArchiver
 {
-    /** @var ContainerInterface */
-    private $container;
+    /** @var JobRegistry */
+    protected $jobRegistry;
 
     /**
-     * @param Filesystem $filesystem
+     * @param Filesystem  $filesystem
+     * @param JobRegistry $jobRegistry
      */
-    public function __construct(Filesystem $filesystem, ContainerInterface $container)
+    public function __construct(Filesystem $filesystem, JobRegistry $jobRegistry)
     {
         $this->filesystem = $filesystem;
-        $this->container = $container;
+        $this->jobRegistry = $jobRegistry;
     }
 
     /**
@@ -40,7 +42,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      */
     public function archive(JobExecution $jobExecution)
     {
-        $job = $this->getConnectorRegistry()->getJob($jobExecution->getJobInstance());
+        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getAlias());
         foreach ($job->getSteps() as $step) {
             if (!$step instanceof ItemStep) {
                 continue;
@@ -70,7 +72,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      */
     public function supports(JobExecution $jobExecution)
     {
-        $job = $this->getConnectorRegistry()->getJob($jobExecution->getJobInstance());
+        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getAlias());
         foreach ($job->getSteps() as $step) {
             if ($step instanceof ItemStep && $this->isUsableWriter($step->getWriter())) {
                 return true;
@@ -123,16 +125,5 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
             );
             $this->filesystem->put($archivedFilePath, file_get_contents($filePath));
         }
-    }
-
-    /**
-     * Should be changed with TIP-418, here we work around a circular reference due to the way we instanciate the whole
-     * Job classes in the DIC
-     *
-     * @return ConnectorRegistry
-     */
-    final protected function getConnectorRegistry()
-    {
-        return $this->container->get('akeneo_batch.connectors');
     }
 }

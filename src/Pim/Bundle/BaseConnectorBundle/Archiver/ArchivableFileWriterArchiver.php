@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Archive job execution files into conventional directories
@@ -26,19 +25,19 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
     /** @var string */
     protected $directory;
 
-    /** @var ContainerInterface */
-    private $container;
+    /** @var JobRegistry */
+    private $jobRegistry;
 
     /**
      * @param ZipFilesystemFactory $factory
      * @param Filesystem           $filesystem
-     * @param ContainerInterface   $container
+     * @param JobRegistry          $jobRegistry
      */
-    public function __construct(ZipFilesystemFactory $factory, Filesystem $filesystem, ContainerInterface $container)
+    public function __construct(ZipFilesystemFactory $factory, Filesystem $filesystem, JobRegistry $jobRegistry)
     {
         $this->factory    = $factory;
         $this->filesystem = $filesystem;
-        $this->container = $container;
+        $this->jobRegistry = $jobRegistry;
     }
 
     /**
@@ -46,7 +45,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
      */
     public function archive(JobExecution $jobExecution)
     {
-        $job = $this->getConnectorRegistry()->getJob($jobExecution->getJobInstance());
+        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getAlias());
         foreach ($job->getSteps() as $step) {
             if (!$step instanceof ItemStep) {
                 continue;
@@ -119,7 +118,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
      */
     public function supports(JobExecution $jobExecution)
     {
-        $job = $this->getConnectorRegistry()->getJob($jobExecution->getJobInstance());
+        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getAlias());
         foreach ($job->getSteps() as $step) {
             if ($step instanceof ItemStep && $this->isWriterUsable($step->getWriter())) {
                 return true;
@@ -127,16 +126,5 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
         }
 
         return false;
-    }
-
-    /**
-     * Should be changed with TIP-418, here we work around a circular reference due to the way we instanciate the whole
-     * Job classes in the DIC
-     *
-     * @return ConnectorRegistry
-     */
-    final protected function getConnectorRegistry()
-    {
-        return $this->container->get('akeneo_batch.connectors');
     }
 }
