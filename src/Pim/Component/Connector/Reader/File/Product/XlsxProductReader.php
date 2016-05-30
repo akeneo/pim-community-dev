@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\Reader\File\Product;
 
+use Pim\Component\Connector\ArchiveStorage;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\XlsxReader;
 
@@ -20,15 +21,20 @@ class XlsxProductReader extends XlsxReader
     /** @var MediaPathTransformer */
     protected $mediaPathTransformer;
 
+    /** @var ArchiveStorage */
+    protected $archiveStorage;
+
     /**
      * @param FileIteratorFactory  $fileIteratorFactory
+     * @param ArchiveStorage       $archiveStorage
      * @param MediaPathTransformer $mediaPathTransformer
      */
     public function __construct(
         FileIteratorFactory $fileIteratorFactory,
+        ArchiveStorage $archiveStorage,
         MediaPathTransformer $mediaPathTransformer
     ) {
-        parent::__construct($fileIteratorFactory);
+        parent::__construct($fileIteratorFactory, $archiveStorage);
 
         $this->mediaPathTransformer = $mediaPathTransformer;
     }

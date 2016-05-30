@@ -103,6 +103,10 @@ connector:
         csv_family_import:
             type: import
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:

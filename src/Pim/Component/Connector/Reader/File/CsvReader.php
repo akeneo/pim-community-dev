@@ -7,7 +7,7 @@ use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Symfony\Component\HttpFoundation\File\File;
+use Pim\Component\Connector\ArchiveStorage;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -25,6 +25,9 @@ class CsvReader extends AbstractConfigurableStepElement implements
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
 
+    /** @var ArchiveStorage */
+    protected $archiveStorage;
+
     /** @var FileIteratorInterface */
     protected $fileIterator;
 
@@ -33,10 +36,12 @@ class CsvReader extends AbstractConfigurableStepElement implements
 
     /**
      * @param FileIteratorFactory $fileIteratorFactory
+     * @param ArchiveStorage      $archiveStorage
      */
-    public function __construct(FileIteratorFactory $fileIteratorFactory)
+    public function __construct(FileIteratorFactory $fileIteratorFactory, ArchiveStorage $archiveStorage)
     {
         $this->fileIteratorFactory = $fileIteratorFactory;
+        $this->archiveStorage = $archiveStorage;
     }
 
     /**
@@ -46,7 +51,8 @@ class CsvReader extends AbstractConfigurableStepElement implements
     {
         if (null === $this->fileIterator) {
             $jobParameters = $this->stepExecution->getJobParameters();
-            $filePath = $jobParameters->get('filePath');
+
+            $filePath = $this->archiveStorage->getPathname($this->stepExecution->getJobExecution());
             $delimiter = $jobParameters->get('delimiter');
             $enclosure = $jobParameters->get('enclosure');
             $this->fileIterator = $this->fileIteratorFactory->create($filePath, [
