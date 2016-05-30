@@ -99,7 +99,7 @@ extensions:
             deletionFailed: pim_enrich.form.variant_group.flash.attribute_deletion_error
 
     pim-variant-group-edit-form-attribute-group-selector:
-        module: pim/product-edit-form/attributes/attribute-group-selector
+        module: pim/form/common/attributes/attribute-group-selector
         parent: pim-variant-group-edit-form-attributes
         targetZone: sidebar
         position: 100
@@ -116,7 +116,7 @@ extensions:
                     exclude_unique: true
 
     pim-variant-group-edit-form-copy:
-        module: pim/product-edit-form/attributes/copy
+        module: pim/form/common/attributes/copy
         parent: pim-variant-group-edit-form-attributes
         targetZone: header
         position: 100

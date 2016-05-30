@@ -193,11 +193,8 @@ config:
 
         # Product
         pim/product-edit-form/product-label:                       pimenrich/js/product/form/product-label
-        pim/product-edit-form/attributes/copy:                     pimenrich/js/product/form/attributes/copy
-        pim/product-edit-form/attributes/copyfield:                pimenrich/js/product/form/attributes/copy-field
         pim/product-edit-form/attributes/validation:               pimenrich/js/product/form/attributes/validation
         pim/product-edit-form/attributes/validation-error:         pimenrich/js/product/form/attributes/validation-error
-        pim/product-edit-form/attributes/attribute-group-selector: pimenrich/js/product/form/attributes/attribute-group-selector
         pim/product-edit-form/attributes/variant-group:            pimenrich/js/product/form/attributes/variant-group
         pim/product-edit-form/attributes/locale-specific:          pimenrich/js/product/form/attributes/locale-specific
         pim/product-edit-form/attributes/localizable:              pimenrich/js/product/form/attributes/localizable
@@ -250,17 +247,20 @@ config:
         # Root
         pim/form/common/edit-form:      pimenrich/js/form/common/edit-form
 
-        pim/form/common/label:          pimenrich/js/form/common/label
-        pim/form/common/group-selector: pimenrich/js/form/common/group-selector
-        pim/form/common/save:           pimenrich/js/form/common/save
-        pim/form/common/delete:         pimenrich/js/form/common/delete
-        pim/form/common/back-to-grid:   pimenrich/js/form/common/back-to-grid
-        pim/form/common/form-tabs:      pimenrich/js/form/common/form-tabs
-        pim/form/common/save-buttons:   pimenrich/js/form/common/save-buttons
-        pim/form/common/state:          pimenrich/js/form/common/state
-        pim/form/common/meta/created:   pimenrich/js/form/common/meta/created
-        pim/form/common/meta/updated:   pimenrich/js/form/common/meta/updated
-        pim/form/common/attributes:     pimenrich/js/form/common/attributes
+        pim/form/common/label:                               pimenrich/js/form/common/label
+        pim/form/common/group-selector:                      pimenrich/js/form/common/group-selector
+        pim/form/common/attributes/attribute-group-selector: pimenrich/js/form/common/attributes/attribute-group-selector
+        pim/form/common/save:                                pimenrich/js/form/common/save
+        pim/form/common/delete:                              pimenrich/js/form/common/delete
+        pim/form/common/back-to-grid:                        pimenrich/js/form/common/back-to-grid
+        pim/form/common/form-tabs:                           pimenrich/js/form/common/form-tabs
+        pim/form/common/save-buttons:                        pimenrich/js/form/common/save-buttons
+        pim/form/common/state:                               pimenrich/js/form/common/state
+        pim/form/common/meta/created:                        pimenrich/js/form/common/meta/created
+        pim/form/common/meta/updated:                        pimenrich/js/form/common/meta/updated
+        pim/form/common/attributes:                          pimenrich/js/form/common/attributes
+        pim/form/common/attributes/copy:                     pimenrich/js/form/common/attributes/copy
+        pim/form/common/attributes/copy-field:               pimenrich/js/form/common/attributes/copy-field
 
         # Add attribute component
         pim/common/add-attribute-line:   pimenrich/js/form/common/attributes/add-attribute-line
@@ -284,28 +284,28 @@ config:
         pim/formatter/choices/base: pimenrich/js/formatter/choices/base
 
         # Templates
-        pim/template/form/group-selector:                 pimenrich/templates/form/group-selector.html
-        pim/template/form/save:                           pimenrich/templates/form/save.html
-        pim/template/form/delete:                         pimenrich/templates/form/delete.html
-        pim/template/form/tab/history:                    pimenrich/templates/form/tab/history.html
-        pim/template/form/grid:                           pimenrich/templates/form/grid.html
-        pim/template/form/attribute/add-attribute:        pimenrich/templates/form/attribute/add-attribute.html
-        pim/template/form/attribute/add-attribute-line:   pimenrich/templates/form/attribute/add-attribute-line.html
-        pim/template/form/attribute/add-attribute-footer: pimenrich/templates/form/attribute/add-attribute-footer.html
-        pim/template/form/back-to-grid:                   pimenrich/templates/form/back-to-grid.html
-        pim/template/form/form-tabs:                      pimenrich/templates/form/form-tabs.html
-        pim/template/form/state:                          pimenrich/templates/form/state.html
-        pim/template/form/meta/created:                   pimenrich/templates/form/meta/created.html
-        pim/template/form/meta/updated:                   pimenrich/templates/form/meta/updated.html
-        pim/template/form/tab/attributes:                 pimenrich/templates/form/tab/attributes.html
-        pim/template/form/save-buttons:                   pimenrich/templates/form/save-buttons.html
-        pim/template/form/edit-form:                      pimenrich/templates/form/edit-form.html
+        pim/template/form/group-selector:                         pimenrich/templates/form/group-selector.html
+        pim/template/form/save:                                   pimenrich/templates/form/save.html
+        pim/template/form/delete:                                 pimenrich/templates/form/delete.html
+        pim/template/form/tab/history:                            pimenrich/templates/form/tab/history.html
+        pim/template/form/grid:                                   pimenrich/templates/form/grid.html
+        pim/template/form/attribute/add-attribute:                pimenrich/templates/form/attribute/add-attribute.html
+        pim/template/form/attribute/add-attribute-line:           pimenrich/templates/form/attribute/add-attribute-line.html
+        pim/template/form/attribute/add-attribute-footer:         pimenrich/templates/form/attribute/add-attribute-footer.html
+        pim/template/form/back-to-grid:                           pimenrich/templates/form/back-to-grid.html
+        pim/template/form/form-tabs:                              pimenrich/templates/form/form-tabs.html
+        pim/template/form/state:                                  pimenrich/templates/form/state.html
+        pim/template/form/meta/created:                           pimenrich/templates/form/meta/created.html
+        pim/template/form/meta/updated:                           pimenrich/templates/form/meta/updated.html
+        pim/template/form/tab/attributes:                         pimenrich/templates/form/tab/attributes.html
+        pim/template/form/save-buttons:                           pimenrich/templates/form/save-buttons.html
+        pim/template/form/edit-form:                              pimenrich/templates/form/edit-form.html
+        pim/template/form/tab/attribute/attribute-group-selector: pimenrich/templates/form/tab/attributes/attribute-group-selector.html
+        pim/template/form/tab/attribute/copy:                     pimenrich/templates/form/tab/attributes/copy.html
+        pim/template/form/tab/attribute/copy-field:               pimenrich/templates/form/tab/attributes/copy-field.html
 
         pim/template/product/tab/categories:                         pimenrich/templates/product/tab/categories.html
-        pim/template/product/tab/attribute/copy:                     pimenrich/templates/product/tab/attributes/copy.html
-        pim/template/product/tab/attribute/copy-field:               pimenrich/templates/product/tab/attributes/copy-field.html
         pim/template/product/tab/attribute/validation-error:         pimenrich/templates/product/tab/attributes/validation-error.html
-        pim/template/product/tab/attribute/attribute-group-selector: pimenrich/templates/product/tab/attributes/attribute-group-selector.html
         pim/template/product/tab/attribute/variant-group:            pimenrich/templates/product/tab/attributes/variant-group.html
         pim/template/product/tab/associations:                       pimenrich/templates/product/tab/associations.html
         pim/template/product/tab/association-panes:                  pimenrich/templates/product/tab/association-panes.html
