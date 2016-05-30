@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
@@ -50,6 +51,19 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
             }
         }
 
+        $qb = $this->applyQueryOptions($qb, $options);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @param array        $options
+     *
+     * @return QueryBuilder
+     */
+    protected function applyQueryOptions(QueryBuilder $qb, array $options)
+    {
         if (isset($options['identifiers']) && is_array($options['identifiers']) && !empty($options['identifiers'])) {
             $qb->andWhere('f.code in (:codes)');
             $qb->setParameter('codes', $options['identifiers']);
@@ -62,6 +76,6 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
             }
         }
 
-        return $qb->getQuery()->getResult();
+        return $qb;
     }
 }
