@@ -5,6 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
@@ -58,13 +59,17 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var ProductBuilder */
     protected $productBuilder;
 
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
+
     /**
      * @param Serializer              $serializer
      * @param ChannelManager          $channelManager
+     * @param ProductBuilderInterface $productBuilder
      * @param string[]                $mediaAttributeTypes
      * @param array                   $decimalSeparators
      * @param array                   $dateFormats
-     * @param ProductBuilderInterface $productBuilder
+     * @param ObjectDetacherInterface $detacher
      */
     public function __construct(
         Serializer $serializer,
@@ -72,7 +77,8 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
         ProductBuilderInterface $productBuilder,
         array $mediaAttributeTypes,
         array $decimalSeparators,
-        array $dateFormats
+        array $dateFormats,
+        ObjectDetacherInterface $detacher = null
     ) {
         $this->serializer          = $serializer;
         $this->channelManager      = $channelManager;
@@ -80,6 +86,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
         $this->decimalSeparators   = $decimalSeparators;
         $this->dateFormats         = $dateFormats;
         $this->productBuilder      = $productBuilder;
+        $this->detacher            = $detacher;
     }
 
     /**
@@ -103,6 +110,9 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
         }
 
         $data['product'] = $this->serializer->normalize($product, 'flat', $this->getNormalizerContext());
+        if (null !== $this->detacher) {
+            $this->detacher->detach($product);
+        }
 
         return $data;
     }

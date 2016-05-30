@@ -45,6 +45,7 @@ services:
             - ['pim_catalog_file', 'pim_catalog_image']
             - %pim_catalog.localization.decimal_separators%
             - %pim_catalog.localization.date_formats%
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_base_connector.processor.dummy:
         class: %pim_base_connector.processor.dummy.class%

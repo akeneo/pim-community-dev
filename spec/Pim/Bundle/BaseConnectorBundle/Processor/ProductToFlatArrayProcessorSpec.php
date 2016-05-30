@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
@@ -18,8 +19,12 @@ use Symfony\Component\Serializer\Serializer;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
-    function let(Serializer $serializer, ChannelManager $channelManager, ProductBuilderInterface $productBuilder)
-    {
+    function let(
+        Serializer $serializer,
+        ChannelManager $channelManager,
+        ProductBuilderInterface $productBuilder,
+        ObjectDetacherInterface $detacher
+    ) {
         $this->beConstructedWith(
             $serializer,
             $channelManager,
@@ -29,7 +34,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             [
                 ['value' => 'yyyy-MM-dd', 'label' => 'yyyy-mm-dd'],
                 ['value' => 'dd.MM.yyyy', 'label' => 'dd.mm.yyyy'],
-            ]
+            ],
+            $detacher
         );
     }
 
@@ -97,6 +103,9 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
     function it_returns_flat_data_with_media(
         $channelManager,
+        $serializer,
+        $productBuilder,
+        $detacher,
         Filesystem $filesystem,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -107,9 +116,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductValueInterface $value2,
         AttributeInterface $attribute,
         ProductValueInterface $identifierValue,
-        AttributeInterface $identifierAttribute,
-        $serializer,
-        $productBuilder
+        AttributeInterface $identifierAttribute
     ) {
         $localeCodes = ['en_US'];
 
@@ -155,6 +162,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             ->willReturn(['normalized_product']);
 
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
+
+        $detacher->detach($product)->shouldBeCalled();
 
         $this->setChannel('foobar');
         $this->process($product)->shouldReturn(
