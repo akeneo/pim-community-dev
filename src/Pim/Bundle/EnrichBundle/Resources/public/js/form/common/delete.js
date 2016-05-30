@@ -40,7 +40,7 @@ define(
              */
             remover: {
                 remove: function () {
-                    throw 'remove function should be implemented in remover';
+                    throw 'Remove function should be implemented in remover';
                 }
             },
 

@@ -3,30 +3,20 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Pim\Component\Enrich\Model\AvailableAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +25,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Product Controller
@@ -54,12 +43,6 @@ class ProductController
 
     const SAVE_AND_FINISH = 'SaveAndFinish';
 
-    /** @var Request */
-    protected $request;
-
-    /** @var EngineInterface */
-    protected $templating;
-
     /** @var RouterInterface */
     protected $router;
 
@@ -69,23 +52,14 @@ class ProductController
     /** @var FormFactoryInterface */
     protected $formFactory;
 
-    /** var ValidatorInterface */
-    protected $validator;
-
     /** @var TranslatorInterface */
     protected $translator;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
 
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
     /** @var UserContext */
     protected $userContext;
-
-    /** @var VersionManager */
-    protected $versionManager;
 
     /** @var SecurityFacade */
     protected $securityFacade;
@@ -99,9 +73,6 @@ class ProductController
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
-    /** @var SimpleFactoryInterface */
-    protected $categoryFactory;
-
     /** @var string */
     protected $categoryClass;
 
@@ -109,61 +80,43 @@ class ProductController
     protected $categoryRepository;
 
     /**
-     * @param Request                     $request
-     * @param EngineInterface             $templating
      * @param RouterInterface             $router
      * @param TokenStorageInterface       $tokenStorage
      * @param FormFactoryInterface        $formFactory
-     * @param ValidatorInterface          $validator
      * @param TranslatorInterface         $translator
-     * @param EventDispatcherInterface    $eventDispatcher
      * @param ProductRepositoryInterface  $productRepository
      * @param CategoryRepositoryInterface $categoryRepository
      * @param UserContext                 $userContext
-     * @param VersionManager              $versionManager
      * @param SecurityFacade              $securityFacade
      * @param SaverInterface              $productSaver
      * @param SequentialEditManager       $seqEditManager
      * @param ProductBuilderInterface     $productBuilder
-     * @param SimpleFactoryInterface      $categoryFactory
      * @param string                      $categoryClass
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
         RouterInterface $router,
         TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
         TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
         ProductRepositoryInterface $productRepository,
         CategoryRepositoryInterface $categoryRepository,
         UserContext $userContext,
-        VersionManager $versionManager,
         SecurityFacade $securityFacade,
         SaverInterface $productSaver,
         SequentialEditManager $seqEditManager,
         ProductBuilderInterface $productBuilder,
-        SimpleFactoryInterface $categoryFactory,
         $categoryClass
     ) {
-        $this->request            = $request;
-        $this->templating         = $templating;
         $this->router             = $router;
         $this->tokenStorage       = $tokenStorage;
         $this->formFactory        = $formFactory;
-        $this->validator          = $validator;
         $this->translator         = $translator;
         $this->productRepository  = $productRepository;
         $this->userContext        = $userContext;
-        $this->versionManager     = $versionManager;
         $this->securityFacade     = $securityFacade;
         $this->productSaver       = $productSaver;
         $this->seqEditManager     = $seqEditManager;
         $this->productBuilder     = $productBuilder;
-        $this->categoryFactory    = $categoryFactory;
-        $this->eventDispatcher    = $eventDispatcher;
         $this->categoryRepository = $categoryRepository;
         $this->categoryClass      = $categoryClass;
     }
@@ -176,7 +129,7 @@ class ProductController
      *
      * @return Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $this->seqEditManager->removeByUser($this->tokenStorage->getToken()->getUser());
 
@@ -209,7 +162,7 @@ class ProductController
             $form->submit($request);
             if ($form->isValid()) {
                 $this->productSaver->save($product);
-                $this->request->getSession()->getFlashBag()->add('success', new Message('flash.product.created'));
+                $request->getSession()->getFlashBag()->add('success', new Message('flash.product.created'));
 
                 if ($dataLocale === null) {
                     $dataLocale = $this->getDataLocaleCode();
@@ -282,7 +235,7 @@ class ProductController
      */
     protected function redirectAfterEdit($params)
     {
-        switch ($this->request->get('action')) {
+        switch ($request->get('action')) {
             case self::CREATE:
                 $route                  = 'pim_enrich_product_edit';
                 $params['create_popin'] = true;
@@ -290,25 +243,6 @@ class ProductController
         }
 
         return $this->redirectToRoute($route, $params);
-    }
-
-    /**
-     * History of a product
-     *
-     * @param int $id
-     *
-     * @AclAncestor("pim_enrich_product_history")
-     *
-     * @return Response
-     */
-    public function historyAction($id)
-    {
-        return $this->templating->renderResponse(
-            'PimEnrichBundle:Product:_history.html.twig',
-            [
-                'product' => $this->findProductOr404($id),
-            ]
-        );
     }
 
     /**
@@ -368,7 +302,7 @@ class ProductController
     protected function redirectToRoute($route, $parameters = [])
     {
         if (!isset($parameters['dataLocale'])) {
-            $parameters['dataLocale'] = $this->getDataLocaleCode();
+            $parameters['dataLocale'] = $this->userContext->getCurrentLocaleCode();
         }
 
         return new RedirectResponse($this->router->generate($route, $parameters));
@@ -392,30 +326,6 @@ class ProductController
     protected function getDataLocaleCode()
     {
         return $this->userContext->getCurrentLocaleCode();
-    }
-
-    /**
-     * Get data locale object
-     *
-     * @throws \Exception
-     *
-     * @return LocaleInterface
-     */
-    protected function getDataLocale()
-    {
-        return $this->userContext->getCurrentLocale();
-    }
-
-    /**
-     * @return string
-     */
-    protected function getComparisonLocale()
-    {
-        $locale = $this->request->query->get('compareWith');
-
-        if ($this->getDataLocaleCode() !== $locale) {
-            return $locale;
-        }
     }
 
     /**
@@ -443,25 +353,6 @@ class ProductController
     }
 
     /**
-     * Get the AvailbleAttributes form
-     *
-     * @param array               $attributes          The attributes
-     * @param AvailableAttributes $availableAttributes The available attributes container
-     *
-     * @return Form
-     */
-    protected function getAvailableAttributesForm(
-        array $attributes = [],
-        AvailableAttributes $availableAttributes = null
-    ) {
-        return $this->formFactory->create(
-            'pim_available_attributes',
-            $availableAttributes ?: new AvailableAttributes(),
-            ['excluded_attributes' => $attributes]
-        );
-    }
-
-    /**
      * Returns the options for the create form
      *
      * @return array
@@ -469,60 +360,5 @@ class ProductController
     protected function getCreateFormOptions()
     {
         return [];
-    }
-
-    /**
-     * Get the product edit template parameters
-     *
-     * @param FormInterface    $form
-     * @param ProductInterface $product
-     * @param array            $channels
-     * @param array            $trees
-     *
-     * @return array
-     */
-    protected function getProductEditTemplateParams(
-        FormInterface $form,
-        ProductInterface $product,
-        array $channels,
-        array $trees
-    ) {
-        $sequentialEdit = $this->seqEditManager->findByUser($this->tokenStorage->getToken()->getUser());
-        if ($sequentialEdit) {
-            $this->seqEditManager->findWrap($sequentialEdit, $product);
-        }
-
-        $defaultParameters = [
-            'form'             => $form->createView(),
-            'dataLocale'       => $this->getDataLocaleCode(),
-            'comparisonLocale' => $this->getComparisonLocale(),
-            'channels'         => $channels,
-            'attributesForm'   => $this->getAvailableAttributesForm($product->getAttributes())->createView(),
-            'product'          => $product,
-            'trees'            => $trees,
-            'created'          => $this->versionManager->getOldestLogEntry($product),
-            'updated'          => $this->versionManager->getNewestLogEntry($product),
-            'locales'          => $this->getUserLocales(),
-            'createPopin'      => $this->request->get('create_popin'),
-            'sequentialEdit'   => $sequentialEdit
-        ];
-
-        $event = new GenericEvent($this, ['parameters' => $defaultParameters]);
-        $this->dispatch(ProductEvents::PRE_RENDER_EDIT, $event);
-
-        return $event->getArgument('parameters');
-    }
-
-    /**
-     * Dispatch event if at least one listener is registered for it
-     *
-     * @param string $eventName
-     * @param Event  $event
-     */
-    protected function dispatch($eventName, Event $event)
-    {
-        if ($this->eventDispatcher->hasListeners($eventName)) {
-            $this->eventDispatcher->dispatch($eventName, $event);
-        }
     }
 }
