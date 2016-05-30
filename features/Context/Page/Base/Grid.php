@@ -639,23 +639,27 @@ class Grid extends Index
      *
      * @param string $value
      * @param bool   $check
-     *
-     * @return NodeElement|null
      */
     public function selectRow($value, $check = true)
     {
-        $row      = $this->getRow($value);
-        $checkbox = $this->spin(function () use ($row) {
-            return $row->find('css', 'input[type="checkbox"]');
-        }, sprintf('Couldn\'t find a checkbox for row "%s"', $value));
+        $this->spin(function () use ($value, $check) {
+            $row      = $this->getRow($value);
+            $checkbox = $row->find('css', 'input[type="checkbox"]');
 
-        if ($check) {
-            $checkbox->check();
-        } else {
+            if (null === $checkbox || !$checkbox->isVisible()) {
+                return false;
+            }
+
+            if (true === $check) {
+                $checkbox->check();
+
+                return $checkbox->isChecked();
+            }
+
             $checkbox->uncheck();
-        }
 
-        return $checkbox;
+            return !$checkbox->isChecked();
+        }, sprintf('Couldn\'t find a checkbox for row "%s"', $value));
     }
 
     /**
