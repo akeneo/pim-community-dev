@@ -93,7 +93,7 @@ class Form extends Base
 
             $tabElement = $this->getFormTab($tab);
 
-            return $tabElement->getParent()->hasClass('active');
+            return null !== $tabElement && $tabElement->getParent()->hasClass('active');
         }, sprintf('Could not go to tab "%s"', $tab));
     }
 
