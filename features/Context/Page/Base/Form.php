@@ -83,17 +83,20 @@ class Form extends Base
             if (null === $tabs) {
                 $tabs = $this->find('css', $this->elements['Form tabs']['css']);
             }
-
+            error_log(count($tabs));
+            error_log($tabs->getHtml());
             if (null === $tabs) {
                 return false;
             }
 
             $tabDom = $tabs->findLink($tab);
+            if (null === $tabDom) {
+                return false;
+            }
+            error_log($tabDom->getParent()->getHtml());
             $tabDom->click();
 
-            $tabElement = $this->getFormTab($tab);
-
-            return null !== $tabElement && $tabElement->getParent()->hasClass('active');
+            return $tabDom->getParent()->hasClass('active');
         }, sprintf('Could not go to tab "%s"', $tab));
     }
 
