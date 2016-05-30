@@ -27,6 +27,9 @@ define([
             initialize: function (alias, options) {
                 this.alias     = alias;
                 this.selection = options.selection || [];
+                this.selection = _.each(this.selection, function (item) {
+                    return String(item);
+                });
                 this.options   = options;
 
                 mediator.on('datagrid:selectModel:' + this.alias, function (model) {
@@ -87,7 +90,7 @@ define([
              * @param {Object} element
              */
             addElement: function (element) {
-                this.selection = _.union(this.selection, [parseInt(element)]);
+                this.selection = _.union(this.selection, [element]);
                 this.trigger('grid:selection:updated', this.selection);
             },
 
@@ -97,7 +100,7 @@ define([
              * @param {Object} element
              */
             removeElement: function (element) {
-                this.selection = _.without(this.selection, parseInt(element));
+                this.selection = _.without(this.selection, element);
                 this.trigger('grid:selection:updated', this.selection);
             },
 
