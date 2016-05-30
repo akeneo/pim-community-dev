@@ -53,12 +53,16 @@ class Creation extends Form
      * Add an attribute option
      *
      * @param string $name
+     * @param array  $labels
      */
     public function addOption($name, array $labels = [])
     {
-        if (!$this->getElement('attribute_option_table')->find('css', '.attribute_option_code')) {
+        if (null === $this->getElement('attribute_option_table')->find('css', '.attribute_option_code')) {
             $this->getElement('add_option_button')->click();
-            $this->getSession()->wait($this->getTimeout());
+
+            $this->spin(function () {
+                return $this->getElement('attribute_option_table')->find('css', '.attribute_option_code');
+            }, 'The click on new option has not added a new line.');
         }
 
         $rows = $this->getOptionsElement();
