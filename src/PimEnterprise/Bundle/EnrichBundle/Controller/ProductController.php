@@ -12,32 +12,24 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Product Controller
@@ -50,44 +42,32 @@ class ProductController extends BaseProductController
     protected $categoryManager;
 
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
         RouterInterface $router,
         TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
         TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
         ProductRepositoryInterface $productRepository,
         CategoryRepositoryInterface $categoryRepository,
         UserContext $userContext,
-        VersionManager $versionManager,
         SecurityFacade $securityFacade,
         SaverInterface $productSaver,
         SequentialEditManager $seqEditManager,
         ProductBuilderInterface $productBuilder,
-        SimpleFactoryInterface $categoryFactory,
         CategoryManager $categoryManager,
         $categoryClass
     ) {
         parent::__construct(
-            $request,
-            $templating,
             $router,
             $tokenStorage,
             $formFactory,
-            $validator,
             $translator,
-            $eventDispatcher,
             $productRepository,
             $categoryRepository,
             $userContext,
-            $versionManager,
             $securityFacade,
             $productSaver,
             $seqEditManager,
             $productBuilder,
-            $categoryFactory,
             $categoryClass
         );
 
@@ -102,19 +82,19 @@ class ProductController extends BaseProductController
      *
      * @return Response|RedirectResponse
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         try {
             $this->userContext->getAccessibleUserTree();
         } catch (\LogicException $e) {
-            $this->request->getSession()->getFlashBag()
+            $request->getSession()->getFlashBag()
                 ->add('error', new Message('category.permissions.no_access_to_products'));
 
             return $this->redirectToRoute('oro_default');
         }
 
         if (null === $dataLocale = $this->getDataLocale()) {
-            $this->request->getSession()->getFlashBag()
+            $request->getSession()->getFlashBag()
                 ->add('error', new Message('locale.permissions.no_access_to_products'));
 
             return $this->redirectToRoute('oro_default');
