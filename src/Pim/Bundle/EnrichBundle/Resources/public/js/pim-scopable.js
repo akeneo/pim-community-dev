@@ -29,12 +29,7 @@ define(
                 '<%= field.hiddenInput %>' +
                 '<div class="control-group">' +
                     '<div class="controls input-prepend<%= isMetric ? " metric input-append" : "" %>">' +
-                        '<label class="control-label add-on" for="<%= field.id %>" title="<%= field.scope %>"' +
-                            '<% if (field.color) { %>' +
-                                ' style="background-color:rgba(<%= field.color %>)' +
-                                    '<%= field.fontColor ? ";color:" + field.fontColor : "" %>;"' +
-                            '<% } %>' +
-                        '>' +
+                        '<label class="control-label add-on" for="<%= field.id %>" title="<%= field.scope %>">' +
                             '<%= field.scope[0].toUpperCase() %>' +
                         '</label>' +
                         '<div class="scopable-input">' +
@@ -97,8 +92,6 @@ define(
                 }
 
                 field.scope       = this.$el.data('scope');
-                field.color       = this.$el.data('color');
-                field.fontColor   = this.$el.data('font-color');
                 field.hiddenInput = this.$el.find('input[type="hidden"]').get(0).outerHTML;
                 field.icons       = this.$el.find('.icons-container').html();
 

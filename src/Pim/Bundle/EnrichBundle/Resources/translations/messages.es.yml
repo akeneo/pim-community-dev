@@ -501,16 +501,6 @@ info:
     auto option sorting: Si está habilitado, las opciones se ordenarán automáticamente por sus etiquetas
   completeness:
     not calculated: Aún no calculados
-color:
-  title: Color
-  gray: Gris
-  white: Blanco
-  yellow: Amarillo
-  orange: Naranja
-  magenta: Magenta
-  violet: Violeta
-  blue: Azul
-  cyan: Cian
 Options: Opciones
 Created at: Creado el
 Updated at: Actualizado el
@@ -563,7 +553,6 @@ Translate from: Traducir desde
 switch_on: SÍ
 switch_off: 'No 	'
 Close: Cerrar
-Choose a color: Elige un color
 Search: Buscar
 Choose the attribute type: Elija el tipo de atributo
 Choose the attribute group: Elija el grupo de atributos

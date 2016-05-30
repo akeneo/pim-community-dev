@@ -509,16 +509,6 @@ info:
     auto option sorting: Si activé, les options sont automatiquement triées par leurs valeurs traduites
   completeness:
     not calculated: Pas encore calculé
-color:
-  title: Couleur
-  gray: Gris
-  white: Blanc
-  yellow: Jaune
-  orange: Orange
-  magenta: Magenta
-  violet: Violet
-  blue: Bleu
-  cyan: Cyan
 Options: Options
 Created at: Crée le
 Updated at: Mis à jour le
@@ -571,7 +561,6 @@ Translate from: Traduire depuis
 switch_on: Oui
 switch_off: Non
 Close: Fermer
-Choose a color: Choisir une couleur
 Search: Recherche
 Choose the attribute type: "Choisissez le type d'attribut"
 Choose the attribute group: "Choisissez le groupe d'attributs"

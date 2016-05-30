@@ -11,7 +11,6 @@ This value should be Yes or No: Este valor debe ser Si o No
 This value should not be blank: Este valor no debe estar vacío
 Option code may contain only letters, numbers and underscores: El Código de opción debe contener sólo letras, números y caracteres especiales
 Option code may contain only letters (at least one), numbers and underscores: El código de opción sólo puede contener letras (al menos una), números y guiones bajos
-This color is already used by another channel: Este color está siendo utilizado en otro canal
 This value should not be a decimal.: Este valor no debe ser un decimal.
 "The value %value% is already set on another product for the unique attribute %attribute%": 'El valor %value% ya es usado en otro producto por el atributo único %attribute%'
 regex.comma_or_semicolon.message: Este campo no debería contener comas o punto y comas.

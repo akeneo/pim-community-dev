@@ -5,7 +5,6 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\EnrichBundle\Helper\SortHelper;
-use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
@@ -30,9 +29,6 @@ class ChannelType extends AbstractType
     /** @var LocaleHelper */
     protected $localeHelper;
 
-    /** @var ColorsProvider */
-    protected $provider;
-
     /** @var TranslatedLabelsProviderInterface */
     protected $categoryProvider;
 
@@ -47,7 +43,6 @@ class ChannelType extends AbstractType
      *
      * @param LocaleRepositoryInterface         $localeRepository
      * @param LocaleHelper                      $localeHelper
-     * @param ColorsProvider                    $provider
      * @param TranslatedLabelsProviderInterface $categoryProvider
      * @param string                            $categoryClass
      * @param string                            $dataClass
@@ -55,14 +50,12 @@ class ChannelType extends AbstractType
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
         LocaleHelper $localeHelper,
-        ColorsProvider $provider,
         TranslatedLabelsProviderInterface $categoryProvider,
         $categoryClass,
         $dataClass
     ) {
         $this->localeRepository = $localeRepository;
         $this->localeHelper     = $localeHelper;
-        $this->provider         = $provider;
         $this->categoryProvider = $categoryProvider;
         $this->categoryClass    = $categoryClass;
         $this->dataClass        = $dataClass;
@@ -76,7 +69,6 @@ class ChannelType extends AbstractType
         $this
             ->addCodeField($builder)
             ->addLabelField($builder)
-            ->addColorField($builder)
             ->addCurrenciesField($builder)
             ->addLocalesField($builder)
             ->addCategoryField($builder)
@@ -108,30 +100,6 @@ class ChannelType extends AbstractType
     protected function addLabelField(FormBuilderInterface $builder)
     {
         $builder->add('label', 'text', ['label' => 'Default label']);
-
-        return $this;
-    }
-
-    /**
-     * Create color field
-     *
-     * @param FormBuilderInterface $builder
-     *
-     * @return ChannelType
-     */
-    protected function addColorField(FormBuilderInterface $builder)
-    {
-        $builder->add(
-            'color',
-            'choice',
-            [
-                'choices'     => $this->provider->getColorChoices(),
-                'select2'     => true,
-                'required'    => false,
-                'label'       => 'color.title',
-                'empty_value' => 'Choose a color'
-            ]
-        );
 
         return $this;
     }

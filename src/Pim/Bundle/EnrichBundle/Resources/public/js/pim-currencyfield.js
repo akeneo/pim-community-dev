@@ -34,12 +34,7 @@ define(
                     '<% _.each(currencies, function (currency, index) { %>' +
                         '<% if (item.label === currency) { %>' +
                             '<% if (scopable && index === 0) { %>' +
-                                '<label class="control-label add-on" title="<%= item.scope %>"' +
-                                    '<% if (item.color) { %>' +
-                                        ' style="background-color:rgba(<%= item.color %>)' +
-                                            '<%= item.fontColor ? ";color:" + item.fontColor : "" %>;"' +
-                                    '<% } %>' +
-                                '>' +
+                                '<label class="control-label add-on" title="<%= item.scope %>">' +
                                     '<%= item.scope[0].toUpperCase() %>' +
                                 '</label>' +
                                 '<div class="scopable-input">' +
@@ -109,10 +104,7 @@ define(
                 $target.find(this.fieldSelector).each(function () {
                     var metadata = $(this).data('metadata');
                     if (extractScope) {
-                        var $root = $(this).parent().parent().parent();
-                        metadata.scope     = $root.data('scope');
-                        metadata.color     = $root.data('color');
-                        metadata.fontColor = $root.data('font-color');
+                        metadata.scope = $(this).parent().parent().parent().data('scope');
                     }
                     data.push(metadata);
                 });

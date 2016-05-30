@@ -113,18 +113,6 @@ interface ChannelInterface extends ReferableInterface, VersionableInterface, Cho
     public function getConversionUnits();
 
     /**
-     * @return string
-     */
-    public function getColor();
-
-    /**
-     * @param string $color
-     *
-     * @return ChannelInterface
-     */
-    public function setColor($color);
-
-    /**
      * Get locale codes
      *
      * @return array
