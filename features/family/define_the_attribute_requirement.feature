@@ -19,9 +19,7 @@ Feature: Define the attribute requirement
   Scenario: Successfully make an attribute required for a channel
     Given I visit the "Attributes" tab
     And I switch the attribute "Rating" requirement in channel "Mobile"
-    And I save the family
-    And I should see the flash message "Family successfully updated"
-    And I should not see the text "There are unsaved changes."
+    And I successfully save the family
     And I visit the "Attributes" tab
     Then attribute "rating" should be required in channels mobile and tablet
 
@@ -50,9 +48,7 @@ Feature: Define the attribute requirement
     And I am on the "Boots" family page
     And I visit the "Attributes" tab
     And I switch the attribute "Rating" requirement in channel "Mobile"
-    And I save the family
-    And I should see the flash message "Family successfully updated"
-    And I should not see the text "There are unsaved changes."
+    And I successfully save the family
     When I remove the "Rating" attribute
     And I confirm the deletion
     Then I should not see the "Rating" attribute

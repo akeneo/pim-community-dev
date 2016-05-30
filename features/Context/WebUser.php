@@ -10,6 +10,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
+use Behat\Mink\Exception\ResponseTextException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Box\Spout\Common\Type;
@@ -406,6 +407,28 @@ class WebUser extends RawMinkContext
     public function iSave()
     {
         $this->getCurrentPage()->save();
+    }
+
+    /**
+     * @Given /^I successfully save the (.*)$/
+     */
+    public function iSuccessfullySave()
+    {
+        $message = 'There are unsaved changes';
+
+        $this->assertSession()->pageTextContains($message);
+
+        $this->getCurrentPage()->save();
+
+        $this->spin(function () use ($message) {
+            try {
+                $this->assertSession()->pageTextNotContains($message);
+
+                return true;
+            } catch (ResponseTextException $exception) {
+                return false;
+            }
+        }, sprintf('The message "%s" remains after saving.', $message));
     }
 
     /**

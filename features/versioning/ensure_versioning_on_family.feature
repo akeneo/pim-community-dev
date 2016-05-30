@@ -15,7 +15,6 @@ Feature: Ensure versioning on family
     Then I visit the "Properties" tab
     When I fill in the following information:
       | English (United States) | My heels |
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes."
+    And I successfully save the family
     When I visit the "History" tab
     Then there should be 2 updates

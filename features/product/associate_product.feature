@@ -51,8 +51,7 @@ Feature: Associate a product
     And I check the row "similar_boots"
     And I press the "Show products" button
     And I check the rows "shoelaces, gray-boots, brown-boots and green-boots"
-    When I save the product
-    Then I should not see the text "There are unsaved changes."
+    When I successfully save the product
     And I should see the text "4 products and 1 groups"
     And I select the "Upsell" association
     Then I should see the text "1 products and 1 groups"
@@ -116,8 +115,7 @@ Feature: Associate a product
     Then I should see the text "There are unsaved changes."
     And I visit the "Attributes" tab
     Then I should see the text "There are unsaved changes."
-    When I save the product
-    Then I should not see the text "There are unsaved changes."
+    When I successfully save the product
     When I visit the "Associations" tab
     And I uncheck the rows "black-boots"
     Then I should see the text "There are unsaved changes."

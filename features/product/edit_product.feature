@@ -32,8 +32,7 @@ Feature: Edit a product
     And I am on the "sandal" product page
     And I fill in the following information:
       | Name | My Sandal |
-    When I press the "Save" button
-    Then I should not see the text "There are unsaved changes."
+    When I successfully save the product
     And the product Name should be "My Sandal"
 
   Scenario: Successfully updates the updated date of the product
@@ -51,8 +50,7 @@ Feature: Edit a product
     Given I am logged in as "Peter"
     And I am on the "Administrator" role page
     And I remove rights to Edit attributes of a product
-    And I save the role
-    Then I should not see the text "There are unsaved changes."
+    And I successfully save the role
     When I am on the "sandal" product page
     Then I should not see "Attributes"
 
