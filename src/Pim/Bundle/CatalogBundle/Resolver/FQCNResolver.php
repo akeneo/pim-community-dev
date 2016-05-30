@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Resolver;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 
 /**
  * FQCN Resolver
@@ -34,9 +35,15 @@ class FQCNResolver
      */
     public function getFQCN($entityType)
     {
-        return $this->container->getParameter(
-            sprintf('pim_catalog.entity.%s.class', $entityType),
-            ContainerInterface::NULL_ON_INVALID_REFERENCE
-        );
+        try {
+            $className = $this->container->getParameter(
+                sprintf('pim_catalog.entity.%s.class', $entityType),
+                ContainerInterface::NULL_ON_INVALID_REFERENCE
+            );
+        } catch (InvalidArgumentException $e) {
+            $className = null;
+        }
+
+        return $className;
     }
 }
