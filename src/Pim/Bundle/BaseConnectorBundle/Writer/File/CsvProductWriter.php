@@ -117,14 +117,12 @@ class CsvProductWriter extends ContextableCsvWriter
             $this->writtenFiles[$target] = $media['exportPath'];
         } catch (FileTransferException $e) {
             $this->stepExecution->addWarning(
-                $this->getName(),
                 'The media has not been found or is not currently available',
                 [],
                 $media
             );
         } catch (\LogicException $e) {
             $this->stepExecution->addWarning(
-                $this->getName(),
                 sprintf('The media has not been copied. %s', $e->getMessage()),
                 [],
                 $media

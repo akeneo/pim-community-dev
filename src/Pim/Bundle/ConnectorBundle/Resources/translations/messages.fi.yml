@@ -1,96 +1,4 @@
 pim_connector:
-  jobs:
-    csv_product_export:
-      title: Tuotteiden vienti CSV-muodossa
-      export.title: Tuotteiden vienti
-    csv_category_export:
-      title: Kategorian vienti CSV-muodossa
-      export.title: Kategorian vienti
-    csv_attribute_export:
-      title: Attribuutin vienti CSV-muodossa
-      export.title: Attribuutin vienti
-    csv_attribute_option_export:
-      title: Attribuutin vaihtoehdon vienti CSV-muodossa
-      export.title: Attribuutin vaihtoehdon vienti
-    csv_association_type_export:
-      title: Liitännäistyyppien vienti CSV-muodossa
-      export.title: Liitännäistyyppien vienti
-    csv_group_export:
-      title: Ryhmän vienti CSV-muodossa
-      export.title: Ryhmän vienti
-    csv_variant_group_export:
-      title: Muuttujaryhmien vienti CSV-muodossa
-      export.title: Muuttujaryhmien vienti
-    csv_family_export:
-      title: Ryhmän tuonti CSV-tiedostona
-      export.title: Ryhmän vienti
-    csv_product_import:
-      title: Tuotteiden tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Tuotteiden tuonti
-      import_associations.title: Liitännäisten tuonti
-    csv_category_import:
-      title: Kategorioiden tuonti CSV-muodossa
-      validation.title: Tiedostojen validaatio
-      import.title: Kategorioiden tuonti
-    csv_attribute_import:
-      title: Attribuuttien tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Attribuuttien tuonti
-    csv_attribute_option_import:
-      title: Attribuutin vaihtoehdon tuonti CSV-muodossa
-      validation.title: Tiedostojen validaatio
-      import.title: Attribuutin vaihtoehdon tuonti
-    csv_association_type_import:
-      title: Liitännäistyyppien tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Liitännäistyyppien tuonti
-    csv_family_import:
-      title: Ryhmän tuonti CSV-tiedostona
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Ryhmätuonti
-    csv_group_import:
-      title: Ryhmän tuonti CSV-muodossa
-      validation.title: Tiedostojen validaatio
-      import.title: Ryhmien tuonti
-    csv_variant_group_import:
-      title: Muuttujaryhmien tuonti CSV-muodossa
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Muuttujaryhmien tuonti
-    xlsx_category_import:
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Kategorioiden tuonti
-    xlsx_association_type_import:
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Liitännäistyyppien tuonti
-    xlsx_attribute_import:
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Attribuuttien tuonti
-    xlsx_attribute_option_import:
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Attribuuttien määritteiden tuonti
-    xlsx_family_import:
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Ryhmätuonti
-    xlsx_product_export:
-      export.title: Tuotteiden vienti
-    xlsx_product_import:
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Tuotteiden tuonti
-      import_associations.title: Liitännäisten tuonti
-    xlsx_group_export:
-      export.title: Ryhmän vienti
-    xlsx_variant_group_export:
-      export.title: Muutujaryhmien vienti
-    xlsx_group_import:
-      validation.title: Tiedostojen tarkistaminen
-      import.title: Ryhmien tuonti
-    xlsx_variant_group_import:
-      validation.title: Tiedostojen tarkistaminen
-    xlsx_family_export:
-      export.title: Ryhmän vienti
-    xlsx_category_export:
-      export.title: Kategorian vienti
   steps:
     dummy_reader.title: Mallilukija
     product_reader.title: Tuotteen poisto
@@ -136,6 +44,17 @@ pim_connector:
     channel:
       label: Kanava
       help: Kanava, jonka haluat viedä
+    locales:
+      label: Alueet
+    status:
+      label: Status
+      choice:
+        enabled: Käytössä
+        disabled: Poistettu käytöstä
+        all: Kaikki
+    updated:
+      choice:
+        all: Kaikki
     decimalSeparator:
       label: Desimaalierotin
       help: Määritä desimaalierotin
@@ -206,3 +125,95 @@ job_execution.summary:
     title: 'Tiedoston koodaus:'
     skipped: ohitetaan, laajennus valkolistattu
   product_skipped_no_diff: ohitettu tuote (ei eroavaisuuksia)
+batch_jobs:
+  csv_product_export:
+    label: Tuotteiden vienti CSV-muodossa
+    export.label: Tuotteiden vienti
+  csv_category_export:
+    label: Kategorian vienti CSV-muodossa
+    export.label: Kategorian vienti
+  csv_attribute_export:
+    label: Attribuuttien vienti CSV-muodossa
+    export.label: Attribuuttien vienti
+  csv_attribute_option_export:
+    label: Attribuuttien määritteiden vienti CSV-muodossa
+    export.label: Attribuuttien määritteiden vienti
+  csv_association_type_export:
+    label: Liitännäistyyppien vienti CSV-muodossa
+    export.label: Liitännäistyyppien vienti
+  csv_group_export:
+    label: Ryhmän vienti CSV-muodossa
+    export.label: Ryhmän vienti
+  csv_variant_group_export:
+    label: Muuttujaryhmien vienti CSV-muodossa
+    export.label: Muutujaryhmien vienti
+  csv_family_export:
+    label: Ryhmän tuonti CSV-tiedostona
+    export.label: Ryhmän vienti
+  csv_product_import:
+    label: Tuotteiden tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tuotteiden tuonti
+    import_associations.label: Liitännäisten tuonti
+  csv_category_import:
+    label: Kategorioiden tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Kategorioiden tuonti
+  csv_attribute_import:
+    label: Attribuuttien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien tuonti
+  csv_attribute_option_import:
+    label: Attribuuttien määritteiden tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien määritteiden tuonti
+  csv_association_type_import:
+    label: Liitännäistyyppien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Liitännäistyyppien tuonti
+  csv_family_import:
+    label: Ryhmän tuonti CSV-tiedostona
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmätuonti
+  csv_group_import:
+    label: Ryhmien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmien tuonti
+  csv_variant_group_import:
+    label: Muuttujaryhmien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Muutujaryhmien tuonti
+  xlsx_category_import:
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Kategorioiden tuonti
+  xlsx_association_type_import:
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Liitännäistyyppien tuonti
+  xlsx_attribute_import:
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien tuonti
+  xlsx_attribute_option_import:
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien määritteiden tuonti
+  xlsx_family_import:
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmätuonti
+  xlsx_product_export:
+    export.label: Tuotteiden vienti
+  xlsx_product_import:
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tuotteiden tuonti
+    import_associations.label: Liitännäisten tuonti
+  xlsx_group_export:
+    export.label: Ryhmän vienti
+  xlsx_variant_group_export:
+    export.label: Muutujaryhmien vienti
+  xlsx_group_import:
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmien tuonti
+  xlsx_variant_group_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_family_export:
+    export.label: Ryhmän vienti
+  xlsx_category_export:
+    export.label: Kategorian vienti

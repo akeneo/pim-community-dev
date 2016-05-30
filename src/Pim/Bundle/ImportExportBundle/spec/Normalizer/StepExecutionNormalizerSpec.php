@@ -63,7 +63,6 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
                 [
                     new Warning(
                         $stepExecution->getWrappedObject(),
-                        'a_warning',
                         'warning_reason',
                         ['foo' => 'bar'],
                         ['a' => 'A', 'b' => 'B', 'c' => 'C']
@@ -99,7 +98,6 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
                'endedAt'   => null,
                'warnings'  => [
                    [
-                       'label'  => 'Reader',
                        'reason' => 'WARNING!',
                        'item'   => ['a' => 'A', 'b' => 'B', 'c' => 'C'],
                    ]

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Component\Batch\Item;
 
+use Akeneo\Component\Batch\Step\StepElementInterface;
 use Doctrine\Common\Util\Inflector;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -14,20 +15,6 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 abstract class AbstractConfigurableStepElement implements StepElementInterface, InitializableInterface,
     FlushableInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        $classname = get_class($this);
-
-        if (preg_match('@\\\\([\w]+)$@', $classname, $matches)) {
-            $classname = $matches[1];
-        }
-
-        return Inflector::tableize($classname);
-    }
-
     /**
      * {@inheritdoc}
      */

@@ -31,7 +31,7 @@ install:
     - ./app/console assets:install
     - npm install -g grunt-cli
     - npm install
-    - curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
+    - curl http://get.sensiolabs.org/php-cs-fixer-v1.11.phar -o php-cs-fixer
 
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test

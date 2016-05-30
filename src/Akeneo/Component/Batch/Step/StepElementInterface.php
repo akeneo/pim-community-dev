@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\Component\Batch\Item;
+namespace Akeneo\Component\Batch\Step;
 
 /**
- * StepElementInterface
+ * Defines a step element, an element which can be injected in a step
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -11,10 +11,4 @@ namespace Akeneo\Component\Batch\Item;
  */
 interface StepElementInterface
 {
-    /**
-     * Return name
-     *
-     * @return string
-     */
-    public function getName();
 }

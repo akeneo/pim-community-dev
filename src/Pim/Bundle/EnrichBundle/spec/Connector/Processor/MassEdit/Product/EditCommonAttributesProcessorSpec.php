@@ -75,7 +75,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
         $stepExecution->addWarning(
-            'edit_common_attributes_processor',
             'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
             [],
             Argument::type('array')

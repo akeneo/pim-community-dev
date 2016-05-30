@@ -1,58 +1,4 @@
 pim_base_connector:
-  jobs:
-    csv_product_export:
-      title: Produkt-Export als CSV-Datei
-      export.title: Produkt export
-    csv_category_export:
-      title: Kategorie-Export als CSV-Datei
-      export.title: Kategorie export
-    csv_attribute_export:
-      title: Attribut-Export als CSV-Datei
-      export.title: Attribut export
-    csv_attribute_option_export:
-      title: Attribut-Option in CSV-Datei exportieren
-      export.title: Attribut-Option export
-    csv_association_type_export:
-      title: Verbindungstyp-Export als CSV-Datei
-      export.title: Verbindungstyp-Export
-    csv_group_export:
-      title: Gruppen-Export in CSV-Datei
-      export.title: Gruppen-Export
-    csv_variant_group_export:
-      title: Variantengruppen-Export als CSV
-      export.title: Variantengruppen-Export
-    csv_family_export:
-      title: Exportiere Produktfamilie in CSV-Datei
-      export.title: Exportiere Produktfamilie
-    csv_product_import:
-      title: Produkt-Export als CSV-Datei
-      validation.title: Dateivalidierung
-      import.title: Produkt import
-      import_associations.title: Produktverbindungen-Import
-    csv_category_import:
-      title: Kategorie-Import aus CSV-Datei
-      validation.title: Dateivalidierung
-      import.title: Kategorie-Import
-    csv_attribute_import:
-      title: Attribut-Import aus CSV-Datei
-      validation.title: Dateivalidierung
-      import.title: Attribut-Import
-    csv_attribute_option_import:
-      title: Attribut-Optionen aus CSV-Datei importieren
-      validation.title: Dateivalidierung
-      import.title: Attribut-Option import
-    csv_association_type_import:
-      title: Verbindungstyp-Import als CSV-Datei
-      validation.title: Dateivalidierung
-      import.title: Verbindungstyp-Import
-    csv_group_import:
-      title: Gruppen-Import aus CSV-Datei
-      validation.title: Dateivalidierung
-      import.title: Gruppen-Import
-    csv_variant_group_import:
-      title: Variantengruppen-Import als CSV
-      validation.title: Dateivalidierung
-      import.title: Variantengruppen-Import
   steps:
     dummy_reader.title: Dummy reader
     product_reader.title: Produkt Auszug
@@ -104,6 +50,9 @@ pim_base_connector:
     dateFormat:
       label: Datumsformat
       help: Bestimmen Sie das Format der Datumsfelder
+    families:
+      label: Produktfamilie
+      placeholder: Wählen Sie eine Produktfamilie
   import:
     enabled:
       label: Produkt aktivieren
@@ -144,3 +93,57 @@ pim_base_connector:
     copyValuesToProducts:
       label: Kopieren von Variantengruppen-Werten in Produkte
       help: Bedeutet, dass die Produkte automatisch mit den Variantengruppen-Werten aktualisiert werden; das kann abgestellt werden, damit nur die Varientengruppen aktualisiert werden
+batch_jobs:
+  csv_product_export:
+    label: Produkt-Export als CSV-Datei
+    export.label: Produkt export
+  csv_category_export:
+    label: Kategorie-Export als CSV-Datei
+    export.label: Kategorie export
+  csv_attribute_export:
+    label: Attribut-Export als CSV-Datei
+    export.label: Attribut export
+  csv_attribute_option_export:
+    label: Attribut-Option in CSV-Datei exportieren
+    export.label: Attribut-Option export
+  csv_association_type_export:
+    label: Verbindungstyp-Export als CSV-Datei
+    export.label: Verbindungstyp-Export
+  csv_group_export:
+    label: Gruppen-Export in CSV-Datei
+    export.label: Gruppen-Export
+  csv_variant_group_export:
+    label: Variantengruppen-Export als CSV
+    export.label: Variantengruppen-Export
+  csv_family_export:
+    label: Exportiere Produktfamilie in CSV-Datei
+    export.label: Exportiere Produktfamilie
+  csv_product_import:
+    label: Produkt-Export als CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Produkt import
+    import_associations.label: Produktverbindungen-Import
+  csv_category_import:
+    label: Kategorie-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Kategorie-Import
+  csv_attribute_import:
+    label: Attribut-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Attribut-Import
+  csv_attribute_option_import:
+    label: Attribut-Optionen aus CSV-Datei importieren
+    validation.label: Dateivalidierung
+    import.label: Attribut-Option import
+  csv_association_type_import:
+    label: Verbindungstyp-Import als CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Verbindungstyp-Import
+  csv_group_import:
+    label: Gruppen-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Gruppen-Import
+  csv_variant_group_import:
+    label: Variantengruppen-Import als CSV
+    validation.label: Dateivalidierung
+    import.label: Variantengruppen-Import

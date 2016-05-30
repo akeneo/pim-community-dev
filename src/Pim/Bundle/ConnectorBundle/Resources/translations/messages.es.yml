@@ -1,119 +1,4 @@
 pim_connector:
-  jobs:
-    csv_product_export:
-      title: Exportar producto en CSV
-      export.title: Exportar producto
-    csv_category_export:
-      title: Exportar categorías en CSV
-      export.title: Exportar categorías
-    csv_attribute_export:
-      title: Exportar atributos en CSV
-      export.title: Exportar atributos
-    csv_attribute_option_export:
-      title: Exportar opciones de atributos en CSV
-      export.title: Exportar opciones de atributos
-    csv_association_type_export:
-      title: Exportar tipos de asociociones en CSV
-      export.title: Exportar tipos de asociaciones
-    csv_group_export:
-      title: Exportar grupos en CSV
-      export.title: Exportar grupos
-    csv_variant_group_export:
-      title: Exportar grupo de variantes en CSV
-      export.title: Exportar grupo de variantes
-    csv_family_export:
-      title: Exportar familias en CSV
-      export.title: Exportar familias
-    csv_product_import:
-      title: Importar productos en CSV
-      validation.title: Validación de archivo
-      import.title: Importar productos
-      import_associations.title: Importar asociaciones
-    csv_category_import:
-      title: Importar categorías en CSV
-      validation.title: Validación de fichero
-      import.title: Importar categorías
-    csv_attribute_import:
-      title: Importar atributos en CSV
-      validation.title: Validación de fichero
-      import.title: Importar atributos
-    csv_attribute_option_import:
-      title: Importar opciones de atributos en CSV
-      validation.title: Validación de fichero
-      import.title: Importar opciones de atributos
-    csv_association_type_import:
-      title: Importar tipos de asociaciones en CSV
-      validation.title: Validación de fichero
-      import.title: Importar tipos de asociaciones
-    csv_family_import:
-      title: Importar familias en CSV
-      validation.title: Validación de fichero
-      import.title: Importe de familias
-    csv_group_import:
-      title: Importar grupos en CSV
-      validation.title: Validación de fichero
-      import.title: Importar grupos
-    csv_variant_group_import:
-      title: Importar grupo de variantes en CSV
-      validation.title: Validación de fichero
-      import.title: Importar grupos de variantes
-    xlsx_category_import:
-      title: Importar categorías en XLSX
-      validation.title: Validación de archivo
-      import.title: Importar categorías
-    xlsx_association_type_import:
-      title: Importar tipo de asociaciones en XLSX
-      validation.title: Validación de archivo
-      import.title: Importar tipos de asociaciones
-    xlsx_attribute_import:
-      title: Importar atributos en XLSX
-      validation.title: Validación de archivo
-      import.title: Importar atributos
-    xlsx_attribute_option_import:
-      title: Importar opciones de atributos en XLSX
-      validation.title: Validación de archivo
-      import.title: Importar opciones de atributos
-    xlsx_family_import:
-      title: Importar familias en XLSX
-      validation.title: Validación de archivo
-      import.title: Importe de familias
-    xlsx_product_export:
-      title: Exportar producto en XLSX
-      export.title: Exportar producto
-    xlsx_product_import:
-      title: Importar productos en XLSX
-      validation.title: Validación de archivo
-      import.title: Importar productos
-      import_associations.title: Importar asociaciones
-    xlsx_group_export:
-      title: Exportar grupos en XLSX
-      export.title: Exportar grupos
-    xlsx_variant_group_export:
-      title: Exportar grupo de variantes en XLSX
-      export.title: Exportación de grupo de variantes
-    xlsx_group_import:
-      title: Importar grupos en XLSX
-      validation.title: Validación de archivo
-      import.title: Importar grupos
-    xlsx_variant_group_import:
-      title: Importar grupo de variantes en XLSX
-      validation.title: Validación de archivo
-      import.title: Importar grupo de variantes
-    xlsx_family_export:
-      title: Exportar familias en XLSX
-      export.title: Exportar familias
-    xlsx_category_export:
-      title: Exportar categorías en XLSX
-      export.title: Exportar categorías
-    xlsx_attribute_export:
-      title: Exportar atributos en XLSX
-      export.title: Exportar atributos en XLSX
-    xlsx_attribute_option_export:
-      title: Exportar opciones de atributos en XLSX
-      export.title: Exportar opciones de atributos en XLSX
-    xlsx_association_type_export:
-      title: Exportar tipo de asociaciones en XLSX
-      export.title: Exportar tipo de asociaciones en XLSX
   steps:
     dummy_reader.title: Lector de prueba
     product_reader.title: Extracción de productos
@@ -159,6 +44,17 @@ pim_connector:
     channel:
       label: Canal
       help: El canal que desea exportar
+    locales:
+      label: Idiomas
+    status:
+      label: Estado
+      choice:
+        enabled: Habilitado
+        disabled: Inhabilitado
+        all: Todos
+    updated:
+      choice:
+        all: Todos
     decimalSeparator:
       label: Separador de decimales
       help: Determinar el separador de decimales
@@ -231,3 +127,95 @@ job_execution.summary:
     title: 'Codificación del archivo:'
     skipped: omitido, extensión en la lista blanca
   product_skipped_no_diff: producto omitido (ninguna diferencia)
+batch_jobs:
+  csv_product_export:
+    label: Exportar productos a CSV
+    export.label: Exportar productos
+  csv_category_export:
+    label: Exportar categorías a CSV
+    export.label: Exportar categorías
+  csv_attribute_export:
+    label: Exportar atributos a CSV
+    export.label: Exportar atributos
+  csv_attribute_option_export:
+    label: Exportar opciones de atributos a CSV
+    export.label: Exportar opciones de atributos
+  csv_association_type_export:
+    label: Exportar tipos de asociaciones a CSV
+    export.label: Exportar tipos de asociaciones
+  csv_group_export:
+    label: Exportar grupos a CSV
+    export.label: Exportar grupos
+  csv_variant_group_export:
+    label: Exportar Grupo de variantes a CSV
+    export.label: Exportación de grupo de variantes
+  csv_family_export:
+    label: Exportar familias en CSV
+    export.label: Exportar familias
+  csv_product_import:
+    label: Importar productos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar productos
+    import_associations.label: Importar asociaciones
+  csv_category_import:
+    label: Importar categorías desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar categorías
+  csv_attribute_import:
+    label: Importar atributos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar atributos
+  csv_attribute_option_import:
+    label: Importar opciones de atributos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar opciones de atributos
+  csv_association_type_import:
+    label: Importar tipos de asociaciones desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar tipos de asociaciones
+  csv_family_import:
+    label: Importar familias en CSV
+    validation.label: Validación de archivo
+    import.label: Importe de familias
+  csv_group_import:
+    label: Importar grupos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar grupos
+  csv_variant_group_import:
+    label: Importar Grupo de variantes de CSV
+    validation.label: Validación de archivo
+    import.label: importación de grupo de variantes
+  xlsx_category_import:
+    validation.label: Validación de archivo
+    import.label: Importar categorías
+  xlsx_association_type_import:
+    validation.label: Validación de archivo
+    import.label: Importar tipos de asociaciones
+  xlsx_attribute_import:
+    validation.label: Validación de archivo
+    import.label: Importar atributos
+  xlsx_attribute_option_import:
+    validation.label: Validación de archivo
+    import.label: Importar opciones de atributos
+  xlsx_family_import:
+    validation.label: Validación de archivo
+    import.label: Importe de familias
+  xlsx_product_export:
+    export.label: Exportar productos
+  xlsx_product_import:
+    validation.label: Validación de archivo
+    import.label: Importar productos
+    import_associations.label: Importar asociaciones
+  xlsx_group_export:
+    export.label: Exportar grupos
+  xlsx_variant_group_export:
+    export.label: Exportación de grupo de variantes
+  xlsx_group_import:
+    validation.label: Validación de archivo
+    import.label: Importar grupos
+  xlsx_variant_group_import:
+    validation.label: Validación de archivo
+  xlsx_family_export:
+    export.label: Exportar familias
+  xlsx_category_export:
+    export.label: Exportar categorías

@@ -87,7 +87,6 @@ class VariantGroupCleanerSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(2);
         $stepExecution->addWarning(
-            'excluded',
             'You cannot group the following product because it is already in a variant group or doesn\'t have the'.
             ' group axis.',
             [],
@@ -277,7 +276,6 @@ class VariantGroupCleanerSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(2);
         $stepExecution->addWarning(
-            'duplicated',
             'Product can\'t be set in the selected variant group: duplicate variation axis values with another product'.
             ' in selection',
             [],

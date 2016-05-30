@@ -286,3 +286,6 @@
 - Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\JobExecutionNormalizer`, add `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`
 - Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\StepExecutionNormalizer`, add `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`
 - Change constructor of `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType`, add `Akeneo\Component\Batch\Job\JobParametersFactory` and `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` arguments
+- Change constructor of `Akeneo\Component\Batch\Model\Warning` to remove the $name argument, we also remove related getter/setter
+- Remove getName() from `Akeneo\Component\Batch\Item\AbstractConfigurableStepElement`
+- Remove $name argument from addWarning method of `Akeneo\Component\Batch\Model\StepExecution` 

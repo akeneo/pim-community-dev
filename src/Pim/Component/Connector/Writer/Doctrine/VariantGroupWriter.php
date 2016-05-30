@@ -88,7 +88,6 @@ class VariantGroupWriter extends BaseWriter
 
         foreach ($skippedMessages as $productIdentifier => $messages) {
             $this->stepExecution->addWarning(
-                $this->getName(),
                 sprintf('Copy of values to product "%s" skipped.', $productIdentifier),
                 [],
                 $messages

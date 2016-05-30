@@ -861,6 +861,23 @@ add_to_variant_group.steps.duplicated.title: Doppelte Achse
 add_to_variant_group.steps.cleaner.warning.description: 'Das Produkt kann der gewählten Variantengruppe nicht zugeordnet werden: gleiche Variantenachsenwerte mit einem anderen Produkt in der Auswahl'
 edit_common_attributes: Gemeinsame Attribute bearbeiten
 edit_common_attributes_clean: Bereinige Dateien für gemeinsame Attribute
+perform.steps.duplicated.title: Doppelte Achse
+perform.steps.excluded.title: Ausgeschlossene Produkte
+batch_jobs:
+  update_product_value:
+    label: Wert des Produkts aktualisieren
+    perform:
+      label: Wert des Produkts aktualisieren
+  edit_common_attributes:
+    label: Gemeinsame Attribute bearbeiten
+    perform:
+      label: Gemeinsame Attribute bearbeiten
+    clean:
+      label: Bereinige Dateien für gemeinsame Attribute
+  set_attribute_requirements:
+    label: Benötigte Attribute auswählen
+    perform:
+      label: Benötigte Attribute auswählen
 mass_edit report:
   overview: Massenbearbeitung Reports
 job_tracker:
@@ -868,3 +885,12 @@ job_tracker:
     title: Prozess-Tracker
   filter:
     started_at: Gestartet am
+pim_enrich_attribute_form:
+  code: Code
+  scopable: Gültigkeitsbereich
+  localizable: Lokalisierbar
+  unique: Eindeutiger Wert
+  availableLocales: Verfügbare Gebietsschemata
+  locale_specific: Gebietsschema-spezifisch
+  group: Attributgruppe
+  useableAsGridFilter: Verwendbar im Raster

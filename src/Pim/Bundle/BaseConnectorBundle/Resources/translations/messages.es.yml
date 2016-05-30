@@ -1,58 +1,4 @@
 pim_base_connector:
-  jobs:
-    csv_product_export:
-      title: Exportar producto en CSV
-      export.title: Exportar productos
-    csv_category_export:
-      title: Exportar categorías a CSV
-      export.title: Exportar categorías
-    csv_attribute_export:
-      title: Exportar atributos a CSV
-      export.title: Exportar atributos
-    csv_attribute_option_export:
-      title: Exportar opciones de atributos a CSV
-      export.title: Exportar opciones de atributos
-    csv_association_type_export:
-      title: Exportar tipos de asociaciones a CSV
-      export.title: Exportar tipos de asociaciones
-    csv_group_export:
-      title: Exportar grupos a CSV
-      export.title: Exportar grupos
-    csv_variant_group_export:
-      title: Exportar Grupo de variantes a CSV
-      export.title: Exportación de grupo de variantes
-    csv_family_export:
-      title: Exportar familias en CSV
-      export.title: Exportar familias
-    csv_product_import:
-      title: Importar productos desde CSV
-      validation.title: Validación de archivo
-      import.title: Importar productos
-      import_associations.title: Importar asociaciones
-    csv_category_import:
-      title: Importar categorías desde CSV
-      validation.title: Validación de archivo
-      import.title: Importar categorías
-    csv_attribute_import:
-      title: Importar atributos desde CSV
-      validation.title: Validación de archivo
-      import.title: Importar atributos
-    csv_attribute_option_import:
-      title: Importar opciones de atributos desde CSV
-      validation.title: Validación de archivo
-      import.title: Importar opciones de atributos
-    csv_association_type_import:
-      title: Importar tipos de asociaciones desde CSV
-      validation.title: Validación de archivo
-      import.title: Importar tipos de asociaciones
-    csv_group_import:
-      title: Importar grupos desde CSV
-      validation.title: Validación de archivo
-      import.title: Importar grupos
-    csv_variant_group_import:
-      title: Importar Grupo de variantes de CSV
-      validation.title: Validación de archivo
-      import.title: importación de grupo de variantes
   steps:
     dummy_reader.title: Lector de prueba
     product_reader.title: Extracción de productos
@@ -104,6 +50,9 @@ pim_base_connector:
     dateFormat:
       label: Formato de fecha
       help: Determinar el formato de los campos de fecha
+    families:
+      label: Familia
+      placeholder: Elija una familia
   import:
     enabled:
       label: Activar el producto
@@ -144,3 +93,57 @@ pim_base_connector:
     copyValuesToProducts:
       label: Copiar los valores de grupo de variantes a productos
       help: Significa que los productos se actualizan automáticamente con los valores del grupo de variantes, puede establecerse a sólo actualizar un grupo de variantes
+batch_jobs:
+  csv_product_export:
+    label: Exportar productos a CSV
+    export.label: Exportar productos
+  csv_category_export:
+    label: Exportar categorías a CSV
+    export.label: Exportar categorías
+  csv_attribute_export:
+    label: Exportar atributos a CSV
+    export.label: Exportar atributos
+  csv_attribute_option_export:
+    label: Exportar opciones de atributos a CSV
+    export.label: Exportar opciones de atributos
+  csv_association_type_export:
+    label: Exportar tipos de asociaciones a CSV
+    export.label: Exportar tipos de asociaciones
+  csv_group_export:
+    label: Exportar grupos a CSV
+    export.label: Exportar grupos
+  csv_variant_group_export:
+    label: Exportar Grupo de variantes a CSV
+    export.label: Exportación de grupo de variantes
+  csv_family_export:
+    label: Exportar familias en CSV
+    export.label: Exportar familias
+  csv_product_import:
+    label: Importar productos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar productos
+    import_associations.label: Importar asociaciones
+  csv_category_import:
+    label: Importar categorías desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar categorías
+  csv_attribute_import:
+    label: Importar atributos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar atributos
+  csv_attribute_option_import:
+    label: Importar opciones de atributos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar opciones de atributos
+  csv_association_type_import:
+    label: Importar tipos de asociaciones desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar tipos de asociaciones
+  csv_group_import:
+    label: Importar grupos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar grupos
+  csv_variant_group_import:
+    label: Importar Grupo de variantes de CSV
+    validation.label: Validación de archivo
+    import.label: importación de grupo de variantes
