@@ -329,6 +329,18 @@ class ProductController
     }
 
     /**
+     * Get data locale object
+     *
+     * @throws \Exception
+     *
+     * @return LocaleInterface
+     */
+    protected function getDataLocale()
+    {
+        return $this->userContext->getCurrentLocale();
+    }
+
+    /**
      * Find a product by its id or return a 404 response
      *
      * @param int $id the product id
