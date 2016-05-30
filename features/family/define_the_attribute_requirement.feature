@@ -8,6 +8,7 @@ Feature: Define the attribute requirement
     And I am logged in as "Peter"
     And I am on the "Boots" family page
 
+  @javascript
   Scenario: Successfully display the attribute requirements
     Given I visit the "Attributes" tab
     Then attribute "name" should be required in channels mobile and tablet

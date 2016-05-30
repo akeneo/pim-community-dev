@@ -16,6 +16,7 @@ Feature: Add attribute to a family
     And I should see available attribute Lace color in group "Colors"
     And I should see available attribute Top view in group "Media"
 
+  @javascript
   Scenario: Successfully display all grouped family's attributes
     Given I am on the "Sneakers" family page
     And I visit the "Attributes" tab
