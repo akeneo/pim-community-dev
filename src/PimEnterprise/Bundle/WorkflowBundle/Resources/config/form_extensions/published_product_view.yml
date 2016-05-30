@@ -75,7 +75,7 @@ extensions:
         position: 90
 
     pimee-published-product-view-attribute-group-selector:
-        module: pim/product-edit-form/attributes/attribute-group-selector
+        module: pim/form/common/attributes/attribute-group-selector
         parent: pimee-published-product-view-attributes
         targetZone: sidebar
         position: 100

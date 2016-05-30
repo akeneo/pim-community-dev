@@ -9,7 +9,7 @@ define(
         'underscore',
         'oro/translator',
         'backbone',
-        'pim/product-edit-form/attributes/copy',
+        'pim/form/common/attributes/copy',
         'pim/fetcher-registry',
         'pim/user-context'
     ],
