@@ -19,7 +19,7 @@ Feature: Edit common attributes of many products at once
       | name      | french | Nom    |
       | size      | french | Taille |
     And I am on the products page
-    And I filter by "scope" with operator "equals" and value ""Mobile"
+    And I filter by "scope" with operator "equals" and value "Mobile"
     And I switch the locale to "fr_FR"
     When I mass-edit products boots and sandals
     And I choose the "Edit common attributes" operation
