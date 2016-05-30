@@ -27,6 +27,15 @@ define(
             /**
              * {@inheritdoc}
              */
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render);
+
+                BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 var variantGroup = this.getFormData();
                 this.$el.empty();

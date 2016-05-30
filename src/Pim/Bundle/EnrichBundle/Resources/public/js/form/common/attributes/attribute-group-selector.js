@@ -12,7 +12,7 @@ define(
         'underscore',
         'pim/form/common/group-selector',
         'pim/attribute-group-manager',
-        'text!pim/template/product/tab/attribute/attribute-group-selector',
+        'text!pim/template/form/tab/attribute/attribute-group-selector',
         'pim/user-context',
         'pim/i18n'
     ],
@@ -38,13 +38,13 @@ define(
             onValidationError: function (event) {
                 this.removeBadges();
 
-                var product = event.sentData;
+                var object = event.sentData;
                 var valuesErrors = _.uniq(event.response.values, function (error) {
                     return JSON.stringify(error);
                 });
 
                 if (valuesErrors) {
-                    AttributeGroupManager.getAttributeGroupsForObject(product)
+                    AttributeGroupManager.getAttributeGroupsForObject(object)
                         .then(function (attributeGroups) {
                             var globalErrors = [];
                             _.each(valuesErrors, function (error) {

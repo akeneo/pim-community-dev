@@ -15,7 +15,7 @@ extensions:
         position: 90
 
     pim-mass-product-edit-form-attribute-group-selector:
-        module: pim/product-edit-form/attributes/attribute-group-selector
+        module: pim/form/common/attributes/attribute-group-selector
         parent: pim-mass-product-edit-form-attributes
         targetZone: sidebar
         position: 100
