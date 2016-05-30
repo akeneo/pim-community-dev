@@ -71,7 +71,7 @@ Feature: Delete many product at once
       | boots_S42 | boots  | winter_collection | Amazing boots | 20 EUR, 25 USD | 42   | red   | laces_black |
     And I launched the completeness calculator
     And I reload the page
-    And I switch the scope to "Mobile"
+    And I filter by "scope" with operator "equals" and value "Mobile"
     And I filter by "completeness" with operator "equals" and value "yes"
     And I select all visible products
     When I press mass-delete button
