@@ -75,7 +75,7 @@ Feature: Leave a comment on a product
     Given I am logged in as "Peter"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
-    And I remove rights to Comment products
+    And I revoke rights to resource Comment products
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "rangers" product page

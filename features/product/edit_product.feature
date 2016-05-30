@@ -50,7 +50,8 @@ Feature: Edit a product
   Scenario: Don't see the attributes tab when the user can't edit a product
     Given I am logged in as "Peter"
     And I am on the "Administrator" role page
-    And I remove rights to Edit attributes of a product
+    And I visit the "Permissions" tab
+    And I revoke rights to resource Edit attributes of a product
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "sandal" product page

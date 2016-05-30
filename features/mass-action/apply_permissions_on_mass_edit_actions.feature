@@ -14,12 +14,12 @@ Feature: Apply ACL permissions on mass edit actions
 
   @jira https://akeneo.atlassian.net/browse/PIM-5171
   Scenario: View only the mass edit operations I have permissions on
-    Given I edit the "Catalog manager" user role
+    Given I edit the "Catalog manager" Role
     And I visit the "Permissions" tab
-    And I click on the "Products" ACL group
-    And I click on the "Change product family" ACL role
-    And I click on the "Change state of product" ACL role
-    And I save the group
+    And I grant rights to group Products
+    And I revoke rights to resource Change product family and Change state of product
+    And I save the Role
+    Then I should not see the text "There are unsaved changes."
     When I am on the products page
     And I mass-edit products kickers and hiking_shoes
     Then I should see the text "Edit common attributes"

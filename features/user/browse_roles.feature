@@ -9,7 +9,7 @@ Feature: Browse roles
     And I am logged in as "Peter"
 
   Scenario: Successfully display roles
-    Given I am on the user roles page
+    Given I am on the role index page
     Then I should see "Administrator"
     And I should see "Catalog manager"
     And I should see "User"

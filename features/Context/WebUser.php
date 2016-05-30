@@ -144,6 +144,9 @@ class WebUser extends RawMinkContext
     public function iShouldBeOnTheTab($tab)
     {
         $tabElement = $this->getCurrentPage()->getFormTab($tab);
+        if (null === $tabElement) {
+            throw $this->createExpectationException(sprintf('Cannot find form tab "%s"', $tab));
+        }
 
         if (!$tabElement->getParent()->hasClass('active')) {
             throw $this->createExpectationException(sprintf('We are not in the %s tab', $tab));
@@ -219,26 +222,6 @@ class WebUser extends RawMinkContext
     public function iVisitTheGroup($group)
     {
         $this->getCurrentPage()->visitGroup($group);
-    }
-
-    /**
-     * @param string $group
-     *
-     * @Given /^I click on the "([^"]*)" ACL group$/
-     */
-    public function iClickOnTheACLGroup($group)
-    {
-        $this->getCurrentPage()->selectGroup($group);
-    }
-
-    /**
-     * @param string $group
-     *
-     * @Given /^I click on the "([^"]*)" ACL role/
-     */
-    public function iClickOnTheACLRole($group)
-    {
-        $this->getCurrentPage()->selectRole($group);
     }
 
     /**
@@ -1204,28 +1187,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $permission
-     * @param string $resources
-     *
-     * @When /^I (grant|remove) rights to (.*)$/
-     */
-    public function iSetRightsToACLResources($permission, $resources)
-    {
-        $method = $permission . 'ResourceRights';
-        foreach ($this->listToArray($resources) as $resource) {
-            $this->getCurrentPage()->$method($resource);
-        }
-    }
-
-    /**
-     * @When /^I grant all rights$/
-     */
-    public function iGrantAllRightsToACLResources()
-    {
-        $this->getCurrentPage()->grantAllResourceRights();
-    }
-
-    /**
      * @param TableNode $table
      *
      * @Then /^removing the following permissions? should hide the following buttons?:$/
@@ -1238,8 +1199,10 @@ class WebUser extends RawMinkContext
 
         foreach ($table->getHash() as $data) {
             $steps[] = new Step\Then('I am on the "Administrator" role page');
-            $steps[] = new Step\Then(sprintf('I remove rights to %s', $data['permission']));
+            $steps[] = new Step\Then('I visit the "Permissions" tab');
+            $steps[] = new Step\Then(sprintf('I revoke rights to resource %s', $data['permission']));
             $steps[] = new Step\Then('I save the role');
+            $steps[] = new Step\Then('I should not see the text "There are unsaved changes."');
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
             $steps[] = new Step\Then(sprintf('I should not see "%s"', $data['button']));
             if ($forbiddenPage = $data['forbiddenPage']) {
@@ -1265,7 +1228,8 @@ class WebUser extends RawMinkContext
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
             $steps[] = new Step\Then(sprintf('I should see "%s"', $data['section']));
             $steps[] = new Step\Then('I am on the "Administrator" role page');
-            $steps[] = new Step\Then(sprintf('I remove rights to %s', $data['permission']));
+            $steps[] = new Step\Then('I visit the "Permissions" tab');
+            $steps[] = new Step\Then(sprintf('I revoke rights to resource %s', $data['permission']));
             $steps[] = new Step\Then('I save the role');
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
             $steps[] = new Step\Then(sprintf('I should not see "%s"', $data['section']));

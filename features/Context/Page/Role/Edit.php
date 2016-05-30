@@ -19,11 +19,31 @@ class Edit extends Form
     protected $path = '/user/role/update/{id}';
 
     /**
+     * {@inheritdoc}
+     */
+    public function __construct($session, $pageFactory, $parameters = [])
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            [
+                'Role' => [
+                    'css'        => '#rights-action',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\Permission\PermissionDecorator'
+                    ]
+                ],
+            ],
+            $this->elements
+        );
+    }
+
+    /**
      * Grant rights to all ACL resources
      */
     public function grantAllResourceRights()
     {
-        $iconSelector = '.acl-permission i.acl-permission-toggle.non-granted';
+        $iconSelector = '.acl-permission .acl-permission-toggle.non-granted';
 
         $this->getSession()->executeScript(
             sprintf('$("%s").each(function () { $(this).click(); });', $iconSelector)
@@ -31,32 +51,48 @@ class Edit extends Form
     }
 
     /**
-     * Grant ACL resource rights
+     * Grant or revoke rights to the given specified $group
      *
-     * @param string $resource
+     * @param string $action 'grant'|'revoke'
+     * @param string $group
+     *
+     * @throws \InvalidArgumentException
      */
-    public function grantResourceRights($resource)
+    public function executeActionOnGroup($action, $group)
     {
-        $resourceSelector = sprintf(".acl-permission strong:contains('%s')", $resource);
-        $iconSelector     = 'i.acl-permission-toggle.non-granted';
-
-        $this->getSession()->executeScript(
-            sprintf('$("%s").parent().parent().find("%s").click();', $resourceSelector, $iconSelector)
-        );
+        switch ($action) {
+            case 'grant':
+                $this->getElement('Role')->grantGroup($group);
+                break;
+            case 'revoke':
+                $this->getElement('Role')->revokeGroup($group);
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Action "%s" does not exist.', $action));
+                break;
+        }
     }
 
     /**
-     * Remove ACL resource rights
+     * Grant or revoke a permission on the given resource
      *
+     * @param string $action   'grant'|'revoke'
      * @param string $resource
+     *
+     * @throws \InvalidArgumentException
      */
-    public function removeResourceRights($resource)
+    public function executeActionOnResource($action, $resource)
     {
-        $resourceSelector = sprintf(".acl-permission strong:contains('%s')", $resource);
-        $iconSelector     = 'i.acl-permission-toggle.granted';
-
-        $this->getSession()->executeScript(
-            sprintf('$("%s").parent().parent().find("%s").click();', $resourceSelector, $iconSelector)
-        );
+        switch ($action) {
+            case 'grant':
+                $this->getElement('Role')->grantResource($resource);
+                break;
+            case 'revoke':
+                $this->getElement('Role')->revokeResource($resource);
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Action "%s" does not exist.', $action));
+                break;
+        }
     }
 }
