@@ -29,7 +29,7 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
     public function __construct(EntityManagerInterface $entityManager, $entityName)
     {
         $this->entityManager = $entityManager;
-        $this->entityName    = $entityName;
+        $this->entityName = $entityName;
     }
 
     /**
@@ -51,7 +51,7 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
             }
         }
 
-        $this->applyQueryOptions($qb, $options);
+        $qb = $this->applyQueryOptions($qb, $options);
 
         return $qb->getQuery()->getResult();
     }
@@ -59,6 +59,8 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
     /**
      * @param QueryBuilder $qb
      * @param array        $options
+     *
+     * @return QueryBuilder
      */
     protected function applyQueryOptions(QueryBuilder $qb, array $options)
     {
@@ -68,10 +70,12 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
         }
 
         if (isset($options['limit'])) {
-            $qb->setMaxResults((int)$options['limit']);
+            $qb->setMaxResults((int) $options['limit']);
             if (isset($options['page'])) {
-                $qb->setFirstResult((int)$options['limit'] * ((int)$options['page'] - 1));
+                $qb->setFirstResult((int) $options['limit'] * ((int) $options['page'] - 1));
             }
         }
+
+        return $qb;
     }
 }
