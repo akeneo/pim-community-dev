@@ -91,7 +91,6 @@ class Form extends Base
             if (null === $tabDom) {
                 return false;
             }
-            error_log($tabDom->getParent()->getHtml());
             $tabDom->click();
 
             return $tabDom->getParent()->hasClass('active');
