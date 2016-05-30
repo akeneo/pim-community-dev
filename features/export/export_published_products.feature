@@ -119,7 +119,8 @@ Feature: Export published products
     And the following job "csv_clothing_mobile_published_product_export" configuration:
       | filePath          | %tmp%/ecommerce_product_export/csv_clothing_mobile_published_product_export.csv |
       | updated_condition | since_date                                                                      |
-      | exported_since    | 2016-04-25                                                                             |
+      | exported_since    | 2016-04-25                                                                      |
+      | locales           | en_US                                                                           |
     When I edit the "tee-white" product
     And I press the "Publish" button
     And I confirm the publishing
