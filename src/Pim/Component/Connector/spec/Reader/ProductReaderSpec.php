@@ -109,8 +109,6 @@ class ProductReaderSpec extends ObjectBehavior
         $channelRepository,
         $metricConverter,
         $objectDetacher,
-        $pqbFactory,
-        $channelRepository,
         $stepExecution,
         ChannelInterface $channel,
         CategoryInterface $channelRoot,
