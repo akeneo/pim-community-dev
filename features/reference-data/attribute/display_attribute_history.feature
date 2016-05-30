@@ -18,9 +18,7 @@ Feature: Display the attribute history
       | Code                | mycolor |
       | Reference data name | color   |
       | Attribute group     | Other   |
-    And I save the attribute
-    Then I should see the flash message "Attribute successfully created"
-    And I should not see the text "There are unsaved changes."
+    And I successfully save the attribute
     When I change the "Attribute group" to "Technical"
     And I save the attribute
     Then I should see the flash message "Attribute successfully updated"

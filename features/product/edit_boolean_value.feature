@@ -14,26 +14,21 @@ Feature: Edit a boolean value
     And I am logged in as "Mary"
     And I am on the "tshirt" product page
     And I add available attributes Boolean and Scopable boolean
-    And I save the product
-    Then I should not see the text "There are unsaved changes."
+    And I successfully save the product
 
   Scenario: Successfully update a boolean value
     When I check the "Boolean" switch
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes."
+    And I successfully save the product
     And attribute boolean of "tshirt" should be "true"
     When I uncheck the "Boolean" switch
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes."
-    And attribute boolean of "tshirt" should be "false"
+    And I successfully save the product
+    Then attribute boolean of "tshirt" should be "false"
 
   Scenario: Successfully update a scopable boolean value
     Given I switch the scope to "ecommerce"
     When I check the "Scopable boolean" switch
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes."
+    And I successfully save the product
     And the english ecommerce scopable_boolean of "tshirt" should be "true"
     When I uncheck the "Scopable boolean" switch
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes."
-    And the english ecommerce scopable_boolean of "tshirt" should be "false"
+    And I successfully save the product
+    Then the english ecommerce scopable_boolean of "tshirt" should be "false"

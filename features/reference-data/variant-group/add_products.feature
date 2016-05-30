@@ -45,8 +45,7 @@ Feature: Add products with reference data to a variant group
     And I am on the "SANDAL" variant group page
     Then the grid should contain 6 elements
     And I check the row "heel-yellow-37"
-    And I press the "Save" button
-    And I should not see the text "There are unsaved changes"
+    And I successfully save the variant group
     # TODO: see with @nidup => temporary fix (broken since the deferred explicit persist of Doctrine)
     And I press the "Save" button
     And I should not see the text "There are unsaved changes"

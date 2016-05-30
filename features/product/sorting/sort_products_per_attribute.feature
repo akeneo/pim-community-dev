@@ -24,13 +24,11 @@ Feature: Sort products per attributes
     And I am on the "blue_shirt" product page
     And I visit the "Additional" group
     When I check the "Handmade" switch
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes."
+    And I successfully save the product
     When I am on the "orange_shirt" product page
     And I visit the "Additional" group
     When I check the "Handmade" switch
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes."
+    And I successfully save the product
     When I am on the products page
     Then the grid should contain 5 elements
     When I display the columns sku, label, family, status, complete, created, updated, groups and handmade

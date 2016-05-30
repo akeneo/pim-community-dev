@@ -47,9 +47,7 @@ Feature: Editing attribute values of a variant group also updates products
     When I add available attributes Handmade
     And I visit the "Other" group
     And I check the "Handmade" switch
-    And I save the variant group
-    And I should see the flash message "Variant group successfully updated"
-    And I should not see the text "There are unsaved changes."
+    And I successfully save the variant group
     When I am on the "boot" product page
     And I visit the "Other" group
     Then the field Handmade should contain "on"
@@ -67,8 +65,7 @@ Feature: Editing attribute values of a variant group also updates products
   Scenario: Change a pim_catalog_metric attribute of a variant group
     When I change the "Length" to "5"
     And I save the variant group
-    And I should see the flash message "Variant group successfully updated"
-    And I should not see the text "There are unsaved changes."
+    And I successfully save the variant group
     When I am on the "boot" product page
     Then the field Length should contain "5"
 
@@ -83,9 +80,7 @@ Feature: Editing attribute values of a variant group also updates products
   Scenario: Change a pim_catalog_number attribute of a variant group
     When I visit the "Other" group
     And I change the "Number in stock" to "8000"
-    And I save the variant group
-    And I should see the flash message "Variant group successfully updated"
-    And I should not see the text "There are unsaved changes."
+    And I successfully save the variant group
     When I am on the "boot" product page
     And I visit the "Other" group
     Then the field Number in stock should contain "8000"
@@ -103,9 +98,7 @@ Feature: Editing attribute values of a variant group also updates products
   Scenario: Change a pim_catalog_simpleselect attribute of a variant group
     When I visit the "Marketing" group
     And I change the "Rating" to "5"
-    And I save the variant group
-    And I should see the flash message "Variant group successfully updated"
-    And I should not see the text "There are unsaved changes."
+    And I successfully save the variant group
     When I am on the "boot" product page
     And I visit the "Marketing" group
     Then the field Rating should contain "5 stars"
@@ -120,9 +113,7 @@ Feature: Editing attribute values of a variant group also updates products
 
   Scenario: Change a pim_catalog_textarea attribute of a variant group
     When I change the "tablet Description" to "The best boots!"
-    And I save the variant group
-    And I should see the flash message "Variant group successfully updated"
-    And I should not see the text "There are unsaved changes."
+    And I successfully save the variant group
     When I am on the "boot" product page
     Then the field Description should contain "The best boots!"
 
@@ -142,9 +133,7 @@ Feature: Editing attribute values of a variant group also updates products
     When I add available attributes Side view
     And I visit the "Media" group
     And I attach file "SNKRS-1R.png" to "Side view"
-    And I save the variant group
-    And I should see the flash message "Variant group successfully updated"
-    And I should not see the text "There are unsaved changes."
+    And I successfully save the variant group
     And I visit the "Products" tab
     And I uncheck the row "boot"
     And I save the variant group
@@ -157,9 +146,7 @@ Feature: Editing attribute values of a variant group also updates products
     When I add available attributes Technical description
     And I visit the "Media" group
     And I attach file "SNKRS-1R.png" to "Technical description"
-    And I save the variant group
-    And I should see the flash message "Variant group successfully updated"
-    And I should not see the text "There are unsaved changes."
+    And I successfully save the variant group
     When I am on the "boot" product page
     And I visit the "Media" group
     Then I should see the text "SNKRS-1R.png"

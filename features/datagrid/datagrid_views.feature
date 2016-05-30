@@ -92,8 +92,7 @@ Feature: Datagrid views
     Then I should see the text "Default product grid view"
     And I fill in the following information:
       | Default product grid view | Sneakers only |
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes."
+    And I successfully save the profile
     When I logout
     And I am logged in as "Julia"
     And I am on the products page

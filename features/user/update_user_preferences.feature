@@ -40,9 +40,7 @@ Feature: Update user preferences
     Given I edit the "Julia" user
     And I visit the "Additional" tab
     And I change the "Catalog locale" to "fr_FR"
-    And I save the user
-    Then I should see the flash message "User saved"
-    And I should not see the text "There are unsaved changes."
+    And I successfully save the user
     When I visit the "Additional Information" tab
     Then I should see the text "Catalog locale"
     And I should see the text "fr_FR"

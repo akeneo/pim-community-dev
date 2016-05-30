@@ -19,8 +19,7 @@ Feature: Edit and remove a product
     And I wait to be on the "boots" product page
     And I fill in the following information:
       | Length | 5.0000 Centimeter |
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes."
+    And I successfully save the product
 
   Scenario: Successfully edit and then delete a product from the grid
     Given I am on the products page
