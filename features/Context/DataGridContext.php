@@ -873,6 +873,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         return [
             new Step\Then(sprintf('I select rows %s', $entities)),
+            new Step\Then(sprintf('The rows "%s" should be checked', $entities)),
             new Step\Then('I press mass-edit button')
         ];
     }
