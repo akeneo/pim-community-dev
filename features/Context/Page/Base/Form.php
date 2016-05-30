@@ -83,8 +83,6 @@ class Form extends Base
             if (null === $tabs) {
                 $tabs = $this->find('css', $this->elements['Form tabs']['css']);
             }
-            error_log(count($tabs));
-            error_log($tabs->getHtml());
             if (null === $tabs) {
                 return false;
             }
