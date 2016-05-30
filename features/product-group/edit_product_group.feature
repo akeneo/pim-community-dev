@@ -19,6 +19,7 @@ Feature: Edit a product group
     And I press the "Save" button
     Then I should see "My similar boots"
 
+  @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I fill in the following information:
       | English (United States) | My similar boots |
