@@ -27,6 +27,10 @@ class Creation extends Form
     public function fillField($locator, $value, Element $modal = null)
     {
         $selectContainer = $this->spin(function () use ($modal) {
+            if (null === $modal) {
+                return false;
+            }
+
             return $modal->find('css', '.select2-container');
         }, 'Cannot find ".select2-container" in modal');
 
