@@ -1,4 +1,3 @@
-
 Feature: Enforce no permissions for a locale
   In order to be able to prevent some users from viewing product data in some locales
   As an administrator
@@ -30,8 +29,8 @@ Feature: Enforce no permissions for a locale
     When I am on the products page
     Then the grid locale switcher should contain the following items:
       | language  | locale | flag    |
-      | en   | en_US  | flag-us |
-      | de   | de_DE  | flag-de |
+      | en        | en_US  | flag-us |
+      | de        | de_DE  | flag-de |
     When I edit the "foo" product
     Then the locale switcher should contain the following items:
       | language  | locale | flag    |
@@ -42,9 +41,16 @@ Feature: Enforce no permissions for a locale
   Scenario: Display product view or edit page depending on user's rights
     Given the following locale accesses:
       | locale | user group | access |
-      | en_US  | Manager    | view   |
+      | en_US  | Manager    | edit   |
+      | en_GB  | Manager    | view   |
+    And the following product:
+      | sku | name-en_US | name-en_GB |
+      | bar | Name       | Name       |
     And I am logged in as "Julia"
-    When I edit the "foo" product
-    Then I should not see the "Save working copy" button
-    When I switch the locale to "de_DE"
-    Then I should see the "Save working copy" button
+    When I edit the "bar" product
+    And I switch the locale to "en_GB"
+    Then the field Name should be read only
+    When I switch the locale to "en_US"
+    And I change the "Name" to "My custom name"
+    And I save the product
+    Then the field Name should contain "My custom name"
