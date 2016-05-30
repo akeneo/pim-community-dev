@@ -146,7 +146,7 @@ class WebUser extends RawMinkContext
     {
         $tabElement = $this->getCurrentPage()->getFormTab($tab);
 
-        if (!$tabElement->getParent()->hasClass('active')) {
+        if (null === $tabElement || !$tabElement->getParent()->hasClass('active')) {
             throw $this->createExpectationException(sprintf('We are not in the %s tab', $tab));
         }
     }
