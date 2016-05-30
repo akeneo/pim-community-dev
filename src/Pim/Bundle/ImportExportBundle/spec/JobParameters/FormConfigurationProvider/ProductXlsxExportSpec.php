@@ -194,6 +194,22 @@ class ProductXlsxExportSpec extends ObjectBehavior
                     'attr'     => ['data-tab' => 'content']
                 ]
             ],
+            'completeness' => [
+                'type'    => 'choice',
+                'options' => [
+                    'choices'  => [
+                        'at_least_one_complete' => 'pim_connector.export.completeness.choice.at_least_one_complete',
+                        'all_complete'          => 'pim_connector.export.completeness.choice.all_complete',
+                        'all_incomplete'        => 'pim_connector.export.completeness.choice.all_incomplete',
+                        'all'                   => 'pim_connector.export.completeness.choice.all'
+                    ],
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_connector.export.completeness.label',
+                    'help'     => 'pim_connector.export.completeness.help',
+                    'attr'     => ['data-tab' => 'content']
+                ]
+            ],
             'updated' => [
                 'type'    => 'choice',
                 'options' => [

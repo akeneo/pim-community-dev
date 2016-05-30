@@ -17,11 +17,11 @@ Feature: List categories
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
     When I am on the "Administrator" role page
-    And I remove rights to Edit a category
-    And I remove rights to Create a category
+    And I visit the "Permissions" tab
+    And I revoke rights to resources Edit a category and Create a category
     And I save the role
-    And I wait 5 seconds
-    Given I am on the categories page
+    Then I should not see the text "There are unsaved changes."
+    When I am on the categories page
     Then I should not see "Please select a category on the left or Create a new category"
     When I click on the "summer_collection" category
     Then I should not see the text "Server error"

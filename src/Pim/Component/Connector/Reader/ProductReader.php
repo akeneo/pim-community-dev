@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\Reader;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Job\BatchStatus;
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
@@ -88,17 +89,14 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     {
         $channel = $this->getConfiguredChannel();
         $parameters = $this->stepExecution->getJobParameters();
-        $enabled = $parameters->get('enabled');
-        $updated = $parameters->get('updated');
-        $families = $parameters->get('families');
 
         $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
-        $filters = $this->getFilters(
+        $filters = array_merge($this->getFilters(
             $channel,
-            $this->rawToStandardProductStatus($enabled),
-            $this->rawToStandardProductUpdated($updated),
-            array_filter(explode(',', $families))
-        );
+            $this->rawToStandardProductStatus($parameters->get('enabled')),
+            $this->rawToStandardProductUpdated($parameters->get('updated')),
+            array_filter(explode(',', $parameters->get('families')))
+        ), $this->getCompletenessFilters($parameters));
 
         foreach ($filters as $filter) {
             $pqb->addFilter(
@@ -176,12 +174,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     protected function getFilters(ChannelInterface $channel, $status, $updated, $families)
     {
         $filters = [
-            [
-                'field'    => 'completeness',
-                'operator' => Operators::EQUALS,
-                'value'    => 100,
-                'context'  => []
-            ],
             [
                 'field'    => 'categories.id',
                 'operator' => Operators::IN_CHILDREN_LIST,
@@ -262,5 +254,54 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         }
 
         return $updated;
+    }
+
+    /**
+     * Transform completeness choice into PQB filter
+     *
+     * @param string $rawCompleteness
+     *
+     * @return array|null
+     */
+    protected function getCompletenessFilters(JobParameters $parameters)
+    {
+        if ('at_least_one_complete' === $parameters->get('completeness')) {
+            return [[
+                'field'    => 'completeness',
+                'operator' => Operators::EQUALS,
+                'value'    => 100,
+                'context'  => []
+            ]];
+        }
+
+        if ('all_complete' === $parameters->get('completeness')) {
+            $filters = [];
+            foreach ($parameters->get('locales') as $locale) {
+                $filters[] = [
+                    'field'    => 'completeness',
+                    'operator' => Operators::EQUALS,
+                    'value'    => 100,
+                    'context'  => ['locale' => $locale]
+                ];
+            }
+
+            return $filters;
+        }
+
+        if ('all_incomplete' === $parameters->get('completeness')) {
+            $filters = [];
+            foreach ($parameters->get('locales') as $locale) {
+                $filters[] = [
+                    'field'    => 'completeness',
+                    'operator' => Operators::LOWER_THAN,
+                    'value'    => 100,
+                    'context'  => ['locale' => $locale]
+                ];
+            }
+
+            return $filters;
+        }
+
+        return [];
     }
 }

@@ -66,6 +66,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn('enabled');
         $jobParameters->get('updated')->willReturn('all');
         $jobParameters->get('families')->willReturn('');
+        $jobParameters->get('completeness')->willReturn('all');
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -76,7 +77,7 @@ class ProductReaderSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($pqb);
         $pqb->addFilter('enabled', '=', true, [])->shouldBeCalled();
-        $pqb->addFilter('completeness', '=', 100, [])->shouldBeCalled();
+        $pqb->addFilter('completeness', Argument::cetera())->shouldNotBeCalled();
         $pqb->addFilter('categories.id', 'IN CHILDREN', [42], [])->shouldBeCalled();
         $pqb->execute()
             ->shouldBeCalled()
@@ -117,12 +118,14 @@ class ProductReaderSpec extends ObjectBehavior
         ProductInterface $product2,
         ProductInterface $product3,
         JobParameters $jobParameters
-    ) {
+    )
+    {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('channel')->willReturn('mobile');
         $jobParameters->get('enabled')->willReturn('enabled');
         $jobParameters->get('updated')->willReturn('all');
         $jobParameters->get('families')->willReturn('mugs,webcams');
+        $jobParameters->get('completeness')->willReturn('all');
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -132,15 +135,15 @@ class ProductReaderSpec extends ObjectBehavior
         $pqbFactory->create(['default_scope' => 'mobile'])
             ->shouldBeCalled()
             ->willReturn($pqb);
+
         $pqb->addFilter('family.code', 'IN', ['mugs', 'webcams'], [])->shouldBeCalled();
         $pqb->addFilter('enabled', '=', true, [])->shouldBeCalled();
-        $pqb->addFilter('completeness', '=', 100, [])->shouldBeCalled();
         $pqb->addFilter('categories.id', 'IN CHILDREN', [42], [])->shouldBeCalled();
         $pqb->execute()
             ->shouldBeCalled()
             ->willReturn($cursor);
 
-        $products = [$product1, $product2, $product3];
+        $products      = [$product1, $product2, $product3];
         $productsCount = count($products);
         $cursor->valid()->will(
             function () use (&$productsCount) {
@@ -159,6 +162,106 @@ class ProductReaderSpec extends ObjectBehavior
         $this->read()->shouldReturn($product2);
         $this->read()->shouldReturn($product3);
         $this->read()->shouldReturn(null);
+    }
+
+    function it_reads_complete_products(
+        $pqbFactory,
+        $channelRepository,
+        $stepExecution,
+        ChannelInterface $channel,
+        CategoryInterface $channelRoot,
+        ProductQueryBuilderInterface $pqb,
+        JobParameters $jobParameters
+    ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('mobile');
+        $jobParameters->get('enabled')->willReturn('all');
+        $jobParameters->get('updated')->willReturn('all');
+        $jobParameters->get('locales')->willReturn(['fr_FR', 'en_US']);
+        $jobParameters->get('families')->willReturn('');
+        $jobParameters->get('completeness')->willReturn('all_complete');
+
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
+        $channel->getCategory()->willReturn($channelRoot);
+        $channelRoot->getId()->willReturn(42);
+        $channel->getCode()->willReturn('mobile');
+
+        $pqbFactory->create(['default_scope' => 'mobile'])
+            ->shouldBeCalled()
+            ->willReturn($pqb);
+
+        $pqb->addFilter('completeness', '=', 100, ['locale' => 'fr_FR'])->shouldBeCalled();
+        $pqb->addFilter('completeness', '=', 100, ['locale' => 'en_US'])->shouldBeCalled();
+        $pqb->addFilter('categories.id', 'IN CHILDREN', [42], [])->shouldBeCalled();
+        $pqb->execute()->shouldBeCalled();
+
+        $this->initialize();
+    }
+
+    function it_reads_incomplete_products(
+        $pqbFactory,
+        $channelRepository,
+        $stepExecution,
+        ChannelInterface $channel,
+        CategoryInterface $channelRoot,
+        ProductQueryBuilderInterface $pqb,
+        JobParameters $jobParameters
+    ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('mobile');
+        $jobParameters->get('enabled')->willReturn('all');
+        $jobParameters->get('updated')->willReturn('all');
+        $jobParameters->get('locales')->willReturn(['fr_FR', 'en_US']);
+        $jobParameters->get('families')->willReturn('');
+        $jobParameters->get('completeness')->willReturn('all_incomplete');
+
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
+        $channel->getCategory()->willReturn($channelRoot);
+        $channelRoot->getId()->willReturn(42);
+        $channel->getCode()->willReturn('mobile');
+
+        $pqbFactory->create(['default_scope' => 'mobile'])
+            ->shouldBeCalled()
+            ->willReturn($pqb);
+
+        $pqb->addFilter('completeness', '<', 100, ['locale' => 'fr_FR'])->shouldBeCalled();
+        $pqb->addFilter('completeness', '<', 100, ['locale' => 'en_US'])->shouldBeCalled();
+        $pqb->addFilter('categories.id', 'IN CHILDREN', [42], [])->shouldBeCalled();
+        $pqb->execute()->shouldBeCalled();
+
+        $this->initialize();
+    }
+
+    function it_reads_at_least_one_complete_products(
+        $pqbFactory,
+        $channelRepository,
+        $stepExecution,
+        ChannelInterface $channel,
+        CategoryInterface $channelRoot,
+        ProductQueryBuilderInterface $pqb,
+        JobParameters $jobParameters
+    ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('mobile');
+        $jobParameters->get('enabled')->willReturn('all');
+        $jobParameters->get('updated')->willReturn('all');
+        $jobParameters->get('families')->willReturn('');
+        $jobParameters->get('completeness')->willReturn('at_least_one_complete');
+
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
+        $channel->getCategory()->willReturn($channelRoot);
+        $channelRoot->getId()->willReturn(42);
+        $channel->getCode()->willReturn('mobile');
+
+        $pqbFactory->create(['default_scope' => 'mobile'])
+            ->shouldBeCalled()
+            ->willReturn($pqb);
+
+        $pqb->addFilter('completeness', '=', 100, [])->shouldBeCalled();
+        $pqb->addFilter('categories.id', 'IN CHILDREN', [42], [])->shouldBeCalled();
+        $pqb->execute()->shouldBeCalled();
+
+        $this->initialize();
     }
 
     function it_reads_disabled_products(
@@ -181,6 +284,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn('disabled');
         $jobParameters->get('updated')->willReturn('all');
         $jobParameters->get('families')->willReturn('');
+        $jobParameters->get('completeness')->willReturn('at_least_one_complete');
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -238,6 +342,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn('all');
         $jobParameters->get('updated')->willReturn('all');
         $jobParameters->get('families')->willReturn('');
+        $jobParameters->get('completeness')->willReturn('at_least_one_complete');
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -290,6 +395,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn('enabled');
         $jobParameters->get('updated')->willReturn('all');
         $jobParameters->get('families')->willReturn('');
+        $jobParameters->get('completeness')->willReturn('at_least_one_complete');
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -325,6 +431,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn('all');
         $jobParameters->get('updated')->willReturn('last_export');
         $jobParameters->get('families')->willReturn('');
+        $jobParameters->get('completeness')->willReturn('at_least_one_complete');
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);

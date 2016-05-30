@@ -42,8 +42,10 @@ Feature: Edit a family
 
   Scenario: Disable property fields when the user can't edit a family
     Given I am on the "Administrator" role page
-    And I remove rights to Edit properties of a family
+    And I visit the "Permissions" tab
+    And I revoke rights to Edit properties of a family
     And I save the role
+    Then I should not see the text "There are unsaved changes."
     When I am on the "sneakers" family page
     Then the field Code should be disabled
     And the field Attribute used as label should be disabled
@@ -51,8 +53,10 @@ Feature: Edit a family
 
   Scenario: Disable attribute fields when the user can't edit a family
     Given I am on the "Administrator" role page
-    And I remove rights to Edit attributes of a family
+    And I visit the "Permissions" tab
+    And I revoke rights to Edit attributes of a family
     And I save the role
+    Then I should not see the text "There are unsaved changes."
     When I am on the "sneakers" family page
     And I visit the "Attributes" tab
     Then attribute "name" should be required in channels mobile and tablet

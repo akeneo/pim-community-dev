@@ -19,6 +19,7 @@ use Pim\Behat\Context\Domain\Enrich\Product\AssociationTabContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
 use Pim\Behat\Context\Domain\Spread\XlsxFileContext;
+use Pim\Behat\Context\Domain\System\PermissionsContext;
 use Pim\Behat\Context\Domain\TreeContext;
 use Pim\Behat\Context\HookContext;
 use Pim\Behat\Context\JobContext;
@@ -77,6 +78,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('job', new JobContext());
         $this->useContext('storage-product', new ProductStorage());
         $this->useContext('attribute-validation', new AttributeValidationContext());
+        $this->useContext('role', new PermissionsContext());
 
         $this->setTimeout($parameters);
     }

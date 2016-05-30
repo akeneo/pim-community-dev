@@ -27,7 +27,7 @@
                     var togglePermission = function($icon, callback) {
                         if ($icon.parent().hasClass('default-field-toggle')) {
                             var permission = $icon.parent().data('permission');
-                            var $defaultIcon = $('.default-field[data-permission="' + permission + '"]').find('i.' + ($icon.hasClass('granted') ? 'granted' : 'non-granted'));
+                            var $defaultIcon = $('.default-field[data-permission="' + permission + '"]').find('.' + ($icon.hasClass('granted') ? 'granted' : 'non-granted'));
                             $defaultIcon.toggleClass('icon-ok granted').toggleClass('icon-remove non-granted');
                             var $defaultInput = $defaultIcon.siblings('input[type="checkbox"]').eq(0);
                             $defaultInput.prop('checked', !$defaultInput.is(':checked'));
@@ -38,14 +38,14 @@
                         (callback || $.noop)();
                     };
 
-                    $('.acl-permission i').on('click', function() {
+                    $('.acl-permission .acl-permission-toggle').on('click', function() {
                         togglePermission($(this), decorateTabs)
                     });
 
                     $('.tab-groups').on('click', 'li.tab .acl-group-permission-toggle', function() {
                         var classToToggle = $(this).hasClass('icon-ok') ? 'granted' : 'non-granted';
                         var $target = $($(this).parent().attr('href'));
-                        $target.find('.acl-permission:not(.default-field) i.' + classToToggle).each(function() {
+                        $target.find('.acl-permission:not(.default-field) a.' + classToToggle).each(function() {
                             togglePermission($(this));
                         });
                         decorateTabs();

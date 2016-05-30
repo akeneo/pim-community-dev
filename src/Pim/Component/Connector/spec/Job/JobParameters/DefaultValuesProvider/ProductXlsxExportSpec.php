@@ -31,9 +31,9 @@ class ProductXlsxExportSpec extends ObjectBehavior
                 'locales'          => [],
                 'enabled'          => "enabled",
                 'updated'          => "all",
+                'completeness'     => 'at_least_one_complete',
                 'linesPerFile'     => 10000,
                 'families'         => null,
-
             ]
         );
     }

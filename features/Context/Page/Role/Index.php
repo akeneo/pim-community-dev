@@ -1,6 +1,6 @@
 <?php
 
-namespace Context\Page\UserRole;
+namespace Context\Page\Role;
 
 use Context\Page\Base\Grid;
 

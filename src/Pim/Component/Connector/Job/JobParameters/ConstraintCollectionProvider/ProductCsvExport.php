@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -53,6 +54,15 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
             'message' => 'pim_connector.export.locales.validation.not_blank'
         ]);
         $constraintFields['families'] = [];
+        $constraintFields['completeness'] = [
+            new NotBlank(['groups' => 'Execution']),
+            new Choice(['choices' => [
+                'at_least_one_complete',
+                'all_complete',
+                'all_incomplete',
+                'all',
+            ], 'groups' => 'Execution'])
+        ];
 
         return new Collection(['fields' => $constraintFields]);
     }

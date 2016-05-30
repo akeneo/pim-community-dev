@@ -112,18 +112,18 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
                     'attr'     => ['data-tab' => 'content']
                 ]
             ],
-            'locales' => ['type' => 'pim_import_export_product_export_locale_choice'],
+            'locales'  => ['type' => 'pim_import_export_product_export_locale_choice'],
             'families' => [
                 'type'    => 'select_family_type',
                 'options' => [
                     'repository' => $this->familyRepository,
-                    'route' => 'pim_enrich_family_rest_index',
-                    'required' => false,
-                    'multiple' => true,
-                    'label' => 'pim_base_connector.export.families.label',
-                    'help' => 'pim_base_connector.export.families.help',
-                    'attr' => [
-                        'data-tab' => 'content',
+                    'route'      => 'pim_enrich_family_rest_index',
+                    'required'   => false,
+                    'multiple'   => true,
+                    'label'      => 'pim_base_connector.export.families.label',
+                    'help'       => 'pim_base_connector.export.families.help',
+                    'attr'       => [
+                        'data-tab'         => 'content',
                         'data-placeholder' => 'pim_base_connector.export.families.placeholder'
                     ]
                 ]
@@ -140,6 +140,22 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
                     'select2'  => true,
                     'label'    => 'pim_connector.export.status.label',
                     'help'     => 'pim_connector.export.status.help',
+                    'attr'     => ['data-tab' => 'content']
+                ]
+            ],
+            'completeness' => [
+                'type'    => 'choice',
+                'options' => [
+                    'choices'  => [
+                        'at_least_one_complete' => 'pim_connector.export.completeness.choice.at_least_one_complete',
+                        'all_complete'          => 'pim_connector.export.completeness.choice.all_complete',
+                        'all_incomplete'        => 'pim_connector.export.completeness.choice.all_incomplete',
+                        'all'                   => 'pim_connector.export.completeness.choice.all'
+                    ],
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_connector.export.completeness.label',
+                    'help'     => 'pim_connector.export.completeness.help',
                     'attr'     => ['data-tab' => 'content']
                 ]
             ],
