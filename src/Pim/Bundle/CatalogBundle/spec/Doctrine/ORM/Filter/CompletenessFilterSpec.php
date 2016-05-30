@@ -70,7 +70,7 @@ class CompletenessFilterSpec extends ObjectBehavior
             Argument::any()
         )->shouldBeCalled()->willReturn($qb);
 
-        $qb->setParameter('cLocaleCode', Argument::any())->shouldBeCalled();
+        $qb->setParameter(Argument::any(), Argument::any())->shouldBeCalled();
         $qb->setParameter('cScopeCode', Argument::any())->shouldBeCalled();
 
         $qb->andWhere('filterCompleteness.ratio = 100')->shouldBeCalled();
@@ -118,7 +118,7 @@ class CompletenessFilterSpec extends ObjectBehavior
             Argument::any()
         )->shouldBeCalled()->willReturn($qb);
 
-        $qb->setParameter('cLocaleCode', Argument::any())->shouldBeCalled();
+        $qb->setParameter(Argument::any(), Argument::any())->shouldBeCalled();
         $qb->setParameter('cScopeCode', Argument::any())->shouldBeCalled();
 
         $qb->andWhere('filterCompleteness.ratio < 100')->shouldBeCalled();

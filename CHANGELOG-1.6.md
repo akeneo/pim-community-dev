@@ -11,6 +11,7 @@
 - PIM-5427: Add possibility to filter by families for product export
 - PIM-5427: It is now possible to filter by families for product export
 - PIM-5145: It is now possible to filter product exports by locale
+- PIM-5426: It is now possible to filter product exports by completeness
 
 ## Scalability improvements
 
