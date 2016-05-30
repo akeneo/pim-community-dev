@@ -149,7 +149,7 @@ class WebUser extends RawMinkContext
             throw $this->createExpectationException(sprintf('Cannot find form tab "%s"', $tab));
         }
 
-        if (!$tabElement->getParent()->hasClass('active')) {
+        if (null === $tabElement || !$tabElement->getParent()->hasClass('active')) {
             throw $this->createExpectationException(sprintf('We are not in the %s tab', $tab));
         }
     }
