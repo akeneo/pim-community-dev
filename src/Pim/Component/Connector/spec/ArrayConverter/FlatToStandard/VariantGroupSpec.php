@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
-class VariantGroupStandardConverterSpec extends ObjectBehavior
+class VariantGroupSpec extends ObjectBehavior
 {
     function let(
         LocaleRepositoryInterface $localeRepository,
