@@ -29,15 +29,6 @@ services:
             - '@validator'
             - %pim_catalog.entity.attribute_option.class%
 
-    pim_connector.processor.denormalization.attribute_option.structured:
-        class: %pim_connector.processor.denormalization.attribute_option.class%
-        arguments:
-            - '@pim_connector.array_converter.structured.attribute_option'
-            - '@pim_catalog.repository.attribute_option'
-            - '@pim_catalog.updater.attribute_option'
-            - '@validator'
-            - %pim_catalog.entity.attribute_option.class%
-
     pim_connector.processor.denormalization.attribute.flat:
         class: %pim_connector.processor.denormalization.attribute.class%
         arguments:
