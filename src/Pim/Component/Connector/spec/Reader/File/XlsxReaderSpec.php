@@ -3,24 +3,28 @@
 namespace spec\Pim\Component\Connector\Reader\File;
 
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\ArchiveStorage;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 
 class XlsxReaderSpec extends ObjectBehavior
 {
-    function let(FileIteratorFactory $fileIteratorFactory, StepExecution $stepExecution)
+    function let(FileIteratorFactory $fileIteratorFactory, StepExecution $stepExecution, ArchiveStorage $archiveStorage)
     {
-        $this->beConstructedWith($fileIteratorFactory);
+        $this->beConstructedWith($fileIteratorFactory, $archiveStorage);
         $this->setStepExecution($stepExecution);
     }
 
     function it_read_csv_file(
+        $archiveStorage,
         $fileIteratorFactory,
         $stepExecution,
         FileIteratorInterface $fileIterator,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobExecution $jobExecution
     ) {
         $filePath = __DIR__ . DIRECTORY_SEPARATOR . '..' .
             DIRECTORY_SEPARATOR . '..' .
@@ -32,6 +36,10 @@ class XlsxReaderSpec extends ObjectBehavior
             DIRECTORY_SEPARATOR . 'Context' .
             DIRECTORY_SEPARATOR . 'fixtures' .
             DIRECTORY_SEPARATOR . 'product_with_carriage_return.xlsx';
+
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $archiveStorage->getPathname($jobExecution)->willReturn($filePath);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn($filePath);

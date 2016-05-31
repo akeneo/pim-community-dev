@@ -58,9 +58,7 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
      */
     public function validate()
     {
-        $filePath = $this->archiveStorage->getPathname($this->stepExecution->getJobExecution());
-        $file = new \SplFileInfo($filePath);
-        if (!in_array($file->getExtension(), $this->whiteListExtension)) {
+        if (!in_array($this->getFileExtension(), $this->whiteListExtension)) {
             $this->validateEncoding();
         } else {
             $this->stepExecution->addSummaryInfo(
@@ -79,9 +77,13 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
     protected function validateEncoding()
     {
         $filePath = $this->archiveStorage->getPathname($this->stepExecution->getJobExecution());
+        if (!is_readable($filePath)) {
+            throw new \Exception(sprintf('Unable to read the file "%s".', $filePath));
+        }
+
         $handle = fopen($filePath, 'r');
         if (false === $handle) {
-            throw new \Exception(sprintf('Unable to read the file "%s".', $filePath));
+            throw new \Exception(sprintf('Unable to open the file "%s".', $filePath));
         }
 
         $errors = [];
@@ -109,6 +111,34 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
         }
 
         $this->stepExecution->addSummaryInfo('charset_validator.title', $this->charset . ' OK');
+    }
+
+    /**
+     * Get the file extension of the file to validate.
+     *
+     * @return string
+     * @throws \Exception
+     */
+    protected function getFileExtension()
+    {
+        $filePath = $this->archiveStorage->getPathname($this->stepExecution->getJobExecution());
+        if (!is_readable($filePath)) {
+            throw new \Exception(sprintf('Unable to read the file "%s".', $filePath));
+        }
+
+        $file = new \SplFileInfo($filePath);
+
+        $extension = $file->getExtension();
+        if ('' === $extension) {
+            // the "originalFilename" can has been set earlier in the context by other steps
+            $originalFilename = $this->stepExecution->getJobExecution()->getExecutionContext()->get('originalFilename');
+            $info = pathinfo($originalFilename);
+            if (isset($info['extension'])) {
+                $extension = $info['extension'];
+            };
+        }
+
+        return $extension;
     }
 
     /**

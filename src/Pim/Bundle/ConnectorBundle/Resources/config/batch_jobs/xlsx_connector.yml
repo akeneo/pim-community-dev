@@ -23,6 +23,10 @@ connector:
         xlsx_category_import:
             type:  import
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -37,6 +41,10 @@ connector:
         xlsx_attribute_import:
             type:  import
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -49,6 +57,10 @@ connector:
         xlsx_attribute_option_import:
             type:  import
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -61,6 +73,10 @@ connector:
         xlsx_association_type_import:
             type: import
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -73,6 +89,10 @@ connector:
         xlsx_family_import:
             type: import
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 transfer:
                     class: %pim_connector.step.transfer.class%
                     services:
@@ -123,6 +143,10 @@ connector:
         xlsx_group_import:
             type:  import
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -135,6 +159,10 @@ connector:
         xlsx_variant_group_import:
             type:  import
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:

@@ -25,4 +25,9 @@ interface TransferStepElementInterface extends StepExecutionAwareInterface
      * @throws TransferException
      */
     public function transfer();
+
+    /**
+     * @return string
+     */
+    public function getOriginalFilename();
 }

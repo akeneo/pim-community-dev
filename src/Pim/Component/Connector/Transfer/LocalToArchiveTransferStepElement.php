@@ -60,6 +60,14 @@ class LocalToArchiveTransferStepElement implements TransferStepElementInterface
     /**
      * {@inheritdoc}
      */
+    public function getOriginalFilename()
+    {
+        return basename($this->stepExecution->getJobParameters()->get('filePath'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;

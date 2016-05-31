@@ -3,8 +3,10 @@
 namespace spec\Pim\Component\Connector\Reader\File\Product;
 
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\ArchiveStorage;
 use Pim\Component\Connector\Reader\File\FileIterator;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
@@ -16,9 +18,10 @@ class CsvProductReaderSpec extends ObjectBehavior
     function let(
         FileIteratorFactory $fileIteratorFactory,
         MediaPathTransformer $mediaPath,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        ArchiveStorage $archiveStorage
     ) {
-        $this->beConstructedWith($fileIteratorFactory, $mediaPath, ['.', ','], ['Y-m-d', 'd-m-Y']);
+        $this->beConstructedWith($fileIteratorFactory, $archiveStorage, $mediaPath, ['.', ','], ['Y-m-d', 'd-m-Y']);
         $this->setStepExecution($stepExecution);
     }
 
@@ -33,13 +36,19 @@ class CsvProductReaderSpec extends ObjectBehavior
     }
 
     function it_transforms_media_paths_to_absolute_paths(
+        $archiveStorage,
         $fileIteratorFactory,
         $stepExecution,
+        $mediaPath,
         FileIteratorInterface $fileIterator,
         JobParameters $jobParameters,
-        $mediaPath
+        JobExecution $jobExecution
     ) {
         $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $archiveStorage->getPathname($jobExecution)->willReturn($filePath);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn($filePath);
         $jobParameters->get('enclosure')->willReturn('"');

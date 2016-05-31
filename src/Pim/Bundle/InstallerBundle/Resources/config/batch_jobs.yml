@@ -4,6 +4,10 @@ connector:
         fixtures_category_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -19,6 +23,10 @@ connector:
         fixtures_attribute_group_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -32,6 +40,10 @@ connector:
         fixtures_channel_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -45,6 +57,10 @@ connector:
         fixtures_locale_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -58,6 +74,10 @@ connector:
         fixtures_currency_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -71,6 +91,10 @@ connector:
         fixtures_group_type_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -84,6 +108,10 @@ connector:
         fixtures_association_type_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -97,6 +125,10 @@ connector:
         fixtures_attribute_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -110,6 +142,10 @@ connector:
         fixtures_attribute_options_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -123,6 +159,10 @@ connector:
         fixtures_family_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -136,6 +176,10 @@ connector:
         fixtures_variant_group_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -149,6 +193,10 @@ connector:
         fixtures_product_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -169,6 +217,10 @@ connector:
         fixtures_job_yml:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -182,6 +234,10 @@ connector:
         fixtures_user_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -195,6 +251,10 @@ connector:
         fixtures_user_role_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -208,6 +268,10 @@ connector:
         fixtures_user_group_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
@@ -221,6 +285,10 @@ connector:
         fixtures_group_csv:
             type:  fixtures
             steps:
+                transfer:
+                    class: %pim_connector.step.transfer.class%
+                    services:
+                        transfer: pim_connector.transfer.local_to_archive_transfer_step_element
                 validation:
                     class: '%pim_connector.step.validator.class%'
                     services:
