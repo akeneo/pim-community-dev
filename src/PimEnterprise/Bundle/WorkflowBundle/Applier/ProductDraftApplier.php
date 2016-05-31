@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Applier;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
@@ -31,14 +32,22 @@ class ProductDraftApplier implements ProductDraftApplierInterface
     /** @var EventDispatcherInterface */
     protected $dispatcher;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
     /**
-     * @param PropertySetterInterface  $propertySetter
-     * @param EventDispatcherInterface $dispatcher
+     * @param PropertySetterInterface               $propertySetter
+     * @param EventDispatcherInterface              $dispatcher
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
      */
-    public function __construct(PropertySetterInterface $propertySetter, EventDispatcherInterface $dispatcher)
-    {
+    public function __construct(
+        PropertySetterInterface $propertySetter,
+        EventDispatcherInterface $dispatcher,
+        IdentifiableObjectRepositoryInterface $attributeRepository = null
+    ) {
         $this->propertySetter = $propertySetter;
         $this->dispatcher = $dispatcher;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -82,14 +91,32 @@ class ProductDraftApplier implements ProductDraftApplierInterface
     protected function applyValues(ProductInterface $product, array $changesValues)
     {
         foreach ($changesValues as $code => $values) {
-            foreach ($values as $value) {
-                $this->propertySetter->setData(
-                    $product,
-                    $code,
-                    $value['data'],
-                    ['locale' => $value['locale'], 'scope' => $value['scope']]
-                );
+            if ($this->attributeExists($code)) {
+                foreach ($values as $value) {
+                    $this->propertySetter->setData(
+                        $product,
+                        $code,
+                        $value['data'],
+                        ['locale' => $value['locale'], 'scope' => $value['scope']]
+                    );
+                }
             }
         }
+    }
+
+    /**
+     * Check if attribute still exists in db
+     *
+     * @param string $code
+     *
+     * @return bool
+     */
+    protected function attributeExists($code)
+    {
+        if (null === $this->attributeRepository) {
+            return true;
+        }
+
+        return null !== $this->attributeRepository->findOneByIdentifier($code);
     }
 }
