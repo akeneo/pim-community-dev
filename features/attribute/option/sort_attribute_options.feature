@@ -17,7 +17,6 @@ Feature: Sortd attribute options
     Then I should see "To manage options, please save the attribute first"
     And I save the attribute
     Then I should see the flash message "Attribute successfully created"
-    And I wait for options to load
     And I check the "Automatic option sorting" switch
 
   Scenario: Auto sorting disable reorder
@@ -28,5 +27,4 @@ Feature: Sortd attribute options
       | large_size  |
     Then I should not see reorder handles
     Given I uncheck the "Automatic option sorting" switch
-    And I wait for options to load
     Then I should see reorder handles

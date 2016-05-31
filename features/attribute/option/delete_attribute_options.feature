@@ -17,17 +17,15 @@ Feature: Delete attribute options
     Then I should see "To manage options, please save the attribute first"
     And I save the attribute
     Then I should see the flash message "Attribute successfully created"
-    And I wait for options to load
     And I check the "Automatic option sorting" switch
 
   @jira https://akeneo.atlassian.net/browse/PIM-2166
   Scenario: Successfully delete some attribute options
     Given I create the following attribute options:
-    | Code        |
-    | small_size  |
-    | medium_size |
-    | large_size  |
+      | Code        |
+      | small_size  |
+      | medium_size |
+      | large_size  |
     When I remove the "small_size" option
     And I confirm the deletion
-    And I wait for options to load
-    Then I should not see "small_size"
+    Then I should not see the text "small_size"
