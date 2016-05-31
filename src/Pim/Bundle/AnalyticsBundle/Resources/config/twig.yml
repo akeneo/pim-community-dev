@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_analytics.twig.update_extension:
-        class: %pim_analytics.twig.update_extension.class%
+        class: '%pim_analytics.twig.update_extension.class%'
         arguments:
             - '@oro_config.global'
             - '%pim_analytics_update_server_url%'

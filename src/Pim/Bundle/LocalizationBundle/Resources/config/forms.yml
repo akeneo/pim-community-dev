@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_localization.form.type.locale:
-        class: %pim_localization.form.type.locale.class%
+        class: '%pim_localization.form.type.locale.class%'
         arguments:
             - @pim_localization.provider.ui_locale
         tags:

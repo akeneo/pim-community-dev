@@ -4,7 +4,7 @@ parameters:
 services:
     # deprecated: will be removed in 1.7
     pim_notification.manager.notification:
-        class: %pim_notification.manager.notification.class%
+        class: '%pim_notification.manager.notification.class%'
         arguments:
             - '@pim_notification.repository.user_notification'
             - '@pim_notification.factory.user_notification'

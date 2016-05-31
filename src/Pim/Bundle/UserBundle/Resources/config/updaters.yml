@@ -5,7 +5,7 @@ parameters:
 
 services:
     pim_user.updater.user:
-        class: %pim_user.updater.user.class%
+        class: '%pim_user.updater.user.class%'
         arguments:
             - '@oro_user.manager'
             - '@pim_catalog.repository.category'
@@ -15,9 +15,9 @@ services:
             - '@pim_user.repository.group'
 
     pim_user.updater.group:
-        class: %pim_user.updater.group.class%
+        class: '%pim_user.updater.group.class%'
 
     pim_user.updater.role:
-        class: %pim_user.updater.role.class%
+        class: '%pim_user.updater.role.class%'
         arguments:
             - '@oro_security.acl.manager'

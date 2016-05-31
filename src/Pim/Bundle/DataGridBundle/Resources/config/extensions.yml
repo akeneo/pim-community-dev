@@ -6,7 +6,7 @@ parameters:
 
 services:
     pim_datagrid.extension.filter:
-        class: %pim_datagrid.extension.filter.class%
+        class: '%pim_datagrid.extension.filter.class%'
         arguments:
             - '@oro_datagrid.datagrid.request_params'
             - '@translator'
@@ -15,14 +15,14 @@ services:
              - { name: oro_datagrid.extension }
 
     pim_datagrid.extension.sorter:
-        class: %pim_datagrid.extension.sorter.class%
+        class: '%pim_datagrid.extension.sorter.class%'
         arguments:
             - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: oro_datagrid.extension }
 
     pim_datagrid.extension.pager:
-        class: %pim_datagrid.extension.pager.class%
+        class: '%pim_datagrid.extension.pager.class%'
         arguments:
             - '@pim_datagrid.extension.pager.pager_resolver'
             - '@oro_datagrid.datagrid.request_params'
@@ -30,9 +30,9 @@ services:
             - { name: oro_datagrid.extension }
 
     pim_datagrid.extension.selector.orm_selector:
-        class: %pim_datagrid.extension.selector.orm_selector.class%
+        class: '%pim_datagrid.extension.selector.orm_selector.class%'
         arguments:
-            - %pim_catalog_product_storage_driver%
+            - '%pim_catalog_product_storage_driver%'
             - '@oro_datagrid.datagrid.request_params'
         calls:
             - [addEligibleDatasource, ['pim_datasource_product']]

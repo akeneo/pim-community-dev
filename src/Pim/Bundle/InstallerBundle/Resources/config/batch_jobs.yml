@@ -5,7 +5,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -20,7 +20,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -33,7 +33,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -46,7 +46,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -59,7 +59,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -72,7 +72,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -85,7 +85,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -98,7 +98,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -111,7 +111,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -124,7 +124,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -137,7 +137,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -150,7 +150,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -170,7 +170,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -183,7 +183,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -196,7 +196,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -209,7 +209,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
@@ -222,7 +222,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:

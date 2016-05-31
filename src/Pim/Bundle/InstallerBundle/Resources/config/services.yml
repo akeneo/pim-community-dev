@@ -4,12 +4,12 @@ parameters:
 
 services:
     pim_installer.yaml_persister:
-        class: %pim_installer.yaml_persister.class%
+        class: '%pim_installer.yaml_persister.class%'
         arguments:
-            - %kernel.root_dir%/config
-            - %kernel.environment%
+            - '%kernel.root_dir%/config'
+            - '%kernel.environment%'
 
     pim_installer.directories_registry:
-        class: %pim_installer.directories_registry.class%
+        class: '%pim_installer.directories_registry.class%'
         arguments:
-            - [%catalog_storage_dir%, %tmp_storage_dir%, %archive_dir%]
+            - ['%catalog_storage_dir%', '%tmp_storage_dir%', '%archive_dir%']

@@ -8,16 +8,16 @@ parameters:
 
 services:
     pim_catalog.localization.localizer.registry:
-        class: %pim_catalog.localization.localizer.registry.class%
+        class: '%pim_catalog.localization.localizer.registry.class%'
 
     pim_catalog.localization.localizer.converter:
-        class: %pim_catalog.localization.localizer.converter.class%
+        class: '%pim_catalog.localization.localizer.converter.class%'
         arguments:
             - '@pim_catalog.localization.localizer.registry'
             - '@pim_catalog.repository.attribute'
 
     pim_catalog.localization.localizer.number:
-        class: %pim_catalog.localization.localizer.number.class%
+        class: '%pim_catalog.localization.localizer.number.class%'
         arguments:
             - '@validator'
             - '@pim_catalog.localization.factory.number'
@@ -26,7 +26,7 @@ services:
             - { name: pim_catalog.localization.localizer }
 
     pim_catalog.localization.localizer.price:
-        class: %pim_catalog.localization.localizer.price.class%
+        class: '%pim_catalog.localization.localizer.price.class%'
         arguments:
             - '@validator'
             - '@pim_catalog.localization.factory.number'
@@ -35,7 +35,7 @@ services:
             - { name: pim_catalog.localization.localizer }
 
     pim_catalog.localization.localizer.metric:
-        class: %pim_catalog.localization.localizer.metric.class%
+        class: '%pim_catalog.localization.localizer.metric.class%'
         arguments:
             - '@validator'
             - '@pim_catalog.localization.factory.number'
@@ -44,7 +44,7 @@ services:
             - { name: pim_catalog.localization.localizer }
 
     pim_catalog.localization.localizer.date:
-        class: %pim_catalog.localization.localizer.date.class%
+        class: '%pim_catalog.localization.localizer.date.class%'
         arguments:
             - '@validator'
             - '@pim_catalog.localization.factory.date'

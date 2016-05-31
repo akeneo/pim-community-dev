@@ -10,47 +10,46 @@ parameters:
     pim_enrich.provider.structure_version.product.class: Pim\Bundle\EnrichBundle\Provider\StructureVersion\ProductStructureVersionProvider
 
 services:
-    # Color management
     pim_enrich.provider.form_extension:
-        class: %pim_enrich.provider.form_extension.class%
+        class: '%pim_enrich.provider.form_extension.class%'
         arguments:
             - '@oro_security.security_facade'
 
     # Field registry
     pim_enrich.provider.field.chained:
-        class: %pim_enrich.provider.field.chained.class%
+        class: '%pim_enrich.provider.field.chained.class%'
 
     pim_enrich.provider.field.base:
-        class: %pim_enrich.provider.field.base.class%
+        class: '%pim_enrich.provider.field.base.class%'
         tags:
             - { name: pim_enrich.provider.field, priority: 100 }
 
     pim_enrich.provider.field.wysiwyg:
-        class: %pim_enrich.provider.field.wysiwyg.class%
+        class: '%pim_enrich.provider.field.wysiwyg.class%'
         tags:
             - { name: pim_enrich.provider.field, priority: 90 }
 
     # Empty value registry
     pim_enrich.provider.empty_value.chained:
-        class: %pim_enrich.provider.empty_value.chained.class%
+        class: '%pim_enrich.provider.empty_value.chained.class%'
 
     pim_enrich.provider.empty_value.base:
-        class: %pim_enrich.provider.empty_value.base.class%
+        class: '%pim_enrich.provider.empty_value.base.class%'
         tags:
             - { name: pim_enrich.provider.empty_value, priority: 100 }
 
     # Form registry
     pim_enrich.provider.form.chained:
-        class: %pim_enrich.provider.form.chained.class%
+        class: '%pim_enrich.provider.form.chained.class%'
 
     pim_enrich.provider.form.product:
-        class: %pim_enrich.provider.form.product.class%
+        class: '%pim_enrich.provider.form.product.class%'
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
 
     # Structure version provider
     pim_enrich.provider.structure_version.product:
-        class: %pim_enrich.provider.structure_version.product.class%
+        class: '%pim_enrich.provider.structure_version.product.class%'
         arguments:
             - '@pim_versioning.repository.version'
         calls:

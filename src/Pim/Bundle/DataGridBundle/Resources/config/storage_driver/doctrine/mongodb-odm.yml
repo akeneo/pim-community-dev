@@ -12,21 +12,21 @@ parameters:
 
 services:
     pim_datagrid.extension.pager.mongodb.pager:
-        class: %pim_datagrid.extension.pager.mongodb.pager.class%
+        class: '%pim_datagrid.extension.pager.mongodb.pager.class%'
 
     pim_datagrid.extension.sorter.mongodb.field_sorter:
-        class: %pim_datagrid.extension.sorter.mongodb.field_sorter.class%
+        class: '%pim_datagrid.extension.sorter.mongodb.field_sorter.class%'
         tags:
             - { name: pim_datagrid.extension.sorter, type: mongodb_field }
 
     pim_datagrid.event_listener.mongodb.configure_history_grid_listener:
-        class: %pim_datagrid.event_listener.mongodb.configure_history_grid_listener.class%
+        class: '%pim_datagrid.event_listener.mongodb.configure_history_grid_listener.class%'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.history-grid, method: onBuildBefore }
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-history-grid, method: onBuildBefore }
 
     pim_datagrid.extension.formatter.property.version.author_property:
-        class: %pim_datagrid.extension.formatter.property.version.author_property.class%
+        class: '%pim_datagrid.extension.formatter.property.version.author_property.class%'
         arguments:
             - '@translator'
             - '@oro_user.manager'

@@ -1,5 +1,5 @@
 services:
     pim_connector.factory.job_instance:
-        class: %akeneo_storage_utils.factory.simple.class%
+        class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - %akeneo_batch.entity.job_instance.class%
+            - '%akeneo_batch.entity.job_instance.class%'

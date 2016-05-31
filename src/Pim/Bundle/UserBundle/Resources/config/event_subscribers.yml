@@ -6,19 +6,19 @@ parameters:
 
 services:
     pim_user.event_subscriber.user_preferences:
-        class: %pim_user.event_subscriber.user_preferences.class%
+        class: '%pim_user.event_subscriber.user_preferences.class%'
         calls:
             - [ setContainer, [ '@service_container' ] ]
         tags:
             - { name: doctrine.event_subscriber }
 
     pim_user.event_subscriber.group:
-        class: %pim_user.event_subscriber.group.class%
+        class: '%pim_user.event_subscriber.group.class%'
         tags:
             - { name: kernel.event_subscriber }
 
     pim_locale.locale_subscriber:
-        class: %pim_locale.locale_subscriber.class%
+        class: '%pim_locale.locale_subscriber.class%'
         arguments:
             - @request_stack
             - @translator
@@ -27,6 +27,6 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_locale.locale_listener:
-        class: %pim_locale.locale_listener.class%
+        class: '%pim_locale.locale_listener.class%'
         tags:
             - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }

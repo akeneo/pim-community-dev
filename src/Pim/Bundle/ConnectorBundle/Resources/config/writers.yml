@@ -25,168 +25,168 @@ parameters:
 services:
     # Dummy writer
     pim_connector.writer.dummy_item:
-        class: %pim_connector.writer.dummy_item.class%
+        class: '%pim_connector.writer.dummy_item.class%'
 
     # Database writers
     pim_connector.writer.doctrine.attribute_option:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@pim_catalog.saver.attribute_option'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.category:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@pim_catalog.saver.category'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.family:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@pim_catalog.saver.family'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.product:
-        class: %pim_connector.writer.doctrine.product.class%
+        class: '%pim_connector.writer.doctrine.product.class%'
         arguments:
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.product_association:
-        class: %pim_connector.writer.doctrine.product_association.class%
+        class: '%pim_connector.writer.doctrine.product_association.class%'
         arguments:
             - '@pim_catalog.saver.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.attribute:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@pim_catalog.saver.attribute'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.group:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@pim_catalog.saver.group'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.user:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@pim_user.saver.user'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.user_role:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@pim_user.saver.role'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.user_group:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@pim_user.saver.group'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.association_type:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@pim_catalog.saver.association_type'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.variant_group:
-        class: %pim_connector.writer.doctrine.variant_group.class%
+        class: '%pim_connector.writer.doctrine.variant_group.class%'
         arguments:
             - '@pim_catalog.saver.group'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_catalog.applier.product_template'
 
     pim_connector.writer.doctrine.channel:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@pim_catalog.saver.channel'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.locale:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@pim_catalog.saver.locale'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.attribute_group:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@pim_catalog.saver.attribute_group'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.group_type:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@pim_catalog.saver.group_type'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.currency:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@pim_catalog.saver.currency'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.doctrine.job_instance:
-        class: %pim_connector.writer.doctrine.base.class%
+        class: '%pim_connector.writer.doctrine.base.class%'
         arguments:
             - '@akeneo_batch.saver.job_instance'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     # File writers
     pim_connector.writer.file.file_path_resolver:
-        class: %pim_connector.writer.file.file_path_resolver.class%
+        class: '%pim_connector.writer.file.file_path_resolver.class%'
 
     pim_connector.writer.file.file_exporter:
-        class: %pim_connector.writer.file.file_exporter.class%
+        class: '%pim_connector.writer.file.file_exporter.class%'
         arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.file_storage.file.file_fetcher'
 
     pim_connector.writer.file.media_exporter_path_generator:
-        class: %pim_connector.writer.file.media_exporter_path_generator.class%
+        class: '%pim_connector.writer.file.media_exporter_path_generator.class%'
 
     pim_connector.writer.file.flat_item_buffer:
-        class: %pim_connector.writer.file.flat_item_buffer.class%
+        class: '%pim_connector.writer.file.flat_item_buffer.class%'
         arguments:
             - '@akeneo_buffer.factory.json_file_buffer'
 
     pim_connector.writer.file.product.bulk_file_exporter:
-        class: %pim_connector.writer.file.product.bulk_file_exporter.class%
+        class: '%pim_connector.writer.file.product.bulk_file_exporter.class%'
         arguments:
             - '@pim_connector.writer.file.file_exporter'
 
     pim_connector.writer.file.simple_file:
-        class: %pim_connector.writer.file.simple_file.class%
+        class: '%pim_connector.writer.file.simple_file.class%'
         arguments:
             - '@pim_connector.writer.file.file_path_resolver'
 
     pim_connector.writer.file.yaml:
-        class: %pim_connector.writer.file.yaml.class%
+        class: '%pim_connector.writer.file.yaml.class%'
         arguments:
             - '@pim_connector.writer.file.file_path_resolver'
 
     pim_connector.writer.file.flat_item_buffer_flusher:
-        class: %pim_connector.writer.file.flat_item_buffer_flusher.class%
+        class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
         arguments:
              - '@pim_connector.writer.file.file_path_resolver'
              - '@pim_connector.writer.file.default.column_sorter'
 
     # CSV
     pim_connector.writer.file.csv:
-        class: %pim_connector.writer.file.csv.class%
+        class: '%pim_connector.writer.file.csv.class%'
         arguments:
             - '@pim_connector.writer.file.file_path_resolver'
             - '@pim_connector.writer.file.flat_item_buffer'
             - '@pim_connector.writer.file.default.column_sorter'
 
     pim_connector.writer.file.csv_product:
-        class: %pim_connector.writer.file.csv_product.class%
+        class: '%pim_connector.writer.file.csv_product.class%'
         arguments:
             - '@pim_connector.writer.file.file_path_resolver'
             - '@pim_connector.writer.file.flat_item_buffer'
@@ -194,7 +194,7 @@ services:
             - '@pim_connector.writer.file.product.column_sorter'
 
     pim_connector.writer.file.csv_variant_group:
-        class: %pim_connector.writer.file.csv_variant_group.class%
+        class: '%pim_connector.writer.file.csv_variant_group.class%'
         arguments:
             - '@pim_connector.writer.file.file_path_resolver'
             - '@pim_connector.writer.file.flat_item_buffer'
@@ -221,14 +221,14 @@ services:
 
     # XLSX
     pim_connector.writer.file.xlsx:
-        class: %pim_connector.writer.file.xlsx_simple.class%
+        class: '%pim_connector.writer.file.xlsx_simple.class%'
         arguments:
              - '@pim_connector.writer.file.file_path_resolver'
              - '@pim_connector.writer.file.flat_item_buffer'
              - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.xlsx_product:
-        class: %pim_connector.writer.file.xlsx_product.class%
+        class: '%pim_connector.writer.file.xlsx_product.class%'
         arguments:
              - '@pim_connector.writer.file.file_path_resolver'
              - '@pim_connector.writer.file.flat_item_buffer'
@@ -236,7 +236,7 @@ services:
              - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.xlsx_variant_group:
-        class: %pim_connector.writer.file.xlsx_variant_group.class%
+        class: '%pim_connector.writer.file.xlsx_variant_group.class%'
         arguments:
              - '@pim_connector.writer.file.file_path_resolver'
              - '@pim_connector.writer.file.flat_item_buffer'

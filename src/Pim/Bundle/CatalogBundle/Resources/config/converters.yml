@@ -3,6 +3,6 @@ parameters:
 
 services:
     pim_catalog.converter.metric:
-        class: %pim_catalog.converter.metric.class%
+        class: '%pim_catalog.converter.metric.class%'
         arguments:
             - '@akeneo_measure.measure_converter'

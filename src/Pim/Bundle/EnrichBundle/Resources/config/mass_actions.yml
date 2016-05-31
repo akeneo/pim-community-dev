@@ -12,13 +12,13 @@ parameters:
 services:
     # Mass edit action operation registry
     pim_enrich.mass_edit_action.operation.registry:
-        class: %pim_enrich.mass_edit_action.operation.registry.class%
+        class: '%pim_enrich.mass_edit_action.operation.registry.class%'
         arguments:
             - '@security.token_storage'
             - '@oro_security.security_facade'
 
     pim_enrich.mass_edit_action.form_resolver:
-        class: %pim_enrich.mass_edit_action.form_resolver.class%
+        class: '%pim_enrich.mass_edit_action.form_resolver.class%'
         arguments:
             - '@pim_enrich.mass_edit_action.operation.registry'
             - '@form.factory'
@@ -27,7 +27,7 @@ services:
     # Product Grid Mass edit actions
     pim_enrich.mass_edit_action.change_status:
         public: false
-        class: %pim_enrich.mass_edit_action.change_status.class%
+        class: '%pim_enrich.mass_edit_action.change_status.class%'
         arguments:
             - 'update_product_value'
         tags:
@@ -40,7 +40,7 @@ services:
 
     pim_enrich.mass_edit_action.edit_common_attributes:
         public: false
-        class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
+        class: '%pim_enrich.mass_edit_action.edit_common_attributes.class%'
         arguments:
             - '@pim_catalog.builder.product'
             - '@pim_user.context.user'
@@ -51,7 +51,7 @@ services:
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_catalog.localization.localizer.registry'
             - '@pim_enrich.filter.product_values_edit_data'
-            - %tmp_storage_dir%
+            - '%tmp_storage_dir%'
             - 'edit_common_attributes'
         tags:
             -
@@ -62,7 +62,7 @@ services:
 
     pim_enrich.mass_edit_action.classify:
         public: false
-        class: %pim_enrich.mass_edit_action.classify.class%
+        class: '%pim_enrich.mass_edit_action.classify.class%'
         arguments:
             - 'add_product_value'
         tags:
@@ -74,7 +74,7 @@ services:
 
     pim_enrich.mass_edit_action.change_family:
         public: false
-        class: %pim_enrich.mass_edit_action.change_family.class%
+        class: '%pim_enrich.mass_edit_action.change_family.class%'
         arguments:
             - 'update_product_value'
         tags:
@@ -85,7 +85,7 @@ services:
                 datagrid: product-grid
 
     pim_enrich.mass_edit_action.add_to_groups:
-        class: %pim_enrich.mass_edit_action.add_to_groups.class%
+        class: '%pim_enrich.mass_edit_action.add_to_groups.class%'
         arguments:
             - 'add_product_value'
         tags:
@@ -96,7 +96,7 @@ services:
                 datagrid: product-grid
 
     pim_enrich.mass_edit_action.add_to_variant_group:
-        class: %pim_enrich.mass_edit_action.add_to_variant_group.class%
+        class: '%pim_enrich.mass_edit_action.add_to_variant_group.class%'
         arguments:
             - 'add_to_variant_group'
         tags:
@@ -109,7 +109,7 @@ services:
     # Family Grid Mass edit actions
     pim_enrich.mass_edit_action.set_attribute_requirements:
         public: false
-        class: %pim_enrich.mass_edit_action.set_attribute_requirements.class%
+        class: '%pim_enrich.mass_edit_action.set_attribute_requirements.class%'
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'

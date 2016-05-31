@@ -4,12 +4,12 @@ parameters:
 
 services:
     pim_transform.cache.doctrine_cache:
-        class: %pim_transform.cache.doctrine_cache.class%
+        class: '%pim_transform.cache.doctrine_cache.class%'
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
 
     pim_transform.cache.cache_clearer:
-        class: %pim_transform.cache.cache_clearer.class%
+        class: '%pim_transform.cache.cache_clearer.class%'
         arguments:
             - '@pim_transform.cache.doctrine_cache'
             - '@pim_catalog.doctrine.smart_manager_registry'

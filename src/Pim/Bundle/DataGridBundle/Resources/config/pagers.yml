@@ -4,10 +4,10 @@ parameters:
 
 services:
     pim_datagrid.extension.pager.orm.pager:
-        class: %pim_datagrid.extension.pager.orm.pager.class%
+        class: '%pim_datagrid.extension.pager.orm.pager.class%'
 
     pim_datagrid.extension.pager.pager_resolver:
-        class: %pim_datagrid.extension.pager.pager_resolver.class%
+        class: '%pim_datagrid.extension.pager.pager_resolver.class%'
         arguments:
             - '@pim_datagrid.datasource.support_resolver'
             - '@pim_datagrid.extension.pager.orm.pager'

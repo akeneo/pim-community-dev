@@ -4,4 +4,4 @@ parameters:
 
 services:
     akeneo_storage_utils.remover.base_options_resolver:
-        class: %akeneo_storage_utils.remover.base_options_resolver.class%
+        class: '%akeneo_storage_utils.remover.base_options_resolver.class%'

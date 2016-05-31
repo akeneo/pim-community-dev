@@ -5,7 +5,7 @@ parameters:
 
 services:
     pim_catalog.builder.product:
-        class: %pim_catalog.builder.product.class%
+        class: '%pim_catalog.builder.product.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.family'
@@ -13,16 +13,16 @@ services:
             - '@pim_catalog.repository.association_type'
             - '@event_dispatcher'
             - '@pim_catalog.resolver.attribute_values'
-            - {'product': %pim_catalog.entity.product.class%, 'product_value': %pim_catalog.entity.product_value.class%, 'product_price': %pim_catalog.entity.product_price.class%, 'association': %pim_catalog.entity.association.class%}
+            - {'product': '%pim_catalog.entity.product.class%', 'product_value': '%pim_catalog.entity.product_value.class%', 'product_price': '%pim_catalog.entity.product_price.class%', 'association': '%pim_catalog.entity.association.class%'}
 
     pim_catalog.builder.product_template:
-        class: %pim_catalog.builder.product_template.class%
+        class: '%pim_catalog.builder.product_template.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_serializer'
             - '@pim_catalog.builder.product'
-            - %pim_catalog.entity.product_template.class%
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product_template.class%'
+            - '%pim_catalog.entity.product.class%'
 
     pim_catalog.builder.choices:
-        class: %pim_catalog.builder.choices.class%
+        class: '%pim_catalog.builder.choices.class%'

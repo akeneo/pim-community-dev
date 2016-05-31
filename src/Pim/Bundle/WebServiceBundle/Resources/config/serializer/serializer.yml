@@ -3,10 +3,10 @@ parameters:
 
 services:
     pim_webservice.serializer:
-        class: %pim_webservice.serializer.class%
+        class: '%pim_webservice.serializer.class%'
 
     pim_webservice.serializer.encoder.json:
         public: false
-        class: %pim_serializer.encoder.json.class%
+        class: '%pim_serializer.encoder.json.class%'
         tags:
             - { name: pim_webservice.serializer.encoder, priority: 90 }

@@ -2,13 +2,13 @@ oneup_flysystem:
     adapters:
         catalog_storage_adapter:
             local:
-                directory: %catalog_storage_dir%
+                directory: '%catalog_storage_dir%'
         tmp_storage_adapter:
             local:
-                directory: %tmp_storage_dir%
+                directory: '%tmp_storage_dir%'
         archivist_adapter:
             local:
-                directory: %archive_dir%
+                directory: '%archive_dir%'
     filesystems:
         catalog_storage:
             adapter: catalog_storage_adapter

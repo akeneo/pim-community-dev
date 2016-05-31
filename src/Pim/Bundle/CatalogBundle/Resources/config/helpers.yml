@@ -4,7 +4,7 @@ parameters:
 services:
     # Locale helper
     pim_catalog.helper.locale:
-        class: %pim_catalog.helper.locale.class%
+        class: '%pim_catalog.helper.locale.class%'
         arguments:
             - '@pim_user.context.user'
             - '@pim_catalog.repository.locale'

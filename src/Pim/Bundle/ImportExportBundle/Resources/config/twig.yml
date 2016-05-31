@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_import_export.twig.normalize_configuration_extension:
-        class: %pim_import_export.twig.normalize_configuration_extension.class%
+        class: '%pim_import_export.twig.normalize_configuration_extension.class%'
         arguments:
             - '@translator'
         tags:

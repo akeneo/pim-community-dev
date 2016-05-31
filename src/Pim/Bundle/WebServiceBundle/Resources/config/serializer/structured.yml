@@ -1,40 +1,40 @@
 services:
     # Normalizers
     pim_webservice.serializer.normalizer.product:
-        class: %pim_serializer.normalizer.product.class%
+        class: '%pim_serializer.normalizer.product.class%'
         arguments:
             - '@pim_catalog.filter.chained'
         tags:
             - { name: pim_webservice.serializer.normalizer, priority: 90 }
 
     pim_webservice.serializer.normalizer.product_value:
-        class: %pim_serializer.normalizer.product_value.class%
+        class: '%pim_serializer.normalizer.product_value.class%'
         arguments:
             - '@pim_catalog.localization.localizer.registry'
         tags:
             - { name: pim_webservice.serializer.normalizer, priority: 90 }
 
     pim_webservice.serializer.normalizer.product_price:
-        class: %pim_serializer.normalizer.product_price.class%
+        class: '%pim_serializer.normalizer.product_price.class%'
         tags:
             - { name: pim_webservice.serializer.normalizer, priority: 90 }
 
     pim_webservice.serializer.normalizer.metric:
-        class: %pim_serializer.normalizer.metric.class%
+        class: '%pim_serializer.normalizer.metric.class%'
         tags:
             - { name: pim_webservice.serializer.normalizer, priority: 90 }
 
     pim_webservice.serializer.normalizer.file:
-        class: %pim_serializer.normalizer.file.class%
+        class: '%pim_serializer.normalizer.file.class%'
         tags:
             - { name: pim_webservice.serializer.normalizer, priority: 90 }
 
     pim_webservice.serializer.normalizer.datetime:
-        class: %pim_serializer.normalizer.datetime.class%
+        class: '%pim_serializer.normalizer.datetime.class%'
         tags:
             - { name: pim_webservice.serializer.normalizer, priority: 90 }
 
     pim_webservice.serializer.normalizer.attribute_option:
-        class: %pim_serializer.normalizer.attribute_option.class%
+        class: '%pim_serializer.normalizer.attribute_option.class%'
         tags:
             - { name: pim_webservice.serializer.normalizer, priority: 90 }

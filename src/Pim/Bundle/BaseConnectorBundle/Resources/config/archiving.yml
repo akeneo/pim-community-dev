@@ -9,20 +9,20 @@ parameters:
 
 services:
     pim_base_connector.event_listener.archivist:
-        class: %pim_base_connector.event_listener.archivist.class%
+        class: '%pim_base_connector.event_listener.archivist.class%'
         tags:
             - { name: kernel.event_subscriber }
 
     pim_base_connector.event_listener.invalid_items_collector:
-        class: %pim_base_connector.event_listener.invalid_items_collector.class%
+        class: '%pim_base_connector.event_listener.invalid_items_collector.class%'
         tags:
             - { name: kernel.event_subscriber }
 
     pim_base_connector.factory.zip_filesystem:
-        class: %pim_base_connector.factory.zip_filesystem.class%
+        class: '%pim_base_connector.factory.zip_filesystem.class%'
 
     pim_base_connector.archiver.file_reader_archiver:
-        class: %pim_base_connector.archiver.file_reader_archiver.class%
+        class: '%pim_base_connector.archiver.file_reader_archiver.class%'
         arguments:
             - '@oneup_flysystem.archivist_filesystem'
             - '@service_container'
@@ -30,7 +30,7 @@ services:
             - { name: pim_base_connector.archiver }
 
     pim_base_connector.archiver.invalid_item_csv_archiver:
-        class: %pim_base_connector.archiver.invalid_item_csv_archiver.class%
+        class: '%pim_base_connector.archiver.invalid_item_csv_archiver.class%'
         arguments:
             - '@pim_base_connector.event_listener.invalid_items_collector'
             - '@pim_base_connector.archiver.invalid_item_csv_writer'
@@ -42,7 +42,7 @@ services:
         parent: pim_connector.writer.file.csv
 
     pim_base_connector.archiver.file_writer_archiver:
-        class: %pim_base_connector.archiver.file_writer_archiver.class%
+        class: '%pim_base_connector.archiver.file_writer_archiver.class%'
         arguments:
             - '@oneup_flysystem.archivist_filesystem'
             - '@service_container'
@@ -50,7 +50,7 @@ services:
             - { name: pim_base_connector.archiver }
 
     pim_base_connector.archiver.archivable_file_writer_archiver:
-        class: %pim_base_connector.archiver.archivable_file_writer_archiver.class%
+        class: '%pim_base_connector.archiver.archivable_file_writer_archiver.class%'
         arguments:
             - '@pim_base_connector.factory.zip_filesystem'
             - '@oneup_flysystem.archivist_filesystem'

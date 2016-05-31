@@ -15,18 +15,18 @@ parameters:
 services:
     # connectors registry
     akeneo_batch.connectors:
-        class: %akeneo_batch.connectors.class%
+        class: '%akeneo_batch.connectors.class%'
         arguments:
             - @akeneo_batch.job_factory
             - @akeneo_batch.step_factory
 
     akeneo_batch.job_instance_factory:
-        class: %akeneo_batch.job_instance_factory.class%
+        class: '%akeneo_batch.job_instance_factory.class%'
         arguments:
-            - %akeneo_batch.entity.job_instance.class%
+            - '%akeneo_batch.entity.job_instance.class%'
 
     akeneo_batch.logger_subscriber:
-        class: %akeneo_batch.logger_subscriber.class%
+        class: '%akeneo_batch.logger_subscriber.class%'
         arguments:
             - @logger
             - @translator
@@ -35,48 +35,48 @@ services:
             - { name: monolog.logger, channel: batch }
 
     akeneo_batch.notification_subscriber:
-        class: %akeneo_batch.notification_subscriber.class%
+        class: '%akeneo_batch.notification_subscriber.class%'
         tags:
             - { name: kernel.event_subscriber }
 
     akeneo_batch.mail_notifier:
-        class: %akeneo_batch.mail_notifier.class%
+        class: '%akeneo_batch.mail_notifier.class%'
         arguments:
             - @akeneo_batch.logger.batch_log_handler
             - @security.token_storage
             - @twig
             - @mailer
-            - %akeneo_batch.mail_notifier.sender_email%
+            - '%akeneo_batch.mail_notifier.sender_email%'
 
     akeneo_batch.step_factory:
-        class: %akeneo_batch.step_factory.class%
+        class: '%akeneo_batch.step_factory.class%'
         arguments:
             - @event_dispatcher
             - @akeneo_batch.job_repository
 
     akeneo_batch.logger.batch_log_handler:
-        class: %akeneo_batch.logger.batch_log_handler.class%
+        class: '%akeneo_batch.logger.batch_log_handler.class%'
         arguments:
             - 100
             - true
             - null
             - false
-            - %kernel.logs_dir%/batch
+            - '%kernel.logs_dir%/batch'
 
     akeneo_batch.set_job_execution_log_file_subscriber:
-        class: %akeneo_batch.set_job_execution_log_file_subscriber.class%
+        class: '%akeneo_batch.set_job_execution_log_file_subscriber.class%'
         arguments:
             - @akeneo_batch.logger.batch_log_handler
         tags:
             - { name: kernel.event_subscriber }
 
     akeneo_batch.manager.job_execution:
-        class: %akeneo_batch.manager.job_execution.class%
+        class: '%akeneo_batch.manager.job_execution.class%'
         arguments:
             - @doctrine.orm.entity_manager
 
     akeneo_batch.launcher.simple_job_launcher:
-        class: %akeneo_batch.launcher.simple_job_launcher.class%
+        class: '%akeneo_batch.launcher.simple_job_launcher.class%'
         arguments:
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.job_parameters_factory'

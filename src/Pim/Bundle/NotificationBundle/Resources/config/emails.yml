@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_notification.email.email_notifier:
-        class: %pim_notification.email.email_notifier.class%
+        class: '%pim_notification.email.email_notifier.class%'
         arguments:
             - @mailer
-            - %akeneo_batch.mail_notifier.sender_email%
+            - '%akeneo_batch.mail_notifier.sender_email%'

@@ -3,4 +3,4 @@ parameters:
 
 services:
     pim_webservice.serializer:
-        class: %pim_webservice.serializer.class%
+        class: '%pim_webservice.serializer.class%'

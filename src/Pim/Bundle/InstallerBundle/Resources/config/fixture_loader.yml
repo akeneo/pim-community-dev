@@ -7,26 +7,26 @@ parameters:
 
 services:
     pim_installer.fixture_loader.path_provider:
-        class: %pim_installer.fixture_loader.path_provider.class%
+        class: '%pim_installer.fixture_loader.path_provider.class%'
         arguments:
             - '%kernel.bundles%'
             - '%installer_data%'
 
     pim_installer.fixture_loader.job_instances_builder:
-        class: %pim_installer.fixture_loader.job_instances_builder.class%
+        class: '%pim_installer.fixture_loader.job_instances_builder.class%'
         arguments:
             - '@file_locator'
             - '@pim_base_connector.reader.file.yaml'
             - '@pim_base_connector.processor.job_instance'
-            - [ %pim_installer.fixture_loader.job_loader.config_file% ]
+            - [ '%pim_installer.fixture_loader.job_loader.config_file%' ]
 
     pim_installer.fixture_loader.job_instances_configurator:
-        class: %pim_installer.fixture_loader.job_instances_configurator.class%
+        class: '%pim_installer.fixture_loader.job_instances_configurator.class%'
         arguments:
             - '@pim_installer.fixture_loader.path_provider'
 
     pim_installer.fixture_loader.job_loader:
-        class: %pim_installer.fixture_loader.job_loader.class%
+        class: '%pim_installer.fixture_loader.job_loader.class%'
         arguments:
             - '@pim_installer.fixture_loader.path_provider'
             - '@pim_installer.fixture_loader.job_instances_builder'

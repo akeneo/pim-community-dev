@@ -11,14 +11,14 @@ parameters:
 
 services:
     pim_datagrid.event_listener.configure_sorters_listener:
-        class: %pim_datagrid.event_listener.configure_sorters_listener.class%
+        class: '%pim_datagrid.event_listener.configure_sorters_listener.class%'
         arguments:
             - '@pim_datagrid.datasource.support_resolver'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before, method: onBuildBefore }
 
     pim_datagrid.event_listener.configure_product_filters:
-        class: %pim_datagrid.event_listener.configure_product_filters.class%
+        class: '%pim_datagrid.event_listener.configure_product_filters.class%'
         arguments:
             - @pim_user.context.user
         tags:

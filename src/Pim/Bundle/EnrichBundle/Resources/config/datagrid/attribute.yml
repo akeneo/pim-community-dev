@@ -5,7 +5,7 @@ datagrid:
             entityHint: attribute
         source:
             acl_resource: pim_enrich_attribute_index
-            entity: %pim_catalog.entity.attribute.class%
+            entity: '%pim_catalog.entity.attribute.class%'
         columns:
             attributeType:
                 label: Type

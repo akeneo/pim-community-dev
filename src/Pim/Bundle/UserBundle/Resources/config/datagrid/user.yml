@@ -1,6 +1,6 @@
 datagrid:
     pim-user-grid:
-        extended_entity_name: %oro_user.entity.class%
+        extended_entity_name: '%oro_user.entity.class%'
         options:
             entityHint: user
         source:
@@ -17,7 +17,7 @@ datagrid:
                     - u.updatedAt
                     - u.enabled
                 from:
-                    - { table: %oro_user.entity.class%, alias: u }
+                    - { table: '%oro_user.entity.class%', alias: u }
         columns:
             username:
                 label: oro.user.grid.users.columns.username
@@ -76,7 +76,7 @@ datagrid:
                 enabled:
                     data_name: u.enabled
             default:
-                username: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                username: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
 
         filters:
             columns:

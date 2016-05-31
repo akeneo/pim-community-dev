@@ -4,10 +4,10 @@ parameters:
 
 services:
     pim_enrich.form.view.view_updater.registry:
-        class: %pim_enrich.form.view.view_updater.registry.class%
+        class: '%pim_enrich.form.view.view_updater.registry.class%'
 
     pim_enrich.form.view.view_updater.variant:
-        class: %pim_enrich.form.view.view_updater.variant.class%
+        class: '%pim_enrich.form.view.view_updater.variant.class%'
         arguments:
             - @property_accessor
         tags:

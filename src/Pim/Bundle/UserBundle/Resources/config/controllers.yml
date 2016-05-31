@@ -4,13 +4,13 @@ parameters:
 
 services:
     pim_user.controller.user_rest:
-        class: %pim_user.controller.user_rest.class%
+        class: '%pim_user.controller.user_rest.class%'
         arguments:
             - '@security.token_storage'
             - '@pim_internal_api_serializer'
 
     pim_user.controller.security_rest:
-        class: %pim_user.controller.security_rest.class%
+        class: '%pim_user.controller.security_rest.class%'
         arguments:
             - '@oro_security.security_facade'
             - @oro_security.acl.annotation_provider

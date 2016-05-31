@@ -3,5 +3,5 @@ parameters:
 
 services:
     akeneo_classification.repository.abstract_item_category:
-        class:    %akeneo_classification.repository.abstract_item_category.class%
+        class:    '%akeneo_classification.repository.abstract_item_category.class%'
         abstract: true

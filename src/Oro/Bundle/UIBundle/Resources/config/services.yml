@@ -7,30 +7,30 @@ parameters:
 
 services:
     oro_ui.router:
-        class: %oro_ui.router.class%
+        class: '%oro_ui.router.class%'
         scope: request
         arguments: [@request, @router]
 
     oro_ui.twig.ceil_extension:
-        class: %oro_ui.twig.ceil.class%
+        class: '%oro_ui.twig.ceil.class%'
         tags:
             - { name: twig.extension }
 
     oro_ui.twig.ui_extension:
-        class: %oro_ui.twig.extension.class%
-        arguments: [%oro_ui.placeholders%, %oro_ui.wrap_class%]
+        class: '%oro_ui.twig.extension.class%'
+        arguments: ['%oro_ui.placeholders%', '%oro_ui.wrap_class%']
         tags:
             - { name: twig.extension }
 
     oro_ui.twig.md5_extension:
-        class: %oro_ui.twig.md5.class%
+        class: '%oro_ui.twig.md5.class%'
         arguments:
             - @serializer
         tags:
             - { name: twig.extension }
 
     oro_ui.twig.date_extension:
-        class: %oro_ui.twig.date.class%
+        class: '%oro_ui.twig.date.class%'
         arguments:
             - @translator
         tags:

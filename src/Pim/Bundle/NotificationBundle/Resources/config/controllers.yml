@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_notification.controller.notification:
-        class: %pim_notification.controller.notification.class%
+        class: '%pim_notification.controller.notification.class%'
         arguments:
             - '@templating'
             - '@pim_user.context.user'

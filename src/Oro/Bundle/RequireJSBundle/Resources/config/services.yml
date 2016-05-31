@@ -4,7 +4,7 @@ parameters:
 
 services:
     oro_requirejs.twig.requirejs_extension:
-        class:                            %oro_requirejs.twig.class%
+        class:                            '%oro_requirejs.twig.class%'
         arguments:
             - "@service_container"
         tags:
@@ -16,7 +16,7 @@ services:
               - [setNamespace, ['oro_requirejs.cache']]
 
     oro_requirejs_config_provider:
-        class: %oro_requirejs.provider.config.class%
+        class: '%oro_requirejs.provider.config.class%'
         arguments:
             - @service_container
         calls:

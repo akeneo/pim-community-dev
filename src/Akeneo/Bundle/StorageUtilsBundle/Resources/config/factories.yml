@@ -4,6 +4,6 @@ parameters:
 
 services:
     akeneo_storage_utils.factory.referenced_collection:
-        class: %akeneo_storage_utils.factory.referenced_collection.class%
+        class: '%akeneo_storage_utils.factory.referenced_collection.class%'
         arguments:
             - '@akeneo_storage_utils.doctrine.smart_manager_registry'

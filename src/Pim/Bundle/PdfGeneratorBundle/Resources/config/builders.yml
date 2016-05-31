@@ -3,6 +3,6 @@ parameters:
 
 services:
     pim_pdf_generator.builder.dompdf:
-        class: %pim_pdf_generator.builder.dompdf.class%
+        class: '%pim_pdf_generator.builder.dompdf.class%'
         arguments:
             - '%kernel.root_dir%'

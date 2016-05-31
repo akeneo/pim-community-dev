@@ -4,12 +4,12 @@ parameters:
 
 services:
     pim_analytics.controller.data:
-        class: %pim_analytics.controller.data.class%
+        class: '%pim_analytics.controller.data.class%'
         arguments:
             - '@pim_analytics.data_collector.chained'
 
     pim_analytics.controller.system_info:
-        class: %pim_analytics.controller.system_info.class%
+        class: '%pim_analytics.controller.system_info.class%'
         arguments:
             - '@templating'
             - '@pim_analytics.data_collector.chained'

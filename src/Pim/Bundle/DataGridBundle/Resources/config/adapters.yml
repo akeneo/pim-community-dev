@@ -3,6 +3,6 @@ parameters:
 
 services:
     pim_datagrid.adapter.oro_to_pim_grid_filter:
-        class: %pim_datagrid.adapter.oro_to_pim_grid_filter.class%
+        class: '%pim_datagrid.adapter.oro_to_pim_grid_filter.class%'
         arguments:
             - '@pim_datagrid.extension.mass_action.dispatcher'

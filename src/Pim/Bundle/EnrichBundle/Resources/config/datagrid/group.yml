@@ -5,7 +5,7 @@ datagrid:
         source:
             acl_resource: pim_enrich_group_index
             type: pim_datasource_default
-            entity: %pim_catalog.entity.group.class%
+            entity: '%pim_catalog.entity.group.class%'
             repository_method: createDatagridQueryBuilder
         columns:
             code:
@@ -47,7 +47,7 @@ datagrid:
                 type:
                     data_name: typeLabel
             default:
-                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         filters:
             columns:
                 code:

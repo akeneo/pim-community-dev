@@ -3,11 +3,11 @@ parameters:
 
 services:
     akeneo_buffer.factory.array_buffer:
-        class: %akeneo_buffer.factory.buffer.class%
+        class: '%akeneo_buffer.factory.buffer.class%'
         arguments:
             - Akeneo\Component\Buffer\ArrayBuffer
 
     akeneo_buffer.factory.json_file_buffer:
-        class: %akeneo_buffer.factory.buffer.class%
+        class: '%akeneo_buffer.factory.buffer.class%'
         arguments:
             - Akeneo\Component\Buffer\JSONFileBuffer

@@ -3,6 +3,6 @@ parameters:
 
 services:
     pim_webservice.handler.rest.product:
-        class: %pim_webservice.handler.rest.product.class%
+        class: '%pim_webservice.handler.rest.product.class%'
         arguments:
             - '@pim_webservice.serializer'

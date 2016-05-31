@@ -3,4 +3,4 @@ parameters:
 
 services:
     pim_localization.updater.translatable:
-        class: %pim_localization.updater.translatable.class%
+        class: '%pim_localization.updater.translatable.class%'

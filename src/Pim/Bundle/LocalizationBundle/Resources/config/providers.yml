@@ -4,7 +4,7 @@ parameters:
 
 services:
     pim_localization.provider.ui_locale:
-        class: %pim_localization.provider.ui_locale.class%
+        class: '%pim_localization.provider.ui_locale.class%'
         arguments:
             - '@translator'
-            - %pim_localization.provider.ui_locale.min_percentage%
+            - '%pim_localization.provider.ui_locale.min_percentage%'

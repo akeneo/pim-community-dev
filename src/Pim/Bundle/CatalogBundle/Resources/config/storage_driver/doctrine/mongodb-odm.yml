@@ -84,76 +84,76 @@ services:
         alias: doctrine.odm.mongodb.document_manager
 
     pim_catalog.doctrine.completeness_generator:
-        class: %pim_catalog.doctrine.completeness_generator.class%
+        class: '%pim_catalog.doctrine.completeness_generator.class%'
         arguments:
             - '@doctrine.odm.mongodb.document_manager'
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.family'
 
     pim_catalog.doctrine.index_creator:
-        class: %pim_catalog.doctrine.index_creator.class%
+        class: '%pim_catalog.doctrine.index_creator.class%'
         arguments:
             - @pim_catalog.doctrine.smart_manager_registry
             - @pim_catalog.doctrine.naming_utility
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'
             - @logger
-            - %pim_catalog.entity.attribute.class%
+            - '%pim_catalog.entity.attribute.class%'
 
     pim_catalog.doctrine.naming_utility:
-        class: %pim_catalog.doctrine.naming_utility.class%
+        class: '%pim_catalog.doctrine.naming_utility.class%'
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
-            - %pim_catalog.entity.channel.class%
-            - %pim_catalog.entity.locale.class%
-            - %pim_catalog.entity.attribute.class%
-            - %pim_catalog.entity.currency.class%
+            - '%pim_catalog.entity.channel.class%'
+            - '%pim_catalog.entity.locale.class%'
+            - '%pim_catalog.entity.attribute.class%'
+            - '%pim_catalog.entity.currency.class%'
 
     pim_catalog.doctrine.index_purger:
-        class: %pim_catalog.doctrine.index_purger.class%
+        class: '%pim_catalog.doctrine.index_purger.class%'
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'
 
     # Normalizers from Object to MongoDB normalizedData
     pim_catalog.mongodb.normalizer.normalized_data.product:
-        class: %pim_catalog.mongodb.normalizer.normalized_data.product.class%
+        class: '%pim_catalog.mongodb.normalizer.normalized_data.product.class%'
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_catalog.mongodb.normalizer.normalized_data.product_value:
-        class: %pim_catalog.mongodb.normalizer.normalized_data.product_value.class%
+        class: '%pim_catalog.mongodb.normalizer.normalized_data.product_value.class%'
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_catalog.mongodb.normalizer.normalized_data.attribute_option:
-        class: %pim_catalog.mongodb.normalizer.normalized_data.attribute_option.class%
+        class: '%pim_catalog.mongodb.normalizer.normalized_data.attribute_option.class%'
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_catalog.mongodb.normalizer.normalized_data.product_price:
-        class: %pim_catalog.mongodb.normalizer.normalized_data.product_price.class%
+        class: '%pim_catalog.mongodb.normalizer.normalized_data.product_price.class%'
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_catalog.mongodb.normalizer.normalized_data.file:
-        class: %pim_catalog.mongodb.normalizer.normalized_data.file.class%
+        class: '%pim_catalog.mongodb.normalizer.normalized_data.file.class%'
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_catalog.mongodb.normalizer.normalized_data.metric:
-        class: %pim_catalog.mongodb.normalizer.normalized_data.metric.class%
+        class: '%pim_catalog.mongodb.normalizer.normalized_data.metric.class%'
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_catalog.mongodb.normalizer.normalized_data.family:
-        class: %pim_catalog.mongodb.normalizer.normalized_data.family.class%
+        class: '%pim_catalog.mongodb.normalizer.normalized_data.family.class%'
         public: false
         arguments:
             - '@pim_serializer.normalizer.label_translation'
@@ -161,7 +161,7 @@ services:
             - { name: pim_serializer.normalizer }
 
     pim_catalog.mongodb.normalizer.normalized_data.group:
-        class: %pim_catalog.mongodb.normalizer.normalized_data.group.class%
+        class: '%pim_catalog.mongodb.normalizer.normalized_data.group.class%'
         public: false
         arguments:
             - '@pim_serializer.normalizer.label_translation'
@@ -169,27 +169,27 @@ services:
             - { name: pim_serializer.normalizer }
 
     pim_catalog.mongodb.normalizer.normalized_data.completeness:
-        class: %pim_catalog.mongodb.normalizer.normalized_data.completeness.class%
+        class: '%pim_catalog.mongodb.normalizer.normalized_data.completeness.class%'
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_catalog.mongodb.normalizer.normalized_data.datetime:
-        class: %pim_catalog.mongodb.normalizer.normalized_data.datetime.class%
+        class: '%pim_catalog.mongodb.normalizer.normalized_data.datetime.class%'
         public: false
         tags:
             - { name: pim_serializer.normalizer }
 
     # Normalizers from Object to MongoDB document
     pim_catalog.mongodb.normalizer.document.product:
-        class: %pim_catalog.mongodb.normalizer.document.product.class%
+        class: '%pim_catalog.mongodb.normalizer.document.product.class%'
         arguments:
             - '@pim_catalog.mongodb.mongo_objects_factory'
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }
 
     pim_catalog.mongodb.normalizer.document.product_value:
-        class: %pim_catalog.mongodb.normalizer.document.product_value.class%
+        class: '%pim_catalog.mongodb.normalizer.document.product_value.class%'
         arguments:
             - '@pim_catalog.mongodb.mongo_objects_factory'
             - '@pim_catalog.doctrine.smart_manager_registry'
@@ -197,7 +197,7 @@ services:
             - { name: pim_serializer.normalizer, priority: 100 }
 
     pim_catalog.mongodb.normalizer.document.metric:
-        class: %pim_catalog.mongodb.normalizer.document.metric.class%
+        class: '%pim_catalog.mongodb.normalizer.document.metric.class%'
         arguments:
             - '@pim_catalog.mongodb.mongo_objects_factory'
             - '@akeneo_measure.measure_converter'
@@ -206,35 +206,35 @@ services:
             - { name: pim_serializer.normalizer, priority: 100 }
 
     pim_catalog.mongodb.normalizer.document.price:
-        class: %pim_catalog.mongodb.normalizer.document.price.class%
+        class: '%pim_catalog.mongodb.normalizer.document.price.class%'
         arguments:
             - '@pim_catalog.mongodb.mongo_objects_factory'
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }
 
     pim_catalog.mongodb.normalizer.document.datetime:
-        class: %pim_catalog.mongodb.normalizer.document.datetime.class%
+        class: '%pim_catalog.mongodb.normalizer.document.datetime.class%'
         arguments:
             - '@pim_catalog.mongodb.mongo_objects_factory'
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }
 
     pim_catalog.mongodb.normalizer.document.association:
-        class: %pim_catalog.mongodb.normalizer.document.association.class%
+        class: '%pim_catalog.mongodb.normalizer.document.association.class%'
         arguments:
             - '@pim_catalog.mongodb.mongo_objects_factory'
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }
 
     pim_catalog.mongodb.normalizer.document.version:
-        class: %pim_catalog.mongodb.normalizer.document.version.class%
+        class: '%pim_catalog.mongodb.normalizer.document.version.class%'
         arguments:
             - '@pim_catalog.mongodb.mongo_objects_factory'
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }
 
     pim_catalog.mongodb.normalizer.document.generic:
-        class: %pim_catalog.mongodb.normalizer.document.generic.class%
+        class: '%pim_catalog.mongodb.normalizer.document.generic.class%'
         arguments:
             - '@pim_catalog.mongodb.mongo_objects_factory'
         tags:
@@ -244,10 +244,10 @@ services:
         alias: akeneo_storage_utils.mongodb.mongo_objects_factory
 
     pim_catalog.repository.product:
-        class: %pim_catalog.repository.product.class%
+        class: '%pim_catalog.repository.product.class%'
         factory_service: pim_catalog.object_manager.product
         factory_method: getRepository
-        arguments: [%pim_catalog.entity.product.class%]
+        arguments: ['%pim_catalog.entity.product.class%']
         calls:
             - [setProductQueryBuilderFactory, ['@pim_catalog.query.product_query_builder_factory']]
             - [setEntityManager, ['@doctrine.orm.entity_manager']]
@@ -259,34 +259,34 @@ services:
             - { name: 'pim_repository' }
 
     pim_catalog.repository.product_value_counter:
-        class: %pim_catalog.repository.product_value_counter.class%
+        class: '%pim_catalog.repository.product_value_counter.class%'
         arguments:
             - '@doctrine.odm.mongodb.document_manager'
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'
 
     pim_catalog.repository.product_mass_action:
-        class: %pim_catalog.repository.product_mass_action.class%
+        class: '%pim_catalog.repository.product_mass_action.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'
             - '@pim_catalog.repository.family'
 
     pim_catalog.repository.product_category:
-        class: %pim_catalog.repository.product_category.class%
+        class: '%pim_catalog.repository.product_category.class%'
         parent: akeneo_classification.repository.abstract_item_category
         arguments:
             - '@pim_catalog.object_manager.product'
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'
             - '@doctrine.orm.entity_manager'
-            - %pim_catalog.entity.category.class%
+            - '%pim_catalog.entity.category.class%'
 
     pim_catalog.repository.completeness:
-        class: %pim_catalog.repository.completeness.class%
+        class: '%pim_catalog.repository.completeness.class%'
         arguments:
             - '@doctrine.odm.mongodb.document_manager'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.category'
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'
 
     pim_catalog.repository.association:
         alias: pim_catalog.repository.product
@@ -295,7 +295,7 @@ services:
         alias: akeneo_storage_utils.doctrine.smart_manager_registry
 
     pim_catalog.saver.product:
-        class: %pim_catalog.saver.product.class%
+        class: '%pim_catalog.saver.product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@pim_catalog.manager.completeness'
@@ -305,35 +305,35 @@ services:
             - '@pim_versioning.doctrine.mongodb.bulk_saver.version'
             - '@pim_serializer'
             - '@pim_catalog.mongodb.mongo_objects_factory'
-            - %pim_catalog.entity.product.class%
-            - %mongodb_database%
+            - '%pim_catalog.entity.product.class%'
+            - '%mongodb_database%'
 
     # Doctrine events subscribers
     pim_catalog.event_subscriber.mongodb.set_normalized_product_data:
-        class: %pim_catalog.event_subscriber.mongodb.set_normalized_product_data.class%
+        class: '%pim_catalog.event_subscriber.mongodb.set_normalized_product_data.class%'
         arguments:
             - '@pim_serializer'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
 
     pim_catalog.event_subscriber.mongodb.update_normalized_product_data:
-        class: %pim_catalog.event_subscriber.mongodb.update_normalized_product_data.class%
+        class: '%pim_catalog.event_subscriber.mongodb.update_normalized_product_data.class%'
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'
         tags:
             - { name: doctrine.event_subscriber, priority: 50 }
 
     pim_catalog.event_subscriber.mongodb.product_related_entity_removal:
-        class: %pim_catalog.event_subscriber.mongodb.product_related_entity_removal.class%
+        class: '%pim_catalog.event_subscriber.mongodb.product_related_entity_removal.class%'
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'
         tags:
             - { name: doctrine.event_subscriber, priority: 100 }
 
     pim_catalog.event_subscriber.mongodb.ensure_indexes:
-        class: %pim_catalog.event_subscriber.mongodb.ensure_indexes.class%
+        class: '%pim_catalog.event_subscriber.mongodb.ensure_indexes.class%'
         arguments:
             - '@pim_catalog.doctrine.index_creator'
             - '@pim_catalog.doctrine.index_purger'
@@ -341,50 +341,50 @@ services:
             - { name: doctrine.event_subscriber, priority: 100 }
 
     pim_catalog.event_subscriber.mongodb.set_products:
-        class: %pim_catalog.event_subscriber.mongodb.set_products.class%
+        class: '%pim_catalog.event_subscriber.mongodb.set_products.class%'
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'
             -
-                - { class: %pim_catalog.entity.group.class%, property: groupIds }
-                - { class: %pim_catalog.entity.category.class%, property: categoryIds }
+                - { class: '%pim_catalog.entity.group.class%', property: groupIds }
+                - { class: '%pim_catalog.entity.category.class%', property: categoryIds }
         tags:
             - { name: doctrine.event_subscriber }
 
     # ODM query generators
     pim_catalog.mongodb_odm_query_generator.abstract_normalized_data:
         abstract: true
-        class: %pim_catalog.mongodb_odm_query_generator.abstract_normalized_data.class%
+        class: '%pim_catalog.mongodb_odm_query_generator.abstract_normalized_data.class%'
         arguments:
             - '@pim_catalog.doctrine.naming_utility'
 
     pim_catalog.mongodb_odm_query_generator.attribute_as_label_updated:
-        class: %pim_catalog.mongodb_odm_query_generator.attribute_as_label_updated.class%
+        class: '%pim_catalog.mongodb_odm_query_generator.attribute_as_label_updated.class%'
         parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
         arguments:
-            - %pim_catalog.entity.family.class%
+            - '%pim_catalog.entity.family.class%'
             - 'attributeAsLabel'
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 
     pim_catalog.mongodb_odm_query_generator.attribute_deleted:
-        class: %pim_catalog.mongodb_odm_query_generator.attribute_deleted.class%
+        class: '%pim_catalog.mongodb_odm_query_generator.attribute_deleted.class%'
         parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
         arguments:
-            - %pim_catalog.entity.attribute.class%
+            - '%pim_catalog.entity.attribute.class%'
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 
     pim_catalog.mongodb_odm_query_generator.channel_deleted:
-        class: %pim_catalog.mongodb_odm_query_generator.channel_deleted.class%
+        class: '%pim_catalog.mongodb_odm_query_generator.channel_deleted.class%'
         parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
         arguments:
-            - %pim_catalog.entity.channel.class%
+            - '%pim_catalog.entity.channel.class%'
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 
     pim_catalog.mongodb_odm_query_generator.family_label_updated:
-        class: %pim_catalog.mongodb_odm_query_generator.family_label_updated.class%
+        class: '%pim_catalog.mongodb_odm_query_generator.family_label_updated.class%'
         parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
         arguments:
             - 'Pim\Bundle\CatalogBundle\Entity\FamilyTranslation'
@@ -393,59 +393,59 @@ services:
             - { name: pim_catalog.mongodb_odm_query_generator }
 
     pim_catalog.mongodb_odm_query_generator.option_code_updated:
-        class: %pim_catalog.mongodb_odm_query_generator.option_code_updated.class%
+        class: '%pim_catalog.mongodb_odm_query_generator.option_code_updated.class%'
         parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
         arguments:
-            - %pim_catalog.entity.attribute_option.class%
+            - '%pim_catalog.entity.attribute_option.class%'
             - 'code'
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 
     pim_catalog.mongodb_odm_query_generator.option_deleted:
-        class: %pim_catalog.mongodb_odm_query_generator.option_deleted.class%
+        class: '%pim_catalog.mongodb_odm_query_generator.option_deleted.class%'
         parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
         arguments:
-            - %pim_catalog.entity.attribute_option.class%
+            - '%pim_catalog.entity.attribute_option.class%'
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 
     pim_catalog.mongodb_odm_query_generator.option_value_updated:
-        class: %pim_catalog.mongodb_odm_query_generator.option_value_updated.class%
+        class: '%pim_catalog.mongodb_odm_query_generator.option_value_updated.class%'
         parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
         arguments:
-            - %pim_catalog.entity.attribute_option_value.class%
+            - '%pim_catalog.entity.attribute_option_value.class%'
             - 'value'
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 
     pim_catalog.mongodb_odm_query_generator.multiple_option_code_updated:
-        class: %pim_catalog.mongodb_odm_query_generator.multiple_option_code_updated.class%
+        class: '%pim_catalog.mongodb_odm_query_generator.multiple_option_code_updated.class%'
         parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
         arguments:
-            - %pim_catalog.entity.attribute_option.class%
+            - '%pim_catalog.entity.attribute_option.class%'
             - 'code'
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 
     pim_catalog.mongodb_odm_query_generator.multiple_option_deleted:
-        class: %pim_catalog.mongodb_odm_query_generator.multiple_option_deleted.class%
+        class: '%pim_catalog.mongodb_odm_query_generator.multiple_option_deleted.class%'
         parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
         arguments:
-            - %pim_catalog.entity.attribute_option.class%
+            - '%pim_catalog.entity.attribute_option.class%'
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 
     pim_catalog.mongodb_odm_query_generator.multiple_option_value_updated:
-        class: %pim_catalog.mongodb_odm_query_generator.multiple_option_value_updated.class%
+        class: '%pim_catalog.mongodb_odm_query_generator.multiple_option_value_updated.class%'
         parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
         arguments:
-            - %pim_catalog.entity.attribute_option_value.class%
+            - '%pim_catalog.entity.attribute_option_value.class%'
             - 'value'
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 
     pim_catalog.event_subscriber.remove_outdated_products_from_associations:
-        class: %pim_catalog.event_subscriber.remove_outdated_products_from_associations.class%
+        class: '%pim_catalog.event_subscriber.remove_outdated_products_from_associations.class%'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.association_type'
@@ -453,17 +453,17 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_catalog.factory.product_cursor:
-        class: %pim_catalog.doctrine.cursor_factory.product.class%
+        class: '%pim_catalog.doctrine.cursor_factory.product.class%'
         arguments:
-            - %pim_catalog.doctrine.query.cursor.class%
+            - '%pim_catalog.doctrine.query.cursor.class%'
 
     pim_catalog.doctrine.query.sorter.is_associated:
-        class: %pim_catalog.doctrine.query.sorter.is_associated.class%
+        class: '%pim_catalog.doctrine.query.sorter.is_associated.class%'
         tags:
             - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.completeness:
-        class: %pim_catalog.doctrine.query.filter.completeness.class%
+        class: '%pim_catalog.doctrine.query.filter.completeness.class%'
         arguments:
             - '@pim_catalog.repository.channel'
             - ['completeness']

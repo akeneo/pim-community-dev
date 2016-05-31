@@ -1,6 +1,6 @@
 services:
     pim_reference_data.doctrine.query.filter.reference_data:
-        class: %pim_reference_data.doctrine.query.filter.reference_data.class%
+        class: '%pim_reference_data.doctrine.query.filter.reference_data.class%'
         arguments:
             - @pim_catalog.validator.helper.attribute
             - '@pim_reference_data.registry'
@@ -10,7 +10,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_reference_data.doctrine.query.sorter.reference_data:
-        class: %pim_reference_data.doctrine.query.sorter.reference_data.class%
+        class: '%pim_reference_data.doctrine.query.sorter.reference_data.class%'
         arguments:
             - '@pim_reference_data.registry'
         tags:

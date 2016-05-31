@@ -10,7 +10,7 @@ datagrid:
                     - u.firstName
                     - u.lastName
                 from:
-                    - { table: %pim_user.entity.user.class%, alias: u }
+                    - { table: '%pim_user.entity.user.class%', alias: u }
 
         columns: []
 
@@ -28,6 +28,6 @@ datagrid:
                 lastName:
                     data_name: u.lastName
             default:
-                id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                id: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
 
         filters: []

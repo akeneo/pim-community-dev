@@ -17,12 +17,12 @@ parameters:
 
 services:
     pim_enrich.normalizer.attribute_option_value_collection:
-        class: %pim_enrich.normalizer.attribute_option_value_collection.class%
+        class: '%pim_enrich.normalizer.attribute_option_value_collection.class%'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.attribute_option:
-        class: %pim_enrich.normalizer.attribute_option.class%
+        class: '%pim_enrich.normalizer.attribute_option.class%'
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.factory.attribute_option_value'
@@ -30,12 +30,12 @@ services:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.attribute_option_value:
-        class: %pim_enrich.normalizer.attribute_option_value.class%
+        class: '%pim_enrich.normalizer.attribute_option_value.class%'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.product:
-        class: %pim_enrich.normalizer.product.class%
+        class: '%pim_enrich.normalizer.product.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_enrich.normalizer.version'
@@ -47,17 +47,17 @@ services:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.completeness:
-        class: %pim_enrich.normalizer.completeness.class%
+        class: '%pim_enrich.normalizer.completeness.class%'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.completeness_collection:
-        class: %pim_enrich.normalizer.completeness_collection.class%
+        class: '%pim_enrich.normalizer.completeness_collection.class%'
         arguments:
             - '@pim_internal_api_serializer'
 
     pim_enrich.normalizer.version:
-        class: %pim_enrich.normalizer.version.class%
+        class: '%pim_enrich.normalizer.version.class%'
         arguments:
             - '@oro_user.manager'
             - '@translator'
@@ -67,7 +67,7 @@ services:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.collection:
-        class: %pim_enrich.normalizer.collection.class%
+        class: '%pim_enrich.normalizer.collection.class%'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -77,21 +77,21 @@ services:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.association_type:
-        class: %pim_enrich.normalizer.association_type.class%
+        class: '%pim_enrich.normalizer.association_type.class%'
         arguments:
             - '@pim_serializer'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.locale:
-        class: %pim_enrich.normalizer.locale.class%
+        class: '%pim_enrich.normalizer.locale.class%'
         arguments:
             - '@pim_catalog.helper.locale'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.attribute:
-        class: %pim_enrich.normalizer.attribute.class%
+        class: '%pim_enrich.normalizer.attribute.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_enrich.provider.field.chained'
@@ -100,25 +100,25 @@ services:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.sequential_edit:
-        class: %pim_enrich.normalizer.sequential_edit.class%
+        class: '%pim_enrich.normalizer.sequential_edit.class%'
         arguments:
             - '@pim_serializer'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.group:
-        class: %pim_enrich.normalizer.group.class%
+        class: '%pim_enrich.normalizer.group.class%'
         arguments:
             - '@pim_serializer.normalizer.group'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.file:
-        class: %pim_enrich.normalizer.file.class%
+        class: '%pim_enrich.normalizer.file.class%'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.product_violation:
-        class: %pim_enrich.normalizer.product_violation.class%
+        class: '%pim_enrich.normalizer.product_violation.class%'
         tags:
             - { name: pim_internal_api_serializer.normalizer }

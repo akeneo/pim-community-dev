@@ -5,8 +5,8 @@ parameters:
 
 services:
     akeneo_measure.measure_converter:
-        class: %akeneo_measure.convert.measure_converter.class%
-        arguments: [%akeneo_measure.measures_config%]
+        class: '%akeneo_measure.convert.measure_converter.class%'
+        arguments: ['%akeneo_measure.measures_config%']
 
     akeneo_measure.manager:
-        class: %akeneo_measure.manager.measure_manager.class%
+        class: '%akeneo_measure.manager.measure_manager.class%'

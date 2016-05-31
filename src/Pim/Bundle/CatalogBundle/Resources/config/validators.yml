@@ -42,53 +42,53 @@ parameters:
 services:
     # Helpers
     pim_catalog.validator.helper.attribute:
-        class: %pim_catalog.validator.helper.attribute.class%
+        class: '%pim_catalog.validator.helper.attribute.class%'
         public: false
         arguments:
             - @pim_catalog.repository.locale
             - @pim_catalog.repository.channel
 
     pim_catalog.validator.unique_value_set:
-        class: %pim_catalog.validator.unique_value_set.class%
+        class: '%pim_catalog.validator.unique_value_set.class%'
         public: true
 
     # Validators
     pim_catalog.validator.constraint.valid_metric:
-        class: %pim_catalog.validator.constraint.valid_metric.class%
+        class: '%pim_catalog.validator.constraint.valid_metric.class%'
         arguments:
             - '@property_accessor'
-            - %akeneo_measure.measures_config%
+            - '%akeneo_measure.measures_config%'
         tags:
             - { name: validator.constraint_validator, alias: pim_metric_validator }
 
     pim_catalog.validator.constraint.currency:
-        class: %pim_catalog.validator.constraint.currency.class%
+        class: '%pim_catalog.validator.constraint.currency.class%'
         arguments:
             - '@pim_catalog.repository.currency'
         tags:
             - { name: validator.constraint_validator, alias: pim_currency_validator }
 
     pim_catalog.validator.constraint.single_identifier:
-        class: %pim_catalog.validator.constraint.single_identifier.class%
+        class: '%pim_catalog.validator.constraint.single_identifier.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
         tags:
             - { name: validator.constraint_validator, alias: pim_single_identifier_attribute_validator }
 
     pim_catalog.validator.constraint.unique_variant_axis:
-        class: %pim_catalog.validator.constraint.unique_variant_axis.class%
+        class: '%pim_catalog.validator.constraint.unique_variant_axis.class%'
         arguments:
             - '@pim_catalog.repository.product'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_variant_axis_validator }
 
     pim_catalog.validator.constraint.unique_variant_group:
-        class: %pim_catalog.validator.constraint.unique_variant_group.class%
+        class: '%pim_catalog.validator.constraint.unique_variant_group.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_variant_group_validator }
 
     pim_catalog.validator.constraint.unique_value:
-        class: %pim_catalog.validator.constraint.unique_value.class%
+        class: '%pim_catalog.validator.constraint.unique_value.class%'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.validator.unique_value_set'
@@ -96,31 +96,31 @@ services:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
 
     pim_catalog.validator.constraint.immutable:
-        class: %pim_catalog.validator.constraint.immutable.class%
+        class: '%pim_catalog.validator.constraint.immutable.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: validator.constraint_validator, alias: pim_immutable_validator }
 
     pim_catalog.validator.constraint.variant_group_values:
-        class: %pim_catalog.validator.constraint.variant_group_values.class%
+        class: '%pim_catalog.validator.constraint.variant_group_values.class%'
         arguments:
             - @pim_catalog.repository.attribute
         tags:
             - { name: validator.constraint_validator, alias: pim_variant_group_values_validator }
 
     pim_catalog.validator.constraint.variant_group_axis:
-        class: %pim_catalog.validator.constraint.variant_group_axis.class%
+        class: '%pim_catalog.validator.constraint.variant_group_axis.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_variant_group_axis_validator }
 
     pim_catalog.validator.constraint.has_variant_axes:
-        class: %pim_catalog.validator.constraint.has_variant_axes.class%
+        class: '%pim_catalog.validator.constraint.has_variant_axes.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_has_variant_axes_validator }
 
     pim_catalog.validator.constraint.family_requirements:
-        class: %pim_catalog.validator.constraint.family_requirements.class%
+        class: '%pim_catalog.validator.constraint.family_requirements.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.channel'
@@ -128,26 +128,26 @@ services:
             - { name: validator.constraint_validator, alias: pim_family_requirements_validator }
 
     pim_catalog.validator.constraint.scopable_value:
-        class: %pim_catalog.validator.constraint.scopable_value.class%
+        class: '%pim_catalog.validator.constraint.scopable_value.class%'
         arguments:
             - '@pim_catalog.repository.cached_channel'
         tags:
             - { name: validator.constraint_validator, alias: pim_scopable_value_validator }
 
     pim_catalog.validator.constraint.localizable_value:
-        class: %pim_catalog.validator.constraint.localizable_value.class%
+        class: '%pim_catalog.validator.constraint.localizable_value.class%'
         arguments:
             - '@pim_catalog.repository.cached_locale'
         tags:
             - { name: validator.constraint_validator, alias: pim_localizable_value_validator }
 
     pim_catalog.validator.constraint.attribute_type_for_option:
-        class: %pim_catalog.validator.constraint.attribute_type_for_option.class%
+        class: '%pim_catalog.validator.constraint.attribute_type_for_option.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_attribute_type_for_option_validator }
 
     pim_catalog.validator.constraint.is_reference_data_configured:
-        class: %pim_catalog.validator.constraint.is_reference_data_configured.class%
+        class: '%pim_catalog.validator.constraint.is_reference_data_configured.class%'
         arguments:
             - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect']
             - '@?pim_reference_data.registry'
@@ -156,121 +156,121 @@ services:
 
     # Attribute constraint guesser
     pim_catalog.validator.constraint_guesser.chained_attribute:
-        class: %pim_catalog.validator.constraint_guesser.chained.class%
+        class: '%pim_catalog.validator.constraint_guesser.chained.class%'
         public: false
 
     pim_catalog.validator.constraint_guesser.email:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.email.class%
+        class: '%pim_catalog.validator.constraint_guesser.email.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.file:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.file.class%
+        class: '%pim_catalog.validator.constraint_guesser.file.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.length:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.length.class%
+        class: '%pim_catalog.validator.constraint_guesser.length.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.not_blank:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.not_blank.class%
+        class: '%pim_catalog.validator.constraint_guesser.not_blank.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.date:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.date.class%
+        class: '%pim_catalog.validator.constraint_guesser.date.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.numeric:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.numeric.class%
+        class: '%pim_catalog.validator.constraint_guesser.numeric.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.string:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.string.class%
+        class: '%pim_catalog.validator.constraint_guesser.string.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.boolean:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.boolean.class%
+        class: '%pim_catalog.validator.constraint_guesser.boolean.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.range:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.range.class%
+        class: '%pim_catalog.validator.constraint_guesser.range.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.regex:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.regex.class%
+        class: '%pim_catalog.validator.constraint_guesser.regex.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.not_decimal:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.not_decimal.class%
+        class: '%pim_catalog.validator.constraint_guesser.not_decimal.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.url:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.url.class%
+        class: '%pim_catalog.validator.constraint_guesser.url.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.unique_value:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.unique_value.class%
+        class: '%pim_catalog.validator.constraint_guesser.unique_value.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.price_collection:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.price_collection.class%
+        class: '%pim_catalog.validator.constraint_guesser.price_collection.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.metric:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.metric.class%
+        class: '%pim_catalog.validator.constraint_guesser.metric.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.currency:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.currency.class%
+        class: '%pim_catalog.validator.constraint_guesser.currency.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     pim_catalog.validator.constraint_guesser.identifier:
         public: false
-        class: %pim_catalog.validator.constraint_guesser.identifier.class%
+        class: '%pim_catalog.validator.constraint_guesser.identifier.class%'
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
     # Validator ClassMetadata factory
     pim_catalog.validator.mapping.product_value_metadata_factory:
         public: false
-        class: %pim_catalog.validator.mapping.product_value_metadata_factory.class%
+        class: '%pim_catalog.validator.mapping.product_value_metadata_factory.class%'
         arguments:
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
 
     pim_catalog.validator.mapping.delegating_class_metadata_factory:
         public: false
-        class: %pim_catalog.validator.mapping.delegating_class_metadata_factory.class%
+        class: '%pim_catalog.validator.mapping.delegating_class_metadata_factory.class%'
         calls:
             - [ 'addMetadataFactory', [ '@pim_catalog.validator.mapping.product_value_metadata_factory' ] ]
             - [ 'addMetadataFactory', [ '@validator.mapping.class_metadata_factory' ] ]
@@ -280,10 +280,10 @@ services:
         class:  Symfony\Component\Validator\Context\ExecutionContextFactory
         arguments:
             - '@translator.default'
-            - %validator.translation_domain%
+            - '%validator.translation_domain%'
 
     pim_catalog.validator.product:
-        class: %symfony.validator.recursive.class%
+        class: '%symfony.validator.recursive.class%'
         arguments:
             - @pim_catalog.validator.context.factory
             - '@pim_catalog.validator.mapping.delegating_class_metadata_factory'

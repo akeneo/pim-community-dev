@@ -4,7 +4,7 @@ parameters:
 
 services:
     pim_enrich.connector.job.job_parameters.default_values_provider.simple_mass_edit:
-        class: %pim_enrich.connector.job.job_parameters.default_values_provider.simple_mass_edit.class%
+        class: '%pim_enrich.connector.job.job_parameters.default_values_provider.simple_mass_edit.class%'
         arguments:
             -
                 - 'update_product_value'
@@ -16,7 +16,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pim_enrich.connector.job.job_parameters.default_values_provider.product_csv_quick_export:
-        class: %pim_enrich.connector.job.job_parameters.default_values_provider.product_quick_export.class%
+        class: '%pim_enrich.connector.job.job_parameters.default_values_provider.product_quick_export.class%'
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_export'
             -
@@ -25,7 +25,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pim_enrich.connector.job.job_parameters.default_values_provider.product_xlsx_quick_export:
-        class: %pim_enrich.connector.job.job_parameters.default_values_provider.product_quick_export.class%
+        class: '%pim_enrich.connector.job.job_parameters.default_values_provider.product_quick_export.class%'
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export'
             -
