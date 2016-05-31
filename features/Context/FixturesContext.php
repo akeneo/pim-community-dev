@@ -1980,7 +1980,7 @@ class FixturesContext extends BaseFixturesContext
      */
     protected function getFieldExtractor()
     {
-        return $this->getContainer()->get('pim_connector.array_converter.flat.product.attribute_column_info_extractor');
+        return $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor');
     }
 
     /**

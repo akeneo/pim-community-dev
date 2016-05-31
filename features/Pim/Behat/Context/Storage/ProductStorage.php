@@ -41,6 +41,6 @@ class ProductStorage extends PimContext
      */
     private function getFieldExtractor()
     {
-        return $this->getService('pim_connector.array_converter.flat.product.attribute_column_info_extractor');
+        return $this->getService('pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor');
     }
 }
