@@ -166,8 +166,8 @@ services:
             - @pim_catalog.doctrine.smart_manager_registry
             - %pim_catalog.entity.product.class%
             - @pim_catalog.builder.product
-            - @pim_connector.array_converter.flat.product.attribute_column_info_extractor
-            - @pim_connector.array_converter.flat.product.association_columns_resolver
+            - @pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor
+            - @pim_connector.array_converter.flat_to_standard.product.association_columns_resolver
             - %pim_catalog.entity.association.class%
             - %pim_catalog.entity.category.class%
             - %pim_catalog.entity.family.class%
@@ -280,7 +280,7 @@ services:
         class: %pim_serializer.denormalizer.flat.product_values.class%
         arguments:
             - @pim_serializer.denormalizer.flat.product_value
-            - @pim_connector.array_converter.flat.product.attribute_column_info_extractor
+            - @pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor
             - %pim_catalog.entity.product_value.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }

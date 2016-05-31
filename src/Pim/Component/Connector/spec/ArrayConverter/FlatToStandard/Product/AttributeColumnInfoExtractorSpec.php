@@ -1,0 +1,234 @@
+<?php
+
+namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
+
+use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+
+class AttributeColumnInfoExtractorSpec extends ObjectBehavior
+{
+    const ASSOC_TYPE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\AssociationType';
+    const ATTRIBUTE_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Attribute';
+    const CHANNEL_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Channel';
+    const LOCALE_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Locale';
+
+    function let(
+        AttributeRepositoryInterface $attributeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository
+    ) {
+        $this->beConstructedWith($attributeRepository, $channelRepository, $localeRepository);
+    }
+
+    function it_returns_attribute_informations_from_field_name(
+        $attributeRepository,
+        AttributeInterface $attribute
+    ) {
+        $attribute->getCode()->willReturn('foo');
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('bar');
+        $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
+
+        $this->extractColumnInfo('foo')->shouldReturn(
+            [
+                'attribute'   => $attribute,
+                'locale_code' => null,
+                'scope_code'  => null
+            ]
+        );
+    }
+
+    function it_returns_null_attribute_informations_from_unknown_field_name(
+        $channelRepository
+    ) {
+        $channelRepository->findOneByIdentifier('foo')->willReturn(null);
+
+        $this->extractColumnInfo('foo')->shouldReturn(null);
+    }
+
+    function it_returns_attribute_informations_from_field_name_with_localizable_attribute(
+        $attributeRepository,
+        $channelRepository,
+        $localeRepository,
+        AttributeInterface $attribute,
+        LocaleInterface $locale,
+        ChannelInterface $channel
+    ) {
+        $attribute->getCode()->willReturn('foo');
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('bar');
+        $attribute->isLocaleSpecific()->willReturn(false);
+
+        $channelRepository->findOneByIdentifier('ecommerce')->shouldBeCalled()->willReturn($channel);
+        $localeRepository->findOneByIdentifier('en_US')->shouldBeCalled()->willReturn($locale);
+        $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
+
+        $channel->hasLocale($locale)->shouldBeCalled()->willReturn(true);
+
+        // Test only localizable attribute
+        $this->extractColumnInfo('foo-en_US')->shouldReturn(
+            [
+                'attribute'   => $attribute,
+                'locale_code' => 'en_US',
+                'scope_code'  => null
+            ]
+        );
+
+        // Test localizable + scopable attribute
+        $attribute->isScopable()->willReturn(true);
+        $this->extractColumnInfo('foo-en_US-ecommerce')->shouldReturn(
+            [
+                'attribute'   => $attribute,
+                'locale_code' => 'en_US',
+                'scope_code'  => 'ecommerce'
+            ]
+        );
+
+        // Test localizable + scopable + price attribute
+        $attribute->getBackendType()->willReturn('prices');
+        $this->extractColumnInfo('foo-en_US-ecommerce-EUR')->shouldReturn(
+            [
+                'attribute'      => $attribute,
+                'locale_code'    => 'en_US',
+                'scope_code'     => 'ecommerce',
+                'price_currency' => 'EUR'
+            ]
+        );
+
+        // Test localizable + price attribute
+        $attribute->isScopable()->willReturn(false);
+        $this->extractColumnInfo('foo-en_US-EUR')->shouldReturn(
+            [
+                'attribute'      => $attribute,
+                'locale_code'    => 'en_US',
+                'scope_code'     => null,
+                'price_currency' => 'EUR'
+            ]
+        );
+    }
+
+    function it_returns_attribute_informations_from_field_name_with_scopable_attribute(
+        $attributeRepository,
+        AttributeInterface $attribute
+    ) {
+        $attribute->getCode()->willReturn('foo');
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(true);
+        $attribute->getBackendType()->willReturn('bar');
+        $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
+
+        // Test only scopable attribute
+        $this->extractColumnInfo('foo-ecommerce')->shouldReturn(
+            [
+                'attribute'   => $attribute,
+                'locale_code' => null,
+                'scope_code'  => 'ecommerce'
+            ]
+        );
+
+        // Test scopable + price attribute
+        $attribute->getBackendType()->willReturn('prices');
+        $this->extractColumnInfo('foo-ecommerce-EUR')->shouldReturn(
+            [
+                'attribute'      => $attribute,
+                'locale_code'    => null,
+                'scope_code'     => 'ecommerce',
+                'price_currency' => 'EUR'
+            ]
+        );
+    }
+
+    function it_returns_attribute_informations_from_field_name_with_price_attribute(
+        $attributeRepository,
+        AttributeInterface $attribute
+    ) {
+        $attribute->getCode()->willReturn('foo');
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('prices');
+        $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
+
+        $this->extractColumnInfo('foo-USD')->shouldReturn(
+            [
+                'attribute'   => $attribute,
+                'locale_code' => null,
+                'scope_code'  => null,
+                'price_currency' => 'USD'
+            ]
+        );
+    }
+
+    function it_throws_exception_when_the_field_name_is_not_consistent_with_the_attribute_property(
+        $attributeRepository,
+        AttributeInterface $attribute
+    ) {
+        // global with extra locale
+        $attribute->getCode()->willReturn('sku');
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('text');
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($attribute);
+
+        $this->shouldThrow(new \InvalidArgumentException('The field "sku-fr_FR" is not well-formatted, attribute "sku" expects no locale, no scope, no currency'))
+            ->duringExtractColumnInfo('sku-fr_FR');
+
+        // localizable without any locale
+        $attribute->getCode()->willReturn('name');
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('text');
+        $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
+
+        $this->shouldThrow(new \InvalidArgumentException('The field "name" is not well-formatted, attribute "name" expects a locale, no scope, no currency'))
+            ->duringExtractColumnInfo('name');
+
+        // localizable, scopable and price without any currency
+        $attribute->getCode()->willReturn('cost');
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->isScopable()->willReturn(true);
+        $attribute->getBackendType()->willReturn('prices');
+        $attributeRepository->findOneByIdentifier('cost')->willReturn($attribute);
+
+        $this->shouldThrow(new \InvalidArgumentException('The field "cost" is not well-formatted, attribute "cost" expects a locale, a scope, an optional currency'))
+            ->duringExtractColumnInfo('cost');
+    }
+
+    function it_throws_exception_when_the_field_name_is_not_consistent_with_the_channel_locale(
+        $attributeRepository,
+        $channelRepository,
+        $localeRepository,
+        AttributeInterface $attribute,
+        LocaleInterface $locale,
+        ChannelInterface $channel
+    ) {
+        // localizable without the associated locale not in the channel
+        $attribute->getCode()->willReturn('description');
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->isScopable()->willReturn(true);
+        $attribute->getBackendType()->willReturn('text');
+        $attribute->isLocaleSpecific()->willReturn(false);
+
+        $attributeInfos =
+            [
+                'attribute'   => $attribute,
+                'locale_code' => 'de_DE',
+                'scope_code'  => 'mobile'
+            ];
+
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
+        $channelRepository->findOneByIdentifier($attributeInfos['scope_code'])->shouldBeCalled()->willReturn($channel);
+        $localeRepository->findOneByIdentifier($attributeInfos['locale_code'])->shouldBeCalled()->willReturn($locale);
+
+        $channel->hasLocale($locale)->shouldBeCalled()->willReturn(false);
+
+        $this->shouldThrow(new \InvalidArgumentException('The locale "de_DE" of the field "description-de_DE-mobile" is not available in scope "mobile"'))
+            ->duringExtractColumnInfo('description-de_DE-mobile');
+    }
+}

@@ -4,7 +4,7 @@ namespace Pim\Behat\Context\Storage;
 
 use Behat\Gherkin\Node\TableNode;
 use Pim\Behat\Context\PimContext;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 
 class ProductStorage extends PimContext
 {

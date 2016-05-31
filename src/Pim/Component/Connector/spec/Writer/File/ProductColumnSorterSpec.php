@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Connector\Writer\File;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
 class ProductColumnSorterSpec extends ObjectBehavior
 {

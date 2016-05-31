@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
 /**
  * Reorder columns before export

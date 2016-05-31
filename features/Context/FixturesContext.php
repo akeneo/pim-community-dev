@@ -1976,7 +1976,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor
+     * @return \Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor
      */
     protected function getFieldExtractor()
     {

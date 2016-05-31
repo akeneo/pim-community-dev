@@ -5,8 +5,8 @@ namespace Pim\Component\Connector\Denormalizer\Flat;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 
 /**
  * Product flat denormalizer
