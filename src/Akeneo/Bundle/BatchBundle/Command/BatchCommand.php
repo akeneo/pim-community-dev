@@ -3,6 +3,7 @@
 namespace Akeneo\Bundle\BatchBundle\Command;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobParameters;
@@ -140,6 +141,9 @@ class BatchCommand extends ContainerAwareCommand
                 throw new \RuntimeException(
                     sprintf('Job execution "%s" has invalid status: %s', $executionId, $jobExecution->getStatus())
                 );
+            }
+            if (null === $jobExecution->getExecutionContext()) {
+                $jobExecution->setExecutionContext(new ExecutionContext());
             }
         } else {
             $jobExecution = $job->getJobRepository()->createJobExecution($jobInstance, $jobParameters);
