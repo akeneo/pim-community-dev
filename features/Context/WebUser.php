@@ -691,62 +691,70 @@ class WebUser extends RawMinkContext
             return $page->findField($label);
         }, sprintf('Field "%s" not found.', $label));
 
-        if ($field->hasClass('select2-focusser')) {
-            for ($i = 0; $i < 2; ++$i) {
-                if (!$field->getParent()) {
-                    break;
+        $this->spin(function () use ($field, $label, $expected) {
+            if ($field->hasClass('select2-focusser')) {
+                for ($i = 0; $i < 2; ++$i) {
+                    if (!$field->getParent()) {
+                        break;
+                    }
+                    $field = $field->getParent();
                 }
-                $field = $field->getParent();
-            }
-            if ($select = $field->find('css', 'select')) {
-                $actual = $select->find('css', 'option[selected]')->getHtml();
-            } else {
-                $actual = trim($field->find('css', '.select2-chosen')->getHtml());
-            }
-        } elseif ($field->hasClass('select2-input')) {
-            for ($i = 0; $i < 4; ++$i) {
-                if (!$field->getParent()) {
-                    break;
+                if ($select = $field->find('css', 'select')) {
+                    $actual = $select->find('css', 'option[selected]')->getHtml();
+                } else {
+                    $actual = trim($field->find('css', '.select2-chosen')->getHtml());
                 }
-                $field = $field->getParent();
-            }
-            if ($select = $field->find('css', 'select')) {
-                $options = $field->findAll('css', 'option[selected]');
+            } elseif ($field->hasClass('select2-input')) {
+                for ($i = 0; $i < 4; ++$i) {
+                    if (!$field->getParent()) {
+                        break;
+                    }
+                    $field = $field->getParent();
+                }
+                if ($select = $field->find('css', 'select')) {
+                    $options = $field->findAll('css', 'option[selected]');
+                } else {
+                    $options = $field->findAll('css', 'li.select2-search-choice div');
+                }
+
+                $actual = [];
+                foreach ($options as $option) {
+                    $actual[] = $option->getHtml();
+                }
+                $expected = $this->listToArray($expected);
+                sort($actual);
+                sort($expected);
+                $actual   = implode(', ', $actual);
+                $expected = implode(', ', $expected);
+            } elseif ($field->hasClass('datepicker')) {
+                $actual = $field->getAttribute('value');
+            } elseif ((null !== $parent = $field->getParent()) && $parent->hasClass('upload-zone')) {
+                // We are dealing with an upload field
+                if (null === $filename = $parent->find('css', '.upload-filename')) {
+                    throw new \LogicException('Cannot find filename of upload field');
+                }
+                $actual = $filename->getText();
             } else {
-                $options = $field->findAll('css', 'li.select2-search-choice div');
+                $actual = $field->getValue();
             }
 
-            $actual = [];
-            foreach ($options as $option) {
-                $actual[] = $option->getHtml();
+            if ($expected != $actual) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expected product field "%s" to contain "%s", but got "%s".',
+                        $label,
+                        $expected,
+                        $actual
+                    )
+                );
             }
-            $expected = $this->listToArray($expected);
-            sort($actual);
-            sort($expected);
-            $actual   = implode(', ', $actual);
-            $expected = implode(', ', $expected);
-        } elseif ($field->hasClass('datepicker')) {
-            $actual = $field->getAttribute('value');
-        } elseif ((null !== $parent = $field->getParent()) && $parent->hasClass('upload-zone')) {
-            // We are dealing with an upload field
-            if (null === $filename = $parent->find('css', '.upload-filename')) {
-                throw new \LogicException('Cannot find filename of upload field');
-            }
-            $actual = $filename->getText();
-        } else {
-            $actual = $field->getValue();
-        }
 
-        if ($expected != $actual) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expected product field "%s" to contain "%s", but got "%s".',
-                    $label,
-                    $expected,
-                    $actual
-                )
-            );
-        }
+            return true;
+        }, sprintf(
+            'Expected product field "%s" to contain "%s".',
+            $label,
+            $expected
+        ));
     }
 
     /**
