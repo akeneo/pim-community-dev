@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
-use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Component\Versioning\Model\VersionInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Prophecy\Argument;
@@ -41,14 +41,14 @@ class AddRemoveVersionSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_a_version_on_object_deletion(
+    function it_creates_a_version_on_versionable_object_deletion(
         $versionFactory,
         $versionRepository,
         $tokenStorage,
         $authorizationChecker,
         $versionSaver,
-        Version $previousVersion,
-        Version $removeVersion,
+        VersionInterface $previousVersion,
+        VersionInterface $removeVersion,
         TokenInterface $token,
         UserInterface $admin,
         VersionableInterface $price,
@@ -76,6 +76,27 @@ class AddRemoveVersionSubscriberSpec extends ObjectBehavior
         $event->getSubjectId()->willReturn(12);
         $event->getArguments()->willReturn($saveOptions);
 
+        $this->addRemoveVersion($event);
+    }
+
+    function it_does_not_create_a_version_on_not_versionable_object_deletion(
+        $tokenStorage,
+        $authorizationChecker,
+        $versionSaver,
+        VersionInterface $removeVersion,
+        TokenInterface $token,
+        UserInterface $admin,
+        $notVersionableObject,
+        RemoveEvent $event
+    ) {
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($admin);
+        $admin->getUsername()->willReturn('admin');
+        $authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(true);
+
+        $versionSaver->save($removeVersion, Argument::any())->shouldNotBeCalled();
+
+        $event->getSubject()->willReturn($notVersionableObject);
         $this->addRemoveVersion($event);
     }
 }

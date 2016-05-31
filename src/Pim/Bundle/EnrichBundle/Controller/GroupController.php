@@ -194,7 +194,7 @@ class GroupController
     public function historyAction(Group $group)
     {
         return $this->templating->renderResponse(
-            'PimEnrichBundle:Group:_history.html.twig',
+            'PimEnrichBundle:Group:Tab/_history.html.twig',
             [
                 'group' => $group
             ]

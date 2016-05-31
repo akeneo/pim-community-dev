@@ -1,0 +1,8 @@
+services:
+    pim_versioning.remover.version:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@pim_versioning.object_manager.version'
+            - '@pim_catalog.remover.base_options_resolver'
+            - '@event_dispatcher'
+            - '%pim_versioning.entity.version.class%'

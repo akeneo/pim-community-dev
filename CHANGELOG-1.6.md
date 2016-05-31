@@ -19,6 +19,7 @@
 - PIM-5602: Introduce "move to categories" action in products mass edit
 - PIM-5432: Export the products updated for a period
 - PIM-5604: Introduce "remove from categories" action in products mass edit
+- PIM-5681: Introduce a new command to purge entity versions stored in the PIM (see pim:versioning:purge command)
 
 ## Scalability improvements
 
@@ -45,6 +46,8 @@
 
 ## BC breaks
 
+- Add method `findPotentiallyPurgeableBy` to interface `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface`
+- Add method `getNewestVersionIdForResource` to interface `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface`
 - Move `Pim\Component\Connector\Writer\Doctrine` to `Pim\Component\Connector\Writer\Database`
 - Move `Pim\Component\Connector\Reader\ProductReader` to `Pim\Component\Connector\Reader\Database\ProductReader`
 - Move `Pim\Component\Connector\Reader\Doctrine\BaseReader` to `Pim\Component\Connector\Reader\Database\BaseReader`
