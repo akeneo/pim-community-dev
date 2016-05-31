@@ -233,7 +233,7 @@ class ProductController
     }
 
     /**
-     * Remove an optional attribute form a product
+     * Remove an optional attribute from a product
      *
      * @param int $productId   The product id
      * @param int $attributeId The attribute id
