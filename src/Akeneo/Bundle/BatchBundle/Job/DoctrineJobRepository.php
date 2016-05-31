@@ -27,6 +27,8 @@ use Doctrine\ORM\EntityManager;
  */
 class DoctrineJobRepository implements JobRepositoryInterface
 {
+    const DATETIME_FORMAT = 'Y-m-d H:i:s';
+
     /* @var EntityManager */
     protected $jobManager = null;
 
@@ -150,5 +152,45 @@ class DoctrineJobRepository implements JobRepositoryInterface
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findPurgeables($days)
+    {
+        $qb = $this->jobManager->createQueryBuilder()
+            ->select('je')
+            ->from($this->jobExecutionClass, 'je');
+
+        $date = new \DateTime();
+        $date->modify(sprintf('- %d days', $days));
+
+        $qb->where(
+            $qb->expr()->lt('je.endTime', ':date')
+        )->setParameter('date', $date->format(self::DATETIME_FORMAT));
+
+        $subQb = $this->jobManager->createQueryBuilder()
+            ->select('MAX(je_max.id)')
+            ->from($this->jobExecutionClass, 'je_max')
+            ->where('je_max.status = :status')
+            ->groupBy('je_max.jobInstance');
+
+        $qb->andWhere(
+            $qb->expr()->notIn('je.id', $subQb->getDQL())
+        )->setParameter('status', BatchStatus::COMPLETED);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove(array $jobsExecutions)
+    {
+        foreach ($jobsExecutions as $jobsExecution) {
+            $this->jobManager->remove($jobsExecution);
+        }
+        $this->jobManager->flush();
     }
 }

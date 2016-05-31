@@ -55,4 +55,20 @@ interface JobRepositoryInterface
      * @return JobExecution|null
      */
     public function getLastJobExecution(JobInstance $jobInstance, $status);
+
+    /**
+     * Get purgeables jobs executions
+     *
+     * @param integer $days
+     *
+     * @return array
+     */
+    public function findPurgeables($days);
+
+    /**
+     * Remove jobs executions
+     *
+     * @param array $jobsExecutions
+     */
+    public function remove(array $jobsExecutions);
 }
