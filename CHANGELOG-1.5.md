@@ -8,6 +8,7 @@
 - PIM-5801: Fix save in product edit form when attribute code is only numeric
 - PIM-5802: Keep data previously filled in select2 filter
 - PIM-5824: Fix memory leak on products export
+- PIM-5712: Keep reference in "akeneo_file_storage_file_info" table after removing a media attribute from a product
 
 # 1.5.3 (2016-05-13)
 
