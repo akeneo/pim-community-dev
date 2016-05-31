@@ -56,7 +56,7 @@ class ProposalWidgetDecorator extends ElementDecorator
         foreach ($proposalElements as $proposalElement) {
             $cells = $proposalElement->findAll('css', 'td');
             $proposals[] = [
-                'author' => $cells[1]->getText(),
+                'author'  => $cells[1]->getText(),
                 'product' => $cells[2]->getText(),
             ];
         }

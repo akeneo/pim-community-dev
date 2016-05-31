@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\Security\Connector\ArrayConverter\FlatToStandard;
 
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 /**
  * Product Category Accesses Flat to Standard format converter
