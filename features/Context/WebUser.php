@@ -1202,7 +1202,7 @@ class WebUser extends RawMinkContext
             $steps[] = new Step\Then('I save the role');
             $steps[] = new Step\Then('I should not see the text "There are unsaved changes."');
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
-            $steps[] = new Step\Then(sprintf('I should not see "%s"', $data['button']));
+            $steps[] = new Step\Then(sprintf('I should not see the "%s" button', $data['button']));
             if ($forbiddenPage = $data['forbiddenPage']) {
                 $steps[] = new Step\Then(sprintf('I should not be able to access the %s page', $forbiddenPage));
             }
@@ -1368,16 +1368,12 @@ class WebUser extends RawMinkContext
      * @param string $button
      *
      * @Given /^I should not see the "([^"]*)" button$/
-     *
-     * @throws ExpectationException
      */
     public function iShouldNotSeeTheButton($button)
     {
-        if (null !== $this->getCurrentPage()->getButton($button)) {
-            throw $this->createExpectationException(
-                sprintf('Button "%s" should not be displayed', $button)
-            );
-        }
+        $this->spin(function () use ($button) {
+            return null === $this->getCurrentPage()->getButton($button);
+        }, sprintf('Button "%s" should not be displayed', $button));
     }
 
     /**
