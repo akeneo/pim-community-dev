@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_product_asset.datagrid.configuration.asset.context_configurator:
-        class: %pimee_product_asset.datagrid.configuration.asset.context_configurator.class%
+        class: '%pimee_product_asset.datagrid.configuration.asset.context_configurator.class%'
         arguments:
             - '@pim_datagrid.datagrid.request.parameters_extractor'
             - '@pimee_product_asset.context.user'

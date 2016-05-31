@@ -1,6 +1,6 @@
 services:
     pimee_product_asset.doctrine.query.filter.category:
-        class: %pim_catalog.doctrine.query.filter.category.class%
+        class: '%pim_catalog.doctrine.query.filter.category.class%'
         arguments:
             - '@pimee_product_asset.repository.category'
             - '@pimee_product_asset.repository.asset_category'

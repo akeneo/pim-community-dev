@@ -23,7 +23,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_asset_category:
@@ -65,7 +65,7 @@ connector:
             type:  fixtures
             steps:
                 import_tags:
-                    class: %pimee_product_asset.step.tag.class%
+                    class: '%pimee_product_asset.step.tag.class%'
                     services:
                         reader:    pimee_product_asset.reader.file.csv_tag
                         processor: pimee_product_asset.processor.denormalization.tag.flat

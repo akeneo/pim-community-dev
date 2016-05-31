@@ -9,10 +9,10 @@ parameters:
 
 services:
     akeneo_file_transformer.transformation.registry:
-        class: %akeneo_file_transformer.transformation.registry.class%
+        class: '%akeneo_file_transformer.transformation.registry.class%'
 
     akeneo_file_transformer.transformation.image.color_space:
-        class: %akeneo_file_transformer.transformation.image.color_space.class%
+        class: '%akeneo_file_transformer.transformation.image.color_space.class%'
         arguments:
             - '@akeneo_file_transformer.options.image.color_space'
             - '@akeneo_file_transformer.transformation.image.image_magick_launcher'
@@ -20,7 +20,7 @@ services:
             - { name: akeneo_file_transformer.transformation, alias: transformation_image_color_space }
 
     akeneo_file_transformer.transformation.image.resize:
-        class: %akeneo_file_transformer.transformation.image.resize.class%
+        class: '%akeneo_file_transformer.transformation.image.resize.class%'
         arguments:
             - '@akeneo_file_transformer.options.image.resize'
             - '@akeneo_file_transformer.transformation.image.image_magick_launcher'
@@ -28,7 +28,7 @@ services:
             - { name: akeneo_file_transformer.transformation, alias: transformation_image_resize }
 
     akeneo_file_transformer.transformation.image.resolution:
-        class: %akeneo_file_transformer.transformation.image.resolution.class%
+        class: '%akeneo_file_transformer.transformation.image.resolution.class%'
         arguments:
             - '@akeneo_file_transformer.options.image.resolution'
             - '@akeneo_file_transformer.transformation.image.image_magick_launcher'
@@ -36,7 +36,7 @@ services:
             - { name: akeneo_file_transformer.transformation, alias: transformation_image_resolution }
 
     akeneo_file_transformer.transformation.image.scale:
-        class: %akeneo_file_transformer.transformation.image.scale.class%
+        class: '%akeneo_file_transformer.transformation.image.scale.class%'
         arguments:
             - '@akeneo_file_transformer.options.image.scale'
             - '@akeneo_file_transformer.transformation.image.image_magick_launcher'
@@ -44,7 +44,7 @@ services:
             - { name: akeneo_file_transformer.transformation, alias: transformation_image_scale }
 
     akeneo_file_transformer.transformation.image.thumbnail:
-        class: %akeneo_file_transformer.transformation.image.thumbnail.class%
+        class: '%akeneo_file_transformer.transformation.image.thumbnail.class%'
         arguments:
             - '@akeneo_file_transformer.options.image.thumbnail'
             - '@akeneo_file_transformer.transformation.image.image_magick_launcher'
@@ -52,4 +52,4 @@ services:
             - { name: akeneo_file_transformer.transformation, alias: transformation_image_thumbnail }
 
     akeneo_file_transformer.transformation.image.image_magick_launcher:
-        class: %akeneo_file_transformer.transformation.image.image_magick_launcher.class%
+        class: '%akeneo_file_transformer.transformation.image.image_magick_launcher.class%'

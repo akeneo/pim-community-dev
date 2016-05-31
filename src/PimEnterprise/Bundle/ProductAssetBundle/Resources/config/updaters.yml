@@ -7,7 +7,7 @@ parameters:
 
 services:
     pimee_product_asset.updater.setter.product_asset_collection_value:
-        class: %pimee_product_asset.updater.setter.product_asset_collection_value.class%
+        class: '%pimee_product_asset.updater.setter.product_asset_collection_value.class%'
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - '@pim_reference_data.repository_resolver'
@@ -16,7 +16,7 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     pimee_product_asset.updater.copier.product_asset_collection_value:
-        class: %pimee_product_asset.updater.copier.product_asset_collection_value.class%
+        class: '%pimee_product_asset.updater.copier.product_asset_collection_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - ['pim_assets_collection']
@@ -25,28 +25,28 @@ services:
             - { name: 'pim_catalog.updater.copier' }
 
     pimee_product_asset.updater.files:
-        class: %pimee_product_asset.updater.files.class%
+        class: '%pimee_product_asset.updater.files.class%'
         arguments:
             - '@akeneo_file_storage.file_storage.file.file_storer'
 
     pimee_product_asset.updater.tag:
-        class: %pimee_product_asset.updater.tag.class%
+        class: '%pimee_product_asset.updater.tag.class%'
 
     pimee_product_asset.updater.asset:
-        class: %pimee_product_asset.updater.asset.class%
+        class: '%pimee_product_asset.updater.asset.class%'
         arguments:
             - '@pimee_product_asset.repository.tag'
             - '@pimee_product_asset.repository.category'
 
     pimee_product_asset.updater.category:
-        class: %akeneo_classification.updater.category.class%
+        class: '%akeneo_classification.updater.category.class%'
         arguments:
             - '@pimee_product_asset.repository.category'
 
     pimee_product_asset.updater.category_translatable:
         decorates: pimee_product_asset.updater.category
         decoration_inner_name: pimee_product_asset.updater.category.base
-        class: %pim_catalog.updater.category_translatable.class%
+        class: '%pim_catalog.updater.category_translatable.class%'
         arguments:
             - '@pimee_product_asset.updater.category.base'
             - '@pim_localization.updater.translatable'

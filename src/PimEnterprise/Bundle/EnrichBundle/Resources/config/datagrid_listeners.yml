@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_enrich.event_listener.proposal_grid_before_listener:
-        class: %pimee_datagrid.event_listener.configure_proposal_grid_listener.class%
+        class: '%pimee_datagrid.event_listener.configure_proposal_grid_listener.class%'
         arguments:
             - '@pimee_datagrid.datagrid.configuration.proposal.context_configurator'
         tags:

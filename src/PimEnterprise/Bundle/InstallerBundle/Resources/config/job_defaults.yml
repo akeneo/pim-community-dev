@@ -3,7 +3,7 @@ parameters: ~
 services:
     # Default Parameters for Imports ----------------------------------------------------------------------------------
     pimee_installer.job.job_parameters.default_values_provider.simple_csv_import:
-        class: %pim_connector.job.job_parameters.default_values_provider.simple_csv_import.class%
+        class: '%pim_connector.job.job_parameters.default_values_provider.simple_csv_import.class%'
         arguments:
             -
                 - 'fixtures_attribute_group_access_csv'
@@ -17,7 +17,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pimee_installer.job.job_parameters.default_values_provider.simple_yaml_import:
-        class: %pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class%
+        class: '%pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class%'
         arguments:
             -
                 - 'fixtures_rule_yml'

@@ -6,7 +6,7 @@ parameters:
 
 services:
     pimee_filter.product_draft_choice_filter:
-        class: %pimee_filter.product_draft_choice_filter.class%
+        class: '%pimee_filter.product_draft_choice_filter.class%'
         arguments:
             - '@form.factory'
             - '@pimee_filter.product_draft_utility'
@@ -14,13 +14,13 @@ services:
             - { name: oro_filter.extension.orm_filter.filter, type: product_draft_choice }
 
     pimee_filter.product_draft_attribute_choice_filter:
-        class: %pimee_filter.product_draft_attribute_choice_filter.class%
+        class: '%pimee_filter.product_draft_attribute_choice_filter.class%'
         parent: pimee_filter.product_draft_choice_filter
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_draft_attribute_choice }
 
     pimee_filter.product_draft_date_filter:
-        class: %pimee_filter.product_draft_date_filter.class%
+        class: '%pimee_filter.product_draft_date_filter.class%'
         arguments:
             - '@form.factory'
             - '@pimee_filter.product_draft_utility'
@@ -28,7 +28,7 @@ services:
             - { name: oro_filter.extension.orm_filter.filter, type: product_draft_date }
 
     pimee_filter.product_permission_filter:
-        class: %pimee_filter.product_permission_filter.class%
+        class: '%pimee_filter.product_permission_filter.class%'
         arguments:
             - '@form.factory'
             - '@oro_filter.filter_utility'

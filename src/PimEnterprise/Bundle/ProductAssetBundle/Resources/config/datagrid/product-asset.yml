@@ -57,7 +57,7 @@ datagrid:
                 endOfUseAt:
                     data_name: asset.endOfUseAt
             default:
-                id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                id: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
                 code:

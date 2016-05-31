@@ -4,10 +4,10 @@ parameters:
 services:
     # Managers
     pimee_catalog_rule.manager.rule_relation:
-        class: %pimee_catalog_rule.manager.rule_relation.class%
+        class: '%pimee_catalog_rule.manager.rule_relation.class%'
         arguments:
             - '@akeneo_rule_engine.repository.rule_relation'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.category'
-            - %pim_catalog.entity.attribute.class%
-            - %pim_catalog.entity.category.class%
+            - '%pim_catalog.entity.attribute.class%'
+            - '%pim_catalog.entity.category.class%'

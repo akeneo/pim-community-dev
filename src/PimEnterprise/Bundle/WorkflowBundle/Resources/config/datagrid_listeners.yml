@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_workflow.event_listener.product_drafts_grid_listener:
-        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
+        class: '%pim_datagrid.event_listener.add_parameters_to_grid.class%'
         arguments:
           - [ product ]
           - '@oro_datagrid.datagrid.request_params'
@@ -11,14 +11,14 @@ services:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-draft-grid, method: onBuildAfter }
 
     pimee_workflow.datagrid.event_listener.inject_product_for_product_draft:
-        class: %pimee_workflow.datagrid.event_listener.inject_product_for_product_draft.class%
+        class: '%pimee_workflow.datagrid.event_listener.inject_product_for_product_draft.class%'
         arguments:
             - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-draft-grid, method: buildBefore }
 
     pim_enrich.event_listener.product_grid_before_listener:
-        class: %pim_datagrid.event_listener.configure_product_grid_listener.class%
+        class: '%pim_datagrid.event_listener.configure_product_grid_listener.class%'
         arguments:
             - '@pim_datagrid.datagrid.configuration.product.context_configurator'
             - '@pim_datagrid.datagrid.configuration.product.columns_configurator'
@@ -29,7 +29,7 @@ services:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
 
     pim_enrich.event_listener.published_product_grid_before_listener:
-        class: %pim_datagrid.event_listener.configure_product_grid_listener.class%
+        class: '%pim_datagrid.event_listener.configure_product_grid_listener.class%'
         arguments:
             - '@pim_datagrid.datagrid.configuration.product.context_configurator'
             - '@pim_datagrid.datagrid.configuration.product.columns_configurator'
@@ -39,7 +39,7 @@ services:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.published-product-grid, method: buildBefore }
 
     pim_enrich.event_listener.published_product_grid_after_listener:
-        class: %pim_datagrid.event_listener.add_parameters_to_product_grid.class%
+        class: '%pim_datagrid.event_listener.add_parameters_to_product_grid.class%'
         arguments:
           - [dataLocale]
           - '@oro_datagrid.datagrid.request_params'

@@ -3,6 +3,6 @@ parameters:
 
 services:
     pimee_filter.product_draft_utility:
-        class: %pimee_filter.product_draft_utility.class%
+        class: '%pimee_filter.product_draft_utility.class%'
         arguments:
             - '@pimee_workflow.repository.product_draft'

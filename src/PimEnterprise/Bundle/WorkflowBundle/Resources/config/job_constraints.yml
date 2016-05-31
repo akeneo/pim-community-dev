@@ -4,7 +4,7 @@ parameters:
 services:
     # Validation constraints for Imports ------------------------------------------------------------------------------
     pimee_workflow.connector.job.job_parameters.constraint_collection_provider.product_csv_import:
-        class: %pim_connector.job.job_parameters.constraint_collection_provider.product_csv_import.class%
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_csv_import.class%'
         arguments:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import'
             -
@@ -13,7 +13,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pimee_workflow.connector.job.job_parameters.constraint_collection_provider.product_xlsx_import:
-        class: %pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_import.class%
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_import.class%'
         arguments:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import'
             -
@@ -23,7 +23,7 @@ services:
 
     # Validation constraints for Exports ------------------------------------------------------------------------------
     pimee_workflow.connector.job.job_parameters.constraint_collection_provider.product_csv_export:
-        class: %pim_connector.job.job_parameters.constraint_collection_provider.product_csv_export.class%
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_csv_export.class%'
         arguments:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export'
             -
@@ -32,7 +32,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pimee_workflow.connector.job.job_parameters.constraint_collection_provider.product_xlsx_export:
-        class: %pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_export.class%
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_export.class%'
         arguments:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export'
             -
@@ -42,7 +42,7 @@ services:
 
     # Validation constraints for MassEdit -----------------------------------------------------------------------------
     pimee_workflow.connector.job.job_parameters.constraint_collection_provider.mass_review:
-        class: %pimee_workflow.connector.job.job_parameters.constraint_collection_provider.mass_review.class%
+        class: '%pimee_workflow.connector.job.job_parameters.constraint_collection_provider.mass_review.class%'
         arguments:
             -
                 - 'approve_product_draft'

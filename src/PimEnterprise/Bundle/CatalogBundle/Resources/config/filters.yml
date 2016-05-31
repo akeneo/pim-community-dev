@@ -13,7 +13,7 @@ parameters:
 
 services:
     pimee_catalog.filter.abstract_authorization:
-        class: %pimee_catalog.filter.abstract_authorization.class%
+        class: '%pimee_catalog.filter.abstract_authorization.class%'
         abstract: true
         public: false
         arguments:
@@ -21,28 +21,28 @@ services:
             - '@security.authorization_checker'
 
     pimee_catalog.filter.attribute_view_right:
-        class: %pimee_catalog.filter.attribute_view_right.class%
+        class: '%pimee_catalog.filter.attribute_view_right.class%'
         parent: pimee_catalog.filter.abstract_authorization
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.attribute.view }
             - { name: pim_catalog.filter.object, type: pim.internal_api.attribute.view }
 
     pimee_catalog.filter.attribute_edit_right:
-        class: %pimee_catalog.filter.attribute_edit_right.class%
+        class: '%pimee_catalog.filter.attribute_edit_right.class%'
         parent: pimee_catalog.filter.abstract_authorization
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.attribute.edit }
             - { name: pim_catalog.filter.object, type: pim.internal_api.attribute.edit }
 
     pimee_catalog.filter.attribute_group_view_right:
-        class: %pimee_catalog.filter.attribute_group_view_right.class%
+        class: '%pimee_catalog.filter.attribute_group_view_right.class%'
         parent: pimee_catalog.filter.abstract_authorization
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.attribute_group.view }
             - { name: pim_catalog.filter.object, type: pim.internal_api.attribute_group.view }
 
     pimee_catalog.filter.product_value_attribute_group_right:
-        class: %pimee_catalog.filter.product_value_attribute_group_right.class%
+        class: '%pimee_catalog.filter.product_value_attribute_group_right.class%'
         parent: pimee_catalog.filter.abstract_authorization
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.product_value.view }
@@ -50,7 +50,7 @@ services:
             - { name: pim_catalog.filter.collection, type: pim.transform.product_value.flat.quick_export }
 
     pimee_catalog.filter.product_value_locale_right:
-        class: %pimee_catalog.filter.product_value_locale_right.class%
+        class: '%pimee_catalog.filter.product_value_locale_right.class%'
         parent: pimee_catalog.filter.abstract_authorization
         arguments:
             - '@pim_catalog.repository.locale'
@@ -60,31 +60,31 @@ services:
             - { name: pim_catalog.filter.collection, type: pim.transform.product_value.flat.quick_export }
 
     pimee_catalog.filter.product_right_view:
-        class: %pimee_catalog.filter.product_right_view.class%
+        class: '%pimee_catalog.filter.product_right_view.class%'
         parent: pimee_catalog.filter.abstract_authorization
         tags:
             - { name: pim_catalog.filter.object, type: pim.internal_api.product.view }
 
     pimee_catalog.filter.product_right_edit:
-        class: %pimee_catalog.filter.product_right_edit.class%
+        class: '%pimee_catalog.filter.product_right_edit.class%'
         parent: pimee_catalog.filter.abstract_authorization
         tags:
             - { name: pim_catalog.filter.object, type: pim.internal_api.product.edit }
 
     pimee_catalog.filter.locale_view_right:
-        class: %pimee_catalog.filter.locale_view_right.class%
+        class: '%pimee_catalog.filter.locale_view_right.class%'
         parent: pimee_catalog.filter.abstract_authorization
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.locale.view }
 
     pimee_catalog.filter.locale_edit_right:
-        class: %pimee_catalog.filter.locale_edit_right.class%
+        class: '%pimee_catalog.filter.locale_edit_right.class%'
         parent: pimee_catalog.filter.abstract_authorization
         tags:
             - { name: pim_catalog.filter.object, type: pim.internal_api.locale.edit }
 
     pimee_catalog.filter.category:
-        class: %pimee_catalog.filter.category.class%
+        class: '%pimee_catalog.filter.category.class%'
         parent: pimee_catalog.filter.abstract_authorization
         arguments:
             - '@pimee_security.repository.category_access'

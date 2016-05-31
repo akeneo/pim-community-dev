@@ -4,17 +4,17 @@ parameters:
 
 services:
     akeneo_rule_engine.repository.rule_definition:
-        class: %akeneo_rule_engine.repository.rule_definition.class%
+        class: '%akeneo_rule_engine.repository.rule_definition.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [%akeneo_rule_engine.model.rule_definition.class%]
+        arguments: ['%akeneo_rule_engine.model.rule_definition.class%']
         tags:
             - { name: 'pim_repository' }
 
     akeneo_rule_engine.repository.rule_relation:
-        class: %akeneo_rule_engine.repository.rule_relation.class%
+        class: '%akeneo_rule_engine.repository.rule_relation.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [%akeneo_rule_engine.model.rule_relation.class%]
+        arguments: ['%akeneo_rule_engine.model.rule_relation.class%']
         tags:
             - { name: 'pim_repository' }

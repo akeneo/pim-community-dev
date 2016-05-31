@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_versioning.reverter.product:
-        class: %pimee_versioning.reverter.product.class%
+        class: '%pimee_versioning.reverter.product.class%'
         arguments:
             - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - '@pimee_versioning.serializer'

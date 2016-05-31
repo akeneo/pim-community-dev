@@ -8,7 +8,7 @@ services:
         parent: pim_enrich.view_element.base
         arguments:
             - 'pimee_product_asset.tabs.variations'
-            - %pimee_product_asset.view_element.asset.tab.variations.template%
+            - '%pimee_product_asset.view_element.asset.tab.variations.template%'
         tags:
             - { name: pim_enrich.view_element, type: pimee_product_asset.asset.form_tab, position: 10 }
 
@@ -16,7 +16,7 @@ services:
         parent: pim_enrich.view_element.base
         arguments:
             - 'pimee_product_asset.tabs.properties'
-            - %pimee_product_asset.view_element.asset.tab.properties.template%
+            - '%pimee_product_asset.view_element.asset.tab.properties.template%'
         tags:
             - { name: pim_enrich.view_element, type: pimee_product_asset.asset.form_tab, position: 20 }
 
@@ -24,7 +24,7 @@ services:
         parent: pim_enrich.view_element.base
         arguments:
             - 'pimee_product_asset.tabs.categories'
-            - %pimee_product_asset.view_element.asset.tab.categories.template%
+            - '%pimee_product_asset.view_element.asset.tab.categories.template%'
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pimee_product_asset_categories_view'}] ]
         tags:

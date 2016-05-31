@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_enrich.provider.form.product:
-        class: %pimee_enrich.provider.form.product.class%
+        class: '%pimee_enrich.provider.form.product.class%'
         arguments:
             - '@security.authorization_checker'
         tags:
@@ -11,7 +11,7 @@ services:
 
     # Structure version provider
     pim_enrich.provider.structure_version.product:
-        class: %pim_enrich.provider.structure_version.product.class%
+        class: '%pim_enrich.provider.structure_version.product.class%'
         arguments:
             - '@pim_versioning.repository.version'
         calls:

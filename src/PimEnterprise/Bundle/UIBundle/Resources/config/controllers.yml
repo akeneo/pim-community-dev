@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_ui.controller.ajax_option:
-        class: %pimee_ui.controller.ajax_option.class%
+        class: '%pimee_ui.controller.ajax_option.class%'
         arguments:
             - '@doctrine'
             - '@pimee_product_asset.context.user'

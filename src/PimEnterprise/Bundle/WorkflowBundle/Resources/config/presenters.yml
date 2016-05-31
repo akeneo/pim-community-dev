@@ -26,7 +26,7 @@ services:
     # Twig Extension
     ##
     pimee_workflow.twig.extension.product_draft_changes:
-        class: %pimee_workflow.twig.extension.product_draft_changes.class%
+        class: '%pimee_workflow.twig.extension.product_draft_changes.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pimee_workflow.product_draft_renderer'
@@ -37,39 +37,39 @@ services:
             - { name: twig.extension }
 
     pimee_workflow.product_draft_renderer:
-        class: %pimee_workflow.product_draft_renderer.class%
+        class: '%pimee_workflow.product_draft_renderer.class%'
         arguments:
             - '@pimee_workflow.renderer.html.simple_list'
             - '@pimee_workflow.rendering.diff_factory'
 
     pimee_workflow.renderer.html.simple_list:
         public: false
-        class: %pimee_workflow.renderer.html.simple_list.class%
+        class: '%pimee_workflow.renderer.html.simple_list.class%'
 
     pimee_workflow.rendering.diff_factory:
         public: false
-        class: %pimee_workflow.rendering.diff_factory.class%
+        class: '%pimee_workflow.rendering.diff_factory.class%'
 
     ##
     # Presenters
     ##
     pimee_workflow.presenter.default:
-        class: %pimee_workflow.presenter.default.class%
+        class: '%pimee_workflow.presenter.default.class%'
         tags:
             - { name: pimee_workflow.presenter, priority: -128 }
 
     pimee_workflow.presenter.text:
-        class: %pimee_workflow.presenter.text.class%
+        class: '%pimee_workflow.presenter.text.class%'
         tags:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.textarea:
-        class: %pimee_workflow.presenter.textarea.class%
+        class: '%pimee_workflow.presenter.textarea.class%'
         tags:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.metric:
-        class: %pimee_workflow.presenter.metric.class%
+        class: '%pimee_workflow.presenter.metric.class%'
         arguments:
             - '@pim_catalog.localization.presenter.metric'
             - '@pim_enrich.resolver.locale'
@@ -77,7 +77,7 @@ services:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.date:
-        class: %pimee_workflow.presenter.date.class%
+        class: '%pimee_workflow.presenter.date.class%'
         arguments:
             - '@pim_catalog.localization.presenter.date'
             - '@pim_enrich.resolver.locale'
@@ -85,7 +85,7 @@ services:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.prices:
-        class: %pimee_workflow.presenter.prices.class%
+        class: '%pimee_workflow.presenter.prices.class%'
         arguments:
             - '@pim_catalog.localization.presenter.prices'
             - '@pim_enrich.resolver.locale'
@@ -93,7 +93,7 @@ services:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.number:
-        class: %pimee_workflow.presenter.number.class%
+        class: '%pimee_workflow.presenter.number.class%'
         arguments:
             - '@pim_catalog.localization.presenter.number'
             - '@pim_enrich.resolver.locale'
@@ -101,54 +101,54 @@ services:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.boolean:
-        class: %pimee_workflow.presenter.boolean.class%
+        class: '%pimee_workflow.presenter.boolean.class%'
         tags:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.option:
-        class: %pimee_workflow.presenter.option.class%
+        class: '%pimee_workflow.presenter.option.class%'
         arguments:
             - '@pim_catalog.repository.attribute_option'
         tags:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.options:
-        class: %pimee_workflow.presenter.options.class%
+        class: '%pimee_workflow.presenter.options.class%'
         arguments:
             - '@pim_catalog.repository.attribute_option'
         tags:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.file:
-        class: %pimee_workflow.presenter.file.class%
+        class: '%pimee_workflow.presenter.file.class%'
         arguments:
             - '@router'
         tags:
             - { name: pimee_workflow.presenter, priority: -64 }
 
     pimee_workflow.presenter.image:
-        class: %pimee_workflow.presenter.image.class%
+        class: '%pimee_workflow.presenter.image.class%'
         arguments:
             - '@router'
         tags:
             - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.product_value.date:
-        class: %pimee_workflow.presenter.product_value.date.class%
+        class: '%pimee_workflow.presenter.product_value.date.class%'
         tags:
             - { name: pimee_workflow.product_value_presenter }
 
     pimee_workflow.presenter.product_value.boolean:
-        class: %pimee_workflow.presenter.product_value.boolean.class%
+        class: '%pimee_workflow.presenter.product_value.boolean.class%'
         tags:
             - { name: pimee_workflow.product_value_presenter }
 
     pimee_workflow.presenter.product_value.image:
-        class: %pimee_workflow.presenter.product_value.image.class%
+        class: '%pimee_workflow.presenter.product_value.image.class%'
         tags:
             - { name: pimee_workflow.product_value_presenter }
 
     pimee_workflow.presenter.product_value.file:
-        class: %pimee_workflow.presenter.product_value.file.class%
+        class: '%pimee_workflow.presenter.product_value.file.class%'
         tags:
             - { name: pimee_workflow.product_value_presenter }

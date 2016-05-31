@@ -6,37 +6,37 @@ parameters:
 
 services:
     pimee_security.repository.attribute_group_access:
-        class: %pimee_security.repository.attribute_group_access.class%
+        class: '%pimee_security.repository.attribute_group_access.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [%pimee_security.entity.attribute_group_access.class%]
+        arguments: ['%pimee_security.entity.attribute_group_access.class%']
         tags:
             - { name: 'pim_repository' }
         calls:
             - [setTableNameBuilder, ['@akeneo_storage_utils.doctrine.table_name_builder']]
 
     pimee_security.repository.category_access:
-        class: %pimee_security.repository.category_access.class%
+        class: '%pimee_security.repository.category_access.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [%pimee_security.entity.product_category_access.class%]
+        arguments: ['%pimee_security.entity.product_category_access.class%']
         tags:
             - { name: 'pim_repository' }
         calls:
             - [setTableNameBuilder, ['@akeneo_storage_utils.doctrine.table_name_builder']]
 
     pimee_security.repository.job_profile_access:
-        class: %pimee_security.repository.job_profile_access.class%
+        class: '%pimee_security.repository.job_profile_access.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [%pimee_security.entity.job_profile_access.class%]
+        arguments: ['%pimee_security.entity.job_profile_access.class%']
         tags:
             - { name: 'pim_repository' }
 
     pimee_security.repository.locale_access:
-        class: %pimee_security.repository.locale_access.class%
+        class: '%pimee_security.repository.locale_access.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [%pimee_security.entity.locale_access.class%]
+        arguments: ['%pimee_security.entity.locale_access.class%']
         tags:
             - { name: 'pim_repository' }

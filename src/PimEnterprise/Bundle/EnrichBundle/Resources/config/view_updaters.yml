@@ -4,7 +4,7 @@ parameters:
 
 services:
     pimee_enrich.form.view.view_updater.draft:
-        class: %pimee_enrich.form.view.view_updater.draft.class%
+        class: '%pimee_enrich.form.view.view_updater.draft.class%'
         arguments:
             - '@pimee_workflow.applier.product_draft_changes_applier'
             - '@router'
@@ -12,7 +12,7 @@ services:
             - { name: 'pim_enrich.form.view_updater' }
 
     pimee_enrich.form.view.view_updater.smart:
-        class: %pimee_enrich.form.view.view_updater.smart.class%
+        class: '%pimee_enrich.form.view.view_updater.smart.class%'
         arguments:
             - '@pimee_catalog_rule.manager.rule_relation'
             - '@router'

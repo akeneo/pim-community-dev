@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit:
-        class: %pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit.class%
+        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit.class%'
         arguments:
             -
                 - 'add_product_value_with_permission'
@@ -17,7 +17,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pimee_enrich.connector.job.job_parameters.constraint_collection_provider.mass_publish:
-        class: %pimee_enrich.connector.job.job_parameters.constraint_collection_provider.mass_publish.class%
+        class: '%pimee_enrich.connector.job.job_parameters.constraint_collection_provider.mass_publish.class%'
         arguments:
             -
                 - 'publish_product'
@@ -26,7 +26,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pimee_enrich.connector.job.job_parameters.constraint_collection_provider.product_csv_quick_export:
-        class: %pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_quick_export.class%
+        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_quick_export.class%'
         arguments:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export'
             -
@@ -35,7 +35,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pimee_enrich.connector.job.job_parameters.constraint_collection_provider.product_xlsx_quick_export:
-        class: %pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_quick_export.class%
+        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_quick_export.class%'
         arguments:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export'
             -

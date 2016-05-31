@@ -9,18 +9,18 @@ parameters:
 services:
     # import rules
     pimee_catalog_rule.processor.denormalization.rule_definition:
-        class: %pimee_catalog_rule.processor.denormalization.rule_definition.class%
+        class: '%pimee_catalog_rule.processor.denormalization.rule_definition.class%'
         arguments:
             - '@akeneo_rule_engine.repository.rule_definition'
             - '@pimee_catalog_rule.denormalizer.product_rule.chained'
             - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
-            - %akeneo_rule_engine.model.rule_definition.class%
-            - %akeneo_rule_engine.model.rule.class%
+            - '%akeneo_rule_engine.model.rule_definition.class%'
+            - '%akeneo_rule_engine.model.rule.class%'
 
     # export rules
     pimee_catalog_rule.processor.normalization.rule_definition:
-        class: %pimee_catalog_rule.processor.normalization.rule_definition.class%
+        class: '%pimee_catalog_rule.processor.normalization.rule_definition.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.repository.locale'
@@ -28,6 +28,6 @@ services:
 
     # product loader
     pimee_catalog_rule.processor.product_loader:
-        class: %pimee_catalog_rule.processor.product_loader.class%
+        class: '%pimee_catalog_rule.processor.product_loader.class%'
         arguments:
             - '@pim_catalog.repository.product'

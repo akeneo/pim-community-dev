@@ -4,10 +4,10 @@ parameters:
 
 services:
     pimee_product_asset.versioning.update_guesser.variation:
-        class: %pimee_product_asset.versioning.update_guesser.variation.class%
+        class: '%pimee_product_asset.versioning.update_guesser.variation.class%'
         tags:
             - { name: pim_versioning.update_guesser }
     pimee_product_asset.versioning.update_guesser.reference:
-        class: %pimee_product_asset.versioning.update_guesser.reference.class%
+        class: '%pimee_product_asset.versioning.update_guesser.reference.class%'
         tags:
             - { name: pim_versioning.update_guesser }

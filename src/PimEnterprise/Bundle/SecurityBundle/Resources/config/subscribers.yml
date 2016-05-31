@@ -3,6 +3,6 @@ parameters:
 
 services:
     pimee_security.form.subscriber.remove_product_value_subscriber:
-        class: %pimee_security.form.subscriber.remove_product_value_subscriber%
+        class: '%pimee_security.form.subscriber.remove_product_value_subscriber%'
         arguments:
             - '@security.authorization_checker'

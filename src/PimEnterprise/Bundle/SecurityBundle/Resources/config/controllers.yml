@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_security.controller.permission_rest:
-        class: %pimee_security.controller.permission_rest.class%
+        class: '%pimee_security.controller.permission_rest.class%'
         arguments:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.attribute_group'

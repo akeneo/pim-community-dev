@@ -3,6 +3,6 @@ parameters:
 
 services:
     pimee_security.form.type.groups:
-        class: %pimee_security.form.type.groups.class%
+        class: '%pimee_security.form.type.groups.class%'
         tags:
             - { name: form.type, alias: pimee_security_groups }

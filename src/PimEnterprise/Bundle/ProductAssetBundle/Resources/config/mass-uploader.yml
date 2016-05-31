@@ -7,20 +7,20 @@ parameters:
 
 services:
     pimee_product_asset.upload_checker:
-        class: %pimee_product_asset.upload_checker.class%
+        class: '%pimee_product_asset.upload_checker.class%'
         arguments:
             - '@pimee_product_asset.repository.asset'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.locale'
 
     pimee_product_asset.upload_scheduler:
-        class: %pimee_product_asset.upload_scheduler.class%
+        class: '%pimee_product_asset.upload_scheduler.class%'
         arguments:
             - '@pimee_product_asset.upload_checker'
             - '@akeneo_file_storage.file_storage.file.file_storer'
 
     pimee_product_asset.mass_upload_processor:
-        class: %pimee_product_asset.mass_upload_processor.class%
+        class: '%pimee_product_asset.mass_upload_processor.class%'
         arguments:
             - '@pimee_product_asset.upload_checker'
             - '@pimee_product_asset.upload_scheduler'
@@ -34,7 +34,7 @@ services:
             - '@translator'
 
     pimee_product_asset.mass_upload.tasklet:
-        class: %pimee_product_asset.mass_upload.tasklet.class%
+        class: '%pimee_product_asset.mass_upload.tasklet.class%'
         arguments:
             - '@pimee_product_asset.mass_upload_processor'
             - '%tmp_storage_dir%'

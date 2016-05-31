@@ -7,53 +7,53 @@ parameters:
 
 services:
     pimee_catalog_rule.denormalizer.product_rule.chained:
-        class: %pimee_catalog_rule.denormalizer.product_rule.chained.class%
+        class: '%pimee_catalog_rule.denormalizer.product_rule.chained.class%'
 
 
     pimee_catalog_rule.denormalizer.product_rule.condition:
-        class: %pimee_catalog_rule.denormalizer.product_rule.condition.class%
+        class: '%pimee_catalog_rule.denormalizer.product_rule.condition.class%'
         arguments:
-            - %pimee_catalog_rule.model.product_condition.class%
+            - '%pimee_catalog_rule.model.product_condition.class%'
         tags:
             - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
 
     pimee_catalog_rule.denormalizer.product_rule.set_action:
-        class: %pimee_catalog_rule.denormalizer.product_rule.action.class%
+        class: '%pimee_catalog_rule.denormalizer.product_rule.action.class%'
         arguments:
-            - %pimee_catalog_rule.model.set_action.class%
+            - '%pimee_catalog_rule.model.set_action.class%'
             - 'set'
         tags:
             - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
 
     pimee_catalog_rule.denormalizer.product_rule.copy_action:
-        class: %pimee_catalog_rule.denormalizer.product_rule.action.class%
+        class: '%pimee_catalog_rule.denormalizer.product_rule.action.class%'
         arguments:
-            - %pimee_catalog_rule.model.copy_action.class%
+            - '%pimee_catalog_rule.model.copy_action.class%'
             - 'copy'
         tags:
             - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
 
     pimee_catalog_rule.denormalizer.product_rule.add_action:
-        class: %pimee_catalog_rule.denormalizer.product_rule.action.class%
+        class: '%pimee_catalog_rule.denormalizer.product_rule.action.class%'
         arguments:
-            - %pimee_catalog_rule.model.add_action.class%
+            - '%pimee_catalog_rule.model.add_action.class%'
             - 'add'
         tags:
             - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
 
     pimee_catalog_rule.denormalizer.product_rule.content:
-        class: %pimee_catalog_rule.denormalizer.product_rule.content.class%
+        class: '%pimee_catalog_rule.denormalizer.product_rule.content.class%'
         arguments:
-            - %akeneo_rule_engine.model.rule.class%
-            - %pimee_catalog_rule.model.product_condition.class%
+            - '%akeneo_rule_engine.model.rule.class%'
+            - '%pimee_catalog_rule.model.product_condition.class%'
         tags:
             - { name: 'pimee_catalog_rule.denormalizer.product_rule' }
 
     pimee_catalog_rule.denormalizer.product_rule:
-        class: %pimee_catalog_rule.denormalizer.product_rule.class%
+        class: '%pimee_catalog_rule.denormalizer.product_rule.class%'
         arguments:
-            - %akeneo_rule_engine.model.rule.class%
-            - %akeneo_rule_engine.model.rule_definition.class%
+            - '%akeneo_rule_engine.model.rule.class%'
+            - '%akeneo_rule_engine.model.rule_definition.class%'
             - 'product'
         tags:
             - { name: 'pimee_catalog_rule.denormalizer.product_rule' }

@@ -5,14 +5,14 @@ connector:
             type:  mass_edit
             steps:
                 perform:
-                    class: "%pim_connector.step.tasklet.class%"
+                    class: '%pim_connector.step.tasklet.class%'
                     services:
                         tasklet: pim_enrich.mass_edit_tasklet.publish_product
         unpublish_product:
             type:  mass_edit
             steps:
                 perform:
-                    class: "%pim_connector.step.tasklet.class%"
+                    class: '%pim_connector.step.tasklet.class%'
                     services:
                         tasklet: pim_enrich.mass_edit_tasklet.unpublish_product
         add_product_value_with_permission:
@@ -72,7 +72,7 @@ connector:
                     parameters:
                         batch_size: 1000
                 clean:
-                    class: "%pim_enrich.step.mass_edit.step.class%"
+                    class: '%pim_enrich.step.mass_edit.step.class%'
                     services:
                         cleaner: pim_enrich.connector.item.mass_edit.temporary_file_cleaner
         edit_common_attributes_with_permission_and_rules:
@@ -86,7 +86,7 @@ connector:
                     parameters:
                         batch_size: 1000
                 clean:
-                    class: "%pim_enrich.step.mass_edit.step.class%"
+                    class: '%pim_enrich.step.mass_edit.step.class%'
                     services:
                         cleaner: pim_enrich.connector.item.mass_edit.temporary_file_cleaner
                 execute_rules:

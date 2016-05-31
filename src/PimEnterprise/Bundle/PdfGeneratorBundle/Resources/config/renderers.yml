@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_pdf_generator.renderer.product_pdf:
-        class: %pimee_pdf_generator.renderer.product_pdf.class%
+        class: '%pimee_pdf_generator.renderer.product_pdf.class%'
         arguments:
             - '@templating'
             - '@pim_pdf_generator.builder.dompdf'
@@ -13,6 +13,6 @@ services:
             - '@liip_imagine.filter.manager'
             - 'PimPdfGeneratorBundle:Product:renderPdf.html.twig'
             - %upload_dir%
-            - %pim_pdf_generator_font%
+            - '%pim_pdf_generator_font%'
         tags:
             - { name: pim_pdf_generator.renderer, priority: 100 }

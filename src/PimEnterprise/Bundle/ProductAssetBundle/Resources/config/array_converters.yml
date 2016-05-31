@@ -1,7 +1,7 @@
 services:
     pimee_connector.array_converter.flat.product.value_converter.multiselect:
         public:    false
-        class:     %pim_connector.array_converter.flat_to_standard.product.value_converter.multiselect.class%
+        class:     '%pim_connector.array_converter.flat_to_standard.product.value_converter.multiselect.class%'
         parent:    pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
         decorates: pim_connector.array_converter.flat_to_standard.product.value_converter.multiselect
         arguments:

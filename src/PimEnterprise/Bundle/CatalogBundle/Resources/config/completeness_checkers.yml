@@ -3,6 +3,6 @@ parameters:
 
 services:
     pim_catalog.completeness.checker.asset_collection:
-        class: %pim_catalog.completeness.checker.asset_collection.class%
+        class: '%pim_catalog.completeness.checker.asset_collection.class%'
         tags:
             - { name: pim_catalog.completeness.checker.product_value, priority: 110 }

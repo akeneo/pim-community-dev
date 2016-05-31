@@ -4,14 +4,14 @@ parameters:
 
 services:
     pimee_produt_asset.twig_extension.file_exists:
-        class: %pimee_produt_asset.twig_extension.file_exists.class%
+        class: '%pimee_produt_asset.twig_extension.file_exists.class%'
         arguments:
             - %assetic.read_from%
         tags:
             - { name: twig.extension }
 
     pimee_produt_asset.twig_extension.format_bytes:
-        class: %pimee_produt_asset.twig_extension.format_bytes.class%
+        class: '%pimee_produt_asset.twig_extension.format_bytes.class%'
         arguments:
             - '@akeneo_file_storage.file_storage.formater.bytes'
         tags:

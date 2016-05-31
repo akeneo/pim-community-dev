@@ -5,10 +5,10 @@ parameters:
 
 services:
     pimee_product_asset.array_converter.flat_to_standard.asset:
-        class: %pimee_product_asset.array_converter.flat_to_standard.asset.class%
+        class: '%pimee_product_asset.array_converter.flat_to_standard.asset.class%'
 
     pimee_product_asset.array_converter.flat_to_standard.tag:
-        class: %pimee_product_asset.array_converter.flat_to_standard.tag.class%
+        class: '%pimee_product_asset.array_converter.flat_to_standard.tag.class%'
 
     pimee_product_asset.array_converter.flat_to_standard.channel_configuration:
-        class: %pimee_product_asset.array_converter.flat_to_standard.channel_configuration.class%
+        class: '%pimee_product_asset.array_converter.flat_to_standard.channel_configuration.class%'

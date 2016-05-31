@@ -4,7 +4,7 @@ parameters:
 
 services:
     pimee_workflow.manager.published_product:
-        class: %pimee_workflow.manager.published_product.class%
+        class: '%pimee_workflow.manager.published_product.class%'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pimee_workflow.repository.published_product'
@@ -15,7 +15,7 @@ services:
             - '@pim_catalog.object_manager.product'
 
     pimee_workflow.manager.product_draft:
-        class: %pimee_workflow.manager.product_draft.class%
+        class: '%pimee_workflow.manager.product_draft.class%'
         arguments:
             - '@pimee_workflow.saver.working_copy_product'
             - '@pim_user.context.user'

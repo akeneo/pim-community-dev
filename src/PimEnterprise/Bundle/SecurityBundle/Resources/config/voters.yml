@@ -11,62 +11,62 @@ parameters:
 
 services:
     pimee_security.voter.attribute:
-        class: %pimee_security.voter.attribute.class%
+        class: '%pimee_security.voter.attribute.class%'
         arguments:
             - '@pimee_security.voter.attribute_group'
         tags:
             - { name: security.voter }
 
     pimee_security.voter.attribute_group:
-        class: %pimee_security.voter.attribute_group.class%
+        class: '%pimee_security.voter.attribute_group.class%'
         arguments:
             - '@pimee_security.manager.attribute_group_access'
         tags:
             - { name: security.voter }
 
     pimee_security.voter.category:
-        class: %pimee_security.voter.category.class%
+        class: '%pimee_security.voter.category.class%'
         arguments:
             - '@pimee_security.manager.category_access'
-            - %pim_catalog.model.category.interface%
+            - '%pim_catalog.model.category.interface%'
         tags:
             - { name: security.voter }
 
     pimee_security.voter.product:
-        class: %pimee_security.voter.product.class%
+        class: '%pimee_security.voter.product.class%'
         arguments:
             - '@pimee_security.repository.category_access'
         tags:
             - { name: security.voter }
 
     pimee_security.voter.job_profile:
-        class: %pimee_security.voter.job_profile.class%
+        class: '%pimee_security.voter.job_profile.class%'
         arguments:
             - '@pimee_security.manager.job_profile_access'
         tags:
             - { name: security.voter }
 
     pimee_security.voter.product_draft:
-        class: %pimee_security.voter.product_draft.class%
+        class: '%pimee_security.voter.product_draft.class%'
         tags:
             - { name: security.voter }
 
     pimee_security.voter.locale:
-        class: %pimee_security.voter.locale.class%
+        class: '%pimee_security.voter.locale.class%'
         arguments:
             - '@pimee_security.manager.locale_access'
         tags:
             - { name: security.voter }
 
     pimee_security.voter.datagrid_view:
-        class: %pimee_security.voter.datagrid_view.class%
+        class: '%pimee_security.voter.datagrid_view.class%'
         arguments:
             - '@pimee_security.manager.datagtrid_view_access'
         tags:
             - { name: security.voter }
 
     pimee_security.voter.category_owner:
-        class: %pimee_security.voter.category_owner.class%
+        class: '%pimee_security.voter.category_owner.class%'
         arguments:
             - '@pimee_security.repository.category_access'
         tags:

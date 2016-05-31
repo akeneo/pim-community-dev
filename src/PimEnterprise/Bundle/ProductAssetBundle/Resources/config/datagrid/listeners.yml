@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_product_asset.event_listener.asset_grid_before_listener:
-        class: %pimee_product_asset.event_listener.configure_asset_grid_listener.class%
+        class: '%pimee_product_asset.event_listener.configure_asset_grid_listener.class%'
         arguments:
             - '@pimee_product_asset.datagrid.configuration.asset.context_configurator'
         tags:

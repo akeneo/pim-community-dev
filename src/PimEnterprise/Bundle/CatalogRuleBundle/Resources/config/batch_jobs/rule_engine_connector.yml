@@ -21,6 +21,6 @@ connector:
             type:  mass_edit_rule
             steps:
                 perform:
-                    class: "%pim_connector.step.tasklet.class%"
+                    class: '%pim_connector.step.tasklet.class%'
                     services:
                         tasklet: pimee_catalog_rule.tasklet.impacted_product_count

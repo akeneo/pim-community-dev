@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_catalog_rule.event_subscriber.rule_relation:
-        class: %pimee_catalog_rule.event_subscriber.rule_relation.class%
+        class: '%pimee_catalog_rule.event_subscriber.rule_relation.class%'
         arguments:
             - '@pimee_catalog_rule.manager.rule_relation'
             - '@pimee_catalog_rule.saver.rule_relation'

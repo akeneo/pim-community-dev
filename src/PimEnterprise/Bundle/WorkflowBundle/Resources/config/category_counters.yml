@@ -1,6 +1,6 @@
 services:
     pimee_product_asset.doctrine.counter.category_published_product:
-        class: %pimee_enrich.doctrine.counter.granted_category_items.class%
+        class: '%pimee_enrich.doctrine.counter.granted_category_items.class%'
         arguments:
             - '@pimee_workflow.repository.published_product_category'
             - '@pim_catalog.repository.category'

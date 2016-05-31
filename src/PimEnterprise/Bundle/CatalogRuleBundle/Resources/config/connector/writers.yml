@@ -7,19 +7,19 @@ parameters:
 services:
     # import rules
     pimee_catalog_rule.writer.doctrine.rule_definition:
-        class: %pimee_catalog_rule.writer.doctrine.rule_definition.class%
+        class: '%pimee_catalog_rule.writer.doctrine.rule_definition.class%'
         arguments:
             - '@akeneo_rule_engine.saver.rule_definition'
 
     # execute rules
     pimee_catalog_rule.executor.rules:
-        class: %pimee_catalog_rule.executor.rules.class%
+        class: '%pimee_catalog_rule.executor.rules.class%'
         arguments:
             - '@pimee_catalog_rule.runner.product'
             - '@akeneo_rule_engine.repository.rule_definition'
 
     pimee_catalog_rule.writer.file.yaml_rule_definition:
-        class: %pim_connector.writer.file.yaml.class%
+        class: '%pim_connector.writer.file.yaml.class%'
         arguments:
             - '@pim_connector.writer.file.file_path_resolver'
             - 'rules'

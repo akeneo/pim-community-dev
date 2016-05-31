@@ -4,10 +4,10 @@ parameters:
 
 services:
     akeneo_file_metadata.reader:
-        class: %akeneo_file_metadata.reader.class%
+        class: '%akeneo_file_metadata.reader.class%'
 
     akeneo_file_metadata.reader_factory:
-        class: %akeneo_file_metadata.reader_factory.class%
+        class: '%akeneo_file_metadata.reader_factory.class%'
         arguments:
             - '@akeneo_file_metadata.adapter.registry'
-            - %akeneo_file_metadata.reader.class%
+            - '%akeneo_file_metadata.reader.class%'

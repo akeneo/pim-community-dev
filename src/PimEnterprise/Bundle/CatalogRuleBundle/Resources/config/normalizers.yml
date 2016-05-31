@@ -3,7 +3,7 @@ parameters:
 
 services:
     akeneo_rule_engine.normalizer.rule_definition:
-        class: %akeneo_rule_engine.normalizer.rule_definition.class%
+        class: '%akeneo_rule_engine.normalizer.rule_definition.class%'
         arguments:
             - '@pim_catalog.localization.presenter.registry'
         tags:

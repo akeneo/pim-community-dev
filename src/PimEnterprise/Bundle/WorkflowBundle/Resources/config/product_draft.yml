@@ -4,7 +4,7 @@ parameters:
 services:
     pimee_workflow.applier.product_draft_changes_applier:
         public: false
-        class: %pimee_workflow.applier.product_draft_changes_applier.class%
+        class: '%pimee_workflow.applier.product_draft_changes_applier.class%'
         arguments:
             - '@form.factory'
             - '@event_dispatcher'

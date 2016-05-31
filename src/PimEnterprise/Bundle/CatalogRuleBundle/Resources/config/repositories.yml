@@ -3,4 +3,4 @@ parameters:
 
 services:
     pimee_catalog_rule.repository.rule_definition_mass_action:
-        class: %pimee_catalog_rule.repository.rule_definition_mass_action.class%
+        class: '%pimee_catalog_rule.repository.rule_definition_mass_action.class%'

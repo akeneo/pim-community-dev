@@ -4,7 +4,7 @@ parameters:
 services:
     # Default Parameters for Exports ----------------------------------------------------------------------------------
     pimee_catalog_rule.job.job_parameters.default_values_provider.simple_yaml_export:
-        class: %pim_connector.job.job_parameters.default_values_provider.simple_yaml_export.class%
+        class: '%pim_connector.job.job_parameters.default_values_provider.simple_yaml_export.class%'
         arguments:
             -
                 - 'yml_rule_export'
@@ -13,7 +13,7 @@ services:
 
     # Default Parameters for Imports ----------------------------------------------------------------------------------
     pimee_catalog_rule.job.job_parameters.default_values_provider.simple_yaml_import:
-        class: %pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class%
+        class: '%pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class%'
         arguments:
             -
                 - 'yml_rule_import'
@@ -21,7 +21,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pimee_catalog_rule.job.job_parameters.default_values_provider.product_csv_import:
-        class: %pim_connector.job.job_parameters.default_values_provider.product_csv_import.class%
+        class: '%pim_connector.job.job_parameters.default_values_provider.product_csv_import.class%'
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
             -
@@ -30,7 +30,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pimee_catalog_rule.job.job_parameters.default_values_provider.product_xlsx_import:
-        class: %pim_connector.job.job_parameters.default_values_provider.product_xlsx_import.class%
+        class: '%pim_connector.job.job_parameters.default_values_provider.product_xlsx_import.class%'
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
             -
@@ -39,7 +39,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pimee_catalog_rule.job.job_parameters.default_values_provider.impacted_product_count:
-        class: %pim_connector.job.job_parameters.default_values_provider.impacted_product_count.class%
+        class: '%pim_connector.job.job_parameters.default_values_provider.impacted_product_count.class%'
         arguments:
             -
                 - 'rule_impacted_product_count'

@@ -12,14 +12,14 @@ services:
             - { name: pim_internal_api_serializer.normalizer, priority: 100 }
 
     pimee_enrich.serializer.normalizer.rule_relation:
-        class: %pimee_enrich.serializer.normalizer.rule_relation.class%
+        class: '%pimee_enrich.serializer.normalizer.rule_relation.class%'
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 100 }
 
     pimee_enrich.normalizer.version:
-        class: %pimee_enrich.normalizer.version.class%
+        class: '%pimee_enrich.normalizer.version.class%'
         arguments:
             - '@pim_enrich.normalizer.version'
             - '@pimee_workflow.repository.published_product'
@@ -27,7 +27,7 @@ services:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
 
     pimee_enrich.normalizer.product:
-        class: %pimee_enrich.normalizer.product.class%
+        class: '%pimee_enrich.normalizer.product.class%'
         arguments:
             - '@pim_enrich.normalizer.product'
             - '@pimee_workflow.manager.published_product'
@@ -40,7 +40,7 @@ services:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
 
     pimee_enrich.normalizer.structured.asset:
-        class: %pimee_enrich.normalizer.structured.asset.class%
+        class: '%pimee_enrich.normalizer.structured.asset.class%'
         arguments:
             - '@pim_serializer'
         tags:

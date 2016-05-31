@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_product_asset.attribute_type.asset_collection:
-        class: %pimee_product_asset.attribute_type.asset_collection.class%
+        class: '%pimee_product_asset.attribute_type.asset_collection.class%'
         arguments:
             - reference_data_options
             - pim_assets_collection

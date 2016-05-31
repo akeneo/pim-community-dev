@@ -3,7 +3,7 @@ parameters: ~
 services:
     # Form options for Exports ---------------------------------------------------------------------------------------
     pimee_catalog_rule.job_parameters.form_configuration_provider.simple_yaml_export:
-        class: %pim_import_export.job_parameters.form_configuration_provider.simple_yaml_export.class%
+        class: '%pim_import_export.job_parameters.form_configuration_provider.simple_yaml_export.class%'
         arguments:
             -
                 - 'yml_rule_export'
@@ -12,7 +12,7 @@ services:
 
     # Form options for Imports ---------------------------------------------------------------------------------------
     pimee_catalog_rule.job_parameters.form_configuration_provider.simple_yaml_import:
-        class: %pim_import_export.job_parameters.form_configuration_provider.simple_yaml_import.class%
+        class: '%pim_import_export.job_parameters.form_configuration_provider.simple_yaml_import.class%'
         arguments:
             -
                 - 'yml_rule_import'
@@ -20,7 +20,7 @@ services:
             - { name: pim_import_export.job_parameters.form_configuration_provider }
 
     pimee_catalog_rule.job_parameters.form_configuration_provider.simple_csv_import:
-        class: %pim_import_export.job_parameters.form_configuration_provider.simple_csv_import.class%
+        class: '%pim_import_export.job_parameters.form_configuration_provider.simple_csv_import.class%'
         arguments:
             -
                 - 'csv_product_import_with_rules'
@@ -28,7 +28,7 @@ services:
             - { name: pim_import_export.job_parameters.form_configuration_provider }
 
     pimee_catalog_rule.job_parameters.form_configuration_provider.simple_xlsx_import:
-        class: %pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_import.class%
+        class: '%pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_import.class%'
         arguments:
             -
                 - 'xlsx_product_import_with_rules'

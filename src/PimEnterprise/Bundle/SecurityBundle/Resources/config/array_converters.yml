@@ -7,26 +7,26 @@ parameters:
 
 services:
     pimee_security.array_converter.flat_to_standard.locale_accesses:
-        class: %pimee_security.array_converter.flat_to_standard.locale_accesses.class%
+        class: '%pimee_security.array_converter.flat_to_standard.locale_accesses.class%'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pimee_security.array_converter.flat_to_standard.asset_category_accesses:
-        class: %pimee_security.array_converter.flat_to_standard.asset_category_accesses.class%
+        class: '%pimee_security.array_converter.flat_to_standard.asset_category_accesses.class%'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pimee_security.array_converter.flat_to_standard.product_category_accesses:
-        class: %pimee_security.array_converter.flat_to_standard.product_category_accesses.class%
+        class: '%pimee_security.array_converter.flat_to_standard.product_category_accesses.class%'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pimee_security.array_converter.flat_to_standard.attribute_group_accesses:
-        class: %pimee_security.array_converter.flat_to_standard.attribute_group_accesses.class%
+        class: '%pimee_security.array_converter.flat_to_standard.attribute_group_accesses.class%'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pimee_security.array_converter.flat_to_standard.job_profile_accesses:
-        class: %pimee_security.array_converter.flat_to_standard.job_profile_accesses.class%
+        class: '%pimee_security.array_converter.flat_to_standard.job_profile_accesses.class%'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'

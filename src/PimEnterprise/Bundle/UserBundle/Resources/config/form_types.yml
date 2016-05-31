@@ -7,7 +7,7 @@ parameters:
 services:
     pim_user.form.type.user:
         scope: request
-        class: %pim_user.form.type.user.class%
+        class: '%pim_user.form.type.user.class%'
         arguments:
             - '@security.token_storage'
             - '@request'

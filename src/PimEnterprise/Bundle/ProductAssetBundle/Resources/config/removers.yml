@@ -4,31 +4,31 @@ parameters:
 
 services:
     pimee_product_asset.remover.variation:
-        class: %pim_catalog.remover.base.class%
+        class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
-            - %pimee_product_asset.model.variation.class%
+            - '%pimee_product_asset.model.variation.class%'
 
     pimee_product_asset.remover.channel_configuration:
-        class: %pim_catalog.remover.base.class%
+        class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
-            - %pimee_product_asset.model.channel_variations_configuration.class%
+            - '%pimee_product_asset.model.channel_variations_configuration.class%'
 
     pimee_product_asset.remover.asset:
-        class:  %pimee_product_asset.remover.asset.class%
+        class:  '%pimee_product_asset.remover.asset.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
-            - %pimee_product_asset.model.asset.class%
+            - '%pimee_product_asset.model.asset.class%'
 
     pimee_product_asset.remover.category_asset:
-        class:  %pimee_product_asset.remover.category_asset.class%
+        class:  '%pimee_product_asset.remover.category_asset.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
