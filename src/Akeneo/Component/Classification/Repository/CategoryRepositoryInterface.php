@@ -51,11 +51,11 @@ interface CategoryRepositoryInterface extends
     /**
      * Get a collection of categories based on the array of code provided
      *
-     * @param array $categoriesIds
+     * @param array $categoriesCodes
      *
      * @return Collection of categories
      */
-    public function getCategoriesByCodes(array $categoriesIds = []);
+    public function getCategoriesByCodes(array $categoriesCodes = []);
 
     /**
      * Get a tree filled with children and their parents
