@@ -21,7 +21,7 @@ class JobInstanceConverterSpec extends ObjectBehavior
 
     function it_is_a_standard_array_convert()
     {
-        $this->shouldImplement('Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface');
+        $this->shouldImplement('Pim\Component\Connector\ArrayConverter\ArrayConverterInterface');
     }
 
     function it_converts($checker)

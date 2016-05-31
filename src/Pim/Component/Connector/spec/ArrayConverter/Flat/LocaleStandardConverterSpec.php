@@ -16,7 +16,7 @@ class LocaleStandardConverterSpec extends ObjectBehavior
     function it_is_a_standard_array_converter()
     {
         $this->shouldImplement(
-            'Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface'
+            'Pim\Component\Connector\ArrayConverter\ArrayConverterInterface'
         );
     }
 

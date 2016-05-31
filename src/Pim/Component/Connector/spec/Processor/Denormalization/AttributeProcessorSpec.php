@@ -7,14 +7,14 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\AttributeFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AttributeProcessorSpec extends ObjectBehavior
 {
     function let(
-        StandardArrayConverterInterface $arrayConverter,
+        ArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         AttributeFactory $attributeFactory,
         ObjectUpdaterInterface $updater,

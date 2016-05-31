@@ -3,8 +3,8 @@
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
@@ -14,7 +14,7 @@ use Pim\Component\Connector\Exception\ArrayConversionException;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupStandardConverter implements StandardArrayConverterInterface
+class GroupStandardConverter implements ArrayConverterInterface
 {
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;

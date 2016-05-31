@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AttributeOptionProcessorSpec extends ObjectBehavior
 {
     function let(
-        StandardArrayConverterInterface $arrayConverter,
+        ArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $optionRepository,
         ObjectUpdaterInterface $optionUpdater,
         ValidatorInterface $optionValidator,

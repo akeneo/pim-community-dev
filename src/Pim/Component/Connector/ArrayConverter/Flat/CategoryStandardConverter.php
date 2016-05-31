@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**
  * Category Flat Converter
@@ -12,7 +12,7 @@ use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryStandardConverter implements StandardArrayConverterInterface
+class CategoryStandardConverter implements ArrayConverterInterface
 {
     /** @var FieldsRequirementChecker */
     protected $fieldChecker;

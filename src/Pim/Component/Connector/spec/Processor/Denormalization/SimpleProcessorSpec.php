@@ -9,7 +9,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -23,7 +23,7 @@ class SimpleProcessorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $repository,
-        StandardArrayConverterInterface $converter,
+        ArrayConverterInterface $converter,
         SimpleFactory $factory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,

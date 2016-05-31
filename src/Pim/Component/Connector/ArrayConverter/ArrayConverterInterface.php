@@ -5,13 +5,13 @@ namespace Pim\Component\Connector\ArrayConverter;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
- * Standard converter interface, convert a format to the standard one
+ * Array converter interface, convert an array format to another one
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface StandardArrayConverterInterface
+interface ArrayConverterInterface
 {
     /**
      * @param array $item    data to convert
