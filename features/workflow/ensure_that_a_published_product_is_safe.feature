@@ -97,7 +97,6 @@ Feature: Ensure that a published product is safe
     And I confirm the error message
     When I save the attribute
     And I should see the flash message "Attribute successfully updated"
-    And I wait for the options to load
     Then the Options section should contain 4 options
 
   Scenario: Successfully remove an option not linked to a published product
@@ -107,7 +106,6 @@ Feature: Ensure that a published product is safe
     And I confirm the deletion
     When I save the attribute
     And I should see the flash message "Attribute successfully updated"
-    And I wait for the options to load
     Then the Options section should contain 3 options
 
   Scenario: Fail to remove a multi-option linked to a published product
@@ -118,7 +116,6 @@ Feature: Ensure that a published product is safe
     And I confirm the error message
     When I save the attribute
     And I should see the flash message "Attribute successfully updated"
-    And I wait for the options to load
     Then the Options section should contain 5 options
 
   @jira https://akeneo.atlassian.net/browse/PIM-4600
@@ -129,5 +126,4 @@ Feature: Ensure that a published product is safe
     And I confirm the deletion
     When I save the attribute
     And I should see the flash message "Attribute successfully updated"
-    And I wait for the options to load
     Then the Options section should contain 4 options

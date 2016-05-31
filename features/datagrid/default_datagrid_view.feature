@@ -15,7 +15,7 @@ Feature: Datagrid views
     And I am on the published page
 
   Scenario: Successfully choose my default published view
-    Given I filter by "Family" with value "Sneakers"
+    Given I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
       | label | Sneakers only |
     Then I should be on the published index page
