@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
@@ -13,6 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -43,19 +45,24 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /** @var AttributeRequirementFactory */
     protected $attrRequiFactory;
 
+    /** @var AttributeRequirementRepositoryInterface */
+    protected $requirementRepo;
+
     /**
-     * @param IdentifiableObjectRepositoryInterface $familyRepository
-     * @param FamilyFactory                         $familyFactory
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param ChannelRepositoryInterface            $channelRepository
-     * @param AttributeRequirementFactory           $attrRequiFactory
+     * @param IdentifiableObjectRepositoryInterface  $familyRepository
+     * @param FamilyFactory                          $familyFactory
+     * @param AttributeRepositoryInterface           $attributeRepository
+     * @param ChannelRepositoryInterface             $channelRepository
+     * @param AttributeRequirementFactory            $attrRequiFactory
+     * @param AttributeRequirementRepositoryInterface $requirementRepo
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
         FamilyFactory $familyFactory,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
-        AttributeRequirementFactory $attrRequiFactory
+        AttributeRequirementFactory $attrRequiFactory,
+        AttributeRequirementRepositoryInterface $requirementRepo = null
     ) {
         $this->accessor            = PropertyAccess::createPropertyAccessor();
         $this->familyRepository    = $familyRepository;
@@ -63,6 +70,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
         $this->attributeRepository = $attributeRepository;
         $this->channelRepository   = $channelRepository;
         $this->attrRequiFactory    = $attrRequiFactory;
+        $this->requirementRepo     = $requirementRepo;
     }
 
     /**
@@ -130,17 +138,37 @@ class FamilyUpdater implements ObjectUpdaterInterface
      */
     protected function setAttributeRequirements(FamilyInterface $family, array $data)
     {
+        $oldRequirements = $family->getAttributeRequirements();
         $requirements = $this->getExistingIdentifierRequirements($family);
         foreach ($data as $channelCode => $attributeCodes) {
             $requirements = array_merge(
                 $requirements,
-                $this->createAttributeRequirementsByChannel($attributeCodes, $channelCode)
+                $this->createAttributeRequirementsByChannel($family, $attributeCodes, $channelCode)
             );
         }
-        $requirements = $this->addMissingIdentifierRequirements($requirements);
-
+        $requirements = $this->addMissingIdentifierRequirements($family, $requirements);
+        $this->removeRequirements($family, $requirements, $oldRequirements);
         $family->setAttributeRequirements($requirements);
     }
+
+    /**
+     * @param FamilyInterface $family
+     * @param array           $requirements
+     * @param array           $oldRequirements
+     */
+    protected function removeRequirements(
+        FamilyInterface $family,
+        array $requirements,
+        array $oldRequirements
+    ) {
+        $checkRequirements = new ArrayCollection($requirements);
+        foreach ($oldRequirements as $requirement) {
+            if (!$checkRequirements->contains($requirement)) {
+                $family->removeAttributeRequirement($requirement);
+            }
+        }
+    }
+
 
     /**
      * @param FamilyInterface $family
@@ -163,15 +191,19 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /**
      * Creates attribute requirements for the given channel but skip identifiers
      *
-     * @param array  $attributeCodes
-     * @param string $channelCode
+     * @param FamilyInterface $family
+     * @param array           $attributeCodes
+     * @param string          $channelCode
      *
      * @throws \InvalidArgumentException
      *
      * @return AttributeRequirementInterface[]
      */
-    protected function createAttributeRequirementsByChannel(array $attributeCodes, $channelCode)
-    {
+    protected function createAttributeRequirementsByChannel(
+        FamilyInterface $family,
+        array $attributeCodes,
+        $channelCode
+    ) {
         $requirements  = [];
         foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
@@ -181,19 +213,19 @@ class FamilyUpdater implements ObjectUpdaterInterface
                 );
             }
             if (AttributeTypes::IDENTIFIER !== $attribute->getAttributeType()) {
-                $requirements[] = $this->createAttributeRequirement($attribute, $channelCode);
+                $requirements[] = $this->createAttributeRequirement($family, $attribute, $channelCode);
             }
         }
-
         return $requirements;
     }
 
     /**
+     * @param FamilyInterface                 $family
      * @param AttributeRequirementInterface[] $requirements
      *
      * @return AttributeRequirementInterface[]
      */
-    protected function addMissingIdentifierRequirements(array $requirements)
+    protected function addMissingIdentifierRequirements(FamilyInterface $family, array $requirements)
     {
         $channelCodes = $this->channelRepository->getChannelCodes();
         $existingChannelCode = [];
@@ -205,13 +237,14 @@ class FamilyUpdater implements ObjectUpdaterInterface
         $missingChannelCodes = array_diff($channelCodes, $existingChannelCode);
         $identifier = $this->attributeRepository->getIdentifier();
         foreach ($missingChannelCodes as $channelCode) {
-            $requirements[] = $this->createAttributeRequirement($identifier, $channelCode);
+            $requirements[] = $this->createAttributeRequirement($family, $identifier, $channelCode);
         }
 
         return $requirements;
     }
 
     /**
+     * @param FamilyInterface    $family
      * @param AttributeInterface $attribute
      * @param string             $channelCode
      *
@@ -219,7 +252,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      *
      * @return AttributeRequirementInterface
      */
-    protected function createAttributeRequirement(AttributeInterface $attribute, $channelCode)
+    protected function createAttributeRequirement(FamilyInterface $family, AttributeInterface $attribute, $channelCode)
     {
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
@@ -228,7 +261,21 @@ class FamilyUpdater implements ObjectUpdaterInterface
             );
         }
 
-        return $this->attrRequiFactory->createAttributeRequirement($attribute, $channel, true);
+        $requirement = null;
+        if (null !== $this->requirementRepo) {
+            $requirement = $this->requirementRepo->findOneBy(
+                [
+                    'attribute' => $attribute->getId(),
+                    'channel' => $channel->getId(),
+                    'family' => $family->getId()
+                ]
+            );
+        }
+        if (null === $requirement) {
+            $requirement = $this->attrRequiFactory->createAttributeRequirement($attribute, $channel, true);
+        }
+
+        return $requirement;
     }
 
     /**
