@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Workflow\Connector\ArrayConverter\Flat;
+namespace spec\PimEnterprise\Component\Workflow\Connector\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 
-class ProductDraftStandardConverterSpec extends ObjectBehavior
+class ProductDraftSpec extends ObjectBehavior
 {
     function let(
-        StandardArrayConverterInterface $productConverter,
+        ArrayConverterInterface $productConverter,
         AttributeColumnInfoExtractor $attributeExtractor
     ) {
         $this->beConstructedWith($productConverter, $attributeExtractor);

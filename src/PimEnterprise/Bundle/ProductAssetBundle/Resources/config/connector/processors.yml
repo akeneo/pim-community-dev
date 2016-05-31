@@ -10,7 +10,7 @@ services:
     pimee_product_asset.processor.denormalization.tag.flat:
         class: %pimee_product_asset.processor.denormalization.tag.class%
         arguments:
-            - '@pimee_product_asset.array_converter.flat.tag'
+            - '@pimee_product_asset.array_converter.flat_to_standard.tag'
             - '@pimee_product_asset.repository.tag'
             - '@pimee_product_asset.updater.tag'
             - '@pimee_product_asset.factory.tag'
@@ -19,7 +19,7 @@ services:
     pimee_product_asset.processor.denormalization.asset.flat:
         class: %pimee_product_asset.processor.denormalization.asset.class%
         arguments:
-            - '@pimee_product_asset.array_converter.flat.asset'
+            - '@pimee_product_asset.array_converter.flat_to_standard.asset'
             - '@pimee_product_asset.repository.asset'
             - '@pimee_product_asset.updater.asset'
             - '@pimee_product_asset.factory.asset'
@@ -28,7 +28,7 @@ services:
     pimee_product_asset.processor.denormalization.channel_configuration.flat:
         class: %pimee_product_asset.processor.denormalization.channel_configuration.class%
         arguments:
-            - '@pimee_product_asset.array_converter.flat.channel_configuration'
+            - '@pimee_product_asset.array_converter.flat_to_standard.channel_configuration'
             - '@pimee_product_asset.repository.channel_configuration'
             - '@pim_catalog.repository.channel'
             - '@pimee_product_asset.factory.channel_configuration'
@@ -63,7 +63,7 @@ services:
         class: %pim_connector.processor.denormalization.simple.class%
         arguments:
             - '@pimee_product_asset.repository.category'
-            - '@pim_connector.array_converter.flat.category'
+            - '@pim_connector.array_converter.flat_to_standard.category'
             - '@pimee_product_asset.factory.category'
             - '@pimee_product_asset.updater.category'
             - '@pim_catalog.validator.product'

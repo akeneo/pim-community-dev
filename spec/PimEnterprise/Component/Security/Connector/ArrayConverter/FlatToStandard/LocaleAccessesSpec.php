@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Security\Connector\ArrayConverter\Flat;
+namespace spec\PimEnterprise\Component\Security\Connector\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
-class LocaleAccessesStandardConverterSpec extends ObjectBehavior
+class LocaleAccessesSpec extends ObjectBehavior
 {
     function let(FieldsRequirementChecker $fieldChecker)
     {
@@ -15,7 +15,7 @@ class LocaleAccessesStandardConverterSpec extends ObjectBehavior
     function it_is_a_standard_array_converter()
     {
         $this->shouldImplement(
-            'Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface'
+            'Pim\Component\Connector\ArrayConverter\ArrayConverterInterface'
         );
     }
 

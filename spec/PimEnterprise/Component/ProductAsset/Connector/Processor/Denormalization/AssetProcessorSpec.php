@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Prophecy\Argument;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AssetProcessorSpec extends ObjectBehavior
 {
     function let(
-        StandardArrayConverterInterface $assetConverter,
+        ArrayConverterInterface $assetConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $assetUpdater,
         AssetFactory $assetFactory,

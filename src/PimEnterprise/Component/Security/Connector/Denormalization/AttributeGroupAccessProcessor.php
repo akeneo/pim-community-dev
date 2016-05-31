@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\Security\Connector\Denormalization;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeGroupAccessProcessor extends AbstractProcessor
 {
-    /** @var StandardArrayConverterInterface */
+    /** @var ArrayConverterInterface */
     protected $accessConverter;
 
     /** @var SimpleFactoryInterface */
@@ -40,14 +40,14 @@ class AttributeGroupAccessProcessor extends AbstractProcessor
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param StandardArrayConverterInterface       $accessConverter
+     * @param ArrayConverterInterface               $accessConverter
      * @param SimpleFactoryInterface                $accessFactory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        StandardArrayConverterInterface $accessConverter,
+        ArrayConverterInterface $accessConverter,
         SimpleFactoryInterface $accessFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator

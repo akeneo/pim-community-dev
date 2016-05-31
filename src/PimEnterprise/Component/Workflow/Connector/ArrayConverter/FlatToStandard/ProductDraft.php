@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Workflow\Connector\ArrayConverter\Flat;
+namespace PimEnterprise\Component\Workflow\Connector\ArrayConverter\FlatToStandard;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
@@ -20,20 +20,20 @@ use Pim\Component\Connector\Exception\ArrayConversionException;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ProductDraftStandardConverter implements StandardArrayConverterInterface
+class ProductDraft implements ArrayConverterInterface
 {
-    /** @var StandardArrayConverterInterface */
+    /** @var ArrayConverterInterface */
     protected $productConverter;
 
     /** @var AttributeColumnInfoExtractor */
     protected $attributeExtractor;
 
     /**
-     * @param StandardArrayConverterInterface $productConverter
+     * @param ArrayConverterInterface $productConverter
      * @param AttributeColumnInfoExtractor    $attributeExtractor
      */
     public function __construct(
-        StandardArrayConverterInterface $productConverter,
+        ArrayConverterInterface $productConverter,
         AttributeColumnInfoExtractor $attributeExtractor
     ) {
         $this->productConverter = $productConverter;

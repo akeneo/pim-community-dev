@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalizati
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AssetProcessor extends AbstractProcessor
 {
-    /** @var StandardArrayConverterInterface */
+    /** @var ArrayConverterInterface */
     protected $assetConverter;
 
     /** @var ObjectUpdaterInterface */
@@ -44,14 +44,14 @@ class AssetProcessor extends AbstractProcessor
     protected $assetFactory;
 
     /**
-     * @param StandardArrayConverterInterface       $assetConverter
+     * @param ArrayConverterInterface               $assetConverter
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param ObjectUpdaterInterface                $assetUpdater
      * @param AssetFactory                          $assetFactory
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
-        StandardArrayConverterInterface $assetConverter,
+        ArrayConverterInterface $assetConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $assetUpdater,
         AssetFactory $assetFactory,

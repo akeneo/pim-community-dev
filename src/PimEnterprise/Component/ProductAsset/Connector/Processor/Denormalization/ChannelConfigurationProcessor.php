@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalizati
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\ProductAsset\Factory\ChannelConfigurationFactory;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
@@ -30,7 +30,7 @@ class ChannelConfigurationProcessor extends AbstractProcessor
     /** @var IdentifiableObjectRepositoryInterface */
     protected $channelRepository;
 
-    /** @var StandardArrayConverterInterface */
+    /** @var ArrayConverterInterface */
     protected $configurationConverter;
 
     /** @var ValidatorInterface */
@@ -40,14 +40,14 @@ class ChannelConfigurationProcessor extends AbstractProcessor
     protected $configurationFactory;
 
     /**
-     * @param StandardArrayConverterInterface       $configurationConverter
+     * @param ArrayConverterInterface               $configurationConverter
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param ChannelConfigurationFactory           $configurationFactory
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
-        StandardArrayConverterInterface $configurationConverter,
+        ArrayConverterInterface $configurationConverter,
         IdentifiableObjectRepositoryInterface $repository,
         IdentifiableObjectRepositoryInterface $channelRepository,
         ChannelConfigurationFactory $configurationFactory,

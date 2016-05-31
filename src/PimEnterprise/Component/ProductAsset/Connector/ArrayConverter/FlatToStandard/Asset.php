@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat;
+namespace PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard;
 
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
@@ -19,7 +19,7 @@ use Pim\Component\Connector\Exception\ArrayConversionException;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class AssetStandardConverter implements StandardArrayConverterInterface
+class Asset implements ArrayConverterInterface
 {
     /**
      * {@inheritdoc}

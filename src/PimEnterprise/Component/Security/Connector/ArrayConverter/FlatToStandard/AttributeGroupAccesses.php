@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Security\Connector\ArrayConverter\Flat;
+namespace PimEnterprise\Component\Security\Connector\ArrayConverter\FlatToStandard;
 
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 
 /**
  * Attribute Group Accesses Flat to Standard format converter
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class AttributeGroupAccessesStandardConverter implements StandardArrayConverterInterface
+class AttributeGroupAccesses implements ArrayConverterInterface
 {
     /** @var FieldsRequirementChecker */
     protected $fieldChecker;

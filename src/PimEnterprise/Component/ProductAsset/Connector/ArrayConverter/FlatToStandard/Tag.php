@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat;
+namespace PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard;
 
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
- * Channel Variations Configuration Flat Converter
+ * Product Asset Tag Converter
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class ChannelConfigurationStandardConverter implements StandardArrayConverterInterface
+class Tag implements ArrayConverterInterface
 {
     /**
      * {@inheritdoc}
@@ -28,29 +28,29 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
      *
      * Before:
      * [
-     *      'code'          => 'mycode',
-     *      'configuration' => [],
+     *      'tags' => 'dog,flowers,cities,animal,sunset',
      * ]
      *
      * After:
      * [
-     *      'channel'       => 'myChannelCode',
-     *      'configuration' => [
-     *          'ecommerce' => ['scale' => ['ratio' => 0.5]],
-     *          'tablet'    => ['scale' => ['ratio' => 0.25]],
-     *          'mobile'    => [
-     *              'scale'      => ['width'      => 200],
-     *              'colorspace' => ['colorspace' => 'gray'],
-     *          ],
-     *          'print'     => ['resize' => ['width' => 400, 'height' => 200]],
+     *      'tags'        => [
+     *          'dog',
+     *          'flowers',
+     *          'cities',
+     *          'animal',
+     *          'sunset',
      *      ]
+     * ]
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validateRequiredFields($item, ['code', 'configuration']);
-        $convertedItem = [];
+        $this->validate($item);
+
+        $convertedItem = ['tags' => []];
         foreach ($item as $field => $data) {
-            $convertedItem = $this->convertField($convertedItem, $field, $data);
+            if ('' !== $data) {
+                $convertedItem = $this->convertField($convertedItem, $field, $data);
+            }
         }
 
         return $convertedItem;
@@ -65,15 +65,19 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
      */
     protected function convertField(array $convertedItem, $field, $data)
     {
-        switch ($field) {
-            case 'code':
-                $convertedItem['channel'] = (string) $data;
-                break;
-            case 'configuration':
-                $convertedItem['configuration'] = $data;
+        if ('tags' === $field) {
+            $convertedItem['tags'] = array_unique(explode(',', $data));
         }
 
         return $convertedItem;
+    }
+
+    /**
+     * @param array $item
+     */
+    protected function validate(array $item)
+    {
+        $this->validateRequiredFields($item, ['tags']);
     }
 
     /**
@@ -89,16 +93,6 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
                 throw new ArrayConversionException(
                     sprintf(
                         'Field "%s" is expected, provided fields are "%s"',
-                        $requiredField,
-                        implode(', ', array_keys($item))
-                    )
-                );
-            }
-
-            if ('' === $item[$requiredField]) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" must be filled',
                         $requiredField,
                         implode(', ', array_keys($item))
                     )

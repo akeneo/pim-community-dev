@@ -17,7 +17,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductDraftProcessor extends AbstractProcessor
 {
-    /** @var StandardArrayConverterInterface */
+    /** @var ArrayConverterInterface */
     protected $arrayConverter;
 
     /** @var ObjectUpdaterInterface */
@@ -60,7 +60,7 @@ class ProductDraftProcessor extends AbstractProcessor
     protected $localizedConverter;
 
     /**
-     * @param StandardArrayConverterInterface       $arrayConverter      array converter
+     * @param ArrayConverterInterface               $arrayConverter      array converter
      * @param IdentifiableObjectRepositoryInterface $repository          product repository
      * @param ObjectUpdaterInterface                $updater             product updater
      * @param ValidatorInterface                    $validator           product validator
@@ -70,7 +70,7 @@ class ProductDraftProcessor extends AbstractProcessor
      * @param AttributeConverterInterface           $localizedConverter  attributes localized converter
      */
     public function __construct(
-        StandardArrayConverterInterface $arrayConverter,
+        ArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,

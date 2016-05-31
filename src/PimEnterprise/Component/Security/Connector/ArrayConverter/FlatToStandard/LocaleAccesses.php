@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Security\Connector\ArrayConverter\Flat;
+namespace PimEnterprise\Component\Security\Connector\ArrayConverter\FlatToStandard;
 
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 
 /**
- * Job Profile Accesses Flat to Standard format converter
+ * Locale Accesses Flat to Standard format converter
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class JobProfileAccessesStandardConverter implements StandardArrayConverterInterface
+class LocaleAccesses implements ArrayConverterInterface
 {
     /** @var FieldsRequirementChecker */
     protected $fieldChecker;
@@ -39,38 +39,38 @@ class JobProfileAccessesStandardConverter implements StandardArrayConverterInter
      *
      * Before:
      * [
-     *      'job_profile'         => 'product_import',
-     *      'execute_job_profile' => 'IT support,Manager',
-     *      'edit_job_profile'    => 'IT support',
+     *      'locale'        => 'en_US',
+     *      'view_products' => 'IT support,Manager',
+     *      'edit_products' => 'IT support',
      * ]
      *
      * After:
      * [
      *     [
-     *         'job_profile'         => 'product_import',
-     *         'user_group'          => 'IT support',
-     *         'execute_job_profile' => true,
-     *         'edit_job_profile'    => true,
+     *         'locale'        => 'en_US',
+     *         'user_group'     => 'IT support',
+     *         'view_products' => true,
+     *         'edit_products' => true,
      *     ], [
-     *         'job_profile'         => 'product_import',
-     *         'user_group'          => 'Manager',
-     *         'execute_job_profile' => true,
-     *         'edit_job_profile'    => false,
+     *         'locale'        => 'en_US',
+     *         'user_group'     => 'Manager',
+     *         'view_products' => true,
+     *         'edit_products' => false,
      *     ]
      * ]
      */
     public function convert(array $item, array $options = [])
     {
-        $this->fieldChecker->checkFieldsPresence($item, ['job_profile']);
-        $this->fieldChecker->checkFieldsFilling($item, ['job_profile']);
+        $this->fieldChecker->checkFieldsPresence($item, ['locale']);
+        $this->fieldChecker->checkFieldsFilling($item, ['locale']);
 
         $convertedItems = [];
         foreach ($this->getConcernedGroupNames($item) as $groupName) {
             $convertedItems[] = [
-                'job_profile'         => $item['job_profile'],
-                'user_group'          => $groupName,
-                'execute_job_profile' => in_array($groupName, $this->getGroupNames($item, 'execute_job_profile')),
-                'edit_job_profile'    => in_array($groupName, $this->getGroupNames($item, 'edit_job_profile')),
+                'locale'        => $item['locale'],
+                'user_group'    => $groupName,
+                'view_products' => in_array($groupName, $this->getGroupNames($item, 'view_products')),
+                'edit_products' => in_array($groupName, $this->getGroupNames($item, 'edit_products')),
             ];
         }
 
@@ -78,7 +78,7 @@ class JobProfileAccessesStandardConverter implements StandardArrayConverterInter
     }
 
     /**
-     * Return all the group concerned by the job profile access.
+     * Return all the group concerned by the locale access.
      *
      * @param array $item
      *
@@ -88,8 +88,8 @@ class JobProfileAccessesStandardConverter implements StandardArrayConverterInter
     {
         return array_unique(
             array_merge(
-                $this->getGroupNames($item, 'execute_job_profile'),
-                $this->getGroupNames($item, 'edit_job_profile')
+                $this->getGroupNames($item, 'view_products'),
+                $this->getGroupNames($item, 'edit_products')
             )
         );
     }

@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use PimEnterprise\Component\ProductAsset\Factory\ChannelConfigurationFactory;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
 use Prophecy\Argument;
@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ChannelConfigurationProcessorSpec extends ObjectBehavior
 {
     function let(
-        StandardArrayConverterInterface $configurationConverter,
+        ArrayConverterInterface $configurationConverter,
         IdentifiableObjectRepositoryInterface $configurationRepository,
         IdentifiableObjectRepositoryInterface $channelRepository,
         ChannelConfigurationFactory $configurationFactory,
