@@ -5,7 +5,6 @@ Feature: Filter on completeness
 
   Scenario: Successfully filter on completeness
     Given a "footwear" catalog configuration
-    And I add the "fr_FR" locale to the "mobile" channel
     And the following products:
       | sku     | family | name-en_US    | price             | size | color |
       | BOOTBXS | boots  | Boot 42 Black | 10.00 USD, 10 EUR | 42   | black |
@@ -15,11 +14,10 @@ Feature: Filter on completeness
       | BOOTRXS | boots  | Boot 42 Red   |                   |      |       |
     And I launched the completeness calculator
     Then I should get the following results for the given filters:
-      | filter                                                                                                                                                                                       | result                                     |
-      | [{"field":"completeness", "operator":"=",  "value": 100, "locale": "en_US", "scope": "mobile"}]                                                                                              | ["BOOTBXS"]                                |
-      | [{"field":"completeness", "operator":"<",  "value": 25, "locale": "en_US", "scope": "mobile"}]                                                                                               | ["BOOTBL"]                                 |
-      | [{"field":"completeness", "operator":"<=", "value": 80, "locale": "en_US", "scope": "mobile"}]                                                                                               | ["BOOTWXS", "BOOTBS", "BOOTBL", "BOOTRXS"] |
-      | [{"field":"completeness", "operator":">=", "value": 50, "locale": "en_US", "scope": "mobile"}]                                                                                               | ["BOOTBS", "BOOTWXS", "BOOTBXS"]           |
-      | [{"field":"completeness", "operator":">",  "value": 80, "locale": "en_US", "scope": "mobile"}]                                                                                               | ["BOOTBXS"]                                |
-      | [{"field":"completeness", "operator":"!=", "value": 100, "locale": "en_US", "scope": "mobile"}]                                                                                              | ["BOOTWXS", "BOOTBS", "BOOTBL", "BOOTRXS"] |
-      | [{"field":"completeness", "operator":"=", "value": 100, "locale": "en_US", "scope": "mobile"}, {"field":"completeness", "operator":"=", "value": 100, "locale": "fr_FR", "scope": "mobile"}] | []                                         |
+      | filter                                                                                          | result                                     |
+      | [{"field":"completeness", "operator":"=",  "value": 100, "locale": "en_US", "scope": "mobile"}] | ["BOOTBXS"]                                |
+      | [{"field":"completeness", "operator":"<",  "value": 25, "locale": "en_US", "scope": "mobile"}]  | ["BOOTBL"]                                 |
+      | [{"field":"completeness", "operator":"<=", "value": 80, "locale": "en_US", "scope": "mobile"}]  | ["BOOTWXS", "BOOTBS", "BOOTBL", "BOOTRXS"] |
+      | [{"field":"completeness", "operator":">=", "value": 50, "locale": "en_US", "scope": "mobile"}]  | ["BOOTBS", "BOOTWXS", "BOOTBXS"]           |
+      | [{"field":"completeness", "operator":">",  "value": 80, "locale": "en_US", "scope": "mobile"}]  | ["BOOTBXS"]                                |
+      | [{"field":"completeness", "operator":"!=", "value": 100, "locale": "en_US", "scope": "mobile"}] | ["BOOTWXS", "BOOTBS", "BOOTBL", "BOOTRXS"] |
