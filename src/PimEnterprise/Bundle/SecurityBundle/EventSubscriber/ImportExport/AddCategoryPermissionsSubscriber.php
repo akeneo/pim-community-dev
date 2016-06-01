@@ -56,7 +56,7 @@ class AddCategoryPermissionsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::PRE_SAVE_ALL => 'storeNewCategoryCodes',
+            StorageEvents::PRE_SAVE_ALL  => 'storeNewCategoryCodes',
             StorageEvents::POST_SAVE_ALL => 'copyParentPermissions'
         ];
     }

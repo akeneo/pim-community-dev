@@ -145,3 +145,12 @@
 	`PimEnterprise\Component\Workflow\Connector\Tasklet\ApproveTasklet`
 	`PimEnterprise\Component\Workflow\Connector\Tasklet\RefuseTasklet` we can access to the JobParameters from the StepExecution
 - Change constructor of `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType`, add `Akeneo\Component\Batch\Job\JobParametersFactory` argument 
+- Move and rename `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat\AssetStandardConverter` to `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\Asset`
+- Move and rename `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat\TagStandardConverter` to `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\Tag`
+- Move and rename `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat\ChannelConfigurationStandardConverter` to `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\ChannelConfiguration`
+- Move and rename `PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\LocaleAccessesStandardConverter` to `PimEnterprise\Component\Security\Connector\ArrayConverter\FlatToStandard\LocaleAccesses`
+- Move and rename `PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\AssetCategoryAccessesStandardConverter` to `PimEnterprise\Component\Security\Connector\ArrayConverter\FlatToStandard\AssetCategoryAccesses`
+- Move and rename `PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\ProductCategoryAccessesStandardConverter` to `PimEnterprise\Component\Security\Connector\ArrayConverter\FlatToStandard\ProductCategoryAccesses`
+- Move and rename `PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\AttributeGroupAccessesStandardConverter` to `PimEnterprise\Component\Security\Connector\ArrayConverter\FlatToStandard\AttributeGroupAccesses`
+- Move and rename `PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\JobProfileAccessesStandardConverter` to `PimEnterprise\Component\Security\Connector\ArrayConverter\FlatToStandard\JobProfileAccesses`
+- Move and rename `PimEnterprise\Component\Workflow\Connector\ArrayConverter\Flat\ProductDraftStandardConverter` to `PimEnterprise\Component\Workflow\Connector\ArrayConverter\FlatToStandard\ProductDraft`

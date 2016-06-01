@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use PimEnterprise\Component\ProductAsset\Factory\TagFactory;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use Prophecy\Argument;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class TagProcessorSpec extends ObjectBehavior
 {
     function let(
-        StandardArrayConverterInterface $tagConverter,
+        ArrayConverterInterface $tagConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $tagUpdater,
         TagFactory $tagFactory,

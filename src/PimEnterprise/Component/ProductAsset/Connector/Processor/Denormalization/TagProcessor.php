@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalizati
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\ProductAsset\Factory\TagFactory;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class TagProcessor extends AbstractProcessor
 {
-    /** @var StandardArrayConverterInterface */
+    /** @var ArrayConverterInterface */
     protected $tagConverter;
 
     /** @var ObjectUpdaterInterface */
@@ -43,14 +43,14 @@ class TagProcessor extends AbstractProcessor
     protected $tagFactory;
 
     /**
-     * @param StandardArrayConverterInterface       $tagConverter
+     * @param ArrayConverterInterface               $tagConverter
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param ObjectUpdaterInterface                $tagUpdater
      * @param TagFactory                            $tagFactory
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
-        StandardArrayConverterInterface $tagConverter,
+        ArrayConverterInterface $tagConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $tagUpdater,
         TagFactory $tagFactory,

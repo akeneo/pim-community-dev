@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Security\Connector\ArrayConverter\Flat;
+namespace PimEnterprise\Component\Security\Connector\ArrayConverter\FlatToStandard;
 
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**
- * Job Profile Accesses Flat to Standard format converter
+ * Attribute Group Accesses Flat to Standard format converter
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class JobProfileAccessesStandardConverter implements StandardArrayConverterInterface
+class AttributeGroupAccesses implements ArrayConverterInterface
 {
     /** @var FieldsRequirementChecker */
     protected $fieldChecker;
@@ -39,38 +39,38 @@ class JobProfileAccessesStandardConverter implements StandardArrayConverterInter
      *
      * Before:
      * [
-     *      'job_profile'         => 'product_import',
-     *      'execute_job_profile' => 'IT support,Manager',
-     *      'edit_job_profile'    => 'IT support',
+     *      'attribute_group' => 'other',
+     *      'view_attributes' => 'IT support,Manager',
+     *      'edit_attributes' => 'IT support',
      * ]
      *
      * After:
      * [
      *     [
-     *         'job_profile'         => 'product_import',
-     *         'user_group'          => 'IT support',
-     *         'execute_job_profile' => true,
-     *         'edit_job_profile'    => true,
+     *         'attribute_group' => 'other',
+     *         'user_group'      => 'IT support',
+     *         'view_attributes' => true,
+     *         'edit_attributes' => true,
      *     ], [
-     *         'job_profile'         => 'product_import',
-     *         'user_group'          => 'Manager',
-     *         'execute_job_profile' => true,
-     *         'edit_job_profile'    => false,
+     *         'attribute_group' => 'other',
+     *         'user_group'      => 'Manager',
+     *         'view_attributes' => true,
+     *         'edit_attributes' => false,
      *     ]
      * ]
      */
     public function convert(array $item, array $options = [])
     {
-        $this->fieldChecker->checkFieldsPresence($item, ['job_profile']);
-        $this->fieldChecker->checkFieldsFilling($item, ['job_profile']);
+        $this->fieldChecker->checkFieldsPresence($item, ['attribute_group']);
+        $this->fieldChecker->checkFieldsFilling($item, ['attribute_group']);
 
         $convertedItems = [];
         foreach ($this->getConcernedGroupNames($item) as $groupName) {
             $convertedItems[] = [
-                'job_profile'         => $item['job_profile'],
-                'user_group'          => $groupName,
-                'execute_job_profile' => in_array($groupName, $this->getGroupNames($item, 'execute_job_profile')),
-                'edit_job_profile'    => in_array($groupName, $this->getGroupNames($item, 'edit_job_profile')),
+                'attribute_group' => $item['attribute_group'],
+                'user_group'      => $groupName,
+                'view_attributes' => in_array($groupName, $this->getGroupNames($item, 'view_attributes')),
+                'edit_attributes' => in_array($groupName, $this->getGroupNames($item, 'edit_attributes')),
             ];
         }
 
@@ -78,7 +78,7 @@ class JobProfileAccessesStandardConverter implements StandardArrayConverterInter
     }
 
     /**
-     * Return all the group concerned by the job profile access.
+     * Return all the group concerned by the attribute group access category access.
      *
      * @param array $item
      *
@@ -88,8 +88,8 @@ class JobProfileAccessesStandardConverter implements StandardArrayConverterInter
     {
         return array_unique(
             array_merge(
-                $this->getGroupNames($item, 'execute_job_profile'),
-                $this->getGroupNames($item, 'edit_job_profile')
+                $this->getGroupNames($item, 'view_attributes'),
+                $this->getGroupNames($item, 'edit_attributes')
             )
         );
     }

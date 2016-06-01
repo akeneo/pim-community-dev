@@ -10,7 +10,7 @@ services:
         class: %pimee_security.processor.denormalization.locale_access.class%
         arguments:
             - '@pimee_security.repository.locale_access'
-            - '@pimee_security.array_converter.flat.locale_accesses'
+            - '@pimee_security.array_converter.flat_to_standard.locale_accesses'
             - '@pimee_security.factory.locale_access'
             - '@pimee_security.updater.locale_access'
             - '@validator'
@@ -19,7 +19,7 @@ services:
         class: %pimee_security.processor.denormalization.asset_category_access.class%
         arguments:
             - '@pimee_product_asset.repository.asset_category_access'
-            - '@pimee_security.array_converter.flat.asset_category_accesses'
+            - '@pimee_security.array_converter.flat_to_standard.asset_category_accesses'
             - '@pimee_security.factory.asset_category_access'
             - '@pimee_security.updater.asset_category_access'
             - '@validator'
@@ -28,7 +28,7 @@ services:
         class: %pimee_security.processor.denormalization.product_category_access.class%
         arguments:
             - '@pimee_security.repository.category_access'
-            - '@pimee_security.array_converter.flat.product_category_accesses'
+            - '@pimee_security.array_converter.flat_to_standard.product_category_accesses'
             - '@pimee_security.factory.product_category_access'
             - '@pimee_security.updater.product_category_access'
             - '@validator'
@@ -37,7 +37,7 @@ services:
         class: %pimee_security.processor.denormalization.attribute_group_access.class%
         arguments:
             - '@pimee_security.repository.attribute_group_access'
-            - '@pimee_security.array_converter.flat.attribute_group_accesses'
+            - '@pimee_security.array_converter.flat_to_standard.attribute_group_accesses'
             - '@pimee_security.factory.attribute_group_access'
             - '@pimee_security.updater.attribute_group_access'
             - '@validator'
@@ -46,7 +46,7 @@ services:
         class: %pimee_security.processor.denormalization.job_profile_access.class%
         arguments:
             - '@pimee_security.repository.job_profile_access'
-            - '@pimee_security.array_converter.flat.job_profile_accesses'
+            - '@pimee_security.array_converter.flat_to_standard.job_profile_accesses'
             - '@pimee_security.factory.job_profile_access'
             - '@pimee_security.updater.job_profile_access'
             - '@validator'

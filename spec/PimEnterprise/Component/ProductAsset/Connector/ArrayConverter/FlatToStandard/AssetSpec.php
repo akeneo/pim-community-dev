@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat;
+namespace spec\PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
-class AssetStandardConverterSpec extends ObjectBehavior
+class AssetSpec extends ObjectBehavior
 {
     function it_converts()
     {

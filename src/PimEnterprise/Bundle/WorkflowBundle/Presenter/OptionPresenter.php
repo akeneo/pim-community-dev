@@ -10,6 +10,7 @@
  */
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
+
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\AttributeTypes;
 

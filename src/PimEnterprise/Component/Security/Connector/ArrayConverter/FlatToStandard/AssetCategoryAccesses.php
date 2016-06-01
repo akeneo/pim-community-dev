@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Security\Connector\ArrayConverter\Flat;
+namespace PimEnterprise\Component\Security\Connector\ArrayConverter\FlatToStandard;
 
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**
- * Product Category Accesses Flat to Standard format converter
+ * Asset Category Accesses Flat to Standard format converter
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class ProductCategoryAccessesStandardConverter implements StandardArrayConverterInterface
+class AssetCategoryAccesses implements ArrayConverterInterface
 {
     /** @var FieldsRequirementChecker */
     protected $fieldChecker;
@@ -39,7 +39,7 @@ class ProductCategoryAccessesStandardConverter implements StandardArrayConverter
      *
      * Before:
      * [
-     *      'category'   => '2013_collection',
+     *      'category'   => 'videos',
      *      'view_items' => 'IT support,Manager',
      *      'edit_items' => 'IT support',
      *      'own_items'  => '',
@@ -48,14 +48,14 @@ class ProductCategoryAccessesStandardConverter implements StandardArrayConverter
      * After:
      * [
      *     [
-     *         'category'   => '2013_collection',
-     *         'user_group' => 'IT support',
+     *         'category'   => 'videos',
+     *         'user_group'  => 'IT support',
      *         'view_items' => true,
      *         'edit_items' => true,
      *         'own_items'  => false,
      *     ], [
-     *         'category'   => '2013_collection',
-     *         'user_group' => 'Manager',
+     *         'category'   => 'videos',
+     *         'user_group'  => 'Manager',
      *         'view_items' => true,
      *         'edit_items' => false,
      *         'own_items'  => false,
