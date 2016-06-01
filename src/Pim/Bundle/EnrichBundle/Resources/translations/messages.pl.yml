@@ -494,16 +494,6 @@ info:
     auto option sorting: Jeśli włączone, opcje będą sortowane automatycznie po ich przetłumaczonych etykietach
   completeness:
     not calculated: Jeszcze nie przeliczone
-color:
-  title: Kolor
-  gray: Szary
-  white: Biały
-  yellow: Żółty
-  orange: Pomarańczowy
-  magenta: Purpurowy (Magenta)
-  violet: Fioletowy
-  blue: Niebieski
-  cyan: Cyjan
 Options: Ustawienia
 Created at: Data utworzenia
 Updated at: Data aktualizacji
@@ -553,7 +543,6 @@ Translate from: Przetłumacz z
 switch_on: Tak
 switch_off: Nie
 Close: Zamknij
-Choose a color: Wybierz kolor
 Search: Szukaj
 Choose the attribute type: Wybierz typ atrybutu
 Choose the attribute group: Wybierz grupę atrybutów

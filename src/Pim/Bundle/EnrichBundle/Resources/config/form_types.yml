@@ -199,7 +199,6 @@ services:
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.helper.locale'
-            - '@pim_enrich.provider.colors'
             - '@pim_enrich.repository.category'
             - '%pim_catalog.entity.category.class%'
             - '%pim_catalog.entity.channel.class%'

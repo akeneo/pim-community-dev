@@ -255,15 +255,6 @@ info:
     remove from products: 'Verwijderen van het associatietype zal het verwijderen van %count% producten.'
     none exist: Er bestaan geen associatietypes.
     create one: Klik hier om er één te creëren
-color:
-  gray: Grijs
-  white: Wit
-  yellow: Geel
-  orange: Oranje
-  magenta: Magenta
-  violet: Violet
-  blue: Blauw
-  cyan: Cyaan
 Options: Opties
 Created at: Aangemaakt op
 Updated at: Bijgewerkt op
@@ -312,7 +303,6 @@ Axis: As
 Add attributes: Attributen toevoegen
 Translate from: Vertaal van
 Close: Sluiten
-Choose a color: Kies een kleur
 Create: Aanmaken
 Cancel: Annuleren
 Choose a family: Kies een familie

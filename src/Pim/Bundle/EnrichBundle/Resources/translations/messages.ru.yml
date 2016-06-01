@@ -432,16 +432,6 @@ info:
     auto option sorting: Если активирован, параметры будут автоматически отсортированы по их локализованным ярлыкaм
   completeness:
     not calculated: не подсчитана
-color:
-  title: Цвет
-  gray: Серый
-  white: Белый
-  yellow: Желтый
-  orange: Оранжевый
-  magenta: Пурпурный
-  violet: Фиолетовый
-  blue: Синий
-  cyan: Голубой
 Options: Параметры
 Created at: Создано
 Updated at: Обновлено
@@ -493,7 +483,6 @@ Translate from: Перевести с
 switch_on: Да
 switch_off: Нет
 Close: Закрыть
-Choose a color: Выбрать цвет
 Search: Поиск
 Choose the attribute type: Выберите тип атрибута
 Choose the attribute group: Выберите группу атрибутов

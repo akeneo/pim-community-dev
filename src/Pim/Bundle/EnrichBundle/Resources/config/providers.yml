@@ -1,5 +1,4 @@
 parameters:
-    pim_enrich.provider.colors.class:                    Pim\Bundle\EnrichBundle\Provider\ColorsProvider
     pim_enrich.provider.form_extension.class:            Pim\Bundle\EnrichBundle\Provider\FormExtensionProvider
     pim_enrich.provider.field.chained.class:             Pim\Bundle\EnrichBundle\Provider\Field\FieldChainedProvider
     pim_enrich.provider.field.base.class:                Pim\Bundle\EnrichBundle\Provider\Field\BaseFieldProvider
@@ -12,11 +11,6 @@ parameters:
 
 services:
     # Color management
-    pim_enrich.provider.colors:
-        class: %pim_enrich.provider.colors.class%
-        arguments:
-            - %pim_enrich.colors%
-
     pim_enrich.provider.form_extension:
         class: %pim_enrich.provider.form_extension.class%
         arguments:

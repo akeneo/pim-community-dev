@@ -319,16 +319,6 @@ info:
     auto option sorting: もし有効にすると、オプションはローカライズされたラベルで自動的にソートされます
   completeness:
     not calculated: 未計算
-color:
-  title: カラー
-  gray: グレー
-  white: 白
-  yellow: イエロー
-  orange: オレンジ
-  magenta: マゼンタ
-  violet: バイオレット
-  blue: ブルー
-  cyan: シアン
 Options: オプション
 Created at: 作成日
 Updated at: 更新日
@@ -381,7 +371,6 @@ Translate from: 言語の選択
 switch_on: はい
 switch_off: いいえ
 Close: 閉じる
-Choose a color: 色を選択
 Search: 検索
 Choose the attribute type: 属性の種類を選択
 Choose the attribute group: 属性グループを選択

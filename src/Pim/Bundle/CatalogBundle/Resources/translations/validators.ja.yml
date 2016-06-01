@@ -9,4 +9,3 @@ No default value may be specified for this attribute type: この属性タイプ
 This value should be Yes or No: この値はYesまたはNoでなければなりません
 This value should not be blank: この値は空白にできません
 Option code may contain only letters, numbers and underscores: オプションのコードは半角英数字とアンダースコアが利用可能です
-This color is already used by another channel: この色は既に他のチャネルで使用しています。

@@ -59,12 +59,10 @@ class ChannelUpdaterSpec extends ObjectBehavior
             'locales'    => ['en_US', 'fr_FR'],
             'currencies' => ['EUR', 'USD'],
             'tree'       => 'master_catalog',
-            'color'      => 'orange'
         ];
 
         $channel->setCode('ecommerce')->shouldBeCalled();
         $channel->setLabel('Ecommerce')->shouldBeCalled();
-        $channel->setColor('orange')->shouldBeCalled();
 
         $categoryRepository->findOneByIdentifier('master_catalog')->willReturn($tree);
         $channel->setCategory($tree)->shouldBeCalled();
@@ -96,7 +94,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
             'locales'    => ['fr_FR'],
             'currencies' => ['EUR'],
             'tree'       => 'unknown',
-            'color'      => 'orange'
         ];
         $categoryRepository->findOneByIdentifier('unknown')->willReturn(null);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
@@ -120,7 +117,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
             'locales'    => ['unknown'],
             'currencies' => ['EUR'],
             'tree'       => 'tree',
-            'color'      => 'orange'
         ];
         $categoryRepository->findOneByIdentifier('tree')->willReturn($tree);
         $localeRepository->findOneByIdentifier('unknown')->willReturn(null);
@@ -144,7 +140,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
             'locales'    => ['fr_FR'],
             'currencies' => ['unknown'],
             'tree'       => 'tree',
-            'color'      => 'orange'
         ];
         $categoryRepository->findOneByIdentifier('tree')->willReturn($tree);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);

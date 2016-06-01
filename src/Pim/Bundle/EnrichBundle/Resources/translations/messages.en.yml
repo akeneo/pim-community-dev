@@ -545,18 +545,6 @@ info:
     completeness:
         not calculated:       Not yet calculated
 
-# Labels for channel colors
-color:
-    title:   Color
-    gray:    Gray
-    white:   White
-    yellow:  Yellow
-    orange:  Orange
-    magenta: Magenta
-    violet:  Violet
-    blue:    Blue
-    cyan:    Cyan
-
 # Form elements
 Options:                             Options
 Created at:                          Created at
@@ -610,7 +598,6 @@ Translate from:                      Translate from
 switch_on:                           "Yes"
 switch_off:                          "No"
 Close:                               Close
-Choose a color:                      Choose a color
 Search:                              Search
 Choose the attribute type:           Choose the attribute type
 Choose the attribute group:          Choose the attribute group

@@ -255,15 +255,6 @@ info:
     remove from products: 'A exclusão desse o tipo de associação irá removê-la de %count% produtos.'
     none exist: Não existe nenhum tipo de associação.
     create one: Clique aqui para criar um
-color:
-  gray: Cinza
-  white: Branco
-  yellow: Amarelo
-  orange: Laranja
-  magenta: Magenta
-  violet: Violeta
-  blue: Azul
-  cyan: Ciano
 Options: Opções
 Created at: Criado em
 Updated at: Atualizado em
@@ -313,7 +304,6 @@ Axis: Eixo
 Add attributes: Adicionar atributos
 Translate from: Traduzir do
 Close: Fechar
-Choose a color: Escolha uma cor
 Create: Criar
 Cancel: Cancelar
 Choose a family: Escolha uma família

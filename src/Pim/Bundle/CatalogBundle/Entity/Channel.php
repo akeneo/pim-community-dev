@@ -38,9 +38,6 @@ class Channel implements ChannelInterface
     /** @var array $conversionUnits */
     protected $conversionUnits = [];
 
-    /** @var string $color */
-    protected $color;
-
     /**
      * Constructor
      */
@@ -222,24 +219,6 @@ class Channel implements ChannelInterface
     public function getConversionUnits()
     {
         return $this->conversionUnits;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getColor()
-    {
-        return $this->color;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setColor($color)
-    {
-        $this->color = $color;
-
-        return $this;
     }
 
     /**

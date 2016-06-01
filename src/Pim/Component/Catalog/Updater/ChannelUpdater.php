@@ -49,8 +49,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *     'label': 'Ecommerce',
      *     'locales': ['en_US'],
      *     'currencies': ['EUR', 'USD'],
-     *     'tree': 'master',
-     *     'color': 'orange'
+     *     'tree': 'master'
      * }
      */
     public function update($channel, array $data, array $options = [])
@@ -117,9 +116,6 @@ class ChannelUpdater implements ObjectUpdaterInterface
                 break;
             case 'label':
                 $channel->setLabel($data);
-                break;
-            case 'color':
-                $channel->setColor($data);
                 break;
         }
     }

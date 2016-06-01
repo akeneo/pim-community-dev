@@ -1,7 +1,6 @@
 parameters:
     pim_enrich.twig.locale_extension.class:       Pim\Bundle\EnrichBundle\Twig\LocaleExtension
     pim_enrich.twig.category_extension.class:     Pim\Bundle\EnrichBundle\Twig\CategoryExtension
-    pim_enrich.twig.channel_extension.class:      Pim\Bundle\EnrichBundle\Twig\ChannelExtension
     pim_enrich.twig.view_element_extension.class: Pim\Bundle\EnrichBundle\Twig\ViewElementExtension
     pim_enrich.twig.attribute_extension.class:    Pim\Bundle\EnrichBundle\Twig\AttributeExtension
     pim_enrich.twig.object_class_extension.class: Pim\Bundle\EnrichBundle\Twig\ObjectClassExtension
@@ -22,14 +21,6 @@ services:
         arguments:
             - '@pim_enrich.doctrine.counter.category_registry'
             - '%pim_enrich_max_products_category_removal%'
-        tags:
-            - { name: twig.extension }
-
-    pim_enrich.twig.channel_extension:
-        class: '%pim_enrich.twig.channel_extension.class%'
-        arguments:
-            - '@pim_catalog.repository.channel'
-            - '@pim_enrich.provider.colors'
         tags:
             - { name: twig.extension }
 

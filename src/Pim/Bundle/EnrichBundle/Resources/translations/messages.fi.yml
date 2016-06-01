@@ -501,16 +501,6 @@ info:
     auto option sorting: Jos käytössä, vaihtoehdot lajitellaan automaattisesti riippuen niiden alueellisesta otsikosta
   completeness:
     not calculated: Ei vielä laskettu
-color:
-  title: Väri
-  gray: Harmaa
-  white: Valkoinen
-  yellow: Keltainen
-  orange: Oranssi
-  magenta: Purppura
-  violet: Violetti
-  blue: Sininen
-  cyan: Sinivihreä
 Options: Vaihtoehdot
 Created at: Luotu
 Updated at: Päivitetty
@@ -563,7 +553,6 @@ Translate from: Käännä kielestä
 switch_on: Kyllä
 switch_off: Ei
 Close: Sulje
-Choose a color: Valitse väri
 Search: Etsi
 Choose the attribute type: Valitse attribuutin tyyppi
 Choose the attribute group: Valitse attribuuttiryhmä
