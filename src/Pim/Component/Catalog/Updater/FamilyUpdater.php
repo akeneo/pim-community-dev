@@ -266,14 +266,15 @@ class FamilyUpdater implements ObjectUpdaterInterface
             $requirement = $this->requirementRepo->findOneBy(
                 [
                     'attribute' => $attribute->getId(),
-                    'channel' => $channel->getId(),
-                    'family' => $family->getId()
+                    'channel'   => $channel->getId(),
+                    'family'    => $family->getId()
                 ]
             );
         }
         if (null === $requirement) {
             $requirement = $this->attrRequiFactory->createAttributeRequirement($attribute, $channel, true);
         }
+        $requirement->setRequired(true);
 
         return $requirement;
     }
