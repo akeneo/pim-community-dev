@@ -12,20 +12,6 @@ parameters:
     pimee_enrich.form.extension.attribute.class: PimEnterprise\Bundle\EnrichBundle\Form\Extension\AttributeTypeExtension
 
 services:
-    ##
-    # Product form view overriding
-    ##
-    pim_enrich.form.type.product_edit:
-        class: '%pim_enrich.form.type.product_edit.class%'
-        arguments:
-            - '@pim_enrich.form.type.product.view'
-            - '@pim_catalog.repository.family'
-            - '%pim_catalog.entity.category.class%'
-        tags:
-            - { name: form.type, alias: pim_product_edit }
-        calls:
-            - [addEventSubscriber, ['@pimee_security.form.subscriber.remove_product_value_subscriber']]
-
     pim_enrich.form.type.attribute_group:
         class: '%pim_enrich.form.type.attribute_group.class%'
         arguments:
@@ -35,13 +21,6 @@ services:
         calls:
             - [addEventSubscriber, ['@pim_enrich.form.subscriber.set_attribute_group_sort_order']]
             - [addEventSubscriber, ['@pimee_enrich.form.subscriber.attribute_group_permissions']]
-
-    pim_enrich.form.type.product.view:
-        public: false
-        class: '%pim_enrich.form.type.product.view.class%'
-        arguments:
-            - '@pim_enrich.form.view.view_updater.registry'
-            - '@security.authorization_checker'
 
     pim_enrich.form.type.category:
         class: '%pim_enrich.form.type.category.class%'
