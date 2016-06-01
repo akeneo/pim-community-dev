@@ -50,6 +50,12 @@ Feature: Classify an asset in the trees I have access
 
   Scenario: Remove permissions on categories tab on asset form
     Given I am logged in as "Peter"
-    And removing the following permissions should hide the following section:
-      | permission                         | section    | page          |
-      | Consult the categories of an asset | Categories | "paint" asset |
+    And I am on the "paint" asset page
+    And I should see the text "Categories"
+    And I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    When I revoke rights to resource Consult the categories of an asset
+    And I save the role
+    And I should not see the text "There are unsaved changes."
+    And I am on the "paint" asset page
+    Then I should not see the text "Categories"
