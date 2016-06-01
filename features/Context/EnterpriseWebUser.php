@@ -7,6 +7,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ExpectationException;
 use Context\WebUser as BaseWebUser;
 
 /**
@@ -45,6 +46,8 @@ class EnterpriseWebUser extends BaseWebUser
     /**
      * @param string $fieldName
      * @param string $expected
+     *
+     * @throws ExpectationException
      *
      * @Then /^the view mode field (.*) should contain "([^"]*)"$/
      */
