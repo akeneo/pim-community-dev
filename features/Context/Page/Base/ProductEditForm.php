@@ -538,7 +538,7 @@ class ProductEditForm extends Form
             return $this->find(
                 'css',
                 sprintf(
-                    '.validation-errors span.error-message:contains("%s")',
+                    '.validation-errors .error-message:contains("%s")',
                     $text
                 )
             );

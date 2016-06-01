@@ -196,6 +196,12 @@ pim_enrich:
                 channel_locale_unavailable: This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
             media:
                 upload: Drag and drop to upload or click here
+            create_popin:
+                title: Create a new product
+                labels:
+                    family: Choose a family
+                    save: Save
+                    cancel: Cancel
         attribute_option:
             code: Code
             label: Label

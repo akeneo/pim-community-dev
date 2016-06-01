@@ -221,6 +221,10 @@ config:
         # Product edit form
         pim/field-manager:                  pimenrich/js/product/field-manager
 
+        # Product create form
+        pim/product-create:      pimenrich/js/product/create/create
+        pim/product-create-form: pimenrich/js/product/create/form
+
         # Mass product edit form
         pim/mass-product-edit-form/hidden-field-updater: pimenrich/js/product/form/mass-edit/hidden-field-updater
         pim/mass-product-edit-form/attributes:           pimenrich/js/product/form/mass-edit/attributes
@@ -334,6 +338,7 @@ config:
         pim/template/product/field/simple-select:                    pimenrich/templates/product/field/simple-select.html
         pim/template/product/field/text:                             pimenrich/templates/product/field/text.html
         pim/template/product/field/textarea:                         pimenrich/templates/product/field/textarea.html
+        pim/template/product-create-popin:                           pimenrich/templates/product/create-popin.html
         pim/template/attribute-option/form:                          pimenrich/templates/attribute-option/form.html
         pim/template/attribute-option/validation-error:              pimenrich/templates/attribute-option/validation-error.html
         pim/template/i18n/flag:                                      pimenrich/templates/i18n/flag.html

@@ -832,7 +832,7 @@ class Form extends Base
      */
     protected function fillCompoundField(NodeElement $label, $value)
     {
-        if (! $label->subLabelContent) {
+        if (!$label->subLabelContent) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'The "%s" field is compound but the sub label was not provided',

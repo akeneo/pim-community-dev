@@ -19,7 +19,16 @@
 
     {% set buttons %}
         {% include 'PimEnrichBundle:Product:_index_buttons.html.twig' %}
+        <script type="text/javascript">
+            require(['jquery', 'pim/product-create'], function ($, ProductCreate) {
+                'use strict';
+                $('.create-product').on('click', function () {
+                    ProductCreate.openProductModal();
+                });
+            });
+        </script>
     {% endset %}
+
     {% set gridAlias = 'product-grid' %}
     {% set subtitle %}
         {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {

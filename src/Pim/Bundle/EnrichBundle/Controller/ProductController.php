@@ -140,51 +140,6 @@ class ProductController
     }
 
     /**
-     * Create product
-     *
-     * @param Request $request
-     * @param string  $dataLocale
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_product_create")
-     *
-     * @return array
-     */
-    public function createAction(Request $request, $dataLocale)
-    {
-        if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_enrich_product_index');
-        }
-
-        $product = $this->productBuilder->createProduct();
-        $form    = $this->formFactory->create('pim_product_create', $product, $this->getCreateFormOptions($product));
-        if ($request->isMethod('POST')) {
-            $form->submit($request);
-            if ($form->isValid()) {
-                $this->productSaver->save($product);
-                $request->getSession()->getFlashBag()->add('success', new Message('flash.product.created'));
-
-                if ($dataLocale === null) {
-                    $dataLocale = $this->getDataLocaleCode();
-                }
-
-                $url = $this->router->generate(
-                    'pim_enrich_product_edit',
-                    ['id' => $product->getId(), 'dataLocale' => $dataLocale]
-                );
-                $response = ['status' => 1, 'url' => $url];
-
-                return new Response(json_encode($response));
-            }
-        }
-
-        return [
-            'form'       => $form->createView(),
-            'dataLocale' => $this->getDataLocaleCode()
-        ];
-    }
-
-    /**
      * Edit product
      *
      * @Template
