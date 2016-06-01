@@ -273,3 +273,47 @@ Feature: Import attributes
       | number | number_with_min     | number2     | info  | 0      | 1                      | 0           | 0        | -10        |            |
       | number | number_with_max     | number3     | info  | 0      | 1                      | 0           | 0        |            | 10         |
       | number | number_with_min_max | number4     | info  | 0      | 1                      | 0           | 0        | -10        | 10         |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5711
+  Scenario: Import attributes with no label and successfully display its code in family attribute drop down:
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      type;code;group;unique;useable_as_grid_filter;localizable;scopable
+      pim_catalog_text;new_name;other;0;1;0;0
+      pim_catalog_textarea;new_description;other;0;1;1;1
+      """
+    And the following job "footwear_attribute_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_attribute_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_attribute_import" job to finish
+    Then I should see "read lines 2"
+    And I should see "created 2"
+    When I am on the "Boots" family page
+    And I visit the "Attributes" tab
+    Then I should see available attribute [new_name] in group "Other"
+    And I should see available attribute [new_description] in group "Other"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5711
+  Scenario: Import attributes with blank label and successfully display its code in family attribute drop down:
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      type;code;label-de_DE;label-en_US;label-fr_FR;group;unique;useable_as_grid_filter;localizable;scopable
+      pim_catalog_text;new_name;;;;other;0;1;0;0
+      pim_catalog_textarea;new_description;;;;other;0;1;1;1
+      """
+    And the following job "footwear_attribute_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_attribute_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_attribute_import" job to finish
+    Then I should see "read lines 2"
+    And I should see "created 2"
+    When I am on the "Boots" family page
+    And I visit the "Attributes" tab
+    Then I should see available attribute [new_name] in group "Other"
+    And I should see available attribute [new_description] in group "Other"
