@@ -60,8 +60,8 @@ Feature: Export published products
 
   Scenario: Export only the published products updated since the last export
     Given the following job "csv_clothing_mobile_published_product_export" configuration:
-      | filePath          | %tmp%/ecommerce_product_export/csv_clothing_mobile_published_product_export.csv |
-      | updated_condition | last_export                                                                     |
+      | filePath               | %tmp%/ecommerce_product_export/csv_clothing_mobile_published_product_export.csv |
+      | updated_since_strategy | last_export                                                                     |
     And the following products:
       | sku       | family | categories        | price          | size | main_color |
       | tee-white | tees   | winter_collection | 10 EUR, 15 USD | XL   | White      |
@@ -117,10 +117,10 @@ Feature: Export published products
       | tee-black | name        | Tshirt noir     | fr_FR  |
       | tee-black | name        | Schwarz t-shirt | de_DE  |
     And the following job "csv_clothing_mobile_published_product_export" configuration:
-      | filePath          | %tmp%/ecommerce_product_export/csv_clothing_mobile_published_product_export.csv |
-      | updated_condition | since_date                                                                      |
-      | exported_since    | 2016-04-25                                                                      |
-      | locales           | en_US                                                                           |
+      | filePath               | %tmp%/ecommerce_product_export/csv_clothing_mobile_published_product_export.csv |
+      | updated_since_strategy | since_date                                                                      |
+      | updated_since_date     | 2016-04-25                                                                      |
+      | locales                | en_US                                                                           |
     When I edit the "tee-white" product
     And I press the "Publish" button
     And I confirm the publishing
@@ -132,12 +132,12 @@ Feature: Export published products
     And I wait for the "csv_clothing_mobile_published_product_export" job to finish
     Then exported file of "csv_clothing_mobile_published_product_export" should contain:
       """
-      sku;categories;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;enabled;family;groups;main_color;manufacturer;name-de_DE;name-en_US;name-fr_FR;price-EUR;price-USD;rating;side_view;size
-      tee-white;winter_collection;;;;1;tees;;white;;"Weiß t-shirt";"White tee";"Tshirt blanc";10.00;15.00;;;XL
-      tee-black;winter_collection;;;;1;tees;;black;;"Schwarz t-shirt";"Black tee";"Tshirt noir";10.00;15.00;;;XL
+      sku;categories;description-en_US-mobile;enabled;family;groups;main_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size
+      tee-white;winter_collection;;1;tees;;white;;"White tee";10.00;15.00;;;XL
+      tee-black;winter_collection;;1;tees;;black;;"Black tee";10.00;15.00;;;XL
       """
     When the following job "csv_clothing_mobile_published_product_export" configuration:
-      | exported_since | NOW +1 day |
+      | updated_since_date | NOW +1 day |
     And I am on the "csv_clothing_mobile_published_product_export" export job page
     And I launch the export job
     And I wait for the "csv_clothing_mobile_published_product_export" job to finish
