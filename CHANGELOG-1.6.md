@@ -1,5 +1,6 @@
 # 1.6.x
 
+
 ## Functional improvements
 
 - PIM-5592: The product grid keeps the page number when you go back to it
