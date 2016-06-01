@@ -71,6 +71,10 @@ class NormalizeConfigurationExtension extends \Twig_Extension
             return $value ? 'Yes' : 'No';
         }
 
+        if (is_array($value)) {
+            return implode(', ', $value);
+        }
+
         if (null === $value) {
             return 'N/A';
         }
