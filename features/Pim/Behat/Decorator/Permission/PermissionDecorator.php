@@ -118,6 +118,10 @@ class PermissionDecorator extends ElementDecorator
         $groupTitle = $groupTitleElement->getHtml();
 
         $this->navigateToGroup($groupTitle);
+
+        $this->spin(function () use ($resource) {
+            return $resource->isVisible();
+        }, sprintf('Resource is not visible on the group %s.', $groupTitle));
         $resource->click();
     }
 
