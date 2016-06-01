@@ -9,10 +9,9 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Component\Batch\Item\ResourceItemReaderInterface;
-use Akeneo\Component\Batch\Item\ResourceItemWriterInterface;
+use Akeneo\Component\Batch\Item\File\ResourceItemReaderInterface;
+use Akeneo\Component\Batch\Item\File\ResourceItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Step\FilesystemResource;
 
 /**
  * Basic step implementation that read items, process them and write them
@@ -267,9 +266,9 @@ class ItemStep extends AbstractStep
     private function loadResource()
     {
         $resource = $this->stepExecution->getJobExecution()->getExecutionContext()->get('resource');
-        if (!$resource instanceof FilesystemResource) {
-            throw new \InvalidArgumentException(
-                'A "Akeneo\Component\Batch\ResourceDescriptor" is expected as resource in the execution context.'
+        if (null === $resource || !$resource instanceof FilesystemResource) {
+            throw new \LogicException(
+                'A "Akeneo\Component\Batch\Step\FilesystemResource" is expected as resource in the execution context.'
             );
         }
 
