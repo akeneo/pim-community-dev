@@ -31,12 +31,17 @@ class AssociationTabContext extends PimContext
      */
     public function iShouldBeOnTheAssociation($association)
     {
-        $list       = $this->getCurrentPage()->getAssociationsList();
-        $currentTab = $this->spin(function () use ($list) {
-            return $list->find('css', '.active');
+        $list     = $this->getCurrentPage()->getAssociationsList();
+        $tabLabel = $this->spin(function () use ($list) {
+            $activeTab = $list->find('css', '.active');
+            if (null !== $activeTab) {
+                return $activeTab->getText();
+            }
+
+            return false;
         }, 'Cannot find ".active" element');
 
-        $tabLabel = trim($currentTab->getText());
+        $tabLabel = trim($tabLabel);
         if ($tabLabel !== $association) {
             throw $this->createExpectationException(
                 sprintf(
