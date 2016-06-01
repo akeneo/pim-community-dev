@@ -19,4 +19,8 @@
     find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\SecurityBundle\\Attributes/PimEnterprise\\Component\\Security\\Attributes/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Publisher\\Product\\FilePublisher/PimEnterprise\\Component\\Workflow\\Publisher\\Product\\FileInfoPublisher/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Normalizer\\Flat/PimEnterprise\\Bundle\\VersioningBundle\\Normalizer\\Flat/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\StandardArrayConverterInterface/Pim\\Component\\Connector\\ArrayConverter\\ArrayConverterInterface/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/implements StandardArrayConverterInterface/implements ArrayConverterInterface/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\Flat/Pim\\Component\\Connector\\ArrayConverter\\FlatToStandard/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pim_connector\.array_converter\.flat\./pim_connector\.array_converter\.flat_to_standard\./g'
 ```
