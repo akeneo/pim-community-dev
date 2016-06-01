@@ -33,27 +33,23 @@ class CompletenessFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_an_equals_filter_on_completeness_in_the_query($qb, Expr $expr, Expr $subExpr)
+    function it_adds_an_equals_filter_on_completeness_in_the_query($qb, Expr $expr)
     {
-        $qb->expr()->willReturn($subExpr, $expr);
-
+        $qb->expr()->willReturn($expr);
         $expr->field('normalizedData.completenesses.mobile-en_US')
             ->shouldBeCalled()
             ->willReturn($expr);
-
         $expr->equals(100)
             ->shouldBeCalled()
             ->willReturn($expr);
-
-        $subExpr->addOr($expr)->shouldBeCalled();
-        $qb->addAnd($subExpr)->shouldBeCalled();
+        $qb->addOr($expr)->shouldBeCalled();
 
         $this->addFieldFilter('completeness', '=', 100, 'en_US', 'mobile');
     }
 
-    function it_adds_a_not_equals_filter_on_completeness_in_the_query($qb, Expr $expr, Expr $subExpr)
+    function it_adds_a_not_equals_filter_on_completeness_in_the_query($qb, Expr $expr)
     {
-        $qb->expr()->willReturn($subExpr, $expr);
+        $qb->expr()->willReturn($expr);
         $expr->field('normalizedData.completenesses.mobile-en_US')
             ->shouldBeCalled()
             ->willReturn($expr);
@@ -66,68 +62,63 @@ class CompletenessFilterSpec extends ObjectBehavior
         $expr->addAnd($expr)
             ->shouldBeCalled()
             ->willReturn($expr);
-        $subExpr->addOr($expr)->shouldBeCalled();
-        $qb->addAnd($subExpr)->shouldBeCalled();
+        $qb->addOr($expr)->shouldBeCalled();
 
         $this->addFieldFilter('completeness', '!=', 100, 'en_US', 'mobile');
     }
 
-    function it_adds_a_lower_than_filter_on_completeness_in_the_query($qb, Expr $expr, Expr $subExpr)
+    function it_adds_a_lower_than_filter_on_completeness_in_the_query($qb, Expr $expr)
     {
-        $qb->expr()->willReturn($subExpr, $expr);
+        $qb->expr()->willReturn($expr);
         $expr->field('normalizedData.completenesses.mobile-en_US')
             ->shouldBeCalled()
             ->willReturn($expr);
         $expr->lt(100)
             ->shouldBeCalled()
             ->willReturn($expr);
-        $subExpr->addOr($expr)->shouldBeCalled();
-        $qb->addAnd($subExpr)->shouldBeCalled();
+        $qb->addOr($expr)->shouldBeCalled();
 
         $this->addFieldFilter('completeness', '<', 100, 'en_US', 'mobile');
     }
 
-    function it_adds_a_greater_than_filter_on_completeness_in_the_query($qb, Expr $expr, Expr $subExpr)
+    function it_adds_a_greater_than_filter_on_completeness_in_the_query($qb, Expr $expr)
     {
-        $qb->expr()->willReturn($subExpr, $expr);
+        $qb->expr()->willReturn($expr);
         $expr->field('normalizedData.completenesses.mobile-en_US')
             ->shouldBeCalled()
             ->willReturn($expr);
         $expr->gt(55)
             ->shouldBeCalled()
             ->willReturn($expr);
-        $subExpr->addOr($expr)->shouldBeCalled();
-        $qb->addAnd($subExpr)->shouldBeCalled();
+        $qb->addOr($expr)->shouldBeCalled();
 
         $this->addFieldFilter('completeness', '>', 55, 'en_US', 'mobile');
     }
 
-    function it_adds_a_greater_or_equal_than_filter_on_completeness_in_the_query($qb, Expr $expr, Expr $subExpr)
+    function it_adds_a_greater_or_equal_than_filter_on_completeness_in_the_query($qb, Expr $expr)
     {
-        $qb->expr()->willReturn($subExpr, $expr);
+        $qb->expr()->willReturn($expr);
         $expr->field('normalizedData.completenesses.mobile-en_US')
             ->shouldBeCalled()
             ->willReturn($expr);
         $expr->gte(55)
             ->shouldBeCalled()
             ->willReturn($expr);
-        $subExpr->addOr($expr)->shouldBeCalled();
-        $qb->addAnd($subExpr)->shouldBeCalled();
+        $qb->addOr($expr)->shouldBeCalled();
 
         $this->addFieldFilter('completeness', '>=', 55, 'en_US', 'mobile');
     }
 
-    function it_adds_a_lower_or_equal_than_filter_on_completeness_in_the_query($qb, Expr $expr, Expr $subExpr)
+    function it_adds_a_lower_or_equal_than_filter_on_completeness_in_the_query($qb, Expr $expr)
     {
-        $qb->expr()->willReturn($subExpr, $expr);
+        $qb->expr()->willReturn($expr);
         $expr->field('normalizedData.completenesses.mobile-en_US')
             ->shouldBeCalled()
             ->willReturn($expr);
         $expr->lte(60)
             ->shouldBeCalled()
             ->willReturn($expr);
-        $subExpr->addOr($expr)->shouldBeCalled();
-        $qb->addAnd($subExpr)->shouldBeCalled();
+        $qb->addOr($expr)->shouldBeCalled();
 
         $this->addFieldFilter('completeness', '<=', 60, 'en_US', 'mobile');
     }
@@ -136,13 +127,12 @@ class CompletenessFilterSpec extends ObjectBehavior
         $channelRepository,
         $qb,
         ChannelInterface $channel,
-        Expr $expr,
-        Expr $subExpr
+        Expr $expr
     ) {
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocaleCodes()->willReturn(['en_US', 'fr_FR']);
 
-        $qb->expr()->willReturn($subExpr, $expr);
+        $qb->expr()->willReturn($expr);
 
         $expr->field('normalizedData.completenesses.mobile-en_US')
             ->shouldBeCalled()
@@ -150,6 +140,7 @@ class CompletenessFilterSpec extends ObjectBehavior
         $expr->lte(60)
             ->shouldBeCalled()
             ->willReturn($expr);
+        $qb->addOr($expr)->shouldBeCalled();
 
         $expr->field('normalizedData.completenesses.mobile-fr_FR')
             ->shouldBeCalled()
@@ -157,9 +148,7 @@ class CompletenessFilterSpec extends ObjectBehavior
         $expr->lte(60)
             ->shouldBeCalled()
             ->willReturn($expr);
-
-        $subExpr->addOr($expr)->shouldBeCalledTimes(2);
-        $qb->addAnd($subExpr)->shouldBeCalled();
+        $qb->addOr($expr)->shouldBeCalled();
 
         $this->addFieldFilter('completeness', '<=', 60, null, 'mobile');
     }
