@@ -1185,58 +1185,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param TableNode $table
-     *
-     * @Then /^removing the following permissions? should hide the following buttons?:$/
-     *
-     * @return Then[]
-     */
-    public function removingPermissionsShouldHideTheButtons(TableNode $table)
-    {
-        $steps = [];
-
-        foreach ($table->getHash() as $data) {
-            $steps[] = new Step\Then('I am on the "Administrator" role page');
-            $steps[] = new Step\Then('I visit the "Permissions" tab');
-            $steps[] = new Step\Then(sprintf('I revoke rights to resource %s', $data['permission']));
-            $steps[] = new Step\Then('I save the role');
-            $steps[] = new Step\Then('I should not see the text "There are unsaved changes."');
-            $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
-            $steps[] = new Step\Then(sprintf('I should not see the "%s" button', $data['button']));
-            if ($forbiddenPage = $data['forbiddenPage']) {
-                $steps[] = new Step\Then(sprintf('I should not be able to access the %s page', $forbiddenPage));
-            }
-        }
-
-        return $steps;
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Then /^removing the following permissions? should hide the following section:$/
-     *
-     * @return Then[]
-     */
-    public function removingPermissionsShouldHideTheSection(TableNode $table)
-    {
-        $steps = [];
-
-        foreach ($table->getHash() as $data) {
-            $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
-            $steps[] = new Step\Then(sprintf('I should see "%s"', $data['section']));
-            $steps[] = new Step\Then('I am on the "Administrator" role page');
-            $steps[] = new Step\Then('I visit the "Permissions" tab');
-            $steps[] = new Step\Then(sprintf('I revoke rights to resource %s', $data['permission']));
-            $steps[] = new Step\Then('I save the role');
-            $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
-            $steps[] = new Step\Then(sprintf('I should not see "%s"', $data['section']));
-        }
-
-        return $steps;
-    }
-
-    /**
      * @param string $field
      *
      * @Given /^I remove the "([^"]*)" file$/
@@ -1277,25 +1225,6 @@ class WebUser extends RawMinkContext
         } catch (UnsupportedDriverActionException $e) {
             throw $this->createExpectationException('You must use selenium for this feature.');
         }
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @return Then[]
-     *
-     * @Given /^the following attribute types should have the following fields$/
-     */
-    public function theFollowingAttributeTypesShouldHaveTheFollowingFields(TableNode $table)
-    {
-        $steps = [];
-        foreach ($table->getRowsHash() as $type => $fields) {
-            $steps[] = new Step\Then('I am on the attributes page');
-            $steps[] = new Step\Then(sprintf('I create a "%s" attribute', $type));
-            $steps[] = new Step\Then(sprintf('I should see the %s fields', $fields));
-        }
-
-        return $steps;
     }
 
     /**

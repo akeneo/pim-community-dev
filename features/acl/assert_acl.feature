@@ -19,9 +19,18 @@ Feature: Define user rights
     And I should not be able to access the channels page
     But I should be able to access the attributes page
 
-  Scenario: Successfully hide entity creation, deletion buttons and page access when user doesn't have the rights
+  Scenario Outline: Successfully hide entity creation, deletion buttons and page access when user doesn't have the rights
     Given I am logged in as "Peter"
-    Then removing the following permissions should hide the following buttons:
+    And I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    When I revoke rights to resource <permission>
+    And I save the role
+    And I should not see the text "There are unsaved changes."
+    And I am on the <page> page
+    Then I should not see the text "<button>"
+    And I should not be able to access the <forbiddenPage> page
+
+    Examples:
       | permission                  | page              | button                  | forbiddenPage            |
       | Create an association type  | association types | Create association type | AssociationType creation |
       | Create a channel            | channels          | Create channel          | channel creation         |
@@ -34,23 +43,31 @@ Feature: Define user rights
       | Create an export profile    | exports           | Create export profile   | Export creation          |
       | Create an import profile    | imports           | Create import profile   | Import creation          |
 
-  Scenario: Successfully hide entity creation and deletion buttons when user doesn't have the rights
+  Scenario Outline: Successfully hide entity creation and deletion buttons when user doesn't have the rights
     Given I am logged in as "Peter"
-    Then removing the following permissions should hide the following buttons:
-      | permission                  | page                                         | button | forbiddenPage |
-      | Remove an association type  | "X_SELL" association type                    | Delete |               |
-      | Remove an attribute group   | "Sizes" attribute group                      | Delete |               |
-      | Remove a category           | "sandals" category                           | Delete |               |
-      | Remove a channel            | "mobile" channel                             | Delete |               |
-      | Remove a family             | "boots" family                               | Delete |               |
-      | Remove a group              | "similar_boots" product group                | Delete |               |
-      | Remove a variant group      | "caterpillar_boots" variant group            | Delete |               |
-      | Remove a group type         | "RELATED" group type                         | Delete |               |
-      | Remove a product            | "boot" product                               | Delete |               |
-      | Download the product as PDF | "boot" product                               | Pdf    |               |
-      | Remove an attribute         | "color" attribute                            | Delete |               |
-      | Remove an export profile    | "csv_footwear_option_export" export job edit | Delete |               |
-      | Remove an import profile    | "csv_footwear_group_import" import job edit  | Delete |               |
+    And I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    When I revoke rights to resource <permission>
+    And I save the role
+    And I should not see the text "There are unsaved changes."
+    And I am on the <page> page
+    Then I should not see the text "<button>"
+
+    Examples:
+      | permission                  | page                                         | button |
+      | Remove an association type  | "X_SELL" association type                    | Delete |
+      | Remove an attribute group   | "Sizes" attribute group                      | Delete |
+      | Remove a category           | "sandals" category                           | Delete |
+      | Remove a channel            | "mobile" channel                             | Delete |
+      | Remove a family             | "boots" family                               | Delete |
+      | Remove a group              | "similar_boots" product group                | Delete |
+      | Remove a variant group      | "caterpillar_boots" variant group            | Delete |
+      | Remove a group type         | "RELATED" group type                         | Delete |
+      | Remove a product            | "boot" product                               | Delete |
+      | Download the product as PDF | "boot" product                               | Pdf    |
+      | Remove an attribute         | "color" attribute                            | Delete |
+      | Remove an export profile    | "csv_footwear_option_export" export job edit | Delete |
+      | Remove an import profile    | "csv_footwear_group_import" import job edit  | Delete |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3758
   Scenario: Successfully remove and add the List categories rights
