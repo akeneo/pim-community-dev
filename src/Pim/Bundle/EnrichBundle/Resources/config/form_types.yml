@@ -1,9 +1,4 @@
 parameters:
-    pim_enrich.form.type.product.class:        Pim\Bundle\EnrichBundle\Form\Type\ProductType
-    pim_enrich.form.type.product_edit.class:   Pim\Bundle\EnrichBundle\Form\Type\ProductEditType
-    pim_enrich.form.type.product_create.class: Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType
-    pim_enrich.form.type.product.view.class:   Pim\Bundle\EnrichBundle\Form\View\ProductFormView
-
     pim_enrich.form.type.attribute.class:        Pim\Bundle\EnrichBundle\Form\Type\AttributeType
     pim_enrich.form.type.channel.class:          Pim\Bundle\EnrichBundle\Form\Type\ChannelType
     pim_enrich.form.type.group.class:            Pim\Bundle\EnrichBundle\Form\Type\GroupType
@@ -43,33 +38,6 @@ parameters:
     pim_enrich.form.type.translatable_field.class:         Pim\Bundle\EnrichBundle\Form\Type\TranslatableFieldType
 
 services:
-    pim_enrich.form.type.product.view:
-        public: false
-        class: '%pim_enrich.form.type.product.view.class%'
-        arguments:
-            - '@pim_enrich.form.view.view_updater.registry'
-
-    pim_enrich.form.type.product:
-        class: '%pim_enrich.form.type.product.class%'
-        tags:
-            - { name: form.type, alias: pim_product }
-
-    pim_enrich.form.type.product_edit:
-        class: '%pim_enrich.form.type.product_edit.class%'
-        arguments:
-            - '@pim_enrich.form.type.product.view'
-            - '@pim_enrich.repository.family'
-            - '%pim_catalog.entity.category.class%'
-        tags:
-            - { name: form.type, alias: pim_product_edit }
-
-    pim_enrich.form.type.product_create:
-        class: '%pim_enrich.form.type.product_create.class%'
-        arguments:
-            - '@pim_catalog.repository.family'
-        tags:
-            - { name: form.type, alias: pim_product_create }
-
     pim_enrich.form.type.attribute:
         class: '%pim_enrich.form.type.attribute.class%'
         tags:

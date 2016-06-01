@@ -162,6 +162,41 @@ class ProductController
 
     /**
      * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function createAction(Request $request)
+    {
+        $product = $this->productBuilder->createProduct(
+            $request->request->get('identifier'),
+            $request->request->get('family', null)
+        );
+
+        $violations = $this->validator->validate($product);
+        if (0 === $violations->count()) {
+            $this->productSaver->save($product);
+
+            $normalizationContext = $this->userContext->toArray() + [
+                'filter_types'               => ['pim.internal_api.product_value.view'],
+                'disable_grouping_separator' => true
+            ];
+
+            return new JsonResponse($this->normalizer->normalize(
+                $product,
+                'internal_api',
+                $normalizationContext
+            ));
+        }
+
+        $errors = [
+            'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
+        ];
+
+        return new JsonResponse($errors, 400);
+    }
+
+    /**
+     * @param Request $request
      * @param string  $id
      *
      * @throws NotFoundHttpException     If product is not found or the user cannot see it
@@ -201,13 +236,13 @@ class ProductController
                 'internal_api',
                 $normalizationContext
             ));
-        } else {
-            $errors = [
-                'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
-            ];
-
-            return new JsonResponse($errors, 400);
         }
+
+        $errors = [
+            'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
+        ];
+
+        return new JsonResponse($errors, 400);
     }
 
     /**

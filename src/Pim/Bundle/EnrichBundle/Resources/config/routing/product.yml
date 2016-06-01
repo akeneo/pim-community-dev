@@ -37,6 +37,11 @@ pim_enrich_product_rest_get:
         id: '[0-9a-f]+'
     methods: [GET]
 
+pim_enrich_product_rest_create:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.rest.product:createAction, _format: json }
+    methods: [POST]
+
 pim_enrich_product_rest_post:
     path: /rest/{id}
     defaults: { _controller: pim_enrich.controller.rest.product:postAction, _format: json }

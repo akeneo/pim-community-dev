@@ -42,4 +42,24 @@ class Creation extends Form
             parent::fillField($locator, $value, $modal);
         }
     }
+
+    /**
+     * Find a validation tooltip containing a text
+     *
+     * @param string $text
+     *
+     * @return null|Element
+     */
+    public function findValidationTooltip($text)
+    {
+        return $this->spin(function () use ($text) {
+            return $this->find(
+                'css',
+                sprintf(
+                    '.validation-errors .error-message:contains("%s")',
+                    $text
+                )
+            );
+        }, sprintf('Cannot find error message "%s" in validation tooltip', $text));
+    }
 }
