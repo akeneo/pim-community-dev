@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class VariantGroupProcessorSpec extends ObjectBehavior
 {
     function let(
-        StandardArrayConverterInterface $variantConverter,
+        ArrayConverterInterface $variantConverter,
         IdentifiableObjectRepositoryInterface $repository,
         GroupFactory $groupFactory,
         ObjectUpdaterInterface $variantUpdater,

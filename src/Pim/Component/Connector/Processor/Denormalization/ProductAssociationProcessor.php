@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductAssociationProcessor extends AbstractProcessor
 {
-    /** @var StandardArrayConverterInterface */
+    /** @var ArrayConverterInterface */
     protected $arrayConverter;
 
     /** @var IdentifiableObjectRepositoryInterface */
@@ -41,7 +41,7 @@ class ProductAssociationProcessor extends AbstractProcessor
     protected $enabledComparison = true;
 
     /**
-     * @param StandardArrayConverterInterface       $arrayConverter     array converter
+     * @param ArrayConverterInterface               $arrayConverter     array converter
      * @param IdentifiableObjectRepositoryInterface $repository         product repository
      * @param ObjectUpdaterInterface                $updater            product updater
      * @param ValidatorInterface                    $validator          validator of the object
@@ -49,7 +49,7 @@ class ProductAssociationProcessor extends AbstractProcessor
      * @param ObjectDetacherInterface               $detacher           detacher to remove it from UOW when skip
      */
     public function __construct(
-        StandardArrayConverterInterface $arrayConverter,
+        ArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,

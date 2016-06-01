@@ -295,3 +295,39 @@
 - Remove `Pim\Bundle\EnrichBundle\Twig\ChannelExtension`
 - Remove twig functions `channel_color` and `channel_font_color`
 - Remove property color from the model `Pim\Bundle\CatalogBundle\Entity\Channel` and interface `Pim\Component\Catalog\Model\ChannelInterface`
+- Rename `Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface` to `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface`
+- Remove `Pim\Component\Connector\ArrayConverter\Structured\AttributeOptionStandardConverter`
+- Remove `Pim\Component\Connector\ArrayConverter\Structured\JobInstanceConverter`
+- Remove `Pim\Component\Connector\ArrayConverter\Flat\LocaleStandardConverter`
+- Remove `Pim\Component\Connector\ArrayConverter\Flat\UserGroupStandardConverter`
+- Remove `Pim\Component\Connector\ArrayConverter\Flat\UserRoleStandardConverter`
+- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\AttributeOptionStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\AttributeOption`
+- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\AttributeStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Attribute`
+- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product`
+- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductAssociation`
+- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\VariantGroupStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\VariantGroup`
+- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\GroupStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Group`
+- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\CategoryStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Category`
+- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\AssociationTypeStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\AssociationType`
+- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\FamilyStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Family`
+- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\ChannelStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Channel`
+- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\AttributeGroupStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\AttributeGroup`
+- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\GroupTypeStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\GroupType`
+- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\CurrencyStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Currency`
+- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\UserStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\User`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistry` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterRegistry`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\AbstractValueConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\AbstractValueConverter`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\PriceConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\PriceConverter`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\MetricConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\MetricConverter`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\MultiSelectConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\MultiSelectConverter`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\SimpleSelectConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\SimpleSelectConverter`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\MediaConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\MediaConverter`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\TextConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\TextConverter`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ScalarConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ScalarConverter`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldConverter`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMapper` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor`
+- Move `Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter`

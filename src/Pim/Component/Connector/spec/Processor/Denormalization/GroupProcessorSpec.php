@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class GroupProcessorSpec extends ObjectBehavior
 {
     function let(
-        StandardArrayConverterInterface $groupConverter,
+        ArrayConverterInterface $groupConverter,
         IdentifiableObjectRepositoryInterface $repository,
         GroupFactory $groupFactory,
         ObjectUpdaterInterface $groupUpdater,

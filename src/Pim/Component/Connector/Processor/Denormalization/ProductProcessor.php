@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductProcessor extends AbstractProcessor
 {
-    /** @var StandardArrayConverterInterface */
+    /** @var ArrayConverterInterface */
     protected $arrayConverter;
 
     /** @var ProductBuilderInterface */
@@ -53,7 +53,7 @@ class ProductProcessor extends AbstractProcessor
     protected $localizedConverter;
 
     /**
-     * @param StandardArrayConverterInterface       $arrayConverter     array converter
+     * @param ArrayConverterInterface               $arrayConverter     array converter
      * @param IdentifiableObjectRepositoryInterface $repository         product repository
      * @param ProductBuilderInterface               $builder            product builder
      * @param ObjectUpdaterInterface                $updater            product updater
@@ -63,7 +63,7 @@ class ProductProcessor extends AbstractProcessor
      * @param AttributeConverterInterface           $localizedConverter attributes localized converter
      */
     public function __construct(
-        StandardArrayConverterInterface $arrayConverter,
+        ArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ProductBuilderInterface $builder,
         ObjectUpdaterInterface $updater,

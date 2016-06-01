@@ -4,7 +4,7 @@ namespace Pim\Behat\Context\Storage;
 
 use Behat\Gherkin\Node\TableNode;
 use Pim\Behat\Context\PimContext;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 
 class ProductStorage extends PimContext
 {
@@ -41,6 +41,6 @@ class ProductStorage extends PimContext
      */
     private function getFieldExtractor()
     {
-        return $this->getService('pim_connector.array_converter.flat.product.attribute_column_info_extractor');
+        return $this->getService('pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor');
     }
 }

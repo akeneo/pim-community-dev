@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Factory\CurrencyFactory;
 use Pim\Component\Catalog\Model\CurrencyInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CurrencyProcessor extends AbstractProcessor
 {
-    /** @var StandardArrayConverterInterface */
+    /** @var ArrayConverterInterface */
     protected $currencyConverter;
 
     /** @var CurrencyFactory */
@@ -32,14 +32,14 @@ class CurrencyProcessor extends AbstractProcessor
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param StandardArrayConverterInterface       $currencyConverter
+     * @param ArrayConverterInterface               $currencyConverter
      * @param CurrencyFactory                       $currencyFactory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        StandardArrayConverterInterface $currencyConverter,
+        ArrayConverterInterface $currencyConverter,
         CurrencyFactory $currencyFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator

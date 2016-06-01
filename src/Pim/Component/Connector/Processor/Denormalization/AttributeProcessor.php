@@ -5,7 +5,7 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Factory\AttributeFactory;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeProcessor extends AbstractProcessor
 {
-    /** @var StandardArrayConverterInterface */
+    /** @var ArrayConverterInterface */
     protected $converter;
 
     /** @var ObjectUpdaterInterface */
@@ -31,14 +31,14 @@ class AttributeProcessor extends AbstractProcessor
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param StandardArrayConverterInterface       $converter
+     * @param ArrayConverterInterface               $converter
      * @param AttributeFactory                      $factory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        StandardArrayConverterInterface $converter,
+        ArrayConverterInterface $converter,
         AttributeFactory $factory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator

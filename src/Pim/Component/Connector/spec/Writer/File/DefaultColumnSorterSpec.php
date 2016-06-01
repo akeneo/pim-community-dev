@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\Writer\File;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
 class DefaultColumnSorterSpec extends ObjectBehavior
 {

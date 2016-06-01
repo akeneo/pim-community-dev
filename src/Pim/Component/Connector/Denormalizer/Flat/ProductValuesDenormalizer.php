@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Denormalizer\Flat;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**

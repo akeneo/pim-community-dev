@@ -1976,11 +1976,11 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor
+     * @return \Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor
      */
     protected function getFieldExtractor()
     {
-        return $this->getContainer()->get('pim_connector.array_converter.flat.product.attribute_column_info_extractor');
+        return $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor');
     }
 
     /**

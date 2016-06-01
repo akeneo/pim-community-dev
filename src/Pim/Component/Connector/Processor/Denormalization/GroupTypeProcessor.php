@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Factory\GroupTypeFactory;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GroupTypeProcessor extends AbstractProcessor
 {
-    /** @var StandardArrayConverterInterface */
+    /** @var ArrayConverterInterface */
     protected $groupTypeConverter;
 
     /** @var ObjectUpdaterInterface */
@@ -32,14 +32,14 @@ class GroupTypeProcessor extends AbstractProcessor
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param StandardArrayConverterInterface       $groupTypeConverter
+     * @param ArrayConverterInterface               $groupTypeConverter
      * @param GroupTypeFactory                      $groupTypeFactory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        StandardArrayConverterInterface $groupTypeConverter,
+        ArrayConverterInterface $groupTypeConverter,
         GroupTypeFactory $groupTypeFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator

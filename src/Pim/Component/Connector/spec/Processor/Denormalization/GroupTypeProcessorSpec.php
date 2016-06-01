@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\GroupTypeFactory;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -18,7 +18,7 @@ class GroupTypeProcessorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $repository,
-        StandardArrayConverterInterface $groupTypeConverter,
+        ArrayConverterInterface $groupTypeConverter,
         GroupTypeFactory $groupTypeFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,

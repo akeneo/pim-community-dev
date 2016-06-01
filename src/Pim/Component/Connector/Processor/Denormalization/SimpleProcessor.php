@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class SimpleProcessor extends AbstractProcessor
 {
-    /** @var StandardArrayConverterInterface */
+    /** @var ArrayConverterInterface */
     protected $converter;
 
     /** @var SimpleFactoryInterface */
@@ -35,7 +35,7 @@ class SimpleProcessor extends AbstractProcessor
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param StandardArrayConverterInterface       $converter
+     * @param ArrayConverterInterface               $converter
      * @param SimpleFactoryInterface                $factory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
@@ -43,7 +43,7 @@ class SimpleProcessor extends AbstractProcessor
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        StandardArrayConverterInterface $converter,
+        ArrayConverterInterface $converter,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
