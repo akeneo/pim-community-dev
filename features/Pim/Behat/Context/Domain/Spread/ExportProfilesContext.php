@@ -297,9 +297,9 @@ class ExportProfilesContext extends PimContext
     /**
      * @param string $code
      *
+     * @throws ExpectationException
      * @return string
      *
-     * @throws ExpectationException
      */
     protected function getExportedFile($code)
     {
