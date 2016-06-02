@@ -1,3 +1,8 @@
+# 1.5.*
+
+- PIM-5711: Don't create empty attribute translations if attributes are imported with empty labels
+- PIM-5829: Fix an issue with wrong parameters order in FamilyUpdater
+
 # 1.5.4 (2016-06-01)
 
 ## Bug fixes
@@ -9,7 +14,6 @@
 - PIM-5802: Keep data previously filled in select2 filter
 - PIM-5824: Fix memory leak on products export
 - PIM-5712: Keep reference in "akeneo_file_storage_file_info" table after removing a media attribute from a product
-- PIM-5711: Don't create empty attribute translations if attributes are imported with empty labels
 
 # 1.5.3 (2016-05-13)
 
