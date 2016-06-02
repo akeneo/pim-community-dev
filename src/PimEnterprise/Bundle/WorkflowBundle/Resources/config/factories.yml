@@ -3,4 +3,4 @@ parameters:
 
 services:
     pimee_workflow.factory.product_draft:
-        class: %pimee_workflow.factory.product_draft.class%
+        class: '%pimee_workflow.factory.product_draft.class%'

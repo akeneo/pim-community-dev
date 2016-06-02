@@ -11,61 +11,61 @@ parameters:
 
 services:
     pimee_product_asset.form.type.asset:
-        class: %pimee_product_asset.form.type.asset.class%
+        class: '%pimee_product_asset.form.type.asset.class%'
         arguments:
-            - %pimee_product_asset.model.asset.class%
-            - %pimee_product_asset.model.tag.class%
-            - %pimee_product_asset.model.category.class%
+            - '%pimee_product_asset.model.asset.class%'
+            - '%pimee_product_asset.model.tag.class%'
+            - '%pimee_product_asset.model.category.class%'
         tags:
             - { name: form.type, alias: pimee_product_asset }
 
     pimee_product_asset.form.type.create_asset:
-        class: %pimee_product_asset.form.type.create_asset.class%
+        class: '%pimee_product_asset.form.type.create_asset.class%'
         tags:
             - { name: form.type, alias: pimee_product_asset_create }
 
     pimee_product_asset.form.type.asset_reference:
-        class: %pimee_product_asset.form.type.asset_reference.class%
+        class: '%pimee_product_asset.form.type.asset_reference.class%'
         arguments:
-            - %pimee_product_asset.model.reference.class%
+            - '%pimee_product_asset.model.reference.class%'
         tags:
             - { name: form.type, alias: pimee_product_asset_reference }
 
     pimee_product_asset.form.type.asset_variation:
-        class: %pimee_product_asset.form.type.asset_variation.class%
+        class: '%pimee_product_asset.form.type.asset_variation.class%'
         arguments:
-            - %pimee_product_asset.model.variation.class%
+            - '%pimee_product_asset.model.variation.class%'
         tags:
             - { name: form.type, alias: pimee_product_asset_variation }
 
     pimee_product_asset.form.type.ajax_tag:
-        class: %pimee_product_asset.form.type.ajax_asset_tag.class%
+        class: '%pimee_product_asset.form.type.ajax_asset_tag.class%'
         arguments:
             - '@pim_ui.form.transformer.ajax_creatable_entity.factory'
             - '@pimee_product_asset.saver.tag'
             - '@router'
             - '@pim_user.context.user'
-            - %pimee_product_asset.form.transformer.ajax_asset_tag.class%
+            - '%pimee_product_asset.form.transformer.ajax_asset_tag.class%'
         tags:
             - { name: form.type, alias: pim_ajax_asset_tag }
 
     pimee_product_asset.form.type.category:
-        class: %pimee_product_asset.form.type.category.class%
+        class: '%pimee_product_asset.form.type.category.class%'
         arguments:
-            - %pimee_product_asset.model.category.class%
-            - %pimee_product_asset.model.category_translation.class%
+            - '%pimee_product_asset.model.category.class%'
+            - '%pimee_product_asset.model.category_translation.class%'
         tags:
             - { name: form.type, alias: pimee_asset_category }
         calls:
             - [addEventSubscriber, ['@pimee_product_asset.form.subscriber.category_permissions']]
 
     pimee_product_asset.form.type.category_permissions:
-        class: %pimee_product_asset.form.type.category_permissions.class%
+        class: '%pimee_product_asset.form.type.category_permissions.class%'
         tags:
             - { name: form.type, alias: pimee_product_asset_category_permissions }
 
     pimee_product_asset.form.type.asset_collection:
-        class: %pimee_product_asset.form.type.asset_collection.class%
+        class: '%pimee_product_asset.form.type.asset_collection.class%'
         arguments:
             - '@pimee_product_asset.data_transformer.asset_to_string'
             - '@pim_user.context.user'

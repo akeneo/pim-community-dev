@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_dashboard.widget.proposal:
-        class: %pimee_dashboard.widget.proposal.class%
+        class: '%pimee_dashboard.widget.proposal.class%'
         arguments:
             - '@security.authorization_checker'
             - '@pimee_workflow.repository.product_draft'

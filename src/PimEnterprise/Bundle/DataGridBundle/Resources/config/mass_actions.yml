@@ -6,7 +6,7 @@ parameters:
 
 services:
     pim_datagrid.extension.mass_action.util.product_fields_builder:
-        class: %pim_datagrid.extension.mass_action.util.product_fields_builder.class%
+        class: '%pim_datagrid.extension.mass_action.util.product_fields_builder.class%'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.attribute'
@@ -18,7 +18,7 @@ services:
             - '@security.token_storage'
 
     pimee_datagrid.extension.mass_action.util.published_product_fields_builder:
-        class: %pim_datagrid.extension.mass_action.util.product_fields_builder.class%
+        class: '%pim_datagrid.extension.mass_action.util.product_fields_builder.class%'
         arguments:
             - '@pimee_workflow.repository.published_product'
             - '@pim_catalog.repository.attribute'
@@ -30,7 +30,7 @@ services:
             - '@security.token_storage'
 
     pim_datagrid.extension.mass_action.handler.mass_approve:
-        class: %pim_datagrid.extension.mass_action.handler.mass_approve.class%
+        class: '%pim_datagrid.extension.mass_action.handler.mass_approve.class%'
         arguments:
             - '@pim_datagrid.datasource.result_record.hydrator.object_id'
             - '@event_dispatcher'
@@ -38,7 +38,7 @@ services:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_approve }
 
     pim_datagrid.extension.mass_action.handler.mass_refuse:
-        class: %pim_datagrid.extension.mass_action.handler.mass_refuse.class%
+        class: '%pim_datagrid.extension.mass_action.handler.mass_refuse.class%'
         arguments:
             - '@pim_datagrid.datasource.result_record.hydrator.object_id'
             - '@event_dispatcher'
@@ -46,7 +46,7 @@ services:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_refuse }
 
     pim_datagrid.extension.mass_action.handler.rule_impacted_product_count:
-        class: %pim_datagrid.extension.mass_action.handler.rule_impacted_product_count.class%
+        class: '%pim_datagrid.extension.mass_action.handler.rule_impacted_product_count.class%'
         arguments:
             - '@pim_datagrid.datasource.result_record.hydrator.orm.object_id'
             - '@event_dispatcher'
@@ -54,13 +54,13 @@ services:
             - { name: pim_datagrid.extension.mass_action.handler, alias: rule_impacted_product_count }
 
     pimee_datagrid.extension.mass_action.type.mass_approve:
-        class: %oro_datagrid.extension.mass_action.type.redirect.class%
+        class: '%oro_datagrid.extension.mass_action.type.redirect.class%'
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: mass-approve-proposal }
 
     pimee_datagrid.extension.mass_action.type.mass_refuse:
-        class: %oro_datagrid.extension.mass_action.type.redirect.class%
+        class: '%oro_datagrid.extension.mass_action.type.redirect.class%'
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: mass-refuse-proposal }

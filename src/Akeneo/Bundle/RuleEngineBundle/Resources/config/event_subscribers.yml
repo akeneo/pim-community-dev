@@ -4,7 +4,7 @@ parameters:
 
 services:
     akeneo_rule_engine.event_subscriber.log_exexution:
-        class: %akeneo_rule_engine.event_subscriber.log_execution.class%
+        class: '%akeneo_rule_engine.event_subscriber.log_execution.class%'
         arguments:
             - '@logger'
         tags:

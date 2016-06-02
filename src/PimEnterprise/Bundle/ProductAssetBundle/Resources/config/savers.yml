@@ -7,54 +7,54 @@ parameters:
 
 services:
     pimee_product_asset.saver.asset:
-        class: %pimee_product_asset.saver.asset.class%
+        class: '%pimee_product_asset.saver.asset.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.completeness_options_resolver'
             - '@pim_catalog.doctrine.completeness_generator'
 
     pimee_product_asset.saver.tag:
-        class: %pimee_product_asset.saver.tag.class%
+        class: '%pimee_product_asset.saver.tag.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
-            - %pimee_product_asset.model.tag.class%
+            - '%pimee_product_asset.model.tag.class%'
 
     pimee_product_asset.saver.reference:
-        class: %pimee_product_asset.saver.reference.class%
+        class: '%pimee_product_asset.saver.reference.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.completeness_options_resolver'
             - '@pim_catalog.doctrine.completeness_generator'
 
     pimee_product_asset.saver.variation:
-        class: %pimee_product_asset.saver.variation.class%
+        class: '%pimee_product_asset.saver.variation.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.completeness_options_resolver'
             - '@pim_catalog.doctrine.completeness_generator'
 
     pimee_product_asset.saver.file_metadata:
-        class: %pimee_product_asset.saver.file_metadata.class%
+        class: '%pimee_product_asset.saver.file_metadata.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
-            - %pimee_product_asset.model.file_metadata.class%
+            - '%pimee_product_asset.model.file_metadata.class%'
 
     pimee_product_asset.saver.category:
-        class: %akeneo_storage_utils.saver.base.class%
+        class: '%akeneo_storage_utils.saver.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
-            - %pimee_product_asset.model.category.interface%
+            - '%pimee_product_asset.model.category.interface%'
 
     pimee_product_asset.saver.channel_configuration:
-        class: %akeneo_storage_utils.saver.base.class%
+        class: '%akeneo_storage_utils.saver.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
-            - %pimee_product_asset.model.channel_variations_configuration.interface%
+            - '%pimee_product_asset.model.channel_variations_configuration.interface%'

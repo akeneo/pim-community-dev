@@ -3,6 +3,6 @@ parameters:
 
 services:
     akeneo_file_transformer.file_transformer:
-        class: %akeneo_file_transformer.file_transformer.class%
+        class: '%akeneo_file_transformer.file_transformer.class%'
         arguments:
             - '@akeneo_file_transformer.transformation.registry'

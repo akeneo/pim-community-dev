@@ -4,15 +4,15 @@ parameters:
 
 services:
     pimee_enrich.twig.version_extension:
-        class: %pimee_enrich.twig.version_extension.class%
+        class: '%pimee_enrich.twig.version_extension.class%'
         tags:
             - { name: twig.extension }
 
     pimee_enrich.twig.attribute_extension:
-        class: %pimee_enrich.twig.attribute_extension.class%
+        class: '%pimee_enrich.twig.attribute_extension.class%'
         arguments:
             - @pim_catalog.repository.attribute
-            - %pim_enrich.attribute_icons%
-            - %pimee_enrich.attribute_icons%
+            - '%pim_enrich.attribute_icons%'
+            - '%pimee_enrich.attribute_icons%'
         tags:
             - { name: twig.extension }

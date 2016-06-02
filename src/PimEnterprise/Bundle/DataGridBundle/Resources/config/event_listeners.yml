@@ -5,7 +5,7 @@ parameters:
 
 services:
     pim_datagrid.event_listener.configure_published_product_filters:
-        class: %pim_datagrid.event_listener.configure_product_filters.class%
+        class: '%pim_datagrid.event_listener.configure_product_filters.class%'
         arguments:
             - @pim_user.context.user
         tags:

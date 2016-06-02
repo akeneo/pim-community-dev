@@ -6,7 +6,7 @@ parameters:
 
 services:
     pimee_product_asset.variation_file_generator:
-        class: %pimee_product_asset.variation_file_generator.class%
+        class: '%pimee_product_asset.variation_file_generator.class%'
         arguments:
             - '@pimee_product_asset.repository.channel_configuration'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
@@ -19,12 +19,12 @@ services:
             - 'assetStorage'
 
     pimee_product_asset.variations_collection_files_generator:
-        class: %pimee_product_asset.variations_collection_files_generator.class%
+        class: '%pimee_product_asset.variations_collection_files_generator.class%'
         arguments:
             - '@pimee_product_asset.variation_file_generator'
 
     pimee_product_asset.command_launcher:
-        class: %pimee_product_asset.command_launcher.class%
+        class: '%pimee_product_asset.command_launcher.class%'
         arguments:
           - '%kernel.root_dir%'
           - '%kernel.environment%'

@@ -5,14 +5,14 @@ connector:
             type:  mass_upload
             steps:
                 perform:
-                    class: "%pim_connector.step.tasklet.class%"
+                    class: '%pim_connector.step.tasklet.class%'
                     services:
                         tasklet: pimee_product_asset.mass_upload.tasklet
         yml_asset_channel_configuration_import:
             type:  import
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_asset:
@@ -32,11 +32,11 @@ connector:
             type:  import
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_tags:
-                    class: %pimee_product_asset.step.tag.class%
+                    class: '%pimee_product_asset.step.tag.class%'
                     services:
                         reader:    pimee_product_asset.reader.file.csv_tag
                         processor: pimee_product_asset.processor.denormalization.tag.flat
@@ -50,7 +50,7 @@ connector:
             type:  import
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_asset_category:
@@ -88,11 +88,11 @@ connector:
             type:  import
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_tags:
-                    class: %pimee_product_asset.step.tag.class%
+                    class: '%pimee_product_asset.step.tag.class%'
                     services:
                         reader:    pimee_product_asset.reader.file.xlsx_tag
                         processor: pimee_product_asset.processor.denormalization.tag.flat
@@ -106,7 +106,7 @@ connector:
             type:  import
             steps:
                 validation:
-                    class: %pim_connector.step.validator.class%
+                    class: '%pim_connector.step.validator.class%'
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_asset_category:

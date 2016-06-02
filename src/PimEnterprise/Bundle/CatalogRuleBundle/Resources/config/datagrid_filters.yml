@@ -3,11 +3,11 @@ parameters:
 
 services:
     pim_catalog_rule.datagrid.extension.filter.orm.attribute.is_smart:
-        class: %pim_catalog_rule.datagrid.extension.filter.orm.attribute.is_smart.class%
+        class: '%pim_catalog_rule.datagrid.extension.filter.orm.attribute.is_smart.class%'
         arguments:
             - '@form.factory'
             - '@oro_filter.filter_utility'
-            - %pim_catalog.entity.attribute.class%
-            - %akeneo_rule_engine.model.rule_relation.class%
+            - '%pim_catalog.entity.attribute.class%'
+            - '%akeneo_rule_engine.model.rule_relation.class%'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: attribute_is_smart }

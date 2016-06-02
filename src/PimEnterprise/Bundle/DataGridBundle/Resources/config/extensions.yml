@@ -3,9 +3,9 @@ parameters:
 
 services:
     pim_datagrid.extension.selector.orm_selector:
-        class: %pim_datagrid.extension.selector.orm_selector.class%
+        class: '%pim_datagrid.extension.selector.orm_selector.class%'
         arguments:
-            - %pim_catalog_product_storage_driver%
+            - '%pim_catalog_product_storage_driver%'
             - '@oro_datagrid.datagrid.request_params'
         calls:
             - [addEligibleDatasource, ['pim_datasource_product']]

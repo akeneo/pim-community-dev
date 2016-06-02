@@ -6,7 +6,7 @@ services:
         parent: pim_enrich.view_element.base
         arguments:
             - 'pimee_enrich.category.tab.permission'
-            - %pimee_enrich.view_element.tab.category_permission.template%
+            - '%pimee_enrich.view_element.tab.category_permission.template%'
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pimee_enrich_category_edit_permissions'}] ]

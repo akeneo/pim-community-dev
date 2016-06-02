@@ -3,7 +3,7 @@ parameters: ~
 services:
     # Validation constraints for Exports ------------------------------------------------------------------------------
     pimee_product_asset.job.job_parameters.constraint_collection_provider.simple_csv_export:
-        class: %pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export.class%
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export.class%'
         arguments:
             -
                 - 'csv_asset_export'
@@ -13,7 +13,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pimee_product_asset.job.job_parameters.constraint_collection_provider.simple_xlsx_export:
-        class: %pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export.class%
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export.class%'
         arguments:
             -
                 - 'xlsx_asset_export'
@@ -23,7 +23,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pimee_product_asset.job_parameters.constraints.simple_yaml_export:
-        class: %pim_connector.job.job_parameters.constraint_collection_provider.simple_yaml_export.class%
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_yaml_export.class%'
         arguments:
             -
                 - 'yml_asset_channel_configuration_export'
@@ -32,7 +32,7 @@ services:
 
     # Validation constraints for Imports ------------------------------------------------------------------------------
     pimee_product_asset.job.job_parameters.constraint_collection_provider.simple_csv_import:
-        class: %pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import.class%
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import.class%'
         arguments:
             -
                 - 'csv_asset_import'
@@ -41,7 +41,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pimee_product_asset.job.job_parameters.constraint_collection_provider.simple_xlsx_import:
-        class: %pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import.class%
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import.class%'
         arguments:
             -
                 - 'xlsx_asset_import'
@@ -50,7 +50,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pimee_product_asset.job_parameters.constraints.simple_yaml_import:
-        class: %pim_connector.job.job_parameters.constraint_collection_provider.simple_yaml_import.class%
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_yaml_import.class%'
         arguments:
             -
                 - 'yml_asset_channel_configuration_import'
@@ -59,7 +59,7 @@ services:
 
     # Mass upload -----------------------------------------------------------------------------------------------------
     pimee_product_asset.job_parameters.constraints.asset_mass_upload:
-        class: %akeneo_batch.job.job_parameters.empty_constraint_collection_provider.class%
+        class: '%akeneo_batch.job.job_parameters.empty_constraint_collection_provider.class%'
         arguments:
             -
                 - 'apply_assets_mass_upload'

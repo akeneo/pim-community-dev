@@ -10,20 +10,20 @@ services:
         alias: doctrine.odm.mongodb.document_manager
 
     pimee_workflow.repository.product_draft:
-        class: %pimee_workflow.repository.product_draft.class%
+        class: '%pimee_workflow.repository.product_draft.class%'
         factory_service: pimee_workflow.object_manager.product_draft
         factory_method: getRepository
-        arguments: [%pimee_workflow.model.product_draft.class%]
+        arguments: ['%pimee_workflow.model.product_draft.class%']
         calls:
             - [setCategoryAccessRepository, ['@pimee_security.repository.category_access']]
         tags:
             - { name: 'pim_repository' }
 
     pimee_workflow.repository.published_product:
-        class: %pimee_workflow.repository.published_product.class%
+        class: '%pimee_workflow.repository.published_product.class%'
         factory_service: pim_catalog.object_manager.product
         factory_method: getRepository
-        arguments: [%pimee_workflow.entity.published_product.class%]
+        arguments: ['%pimee_workflow.entity.published_product.class%']
         calls:
             - [setProductQueryBuilderFactory, ['@pimee_workflow.doctrine.query.published_product_query_factory']]
             - [setEntityManager, ['@doctrine.orm.entity_manager']]
@@ -34,26 +34,26 @@ services:
             - { name: 'pim_repository' }
 
     pimee_workflow.repository.published_product_category:
-        class: %pim_catalog.repository.product_category.class%
+        class: '%pim_catalog.repository.product_category.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - %pimee_workflow.entity.published_product.class%
+            - '%pimee_workflow.entity.published_product.class%'
             - '@doctrine.orm.entity_manager'
-            - %pim_catalog.entity.category.class%
+            - '%pim_catalog.entity.category.class%'
 
     pimee_workflow.repository.published_association:
         alias: pimee_workflow.repository.published_product
 
     pimee_workflow.repository.published_product_mass_action:
-        class: %pim_catalog.repository.product_mass_action.class%
+        class: '%pim_catalog.repository.product_mass_action.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - %pimee_workflow.entity.published_product.class%
+            - '%pimee_workflow.entity.published_product.class%'
             - '@pim_catalog.repository.family'
             - '@pimee_workflow.repository.published_product'
 
     pimee_workflow.subscriber.synchronize_product_draft_categories:
-        class: %pimee_workflow.subscriber.synchronize_product_draft_categories.class%
+        class: '%pimee_workflow.subscriber.synchronize_product_draft_categories.class%'
         arguments:
             - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - '%pimee_workflow.model.product_draft.class%'
@@ -62,7 +62,7 @@ services:
             - { name: doctrine.event_subscriber }
 
     pimee_workflow.subscriber.remove_outdated_product_draft:
-        class: %pimee_workflow.subscriber.remove_outdated_product_draft.class%
+        class: '%pimee_workflow.subscriber.remove_outdated_product_draft.class%'
         arguments:
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.remover.product_draft'

@@ -4,7 +4,7 @@ datagrid:
             acl_resource: pimee_catalog_rule_rule_view_permissions
             repository_method: createDatagridQueryBuilder
             type: pim_datasource_rule
-            entity: %akeneo_rule_engine.model.rule_definition.class%
+            entity: '%akeneo_rule_engine.model.rule_definition.class%'
         columns:
             code:
                 label: pimee_catalog_rule.datagrid.rule-grid.column.code
@@ -51,7 +51,7 @@ datagrid:
                 impactedSubjectCount:
                     data_name: r.impactedSubjectCount
             default:
-                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         mass_actions:
             impacted_product_count:
                 type: ajax

@@ -10,80 +10,80 @@ parameters:
 
 services:
     pimee_product_asset.repository.channel_configuration:
-        class: %pimee_product_asset.repository.channel_configuration.class%
+        class: '%pimee_product_asset.repository.channel_configuration.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [%pimee_product_asset.model.channel_variations_configuration.class%]
+        arguments: ['%pimee_product_asset.model.channel_variations_configuration.class%']
         tags:
             - { name: 'pim_repository' }
 
     pimee_product_asset.repository.asset:
-        class: %pimee_product_asset.repository.asset.class%
+        class: '%pimee_product_asset.repository.asset.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [%pimee_product_asset.model.asset.class%]
+        arguments: ['%pimee_product_asset.model.asset.class%']
         calls:
             - [setProductClass, ['%pim_catalog.entity.product.class%']]
         tags:
             - { name: 'pim_repository' }
 
     pimee_product_asset.repository.file_metadata:
-        class: %pimee_product_asset.repository.file_metadata.class%
+        class: '%pimee_product_asset.repository.file_metadata.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments:
-            - %pimee_product_asset.model.file_metadata.class%
+            - '%pimee_product_asset.model.file_metadata.class%'
         tags:
             - { name: 'pim_repository' }
 
     pimee_product_asset.repository.reference:
-        class: %pimee_product_asset.repository.reference.class%
+        class: '%pimee_product_asset.repository.reference.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments:
-            - %pimee_product_asset.model.reference.class%
+            - '%pimee_product_asset.model.reference.class%'
         tags:
             - { name: 'pim_repository' }
 
     pimee_product_asset.repository.variation:
-        class: %pimee_product_asset.repository.variation.class%
+        class: '%pimee_product_asset.repository.variation.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments:
-            - %pimee_product_asset.model.variation.class%
+            - '%pimee_product_asset.model.variation.class%'
         tags:
             - { name: 'pim_repository' }
 
     pimee_product_asset.repository.category:
-        class: %pimee_product_asset.repository.category.class%
+        class: '%pimee_product_asset.repository.category.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments:
-            - %pimee_product_asset.model.category.class%
+            - '%pimee_product_asset.model.category.class%'
         tags:
             - { name: 'pim_repository' }
 
     pimee_product_asset.repository.asset_category:
-        class:  %pimee_product_asset.repository.asset_category.class%
+        class:  '%pimee_product_asset.repository.asset_category.class%'
         parent: akeneo_classification.repository.abstract_item_category
         arguments:
             - '@doctrine.orm.entity_manager'
-            - %pimee_product_asset.model.asset.class%
+            - '%pimee_product_asset.model.asset.class%'
 
     pimee_product_asset.repository.tag:
-        class: %pimee_product_asset.repository.tag.class%
+        class: '%pimee_product_asset.repository.tag.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments:
-            - %pimee_product_asset.model.tag.class%
+            - '%pimee_product_asset.model.tag.class%'
         tags:
             - { name: 'pim_repository' }
 
     pimee_product_asset.repository.asset_category_access:
-        class: %pimee_security.repository.category_access.class%
+        class: '%pimee_security.repository.category_access.class%'
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [%pimee_security.entity.asset_category_access.class%]
+        arguments: ['%pimee_security.entity.asset_category_access.class%']
         tags:
             - { name: 'pim_repository' }
         calls:

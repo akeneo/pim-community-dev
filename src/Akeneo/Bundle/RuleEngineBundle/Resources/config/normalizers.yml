@@ -5,14 +5,14 @@ parameters:
 
 services:
    akeneo_rule_engine.normalizer.rule_collection:
-        class: %akeneo_rule_engine.normalizer.rule_collection.class%
+        class: '%akeneo_rule_engine.normalizer.rule_collection.class%'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
    akeneo_rule_engine.normalizer.rule_definition:
-        class: %akeneo_rule_engine.normalizer.rule_definition.class%
+        class: '%akeneo_rule_engine.normalizer.rule_definition.class%'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
    akeneo_rule_engine.normalizer.rule:
-        class: %akeneo_rule_engine.normalizer.rule.class%
+        class: '%akeneo_rule_engine.normalizer.rule.class%'

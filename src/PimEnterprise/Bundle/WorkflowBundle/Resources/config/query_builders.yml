@@ -2,7 +2,7 @@ parameters: ~
 
 services:
     pimee_workflow.doctrine.query.published_product_query_factory:
-        class: %pim_catalog.query.product_query_builder_factory.class%
+        class: '%pim_catalog.query.product_query_builder_factory.class%'
         arguments:
             - '%pim_catalog.query.product_query_builder.class%'
             - '@pim_catalog.object_manager.product'
@@ -14,7 +14,7 @@ services:
 
     # PQB common filter definitions (implement either in ORM or MongoDB ODM)
     pimee_workflow.doctrine.query.filter.original_product_id:
-        class: %pim_catalog.doctrine.query.filter.product_id.class%
+        class: '%pim_catalog.doctrine.query.filter.product_id.class%'
         arguments:
             - ['originalProduct']
             - ['=', 'IN']

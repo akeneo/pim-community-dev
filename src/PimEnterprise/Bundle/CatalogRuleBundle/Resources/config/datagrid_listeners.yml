@@ -4,12 +4,12 @@ parameters:
 
 services:
     pimee_catalog_rule.event_listener.datagrid.configure_attribute_grid:
-        class: %pimee_catalog_rule.event_listener.datagrid.configure_attribute_grid.class%
+        class: '%pimee_catalog_rule.event_listener.datagrid.configure_attribute_grid.class%'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.attribute-grid, method: buildBefore }
 
     pimee_catalog_rule.event_listener.datagrid.configure_rule_grid:
-        class: %pimee_catalog_rule.event_listener.datagrid.configure_rule_grid.class%
+        class: '%pimee_catalog_rule.event_listener.datagrid.configure_rule_grid.class%'
         arguments:
             - '@oro_datagrid.datagrid.request_params'
         tags:

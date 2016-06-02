@@ -1,6 +1,6 @@
 services:
     pim_enrich.imagine.loader.flysystem:
-        class: %pim_enrich.imagine.loader.flysystem.class%
+        class: '%pim_enrich.imagine.loader.flysystem.class%'
         arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['catalogStorage', 'assetStorage']

@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_workflow.builder.draft:
-        class: %pimee_workflow.builder.draft.class%
+        class: '%pimee_workflow.builder.draft.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@pim_serializer'

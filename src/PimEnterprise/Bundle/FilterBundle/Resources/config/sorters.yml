@@ -3,6 +3,6 @@ parameters:
 
 services:
     pimee_datagrid.extension.sorter.product_draft.field_sorter:
-        class: %pimee_datagrid.extension.sorter.field_sorter.class%
+        class: '%pimee_datagrid.extension.sorter.field_sorter.class%'
         tags:
             - { name: pimee_datagrid.extension.sorter, type: product_draft_field }

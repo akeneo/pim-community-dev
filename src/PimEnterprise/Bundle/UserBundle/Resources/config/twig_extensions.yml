@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_user.twig_extension.visible_user_preferences:
-        class: %pimee_user.twig_extension.visible_user_preferences.class%
+        class: '%pimee_user.twig_extension.visible_user_preferences.class%'
         arguments:
             - '@pimee_security.repository.category_access'
         tags:

@@ -3,6 +3,6 @@ parameters:
 
 services:
     pimee_product_asset.finder.asset:
-        class: %pimee_product_asset.finder.asset.class%
+        class: '%pimee_product_asset.finder.asset.class%'
         arguments:
             - '@pimee_product_asset.repository.variation'

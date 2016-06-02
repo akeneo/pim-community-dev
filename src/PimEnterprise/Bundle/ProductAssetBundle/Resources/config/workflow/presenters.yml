@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_product_asset.workflow.presenter.assets_collection:
-        class: %pimee_product_asset.workflow.presenter.assets_collection.class%
+        class: '%pimee_product_asset.workflow.presenter.assets_collection.class%'
         arguments:
             - '@pimee_product_asset.repository.asset'
         tags:

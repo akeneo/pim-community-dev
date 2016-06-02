@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_enrich.doctrine.counter.category_product:
-        class: %pimee_enrich.doctrine.counter.granted_category_items.class%
+        class: '%pimee_enrich.doctrine.counter.granted_category_items.class%'
         arguments:
             - '@pim_catalog.repository.product_category'
             - '@pim_catalog.repository.category'

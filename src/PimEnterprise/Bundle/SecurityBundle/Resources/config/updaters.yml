@@ -7,31 +7,31 @@ parameters:
 
 services:
     pimee_security.updater.locale_access:
-        class: %pimee_security.updater.locale_access.class%
+        class: '%pimee_security.updater.locale_access.class%'
         arguments:
             - '@pim_user.repository.group'
             - '@pim_catalog.repository.locale'
 
     pimee_security.updater.asset_category_access:
-        class: %pimee_security.updater.asset_category_access.class%
+        class: '%pimee_security.updater.asset_category_access.class%'
         arguments:
             - '@pim_user.repository.group'
             - '@pimee_product_asset.repository.asset_category'
 
     pimee_security.updater.product_category_access:
-        class: %pimee_security.updater.product_category_access.class%
+        class: '%pimee_security.updater.product_category_access.class%'
         arguments:
             - '@pim_user.repository.group'
             - '@pim_catalog.repository.product_category'
 
     pimee_security.updater.attribute_group_access:
-        class: %pimee_security.updater.attribute_group_access.class%
+        class: '%pimee_security.updater.attribute_group_access.class%'
         arguments:
             - '@pim_user.repository.group'
             - '@pim_catalog.repository.attribute_group'
 
     pimee_security.updater.job_profile_access:
-        class: %pimee_security.updater.job_profile_access.class%
+        class: '%pimee_security.updater.job_profile_access.class%'
         arguments:
             - '@pim_user.repository.group'
             - '@pim_import_export.repository.job_instance'

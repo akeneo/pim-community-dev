@@ -8,7 +8,7 @@ services:
     # Published products operation
     pimee_enrich.mass_edit_action.unpublish:
         public: false
-        class: %pimee_enrich.mass_edit_action.unpublish.class%
+        class: '%pimee_enrich.mass_edit_action.unpublish.class%'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -19,7 +19,7 @@ services:
     # New products operations
     pimee_enrich.mass_edit_action.publish:
         public: false
-        class: %pimee_enrich.mass_edit_action.publish.class%
+        class: '%pimee_enrich.mass_edit_action.publish.class%'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -28,7 +28,7 @@ services:
                 datagrid: product-grid
 
     pim_enrich.mass_edit_tasklet.publish_product:
-        class: %pimee_enrich.mass_edit_tasklet.publish_product.class%
+        class: '%pimee_enrich.mass_edit_tasklet.publish_product.class%'
         arguments:
             - '@pimee_workflow.manager.published_product'
             - '@pim_enrich.product.paginator'
@@ -40,7 +40,7 @@ services:
             - '@pim_catalog.query.product_query_builder_factory'
 
     pim_enrich.mass_edit_tasklet.unpublish_product:
-        class: %pimee_enrich.mass_edit_tasklet.unpublish_product.class%
+        class: '%pimee_enrich.mass_edit_tasklet.unpublish_product.class%'
         arguments:
             - '@pimee_workflow.manager.published_product'
             - '@pim_enrich.product.paginator'
@@ -55,7 +55,7 @@ services:
     # take permissions in account & apply rules
     pim_enrich.mass_edit_action.change_status:
         public: false
-        class: %pim_enrich.mass_edit_action.change_status.class%
+        class: '%pim_enrich.mass_edit_action.change_status.class%'
         arguments:
             - 'update_product_value_with_permission_and_rules'
         tags:
@@ -68,7 +68,7 @@ services:
 
     pim_enrich.mass_edit_action.edit_common_attributes:
         public: false
-        class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
+        class: '%pim_enrich.mass_edit_action.edit_common_attributes.class%'
         arguments:
             - '@pim_catalog.builder.product'
             - '@pim_user.context.user'
@@ -90,7 +90,7 @@ services:
 
     pim_enrich.mass_edit_action.classify:
         public: false
-        class: %pim_enrich.mass_edit_action.classify.class%
+        class: '%pim_enrich.mass_edit_action.classify.class%'
         arguments:
             - 'add_product_value_with_permission_and_rules'
         tags:
@@ -102,7 +102,7 @@ services:
 
     pim_enrich.mass_edit_action.change_family:
         public: false
-        class: %pim_enrich.mass_edit_action.change_family.class%
+        class: '%pim_enrich.mass_edit_action.change_family.class%'
         arguments:
             - 'update_product_value_with_permission_and_rules'
         tags:
@@ -113,7 +113,7 @@ services:
                 datagrid: product-grid
 
     pim_enrich.mass_edit_action.add_to_groups:
-        class: %pim_enrich.mass_edit_action.add_to_groups.class%
+        class: '%pim_enrich.mass_edit_action.add_to_groups.class%'
         arguments:
             - 'add_product_value_with_permission_and_rules'
         tags:
@@ -124,7 +124,7 @@ services:
                 datagrid: product-grid
 
     pim_enrich.mass_edit_action.add_to_variant_group:
-        class: %pim_enrich.mass_edit_action.add_to_variant_group.class%
+        class: '%pim_enrich.mass_edit_action.add_to_variant_group.class%'
         arguments:
             - 'add_to_variant_group_with_rules'
         tags:

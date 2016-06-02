@@ -1,6 +1,6 @@
 services:
     pimee_product_asset.filter.asset_category_filter:
-        class: %pim_filter.category_filter.class%
+        class: '%pim_filter.category_filter.class%'
         arguments:
             - '@form.factory'
             - '@pimee_filter.product_asset_utility'
@@ -9,7 +9,7 @@ services:
             - { name: oro_filter.extension.orm_filter.filter, type: asset_category }
 
     pimee_product_asset.filter.product_asset_category_filter:
-        class: %pim_filter.category_filter.class%
+        class: '%pim_filter.category_filter.class%'
         arguments:
             - '@form.factory'
             - '@pimee_filter.product_asset_utility'

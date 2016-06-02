@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_enrich.connector.writer.mass_edit.product:
-        class: %pimee_enrich.connector.writer.mass_edit.product.class%
+        class: '%pimee_enrich.connector.writer.mass_edit.product.class%'
         arguments:
             - '@pim_versioning.manager.version'
             - '@pimee_workflow.saver.product_delegating'

@@ -1,10 +1,10 @@
 services:
     pimee_datagrid.datasource.result_record.hydrator.product_history:
-        class: %pimee_datagrid.datasource.result_record.hydrator.product_history.class%
+        class: '%pimee_datagrid.datasource.result_record.hydrator.product_history.class%'
         arguments:
             - '@pimee_workflow.repository.published_product'
 
     pim_datagrid.datasource.result_record.hydrator.product_draft:
-        class: %pimee_datagrid.datasource.result_record.hydrator.product_draft.class%
+        class: '%pimee_datagrid.datasource.result_record.hydrator.product_draft.class%'
         arguments:
           - '@pim_datagrid.datagrid.request.parameters_extractor'

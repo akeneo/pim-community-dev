@@ -4,7 +4,7 @@ parameters:
 
 services:
     pimee_product_asset.event_subscriber.mongodb.asset:
-        class: %pimee_product_asset.event_subscriber.mongodb.asset.class%
+        class: '%pimee_product_asset.event_subscriber.mongodb.asset.class%'
         arguments:
             - '@pimee_product_asset.repository.product_cascade_removal'
             - '@pim_catalog.repository.attribute'
@@ -12,7 +12,7 @@ services:
             - { name: kernel.event_subscriber, priority: 100 }
 
     pimee_product_asset.repository.product_cascade_removal:
-        class: %pimee_product_asset.repository.product_cascade_removal.class%
+        class: '%pimee_product_asset.repository.product_cascade_removal.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'

@@ -8,7 +8,7 @@ services:
 
     # product draft saver
     pimee_workflow.saver.product_draft:
-        class: %akeneo_storage_utils.saver.base.class%
+        class: '%akeneo_storage_utils.saver.base.class%'
         arguments:
             - '@pimee_workflow.object_manager.product_draft'
             - '@pim_catalog.saver.product_options_resolver'
@@ -17,7 +17,7 @@ services:
 
     # this product saver delegates to draft or working copy savers depending on user permissions
     pimee_workflow.saver.product_delegating:
-        class: %pimee_workflow.saver.product_delegating.class%
+        class: '%pimee_workflow.saver.product_delegating.class%'
         arguments:
             - '@pimee_workflow.saver.working_copy_product'
             - '@pimee_workflow.saver.product_draft'

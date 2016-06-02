@@ -7,7 +7,7 @@ datagrid:
         source:
             acl_resource:      pim_enrich_product_index
             type:              pimee_datasource_published_product
-            entity:            %pimee_workflow.entity.published_product.class%
+            entity:            '%pimee_workflow.entity.published_product.class%'
             repository_method: createDatagridQueryBuilder
         columns:
             label:
@@ -130,7 +130,7 @@ datagrid:
                     data_name: updated
                     sorter:    product_field
             default:
-                updated: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                updated: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
                 family:

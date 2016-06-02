@@ -6,7 +6,7 @@ parameters:
 
 services:
     pim_datagrid.datagrid.configuration.product.context_configurator:
-        class: %pim_datagrid.datagrid.configuration.product.context_configurator.class%
+        class: '%pim_datagrid.datagrid.configuration.product.context_configurator.class%'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.attribute'
@@ -18,7 +18,7 @@ services:
             - [setRequest, ['@?request=']]
 
     pimee_datagrid.datagrid.configuration.proposal.context_configurator:
-        class: %pimee_datagrid.datagrid.configuration.proposal.context_configurator.class%
+        class: '%pimee_datagrid.datagrid.configuration.proposal.context_configurator.class%'
         arguments:
             - '@oro_datagrid.datagrid.request_params'
             - '@pim_user.context.user'
@@ -26,7 +26,7 @@ services:
             - [setRequest, ['@?request=']]
 
     pimee_datagrid.datagrid.configuration.product.row_actions_configurator:
-        class: %pimee_datagrid.datagrid.configuration.product.row_actions_configurator.class%
+        class: '%pimee_datagrid.datagrid.configuration.product.row_actions_configurator.class%'
         arguments:
             - '@pim_datagrid.datagrid.configuration.product.configuration_registry'
             - '@security.authorization_checker'

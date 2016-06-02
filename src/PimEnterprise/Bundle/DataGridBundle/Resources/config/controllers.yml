@@ -1,6 +1,6 @@
 services:
     pimee_datagrid.controller.published_product_export:
-        class: %pim_datagrid.controller.product_export.class%
+        class: '%pim_datagrid.controller.product_export.class%'
         scope: request
         arguments:
             - '@request'

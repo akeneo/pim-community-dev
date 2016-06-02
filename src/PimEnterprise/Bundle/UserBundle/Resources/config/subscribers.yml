@@ -3,6 +3,6 @@ parameters:
 
 services:
     pimee_user.form.subscriber.user_preferences:
-        class: %pimee_user.form.subscriber.user_preferences.class%
+        class: '%pimee_user.form.subscriber.user_preferences.class%'
         arguments:
             - '@pimee_security.repository.category_access'

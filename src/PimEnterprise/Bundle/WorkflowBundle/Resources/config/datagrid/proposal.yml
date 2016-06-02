@@ -6,7 +6,7 @@ datagrid:
                 - pimee/proposal/partial-proposal-builder
         source:
             type: pimee_datasource_product_draft
-            entity: %pimee_workflow.model.product_draft.class%
+            entity: '%pimee_workflow.model.product_draft.class%'
             repository_method: createProposalDatagridQueryBuilder
             repository_parameters:
                 - currentUser
@@ -126,4 +126,4 @@ datagrid:
                 createdAt:
                     data_name: createdAt
             default:
-                createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                createdAt: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'

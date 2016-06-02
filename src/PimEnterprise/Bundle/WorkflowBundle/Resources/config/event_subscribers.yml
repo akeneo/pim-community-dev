@@ -17,7 +17,7 @@ services:
     # Published product events
     ##
     pimee_workflow.event_subscriber.published_product.check_removal:
-        class: %pimee_workflow.event_subscriber.published_product.check_removal.class%
+        class: '%pimee_workflow.event_subscriber.published_product.check_removal.class%'
         arguments:
             - '@pimee_workflow.repository.published_product'
             - '@pim_catalog.repository.category'
@@ -25,14 +25,14 @@ services:
             - { name: kernel.event_subscriber, priority: 255 }
 
     pimee_workflow.event_subscriber.published_product.consistency_exception:
-        class: %pimee_workflow.event_subscriber.published_product.consistency_exception.class%
+        class: '%pimee_workflow.event_subscriber.published_product.consistency_exception.class%'
         arguments:
             - '@router'
         tags:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.event_subscriber.published_product.detach_product:
-        class: %pimee_workflow.event_subscriber.published_product.detach_product.class%
+        class: '%pimee_workflow.event_subscriber.published_product.detach_product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@doctrine.orm.entity_manager'
@@ -43,7 +43,7 @@ services:
     # Import event subscribers
     ##
     pimee_workflow.event_subscriber.import.new_proposals:
-        class: %pimee_workflow.event_subscriber.import.new_proposals.class%
+        class: '%pimee_workflow.event_subscriber.import.new_proposals.class%'
         arguments:
             - '@pim_notification.notifier'
             - '@pim_user.repository.user'
@@ -58,7 +58,7 @@ services:
     # Product drafts event subscribers
     ##
     pimee_workflow.event_subscriber.product_draft.replace_flash_message:
-        class: %pimee_workflow.event_subscriber.product_draft.replace_flash_message.class%
+        class: '%pimee_workflow.event_subscriber.product_draft.replace_flash_message.class%'
         arguments:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.product'
@@ -66,7 +66,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.event_subscriber.product_draft.approve_notification:
-        class: %pimee_workflow.event_subscriber.product_draft.approve_notification.class%
+        class: '%pimee_workflow.event_subscriber.product_draft.approve_notification.class%'
         arguments:
             - '@pim_notification.notifier'
             - '@pim_user.context.user'
@@ -77,7 +77,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.event_subscriber.product_draft.refuse_notification:
-        class: %pimee_workflow.event_subscriber.product_draft.refuse_notification.class%
+        class: '%pimee_workflow.event_subscriber.product_draft.refuse_notification.class%'
         arguments:
             - '@pim_notification.notifier'
             - '@pim_user.context.user'
@@ -88,7 +88,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.event_subscriber.product_draft.remove_notification:
-        class: %pimee_workflow.event_subscriber.product_draft.remove_notification.class%
+        class: '%pimee_workflow.event_subscriber.product_draft.remove_notification.class%'
         arguments:
             - '@pim_notification.notifier'
             - '@pim_user.context.user'
@@ -99,7 +99,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.event_subscriber.product_draft.send_for_approval:
-        class: %pimee_workflow.event_subscriber.product_draft.send_for_approval.class%
+        class: '%pimee_workflow.event_subscriber.product_draft.send_for_approval.class%'
         arguments:
             - '@pim_notification.notifier'
             - '@pim_user.repository.user'
@@ -110,7 +110,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.event_subscriber.product_draft.ensure_global_status:
-        class: %pimee_workflow.event_subscriber.product_draft.ensure_global_status.class%
+        class: '%pimee_workflow.event_subscriber.product_draft.ensure_global_status.class%'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -118,7 +118,7 @@ services:
     # Product to edit preparation
     ##
     pimee_workflow.event_subscriber.enrich.inject_current_user_product_draft:
-        class: %pimee_workflow.event_subscriber.enrich.inject_current_user_product_draft.class%
+        class: '%pimee_workflow.event_subscriber.enrich.inject_current_user_product_draft.class%'
         arguments:
             - '@pim_user.context.user'
             - '@pim_catalog.context.catalog'
@@ -128,7 +128,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.event_subscriber.enrich.add_product_draft_form_view_parameter:
-        class: %pimee_workflow.event_subscriber.enrich.add_product_draft_form_view_parameter.class%
+        class: '%pimee_workflow.event_subscriber.enrich.add_product_draft_form_view_parameter.class%'
         arguments:
             - '@form.factory'
             - '@pimee_workflow.manager.product_draft'

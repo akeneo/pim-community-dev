@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_user.updater.user:
-        class: %pimee_user.updater.user.class%
+        class: '%pimee_user.updater.user.class%'
         arguments:
             - '@oro_user.manager'
             - '@pim_catalog.repository.category'

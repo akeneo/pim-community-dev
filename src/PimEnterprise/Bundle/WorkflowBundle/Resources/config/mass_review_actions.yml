@@ -4,7 +4,7 @@ parameters:
 
 services:
     pimee_workflow.mass_review_tasklet.approve_draft:
-        class: %pimee_workflow.mass_review_tasklet.approve_draft.class%
+        class: '%pimee_workflow.mass_review_tasklet.approve_draft.class%'
         arguments:
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.manager.product_draft'
@@ -14,7 +14,7 @@ services:
             - '@pimee_workflow.helper.product_draft_changes_permission'
 
     pimee_workflow.mass_review_tasklet.refuse_draft:
-        class: %pimee_workflow.mass_review_tasklet.refuse_draft.class%
+        class: '%pimee_workflow.mass_review_tasklet.refuse_draft.class%'
         arguments:
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.manager.product_draft'

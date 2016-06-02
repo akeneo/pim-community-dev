@@ -5,21 +5,21 @@ parameters:
 
 services:
     pimee_catalog_rule.action_applier.setter:
-        class: %pimee_catalog_rule.action_applier.setter.class%
+        class: '%pimee_catalog_rule.action_applier.setter.class%'
         arguments:
             - '@pim_catalog.updater.product_property_setter'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
 
     pimee_catalog_rule.action_applier.copier:
-        class: %pimee_catalog_rule.action_applier.copier.class%
+        class: '%pimee_catalog_rule.action_applier.copier.class%'
         arguments:
             - '@pim_catalog.updater.product_property_copier'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
 
     pimee_catalog_rule.action_applier.adder:
-        class: %pimee_catalog_rule.action_applier.adder.class%
+        class: '%pimee_catalog_rule.action_applier.adder.class%'
         arguments:
             - '@pim_catalog.updater.product_property_adder'
         tags:

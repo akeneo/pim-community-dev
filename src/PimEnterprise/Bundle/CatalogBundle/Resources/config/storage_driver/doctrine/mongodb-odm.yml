@@ -4,15 +4,15 @@ parameters:
 
 services:
     pim_catalog.repository.product_mass_action:
-        class: %pim_catalog.repository.product_mass_action.class%
+        class: '%pim_catalog.repository.product_mass_action.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'
             - '@pim_catalog.repository.family'
             - '@pimee_workflow.repository.published_product'
 
     pim_catalog.doctrine.completeness_generator:
-        class: %pim_catalog.doctrine.completeness_generator.class%
+        class: '%pim_catalog.doctrine.completeness_generator.class%'
         arguments:
             - '@doctrine.odm.mongodb.document_manager'
             - '@pim_catalog.repository.channel'
@@ -20,4 +20,4 @@ services:
             - '@pimee_product_asset.repository.asset'
             - '@pim_catalog.repository.attribute'
             - '@doctrine.orm.entity_manager'
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'
