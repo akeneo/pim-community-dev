@@ -6,22 +6,22 @@ parameters:
     pim_base_connector.writer.file.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Writer\File\CsvVariantGroupWriter
 
 services:
-    # deprecated will be removed in 1.6
     pim_base_connector.writer.file:
         class: '%pim_base_connector.writer.file.class%'
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.6, please use @pim_connector.writer.file.simple_file'
 
-    # deprecated will be removed in 1.6
     pim_base_connector.writer.file.csv:
         class: '%pim_base_connector.writer.file.csv.class%'
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.6, please use @pim_connector.writer.file.csv'
 
-    # deprecated will be removed in 1.6
     pim_base_connector.writer.file.csv_product:
         class: '%pim_base_connector.writer.file.csv_product.class%'
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.6, please use @pim_connector.writer.file.csv_product'
         arguments:
             - '@pim_connector.writer.file.file_exporter'
 
-    # deprecated will be removed in 1.7 use @pim_connector.writer.file.csv_variant_group
     pim_base_connector.writer.file.csv_variant_group:
         class: '%pim_base_connector.writer.file.csv_variant_group.class%'
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.7, please use @pim_connector.writer.file.csv_variant_group'
         arguments:
             - '@pim_connector.writer.file.file_exporter'

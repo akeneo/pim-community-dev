@@ -32,9 +32,9 @@ services:
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
 
-    # deprecated Will be removed in 1.6
     pim_versioning.doctrine.mongodb.pending_mass_persister:
         class: '%pim_versioning.doctrine.mongodb.pending_mass_persister.class%'
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.6'
         arguments:
             - '@pim_versioning.builder.version'
             - '@pim_versioning.manager.version'

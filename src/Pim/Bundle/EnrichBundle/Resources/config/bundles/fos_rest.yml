@@ -5,8 +5,6 @@ fos_rest:
         formats:
             json: true
             xml: true
-    format_listener:
-        prefer_extension: true
     body_listener:
         decoders:
             json: fos_rest.decoder.json

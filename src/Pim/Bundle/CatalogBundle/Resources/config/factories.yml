@@ -46,9 +46,9 @@ services:
         arguments:
             - '%pim_catalog.entity.attribute_requirement.class%'
 
-    # deprecated: will be removed in 1.6
     pim_catalog.factory.referenced_collection:
         alias: akeneo_storage_utils.factory.referenced_collection
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.6'
 
     pim_catalog.factory.attribute:
         class: '%pim_catalog.factory.attribute.class%'

@@ -25,14 +25,14 @@ services:
     pim_base_connector.processor.job_instance: @pim_connector.processor.denormalization.job_instance.flat
 
     # Normalization
-    # @deprecated will be removed in 1.7 use @pim_connector.processor.normalization.group.flat
     pim_base_connector.processor.normalization.csv_group:
         class: '%pim_base_connector.processor.csv_serializer.homogeneous.class%'
         parent: pim_base_connector.processor.csv_serializer
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.7, please use @pim_connector.processor.normalization.group.flat'
 
-    # @deprecated will be removed in 1.7 use @pim_connector.processor.normalization.variant_group.flat
     pim_base_connector.processor.normalization.csv_variant_group:
         class: '%pim_connector.processor.normalization.csv_variant_group.class%'
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.7, please use @pim_connector.processor.normalization.variant_group.flat'
         arguments:
             - '@pim_serializer'
             - '@pim_serializer'
@@ -41,9 +41,9 @@ services:
             - '%upload_dir%'
             - 'csv'
 
-    # @deprecated will be removed in 1.7 use @pim_connector.processor.normalization.family.flat
     pim_base_connector.processor.normalization.family.flat:
         class: '%pim_base_connector.processor.normalization.family.class%'
+        deprecated: 'The "%service_id%" service is deprecated and will be removed in 1.7, please use @pim_connector.processor.normalization.family.flat'
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.repository.locale'
