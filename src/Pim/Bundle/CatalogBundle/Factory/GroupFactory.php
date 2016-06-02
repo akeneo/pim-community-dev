@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Factory;
 
+use Pim\Bundle\CatalogBundle\Entity\ProductTemplate;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 
@@ -47,6 +48,10 @@ class GroupFactory
                 throw new \InvalidArgumentException(sprintf('Group type with code "%s" was not found', $groupTypeCode));
             }
             $group->setType($groupType);
+
+            if ($group->getType()->isVariant()) {
+                $group->setProductTemplate(new ProductTemplate());
+            }
         }
 
         return $group;
