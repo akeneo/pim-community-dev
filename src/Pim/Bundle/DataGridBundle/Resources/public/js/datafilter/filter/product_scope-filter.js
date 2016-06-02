@@ -27,7 +27,6 @@ define(
                 SelectFilter.prototype.initialize.apply(this, arguments);
                 this.catalogScope = UserContext.get('catalogScope');
 
-                mediator.once('datagrid_filters:rendered', this.resetValue.bind(this));
                 mediator.once('datagrid_filters:rendered', this.moveFilter.bind(this));
 
                 mediator.bind('grid_load:complete', function(collection) {
@@ -48,15 +47,6 @@ define(
                 $filterChoices.find('option[value="scope"]').remove();
                 $filterChoices.multiselect('refresh');
 
-                this.selectWidget.multiselect('refresh');
-            },
-
-            /**
-             * Update the current filter value using the UserContext.
-             */
-            resetValue: function () {
-                this.setValue({value: this.catalogScope});
-                UserContext.set('catalogScope', this.catalogScope);
                 this.selectWidget.multiselect('refresh');
             },
 
