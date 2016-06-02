@@ -63,6 +63,8 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
             [$locale] :
             $this->getChannelByCode($scope)->getLocaleCodes();
 
+        $expr = $this->qb->expr();
+
         foreach ($localeCodes as $localeCode) {
             $field = sprintf(
                 "%s.%s.%s-%s",
@@ -72,9 +74,10 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
                 $localeCode
             );
             $value = intval($value);
-
-            $this->qb->addOr($this->getExpr($value, $field, $operator));
+            $expr->addOr($this->getExpr($value, $field, $operator));
         }
+
+        $this->qb->addAnd($expr);
 
         return $this;
     }
