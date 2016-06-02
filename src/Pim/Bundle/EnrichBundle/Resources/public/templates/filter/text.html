@@ -1,0 +1,6 @@
+<label class="control-label required"><%- filter.field %></label>
+<div class="controls" style="width: 600px;">
+    <input type="text" name="operator" value="<%- filter.operator %>"/>
+    <input type="text" name="data" value="<%- JSON.stringify(filter.data) %>"/>
+    <% if (removable) { %><i class="remove icon-trash"></i><% } %>
+</div>

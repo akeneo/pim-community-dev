@@ -73,7 +73,6 @@ config:
                 measure:
                     module: pim/base-fetcher
                     options:
-                        warmup: false
                         urls:
                             list: pim_enrich_measures_rest_index
                 currency:
@@ -89,39 +88,33 @@ config:
                 product-completeness:
                     module: pim/completeness-fetcher
                     options:
-                        warmup: false
                         urls:
                             get: pim_enrich_product_completeness_rest_get
                 group:
                     module: pim/base-fetcher
                     options:
-                        warmup: false
                         urls:
                             list: pim_enrich_group_rest_index
                             get: pim_enrich_group_rest_get
                 variant-group:
                     module: pim/variant-group-fetcher
                     options:
-                        warmup: false
                         urls:
                             list: pim_enrich_variant_group_rest_index
                             get: pim_enrich_variant_group_rest_get
                 sequential-edit:
                     module: pim/base-fetcher
                     options:
-                        warmup: false
                         urls:
                             list: pim_enrich_mass_edit_action_sequential_edit_get
                 product-history:
                     module: pim/base-fetcher
                     options:
-                        warmup: false
                         urls:
                             get: pim_enrich_product_history_rest_get
                 product:
                     module: pim/product-fetcher
                     options:
-                        warmup: false
                         urls:
                             get: pim_enrich_product_rest_get
 
@@ -218,6 +211,17 @@ config:
         pim/product-edit-form/status-switcher:                     pimenrich/js/product/form/status-switcher
         pim/product-edit-form/download-pdf:                        pimenrich/js/product/form/download-pdf
         pim/product-edit-form/attributes:                          pimenrich/js/product/form/attributes
+        pim/product-edit-form/back-to-grid:                        pimenrich/js/product/form/back-to-grid
+
+        pim/export/product/edit/content/structure/scope:           pimenrich/js/export/product/edit/content/structure/scope
+        pim/export/product/edit/content/structure/locales:         pimenrich/js/export/product/edit/content/structure/locales
+        pim/export/product/edit/content/structure/attributes:      pimenrich/js/export/product/edit/content/structure/attributes
+        pim/export/product/edit/content:                           pimenrich/js/export/product/edit/content
+        pim/export/product/edit/content/data:                      pimenrich/js/export/product/edit/content/data
+        pim/export/product/edit/content/structure:                 pimenrich/js/export/product/edit/content/structure
+
+        # Filters
+        pim/filter/text: pimenrich/js/filter/text
 
         # Product edit form
         pim/field-manager:                  pimenrich/js/product/field-manager
@@ -350,3 +354,14 @@ config:
         pim/template/variant-group/tab/properties/translation: pimenrich/templates/variant-group/tab/properties/translation.html
         pim/template/variant-group/meta/product-count:         pimenrich/templates/variant-group/meta/product-count.html
         pim/template/variant-group/form/no-attribute:          pimenrich/templates/variant-group/form/no-attribute.html
+        
+        # Exports
+        pim/template/export/product/edit/content:                      pimenrich/templates/export/product/edit/content.html
+        pim/template/export/product/edit/content/data:                 pimenrich/templates/export/product/edit/content/data.html
+        pim/template/export/product/edit/content/structure:            pimenrich/templates/export/product/edit/content/structure.html
+        pim/template/export/product/edit/content/structure/scope:      pimenrich/templates/export/product/edit/content/structure/scope.html
+        pim/template/export/product/edit/content/structure/locales:    pimenrich/templates/export/product/edit/content/structure/locales.html
+        pim/template/export/product/edit/content/structure/attributes: pimenrich/templates/export/product/edit/content/structure/attributes.html
+
+        # Filters
+        pim/template/filter/text: pimenrich/templates/filter/text

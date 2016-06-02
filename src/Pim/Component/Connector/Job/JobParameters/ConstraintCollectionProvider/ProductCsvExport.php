@@ -45,38 +45,38 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
         $constraintFields = $baseConstraint->fields;
         $constraintFields['decimalSeparator'] = new NotBlank();
         $constraintFields['dateFormat'] = new NotBlank();
-        $constraintFields['channel'] = [
-            new NotBlank(['groups' => 'Execution']),
-            new Channel()
-        ];
-        $constraintFields['enabled'] = new NotBlank(['groups' => 'Execution']);
-        $constraintFields['updated_since_strategy'] = [
-            new NotBlank(['groups' => 'Execution']),
-            new Choice(['choices' => [
-                    'all',
-                    'last_export',
-                    'since_date',
-                    'since_n_days',
-                ]
-            ])
-        ];
-        $constraintFields['updated_since_date'] = new DateTime(['groups' => 'Execution']);
-        $constraintFields['updated_since_n_days'] = new Range(['min' => 0, 'groups' => 'Execution']);
-        $constraintFields['locales'] = new NotBlank([
-            'groups'  => 'Execution',
-            'message' => 'pim_connector.export.locales.validation.not_blank'
-        ]);
-        $constraintFields['families'] = [];
-        $constraintFields['product_identifier'] = [];
-        $constraintFields['completeness'] = [
-            new NotBlank(['groups' => 'Execution']),
-            new Choice(['choices' => [
-                'at_least_one_complete',
-                'all_complete',
-                'all_incomplete',
-                'all',
-            ], 'groups' => 'Execution'])
-        ];
+//        $constraintFields['channel'] = [
+//            new NotBlank(['groups' => 'Execution']),
+//            new Channel()
+//        ];
+//        $constraintFields['enabled'] = new NotBlank(['groups' => 'Execution']);
+//        $constraintFields['updated_since_strategy'] = [
+//            new NotBlank(['groups' => 'Execution']),
+//            new Choice(['choices' => [
+//                    'all',
+//                    'last_export',
+//                    'since_date',
+//                    'since_n_days',
+//                ]
+//            ])
+//        ];
+//        $constraintFields['updated_since_date'] = new DateTime(['groups' => 'Execution']);
+//        $constraintFields['updated_since_n_days'] = new Range(['min' => 0, 'groups' => 'Execution']);
+//        $constraintFields['locales'] = new NotBlank([
+//            'groups'  => 'Execution',
+//            'message' => 'pim_connector.export.locales.validation.not_blank'
+//        ]);
+//        $constraintFields['families'] = [];
+//        $constraintFields['product_identifier'] = [];
+//        $constraintFields['completeness'] = [
+//            new NotBlank(['groups' => 'Execution']),
+//            new Choice(['choices' => [
+//                'at_least_one_complete',
+//                'all_complete',
+//                'all_incomplete',
+//                'all',
+//            ], 'groups' => 'Execution'])
+//        ];
 
         return new Collection(['fields' => $constraintFields]);
     }

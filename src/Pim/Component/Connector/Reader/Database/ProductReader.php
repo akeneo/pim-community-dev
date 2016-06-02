@@ -11,15 +11,12 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
@@ -58,9 +55,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /** @var CursorInterface */
     protected $products;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
@@ -68,7 +62,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * @param MetricConverter                     $metricConverter
      * @param ObjectDetacherInterface             $objectDetacher
      * @param JobRepositoryInterface              $jobRepository
-     * @param AttributeRepositoryInterface        $attributeRepository
      * @param bool                                $generateCompleteness
      */
     public function __construct(
@@ -78,7 +71,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         MetricConverter $metricConverter,
         ObjectDetacherInterface $objectDetacher,
         JobRepositoryInterface $jobRepository,
-        AttributeRepositoryInterface $attributeRepository,
         $generateCompleteness
     ) {
         $this->pqbFactory           = $pqbFactory;
@@ -87,7 +79,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $this->metricConverter      = $metricConverter;
         $this->objectDetacher       = $objectDetacher;
         $this->jobRepository        = $jobRepository;
-        $this->attributeRepository  = $attributeRepository;
         $this->generateCompleteness = (bool) $generateCompleteness;
     }
 
@@ -100,22 +91,20 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $parameters = $this->stepExecution->getJobParameters();
 
         $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
-        $filters = array_merge(
-            $this->getFilters(
-                $channel,
-                $this->rawToStandardProductStatus($parameters->get('enabled')),
-                $this->rawToStandardProductUpdated($parameters),
-                array_filter(explode(',', $parameters->get('families')))
-            ),
-            $this->getCompletenessFilters($parameters),
-            $this->getProductIdentifiersFilter($parameters)
-        );
+        $filters = json_decode($parameters->get('filters'), true);
+
+        $filters = array_filter($filters['data'], function ($filter) {
+            return isset($filter['operator']) && '' !== $filter['operator'];
+        });
+        error_log(print_r($filters, true));
 
         foreach ($filters as $filter) {
+            $filter['context'] = [];
+
             $pqb->addFilter(
                 $filter['field'],
                 $filter['operator'],
-                $filter['value'],
+                $filter['data'],
                 $filter['context']
             );
         }
@@ -165,7 +154,8 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     protected function getConfiguredChannel()
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $channelCode = $parameters->get('channel');
+        $channelCode = json_decode($parameters->get('filters'), true)['structure']['scope'];
+
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
             throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $channelCode));
@@ -325,29 +315,5 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         }
 
         return [];
-    }
-
-    /**
-     * @param JobParameters $parameters
-     *
-     * @return array
-     */
-    protected function getProductIdentifiersFilter(JobParameters $parameters)
-    {
-        $filter = [];
-        $productIdentifiers = $parameters->get('product_identifier');
-        if (null !== $productIdentifiers) {
-            $productIdentifiers = explode(',', $productIdentifiers);
-            $attribute = $this->attributeRepository->findOneBy(['attributeType' => AttributeTypes::IDENTIFIER]);
-
-            $filter[] = [
-                'field'    => $attribute->getCode(),
-                'operator' => Operators::IN_LIST,
-                'value'    => $productIdentifiers,
-                'context'  => []
-            ];
-        }
-        
-        return $filter;
     }
 }

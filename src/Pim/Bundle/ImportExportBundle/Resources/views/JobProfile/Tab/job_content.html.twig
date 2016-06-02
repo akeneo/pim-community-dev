@@ -1,27 +1,26 @@
-<div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="job-profile-content-tab tab-pane buffer-top">
-    {% set filtersSettings %}
-        {% for field in form.configuration %}
-            {% if field.vars.attr['data-tab'] is defined and 'content' == field.vars.attr['data-tab'] %}
-                {{ form_row(field) }}
-            {% endif %}
-        {% endfor %}
-    {% endset %}
-
-    <script type="text/javascript">
+<div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane buffer-top">
+    <div id="pim-product-export-edit-content"></div>
+    <input id="{{ form.configuration.filters.vars.id }}" value="{{ form.configuration.filters.vars.value }}" type="hidden"/>
+    <script>
         require(
-            ['jquery', 'pim/product-export/locales-selector'],
-            function($, LocaleSelector){
-                'use strict';
+            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'oro/loading-mask'],
+            function($, FetcherRegistry, FormBuilder, LoadingMask) {
+                $(function() {
+                    var loadingMask = new LoadingMask();
+                    loadingMask.render().$el.appendTo($('#container')).show();
+                    FetcherRegistry.initialize().done(function () {
+                        FormBuilder.build('pim-product-export-edit-content')
+                            .then(function (form) {
+                                form.setData(JSON.parse($('#{{ form.configuration.filters.vars.id }}').val()));
 
-                $(function () {
-                    LocaleSelector.init(
-                        '#{{ form.configuration.channel.vars.id }}',
-                        '#{{ form.configuration.locales.vars.id }}'
-                    );
+                                form.setElement('#pim-product-export-edit-content').render();
+                                form.on('pim_enrich:form:entity:post_update', function () {
+                                    document.getElementById('{{ form.configuration.filters.vars.id }}').value = JSON.stringify(form.getFormData());
+                                });
+                                loadingMask.remove();
+                            });
+                    })
                 });
-            }
-        );
+            });
     </script>
-
-    {{ elements.accordion({ 'pane.accordion.filters': filtersSettings }, 3) }}
 </div>
