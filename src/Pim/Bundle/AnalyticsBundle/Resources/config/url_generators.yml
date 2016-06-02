@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_analytics.url_generator.last_patch:
-        class: %pim_analytics.url_generator.last_patch.class%
+        class: '%pim_analytics.url_generator.last_patch.class%'
         arguments:
             - '@pim_analytics.data_collector.chained'
             - '@pim_catalog.version_provider'

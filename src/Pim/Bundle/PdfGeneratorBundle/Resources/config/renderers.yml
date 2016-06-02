@@ -4,7 +4,7 @@ parameters:
 
 services:
     pim_pdf_generator.renderer.product_pdf:
-        class: %pim_pdf_generator.renderer.product_pdf.class%
+        class: '%pim_pdf_generator.renderer.product_pdf.class%'
         arguments:
             - '@templating'
             - '@pim_pdf_generator.builder.dompdf'
@@ -12,10 +12,10 @@ services:
             - '@liip_imagine.cache.manager'
             - '@liip_imagine.filter.manager'
             - 'PimPdfGeneratorBundle:Product:renderPdf.html.twig'
-            - %upload_dir%
-            - %pim_pdf_generator_font%
+            - '%upload_dir%'
+            - '%pim_pdf_generator_font%'
         tags:
             - { name: pim_pdf_generator.renderer, priority: 80 }
 
     pim_pdf_generator.renderer.registry:
-        class: %pim_pdf_generator.renderer.registry.class%
+        class: '%pim_pdf_generator.renderer.registry.class%'

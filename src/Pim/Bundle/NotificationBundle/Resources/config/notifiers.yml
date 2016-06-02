@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_notification.notifier:
-        class: %pim_notification.notifier.class%
+        class: '%pim_notification.notifier.class%'
         arguments:
             - '@pim_notification.factory.user_notification'
             - '@oro_user.manager'

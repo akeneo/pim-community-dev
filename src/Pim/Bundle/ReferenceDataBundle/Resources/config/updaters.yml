@@ -6,7 +6,7 @@ parameters:
 
 services:
     pim_reference_data.updater.setter.reference_data_value:
-        class: %pim_reference_data.updater.setter.reference_data_value.class%
+        class: '%pim_reference_data.updater.setter.reference_data_value.class%'
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - '@pim_reference_data.repository_resolver'
@@ -15,7 +15,7 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     pim_reference_data.updater.setter.reference_data_collection_value:
-        class: %pim_reference_data.updater.setter.reference_data_collection_value.class%
+        class: '%pim_reference_data.updater.setter.reference_data_collection_value.class%'
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - '@pim_reference_data.repository_resolver'
@@ -24,7 +24,7 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     pim_reference_data.updater.copier.reference_data_value:
-        class: %pim_reference_data.updater.copier.reference_data_value.class%
+        class: '%pim_reference_data.updater.copier.reference_data_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - ['pim_reference_data_simpleselect']
@@ -33,7 +33,7 @@ services:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_reference_data.updater.copier.reference_data_collection_value:
-        class: %pim_reference_data.updater.copier.reference_data_collection_value.class%
+        class: '%pim_reference_data.updater.copier.reference_data_collection_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - ['pim_reference_data_multiselect']

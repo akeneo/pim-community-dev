@@ -3,6 +3,6 @@ parameters:
 
 services:
     pim_ui.controller.ajax_option:
-        class: %pim_ui.controller.ajax_option.class%
+        class: '%pim_ui.controller.ajax_option.class%'
         arguments:
             - '@doctrine'

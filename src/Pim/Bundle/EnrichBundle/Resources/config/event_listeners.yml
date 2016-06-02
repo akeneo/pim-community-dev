@@ -8,7 +8,7 @@ parameters:
 services:
     # User context listener
     stof_doctrine_extensions.event_listener.locale:
-        class: %pim_enrich.event_listener.user_context.class%
+        class: '%pim_enrich.event_listener.user_context.class%'
         arguments:
             - '@security.token_storage'
             - '@pim_enrich.event_listener.add_locale'
@@ -18,12 +18,12 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_enrich.event_listener.request:
-        class: %pim_enrich.event_listener.request.class%
+        class: '%pim_enrich.event_listener.request.class%'
         tags:
             - { name: kernel.event_subscriber }
 
     pim_enrich.event_subscriber.translate_flash_messages:
-        class: %pim_enrich.event_subscriber.translate_flash_messages.class%
+        class: '%pim_enrich.event_subscriber.translate_flash_messages.class%'
         arguments:
             - '@translator'
         tags:
@@ -31,7 +31,7 @@ services:
 
     # Storage event listeners
     pim_enrich.event_subscriber.storage.channel_locale:
-        class: %pim_enrich.event_subscriber.storage.channel_locale.class%
+        class: '%pim_enrich.event_subscriber.storage.channel_locale.class%'
         arguments:
             - @pim_catalog.repository.locale
             - @pim_catalog.saver.locale
@@ -41,6 +41,6 @@ services:
 
     # inject current locale into translatable entities
     pim_enrich.event_listener.add_locale:
-        class: %pim_enrich.event_listener.add_locale.class%
+        class: '%pim_enrich.event_listener.add_locale.class%'
         tags:
             - { name: doctrine.event_subscriber }

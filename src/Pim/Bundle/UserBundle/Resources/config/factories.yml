@@ -1,15 +1,15 @@
 services:
     pim_user.factory.user:
-        class: %akeneo_storage_utils.factory.simple.class%
+        class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - %pim_user.entity.user.class%
+            - '%pim_user.entity.user.class%'
 
     pim_user.factory.group:
-        class: %akeneo_storage_utils.factory.simple.class%
+        class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - %pim_user.entity.group.class%
+            - '%pim_user.entity.group.class%'
 
     pim_user.factory.role:
-        class: %akeneo_storage_utils.factory.simple.class%
+        class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - %pim_user.entity.role.class%
+            - '%pim_user.entity.role.class%'

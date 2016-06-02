@@ -23,7 +23,7 @@ services:
     oro.cache.abstract:
         abstract:  true
         class:     Doctrine\Common\Cache\PhpFileCache
-        arguments: [%kernel.cache_dir%]
+        arguments: ['%kernel.cache_dir%']
     twig.extension.intl:
          class: Twig_Extensions_Extension_Intl
          tags:
@@ -40,7 +40,7 @@ services:
                 db_table: pim_session
 
 pim_enrich:
-    max_products_category_removal: %max_products_category_removal%
+    max_products_category_removal: '%max_products_category_removal%'
 
 pim_catalog:
     localization:

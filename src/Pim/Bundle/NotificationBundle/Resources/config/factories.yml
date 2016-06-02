@@ -4,14 +4,14 @@ parameters:
 
 services:
     pim_notification.factory.notification:
-        class: %akeneo_storage_utils.factory.simple.class%
+        class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - %pim_notification.entity.notification.class%
+            - '%pim_notification.entity.notification.class%'
 
     pim_notification.registry.factory.notification:
-        class: %pim_notification.registry.factory.notification.class%
+        class: '%pim_notification.registry.factory.notification.class%'
 
     pim_notification.factory.user_notification:
-        class: %pim_notification.factory.user_notification.class%
+        class: '%pim_notification.factory.user_notification.class%'
         arguments:
-            - %pim_notification.entity.user_notification.class%
+            - '%pim_notification.entity.user_notification.class%'

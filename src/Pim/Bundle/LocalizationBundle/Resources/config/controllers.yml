@@ -4,13 +4,13 @@ parameters:
 
 services:
     pim_localization.controller.locale:
-        class: %pim_localization.controller.locale.class%
+        class: '%pim_localization.controller.locale.class%'
         arguments:
             - '@pim_localization.provider.ui_locale'
             - '@pim_internal_api_serializer'
 
     pim_localization.controller.format:
-        class: %pim_localization.controller.format.class%
+        class: '%pim_localization.controller.format.class%'
         arguments:
             - '@pim_catalog.localization.factory.date'
             - '@pim_catalog.localization.factory.datetime'

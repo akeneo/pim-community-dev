@@ -3,10 +3,10 @@ parameters:
 
 services:
     pim_catalog.data_collector.database:
-        class: %pim_catalog.data_collector.database.class%
+        class: '%pim_catalog.data_collector.database.class%'
         arguments:
             - @pim_catalog.version_provider
             - @pim_catalog.repository.product_value_counter
-            - %pim_catalog_product_storage_driver%
+            - '%pim_catalog_product_storage_driver%'
         tags:
             - { name: data_collector, template: "PimCatalogBundle:Collector:database", id: "database" }

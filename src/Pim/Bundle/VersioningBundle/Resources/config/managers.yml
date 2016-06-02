@@ -4,7 +4,7 @@ parameters:
 
 services:
     pim_versioning.manager.version:
-        class: %pim_versioning.manager.version.class%
+        class: '%pim_versioning.manager.version.class%'
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - '@pim_versioning.builder.version'
@@ -12,4 +12,4 @@ services:
             - '@event_dispatcher'
 
     pim_versioning.context.version:
-        class: %pim_versioning.context.version.class%
+        class: '%pim_versioning.context.version.class%'

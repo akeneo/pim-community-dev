@@ -5,24 +5,24 @@ parameters:
 
 services:
     pim_datagrid.datasource.result_record.hydrator.product:
-        class: %pim_datagrid.datasource.result_record.hydrator.product.class%
+        class: '%pim_datagrid.datasource.result_record.hydrator.product.class%'
 
     pim_datagrid.datasource.result_record.hydrator.associated_product:
-        class: %pim_datagrid.datasource.result_record.hydrator.associated_product.class%
+        class: '%pim_datagrid.datasource.result_record.hydrator.associated_product.class%'
         arguments:
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'
 
     pim_datagrid.datasource.result_record.hydrator.object_id:
-        class: %pim_datagrid.datasource.result_record.hydrator.object_id.class%
+        class: '%pim_datagrid.datasource.result_record.hydrator.object_id.class%'
 
     pim_datagrid.datasource.result_record.hydrator.object:
-        class: %pim_datagrid.datasource.result_record.hydrator.object.class%
+        class: '%pim_datagrid.datasource.result_record.hydrator.object.class%'
 
     pim_datagrid.datasource.result_record.hydrator.default:
-        class: %pim_datagrid.datasource.result_record.hydrator.default.class%
+        class: '%pim_datagrid.datasource.result_record.hydrator.default.class%'
 
     pim_datagrid.datasource.result_record.hydrator.orm.object:
-        class: %pim_datagrid.datasource.result_record.hydrator.orm.object.class%
+        class: '%pim_datagrid.datasource.result_record.hydrator.orm.object.class%'
 
     pim_datagrid.datasource.result_record.hydrator.orm.object_id:
-        class: %pim_datagrid.datasource.result_record.hydrator.orm.object_id.class%
+        class: '%pim_datagrid.datasource.result_record.hydrator.orm.object_id.class%'

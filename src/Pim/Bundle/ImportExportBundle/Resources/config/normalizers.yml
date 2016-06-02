@@ -4,7 +4,7 @@ parameters:
 
 services:
     pim_import_export.normalizer.job_execution:
-        class: %pim_import_export.normalizer.job_execution.class%
+        class: '%pim_import_export.normalizer.job_execution.class%'
         arguments:
             - '@translator'
             - '@pim_import_export.job_label.translated_label_provider'
@@ -13,7 +13,7 @@ services:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_import_export.normalizer.step_execution:
-        class: %pim_import_export.normalizer.step_execution.class%
+        class: '%pim_import_export.normalizer.step_execution.class%'
         arguments:
             - '@translator'
             - '@pim_catalog.localization.presenter.datetime'

@@ -9,7 +9,7 @@ datagrid:
                 columnName: is_checked
         source:
             type:              pim_datasource_associated_product
-            entity:            %pim_catalog.entity.product.class%
+            entity:            '%pim_catalog.entity.product.class%'
             repository_method: createAssociationDatagridQueryBuilder
             user_config_alias: product-grid
             repository_parameters:
@@ -77,7 +77,7 @@ datagrid:
                     data_name: updated
                     sorter:    product_field
             default:
-                is_associated: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                is_associated: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
                 is_associated:

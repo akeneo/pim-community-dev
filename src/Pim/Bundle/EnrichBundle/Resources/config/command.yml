@@ -4,7 +4,7 @@ parameters:
 
 services:
     pim_enrich.product.paginator:
-        class: %pim_enrich.paginator.paginator_factory.class%
+        class: '%pim_enrich.paginator.paginator_factory.class%'
         arguments:
-            - %pim_enrich.paginator.class%
+            - '%pim_enrich.paginator.class%'
             - '1000'

@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_datagrid.event_subscriber.default_view:
-        class: %pim_datagrid.event_subscriber.default_view.class%
+        class: '%pim_datagrid.event_subscriber.default_view.class%'
         arguments:
             - '@pim_datagrid.repository.datagrid_view'
         tags:

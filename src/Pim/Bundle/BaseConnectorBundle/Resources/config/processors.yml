@@ -11,11 +11,11 @@ services:
             - '@pim_catalog.repository.locale'
 
     pim_base_connector.processor.csv_serializer.homogeneous:
-        class: %pim_base_connector.processor.csv_serializer.homogeneous.class%
+        class: '%pim_base_connector.processor.csv_serializer.homogeneous.class%'
         parent: pim_base_connector.processor.csv_serializer
 
     pim_base_connector.processor.product_to_flat_array:
-        class: %pim_base_connector.processor.product_to_flat_array.class%
+        class: '%pim_base_connector.processor.product_to_flat_array.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.repository.channel'
@@ -27,23 +27,23 @@ services:
     # Normalization
     # @deprecated will be removed in 1.7 use @pim_connector.processor.normalization.group.flat
     pim_base_connector.processor.normalization.csv_group:
-        class: %pim_base_connector.processor.csv_serializer.homogeneous.class%
+        class: '%pim_base_connector.processor.csv_serializer.homogeneous.class%'
         parent: pim_base_connector.processor.csv_serializer
 
     # @deprecated will be removed in 1.7 use @pim_connector.processor.normalization.variant_group.flat
     pim_base_connector.processor.normalization.csv_variant_group:
-        class: %pim_connector.processor.normalization.csv_variant_group.class%
+        class: '%pim_connector.processor.normalization.csv_variant_group.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_serializer'
-            - %pim_catalog.localization.decimal_separators%
-            - %pim_catalog.localization.date_formats%
-            - %upload_dir%
+            - '%pim_catalog.localization.decimal_separators%'
+            - '%pim_catalog.localization.date_formats%'
+            - '%upload_dir%'
             - 'csv'
 
     # @deprecated will be removed in 1.7 use @pim_connector.processor.normalization.family.flat
     pim_base_connector.processor.normalization.family.flat:
-        class: %pim_base_connector.processor.normalization.family.class%
+        class: '%pim_base_connector.processor.normalization.family.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.repository.locale'

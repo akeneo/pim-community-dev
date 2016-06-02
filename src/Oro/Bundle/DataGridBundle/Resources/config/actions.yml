@@ -5,19 +5,19 @@ parameters:
 
 services:
     oro_datagrid.extension.action.type.navigate:
-        class: %oro_datagrid.extension.action.type.navigate.class%
+        class: '%oro_datagrid.extension.action.type.navigate.class%'
         scope: prototype
         tags:
             - { name:  oro_datagrid.extension.action.type, type: navigate }
 
     oro_datagrid.extension.action.type.ajax:
-        class: %oro_datagrid.extension.action.type.ajax.class%
+        class: '%oro_datagrid.extension.action.type.ajax.class%'
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.action.type, type: ajax }
 
     oro_datagrid.extension.action.type.delete:
-        class: %oro_datagrid.extension.action.type.delete.class%
+        class: '%oro_datagrid.extension.action.type.delete.class%'
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.action.type, type: delete }

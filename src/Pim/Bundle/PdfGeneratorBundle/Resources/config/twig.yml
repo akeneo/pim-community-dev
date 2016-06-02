@@ -4,6 +4,6 @@ parameters:
 services:
     # Twig extensions
     pim_datagrid.twig.image_extension:
-        class: %pim_datagrid.twig.image_extension.class%
+        class: '%pim_datagrid.twig.image_extension.class%'
         tags:
             - { name: twig.extension }

@@ -12,52 +12,52 @@ parameters:
 services:
     # Subscribers
     pim_enrich.form.subscriber.attribute:
-        class: %pim_enrich.form.subscriber.add_attribute_type.class%
+        class: '%pim_enrich.form.subscriber.add_attribute_type.class%'
         arguments:
             - '@pim_catalog.registry.attribute_type'
             - '@oro_security.security_facade'
             - '@pim_catalog.repository.attribute_group'
 
     pim_enrich.form.subscriber.attribute_requirements:
-        class: %pim_enrich.form.subscriber.add_attribute_requirements.class%
+        class: '%pim_enrich.form.subscriber.add_attribute_requirements.class%'
         arguments:
             - '@pim_catalog.repository.channel'
 
     pim_enrich.form.subscriber.add_value_field_subscriber:
-        class: %pim_enrich.form.subscriber.add_value_field_subscriber.class%
+        class: '%pim_enrich.form.subscriber.add_value_field_subscriber.class%'
         arguments:
             - '@pim_enrich.form.factory.product_value'
 
     pim_enrich.form.subscriber.family_disable_fields_subscriber:
-        class: %pim_enrich.form.subscriber.family_disable_fields_subscriber.class%
+        class: '%pim_enrich.form.subscriber.family_disable_fields_subscriber.class%'
         arguments:
             - '@oro_security.security_facade'
 
     pim_enrich.form.subscriber.family_attribute_label_subscriber:
-        class: %pim_enrich.form.subscriber.family_attribute_label_subscriber.class%
+        class: '%pim_enrich.form.subscriber.family_attribute_label_subscriber.class%'
         arguments:
-            - %pim_catalog.entity.attribute.class%
+            - '%pim_catalog.entity.attribute.class%'
             - '@form.factory'
             - '@oro_security.security_facade'
 
     pim_enrich.form.subscriber.set_attribute_group_sort_order:
-        class: %pim_enrich.form.subscriber.set_attribute_group_sort_order.class%
+        class: '%pim_enrich.form.subscriber.set_attribute_group_sort_order.class%'
         arguments:
             - '@pim_catalog.repository.attribute_group'
 
     pim_enrich.form.subscriber.transform_product_template_values:
-        class: %pim_enrich.form.subscriber.transform_product_template_values.class%
+        class: '%pim_enrich.form.subscriber.transform_product_template_values.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_serializer'
             - '@pim_enrich.resolver.locale'
 
     pim_enrich.form.subscriber.add_variant_group_template:
-        class: %pim_enrich.form.subscriber.add_variant_group_template.class%
+        class: '%pim_enrich.form.subscriber.add_variant_group_template.class%'
         arguments:
             - '@pim_user.context.user'
 
     pim_enrich.form.subscriber.add_variant_group_axes:
-        class: %pim_enrich.form.subscriber.add_variant_group_axes.class%
+        class: '%pim_enrich.form.subscriber.add_variant_group_axes.class%'
         arguments:
-            - %pim_catalog.entity.attribute.class%
+            - '%pim_catalog.entity.attribute.class%'

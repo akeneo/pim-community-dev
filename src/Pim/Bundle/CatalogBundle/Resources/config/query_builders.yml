@@ -10,7 +10,7 @@ parameters:
 
 services:
     pim_catalog.query.product_query_builder_factory:
-        class: %pim_catalog.query.product_query_builder_factory.class%
+        class: '%pim_catalog.query.product_query_builder_factory.class%'
         arguments:
             - '%pim_catalog.query.product_query_builder.class%'
             - @pim_catalog.object_manager.product
@@ -21,38 +21,38 @@ services:
             - @pim_catalog.factory.product_cursor
 
     pim_catalog.query.filter.registry:
-        class: %pim_catalog.query.filter.registry.class%
+        class: '%pim_catalog.query.filter.registry.class%'
         arguments:
             - @pim_catalog.repository.attribute
 
     pim_catalog.query.sorter.registry:
-        class: %pim_catalog.query.sorter.registry.class%
+        class: '%pim_catalog.query.sorter.registry.class%'
 
     pim_catalog.query.filter.field_dumper:
-        class: %pim_catalog.query.filter.field_dumper.class%
+        class: '%pim_catalog.query.filter.field_dumper.class%'
         arguments:
             - @pim_catalog.query.filter.registry
 
     pim_catalog.query.filter.attribute_dumper:
-        class: %pim_catalog.query.filter.attribute_dumper.class%
+        class: '%pim_catalog.query.filter.attribute_dumper.class%'
         arguments:
             - @pim_catalog.query.filter.registry
             - @pim_catalog.repository.attribute
 
     # PQB common utils
     pim_catalog.doctrine.query.filter.object_id_resolver:
-        class: %pim_catalog.doctrine.query.filter.object_id_resolver.class%
+        class: '%pim_catalog.doctrine.query.filter.object_id_resolver.class%'
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
         calls:
-            - [ addFieldMapping, ['family', %pim_catalog.entity.family.class%]]
-            - [ addFieldMapping, ['option', %pim_catalog.entity.attribute_option.class%]]
-            - [ addFieldMapping, ['category', %pim_catalog.entity.category.class%]]
-            - [ addFieldMapping, ['group', %pim_catalog.entity.group.class%]]
+            - [ addFieldMapping, ['family', '%pim_catalog.entity.family.class%']]
+            - [ addFieldMapping, ['option', '%pim_catalog.entity.attribute_option.class%']]
+            - [ addFieldMapping, ['category', '%pim_catalog.entity.category.class%']]
+            - [ addFieldMapping, ['group', '%pim_catalog.entity.group.class%']]
 
     # PQB common filter
     pim_catalog.doctrine.query.filter.category:
-        class: %pim_catalog.doctrine.query.filter.category.class%
+        class: '%pim_catalog.doctrine.query.filter.category.class%'
         arguments:
             - @pim_catalog.repository.category
             - @pim_catalog.repository.product_category
@@ -64,7 +64,7 @@ services:
 
     # PQB common filter definitions (implement either in ORM or MongoDB ODM)
     pim_catalog.doctrine.query.filter.boolean:
-        class: %pim_catalog.doctrine.query.filter.boolean.class%
+        class: '%pim_catalog.doctrine.query.filter.boolean.class%'
         arguments:
             - @pim_catalog.validator.helper.attribute
             - ['pim_catalog_boolean']
@@ -74,7 +74,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.family:
-        class: %pim_catalog.doctrine.query.filter.family.class%
+        class: '%pim_catalog.doctrine.query.filter.family.class%'
         arguments:
             - '@pim_catalog.doctrine.query.filter.object_id_resolver'
             - ['family.id', 'family.code']
@@ -83,7 +83,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.groups:
-        class: %pim_catalog.doctrine.query.filter.groups.class%
+        class: '%pim_catalog.doctrine.query.filter.groups.class%'
         arguments:
             - '@pim_catalog.doctrine.query.filter.object_id_resolver'
             - ['groups.id', 'groups.code']
@@ -92,7 +92,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.option:
-        class: %pim_catalog.doctrine.query.filter.option.class%
+        class: '%pim_catalog.doctrine.query.filter.option.class%'
         arguments:
             - '@pim_catalog.validator.helper.attribute'
             - '@pim_catalog.doctrine.query.filter.object_id_resolver'
@@ -102,7 +102,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.options:
-        class: %pim_catalog.doctrine.query.filter.options.class%
+        class: '%pim_catalog.doctrine.query.filter.options.class%'
         arguments:
             - '@pim_catalog.validator.helper.attribute'
             - '@pim_catalog.doctrine.query.filter.object_id_resolver'
@@ -112,7 +112,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.date:
-        class: %pim_catalog.doctrine.query.filter.date.class%
+        class: '%pim_catalog.doctrine.query.filter.date.class%'
         arguments:
             - @pim_catalog.validator.helper.attribute
             - ['pim_catalog_date']
@@ -121,7 +121,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.datetime:
-        class: %pim_catalog.doctrine.query.filter.datetime.class%
+        class: '%pim_catalog.doctrine.query.filter.datetime.class%'
         arguments:
             - ['created', 'updated']
             - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']
@@ -129,7 +129,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.metric:
-        class: %pim_catalog.doctrine.query.filter.metric.class%
+        class: '%pim_catalog.doctrine.query.filter.metric.class%'
         arguments:
             - @pim_catalog.validator.helper.attribute
             - @akeneo_measure.manager
@@ -140,7 +140,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.number:
-        class: %pim_catalog.doctrine.query.filter.number.class%
+        class: '%pim_catalog.doctrine.query.filter.number.class%'
         arguments:
             - @pim_catalog.validator.helper.attribute
             - ['pim_catalog_number']
@@ -149,7 +149,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.price:
-        class: %pim_catalog.doctrine.query.filter.price.class%
+        class: '%pim_catalog.doctrine.query.filter.price.class%'
         arguments:
             - @pim_catalog.validator.helper.attribute
             - @pim_catalog.repository.currency
@@ -159,7 +159,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.product_id:
-        class: %pim_catalog.doctrine.query.filter.product_id.class%
+        class: '%pim_catalog.doctrine.query.filter.product_id.class%'
         arguments:
             - ['id']
             - ['=', 'IN', 'NOT IN', '!=']
@@ -167,7 +167,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.string:
-        class: %pim_catalog.doctrine.query.filter.string.class%
+        class: '%pim_catalog.doctrine.query.filter.string.class%'
         arguments:
             - @pim_catalog.validator.helper.attribute
             - ['pim_catalog_text', 'pim_catalog_textarea']
@@ -176,7 +176,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.identifier:
-        class: %pim_catalog.doctrine.query.filter.string.class%
+        class: '%pim_catalog.doctrine.query.filter.string.class%'
         arguments:
             - @pim_catalog.validator.helper.attribute
             - ['pim_catalog_identifier']
@@ -185,7 +185,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.media:
-        class: %pim_catalog.doctrine.query.filter.media.class%
+        class: '%pim_catalog.doctrine.query.filter.media.class%'
         arguments:
             - @pim_catalog.validator.helper.attribute
             - ['pim_catalog_image', 'pim_catalog_file']
@@ -195,21 +195,21 @@ services:
 
     # PQB common sorter definitions (implement either in ORM or MongoDB ODM)
     pim_catalog.doctrine.query.sorter.base:
-        class: %pim_catalog.doctrine.query.sorter.base.class%
+        class: '%pim_catalog.doctrine.query.sorter.base.class%'
         tags:
             - { name: 'pim_catalog.doctrine.query.sorter', priority: 20 }
 
     pim_catalog.doctrine.query.sorter.completeness:
-        class: %pim_catalog.doctrine.query.sorter.completeness.class%
+        class: '%pim_catalog.doctrine.query.sorter.completeness.class%'
         tags:
             - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
 
     pim_catalog.doctrine.query.sorter.family:
-        class: %pim_catalog.doctrine.query.sorter.family.class%
+        class: '%pim_catalog.doctrine.query.sorter.family.class%'
         tags:
             - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
 
     pim_catalog.doctrine.query.sorter.in_group:
-        class: %pim_catalog.doctrine.query.sorter.in_group.class%
+        class: '%pim_catalog.doctrine.query.sorter.in_group.class%'
         tags:
             - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }

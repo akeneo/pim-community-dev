@@ -3,6 +3,6 @@ parameters:
 
 services:
     pim_versioning.factory.version:
-        class: %pim_versioning.factory.version.class%
+        class: '%pim_versioning.factory.version.class%'
         arguments:
-            - %pim_versioning.entity.version.class%
+            - '%pim_versioning.entity.version.class%'

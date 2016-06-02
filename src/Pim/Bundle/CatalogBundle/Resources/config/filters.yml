@@ -7,24 +7,24 @@ parameters:
 
 services:
     pim_catalog.filter.chained:
-        class: %pim_catalog.filter.chained.class%
+        class: '%pim_catalog.filter.chained.class%'
 
     pim_enrich.filter.product_value.locale:
-        class: %pim_enrich.filter.product_value.locale.class%
+        class: '%pim_enrich.filter.product_value.locale.class%'
         tags:
             - { name: pim_catalog.filter.collection, type: pim.transform.product_value.flat }
             - { name: pim_catalog.filter.collection, type: pim.transform.product_value.structured }
             - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
 
     pim_enrich.filter.product_value.channel:
-        class: %pim_enrich.filter.product_value.channel.class%
+        class: '%pim_enrich.filter.product_value.channel.class%'
         tags:
             - { name: pim_catalog.filter.collection, type: pim.transform.product_value.flat }
             - { name: pim_catalog.filter.collection, type: pim.transform.product_value.structured }
             - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
 
     pim_catalog.comparator.filter.product:
-        class: %pim_catalog.comparator.filter.product.class%
+        class: '%pim_catalog.comparator.filter.product.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.comparator.registry'
@@ -32,7 +32,7 @@ services:
             - ['family', 'enabled', 'groups', 'variant_group', 'categories']
 
     pim_catalog.comparator.filter.product_association:
-        class: %pim_catalog.comparator.filter.product_association.class%
+        class: '%pim_catalog.comparator.filter.product_association.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.comparator.registry'

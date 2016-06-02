@@ -8,7 +8,7 @@ parameters:
 
 services:
     oro_config.user:
-        class:                        %oro_config.user.class%
+        class:                        '%oro_config.user.class%'
         arguments:                    ["@doctrine.orm.entity_manager"]
         calls:
              - [setSecurity, ["@security.token_storage"]]
@@ -16,18 +16,18 @@ services:
             -  { name: oro_config.manager }
 
     oro_config.global:
-        class:                        %oro_config.global.class%
+        class:                        '%oro_config.global.class%'
         arguments:                    ["@doctrine.orm.entity_manager"]
         tags:
             -  { name: oro_config.manager }
 
     oro_config.twig.config_extension:
-        class:                        %oro_config.twig_extension.class%
+        class:                        '%oro_config.twig_extension.class%'
         arguments:                    ["@oro_config.global"]
         tags:
             - { name: twig.extension }
 
     oro_config.form.config_subscriber:
-        class: %oro_config.form.config_subscriber.class%
+        class: '%oro_config.form.config_subscriber.class%'
         arguments:
           - @oro_config.user

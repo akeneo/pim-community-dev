@@ -3,7 +3,7 @@ parameters: ~
 services:
     # Default parameters depending on Job
     pim_installer.job_parameters.defaults.simple_csv_import:
-        class: %pim_connector.job.job_parameters.default_values_provider.simple_csv_import.class%
+        class: '%pim_connector.job.job_parameters.default_values_provider.simple_csv_import.class%'
         arguments:
             -
                 - 'fixtures_category_csv'
@@ -24,7 +24,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pim_installer.job_parameters.defaults.product_csv_import:
-        class: %pim_connector.job.job_parameters.default_values_provider.product_csv_import.class%
+        class: '%pim_connector.job.job_parameters.default_values_provider.product_csv_import.class%'
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
             -
@@ -33,7 +33,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pim_installer.job_parameters.defaults.variant_group_csv_import:
-        class: %pim_connector.job.job_parameters.default_values_provider.variant_group_csv_import.class%
+        class: '%pim_connector.job.job_parameters.default_values_provider.variant_group_csv_import.class%'
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
             -
@@ -42,7 +42,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pim_installer.job_parameters.defaults.simple_yaml_import:
-        class: %pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class%
+        class: '%pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class%'
         arguments:
             -
                 - 'fixtures_job_yml'

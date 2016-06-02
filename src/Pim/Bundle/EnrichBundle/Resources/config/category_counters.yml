@@ -4,7 +4,7 @@ parameters:
 
 services:
     pim_enrich.doctrine.counter.category_product:
-        class: %pim_enrich.doctrine.counter.category_items.class%
+        class: '%pim_enrich.doctrine.counter.category_items.class%'
         arguments:
             - '@pim_catalog.repository.product_category'
             - '@pim_catalog.repository.category'
@@ -12,4 +12,4 @@ services:
             - { name: pim_enrich.doctrine.counter.category_item, type: product }
 
     pim_enrich.doctrine.counter.category_registry:
-        class: %pim_enrich.doctrine.counter.category_registry.class%
+        class: '%pim_enrich.doctrine.counter.category_registry.class%'

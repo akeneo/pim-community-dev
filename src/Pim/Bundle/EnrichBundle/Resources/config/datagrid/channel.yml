@@ -6,7 +6,7 @@ datagrid:
         source:
             acl_resource: pim_enrich_channel_index
             type: pim_datasource_default
-            entity: %pim_catalog.entity.channel.class%
+            entity: '%pim_catalog.entity.channel.class%'
             repository_method: createDatagridQueryBuilder
         columns:
             code:
@@ -49,7 +49,7 @@ datagrid:
                 category:
                     data_name: categoryLabel
             default:
-                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         filters:
             columns:
                 code:

@@ -7,24 +7,24 @@ parameters:
 
 services:
     pim_catalog.completeness.checker.chained:
-        class: %pim_catalog.completeness.checker.chained.class%
+        class: '%pim_catalog.completeness.checker.chained.class%'
 
     pim_catalog.completeness.checker.empty:
-        class: %pim_catalog.completeness.checker.empty.class%
+        class: '%pim_catalog.completeness.checker.empty.class%'
         tags:
             - { name: pim_catalog.completeness.checker.product_value, priority: 80 }
 
     pim_catalog.completeness.checker.media:
-        class: %pim_catalog.completeness.checker.media.class%
+        class: '%pim_catalog.completeness.checker.media.class%'
         tags:
             - { name: pim_catalog.completeness.checker.product_value, priority: 100 }
 
     pim_catalog.completeness.checker.metric:
-        class: %pim_catalog.completeness.checker.metric.class%
+        class: '%pim_catalog.completeness.checker.metric.class%'
         tags:
             - { name: pim_catalog.completeness.checker.product_value, priority: 100 }
 
     pim_catalog.completeness.checker.price:
-        class: %pim_catalog.completeness.checker.price.class%
+        class: '%pim_catalog.completeness.checker.price.class%'
         tags:
             - { name: pim_catalog.completeness.checker.product_value, priority: 100 }

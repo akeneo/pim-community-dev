@@ -7,14 +7,14 @@ parameters:
 
 services:
     pim_versioning.event_subscriber.addversion:
-        class: %pim_versioning.event_subscriber.addversion.class%
+        class: '%pim_versioning.event_subscriber.addversion.class%'
         arguments:
             - '@service_container'
         tags:
             - { name: doctrine.event_subscriber }
 
     pim_versioning.event_subscriber.adduser:
-        class: %pim_versioning.event_subscriber.adduser.class%
+        class: '%pim_versioning.event_subscriber.adduser.class%'
         arguments:
             - '@security.authorization_checker'
             - '@security.token_storage'
@@ -22,14 +22,14 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_versioning.event_subscriber.addcontext:
-        class: %pim_versioning.event_subscriber.addcontext.class%
+        class: '%pim_versioning.event_subscriber.addcontext.class%'
         arguments:
             - '@pim_versioning.context.version'
         tags:
             - { name: kernel.event_subscriber}
 
     pim_versioning.event_subscriber.add_remove_version:
-        class: %pim_versioning.event_subscriber.add_remove_version.class%
+        class: '%pim_versioning.event_subscriber.add_remove_version.class%'
         arguments:
             - '@pim_versioning.factory.version'
             - '@pim_versioning.repository.version'

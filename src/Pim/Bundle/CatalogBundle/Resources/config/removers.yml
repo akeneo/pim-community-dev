@@ -4,84 +4,84 @@ parameters:
 
 services:
     pim_catalog.remover.group_type:
-        class: %pim_catalog.remover.base.class%
+        class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
-            - %pim_catalog.entity.group_type.class%
+            - '%pim_catalog.entity.group_type.class%'
 
     pim_catalog.remover.channel:
-        class: %pim_catalog.remover.base.class%
+        class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
-            - %pim_catalog.entity.channel.class%
+            - '%pim_catalog.entity.channel.class%'
 
     pim_catalog.remover.product:
-        class: %pim_catalog.remover.base.class%
+        class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.product.class%'
 
     pim_catalog.remover.association_type:
-        class: %pim_catalog.remover.base.class%
+        class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
-            - %pim_catalog.entity.association_type.class%
+            - '%pim_catalog.entity.association_type.class%'
 
     pim_catalog.remover.attribute_group:
-        class: %pim_catalog.remover.base.class%
+        class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
-            - %pim_catalog.entity.attribute_group.class%
+            - '%pim_catalog.entity.attribute_group.class%'
 
     pim_catalog.remover.attribute:
-        class: %pim_catalog.remover.base.class%
+        class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
-            - %pim_catalog.entity.attribute.class%
+            - '%pim_catalog.entity.attribute.class%'
 
     pim_catalog.remover.attribute_option:
-        class: %pim_catalog.remover.base.class%
+        class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
-            - %pim_catalog.entity.attribute_option.class%
+            - '%pim_catalog.entity.attribute_option.class%'
 
     pim_catalog.remover.category:
-        class: %pim_catalog.remover.base.class%
+        class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
-            - %pim_catalog.entity.category.class%
+            - '%pim_catalog.entity.category.class%'
 
     pim_catalog.remover.family:
-        class: %pim_catalog.remover.base.class%
+        class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
-            - %pim_catalog.entity.family.class%
+            - '%pim_catalog.entity.family.class%'
 
     pim_catalog.remover.group:
-        class: %pim_catalog.remover.base.class%
+        class: '%pim_catalog.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
-            - %pim_catalog.entity.group.class%
+            - '%pim_catalog.entity.group.class%'
 
     pim_catalog.remover.base_options_resolver:
-        class: %pim_catalog.remover.base_options_resolver.class%
+        class: '%pim_catalog.remover.base_options_resolver.class%'

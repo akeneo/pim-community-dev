@@ -3,6 +3,6 @@ parameters:
 
 services:
     pim_comment.builder.comment:
-        class: %pim_comment.builder.comment.class%
+        class: '%pim_comment.builder.comment.class%'
         arguments:
-            - %pim_comment.entity.comment.class%
+            - '%pim_comment.entity.comment.class%'

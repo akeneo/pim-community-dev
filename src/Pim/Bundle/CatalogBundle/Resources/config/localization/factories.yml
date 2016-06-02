@@ -15,21 +15,21 @@ parameters:
 
 services:
     pim_catalog.localization.factory.currency:
-        class: %pim_catalog.localization.factory.number.class%
+        class: '%pim_catalog.localization.factory.number.class%'
         arguments:
-            - %pim_catalog.localization.factory.currency.formats%
+            - '%pim_catalog.localization.factory.currency.formats%'
 
     pim_catalog.localization.factory.number:
-        class: %pim_catalog.localization.factory.number.class%
+        class: '%pim_catalog.localization.factory.number.class%'
         arguments:
             - []
 
     pim_catalog.localization.factory.date:
-        class: %pim_catalog.localization.factory.date.class%
+        class: '%pim_catalog.localization.factory.date.class%'
         arguments:
-            - %pim_catalog.localization.factory.date.formats%
+            - '%pim_catalog.localization.factory.date.formats%'
 
     pim_catalog.localization.factory.datetime:
-        class: %pim_catalog.localization.factory.datetime.class%
+        class: '%pim_catalog.localization.factory.datetime.class%'
         arguments:
-            - %pim_catalog.localization.factory.datetime.formats%
+            - '%pim_catalog.localization.factory.datetime.formats%'

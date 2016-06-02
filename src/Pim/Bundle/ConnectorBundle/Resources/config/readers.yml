@@ -15,7 +15,7 @@ parameters:
 
 services:
     pim_connector.reader.product:
-        class: %pim_connector.reader.product.class%
+        class: '%pim_connector.reader.product.class%'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.repository.channel'
@@ -26,29 +26,29 @@ services:
             - true
 
     pim_connector.reader.file.csv_iterator_factory:
-        class: %pim_connector.reader.file.file_iterator_factory.class%
+        class: '%pim_connector.reader.file.file_iterator_factory.class%'
         arguments:
-            - %pim_connector.reader.file.file_iterator.class%
+            - '%pim_connector.reader.file.file_iterator.class%'
             - 'csv'
 
     pim_connector.reader.file.xlsx_iterator_factory:
-        class: %pim_connector.reader.file.file_iterator_factory.class%
+        class: '%pim_connector.reader.file.file_iterator_factory.class%'
         arguments:
-            - %pim_connector.reader.file.file_iterator.class%
+            - '%pim_connector.reader.file.file_iterator.class%'
             - 'xlsx'
 
     pim_connector.reader.file.media_path_transformer:
-        class: %pim_connector.reader.file.media_path_transformer.class%
+        class: '%pim_connector.reader.file.media_path_transformer.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
 
     # Dummy Reader
     pim_connector.reader.dummy_item:
-        class: %pim_connector.reader.dummy_item.class%
+        class: '%pim_connector.reader.dummy_item.class%'
 
     # CSV File Readers
     pim_connector.reader.file.csv:
-        class: %pim_connector.reader.file.csv.class%
+        class: '%pim_connector.reader.file.csv.class%'
         arguments:
             - '@pim_connector.reader.file.csv_iterator_factory'
 
@@ -92,19 +92,19 @@ services:
         alias: pim_connector.reader.file.csv
 
     pim_connector.reader.file.csv_product:
-        class: %pim_connector.reader.file.csv_product.class%
+        class: '%pim_connector.reader.file.csv_product.class%'
         arguments:
             - '@pim_connector.reader.file.csv_iterator_factory'
             - '@pim_connector.reader.file.media_path_transformer'
 
     # XLSX file Readers
     pim_connector.reader.file.xlsx:
-        class: %pim_connector.reader.file.xlsx.class%
+        class: '%pim_connector.reader.file.xlsx.class%'
         arguments:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
 
     pim_connector.reader.file.xlsx_product:
-       class: %pim_connector.reader.file.xlsx_product.class%
+       class: '%pim_connector.reader.file.xlsx_product.class%'
        arguments:
            - '@pim_connector.reader.file.xlsx_iterator_factory'
            - '@pim_connector.reader.file.media_path_transformer'

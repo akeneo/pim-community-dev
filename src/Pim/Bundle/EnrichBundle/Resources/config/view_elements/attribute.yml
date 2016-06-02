@@ -21,7 +21,7 @@ services:
         parent: pim_enrich.view_element.base
         arguments:
             - 'pim_enrich.attribute.tab.parameter'
-            - %pim_enrich.view_element.attribute.tab.parameter.template%
+            - '%pim_enrich.view_element.attribute.tab.parameter.template%'
         tags:
             - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.form_tab, position: 90 }
 
@@ -29,7 +29,7 @@ services:
         parent: pim_enrich.view_element.base
         arguments:
             - 'pim_enrich.attribute.tab.value'
-            - %pim_enrich.view_element.attribute.tab.value.template%
+            - '%pim_enrich.view_element.attribute.tab.value.template%'
         tags:
             - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.form_tab, position: 100 }
 
@@ -37,7 +37,7 @@ services:
         parent: pim_enrich.view_element.base
         arguments:
             - 'pim_enrich.attribute.tab.history'
-            - %pim_enrich.view_element.attribute.tab.history.template%
+            - '%pim_enrich.view_element.attribute.tab.history.template%'
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_attribute_history'}] ]
@@ -51,7 +51,7 @@ services:
             - 'pane.accordion.general_parameters'
             - 'PimEnrichBundle:Attribute:Tab/_default_parameter_form.html.twig'
             -
-                allowed_form_types: %pim_enrich.attribute.general_parameters.allowed_form_types%
+                allowed_form_types: '%pim_enrich.attribute.general_parameters.allowed_form_types%'
         tags:
             - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.general_parameters, position: 90 }
 
@@ -61,6 +61,6 @@ services:
             - 'pane.accordion.backend_parameters'
             - 'PimEnrichBundle:Attribute:Tab/_default_parameter_form.html.twig'
             -
-                allowed_form_types: %pim_enrich.attribute.backend_parameters.allowed_form_types%
+                allowed_form_types: '%pim_enrich.attribute.backend_parameters.allowed_form_types%'
         tags:
             - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.backend_parameters, position: 90 }

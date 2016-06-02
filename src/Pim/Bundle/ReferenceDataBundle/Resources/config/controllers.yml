@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_reference_data.controller.configuration_rest:
-        class: %pim_reference_data.controller.configuration_rest.class%
+        class: '%pim_reference_data.controller.configuration_rest.class%'
         arguments:
             - '@pim_reference_data.registry'
             - '@pim_internal_api_serializer'

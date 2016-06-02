@@ -7,27 +7,27 @@ parameters:
 
 services:
     akeneo_file_storage.file_storage.file.file_storer:
-        class: %akeneo_file_storage.file_storage.file.file_storer.class%
+        class: '%akeneo_file_storage.file_storage.file.file_storer.class%'
         arguments:
             - '@oneup_flysystem.mount_manager'
             - '@akeneo_file_storage.saver.file'
             - '@akeneo_file_storage.file_storage.file_info_factory'
 
     akeneo_file_storage.file_storage.file.file_fetcher:
-        class: %akeneo_file_storage.file_storage.file.file_fetcher.class%
+        class: '%akeneo_file_storage.file_storage.file.file_fetcher.class%'
         arguments:
             - '@oneup_flysystem.tmp_storage_filesystem'
 
     akeneo_file_storage.file_storage.file_info_factory:
-        class: %akeneo_file_storage.file_storage.file_info_factory.class%
+        class: '%akeneo_file_storage.file_storage.file_info_factory.class%'
         arguments:
             - '@akeneo_file_storage.file_storage.path_generator'
-            - %akeneo_file_storage.model.file_info.class%
+            - '%akeneo_file_storage.model.file_info.class%'
 
     akeneo_file_storage.file_storage.path_generator:
-        class: %akeneo_file_storage.file_storage.path_generator.class%
+        class: '%akeneo_file_storage.file_storage.path_generator.class%'
 
     akeneo_file_storage.file_storage.filesystem_provider:
-        class: %akeneo_file_storage.file_storage.filesystem_provider.class%
+        class: '%akeneo_file_storage.file_storage.filesystem_provider.class%'
         arguments:
             - '@oneup_flysystem.mount_manager'

@@ -6,18 +6,18 @@ parameters:
 
 services:
     pim_dashboard.widget.registry:
-        class: %pim_dashboard.widget.registry.class%
+        class: '%pim_dashboard.widget.registry.class%'
 
     ##
     # Widgets
     ##
     pim_dashboard.widget.links:
-        class: %pim_dashboard.widget.links.class%
+        class: '%pim_dashboard.widget.links.class%'
         tags:
             - { name: pim_dashboard.widget, position: 10 }
 
     pim_dashboard.widget.completeness:
-        class: %pim_dashboard.widget.completeness.class%
+        class: '%pim_dashboard.widget.completeness.class%'
         arguments:
             - '@pim_catalog.repository.completeness'
             - '@pim_catalog.helper.locale'
@@ -25,7 +25,7 @@ services:
             - { name: pim_dashboard.widget, position: 20 }
 
     pim_dashboard.widget.last_operations:
-        class: %pim_dashboard.widget.last_operations.class%
+        class: '%pim_dashboard.widget.last_operations.class%'
         arguments:
             - '@pim_import_export.manager.job_execution'
             - '@translator'

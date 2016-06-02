@@ -4,7 +4,7 @@ parameters:
 
 services:
     pim_enrich.connector.item.mass_edit.temporary_file_cleaner:
-        class: %pim_enrich.connector.item.mass_edit.temporary_file_cleaner.class%
+        class: '%pim_enrich.connector.item.mass_edit.temporary_file_cleaner.class%'
         arguments:
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
@@ -12,7 +12,7 @@ services:
             - '@pim_catalog.repository.attribute'
 
     pim_enrich.connector.item.mass_edit.variant_group_cleaner:
-        class: %pim_enrich.connector.item.mass_edit.variant_group_cleaner.class%
+        class: '%pim_enrich.connector.item.mass_edit.variant_group_cleaner.class%'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_enrich.product.paginator'

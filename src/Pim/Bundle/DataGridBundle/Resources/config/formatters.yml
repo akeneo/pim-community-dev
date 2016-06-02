@@ -16,28 +16,28 @@ parameters:
 
 services:
     pim_datagrid.extension.formatter.property.product_value.field_property:
-        class: %pim_datagrid.extension.formatter.property.product_value.field_property.class%
+        class: '%pim_datagrid.extension.formatter.property.product_value.field_property.class%'
         arguments:
             - '@translator'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_field }
 
     pim_datagrid.extension.formatter.property.product_value.attribute_options_property:
-        class: %pim_datagrid.extension.formatter.property.product_value.attribute_options_property.class%
+        class: '%pim_datagrid.extension.formatter.property.product_value.attribute_options_property.class%'
         arguments:
             - '@translator'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_options }
 
     pim_datagrid.extension.formatter.property.product_value.attribute_option_property:
-        class: %pim_datagrid.extension.formatter.property.product_value.attribute_option_property.class%
+        class: '%pim_datagrid.extension.formatter.property.product_value.attribute_option_property.class%'
         arguments:
             - '@translator'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_option }
 
     pim_datagrid.extension.formatter.property.product_value.price_property:
-        class: %pim_datagrid.extension.formatter.property.product_value.price_property.class%
+        class: '%pim_datagrid.extension.formatter.property.product_value.price_property.class%'
         arguments:
             - '@translator'
             - '@pim_catalog.localization.presenter.prices'
@@ -45,7 +45,7 @@ services:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_price }
 
     pim_datagrid.extension.formatter.property.product_value.number_property:
-        class: %pim_datagrid.extension.formatter.property.product_value.number_property.class%
+        class: '%pim_datagrid.extension.formatter.property.product_value.number_property.class%'
         arguments:
             - '@translator'
             - '@pim_catalog.localization.presenter.number'
@@ -53,21 +53,21 @@ services:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_number }
 
     pim_datagrid.extension.formatter.property.product_value.image_property:
-        class: %pim_datagrid.extension.formatter.property.product_value.image_property.class%
+        class: '%pim_datagrid.extension.formatter.property.product_value.image_property.class%'
         arguments:
             - '@twig'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_image }
 
     pim_datagrid.extension.formatter.property.product_value.file_property:
-        class: %pim_datagrid.extension.formatter.property.product_value.file_property.class%
+        class: '%pim_datagrid.extension.formatter.property.product_value.file_property.class%'
         arguments:
             - '@translator'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_file }
 
     pim_datagrid.extension.formatter.property.product_value.metric_property:
-        class: %pim_datagrid.extension.formatter.property.product_value.metric_property.class%
+        class: '%pim_datagrid.extension.formatter.property.product_value.metric_property.class%'
         arguments:
             - '@twig'
             - '@translator'
@@ -76,14 +76,14 @@ services:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_metric }
 
     pim_datagrid.extension.formatter.property.product_value.boolean_property:
-        class: %pim_datagrid.extension.formatter.property.product_value.boolean_property.class%
+        class: '%pim_datagrid.extension.formatter.property.product_value.boolean_property.class%'
         arguments:
             - '@twig'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_boolean }
 
     pim_datagrid.extension.formatter.property.product_value.date_property:
-        class: %pim_datagrid.extension.formatter.property.product_value.date_property.class%
+        class: '%pim_datagrid.extension.formatter.property.product_value.date_property.class%'
         arguments:
             - '@translator'
             - '@pim_catalog.localization.presenter.date'
@@ -91,7 +91,7 @@ services:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_date }
 
     pim_datagrid.extension.formatter.property.product_value.datetime_property:
-        class: %pim_datagrid.extension.formatter.property.product_value.date_property.class%
+        class: '%pim_datagrid.extension.formatter.property.product_value.date_property.class%'
         arguments:
             - '@translator'
             - '@pim_catalog.localization.presenter.datetime'
@@ -99,21 +99,21 @@ services:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_datetime }
 
     pim_datagrid.extension.formatter.property.product_value.twig_property:
-        class: %pim_datagrid.extension.formatter.property.product_value.twig_property.class%
+        class: '%pim_datagrid.extension.formatter.property.product_value.twig_property.class%'
         arguments:
             - '@twig'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_twig }
 
     pim_datagrid.extension.formatter.property.product.groups_property:
-        class: %pim_datagrid.extension.formatter.property.product.groups_property.class%
+        class: '%pim_datagrid.extension.formatter.property.product.groups_property.class%'
         arguments:
             - '@translator'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_groups }
 
     pim_datagrid.extension.formatter.property.job.name_property:
-        class: %pim_datagrid.extension.formatter.property.job.name_property.class%
+        class: '%pim_datagrid.extension.formatter.property.job.name_property.class%'
         arguments:
             - '@akeneo_batch.connectors'
             - '@translator'
@@ -121,7 +121,7 @@ services:
             - { name: oro_datagrid.extension.formatter.property, type: job_name }
 
     pim_datagrid.extension.formatter.property.job.type_property:
-        class: %pim_datagrid.extension.formatter.property.job.type_property.class%
+        class: '%pim_datagrid.extension.formatter.property.job.type_property.class%'
         arguments:
             - '@translator'
         tags:

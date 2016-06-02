@@ -5,17 +5,17 @@ parameters:
 
 services:
     pim_enrich.connector.reader.mass_edit.product:
-        class: %pim_enrich.connector.reader.mass_edit.product.class%
+        class: '%pim_enrich.connector.reader.mass_edit.product.class%'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
 
     pim_enrich.connector.reader.mass_edit.variant_group_product:
-        class: %pim_enrich.connector.reader.mass_edit.variant_group_product.class%
+        class: '%pim_enrich.connector.reader.mass_edit.variant_group_product.class%'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_enrich.connector.item.mass_edit.variant_group_cleaner'
 
     pim_enrich.connector.reader.mass_edit.family:
-        class: %pim_enrich.connector.reader.mass_edit.family.class%
+        class: '%pim_enrich.connector.reader.mass_edit.family.class%'
         arguments:
             - '@pim_catalog.repository.family'

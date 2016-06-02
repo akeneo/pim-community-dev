@@ -3,7 +3,7 @@ parameters:
 
 services:
     akeneo_batch.validator.job_instance:
-        class: %akeneo_batch.validator.job_instance.class%
+        class: '%akeneo_batch.validator.job_instance.class%'
         arguments:
             - '@akeneo_batch.connectors'
         tags:

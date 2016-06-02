@@ -3,4 +3,4 @@ parameters:
 
 services:
     akeneo_file_storage.file_storage.formater.bytes:
-        class: %akeneo_file_storage.file_storage.formater.bytes.class%
+        class: '%akeneo_file_storage.file_storage.formater.bytes.class%'

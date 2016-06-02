@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_base_connector.validator.constraints.channel_validator:
-        class: %pim_base_connector.validator.constraints.channel_validator.class%
+        class: '%pim_base_connector.validator.constraints.channel_validator.class%'
         arguments:
             - '@pim_catalog.repository.channel'
         tags:

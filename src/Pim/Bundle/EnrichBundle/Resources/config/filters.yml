@@ -4,13 +4,13 @@ parameters:
 
 services:
     pim_enrich.filter.product_edit_data:
-        class: %pim_enrich.filter.product_edit_data.class%
+        class: '%pim_enrich.filter.product_edit_data.class%'
         arguments:
             - '@oro_security.security_facade'
             - '@pim_enrich.filter.product_values_edit_data'
 
     pim_enrich.filter.product_values_edit_data:
-        class: %pim_enrich.filter.product_values_edit_data.class%
+        class: '%pim_enrich.filter.product_values_edit_data.class%'
         arguments:
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.repository.attribute'

@@ -4,7 +4,7 @@ parameters:
 
 services:
     pim_enrich.form.handler.attribute:
-        class: %pim_enrich.form.handler.base.class%
+        class: '%pim_enrich.form.handler.base.class%'
         scope: request
         arguments:
             - '@pim_enrich.form.attribute'
@@ -12,7 +12,7 @@ services:
             - '@pim_catalog.saver.attribute'
 
     pim_enrich.form.handler.attribute_group:
-        class: %pim_enrich.form.handler.base.class%
+        class: '%pim_enrich.form.handler.base.class%'
         scope: request
         arguments:
             - '@pim_enrich.form.attribute_group'
@@ -20,7 +20,7 @@ services:
             - '@pim_catalog.saver.attribute_group'
 
     pim_enrich.form.handler.channel:
-        class: %pim_enrich.form.handler.base.class%
+        class: '%pim_enrich.form.handler.base.class%'
         scope: request
         arguments:
             - '@pim_enrich.form.channel'
@@ -28,7 +28,7 @@ services:
             - '@pim_catalog.saver.channel'
 
     pim_enrich.form.handler.group:
-        class: %pim_enrich.form.handler.group.class%
+        class: '%pim_enrich.form.handler.group.class%'
         scope: request
         arguments:
             - '@pim_enrich.form.group'
@@ -38,7 +38,7 @@ services:
             - '@pim_catalog.localization.localizer.converter'
 
     pim_enrich.form.handler.variant_group:
-        class: %pim_enrich.form.handler.group.class%
+        class: '%pim_enrich.form.handler.group.class%'
         scope: request
         arguments:
             - '@pim_enrich.form.variant_group'
@@ -48,7 +48,7 @@ services:
             - '@pim_catalog.localization.localizer.converter'
 
     pim_enrich.form.handler.group_type:
-        class: %pim_enrich.form.handler.base.class%
+        class: '%pim_enrich.form.handler.base.class%'
         scope: request
         arguments:
             - '@pim_enrich.form.group_type'
@@ -56,7 +56,7 @@ services:
             - '@pim_catalog.saver.group_type'
 
     pim_enrich.form.handler.association_type:
-        class: %pim_enrich.form.handler.base.class%
+        class: '%pim_enrich.form.handler.base.class%'
         scope: request
         arguments:
             - '@pim_enrich.form.association_type'
@@ -64,7 +64,7 @@ services:
             - '@pim_catalog.saver.association_type'
 
     pim_enrich.form.handler.family:
-        class: %pim_enrich.form.handler.base.class%
+        class: '%pim_enrich.form.handler.base.class%'
         scope: request
         arguments:
             - '@pim_enrich.form.family'

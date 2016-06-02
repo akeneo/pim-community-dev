@@ -4,9 +4,9 @@ parameters:
 
 services:
     oro_form.validator.constraint_factory:
-        class: %oro_form.validator.constraint_factory.class%
+        class: '%oro_form.validator.constraint_factory.class%'
 
     oro_form.twig.form_extension:
-        class: %oro_form.twig.form.class%
+        class: '%oro_form.twig.form.class%'
         tags:
             - { name: twig.extension }

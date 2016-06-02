@@ -1,9 +1,9 @@
 services:
     pim_versioning.serializer:
-        class: %pim_serializer.class%
+        class: '%pim_serializer.class%'
 
     pim_versioning.serializer.encoder.csv:
         public: false
-        class: %pim_serializer.encoder.csv.class%
+        class: '%pim_serializer.encoder.csv.class%'
         tags:
             - { name: pim_versioning.serializer.encoder, priority: 90 }

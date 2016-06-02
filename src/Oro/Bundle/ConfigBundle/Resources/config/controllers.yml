@@ -3,7 +3,7 @@ parameters:
 
 services:
     oro_config.controller.configuration:
-        class: %oro_config.controller.configuration.class%
+        class: '%oro_config.controller.configuration.class%'
         arguments:
             - '@oro_config.global'
             -

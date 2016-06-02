@@ -4,19 +4,19 @@ parameters:
 
 services:
     oro_assetic.asset_manager:
-          class:        %oro_assetic.asset_manager.class%
+          class:        '%oro_assetic.asset_manager.class%'
           arguments:
               - @assetic.asset_manager
               - @twig
-              - %oro_assetic.assets_groups%
-              - %oro_assetic.compiled_assets_groups%
+              - '%oro_assetic.assets_groups%'
+              - '%oro_assetic.compiled_assets_groups%'
 
     oro_assetic.twig.extension:
-          class:        %oro_assetic.twig_extension.class%
+          class:        '%oro_assetic.twig_extension.class%'
           arguments:
               - @assetic.asset_factory
-              - %oro_assetic.assets%
+              - '%oro_assetic.assets%'
               - @templating.name_parser
-              - %assetic.bundles%
+              - '%assetic.bundles%'
           tags:
               - { name: twig.extension }

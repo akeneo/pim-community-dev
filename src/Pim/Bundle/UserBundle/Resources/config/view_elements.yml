@@ -3,4 +3,4 @@ parameters:
 
 services:
     pim_user.view_element.visibility_checker.groups_and_roles:
-        class: %pim_user.view_element.visibility_checker.groups_and_roles.class%
+        class: '%pim_user.view_element.visibility_checker.groups_and_roles.class%'

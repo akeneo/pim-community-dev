@@ -9,13 +9,13 @@ parameters:
 
 services:
     pim_catalog.localization.presenter.registry:
-        class: %pim_catalog.localization.presenter.registry.class%
+        class: '%pim_catalog.localization.presenter.registry.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
 
     # Product values
     pim_catalog.localization.presenter.prices:
-        class: %pim_catalog.localization.presenter.prices.class%
+        class: '%pim_catalog.localization.presenter.prices.class%'
         arguments:
             - '@pim_catalog.localization.factory.currency'
             - ['pim_catalog_price_collection']
@@ -23,7 +23,7 @@ services:
             - { name: pim_catalog.localization.presenter, type: 'product_value' }
 
     pim_catalog.localization.presenter.metric:
-        class: %pim_catalog.localization.presenter.metric.class%
+        class: '%pim_catalog.localization.presenter.metric.class%'
         arguments:
             - '@pim_catalog.localization.factory.number'
             - ['pim_catalog_metric']
@@ -32,7 +32,7 @@ services:
             - { name: pim_catalog.localization.presenter, type: 'product_value' }
 
     pim_catalog.localization.presenter.number:
-        class: %pim_catalog.localization.presenter.number.class%
+        class: '%pim_catalog.localization.presenter.number.class%'
         arguments:
             - '@pim_catalog.localization.factory.number'
             - ['pim_catalog_number']
@@ -40,7 +40,7 @@ services:
             - { name: pim_catalog.localization.presenter, type: 'product_value' }
 
     pim_catalog.localization.presenter.date:
-        class: %pim_catalog.localization.presenter.date.class%
+        class: '%pim_catalog.localization.presenter.date.class%'
         arguments:
             - '@pim_catalog.localization.factory.date'
             - ['pim_catalog_date']
@@ -48,7 +48,7 @@ services:
             - { name: pim_catalog.localization.presenter, type: 'product_value' }
 
     pim_catalog.localization.presenter.product_value.boolean:
-        class: %pim_catalog.localization.presenter.boolean.class%
+        class: '%pim_catalog.localization.presenter.boolean.class%'
         arguments:
             - ['pim_catalog_boolean']
         tags:
@@ -56,7 +56,7 @@ services:
 
     # Product fields
     pim_catalog.localization.presenter.datetime:
-        class: %pim_catalog.localization.presenter.date.class%
+        class: '%pim_catalog.localization.presenter.date.class%'
         arguments:
             - '@pim_catalog.localization.factory.datetime'
             - ['created_at', 'updated_at']
@@ -64,7 +64,7 @@ services:
             - { name: pim_catalog.localization.presenter, type: 'product_field' }
 
     pim_catalog.localization.presenter.product_field.boolean:
-        class: %pim_catalog.localization.presenter.boolean.class%
+        class: '%pim_catalog.localization.presenter.boolean.class%'
         arguments:
             - ['enabled']
         tags:
@@ -72,7 +72,7 @@ services:
 
     # Attribute options
     pim_catalog.localization.presenter.number.attribute_option:
-        class: %pim_catalog.localization.presenter.number.class%
+        class: '%pim_catalog.localization.presenter.number.class%'
         arguments:
             - '@pim_catalog.localization.factory.number'
             - ['number_min', 'number_max']
@@ -80,7 +80,7 @@ services:
             - { name: pim_catalog.localization.presenter, type: 'attribute_option' }
 
     pim_catalog.localization.presenter.date.attribute_option:
-        class: %pim_catalog.localization.presenter.date.class%
+        class: '%pim_catalog.localization.presenter.date.class%'
         arguments:
             - '@pim_catalog.localization.factory.date'
             - ['date_min', 'date_max']

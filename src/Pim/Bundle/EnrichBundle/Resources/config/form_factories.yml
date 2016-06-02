@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_enrich.form.factory.product_value:
-        class: %pim_enrich.form.factory.product_value.class%
+        class: '%pim_enrich.form.factory.product_value.class%'
         arguments:
             - '@form.factory'
             - '@pim_catalog.registry.attribute_type'

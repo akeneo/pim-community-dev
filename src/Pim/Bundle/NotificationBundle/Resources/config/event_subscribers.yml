@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_notification.event_subscriber.job_execution_notifier:
-        class: %pim_notification.event_subscriber.job_execution_notifier.class%
+        class: '%pim_notification.event_subscriber.job_execution_notifier.class%'
         arguments:
             - '@pim_notification.registry.factory.notification'
             - '@pim_notification.notifier'

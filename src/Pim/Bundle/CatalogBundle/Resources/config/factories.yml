@@ -9,81 +9,81 @@ parameters:
 
 services:
     pim_catalog.factory.family:
-        class: %pim_catalog.factory.family.class%
+        class: '%pim_catalog.factory.family.class%'
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.attribute_requirement'
             - '@pim_catalog.repository.attribute'
-            - %pim_catalog.entity.family.class%
+            - '%pim_catalog.entity.family.class%'
 
     pim_catalog.factory.channel:
-        class: %akeneo_storage_utils.factory.simple.class%
+        class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - %pim_catalog.entity.channel.class%
+            - '%pim_catalog.entity.channel.class%'
 
     pim_catalog.factory.locale:
-        class: %akeneo_storage_utils.factory.simple.class%
+        class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - %pim_catalog.entity.locale.class%
+            - '%pim_catalog.entity.locale.class%'
 
     pim_catalog.factory.attribute_group:
-        class: %akeneo_storage_utils.factory.simple.class%
+        class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - %pim_catalog.entity.attribute_group.class%
+            - '%pim_catalog.entity.attribute_group.class%'
 
     pim_catalog.factory.group_type:
-        class: %pim_catalog.factory.group_type.class%
+        class: '%pim_catalog.factory.group_type.class%'
         arguments:
-            - %pim_catalog.entity.group_type.class%
+            - '%pim_catalog.entity.group_type.class%'
 
     pim_catalog.factory.currency:
-        class: %pim_catalog.factory.currency.class%
+        class: '%pim_catalog.factory.currency.class%'
         arguments:
-            - %pim_catalog.entity.currency.class%
+            - '%pim_catalog.entity.currency.class%'
 
     pim_catalog.factory.attribute_requirement:
-        class: %pim_catalog.factory.attribute_requirement.class%
+        class: '%pim_catalog.factory.attribute_requirement.class%'
         arguments:
-            - %pim_catalog.entity.attribute_requirement.class%
+            - '%pim_catalog.entity.attribute_requirement.class%'
 
     # deprecated: will be removed in 1.6
     pim_catalog.factory.referenced_collection:
         alias: akeneo_storage_utils.factory.referenced_collection
 
     pim_catalog.factory.attribute:
-        class: %pim_catalog.factory.attribute.class%
+        class: '%pim_catalog.factory.attribute.class%'
         arguments:
             - '@pim_catalog.registry.attribute_type'
-            - %pim_catalog.entity.attribute.class%
-            - %pim_catalog.entity.product.class%
+            - '%pim_catalog.entity.attribute.class%'
+            - '%pim_catalog.entity.product.class%'
 
     pim_catalog.factory.attribute_option:
-        class: %akeneo_storage_utils.factory.simple.class%
+        class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - %pim_catalog.entity.attribute_option.class%
+            - '%pim_catalog.entity.attribute_option.class%'
 
     pim_catalog.factory.attribute_option_value:
-        class: %akeneo_storage_utils.factory.simple.class%
+        class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - %pim_catalog.entity.attribute_option_value.class%
+            - '%pim_catalog.entity.attribute_option_value.class%'
 
     pim_catalog.factory.metric:
-        class: %pim_catalog.factory.metric.class%
+        class: '%pim_catalog.factory.metric.class%'
         arguments:
-            - %pim_catalog.entity.metric.class%
+            - '%pim_catalog.entity.metric.class%'
 
     pim_catalog.factory.group:
-        class: %pim_catalog.factory.group.class%
+        class: '%pim_catalog.factory.group.class%'
         arguments:
             - '@pim_catalog.repository.group_type'
-            - %pim_catalog.entity.group.class%
+            - '%pim_catalog.entity.group.class%'
 
     pim_catalog.factory.category:
-        class: %akeneo_storage_utils.factory.simple.class%
+        class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - %pim_catalog.entity.category.class%
+            - '%pim_catalog.entity.category.class%'
 
     pim_catalog.factory.association_type:
-        class: %akeneo_storage_utils.factory.simple.class%
+        class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - %pim_catalog.entity.association_type.class%
+            - '%pim_catalog.entity.association_type.class%'
