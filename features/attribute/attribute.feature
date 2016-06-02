@@ -12,8 +12,13 @@ Feature: Display available field options
     And I am logged in as "Julia"
     And I am on the attributes page
 
-  Scenario: Successfully display available parameter fields for attribute types
-    Then the following attribute types should have the following fields
+  Scenario Outline: Successfully display available parameter fields for attribute types
+    Given I am on the attributes page
+    When I create a "<type>" attribute
+    Then I should see the <fields> fields
+
+    Examples:
+      | type       | fields                                                                                                       |
       | Identifier | Read only, Max characters, Validation rule                                                                   |
       | Date       | Read only, Min date, Max date                                                                                |
       | File       | Read only, Max file size (MB), Allowed extensions                                                            |
