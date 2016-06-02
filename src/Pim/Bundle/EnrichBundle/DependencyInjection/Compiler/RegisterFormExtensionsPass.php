@@ -33,6 +33,7 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
 
         $extensionConfig = [];
         $attributeFields = [];
+        $filters         = [];
         $files = $this->listConfigFiles($container);
 
         foreach ($files as $file) {
@@ -43,6 +44,9 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
             if (isset($config['attribute_fields']) && is_array($config['attribute_fields'])) {
                 $attributeFields = array_merge($attributeFields, $config['attribute_fields']);
             }
+            if (isset($config['filters']) && is_array($config['filters'])) {
+                $filters = array_merge($filters, $config['filters']);
+            }
             $container->addResource(new FileResource($file->getPathName()));
         }
 
@@ -52,6 +56,10 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
 
         foreach ($attributeFields as $attributeType => $module) {
             $providerDefinition->addMethodCall('addAttributeField', [$attributeType, $module]);
+        }
+
+        foreach ($filters as $filter => $module) {
+            $providerDefinition->addMethodCall('addFilter', [$filter, $module]);
         }
     }
 

@@ -8,6 +8,10 @@ define(
                 var form     = _.first(_.where(extensionMap, { code: formName }));
                 var deferred = new $.Deferred();
 
+                if (undefined === form) {
+                    throw new Error('The form ' + formName + ' was not found. Are you sure you registred it properly?')
+                }
+
                 require([form.module], function (Form) {
                     deferred.resolve(Form);
                 });

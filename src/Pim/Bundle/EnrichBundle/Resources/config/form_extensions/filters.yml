@@ -1,0 +1,3 @@
+extensions:
+    pim-filter-text:
+        module: pim/filter/text

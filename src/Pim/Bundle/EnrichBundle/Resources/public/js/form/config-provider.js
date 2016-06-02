@@ -23,6 +23,11 @@ define(
                 return loadConfig().then(function (config) {
                     return config.attribute_fields;
                 });
+            },
+            getFilters: function (code) {
+                return loadConfig().then(function (config) {
+                    return config.filters[code];
+                });
             }
         };
     }

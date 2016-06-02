@@ -1,0 +1,90 @@
+extensions:
+    pim-product-export-edit-content:
+        module: pim/export/product/edit/content
+
+    pim-product-export-edit-content-structure:
+        module: pim/export/product/edit/content/structure
+        parent: pim-product-export-edit-content
+        targetZone: structure-filters
+        position: 100
+
+    pim-product-export-edit-content-structure-scope:
+        module: pim/export/product/edit/content/structure/scope
+        parent: pim-product-export-edit-content-structure
+        targetZone: filters
+        position: 90
+
+    pim-product-export-edit-content-structure-locales:
+        module: pim/export/product/edit/content/structure/locales
+        parent: pim-product-export-edit-content-structure
+        targetZone: filters
+        position: 100
+
+    pim-product-export-edit-content-structure-attributes:
+        module: pim/export/product/edit/content/structure/attributes
+        parent: pim-product-export-edit-content-structure
+        targetZone: filters
+        position: 110
+
+    pim-product-export-edit-content-data:
+        module: pim/export/product/edit/content/data
+        parent: pim-product-export-edit-content
+        targetZone: data-filters
+        config:
+            filters:
+                -
+                    field: status
+                    view: pim-filter-text
+                -
+                    field: completeness
+                    view: pim-filter-text
+                -
+                    field: family
+                    view: pim-filter-text
+
+    pim-product-export-edit-content-data-add-filter:
+        module: pim/product-edit-form/attributes/add-attribute #to change
+        parent: pim-product-export-edit-content-data
+        targetZone: headings
+
+filters:
+    pim-product-export-edit-content:
+        pim_catalog_text:
+            view: pim-filter-text
+        pim_catalog_number:
+            view: pim-filter-text
+            # view: pim-filter-number
+        pim_catalog_textarea:
+            view: pim-filter-text
+        pim_catalog_identifier:
+            view: pim-filter-text
+        pim_catalog_metric:
+            view: pim-filter-text
+            # view: pim-filter-metric
+        pim_catalog_price_collection:
+            view: pim-filter-text
+            # view: pim-filter-price
+        pim_catalog_image:
+            view: pim-filter-text
+        pim_catalog_file:
+            view: pim-filter-text
+        pim_catalog_multiselect:
+            view: pim-filter-text
+            # view: pim-filter-multiselect
+        pim_catalog_simpleselect:
+            view: pim-filter-text
+            # view: pim-filter-simpleselect
+        pim_catalog_date:
+            view: pim-filter-text
+            # view: pim-filter-date
+        pim_catalog_boolean:
+            view: pim-filter-text
+            # view: pim-filter-boolean
+        pim_reference_data_simpleselect: #to move in reference data bundle
+            view: pim-filter-text
+            # view: pim-filter-simpleselect
+        pim_reference_data_multiselect:
+            view: pim-filter-text
+            # view: pim-filter-multiselect
+
+#Lorsqu'on ajoute un attribute il regarde son type normalizé. il fait appel au configProvider->getFilters() à partir de là il récupère son module et le load avec le form registry

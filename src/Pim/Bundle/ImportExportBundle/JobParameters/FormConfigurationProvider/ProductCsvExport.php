@@ -31,7 +31,7 @@ class ProductCsvExport implements FormConfigurationProviderInterface
 
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
-    
+
     /** @var string */
     protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
 
@@ -43,6 +43,9 @@ class ProductCsvExport implements FormConfigurationProviderInterface
 
     /** @var array */
     protected $dateFormats;
+
+    /** @var array */
+    protected $filters = [];
 
     /** @var array */
     protected $supportedJobNames;
@@ -77,72 +80,8 @@ class ProductCsvExport implements FormConfigurationProviderInterface
     public function getFormConfiguration(JobInstance $jobInstance)
     {
         $formOptions = [
-            'channel' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => $this->channelRepository->getLabelsIndexedByCode(),
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_connector.export.channel.label',
-                    'help'     => 'pim_connector.export.channel.help',
-                    'attr'     => ['data-tab' => 'content']
-                ]
-            ],
-            'locales'  => ['type' => 'pim_import_export_product_export_locale_choice'],
-            'families' => [
-                'type'    => 'select_family_type',
-                'options' => [
-                    'repository' => $this->familyRepository,
-                    'route'      => 'pim_enrich_family_rest_index',
-                    'required'   => false,
-                    'multiple'   => true,
-                    'label'      => 'pim_base_connector.export.families.label',
-                    'help'       => 'pim_base_connector.export.families.help',
-                    'attr'       => [
-                        'data-tab'         => 'content',
-                        'data-placeholder' => 'pim_base_connector.export.families.placeholder'
-                    ]
-                ]
-            ],
-            'enabled' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => [
-                        'enabled'  => 'pim_connector.export.status.choice.enabled',
-                        'disabled' => 'pim_connector.export.status.choice.disabled',
-                        'all'      => 'pim_connector.export.status.choice.all'
-                    ],
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_connector.export.status.label',
-                    'help'     => 'pim_connector.export.status.help',
-                    'attr'     => ['data-tab' => 'content']
-                ]
-            ],
-            'completeness' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => [
-                        'at_least_one_complete' => 'pim_connector.export.completeness.choice.at_least_one_complete',
-                        'all_complete'          => 'pim_connector.export.completeness.choice.all_complete',
-                        'all_incomplete'        => 'pim_connector.export.completeness.choice.all_incomplete',
-                        'all'                   => 'pim_connector.export.completeness.choice.all'
-                    ],
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_connector.export.completeness.label',
-                    'help'     => 'pim_connector.export.completeness.help',
-                    'attr'     => ['data-tab' => 'content']
-                ]
-            ],
-            'updated_since' => [
-                'type'    => 'pim_updated_since_parameter_type',
-                'options' => [
-                    'job_instance' => $jobInstance,
-                    'label'        => 'pim_connector.export.updated.updated_since_strategy.label',
-                    'help'         => 'pim_connector.export.updated.updated_since_strategy.help',
-                    'attr'         => ['data-tab' => 'content']
-                ]
+            'filters' => [
+                'type' => 'hidden'
             ],
             'decimalSeparator' => [
                 'type'    => 'choice',
@@ -165,7 +104,7 @@ class ProductCsvExport implements FormConfigurationProviderInterface
                 ]
             ],
         ];
-        
+
         $formOptions = array_merge($formOptions, $this->simpleCsvExport->getFormConfiguration($jobInstance));
 
         return $formOptions;

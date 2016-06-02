@@ -39,13 +39,27 @@ class ProductCsvExport implements DefaultValuesProviderInterface
         $parameters = $this->simpleProvider->getDefaultValues();
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
-        $parameters['channel'] = null;
-        $parameters['locales'] = [];
-        $parameters['enabled'] = 'enabled';
-        $parameters['updated_since_strategy'] = 'all';
-        $parameters['updated_since_date'] = null;
-        $parameters['families'] = null;
-        $parameters['completeness'] = 'at_least_one_complete';
+        // $parameters['channel'] = 'mobile';//null;
+        // $parameters['locales'] = ['fr_FR'];
+        $parameters['filters'] = '{"data": [], "structure": {}}';
+        // $parameters['enabled'] = true;
+
+        // $constraintFields['enabled'] = new NotBlank(['groups' => 'Execution']);
+        // $constraintFields['updated'] = new NotBlank(['groups' => 'Execution']);
+        // $constraintFields['locales'] = new NotBlank([
+        //     'groups'  => 'Execution',
+        //     'message' => 'pim_connector.export.locales.validation.not_blank'
+        // ]);
+        // $constraintFields['families'] = [];
+        // $constraintFields['completeness'] = [
+        //     new NotBlank(['groups' => 'Execution']),
+        //     new Choice(['choices' => [
+        //         'at_least_one_complete',
+        //         'all_complete',
+        //         'all_incomplete',
+        //         'all',
+        //     ], 'groups' => 'Execution'])
+        // ];
 
         return $parameters;
     }

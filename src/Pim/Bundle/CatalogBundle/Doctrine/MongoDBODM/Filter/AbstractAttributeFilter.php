@@ -31,16 +31,16 @@ abstract class AbstractAttributeFilter extends AbstractFilter implements Attribu
      */
     protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
     {
-        try {
-            $this->attrValidatorHelper->validateLocale($attribute, $locale);
-            $this->attrValidatorHelper->validateScope($attribute, $scope);
-        } catch (\LogicException $e) {
-            throw InvalidArgumentException::expectedFromPreviousException(
-                $e,
-                $attribute->getCode(),
-                'filter',
-                $type
-            );
-        }
+        // try {
+        //     $this->attrValidatorHelper->validateLocale($attribute, $locale);
+        //     $this->attrValidatorHelper->validateScope($attribute, $scope);
+        // } catch (\LogicException $e) {
+        //     throw InvalidArgumentException::expectedFromPreviousException(
+        //         $e,
+        //         $attribute->getCode(),
+        //         'filter',
+        //         $type
+        //     );
+        // }
     }
 }
