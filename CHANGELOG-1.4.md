@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-5820: Fix product value filtering by channel and locale in structured product normalizer
+- PIM-5687: Fix an issue that prevented the removal of a product from a variant group in MongoDB
 
 # 1.4.24 (2016-05-10)
 
