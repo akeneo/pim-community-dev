@@ -1,3 +1,5 @@
+{% form_theme form 'PimImportExportBundle:JobProfile/Tab:_form_theme.html.twig' %}
+
 <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane buffer-top active">
     {% set properties %}
         {{ form_row(form.code) }}

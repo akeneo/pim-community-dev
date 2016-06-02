@@ -181,7 +181,7 @@
                     : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators') %}
                 {% set combinedError = (combinedError != '') ? combinedError ~ '; ' ~ error : error %}
             {% endfor %}
-            <i class="validation-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="{{ combinedError }}"></i>
+            <i class="validation-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="{{ combinedError|trans }}"></i>
         {% else %}
             {{ parent() }}
         {% endif %}

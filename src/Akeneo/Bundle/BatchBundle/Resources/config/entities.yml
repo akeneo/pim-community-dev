@@ -1,6 +1,4 @@
 parameters:
-    akeneo_batch.entity.field_mapping.class:  Akeneo\Bundle\BatchBundle\Entity\FieldMapping
-    akeneo_batch.entity.item_mapping.class:   Akeneo\Bundle\BatchBundle\Entity\ItemMapping
     akeneo_batch.entity.warning.class:        Akeneo\Component\Batch\Model\Warning
     akeneo_batch.entity.job_instance.class:   Akeneo\Component\Batch\Model\JobInstance
     akeneo_batch.entity.job_execution.class:  Akeneo\Component\Batch\Model\JobExecution

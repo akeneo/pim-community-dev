@@ -20,21 +20,13 @@ class ProductCsvExportSpec extends ObjectBehavior
     function let(
         FormConfigurationProviderInterface $simpleCsvExport,
         ChannelRepositoryInterface $channelRepository,
-        FamilyRepositoryInterface $familyRepository,
-        JobRepositoryInterface $jobRepository,
-        TranslatorInterface $translator,
-        PresenterInterface $datePresenter,
-        LocaleResolver $localeResolver
+        FamilyRepositoryInterface $familyRepository
     ) {
 
         $this->beConstructedWith(
             $simpleCsvExport,
             $channelRepository,
             $familyRepository,
-            $jobRepository,
-            $translator,
-            $datePresenter,
-            $localeResolver,
             ['product_csv_export'],
             [',', ';'],
             ['yyyy-MM-dd', 'dd/MM/yyyy']
@@ -59,13 +51,15 @@ class ProductCsvExportSpec extends ObjectBehavior
         $simpleCsvExport,
         $channelRepository,
         $familyRepository,
-        $jobRepository,
-        $translator,
-        $datePresenter,
-        $localeResolver,
-        JobInstance $jobInstance,
-        JobExecution $jobExecution
+        JobInstance $jobInstance
     ) {
+        $channelCodes = [
+            'mobile'    => 'Mobile',
+            'ecommerce' => 'E-commerce'
+        ];
+
+        $channelRepository->getLabelsIndexedByCode()->willReturn($channelCodes);
+
         $baseExport = [
             'filePath' => [
                 'options' => [
@@ -94,70 +88,7 @@ class ProductCsvExportSpec extends ObjectBehavior
             ],
         ];
 
-        $simpleCsvExport->getFormConfiguration($jobInstance)->willReturn($baseExport);
-
-        $date = new \DateTime('2015-12-15 16:00:50');
-        $jobExecution->getStartTime()->willReturn($date);
-        $jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED)->willReturn($jobExecution);
-
-        $localeResolver->getCurrentLocale()->willReturn('fr_FR');
-        $datePresenter->present($date, ['locale' => 'fr_FR'])->willReturn('15/12/2015 16:00:50');
-        $translator->trans('pim_connector.export.updated.last_execution.last', [
-            '%date%' => '15/12/2015 16:00:50'
-        ])->willReturn('Last export: 15/12/2015 16:00:50');
-
-        $channelCodes = [
-            'mobile'    => 'Mobile',
-            'ecommerce' => 'E-commerce'
-        ];
-
-        $channelRepository->getLabelsIndexedByCode()->willReturn($channelCodes);
-
-        $result = $this->getConfiguration($channelCodes, 'Last export: 15/12/2015 16:00:50', $familyRepository)
-            + $baseExport;
-        $this->getFormConfiguration($jobInstance)->shouldReturn($result);
-
-    }
-
-    function it_gets_form_configuration_when_job_has_never_been_exported(
-        $simpleCsvExport,
-        $channelRepository,
-        $familyRepository,
-        $jobRepository,
-        $translator,
-        $datePresenter,
-        $localeResolver,
-        JobInstance $jobInstance,
-        JobExecution $jobExecution
-    ) {
-        $baseExport = [];
-
-        $simpleCsvExport->getFormConfiguration($jobInstance)->willReturn($baseExport);
-
-        $date = new \DateTime('2015-12-15 16:00:50');
-        $jobExecution->getStartTime()->willReturn($date);
-        $jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED)->willReturn(null);
-
-        $localeResolver->getCurrentLocale()->shouldNotBeCalled();
-        $datePresenter->present()->shouldNotBeCalled();
-        $translator->trans('pim_connector.export.updated.last_execution.none')
-            ->willReturn('This job has never been exported');
-
-        $channelCodes = [
-            'mobile'    => 'Mobile',
-            'ecommerce' => 'E-commerce'
-        ];
-
-        $channelRepository->getLabelsIndexedByCode()->willReturn($channelCodes);
-
-        $result = $this->getConfiguration($channelCodes, 'This job has never been exported', $familyRepository)
-            + $baseExport;
-        $this->getFormConfiguration($jobInstance)->shouldReturn($result);
-    }
-
-    private function getConfiguration($channelCodes, $updatedInfo, $familyRepository)
-    {
-        return [
+        $exportConfig = [
             'channel' => [
                 'type'    => 'choice',
                 'options' => [
@@ -216,20 +147,14 @@ class ProductCsvExportSpec extends ObjectBehavior
                     'attr'     => ['data-tab' => 'content']
                 ]
             ],
-            'updated' => [
-                'type'    => 'choice',
+            'updated_since' => [
+                'type' => 'pim_updated_since_parameter_type',
                 'options' => [
-                    'choices'  => [
-                        'all'         => 'pim_connector.export.updated.choice.all',
-                        'last_export' => 'pim_connector.export.updated.choice.last_export'
-                    ],
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_connector.export.updated.label',
-                    'help'     => 'pim_connector.export.updated.help',
-                    'info'     => $updatedInfo,
-                    'attr'     => ['data-tab' => 'content']
-                ],
+                    'job_instance' => $jobInstance,
+                    'label'        => 'pim_connector.export.updated.updated_since_strategy.label',
+                    'help'         => 'pim_connector.export.updated.updated_since_strategy.help',
+                    'attr'         => ['data-tab' => 'content']
+                ]
             ],
             'decimalSeparator' => [
                 'type'    => 'choice',
@@ -252,5 +177,9 @@ class ProductCsvExportSpec extends ObjectBehavior
                 ]
             ]
         ];
+
+        $simpleCsvExport->getFormConfiguration($jobInstance)->willReturn($baseExport);
+
+        $this->getFormConfiguration($jobInstance)->shouldReturn($exportConfig + $baseExport);
     }
 }

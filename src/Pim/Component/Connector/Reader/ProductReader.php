@@ -94,7 +94,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $filters = array_merge($this->getFilters(
             $channel,
             $this->rawToStandardProductStatus($parameters->get('enabled')),
-            $this->rawToStandardProductUpdated($parameters->get('updated')),
+            $this->rawToStandardProductUpdated($parameters),
             array_filter(explode(',', $parameters->get('families')))
         ), $this->getCompletenessFilters($parameters));
 
@@ -237,23 +237,23 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /**
      * Convert the UI product updated to the standard product updated
      *
-     * @param string $rawUpdated
+     * @param JobParameters $parameters
      *
      * @return \DateTime|null
      */
-    protected function rawToStandardProductUpdated($rawUpdated)
+    protected function rawToStandardProductUpdated(JobParameters $parameters)
     {
-        switch ($rawUpdated) {
+        switch ($parameters->get('updated_since_strategy')) {
             case 'last_export':
                 $jobInstance = $this->stepExecution->getJobExecution()->getJobInstance();
                 $jobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
-                $updated = null === $jobExecution ? null : $jobExecution->getStartTime();
-                break;
-            default:
-                $updated = null;
-        }
 
-        return $updated;
+                return null === $jobExecution ? null : $jobExecution->getStartTime();
+            case 'since_date':
+                return $parameters->get('updated_since_date');
+            default:
+                return null;
+        }
     }
 
     /**

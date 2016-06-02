@@ -224,6 +224,18 @@ class NavigationContext extends BaseNavigationContext
     }
 
     /**
+     * @param JobInstance $job
+     *
+     * @Given /^I should be on the ("([^"]*)" (import|export) job) edit page$/
+     */
+    public function iShouldBeOnTheJobEditPage(JobInstance $job)
+    {
+        $jobPage         = sprintf('%s edit', ucfirst($job->getType()));
+        $expectedAddress = $this->getPage($jobPage)->getUrl(['id' => $job->getId()]);
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
      * @param GroupTypeInterface $groupType
      *
      * @Given /^I should be on the ("([^"]*)" group type) page$/

@@ -42,7 +42,8 @@ class ProductCsvExport implements DefaultValuesProviderInterface
         $parameters['channel'] = null;
         $parameters['locales'] = [];
         $parameters['enabled'] = 'enabled';
-        $parameters['updated'] = 'all';
+        $parameters['updated_since_strategy'] = 'all';
+        $parameters['updated_since_date'] = null;
         $parameters['families'] = null;
         $parameters['completeness'] = 'at_least_one_complete';
 

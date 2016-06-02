@@ -72,14 +72,19 @@ pim_connector:
                 all_incomplete: Not complete on all selected locales
                 all: No condition on completeness
         updated:
-            label: Updated time condition
-            help: The time condition of the products you want to export
+            updated_since_strategy:
+                label: Updated time condition
+                help: The time condition of the products you want to export
+                choice:
+                    since_date: Updated products since the defined date
+                    last_export: Updated products since last export
+                    all: No date condition
+            updated_since_date:
+                placeholder: Choose your date
+                error: The date must not be empty
             last_execution:
                 none: This job has never been exported
                 last: Last export: %date%
-            choice:
-                last_export: Updated products since last export
-                all: All
         decimalSeparator:
             label: Decimal separator
             help: Determine the decimal separator

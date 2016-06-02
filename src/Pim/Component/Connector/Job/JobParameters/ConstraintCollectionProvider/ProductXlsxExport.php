@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -54,8 +55,9 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
         ]);
 
         $constraintFields['enabled'] = new NotBlank(['groups' => 'Execution']);
-        $constraintFields['updated'] = new NotBlank(['groups' => 'Execution']);
         $constraintFields['completeness'] = new NotBlank(['groups' => 'Execution']);
+        $constraintFields['updated_since_strategy'] = new NotBlank(['groups' => 'Execution']);
+        $constraintFields['updated_since_date'] = new DateTime(['groups' => 'Execution']);
         $constraintFields['linesPerFile'] = [
             new NotBlank(),
             new GreaterThan(1)
