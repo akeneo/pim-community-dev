@@ -29,12 +29,6 @@ class NumberTypeSpec extends ObjectBehavior
         $this->buildAttributeFormTypes($factory, $attribute)->shouldHaveCount(8);
     }
 
-    function it_prepares_default_value_form_constraints($guesser, $attribute, $value)
-    {
-        $guesser->supportAttribute($attribute)->willReturn(false);
-        $this->prepareValueFormConstraints($value)->shouldReturn([]);
-    }
-
     function it_has_a_name()
     {
         $this->getName()->shouldReturn('pim_catalog_number');

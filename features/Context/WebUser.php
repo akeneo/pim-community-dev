@@ -1502,7 +1502,6 @@ class WebUser extends RawMinkContext
      */
     public function productShouldBeEnabled(Product $product)
     {
-
         $this->spin(function () use ($product) {
             $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
 

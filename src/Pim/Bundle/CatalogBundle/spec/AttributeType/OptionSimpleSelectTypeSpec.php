@@ -33,25 +33,6 @@ class OptionSimpleSelectTypeSpec extends ObjectBehavior
         $this->getFormType()->shouldReturn('pim_ajax_entity');
     }
 
-    function it_prepares_value_form_options($value, $attribute)
-    {
-        $attribute->getLabel()->willReturn('A label');
-        $attribute->isRequired()->willReturn(true);
-        $attribute->getId()->willReturn(42);
-        $attribute->getMinimumInputLength()->willReturn(10);
-
-        $this->prepareValueFormOptions($value)->shouldHaveCount(7);
-        $this->prepareValueFormOptions($value)->shouldReturn([
-            'label'                => 'A label',
-            'required'             => false,
-            'auto_initialize'      => false,
-            'label_attr'           => ['truncate' => true],
-            'class'                => 'PimCatalogBundle:AttributeOption',
-            'collection_id'        => 42,
-            'minimum_input_length' => 10
-        ]);
-    }
-
     function it_has_a_name()
     {
         $this->getName()->shouldReturn('pim_catalog_simpleselect');

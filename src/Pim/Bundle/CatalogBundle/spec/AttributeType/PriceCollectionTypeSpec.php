@@ -35,13 +35,6 @@ class PriceCollectionTypeSpec extends ObjectBehavior
         $this->buildAttributeFormTypes($factory, $attribute)->shouldHaveCount(7);
     }
 
-    function it_prepares_default_value_form_constraints($guesser, $attribute, $value)
-    {
-        $guesser->supportAttribute($attribute)->willReturn(false);
-
-        $this->prepareValueFormConstraints($value)->shouldReturn([]);
-    }
-
     function it_has_a_name()
     {
         $this->getName()->shouldReturn('pim_catalog_price_collection');

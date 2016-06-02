@@ -47,7 +47,6 @@ class ProductEditDataFilterSpec extends ObjectBehavior
     {
         $data = [
             'family'        => 'some family',
-            'groups'        => [],
             'categories'    => ['lexmark'],
             'enabled'       => true,
             'associations'  => [],
