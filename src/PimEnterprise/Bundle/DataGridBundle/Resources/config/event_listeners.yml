@@ -7,6 +7,6 @@ services:
     pim_datagrid.event_listener.configure_published_product_filters:
         class: '%pim_datagrid.event_listener.configure_product_filters.class%'
         arguments:
-            - @pim_user.context.user
+            - '@pim_user.context.user'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.published-product-grid, method: onBuildAfter }

@@ -28,7 +28,7 @@ services:
             - '@pimee_product_asset.repository.category'
             - '@pimee_product_asset.manager.category'
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setContainer, [ '@service_container' ] ]
 
     pimee_product_asset.controller.rest.product_asset:
         class: '%pimee_product_asset.controller.rest.product_asset.class%'
@@ -62,7 +62,7 @@ services:
             - '@pimee_product_asset.repository.asset_category_access'
             - '@security.token_storage'
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setContainer, [ '@service_container' ] ]
 
     pimee_product_asset.controller.category_tree_asset_picker:
         scope: request
@@ -79,4 +79,4 @@ services:
             - '@pimee_product_asset.repository.asset_category_access'
             - '@security.token_storage'
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setContainer, [ '@service_container' ] ]
