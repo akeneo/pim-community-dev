@@ -8,6 +8,7 @@
 - PIM-5357: Add the following XLSX job import: assets and asset categories
 - PIM-5582: Read only attribute
 - PIM-5427: Add possibility to filter by families for product export
+- PIM-5431: export the products updated since a defined date
 
 ## Technical improvements
 
