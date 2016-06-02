@@ -99,7 +99,7 @@ connector:
         csv_published_product_quick_export:
             type: quick_export
             steps:
-                perform:
+                export:
                     services:
                         reader:    pimee_workflow.connector.reader.mass_edit.published_product
                         processor: pim_enrich.connector.processor.quick_export.product_to_flat_array

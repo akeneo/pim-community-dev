@@ -17,7 +17,9 @@ approve_product_draft;All
 refuse_product_draft;All
 apply_assets_mass_upload;All
 csv_product_quick_export;All
+csv_product_grid_context_quick_export;All
 csv_published_product_quick_export;All
 xlsx_product_quick_export;All
+xlsx_product_grid_context_quick_export;All
 xlsx_published_product_quick_export;All
 rule_impacted_product_count;All
