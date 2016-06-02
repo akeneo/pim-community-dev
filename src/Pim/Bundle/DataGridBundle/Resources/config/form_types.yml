@@ -13,8 +13,8 @@ services:
     pim_datagrid.form.type.datagrid_product_filter_choice:
         class: '%pim_datagrid.form.type.datagrid_filter_choice.class%'
         arguments:
-            - @oro_datagrid.datagrid.manager
-            - @pim_datagrid.datagrid.product.filters_configurator
+            - '@oro_datagrid.datagrid.manager'
+            - '@pim_datagrid.datagrid.product.filters_configurator'
             - product-grid
         tags:
             - { name: form.type, alias: pim_datagrid_product_filter_choice }

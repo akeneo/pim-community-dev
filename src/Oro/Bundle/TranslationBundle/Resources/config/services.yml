@@ -5,4 +5,4 @@ parameters:
 services:
     oro_translation.controller:
         class: '%oro_translation.controller.class%'
-        arguments: [@translator, @templating, OroTranslationBundle:Translation:translation.js.twig, ""]
+        arguments: ['@translator', '@templating', 'OroTranslationBundle:Translation:translation.js.twig', '']

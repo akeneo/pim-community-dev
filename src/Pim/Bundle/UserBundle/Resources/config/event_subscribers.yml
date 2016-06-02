@@ -20,9 +20,9 @@ services:
     pim_locale.locale_subscriber:
         class: '%pim_locale.locale_subscriber.class%'
         arguments:
-            - @request_stack
-            - @translator
-            - @doctrine.orm.entity_manager
+            - '@request_stack'
+            - '@translator'
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: kernel.event_subscriber }
 

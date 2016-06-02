@@ -65,6 +65,6 @@ services:
     pim_versioning.event_subscriber.timestampable:
         class: '%pim_versioning.event_subscriber.timestampable.class%'
         arguments:
-            - @akeneo_storage_utils.doctrine.smart_manager_registry
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }

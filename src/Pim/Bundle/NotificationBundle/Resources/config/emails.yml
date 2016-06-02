@@ -5,5 +5,5 @@ services:
     pim_notification.email.email_notifier:
         class: '%pim_notification.email.email_notifier.class%'
         arguments:
-            - @mailer
+            - '@mailer'
             - '%akeneo_batch.mail_notifier.sender_email%'

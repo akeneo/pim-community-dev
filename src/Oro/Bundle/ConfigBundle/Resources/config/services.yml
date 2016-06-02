@@ -30,4 +30,4 @@ services:
     oro_config.form.config_subscriber:
         class: '%oro_config.form.config_subscriber.class%'
         arguments:
-          - @oro_config.user
+          - '@oro_config.user'

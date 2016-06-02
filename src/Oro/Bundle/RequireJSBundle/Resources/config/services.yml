@@ -18,6 +18,6 @@ services:
     oro_requirejs_config_provider:
         class: '%oro_requirejs.provider.config.class%'
         arguments:
-            - @service_container
+            - '@service_container'
         calls:
-            - [ setCache, [ @oro_requirejs.cache ] ]
+            - [ setCache, [ '@oro_requirejs.cache' ] ]
