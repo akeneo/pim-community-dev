@@ -221,7 +221,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
         $missingChannelCodes = array_diff($channelCodes, $existingChannelCode);
         $identifier = $this->attributeRepository->getIdentifier();
         foreach ($missingChannelCodes as $channelCode) {
-            $requirements[] = $this->createAttributeRequirement($identifier, $family, $channelCode);
+            $requirements[] = $this->createAttributeRequirement($family, $identifier, $channelCode);
         }
 
         return $requirements;
