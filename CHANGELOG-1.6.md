@@ -2,6 +2,7 @@
 
 ## Functional improvements
 
+- PIM-5664: It is now possible to purge jobs executions history
 - PIM-5592: The product grid keeps the page number when you go back to it
 - PIM-5096: Introduce the XLSX quick export
 - PIM-5593: The context is now kept in the associations tab of the product edit form
