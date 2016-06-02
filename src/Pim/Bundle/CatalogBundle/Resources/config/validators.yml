@@ -45,8 +45,8 @@ services:
         class: '%pim_catalog.validator.helper.attribute.class%'
         public: false
         arguments:
-            - @pim_catalog.repository.locale
-            - @pim_catalog.repository.channel
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.channel'
 
     pim_catalog.validator.unique_value_set:
         class: '%pim_catalog.validator.unique_value_set.class%'
@@ -105,7 +105,7 @@ services:
     pim_catalog.validator.constraint.variant_group_values:
         class: '%pim_catalog.validator.constraint.variant_group_values.class%'
         arguments:
-            - @pim_catalog.repository.attribute
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: validator.constraint_validator, alias: pim_variant_group_values_validator }
 
@@ -285,7 +285,7 @@ services:
     pim_catalog.validator.product:
         class: '%symfony.validator.recursive.class%'
         arguments:
-            - @pim_catalog.validator.context.factory
+            - '@pim_catalog.validator.context.factory'
             - '@pim_catalog.validator.mapping.delegating_class_metadata_factory'
             - '@validator.validator_factory'
             - []

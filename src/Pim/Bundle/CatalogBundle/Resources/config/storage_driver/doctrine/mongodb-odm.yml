@@ -94,10 +94,10 @@ services:
     pim_catalog.doctrine.index_creator:
         class: '%pim_catalog.doctrine.index_creator.class%'
         arguments:
-            - @pim_catalog.doctrine.smart_manager_registry
-            - @pim_catalog.doctrine.naming_utility
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_catalog.doctrine.naming_utility'
             - '%pim_catalog.entity.product.class%'
-            - @logger
+            - '@logger'
             - '%pim_catalog.entity.attribute.class%'
 
     pim_catalog.doctrine.naming_utility:

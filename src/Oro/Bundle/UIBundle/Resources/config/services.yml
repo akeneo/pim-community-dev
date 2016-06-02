@@ -9,7 +9,7 @@ services:
     oro_ui.router:
         class: '%oro_ui.router.class%'
         scope: request
-        arguments: [@request, @router]
+        arguments: ['@request', '@router']
 
     oro_ui.twig.ceil_extension:
         class: '%oro_ui.twig.ceil.class%'
@@ -25,13 +25,13 @@ services:
     oro_ui.twig.md5_extension:
         class: '%oro_ui.twig.md5.class%'
         arguments:
-            - @serializer
+            - '@serializer'
         tags:
             - { name: twig.extension }
 
     oro_ui.twig.date_extension:
         class: '%oro_ui.twig.date.class%'
         arguments:
-            - @translator
+            - '@translator'
         tags:
             - { name: twig.extension }

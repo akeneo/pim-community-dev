@@ -40,26 +40,26 @@ services:
     oro_security.security_facade:
         class: '%oro_security.security_facade.class%'
         arguments:
-            - @security.authorization_checker
-            - @oro_security.acl.annotation_provider
-            - @oro_security.acl.object_identity_factory
-            - @logger
+            - '@security.authorization_checker'
+            - '@oro_security.acl.annotation_provider'
+            - '@oro_security.acl.object_identity_factory'
+            - '@logger'
         tags:
             - { name: monolog.logger, channel: security }
 
     oro_security.acl.manager:
         class: '%oro_security.acl.manager.class%'
         arguments:
-            - @oro_security.acl.object_identity_factory
-            - @oro_security.acl.extension_selector
-            - @?security.acl.dbal.provider
-            - @oro_security.acl.ace_provider
+            - '@oro_security.acl.object_identity_factory'
+            - '@oro_security.acl.extension_selector'
+            - '@?security.acl.dbal.provider'
+            - '@oro_security.acl.ace_provider'
             - '%oro_security.acl.privilege_repository.class%'
 
     oro_security.acl.sid_manager:
         class: '%oro_security.acl.sid_manager.class%'
         arguments:
-            - @?security.acl.dbal.provider
+            - '@?security.acl.dbal.provider'
 
     oro_security.link.sid_manager:
         tags:
@@ -79,14 +79,14 @@ services:
         public: false
         class: '%oro_security.acl.extension_selector.class%'
         arguments:
-            - @oro_security.acl.object_id_accessor
+            - '@oro_security.acl.object_id_accessor'
 
     oro_security.acl.extension.entity:
         public: false
         class: '%oro_security.acl.extension.entity.class%'
         arguments:
-            - @oro_security.acl.object_id_accessor
-            - @oro_security.acl.entity_class_resolver
+            - '@oro_security.acl.object_id_accessor'
+            - '@oro_security.acl.entity_class_resolver'
         tags:
             - { name: oro_security.acl.extension, priority: 20 }
 
@@ -94,7 +94,7 @@ services:
         public: false
         class: '%oro_security.acl.extension.action.class%'
         arguments:
-            - @oro_security.action_metadata_provider
+            - '@oro_security.action_metadata_provider'
         tags:
             - { name: oro_security.acl.extension, priority: 10 }
 
@@ -102,7 +102,7 @@ services:
         public: false
         class: '%oro_security.acl.provider.class%'
         arguments:
-            - @oro_security.acl.object_identity_factory
+            - '@oro_security.acl.object_identity_factory'
 
     oro_security.acl.voter_link:
         tags:
@@ -112,24 +112,24 @@ services:
         public: false
         class: '%oro_security.acl.permission_granting_strategy.class%'
         calls:
-             - [setAuditLogger, [@?security.acl.audit_logger]]
+             - [setAuditLogger, ['@?security.acl.audit_logger']]
 
     oro_security.acl.permission_map:
         public: false
         class: '%oro_security.acl.permission_map.class%'
         arguments:
-            - @oro_security.acl.extension_selector
+            - '@oro_security.acl.extension_selector'
 
     oro_security.acl.object_identity_factory:
         class: '%oro_security.acl.object_identity_factory.class%'
         arguments:
-            - @oro_security.acl.extension_selector
+            - '@oro_security.acl.extension_selector'
 
     oro_security.acl.object_identity_retrieval_strategy:
         public: false
         class: '%oro_security.acl.object_identity_retrieval_strategy.class%'
         arguments:
-            - @oro_security.acl.object_identity_factory
+            - '@oro_security.acl.object_identity_factory'
 
     oro_security.acl.object_id_accessor:
         public: false
@@ -144,8 +144,8 @@ services:
         public: false
         class: '%oro_security.action_metadata_provider.class%'
         arguments:
-            - @oro_security.acl.annotation_provider
-            - @oro_security.action_metadata_provider.cache
+            - '@oro_security.acl.annotation_provider'
+            - '@oro_security.action_metadata_provider.cache'
 
     oro_security.action_metadata_provider.cache:
         public: false
@@ -154,7 +154,7 @@ services:
     oro_security.acl.annotation_provider:
         class: '%oro_security.acl.annotation_provider.class%'
         arguments:
-          - @oro_security.acl.annotation_provider.cache
+          - '@oro_security.acl.annotation_provider.cache'
 
     oro_security.acl.annotation_provider.cache:
         public: false
@@ -168,7 +168,7 @@ services:
         arguments:
             - '%kernel.bundles%'
             - ["Controller"]
-            - @annotation_reader
+            - '@annotation_reader'
         tags:
             - { name: oro_security.acl.config_loader }
 
@@ -184,7 +184,7 @@ services:
         public: false
         class: '%oro_security.acl.annotation_provider.cache.warmer.class%'
         arguments:
-            - @oro_security.acl.annotation_provider
+            - '@oro_security.acl.annotation_provider'
         tags:
             - { name: kernel.cache_warmer}
 
@@ -192,7 +192,7 @@ services:
         public: false
         class: '%oro_security.acl.annotation_provider.cache.clearer.class%'
         arguments:
-            - @oro_security.acl.annotation_provider
+            - '@oro_security.acl.annotation_provider'
         tags:
             - { name: kernel.cache_clearer }
 
@@ -200,7 +200,7 @@ services:
         public: false
         class: '%oro_security.action_metadata_provider.cache.warmer.class%'
         arguments:
-            - @oro_security.action_metadata_provider
+            - '@oro_security.action_metadata_provider'
         tags:
             - { name: kernel.cache_warmer}
 
@@ -208,15 +208,15 @@ services:
         public: false
         class: '%oro_security.action_metadata_provider.cache.clearer.class%'
         arguments:
-            - @oro_security.action_metadata_provider
+            - '@oro_security.action_metadata_provider'
         tags:
             - { name: kernel.cache_clearer }
 
     oro_security.listener.controller:
         class: '%oro_security.listener.controller.class%'
         arguments:
-            - @oro_security.security_facade
-            - @logger
+            - '@oro_security.security_facade'
+            - '@logger'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -1 }
             - { name: monolog.logger, channel: security }
@@ -224,7 +224,7 @@ services:
     oro_security.twig.security_extension:
         class: '%oro_security.twig.security_extension%'
         arguments:
-            - @oro_security.security_facade
+            - '@oro_security.security_facade'
         tags:
             - { name: twig.extension }
 

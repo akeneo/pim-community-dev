@@ -12,7 +12,7 @@ services:
     akeneo_batch.job_repository:
         class: %akeneo_batch.job_repository.class%
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
             - '%akeneo_batch.entity.job_execution.class%'
             - '%akeneo_batch.entity.job_instance.class%'
             - '%pim_import_export.repository.job_instance.class%'

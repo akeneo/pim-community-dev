@@ -33,9 +33,9 @@ services:
     pim_enrich.event_subscriber.storage.channel_locale:
         class: '%pim_enrich.event_subscriber.storage.channel_locale.class%'
         arguments:
-            - @pim_catalog.repository.locale
-            - @pim_catalog.saver.locale
-            - @pim_catalog.doctrine.completeness_generator
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.saver.locale'
+            - '@pim_catalog.doctrine.completeness_generator'
         tags:
             - { name: kernel.event_subscriber }
 

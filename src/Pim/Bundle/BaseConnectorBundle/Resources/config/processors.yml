@@ -22,13 +22,13 @@ services:
             - '@pim_catalog.builder.product'
             - ['pim_catalog_file', 'pim_catalog_image']
 
-    pim_base_connector.processor.job_instance: @pim_connector.processor.denormalization.job_instance.flat
+    pim_base_connector.processor.job_instance: '@pim_connector.processor.denormalization.job_instance.flat'
 
     # Normalization
     # @deprecated will be removed in 1.7 use @pim_connector.processor.normalization.group.flat
     pim_base_connector.processor.normalization.csv_group:
         class: '%pim_base_connector.processor.csv_serializer.homogeneous.class%'
-        parent: pim_base_connector.processor.csv_serializer
+        parent: 'pim_base_connector.processor.csv_serializer'
 
     # @deprecated will be removed in 1.7 use @pim_connector.processor.normalization.variant_group.flat
     pim_base_connector.processor.normalization.csv_variant_group:

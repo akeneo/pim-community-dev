@@ -119,7 +119,7 @@ services:
         class: '%pim_catalog.doctrine.cursor_factory.product.class%'
         arguments:
             - '%pim_catalog.doctrine.query.cursor.class%'
-            - @pim_catalog.object_manager.product
+            - '@pim_catalog.object_manager.product'
             - '%pim_catalog.factory.product_cursor.page_size%'
 
     pim_catalog.doctrine.query.filter.completeness:

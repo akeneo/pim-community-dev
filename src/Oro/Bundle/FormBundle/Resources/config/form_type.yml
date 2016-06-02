@@ -36,20 +36,20 @@ services:
     oro_form.extension.constraint_as_option:
         class: '%oro_form.extension.constraint_as_option.class%'
         arguments:
-            - @oro_form.validator.constraint_factory
+            - '@oro_form.validator.constraint_factory'
         tags:
             - { name: form.type_extension, alias: form }
 
     oro_form.extension.js_validation:
         class: '%oro_form.extension.js_validation.class%'
-        arguments: [@oro_form.extension.js_validation.constraints_provider]
+        arguments: ['@oro_form.extension.js_validation.constraints_provider']
         tags:
             - { name: form.type_extension, alias: form }
 
     oro_form.extension.js_validation.constraints_provider:
         class: '%oro_form.extension.js_validation.constraints_provider.class%'
         arguments:
-            - @validator.mapping.class_metadata_factory
+            - '@validator.mapping.class_metadata_factory'
 
     oro_form.extension.js_validation.repeated:
         class: '%oro_form.extension.js_validation.repeated.class%'

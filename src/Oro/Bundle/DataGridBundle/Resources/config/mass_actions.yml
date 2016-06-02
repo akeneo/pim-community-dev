@@ -12,8 +12,8 @@ services:
     oro_datagrid.extension.mass_action.handler.delete:
         class: '%oro_datagrid.extension.mass_action.handler.delete.class%'
         arguments:
-            - @doctrine.orm.entity_manager
-            - @translator
+            - '@doctrine.orm.entity_manager'
+            - '@translator'
 
     oro_datagrid.mass_action.parameters_parser:
         class: '%oro_datagrid.mass_action.parameters_parser.class%'
@@ -21,9 +21,9 @@ services:
     oro_datagrid.mass_action.dispatcher:
         class: '%oro_datagrid.mass_action.dispatcher.class%'
         arguments:
-            - @service_container
-            - @oro_datagrid.datagrid.manager
-            - @oro_datagrid.datagrid.request_params
+            - '@service_container'
+            - '@oro_datagrid.datagrid.manager'
+            - '@oro_datagrid.datagrid.request_params'
 
     oro_datagrid.extension.mass_action.type.ajax:
         class: '%oro_datagrid.extension.mass_action.type.ajax.class%'

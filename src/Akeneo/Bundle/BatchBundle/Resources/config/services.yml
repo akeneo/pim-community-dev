@@ -17,8 +17,8 @@ services:
     akeneo_batch.connectors:
         class: '%akeneo_batch.connectors.class%'
         arguments:
-            - @akeneo_batch.job_factory
-            - @akeneo_batch.step_factory
+            - '@akeneo_batch.job_factory'
+            - '@akeneo_batch.step_factory'
 
     akeneo_batch.job_instance_factory:
         class: '%akeneo_batch.job_instance_factory.class%'
@@ -28,8 +28,8 @@ services:
     akeneo_batch.logger_subscriber:
         class: '%akeneo_batch.logger_subscriber.class%'
         arguments:
-            - @logger
-            - @translator
+            - '@logger'
+            - '@translator'
         tags:
             - { name: kernel.event_subscriber }
             - { name: monolog.logger, channel: batch }
@@ -42,17 +42,17 @@ services:
     akeneo_batch.mail_notifier:
         class: '%akeneo_batch.mail_notifier.class%'
         arguments:
-            - @akeneo_batch.logger.batch_log_handler
-            - @security.token_storage
-            - @twig
-            - @mailer
+            - '@akeneo_batch.logger.batch_log_handler'
+            - '@security.token_storage'
+            - '@twig'
+            - '@mailer'
             - '%akeneo_batch.mail_notifier.sender_email%'
 
     akeneo_batch.step_factory:
         class: '%akeneo_batch.step_factory.class%'
         arguments:
-            - @event_dispatcher
-            - @akeneo_batch.job_repository
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
 
     akeneo_batch.logger.batch_log_handler:
         class: '%akeneo_batch.logger.batch_log_handler.class%'
@@ -66,14 +66,14 @@ services:
     akeneo_batch.set_job_execution_log_file_subscriber:
         class: '%akeneo_batch.set_job_execution_log_file_subscriber.class%'
         arguments:
-            - @akeneo_batch.logger.batch_log_handler
+            - '@akeneo_batch.logger.batch_log_handler'
         tags:
             - { name: kernel.event_subscriber }
 
     akeneo_batch.manager.job_execution:
         class: '%akeneo_batch.manager.job_execution.class%'
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
 
     akeneo_batch.launcher.simple_job_launcher:
         class: '%akeneo_batch.launcher.simple_job_launcher.class%'

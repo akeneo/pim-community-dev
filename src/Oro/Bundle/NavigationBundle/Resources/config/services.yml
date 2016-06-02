@@ -45,66 +45,66 @@ services:
     oro_menu_acl_extension:
         class: '%oro_menu.factory.acl_extension.class%'
         arguments:
-            - @router
-            - @oro_security.security_facade
+            - '@router'
+            - '@oro_security.security_facade'
         calls:
-            - [ setCache, [ @oro_menu.cache ] ]
+            - [ setCache, [ '@oro_menu.cache' ] ]
 
     oro_menu.factory:
         class: '%oro_menu.factory.class%'
         calls:
-            - [ addExtension, [ @oro_menu_acl_extension ] ]
+            - [ addExtension, [ '@oro_menu_acl_extension' ] ]
 
     oro_menu.builder_chain:
         class: '%oro_menu.builder_chain.class%'
         arguments:
-            - @oro_menu.factory
-            - @event_dispatcher
+            - '@oro_menu.factory'
+            - '@event_dispatcher'
         tags:
             - { name: knp_menu.provider }
 
     oro_menu.configuration_builder:
         class: '%oro_menu.configuration_builder.class%'
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setContainer, [ '@service_container' ] ]
         tags:
             - { name: oro_menu.builder }
 
     oro_menu.twig.extension:
         class: '%oro_menu.twig.extension.class%'
         arguments:
-            - @knp_menu.helper
-            - @oro_menu.builder_chain
-            - @oro_navigation.breadcrumb_manager
-            - @service_container
+            - '@knp_menu.helper'
+            - '@oro_menu.builder_chain'
+            - '@oro_navigation.breadcrumb_manager'
+            - '@service_container'
         tags:
             - { name: twig.extension }
 
     oro_navigation.item.builder.pinbar:
         class: '%oro_navigation.item.builder.pinbar.class%'
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: oro_navigation.item.builder, alias: pinbar }
 
     oro_navigation.item.builder.favorite:
         class: '%oro_navigation.item.builder.favorite.class%'
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: oro_navigation.item.builder, alias: favorite }
 
     oro_navigation.item.builder.history:
         class: '%oro_navigation.item.builder.history.class%'
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: oro_navigation.item.builder, alias: history }
 
     oro_navigation.item.builder.mostviewed:
         class: '%oro_navigation.item.builder.history.class%'
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: oro_navigation.item.builder, alias: mostviewed }
 
@@ -119,41 +119,41 @@ services:
     oro_navigation.pinbar_menu.builder:
         class: '%oro_navigation.navigation_item_menu.builder.class%'
         arguments:
-            - @security.token_storage
-            - @doctrine.orm.entity_manager
-            - @oro_navigation.item.factory
+            - '@security.token_storage'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_navigation.item.factory'
         tags:
             - { name: oro_menu.builder, alias: pinbar }
 
     oro_navigation.favorites_menu.builder:
         class: '%oro_navigation.navigation_item_menu.builder.class%'
         arguments:
-            - @security.token_storage
-            - @doctrine.orm.entity_manager
-            - @oro_navigation.item.factory
+            - '@security.token_storage'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_navigation.item.factory'
         tags:
             - { name: oro_menu.builder, alias: favorite }
 
     oro_navigation.history_menu.builder:
         class: '%oro_navigation.navigation_history_menu.builder.class%'
         arguments:
-            - @security.token_storage
-            - @doctrine.orm.entity_manager
-            - @oro_navigation.item.factory
+            - '@security.token_storage'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_navigation.item.factory'
         calls:
-            - [ setMatcher, [ @knp_menu.matcher ]]
-            - [ setOptions, [ @oro_config.user ]]
+            - [ setMatcher, [ '@knp_menu.matcher' ]]
+            - [ setOptions, [ '@oro_config.user' ]]
         tags:
             - { name: oro_menu.builder, alias: history }
 
     oro_navigation.mostviewed_menu.builder:
         class: '%oro_navigation.navigation_mostviewed_menu.builder.class%'
         arguments:
-            - @security.token_storage
-            - @doctrine.orm.entity_manager
-            - @oro_navigation.item.factory
+            - '@security.token_storage'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_navigation.item.factory'
         calls:
-            - [ setOptions, [ @oro_config.user ]]
+            - [ setOptions, [ '@oro_config.user' ]]
         tags:
             - { name: oro_menu.builder, alias: mostviewed }
 
@@ -179,13 +179,13 @@ services:
     oro_navigation.title_service:
         class: '%oro_navigation.title_service.class%'
         arguments:
-          - @oro_navigation.title_annotations_reader
-          - @oro_navigation.title_config_reader
-          - @translator.default
-          - @doctrine.orm.entity_manager
-          - @serializer
-          - @oro_config.user
-          - @oro_navigation.breadcrumb_manager
+          - '@oro_navigation.title_annotations_reader'
+          - '@oro_navigation.title_config_reader'
+          - '@translator.default'
+          - '@doctrine.orm.entity_manager'
+          - '@serializer'
+          - '@oro_config.user'
+          - '@oro_navigation.breadcrumb_manager'
         calls:
           - [ setTitles, [ '%oro_titles%' ] ]
 
@@ -200,7 +200,7 @@ services:
     oro_navigation.title_service.twig.extension:
         class: '%oro_navigation.title_service.twig.extension.class%'
         arguments:
-            - @oro_navigation.title_service
+            - '@oro_navigation.title_service'
         tags:
             - { name: twig.extension }
 
@@ -214,8 +214,8 @@ services:
     oro_navigation.translation.extractor:
         class: '%oro_navigation.translation.extractor.class%'
         arguments:
-            - @oro_navigation.title_service
-            - @router
+            - '@oro_navigation.title_service'
+            - '@router'
         tags:
             - { name: translation.extractor, alias: navigation_translation_extractor }
 
@@ -250,6 +250,6 @@ services:
     oro_navigation.breadcrumb_manager:
         class: '%oro_navigation.breadcrumbs_manager.class%'
         arguments:
-            - @oro_menu.builder_chain
-            - @knp_menu.matcher
-            - @router
+            - '@oro_menu.builder_chain'
+            - '@knp_menu.matcher'
+            - '@router'

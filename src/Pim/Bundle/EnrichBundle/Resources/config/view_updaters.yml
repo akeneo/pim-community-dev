@@ -9,6 +9,6 @@ services:
     pim_enrich.form.view.view_updater.variant:
         class: '%pim_enrich.form.view.view_updater.variant.class%'
         arguments:
-            - @property_accessor
+            - '@property_accessor'
         tags:
             - { name: 'pim_enrich.form.view_updater' }

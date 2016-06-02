@@ -69,7 +69,7 @@ services:
             - '@oro_security.security_facade'
             - { related_entity: product, form_type: pim_category, acl: pim_enrich_product, route: pim_enrich }
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setContainer, [ '@service_container' ] ]
 
     pim_enrich.controller.channel:
         scope: request
