@@ -74,7 +74,7 @@ services:
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setContainer, [ '@service_container' ] ]
 
     pim_enrich.controller.category_tree.published_product:
         scope: request
@@ -91,7 +91,7 @@ services:
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setContainer, [ '@service_container' ] ]
 
     pim_enrich.controller.file:
         class: '%pim_enrich.controller.file.class%'
