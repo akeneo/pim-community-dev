@@ -13,6 +13,7 @@
 - PIM-5427: It is now possible to filter by families for product export
 - PIM-5145: It is now possible to filter product exports by locale
 - PIM-5426: It is now possible to filter product exports by completeness
+- PIM-5600: Introduce the product quick export with grid context in CSV and XLSX (exports selected products with a channel, a local and the shown columns)
 - PIM-5761: The channel no more contains any color information as it was not used anymore in the UI.
 - PIM-5431: export the products updated since a defined date
 
@@ -39,6 +40,8 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility` to `Pim\Bundle\CatalogBundle\ProductQueryUtility`
+- Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor` . Add `Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter`
 - Change constructor of `Pim\Component\Connector\Reader\ProductReader`. Add `Akeneo\Component\Batch\Job\JobRepositoryInterface`.
 - Add method `getLastJobExecution` to interface `Akeneo\Component\Batch\Job\JobRepositoryInterface`
 - Remove properties editTemplate, showTemplate from `src\Akeneo\Component\Batch\Job\Job`.

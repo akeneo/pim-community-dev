@@ -42,6 +42,7 @@ class ProductQuickExport implements ConstraintCollectionProviderInterface
         $constraintFields = $baseConstraint->fields;
         $constraintFields['filters'] = new NotBlank(['groups' => 'Execution']);
         $constraintFields['mainContext'] = new NotBlank(['groups' => 'Execution']);
+        $constraintFields['selected_properties'] = null;
 
         return new Collection(['fields' => $constraintFields]);
     }

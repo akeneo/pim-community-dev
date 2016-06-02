@@ -293,6 +293,7 @@ jobs:
         type: quick_export
         configuration:
             withHeader: true
+            linesPerFile: 10000
             filePath:   /tmp/products_export_%locale%_%scope%.xlsx
     xlsx_footwear_family_export:
         connector: Akeneo XLSX Connector
@@ -339,3 +340,22 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath: /tmp/association_type.xlsx
+    csv_product_grid_context_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias: csv_product_grid_context_quick_export
+        label: CSV product quick export grid context
+        type: quick_export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/products_export_grid_context_%locale%_%scope%.csv
+    xlsx_product_grid_context_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias: xlsx_product_grid_context_quick_export
+        label: XLSX product quick export grid context
+        type: quick_export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePath:   /tmp/products_export_grid_context_%locale%_%scope%.xlsx

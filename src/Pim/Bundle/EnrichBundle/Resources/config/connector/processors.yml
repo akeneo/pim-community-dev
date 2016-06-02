@@ -50,4 +50,5 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_user.provider.user'
             - '@security.token_storage'
+            - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
             - '%upload_dir%'

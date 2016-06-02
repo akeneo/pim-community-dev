@@ -30,13 +30,13 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     const FIELD_CATEGORY = 'categories';
 
     /** @staticvar string */
+    const FIELD_ENABLED = 'enabled';
+
+    /** @staticvar string */
     const ITEM_SEPARATOR = ',';
 
     /** @var string[] */
     protected $supportedFormats = ['csv', 'flat'];
-
-    /** @var array */
-    protected $results = [];
 
     /** @var CollectionFilterInterface */
     protected $filter;
@@ -58,16 +58,16 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     {
         $context = $this->resolveContext($context);
 
-        $this->results = $this->serializer->normalize($object->getIdentifier(), $format, $context);
+        $results = $this->serializer->normalize($object->getIdentifier(), $format, $context);
 
-        $this->normalizeFamily($object->getFamily());
-        $this->normalizeGroups($object->getGroupCodes());
-        $this->normalizeCategories($object->getCategoryCodes());
-        $this->normalizeAssociations($object->getAssociations());
-        $this->normalizeValues($object, $format, $context);
-        $this->normalizeProperties($object);
+        $results[self::FIELD_FAMILY] = $this->normalizeFamily($object->getFamily());
+        $results[self::FIELD_GROUPS] = $this->normalizeGroups($object->getGroupCodes());
+        $results[self::FIELD_CATEGORY] = $this->normalizeCategories($object->getCategoryCodes());
+        $results = array_merge($results, $this->normalizeAssociations($object->getAssociations()));
+        $results = array_replace($results, $this->normalizeValues($object, $format, $context));
+        $results[self::FIELD_ENABLED] = (int) $object->isEnabled();
 
-        return $this->results;
+        return $results;
     }
 
     /**
@@ -79,21 +79,13 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     }
 
     /**
-     * Normalize properties
-     *
-     * @param ProductInterface $product
-     */
-    protected function normalizeProperties(ProductInterface $product)
-    {
-        $this->results['enabled'] = (int) $product->isEnabled();
-    }
-
-    /**
      * Normalize values
      *
      * @param ProductInterface $product
      * @param string|null      $format
      * @param array            $context
+     *
+     * @return array
      */
     protected function normalizeValues(ProductInterface $product, $format = null, array $context = [])
     {
@@ -107,7 +99,8 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
             );
         }
         ksort($normalizedValues);
-        $this->results = array_replace($this->results, $normalizedValues);
+
+        return $normalizedValues;
     }
 
     /**
@@ -164,39 +157,48 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      * Normalizes a family
      *
      * @param FamilyInterface $family
+     *
+     * @return string
      */
     protected function normalizeFamily(FamilyInterface $family = null)
     {
-        $this->results[self::FIELD_FAMILY] = $family ? $family->getCode() : '';
+        return $family ? $family->getCode() : '';
     }
 
     /**
      * Normalizes groups
      *
      * @param GroupInterface[] $groups
+     *
+     * @return string
      */
     protected function normalizeGroups($groups = [])
     {
-        $this->results[self::FIELD_GROUPS] = implode(static::ITEM_SEPARATOR, $groups);
+        return implode(static::ITEM_SEPARATOR, $groups);
     }
 
     /**
      * Normalizes categories
      *
      * @param array $categories
+     *
+     * @return string
      */
     protected function normalizeCategories($categories = [])
     {
-        $this->results[self::FIELD_CATEGORY] = implode(static::ITEM_SEPARATOR, $categories);
+        return implode(static::ITEM_SEPARATOR, $categories);
     }
 
     /**
      * Normalize associations
      *
      * @param AssociationInterface[] $associations
+     *
+     * @return array
      */
     protected function normalizeAssociations($associations = [])
     {
+        $results = [];
         foreach ($associations as $association) {
             $columnPrefix = $association->getAssociationType()->getCode();
 
@@ -210,9 +212,11 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
                 $products[] = $product->getIdentifier();
             }
 
-            $this->results[$columnPrefix.'-groups'] = implode(',', $groups);
-            $this->results[$columnPrefix.'-products'] = implode(',', $products);
+            $results[$columnPrefix.'-groups'] = implode(',', $groups);
+            $results[$columnPrefix.'-products'] = implode(',', $products);
         }
+
+        return $results;
     }
 
     /**

@@ -130,9 +130,10 @@ class DatagridViewController
         return $this->templating->renderResponse(
             'PimDataGridBundle:Datagrid:_views.html.twig',
             [
-                'alias' => $alias,
-                'views' => $views,
-                'form'  => $form->createView(),
+                'alias'              => $alias,
+                'views'              => $views,
+                'defaultViewColumns' => array_keys($this->datagridViewManager->getColumnChoices($alias, true)),
+                'form'               => $form->createView(),
             ]
         );
     }

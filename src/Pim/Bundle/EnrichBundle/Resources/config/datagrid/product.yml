@@ -110,16 +110,17 @@ datagrid:
                     empty_selection: pim_datagrid.mass_action.delete.empty_selection
                 launcherOptions:
                     icon: trash
-            quick_export_csv:
+            quick_export_grid_context_xlsx:
                 type: export
-                label: pim.grid.mass_action.quick_export.csv_all
+                label: pim.grid.mass_action.quick_export.xlsx_grid_context
                 icon: download
                 handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:
-                    _format: csv
-                    _contentType: text/csv
-                    _jobCode: csv_product_quick_export
+                    _format: xlsx
+                    _contentType: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                    _jobCode: xlsx_product_grid_context_quick_export
+                    _displayedColumnsOnly: 1
                 context:
                     withHeader: true
                 messages:
@@ -136,6 +137,41 @@ datagrid:
                     _format: xlsx
                     _contentType: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
                     _jobCode: xlsx_product_quick_export
+                    _displayedColumnsOnly: 0
+                context:
+                    withHeader: true
+                messages:
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
+                launcherOptions:
+                    group: quick_export
+            quick_export_grid_context_csv:
+                type: export
+                label: pim.grid.mass_action.quick_export.csv_grid_context
+                icon: download
+                handler: product_quick_export
+                route: pim_datagrid_export_product_index
+                route_parameters:
+                    _format: csv
+                    _contentType: text/csv
+                    _jobCode: csv_product_grid_context_quick_export
+                    _displayedColumnsOnly: 1
+                context:
+                    withHeader: true
+                messages:
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
+                launcherOptions:
+                    group: quick_export
+            quick_export_csv:
+                type: export
+                label: pim.grid.mass_action.quick_export.csv_all
+                icon: download
+                handler: product_quick_export
+                route: pim_datagrid_export_product_index
+                route_parameters:
+                    _format: csv
+                    _contentType: text/csv
+                    _jobCode: csv_product_quick_export
+                    _displayedColumnsOnly: 0
                 context:
                     withHeader: true
                 messages:

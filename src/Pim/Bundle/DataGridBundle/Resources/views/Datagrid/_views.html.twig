@@ -15,7 +15,7 @@
     {% endfor %}
 
     {% if not hasDefaultView %}
-        <option value="0" data-default="1">
+        <option value="0" data-default="1" data-columns="{{ defaultViewColumns|join(',') }}">
             {{- 'datagrid_view.default'|trans -}}
         </option>
     {% endif %}
@@ -231,6 +231,9 @@ require(
                 setTitle(activeViewLabel);
                 $updateLink.addClass('hide');
 
+                if ($activeView.data('default') && !$activeView.data('removable') && !currentState.columns) {
+                    DatagridState.set('{{ alias }}', {'columns': $activeView.data('columns')});
+                }
             } else {
                 setTitle(activeViewLabel, ' *');
                 if (!$activeView.data('default') && $activeView.data('removable')) {

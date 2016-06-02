@@ -6,11 +6,14 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Pim\Bundle\CatalogBundle\ProductQueryUtility;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -43,6 +46,9 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var  ObjectDetacherInterface */
     protected $objectDetacher;
 
+    /** @var FieldSplitter */
+    protected $fieldSplitter;
+
     /**
      * @param SerializerInterface        $serializer
      * @param ChannelRepositoryInterface $channelRepository
@@ -50,6 +56,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      * @param ObjectDetacherInterface    $objectDetacher
      * @param UserProviderInterface      $userProvider
      * @param TokenStorageInterface      $tokenStorage
+     * @param FieldSplitter              $fieldSplitter
      * @param string                     $uploadDirectory
      */
     public function __construct(
@@ -59,6 +66,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         ObjectDetacherInterface $objectDetacher,
         UserProviderInterface $userProvider,
         TokenStorageInterface $tokenStorage,
+        FieldSplitter $fieldSplitter,
         $uploadDirectory
     ) {
         $this->serializer        = $serializer;
@@ -67,6 +75,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         $this->objectDetacher    = $objectDetacher;
         $this->userProvider      = $userProvider;
         $this->tokenStorage      = $tokenStorage;
+        $this->fieldSplitter     = $fieldSplitter;
         $this->uploadDirectory   = $uploadDirectory;
     }
 
@@ -102,10 +111,90 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
             }
         }
 
-        $data['product'] = $this->serializer->normalize($product, 'flat', $this->getNormalizerContext());
+        $normalizerContext = $this->getNormalizerContext();
+        $data['product'] = $this->serializer->normalize($product, 'flat', $normalizerContext);
+
+        if (isset($normalizerContext['selected_properties']) && !empty($normalizerContext['selected_properties'])) {
+            $data['product'] = $this->filterProperties(
+                $product,
+                $data['product'],
+                $normalizerContext['selected_properties'],
+                $normalizerContext['locale'],
+                $normalizerContext['scopeCode']
+            );
+        }
+
         $this->objectDetacher->detach($product);
 
         return $data;
+    }
+
+    /**
+     * filter the properties that has to be exported based on a product and a list of properties
+     *
+     * @param ProductInterface $product
+     * @param array            $normalizedProduct
+     * @param array            $properties
+     * @param string           $localeCode
+     * @param string           $channelCode
+     *
+     * @return array
+     */
+    protected function filterProperties(
+        ProductInterface $product,
+        array $normalizedProduct,
+        array $properties,
+        $localeCode = null,
+        $channelCode = null
+    ) {
+        $filteredColumnList = [];
+
+        foreach ($properties as $column) {
+            if ('label' === $column && null !== $product->getFamily()) {
+                $column = $product->getFamily()->getAttributeAsLabel()->getCode();
+            }
+
+            $attribute = $this->getProductAttributeByCode($product, $column);
+            if (null !== $attribute) {
+                if (in_array(
+                    $attribute->getAttributeType(),
+                    [AttributeTypes::PRICE_COLLECTION, AttributeTypes::METRIC]
+                )) {
+                    foreach ($normalizedProduct as $key => $value) {
+                        if ($column === $this->fieldSplitter->splitFieldName($key)[0]) {
+                            $filteredColumnList[] = $key;
+                        }
+                    };
+                } else {
+                    $filteredColumnList[] = ProductQueryUtility::getNormalizedValueFieldFromAttribute(
+                        $attribute,
+                        $localeCode,
+                        $channelCode
+                    );
+                }
+            } else {
+                $filteredColumnList[] = $column;
+            }
+        }
+
+        return array_intersect_key($normalizedProduct, array_flip($filteredColumnList));
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param string           $attributeCode
+     *
+     * @return AttributeInterface|null
+     */
+    protected function getProductAttributeByCode(ProductInterface $product, $attributeCode)
+    {
+        foreach ($product->getValues() as $value) {
+            if ($attributeCode === $value->getAttribute()->getCode()) {
+                return $value->getAttribute();
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -117,6 +206,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $mainContext = $jobParameters->get('mainContext');
+        $columns = $jobParameters->get('selected_properties');
 
         if (!isset($mainContext['scope'])) {
             throw new \InvalidArgumentException('No channel found');
@@ -126,14 +216,19 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
             throw new \InvalidArgumentException('No UI locale found');
         }
 
+        if (isset($columns) && 0 !== count($columns)) {
+            $columns[] = 'sku';
+        }
+
         $normalizerContext = [
-            'scopeCode'    => $mainContext['scope'],
-            'localeCodes'  => $this->getLocaleCodes($mainContext['scope']),
-            'locale'       => $mainContext['ui_locale'],
-            'filter_types' => [
+            'scopeCode'           => $mainContext['scope'],
+            'localeCodes'         => $this->getLocaleCodes($mainContext['scope']),
+            'locale'              => $mainContext['ui_locale'],
+            'filter_types'        => [
                 'pim.transform.product_value.flat',
                 'pim.transform.product_value.flat.quick_export'
-            ]
+            ],
+            'selected_properties' => $columns
         ];
 
         return $normalizerContext;
