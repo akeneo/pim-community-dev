@@ -11,10 +11,10 @@ Feature: Browse product drafts for a specific product
       | black-boots | boots  |
       | white-boots | boots  |
     And the following product drafts:
-      | product     | status      | author |
-      | black-boots | in progress | Julia  |
-      | black-boots | ready       | Mary   |
-      | white-boots | ready       | Sandra |
+      | product     | status      | author | result                                                                    |
+      | black-boots | in progress | Julia  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
+      | black-boots | ready       | Mary   | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change2"}]}} |
+      | white-boots | ready       | Sandra | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change3"}]}} |
     And I am logged in as "Julia"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980

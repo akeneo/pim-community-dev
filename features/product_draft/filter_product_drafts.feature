@@ -15,8 +15,8 @@ Feature: Filter product drafts
       | sku     | family   | categories      |
       | tshirt  | tshirts  | 2015_collection |
     And the following product drafts:
-      | product | status      | author |
-      | tshirt  | in progress | Sandra |
+      | product | status      | author | result                                                                    |
+      | tshirt  | in progress | Sandra | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
     And Mary proposed the following change to "tshirt":
       | field       | value                      |
       | Name        | Summer t-shirt             |
@@ -33,6 +33,6 @@ Feature: Filter product drafts
     When I visit the "Proposals" tab
     Then the grid should contain 3 elements
     And I should be able to use the following filters:
-      | filter    | value                | result      |
-      | Attribute | Name                 | Mary, Julia |
-      | Attribute | Price                | Julia       |
+      | filter    | value | result              |
+      | Attribute | Name  | Mary, Julia, Sandra |
+      | Attribute | Price | Julia               |

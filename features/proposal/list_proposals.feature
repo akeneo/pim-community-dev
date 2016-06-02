@@ -100,3 +100,33 @@ Feature: List proposals
     Then I should see the following proposals:
       | product | author | attribute          | original | new  |
       | tshirt  | Mary   | weather_conditions | Dry      | Blue |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5825
+  Scenario: Successfully display a proposal even when an attribute has been deleted
+    Given I am logged in as "Julia"
+    And I am on the "name" attribute page
+    And I press the "Delete" button
+    And I press the "OK" button in the popin
+    When I am on the proposals page
+    Then I should see the following proposals:
+      | product | author | attribute   | original | new                        |
+      | tshirt  | Mary   | description |          | Summer t-shirt description |
+    And I click on the "Reject All" action of the row which contains "tshirt"
+    And I press the "Send" button in the popin
+    And I should see the text "There is no proposal to review"
+    When I logout
+    And I am logged in as "Mary"
+    And I am on the "tshirt" product page
+    Then I should not see the Name field
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5825
+  Scenario: Does not display a proposal when all of its attributes have been deleted
+    Given I am logged in as "Julia"
+    And I am on the "name" attribute page
+    And I press the "Delete" button
+    And I press the "OK" button in the popin
+    And I am on the "description" attribute page
+    And I press the "Delete" button
+    And I press the "OK" button in the popin
+    When I am on the proposals page
+    Then I should see the text "There is no proposal to review"
