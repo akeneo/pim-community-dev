@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-5825: Fix proposals page when an attribute related to a proposal is deleted
+
 # 1.5.4 (2016-06-01)
 
 ## Bug fixes
