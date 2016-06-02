@@ -45,7 +45,18 @@ class PermissionDecorator extends ElementDecorator
         $resourceElement = $this->spin(function () use ($resource) {
             return $this->find('css', sprintf($this->selectors['Resource'], $resource));
         }, sprintf('Resource with label "%s" not found.', $resource));
+        
+        $title = $this->spin(function () use ($resourceElement) {
+            return $resourceElement->getParent()->getParent()
+                ->find('css', 'h3');
+        }, sprintf('Title "%s" not found.', $resource));
 
+        $subTab = $this->spin(function () use ($title) {
+            return $this->find('css', sprintf('.tab-groups .tab a:contains("%s")', $title->getHtml()));
+        }, sprintf('Sub tab with label "%s" not found.', $resource));
+        
+        $subTab->click();
+        
         return $this->spin(function () use ($resourceElement) {
             return $resourceElement->find('css', $this->selectors['Resource Toggle']);
         }, sprintf('Resource with label "%s" found but the toggle was not found.', $resource));
