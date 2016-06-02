@@ -132,6 +132,9 @@ class FamilyUpdaterSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $family->setCode('mycode')->shouldBeCalled();
+        $nameMobileRqrmt->setRequired(true)->shouldBeCalled();
+        $namePrintRqrmt->setRequired(true)->shouldBeCalled();
+        $descPrintRqrmt->setRequired(true)->shouldBeCalled();
 
         $family->addAttribute($skuAttribute)->shouldBeCalled();
         $family->addAttribute($nameAttribute)->shouldBeCalled();
@@ -248,6 +251,8 @@ class FamilyUpdaterSpec extends ObjectBehavior
             [$skuMobileRqrmt, $skuPrintRqrmt, $namePrintRqrmt, $descPrintRqrmt]
         )
         ->shouldBeCalled();
+        $namePrintRqrmt->setRequired(true)->shouldBeCalled();
+        $descPrintRqrmt->setRequired(true)->shouldBeCalled();
 
         $this->update($family, $values, []);
     }
