@@ -48,9 +48,9 @@ class FamilyProcessor extends AbstractProcessor
         parent::__construct($repository);
 
         $this->familyConverter = $familyConverter;
-        $this->familyFactory  = $familyFactory;
-        $this->updater        = $updater;
-        $this->validator      = $validator;
+        $this->familyFactory   = $familyFactory;
+        $this->updater         = $updater;
+        $this->validator       = $validator;
     }
 
     /**

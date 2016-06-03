@@ -1647,12 +1647,9 @@ class FixturesContext extends BaseFixturesContext
      */
     protected function createProductGroup($code, $label, $type, array $attributes, array $products = [])
     {
-        $group = new Group();
+        $group = $this->getGroupFactory()->createGroup($type);
         $group->setCode($code);
         $group->setLocale('en_US')->setLabel($label); // TODO translation refactoring
-
-        $type = $this->getGroupType($type);
-        $group->setType($type);
 
         foreach ($attributes as $attributeCode) {
             $attribute = $this->getAttribute($attributeCode);
@@ -1671,6 +1668,14 @@ class FixturesContext extends BaseFixturesContext
                 $this->getProductSaver()->save($product);
             }
         }
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Factory\GroupFactory
+     */
+    protected function getGroupFactory()
+    {
+        return $this->getContainer()->get('pim_catalog.factory.group');
     }
 
     /**

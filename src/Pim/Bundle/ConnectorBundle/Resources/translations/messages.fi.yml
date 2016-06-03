@@ -128,7 +128,6 @@ pim_connector:
       label: Liite
       help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
     escape:
-      label: Poistu
       help: 'Yhtä merkkiä käytetään kentän "poistu" määrittämiseen'
     circularRefsChecked:
       label: Tarkista kehäviittaukset
