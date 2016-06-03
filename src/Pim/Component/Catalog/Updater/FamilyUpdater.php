@@ -157,25 +157,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
 
     /**
      * @param FamilyInterface $family
-     * @param array           $requirements
-     * @param array           $oldRequirements
-     */
-    protected function removeRequirements(
-        FamilyInterface $family,
-        array $requirements,
-        array $oldRequirements
-    ) {
-        $checkRequirements = new ArrayCollection($requirements);
-        foreach ($oldRequirements as $requirement) {
-            if (!$checkRequirements->contains($requirement)) {
-                $family->removeAttributeRequirement($requirement);
-            }
-        }
-    }
-
-
-    /**
-     * @param FamilyInterface $family
      *
      * @return AttributeRequirementInterface[]
      */
@@ -218,6 +199,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
                 $requirements[] = $this->createAttributeRequirement($family, $attribute, $channelCode);
             }
         }
+
         return $requirements;
     }
 
@@ -268,6 +250,8 @@ class FamilyUpdater implements ObjectUpdaterInterface
         if (null === $requirement) {
             $requirement = $this->attrRequiFactory->createAttributeRequirement($attribute, $channel, true);
         }
+
+        $requirement->setRequired(true);
 
         return $requirement;
     }
