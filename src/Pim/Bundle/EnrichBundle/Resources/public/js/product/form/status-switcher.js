@@ -26,6 +26,19 @@ define(
             events: {
                 'click li a': 'updateStatus'
             },
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 var status = this.getRoot().getFormData().enabled;
 
@@ -38,6 +51,12 @@ define(
 
                 return this;
             },
+
+            /**
+             * Update the current status of the product
+             *
+             * @param {Event} event
+             */
             updateStatus: function (event) {
                 var newStatus = event.currentTarget.dataset.status === 'enable';
                 this.getFormModel().set('enabled', newStatus);

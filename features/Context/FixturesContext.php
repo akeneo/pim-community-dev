@@ -934,42 +934,47 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
     {
-        $this->getMainContext()->getSubcontext('hook')->clearUOW();
-        $product = $this->getProduct($identifier);
+        $this->spin(function () use ($identifier, $table) {
+            $this->getMainContext()->getSubcontext('hook')->clearUOW();
 
-        foreach ($table->getRowsHash() as $rawCode => $value) {
-            $infos = $this->getFieldExtractor()->extractColumnInfo($rawCode);
+            $product = $this->getProduct($identifier);
 
-            $attribute     = $infos['attribute'];
-            $attributeCode = $attribute->getCode();
-            $localeCode    = $infos['locale_code'];
-            $scopeCode     = $infos['scope_code'];
-            $priceCurrency = isset($infos['price_currency']) ? $infos['price_currency'] : null;
-            $productValue  = $product->getValue($attributeCode, $localeCode, $scopeCode);
+            foreach ($table->getRowsHash() as $rawCode => $value) {
+                $infos = $this->getFieldExtractor()->extractColumnInfo($rawCode);
 
-            if ('' === $value) {
-                assertEmpty((string) $productValue);
-            } elseif ('media' === $attribute->getBackendType()) {
-                // media filename is auto generated during media handling and cannot be guessed
-                // (it contains a timestamp)
-                if ('**empty**' === $value) {
+                $attribute     = $infos['attribute'];
+                $attributeCode = $attribute->getCode();
+                $localeCode    = $infos['locale_code'];
+                $scopeCode     = $infos['scope_code'];
+                $priceCurrency = isset($infos['price_currency']) ? $infos['price_currency'] : null;
+                $productValue  = $product->getValue($attributeCode, $localeCode, $scopeCode);
+
+                if ('' === $value) {
                     assertEmpty((string) $productValue);
-                } else {
-                    assertTrue(false !== strpos((string) $productValue, $value));
-                }
-            } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
-                // $priceCurrency can be null if we want to test all the currencies at the same time
-                // in this case, it's a simple string comparison
-                // example: 180.00 EUR, 220.00 USD
+                } elseif ('media' === $attribute->getBackendType()) {
+                    // media filename is auto generated during media handling and cannot be guessed
+                    // (it contains a timestamp)
+                    if ('**empty**' === $value) {
+                        assertEmpty((string) $productValue);
+                    } else {
+                        assertTrue(false !== strpos((string) $productValue, $value));
+                    }
+                } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
+                    // $priceCurrency can be null if we want to test all the currencies at the same time
+                    // in this case, it's a simple string comparison
+                    // example: 180.00 EUR, 220.00 USD
 
-                $price = $productValue->getPrice($priceCurrency);
-                assertEquals($value, $price->getData());
-            } elseif ('date' === $attribute->getBackendType()) {
-                assertEquals($value, $productValue->getDate()->format('Y-m-d'));
-            } else {
-                assertEquals($value, (string) $productValue);
+                    $price = $productValue->getPrice($priceCurrency);
+                    assertEquals($value, $price->getData());
+                } elseif ('date' === $attribute->getBackendType()) {
+                    assertEquals($value, $productValue->getDate()->format('Y-m-d'));
+                } else {
+                    assertEquals($value, (string) $productValue);
+                }
             }
-        }
+
+            return true;
+        }, sprintf('Cannot get the product %s', $identifier));
     }
 
     /**
@@ -998,13 +1003,17 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theCategoriesOfShouldBe($productCode, $categoryCodes)
     {
-        $product    = $this->getProduct($productCode);
-        $categories = $product->getCategories()->map(
-            function ($category) {
-                return $category->getCode();
-            }
-        )->toArray();
-        assertEquals($this->listToArray($categoryCodes), $categories);
+        $this->spin(function () use ($productCode, $categoryCodes) {
+            $product    = $this->getProduct($productCode);
+            $categories = $product->getCategories()->map(
+                function ($category) {
+                    return $category->getCode();
+                }
+            )->toArray();
+            assertEquals($this->listToArray($categoryCodes), $categories);
+
+            return true;
+        }, sprintf('Cannot assert that %s categories are %s', $productCode, $categoryCodes));
     }
 
     /**
@@ -1085,11 +1094,9 @@ class FixturesContext extends BaseFixturesContext
      */
     public function getProduct($sku)
     {
-        $product = $this->getProductRepository()->findOneByIdentifier($sku);
-
-        if (!$product) {
-            throw new \InvalidArgumentException(sprintf('Could not find a product with sku "%s"', $sku));
-        }
+        $product = $this->spin(function () use ($sku) {
+            return $this->getProductRepository()->findOneByIdentifier($sku);
+        }, sprintf('Could not find a product with sku "%s"', $sku));
 
         $this->refresh($product);
 

@@ -27,6 +27,10 @@ class Creation extends Form
     public function fillField($locator, $value, Element $modal = null)
     {
         $selectContainer = $this->spin(function () use ($modal) {
+            if (null === $modal) {
+                return false;
+            }
+
             return $modal->find('css', '.select2-container');
         }, 'Cannot find ".select2-container" in modal');
 
@@ -37,5 +41,25 @@ class Creation extends Form
         } else {
             parent::fillField($locator, $value, $modal);
         }
+    }
+
+    /**
+     * Find a validation tooltip containing a text
+     *
+     * @param string $text
+     *
+     * @return null|Element
+     */
+    public function findValidationTooltip($text)
+    {
+        return $this->spin(function () use ($text) {
+            return $this->find(
+                'css',
+                sprintf(
+                    '.validation-errors .error-message:contains("%s")',
+                    $text
+                )
+            );
+        }, sprintf('Cannot find error message "%s" in validation tooltip', $text));
     }
 }

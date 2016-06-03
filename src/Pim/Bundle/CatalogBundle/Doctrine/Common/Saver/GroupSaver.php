@@ -13,6 +13,8 @@ use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
 use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -46,18 +48,22 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $productQueryBuilderFactory;
+
     /** @var string */
     protected $productClassName;
 
     /**
-     * @param ObjectManager                   $objectManager
-     * @param BulkSaverInterface              $productSaver
-     * @param ProductTemplateMediaManager     $templateMediaManager
-     * @param ProductTemplateApplierInterface $productTplApplier
-     * @param VersionContext                  $versionContext
-     * @param SavingOptionsResolverInterface  $optionsResolver
-     * @param EventDispatcherInterface        $eventDispatcher
-     * @param string                          $productClassName
+     * @param ObjectManager                       $objectManager
+     * @param BulkSaverInterface                  $productSaver
+     * @param ProductTemplateMediaManager         $templateMediaManager
+     * @param ProductTemplateApplierInterface     $productTplApplier
+     * @param VersionContext                      $versionContext
+     * @param SavingOptionsResolverInterface      $optionsResolver
+     * @param EventDispatcherInterface            $eventDispatcher
+     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+     * @param string                              $productClassName
      */
     public function __construct(
         ObjectManager $objectManager,
@@ -67,16 +73,18 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         VersionContext $versionContext,
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         $productClassName
     ) {
-        $this->objectManager          = $objectManager;
-        $this->productSaver           = $productSaver;
-        $this->templateMediaManager   = $templateMediaManager;
-        $this->productTplApplier      = $productTplApplier;
-        $this->versionContext         = $versionContext;
-        $this->optionsResolver        = $optionsResolver;
-        $this->eventDispatcher        = $eventDispatcher;
-        $this->productClassName       = $productClassName;
+        $this->objectManager              = $objectManager;
+        $this->productSaver               = $productSaver;
+        $this->templateMediaManager       = $templateMediaManager;
+        $this->productTplApplier          = $productTplApplier;
+        $this->versionContext             = $versionContext;
+        $this->optionsResolver            = $optionsResolver;
+        $this->eventDispatcher            = $eventDispatcher;
+        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
+        $this->productClassName           = $productClassName;
     }
 
     /**
@@ -111,20 +119,15 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         }
 
         $this->objectManager->persist($group);
+
+        $this->saveAssociatedProducts($group);
+
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
 
         if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
             $this->copyVariantGroupValues($group);
-        } else {
-            if (0 < count($options['add_products'])) {
-                $this->addProducts($options['add_products']);
-            }
-        }
-
-        if (0 < count($options['remove_products'])) {
-            $this->removeProducts($options['remove_products']);
         }
 
         $this->versionContext->unsetContextInfo($context);
@@ -159,22 +162,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * @param ProductInterface[] $products
-     */
-    protected function addProducts(array $products)
-    {
-        $this->productSaver->saveAll($products);
-    }
-
-    /**
-     * @param ProductInterface[] $products
-     */
-    protected function removeProducts(array $products)
-    {
-        $this->productSaver->saveAll($products);
-    }
-
-    /**
      * Copy the variant group values on any products belonging in the variant group
      *
      * @param GroupInterface $group
@@ -184,5 +171,36 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         $template = $group->getProductTemplate();
         $products = $group->getProducts()->toArray();
         $this->productTplApplier->apply($template, $products);
+    }
+
+    /**
+     * Save associated products updated by the variant group update
+     *
+     * @param  GroupInterface $group
+     */
+    protected function saveAssociatedProducts(GroupInterface $group)
+    {
+        $productInGroup     = $group->getProducts();
+        $productsToUpdate   = $productInGroup->toArray();
+        $productToUpdateIds = array_map(function ($product) {
+            return $product->getId();
+        }, $productsToUpdate);
+
+        if (null !== $group->getId()) {
+            $pqb = $this->productQueryBuilderFactory->create();
+            $pqb->addFilter('groups.id', Operators::IN_LIST, [$group->getId()]);
+            $oldProducts = $pqb->execute();
+            foreach ($oldProducts as $oldProduct) {
+                if (!in_array($oldProduct->getId(), $productToUpdateIds)) {
+                    $oldProduct->removeGroup($group);
+                    $productsToUpdate[]   = $oldProduct;
+                    $productToUpdateIds[] = $oldProduct->getId();
+                }
+            }
+        }
+
+        if (!empty($productsToUpdate)) {
+            $this->productSaver->saveAll($productsToUpdate);
+        }
     }
 }

@@ -15,11 +15,6 @@ define(
             events: {
                 'change input': 'updateModel'
             },
-            initialize: function () {
-                this.model = new Backbone.Model();
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
             updateModel: function () {
                 var optionValues = {};
 
@@ -31,8 +26,8 @@ define(
                     };
                 });
 
-                this.model.set('code', this.$('input[name="code"]').val());
-                this.model.set('optionValues', optionValues);
+                this.getFormModel().set('code', this.$('input[name="code"]').val());
+                this.getFormModel().set('optionValues', optionValues);
             },
             render: function () {
                 if (!this.configured) {

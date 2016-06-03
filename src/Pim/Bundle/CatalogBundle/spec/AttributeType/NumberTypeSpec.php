@@ -29,54 +29,6 @@ class NumberTypeSpec extends ObjectBehavior
         $this->buildAttributeFormTypes($factory, $attribute)->shouldHaveCount(8);
     }
 
-    function it_prepares_the_product_value_form($value, $attribute)
-    {
-        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_DECIMAL);
-        $this->prepareValueFormName($value)->shouldReturn(AttributeTypes::BACKEND_TYPE_DECIMAL);
-    }
-
-    function it_prepares_the_product_value_form_alias($value)
-    {
-        $this->prepareValueFormAlias($value)->shouldReturn('pim_number');
-    }
-
-    function it_prepares_value_form_options($value, $attribute)
-    {
-        $attribute->getLabel()->willReturn('Some label');
-        $attribute->isRequired()->willReturn(true);
-        $attribute->isDecimalsAllowed()->willReturn(true);
-
-        $this->prepareValueFormOptions($value)->shouldReturn([
-            'label' => 'Some label',
-            'required' => true,
-            'auto_initialize' => false,
-            'label_attr'      => ['truncate' => true],
-            'decimals_allowed' => true
-        ]);
-    }
-
-    function it_prepares_value_form_constraints($guesser, $attribute, $value)
-    {
-        $guesser->supportAttribute($attribute)->willReturn(true);
-        $guesser->guessConstraints($attribute)->willReturn([]);
-
-        $this->prepareValueFormConstraints($value)->shouldReturn([
-            'constraints' => []
-        ]);
-    }
-
-    function it_prepares_default_value_form_constraints($guesser, $attribute, $value)
-    {
-        $guesser->supportAttribute($attribute)->willReturn(false);
-        $this->prepareValueFormConstraints($value)->shouldReturn([]);
-    }
-
-    function it_prepares_value_form_data($value)
-    {
-        $value->getData()->willReturn('data');
-        $this->prepareValueFormData($value)->shouldReturn('data');
-    }
-
     function it_has_a_name()
     {
         $this->getName()->shouldReturn('pim_catalog_number');

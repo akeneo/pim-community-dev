@@ -18,18 +18,6 @@ class DateType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    public function prepareValueFormOptions(ProductValueInterface $value)
-    {
-        $options = parent::prepareValueFormOptions($value);
-        $options['widget'] = 'single_text';
-        $options['input'] = 'datetime';
-
-        return $options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
         $properties = parent::defineCustomAttributeProperties($attribute) + [

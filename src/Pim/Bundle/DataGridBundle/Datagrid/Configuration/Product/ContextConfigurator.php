@@ -71,6 +71,7 @@ class ContextConfigurator implements ConfiguratorInterface
      * @param RequestParameters            $requestParams
      * @param UserContext                  $userContext
      * @param ObjectManager                $objectManager
+     * @param GroupRepositoryInterface     $productGroupRepository
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -78,13 +79,13 @@ class ContextConfigurator implements ConfiguratorInterface
         RequestParameters $requestParams,
         UserContext $userContext,
         ObjectManager $objectManager,
-        GroupRepositoryInterface $productGroupRepository = null
+        GroupRepositoryInterface $productGroupRepository
     ) {
-        $this->productRepository   = $productRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->requestParams       = $requestParams;
-        $this->userContext         = $userContext;
-        $this->objectManager       = $objectManager;
+        $this->productRepository      = $productRepository;
+        $this->attributeRepository    = $attributeRepository;
+        $this->requestParams          = $requestParams;
+        $this->userContext            = $userContext;
+        $this->objectManager          = $objectManager;
         $this->productGroupRepository = $productGroupRepository;
     }
 
@@ -191,7 +192,7 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function addCurrentGroupId()
     {
-        $groupId = $this->requestParams->get('currentGroup', null);
+        $groupId = $this->getProductGroupId();
         $path = $this->getSourcePath(self::CURRENT_GROUP_ID_KEY);
         $this->configuration->offsetSetByPath($path, $groupId);
     }
@@ -318,7 +319,7 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $attributeIds = [];
 
-        if ((null !== $productGroupId = $this->getProductGroupId()) && null !== $this->productGroupRepository) {
+        if (null !== $productGroupId = $this->getProductGroupId()) {
             $group = $this->productGroupRepository->find($productGroupId);
             if ($group->getType()->isVariant()) {
                 foreach ($group->getAxisAttributes() as $axis) {

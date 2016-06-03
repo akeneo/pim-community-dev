@@ -3,9 +3,11 @@
 namespace Context\Page\Base;
 
 use Behat\Mink\Element\Element;
+use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\TimeoutException;
 
 /**
  * Basic form page
@@ -39,7 +41,7 @@ class Form extends Base
                 'Available attributes list'       => ['css' => '.pimmultiselect .ui-multiselect-checkboxes'],
                 'Available attributes search'     => ['css' => '.pimmultiselect input[type="search"]'],
                 'Available attributes add button' => ['css' => '.pimmultiselect a.btn:contains("Add")'],
-                'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid'],
+                'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid, .tab-container .history'],
                 'Save'                            => ['css' => 'button.btn-submit'],
                 'Panel sidebar'                   => [
                     'css'        => '.edit-form > .content',
@@ -183,15 +185,11 @@ class Form extends Base
                 }
 
                 $button->click();
-
-                return true;
             } else {
                 $groups->clickLink($group);
-
-                return true;
             }
 
-            return false;
+            return true;
         }, 'Cannot find the group selector.');
 
         return true;
@@ -220,6 +218,7 @@ class Form extends Base
     }
 
     /**
+     * @param string $name
      * {@inheritdoc}
      */
     public function findField($name)
@@ -244,15 +243,13 @@ class Form extends Base
      */
     public function findFieldContainer($name)
     {
-        $label = $this->find('css', sprintf('label:contains("%s")', $name));
-        if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-        }
+        $label = $this->spin(function () use ($name) {
+            return $this->find('css', sprintf('label:contains("%s")', $name));
+        }, sprintf('Label containing text "%s" not found'), $name);
 
-        $field = $label->getParent()->find('css', 'input,textarea');
-        if (!$field) {
-            throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
-        }
+        $field = $this->spin(function () use ($label) {
+            return $label->getParent()->find('css', 'input,textarea');
+        }, sprintf('Can not find any input or textearea sibling of "%s" label', $name));
 
         return $field->getParent();
     }
@@ -609,12 +606,12 @@ class Form extends Base
     /**
      * Extracts and return the label NodeElement, identified by $field content and $element
      *
-     * @param string  $field
-     * @param Element $element
+     * @param string           $field
+     * @param ElementInterface $element
      *
      * @return \Behat\Mink\Element\NodeElement
      */
-    protected function extractLabelElement($field, $element)
+    protected function extractLabelElement($field, ElementInterface $element = null)
     {
         $subLabelContent = null;
         $channel         = null;
@@ -765,7 +762,7 @@ class Form extends Base
      * @param NodeElement $label
      * @param string      $value
      */
-    protected function fillSelectField(NodeElement$label, $value)
+    protected function fillSelectField(NodeElement $label, $value)
     {
         $field = $label->getParent()->find('css', 'select');
 
@@ -835,7 +832,7 @@ class Form extends Base
      */
     protected function fillCompoundField(NodeElement $label, $value)
     {
-        if (! $label->subLabelContent) {
+        if (!$label->subLabelContent) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'The "%s" field is compound but the sub label was not provided',

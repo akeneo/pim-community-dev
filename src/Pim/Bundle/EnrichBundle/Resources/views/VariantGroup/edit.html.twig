@@ -1,82 +1,91 @@
-{% set gridName = 'product-variant-group-grid' %}
-{% set locales = form.productTemplate.vars.locales %}
-{% set channels = form.productTemplate.vars.channels %}
-{% set dataLocale = form.productTemplate.vars.currentLocale %}
-
 {% extends 'PimEnrichBundle::layout.html.twig' %}
-{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
-{% oro_title_set({ params: { '%group.label%': form.vars.data.label } }) %}
-
-{% block head_script %}
-    {{ parent() }}
-    {% include 'PimEnrichBundle:VariantGroup:_js-handler.html.twig' %}
-{% endblock %}
-
-{% block content %}
-
-    {% if resource_granted('pim_enrich_variant_group_add_attributes') %}
-        {% include 'PimEnrichBundle:Attribute:_available-attributes-form.html.twig' with {
-            'form': attributesForm,
-            'action': path('pim_enrich_variant_group_add_attributes', {'id': form.vars.data.id})
-        } %}
-    {% endif %}
-
-    {{ JSFV(form) }}
-    {{ form_start(form, {
-        'action': path('pim_enrich_variant_group_edit', { id: form.vars.value.id, dataLocale: dataLocale }),
-        'attr': {
-            'data-updated-title': 'confirmation.leave'|trans,
-            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'variant group'|trans })
-        }
-    }) }}
-
-        {% set title = 'variant group.edit'|trans ~ ' - ' ~ form.vars.data.label %}
-
-        {% set buttons %}
-            {{ elements.backLink(path('pim_enrich_variant_group_index')) }}
-            {{ elements.deleteLink(
-                path('pim_enrich_variant_group_remove', { id: form.vars.value.id }),
-                'pim_enrich_variant_group_remove',
-                path('pim_enrich_variant_group_index'),
-                'confirmation.remove.variant group'|trans({'%name%': form.vars.value.label}),
-                'flash.variant group.removed'|trans
-            ) }}
-            {{ elements.submitBtn('', 'ok') }}
-        {% endset %}
-
-        {% set left %}
-            <ul class="inline">
-                <li>
-                    {{ 'code'|trans|capitalize }}: {{ form.vars.value.code }}
-                </li>
-                <li>
-                    {{ 'type'|trans|capitalize }}: {{ form.vars.value.type.code }}
-                </li>
-                <li>
-                    {{ 'axis'|trans|capitalize }}:
-                    {% set variantGroupAttributes %}
-                        {% for attribute in form.vars.value.attributes %}
-                            {{ attribute }}{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                    {% endset %}
-                    <span>{{ variantGroupAttributes|capitalize|default('N/A'|trans) }}</span>
-                </li>
-
-                {% if form.vars.data.products|length > 0 %}
-                    <li>{{ 'products'|trans|capitalize }}: {{ form.vars.data.products|length }}</li>
-                {% endif %}
-           </ul>
-        {% endset %}
-
-        {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
-
-        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
-
-        <div class="row-fluid tab-content group-edit">
-            {{ elements.form_errors(form) }}
-
-            {{ view_elements(form.vars.id ~ '.form_tab') }}
+{% block main %}
+    <div id="main">
+        {% block before_content %}
+        <div class="container-fluid breadcrumb-pin">
+            <div id="breadcrumb">
+                {% block breadcrumb %}
+                    {% placeholder breadcrumb %}
+                {% endblock breadcrumb %}
+            </div>
+            {% placeholder pin_button %}
+            <div id="flash-messages">
+                {% block messages %}
+                    <div class="flash-messages-frame">
+                        <div class="flash-messages-holder"></div>
+                    </div>
+                    <script type="text/template" id="message-item-template">
+                        <div class="alert <% if (type) {  %><%= 'alert-' + type %><% } %> fade in top-messages ">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <div class="message"><%= message %></div>
+                        </div>
+                    </script>
+                    <script type="text/javascript">
+                        require(['jquery', 'oro/messenger'],
+                                function($, messenger) {
+                                    messenger.setup({
+                                        container: '#flash-messages .flash-messages-holder',
+                                        template: _.template($.trim($('#message-item-template').html()))
+                                    });
+                                    {% if app.session.flashbag.peekAll|length > 0 %}
+                                        $(function() {
+                                            {% for type, messages in app.session.flashbag.all %}
+                                                {% for message in messages %}
+                                                    messenger.notificationFlashMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
+                                                {% endfor %}
+                                            {% endfor %}
+                                        });
+                                    {% endif %}
+                                });
+                    </script>
+                {% endblock messages %}
+            </div>
         </div>
-        {{ form_end(form) }}
-{% endblock %}
+        {% endblock before_content %}
+        <div class="hash-loading-mask"></div>
+        <div id="container">
+            {% block page_container %}
+                {% block content %}
+                    {% placeholder content_before %}
+                    <div id="variant-group-edit-form">
+
+                    </div>
+                    <script>
+                        require(
+                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/variant-group-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation'],
+                            function($, FetcherRegistry, FormBuilder, VariantGroupManager, UserContext, Dialog, mediator, Error, Navigation) {
+                                $(function() {
+                                    FetcherRegistry.initialize().done(function () {
+                                        FetcherRegistry.getFetcher('variant-group').fetch('{{ code }}', {cached: false, generateMissing: true})
+                                            .then(function (group) {
+                                                var label    = _.escape(group.labels[UserContext.get('catalogLocale')]);
+                                                var newTitle = document.title.replace('%group.label%', label);
+
+                                                document.title  = newTitle;
+                                                var navigation  = Navigation.getInstance();
+                                                var navTitle    = navigation.getPinButtonsData('title');
+                                                navTitle.params = {'%group.label%': label};
+                                                navigation.setPinButtonsData('title', navTitle);
+                                                navigation.setPinButtonsData('title-rendered-short', newTitle);
+
+                                                FormBuilder.build(group.meta.form)
+                                                    .then(function (form) {
+                                                        form.setData(group);
+                                                        mediator.trigger('pim_enrich:form:entity:post_fetch', group);
+                                                        form.setElement('#variant-group-edit-form').render();
+                                                    });
+                                            }).fail(function(response, textStatus, errorThrown) {
+                                                var errorView = new Error(response.responseJSON.message, response.status);
+                                                errorView.setElement('#variant-group-edit-form').render();
+                                            });
+                                    })
+                                });
+                            });
+                    </script>
+                    {% placeholder content_after %}
+                {% endblock content %}
+            {% endblock page_container %}
+        </div>
+    </div>
+{% endblock main %}

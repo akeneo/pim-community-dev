@@ -17,8 +17,8 @@ define(
         'text!pim/template/product/sequential-edit',
         'routing',
         'oro/navigation',
-        'pim/product-manager',
         'pim/fetcher-registry',
+        'pim/product-manager',
         'pim/user-context',
         'bootstrap'
     ],
@@ -31,8 +31,8 @@ define(
         template,
         Routing,
         Navigation,
-        ProductManager,
         FetcherRegistry,
+        ProductManager,
         UserContext
     ) {
         return BaseForm.extend({
@@ -104,7 +104,7 @@ define(
 
                 var promises = [];
                 if (previous) {
-                    promises.push(ProductManager.get(previous).then(function (product) {
+                    promises.push(FetcherRegistry.getFetcher('product').fetch(previous).then(function (product) {
                         var label = product.meta.label[UserContext.get('catalogLocale')];
                         previousObject = {
                             id:         product.meta.id,
@@ -114,7 +114,7 @@ define(
                     }));
                 }
                 if (next) {
-                    promises.push(ProductManager.get(next).then(function (product) {
+                    promises.push(FetcherRegistry.getFetcher('product').fetch(next).then(function (product) {
                         var label = product.meta.label[UserContext.get('catalogLocale')];
                         nextObject = {
                             id:         product.meta.id,

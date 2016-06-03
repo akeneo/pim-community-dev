@@ -16,6 +16,8 @@ use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -29,7 +31,7 @@ class GroupSaverSpec extends ObjectBehavior
         SavingOptionsResolverInterface $optionsResolver,
         VersionContext $versionContext,
         EventDispatcherInterface $eventDispatcher,
-        AttributeConverterInterface $localizedConverter
+        ProductQueryBuilderFactoryInterface $pqbFactory
     ) {
         $this->beConstructedWith(
             $objectManager,
@@ -39,7 +41,7 @@ class GroupSaverSpec extends ObjectBehavior
             $versionContext,
             $optionsResolver,
             $eventDispatcher,
-            $localizedConverter,
+            $pqbFactory,
             'Pim\Bundle\CatalogBundle\Model'
         );
     }
@@ -60,13 +62,14 @@ class GroupSaverSpec extends ObjectBehavior
             [
                 'flush'                   => true,
                 'copy_values_to_products' => false,
-                'add_products'            => [],
-                'remove_products'         => [],
             ]
         );
 
+        $group->getProducts()->willReturn(new ArrayCollection([]));
         $group->getType()->willReturn($type);
         $group->getCode()->willReturn('my_code');
+        $group->getId()->willReturn(null);
+
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
@@ -88,13 +91,14 @@ class GroupSaverSpec extends ObjectBehavior
             [
                 'flush'                   => true,
                 'copy_values_to_products' => false,
-                'add_products'            => [$addedProduct],
-                'remove_products'         => [],
             ]
         );
 
+        $group->getProducts()->willReturn(new ArrayCollection([$addedProduct]));
         $group->getType()->willReturn($type);
         $group->getCode()->willReturn('my_code');
+        $group->getId()->willReturn(null);
+
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
@@ -111,27 +115,32 @@ class GroupSaverSpec extends ObjectBehavior
         $objectManager,
         $productSaver,
         $eventDispatcher,
+        $pqbFactory,
         GroupInterface $group,
         GroupType $type,
-        ProductInterface $removedProduct
+        ProductInterface $removedProduct,
+        ProductQueryBuilderInterface $pqb
     ) {
         $optionsResolver->resolveSaveOptions(['remove_products' => [$removedProduct]])->willReturn(
             [
                 'flush'                   => true,
                 'copy_values_to_products' => false,
-                'add_products'            => [],
-                'remove_products'         => [$removedProduct],
             ]
         );
 
+        $pqbFactory->create()->willReturn($pqb);
+        $pqb->addFilter('groups.id', 'IN', [42])->shouldBeCalled();
+        $pqb->execute()->willReturn([$removedProduct]);
+
+        $group->getProducts()->willReturn(new ArrayCollection([]));
         $group->getType()->willReturn($type);
         $group->getCode()->willReturn('my_code');
+        $group->getId()->willReturn(42);
+
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $productSaver
-            ->saveAll([$removedProduct])
-            ->shouldBeCalled();
+        $productSaver->saveAll([$removedProduct])->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
@@ -146,10 +155,13 @@ class GroupSaverSpec extends ObjectBehavior
         GroupType $type,
         ProductTemplateInterface $template
     ) {
+        $group->getProducts()->willReturn(new ArrayCollection([]));
         $group->getType()->willReturn($type);
         $group->getCode()->willReturn('my_code');
-        $type->isVariant()->willReturn(true);
+        $group->getId()->willReturn(null);
         $group->getProductTemplate()->willReturn($template);
+
+        $type->isVariant()->willReturn(true);
 
         $templateMediaManager->handleProductTemplateMedia($template)->shouldBeCalled();
 
@@ -167,27 +179,25 @@ class GroupSaverSpec extends ObjectBehavior
         GroupInterface $group,
         GroupType $type,
         ProductInterface $product,
-        ProductTemplateInterface $template,
-        ArrayCollection $products
+        ProductTemplateInterface $template
     ) {
         $optionsResolver->resolveSaveOptions(['copy_values_to_products' => true])->willReturn(
             [
                 'flush'                   => true,
                 'copy_values_to_products' => true,
-                'add_products'            => [],
-                'remove_products'         => [],
             ]
         );
 
+        $group->getId()->willReturn(null);
         $group->getType()->willReturn($type);
         $group->getCode()->willReturn('my_code');
+
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $type->isVariant()->willReturn(true);
         $group->getProductTemplate()->willReturn($template);
-        $group->getProducts()->willReturn($products);
-        $products->toArray()->willReturn([$product]);
+        $group->getProducts()->willReturn(new ArrayCollection([$product]));
 
         $templateApplier
             ->apply($template, [$product])

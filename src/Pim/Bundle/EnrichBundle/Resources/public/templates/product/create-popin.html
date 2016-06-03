@@ -1,0 +1,19 @@
+<div class="control-group" data-code="identifier">
+    <label title="<%- labels.identifier %>" class="control-label required truncate" for="new-product-identifier">
+        <em>*</em><%- labels.identifier %>
+    </label>
+    <div class="controls">
+        <input type="text" id="new-product-identifier" class="input-large" />
+    </div>
+    <div class="validation-errors">
+        <% _.each(_.where(errors, { attribute: identifier.code }), function (error) { %>
+            <span>
+                <i class="icon-warning-sign"></i>
+                <span class="error-message"><%- error.message %></span>
+            </span>
+        <% }) %>
+    </div>
+</div>
+<div class="control-group" data-code="family">
+    <input type="hidden" class="input-large select-field" data-placeholder="<%- labels.family %>" />
+</div>

@@ -34,7 +34,7 @@ Feature: Add products to a variant group
     Given I am on the "SANDAL" variant group page
     And I should see products sandal-white-37
     And I check the row "sandal-white-37"
-    And I press the "Save" button
+    And I save the variant group
     Then the row "sandal-white-37" should be checked
     When I am on the variant groups page
     And I click on the "Delete" action of the row which contains "SANDAL"

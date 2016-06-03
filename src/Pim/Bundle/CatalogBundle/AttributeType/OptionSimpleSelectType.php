@@ -18,21 +18,6 @@ class OptionSimpleSelectType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    public function prepareValueFormOptions(ProductValueInterface $value)
-    {
-        $options = parent::prepareValueFormOptions($value);
-        $attribute = $value->getAttribute();
-        $options['class']                = 'PimCatalogBundle:AttributeOption';
-        $options['collection_id']        = $attribute->getId();
-        $options['required']             = false;
-        $options['minimum_input_length'] = $attribute->getMinimumInputLength();
-
-        return $options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
         return parent::defineCustomAttributeProperties($attribute) + [

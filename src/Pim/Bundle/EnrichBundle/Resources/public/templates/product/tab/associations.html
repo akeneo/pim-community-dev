@@ -10,9 +10,7 @@
             <ul class="associations-list nav nav-tabs tab-groups">
                 <% _.each(associationTypes, function (associationType) { %>
                     <li data-association-type="<%- associationType.code %>"<% if (associationType.code === currentAssociationType) { %> class="active"<% } %>>
-                        <a href="#">
-                            <%- associationType.label[locale] || '[' + associationType.code + ']'  %>
-                        </a>
+                        <a href="#"><%- associationType.labels[locale] || '[' + associationType.code + ']' %></a>
                     </li>
                 <% }); %>
             </ul>

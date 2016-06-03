@@ -23,6 +23,7 @@ class Operators
     const NOT_IN_CHILDREN_LIST    = 'NOT IN CHILDREN';
     const UNCLASSIFIED            = 'UNCLASSIFIED';
     const IN_LIST_OR_UNCLASSIFIED = 'IN OR UNCLASSIFIED';
+    const IN_ARRAY_KEYS           = 'IN ARRAY KEYS';
     const BETWEEN                 = 'BETWEEN';
     const NOT_BETWEEN             = 'NOT BETWEEN';
     const IS_NULL                 = 'NULL';

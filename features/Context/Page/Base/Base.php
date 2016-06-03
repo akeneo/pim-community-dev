@@ -26,7 +26,7 @@ class Base extends Page
         'Body'             => ['css' => 'body'],
         'Dialog'           => ['css' => 'div.modal'],
         'Title'            => ['css' => '.navbar-title'],
-        'Product title'    => ['css' => '.product-title'],
+        'Product title'    => ['css' => '.entity-title'],
         'HeadTitle'        => ['css' => 'title'],
         'Flash messages'   => ['css' => '.flash-messages-holder'],
         'Navigation Bar'   => ['css' => 'header#oroplatform-header'],
@@ -72,7 +72,7 @@ class Base extends Page
     {
         return $this->spin(function () use ($locator) {
             return parent::findField($locator);
-        }, sprintf("Can't find the field with given locator (%s)", $locator));
+        }, sprintf('Can\'t find the field with given locator (%s)', $locator));
     }
 
     /**
@@ -176,8 +176,8 @@ class Base extends Page
 
         if (null === $subtitle || null === $separator || null === $name) {
             $titleElt = $this->spin(function () {
-                return $this->getElement('Product title')->find('css', '.product-label');
-            }, 'Could not find the page title');
+                return $this->getElement('Product title')->find('css', '.object-label');
+            }, "Could not find the page title");
 
             return $titleElt->getText();
         }

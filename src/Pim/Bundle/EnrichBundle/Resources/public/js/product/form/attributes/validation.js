@@ -23,6 +23,10 @@ define(
     function ($, _, Backbone, BaseForm, mediator, messenger, FieldManager, ValidationError, UserContext) {
         return BaseForm.extend({
             validationErrors: {},
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', this.onPreSave);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onValidationError);
@@ -30,9 +34,19 @@ define(
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * Pre save callback
+             */
             onPreSave: function () {
                 this.validationErrors = {};
             },
+
+            /**
+             * On validation callback
+             *
+             * @param {Event} event
+             */
             onValidationError: function (event) {
                 this.validationErrors = event.response;
                 var globalErrors = _.where(this.validationErrors.values, {global: true});
@@ -44,6 +58,12 @@ define(
 
                 this.getRoot().trigger('pim_enrich:form:entity:validation_error', event);
             },
+
+            /**
+             * On field extension
+             *
+             * @param {Event} event
+             */
             addFieldExtension: function (event) {
                 var field = event.field;
                 var valuesErrors = _.uniq(this.validationErrors.values, function (error) {
@@ -56,6 +76,13 @@ define(
                     this.addErrorsToField(field, errorsForAttribute);
                 }
             },
+
+            /**
+             * Add an error to a field
+             *
+             * @param {Object} field
+             * @param {Array}  fieldError
+             */
             addErrorsToField: function (field, fieldErrors) {
                 field.addElement(
                     'footer',
@@ -65,6 +92,13 @@ define(
 
                 field.setValid(false);
             },
+
+            /**
+             * Change the current context
+             *
+             * @param {[type]} locale
+             * @param {[type]} scope
+             */
             changeContext: function (locale, scope) {
                 if (locale) {
                     UserContext.set('catalogLocale', locale);

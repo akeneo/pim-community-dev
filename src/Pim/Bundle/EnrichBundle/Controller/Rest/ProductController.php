@@ -162,6 +162,41 @@ class ProductController
 
     /**
      * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function createAction(Request $request)
+    {
+        $product = $this->productBuilder->createProduct(
+            $request->request->get('identifier'),
+            $request->request->get('family', null)
+        );
+
+        $violations = $this->validator->validate($product);
+        if (0 === $violations->count()) {
+            $this->productSaver->save($product);
+
+            $normalizationContext = $this->userContext->toArray() + [
+                'filter_types'               => ['pim.internal_api.product_value.view'],
+                'disable_grouping_separator' => true
+            ];
+
+            return new JsonResponse($this->normalizer->normalize(
+                $product,
+                'internal_api',
+                $normalizationContext
+            ));
+        }
+
+        $errors = [
+            'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
+        ];
+
+        return new JsonResponse($errors, 400);
+    }
+
+    /**
+     * @param Request $request
      * @param string  $id
      *
      * @throws NotFoundHttpException     If product is not found or the user cannot see it
@@ -183,11 +218,6 @@ class ProductController
             throw new BadRequestHttpException();
         }
 
-        // TODO: PEF should never update groups, no way to do so from the screen, if a product is added to
-        // another group during the save, this relation will be removed, other issue is that variant groups are never
-        // passed here, so a product is always removed from it's variant group when saved
-        unset($data['groups']);
-
         $this->updateProduct($product, $data);
 
         $violations = $this->validator->validate($product);
@@ -206,13 +236,13 @@ class ProductController
                 'internal_api',
                 $normalizationContext
             ));
-        } else {
-            $errors = [
-                'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
-            ];
-
-            return new JsonResponse($errors, 400);
         }
+
+        $errors = [
+            'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
+        ];
+
+        return new JsonResponse($errors, 400);
     }
 
     /**
@@ -235,7 +265,7 @@ class ProductController
     /**
      * Remove an optional attribute form a product
      *
-     * @param int $productId   The product id
+     * @param int $id          The product id
      * @param int $attributeId The attribute id
      *
      * @AclAncestor("pim_enrich_product_remove_attribute")
@@ -246,9 +276,9 @@ class ProductController
      *
      * @return JsonResponse
      */
-    public function removeAttributeAction($productId, $attributeId)
+    public function removeAttributeAction($id, $attributeId)
     {
-        $product = $this->findProductOr404($productId);
+        $product = $this->findProductOr404($id);
         if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
             throw new AccessDeniedHttpException();
         }

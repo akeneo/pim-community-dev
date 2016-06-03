@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit a variant group
   In order to manage existing variant groups for the catalog
   As a product manager
@@ -9,30 +10,25 @@ Feature: Edit a variant group
     And I am on the "caterpillar_boots" variant group page
     And I visit the "Properties" tab
 
-  @javascript
   Scenario: Successfully edit a variant group
-    Then I should see the Code and Axis fields
-    And the fields Code and Axis should be disabled
-    When I fill in the following information:
-      | English (United States) | My boots |
-    And I press the "Save" button
+    Then the variant group property "Code" should be disabled
+    And the variant group property "Axis" should be disabled
+    When I fill in the variant group property "English (United States)" with "My boots"
+    And I save the variant group
+    And I reload the page
     Then I should see "My boots"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
-    Given I fill in the following information:
-      | English (United States) | My boots |
+    When I fill in the variant group property "English (United States)" with "My boots"
     And I click on the Akeneo logo
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                          |
       | content | You will lose changes to the variant group if you leave this page. |
 
-  @skip
   Scenario: Successfully display a message when there are unsaved changes
-    Given I fill in the following information:
-      | English (United States) | My boots |
-    Then I should see "There are unsaved changes."
+    When I fill in the variant group property "English (United States)" with "My boots"
+    Then I should see the text "There are unsaved changes."
 
-  @javascript
   Scenario: Successfully edit a variant group and the completeness should be computed
     Given I add the "french" locale to the "tablet" channel
     And I add the "french" locale to the "mobile" channel
@@ -47,8 +43,8 @@ Feature: Edit a variant group
     And I visit the "Attributes" tab
     When I add available attributes Description
     And I visit the "Products" tab
-    And I press the "Save" button
+    And I save the variant group
     And I should see the text "89%"
     And I check the row "sneakers"
-    And I press the "Save" button
+    And I save the variant group
     Then I should see the text "78%"

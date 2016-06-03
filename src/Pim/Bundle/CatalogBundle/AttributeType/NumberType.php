@@ -54,17 +54,6 @@ class NumberType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    public function prepareValueFormOptions(ProductValueInterface $value)
-    {
-        $options = parent::prepareValueFormOptions($value);
-        $options['decimals_allowed'] = $value->getAttribute()->isDecimalsAllowed();
-
-        return $options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return AttributeTypes::NUMBER;
