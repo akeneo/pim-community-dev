@@ -204,10 +204,10 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param FamilyInterface $family
-     * @param array           $requirements
+     * @param FamilyInterface                 $family
+     * @param AttributeRequirementInterface[] $requirements
      *
-     * @return array
+     * @return AttributeRequirementInterface[]
      */
     protected function addMissingIdentifierRequirements(FamilyInterface $family, array $requirements)
     {
@@ -250,6 +250,8 @@ class FamilyUpdater implements ObjectUpdaterInterface
         if (null === $requirement) {
             $requirement = $this->attrRequiFactory->createAttributeRequirement($attribute, $channel, true);
         }
+
+        $requirement->setRequired(true);
 
         return $requirement;
     }

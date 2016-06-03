@@ -78,8 +78,10 @@ pim_enrich:
     limit_exceeded: 'Proszę wybrać mniej niż %limit% elementów do edycji'
     product:
       page_title: Produkty
+      page_subtitle: 'Masowa edycja (1 produkt) | Masowa edycja (%count% produktów)'
       title: Wybierz działanie
       subtitle: 'Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach'
+      confirm: 'Zamierzasz zaktualizować produkt o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% produkty(ów) o następujące informacje, proszę potwierdź.'
       steps:
         first: Wybierz produkty
         second: Wybierz działanie
@@ -87,8 +89,10 @@ pim_enrich:
         fourth: Potwierdź
     family:
       page_title: Rodziny
+      page_subtitle: 'Masowa edycja (1 rodzina) | Masowa edycja (%count% rodzin)'
       title: Wybierz działanie
       subtitle: 'Wybierz operację, którą chcesz wykonać dla wybranej rodziny | Wybierz operację, którą chcesz wykonać dla %count% zaznaczonych rodzin'
+      confirm: 'Zamierzasz zaktualizować rodzinę o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% rodzin o następujące informacje, proszę potwierdź.'
       steps:
         first: Wybierz rodziny
         second: Wybierz działanie
@@ -102,13 +106,20 @@ pim_enrich:
     edit-common-attributes:
       label: Edytuj atrybuty
       description: Atrybuty wybranych produktów zostaną zaktualizowane o następujące wartości, przy wybranym ustawieniu regionalnym.
+      empty: Proszę wybrać atrybut(y), które chcesz edytować
       success_flash: Zadanie aktualizacji statusu produktów jest aktualnie wykonywane
       launched_flash: 'Zadanie masowej "edycji wspólnych atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
       message:
+        warning: Brak wspólnych atrybutów dla zaznaczonych produktów. Proszę wybierz inne produkty.
+        invalid_attribute: 'Atrybut o kodzie "attribute_code" nie jest wspólnym atrybutem zaznaczonych produktów, został pominięty.'
         no_valid_attribute: Żaden z wybranych atrybutów nie może zostać zastosowany do tego produktu.
     classify:
+      label: Klasyfikuj produkty w kategorie
+      description: Produkty zostanie umieszczony w następujących kategoriach, istniejące rozmieszczenie nie zostanie zmienione.
+      success_flash: Produkt(y) został(y) zaklasyfikowane do wybranych kategorii
       launched_flash: 'Zadanie masowej "klasyfikacji" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
     change-family:
+      label: Zmień rodzinę produktów
       description: Rodzina wybranych produktów zostanie zamieniona na wybraną rodzinę
       success_flash: Rodzina wybranego produktu(ów) została zmieniona pomyślnie
       launched_flash: 'Zadanie masowej "zmiany rodziny" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
@@ -117,12 +128,24 @@ pim_enrich:
       description: Wybierz grupy, do których chcesz dodać wybrane produkty
       success_flash: Produkty zostały pomyślnie dodane do wybranych grup
       launched_flash: 'Masowe zadanie "dodaj do grup" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
+      no_group: Żadna grupa nie istnieje. Proszę zacznij od utworzenia jednej.
     add-to-variant-group:
+      label: Dodaj do grupy wariantów
+      description: Wybierz grupę wariantów, do której chcesz dodać wybrane produkty
+      success_flash: Produkty zostały pomyślnie dodane do wybranej grupy wariantów
+      no_variant_group: Żadna grupa wariantów nie istnieje. Proszę zacznij od utworzenia jednej.
       launched_flash: 'Masowe zadanie "dodaj do grupy wariantów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
     set-attribute-requirements:
       description: Poniższe wymagania atrybutów zostaną zastosowane do wybranych rodzin
       success_flash: Wymagania atrybutów zostały zastosowane do wybranych rodzin
       launched_flash: 'Masowe zadanie "określone wymagania atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
+    mass_action:
+      quick_export:
+        launched_flash: Zadanie eksportu produktów jest aktualnie wykonywane
+  sequential_edit_action:
+    product:
+      previous: 'Przejdź z powrotem do "%product%" bez zapisywania.'
+      next: 'Przejdź do "%product%" bez zapisywania.'
   acl:
     locale:
       index: Przeglądanie ustawień regionalnych
@@ -569,6 +592,7 @@ Number max: Maksymalna liczba
 Decimals allowed: Zezwól na dziesiętne
 Negative allowed: Zezwalaj na wartooci ujemne
 Date min: Data początkowa
+Date max: Data końcowa
 Metric family: Zestaw metryk
 Default metric unit: Domyślna jednostka metryczna
 Max file size: Maksymalny rozmiar pliku (MB)
@@ -587,45 +611,65 @@ pim_title.attribute_group:
 pim_title.category:
   index: Drzewo kategorii
   create: Drzewa kategorii | Utwórz
+  edit: 'Drzewa kategorii %category.label% | Edycja'
 pim_title.attribute:
   index: Atrybuty
   create: Atrybuty | Utwórz
+  edit: 'Atrybuty %attribute.label% | Edycja'
 pim_title.product:
   index: Produkty
+  edit: 'Produkty %product.sku% | Edycja'
 pim_title.family:
   index: Rodziny
+  edit: 'Rodziny %family.label% | Edycja'
 pim_title.channel:
   index: Kanały
   create: Kanały | Utwórz
+  edit: 'Kanały %channel.label% | Edycja'
 pim_title.currency:
   index: Waluty
 pim_title.locale:
   index: Ustawienia regionalne
 pim_title.group:
   index: Grupy
+  edit: 'Grupy %group.label% | Edycja'
 pim_title.variant_group:
   index: Grupy wariantów
+  edit: 'Grupy wariantów %group.label% | Edycja'
 pim_title.association_type:
   index: Typy powiązań
+  edit: 'Typy powiązań %association type.label% | Edycja'
 pim_title.group_type:
   index: Typy grup
+  edit: 'Typy grupy %group type.label% | Edycja'
 pim_title.mass_edit_action:
   choose: Edycja Masowa | Wybierz
   configure: Edycja Masowa | Konfiguruj
+pim_title.job_tracker:
+  index: Śledzenie procesu
+  show: Śledzenie procesu | Pokaż zadanie
 pim_title.dashboard: Kokpit
 pim_catalog_identifier: Identyfikator
 pim_catalog_text: Tekst
 pim_catalog_textarea: Pole tekstowe
 pim_catalog_file: Plik
 pim_catalog_image: Obrazek
+pim_reference_data_simpleselect: Referencja pojedynczy wybór
+pim_reference_data_multiselect: Referencja wielokrotny wybór
 Activated: Aktywowany
 Disable: Wyłącz
+pim_enrich.sequential_edit_action:
+  product:
+    previous: 'Przejdź z powrotem do "%product%" bez zapisywania.'
+    next: 'Przejdź do "%product%" bez zapisywania.'
 pim_enrich.mass_edit_action:
   limit_exceeded: 'Proszę wybrać mniej niż %limit% elementów do edycji'
   product:
     page_title: Produkty
+    page_subtitle: 'Masowa edycja (1 produkt) | Masowa edycja (%count% produktów)'
     title: Wybierz działanie
     subtitle: 'Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach'
+    confirm: 'Zamierzasz zaktualizować produkt o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% produkty(ów) o następujące informacje, proszę potwierdź.'
     steps:
       first: Wybierz produkty
       second: Wybierz działanie
@@ -633,8 +677,10 @@ pim_enrich.mass_edit_action:
       fourth: Potwierdź
   family:
     page_title: Rodziny
+    page_subtitle: 'Masowa edycja (1 rodzina) | Masowa edycja (%count% rodzin)'
     title: Wybierz działanie
     subtitle: 'Wybierz operację, którą chcesz wykonać dla wybranej rodziny | Wybierz operację, którą chcesz wykonać dla %count% zaznaczonych rodzin'
+    confirm: 'Zamierzasz zaktualizować rodzinę o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% rodzin o następujące informacje, proszę potwierdź.'
     steps:
       first: Wybierz rodziny
       second: Wybierz działanie
@@ -647,6 +693,15 @@ pim_enrich.mass_edit_action:
   edit-common-attributes:
     label: Edytuj wspólne atrybuty
     description: Atrybuty wybranych produktów zostaną zaktualizowane o następujące wartości, przy wybranym ustawieniu regionalnym.
+    empty: Proszę wybrać atrybut(y), które chcesz edytować
+    success_flash: Atrybut(y) produkt(ów) zostały zaktualizowane
+    message.warning: Brak wspólnych atrybutów dla zaznaczonych produktów. Proszę wybierz inne produkty.
+    no_attribute.warning: Brak wspólnych atrybutów dla zaznaczonych produktów. Proszę wybierz inne produkty.
+    truncated_by_variant_attribute.warning: 'Niektóre wspólne atrybuty spośród wybranych produktów pochodzą z grup wariantów. Nie mogą one podlegać masowej edycji: %attributes%.'
+  classify:
+    label: Klasyfikuj produkty w kategorie
+    description: Produkty zostanie umieszczony w następujących kategoriach, istniejące rozmieszczenie nie zostanie zmienione.
+    success_flash: Produkt(y) został(y) zaklasyfikowane do wybranych kategorii
   change-family:
     label: Zmień rodzinę produktów
     description: Rodzina wybranych produktów zostanie zamieniona na wybraną rodzinę
@@ -755,17 +810,31 @@ oro.locale:
       timezone: Wybierz strefę czasową do wyświetlania daty i godziny
       currency: Wybierz domyślną walutę
 Selected products successfully deleted: Wybrane produkty zostały pomyślnie usunięte
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: 'Masowa edycja <strong>%label%</strong> nie powiodła się'
+      warning: 'Masowa edycja <strong>%label%</strong> zakończona z ostrzeżeniami'
+      success: 'Masowa edycja <strong>%label%</strong> zakończona'
+    quick_export:
+      error: 'Szybki eksport <strong>%label%</strong> nie powiódł się'
+      warning: 'Szybki eksport <strong>%label%</strong> zakończony z ostrzeżeniami'
+      success: 'Szybki eksport <strong>%label%</strong> zakończony'
 job_execution.summary:
   mass_edited: Masowa edycja
   skip: Pominięte
   skipped_products: Pominięte produkty
   skipped_attributes: Pominięte atrybuty
+pim_mass_edit_execution_show: Wykonania masowej edycji | Szczegóły
 edit_common_attributes.steps.edit_common_attributes_processor.title: Edytuj wspólne atrybuty
+update_product_value.steps.update_product_value_processor.title: Aktualizacja wartości produktu
 add_to_variant_group_clean.steps.excluded.title: Wykluczone produkty
 add_to_variant_group_clean.steps.duplicated.title: Duplikowane Osie
 edit_common_attributes: Edytuj wspólne atrybuty
 mass_edit report:
   overview: Raporty edycji masowej
 job_tracker:
+  tab:
+    title: Śledzenie procesu
   filter:
     started_at: Rozpoczęto o
