@@ -146,7 +146,7 @@ Feature: Associate a product
     And the rows "black-boots and gray-boots" should be checked
     And the rows should be sorted descending by Is associated
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5161
+  @skip https://akeneo.atlassian.net/browse/PIM-5830 @jira https://akeneo.atlassian.net/browse/PIM-5161
   Scenario: Grid is sortable by "is associated"
     Given the following products:
       | sku          |
