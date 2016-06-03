@@ -58,7 +58,13 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
      */
     public function validate()
     {
-        if (!in_array($this->getFileExtension(), $this->whiteListExtension)) {
+        $filePath = $this->getPathname();
+        if (!is_readable($filePath)) {
+            throw new \Exception(sprintf('Unable to read the file "%s".', $filePath));
+        }
+
+        $file = new \SplFileInfo($filePath);
+        if (!in_array($file->getExtension(), $this->whiteListExtension)) {
             $this->validateEncoding();
         } else {
             $this->stepExecution->addSummaryInfo(
@@ -76,7 +82,7 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
      */
     protected function validateEncoding()
     {
-        $filePath = $this->archiveStorage->getPathname($this->stepExecution->getJobExecution());
+        $filePath = $this->getPathname();
         if (!is_readable($filePath)) {
             throw new \Exception(sprintf('Unable to read the file "%s".', $filePath));
         }
@@ -114,38 +120,26 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
     }
 
     /**
-     * Get the file extension of the file to validate.
-     *
-     * @return string
-     * @throws \Exception
-     */
-    protected function getFileExtension()
-    {
-        $filePath = $this->archiveStorage->getPathname($this->stepExecution->getJobExecution());
-        if (!is_readable($filePath)) {
-            throw new \Exception(sprintf('Unable to read the file "%s".', $filePath));
-        }
-
-        $file = new \SplFileInfo($filePath);
-
-        $extension = $file->getExtension();
-        if ('' === $extension) {
-            // the "originalFilename" can has been set earlier in the context by other steps
-            $originalFilename = $this->stepExecution->getJobExecution()->getExecutionContext()->get('originalFilename');
-            $info = pathinfo($originalFilename);
-            if (isset($info['extension'])) {
-                $extension = $info['extension'];
-            };
-        }
-
-        return $extension;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * TODO: should not be duplicated everywhere
+     *
+     * @return string
+     */
+    private function getPathname()
+    {
+        $context = $this->stepExecution->getJobExecution()->getExecutionContext();
+        if (!$context->has('workingDirectory')) {
+            throw new \LogicException('The working directory is expected in the execution context.');
+        }
+
+        return $context->get('workingDirectory')->getPathname() . DIRECTORY_SEPARATOR .
+            basename($this->stepExecution->getJobParameters()->get('filePath'));
     }
 }

@@ -3,9 +3,9 @@
 namespace Pim\Component\Connector\Transfer;
 
 use Akeneo\Component\Batch\Model\StepExecution;
-use Pim\Component\Connector\ArchiveStorage;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Step element able to copy output files from the archives to the desired local path.
@@ -22,22 +22,13 @@ use Symfony\Component\Finder\Finder;
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO: rename "WorkingDirectoryToLocalTransferStepElement"
  */
 class ArchiveToLocalTransferStepElement implements TransferStepElementInterface
 {
-    /** @var ArchiveStorage */
-    protected $archiveStorage;
-
     /** @var StepExecution */
     protected $stepExecution;
-
-    /**
-     * @param ArchiveStorage $archiveStorage
-     */
-    public function __construct(ArchiveStorage $archiveStorage)
-    {
-        $this->archiveStorage = $archiveStorage;
-    }
 
     /**
      * {@inheritdoc}
@@ -81,16 +72,19 @@ class ArchiveToLocalTransferStepElement implements TransferStepElementInterface
     }
 
     /**
-     * @return Finder
+     * @return SplFileInfo[]
      *
      * @throws \Exception
      */
     protected function listArchivedFiles()
     {
-        $archiveStorage = $this->archiveStorage->getAbsoluteDirectory($this->stepExecution->getJobExecution());
+        $context = $this->stepExecution->getJobExecution()->getExecutionContext();
+        if (!$context->has('workingDirectory')) {
+            throw new \LogicException('The working directory is expected in the execution context.');
+        }
 
         $finder = new Finder();
-        $finder->in($archiveStorage)->files()->depth('== 0');
+        $finder->in($context->get('workingDirectory')->getPathname())->files()->depth('== 0');
 
         return $finder;
     }

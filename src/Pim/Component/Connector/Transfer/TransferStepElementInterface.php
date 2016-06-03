@@ -27,6 +27,8 @@ interface TransferStepElementInterface extends StepExecutionAwareInterface
     public function transfer();
 
     /**
+     * TODO: should we keep it?
+     *
      * @return string
      */
     public function getOriginalFilename();
