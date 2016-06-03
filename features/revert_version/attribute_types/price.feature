@@ -8,7 +8,7 @@ Feature: Revert product attributes to a previous version
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3351
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-3351
   Scenario: Successfully revert a product with prices and leave them empty
     And the following product:
     | sku   | name-fr_FR | family |
@@ -42,6 +42,7 @@ Feature: Revert product attributes to a previous version
     Then the product "t-shirt" should have the following values:
     | price | 49.00 EUR |
 
+  @skip
   Scenario: Successfully revert a price attribute with empty value
     Given the following product:
     | sku     | family | price  |

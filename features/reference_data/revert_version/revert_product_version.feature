@@ -32,6 +32,7 @@ Feature: Revert a product to a previous version
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
 
+  @skip
   Scenario: Revert a product with simple reference data
     Given I am on the "red-heels" product page
     And I add available attribute color
