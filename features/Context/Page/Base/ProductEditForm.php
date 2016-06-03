@@ -506,6 +506,8 @@ class ProductEditForm extends Form
      *
      * @param NodeElement $fieldContainerOrLabel
      * @param string      $value
+     *
+     * @throws ElementNotFoundException
      */
     protected function fillTextField(NodeElement $fieldContainerOrLabel, $value)
     {
@@ -518,6 +520,13 @@ class ProductEditForm extends Form
 
         if (!$field) {
             $field = $fieldContainerOrLabel->getParent()->find('css', 'div.controls input');
+        }
+
+        if (null === $field) {
+            throw new ElementNotFoundException(sprintf(
+                'No text field can be found from "%s".',
+                $fieldContainerOrLabel->getText()
+            ));
         }
 
         $field->setValue($value);

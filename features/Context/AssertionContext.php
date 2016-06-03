@@ -747,56 +747,6 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
-     * @param $fieldName
-     * @param $string
-     *
-     * @throws ExpectationException
-     *
-     * @return bool
-     *
-     *
-     * @Then /^the field "([^"]*)" should have the following options:$/
-     */
-    public function theFieldShouldHaveTheFollowingOptions($fieldName, PyStringNode $string)
-    {
-        $field = $this->getCurrentPage()->findField($fieldName);
-        $id    = $field->getAttribute('id');
-
-        if ('select' === $field->getTagName()) {
-            $options = $field->findAll('css', 'option');
-        } elseif ('input' === $field->getTagName() && 0 === strpos($id, 's2id_')) {
-            $options = $field->getParent()->getParent()->findAll('css', 'option');
-        } else {
-            throw $this->createExpectationException(
-                sprintf('"%s" field is not a select field, can\'t have options.', $fieldName)
-            );
-        }
-
-        $availableOptions = [];
-
-        foreach ($options as $option) {
-            $optionValue = trim($option->getText());
-
-            if ($optionValue) {
-                $availableOptions[] = $optionValue;
-            }
-        }
-
-        if (count(array_intersect($string->getLines(), $availableOptions)) === count($string->getLines())) {
-            return true;
-        }
-
-        throw $this->createExpectationException(
-            sprintf(
-                '"%s" field have these options (%s), but expected following options (%s).',
-                $fieldName,
-                implode(', ', $availableOptions),
-                implode(', ', $string->getLines())
-            )
-        );
-    }
-
-    /**
      * @param PyStringNode $text
      *
      * @throws ResponseTextException
