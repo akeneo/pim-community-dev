@@ -1027,7 +1027,7 @@ class WebUser extends RawMinkContext
             );
         }
 
-        $link->click();
+        $removeLink->click();
         $this->wait();
     }
 
@@ -1156,28 +1156,6 @@ class WebUser extends RawMinkContext
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value, $element);
         }
-    }
-
-    /**
-     * @param string $permission
-     * @param string $resources
-     *
-     * @When /^I (grant|remove) rights to (.*)$/
-     */
-    public function iSetRightsToACLResources($permission, $resources)
-    {
-        $method = $permission . 'ResourceRights';
-        foreach ($this->listToArray($resources) as $resource) {
-            $this->getCurrentPage()->$method($resource);
-        }
-    }
-
-    /**
-     * @When /^I grant all rights$/
-     */
-    public function iGrantAllRightsToACLResources()
-    {
-        $this->getCurrentPage()->grantAllResourceRights();
     }
 
     /**
