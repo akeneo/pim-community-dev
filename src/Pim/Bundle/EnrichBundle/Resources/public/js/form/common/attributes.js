@@ -102,13 +102,13 @@ define(
                     var object = this.getFormData();
                     AttributeManager.getValues(object)
                         .then(function (values) {
-                            var values = AttributeGroupManager.getAttributeGroupValues(
+                            var attributeGroupValues = AttributeGroupManager.getAttributeGroupValues(
                                 values,
                                 this.getExtension('attribute-group-selector').getCurrentElement()
                             );
 
                             var fieldPromises = [];
-                            _.each(values, function (value, attributeCode) {
+                            _.each(attributeGroupValues, function (value, attributeCode) {
                                 fieldPromises.push(this.renderField(object, attributeCode, value));
                             }.bind(this));
 
@@ -301,7 +301,7 @@ define(
                         code: this.getFormData().code,
                         attributeId: attribute.id
                     }
-                )
+                );
             },
 
             /**

@@ -3,13 +3,11 @@
 define([
         'jquery',
         'module',
-        'oro/mediator',
-        'routing'
+        'oro/mediator'
     ], function (
         $,
         module,
-        mediator,
-        Routing
+        mediator
     ) {
         return {
             /**
@@ -32,11 +30,10 @@ define([
 
             /**
              * Get the entity url
-             * @param {String} code
              *
              * @return {String}
              */
-            getUrl: function (code) {
+            getUrl: function () {
                 throw new Error('This method need to be implemented');
             }
         };

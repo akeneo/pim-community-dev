@@ -137,7 +137,7 @@ Feature: Editing attribute values of a variant group also updates products
     And I visit the "Media" group
     Then I should see the text "SNKRS-1R.png"
 
-  @skip https://akeneo.atlassian.net/browse/PIM-5830 @jira https://akeneo.atlassian.net/browse/PIM-5335
+  @jira https://akeneo.atlassian.net/browse/PIM-5335
   Scenario: Change a pim_catalog_image attribute of a variant group and ensure saving
     When I add available attributes Side view
     And I visit the "Media" group

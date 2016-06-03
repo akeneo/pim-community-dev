@@ -1,4 +1,3 @@
-/* global console */
 'use strict';
 
 define([
@@ -30,11 +29,10 @@ define([
              * Fetch an element based on its identifier
              *
              * @param {string} identifier
-             * @param {Object} options
              *
              * @return {Promise}
              */
-            fetch: function (identifier, options) {
+            fetch: function (identifier) {
                 return $.getJSON(Routing.generate(this.options.urls.get, { id: identifier }))
                     .then(function (product) {
                         var cacheInvalidator = new CacheInvalidator();

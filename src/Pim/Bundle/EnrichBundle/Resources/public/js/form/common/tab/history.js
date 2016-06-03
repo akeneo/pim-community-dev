@@ -1,11 +1,14 @@
 'use strict';
 
 define([
+        'underscore',
         'pim/form',
         'pim/common/grid',
         'oro/translator'
     ],
     function (
+
+        _,
         BaseForm,
         Grid,
         __

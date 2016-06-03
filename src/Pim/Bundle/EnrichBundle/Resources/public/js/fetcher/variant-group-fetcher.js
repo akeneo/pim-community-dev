@@ -1,4 +1,3 @@
-/* global console */
 'use strict';
 
 define([
@@ -56,7 +55,6 @@ define([
                         return variantGroup;
                     });
                 }
-
 
                 return promise.promise();
             }

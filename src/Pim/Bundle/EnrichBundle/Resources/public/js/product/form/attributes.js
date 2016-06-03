@@ -28,7 +28,7 @@ define(
                         id: this.getFormData().meta.id,
                         attributeId: attribute.id
                     }
-                )
+                );
             }
         });
     }

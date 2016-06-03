@@ -18,6 +18,7 @@ define(
         'routing',
         'oro/navigation',
         'pim/fetcher-registry',
+        'pim/product-manager',
         'pim/user-context',
         'bootstrap'
     ],
@@ -31,6 +32,7 @@ define(
         Routing,
         Navigation,
         FetcherRegistry,
+        ProductManager,
         UserContext
     ) {
         return BaseForm.extend({

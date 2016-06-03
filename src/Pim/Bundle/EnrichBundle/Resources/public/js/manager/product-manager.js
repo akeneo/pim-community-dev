@@ -7,8 +7,7 @@ define([
         'oro/mediator',
         'routing',
         'pim/attribute-manager',
-        'pim/fetcher-registry',
-        'pim/cache-invalidator'
+        'pim/fetcher-registry'
     ], function (
         $,
         _,
@@ -16,8 +15,7 @@ define([
         mediator,
         Routing,
         AttributeManager,
-        FetcherRegistry,
-        CacheInvalidator
+        FetcherRegistry
     ) {
         return {
             productValues: null,

@@ -5,6 +5,7 @@ define(
         'jquery',
         'underscore',
         'backbone',
+        'routing',
         'pim/form',
         'pim/user-context',
         'pim/i18n',
@@ -15,7 +16,20 @@ define(
         'text!pim/template/product-create-popin',
         'jquery.select2'
     ],
-    function ($, _, Backbone, BaseForm, UserContext, i18n, __, LoadingMask, FetcherRegistry, initSelect2, template) {
+    function (
+        $,
+        _,
+        Backbone,
+        Routing,
+        BaseForm,
+        UserContext,
+        i18n,
+        __,
+        LoadingMask,
+        FetcherRegistry,
+        initSelect2,
+        template
+    ) {
         return BaseForm.extend({
             template: _.template(template),
             events: {

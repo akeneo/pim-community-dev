@@ -141,10 +141,10 @@ define(
                         this.groupModal.on('ok', function visitGroup() {
                             this.groupModal.close();
                             var route = 'VARIANT' === group.type ?
-                                'pim_enrich_variant_group_edit':
+                                'pim_enrich_variant_group_edit' :
                                 'pim_enrich_group_edit';
                             var parameters = 'VARIANT' === group.type ?
-                                { code: group.code }:
+                                { code: group.code } :
                                 { id: group.meta.id };
 
                             Navigation.getInstance().setLocation(Routing.generate(route, parameters));
