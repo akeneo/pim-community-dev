@@ -11,11 +11,13 @@ config:
                 published-product-completeness:
                     module: pim/completeness-fetcher
                     options:
+                        warmup: false
                         urls:
                             get: pimee_workflow_completeness_rest_get
                 product_draft:
                     module: pimee/product-draft-fetcher
                     options:
+                        warmup: false
                         urls:
                             product_index: pimee_workflow_rest_product_index
 

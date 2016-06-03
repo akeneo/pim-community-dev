@@ -12,7 +12,7 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        'pim/product-edit-form',
+        'pim/form/common/edit-form',
         'pim/form'
     ],
     function (

@@ -11,7 +11,7 @@ services:
 
     # Structure version provider
     pim_enrich.provider.structure_version.product:
-        class: '%pim_enrich.provider.structure_version.product.class%'
+        class: '%pim_enrich.provider.structure_version.class%'
         arguments:
             - '@pim_versioning.repository.version'
         calls:

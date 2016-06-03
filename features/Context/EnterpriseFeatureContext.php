@@ -208,9 +208,12 @@ class EnterpriseFeatureContext extends FeatureContext
         }, sprintf('Cannot find product version "%s"', $version));
 
         $button->click();
+
         $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
 
-        $this->wait();
+        $this->spin(function () use ($version) {
+            return ($version + 1) === count($this->getSession()->getPage()->findAll('css', 'tr[data-version]'));
+        }, 'Revert failed');
     }
 
     /**

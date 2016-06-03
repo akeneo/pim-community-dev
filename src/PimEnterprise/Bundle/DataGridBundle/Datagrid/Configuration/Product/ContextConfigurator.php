@@ -16,6 +16,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator as BaseContextConfigurator;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
@@ -53,10 +54,19 @@ class ContextConfigurator extends BaseContextConfigurator
         AttributeRepositoryInterface $attributeRepository,
         RequestParameters $requestParams,
         UserContext $userContext,
-        AttributeGroupAccessRepository $accessRepository,
-        ObjectManager $objectManager
+        ObjectManager $objectManager,
+        GroupRepositoryInterface $productGroupRepository,
+        AttributeGroupAccessRepository $accessRepository
     ) {
-        parent::__construct($productRepository, $attributeRepository, $requestParams, $userContext, $objectManager);
+        parent::__construct(
+            $productRepository,
+            $attributeRepository,
+            $requestParams,
+            $userContext,
+            $objectManager,
+            $productGroupRepository
+        );
+
         $this->accessRepository = $accessRepository;
     }
 

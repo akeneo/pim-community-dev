@@ -50,4 +50,4 @@ Feature: Review a product draft
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
-    Then the product Weather conditions should be "cold, dry, hot and wet"
+    Then the product Weather conditions should be "cold, dry, hot, wet"

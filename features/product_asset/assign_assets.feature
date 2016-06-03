@@ -106,7 +106,7 @@ Feature: Assign assets to a product
     And I add available attributes Front view
     And I start to manage assets for "Front view"
     Then I should see the text "Asset main catalog"
-    And I cancel the asset modification
+    And I confirm the asset modification
     And I save the product
     Then I should not see the text "There are unsaved changes."
     When I am on the "Administrator" role page
@@ -118,5 +118,5 @@ Feature: Assign assets to a product
     And I add available attributes Front view
     And I start to manage assets for "Front view"
     Then I should not see the text "Asset main catalog"
-    And I cancel the asset modification
+    And I confirm the asset modification
     And I save the product

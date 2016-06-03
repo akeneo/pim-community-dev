@@ -82,6 +82,8 @@ define(
              * @param jqXHR
              */
             _onAjaxError: function (jqXHR) {
+                var message = jqXHR.responseJSON.message;
+
                 messenger.notificationFlashMessage(
                     'error',
                     __('pimee_enrich.entity.product.tab.proposals.messages.approve.error', {error: message})
@@ -89,7 +91,7 @@ define(
 
                 this.datagrid.hideLoading();
 
-                mediator.trigger('pim_enrich:form:proposal:post_approve:error', jqXHR.responseJSON.message);
+                mediator.trigger('pim_enrich:form:proposal:post_approve:error', message);
             },
 
             /**

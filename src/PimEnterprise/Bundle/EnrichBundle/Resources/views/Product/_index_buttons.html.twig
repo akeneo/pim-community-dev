@@ -1,8 +1,8 @@
 {% if is_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EDIT_ITEMS'), dataLocale) %}
     {{ elements.createBtn(
         'product',
-        path('pim_enrich_product_create'),
-        'dialog',
+        null,
+        { 'class': 'create-product' },
         'pim_enrich_product_create',
         'plus'
     ) }}

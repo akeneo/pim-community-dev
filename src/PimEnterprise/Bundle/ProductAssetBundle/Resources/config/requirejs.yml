@@ -26,5 +26,6 @@ config:
                 asset:
                     module: pim/base-fetcher
                     options:
+                        warmup: false
                         urls:
                             list: pimee_product_asset_rest_index

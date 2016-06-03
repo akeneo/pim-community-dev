@@ -49,6 +49,9 @@ class UnpublishSpec extends ObjectBehavior
             ['id', 'IN', ['100', '50']]
         ]);
 
-        $this->getBatchConfig()->shouldReturn(['filters' => [['id', 'IN', ['100', '50']]], 'actions' => []]);
+        $this->getBatchConfig()->shouldReturn([
+            'filters' => [['id', 'IN', ['100', '50']]],
+            'actions' => []
+        ]);
     }
 }

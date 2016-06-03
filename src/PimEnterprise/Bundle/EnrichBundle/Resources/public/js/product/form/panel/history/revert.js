@@ -6,7 +6,7 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'pim/product-manager',
+        'pim/fetcher-registry',
         'text!pimee/template/product/panel/history/revert',
         'oro/navigation',
         'oro/loading-mask',
@@ -18,7 +18,7 @@ define(
         _,
         Backbone,
         BaseForm,
-        ProductManager,
+        FetcherRegistry,
         revertTemplate,
         Navigation,
         LoadingMask,
@@ -57,19 +57,20 @@ define(
                             function () {
                                 // TODO: We shouldn't force product fetching,
                                 // we should use request response (cf. send for approval)
-                                ProductManager.get(this.getFormData().meta.id).done(function (product) {
-                                    navigation.addFlashMessage(
-                                        'success',
-                                        _.__('pimee_enrich.entity.product.flash.product_reverted')
-                                    );
-                                    navigation.afterRequest();
-                                    loadingMask.hide().$el.remove();
+                                FetcherRegistry.getFetcher('product').fetch(this.getFormData().meta.id)
+                                    .done(function (product) {
+                                        navigation.addFlashMessage(
+                                            'success',
+                                            _.__('pimee_enrich.entity.product.flash.product_reverted')
+                                        );
+                                        navigation.afterRequest();
+                                        loadingMask.hide().$el.remove();
 
-                                    this.setData(product);
+                                        this.setData(product);
 
-                                    this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
-                                    this.getRoot().trigger('pim_enrich:form:entity:post_revert', product);
-                                }.bind(this));
+                                        this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
+                                        this.getRoot().trigger('pim_enrich:form:entity:post_revert', product);
+                                    }.bind(this));
                             }.bind(this)
                         ).fail(
                             function (response) {

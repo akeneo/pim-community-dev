@@ -8,7 +8,7 @@ define(
         'text!pimee/template/product/publish',
         'oro/navigation',
         'oro/loading-mask',
-        'pim/product-manager',
+        'pim/fetcher-registry',
         'pimee/published-product-manager',
         'routing',
         'pim/dialog'
@@ -20,7 +20,7 @@ define(
         template,
         Navigation,
         LoadingMask,
-        ProductManager,
+        FetcherRegistry,
         PublishedProductManager,
         Routing,
         Dialog
@@ -80,22 +80,23 @@ define(
                 // TODO: We shouldn't force product fetching, we should use request response (cf. send for approval)
                 return method(productId)
                     .done(function () {
-                        ProductManager.get(this.getFormData().meta.id).done(function (product) {
-                            navigation.addFlashMessage(
-                                'success',
-                                _.__(
-                                    'pimee_enrich.entity.product.flash.product_' +
-                                    (publish ? 'published' : 'unpublished')
-                                )
-                            );
-                            navigation.afterRequest();
-                            loadingMask.hide().$el.remove();
+                        FetcherRegistry.getFetcher('product')
+                            .fetch(this.getFormData().meta.id).done(function (product) {
+                                navigation.addFlashMessage(
+                                    'success',
+                                    _.__(
+                                        'pimee_enrich.entity.product.flash.product_' +
+                                        (publish ? 'published' : 'unpublished')
+                                    )
+                                );
+                                navigation.afterRequest();
+                                loadingMask.hide().$el.remove();
 
-                            this.setData(product);
+                                this.setData(product);
 
-                            this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
-                            this.getRoot().trigger('pim_enrich:form:entity:post_publish', product);
-                        }.bind(this));
+                                this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
+                                this.getRoot().trigger('pim_enrich:form:entity:post_publish', product);
+                            }.bind(this));
                     }.bind(this))
                     .fail(function () {
                         navigation.addFlashMessage(

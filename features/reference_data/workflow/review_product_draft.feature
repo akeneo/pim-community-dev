@@ -84,7 +84,7 @@ Feature: Review a product draft with reference data
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     And I visit the "Other" group
-    Then the product Sole fabric should be "wool, jute"
+    Then the product Sole fabric should be "jute, wool"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully reject a waiting for approval product draft with a multi select reference data
