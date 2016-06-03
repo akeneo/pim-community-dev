@@ -84,7 +84,7 @@ pim_connector:
                 error: The date must not be empty
             last_execution:
                 none: This job has never been exported
-                last: Last export: %date%
+                last: "Last export: %date%"
         decimalSeparator:
             label: Decimal separator
             help: Determine the decimal separator
