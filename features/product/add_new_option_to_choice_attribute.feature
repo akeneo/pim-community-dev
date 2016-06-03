@@ -35,6 +35,6 @@ Feature: Add a new option to a choice attribute directly from the product edit f
       | Code | very_wet      |
       | en   | Extremely wet |
     And I save and back to the grid
-    And I click on the "shoes" row
-    When I fill in the following information:
-      | Weather conditions | Extremely wet |
+    And I am on the "shoes" product page
+    And I should be on the product "shoes" edit page
+    And I change the "Weather conditions" to "Extremely wet"
