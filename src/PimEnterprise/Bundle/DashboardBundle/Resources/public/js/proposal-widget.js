@@ -1,8 +1,15 @@
-define(
-    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pim/dashboard/abstract-widget', 'text!pimee/templates/dashboard/proposal-widget'],
-    function ($, _, Routing, Navigation, AbstractWidget, widgetTemplate) {
-        'use strict';
+'use strict';
 
+define(
+    [
+        'jquery',
+        'underscore',
+        'routing',
+        'oro/navigation',
+        'pim/dashboard/abstract-widget',
+        'text!pimee/templates/dashboard/proposal-widget'
+    ],
+    function ($, _, Routing, Navigation, AbstractWidget, widgetTemplate) {
         return AbstractWidget.extend({
             tagName: 'table',
 
