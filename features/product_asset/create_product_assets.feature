@@ -9,9 +9,13 @@ Feature: Create product assets
 
   Scenario: Successfully hide entity creation and deletion buttons when user doesn't have the rights
     Given I am logged in as "Peter"
-    Then removing the following permissions should hide the following buttons:
-      | permission      | page        | button          | forbiddenPage |
-      | Create an asset | asset index | Create an asset |               |
+    And I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    When I revoke rights to resource Create an asset
+    And I save the role
+    And I should not see the text "There are unsaved changes."
+    And I am on the asset index page
+    Then I should not see the text "Create an asset"
 
   Scenario: Create a localized asset
     Given I am logged in as "Pamela"
