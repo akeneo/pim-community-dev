@@ -5,7 +5,6 @@ namespace Pim\Component\Connector\Item;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Pim\Component\Connector\ArchiveStorage;
 use Pim\Component\Connector\Exception\CharsetException;
 
 /**
@@ -17,9 +16,6 @@ use Pim\Component\Connector\Exception\CharsetException;
  */
 class CharsetValidator extends AbstractConfigurableStepElement implements StepExecutionAwareInterface
 {
-    /** @var ArchiveStorage */
-    protected $archiveStorage;
-
     /** @var string */
     protected $charset;
 
@@ -33,18 +29,15 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
     protected $whiteListExtension;
 
     /**
-     * @param ArchiveStorage $archiveStorage
-     * @param array          $whiteListExtension
-     * @param string         $charset
-     * @param int            $maxErrors
+     * @param array  $whiteListExtension
+     * @param string $charset
+     * @param int    $maxErrors
      */
     public function __construct(
-        ArchiveStorage $archiveStorage,
         array $whiteListExtension = ['xls', 'xlsx', 'zip'],
         $charset = 'UTF-8',
         $maxErrors = 10
     ) {
-        $this->archiveStorage = $archiveStorage;
         $this->charset = $charset;
         $this->maxErrors = $maxErrors;
         $this->whiteListExtension = $whiteListExtension;

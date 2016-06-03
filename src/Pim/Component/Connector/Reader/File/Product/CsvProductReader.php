@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\Reader\File\Product;
 
-use Pim\Component\Connector\ArchiveStorage;
 use Pim\Component\Connector\Reader\File\CsvReader;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 
@@ -23,15 +22,13 @@ class CsvProductReader extends CsvReader
 
     /**
      * @param FileIteratorFactory  $fileIteratorFactory,
-     * @param ArchiveStorage       $archiveStorage
      * @param MediaPathTransformer $mediaPathTransformer
      */
     public function __construct(
         FileIteratorFactory $fileIteratorFactory,
-        ArchiveStorage $archiveStorage,
         MediaPathTransformer $mediaPathTransformer
     ) {
-        parent::__construct($fileIteratorFactory, $archiveStorage);
+        parent::__construct($fileIteratorFactory);
 
         $this->mediaPathTransformer = $mediaPathTransformer;
     }

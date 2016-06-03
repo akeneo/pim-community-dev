@@ -7,7 +7,6 @@ use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Pim\Component\Connector\ArchiveStorage;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -25,9 +24,6 @@ class CsvReader extends AbstractConfigurableStepElement implements
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
 
-    /** @var ArchiveStorage */
-    protected $archiveStorage;
-
     /** @var FileIteratorInterface */
     protected $fileIterator;
 
@@ -36,12 +32,10 @@ class CsvReader extends AbstractConfigurableStepElement implements
 
     /**
      * @param FileIteratorFactory $fileIteratorFactory
-     * @param ArchiveStorage      $archiveStorage
      */
-    public function __construct(FileIteratorFactory $fileIteratorFactory, ArchiveStorage $archiveStorage)
+    public function __construct(FileIteratorFactory $fileIteratorFactory)
     {
         $this->fileIteratorFactory = $fileIteratorFactory;
-        $this->archiveStorage = $archiveStorage;
     }
 
     /**
