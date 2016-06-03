@@ -1,4 +1,4 @@
-# 1.4.*
+# 1.4.25 (2016-06-03)
 
 ## Bug fixes
 - PIM-5820: Fix product value filtering by channel and locale in structured product normalizer
