@@ -51,9 +51,8 @@ pim_connector:
         enabled: Włączony
         disabled: Nieaktywny
         all: Wszystkie
-    updated:
-      choice:
-        all: Wszystkie
+    completeness:
+      label: Kompletność
     decimalSeparator:
       label: Separator dziesiętny
       help: Określ separator dziesiętny

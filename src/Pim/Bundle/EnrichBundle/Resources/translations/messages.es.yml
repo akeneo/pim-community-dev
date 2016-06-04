@@ -853,6 +853,10 @@ edit_common_attributes_clean: Limpiar archivos para los atributos comunes
 perform.steps.duplicated.title: Eje duplicado
 perform.steps.excluded.title: Producto excluido
 batch_jobs:
+  add_product_value:
+    label: Agregar un valor de producto
+    perform:
+      label: Agregar un valor de producto
   update_product_value:
     label: Actualizar el valor del producto
     perform:
@@ -867,6 +871,18 @@ batch_jobs:
     label: Configurar requerimientos del atributo
     perform:
       label: Configurar requerimientos del atributo
+  csv_product_quick_export:
+    label: Exportación rápida de producto en CSV
+    perform:
+      label: Exportación rápida de producto en CSV
+  xlsx_product_quick_export:
+    label: Exportación rápida de producto en XLSX
+    perform:
+      label: Exportación rápida de producto en XLSX
+  add_to_variant_group:
+    label: Agregar a un grupo de variantes
+    perform:
+      label: Agregar a un grupo de variantes
 mass_edit report:
   overview: Reportes de edición en masa
 job_tracker:
@@ -876,6 +892,8 @@ job_tracker:
     started_at: Ejecutado el
 pim_enrich_attribute_form:
   code: Código
+  attributeType: Tipo de atributo
+  reference_data_name: Nombre de datos de referencia
   scopable: Ámbito
   localizable: Localizable
   unique: Valor único

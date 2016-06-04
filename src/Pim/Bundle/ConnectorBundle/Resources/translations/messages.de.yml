@@ -52,9 +52,8 @@ pim_connector:
         enabled: Aktiviert
         disabled: Deaktiviert
         all: Alle
-    updated:
-      choice:
-        all: Alle
+    completeness:
+      label: Vollständigkeit
     decimalSeparator:
       label: Dezimaltrennzeichen
       help: Wählen Sie ein Dezimaltrennzeichen

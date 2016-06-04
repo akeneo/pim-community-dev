@@ -52,9 +52,8 @@ pim_connector:
         enabled: Включено
         disabled: Отключено
         all: Все
-    updated:
-      choice:
-        all: Все
+    completeness:
+      label: Завершенность
     decimalSeparator:
       label: Десятичный разделитель
       help: Введите десятичный разделитель

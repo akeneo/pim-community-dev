@@ -2,3 +2,8 @@ job_execution:
   summary:
     display_item: Mostrar elemento
     hide_item: Ocultar elemento
+pim_connector:
+  export:
+    locales:
+      validation:
+        not_blank: Un local debe ser seleccionado, por favor seleccione un local para exportar.
