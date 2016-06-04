@@ -21,16 +21,16 @@ define([
             return this;
         },
         updateState: function () {
-            var data = '';
+            var value = '';
             try {
-                data = JSON.parse(this.$('input[name="data"]').val());
+                value = JSON.parse(this.$('input[name="filter-value"]').val());
             } catch (error) {
-                data = this.$('input[name="data"]').val();
+                value = this.$('input[name="filter-value"]').val();
             }
             this.setData({
                 'field': this.getField(),
                 'operator': this.$('input[name="operator"]').val(),
-                'data': data
+                'value': value
             });
         },
         setField: function (field) {

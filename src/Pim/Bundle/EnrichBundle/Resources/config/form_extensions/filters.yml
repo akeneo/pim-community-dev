@@ -1,3 +1,12 @@
 extensions:
     pim-filter-text:
         module: pim/filter/text
+
+    pim-filter-product-family:
+        module: pim/filter/product/family
+        config:
+            operators: #Maybe we can create a method to get that from the back (not sure)
+                - IN
+                - NOT IN
+                - EMPTY
+                - NOT EMPTY

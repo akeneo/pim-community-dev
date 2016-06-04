@@ -51,9 +51,16 @@ class FamilyController
      */
     public function indexAction(Request $request)
     {
+        $options = $request->query->get('options', ['limit' => 20]);
+
+        if ($request->request->has('identifiers')) {
+            $this->familySearchableRepo->findBySearch();
+            $options['identifiers'] = explode(',', $request->request->get('identifiers'));
+        }
+
         $families = $this->familySearchableRepo->findBySearch(
             $request->query->get('search'),
-            $request->query->get('options', ['limit' => 20])
+            $options
         );
 
         $normalizedFamilies = [];

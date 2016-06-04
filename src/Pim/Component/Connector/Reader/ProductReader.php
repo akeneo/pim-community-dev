@@ -96,7 +96,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $filters = array_filter($filters['data'], function ($filter) {
             return isset($filter['operator']) && '' !== $filter['operator'];
         });
-        error_log(print_r($filters, true));
 
         foreach ($filters as $filter) {
             $filter['context'] = [];
@@ -104,7 +103,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
             $pqb->addFilter(
                 $filter['field'],
                 $filter['operator'],
-                $filter['data'],
+                $filter['value'],
                 $filter['context']
             );
         }
@@ -162,101 +161,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         }
 
         return $channel;
-    }
-
-    /**
-     * Return the filters to be applied on the PQB instance.
-     *
-     * @param ChannelInterface $channel
-     * @param bool             $status
-     * @param string           $updated
-     * @param array            $families
-     *
-     * @return array
-     */
-    protected function getFilters(ChannelInterface $channel, $status, $updated, $families)
-    {
-        $filters = [
-            [
-                'field'    => 'categories.id',
-                'operator' => Operators::IN_CHILDREN_LIST,
-                'value'    => [$channel->getCategory()->getId()],
-                'context'  => []
-            ]
-        ];
-
-        if (null !== $status) {
-            $filters[] = [
-                'field'    => 'enabled',
-                'operator' => Operators::EQUALS,
-                'value'    => $status,
-                'context'  => []
-            ];
-        }
-
-        if (!empty($families)) {
-            $filters[] = [
-                'field'    => 'family.code',
-                'operator' => Operators::IN_LIST,
-                'value'    => $families,
-                'context'  => []
-            ];
-        }
-
-        if (null !== $updated) {
-            $filters[] = [
-                'field'    => 'updated',
-                'operator' => Operators::GREATER_THAN,
-                'value'    => $updated,
-                'context'  => []
-            ];
-        }
-
-        return $filters;
-    }
-
-    /**
-     * Convert the UI product status to the standard product status
-     *
-     * @param string $rawStatus
-     * @return bool|null
-     */
-    protected function rawToStandardProductStatus($rawStatus)
-    {
-        switch ($rawStatus) {
-            case 'enabled':
-                $status = true;
-                break;
-            case 'disabled':
-                $status = false;
-                break;
-            default:
-                $status = null;
-        }
-
-        return $status;
-    }
-
-    /**
-     * Convert the UI product updated to the standard product updated
-     *
-     * @param JobParameters $parameters
-     *
-     * @return \DateTime|null
-     */
-    protected function rawToStandardProductUpdated(JobParameters $parameters)
-    {
-        switch ($parameters->get('updated_since_strategy')) {
-            case 'last_export':
-                $jobInstance = $this->stepExecution->getJobExecution()->getJobInstance();
-                $jobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
-
-                return null === $jobExecution ? null : $jobExecution->getStartTime();
-            case 'since_date':
-                return $parameters->get('updated_since_date');
-            default:
-                return null;
-        }
     }
 
     /**
