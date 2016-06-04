@@ -71,6 +71,7 @@ pimee_catalog_rule:
     product_rule_definition_reader.title: Lector de reglas de importación de productos
     rule_definition_processor.title: Procesador de reglas de importación de productos
     product_rule_definition_writer.title: Editor de reglas de importación de productos
+    rules_execution.title: Ejecución de las reglas
   notification:
     mass_edit_rule:
       success: Cálculo de productos correspondientes por las reglas finalizado
@@ -83,3 +84,12 @@ batch_jobs:
   yml_rule_export:
     label: Exportación de regla en YAML
     export.label: Exportación de regla
+  rule_impacted_product_count:
+    label: Productos correspondientes para las reglas
+    perform.label: Cuenta de productos afectados
+  csv_product_import_with_rules:
+    label: Importar productos en CSV con reglas
+    execute_rules.label: Ejecución de las reglas
+  xlsx_product_import_with_rules:
+    label: Importar productos en XLSX con reglas
+    execute_rules.label: Ejecución de las reglas
