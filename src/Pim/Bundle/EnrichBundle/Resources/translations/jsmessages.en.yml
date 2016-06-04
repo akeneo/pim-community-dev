@@ -281,6 +281,23 @@ pim_enrich:
             switch:
                 "no": "No"
                 "yes": "Yes"
+    export:
+        product:
+            filter:
+                family:
+                    title: Family
+                    operators:
+                        IN: In list
+                        "NOT IN": Not in list
+                        EMPTY: Products that don't have a family
+                        "NOT EMPTY": Products that have a family
+                    empty_selection: Select a family
+                enabled:
+                    title: Status
+                    value:
+                        all: All
+                        enabled: Enabled
+                        disabled: Disabled
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
