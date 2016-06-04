@@ -11,7 +11,7 @@ define(
         'text!pim/template/export/product/edit/content/structure/locales',
         'pim/form',
         'pim/fetcher-registry',
-        'pim/initselect2'
+        'jquery.select2'
     ],
     function (
         template,

@@ -40,7 +40,7 @@ extensions:
                     view: pim-filter-text
                 -
                     field: family
-                    view: pim-filter-text
+                    view: pim-filter-product-family
 
     pim-product-export-edit-content-data-add-filter:
         module: pim/product-edit-form/attributes/add-attribute #to change

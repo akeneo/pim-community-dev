@@ -12,7 +12,7 @@ define(
         'pim/form',
         'pim/fetcher-registry',
         'pim/user-context',
-        'pim/initselect2'
+        'jquery.select2'
     ],
     function (
         template,
