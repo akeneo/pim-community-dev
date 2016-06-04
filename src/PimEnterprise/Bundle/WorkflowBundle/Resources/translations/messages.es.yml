@@ -13,8 +13,12 @@ pimee_workflow:
       ready: Esperando aprobacion
       can_not_be_approved: No puede ser revisado
       can_not_be_deleted: No puede ser borrado
+    status_message:
+      can_not_be_approved: Usted no puede aprobar o rechazar esta aprobación debido a que implica cambios en valores que usted no puede editar. Por favor contacte al administrador para modificar sus permisos.
+      can_not_be_deleted: Usted no puede aprobar o rechazar esta aprobación debido a que implica cambios en valores que usted no puede editar. Por favor contacte al administrador para modificar sus permisos.
     action:
       approve: Aprobar
+      refuse: Rechazar
       remove: Quitar
     mass_review_action:
       approve: Aprobar seleccionados

@@ -1,0 +1,7 @@
+pimee_catalog_rule:
+  attribute:
+    grid:
+      is_smart.label: Inteligentne
+  product:
+    tooltip:
+      loading.title: Ładuję...

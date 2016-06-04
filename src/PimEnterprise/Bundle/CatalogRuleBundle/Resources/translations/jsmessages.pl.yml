@@ -1,0 +1,5 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Kod
+      action.label: Akcja

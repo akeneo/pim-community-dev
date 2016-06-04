@@ -1,0 +1,34 @@
+Permissions: Uprawnienia
+pane.accordion.permissions: Uprawnienia
+pim_enrich:
+  mass_edit_action:
+    published_product:
+      title: Wybierz działanie
+      steps:
+        second: Wybierz działanie
+        third: Konfiguruj
+        fourth: Potwierdź
+pim_enrich.mass_edit_action:
+  limit_exceeded: 'Proszę wybrać mniej niż %limit% elementów do edycji'
+  product:
+    page_title: Produkty
+    page_subtitle: 'Masowa edycja (1 produkt) | Masowa edycja (%count% produktów)'
+    title: Wybierz działanie
+    subtitle: 'Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach'
+    confirm: 'Zamierzasz zaktualizować produkt o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% produkty(ów) o następujące informacje, proszę potwierdź.'
+    steps:
+      first: Wybierz produkty
+      second: Wybierz działanie
+      third: Konfiguruj
+      fourth: Potwierdź
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Uprawnienia
+  category:
+    tab:
+      permission.title: Uprawnienia
+  asset_transformation:
+    title:
+      transformation: Transformacja
+      options: Ustawienia
