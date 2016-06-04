@@ -2,13 +2,11 @@
 'use strict';
 
 define([
-        'pim/form',
+        'pim/filter/filter',
         'text!pim/template/filter/text'
-    ], function (BaseForm, template) {
-    return BaseForm.extend({
+    ], function (BaseFilter, template) {
+    return BaseFilter.extend({
         template: _.template(template),
-        field: null,
-        removable: false,
         events: {
             'blur input': 'updateState',
             'click .remove': 'removeFilter'
@@ -32,25 +30,6 @@ define([
                 'operator': this.$('input[name="operator"]').val(),
                 'value': value
             });
-        },
-        setField: function (field) {
-            this.field = field;
-
-            var data = this.getFormData();
-            data.field = field;
-            this.setData(data, {silent: true});
-        },
-        getField: function () {
-            return this.field;
-        },
-        setRemovable: function (removable) {
-            this.removable = removable;
-        },
-        isRemovable: function () {
-            return this.removable;
-        },
-        removeFilter: function () {
-            this.trigger('filter:remove', this.getField());
         }
     });
 });
