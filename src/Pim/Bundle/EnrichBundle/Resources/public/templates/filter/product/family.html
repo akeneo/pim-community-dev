@@ -1,8 +1,10 @@
 <label class="control-label required"><%- __('pim_enrich.export.product.filter.family.title') %></label>
-<div class="controls" style="width: 600px;">
+<div class="controls" style="width: 800px;">
     <select class="select2" name="filter-operator">
         <% _.each(operators, function (availableOperator) { %>
-            <option value="<%- availableOperator %>" <%- availableOperator === operator ? 'selected' : '' %>><%- availableOperator %></option>
+            <option value="<%- availableOperator %>" <%- availableOperator === operator ? 'selected' : '' %>>
+                <%- __('pim_enrich.export.product.filter.family.operators.' + availableOperator) %>
+            </option>
         <% }); %>
     </select>
     <% if (_.contains(['IN', 'NOT IN'], operator)) { %><!-- could be done by configuration -->
