@@ -85,7 +85,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
      *
      * @return string
      */
-    public function getPathname()
+    protected function getPathname()
     {
         $context = $this->stepExecution->getJobExecution()->getExecutionContext();
         if (!$context->has('workingDirectory')) {

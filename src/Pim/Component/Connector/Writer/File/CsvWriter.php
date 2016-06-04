@@ -3,7 +3,6 @@
 namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
-use Pim\Component\Connector\ArchiveStorage;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -32,17 +31,15 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
 
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param ArchiveStorage            $archiveStorage
      * @param FlatItemBuffer            $flatRowBuffer
      * @param ColumnSorterInterface     $columnSorter
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
-        ArchiveStorage $archiveStorage,
         FlatItemBuffer $flatRowBuffer,
         ColumnSorterInterface $columnSorter
     ) {
-        parent::__construct($filePathResolver, $archiveStorage);
+        parent::__construct($filePathResolver);
 
         $this->buffer = $flatRowBuffer;
         $this->columnSorter = $columnSorter;
@@ -126,16 +123,23 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
             throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPathname()]);
         }
     }
-
     /**
+     * TODO: should not be duplicated everywhere
+     *
      * @return string
      */
-    private function getPathname()
+    protected function getPathname()
     {
         if (null === $this->pathname) {
-            $this->pathname = $this->archiveStorage->getPathname($this->stepExecution->getJobExecution());
+            $context = $this->stepExecution->getJobExecution()->getExecutionContext();
+            if (!$context->has('workingDirectory')) {
+                throw new \LogicException('The working directory is expected in the execution context.');
+            }
+
+            $this->pathname = $context->get('workingDirectory')->getPathname() . DIRECTORY_SEPARATOR .
+                basename($this->stepExecution->getJobParameters()->get('filePath'));
         }
 
-       return $this->pathname;
+        return $this->pathname;
     }
 }

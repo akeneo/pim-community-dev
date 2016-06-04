@@ -28,19 +28,17 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
 
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param ArchiveStorage            $archiveStorage
      * @param FlatItemBuffer            $flatRowBuffer
      * @param BulkFileExporter          $fileExporter
      * @param FlatItemBufferFlusher     $flusher
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
-        ArchiveStorage $archiveStorage,
         FlatItemBuffer $flatRowBuffer,
         BulkFileExporter $fileExporter,
         FlatItemBufferFlusher $flusher
     ) {
-        parent::__construct($filePathResolver, $archiveStorage);
+        parent::__construct($filePathResolver);
 
         $this->flatRowBuffer = $flatRowBuffer;
         $this->fileExporter  = $fileExporter;

@@ -6,7 +6,6 @@ use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Pim\Component\Connector\ArchiveStorage;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -39,22 +38,16 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     /** @var Filesystem */
     protected $localFs;
 
-    /** @var ArchiveStorage */
-    protected $archiveStorage;
-
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param ArchiveStorage            $archiveStorage
      */
-    public function __construct(FilePathResolverInterface $filePathResolver, ArchiveStorage $archiveStorage)
+    public function __construct(FilePathResolverInterface $filePathResolver)
     {
         $this->filePathResolver = $filePathResolver;
         $this->filePathResolverOptions = [
             'parameters' => ['%datetime%' => date('Y-m-d_H:i:s')]
         ];
         $this->localFs = new Filesystem();
-
-        $this->archiveStorage = $archiveStorage;
     }
 
     /**
@@ -88,10 +81,18 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     }
 
     /**
+     * TODO: should not be duplicated everywhere
+     *
      * @return string
      */
-    protected function getFilename()
+    protected function getPathname()
     {
-        return $this->stepExecution->getJobExecution()->getJobInstance()->getCode();
+        $context = $this->stepExecution->getJobExecution()->getExecutionContext();
+        if (!$context->has('workingDirectory')) {
+            throw new \LogicException('The working directory is expected in the execution context.');
+        }
+
+        return $context->get('workingDirectory')->getPathname() . DIRECTORY_SEPARATOR .
+            basename($this->stepExecution->getJobParameters()->get('filePath'));
     }
 }

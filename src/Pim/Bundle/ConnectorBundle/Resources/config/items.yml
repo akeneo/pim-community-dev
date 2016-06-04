@@ -4,5 +4,3 @@ parameters:
 services:
     pim_connector.validator.item.charset_validator:
         class: '%pim_connector.validator.item.charset_validator.class%'
-        arguments:
-            - '@pim_connector.archive_storage'

@@ -4,6 +4,8 @@ namespace Pim\Component\Connector\Transfer;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Step element able to copy output files from input local path to the archives directory.
@@ -61,6 +63,21 @@ class LocalToArchiveTransferStepElement implements TransferStepElementInterface
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * @return SplFileInfo[]
+     *
+     * @throws \Exception
+     */
+    private function listFilesToTransfer()
+    {
+        $pathname = $this->getPathname();
+
+        $finder = new Finder();
+        $finder->in(dirname($pathname));
+
+        return $finder;
     }
 
     /**

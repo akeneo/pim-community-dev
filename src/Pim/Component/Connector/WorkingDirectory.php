@@ -9,7 +9,7 @@ class WorkingDirectory
     /** @var \SplFileInfo */
     protected $handler;
 
-    public function __construct()
+    public function __construct($createAsSymlink = false)
     {
         $path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('akeneo_connector_');
 
