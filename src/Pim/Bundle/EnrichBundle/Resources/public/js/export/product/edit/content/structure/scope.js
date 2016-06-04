@@ -9,33 +9,58 @@
 define(
     [
         'text!pim/template/export/product/edit/content/structure/scope',
-        'pim/form'
+        'pim/form',
+        'pim/fetcher-registry',
+        'pim/user-context',
+        'pim/initselect2'
     ],
     function (
         template,
-        BaseForm
+        BaseForm,
+        fetcherRegistry,
+        UserContext
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            events: {
-                'change input': 'updateModel'
-            },
             render: function () {
                 if (!this.configured) {
                     return this;
                 }
-                this.$el.html(
-                    this.template({
-                        scope: this.getFormData().structure.scope || ''
-                    })
-                );
 
-                this.renderExtensions();
+                fetcherRegistry.getFetcher('channel').fetchAll().then(function (channels) {
+                    if (!this.getScope()) {
+                        this.setScope(_.first(channels).code);
+                    }
+
+                    this.$el.html(
+                        this.template({
+                            locale: UserContext.get('uiLocale'),
+                            channels: channels,
+                            scope: this.getScope()
+                        })
+                    );
+
+                    this.$('.select2').select2().on('change', this.updateModel.bind(this));
+
+                    this.renderExtensions();
+                }.bind(this));
             },
-            updateModel: function() {
+            updateModel: function(event) {
+                this.setScope(event.target.value);
+            },
+            setScope: function (code) {
                 var data = this.getFormData();
-                data.structure.scope = JSON.parse(event.target.value);
+                var before = data.structure.scope;
+
+                data.structure.scope = code;
                 this.setData(data);
+
+                if (before !== code) {
+                    this.getRoot().trigger('channel:update:after', data.structure.scope);
+                }
+            },
+            getScope: function () {
+                return this.getFormData().structure.scope
             }
         });
     }
