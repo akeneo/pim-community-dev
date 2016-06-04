@@ -1,4 +1,8 @@
 <label class="control-label required">Channel</label>
 <div class="controls">
-    <input type="text" value="<%- scope %>"/>
+    <select class="select2">
+        <% _.each(channels, function (channel) { %>
+            <option value="<%- channel.code %>" <%- channel.code === scope ? 'selected' : '' %>><%- channel.label %></option>
+        <% }); %>
+    </select>
 </div>
