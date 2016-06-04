@@ -1,4 +1,4 @@
-<label class="control-label required">Family</label>
+<label class="control-label required"><%- __('pim_enrich.export.product.filter.family.title') %></label>
 <div class="controls" style="width: 600px;">
     <select class="select2" name="filter-operator">
         <% _.each(operators, function (availableOperator) { %>
@@ -11,7 +11,7 @@
         name="filter-value"
         type="hidden"
         value="<%- value ? value : '' %>"
-        data-placeholder="<%- _.__('pim_enrich.export.product.filter.family.empty_selection') %>"
+        data-placeholder="<%- __('pim_enrich.export.product.filter.family.empty_selection') %>"
     />
     <% } %>
     <% if (removable) { %><i class="remove icon-trash"></i><% } %>

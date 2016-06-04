@@ -2,6 +2,8 @@
 'use strict';
 
 define([
+        'underscore',
+        'oro/translator',
         'pim/filter/filter',
         'routing',
         'text!pim/template/filter/product/family',
@@ -9,7 +11,7 @@ define([
         'pim/user-context',
         'pim/i18n',
         'jquery.select2'
-    ], function (BaseFilter, Routing, template, fetcherRegistry, userContext, i18n, initSelect2) {
+    ], function (_, __, BaseFilter, Routing, template, fetcherRegistry, userContext, i18n, initSelect2) {
     return BaseFilter.extend({
         template: _.template(template),
         events: {
@@ -86,6 +88,7 @@ define([
             }
 
             this.$el.append(this.template({
+                __: __,
                 field: this.getField(),
                 operator: this.getOperator(),
                 value: this.getValue(),
