@@ -52,9 +52,8 @@ pim_connector:
         enabled: Käytössä
         disabled: Poistettu käytöstä
         all: Kaikki
-    updated:
-      choice:
-        all: Kaikki
+    completeness:
+      label: Valmistumisaste
     decimalSeparator:
       label: Desimaalierotin
       help: Määritä desimaalierotin

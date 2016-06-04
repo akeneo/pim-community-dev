@@ -35,6 +35,9 @@ pim_connector:
     enclosure:
       label: Encuadre
       help: Único caracter utilizado para encuadrar los campos
+    lines_per_files:
+      label: Número de líneas por archivo
+      help: Definir la cantidad límite de líneas por archivo
     withHeader:
       label: Con encabezado
       help: Imprimir o no el nombre de columnas
@@ -46,15 +49,23 @@ pim_connector:
       help: El canal que desea exportar
     locales:
       label: Idiomas
+      help: Los locales que desea exportar
+      validation:
+        not_blank: Un local debe ser seleccionado, por favor seleccione un local para exportar.
     status:
       label: Estado
+      help: El estado de los productos que desea exportar
       choice:
         enabled: Habilitado
         disabled: Inhabilitado
         all: Todos
+    completeness:
+      label: Completitud
     updated:
-      choice:
-        all: Todos
+      last_execution:
+        none: Este trabajo nunca se ha exportado
+        last:
+          Last export: '%date%'
     decimalSeparator:
       label: Separador de decimales
       help: Determinar el separador de decimales
@@ -186,36 +197,59 @@ batch_jobs:
     validation.label: Validación de archivo
     import.label: importación de grupo de variantes
   xlsx_category_import:
+    label: Importar categorías en XLSX
     validation.label: Validación de archivo
     import.label: Importar categorías
   xlsx_association_type_import:
+    label: Importar tipo de asociaciones en XLSX
     validation.label: Validación de archivo
     import.label: Importar tipos de asociaciones
   xlsx_attribute_import:
+    label: Importar atributos en XLSX
     validation.label: Validación de archivo
     import.label: Importar atributos
   xlsx_attribute_option_import:
+    label: Importar opciones de atributos en XLSX
     validation.label: Validación de archivo
     import.label: Importar opciones de atributos
   xlsx_family_import:
+    label: Importar familias en XLSX
     validation.label: Validación de archivo
     import.label: Importe de familias
   xlsx_product_export:
+    label: Exportar producto en XLSX
     export.label: Exportar productos
   xlsx_product_import:
+    label: Importar productos en XLSX
     validation.label: Validación de archivo
     import.label: Importar productos
     import_associations.label: Importar asociaciones
   xlsx_group_export:
+    label: Exportar grupos en XLSX
     export.label: Exportar grupos
   xlsx_variant_group_export:
+    label: Exportar grupo de variantes en XLSX
     export.label: Exportación de grupo de variantes
   xlsx_group_import:
+    label: Importar grupos en XLSX
     validation.label: Validación de archivo
     import.label: Importar grupos
   xlsx_variant_group_import:
+    label: Importar grupo de variantes en XLSX
     validation.label: Validación de archivo
+    import.label: Importar grupo de variantes
   xlsx_family_export:
+    label: Exportar familias en XLSX
     export.label: Exportar familias
   xlsx_category_export:
+    label: Exportar categorías en XLSX
     export.label: Exportar categorías
+  xlsx_attribute_export:
+    label: Exportar atributos en XLSX
+    export.label: Exportar atributos en XLSX
+  xlsx_attribute_option_export:
+    label: Exportar opciones de atributos en XLSX
+    export.label: Exportar opciones de atributos en XLSX
+  xlsx_association_type_export:
+    label: Exportar tipo de asociaciones en XLSX
+    export.label: Exportar tipo de asociaciones en XLSX

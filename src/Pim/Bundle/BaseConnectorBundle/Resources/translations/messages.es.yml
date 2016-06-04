@@ -52,6 +52,7 @@ pim_base_connector:
       help: Determinar el formato de los campos de fecha
     families:
       label: Familia
+      help: Las familias que desea importar
       placeholder: Elija una familia
   import:
     enabled:

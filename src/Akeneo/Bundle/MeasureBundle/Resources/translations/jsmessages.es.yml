@@ -24,6 +24,8 @@ KILOBYTE: Kilobyte
 MEGABYTE: Megabyte
 GIGABYTE: Gigabyte
 TERABYTE: Terabyte
+Decibel: Decibelio
+DECIBEL: Decibelio
 Frequency: Frecuencia
 GIGAHERTZ: Gigahercios
 KILOHERTZ: Kilohercios
@@ -51,10 +53,48 @@ KILOWATT: Kilovatio
 MEGAWATT: Megavatio
 TERAWATT: Teravatios
 WATT: Vatio
+Resistance: Resistencia
+MILLIOHM: Miliohmio
+CENTIOHM: Centiohmio
+DECIOHM: Deciohmio
+OHM: Ohmio
+DEKAOHM: Decaohmio
+HECTOHM: Hectoohmio
+KILOHM: Kiloohmio
+MEGOHM: Megaohmio
+Voltage: Voltaje
+MILLIVOLT: Milivoltio
+CENTIVOLT: Centivoltio
+DECIVOLT: Decivoltio
+VOLT: Voltio
+DEKAVOLT: Decavoltio
+HECTOVOLT: Hectovoltio
+KILOVOLT: Kilovoltio
+Intensity: Intensidad
+MILLIAMPERE: Miliamperio
+CENTIAMPERE: Centiamperio
+DECIAMPERE: Deciamperio
+AMPERE: Amperio
+DEKAAMPERE: Decaamperio
+HECTOAMPERE: Hectoamperio
+KILOAMPERE: Kiloamperio
+MEGAAMPERE: Megaamperio
+ElectricCharge: Carga eléctrica
+MILLIAMPEREHOUR: Miliamperio por hora
+AMPEREHOUR: Amperio por hora
+MILLICOULOMB: Miliculombio
+CENTICOULOMB: Centiculombio
+DECICOULOMB: Deciculombio
+COULOMB: Culombio
+DEKACOULOMB: Decaculombio
+HECTOCOULOMB: Hectoculombio
+KILOCOULOMB: Kiloculombio
+Duration: Duración
 MILLISECOND: Milisegundo
 SECOND: Segundo
 MINUTE: Minuto
 HOUR: Hora
+DAY: Día
 Speed: Velocidad
 FOOT_PER_SECOND: Pie por segundo
 FOOT_PER_HOUR: Pie por hora
@@ -97,3 +137,12 @@ MILLIGRAM: Miligramo
 ONCE: Onza
 POUND: Libra
 TON: Tonelada
+Pressure: Presión
+BAR: Bar
+PASCAL: Pascal
+HECTOPASCAL: hecto Pascal
+MILLIBAR: milibar
+ATM: Atmósfera
+PSI: Libra por pulgada cuadrada
+TORR: Torr
+MMHG: milímetro de mercurio
