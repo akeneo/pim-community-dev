@@ -31,7 +31,7 @@ define(
                 //change that after variant group merge
                 this.config = config || {
                     filters: [
-                        {field: 'enabled', view: 'pim-filter-text'},
+                        {field: 'enabled', view: 'pim-filter-product-enabled'},
                         {field: 'completeness', view: 'pim-filter-text'},
                         {field: 'family.code', view: 'pim-filter-product-family'}
                     ]

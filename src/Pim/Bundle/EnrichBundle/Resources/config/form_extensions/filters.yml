@@ -10,3 +10,6 @@ extensions:
                 - NOT IN
                 - EMPTY
                 - NOT EMPTY
+
+    pim-filter-product-enabled:
+        module: pim/filter/product/enabled

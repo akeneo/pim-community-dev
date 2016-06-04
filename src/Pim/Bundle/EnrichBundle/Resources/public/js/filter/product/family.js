@@ -2,17 +2,16 @@
 'use strict';
 
 define([
-        'pim/form',
+        'pim/filter/filter',
         'routing',
         'text!pim/template/filter/product/family',
         'pim/fetcher-registry',
         'pim/user-context',
         'pim/i18n',
         'jquery.select2'
-    ], function (BaseForm, Routing, template, fetcherRegistry, userContext, i18n, initSelect2) {
-    return BaseForm.extend({
+    ], function (BaseFilter, Routing, template, fetcherRegistry, userContext, i18n, initSelect2) {
+    return BaseFilter.extend({
         template: _.template(template),
-        removable: false,
         events: {
             'change [name="filter-operator"], [name="filter-value"]': 'updateState',
             'click .remove': 'removeFilter'
@@ -61,7 +60,7 @@ define([
                     }
                 },
                 initSelection: function (element, callback) {
-                    var families = this.getFormData().value;
+                    var families = this.getValue();
                     if (null !== families) {
                         fetcherRegistry.getFetcher('family')
                             .fetchByIdentifiers(families)
@@ -77,7 +76,7 @@ define([
                 }.bind(this)
             };
 
-            return BaseForm.prototype.initialize.apply(this, arguments);
+            return BaseFilter.prototype.initialize.apply(this, arguments);
         },
         render: function () {
             this.$el.empty();
@@ -89,7 +88,7 @@ define([
             this.$el.append(this.template({
                 field: this.getField(),
                 operator: this.getOperator(),
-                value: this.getFormData().value,
+                value: this.getValue(),
                 removable: this.isRemovable(),
                 operators: this.config.operators
             }));
@@ -101,42 +100,14 @@ define([
 
             return this;
         },
-        updateOperator: function (event) {
-            $(event.target).val();
-        },
         updateState: function () {
             var value = this.$('[name="filter-value"]').val();
             value = undefined !== value ? value.split(',') : value;
             this.setData({
-                'field': this.getField(),
-                'operator': this.$('[name="filter-operator"]').val(),
-                'value': value
+                field: this.getField(),
+                operator: this.$('[name="filter-operator"]').val(),
+                value: value
             });
-        },
-        setField: function (field) {
-            var data = this.getFormData();
-            data.field = field;
-            this.setData(data, {silent: true});
-        },
-        getField: function () {
-            return this.getFormData().field;
-        },
-        setOperator: function (operator) {
-            var data = this.getFormData();
-            data.operator = operator;
-            this.setData(data, {silent: true});
-        },
-        getOperator: function () {
-            return this.getFormData().operator;
-        },
-        setRemovable: function (removable) {
-            this.removable = removable;
-        },
-        isRemovable: function () {
-            return this.removable;
-        },
-        removeFilter: function () {
-            this.trigger('filter:remove', this.getField());
         }
     });
 });

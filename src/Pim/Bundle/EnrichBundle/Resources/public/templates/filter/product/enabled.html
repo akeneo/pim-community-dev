@@ -1,0 +1,9 @@
+<label class="control-label required">Enabled</label>
+<div class="controls" style="width: 600px;">
+    <select class="select2" name="filter-value">
+        <option value="all" <%- value === null ? 'selected' : '' %>>All</option>
+        <option value="true" <%- value === true ? 'selected' : '' %>>Enabled</option>
+        <option value="false" <%- value === false ? 'selected' : '' %>>Disabled</option>
+    </select>
+    <% if (removable) { %><i class="remove icon-trash"></i><% } %>
+</div>

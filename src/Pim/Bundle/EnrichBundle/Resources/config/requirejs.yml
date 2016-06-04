@@ -221,8 +221,10 @@ config:
         pim/export/product/edit/content/structure:                 pimenrich/js/export/product/edit/content/structure
 
         # Filters
-        pim/filter/text:           pimenrich/js/filter/text
-        pim/filter/product/family: pimenrich/js/filter/product/family
+        pim/filter/filter:          pimenrich/js/filter/filter
+        pim/filter/text:            pimenrich/js/filter/text
+        pim/filter/product/family:  pimenrich/js/filter/product/family
+        pim/filter/product/enabled: pimenrich/js/filter/product/enabled
 
         # Product edit form
         pim/field-manager:                  pimenrich/js/product/field-manager
@@ -365,5 +367,6 @@ config:
         pim/template/export/product/edit/content/structure/attributes: pimenrich/templates/export/product/edit/content/structure/attributes.html
 
         # Filters
-        pim/template/filter/text:           pimenrich/templates/filter/text.html
-        pim/template/filter/product/family: pimenrich/templates/filter/product/family.html
+        pim/template/filter/text:            pimenrich/templates/filter/text.html
+        pim/template/filter/product/family:  pimenrich/templates/filter/product/family.html
+        pim/template/filter/product/enabled: pimenrich/templates/filter/product/enabled.html

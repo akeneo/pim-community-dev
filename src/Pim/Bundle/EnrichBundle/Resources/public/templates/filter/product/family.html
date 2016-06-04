@@ -1,11 +1,10 @@
-<label class="control-label required"><%- field %></label>
+<label class="control-label required">Family</label>
 <div class="controls" style="width: 600px;">
     <select class="select2" name="filter-operator">
         <% _.each(operators, function (availableOperator) { %>
             <option value="<%- availableOperator %>" <%- availableOperator === operator ? 'selected' : '' %>><%- availableOperator %></option>
         <% }); %>
     </select>
-    <% console.log(operator) %>
     <% if (_.contains(['IN', 'NOT IN'], operator)) { %><!-- could be done by configuration -->
     <input
         class="select2"
@@ -17,5 +16,3 @@
     <% } %>
     <% if (removable) { %><i class="remove icon-trash"></i><% } %>
 </div>
-
-
