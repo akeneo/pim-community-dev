@@ -216,22 +216,31 @@
   }
 }
 
+.btn-group.open .btn.btn-download.dropdown-toggle {
+  background-color: darken(@akeneo-grey, 10%);
+}
+
 .btn.btn-download {
-  background-color: #a1a9b7;
-  color: #fff;
+  background-color: @akeneo-grey;
+  color: @backgroundColor-white;
   padding: 0 10px 0 44px;
   overflow: hidden;
   border-radius: 2px;
 
   i {
     .icon-button();
-    background-color: darken(#a1a9b7, 10%);
+    background-color: darken(@akeneo-grey, 10%);
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
   }
 
+  .caret {
+      margin-top: 15px;
+      border-top: 4px solid @backgroundColor-white;
+  }
+
   &:hover {
-    background-color: darken(#a1a9b7, 10%);
+    background-color: darken(@akeneo-grey, 10%);
   }
 
 }
