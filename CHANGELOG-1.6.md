@@ -42,6 +42,7 @@
 
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor`. Add `Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface` as the fourth argument.
 - Change constructor of `Pim\Component\Catalog\Factory\GroupFactory`. Add `Pim\Component\Catalog\Factory\ProductTemplateFactory` as the second argument.
+- Remove `Pim\Component\Connector\Writer\File\SimpleFileWriter` as it was not used
 - Move `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility` to `Pim\Bundle\CatalogBundle\ProductQueryUtility`
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor` . Add `Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter`
 - Change constructor of `Pim\Component\Connector\Reader\ProductReader`. Add `Akeneo\Component\Batch\Job\JobRepositoryInterface`.

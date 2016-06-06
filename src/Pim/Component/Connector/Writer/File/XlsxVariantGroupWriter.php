@@ -91,8 +91,8 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
 
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,
-            $this->stepExecution->getJobParameters()->get('linesPerFile'),
             $this->getPath(),
+            $this->stepExecution->getJobParameters()->get('linesPerFile'),
             $this->filePathResolverOptions
         );
 

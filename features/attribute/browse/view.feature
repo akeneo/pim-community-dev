@@ -9,6 +9,7 @@ Feature: View attributes
     And I am logged in as "Julia"
     And I am on the attributes page
 
+  @ce
   Scenario: Successfully view attributes
     Then the grid should contain 26 elements
     And I should see the columns Code, Label, Type, Scopable, Localizable and Group

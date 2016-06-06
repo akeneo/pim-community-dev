@@ -61,7 +61,8 @@ class JsNodeDecorator extends ElementDecorator
      *
      * @return string
      */
-    protected function getName() {
+    protected function getName()
+    {
         return $this->find('css', 'a')->getText();
     }
 }
