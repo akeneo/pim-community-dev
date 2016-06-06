@@ -347,6 +347,12 @@ pim_enrich:
                         EMPTY: Products that don't have a family
                         "NOT EMPTY": Products that have a family
                     empty_selection: Select a family
+                updated:
+                    title: Updated
+                    operators:
+                        before: Before
+                        after: After
+                        all: All
                 enabled:
                     title: Status
                     value:

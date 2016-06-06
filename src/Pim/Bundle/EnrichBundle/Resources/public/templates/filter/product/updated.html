@@ -1,0 +1,16 @@
+<label class="control-label required"><%- __('pim_enrich.export.product.filter.updated.title') %></label>
+<div class="controls" style="width: 800px;">
+    <select class="select2" name="filter-operator">
+        <% _.each(operators, function (availableOperator, key) { %>
+            <option value="<%- key %>" <%- availableOperator === operator ? 'selected' : '' %>>
+                <%- __('pim_enrich.export.product.filter.updated.operators.' + key) %>
+            </option>
+        <% }); %>
+    </select>
+    <% if ('' !==  operator) { %>
+    <span class="date-wrapper">
+        <input name="filter-value" class="datepicker add-on input-large" type="text" value="<%- value ? value : '' %>" />
+    </span>
+    <% } %>
+    <% if (removable) { %><i class="remove icon-trash"></i><% } %>
+</div>

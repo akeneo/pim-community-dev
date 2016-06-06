@@ -225,6 +225,7 @@ config:
         pim/filter/text:            pimenrich/js/filter/text
         pim/filter/product/family:  pimenrich/js/filter/product/family
         pim/filter/product/enabled: pimenrich/js/filter/product/enabled
+        pim/filter/product/updated: pimenrich/js/filter/product/updated
 
         # Product edit form
         pim/field-manager:                  pimenrich/js/product/field-manager
@@ -370,3 +371,4 @@ config:
         pim/template/filter/text:            pimenrich/templates/filter/text.html
         pim/template/filter/product/family:  pimenrich/templates/filter/product/family.html
         pim/template/filter/product/enabled: pimenrich/templates/filter/product/enabled.html
+        pim/template/filter/product/updated: pimenrich/templates/filter/product/updated.html

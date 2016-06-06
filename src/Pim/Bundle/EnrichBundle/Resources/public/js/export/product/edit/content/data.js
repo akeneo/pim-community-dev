@@ -33,7 +33,8 @@ define(
                     filters: [
                         {field: 'enabled', view: 'pim-filter-product-enabled'},
                         {field: 'completeness', view: 'pim-filter-text'},
-                        {field: 'family.code', view: 'pim-filter-product-family'}
+                        {field: 'family.code', view: 'pim-filter-product-family'},
+                        {field: 'updated', view: 'pim-filter-product-updated'}
                     ]
                 };
 
