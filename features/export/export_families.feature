@@ -1,4 +1,3 @@
-@javascript
 Feature: Export families
   In order to be able to access and modify families outside PIM
   As a product manager
