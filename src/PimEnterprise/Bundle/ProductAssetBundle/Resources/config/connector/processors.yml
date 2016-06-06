@@ -63,7 +63,6 @@ services:
         class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pimee_product_asset.repository.category'
-            - '@pim_connector.array_converter.flat_to_standard.category'
             - '@pimee_product_asset.factory.category'
             - '@pimee_product_asset.updater.category'
             - '@pim_catalog.validator.product'
