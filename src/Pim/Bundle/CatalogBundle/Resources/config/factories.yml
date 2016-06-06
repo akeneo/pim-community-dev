@@ -6,6 +6,7 @@ parameters:
     pim_catalog.factory.attribute.class:             Pim\Component\Catalog\Factory\AttributeFactory
     pim_catalog.factory.group_type.class:            Pim\Component\Catalog\Factory\GroupTypeFactory
     pim_catalog.factory.currency.class:              Pim\Component\Catalog\Factory\CurrencyFactory
+    pim_catalog.factory.product_template.class:      Pim\Component\Catalog\Factory\ProductTemplateFactory
 
 services:
     pim_catalog.factory.family:
@@ -76,6 +77,7 @@ services:
         class: '%pim_catalog.factory.group.class%'
         arguments:
             - '@pim_catalog.repository.group_type'
+            - '@pim_catalog.factory.product_template'
             - '%pim_catalog.entity.group.class%'
 
     pim_catalog.factory.category:
@@ -87,3 +89,8 @@ services:
         class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
             - '%pim_catalog.entity.association_type.class%'
+
+    pim_catalog.factory.product_template:
+        class: '%pim_catalog.factory.product_template.class%'
+        arguments:
+            - '%pim_catalog.entity.product_template.class%'

@@ -775,46 +775,6 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
-     * Checks that a file (or media) exists in database
-     *
-     * @param string $originalFilename
-     *
-     * @Then /^The file with original filename "([^"]*)" should exists in database$/
-     */
-    public function theFileShouldExistInDatabase($originalFilename)
-    {
-        $fileInfoRepoClass  = $this->getParameter('akeneo_file_storage.model.file_info.class');
-        $fileInfoRepository = $this->getRepository($fileInfoRepoClass);
-
-        $fileInfo = $fileInfoRepository->findOneBy(['originalFilename' => $originalFilename]);
-
-        assertNotNull($fileInfo, sprintf(
-            'Unable to find file with original filename "%s" in database',
-            $originalFilename
-        ));
-    }
-
-    /**
-     * @param string $parameter
-     *
-     * @return string
-     */
-    protected function getParameter($parameter)
-    {
-        return $this->getMainContext()->getContainer()->getParameter($parameter);
-    }
-
-    /**
-     * @param string $entityClass
-     *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected function getRepository($entityClass)
-    {
-        return $this->getMainContext()->getEntityManager()->getRepository($entityClass);
-    }
-
-    /**
      * @return Page
      */
     protected function getCurrentPage()

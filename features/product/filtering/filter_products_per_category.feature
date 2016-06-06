@@ -36,12 +36,12 @@ Feature: Filter products by category
     When I select the "2015 collection" tree
     Then I should see products purple-tshirt, green-tshirt and blue-jeans
     Then I should be able to use the following filters:
-      | filter   | value      | result                         |
-      | category | women_2015 | purple-tshirt and green-tshirt |
+      | filter   | operator | value      | result                         |
+      | category |          | women_2015 | purple-tshirt and green-tshirt |
     And the grid should contain 2 elements
-    When I collapse the category sidebar
+    When I collapse the "category" sidebar
     And I change the page size to 50
     Then the grid should contain 2 elements
-    When I expand the category sidebar
+    When I expand the "category" sidebar
     And I change the page size to 25
     Then the grid should contain 2 elements

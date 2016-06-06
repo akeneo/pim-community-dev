@@ -354,10 +354,21 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $filterName
      *
      * @Then /^I hide the filter "([^"]*)"$/
+     * @Then /^I collapse the "([^"]*)" sidebar$/
      */
     public function iHideTheFilter($filterName)
     {
         $this->datagrid->hideFilter($filterName);
+    }
+
+    /**
+     * @param string $filterName
+     *
+     * @Then /^I expand the "([^"]*)" sidebar$/
+     */
+    public function iexpandTheCategoriesSidebar($filterName)
+    {
+        $this->datagrid->expandFilter($filterName);
     }
 
     /**
@@ -671,18 +682,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $filterName
-     *
-     * @When /^I open the "([^"]*)" filter$/
-     */
-    public function iOpenTheFilter($filterName)
-    {
-        $filter = $this->datagrid->getFilter($filterName);
-
-        $this->datagrid->openFilter($filter);
-    }
-
-    /**
      * @param string $optionNames
      * @param string $filterName
      *
@@ -692,29 +691,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSeeOptionInFilter($optionNames, $filterName)
     {
-        $expectedOptions = $this->getMainContext()->listToArray($optionNames);
-        $filter = $this->datagrid->getFilter($filterName);
+        $optionNames = $this->getMainContext()->listToArray($optionNames);
 
-        $options = $filter->findAll('css', '.select2-choices .select2-search-choice');
-        if (null === $options) {
-            throw $this->createExpectationException(sprintf('Unable to find choices in filter "%s"', $filterName));
-        }
-
-        $data = [];
-        foreach ($options as $option) {
-            $data[] = $option->getText();
-        }
-
-        if ($data != $expectedOptions) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expecting filter "%s" to contain the options "%s", got "%s"',
-                    $filterName,
-                    implode(', ', $expectedOptions),
-                    implode(', ', $data)
-                )
-            );
-        }
+        $this->datagrid->checkOptionInFilter($optionNames, $filterName);
     }
 
     /**

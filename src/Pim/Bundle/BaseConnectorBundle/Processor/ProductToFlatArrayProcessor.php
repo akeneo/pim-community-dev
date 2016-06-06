@@ -30,14 +30,14 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var array */
-    protected $mediaAttributeTypes;
-
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var ObjectDetacherInterface */
     protected $detacher;
+
+    /** @var array */
+    protected $mediaAttributeTypes;
 
     /**
      * @param Serializer                 $serializer
@@ -55,9 +55,9 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     ) {
         $this->serializer          = $serializer;
         $this->channelRepository   = $channelRepository;
-        $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->productBuilder      = $productBuilder;
         $this->detacher            = $detacher;
+        $this->mediaAttributeTypes = $mediaAttributeTypes;
     }
 
     /**

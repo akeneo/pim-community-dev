@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
@@ -24,12 +25,14 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         Serializer $serializer,
         ChannelRepositoryInterface $channelRepository,
         ProductBuilderInterface $productBuilder,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        ObjectDetacherInterface $detacher
     ) {
         $this->beConstructedWith(
             $serializer,
             $channelRepository,
             $productBuilder,
+            $detacher,
             ['pim_catalog_file', 'pim_catalog_image']
         );
         $this->setStepExecution($stepExecution);
@@ -50,6 +53,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $serializer,
         $productBuilder,
         $stepExecution,
+        $detacher,
         Filesystem $filesystem,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -111,6 +115,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
             ->willReturn(['normalized_product']);
 
+        $detacher->detach($product)->shouldBeCalled();
+
         $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
 
         $this->process($product)->shouldReturn(
@@ -124,6 +130,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_without_media(
         $productBuilder,
         $stepExecution,
+        $detacher,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ChannelRepositoryInterface $channelRepository,
@@ -157,6 +164,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             ->willReturn(['normalized_product']);
 
         $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
+
+        $detacher->detach($product)->shouldBeCalled();
 
         $this->process($product)->shouldReturn(['media' => [], 'product' => ['normalized_product']]);
     }
