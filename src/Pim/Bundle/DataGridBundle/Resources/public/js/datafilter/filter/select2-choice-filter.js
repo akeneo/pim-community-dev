@@ -160,7 +160,7 @@ define(
                 $('body').trigger('click');
                 if (!this.popupCriteriaShowed) {
                     this._showCriteria();
-                    initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config()).select2('open');
+                    this.$(this.criteriaValueSelectors.value).select2('open');
                 } else {
                     this._hideCriteria();
                 }

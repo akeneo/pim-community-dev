@@ -45,3 +45,18 @@ Feature: Filter products
     When I filter by "groups" with operator "" and value "Empty"
     Then the grid should contain 0 element
     And I should not see products BOOK, MUG-1, MUG-2 and POSTIT
+
+  Scenario: Successfully update group filters
+    Given I am on the products page
+    When I filter by "Groups" with value "Postit"
+    Then the grid should contain 1 element
+    And I should see product POSTIT
+    And I filter by "Groups" with value "Mug"
+    Then the grid should contain 3 elements
+
+  Scenario: Successfully remove groups selected filter
+    Given I am on the products page
+    When I filter by "Groups" with value "Mug"
+    Then the grid should contain 2 elements
+    When I remove value "Mug" on filter "Groups"
+    Then the grid should contain 4 elements

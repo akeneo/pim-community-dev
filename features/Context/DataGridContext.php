@@ -671,6 +671,18 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $filterName
+     * @param string $criteriaName
+     *
+     * @When /^I remove value "([^"]*)" on filter "([^"]*)"$/
+     * @And /^I remove value "([^"]*)" on filter "([^"]*)"$/
+     */
+    public function iRemoveValueOnFilter($selectionValue, $filterName)
+    {
+        $this->datagrid->removeFiltersSelection($filterName, $selectionValue, $this->getSession()->getDriver());
+    }
+
+    /**
      * @param string $row
      *
      * @When /^I click on the "([^"]*)" row$/
