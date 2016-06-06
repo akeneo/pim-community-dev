@@ -19,6 +19,7 @@
 
 ## BC breaks
 
+- Change constructor of `PimEnterprise\Component\Workflow\Applier\ProductDraftApplier`. Add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`.
 - Remove `PimEnterprise\Bundle\CatalogBundle\Manager\ProductCategoryManager`
 - In `PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository`, remove method `getGrantedCategoryIdsFromQB` and replace it by `getGrantedChildrenIds`
 - Change constructor of `PimEnterprise\Bundle\UserBundle\Form\Type\UserType`. Remove the last parameter `%pimee_product_asset.model.category.class%` and replace it by `Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface`

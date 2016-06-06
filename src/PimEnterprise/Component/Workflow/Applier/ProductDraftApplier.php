@@ -43,7 +43,7 @@ class ProductDraftApplier implements ProductDraftApplierInterface
     public function __construct(
         PropertySetterInterface $propertySetter,
         EventDispatcherInterface $dispatcher,
-        IdentifiableObjectRepositoryInterface $attributeRepository = null
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->propertySetter = $propertySetter;
         $this->dispatcher = $dispatcher;
@@ -113,10 +113,6 @@ class ProductDraftApplier implements ProductDraftApplierInterface
      */
     protected function attributeExists($code)
     {
-        if (null === $this->attributeRepository) {
-            return true;
-        }
-
         return null !== $this->attributeRepository->findOneByIdentifier($code);
     }
 }
