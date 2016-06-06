@@ -10,42 +10,74 @@ class ExportBuilderContext extends PimContext
     use SpinCapableTrait;
     
     /**
-     * @When /^I filter by "Updated time condition" with operator "([^"]*)" with value "([^"]*)"$/
+     * Set the operator and the value of a filter
+     *
+     * Example:
+     * When I filter by "Updated time condition" with operator "Updated products since the defined date" with value "05/25/2016"
+     *
+     * @param string $filter
+     * @param string $expectedOperator
+     * @param string $exceptedValue
+     * 
+     * @When /^I filter by "([^"]*)" with operator "([^"]*)" with value "([^"]*)"$/
      */
-    public function iChangeExportedTimeStrategyTo($operator, $value)
+    public function iFilterBy($filter, $expectedOperator, $exceptedValue)
     {
-        $select = $this->getCurrentPage()->getElement('export_time_strategy');
-        $select->setValue($operator);
+        $filterName = $this->formatElementName($filter);
+        $filterElement = $this->getCurrentPage()->getElement($filterName);
 
-        $date = $this->getCurrentPage()->getElement('export_time_date');
-        $date->setValue($value);
+        $filterElement->setValue($expectedOperator, $exceptedValue);
     }
 
     /**
-     * @Then /^I should not see the exported time date$/
+     * Check the value and the operator of the filter
+     *
+     * Example:
+     * Then the filter "Updated time condition" should contain operator "Updated products since the last n days" with value "10"
+     *
+     * @param string $filter
+     * @param string $expectedOperator
+     * @param string $exceptedValue
+     * 
+     * @throws \Exception
+     * 
+     * @Then /^the filter "([^"]*)" should contain operator "([^"]*)" with value "([^"]*)"$/
      */
-    public function iShouldNotSeeTheDateInput()
+    public function theFilterShouldContains($filter, $expectedOperator, $exceptedValue)
     {
-        $input = $this->getCurrentPage()->getElement('export_time_date');
-        
-        if ($input->isVisible()) {
-            throw new \Exception('The date input for the updated condition time should not be visible');
-        }
+        $filterName = $this->formatElementName($filter);
+        $filterElement = $this->getCurrentPage()->getElement($filterName);
+
+        $filterElement->validate($expectedOperator, $exceptedValue);
     }
 
     /**
-     * @Then /^the filter "Updated time condition" should contain operator "([^"]*)" with value "([^"]*)"$/
+     * Check if the element is visible
+     * 
+     * Example:
+     * Then I should not see the exported time date
+     *
+     * @param string $field
+     * 
+     * @throws \Exception
+     * 
+     * @Then /^I should not see the "([^"]*)" element in the filter "([^"]*)"$/
      */
-    public function theDateInputShouldContains($operator, $exceptedValue)
+    public function iShouldNotSeeTheDateInput($field, $filter)
     {
-        $input = $this->getCurrentPage()->getElement('export_time_date');
-        
-        $value = $input->getValue();
+        $input = $this->getCurrentPage()->getElement($this->formatElementName($filter));
+        $input->hasVisibleFilterValue($this->formatElementName($field));
+    }
 
-        if ($exceptedValue !== $value) {
-            throw new \Exception(
-                sprintf('The exported time date does not contain "%s" but "%s"', $exceptedValue, $value)
-            );
-        }
+    /**
+     * Format the name of an element from guerkin syntax
+     * 
+     * @param string $name
+     *
+     * @return string
+     */
+    private function formatElementName($name)
+    {
+        return str_replace(' ', '_', strtolower($name));
     }
 }

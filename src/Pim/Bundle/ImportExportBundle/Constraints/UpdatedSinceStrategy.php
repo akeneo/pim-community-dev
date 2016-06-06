@@ -14,17 +14,26 @@ use Symfony\Component\Validator\Constraint;
  */
 class UpdatedSinceStrategy extends Constraint
 {
+    /** @var string */
+    public $strategy;
+    
     /** @var JobInstance */
     public $jobInstance;
     
     /** @var string */
-    public $message = 'pim_connector.export.updated.updated_since_date.error';
-    
+    public $message = [
+        'since_date' => 'pim_connector.export.updated.updated_since_date.error',
+        'since_period' => 'pim_connector.export.updated.updated_since_period.error',
+    ];
+
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOption()
+    public function getRequiredOptions()
     {
-        return 'jobInstance';
+        return [
+            'jobInstance',
+            'strategy',
+        ];
     }
 }

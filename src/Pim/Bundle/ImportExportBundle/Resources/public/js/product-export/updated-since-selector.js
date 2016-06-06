@@ -12,6 +12,7 @@ define(
         return {
             $exportedSinceStrategy: null,
             $exportedSinceDate: null,
+            $exportedSincePeriod: null,
             $validationTooltip: null,
             $legend: null,
 
@@ -22,15 +23,19 @@ define(
                 var $container = $(container);
 
                 this.$exportedSinceStrategy = $container.find('select');
-                this.$exportedSinceDate = $container.find('input.datepicker');
-                this.$validationTooltip = $container.find('.validation-tooltip');
+                this.$exportedSinceDate = $container.find('.exported-since-date-wrapper input');
+                this.$exportedSincePeriod = $container.find('.exported-since-period-wrapper input');
+                this.$dateValidationTooltip = $container.find('.exported-since-date-wrapper .validation-tooltip');
+                this.$periodValidationTooltip = $container.find('.exported-since-period-wrapper .validation-tooltip');
                 this.$legend = $container.find('.legend');
 
                 this._displayDateElement();
                 this._displayLegendElement();
+                this._displayPeriodElement();
 
                 this.$exportedSinceStrategy.on('change', this._displayDateElement.bind(this));
                 this.$exportedSinceStrategy.on('change', this._displayLegendElement.bind(this));
+                this.$exportedSinceStrategy.on('change', this._displayPeriodElement.bind(this));
 
                 Datepicker.init(this.$exportedSinceDate.parent());
             },
@@ -43,10 +48,25 @@ define(
             _displayDateElement: function () {
                 if ('since_date' === this.$exportedSinceStrategy.val()) {
                     this.$exportedSinceDate.show().prop('disabled', false);
-                    this.$validationTooltip.show();
+                    this.$dateValidationTooltip.show();
                 } else {
                     this.$exportedSinceDate.hide().prop('disabled', true);
-                    this.$validationTooltip.hide();
+                    this.$dateValidationTooltip.hide();
+                }
+            },
+
+            /**
+             * Display or hide the period depending condition time value
+             *
+             * @private
+             */
+            _displayPeriodElement: function () {
+                if ('since_period' === this.$exportedSinceStrategy.val()) {
+                    this.$exportedSincePeriod.show().prop('disabled', false);
+                    this.$periodValidationTooltip.show();
+                } else {
+                    this.$exportedSincePeriod.hide().prop('disabled', true);
+                    this.$periodValidationTooltip.hide();
                 }
             },
 

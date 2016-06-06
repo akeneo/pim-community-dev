@@ -27,15 +27,9 @@ class Edit extends Form
 
         $this->elements = array_merge(
             [
-                'export_time_strategy' => [
-                    'css'        => '.updated-since-parameter .select2-container',
-                    'decorators' => ['Pim\Behat\Decorator\Field\Select2Decorator']
-                ]
-            ],
-            [
-                'export_time_date' => [
-                    'css'        => '.exported-since-date-wrapper input',
-                    'decorators' => ['Pim\Behat\Decorator\Field\DatepickerDecorator']
+                'updated_time_condition' => [
+                    'css'        => '.updated-since-parameter .controls',
+                    'decorators' => ['Pim\Behat\Decorator\Export\Filter\UpdatedTimeConditionDecorator'],
                 ]
             ],
             $this->elements

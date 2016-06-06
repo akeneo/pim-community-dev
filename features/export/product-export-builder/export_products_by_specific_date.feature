@@ -36,20 +36,28 @@ Feature: Export products according to a date
       """
 
   @javascript
-  Scenario: Manage the updated time condition
+  Scenario: Update the updated time condition field
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     When I am on the "csv_footwear_product_export" export job edit page
     And I follow "Content"
-    Then I should not see the exported time date
+    Then I should not see the "updated since date" element in the filter "Updated time condition"
+    Then I should not see the "updated since period" element in the filter "Updated time condition"
     When I filter by "Updated time condition" with operator "Updated products since the defined date" with value "05/25/2016"
     And I press "Save"
     Then I should be on the "csv_footwear_product_export" export job page
     When I follow "Content"
     Then the filter "Updated time condition" should contain operator "Updated products since the defined date" with value "05/25/2016"
+    When I am on the "csv_footwear_product_export" export job edit page
+    And I follow "Content"
+    And I filter by "Updated time condition" with operator "Updated products since the last n days" with value "10"
+    And I press "Save"
+    Then I should be on the "csv_footwear_product_export" export job page
+    When I follow "Content"
+    Then the filter "Updated time condition" should contain operator "Updated products since the last n days" with value "10"
 
   @javascript
-  Scenario: Add a blank date in the updated time condition
+  Scenario: Error management when the updated time condition field is updated
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     When I am on the "csv_footwear_product_export" export job edit page
@@ -58,6 +66,14 @@ Feature: Export products according to a date
     And I press "Save"
     Then I should be on the "csv_footwear_product_export" export job edit page
     And I should see a validation error "The date must not be empty"
+    When I filter by "Updated time condition" with operator "Updated products since the last n days" with value ""
+    And I press "Save"
+    Then I should be on the "csv_footwear_product_export" export job edit page
+    And I should see a validation error "This value should be blank"
+    When I filter by "Updated time condition" with operator "Updated products since the last n days" with value "ten days"
+    And I press "Save"
+    Then I should be on the "csv_footwear_product_export" export job edit page
+    And I should see a validation error "This value is not valid."
 
   @javascript
   Scenario: Export only the products updated since a defined date

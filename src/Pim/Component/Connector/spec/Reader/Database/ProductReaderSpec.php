@@ -537,4 +537,65 @@ class ProductReaderSpec extends ObjectBehavior
         $this->read()->shouldReturn($product3);
         $this->read()->shouldReturn(null);
     }
+    
+    function it_reads_only_products_updated_since_a_period(
+        $pqbFactory,
+        $channelRepository,
+        $metricConverter,
+        $objectDetacher,
+        $stepExecution,
+        ChannelInterface $channel,
+        CategoryInterface $channelRoot,
+        ProductQueryBuilderInterface $pqb,
+        CursorInterface $cursor,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
+        JobParameters $jobParameters
+    ) {
+        $updated = (new \DateTime())->sub(new \DateInterval('P10D'))->setTime(0, 0);
+        
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('mobile');
+        $jobParameters->get('enabled')->willReturn('all');
+        $jobParameters->get('completeness')->willReturn('all');
+        $jobParameters->get('updated_since_strategy')->willReturn('since_period');
+        $jobParameters->get('updated_since_period')->willReturn(10);
+        $jobParameters->get('families')->willReturn('');
+        
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
+        $channel->getCategory()->willReturn($channelRoot);
+        $channelRoot->getId()->willReturn(42);
+        $channel->getCode()->willReturn('mobile');
+
+        $pqbFactory->create(['default_scope' => 'mobile'])
+            ->shouldBeCalled()
+            ->willReturn($pqb);
+        $pqb->addFilter('enabled', Argument::cetera())->shouldNotBeCalled();
+        $pqb->addFilter('categories.id', 'IN CHILDREN', [42], [])->shouldBeCalled();
+        $pqb->addFilter('updated', '>', $updated->format('Y-m-d H:i:s'), [])->shouldBeCalled();
+        $pqb->execute()
+            ->shouldBeCalled()
+            ->willReturn($cursor);
+
+        $products = [$product1, $product2, $product3];
+        $productsCount = count($products);
+        $cursor->valid()->will(
+            function () use (&$productsCount) {
+                return $productsCount-- > 0;
+            }
+        );
+        $cursor->next()->shouldBeCalled();
+        $cursor->current()->will(new ReturnPromise($products));
+
+        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
+        $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(3);
+        $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
+
+        $this->initialize();
+        $this->read()->shouldReturn($product1);
+        $this->read()->shouldReturn($product2);
+        $this->read()->shouldReturn($product3);
+        $this->read()->shouldReturn(null);
+    }
 }

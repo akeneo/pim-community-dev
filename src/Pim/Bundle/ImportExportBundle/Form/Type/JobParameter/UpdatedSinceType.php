@@ -81,24 +81,27 @@ class UpdatedSinceType extends AbstractType
         $builder
             ->add('updated_since_strategy', 'choice', [
                 'choices' => [
-                    'all'         => 'pim_connector.export.updated.updated_since_strategy.choice.all',
-                    'last_export' => 'pim_connector.export.updated.updated_since_strategy.choice.last_export',
-                    'since_date'  => 'pim_connector.export.updated.updated_since_strategy.choice.since_date',
+                    'all'          => 'pim_connector.export.updated.updated_since_strategy.choice.all',
+                    'last_export'  => 'pim_connector.export.updated.updated_since_strategy.choice.last_export',
+                    'since_date'   => 'pim_connector.export.updated.updated_since_strategy.choice.since_date',
+                    'since_period' => 'pim_connector.export.updated.updated_since_strategy.choice.since_period',
                 ],
                 'select2'  => true,
-                'label'    => false,
             ])
             ->add('updated_since_date', 'datetime', [
                 'widget' => 'single_text',
                 'format' => $dateFormatter->getPattern(),
-                'label'  => false,
                 'input'  => 'string',
-                'attr'   => [
-                    'placeholder'  => 'pim_connector.export.updated.updated_since_date.placeholder',
-                    'class'        => 'datepicker add-on input-large',
-                    'autocomplete' => 'off',
-                ],
-                'constraints' => new UpdatedSinceStrategy($options['job_instance'])
+                'constraints' => new UpdatedSinceStrategy([
+                    'jobInstance' => $options['job_instance'],
+                    'strategy' => 'since_date',
+                ])
+            ])
+            ->add('updated_since_period', 'number', [
+                'constraints' => new UpdatedSinceStrategy([
+                    'jobInstance' => $options['job_instance'],
+                    'strategy' => 'since_period',
+                ])
             ])
         ;
     }

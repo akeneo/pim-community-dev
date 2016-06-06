@@ -243,23 +243,32 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     protected function rawToStandardProductUpdated(JobParameters $parameters)
     {
-        switch ($parameters->get('updated_since_strategy')) {
-            case 'last_export':
-                $jobInstance = $this->stepExecution->getJobExecution()->getJobInstance();
-                $jobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
+        $updatedTimeCondition = $parameters->get('updated_since_strategy');
+        if ('last_export' === $updatedTimeCondition) {
+            $jobInstance = $this->stepExecution->getJobExecution()->getJobInstance();
+            $jobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
 
-                return null === $jobExecution ? null : $jobExecution->getStartTime();
-            case 'since_date':
-                return $parameters->get('updated_since_date');
-            default:
-                return null;
+            return null === $jobExecution ? null : $jobExecution->getStartTime();
+        }
+
+        if ('since_period' === $updatedTimeCondition) {
+            $period = $parameters->get('updated_since_period');
+            
+            return (new \DateTime())->setTime(0, 0)
+                ->sub(new \DateInterval(sprintf('P%dD', $period)))
+                ->format('Y-m-d H:i:s')
+            ;
+        }
+
+        if ('since_date' === $updatedTimeCondition) {
+            return $parameters->get('updated_since_date');
         }
     }
 
     /**
      * Transform completeness choice into PQB filter
      *
-     * @param string $rawCompleteness
+     * @param JobParameters $parameters
      *
      * @return array|null
      */

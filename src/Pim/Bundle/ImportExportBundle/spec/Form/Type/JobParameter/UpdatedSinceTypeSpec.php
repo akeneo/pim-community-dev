@@ -61,12 +61,12 @@ class UpdatedSinceTypeSpec extends ObjectBehavior
         
         $builder->add('updated_since_strategy', 'choice', [
             'choices'  => [
-                'all'         => 'pim_connector.export.updated.updated_since_strategy.choice.all',
-                'last_export' => 'pim_connector.export.updated.updated_since_strategy.choice.last_export',
-                'since_date'  => 'pim_connector.export.updated.updated_since_strategy.choice.since_date',
+                'all'          => 'pim_connector.export.updated.updated_since_strategy.choice.all',
+                'last_export'  => 'pim_connector.export.updated.updated_since_strategy.choice.last_export',
+                'since_date'   => 'pim_connector.export.updated.updated_since_strategy.choice.since_date',
+                'since_period' => 'pim_connector.export.updated.updated_since_strategy.choice.since_period',
             ],
             'select2'  => true,
-            'label'    => false,
         ])->willReturn($builder);
 
         $builder->add('updated_since_date', 'datetime', Argument::that(function ($value) {
@@ -76,6 +76,10 @@ class UpdatedSinceTypeSpec extends ObjectBehavior
                 isset($value['input']) && 'string' === $value['input'] &&
                 isset($value['constraints']) && $value['constraints'] instanceof UpdatedSinceStrategy
             ;
+        }))->willReturn($builder);
+        
+        $builder->add('updated_since_period', 'number', Argument::that(function ($value) {
+            return isset($value['constraints']) && $value['constraints'] instanceof UpdatedSinceStrategy;
         }))->shouldBeCalled();
 
         $this->buildForm($builder, ['job_instance' => $jobInstance]);

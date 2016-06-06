@@ -49,8 +49,18 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
             new Channel()
         ];
         $constraintFields['enabled'] = new NotBlank(['groups' => 'Execution']);
-        $constraintFields['updated_since_strategy'] = new NotBlank(['groups' => 'Execution']);
+        $constraintFields['updated_since_strategy'] = [
+            new NotBlank(['groups' => 'Execution']),
+            new Choice(['choices' => [
+                    'all',
+                    'last_export',
+                    'since_date',
+                    'since_period',
+                ]
+            ])
+        ];
         $constraintFields['updated_since_date'] = new DateTime(['groups' => 'Execution']);
+        $constraintFields['updated_since_period'] = [];
         $constraintFields['locales'] = new NotBlank([
             'groups'  => 'Execution',
             'message' => 'pim_connector.export.locales.validation.not_blank'

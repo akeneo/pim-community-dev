@@ -24,9 +24,9 @@ class UpdatedSinceStrategyValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\UpdateSinceStrategy');
         }
 
-        if (empty($value) &&
-            'since_date' === $constraint->jobInstance->getRawConfiguration()['updated_since_strategy']) {
-            $this->context->buildViolation($constraint->message)->addViolation();
+        $strategy = $constraint->jobInstance->getRawConfiguration()['updated_since_strategy'];
+        if (empty($value) && $constraint->strategy === $strategy) {
+            $this->context->buildViolation($constraint->message[$strategy])->addViolation();
         }
     }
 }

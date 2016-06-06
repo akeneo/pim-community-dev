@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\GreaterThan;
@@ -56,13 +57,32 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
 
         $constraintFields['enabled'] = new NotBlank(['groups' => 'Execution']);
         $constraintFields['completeness'] = new NotBlank(['groups' => 'Execution']);
-        $constraintFields['updated_since_strategy'] = new NotBlank(['groups' => 'Execution']);
+        $constraintFields['updated_since_strategy'] = [
+            new NotBlank(['groups' => 'Execution']),
+            new Choice(['choices' => [
+                    'all',
+                    'last_export',
+                    'since_date',
+                    'since_period',
+                ]
+            ])
+        ];
         $constraintFields['updated_since_date'] = new DateTime(['groups' => 'Execution']);
+        $constraintFields['updated_since_period'] = [];
         $constraintFields['linesPerFile'] = [
             new NotBlank(),
             new GreaterThan(1)
         ];
         $constraintFields['families'] = [];
+        $constraintFields['completeness'] = [
+            new NotBlank(['groups' => 'Execution']),
+            new Choice(['choices' => [
+                'at_least_one_complete',
+                'all_complete',
+                'all_incomplete',
+                'all',
+            ], 'groups' => 'Execution'])
+        ];
 
         return new Collection(['fields' => $constraintFields]);
     }
