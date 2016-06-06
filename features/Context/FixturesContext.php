@@ -31,6 +31,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Model\Association;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -1730,7 +1731,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @param string $code
      *
-     * @return \Pim\Component\Catalog\Model\AttributeOptionInterface
+     * @return AttributeOptionInterface
      */
     protected function createOption($code)
     {

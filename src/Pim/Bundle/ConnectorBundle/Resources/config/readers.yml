@@ -70,7 +70,10 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.attribute'
 
     pim_connector.reader.file.csv_attribute_option:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute_option'
 
     pim_connector.reader.file.csv_group:
         alias: pim_connector.reader.file.csv
