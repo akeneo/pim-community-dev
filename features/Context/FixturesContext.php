@@ -1638,10 +1638,6 @@ class FixturesContext extends BaseFixturesContext
         $channel->setCode($data['code']);
         $channel->setLabel($data['label']);
 
-        if ($data['color']) {
-            $channel->setColor($data['color']);
-        }
-
         foreach ($this->listToArray($data['currencies']) as $currencyCode) {
             $channel->addCurrency($this->getCurrency($currencyCode));
         }
