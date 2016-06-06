@@ -34,8 +34,8 @@ class GroupFactory
         SimpleFactoryInterface $productTemplateFactory,
         $groupClass
     ) {
-        $this->groupClass          = $groupClass;
-        $this->groupTypeRepository = $groupTypeRepository;
+        $this->groupClass             = $groupClass;
+        $this->groupTypeRepository    = $groupTypeRepository;
         $this->productTemplateFactory = $productTemplateFactory;
     }
 
@@ -61,6 +61,7 @@ class GroupFactory
                 $group->setProductTemplate($this->productTemplateFactory->create());
             }
         }
+
         return $group;
     }
 }

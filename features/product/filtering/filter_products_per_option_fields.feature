@@ -41,7 +41,7 @@ Feature: Filter products per option
     Given I am on the products page
     And the grid should contain 3 elements
     When I show the filter "size"
-    And I filter by "size" with operator "In list" and value "M"
+    And I filter by "size" with operator "in list" and value "M"
     And I should see entities Sweat
     Then I should see option "[M]" in filter "size"
 
@@ -50,6 +50,6 @@ Feature: Filter products per option
     Given I am on the products page
     And the grid should contain 3 elements
     When I show the filter "color"
-    And I filter by "color" with operator "In list" and value "Black, White"
+    And I filter by "color" with operator "in list" and value "Black, White"
     And I should see entities Shoes
     Then I should see options "[Black], [White]" in filter "color"

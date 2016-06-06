@@ -29,6 +29,7 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -1685,7 +1686,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Factory\GroupFactory
+     * @return GroupFactory
      */
     protected function getGroupFactory()
     {

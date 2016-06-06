@@ -322,11 +322,11 @@ Feature: Import attributes
         pim_catalog_text;new_name;other;0;1;0;0
         pim_catalog_textarea;new_description;other;0;1;1;1
         """
-      And the following job "footwear_attribute_import" configuration:
+      And the following job "csv_footwear_attribute_import" configuration:
         | filePath | %file to import% |
-      When I am on the "footwear_attribute_import" import job page
+      When I am on the "csv_footwear_attribute_import" import job page
       And I launch the import job
-      And I wait for the "footwear_attribute_import" job to finish
+      And I wait for the "csv_footwear_attribute_import" job to finish
       Then I should see "read lines 2"
       And I should see "created 2"
       When I am on the "Boots" family page
@@ -344,11 +344,11 @@ Feature: Import attributes
         pim_catalog_text;new_name;;;;other;0;1;0;0
         pim_catalog_textarea;new_description;;;;other;0;1;1;1
         """
-      And the following job "footwear_attribute_import" configuration:
+      And the following job "csv_footwear_attribute_import" configuration:
         | filePath | %file to import% |
-      When I am on the "footwear_attribute_import" import job page
+      When I am on the "csv_footwear_attribute_import" import job page
       And I launch the import job
-      And I wait for the "footwear_attribute_import" job to finish
+      And I wait for the "csv_footwear_attribute_import" job to finish
       Then I should see "read lines 2"
       And I should see "created 2"
       When I am on the "Boots" family page

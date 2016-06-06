@@ -366,7 +366,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @Then /^I expand the "([^"]*)" sidebar$/
      */
-    public function iexpandTheCategoriesSidebar($filterName)
+    public function iExpandTheCategoriesSidebar($filterName)
     {
         $this->datagrid->expandFilter($filterName);
     }
