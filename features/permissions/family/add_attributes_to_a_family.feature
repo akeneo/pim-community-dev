@@ -7,8 +7,7 @@ Feature: Add attribute to a family
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5147
-  @javascript
+  @javascript @jira https://akeneo.atlassian.net/browse/PIM-5147
   Scenario: Successfully list available grouped attributes without any permission restriction
     Given I am on the "colors" attribute group page
     And I visit the "Permissions" tab
