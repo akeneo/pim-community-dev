@@ -59,7 +59,6 @@ services:
     pim_connector.processor.denormalization.product_association.flat:
         class: '%pim_connector.processor.denormalization.product_association.class%'
         arguments:
-            - '@pim_connector.array_converter.flat_to_standard.product_association'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
