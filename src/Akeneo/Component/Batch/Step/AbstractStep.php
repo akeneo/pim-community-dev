@@ -69,6 +69,8 @@ abstract class AbstractStep implements StepInterface
      * Extension point for subclasses to execute business logic. Subclasses should set the {@link ExitStatus} on the
      * {@link StepExecution} before returning.
      *
+     * Do not catch exception here. It will be correctly handled by the execute() method.
+     *
      * @param StepExecution $stepExecution the current step context
      *
      * @throws \Exception

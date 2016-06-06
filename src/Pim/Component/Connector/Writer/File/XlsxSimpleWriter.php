@@ -61,8 +61,8 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
 
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,
-            $this->stepExecution->getJobParameters()->get('linesPerFile'),
             $this->getPath(),
+            $this->stepExecution->getJobParameters()->get('linesPerFile'),
             $this->filePathResolverOptions
         );
 
