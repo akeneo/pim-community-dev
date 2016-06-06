@@ -41,12 +41,12 @@ class Attribute implements ArrayConverterInterface
     /**
      * @param string $field
      * @param array  $booleanFields
-     * @param array  $data
+     * @param mixed  $data
      * @param array  $convertedItem
      *
      * @return array
      */
-    protected function convertFields($field, $booleanFields, $data, $convertedItem)
+    protected function convertFields($field, array $booleanFields, $data, array $convertedItem)
     {
         switch ($field) {
             case 'labels':

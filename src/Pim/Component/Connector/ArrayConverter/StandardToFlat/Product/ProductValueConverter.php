@@ -26,7 +26,7 @@ class ProductValueConverter
 
     /**
      * @param string $field
-     * @param array  $data
+     * @param mixed  $data
      *
      * @return array
      */

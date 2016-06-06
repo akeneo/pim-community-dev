@@ -29,12 +29,12 @@ class AssociationType implements ArrayConverterInterface
 
     /**
      * @param string $field
-     * @param array  $data
+     * @param mixed  $data
      * @param array  $convertedItem
      *
      * @return array
      */
-    protected function convertFields($field, $data, $convertedItem)
+    protected function convertFields($field, $data, array $convertedItem)
     {
         switch ($field) {
             case 'labels':

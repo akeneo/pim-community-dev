@@ -99,9 +99,9 @@ class AttributeColumnsResolver
      *  name-ecommerce
      *  weight
      *
-     * @param $attribute
-     * @param $locale
-     * @param $scope
+     * @param string $attribute
+     * @param string $locale
+     * @param string $scope
      *
      * @return string
      */
