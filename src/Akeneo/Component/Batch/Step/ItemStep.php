@@ -9,6 +9,8 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Item\File\ResourceItemReaderInterface;
+use Akeneo\Component\Batch\Item\File\ResourceItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 
 /**
@@ -57,6 +59,10 @@ class ItemStep extends AbstractStep
     public function setReader(ItemReaderInterface $reader)
     {
         $this->reader = $reader;
+
+        if ($reader instanceof ResourceItemReaderInterface) {
+            $reader->setResource($this->loadResource());
+        }
     }
 
     /**
@@ -76,6 +82,10 @@ class ItemStep extends AbstractStep
     public function setWriter(ItemWriterInterface $writer)
     {
         $this->writer = $writer;
+
+        if ($writer instanceof ResourceItemWriterInterface) {
+            $writer->setResource($this->loadResource());
+        }
     }
 
     /**
@@ -248,5 +258,20 @@ class ItemStep extends AbstractStep
             'processor' => $this->getProcessor(),
             'writer'    => $this->getWriter()
         );
+    }
+
+    /**
+     * @return FilesystemResource
+     */
+    private function loadResource()
+    {
+        $resource = $this->stepExecution->getJobExecution()->getExecutionContext()->get('resource');
+        if (null === $resource || !$resource instanceof FilesystemResource) {
+            throw new \LogicException(
+                'A "Akeneo\Component\Batch\Step\FilesystemResource" is expected as resource in the execution context.'
+            );
+        }
+
+        return $resource;
     }
 }

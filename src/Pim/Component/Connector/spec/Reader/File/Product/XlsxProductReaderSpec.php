@@ -2,7 +2,9 @@
 
 namespace spec\Pim\Component\Connector\Reader\File\Product;
 
+use Akeneo\Component\Batch\Model\JobExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\ArchiveStorage;
 use Pim\Component\Connector\Reader\File\FileIterator;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Pim\Component\Connector\Reader\File\Product\MediaPathTransformer;
@@ -10,9 +12,9 @@ use Prophecy\Argument;
 
 class CsvProductReaderSpec extends ObjectBehavior
 {
-    function let(FileIterator $fileIterator, MediaPathTransformer $mediaPath)
+    function let(FileIterator $fileIterator, ArchiveStorage $archiveStorage, MediaPathTransformer $mediaPath)
     {
-        $this->beConstructedWith($fileIterator, $mediaPath, ['.', ','], ['Y-m-d', 'd-m-Y']);
+        $this->beConstructedWith($fileIterator, $archiveStorage, $mediaPath, ['.', ','], ['Y-m-d', 'd-m-Y']);
     }
 
     function it_is_initializable()
@@ -27,8 +29,8 @@ class CsvProductReaderSpec extends ObjectBehavior
 
     function it_transforms_media_paths_to_absolute_paths(
         $fileIteratorFactory,
-        FileIteratorInterface $fileIterator,
-        $mediaPath
+        $mediaPath,
+        FileIteratorInterface $fileIterator
     ) {
         $data = [
             'sku'          => 'SKU-001',

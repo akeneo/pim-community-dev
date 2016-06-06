@@ -7,7 +7,6 @@ use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -45,9 +44,7 @@ class XlsxReader extends AbstractConfigurableStepElement implements
     public function read()
     {
         if (null === $this->fileIterator) {
-            $jobParameters = $this->stepExecution->getJobParameters();
-            $filePath = $jobParameters->get('filePath');
-            $this->fileIterator = $this->fileIteratorFactory->create($filePath);
+            $this->fileIterator = $this->fileIteratorFactory->create($this->getPathname());
             $this->fileIterator->rewind();
         }
 
@@ -74,5 +71,21 @@ class XlsxReader extends AbstractConfigurableStepElement implements
     public function flush()
     {
         $this->fileIterator = null;
+    }
+
+    /**
+     * TODO: should not be duplicated everywhere
+     *
+     * @return string
+     */
+    protected function getPathname()
+    {
+        $context = $this->stepExecution->getJobExecution()->getExecutionContext();
+        if (!$context->has('workingDirectory')) {
+            throw new \LogicException('The working directory is expected in the execution context.');
+        }
+
+        return $context->get('workingDirectory')->getPathname() . DIRECTORY_SEPARATOR .
+        basename($this->stepExecution->getJobParameters()->get('filePath'));
     }
 }

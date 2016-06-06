@@ -48,7 +48,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      * @param string         $basePathname
      * @param array          $filePathResolverOptions
      *
-     * @return array the list of file paths that have been written
+     * @return array the absolute pathnames of files that have been written
      */
     public function flush(FlatItemBuffer $buffer, $basePathname, $maxLinesPerFile = -1, array $filePathResolverOptions = [])
     {

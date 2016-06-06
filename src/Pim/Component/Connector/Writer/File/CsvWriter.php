@@ -26,6 +26,9 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     /** @var array */
     protected $writtenFiles = [];
 
+    /** @var string */
+    protected $pathname;
+
     /**
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
@@ -43,6 +46,8 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
     }
 
     /**
+     * TODO: should be dropped at the end
+     *
      * {@inheritdoc}
      */
     public function getWrittenFiles()
@@ -80,7 +85,7 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
         }
 
         fclose($csvFile);
-        $this->writtenFiles[$this->getPath()] = basename($this->getPath());
+        $this->writtenFiles[$this->getPathname()] = basename($this->getPathname());
     }
 
     /**
@@ -92,13 +97,8 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
      */
     protected function createCsvFile()
     {
-        $exportDirectory = dirname($this->getPath());
-        if (!is_dir($exportDirectory)) {
-            $this->localFs->mkdir($exportDirectory);
-        }
-
-        if (false === $file = fopen($this->getPath(), 'w')) {
-            throw new RuntimeErrorException('Failed to open file %path%', ['%path%' => $this->getPath()]);
+        if (false === $file = fopen($this->getPathname(), 'w')) {
+            throw new RuntimeErrorException('Failed to open file %path%', ['%path%' => $this->getPathname()]);
         }
 
         return $file;
@@ -120,7 +120,26 @@ class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
         $enclosure = $parameters->get('enclosure');
         if (false === fputcsv($csvFile, $data, $delimiter, $enclosure)) {
             fclose($csvFile);
-            throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
+            throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPathname()]);
         }
+    }
+    /**
+     * TODO: should not be duplicated everywhere
+     *
+     * @return string
+     */
+    protected function getPathname()
+    {
+        if (null === $this->pathname) {
+            $context = $this->stepExecution->getJobExecution()->getExecutionContext();
+            if (!$context->has('workingDirectory')) {
+                throw new \LogicException('The working directory is expected in the execution context.');
+            }
+
+            $this->pathname = $context->get('workingDirectory')->getPathname() . DIRECTORY_SEPARATOR .
+                basename($this->stepExecution->getJobParameters()->get('filePath'));
+        }
+
+        return $this->pathname;
     }
 }

@@ -33,8 +33,11 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
      * @param string $charset
      * @param int    $maxErrors
      */
-    public function __construct(array $whiteListExtension = ['xls', 'xlsx', 'zip'], $charset = 'UTF-8', $maxErrors = 10)
-    {
+    public function __construct(
+        array $whiteListExtension = ['xls', 'xlsx', 'zip'],
+        $charset = 'UTF-8',
+        $maxErrors = 10
+    ) {
         $this->charset = $charset;
         $this->maxErrors = $maxErrors;
         $this->whiteListExtension = $whiteListExtension;
@@ -48,8 +51,11 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
      */
     public function validate()
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('filePath');
+        $filePath = $this->getPathname();
+        if (!is_readable($filePath)) {
+            throw new \Exception(sprintf('Unable to read the file "%s".', $filePath));
+        }
+
         $file = new \SplFileInfo($filePath);
         if (!in_array($file->getExtension(), $this->whiteListExtension)) {
             $this->validateEncoding();
@@ -69,11 +75,14 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
      */
     protected function validateEncoding()
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('filePath');
+        $filePath = $this->getPathname();
+        if (!is_readable($filePath)) {
+            throw new \Exception(sprintf('Unable to read the file "%s".', $filePath));
+        }
+
         $handle = fopen($filePath, 'r');
         if (false === $handle) {
-            throw new \Exception(sprintf('Unable to read the file "%s".', $filePath));
+            throw new \Exception(sprintf('Unable to open the file "%s".', $filePath));
         }
 
         $errors = [];
@@ -109,5 +118,21 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * TODO: should not be duplicated everywhere
+     *
+     * @return string
+     */
+    private function getPathname()
+    {
+        $context = $this->stepExecution->getJobExecution()->getExecutionContext();
+        if (!$context->has('workingDirectory')) {
+            throw new \LogicException('The working directory is expected in the execution context.');
+        }
+
+        return $context->get('workingDirectory')->getPathname() . DIRECTORY_SEPARATOR .
+            basename($this->stepExecution->getJobParameters()->get('filePath'));
     }
 }

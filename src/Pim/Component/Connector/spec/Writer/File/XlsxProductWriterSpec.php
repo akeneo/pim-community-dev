@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Connector\Writer\File;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\ArchiveStorage;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
@@ -15,11 +16,12 @@ class XlsxProductWriterSpec extends ObjectBehavior
 {
     function let(
         FilePathResolverInterface $filePathResolver,
+        ArchiveStorage $archiveStorage,
         FlatItemBuffer $flatRowBuffer,
         BulkFileExporter $mediaCopier,
         FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier, $flusher);
+        $this->beConstructedWith($filePathResolver, $archiveStorage, $flatRowBuffer, $mediaCopier, $flusher);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.xlsx');
@@ -49,8 +51,8 @@ class XlsxProductWriterSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn('my/file/path');
         $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
 
         $items = $this->getItemToExport();
 

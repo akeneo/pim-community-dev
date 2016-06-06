@@ -12,6 +12,12 @@ use Symfony\Component\Filesystem\Filesystem;
  * Abstract file writer to handle file naming and configuration-related logic.
  * write() method must be implemented by children.
  *
+ * All the writers should output to files that are named with the job code.
+ * Like "csv_family_export" or "xlsx_product_export" for instance.
+ *
+ * Some writers may output to several files in case of need, like "xlsx_product_export_1",
+ * "xlsx_product_export"_2" etc..
+ *
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -45,6 +51,8 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     }
 
     /**
+     * TODO: should be dropped at the end
+     *
      * Get the file path in which to write the data
      *
      * @return string
@@ -70,5 +78,21 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * TODO: should not be duplicated everywhere
+     *
+     * @return string
+     */
+    protected function getPathname()
+    {
+        $context = $this->stepExecution->getJobExecution()->getExecutionContext();
+        if (!$context->has('workingDirectory')) {
+            throw new \LogicException('The working directory is expected in the execution context.');
+        }
+
+        return $context->get('workingDirectory')->getPathname() . DIRECTORY_SEPARATOR .
+            basename($this->stepExecution->getJobParameters()->get('filePath'));
     }
 }

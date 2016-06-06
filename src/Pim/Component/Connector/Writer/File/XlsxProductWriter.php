@@ -3,9 +3,7 @@
 namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
-use Box\Spout\Common\Type;
-use Box\Spout\Writer\WriterFactory;
-use Box\Spout\Writer\WriterInterface;
+use Pim\Component\Connector\ArchiveStorage;
 
 /**
  * Write product data into a XLSX file on the local filesystem
@@ -102,6 +100,8 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     }
 
     /**
+     * TODO: should be dropped at the end
+     *
      * {@inheritdoc}
      */
     public function getWrittenFiles()

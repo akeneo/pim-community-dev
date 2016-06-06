@@ -3,9 +3,6 @@
 namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
-use Box\Spout\Common\Type;
-use Box\Spout\Writer\WriterFactory;
-use Box\Spout\Writer\WriterInterface;
 
 /**
  * XLSX VariantGroup writer
@@ -102,6 +99,8 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
     }
 
     /**
+     * TODO: should be dropped at the end
+     *
      * {@inheritdoc}
      */
     public function getWrittenFiles()

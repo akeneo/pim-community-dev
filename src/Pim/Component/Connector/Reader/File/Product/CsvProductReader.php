@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\Reader\File\Product;
 
-use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Connector\Reader\File\CsvReader;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 
@@ -25,8 +24,10 @@ class CsvProductReader extends CsvReader
      * @param FileIteratorFactory  $fileIteratorFactory,
      * @param MediaPathTransformer $mediaPathTransformer
      */
-    public function __construct(FileIteratorFactory $fileIteratorFactory, MediaPathTransformer $mediaPathTransformer)
-    {
+    public function __construct(
+        FileIteratorFactory $fileIteratorFactory,
+        MediaPathTransformer $mediaPathTransformer
+    ) {
         parent::__construct($fileIteratorFactory);
 
         $this->mediaPathTransformer = $mediaPathTransformer;

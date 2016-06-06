@@ -1,0 +1,8 @@
+parameters:
+    pim_connector.event_subscriber.working_directory.class: Pim\Bundle\ConnectorBundle\EventSubscriber\WorkingDirectorySubscriber
+
+services:
+    pim_connector.event_subscriber.working_directory:
+        class: '%pim_connector.event_subscriber.working_directory.class%'
+        tags:
+            - { name: kernel.event_subscriber }
