@@ -190,7 +190,6 @@ class BatchCommand extends ContainerAwareCommand
 
                 return self::EXIT_WARNING_CODE;
             }
-
         } else {
             $output->writeln(
                 sprintf(

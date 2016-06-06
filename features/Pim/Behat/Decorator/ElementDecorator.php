@@ -58,7 +58,7 @@ abstract class ElementDecorator
     {
         $element = $this;
 
-        while('body' !== $element->getTagName()) {
+        while ('body' !== $element->getTagName()) {
             $element = $element->getParent();
         }
 
