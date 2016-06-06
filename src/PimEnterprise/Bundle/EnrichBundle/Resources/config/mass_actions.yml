@@ -13,8 +13,9 @@ services:
             -
                 name: pim_enrich.mass_edit_action
                 alias: unpublish
-                acl: pimee_workflow_published_product_index
                 datagrid: published-product-grid
+                operation_group: mass_edit
+                acl: pimee_workflow_published_product_index
 
     # New products operations
     pimee_enrich.mass_edit_action.publish:
@@ -24,8 +25,9 @@ services:
             -
                 name: pim_enrich.mass_edit_action
                 alias: publish
-                acl: pim_enrich_product_edit_attributes
                 datagrid: product-grid
+                operation_group: mass_edit
+                acl: pim_enrich_product_edit_attributes
 
     pim_enrich.mass_edit_tasklet.publish_product:
         class: '%pimee_enrich.mass_edit_tasklet.publish_product.class%'
@@ -62,8 +64,9 @@ services:
             -
                 name: pim_enrich.mass_edit_action
                 alias: change-status
-                acl: pim_enrich_product_change_state
                 datagrid: product-grid
+                operation_group: mass_edit
+                acl: pim_enrich_product_change_state
                 form_type: pim_enrich_mass_change_status
 
     pim_enrich.mass_edit_action.edit_common_attributes:
@@ -85,8 +88,9 @@ services:
             -
                 name: pim_enrich.mass_edit_action
                 alias: edit-common-attributes
-                acl: pim_enrich_product_edit_attributes
                 datagrid: product-grid
+                operation_group: mass_edit
+                acl: pim_enrich_product_edit_attributes
 
     pim_enrich.mass_edit_action.classify:
         public: false
@@ -97,8 +101,9 @@ services:
             -
                 name: pim_enrich.mass_edit_action
                 alias: classify
-                acl: pim_enrich_product_categories_view
                 datagrid: product-grid
+                operation_group: category_edit
+                acl: pim_enrich_product_categories_view
 
     pim_enrich.mass_edit_action.change_family:
         public: false
@@ -109,8 +114,9 @@ services:
             -
                 name: pim_enrich.mass_edit_action
                 alias: change-family
-                acl: pim_enrich_product_change_family
                 datagrid: product-grid
+                operation_group: mass_edit
+                acl: pim_enrich_product_change_family
 
     pim_enrich.mass_edit_action.add_to_groups:
         class: '%pim_enrich.mass_edit_action.add_to_groups.class%'
@@ -120,8 +126,9 @@ services:
             -
                 name: pim_enrich.mass_edit_action
                 alias: add-to-groups
-                acl: pim_enrich_product_add_to_groups
                 datagrid: product-grid
+                operation_group: mass_edit
+                acl: pim_enrich_product_add_to_groups
 
     pim_enrich.mass_edit_action.add_to_variant_group:
         class: '%pim_enrich.mass_edit_action.add_to_variant_group.class%'
@@ -131,5 +138,6 @@ services:
             -
                 name: pim_enrich.mass_edit_action
                 alias: add-to-variant-group
-                acl: pim_enrich_product_add_to_variant_group
                 datagrid: product-grid
+                operation_group: mass_edit
+                acl: pim_enrich_product_add_to_variant_group
