@@ -55,6 +55,10 @@ class ProductDraftGrantedAttributeProvider
      */
     public function getViewable(ProductDraftInterface $proposal)
     {
+        if (!$proposal->hasChanges()) {
+            return [];
+        }
+
         $attributes = [];
         $values     = $proposal->getChanges()['values'];
 
@@ -74,7 +78,7 @@ class ProductDraftGrantedAttributeProvider
     /**
      * Check that the current user have view access to the change
      *
-     * @param AttributeInterface $attributeCode
+     * @param AttributeInterface $attribute
      * @param string             $localeCode
      *
      * @return bool

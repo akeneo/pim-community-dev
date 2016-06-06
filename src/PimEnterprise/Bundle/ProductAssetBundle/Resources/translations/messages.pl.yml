@@ -1,4 +1,9 @@
 pimee_product_asset:
+  enrich_asset:
+    button:
+      delete: Usuń
+    view:
+      code: Kod
   popin.create:
     is_localized: Określaj ustawienia regionalne
   code:
@@ -6,6 +11,11 @@ pimee_product_asset:
   status:
     label: Status
   tabs:
+    categories.title: Kategorie
+  createdAt:
+      label: Data utworzenia
+  tabs:
+    properties.title: Właściwości
     categories.title: Kategorie
 batch_jobs:
   yml_asset_channel_configuration_import:

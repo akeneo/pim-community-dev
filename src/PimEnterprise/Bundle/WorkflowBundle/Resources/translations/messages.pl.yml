@@ -1,1 +1,14 @@
+pimee_workflow:
+  product_draft:
+    author: Autor
+    status:
+      label: Status
+    action:
+      remove: Usuń
+  product:
+    permission:
+      label: Uprawnienia
+      edit: Edytuj
+      view: Zobacz
+Attributes.title: Atrybuty
 Completeness.title: Kompletność

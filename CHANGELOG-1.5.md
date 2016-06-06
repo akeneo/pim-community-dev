@@ -1,3 +1,15 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-5825: Fix proposals page when an attribute related to a proposal is deleted
+
+# 1.5.4 (2016-06-01)
+
+## Bug fixes
+
+- PIM-5796: Add ACL on revert button
+
 # 1.5.3 (2016-05-13)
 
 ## Bug fixes

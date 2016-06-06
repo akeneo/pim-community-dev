@@ -34,5 +34,5 @@ Feature: Filter product drafts
     Then the grid should contain 3 elements
     And I should be able to use the following filters:
       | filter    | operator | value | result              |
-      | attribute |          | Name  | Mary, Julia, Sandra |
-      | attribute |          | Price | Julia               |
+      | Attribute |          | Name  | Mary, Julia, Sandra |
+      | Attribute |          | Price | Julia               |

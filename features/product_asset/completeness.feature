@@ -25,10 +25,12 @@ Feature: Display the completeness of a product with assets
     And I visit the "Variations" tab
     And I upload the reference file akeneo.jpg
     And I save the asset
-    And I am on the "chicagoskyline" asset page
+    Then I should not see the text "There are unsaved changes."
+    When I am on the "chicagoskyline" asset page
     And I visit the "Variations" tab
     And I upload the reference file akeneo.jpg
     And I save the asset
+    Then I should not see the text "There are unsaved changes."
     And I launched the completeness calculator
 
   Scenario: Successfully update the completeness for a product with non localized asset

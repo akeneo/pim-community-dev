@@ -26,6 +26,7 @@ extensions:
     pim-product-edit-form-revert:
         module: pimee/product-edit-form/panel/history/revert
         parent: pim-product-edit-form-history
+        aclResourceId: pimee_versioning_product_version_revert
         targetZone: self
         position: 100
 

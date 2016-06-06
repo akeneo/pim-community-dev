@@ -22,9 +22,7 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
  */
 class ProductDraftHydrator implements HydratorInterface
 {
-    /**
-     * @var RequestParametersExtractorInterface
-     */
+    /** @var RequestParametersExtractorInterface */
     protected $extractor;
 
     /**
@@ -45,8 +43,10 @@ class ProductDraftHydrator implements HydratorInterface
         $query = $qb->getQuery();
         $rows = [];
         foreach ($query->execute() as $result) {
-            $result->setDataLocale($locale);
-            $rows[] = new ResultRecord($result);
+            if ($result->hasChanges()) {
+                $result->setDataLocale($locale);
+                $rows[] = new ResultRecord($result);
+            }
         }
 
         return $rows;
