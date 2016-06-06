@@ -124,10 +124,16 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.attribute_group'
 
     pim_connector.reader.file.csv_group_type:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.group_type'
 
     pim_connector.reader.file.csv_currency:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.currency'
 
     pim_connector.reader.file.csv_product:
         class: '%pim_connector.reader.file.csv_product.class%'
