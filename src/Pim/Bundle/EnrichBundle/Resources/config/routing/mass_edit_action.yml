@@ -1,6 +1,12 @@
 pim_enrich_mass_edit_action_choose:
-    path: /choose
-    defaults: { _controller: pim_enrich.controller.mass_edit_action:chooseAction }
+    path: /choose/mass-edit
+    defaults: { _controller: pim_enrich.controller.mass_edit_action:chooseAction, operationGroup: mass_edit }
+    requirements:
+        _method: GET|POST
+
+pim_enrich_category_edit_action_choose:
+    path: /choose/category-edit
+    defaults: { _controller: pim_enrich.controller.mass_edit_action:chooseAction, operationGroup: category_edit }
     requirements:
         _method: GET|POST
 

@@ -6,6 +6,7 @@ use Pim\Bundle\EnrichBundle\Form\Type\MassEditChooseActionType;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Retrieve the appropriate form corresponding to the operation
@@ -42,16 +43,17 @@ class MassEditFormResolver
 
     /**
      * Get the form to select the operation to apply on items.
-     * It contains available mass edit operation for the given $gridName.
+     * It contains available mass edit operation for the given $gridName and $actionGroup.
      *
      * @param string $gridName
+     * @param string $operationGroup
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
-    public function getAvailableOperationsForm($gridName)
+    public function getAvailableOperationsForm($gridName, $operationGroup)
     {
         $choices = [];
-        $availableOperations = $this->operationRegistry->getAllByGridName($gridName);
+        $availableOperations = $this->operationRegistry->getAllByGridNameAndGroup($gridName, $operationGroup);
 
         foreach (array_keys($availableOperations) as $alias) {
             $choices[$alias] = sprintf('pim_enrich.mass_edit_action.%s.label', $alias);
@@ -69,7 +71,7 @@ class MassEditFormResolver
      * @throws \LogicException If operation get from $operationAlias or $operation
      *                         doesn't implements ConfigurableOperationInterface
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
     public function getConfigurationForm($operationAlias, $operation = null)
     {

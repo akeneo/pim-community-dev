@@ -125,15 +125,17 @@ class MassEditActionController
      * @Template
      * @AclAncestor("pim_enrich_mass_edit")
      *
+     * @param string $operationGroup
+     *
      * @return array
      */
-    public function chooseAction()
+    public function chooseAction($operationGroup)
     {
         $gridName     = $this->request->get('gridName');
         $objectsCount = $this->request->get('objectsCount');
         $itemsName    = $this->getItemName($gridName);
 
-        $form = $this->massEditFormResolver->getAvailableOperationsForm($gridName);
+        $form = $this->massEditFormResolver->getAvailableOperationsForm($gridName, $operationGroup);
 
         if ($this->request->isMethod('POST')) {
             $form->submit($this->request);

@@ -17,6 +17,8 @@ confirmation:
 
 pim_datagrid:
     mass_action_group:
+        bulk_actions:
+            label: Bulk Actions
         quick_export:
             label: Quick Export
     mass_action:
@@ -97,13 +99,18 @@ Change status:                  Change status
 Toggle status:                  Toggle status
 
 # Quick export labels
-pim.grid.mass_action.quick_export.csv_all: CSV (All attributes)
-pim.grid.mass_action.quick_export.csv_grid_context: CSV (Grid context)
-pim.grid.mass_action.quick_export.xlsx_all: XLSX (All attributes)
-pim.grid.mass_action.quick_export.xlsx_grid_context: XLSX (Grid context)
-pim.grid.mass_action.delete:               Delete
-pim.grid.mass_action.mass_edit:            Mass Edit
-pim.grid.mass_action.sequential_edit:      Sequential Edit
+pim:
+    grid:
+        mass_action:
+            quick_export:
+                csv_all: CSV (All attributes)
+                csv_grid_context: CSV (Grid context)
+                xlsx_all: XLSX (All attributes)
+                xlsx_grid_context: XLSX (Grid context)
+            delete: Delete
+            mass_edit: Mass Edit
+            category_edit: Category Edit
+            sequential_edit: Sequential Edit
 
 # Jstree context menu actions
 jstree.create: Create

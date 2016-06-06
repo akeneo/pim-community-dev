@@ -32,17 +32,19 @@ class RegisterMassEditOperationsPassSpec extends ObjectBehavior
         $container->findTaggedServiceIds(RegisterMassEditOperationsPass::OPERATION_TAG)->willReturn([
             'mass_edit_action.uglify' => [
                 [
-                    'name'     => 'uglify_products',
-                    'alias'    => 'uglify',
-                    'datagrid' => 'product-grid'
+                    'name'            => 'uglify_products',
+                    'alias'           => 'uglify',
+                    'datagrid'        => 'product-grid',
+                    'operation_group' => 'mass-edit',
                 ]
             ],
             'mass_edit_action.duplicate' => [
                 [
-                    'name'     => 'duplicate_families',
-                    'alias'    => 'duplicate',
-                    'datagrid' => 'family-grid',
-                    'acl'      => 'pim_enrich_product_duplicate_family'
+                    'name'            => 'duplicate_families',
+                    'alias'           => 'duplicate',
+                    'datagrid'        => 'family-grid',
+                    'operation_group' => 'mass-edit',
+                    'acl'             => 'pim_enrich_product_duplicate_family'
                 ]
             ],
         ]);
@@ -53,15 +55,17 @@ class RegisterMassEditOperationsPassSpec extends ObjectBehavior
         $operationRegistry->addMethodCall('register', [
             $uglifyOperation,
             'uglify',
-            null,
-            'product-grid'
+            'product-grid',
+            'mass-edit',
+            null
         ])->shouldBeCalled();
 
         $operationRegistry->addMethodCall('register', [
             $duplicateOperation,
             'duplicate',
-            'pim_enrich_product_duplicate_family',
-            'family-grid'
+            'family-grid',
+            'mass-edit',
+            'pim_enrich_product_duplicate_family'
         ])->shouldBeCalled();
 
         $this->process($container);

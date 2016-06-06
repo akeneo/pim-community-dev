@@ -23,45 +23,44 @@ class OperationRegistrySpec extends ObjectBehavior
 
     function it_registers_a_mass_edit_operation_and_retrieves_it_by_its_alias(
         $securityFacade,
-        MassEditOperationInterface $dummyOperation,
         MassEditOperationInterface $gridOperation,
         MassEditOperationInterface $aclOperation
     ) {
-        $this->register($dummyOperation, 'dummy');
-        $this->get('dummy')->shouldReturn($dummyOperation);
-
-        $this->register($gridOperation, 'grid', null, 'product-grid');
+        $this->register($gridOperation, 'grid', 'product-grid', 'mass-edit');
         $this->get('grid')->shouldReturn($gridOperation);
 
         $securityFacade->isGranted('acl1')->willReturn(true);
-        $this->register($aclOperation, 'acl1', 'acl1', 'mass_edit_grid');
+        $this->register($aclOperation, 'acl1', 'mass_edit_grid', 'mass-edit', 'acl1');
         $this->get('acl1')->shouldReturn($aclOperation);
 
         $securityFacade->isGranted('acl2')->willReturn(false);
-        $this->register($aclOperation, 'acl2', 'acl2', 'mass_edit_grid');
+        $this->register($aclOperation, 'acl2', 'mass_edit_grid', 'mass-edit', 'acl2');
         $this->shouldThrow('\InvalidArgumentException')->during('get', ['acl2']);
     }
 
-    function it_retrieves_all_operation_registered_with_a_gridname(
+    function it_retrieves_all_operation_registered_with_a_gridname_and_group(
         MassEditOperationInterface $dummyOperation,
         MassEditOperationInterface $gridOperation,
+        MassEditOperationInterface $awesomeOperation,
         MassEditOperationInterface $amazingOperation
     ) {
-        $this->register($dummyOperation, 'dummy', null, 'product-grid');
-        $this->register($gridOperation, 'grid', null, 'product-grid');
-        $this->register($amazingOperation, 'amazing', null, 'family-grid');
+        $this->register($dummyOperation, 'dummy', 'product-grid', 'mass-edit');
+        $this->register($gridOperation, 'grid', 'product-grid', 'mass-edit');
+        $this->register($awesomeOperation, 'awesome', 'product-grid', 'category-edit');
+        $this->register($amazingOperation, 'amazing', 'family-grid', 'mass-edit');
 
-        $this->getAllByGridName('product-grid')->shouldHaveCount(2);
-        $this->getAllByGridName('family-grid')->shouldHaveCount(1);
+        $this->getAllByGridNameAndGroup('product-grid', 'mass-edit')->shouldHaveCount(2);
+        $this->getAllByGridNameAndGroup('product-grid', 'category-edit')->shouldHaveCount(1);
+        $this->getAllByGridNameAndGroup('family-grid', 'mass-edit')->shouldHaveCount(1);
     }
 
     function it_throws_an_exception_if_an_operation_is_already_registered(
         MassEditOperationInterface $dummyOperation,
         MassEditOperationInterface $amazingOperation
     ) {
-        $this->register($dummyOperation, 'dummy');
+        $this->register($dummyOperation, 'dummy', 'product-grid', 'mass-edit');
         $this->shouldThrow('\InvalidArgumentException')
-            ->during('register', [$amazingOperation, 'dummy']);
+            ->during('register', [$amazingOperation, 'dummy', 'product-grid', 'mass-edit']);
     }
 
     function it_throws_an_exception_if_no_operation_is_found_with_alias()
@@ -73,6 +72,6 @@ class OperationRegistrySpec extends ObjectBehavior
     function it_throws_an_exception_if_no_operation_is_found_with_gridname()
     {
         $this->shouldThrow('\InvalidArgumentException')
-            ->during('getAllByGridName', ['grid404']);
+            ->during('getAllByGridNameAndGroup', ['grid404', 'group404']);
     }
 }
