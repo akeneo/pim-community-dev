@@ -52,6 +52,7 @@ services:
         class: '%pim_connector.reader.file.csv.class%'
         arguments:
             - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_dummy_convertor_to_move'
 
     pim_connector.reader.file.csv_association_type:
         alias: pim_connector.reader.file.csv
@@ -63,7 +64,10 @@ services:
         alias: pim_connector.reader.file.csv
 
     pim_connector.reader.file.csv_attribute:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute'
 
     pim_connector.reader.file.csv_attribute_option:
         alias: pim_connector.reader.file.csv
@@ -96,6 +100,7 @@ services:
         class: '%pim_connector.reader.file.csv_product.class%'
         arguments:
             - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_dummy_convertor_to_move'
             - '@pim_connector.reader.file.media_path_transformer'
 
     # XLSX file Readers

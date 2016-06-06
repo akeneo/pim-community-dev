@@ -1474,6 +1474,7 @@ class FixturesContext extends BaseFixturesContext
      */
     protected function createAttribute($data)
     {
+        // TODO We should use the attribute reader service to avoid all these lines
         if (is_string($data)) {
             $data = [
                 'code'  => $data,
@@ -1522,8 +1523,11 @@ class FixturesContext extends BaseFixturesContext
             }
         }
 
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute');
+        $convertedData = $converter->convert($data);
+
         $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute.flat');
-        $attribute = $processor->process($data);
+        $attribute = $processor->process($convertedData);
 
         $familiesToPersist = [];
         if ($families) {

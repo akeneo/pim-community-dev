@@ -269,3 +269,12 @@ services:
     # checkers
     pim_connector.array_convertor.checker.fields_requirement:
         class: '%pim_connector.array_convertor.checker.fields_requirement.class%'
+
+    # Dummy convertor (TODO TO MOVE)
+    # Just here to keep the old readers during this PR.
+    pim_dummy_convertor_to_move:
+        class: '%pim_connector.array_converter.dummy.class%'
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+            - []
+            - []

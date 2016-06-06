@@ -5,7 +5,6 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Factory\AttributeFactory;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -17,9 +16,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeProcessor extends AbstractProcessor
 {
-    /** @var ArrayConverterInterface */
-    protected $converter;
-
     /** @var ObjectUpdaterInterface */
     protected $updater;
 
@@ -31,21 +27,18 @@ class AttributeProcessor extends AbstractProcessor
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param ArrayConverterInterface               $converter
      * @param AttributeFactory                      $factory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        ArrayConverterInterface $converter,
         AttributeFactory $factory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator
     ) {
         parent::__construct($repository);
 
-        $this->converter = $converter;
         $this->factory   = $factory;
         $this->updater   = $updater;
         $this->validator = $validator;
@@ -56,11 +49,10 @@ class AttributeProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $convertedItem = $this->converter->convert($item);
-        $entity        = $this->findOrCreateObject($convertedItem);
+        $entity = $this->findOrCreateObject($item);
 
         try {
-            $this->updater->update($entity, $convertedItem);
+            $this->updater->update($entity, $item);
         } catch (\InvalidArgumentException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }

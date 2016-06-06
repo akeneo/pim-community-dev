@@ -33,7 +33,6 @@ services:
         class: '%pim_connector.processor.denormalization.attribute.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
-            - '@pim_connector.array_converter.flat_to_standard.attribute'
             - '@pim_catalog.factory.attribute'
             - '@pim_catalog.updater.attribute'
             - '@validator'
