@@ -13,3 +13,6 @@ extensions:
 
     pim-filter-product-enabled:
         module: pim/filter/product/enabled
+
+    pim-filter-product-updated:
+        module: pim/filter/product/updated

@@ -39,8 +39,11 @@ extensions:
                     field: completeness
                     view: pim-filter-text
                 -
-                    field: family
+                    field: family.code
                     view: pim-filter-product-family
+                -
+                    field: updated
+                    view: pim-filter-product-updated
 
     pim-product-export-edit-content-data-add-filter:
         module: pim/product-edit-form/attributes/add-attribute #to change
