@@ -90,7 +90,7 @@ connector:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
                     services:
-                        reader:    pim_connector.reader.file.csv
+                        reader:    pim_connector.reader.file.csv_association_type
                         processor: pim_connector.processor.denormalization.association_type.flat
                         writer:    pim_connector.writer.database.association_type
 
@@ -129,7 +129,7 @@ connector:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
                     services:
-                        reader:    pim_connector.reader.file.csv
+                        reader:    pim_connector.reader.file.csv_family
                         processor: pim_connector.processor.denormalization.family.flat
                         writer:    pim_connector.writer.database.family
 
@@ -188,7 +188,7 @@ connector:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
                     services:
-                        reader:    pim_connector.reader.file.csv
+                        reader:    pim_connector.reader.file.csv_user
                         processor: pim_connector.processor.denormalization.user.flat
                         writer:    pim_connector.writer.database.user
 
@@ -201,7 +201,7 @@ connector:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
                     services:
-                        reader:    pim_connector.reader.file.csv
+                        reader:    pim_connector.reader.file.csv_user_role
                         processor: pim_connector.processor.denormalization.user_role.flat
                         writer:    pim_connector.writer.database.user_role
 
@@ -214,7 +214,7 @@ connector:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
                     services:
-                        reader:    pim_connector.reader.file.csv
+                        reader:    pim_connector.reader.file.csv_user_group
                         processor: pim_connector.processor.denormalization.user_group.flat
                         writer:    pim_connector.writer.database.user_group
 

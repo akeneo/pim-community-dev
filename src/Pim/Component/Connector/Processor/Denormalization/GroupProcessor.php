@@ -72,21 +72,21 @@ class GroupProcessor extends AbstractProcessor
     /**
      * Find or create group
      *
-     * @param array $convertedItem
+     * @param array $item
      *
      * @return GroupInterface
      */
-    protected function findOrCreateGroup(array $convertedItem)
+    protected function findOrCreateGroup(array $item)
     {
-        if (null === $group = $this->findObject($this->repository, $convertedItem)) {
-            $group = $this->groupFactory->createGroup($convertedItem['type']);
+        if (null === $group = $this->findObject($this->repository, $item)) {
+            $group = $this->groupFactory->createGroup($item['type']);
         }
 
         $isExistingGroup = (null !== $group->getType() && true === $group->getType()->isVariant());
         if ($isExistingGroup) {
             $this->skipItemWithMessage(
-                $convertedItem,
-                sprintf('Cannot process variant group "%s", only groups are accepted', $convertedItem['code'])
+                $item,
+                sprintf('Cannot process variant group "%s", only groups are accepted', $item['code'])
             );
         }
 

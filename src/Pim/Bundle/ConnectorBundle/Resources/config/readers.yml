@@ -56,10 +56,16 @@ services:
             - '@pim_dummy_convertor_to_move'
 
     pim_connector.reader.file.csv_association_type:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.association_type'
 
     pim_connector.reader.file.csv_family:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.family'
 
     pim_connector.reader.file.csv_association:
         alias: pim_connector.reader.file.csv
@@ -90,16 +96,28 @@ services:
             - '@pim_connector.reader.file.media_path_transformer'
 
     pim_connector.reader.file.csv_category:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.category'
 
     pim_connector.reader.file.csv_channel:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.channel'
 
     pim_connector.reader.file.csv_locale:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.locale'
 
     pim_connector.reader.file.csv_attribute_group:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute_group'
 
     pim_connector.reader.file.csv_group_type:
         alias: pim_connector.reader.file.csv
@@ -113,6 +131,24 @@ services:
             - '@pim_connector.reader.file.csv_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.product'
             - '@pim_connector.reader.file.media_path_transformer'
+
+    pim_connector.reader.file.csv_user:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.user'
+
+    pim_connector.reader.file.csv_user_group:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.user_group'
+
+    pim_connector.reader.file.csv_user_role:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.user_role'
 
     # XLSX file Readers
     pim_connector.reader.file.xlsx:

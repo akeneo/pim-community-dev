@@ -40,7 +40,6 @@ services:
         class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.association_type'
-            - '@pim_connector.array_converter.flat_to_standard.association_type'
             - '@pim_catalog.factory.association_type'
             - '@pim_catalog.updater.association_type'
             - '@validator'
@@ -88,7 +87,6 @@ services:
         class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.category'
-            - '@pim_connector.array_converter.flat_to_standard.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.updater.category'
             - '@pim_catalog.validator.product'
@@ -98,7 +96,6 @@ services:
         class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.family'
-            - '@pim_connector.array_converter.flat_to_standard.family'
             - '@pim_catalog.factory.family'
             - '@pim_catalog.updater.family'
             - '@pim_catalog.validator.product'
@@ -108,7 +105,6 @@ services:
         class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.channel'
-            - '@pim_connector.array_converter.flat_to_standard.channel'
             - '@pim_catalog.factory.channel'
             - '@pim_catalog.updater.channel'
             - '@pim_catalog.validator.product'
@@ -118,7 +114,6 @@ services:
         class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.locale'
-            - '@pim_connector.array_converter.flat_to_standard.locale'
             - '@pim_catalog.factory.locale'
             - '@pim_catalog.updater.locale'
             - '@pim_catalog.validator.product'
@@ -128,7 +123,6 @@ services:
         class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.attribute_group'
-            - '@pim_connector.array_converter.flat_to_standard.attribute_group'
             - '@pim_catalog.factory.attribute_group'
             - '@pim_catalog.updater.attribute_group'
             - '@pim_catalog.validator.product'
@@ -156,7 +150,6 @@ services:
         class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_user.repository.user'
-            - '@pim_connector.array_converter.flat_to_standard.user'
             - '@pim_user.factory.user'
             - '@pim_user.updater.user'
             - '@pim_catalog.validator.product'
@@ -166,7 +159,6 @@ services:
         class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_user.repository.group'
-            - '@pim_connector.array_converter.flat_to_standard.user_group'
             - '@pim_user.factory.group'
             - '@pim_user.updater.group'
             - '@pim_catalog.validator.product'
@@ -176,7 +168,6 @@ services:
         class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_user.repository.role'
-            - '@pim_connector.array_converter.flat_to_standard.user_role'
             - '@pim_user.factory.role'
             - '@pim_user.updater.role'
             - '@pim_catalog.validator.product'
