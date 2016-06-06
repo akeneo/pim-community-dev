@@ -49,7 +49,6 @@ services:
     pim_connector.processor.denormalization.product.flat:
         class: '%pim_connector.processor.denormalization.product.class%'
         arguments:
-            - '@pim_connector.array_converter.flat_to_standard.product'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.updater.product'
@@ -71,7 +70,6 @@ services:
     pim_connector.processor.denormalization.variant_group.flat:
         class: '%pim_connector.processor.denormalization.variant_group.class%'
         arguments:
-            - '@pim_connector.array_converter.flat_to_standard.variant_group'
             - '@pim_catalog.repository.group'
             - '@pim_catalog.factory.group'
             - '@pim_catalog.updater.variant_group'
@@ -80,7 +78,6 @@ services:
     pim_connector.processor.denormalization.group.flat:
         class: '%pim_connector.processor.denormalization.group.class%'
         arguments:
-            - '@pim_connector.array_converter.flat_to_standard.group'
             - '@pim_catalog.repository.group'
             - '@pim_catalog.factory.group'
             - '@pim_catalog.updater.group'

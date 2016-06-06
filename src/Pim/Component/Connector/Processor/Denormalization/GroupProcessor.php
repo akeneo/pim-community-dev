@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -21,9 +20,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GroupProcessor extends AbstractProcessor
 {
-    /** @var ArrayConverterInterface */
-    protected $groupConverter;
-
     /** @var ObjectUpdaterInterface */
     protected $groupUpdater;
 
@@ -34,14 +30,12 @@ class GroupProcessor extends AbstractProcessor
     protected $groupFactory;
 
     /**
-     * @param ArrayConverterInterface               $groupConverter
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param GroupFactory                          $groupFactory
      * @param ObjectUpdaterInterface                $groupUpdater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
-        ArrayConverterInterface $groupConverter,
         IdentifiableObjectRepositoryInterface $repository,
         GroupFactory $groupFactory,
         ObjectUpdaterInterface $groupUpdater,
@@ -49,7 +43,6 @@ class GroupProcessor extends AbstractProcessor
     ) {
         parent::__construct($repository);
 
-        $this->groupConverter = $groupConverter;
         $this->groupFactory   = $groupFactory;
         $this->groupUpdater   = $groupUpdater;
         $this->validator      = $validator;
@@ -60,11 +53,10 @@ class GroupProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $convertedItem = $this->convertItemData($item);
-        $group = $this->findOrCreateGroup($convertedItem);
+        $group = $this->findOrCreateGroup($item);
 
         try {
-            $this->updateGroup($group, $convertedItem);
+            $this->updateGroup($group, $item);
         } catch (\InvalidArgumentException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
@@ -75,16 +67,6 @@ class GroupProcessor extends AbstractProcessor
         }
 
         return $group;
-    }
-
-    /**
-     * @param array $item
-     *
-     * @return array
-     */
-    protected function convertItemData(array $item)
-    {
-        return $this->groupConverter->convert($item);
     }
 
     /**

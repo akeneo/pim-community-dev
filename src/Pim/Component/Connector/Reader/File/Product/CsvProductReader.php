@@ -49,4 +49,40 @@ class CsvProductReader extends CsvReader
 
         return $this->mediaPathTransformer->transform($data, $this->fileIterator->getDirectoryPath());
     }
+
+    /**
+     * @return array
+     */
+    protected function getArrayConverterOptions()
+    {
+        return [
+            'mapping'           => $this->getMapping(),
+            'default_values'    => $this->getDefaultValues(),
+            'with_associations' => false
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getMapping()
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+
+        return [
+            $jobParameters->get('familyColumn')     => 'family',
+            $jobParameters->get('categoriesColumn') => 'categories',
+            $jobParameters->get('groupsColumn')     => 'groups'
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getDefaultValues()
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+
+        return ['enabled' => $jobParameters->get('enabled')];
+    }
 }

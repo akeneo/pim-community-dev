@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -10,7 +9,6 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -28,9 +26,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductProcessor extends AbstractProcessor
 {
-    /** @var ArrayConverterInterface */
-    protected $arrayConverter;
-
     /** @var ProductBuilderInterface */
     protected $builder;
 
@@ -53,7 +48,6 @@ class ProductProcessor extends AbstractProcessor
     protected $localizedConverter;
 
     /**
-     * @param ArrayConverterInterface               $arrayConverter     array converter
      * @param IdentifiableObjectRepositoryInterface $repository         product repository
      * @param ProductBuilderInterface               $builder            product builder
      * @param ObjectUpdaterInterface                $updater            product updater
@@ -63,7 +57,6 @@ class ProductProcessor extends AbstractProcessor
      * @param AttributeConverterInterface           $localizedConverter attributes localized converter
      */
     public function __construct(
-        ArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ProductBuilderInterface $builder,
         ObjectUpdaterInterface $updater,
@@ -74,7 +67,6 @@ class ProductProcessor extends AbstractProcessor
     ) {
         parent::__construct($repository);
 
-        $this->arrayConverter     = $arrayConverter;
         $this->builder            = $builder;
         $this->updater            = $updater;
         $this->validator          = $validator;
@@ -88,23 +80,23 @@ class ProductProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $convertedItem = $this->convertItemData($item);
+        $this->itemHasStatus = array_key_exists('enabled', $item);
 
-        $convertedItem = $this->convertLocalizedAttributes($convertedItem);
+        $item = $this->convertLocalizedAttributes($item);
         $violations = $this->localizedConverter->getViolations();
 
         if ($violations->count() > 0) {
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
-        $identifier = $this->getIdentifier($convertedItem);
+        $identifier = $this->getIdentifier($item);
 
         if (null === $identifier) {
             $this->skipItemWithMessage($item, 'The identifier must be filled');
         }
 
-        $familyCode    = $this->getFamilyCode($convertedItem);
-        $filteredItem  = $this->filterItemData($convertedItem);
+        $familyCode    = $this->getFamilyCode($item);
+        $filteredItem  = $this->filterItemData($item);
 
         $product = $this->findOrCreateProduct($identifier, $familyCode);
 
@@ -145,15 +137,15 @@ class ProductProcessor extends AbstractProcessor
     /**
      * Check and convert localized attributes to default format
      *
-     * @param array $convertedItem
+     * @param array $item
      *
      * @return array
      */
-    protected function convertLocalizedAttributes(array $convertedItem)
+    protected function convertLocalizedAttributes(array $item)
     {
         $jobParameters = $this->stepExecution->getJobParameters();
 
-        return $this->localizedConverter->convertToDefaultFormats($convertedItem, [
+        return $this->localizedConverter->convertToDefaultFormats($item, [
             'decimal_separator' => $jobParameters->get('decimalSeparator'),
             'date_format'       => $jobParameters->get('dateFormat')
         ]);
@@ -177,50 +169,49 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function convertItemData(array $item)
     {
-        $this->itemHasStatus = array_key_exists('enabled', $item);
-
-        return $this->arrayConverter->convert($item, $this->getArrayConverterOptions());
     }
 
     /**
-     * @param array $convertedItem
+     * @param array $item
      *
      * @return string
      */
-    protected function getIdentifier(array $convertedItem)
+    protected function getIdentifier(array $item)
     {
         $identifierProperty = $this->repository->getIdentifierProperties()[0];
-        if (!isset($convertedItem[$identifierProperty])) {
+        if (!isset($item[$identifierProperty])) {
             throw new \RuntimeException(sprintf('Identifier property "%s" is expected', $identifierProperty));
         }
 
-        return $convertedItem[$identifierProperty][0]['data'];
+        return $item[$identifierProperty][0]['data'];
     }
 
     /**
-     * @param array $convertedItem
+     * @param array $item
      *
      * @return string|null
      */
-    protected function getFamilyCode(array $convertedItem)
+    protected function getFamilyCode(array $item)
     {
-        return isset($convertedItem['family']) ? $convertedItem['family'] : null;
+        return isset($item['family']) ? $item['family'] : null;
     }
 
     /**
      * Filters item data to remove associations which are imported through a dedicated processor because we need to
      * create any products before to associate them
      *
-     * @param array $convertedItem
+     * @param array $item
      *
      * @return array
      */
-    protected function filterItemData(array $convertedItem)
+    protected function filterItemData(array $item)
     {
-        unset($convertedItem[$this->repository->getIdentifierProperties()[0]]);
-        unset($convertedItem['associations']);
+        foreach ($this->repository->getIdentifierProperties() as $identifierProperty) {
+            unset($item[$identifierProperty]);
+        }
+        unset($item['associations']);
 
-        return $convertedItem;
+        return $item;
     }
 
     /**
@@ -271,41 +262,5 @@ class ProductProcessor extends AbstractProcessor
     protected function detachProduct(ProductInterface $product)
     {
         $this->detacher->detach($product);
-    }
-
-    /**
-     * @return array
-     */
-    protected function getArrayConverterOptions()
-    {
-        return [
-            'mapping'           => $this->getMapping(),
-            'default_values'    => $this->getDefaultValues(),
-            'with_associations' => false
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getMapping()
-    {
-        $jobParameters = $this->stepExecution->getJobParameters();
-
-        return [
-            $jobParameters->get('familyColumn')     => 'family',
-            $jobParameters->get('categoriesColumn') => 'categories',
-            $jobParameters->get('groupsColumn')     => 'groups'
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getDefaultValues()
-    {
-        $jobParameters = $this->stepExecution->getJobParameters();
-
-        return ['enabled' => $jobParameters->get('enabled')];
     }
 }

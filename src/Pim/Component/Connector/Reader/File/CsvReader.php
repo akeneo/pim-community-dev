@@ -70,7 +70,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
 
         $item = $this->fileIterator->current();
 
-        return (null === $item) ? null : $this->converter->convert($item);
+        return (null === $item) ? null : $this->converter->convert($item, $this->getArrayConverterOptions());
     }
 
     /**
@@ -87,5 +87,15 @@ class CsvReader extends AbstractConfigurableStepElement implements
     public function flush()
     {
         $this->fileIterator = null;
+    }
+
+    /**
+     * Returns the options for array converter. It should be overridden in the sub classes.
+     *
+     * @return array
+     */
+    protected function getArrayConverterOptions()
+    {
+        return [];
     }
 }
