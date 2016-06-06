@@ -2413,4 +2413,20 @@ class WebUser extends RawMinkContext
             assertEquals((int) $expectedCount, count($items));
         }
     }
+
+    /**
+     * @When /^I collapse the category sidebar$/
+     */
+    public function iCollapseTheCategorySidebar()
+    {
+        $this->getCurrentPage()->getElement('Sidebar collapse button')->click();
+    }
+
+    /**
+     * @When /^I expand the category sidebar$/
+     */
+    public function iExpandTheCategorySidebar()
+    {
+        $this->getCurrentPage()->getElement('Sidebar expand button')->click();
+    }
 }

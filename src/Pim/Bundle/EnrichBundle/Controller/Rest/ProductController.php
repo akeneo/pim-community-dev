@@ -263,7 +263,7 @@ class ProductController
     }
 
     /**
-     * Remove an optional attribute form a product
+     * Remove an optional attribute from a product
      *
      * @param int $id          The product id
      * @param int $attributeId The attribute id
@@ -355,7 +355,7 @@ class ProductController
         $values = $this->emptyValuesFilter->filter($product, $values);
 
         unset($data['values']);
-        $data = array_merge($data, $values);
+        $data = array_replace($data, $values);
 
         $this->productUpdater->update($product, $data);
     }

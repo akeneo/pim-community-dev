@@ -1,3 +1,20 @@
+# 1.5.*
+
+- PIM-5711: Don't create empty attribute translations if attributes are imported with empty labels
+- PIM-5829: Fix an issue with wrong parameters order in FamilyUpdater
+
+# 1.5.4 (2016-06-01)
+
+## Bug fixes
+
+- PIM-5710: Fix thumbnail display after file upload in the product edit form
+- PIM-5811: Fix family export with multiple locales activated
+- PIM-5726: Fix number of product displayed on Product Grid when category panel is withdrawn
+- PIM-5801: Fix save in product edit form when attribute code is only numeric
+- PIM-5802: Keep data previously filled in select2 filter
+- PIM-5824: Fix memory leak on products export
+- PIM-5712: Keep reference in "akeneo_file_storage_file_info" table after removing a media attribute from a product
+
 # 1.5.3 (2016-05-13)
 
 ## Bug fixes
@@ -15,6 +32,10 @@
 
 - PIM-5762: Removed unused category filters on product datagrids
 - Upgrade "akeneo/measure-bundle" from "0.4.1" to "0.5.0", details in the release note https://github.com/akeneo/MeasureBundle/releases/tag/0.5.0
+
+## Bug fixes
+
+- PIM-5643: Fix default system locale was not fixed by the last PIM-5643 ticket, tagged in 1.5.2
 
 # 1.5.2 (2016-04-25)
 

@@ -29,7 +29,7 @@ Please, select item to perform action.: Proszę, zaznacz elementy do wykonania a
 View per page: Wyników na stronie
 oro.datagrid.entityHint: Encja
 oro.datagrid.noentities: Nie znaleziono żadnych rekordów
-oro.datagrid.noresults: Nic nie znaleziono. Spróbuj zmienić kryteria wyszukiwania.
+oro.datagrid.noresults: Brak wyników. Spróbuj zmienić kryteria wyszukiwania.
 oro.datagrid.nocolumns: Kolumny dla tej tabeli nie zostały ustawione
 oro.datagrid.pagination.label: Strona
 oro.datagrid.pagination.totalPages: 'z {{ totalPages }}'
@@ -38,11 +38,11 @@ oro.datagrid.action.reset: Resetuj
 oro.datagrid.action.refresh: Odśwież
 oro_datagrid.select.all: Wszystkie
 oro_datagrid.select.visible: Wszystkie widoczne
-oro_datagrid.select.none: Żaden
+oro_datagrid.select.none: Brak
 pim.grid.ajax_choice_filter.label_empty: jest pusty
 pim.grid.choice_filter:
-  label_empty: jest pusty
-  label_in_list: na liście
+  label_empty: Jest pusty
+  label_in_list: Na liście
 Available Columns: Dostępne kolumny
 Displayed Columns: Wyświetlone kolumny
 datagrid_view.columns.min_message: Musisz wybrać co najmniej jedną kolumnę tabeli do wyświetlania

@@ -29,3 +29,19 @@ Feature: Filter products by category
     Then I should be able to use the following filters:
       | filter   | operator | value    | result     |
       | category |          | men_2015 | blue-jeans |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5726
+  Scenario: Successfully filter products by category when hiding the category sidebar
+    Given I am on the products page
+    When I select the "2015 collection" tree
+    Then I should see products purple-tshirt, green-tshirt and blue-jeans
+    Then I should be able to use the following filters:
+      | filter   | value      | result                         |
+      | category | women_2015 | purple-tshirt and green-tshirt |
+    And the grid should contain 2 elements
+    When I collapse the category sidebar
+    And I change the page size to 50
+    Then the grid should contain 2 elements
+    When I expand the category sidebar
+    And I change the page size to 25
+    Then the grid should contain 2 elements

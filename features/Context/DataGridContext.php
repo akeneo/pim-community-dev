@@ -671,6 +671,53 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $filterName
+     *
+     * @When /^I open the "([^"]*)" filter$/
+     */
+    public function iOpenTheFilter($filterName)
+    {
+        $filter = $this->datagrid->getFilter($filterName);
+
+        $this->datagrid->openFilter($filter);
+    }
+
+    /**
+     * @param string $optionNames
+     * @param string $filterName
+     *
+     * @throws ExpectationException
+     *
+     * @Then /^I should see options? "([^"]*)" in filter "([^"]*)"$/
+     */
+    public function iShouldSeeOptionInFilter($optionNames, $filterName)
+    {
+        $expectedOptions = $this->getMainContext()->listToArray($optionNames);
+        $filter = $this->datagrid->getFilter($filterName);
+
+        $options = $filter->findAll('css', '.select2-choices .select2-search-choice');
+        if (null === $options) {
+            throw $this->createExpectationException(sprintf('Unable to find choices in filter "%s"', $filterName));
+        }
+
+        $data = [];
+        foreach ($options as $option) {
+            $data[] = $option->getText();
+        }
+
+        if ($data != $expectedOptions) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting filter "%s" to contain the options "%s", got "%s"',
+                    $filterName,
+                    implode(', ', $expectedOptions),
+                    implode(', ', $data)
+                )
+            );
+        }
+    }
+
+    /**
      * @param string $row
      *
      * @When /^I click on the "([^"]*)" row$/

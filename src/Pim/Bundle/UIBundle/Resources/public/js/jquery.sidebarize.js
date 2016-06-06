@@ -33,11 +33,14 @@
     }
 
     function collapse($element, opts) {
-        $('>.sidebar', $element).hide();
+        var $switchInputLabel = $('label[for="nested_switch_input"]');
+
+        $('>.sidebar', $element).width(0);
         $('>.separator', $element).toggleClass('expanded collapsed').css({
             'width': opts.collapsedSeparatorWidth - 2 + 'px',
             'cursor': 'default'
         });
+        $switchInputLabel.hide();
         adjustWidth($element, opts);
         $element.find('.separator i').addClass(opts.expandIcon);
         $element.find('.separator b').removeClass(opts.dragIcon);
@@ -45,11 +48,14 @@
     }
 
     function expand($element, opts) {
-        $('>.sidebar', $element).show();
+        var $switchInputLabel = $('label[for="nested_switch_input"]');
+
+        $('>.sidebar', $element).width(parseInt(getState(opts.widthStorageKey), 10) || opts.sidebarWidth);
         $('>.separator', $element).toggleClass('expanded collapsed').css({
             'width': opts.separatorWidth - 2 + 'px',
             'cursor': opts.resizeCursor
         });
+        $switchInputLabel.show();
         adjustWidth($element, opts);
         $element.find('.separator i').removeClass(opts.expandIcon);
         $element.find('.separator b').addClass(opts.dragIcon);

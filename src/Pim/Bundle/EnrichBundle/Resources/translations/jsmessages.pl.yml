@@ -26,27 +26,25 @@ flash:
   item:
     removed: Element usunięty pomyślnie
   association type:
-    removed: Typ powiązania usunięty pomyślnie
+    removed: Typ powiązania został pomyślnie usunięty
   attribute:
-    removed: Pomyślnie usunięto atrybut
+    removed: Atrybut został pomyślnie usunięty
   family:
-    removed: Rodzina została usunięta pomyślnie
-  product:
-    removed: Produkt pomyślnie usunięty
+    removed: Rodzina produktów została usunięta pomyślnie
   channel:
-    removed: Kanał pomyślnie usunięty
+    removed: Kanał został pomyślnie usunięty
   group:
     removed: Grupa została pomyślnie usunięta
   variant group:
-    removed: Grupa wariantów usunięta pomyślnie
+    removed: Grupa wariantów została pomyślnie usunięta
   group type:
-    removed: Typ grupy usunięty pomyślnie
+    removed: Typ grupy został pomyślnie usunięty
   import profile:
     removed: Profil importu usunięty pomyślnie
   export profile:
     removed: Profil eksportu usunięty pomyślnie
   user:
-    removed: Użytkownik usunięty pomyślnie
+    removed: Użytkownik został pomyślnie usunięty
   role:
     removed: Rola usunięta pomyślnie
 error:
@@ -151,10 +149,10 @@ pim_enrich:
         created: Utworzono
         created_by: Przez
         updated_by: Przez
-        updated: Modyfikowany
+        updated: Ostatnia aktualizacja
         family:
           title: Rodzina
-          none: Żaden
+          none: Brak
         groups:
           title: Grupy
           modal:

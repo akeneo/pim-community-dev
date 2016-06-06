@@ -197,10 +197,10 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param FamilyInterface $family
-     * @param array           $requirements
+     * @param FamilyInterface                 $family
+     * @param AttributeRequirementInterface[] $requirements
      *
-     * @return array
+     * @return AttributeRequirementInterface[]
      */
     protected function addMissingIdentifierRequirements(FamilyInterface $family, array $requirements)
     {
@@ -214,7 +214,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
         $missingChannelCodes = array_diff($channelCodes, $existingChannelCode);
         $identifier = $this->attributeRepository->getIdentifier();
         foreach ($missingChannelCodes as $channelCode) {
-            $requirements[] = $this->createAttributeRequirement($identifier, $family, $channelCode);
+            $requirements[] = $this->createAttributeRequirement($family, $identifier, $channelCode);
         }
 
         return $requirements;
@@ -243,6 +243,8 @@ class FamilyUpdater implements ObjectUpdaterInterface
         if (null === $requirement) {
             $requirement = $this->attrRequiFactory->createAttributeRequirement($attribute, $channel, true);
         }
+
+        $requirement->setRequired(true);
 
         return $requirement;
     }

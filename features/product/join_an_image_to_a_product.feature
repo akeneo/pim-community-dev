@@ -53,3 +53,26 @@ Feature: Join an image to a product
     And I save the product
     Then I should not see the text "akeneo.jpg"
     But I should see the text "bic-core-148.gif"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5712
+  Scenario: Successfully remove an image then its field and keep a reference to the file in database
+    When I attach file "akeneo.jpg" to "Visual"
+    And I save the product
+    And I remove the "Visual" file
+    And I save the product
+    Then I should not see the text "akeneo.jpg"
+    When I remove the "Visual" attribute
+    And I confirm the deletion
+    And I save the product
+    Then I should see available attribute Visual in group "Other"
+    And The file with original filename "akeneo.jpg" should exists in database
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5712
+  Scenario: Successfully remove an image field containing an image and keep a reference to the file in database
+    When I attach file "akeneo.jpg" to "Visual"
+    And I save the product
+    And I remove the "Visual" attribute
+    And I confirm the deletion
+    And I save the product
+    Then I should see available attribute Visual in group "Other"
+    And The file with original filename "akeneo.jpg" should exists in database

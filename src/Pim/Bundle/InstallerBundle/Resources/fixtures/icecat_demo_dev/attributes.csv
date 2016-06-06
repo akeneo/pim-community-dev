@@ -25,7 +25,7 @@ pim_catalog_metric;display_diagonal;Bildschirmdiagonale;"Display diagonal";"Tail
 pim_catalog_date;release_date;Erscheinungstermin;"Release date";"Date de sortie";marketing;0;1;;;;;0;1
 pim_catalog_metric;viewing_area;"Effektive Bildfläche";"Effective viewing area";"Zone d'affichage active";technical;0;1;;Length;MILLIMETER;;0;0
 pim_catalog_price_collection;price;Preis;Price;Prix;marketing;0;1;;;;;0;0
-pim_catalog_image;picture;Photography;Picture;Photographie;media;0;1;jpg,jpeg,gif;;;;0;0
+pim_catalog_image;picture;Photography;Picture;Photographie;media;0;1;jpg,jpeg,gif,png;;;;0;0
 pim_catalog_file;pdf_description;"PDF Bezeichnung";"PDF description";"Description PDF";media;0;1;pdf;;;;0;0
 pim_catalog_simpleselect;container_material;Behältermaterial;"Container material";"Matériau du récipient";manufacturing;0;1;;;;;0;0
 pim_catalog_simpleselect;main_color;Hauptfarbe;"Main color";"Couleur principale";color;0;1;;;;;0;0
