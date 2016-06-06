@@ -69,28 +69,7 @@ class AttributeColumnsResolver
             $currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
             $values = $this->valuesResolver->resolveEligibleValues($attributes);
             foreach ($values as $value) {
-                if (null !== $value['locale'] && null !== $value['scope']) {
-                    $field = sprintf(
-                        '%s-%s-%s',
-                        $value['attribute'],
-                        $value['locale'],
-                        $value['scope']
-                    );
-                } elseif (null !== $value['locale']) {
-                    $field = sprintf(
-                        '%s-%s',
-                        $value['attribute'],
-                        $value['locale']
-                    );
-                } elseif (null !== $value['scope']) {
-                    $field = sprintf(
-                        '%s-%s',
-                        $value['attribute'],
-                        $value['scope']
-                    );
-                } else {
-                    $field = $value['attribute'];
-                }
+                $field = $this->resolveFlatAttributeName($value['attribute'], $value['locale'], $value['scope']);
 
                 if (AttributeTypes::PRICE_COLLECTION === $value['type']) {
                     $this->attributesFields[] = $field;
@@ -109,5 +88,48 @@ class AttributeColumnsResolver
         }
 
         return $this->attributesFields;
+    }
+
+    /**
+     * Resolve the full flat attribute name depending on the $attribute, the $locale and the $scope.
+     *
+     * Examples:
+     *
+     *  description-en_US-mobile
+     *  name-ecommerce
+     *  weight
+     *
+     * @param $attribute
+     * @param $locale
+     * @param $scope
+     *
+     * @return string
+     */
+    public function resolveFlatAttributeName($attribute, $locale, $scope)
+    {
+        if (null !== $locale && null !== $scope) {
+            $field = sprintf(
+                '%s-%s-%s',
+                $attribute,
+                $locale,
+                $scope
+            );
+        } elseif (null !== $locale) {
+            $field = sprintf(
+                '%s-%s',
+                $attribute,
+                $locale
+            );
+        } elseif (null !== $scope) {
+            $field = sprintf(
+                '%s-%s',
+                $attribute,
+                $scope
+            );
+        } else {
+            $field = $attribute;
+        }
+
+        return $field;
     }
 }

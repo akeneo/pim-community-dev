@@ -80,4 +80,17 @@ class AttributeColumnsResolverSpec extends ObjectBehavior
                 ]
             );
     }
+
+    function it_resolves_flat_attribute_name()
+    {
+        $expected1 = 'description-en_US-mobile';
+        $expected2 = 'name-ecommerce';
+        $expected3 = 'weight-fr_FR';
+        $expected4 = 'sku';
+
+        $this->resolveFlatAttributeName('description', 'en_US', 'mobile')->shouldReturn($expected1);
+        $this->resolveFlatAttributeName('name', null, 'ecommerce')->shouldReturn($expected2);
+        $this->resolveFlatAttributeName('weight', 'fr_FR', null)->shouldReturn($expected3);
+        $this->resolveFlatAttributeName('sku', null, null)->shouldReturn($expected4);
+    }
 }
