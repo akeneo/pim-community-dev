@@ -29,6 +29,7 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -1638,10 +1639,6 @@ class FixturesContext extends BaseFixturesContext
         $channel->setCode($data['code']);
         $channel->setLabel($data['label']);
 
-        if ($data['color']) {
-            $channel->setColor($data['color']);
-        }
-
         foreach ($this->listToArray($data['currencies']) as $currencyCode) {
             $channel->addCurrency($this->getCurrency($currencyCode));
         }
@@ -1667,12 +1664,9 @@ class FixturesContext extends BaseFixturesContext
      */
     protected function createProductGroup($code, $label, $type, array $attributes, array $products = [])
     {
-        $group = new Group();
+        $group = $this->getGroupFactory()->createGroup($type);
         $group->setCode($code);
         $group->setLocale('en_US')->setLabel($label); // TODO translation refactoring
-
-        $type = $this->getGroupType($type);
-        $group->setType($type);
 
         foreach ($attributes as $attributeCode) {
             $attribute = $this->getAttribute($attributeCode);
@@ -1689,6 +1683,14 @@ class FixturesContext extends BaseFixturesContext
                 $this->getProductSaver()->save($product);
             }
         }
+    }
+
+    /**
+     * @return GroupFactory
+     */
+    protected function getGroupFactory()
+    {
+        return $this->getContainer()->get('pim_catalog.factory.group');
     }
 
     /**

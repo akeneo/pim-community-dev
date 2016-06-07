@@ -116,9 +116,11 @@ class AttributeUpdater implements ObjectUpdaterInterface
     protected function setLabels(AttributeInterface $attribute, array $data)
     {
         foreach ($data as $localeCode => $label) {
-            $attribute->setLocale($localeCode);
-            $translation = $attribute->getTranslation();
-            $translation->setLabel($label);
+            if (null !== $label && '' !== $label) {
+                $attribute->setLocale($localeCode);
+                $translation = $attribute->getTranslation();
+                $translation->setLabel($label);
+            }
         }
     }
 

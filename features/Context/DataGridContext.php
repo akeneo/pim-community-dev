@@ -354,10 +354,21 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $filterName
      *
      * @Then /^I hide the filter "([^"]*)"$/
+     * @Then /^I collapse the "([^"]*)" sidebar$/
      */
     public function iHideTheFilter($filterName)
     {
         $this->datagrid->hideFilter($filterName);
+    }
+
+    /**
+     * @param string $filterName
+     *
+     * @Then /^I expand the "([^"]*)" sidebar$/
+     */
+    public function iExpandTheCategoriesSidebar($filterName)
+    {
+        $this->datagrid->expandFilter($filterName);
     }
 
     /**
@@ -668,6 +679,21 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->datagrid->filterBy($filterName, $operator, $value);
         $this->wait();
+    }
+
+    /**
+     * @param string $optionNames
+     * @param string $filterName
+     *
+     * @throws ExpectationException
+     *
+     * @Then /^I should see options? "([^"]*)" in filter "([^"]*)"$/
+     */
+    public function iShouldSeeOptionInFilter($optionNames, $filterName)
+    {
+        $optionNames = $this->getMainContext()->listToArray($optionNames);
+
+        $this->datagrid->checkOptionInFilter($optionNames, $filterName);
     }
 
     /**

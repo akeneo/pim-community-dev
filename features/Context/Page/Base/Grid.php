@@ -209,8 +209,33 @@ class Grid extends Index
     }
 
     /**
+     * @param array  $expectedOptions
+     * @param string $filterName
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function checkOptionInFilter(array $expectedOptions, $filterName)
+    {
+        $filter = $this->getFilter($filterName);
+
+        $filter->open();
+        $options = $filter->getOptions();
+
+        if ($options != $expectedOptions) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expecting filter "%s" to contain the options "%s", got "%s"',
+                    $filterName,
+                    implode(', ', $expectedOptions),
+                    implode(', ', $options)
+                )
+            );
+        }
+    }
+
+    /**
      * @param string      $filterName The name of the filter
-     * @param bool|string $operator   The orpertor
+     * @param bool|string $operator   The operator
      * @param string      $value      The value to filter by
      *
      * @throws \InvalidArgumentException
@@ -521,6 +546,17 @@ class Grid extends Index
         if ($filter->isVisible()) {
             $filter->remove();
         }
+    }
+
+    /**
+     * Expand filter
+     *
+     * @param string $filterName
+     */
+    public function expandFilter($filterName)
+    {
+        $filter = $this->getFilter($filterName);
+        $filter->expand();
     }
 
     /**

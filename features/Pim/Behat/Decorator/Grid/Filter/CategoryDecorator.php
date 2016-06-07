@@ -33,6 +33,31 @@ class CategoryDecorator extends ElementDecorator
     }
 
     /**
+     * Expand the filter
+     */
+    public function expand()
+    {
+        $filter = $this->spin(function () {
+            return $this->getParent()->getParent()->getParent()
+                ->find('css', '.separator.collapsed i.icon-double-angle-right');
+        }, 'Cannot open the category filter');
+
+        $filter->click();
+    }
+
+    /**
+     * Remove the filter
+     */
+    public function remove()
+    {
+        $filter = $this->spin(function () {
+            return $this->getParent()->getParent()->find('css', '.sidebar .sidebar-controls i.icon-double-angle-left');
+        }, 'Cannot remove the category filter');
+
+        $filter->click();
+    }
+
+    /**
      * Open the filter
      */
     public function open()

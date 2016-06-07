@@ -1,4 +1,58 @@
 pim_base_connector:
+  jobs:
+    csv_product_export:
+      title: Eksport produktów do CSV
+      export.title: Eksport produktów
+    csv_category_export:
+      title: Eksport kategorii do CSV
+      export.title: Eksport kategorii
+    csv_attribute_export:
+      title: Eksport atrybutów do CSV
+      export.title: Eksport atrybutów
+    csv_attribute_option_export:
+      title: Eksport opcji atrybutów do CSV
+      export.title: Eksport opcji atrybutów
+    csv_association_type_export:
+      title: Eksport typów powiązań do CSV
+      export.title: Eksport typów powiązań
+    csv_group_export:
+      title: Eksport grup do CSV
+      export.title: Eksport grup
+    csv_variant_group_export:
+      title: Eksport grup wariantów do CSV
+      export.title: Eksport grup wariantów
+    csv_family_export:
+      title: Eksport rodzin do pliku CSV
+      export.title: Eksport rodziny
+    csv_product_import:
+      title: Import produktów z CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import Produktu
+      import_associations.title: Import Powiązań
+    csv_category_import:
+      title: Import kategorii z CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import kategorii
+    csv_attribute_import:
+      title: Import atrybutów z CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import atrybutu
+    csv_attribute_option_import:
+      title: Import ustawień atrybutów z CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import ustawień atrybutów
+    csv_association_type_import:
+      title: Import typów powiązań z CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import typów powiązań
+    csv_group_import:
+      title: Import grup z CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import grup
+    csv_variant_group_import:
+      title: Import grup wariantów z CSV
+      validation.title: Sprawdzanie pliku
+      import.title: Import grup wariantów
   steps:
     dummy_reader.title: Pozorny mechanizm odczytu
     product_reader.title: Odczyt produktu

@@ -34,20 +34,20 @@ interface CategoryRepositoryInterface extends
     /**
      * Get a collection of categories based on the array of id provided
      *
-     * @param array $categoriesIds
+     * @param array $categoryIds
      *
      * @return Collection of categories
      */
-    public function getCategoriesByIds(array $categoriesIds = []);
+    public function getCategoriesByIds(array $categoryIds = []);
 
     /**
      * Get a collection of categories based on the array of code provided
      *
-     * @param array $categoriesIds
+     * @param array $categoryCodes
      *
      * @return Collection of categories
      */
-    public function getCategoriesByCodes(array $categoriesIds = []);
+    public function getCategoriesByCodes(array $categoryCodes = []);
 
     /**
      * Get a tree filled with children and their parents

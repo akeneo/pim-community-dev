@@ -47,18 +47,16 @@
           }
 
           .btn {
-            position: absolute;
-            right: 15px;
-            bottom: 15px;
+            margin: 10px 0 0;
             height: 22px;
             line-height: 22px;
             font-size: @font-size-12;
             background-color: white;
-            border: 1px solid @akeneo-grey;
+            color: @akeneo-light;
 
             &.icons-holder-text {
               padding: 0 10px 0 32px;
-              background-color: @akeneo-light;
+              background-color: @akeneo-grey;
 
               i{
                 width: 22px;
@@ -68,7 +66,7 @@
             }
 
             &:hover {
-              background-color: @akeneo-light;
+              background-color: darken(@akeneo-grey, 10%);
             }
           }
 
@@ -131,7 +129,7 @@
             color: @akeneo-dark;
             line-height: 20px;
             width: 100%;
-            margin-top: 5px;
+            margin-top: 10px;
 
             > strong {
               color: @akeneo-purple;
@@ -146,10 +144,6 @@
             padding: 15px;
             margin-top: 10px;
             width: 100%;
-          }
-
-          i {
-            padding-right: 5px;
           }
 
           i.status {

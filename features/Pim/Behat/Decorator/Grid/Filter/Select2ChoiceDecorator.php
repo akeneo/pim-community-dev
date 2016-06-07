@@ -43,4 +43,23 @@ class Select2ChoiceDecorator extends ElementDecorator
             return true;
         }, 'Cannot update the filter');
     }
+
+    /**
+     * Get filter options
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        $options = $this->spin(function () {
+            return $this->findAll('css', '.select2-choices .select2-search-choice');
+        }, sprintf('Unable to find choices in filter "%s"', $this->getAttribute('data-name')));
+
+        $data = [];
+        foreach ($options as $option) {
+            $data[] = $option->getText();
+        }
+
+        return $data;
+    }
 }

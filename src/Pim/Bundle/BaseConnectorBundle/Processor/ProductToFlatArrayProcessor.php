@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -29,28 +30,34 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var array */
-    protected $mediaAttributeTypes;
-
     /** @var ProductBuilderInterface */
     protected $productBuilder;
+
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
+
+    /** @var array */
+    protected $mediaAttributeTypes;
 
     /**
      * @param Serializer                 $serializer
      * @param ChannelRepositoryInterface $channelRepository
      * @param ProductBuilderInterface    $productBuilder
+     * @param ObjectDetacherInterface    $detacher
      * @param string[]                   $mediaAttributeTypes
      */
     public function __construct(
         Serializer $serializer,
         ChannelRepositoryInterface $channelRepository,
         ProductBuilderInterface $productBuilder,
+        ObjectDetacherInterface $detacher,
         array $mediaAttributeTypes
     ) {
         $this->serializer          = $serializer;
         $this->channelRepository   = $channelRepository;
-        $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->productBuilder      = $productBuilder;
+        $this->detacher            = $detacher;
+        $this->mediaAttributeTypes = $mediaAttributeTypes;
     }
 
     /**
@@ -79,6 +86,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
         }
 
         $data['product'] = $this->serializer->normalize($product, 'flat', $this->getNormalizerContext($contextChannel));
+        $this->detacher->detach($product);
 
         return $data;
     }
