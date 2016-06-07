@@ -40,6 +40,7 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Connector\Writer\Doctrine` to `Pim\Component\Connector\Writer\Database`
 - Move `Pim\Component\Connector\Reader\ProductReader` to `Pim\Component\Connector\Reader\Database\ProductReader`
 - Move `Pim\Component\Connector\Reader\Doctrine\BaseReader` to `Pim\Component\Connector\Reader\Database\BaseReader`
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor`. Add `Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface` as the fourth argument.

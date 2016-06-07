@@ -176,4 +176,6 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Reader\\ProductReader/Pim\\Component\\Connector\\Reader\\Database\\ProductReader/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.reader\.product/pim_connector\.reader\.database\.product/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.reader\.doctrine/pim_connector\.reader\.database/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\Doctrine/Pim\\Component\\Connector\\Writer\\Database/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.writer\.doctrine/pim_connector\.writer\.database/g'
 ```

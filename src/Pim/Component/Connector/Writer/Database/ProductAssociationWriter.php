@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\Doctrine;
+namespace Pim\Component\Connector\Writer\Database;
 
 /**
  * Custom writer for product associations to indicate the number of created/updated association targets
