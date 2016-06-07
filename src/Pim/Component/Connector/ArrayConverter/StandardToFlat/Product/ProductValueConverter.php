@@ -133,7 +133,7 @@ class ProductValueConverter
         foreach ($data as $value) {
             $fieldName = $this->columnsResolver->resolveFlatAttributeName($field, $value['locale'], $value['scope']);
 
-            $convertedItem[$fieldName] = $value['data'] ? '1' : '0';
+            $convertedItem[$fieldName] = (true === $value['data']) ? '1' : '0';
         }
 
         return $convertedItem;

@@ -21,7 +21,7 @@ class AttributeGroup implements ArrayConverterInterface
         $convertedItem = [];
 
         foreach ($item as $field => $data) {
-            $convertedItem = $this->convertFields($field, $data, $convertedItem);
+            $convertedItem = $this->convertField($field, $data, $convertedItem);
         }
 
         return $convertedItem;
@@ -34,7 +34,7 @@ class AttributeGroup implements ArrayConverterInterface
      *
      * @return array
      */
-    protected function convertFields($field, $data, array $convertedItem)
+    protected function convertField($field, $data, array $convertedItem)
     {
         switch ($field) {
             case 'label':

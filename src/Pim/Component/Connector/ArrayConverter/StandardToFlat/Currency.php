@@ -21,7 +21,7 @@ class Currency implements ArrayConverterInterface
         $convertedItem = [];
 
         foreach ($item as $field => $data) {
-            $convertedItem = $this->convertFields($field, $data, $convertedItem);
+            $convertedItem = $this->convertField($field, $data, $convertedItem);
         }
 
         return $convertedItem;
@@ -34,11 +34,11 @@ class Currency implements ArrayConverterInterface
      *
      * @return array
      */
-    protected function convertFields($field, $data, array $convertedItem)
+    protected function convertField($field, $data, array $convertedItem)
     {
         switch ($field) {
             case 'activated':
-                $convertedItem[$field] = $data ? '1' : '0';
+                $convertedItem[$field] = (true === $data) ? '1' : '0';
                 break;
             default:
                 $convertedItem[$field] = (string) $data;

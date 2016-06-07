@@ -33,7 +33,7 @@ class Product implements ArrayConverterInterface
         $convertedItem = [];
 
         foreach ($item as $field => $data) {
-            $convertedItem = $this->convertFields($field, $data, $convertedItem);
+            $convertedItem = $this->convertField($field, $data, $convertedItem);
         }
 
         return $convertedItem;
@@ -46,7 +46,7 @@ class Product implements ArrayConverterInterface
      *
      * @return array
      */
-    protected function convertFields($field, $data, array $convertedItem)
+    protected function convertField($field, $data, array $convertedItem)
     {
         switch ($field) {
             case 'associations':
@@ -103,7 +103,7 @@ class Product implements ArrayConverterInterface
      *     ],
      *     'X_SELL' => [
      *         'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
-     *         'products' => ['AKN_TS', 'ORO_TSH']
+     *         'products' => ['akn_ts', 'oro_tsh']
      *     ]
      * ]
      *
@@ -112,7 +112,7 @@ class Product implements ArrayConverterInterface
      *     'UPSELL-groups'   => '',
      *     'UPSELL-products' => '',
      *     'X_SELL-groups'   => 'akeneo_tshirt,oro_tshirt',
-     *     'X_SELL-products' => 'AKN_TS,ORO_TSH',
+     *     'X_SELL-products' => 'akn_ts,oro_tsh',
      * ]
      *
      * @param array $data

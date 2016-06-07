@@ -29,7 +29,7 @@ parameters:
     pim_connector.array_converter.standard_to_flat.user.class:                                    Pim\Component\Connector\ArrayConverter\StandardToFlat\User
     pim_connector.array_converter.standard_to_flat.variant_group.class:                           Pim\Component\Connector\ArrayConverter\StandardToFlat\VariantGroup
 
-    pim_connector.array_converter.standard_to_flat.product.value.class:                           Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter
+    pim_connector.array_converter.standard_to_flat.product.product_value_converter.class:         Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter
 
     pim_connector.array_converter.flat_to_standard.product.value_converter.registry.class:        Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterRegistry
     pim_connector.array_converter.flat_to_standard.product.value_converter.abstract.class:        Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\AbstractValueConverter
@@ -231,7 +231,7 @@ services:
     pim_connector.array_converter.standard_to_flat.product:
         class: '%pim_connector.array_converter.standard_to_flat.product.class%'
         arguments:
-            - '@pim_connector.array_converter.standard_to_flat.product.value'
+            - '@pim_connector.array_converter.standard_to_flat.product.product_value_converter'
 
     pim_connector.array_converter.standard_to_flat.user:
         class: '%pim_connector.array_converter.standard_to_flat.user.class%'
@@ -239,10 +239,10 @@ services:
     pim_connector.array_converter.standard_to_flat.variant_group:
         class: '%pim_connector.array_converter.standard_to_flat.variant_group.class%'
         arguments:
-            - '@pim_connector.array_converter.standard_to_flat.product.value'
+            - '@pim_connector.array_converter.standard_to_flat.product.product_value_converter'
 
-    pim_connector.array_converter.standard_to_flat.product.value:
-        class: '%pim_connector.array_converter.standard_to_flat.product.value.class%'
+    pim_connector.array_converter.standard_to_flat.product.product_value_converter:
+        class: '%pim_connector.array_converter.standard_to_flat.product.product_value_converter.class%'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
 

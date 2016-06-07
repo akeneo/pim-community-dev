@@ -32,7 +32,7 @@ class Attribute implements ArrayConverterInterface
         $convertedItem = [];
 
         foreach ($item as $field => $data) {
-            $convertedItem = $this->convertFields($field, $this->booleanFields, $data, $convertedItem);
+            $convertedItem = $this->convertField($field, $this->booleanFields, $data, $convertedItem);
         }
 
         return $convertedItem;
@@ -46,7 +46,7 @@ class Attribute implements ArrayConverterInterface
      *
      * @return array
      */
-    protected function convertFields($field, array $booleanFields, $data, array $convertedItem)
+    protected function convertField($field, array $booleanFields, $data, array $convertedItem)
     {
         switch ($field) {
             case 'labels':
@@ -63,7 +63,7 @@ class Attribute implements ArrayConverterInterface
                 $convertedItem[$field] = implode(',', $data);
                 break;
             case in_array($field, $booleanFields):
-                $convertedItem[$field] = $data ? '1' : '0';
+                $convertedItem[$field] = (true === $data) ? '1' : '0';
                 break;
             default:
                 $convertedItem[$field] = (string) $data;

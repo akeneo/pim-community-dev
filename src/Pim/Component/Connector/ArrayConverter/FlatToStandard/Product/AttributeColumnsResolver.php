@@ -91,7 +91,7 @@ class AttributeColumnsResolver
     }
 
     /**
-     * Resolve the full flat attribute name depending on the $attribute, the $locale and the $scope.
+     * Resolve the full flat attribute name depending on the $attributeCode, the $localeCode and the $scopeCode.
      *
      * Examples:
      *
@@ -99,35 +99,35 @@ class AttributeColumnsResolver
      *  name-ecommerce
      *  weight
      *
-     * @param string $attribute
-     * @param string $locale
-     * @param string $scope
+     * @param string $attributeCode
+     * @param string $localeCode
+     * @param string $scopeCode
      *
      * @return string
      */
-    public function resolveFlatAttributeName($attribute, $locale, $scope)
+    public function resolveFlatAttributeName($attributeCode, $localeCode, $scopeCode)
     {
-        if (null !== $locale && null !== $scope) {
+        if (null !== $localeCode && null !== $scopeCode) {
             $field = sprintf(
                 '%s-%s-%s',
-                $attribute,
-                $locale,
-                $scope
+                $attributeCode,
+                $localeCode,
+                $scopeCode
             );
-        } elseif (null !== $locale) {
+        } elseif (null !== $localeCode) {
             $field = sprintf(
                 '%s-%s',
-                $attribute,
-                $locale
+                $attributeCode,
+                $localeCode
             );
-        } elseif (null !== $scope) {
+        } elseif (null !== $scopeCode) {
             $field = sprintf(
                 '%s-%s',
-                $attribute,
-                $scope
+                $attributeCode,
+                $scopeCode
             );
         } else {
-            $field = $attribute;
+            $field = $attributeCode;
         }
 
         return $field;
