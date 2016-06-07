@@ -368,9 +368,11 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $attributeBulks = [];
+        $attributeConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute');
         $attributeProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute.flat');
         foreach ($attributeData as $index => $data) {
-            $attribute = $attributeProcessor->process($data);
+            $convertedData = $attributeConverter->convert($data);
+            $attribute = $attributeProcessor->process($convertedData);
             $this->validate($attribute);
             $attributeBulks[$index % 200][]= $attribute;
         }
@@ -379,9 +381,11 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $optionsBulks = [];
+        $optionConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute_option');
         $optionProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_option.flat');
         foreach ($optionData as $index => $data) {
-            $option = $optionProcessor->process($data);
+            $convertedData = $optionConverter->convert($data);
+            $option = $optionProcessor->process($convertedData);
             $this->validate($option);
             $optionsBulks[$index % 200][]= $option;
         }
