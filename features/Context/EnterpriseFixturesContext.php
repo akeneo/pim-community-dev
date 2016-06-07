@@ -997,8 +997,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $data = [['code' => $data]];
         }
 
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.category');
         $processor = $this->getContainer()->get('pimee_product_asset.processor.denormalization.category.flat');
-        $category = $processor->process($data);
+        $convertedData = $converter->convert($data);
+        $category = $processor->process($convertedData);
 
         /*
          * When using ODM, one must persist and flush category without product
