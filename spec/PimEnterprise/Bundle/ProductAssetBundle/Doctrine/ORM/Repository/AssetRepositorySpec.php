@@ -38,6 +38,7 @@ class AssetRepositorySpec extends ObjectBehavior
         $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
         $qb->orderBy('asset.sortOrder', 'DESC')->willReturn($qb);
         $qb->addOrderBy('asset.code')->willReturn($qb);
+        $qb->groupBy('asset.id')->willReturn($qb);
 
         $qb->getQuery()->willReturn($query);
 
@@ -58,6 +59,7 @@ class AssetRepositorySpec extends ObjectBehavior
         $qb->addOrderBy('asset.code')->willReturn($qb);
         $qb->andWhere('asset.code LIKE :search')->willReturn($qb);
         $qb->setParameter('search', '%my-search%')->willReturn($qb);
+        $qb->groupBy('asset.id')->willReturn($qb);
 
         $qb->getQuery()->willReturn($query);
 
@@ -78,6 +80,7 @@ class AssetRepositorySpec extends ObjectBehavior
         $qb->addOrderBy('asset.code')->willReturn($qb);
         $qb->andWhere('asset.code LIKE :search')->willReturn($qb);
         $qb->setParameter('search', '%my-search%')->willReturn($qb);
+        $qb->groupBy('asset.id')->willReturn($qb);
 
         $qb->getQuery()->willReturn($query);
 
