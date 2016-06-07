@@ -27,7 +27,7 @@ define([
             initialize: function (alias, options) {
                 this.alias     = alias;
                 this.selection = options.selection || [];
-                this.selection = _.each(this.selection, function (item) {
+                this.selection = _.map(this.selection, function (item) {
                     return String(item);
                 });
                 this.options   = options;
