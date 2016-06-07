@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Reader;
+namespace spec\Pim\Component\Connector\Reader\Database;
 
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\JobParameters;

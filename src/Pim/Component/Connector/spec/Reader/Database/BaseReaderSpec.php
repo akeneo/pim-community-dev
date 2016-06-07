@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Reader\Doctrine;
+namespace spec\Pim\Component\Connector\Reader\Database;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Persistence\ObjectRepository;

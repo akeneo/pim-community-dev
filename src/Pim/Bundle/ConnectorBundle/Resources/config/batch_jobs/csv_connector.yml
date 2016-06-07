@@ -113,7 +113,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_connector.reader.product
+                        reader:    pim_connector.reader.database.product
                         processor: pim_base_connector.processor.product_to_flat_array
                         writer:    pim_connector.writer.file.csv_product
                     parameters:

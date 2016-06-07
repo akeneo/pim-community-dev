@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\Doctrine;
+namespace Pim\Component\Connector\Reader\Database;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
