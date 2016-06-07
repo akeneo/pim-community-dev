@@ -80,7 +80,7 @@ class ProductProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $this->itemHasStatus = array_key_exists('enabled', $item);
+        $item = $this->setEnabledStatus($item);
 
         $item = $this->convertLocalizedAttributes($item);
         $violations = $this->localizedConverter->getViolations();
@@ -132,6 +132,23 @@ class ProductProcessor extends AbstractProcessor
         }
 
         return $product;
+    }
+
+    /**
+     * Sets default enabled status if not set.
+     *
+     * @param array $item
+     *
+     * @return array
+     */
+    protected function setEnabledStatus($item)
+    {
+        $this->itemHasStatus = isset($item['enabled']);
+        if (!$this->itemHasStatus) {
+            $item['enabled'] = $jobParameters = $this->stepExecution->getJobParameters()->get('enabled');
+        }
+
+        return $item;
     }
 
     /**

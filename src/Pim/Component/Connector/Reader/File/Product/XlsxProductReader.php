@@ -57,7 +57,6 @@ class XlsxProductReader extends XlsxReader
     {
         return [
             'mapping'           => $this->getMapping(),
-            'default_values'    => $this->getDefaultValues(),
             'with_associations' => false
         ];
     }
@@ -74,15 +73,5 @@ class XlsxProductReader extends XlsxReader
             $jobParameters->get('categoriesColumn') => 'categories',
             $jobParameters->get('groupsColumn')     => 'groups'
         ];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getDefaultValues()
-    {
-        $jobParameters = $this->stepExecution->getJobParameters();
-
-        return ['enabled' => $jobParameters->get('enabled')];
     }
 }

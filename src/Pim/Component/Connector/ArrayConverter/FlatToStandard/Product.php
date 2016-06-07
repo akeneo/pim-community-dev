@@ -168,7 +168,6 @@ class Product implements ArrayConverterInterface
         $options = $this->prepareOptions($options);
 
         $mappedItem   = $this->mapFields($item, $options);
-        $mappedItem   = $this->defineDefaultValues($mappedItem, $options['default_values']);
         $filteredItem = $this->filterFields($mappedItem, $options['with_associations']);
         $this->validateItem($filteredItem, $options['with_required_identifier']);
 
@@ -207,20 +206,6 @@ class Product implements ArrayConverterInterface
         }
 
         return $item;
-    }
-
-    /**
-     * @param array $mappedItem
-     * @param array $defaultValues
-     *
-     * @return array
-     */
-    protected function defineDefaultValues(array $mappedItem, array $defaultValues)
-    {
-        $enabled = (isset($defaultValues['enabled'])) ? (bool) $defaultValues['enabled'] : true;
-        $mappedItem['enabled'] = isset($mappedItem['enabled']) ? (bool) $mappedItem['enabled'] : $enabled;
-
-        return $mappedItem;
     }
 
     /**
@@ -344,7 +329,7 @@ class Product implements ArrayConverterInterface
     protected function validateOptionalFields(array $item)
     {
         $optionalFields = array_merge(
-            ['family', 'enabled', 'categories', 'groups'],
+            ['family', 'enabled', 'categories', 'groups', 'enabled'],
             $this->attrColumnsResolver->resolveAttributeColumns(),
             $this->getOptionalAssociationFields()
         );
@@ -371,16 +356,11 @@ class Product implements ArrayConverterInterface
     protected function validateFieldValueTypes(array $item)
     {
         $stringFields = ['family', 'categories', 'groups'];
-        $booleanFields = ['enabled'];
 
         foreach ($item as $field => $value) {
             if (in_array($field, $stringFields) && !is_string($value)) {
                 throw new ArrayConversionException(
                     sprintf('The field "%s" should contain a string, "%s" provided', $field, $value)
-                );
-            } elseif (in_array($field, $booleanFields) && !is_bool($value)) {
-                throw new ArrayConversionException(
-                    sprintf('The field "%s" should contain a boolean, "%s" provided', $field, $value)
                 );
             }
         }
