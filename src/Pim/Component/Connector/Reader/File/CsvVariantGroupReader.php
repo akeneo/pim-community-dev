@@ -44,6 +44,10 @@ class CsvVariantGroupReader extends CsvReader
             return $data;
         }
 
-        return $this->mediaPathTransformer->transform($data, $this->fileIterator->getDirectoryPath());
+        if (isset($data['values'])) {
+            $data['values'] = $this->mediaPathTransformer->transform($data['values'], $this->fileIterator->getDirectoryPath());
+        }
+
+        return $data;
     }
 }

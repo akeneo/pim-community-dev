@@ -25,31 +25,47 @@ class MediaPathTransformer
     }
 
     /**
-     * Transforms a relative path to absolute
+     * Transforms a relative path to absolute. Data must be provided in the pivot format.
      *
-     * @param array  $data
-     * @param string $filePath
+     * $item exemple:
+     * [
+     *   'side_view' => [
+     *     [
+     *       'locale' => null,
+     *       'scope'  => null,
+     *       'data'   => [
+     *         'filePath'         => 'cat_003.png',
+     *         'originalFilename' => 'cat_003.png'
+     *       ]
+     *     ]
+     *   ]
+     * ]
+     *
+     * @param array  $attributeValues An associative array (attribute_code => values)
+     * @param string $filePath        The absolute path
      *
      * @return array
      */
-    public function transform(array $data, $filePath)
+    public function transform(array $attributeValues, $filePath)
     {
         $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
 
-        foreach ($data as $code => $value) {
-            if (!is_string($value)) {
-                continue;
-            }
-
-            $pos = strpos($code, '-');
-            $attributeCode = false !== $pos ? substr($code, 0, $pos) : $code;
-            $value = trim($value);
-
-            if (in_array($attributeCode, $mediaAttributes) && !empty($value)) {
-                $data[$code] = $filePath . DIRECTORY_SEPARATOR . $value;
+        foreach ($attributeValues as $code => $values) {
+            if (in_array($code, $mediaAttributes)) {
+                foreach ($values as $index => $value) {
+                    if (isset($value['data']) && isset($value['data']['filePath'])) {
+                        $dataFilePath = $value['data']['filePath'];
+                        $attributeValues[$code][$index]['data']['filePath'] = sprintf(
+                            '%s%s%s',
+                            $filePath,
+                            DIRECTORY_SEPARATOR,
+                            $dataFilePath
+                        );
+                    }
+                }
             }
         }
 
-        return $data;
+        return $attributeValues;
     }
 }
