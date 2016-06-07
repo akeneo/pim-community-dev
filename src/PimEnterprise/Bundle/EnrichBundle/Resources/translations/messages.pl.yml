@@ -1,3 +1,5 @@
+Permissions: Uprawnienia
+pane.accordion.permissions: Uprawnienia
 pim_enrich:
   mass_edit_action:
     product:
@@ -16,6 +18,7 @@ pim_enrich:
       steps:
         second: Wybierz działanie
         fourth: Potwierdź
+    limit_exceeded: 'Proszę wybrać mniej niż %limit% elementów do edycji'
 pimee_enrich:
   attribute_group:
     tab:
@@ -26,6 +29,11 @@ pimee_enrich:
   locale:
     tab:
       permission.title: Uprawnienia
+  asset_transformation:
+      title:
+        transformation: Transformacja
+        options: Ustawienia
+
 update_product_value_with_permission_and_rules:
   steps.perform: Aktualizacja wartości produktu
 edit_common_attributes_with_permission_and_rules:

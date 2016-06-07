@@ -110,6 +110,19 @@ pimee_product_asset:
       not_empty: Code ist erforderlich. Feld darf nicht leer sein.
       unique: Code muss eindeutig sein.
       new_generation: Wir haben einen neuen Code für Sie generiert.
+  jobs:
+    csv_asset_import.title: Asset-Import aus CSV-Datei
+    csv_asset_export.title: Asset-Export in CSV-Datei
+    csv_asset_variation_export.title: Assetvariationen-Export in CSV-Datei
+    csv_tag_import.title: Stichworte-Import aus CSV-Datei
+    csv_asset_category_import.title: Assetkategorie-Import aus CSV-Datei
+    csv_asset_configuration_import.title: Assetausgabekanalkonfiguration-Import aus CSV-Datei
+    yml_asset_configuration_export.title: Assetausgabekanalkonfiguration-Export in Yaml
+    csv_asset_category_export.title: Assetkategorie-Export in CSV-Datei
+    yml_asset_channel_configuration_import.title: Assets Channel-Konfiguration in Yaml importieren
+    assets_mass_upload.title: Massenupload von Assets
+  steps:
+    channel_configuration.processor.title: Verarbeite Ausgabekanalkonfigurationen
   notAvailable:
     label: nicht verfügbar
   asset:

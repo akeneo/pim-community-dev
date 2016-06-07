@@ -23,6 +23,7 @@ Feature: Display proposal widget
     Then I should be on the proposals index page
     And the grid should contain 1 elements
     And I should see entity my-tee-shirt
+    And I should see the text "Sandra"
 
   Scenario: Successfully get redirected to correct Mary's proposal grid filtered on selected proposal
     When I am on the dashboard page

@@ -3,8 +3,24 @@ pimee_catalog_rule:
     rule-grid:
       column:
         actions: Akcja
+        delete: Usuń
         impacted_product_count:
           no_yet_calculated: Jeszcze nie przeliczone
+      column:
+        code: Kod
+        actions: Akcja
   condition:
     operators:
+      STARTS WITH: zaczyna się od
       ENDS WITH: kończy się na
+      CONTAINS: zawiera
+      DOES NOT CONTAIN: nie zawiera
+      BETWEEN: pomiędzy
+      NOT BETWEEN: nie pomiędzy
+      <: mniej niż
+  attribute:
+    grid:
+      is_smart.label: Inteligentne
+  product:
+    tooltip:
+      loading.title: Ładuję...

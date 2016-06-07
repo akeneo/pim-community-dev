@@ -37,6 +37,7 @@ class ProductDraftGrantedAttributeProviderSpec extends ObjectBehavior
             'attribute' => [['data' => 'data', 'scope' => null, 'locale' => null]],
         ]]);
 
+        $draft->hasChanges()->willReturn(true);
         $this->getViewable($draft)->shouldReturn([
             'attribute' => $attribute
         ]);
@@ -51,6 +52,7 @@ class ProductDraftGrantedAttributeProviderSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $authorizationChecker->isGranted('VIEW_ATTRIBUTES', $attribute)->willReturn(false);
 
+        $draft->hasChanges()->willReturn(true);
         $draft->getChanges()->willReturn(['values' => [
             'attribute' => [['data' => 'data', 'scope' => null, 'locale' => null]],
         ]]);
@@ -72,6 +74,7 @@ class ProductDraftGrantedAttributeProviderSpec extends ObjectBehavior
         $authorizationChecker->isGranted('VIEW_ITEMS', $locale)->willReturn(false);
         $attribute->isLocalizable()->willReturn(true);
 
+        $draft->hasChanges()->willReturn(true);
         $draft->getChanges()->willReturn(['values' => [
             'attribute' => [['data' => 'data', 'scope' => null, 'locale' => 'en_US']],
         ]]);
