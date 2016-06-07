@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\Reader\File\Product;
 
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\XlsxReader;
 
@@ -21,14 +22,16 @@ class XlsxProductReader extends XlsxReader
     protected $mediaPathTransformer;
 
     /**
-     * @param FileIteratorFactory  $fileIteratorFactory
-     * @param MediaPathTransformer $mediaPathTransformer
+     * @param FileIteratorFactory     $fileIteratorFactory
+     * @param ArrayConverterInterface $converter
+     * @param MediaPathTransformer    $mediaPathTransformer
      */
     public function __construct(
         FileIteratorFactory $fileIteratorFactory,
+        ArrayConverterInterface $converter,
         MediaPathTransformer $mediaPathTransformer
     ) {
-        parent::__construct($fileIteratorFactory);
+        parent::__construct($fileIteratorFactory, $converter);
 
         $this->mediaPathTransformer = $mediaPathTransformer;
     }
@@ -45,5 +48,41 @@ class XlsxProductReader extends XlsxReader
         }
 
         return $this->mediaPathTransformer->transform($data, $this->fileIterator->getDirectoryPath());
+    }
+
+    /**
+     * @return array
+     */
+    protected function getArrayConverterOptions()
+    {
+        return [
+            'mapping'           => $this->getMapping(),
+            'default_values'    => $this->getDefaultValues(),
+            'with_associations' => false
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getMapping()
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+
+        return [
+            $jobParameters->get('familyColumn')     => 'family',
+            $jobParameters->get('categoriesColumn') => 'categories',
+            $jobParameters->get('groupsColumn')     => 'groups'
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getDefaultValues()
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+
+        return ['enabled' => $jobParameters->get('enabled')];
     }
 }

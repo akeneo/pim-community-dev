@@ -165,30 +165,59 @@ services:
         class: '%pim_connector.reader.file.xlsx.class%'
         arguments:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_dummy_convertor_to_move'
 
     pim_connector.reader.file.xlsx_product:
        class: '%pim_connector.reader.file.xlsx_product.class%'
        arguments:
            - '@pim_connector.reader.file.xlsx_iterator_factory'
+           - '@pim_connector.array_converter.flat_to_standard.product'
            - '@pim_connector.reader.file.media_path_transformer'
 
     pim_connector.reader.file.xlsx_association_type:
-        alias: pim_connector.reader.file.xlsx
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.association_type'
+
+    pim_connector.reader.file.xlsx_association:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_association'
 
     pim_connector.reader.file.xlsx_group:
-        alias: pim_connector.reader.file.xlsx
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.group'
 
     pim_connector.reader.file.xlsx_variant_group:
-        alias: pim_connector.reader.file.xlsx_product
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.variant_group'
 
     pim_connector.reader.file.xlsx_attribute:
-        alias: pim_connector.reader.file.xlsx
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute'
 
     pim_connector.reader.file.xlsx_attribute_option:
-        alias: pim_connector.reader.file.xlsx
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute_option'
 
     pim_connector.reader.file.xlsx_family:
-        alias: pim_connector.reader.file.xlsx
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.family'
 
     pim_connector.reader.file.xlsx_category:
-        alias: pim_connector.reader.file.xlsx
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.category'

@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,6 +26,9 @@ class XlsxReader extends AbstractConfigurableStepElement implements
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
 
+    /** ArrayConverterInterface */
+    protected $converter;
+
     /** @var FileIteratorInterface */
     protected $fileIterator;
 
@@ -32,11 +36,13 @@ class XlsxReader extends AbstractConfigurableStepElement implements
     protected $stepExecution;
 
     /**
-     * @param FileIteratorFactory $fileIteratorFactory
+     * @param FileIteratorFactory     $fileIteratorFactory
+     * @param ArrayConverterInterface $converter
      */
-    public function __construct(FileIteratorFactory $fileIteratorFactory)
+    public function __construct(FileIteratorFactory $fileIteratorFactory, ArrayConverterInterface $converter)
     {
         $this->fileIteratorFactory = $fileIteratorFactory;
+        $this->converter           = $converter;
     }
 
     /**
@@ -57,7 +63,9 @@ class XlsxReader extends AbstractConfigurableStepElement implements
             $this->stepExecution->incrementSummaryInfo('read_lines');
         }
 
-        return $this->fileIterator->current();
+        $item = $this->fileIterator->current();
+
+        return (null === $item) ? null : $this->converter->convert($item, $this->getArrayConverterOptions());
     }
 
     /**
@@ -74,5 +82,15 @@ class XlsxReader extends AbstractConfigurableStepElement implements
     public function flush()
     {
         $this->fileIterator = null;
+    }
+
+    /**
+     * Returns the options for array converter. It should be overridden in the sub classes.
+     *
+     * @return array
+     */
+    protected function getArrayConverterOptions()
+    {
+        return [];
     }
 }

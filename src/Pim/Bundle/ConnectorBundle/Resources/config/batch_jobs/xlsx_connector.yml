@@ -15,7 +15,7 @@ connector:
                         writer:    pim_connector.writer.database.product
                 import_associations:
                     services:
-                        reader:    pim_connector.reader.file.xlsx_association_type
+                        reader:    pim_connector.reader.file.xlsx_association
                         processor: pim_connector.processor.denormalization.product_association.flat
                         writer:    pim_connector.writer.database.product_association
                     parameters:
