@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -154,8 +155,8 @@ class MassEditActionController
         return [
             'form'        => $form->createView(),
             'count'       => $objectsCount,
-            'queryParams' => $this->getQueryParams(),
-            'itemsName'   => $itemsName
+            'queryParams' => array_merge($this->getQueryParams(), ['operationGroup' => $operationGroup]),
+            'itemsName'   => $itemsName,
         ];
     }
 
@@ -166,7 +167,7 @@ class MassEditActionController
      *
      * @throws NotFoundHttpException
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function configureAction($operationAlias)
     {
@@ -203,7 +204,7 @@ class MassEditActionController
      *
      * @throws NotFoundResourceException
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function performAction($operationAlias)
     {

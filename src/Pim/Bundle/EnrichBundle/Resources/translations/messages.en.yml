@@ -133,11 +133,17 @@ pim_enrich:
                 invalid_attribute: Attribute with code "attribute_code" is not common to selected products, attribute skipped.
                 no_valid_attribute: None of selected attribute can be applied on this product.
 
-        classify:
+        classify-add:
             label:          Classify products in categories
             description:    The products will be positioned into following categories, the existing placement is kept.
             success_flash:  Product(s) have been classified into selected categories
-            launched_flash: The bulk action "classify" has been launched. You will be notified when it is done.
+            launched_flash: The bulk action "add to categories" has been launched. You will be notified when it is done.
+
+        classify-move:
+            label:          Move products to categories
+            description:    The products will be positioned into following categories, the existing placement is lost.
+            success_flash:  Product(s) have been moved to selected categories
+            launched_flash: The bulk action "move to categories" has been launched. You will be notified when it is done.
 
         change-family:
             label:          Change the family of products

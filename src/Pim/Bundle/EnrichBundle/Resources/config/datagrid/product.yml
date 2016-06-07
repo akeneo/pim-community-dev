@@ -93,10 +93,8 @@ datagrid:
         mass_actions_groups:
             bulk_actions:
                 label: pim_datagrid.mass_action_group.bulk_actions.label
-                icon: sort-by-attributes
             quick_export:
                 label: pim_datagrid.mass_action_group.quick_export.label
-                icon: download-alt
         mass_actions:
             delete:
                 type: delete
@@ -126,7 +124,9 @@ datagrid:
                 acl_resource: pim_enrich_mass_edit
                 label: pim.grid.mass_action.category_edit
                 handler: product_mass_edit
-                route: pim_enrich_category_edit_action_choose
+                route: pim_enrich_mass_edit_action_choose
+                route_parameters:
+                    operationGroup: category-edit
                 launcherOptions:
                     group: bulk_actions
             sequential_edit:

@@ -140,6 +140,39 @@ To detect the files impacted by this change, you can execute the following comma
     grep -rl 'AbstractAttributeType::BACKEND_TYPE' src/* 
 ```
 
+## Mass edit actions declaration
+
+In 1.5 and before mass edit actions could be declared like this:
+```
+my_bundle.mass_edit_action.my_action:
+        public: false
+        class: '%my_bundle.mass_edit_action.my_action.class%'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: my_action
+                acl: pim_enrich_product_edit_attributes
+```
+As of 1.6, the `datagrid` entry of the tag is mandatory because a mass edit action linked to no datagrid makes no sense.
+
+Also, a new `operation_group` entry is introduced and is mandatory too. Several mass edit actions with the same operation group will appear on the same "Choose operation" page (the first step in the mass edit process).
+There are two operation groups for now: "mass-edit" and "category-edit", "mass-edit" being the default one.
+
+Now your custom mass action declaration should look like this:
+```
+my_bundle.mass_edit_action.my_action:
+        public: false
+        class: '%my_bundle.mass_edit_action.my_action.class%'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: my_action
+                datagrid: product-grid
+                operation_group: mass-edit
+                acl: pim_enrich_product_edit_attributes
+```
+In this example it is an action for the products grid and it must appear in the default group.
+
 ## Partially fix BC breaks
 
 If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
