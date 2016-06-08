@@ -13,7 +13,7 @@ use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
-use Pim\Component\Connector\Reader\File\YamlReader;
+use Pim\Component\Connector\Reader\File\Yaml\YamlReader;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

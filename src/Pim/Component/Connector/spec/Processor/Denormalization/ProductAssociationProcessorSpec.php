@@ -23,7 +23,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ProductAssociationProcessorSpec extends ObjectBehavior
 {
     function let(
-        ArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
@@ -32,7 +31,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         ObjectDetacherInterface $productDetacher
     ) {
         $this->beConstructedWith(
-            $arrayConverter,
             $productRepository,
             $productUpdater,
             $productValidator,
@@ -51,7 +49,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_product(
-        $arrayConverter,
         $productRepository,
         $productUpdater,
         $productValidator,
@@ -69,11 +66,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $originalData = [
-            'sku'           => 'tshirt',
-            'XSELL-groups'  => ['akeneo_tshirt, oro_tshirt'],
-            'XSELL-product' => ['AKN_TS, ORO_TSH']
-        ];
         $convertedData = [
             'sku' => [
                 [
@@ -89,9 +81,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $arrayConverter
-            ->convert($originalData, ['with_associations' => true])
-            ->willReturn($convertedData);
 
         $filteredData = [
             'associations' => [
@@ -117,12 +106,11 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($originalData)
+            ->process($convertedData)
             ->shouldReturn($product);
     }
 
     function it_skips_a_product_when_update_fails(
-        $arrayConverter,
         $productRepository,
         $productUpdater,
         $productAssocFilter,
@@ -138,11 +126,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $originalData = [
-            'sku'               => 'tshirt',
-            'NOT_FOUND-groups'  => ['akeneo_tshirt, oro_tshirt'],
-            'NOT_FOUND-product' => ['AKN_TS, ORO_TSH']
-        ];
         $convertedData = [
             'sku' => [
                 [
@@ -158,9 +141,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $arrayConverter
-            ->convert($originalData, ['with_associations' => true])
-            ->willReturn($convertedData);
 
         $filteredData = [
             'associations' => [
@@ -188,12 +168,11 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$originalData]
+                [$convertedData]
             );
     }
 
     function it_skips_a_product_when_association_is_invalid(
-        $arrayConverter,
         $productRepository,
         $productUpdater,
         $productValidator,
@@ -210,11 +189,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $originalData = [
-            'sku'           => 'tshirt',
-            'XSELL-groups'  => ['akeneo_tshirt, oro_tshirt'],
-            'XSELL-product' => ['AKN_TS, ORO_TSH']
-        ];
         $convertedData = [
             'sku' => [
                 [
@@ -230,9 +204,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $arrayConverter
-            ->convert($originalData, ['with_associations' => true])
-            ->willReturn($convertedData);
 
         $filteredData = [
             'associations' => [
@@ -267,12 +238,11 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$originalData]
+                [$convertedData]
             );
     }
 
     function it_skips_a_product_when_there_is_nothing_to_update(
-        $arrayConverter,
         $productRepository,
         $productUpdater,
         $productAssocFilter,
@@ -288,11 +258,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $originalData = [
-            'sku'           => 'tshirt',
-            'XSELL-groups'  => ['akeneo_tshirt, oro_tshirt'],
-            'XSELL-product' => ['AKN_TS, ORO_TSH']
-        ];
         $convertedData = [
             'sku' => [
                 [
@@ -308,9 +273,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $arrayConverter
-            ->convert($originalData, ['with_associations' => true])
-            ->willReturn($convertedData);
 
         $filteredData = [
             'associations' => [
@@ -334,7 +296,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
 
         $productDetacher->detach($product)->shouldBeCalled();
 
-        $this->process($originalData)
+        $this->process($convertedData)
             ->shouldReturn(null);
     }
 }

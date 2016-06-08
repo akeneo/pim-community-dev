@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Connector\Reader\File\Csv;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Pim\Component\Connector\Reader\File\MediaPathTransformer;
@@ -14,10 +15,11 @@ class CsvProductReaderSpec extends ObjectBehavior
 {
     function let(
         FileIteratorFactory $fileIteratorFactory,
+        ArrayConverterInterface $converter,
         MediaPathTransformer $mediaPath,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($fileIteratorFactory, $mediaPath, ['.', ','], ['Y-m-d', 'd-m-Y']);
+        $this->beConstructedWith($fileIteratorFactory, $converter, $mediaPath, ['.', ','], ['Y-m-d', 'd-m-Y']);
         $this->setStepExecution($stepExecution);
     }
 
@@ -33,6 +35,7 @@ class CsvProductReaderSpec extends ObjectBehavior
 
     function it_transforms_media_paths_to_absolute_paths(
         $fileIteratorFactory,
+        $converter,
         $stepExecution,
         FileIteratorInterface $fileIterator,
         JobParameters $jobParameters,
@@ -43,6 +46,9 @@ class CsvProductReaderSpec extends ObjectBehavior
         $jobParameters->get('filePath')->willReturn($filePath);
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('category');
+        $jobParameters->get('groupsColumn')->willReturn('group');
 
         $data = [
             'sku'          => 'SKU-001',
@@ -64,8 +70,8 @@ class CsvProductReaderSpec extends ObjectBehavior
         $absolutePath = [
             'sku'          => 'SKU-001',
             'name'         => 'door',
-            'view'         => __DIR__ . '/../../../../../../features/Context/fixtures/sku-001.jpg',
-            'manual-fr_FR' => __DIR__ . '/../../../../../../features/Context/fixtures/sku-001.txt',
+            'view'         => 'fixtures/sku-001.jpg',
+            'manual-fr_FR' => 'fixtures/sku-001.txt',
         ];
 
         $directoryPath = __DIR__ . '/../../../../../../features/Context/fixtures';
@@ -73,6 +79,15 @@ class CsvProductReaderSpec extends ObjectBehavior
         $mediaPath->transform($data, $directoryPath)->willReturn($absolutePath);
 
         $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+
+        $converter->convert($absolutePath, [
+            'mapping' => [
+                'family' => 'family',
+                'category' => 'categories',
+                'group' => 'groups'
+            ],
+            'with_associations' => false
+        ])->willReturn($absolutePath);
 
         $this->read()->shouldReturn($absolutePath);
     }

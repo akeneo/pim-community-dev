@@ -9,7 +9,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -23,14 +22,13 @@ class SimpleProcessorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $repository,
-        ArrayConverterInterface $converter,
         SimpleFactory $factory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($repository, $converter, $factory, $updater, $validator, $objectDetacher);
+        $this->beConstructedWith($repository, $factory, $updater, $validator, $objectDetacher);
         $this->setStepExecution($stepExecution);
     }
 
@@ -42,7 +40,6 @@ class SimpleProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_channel(
-        $converter,
         $repository,
         $updater,
         $validator,
@@ -56,12 +53,8 @@ class SimpleProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        $converter
-            ->convert($values['original_values'])
-            ->willReturn($values['converted_values']);
-
         $updater
-            ->update($channel, $values['converted_values'])
+            ->update($channel, $values)
             ->shouldBeCalled();
 
         $validator
@@ -69,16 +62,14 @@ class SimpleProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($values['original_values'])
+            ->process($values)
             ->shouldReturn($channel);
     }
 
     function it_skips_a_channel_when_update_fails(
-        $converter,
         $repository,
         $updater,
         $validator,
-
         ChannelInterface $channel,
         ConstraintViolationListInterface $violationList
     ) {
@@ -89,12 +80,8 @@ class SimpleProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        $converter
-            ->convert($values['original_values'])
-            ->willReturn($values['converted_values']);
-
         $updater
-            ->update($channel, $values['converted_values'])
+            ->update($channel, $values)
             ->shouldBeCalled();
 
         $validator
@@ -102,29 +89,27 @@ class SimpleProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($values['original_values'])
+            ->process($values)
             ->shouldReturn($channel);
 
         $updater
-            ->update($channel, $values['converted_values'])
+            ->update($channel, $values)
             ->willThrow(new \InvalidArgumentException());
 
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$values['original_values']]
+                [$values]
             );
     }
 
     function it_skips_a_channel_when_object_is_invalid(
-        $converter,
         $repository,
         $updater,
         $validator,
         $objectDetacher,
-        ChannelInterface $channel,
-        ConstraintViolationListInterface $violationList
+        ChannelInterface $channel
     ) {
         $repository->getIdentifierProperties()->willReturn(['code']);
         $repository->findOneByIdentifier(Argument::any())->willReturn($channel);
@@ -133,12 +118,8 @@ class SimpleProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        $converter
-            ->convert($values['original_values'])
-            ->willReturn($values['converted_values']);
-
         $updater
-            ->update($channel, $values['converted_values'])
+            ->update($channel, $values)
             ->shouldBeCalled();
 
         $violation = new ConstraintViolation('Error', 'foo', [], 'bar', 'code', 'mycode');
@@ -151,29 +132,19 @@ class SimpleProcessorSpec extends ObjectBehavior
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$values['original_values']]
+                [$values]
             );
     }
 
     protected function getValues()
     {
         return [
-            'original_values' => [
-               'code'         => 'mycode',
-               'label'        => 'Ecommerce',
-               'locales'      => 'en_US,fr_FR',
-               'currencies'   => 'EUR,USD',
-               'tree'         => 'master_catalog',
-               'color'        => 'orange'
-            ],
-            'converted_values' => [
-              'code'   => 'mycode',
-              'label'  => 'Ecommerce',
-              'locales'    => ['en_US', 'fr_FR'],
-              'currencies' => ['EUR', 'USD'],
-              'tree'       => 'master_catalog',
-              'color'      => 'orange'
-            ]
+            'code'       => 'mycode',
+            'label'      => 'Ecommerce',
+            'locales'    => ['en_US', 'fr_FR'],
+            'currencies' => ['EUR', 'USD'],
+            'tree'       => 'master_catalog',
+            'color'      => 'orange'
         ];
     }
 }
