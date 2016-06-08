@@ -42,7 +42,7 @@ Feature: Export products according to a date
     When I am on the "csv_footwear_product_export" export job edit page
     And I follow "Content"
     Then I should not see the "updated since date" element in the filter "Updated time condition"
-    Then I should not see the "updated since period" element in the filter "Updated time condition"
+    Then I should not see the "updated since n days" element in the filter "Updated time condition"
     When I filter by "Updated time condition" with operator "Updated products since the defined date" with value "05/25/2016"
     And I press "Save"
     Then I should be on the "csv_footwear_product_export" export job page

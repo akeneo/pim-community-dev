@@ -62,20 +62,20 @@ class UpdatedSinceStrategyValidatorSpec extends ObjectBehavior
         $this->validate('', $constraint)->shouldReturn(null);
     }
     
-    function it_adds_a_violation_if_updated_since_period_is_empty(
+    function it_adds_a_violation_if_updated_since_n_days_is_empty(
         $executionContext,
         JobInstance $jobInstance,
         UpdatedSinceStrategy $constraint,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {
         $jobInstance->getRawConfiguration()->willReturn([
-            'updated_since_strategy' => 'since_period',
+            'updated_since_strategy' => 'since_n_days',
         ]);
 
         $constraint->jobInstance = $jobInstance;
-        $constraint->strategy = 'since_period';
+        $constraint->strategy = 'since_n_days';
 
-        $executionContext->buildViolation('pim_connector.export.updated.updated_since_period.error')->willReturn($constraintViolationBuilder);
+        $executionContext->buildViolation('pim_connector.export.updated.updated_since_n_days.error')->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate('', $constraint)->shouldReturn(null);

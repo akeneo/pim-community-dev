@@ -251,8 +251,8 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
             return null === $jobExecution ? null : $jobExecution->getStartTime();
         }
 
-        if ('since_period' === $updatedTimeCondition) {
-            $period = $parameters->get('updated_since_period');
+        if ('since_n_days' === $updatedTimeCondition) {
+            $period = $parameters->get('updated_since_n_days');
             
             return (new \DateTime())->setTime(0, 0)
                 ->sub(new \DateInterval(sprintf('P%dD', $period)))

@@ -9,17 +9,17 @@
 
     <script type="text/javascript">
         require(
-                ['jquery', 'pim/product-export/locales-selector'],
-                function($, LocaleSelector){
-                    'use strict';
+            ['jquery', 'pim/product-export/locales-selector'],
+            function($, LocaleSelector){
+                'use strict';
 
-                    $(function () {
-                        LocaleSelector.init(
-                            '#pim_import_export_jobInstance_configuration_channel',
-                            '#pim_import_export_jobInstance_configuration_locales'
-                        );
-                    });
-                }
+                $(function () {
+                    LocaleSelector.init(
+                        '#{{ form.configuration.channel.vars.id }}',
+                        '#{{ form.configuration.locales.vars.id }}'
+                    );
+                });
+            }
         );
     </script>
 

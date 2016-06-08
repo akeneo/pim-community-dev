@@ -23,8 +23,8 @@ class UpdatedTimeConditionDecorator extends ElementDecorator
             'css'        => '.exported-since-date-wrapper input',
             'decorators' => ['Pim\Behat\Decorator\Field\DatepickerDecorator']
         ],
-        'updated_since_period' => [
-            'css' => '.exported-since-period-wrapper input',
+        'updated_since_n_days' => [
+            'css' => '.exported-since-n-days-wrapper input',
         ],
     ];
 

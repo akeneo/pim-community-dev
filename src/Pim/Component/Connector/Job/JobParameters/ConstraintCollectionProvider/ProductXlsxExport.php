@@ -63,12 +63,12 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
                     'all',
                     'last_export',
                     'since_date',
-                    'since_period',
+                    'since_n_days',
                 ]
             ])
         ];
         $constraintFields['updated_since_date'] = new DateTime(['groups' => 'Execution']);
-        $constraintFields['updated_since_period'] = [];
+        $constraintFields['updated_since_n_days'] = [];
         $constraintFields['linesPerFile'] = [
             new NotBlank(),
             new GreaterThan(1)

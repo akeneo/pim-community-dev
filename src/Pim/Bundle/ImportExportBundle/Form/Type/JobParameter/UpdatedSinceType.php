@@ -84,7 +84,7 @@ class UpdatedSinceType extends AbstractType
                     'all'          => 'pim_connector.export.updated.updated_since_strategy.choice.all',
                     'last_export'  => 'pim_connector.export.updated.updated_since_strategy.choice.last_export',
                     'since_date'   => 'pim_connector.export.updated.updated_since_strategy.choice.since_date',
-                    'since_period' => 'pim_connector.export.updated.updated_since_strategy.choice.since_period',
+                    'since_n_days' => 'pim_connector.export.updated.updated_since_strategy.choice.since_n_days',
                 ],
                 'select2'  => true,
             ])
@@ -97,10 +97,10 @@ class UpdatedSinceType extends AbstractType
                     'strategy' => 'since_date',
                 ])
             ])
-            ->add('updated_since_period', 'number', [
+            ->add('updated_since_n_days', 'number', [
                 'constraints' => new UpdatedSinceStrategy([
                     'jobInstance' => $options['job_instance'],
-                    'strategy' => 'since_period',
+                    'strategy' => 'since_n_days',
                 ])
             ])
         ;

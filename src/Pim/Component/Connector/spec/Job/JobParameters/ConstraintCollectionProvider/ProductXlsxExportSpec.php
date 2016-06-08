@@ -36,7 +36,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
         $fields->shouldHaveKey('completeness');
         $fields->shouldHaveKey('updated_since_strategy');
         $fields->shouldHaveKey('updated_since_date');
-        $fields->shouldHaveKey('updated_since_period');
+        $fields->shouldHaveKey('updated_since_n_days');
         $fields->shouldHaveKey('linesPerFile');
         $fields->shouldHaveKey('families');
     }

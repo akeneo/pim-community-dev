@@ -538,7 +538,7 @@ class ProductReaderSpec extends ObjectBehavior
         $this->read()->shouldReturn(null);
     }
     
-    function it_reads_only_products_updated_since_a_period(
+    function it_reads_only_products_updated_since_a_n_days(
         $pqbFactory,
         $channelRepository,
         $metricConverter,
@@ -559,8 +559,8 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('channel')->willReturn('mobile');
         $jobParameters->get('enabled')->willReturn('all');
         $jobParameters->get('completeness')->willReturn('all');
-        $jobParameters->get('updated_since_strategy')->willReturn('since_period');
-        $jobParameters->get('updated_since_period')->willReturn(10);
+        $jobParameters->get('updated_since_strategy')->willReturn('since_n_days');
+        $jobParameters->get('updated_since_n_days')->willReturn(10);
         $jobParameters->get('families')->willReturn('');
         
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);

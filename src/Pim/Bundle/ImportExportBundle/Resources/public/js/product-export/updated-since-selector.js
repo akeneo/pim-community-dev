@@ -12,7 +12,7 @@ define(
         return {
             $exportedSinceStrategy: null,
             $exportedSinceDate: null,
-            $exportedSincePeriod: null,
+            $exportedSinceNDays: null,
             $validationTooltip: null,
             $legend: null,
 
@@ -24,9 +24,9 @@ define(
 
                 this.$exportedSinceStrategy = $container.find('select');
                 this.$exportedSinceDate = $container.find('.exported-since-date-wrapper input');
-                this.$exportedSincePeriod = $container.find('.exported-since-period-wrapper input');
+                this.$exportedSinceNDays = $container.find('.exported-since-n-days-wrapper input');
                 this.$dateValidationTooltip = $container.find('.exported-since-date-wrapper .validation-tooltip');
-                this.$periodValidationTooltip = $container.find('.exported-since-period-wrapper .validation-tooltip');
+                this.$nDaysValidationTooltip = $container.find('.exported-since-n-days-wrapper .validation-tooltip');
                 this.$legend = $container.find('.legend');
 
                 this._displayDateElement();
@@ -56,17 +56,17 @@ define(
             },
 
             /**
-             * Display or hide the period depending condition time value
+             * Display or hide the n days depending condition time value
              *
              * @private
              */
             _displayPeriodElement: function () {
-                if ('since_period' === this.$exportedSinceStrategy.val()) {
-                    this.$exportedSincePeriod.show().prop('disabled', false);
-                    this.$periodValidationTooltip.show();
+                if ('since_n_days' === this.$exportedSinceStrategy.val()) {
+                    this.$exportedSinceNDays.show().prop('disabled', false);
+                    this.$nDaysValidationTooltip.show();
                 } else {
-                    this.$exportedSincePeriod.hide().prop('disabled', true);
-                    this.$periodValidationTooltip.hide();
+                    this.$exportedSinceNDays.hide().prop('disabled', true);
+                    this.$nDaysValidationTooltip.hide();
                 }
             },
 

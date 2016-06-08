@@ -76,14 +76,14 @@ pim_connector:
                 label: Updated time condition
                 help: The time condition of the products you want to export
                 choice:
-                    since_period: Updated products since the last n days
+                    since_n_days: Updated products since the last n days
                     since_date: Updated products since the defined date
                     last_export: Updated products since last export
                     all: No date condition
             updated_since_date:
                 placeholder: Choose your date
                 error: The date must not be empty
-            updated_since_period:
+            updated_since_n_days:
                 error: This value should be blank
             last_execution:
                 none: This job has never been exported

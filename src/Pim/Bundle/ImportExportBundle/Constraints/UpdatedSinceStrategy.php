@@ -23,7 +23,7 @@ class UpdatedSinceStrategy extends Constraint
     /** @var string */
     public $message = [
         'since_date' => 'pim_connector.export.updated.updated_since_date.error',
-        'since_period' => 'pim_connector.export.updated.updated_since_period.error',
+        'since_n_days' => 'pim_connector.export.updated.updated_since_n_days.error',
     ];
 
     /**

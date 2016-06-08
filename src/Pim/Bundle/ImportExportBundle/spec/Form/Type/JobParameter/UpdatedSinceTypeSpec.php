@@ -64,7 +64,7 @@ class UpdatedSinceTypeSpec extends ObjectBehavior
                 'all'          => 'pim_connector.export.updated.updated_since_strategy.choice.all',
                 'last_export'  => 'pim_connector.export.updated.updated_since_strategy.choice.last_export',
                 'since_date'   => 'pim_connector.export.updated.updated_since_strategy.choice.since_date',
-                'since_period' => 'pim_connector.export.updated.updated_since_strategy.choice.since_period',
+                'since_n_days' => 'pim_connector.export.updated.updated_since_strategy.choice.since_n_days',
             ],
             'select2'  => true,
         ])->willReturn($builder);
@@ -78,7 +78,7 @@ class UpdatedSinceTypeSpec extends ObjectBehavior
             ;
         }))->willReturn($builder);
         
-        $builder->add('updated_since_period', 'number', Argument::that(function ($value) {
+        $builder->add('updated_since_n_days', 'number', Argument::that(function ($value) {
             return isset($value['constraints']) && $value['constraints'] instanceof UpdatedSinceStrategy;
         }))->shouldBeCalled();
 
