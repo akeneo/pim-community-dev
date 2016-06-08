@@ -52,12 +52,7 @@ class CsvReaderSpec extends ObjectBehavior
 
     private function getPath()
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . '..' .
-               DIRECTORY_SEPARATOR  . '..' .
-               DIRECTORY_SEPARATOR  . '..'.
-               DIRECTORY_SEPARATOR  . '..'.
-               DIRECTORY_SEPARATOR  . '..'.
-               DIRECTORY_SEPARATOR  . '..' .
+        return __DIR__ . DIRECTORY_SEPARATOR .
                DIRECTORY_SEPARATOR  . 'features' .
                DIRECTORY_SEPARATOR  . 'Context' .
                DIRECTORY_SEPARATOR  . 'fixtures';

@@ -38,9 +38,6 @@ class ProductProcessor extends AbstractProcessor
     /** @var ObjectDetacherInterface */
     protected $detacher;
 
-    /** @var bool */
-    protected $itemHasStatus = false;
-
     /** @var ProductFilterInterface */
     protected $productFilter;
 
@@ -80,7 +77,10 @@ class ProductProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $item = $this->setEnabledStatus($item);
+        $itemHasStatus = isset($item['enabled']);
+        if (!isset($item['enabled'])) {
+            $item['enabled'] = $jobParameters = $this->stepExecution->getJobParameters()->get('enabled');
+        }
 
         $item = $this->convertLocalizedAttributes($item);
         $violations = $this->localizedConverter->getViolations();
@@ -100,7 +100,7 @@ class ProductProcessor extends AbstractProcessor
 
         $product = $this->findOrCreateProduct($identifier, $familyCode);
 
-        if (false === $this->itemHasStatus && null !== $product->getId()) {
+        if (false === $itemHasStatus && null !== $product->getId()) {
             unset($filteredItem['enabled']);
         }
 
@@ -132,23 +132,6 @@ class ProductProcessor extends AbstractProcessor
         }
 
         return $product;
-    }
-
-    /**
-     * Sets default enabled status if not set.
-     *
-     * @param array $item
-     *
-     * @return array
-     */
-    protected function setEnabledStatus($item)
-    {
-        $this->itemHasStatus = isset($item['enabled']);
-        if (!$this->itemHasStatus) {
-            $item['enabled'] = $jobParameters = $this->stepExecution->getJobParameters()->get('enabled');
-        }
-
-        return $item;
     }
 
     /**
