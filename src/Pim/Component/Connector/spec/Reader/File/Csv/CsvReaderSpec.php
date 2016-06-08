@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Reader\File;
+namespace spec\Pim\Component\Connector\Reader\File\Csv;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;

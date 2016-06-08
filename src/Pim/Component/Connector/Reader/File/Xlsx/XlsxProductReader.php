@@ -1,11 +1,10 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\File\Product;
+namespace Pim\Component\Connector\Reader\File\Xlsx;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\MediaPathTransformer;
-use Pim\Component\Connector\Reader\File\XlsxReader;
 
 /**
  * Product XLSX reader

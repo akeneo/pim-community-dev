@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\File;
+namespace Pim\Component\Connector\Reader\File\Yaml;
 
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;

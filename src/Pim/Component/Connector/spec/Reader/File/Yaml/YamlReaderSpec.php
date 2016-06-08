@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Reader\File;
+namespace spec\Pim\Component\Connector\Reader\File\Yaml;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -12,7 +12,7 @@ class YamlReaderSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Component\Connector\Reader\File\YamlReader');
+        $this->shouldHaveType('\Pim\Component\Connector\Reader\File\Yaml\YamlReader');
     }
 
     function it_is_an_item_reader_step_execution_and_uploaded_file_aware()

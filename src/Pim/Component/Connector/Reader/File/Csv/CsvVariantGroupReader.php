@@ -1,8 +1,10 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\File;
+namespace Pim\Component\Connector\Reader\File\Csv;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\Reader\File\FileIteratorFactory;
+use Pim\Component\Connector\Reader\File\MediaPathTransformer;
 
 /**
  * Variant Group csv reader

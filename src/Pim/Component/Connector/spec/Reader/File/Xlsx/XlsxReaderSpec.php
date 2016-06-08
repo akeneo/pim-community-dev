@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Reader\File;
+namespace spec\Pim\Component\Connector\Reader\File\Xlsx;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -22,12 +22,7 @@ class XlsxReaderSpec extends ObjectBehavior
         FileIteratorInterface $fileIterator,
         JobParameters $jobParameters
     ) {
-        $filePath = __DIR__ . DIRECTORY_SEPARATOR . '..' .
-            DIRECTORY_SEPARATOR . '..' .
-            DIRECTORY_SEPARATOR . '..' .
-            DIRECTORY_SEPARATOR . '..' .
-            DIRECTORY_SEPARATOR . '..' .
-            DIRECTORY_SEPARATOR . '..' .
+        $filePath = __DIR__ . DIRECTORY_SEPARATOR .
             DIRECTORY_SEPARATOR . 'features' .
             DIRECTORY_SEPARATOR . 'Context' .
             DIRECTORY_SEPARATOR . 'fixtures' .

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\File;
+namespace Pim\Component\Connector\Reader\File\Csv;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\FlushableInterface;
@@ -8,6 +8,8 @@ use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\Reader\File\FileIteratorFactory;
+use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

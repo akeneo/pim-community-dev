@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Reader\File\Product;
+namespace spec\Pim\Component\Connector\Reader\File\Xlsx;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Reader\File\FileIterator;
@@ -17,12 +17,12 @@ class CsvProductReaderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Product\XlsxProductReader');
+        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Xlsx\XlsxProductReader');
     }
 
     function it_is_a_csv_reader()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Reader\File\XlsxReader');
+        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Xlsx\XlsxReader');
     }
 
     function it_transforms_media_paths_to_absolute_paths(

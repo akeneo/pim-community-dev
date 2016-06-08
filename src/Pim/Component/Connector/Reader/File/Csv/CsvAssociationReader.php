@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\File;
+namespace Pim\Component\Connector\Reader\File\Csv;
 
 /**
  * Product Association CSV reader

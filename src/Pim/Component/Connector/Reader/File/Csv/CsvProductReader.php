@@ -1,9 +1,8 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\File\Product;
+namespace Pim\Component\Connector\Reader\File\Csv;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Reader\File\CsvReader;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\MediaPathTransformer;
 
