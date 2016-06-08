@@ -124,33 +124,47 @@ class Select2Decorator extends ElementDecorator
     }
 
     /**
-     * @return string
+     * Get the value of the the HTML select (value='xxx')
      *
      * @throws TimeoutException
+     * @throws \Exception
+     *
+     * @return array
      */
-    public function getValue()
+    public function getCodes()
     {
+        if (false !== strpos('select2-container-multi', $this->getAttribute('class'))) {
+            throw new \Exception('Not implement yet');
+        }
+
         $id = $this->getAttribute('id');
-        $id =  sprintf('#%s',substr($id, 5, strlen($id)));
+        $id = sprintf('#%s', substr($id, 5, strlen($id)));
 
         $select = $this->spin(function () use ($id) {
             return $this->getSession()->getPage()->find('css', $id);
         }, sprintf('Impossible to find the select element for the select2 %s', $id));
 
-        return $select->getValue();
+        return [$select->getValue()];
     }
 
     /**
-     * @return string
-     * 
+     * Get the label of the options displayed in the select2
+     *
      * @throws TimeoutException
+     * @throws \Exception
+     *
+     * @return array
      */
-    public function getOptionLabel()
+    public function getValues()
     {
+        if (false !== strpos('select2-container-multi', $this->getAttribute('class'))) {
+            throw new \Exception('Not implement yet');
+        }
+
         $element = $this->spin(function () {
             return $this->find('css', '.select2-chosen');
         }, 'Impossible to find the open of the the select2');
 
-        return $element->getHtml();
+        return [$element->getHtml()];
     }
 }

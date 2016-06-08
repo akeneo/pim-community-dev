@@ -1,25 +1,22 @@
 <?php
 
-namespace spec\Pim\Bundle\ImportExportBundle\Constraints;
+namespace spec\Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
 use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 
-class UpdatedSinceStrategySpec extends ObjectBehavior
+class UpdatedSinceNDaysSpec extends ObjectBehavior
 {
     function let(JobInstance $jobInstance)
     {
-        $this->beConstructedWith([
-            'jobInstance' => $jobInstance,
-            'strategy' => 'since_date',
-        ]);
+        $this->beConstructedWith($jobInstance);
     }
-
+    
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\ImportExportBundle\Constraints\UpdatedSinceStrategy');
+        $this->shouldHaveType('Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceNDays');
     }
 
     function it_is_constraint()
@@ -29,14 +26,16 @@ class UpdatedSinceStrategySpec extends ObjectBehavior
 
     function it_has_required_options()
     {
-        $this->getRequiredOptions()->shouldReturn([
-            'jobInstance',
-            'strategy',
-        ]);
+        $this->getDefaultOption()->shouldReturn('jobInstance');
     }
 
     function it_has_targets()
     {
         $this->getTargets()->shouldReturn(Constraint::PROPERTY_CONSTRAINT);
+    }
+
+    function it_is_validated_by()
+    {
+        $this->validatedBy()->shouldReturn('updated_since_strategy');
     }
 }

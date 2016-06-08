@@ -8,15 +8,15 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Localization\Factory\DateFactory;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
-use Pim\Bundle\ImportExportBundle\Constraints\UpdatedSinceStrategy;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceDate;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceNDays;
+use Pim\Component\Catalog\Validator\Constraints\Range;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Updated time condition type use in export builder
@@ -89,19 +89,16 @@ class UpdatedSinceType extends AbstractType
                 'select2'  => true,
             ])
             ->add('updated_since_date', 'datetime', [
-                'widget' => 'single_text',
-                'format' => $dateFormatter->getPattern(),
-                'input'  => 'string',
-                'constraints' => new UpdatedSinceStrategy([
-                    'jobInstance' => $options['job_instance'],
-                    'strategy' => 'since_date',
-                ])
+                'widget'      => 'single_text',
+                'format'      => $dateFormatter->getPattern(),
+                'input'       => 'string',
+                'constraints' => new UpdatedSinceDate($options['job_instance'])
             ])
             ->add('updated_since_n_days', 'number', [
-                'constraints' => new UpdatedSinceStrategy([
-                    'jobInstance' => $options['job_instance'],
-                    'strategy' => 'since_n_days',
-                ])
+                'constraints' => [
+                    new UpdatedSinceNDays($options['job_instance']),
+                    new Range(['min' => 0]),
+                ]
             ])
         ;
     }

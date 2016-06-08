@@ -10,7 +10,8 @@ use Akeneo\Component\Localization\Factory\DateFactory;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
-use Pim\Bundle\ImportExportBundle\Constraints\UpdatedSinceStrategy;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceDate;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceNDays;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -18,6 +19,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\Range;
 
 class UpdatedSinceTypeSpec extends ObjectBehavior
 {
@@ -74,12 +76,13 @@ class UpdatedSinceTypeSpec extends ObjectBehavior
                 isset($value['widget']) && 'single_text' === $value['widget'] &&
                 isset($value['format']) && 'y-m-d' === $value['format'] &&
                 isset($value['input']) && 'string' === $value['input'] &&
-                isset($value['constraints']) && $value['constraints'] instanceof UpdatedSinceStrategy
+                isset($value['constraints']) && $value['constraints'] instanceof UpdatedSinceDate
             ;
         }))->willReturn($builder);
         
         $builder->add('updated_since_n_days', 'number', Argument::that(function ($value) {
-            return isset($value['constraints']) && $value['constraints'] instanceof UpdatedSinceStrategy;
+            return isset($value['constraints']) && $value['constraints'][0] instanceof UpdatedSinceNDays;
+            return isset($value['constraints']) && $value['constraints'][1] instanceof Range;
         }))->shouldBeCalled();
 
         $this->buildForm($builder, ['job_instance' => $jobInstance]);

@@ -27,7 +27,7 @@ class Edit extends Form
 
         $this->elements = array_merge(
             [
-                'updated_time_condition' => [
+                'Updated time condition' => [
                     'css'        => '.updated-since-parameter .controls',
                     'decorators' => ['Pim\Behat\Decorator\Export\Filter\UpdatedTimeConditionDecorator'],
                 ]

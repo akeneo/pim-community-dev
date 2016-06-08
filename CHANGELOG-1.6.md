@@ -17,7 +17,7 @@
 - PIM-5761: The channel no more contains any color information as it was not used anymore in the UI.
 - PIM-5431: Export the products updated since a defined date
 - PIM-5602: Introduce "move to categories" action in products mass edit
-- PIM-5432: export the products updated for a period
+- PIM-5432: Export the products updated for a period
 
 ## Scalability improvements
 
@@ -40,6 +40,7 @@
 - TIP-245: Add datetime filters in the Product Query Builder, allowing to select products on "created at" and "updated at" fields.
 - PIM-5657: Introduce a `JobTemplateProvider` that holds the job template codes to use for creating, showing, editing job profiles. The provider uses configuration files in order to retrieve overridden templates for specific job names
 - TIP-458: Move the Converters from Processors to Readers. Now, all the readers return a standard format as output, and all the processors get a standard format as input.
+- TIP-459: Standardize the denormalization Processors, to use SimpleProcessor in most of the cases.
 
 ## BC breaks
 
@@ -80,10 +81,10 @@
 - Change constructor of `Pim\Bundle\NotificationBundle\Controller\NotificationController`. Remove deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and add `Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface` and `Akeneo\Component\StorageUtils\Remover\RemoverInterface`.
 - Change constructor of `Pim\Bundle\NotificationBundle\EventSubscriber\JobExecutionNotifier`. Remove deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and add `Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry` and `Pim\Bundle\NotificationBundle\NotifierInterface`.
 - Change constructor of `Pim\Bundle\NotificationBundle\Twig\NotificationExtension`. Replace deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` by `Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface`.
-- Change constructor of `Pim\Bundle\EnrichBundle\Controller\FileController`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
-- Change constructor of `Pim\Bundle\EnrichBundle\Imagine\Loader\FlysystemLoader`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
-- Change constructor of `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
-- Change constructor of `Pim\Component\Connector\Writer\File\FileExporter`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\FileController`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Imagine\Loader\FlysystemLoader`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`.
+- Change constructor of `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`.
+- Change constructor of `Pim\Component\Connector\Writer\File\FileExporter`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`.
 - Move `Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry` to `Pim\Component\Catalog\AttributeTypeRegistry`
 - Move `Pim\Bundle\CatalogBundle\Factory\AttributeFactory` to `Pim\Component\Catalog\Factory\AttributeFactory`
 - Remove `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager`
@@ -193,7 +194,7 @@
 - Change constructor of `Pim\Component\Catalog\Updater\GroupUpdater` and `Pim\Component\Catalog\Updater\VariantGroupUpdater`, add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
 - Change constructor of `Akeneo\Bundle\BatchBundle\Job\Pim\Bundle\TransformBundle\Normalizer\Structured\FamilyNormalizer` to inject two more dependendies `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` and `Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface`
 - Remove class `Pim\Bundle\ConnectorBundle\JobLauncher\SimpleJobLauncher`  which overrides `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` we now always use `@akeneo_batch.launcher.simple_job_launcher` and not anymore `@pim_connector.launcher.simple_job_launcher`
-- Remove parameter `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface` from constructors of 
+- Remove parameter `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface` from constructors of
     `Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor`
     `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements`
     `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor`
@@ -301,10 +302,6 @@
 - Remove property color from the model `Pim\Bundle\CatalogBundle\Entity\Channel` and interface `Pim\Component\Catalog\Model\ChannelInterface`
 - Rename `Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface` to `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface`
 - Remove `Pim\Component\Connector\ArrayConverter\Structured\AttributeOptionStandardConverter`
-- Remove `Pim\Component\Connector\ArrayConverter\Structured\JobInstanceConverter`
-- Remove `Pim\Component\Connector\ArrayConverter\Flat\LocaleStandardConverter`
-- Remove `Pim\Component\Connector\ArrayConverter\Flat\UserGroupStandardConverter`
-- Remove `Pim\Component\Connector\ArrayConverter\Flat\UserRoleStandardConverter`
 - Move and rename `Pim\Component\Connector\ArrayConverter\Flat\AttributeOptionStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\AttributeOption`
 - Move and rename `Pim\Component\Connector\ArrayConverter\Flat\AttributeStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Attribute`
 - Move and rename `Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product`
@@ -314,11 +311,6 @@
 - Move and rename `Pim\Component\Connector\ArrayConverter\Flat\CategoryStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Category`
 - Move and rename `Pim\Component\Connector\ArrayConverter\Flat\AssociationTypeStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\AssociationType`
 - Move and rename `Pim\Component\Connector\ArrayConverter\Flat\FamilyStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Family`
-- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\ChannelStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Channel`
-- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\AttributeGroupStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\AttributeGroup`
-- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\GroupTypeStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\GroupType`
-- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\CurrencyStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Currency`
-- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\UserStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\User`
 - Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistry` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterRegistry`
 - Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\AbstractValueConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\AbstractValueConverter`
 - Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\PriceConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\PriceConverter`
@@ -339,18 +331,13 @@
 - Move `Pim\Component\Connector\Reader\File\CsvProductReader` to `Pim\Component\Connector\Reader\File\Csv\ProductReader`. Change constructor to remove `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, decimalSeparators and dateFormats to add `Pim\Component\Connector\Reader\File\FileIteratorFactory`, `Pim\Component\Connector\Reader\File\MediaPathTransformer` and `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface`.
 - Move `Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader` to `Pim\Component\Connector\Reader\File\Yaml\Reader`. Change constructor to add `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface` as first parameter.
 - Remove `Pim\Component\Connector\Processor\Denormalization\AssociationTypeProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
-- Remove `Pim\Component\Connector\Processor\Denormalization\AttributeGroupProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
 - Remove `Pim\Component\Connector\Processor\Denormalization\CategoryProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
 - Remove `Pim\Component\Connector\Processor\Denormalization\FamilyProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
-- Remove `Pim\Component\Connector\Processor\Denormalization\ChannelProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
-- Remove parameter `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface` from constructors of
-  `Pim\Component\Connector\Processor\Denormalization\AttributeOptionProcessor`,
-  `Pim\Component\Connector\Processor\Denormalization\AttributeProcessor`,
-  `Pim\Component\Connector\Processor\Denormalization\CurrencyProcessor`,
-  `Pim\Component\Connector\Processor\Denormalization\GroupProcessor`,
-  `Pim\Component\Connector\Processor\Denormalization\GroupTypeProcessor`,
-  `Pim\Component\Connector\Processor\Denormalization\ProductAssociationProcessor`,
-  `Pim\Component\Connector\Processor\Denormalization\ProductProcessor` and
-  `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
+- Remove parameter `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface` from constructors of `Pim\Component\Connector\Processor\Denormalization\ProductAssociationProcessor` and `Pim\Component\Connector\Processor\Denormalization\ProductProcessor`.
 - Invert the two first arguments or the constructor of `Pim\Component\Connector\Processor\Denormalization\AttributeProcessor`
 - Move `Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor` to `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor`
+- Change constructor of `Pim\Component\Catalog\Updater\AttributeUpdater`, add `Pim\Component\Catalog\AttributeTypeRegistry` as last parameter.
+- Remove `Pim\Component\Connector\Processor\Denormalization\AttributeOptionProcessor`, `Pim\Component\Connector\Processor\Denormalization\AttributeProcessor`, `Pim\Component\Connector\Processor\Denormalization\GroupProcessor`.
+- Add parameter `$operationGroup` to `Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver::getAvailableOperationsForm()`
+- Add parameter `$operationGroup` to `Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface::register()`
+- Replace method `getAllByGridName()` by `getAllByGridNameAndGroup()` in `Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface`

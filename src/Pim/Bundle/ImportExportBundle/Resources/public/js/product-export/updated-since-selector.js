@@ -47,8 +47,9 @@ define(
              */
             _displayDateElement: function () {
                 if ('since_date' === this.$exportedSinceStrategy.val()) {
-                    this.$exportedSinceDate.show().prop('disabled', false);
+                    this.$exportedSinceDate.show();
                     this.$dateValidationTooltip.show();
+                    this._disableElement(this.$exportedSinceDate);
                 } else {
                     this.$exportedSinceDate.hide().prop('disabled', true);
                     this.$dateValidationTooltip.hide();
@@ -62,8 +63,9 @@ define(
              */
             _displayPeriodElement: function () {
                 if ('since_n_days' === this.$exportedSinceStrategy.val()) {
-                    this.$exportedSinceNDays.show().prop('disabled', false);
+                    this.$exportedSinceNDays.show();
                     this.$nDaysValidationTooltip.show();
+                    this._disableElement(this.$exportedSinceNDays);
                 } else {
                     this.$exportedSinceNDays.hide().prop('disabled', true);
                     this.$nDaysValidationTooltip.hide();
@@ -80,6 +82,19 @@ define(
                     this.$legend.show();
                 } else {
                     this.$legend.hide();
+                }
+            },
+
+            /**
+             * Disable an filter value if the strategy is disabled
+             *
+             * @param {object} $element
+             *
+             * @private
+             */
+            _disableElement: function ($element) {
+                if (!this.$exportedSinceStrategy.is(':disabled')) {
+                    $element.prop('disabled', false);
                 }
             }
         };

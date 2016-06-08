@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
+use Pim\Component\Catalog\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -60,7 +61,7 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
             ])
         ];
         $constraintFields['updated_since_date'] = new DateTime(['groups' => 'Execution']);
-        $constraintFields['updated_since_n_days'] = [];
+        $constraintFields['updated_since_n_days'] = new Range(['min' => 0, 'groups' => 'Execution']);
         $constraintFields['locales'] = new NotBlank([
             'groups'  => 'Execution',
             'message' => 'pim_connector.export.locales.validation.not_blank'

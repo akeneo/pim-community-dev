@@ -1,11 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\ImportExportBundle\Constraints;
+namespace spec\Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\ImportExportBundle\Constraints\UpdatedSinceStrategy;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceDate;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceNDays;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\Blank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -20,7 +21,7 @@ class UpdatedSinceStrategyValidatorSpec extends ObjectBehavior
     
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\ImportExportBundle\Constraints\UpdatedSinceStrategyValidator');
+        $this->shouldHaveType('Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceStrategyValidator');
     }
     
     function it_is_validator()
@@ -31,7 +32,7 @@ class UpdatedSinceStrategyValidatorSpec extends ObjectBehavior
     function it_does_not_adds_a_violation_if_job_parameter_is_valid(
         $executionContext,
         JobInstance $jobInstance,
-        UpdatedSinceStrategy $constraint
+        \Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceDate $constraint
     ) {
         $jobInstance->getRawConfiguration()->willReturn([
             'updated_since_strategy' => 'since_date',
@@ -46,7 +47,7 @@ class UpdatedSinceStrategyValidatorSpec extends ObjectBehavior
     function it_adds_a_violation_if_updated_since_date_is_empty(
         $executionContext,
         JobInstance $jobInstance,
-        UpdatedSinceStrategy $constraint,
+        UpdatedSinceDate $constraint,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {
         $jobInstance->getRawConfiguration()->willReturn([
@@ -65,7 +66,7 @@ class UpdatedSinceStrategyValidatorSpec extends ObjectBehavior
     function it_adds_a_violation_if_updated_since_n_days_is_empty(
         $executionContext,
         JobInstance $jobInstance,
-        UpdatedSinceStrategy $constraint,
+        UpdatedSinceNDays $constraint,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {
         $jobInstance->getRawConfiguration()->willReturn([

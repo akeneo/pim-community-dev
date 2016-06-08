@@ -12,88 +12,83 @@ use Pim\Behat\Decorator\ElementDecorator;
 class UpdatedTimeConditionDecorator extends ElementDecorator
 {
     use SpinCapableTrait;
-    
+
     /** @var array */
-    private $elements = [
-        'updated_since_strategy' => [
+    protected $elements = [
+        'updated since strategy' => [
             'css'        => '.select2-container',
-            'decorators' => ['Pim\Behat\Decorator\Field\Select2Decorator']
+            'decorators' => ['Pim\Behat\Decorator\Field\Select2Decorator'],
         ],
-        'updated_since_date' => [
+        'updated since date' => [
             'css'        => '.exported-since-date-wrapper input',
-            'decorators' => ['Pim\Behat\Decorator\Field\DatepickerDecorator']
+            'decorators' => ['Pim\Behat\Decorator\Field\DatepickerDecorator'],
         ],
-        'updated_since_n_days' => [
+        'updated since n days' => [
             'css' => '.exported-since-n-days-wrapper input',
         ],
     ];
+    
+    /**
+     * Get the value of the operator
+     *
+     * @return string
+     */
+    public function getOperator()
+    {
+        return $this->getElement('updated since strategy')->getValues()[0];
+    }
 
     /**
      * Set the value of the filter
-     * 
-     * @param string $expectedOperatorValue
-     * @param string $expectedFilterValue
+     *
+     * @param string $operator
+     * @param string $value
      */
-    public function setValue($expectedOperatorValue, $expectedFilterValue)
+    public function setValue($operator, $value)
     {
-        $operator = $this->getElement('updated_since_strategy');
-        $operator->setValue($expectedOperatorValue);
+        $operatorElement = $this->getElement('updated since strategy');
+        $operatorElement->setValue($operator);
 
-        $filterValueElement = $this->getFilterValueElement($operator);
-        $filterValueElement->setValue($expectedFilterValue);
+        $filterValueElement = $this->getFilterValueElement($operatorElement);
+        $filterValueElement->setValue($value);
     }
-    
+
     /**
-     * Check if the operator and the value of the filter are valid
+     * Get the value of the filter
      * 
-     * @param string $expectedOperatorValue
-     * @param string $expectedFilterValue
-     * 
-     * @throws \Exception
+     * @return string
      */
-    public function validate($expectedOperatorValue, $expectedFilterValue)
+    public function getValue()
     {
-        $operator = $this->getElement('updated_since_strategy');
-        $operatorOptionValue = $operator->getOptionLabel();
-        if ($expectedOperatorValue !== $operatorOptionValue) {
-            throw new \Exception(
-                sprintf(
-                    'The value of operator does not contain "%s" but "%s"', 
-                    $expectedOperatorValue, 
-                    $operatorOptionValue
-                )
-            );
-        }
-
-        usleep(200);
-
-        $filterValue = $this->getFilterValueElement($operator)->getValue();
-        if ($expectedFilterValue !== $filterValue) {
-            throw new \Exception(
-                sprintf('The value of filter does not contain "%s" but "%s"', $filterValue, $expectedFilterValue)
-            );
-        }
+        $operator = $this->getElement('updated since strategy');
+        
+        return $this->getFilterValueElement($operator)->getValue();
     }
-    
-    public function hasVisibleFilterValue($field)
+
+    /**
+     * Check the visibility of the filter
+     *
+     * @param string $field
+     *
+     * @return bool
+     */
+    public function checkValueElementVisibility($field)
     {
         $filter = $this->getElement($field);
 
-        if ($filter->isVisible()) {
-            throw new \Exception('The date input for the updated condition time should not be visible');
-        }
+        return $filter->isVisible();
     }
 
     /**
      * Return a decorated Element
-     * 
+     *
      * @param string $name
-     * 
+     *
      * @return ElementDecorator|NodeElement
      */
-    private function getElement($name)
+    protected function getElement($name)
     {
-        $element = $this->spin(function() use ($name) {
+        $element = $this->spin(function () use ($name) {
             return $this->find('css', $this->elements[$name]['css']);
         }, sprintf('Impossible to find the element %s', $name));
 
@@ -106,13 +101,15 @@ class UpdatedTimeConditionDecorator extends ElementDecorator
 
     /**
      * Get the element used to managed the value of the filter
-     * 
+     *
      * @param mixed $operator
-     * 
+     *
      * @return NodeElement
      */
-    private function getFilterValueElement($operator)
+    protected function getFilterValueElement($operator)
     {
-        return $this->getElement(sprintf('updated_%s', $operator->getValue()));
+        $formattedCode = str_replace('_', ' ',  $operator->getCodes()[0]);
+
+        return $this->getElement(sprintf('updated %s', $formattedCode));
     }
 }

@@ -82,9 +82,9 @@ pim_connector:
                     all: No date condition
             updated_since_date:
                 placeholder: Choose your date
-                error: The date must not be empty
+                error: The date should not be blank.
             updated_since_n_days:
-                error: This value should be blank
+                error: This value should not be blank.
             last_execution:
                 none: This job has never been exported
                 last: "Last export: %date%"

@@ -2,8 +2,10 @@
 
 namespace Pim\Behat\Context\Domain\Spread;
 
+use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
+use Pim\Behat\Decorator\Export\Filter\UpdatedTimeConditionDecorator;
 
 class ExportBuilderContext extends PimContext
 {
@@ -13,18 +15,16 @@ class ExportBuilderContext extends PimContext
      * Set the operator and the value of a filter
      *
      * Example:
-     * When I filter by "Updated time condition" with operator "Updated products since the defined date" with value "05/25/2016"
+     * When I filter exported products by operator "Updated products since the defined date" with value "05/25/2016"
      *
-     * @param string $filter
      * @param string $expectedOperator
      * @param string $exceptedValue
      * 
-     * @When /^I filter by "([^"]*)" with operator "([^"]*)" with value "([^"]*)"$/
+     * @When /^I filter exported products by operator "([^"]*)" and value "([^"]*)"$/
      */
-    public function iFilterBy($filter, $expectedOperator, $exceptedValue)
+    public function iFilterBy($expectedOperator, $exceptedValue)
     {
-        $filterName = $this->formatElementName($filter);
-        $filterElement = $this->getCurrentPage()->getElement($filterName);
+        $filterElement = $this->getCurrentPage()->getElement('Updated time condition');
 
         $filterElement->setValue($expectedOperator, $exceptedValue);
     }
@@ -33,51 +33,64 @@ class ExportBuilderContext extends PimContext
      * Check the value and the operator of the filter
      *
      * Example:
-     * Then the filter "Updated time condition" should contain operator "Updated products since the last n days" with value "10"
+     * Then the filter should contain operator "Updated products since the last n days" with value "10"
      *
-     * @param string $filter
      * @param string $expectedOperator
      * @param string $exceptedValue
      * 
-     * @throws \Exception
+     * @throws ExpectationException
      * 
-     * @Then /^the filter "([^"]*)" should contain operator "([^"]*)" with value "([^"]*)"$/
+     * @Then /^the filter should contain operator "([^"]*)" and value "([^"]*)"$/
      */
-    public function theFilterShouldContains($filter, $expectedOperator, $exceptedValue)
+    public function theFilterShouldContains($expectedOperator, $exceptedValue)
     {
-        $filterName = $this->formatElementName($filter);
-        $filterElement = $this->getCurrentPage()->getElement($filterName);
+        /** @var UpdatedTimeConditionDecorator $filter */
+        $filterElement = $this->getCurrentPage()->getElement('Updated time condition');
+        $value = $filterElement->getValue();
+        $operator = $filterElement->getOperator();
 
-        $filterElement->validate($expectedOperator, $exceptedValue);
+        if ($expectedOperator !== $operator) {
+            throw new ExpectationException(
+                sprintf(
+                    'The value of operator does not contain "%s" but "%s"',
+                    $expectedOperator,
+                    $operator
+                ),
+                $this->getSession()->getDriver()
+            );
+        }
+
+        if ($exceptedValue !== $value) {
+            throw new ExpectationException(
+                sprintf('The value of filter does not contain "%s" but "%s"', $exceptedValue, $value),
+                $this->getSession()->getDriver()
+            );
+        }
     }
 
     /**
      * Check if the element is visible
      * 
      * Example:
-     * Then I should not see the exported time date
+     * Then I should not see the "updated since n days" element in the filter "Updated time condition"
      *
      * @param string $field
+     * @param string $filterElement
      * 
      * @throws \Exception
      * 
      * @Then /^I should not see the "([^"]*)" element in the filter "([^"]*)"$/
      */
-    public function iShouldNotSeeTheDateInput($field, $filter)
+    public function iShouldNotSeeTheElement($field, $filterElement)
     {
-        $input = $this->getCurrentPage()->getElement($this->formatElementName($filter));
-        $input->hasVisibleFilterValue($this->formatElementName($field));
-    }
-
-    /**
-     * Format the name of an element from guerkin syntax
-     * 
-     * @param string $name
-     *
-     * @return string
-     */
-    private function formatElementName($name)
-    {
-        return str_replace(' ', '_', strtolower($name));
+        /** @var UpdatedTimeConditionDecorator $filterElement */
+        $filterElement = $this->getCurrentPage()->getElement($filterElement);
+        
+        if ($filterElement->checkValueElementVisibility($field)) {
+            throw new ExpectationException(
+                sprintf('The element "%s" should not be visible', $field),
+                $this->getSession()->getDriver()
+            );
+        }
     }
 }

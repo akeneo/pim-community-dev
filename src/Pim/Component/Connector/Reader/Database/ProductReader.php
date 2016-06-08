@@ -254,8 +254,8 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         if ('since_n_days' === $updatedTimeCondition) {
             $period = $parameters->get('updated_since_n_days');
             
-            return (new \DateTime())->setTime(0, 0)
-                ->sub(new \DateInterval(sprintf('P%dD', $period)))
+            return (new \DateTime(sprintf('%d days ago', $period), new \DateTimeZone('UTC')))
+                ->setTime(0, 0)
                 ->format('Y-m-d H:i:s')
             ;
         }
