@@ -227,3 +227,10 @@ services:
     # Yaml file readers
     pim_connector.reader.file.yaml:
         class: '%pim_connector.reader.file.yaml.class%'
+        arguments:
+            - '@pim_connector.array_converter.identity'
+
+    pim_connector.reader.file.yaml_job_instance:
+        class: '%pim_connector.reader.file.yaml.class%'
+        arguments:
+            - '@pim_connector.array_converter.structured.job_instance'

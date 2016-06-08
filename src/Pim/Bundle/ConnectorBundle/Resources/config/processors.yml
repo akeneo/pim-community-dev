@@ -170,12 +170,10 @@ services:
             - '@pim_catalog.validator.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
-#    TODO Do this too !
-    pim_connector.processor.denormalization.job_instance.flat:
+    pim_connector.processor.denormalization.job_instance:
         class: '%pim_connector.processor.denormalization.job_instance.class%'
         arguments:
             - '@pim_import_export.repository.job_instance' # TODO, alias should be changed and class should be moved
-            - '@pim_connector.array_converter.structured.job_instance'
             - '@pim_connector.factory.job_instance'
             - '@akeneo_batch.updater.job_instance'
             - '@validator'

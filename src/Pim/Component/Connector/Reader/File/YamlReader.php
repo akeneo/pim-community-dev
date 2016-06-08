@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Yaml\Yaml;
@@ -23,11 +24,14 @@ class YamlReader extends FileReader implements
     StepExecutionAwareInterface,
     FlushableInterface
 {
-    /** @var string */
-    protected $codeField = 'code';
+    /** @var ArrayConverterInterface */
+    protected $converter;
 
     /** @var bool */
     protected $multiple = false;
+
+    /** @var string */
+    protected $codeField = 'code';
 
     /** @var bool */
     protected $uploadAllowed = false;
@@ -39,13 +43,15 @@ class YamlReader extends FileReader implements
     protected $yaml;
 
     /**
-     * @param bool   $multiple
-     * @param string $codeField
+     * @param ArrayConverterInterface $converter
+     * @param bool                    $multiple
+     * @param string                  $codeField
      */
-    public function __construct($multiple = false, $codeField = 'code')
+    public function __construct(ArrayConverterInterface $converter, $multiple = false, $codeField = 'code')
     {
+        $this->converter = $converter;
         $this->codeField = $codeField;
-        $this->multiple = $multiple;
+        $this->multiple  = $multiple;
     }
 
     /**
@@ -95,12 +101,11 @@ class YamlReader extends FileReader implements
 
         if ($data = $this->yaml->current()) {
             $this->yaml->next();
-
             if (null !== $this->stepExecution) {
                 $this->stepExecution->incrementSummaryInfo('read_lines');
             }
-            return $data;
 
+            return $this->converter->convert($data);
         } else {
             // if not used in the context of an ItemStep, the previous read file will be returned
             $this->flush();

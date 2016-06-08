@@ -23,8 +23,6 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - ['pim_catalog_file', 'pim_catalog_image']
 
-    pim_base_connector.processor.job_instance: '@pim_connector.processor.denormalization.job_instance.flat'
-
     # Normalization
     # @deprecated will be removed in 1.7 use @pim_connector.processor.normalization.group
     pim_base_connector.processor.normalization.csv_group:

@@ -175,8 +175,8 @@ connector:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import:
                     services:
-                        reader:    pim_connector.reader.file.yaml
-                        processor: pim_connector.processor.denormalization.job_instance.flat
+                        reader:    pim_connector.reader.file.yaml_job_instance
+                        processor: pim_connector.processor.denormalization.job_instance
                         writer:    pim_connector.writer.database.job_instance
 
         fixtures_user_csv:
