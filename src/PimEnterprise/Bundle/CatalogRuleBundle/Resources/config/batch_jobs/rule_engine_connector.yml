@@ -6,7 +6,7 @@ connector:
             steps:
                 import:
                     services:
-                        reader:    pim_connector.reader.file.yaml
+                        reader:    pim_connector.reader.file.yaml_rule
                         processor: pimee_catalog_rule.processor.denormalization.rule_definition
                         writer:    pimee_catalog_rule.writer.doctrine.rule_definition
         yml_rule_export:
