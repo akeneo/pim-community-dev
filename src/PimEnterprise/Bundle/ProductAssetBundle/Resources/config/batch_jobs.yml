@@ -17,7 +17,7 @@ connector:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_asset:
                     services:
-                        reader:    pim_base_connector.reader.file.yaml
+                        reader:    pim_connector.reader.file.yaml
                         processor: pimee_product_asset.processor.denormalization.channel_configuration.flat
                         writer:    pimee_product_asset.writer.doctrine.channel_configuration
         yml_asset_channel_configuration_export:
