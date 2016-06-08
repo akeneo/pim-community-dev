@@ -12,8 +12,8 @@ use Akeneo\Component\Batch\Step\AbstractStep;
 use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
+use Pim\Component\Connector\Reader\File\YamlReader;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

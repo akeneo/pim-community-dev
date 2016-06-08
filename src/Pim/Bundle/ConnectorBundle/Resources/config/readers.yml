@@ -16,6 +16,8 @@ parameters:
     pim_connector.reader.file.file_iterator_factory.class:  Pim\Component\Connector\Reader\File\FileIteratorFactory
     pim_connector.reader.file.media_path_transformer.class: Pim\Component\Connector\Reader\File\MediaPathTransformer
 
+    pim_connector.reader.file.yaml.class: Pim\Component\Connector\Reader\File\YamlReader
+
 services:
     pim_connector.reader.database.product:
         class: '%pim_connector.reader.database.product.class%'
@@ -221,3 +223,7 @@ services:
         arguments:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.category'
+
+    # Yaml file readers
+    pim_connector.reader.file.yaml:
+        class: '%pim_connector.reader.file.yaml.class%'

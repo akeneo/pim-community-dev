@@ -1,11 +1,12 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
+namespace Pim\Component\Connector\Reader\File;
 
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Yaml\Yaml;
@@ -38,8 +39,6 @@ class YamlReader extends FileReader implements
     protected $yaml;
 
     /**
-     * Constructor
-     *
      * @param bool   $multiple
      * @param string $codeField
      */
