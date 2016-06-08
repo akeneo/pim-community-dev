@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\File\Product;
+namespace Pim\Component\Connector\Reader\File;
 
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 

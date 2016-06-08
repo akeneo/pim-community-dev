@@ -4,6 +4,7 @@ namespace Pim\Component\Connector\Reader\File\Product;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
+use Pim\Component\Connector\Reader\File\MediaPathTransformer;
 use Pim\Component\Connector\Reader\File\XlsxReader;
 
 /**

@@ -5,10 +5,9 @@ namespace spec\Pim\Component\Connector\Reader\File\Product;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Reader\File\FileIterator;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
-use Pim\Component\Connector\Reader\File\Product\MediaPathTransformer;
+use Pim\Component\Connector\Reader\File\MediaPathTransformer;
 use Prophecy\Argument;
 
 class CsvProductReaderSpec extends ObjectBehavior

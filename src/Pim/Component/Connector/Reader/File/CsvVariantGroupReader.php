@@ -3,8 +3,6 @@
 namespace Pim\Component\Connector\Reader\File;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-// TODO Move mediaPathTransformer
-use Pim\Component\Connector\Reader\File\Product\MediaPathTransformer;
 
 /**
  * Variant Group csv reader

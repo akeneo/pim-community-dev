@@ -14,7 +14,7 @@ parameters:
 
     pim_connector.reader.file.file_iterator.class:          Pim\Component\Connector\Reader\File\FileIterator
     pim_connector.reader.file.file_iterator_factory.class:  Pim\Component\Connector\Reader\File\FileIteratorFactory
-    pim_connector.reader.file.media_path_transformer.class: Pim\Component\Connector\Reader\File\Product\MediaPathTransformer
+    pim_connector.reader.file.media_path_transformer.class: Pim\Component\Connector\Reader\File\MediaPathTransformer
 
 services:
     pim_connector.reader.database.product:
