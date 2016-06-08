@@ -54,7 +54,7 @@ services:
         class: '%pim_connector.reader.file.csv.class%'
         arguments:
             - '@pim_connector.reader.file.csv_iterator_factory'
-            - '@pim_dummy_convertor_to_move'
+            - '@pim_connector.array_converter.identity'
 
     pim_connector.reader.file.csv_association_type:
         class: '%pim_connector.reader.file.csv.class%'
@@ -165,7 +165,7 @@ services:
         class: '%pim_connector.reader.file.xlsx.class%'
         arguments:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
-            - '@pim_dummy_convertor_to_move'
+            - '@pim_connector.array_converter.identity'
 
     pim_connector.reader.file.xlsx_product:
        class: '%pim_connector.reader.file.xlsx_product.class%'
