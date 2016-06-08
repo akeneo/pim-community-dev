@@ -11,12 +11,12 @@ connector:
                 import:
                     services:
                         reader:    pim_connector.reader.file.xlsx_product
-                        processor: pim_connector.processor.denormalization.product.flat
+                        processor: pim_connector.processor.denormalization.product
                         writer:    pim_connector.writer.database.product
                 import_associations:
                     services:
                         reader:    pim_connector.reader.file.xlsx_association
-                        processor: pim_connector.processor.denormalization.product_association.flat
+                        processor: pim_connector.processor.denormalization.product_association
                         writer:    pim_connector.writer.database.product_association
                     parameters:
                         batch_size: 1
@@ -30,7 +30,7 @@ connector:
                 import:
                     services:
                         reader:    pim_connector.reader.file.xlsx_category
-                        processor: pim_connector.processor.denormalization.category.flat
+                        processor: pim_connector.processor.denormalization.category
                         writer:    pim_connector.writer.database.category
                     parameters:
                         batchSize: 1
@@ -44,7 +44,7 @@ connector:
                 import:
                     services:
                         reader:    pim_connector.reader.file.xlsx_attribute
-                        processor: pim_connector.processor.denormalization.attribute.flat
+                        processor: pim_connector.processor.denormalization.attribute
                         writer:    pim_connector.writer.database.attribute
         xlsx_attribute_option_import:
             type:  import
@@ -56,7 +56,7 @@ connector:
                 import:
                     services:
                         reader:    pim_connector.reader.file.xlsx_attribute_option
-                        processor: pim_connector.processor.denormalization.attribute_option.flat
+                        processor: pim_connector.processor.denormalization.attribute_option
                         writer:    pim_connector.writer.database.attribute_option
         xlsx_association_type_import:
             type: import
@@ -68,7 +68,7 @@ connector:
                 import:
                     services:
                         reader:    pim_connector.reader.file.xlsx_association_type
-                        processor: pim_connector.processor.denormalization.association_type.flat
+                        processor: pim_connector.processor.denormalization.association_type
                         writer:    pim_connector.writer.database.association_type
         xlsx_family_import:
             type: import
@@ -80,7 +80,7 @@ connector:
                 import:
                     services:
                         reader:    pim_connector.reader.file.xlsx_family
-                        processor: pim_connector.processor.denormalization.family.flat
+                        processor: pim_connector.processor.denormalization.family
                         writer:    pim_connector.writer.database.family
         xlsx_product_export:
              type:  export
@@ -98,7 +98,7 @@ connector:
                 export:
                     services:
                         reader:    pim_base_connector.reader.repository.group
-                        processor: pim_connector.processor.normalization.group.flat
+                        processor: pim_connector.processor.normalization.group
                         writer:    pim_connector.writer.file.xlsx_group
                     parameters:
                         batch_size: 10
@@ -108,7 +108,7 @@ connector:
                 export:
                     services:
                         reader:    pim_base_connector.reader.repository.variant_group
-                        processor: pim_connector.processor.normalization.variant_group.flat
+                        processor: pim_connector.processor.normalization.variant_group
                         writer:    pim_connector.writer.file.xlsx_variant_group
                     parameters:
                         batch_size: 10
@@ -122,7 +122,7 @@ connector:
                 import:
                     services:
                         reader:    pim_connector.reader.file.xlsx_group
-                        processor: pim_connector.processor.denormalization.group.flat
+                        processor: pim_connector.processor.denormalization.group
                         writer:    pim_connector.writer.database.group
         xlsx_variant_group_import:
             type:  import
@@ -134,7 +134,7 @@ connector:
                 import:
                     services:
                         reader:    pim_connector.reader.file.xlsx_variant_group
-                        processor: pim_connector.processor.denormalization.variant_group.flat
+                        processor: pim_connector.processor.denormalization.variant_group
                         writer:    pim_connector.writer.database.variant_group
                     parameters:
                         batchSize: 1
@@ -144,7 +144,7 @@ connector:
                 export:
                     services:
                         reader:    pim_base_connector.reader.orm.family
-                        processor: pim_connector.processor.normalization.family.flat
+                        processor: pim_connector.processor.normalization.family
                         writer:    pim_connector.writer.file.xlsx_family
                     parameters:
                         batch_size: 10
@@ -154,7 +154,7 @@ connector:
                 export:
                     services:
                         reader:    pim_base_connector.reader.orm.category
-                        processor: pim_connector.processor.normalization.category.flat
+                        processor: pim_connector.processor.normalization.category
                         writer:    pim_connector.writer.file.xlsx_category
                     parameters:
                         batch_size: 10
@@ -164,7 +164,7 @@ connector:
                 export:
                     services:
                         reader:    pim_base_connector.reader.orm.attribute
-                        processor: pim_connector.processor.normalization.attribute.flat
+                        processor: pim_connector.processor.normalization.attribute
                         writer:    pim_connector.writer.file.xlsx_attribute
                     parameters:
                         batch_size: 10
@@ -174,7 +174,7 @@ connector:
                 export:
                     services:
                         reader:    pim_base_connector.reader.orm.attribute_option
-                        processor: pim_connector.processor.normalization.attribute_option.flat
+                        processor: pim_connector.processor.normalization.attribute_option
                         writer:    pim_connector.writer.file.xlsx_attribute_option
                     parameters:
                         batch_size: 10
@@ -184,7 +184,7 @@ connector:
                 export:
                     services:
                         reader:    pim_base_connector.reader.orm.association_type
-                        processor: pim_connector.processor.normalization.association_type.flat
+                        processor: pim_connector.processor.normalization.association_type
                         writer:    pim_connector.writer.file.xlsx_association_type
                     parameters:
                         batch_size: 10

@@ -100,7 +100,7 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product');
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.product.flat');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.product');
 
         $jobExecution = new JobExecution();
         $provider = new ProductCsvImport(new SimpleCsvExport([]), []);
@@ -369,7 +369,7 @@ class FixturesContext extends BaseFixturesContext
 
         $attributeBulks = [];
         $attributeConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute');
-        $attributeProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute.flat');
+        $attributeProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute');
         foreach ($attributeData as $index => $data) {
             $convertedData = $attributeConverter->convert($data);
             $attribute = $attributeProcessor->process($convertedData);
@@ -382,7 +382,7 @@ class FixturesContext extends BaseFixturesContext
 
         $optionsBulks = [];
         $optionConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute_option');
-        $optionProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_option.flat');
+        $optionProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_option');
         foreach ($optionData as $index => $data) {
             $convertedData = $optionConverter->convert($data);
             $option = $optionProcessor->process($convertedData);
@@ -1534,7 +1534,7 @@ class FixturesContext extends BaseFixturesContext
         $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute');
         $convertedData = $converter->convert($data);
 
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute.flat');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute');
         $attribute = $processor->process($convertedData);
 
         $familiesToPersist = [];
@@ -1606,7 +1606,7 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.category');
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.category.flat');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.category');
         $convertedData = $converter->convert($data);
         $category = $processor->process($convertedData);
 
@@ -1847,7 +1847,7 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.family');
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family.flat');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family');
 
         $convertedData = $converter->convert($data);
         $family = $processor->process($convertedData);
@@ -1870,7 +1870,7 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute_group');
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_group.flat');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_group');
         $convertedData = $converter->convert($data);
         $attributeGroup = $processor->process($convertedData);
         $this->getContainer()->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
