@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\DataTransformer\ConfigurationToJobParametersTransformer;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobInstanceSubscriber;
@@ -22,8 +22,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class JobInstanceType extends AbstractType
 {
-    /** @var ConnectorRegistry $connectorRegistry */
-    protected $connectorRegistry;
+    /** @var JobRegistry $jobRegistry */
+    protected $jobRegistry;
 
     /** @var string $jobType */
     protected $jobType;
@@ -41,18 +41,18 @@ class JobInstanceType extends AbstractType
     protected $jobParametersFactory;
 
     /**
-     * @param ConnectorRegistry       $connectorRegistry
+     * @param JobRegistry             $jobRegistry
      * @param TranslatorInterface     $translator
      * @param TranslatedLabelProvider $jobLabelProvider
      * @param JobParametersFactory    $jobParametersFactory
      */
     public function __construct(
-        ConnectorRegistry $connectorRegistry,
+        JobRegistry $jobRegistry,
         TranslatorInterface $translator,
         TranslatedLabelProvider $jobLabelProvider,
         JobParametersFactory $jobParametersFactory
     ) {
-        $this->connectorRegistry    = $connectorRegistry;
+        $this->jobRegistry          = $jobRegistry;
         $this->translator           = $translator;
         $this->jobLabelProvider     = $jobLabelProvider;
         $this->jobParametersFactory = $jobParametersFactory;
@@ -172,7 +172,7 @@ class JobInstanceType extends AbstractType
     protected function addJobNameField(FormBuilderInterface $builder)
     {
         $choices = [];
-        foreach ($this->connectorRegistry->getJobs($this->jobType) as $connector => $jobs) {
+        foreach ($this->jobRegistry->allByType($this->jobType) as $connector => $jobs) {
             foreach ($jobs as $key => $job) {
                 $choices[$connector][$key] = $this->jobLabelProvider->getJobLabel($job->getName());
             }
@@ -206,9 +206,10 @@ class JobInstanceType extends AbstractType
     protected function addJobConfigurationField(FormBuilderInterface $builder)
     {
         // TODO: TIP-426: rename this field to parameters
-        $job = $this->connectorRegistry->getJob($builder->getData());
+        $jobName = $builder->getData()->getAlias();
 
-        if (null !== $job) {
+        if (null !== $jobName) {
+            $job = $this->jobRegistry->get($jobName);
             $builder
                 ->add(
                     'configuration',

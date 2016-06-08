@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,8 +39,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class JobProfileController
 {
-    /** @var ConnectorRegistry */
-    protected $connectorRegistry;
+    /** @var JobRegistry */
+    protected $jobRegistry;
 
     /** @var string */
     protected $jobType;
@@ -101,7 +100,7 @@ class JobProfileController
      * @param FormFactoryInterface         $formFactory
      * @param ValidatorInterface           $validator
      * @param EventDispatcherInterface     $eventDispatcher
-     * @param ConnectorRegistry            $connectorRegistry
+     * @param JobRegistry                  $jobRegistry
      * @param JobInstanceType              $jobInstanceType
      * @param JobInstanceFactory           $jobInstanceFactory
      * @param JobLauncherInterface         $simpleJobLauncher
@@ -120,7 +119,7 @@ class JobProfileController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         EventDispatcherInterface $eventDispatcher,
-        ConnectorRegistry $connectorRegistry,
+        JobRegistry $jobRegistry,
         JobInstanceType $jobInstanceType,
         JobInstanceFactory $jobInstanceFactory,
         JobLauncherInterface $simpleJobLauncher,
@@ -132,7 +131,7 @@ class JobProfileController
         JobParametersValidator $jobParametersValidator,
         $jobType
     ) {
-        $this->connectorRegistry     = $connectorRegistry;
+        $this->jobRegistry           = $jobRegistry;
         $this->jobType               = $jobType;
 
         $this->jobInstanceType       = $jobInstanceType;
@@ -170,7 +169,7 @@ class JobProfileController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $job = $this->connectorRegistry->getJob($jobInstance);
+                $job = $this->jobRegistry->get($jobInstance->getAlias());
                 $jobParameters = $this->jobParametersFactory->create($job);
                 $jobInstance->setRawConfiguration($jobParameters->all());
 
@@ -226,7 +225,7 @@ class JobProfileController
             $uploadAllowed = true;
             $uploadForm = $this->createUploadForm()->createView();
         }
-        $job = $this->connectorRegistry->getJob($jobInstance);
+        $job = $this->jobRegistry->get($jobInstance->getAlias());
 
         return $this->templating->renderResponse(
             $this->jobTemplateProvider->getShowTemplate($jobInstance),
@@ -278,7 +277,7 @@ class JobProfileController
         }
 
         $this->eventDispatcher->dispatch(JobProfileEvents::POST_EDIT, new GenericEvent($jobInstance));
-        $job = $this->connectorRegistry->getJob($jobInstance);
+        $job = $this->jobRegistry->get($jobInstance->getAlias());
 
         return $this->templating->renderResponse(
             $this->jobTemplateProvider->getEditTemplate($jobInstance),
@@ -401,7 +400,7 @@ class JobProfileController
     protected function validateJobInstance(JobInstance $jobInstance, array $validationGroups)
     {
         $rawConfiguration = $jobInstance->getRawConfiguration();
-        $job = $this->connectorRegistry->getJob($jobInstance);
+        $job = $this->jobRegistry->get($jobInstance->getAlias());
         $jobParameters = $this->jobParametersFactory->create($job, $rawConfiguration);
 
         /** @var ConstraintViolationListInterface $jobParamsViolations */
@@ -516,7 +515,7 @@ class JobProfileController
             );
         }
 
-        $job = $this->connectorRegistry->getJob($jobInstance);
+        $job = $this->jobRegistry->get($jobInstance->getAlias());
 
         if (!$job) {
             throw new NotFoundHttpException(

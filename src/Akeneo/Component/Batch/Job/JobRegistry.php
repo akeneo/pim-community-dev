@@ -14,12 +14,20 @@ class JobRegistry
     /** @var JobInterface[] */
     protected $jobs = [];
 
+    /** @var JobInterface[][] */
+    protected $jobsByType = [];
+
+    /** @var JobInterface[][] */
+    protected $jobsByConnector = [];
+
     /**
      * @param JobInterface $job
+     * @param string       $jobType
+     * @param string       $connector
      *
      * @throws DuplicatedJobException
      */
-    public function register(JobInterface $job)
+    public function register(JobInterface $job, $jobType, $connector)
     {
         if (isset($this->jobs[$job->getName()])) {
             throw new DuplicatedJobException(
@@ -27,10 +35,14 @@ class JobRegistry
             );
         }
         $this->jobs[$job->getName()] = $job;
+        $this->jobsByType[$jobType][$job->getName()] = $job;
+        $this->jobsByConnector[$connector][$job->getName()] = $job;
     }
 
     /**
      * @param string $jobName
+     *
+     * @throws UndefinedJobException
      *
      * @return JobInterface
      */
@@ -43,5 +55,39 @@ class JobRegistry
         }
 
         return $this->jobs[$jobName];
+    }
+
+    /**
+     * @return JobInterface[]
+     */
+    public function all()
+    {
+        return $this->jobs;
+    }
+
+    /**
+     * @param string $jobType
+     *
+     * @throws UndefinedJobException
+     *
+     * @return JobInterface
+     */
+    public function allByType($jobType)
+    {
+        if (!isset($this->jobsByType[$jobType])) {
+            throw new UndefinedJobException(
+                sprintf('There is no registered job with the type "%s"', $jobType)
+            );
+        }
+
+        return $this->jobsByType[$jobType];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getConnectors()
+    {
+        return array_keys($this->jobsByConnector);
     }
 }

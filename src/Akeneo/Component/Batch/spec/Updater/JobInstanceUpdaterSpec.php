@@ -2,20 +2,19 @@
 
 namespace spec\Akeneo\Component\Batch\Updater;
 
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class JobInstanceUpdaterSpec extends ObjectBehavior
 {
-    function let(JobParametersFactory $jobParametersFactory, ContainerInterface $container)
+    function let(JobParametersFactory $jobParametersFactory, JobRegistry $jobRegistry)
     {
-        $this->beConstructedWith($jobParametersFactory, $container);
+        $this->beConstructedWith($jobParametersFactory, $jobRegistry);
     }
 
     function it_is_initializable()
@@ -30,14 +29,13 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
 
     function it_updates_an_job_instance(
         $jobParametersFactory,
-        $container,
-        ConnectorRegistry $registry,
+        $jobRegistry,
         JobInstance $jobInstance,
         JobInterface $job,
         JobParameters $jobParameters
     ) {
-        $container->get('akeneo_batch.connectors')->willReturn($registry);
-        $registry->getJob($jobInstance)->willReturn($job);
+        $jobInstance->getAlias()->willReturn('fixtures_currency_csv');
+        $jobRegistry->get('fixtures_currency_csv')->willReturn($job);
         $jobParametersFactory->create($job, ['filePath' => 'currencies.csv'])->willReturn($jobParameters);
         $jobParameters->all()->willReturn(['filePath' => 'currencies.csv']);
 

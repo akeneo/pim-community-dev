@@ -2,10 +2,10 @@
 
 namespace Akeneo\Component\Batch\Updater;
 
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -23,17 +23,17 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
     /** @var JobParametersFactory */
     protected $jobParametersFactory;
 
-    /** @var ContainerInterface */
-    private $container;
+    /** @var JobRegistry */
+    protected $jobRegistry;
 
     /**
      * @param JobParametersFactory $jobParametersFactory
-     * @param ContainerInterface   $container
+     * @param JobRegistry          $jobRegistry
      */
-    public function __construct(JobParametersFactory $jobParametersFactory, ContainerInterface $container)
+    public function __construct(JobParametersFactory $jobParametersFactory, JobRegistry $jobRegistry)
     {
         $this->jobParametersFactory = $jobParametersFactory;
-        $this->container = $container;
+        $this->jobRegistry = $jobRegistry;
     }
 
     /**
@@ -78,8 +78,7 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
                 $jobInstance->setType($data);
                 break;
             case 'configuration':
-                /** @var Job */
-                $job = $this->getConnectorRegistry()->getJob($jobInstance);
+                $job = $this->jobRegistry->get($jobInstance->getAlias());
                 /** @var JobParameters $jobParameters */
                 $jobParameters = $this->jobParametersFactory->create($job, $data);
                 $jobInstance->setRawConfiguration($jobParameters->all());
@@ -88,16 +87,5 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
                 $jobInstance->setCode($data);
                 break;
         }
-    }
-
-    /**
-     * Should be changed with TIP-418, here we work around a circular reference due to the way we instanciate the whole
-     * Job classes in the DIC
-     *
-     * @return ConnectorRegistry
-     */
-    final protected function getConnectorRegistry()
-    {
-        return $this->container->get('akeneo_batch.connectors');
     }
 }

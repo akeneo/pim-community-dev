@@ -30,7 +30,7 @@ class ImportProfileController extends JobProfileController
     {
         return [
             'jobType'    => $this->getJobType(),
-            'connectors' => $this->connectorRegistry->getJobs($this->getJobType())
+            'connectors' => $this->jobRegistry->allByType($this->getJobType())
         ];
     }
 

@@ -5,6 +5,7 @@ namespace Context;
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -573,14 +574,10 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingJobs(TableNode $table)
     {
-        $registry = $this->getContainer()->get('akeneo_batch.connectors');
-
         foreach ($table->getHash() as $data) {
             $jobInstance = new JobInstance($data['connector'], $data['type'], $data['alias']);
             $jobInstance->setCode($data['code']);
             $jobInstance->setLabel($data['label']);
-
-            $job = $registry->getJob($jobInstance);
             $this->getContainer()->get('akeneo_batch.saver.job_instance')->save($jobInstance);
         }
     }

@@ -4,6 +4,7 @@ namespace Akeneo\Bundle\BatchBundle\Launcher;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -24,8 +25,8 @@ class SimpleJobLauncher implements JobLauncherInterface
     /** @var JobParametersFactory */
     protected $jobParametersFactory;
 
-    /** @var ContainerInterface */
-    private $container;
+    /** @var JobRegistry */
+    protected $jobRegistry;
 
     /** @var string */
     protected $rootDir;
@@ -38,20 +39,20 @@ class SimpleJobLauncher implements JobLauncherInterface
      *
      * @param JobRepositoryInterface $jobRepository
      * @param JobParametersFactory   $jobParametersFactory
-     * @param ContainerInterface     $container
+     * @param JobRegistry            $jobRegistry
      * @param string                 $rootDir
      * @param string                 $environment
      */
     public function __construct(
         JobRepositoryInterface $jobRepository,
         JobParametersFactory $jobParametersFactory,
-        ContainerInterface $container,
+        JobRegistry $jobRegistry,
         $rootDir,
         $environment
     ) {
         $this->jobRepository        = $jobRepository;
         $this->jobParametersFactory = $jobParametersFactory;
-        $this->container            = $container;
+        $this->jobRegistry          = $jobRegistry;
         $this->rootDir              = $rootDir;
         $this->environment          = $environment;
     }
@@ -114,23 +115,12 @@ class SimpleJobLauncher implements JobLauncherInterface
      */
     protected function createJobExecution(JobInstance $jobInstance, UserInterface $user)
     {
-        $job = $this->getConnectorRegistry()->getJob($jobInstance);
+        $job = $this->jobRegistry->get($jobInstance->getAlias());
         $jobParameters = $this->jobParametersFactory->create($job, $jobInstance->getRawConfiguration());
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance, $jobParameters);
         $jobExecution->setUser($user->getUsername());
         $this->jobRepository->updateJobExecution($jobExecution);
 
         return $jobExecution;
-    }
-
-    /**
-     * Should be changed with TIP-418, here we work around a circular reference due to the way we instanciate the whole
-     * Job classes in the DIC
-     *
-     * @return ConnectorRegistry
-     */
-    final protected function getConnectorRegistry()
-    {
-        return $this->container->get('akeneo_batch.connectors');
     }
 }

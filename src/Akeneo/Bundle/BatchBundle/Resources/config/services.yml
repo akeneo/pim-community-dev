@@ -80,6 +80,6 @@ services:
         arguments:
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.job_parameters_factory'
-            - '@service_container'
+            - '@akeneo_batch.job.job_registry'
             - '%kernel.root_dir%'
             - '%kernel.environment%'

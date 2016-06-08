@@ -24,6 +24,9 @@ class RegisterJobsPass implements CompilerPassInterface
     /** @staticvar string */
     const DEFAULT_CONNECTOR = 'default';
 
+    /** @staticvar string */
+    const DEFAULT_JOB_TYPE = 'default';
+
     /**
      * {@inheritdoc}
      */
@@ -37,10 +40,9 @@ class RegisterJobsPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds(self::SERVICE_TAG) as $serviceId => $tags) {
             foreach ($tags as $tag) {
                 $connector = isset($tag['connector']) ? $tag['connector'] : self::DEFAULT_CONNECTOR;
-                // TODO inject connector?
-                // TODO inject job type?
+                $type = isset($tag['type']) ? $tag['type'] : self::DEFAULT_JOB_TYPE;
                 $job = new Reference($serviceId);
-                $registryDefinition->addMethodCall('register', [$job]);
+                $registryDefinition->addMethodCall('register', [$job, $type, $connector]);
 
             }
         }
