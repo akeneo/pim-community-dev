@@ -35,7 +35,7 @@ Feature: Import proposals
     Given I am logged in as "Mary"
     And the following CSV file to import:
     """
-    sku;enable;description-en_US-mobile
+    sku;enabled;description-en_US-mobile
     my-jacket;1;My desc
     my-jacket2;0;My desc
     """
@@ -62,7 +62,7 @@ Feature: Import proposals
     Then there should be 0 proposal
     And I should see:
     """
-    Field "sku" is expected, provided fields are "description-en_US-mobile, description-en_US-tablet, comment, enabled"
+    Field "sku" is expected, provided fields are "description-en_US-mobile, description-en_US-tablet, comment"
     """
     And I should see "Status: FAILED"
 
