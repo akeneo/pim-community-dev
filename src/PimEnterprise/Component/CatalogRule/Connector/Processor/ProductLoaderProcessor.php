@@ -53,8 +53,8 @@ class ProductLoaderProcessor extends AbstractConfigurableStepElement implements 
      * [
      *   'sku' => [
      *     [
-     *       'scope'  => null
-     *       'locale' => null
+     *       'scope'  => null,
+     *       'locale' => null,
      *       'data'   => 'boot-123'
      *     ]
      *   ],

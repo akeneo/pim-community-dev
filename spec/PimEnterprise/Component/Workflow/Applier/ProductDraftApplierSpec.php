@@ -2,8 +2,10 @@
 
 namespace spec\PimEnterprise\Component\Workflow\Applier;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
@@ -12,9 +14,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductDraftApplierSpec extends ObjectBehavior
 {
-    function let(PropertySetterInterface $propertySetter, EventDispatcherInterface $dispatcher)
-    {
-        $this->beConstructedWith($propertySetter, $dispatcher);
+    function let(
+        PropertySetterInterface $propertySetter,
+        EventDispatcherInterface $dispatcher,
+        IdentifiableObjectRepositoryInterface $repository
+    ) {
+        $this->beConstructedWith($propertySetter, $dispatcher, $repository);
     }
 
     function it_is_a_applier()
@@ -49,8 +54,10 @@ class ProductDraftApplierSpec extends ObjectBehavior
     function it_applies_changes_to_review_of_a_draft(
         $propertySetter,
         $dispatcher,
+        $repository,
         ProductInterface $product,
-        ProductDraftInterface $productDraft
+        ProductDraftInterface $productDraft,
+        AttributeInterface $fakeAttribute
     ) {
         $productDraft->getChangesToReview()->willReturn([
             'values' => [
@@ -105,14 +112,18 @@ class ProductDraftApplierSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
 
+        $repository->findOneByIdentifier(Argument::any())->willReturn($fakeAttribute);
+
         $this->applyToReviewChanges($product, $productDraft);
     }
 
     function it_applies_all_changes_of_a_draft(
         $propertySetter,
         $dispatcher,
+        $repository,
         ProductInterface $product,
-        ProductDraftInterface $productDraft
+        ProductDraftInterface $productDraft,
+        AttributeInterface $fakeAttribute
     ) {
         $productDraft->getChanges()->willReturn([
             'values' => [
@@ -167,6 +178,8 @@ class ProductDraftApplierSpec extends ObjectBehavior
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
+
+        $repository->findOneByIdentifier(Argument::any())->willReturn($fakeAttribute);
 
         $this->applyAllChanges($product, $productDraft);
     }
