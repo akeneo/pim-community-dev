@@ -12,12 +12,12 @@ connector:
                     services:
                         reader:    pim_connector.reader.file.csv_product
                         processor: pim_connector.processor.denormalization.product.flat
-                        writer:    pim_connector.writer.doctrine.product
+                        writer:    pim_connector.writer.database.product
                 import_associations:
                     services:
                         reader:    pim_connector.reader.file.csv_association
                         processor: pim_connector.processor.denormalization.product_association.flat
-                        writer:    pim_connector.writer.doctrine.product_association
+                        writer:    pim_connector.writer.database.product_association
                     parameters:
                         batch_size: 1
         csv_attribute_import:
@@ -31,7 +31,7 @@ connector:
                     services:
                         reader:    pim_connector.reader.file.csv_attribute
                         processor: pim_connector.processor.denormalization.attribute.flat
-                        writer:    pim_connector.writer.doctrine.attribute
+                        writer:    pim_connector.writer.database.attribute
         csv_attribute_option_import:
             type:  import
             steps:
@@ -43,7 +43,7 @@ connector:
                     services:
                         reader:    pim_connector.reader.file.csv_attribute_option
                         processor: pim_connector.processor.denormalization.attribute_option.flat
-                        writer:    pim_connector.writer.doctrine.attribute_option
+                        writer:    pim_connector.writer.database.attribute_option
         csv_variant_group_import:
             type:  import
             steps:
@@ -55,7 +55,7 @@ connector:
                     services:
                         reader:    pim_connector.reader.file.csv_variant_group
                         processor: pim_connector.processor.denormalization.variant_group.flat
-                        writer:    pim_connector.writer.doctrine.variant_group
+                        writer:    pim_connector.writer.database.variant_group
                     parameters:
                         batchSize: 1
         csv_category_import:
@@ -69,7 +69,7 @@ connector:
                     services:
                         reader:    pim_connector.reader.file.csv_category
                         processor: pim_connector.processor.denormalization.category.flat
-                        writer:    pim_connector.writer.doctrine.category
+                        writer:    pim_connector.writer.database.category
                     parameters:
                         batchSize: 1
         csv_group_import:
@@ -83,7 +83,7 @@ connector:
                     services:
                         reader:    pim_connector.reader.file.csv_group
                         processor: pim_connector.processor.denormalization.group.flat
-                        writer:    pim_connector.writer.doctrine.group
+                        writer:    pim_connector.writer.database.group
         csv_association_type_import:
             type: import
             steps:
@@ -95,7 +95,7 @@ connector:
                     services:
                         reader:    pim_connector.reader.file.csv_association_type
                         processor: pim_connector.processor.denormalization.association_type.flat
-                        writer:    pim_connector.writer.doctrine.association_type
+                        writer:    pim_connector.writer.database.association_type
         csv_family_import:
             type: import
             steps:
@@ -107,13 +107,13 @@ connector:
                     services:
                         reader:    pim_connector.reader.file.csv_family
                         processor: pim_connector.processor.denormalization.family.flat
-                        writer:    pim_connector.writer.doctrine.family
+                        writer:    pim_connector.writer.database.family
         csv_product_export:
             type:  export
             steps:
                 export:
                     services:
-                        reader:    pim_connector.reader.product
+                        reader:    pim_connector.reader.database.product
                         processor: pim_base_connector.processor.product_to_flat_array
                         writer:    pim_connector.writer.file.csv_product
                     parameters:

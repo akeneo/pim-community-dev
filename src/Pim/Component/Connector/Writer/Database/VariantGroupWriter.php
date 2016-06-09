@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\Doctrine;
+namespace Pim\Component\Connector\Writer\Database;
 
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;

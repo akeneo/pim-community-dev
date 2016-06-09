@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\Doctrine;
+namespace Pim\Component\Connector\Writer\Database;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
