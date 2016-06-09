@@ -8,16 +8,16 @@ services:
             - '@pimee_product_asset.repository.category'
 
     pimee_product_asset.reader.orm.asset:
-        class: '%pim_connector.reader.doctrine.base.class%'
+        class: '%pim_connector.reader.database.base.class%'
         arguments:
             - '@pimee_product_asset.repository.asset'
 
     pimee_product_asset.reader.orm.variation:
-        class: '%pim_connector.reader.doctrine.base.class%'
+        class: '%pim_connector.reader.database.base.class%'
         arguments:
             - '@pimee_product_asset.repository.variation'
 
     pimee_product_asset.reader.orm.csv_channel_configuration:
-        class: '%pim_connector.reader.doctrine.base.class%'
+        class: '%pim_connector.reader.database.base.class%'
         arguments:
             - '@pimee_product_asset.repository.channel_configuration'

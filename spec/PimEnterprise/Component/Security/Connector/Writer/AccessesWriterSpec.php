@@ -26,7 +26,7 @@ class AccessesWriterSpec extends ObjectBehavior
 
     function it_is_a_writer()
     {
-        $this->shouldHaveType('\Pim\Component\Connector\Writer\Doctrine\BaseWriter');
+        $this->shouldHaveType('\Pim\Component\Connector\Writer\Database\BaseWriter');
     }
 
     function it_massively_insert_and_update_objects(

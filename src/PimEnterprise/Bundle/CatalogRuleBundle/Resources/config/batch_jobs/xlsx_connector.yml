@@ -12,12 +12,12 @@ connector:
                     services:
                         reader:    pim_connector.reader.file.xlsx_product
                         processor: pim_connector.processor.denormalization.product.flat
-                        writer:    pim_connector.writer.doctrine.product
+                        writer:    pim_connector.writer.database.product
                 import_associations:
                     services:
                         reader:    pim_connector.reader.file.xlsx_association_type
                         processor: pim_connector.processor.denormalization.product_association.flat
-                        writer:    pim_connector.writer.doctrine.product_association
+                        writer:    pim_connector.writer.database.product_association
                     parameters:
                         batch_size: 1
                 execute_rules:

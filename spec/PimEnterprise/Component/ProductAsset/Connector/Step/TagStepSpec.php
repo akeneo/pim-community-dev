@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Reader\File\CsvReader;
-use Pim\Component\Connector\Writer\Doctrine\BaseWriter;
+use Pim\Component\Connector\Writer\Database\BaseWriter;
 use PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\TagProcessor;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

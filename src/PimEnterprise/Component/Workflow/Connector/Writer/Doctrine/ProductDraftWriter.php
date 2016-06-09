@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\Workflow\Connector\Writer\Doctrine;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Component\Connector\Writer\Doctrine\BaseWriter;
+use Pim\Component\Connector\Writer\Database\BaseWriter;
 
 /**
  * Product draft writer

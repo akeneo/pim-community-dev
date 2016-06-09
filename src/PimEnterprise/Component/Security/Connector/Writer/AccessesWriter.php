@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Security\Connector\Writer;
 
-use Pim\Component\Connector\Writer\Doctrine\BaseWriter;
+use Pim\Component\Connector\Writer\Database\BaseWriter;
 
 /**
  * Accesses rights writer
