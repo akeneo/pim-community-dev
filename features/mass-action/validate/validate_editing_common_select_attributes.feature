@@ -41,7 +41,8 @@ Feature: Validate editing common select attributes of multiple products
     And I am on the products page
 
   Scenario: Successfully mass edit a multi select attribute
-    Given I mass-edit products boots and sneakers
+    Given I select rows boots and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
@@ -52,7 +53,8 @@ Feature: Validate editing common select attributes of multiple products
       | dry   |
       | hot   |
     When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
+    And I select rows boots, sandals and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
     And I move on to the next step
@@ -62,7 +64,8 @@ Feature: Validate editing common select attributes of multiple products
       |       |
 
   Scenario: Successfully mass edit a simple select attribute
-    Given I mass-edit products boots and sneakers
+    Given I select rows boots and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Manufacturer attribute
     And I change the "Manufacturer" to "Converse"
@@ -70,7 +73,8 @@ Feature: Validate editing common select attributes of multiple products
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the option "manufacturer" of products boots and sneakers should be "Converse"
     When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
+    And I select rows boots, sandals and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Manufacturer attribute
     And I move on to the next step

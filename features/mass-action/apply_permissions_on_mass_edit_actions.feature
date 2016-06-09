@@ -21,9 +21,9 @@ Feature: Apply ACL permissions on mass edit actions
     And I save the Role
     Then I should not see the text "There are unsaved changes."
     When I am on the products page
-    And I mass-edit products kickers and hiking_shoes
+    And I select rows kickers and hiking_shoes
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     Then I should see the text "Edit common attributes"
-    And I should see the text "Classify products in categories"
     And I should see the text "Add to groups"
     And I should see the text "Add to a variant group"
     And I should not see "Change the family of products"
@@ -31,10 +31,10 @@ Feature: Apply ACL permissions on mass edit actions
 
   Scenario: View all mass edit operations
     Given I am on the products page
-    When I mass-edit products kickers and hiking_shoes
+    When I select rows kickers and hiking_shoes
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     Then I should see the text "Change status (enable / disable)"
     And I should see the text "Edit common attributes"
-    And I should see the text "Classify products in categories"
     And I should see the text "Change the family of products"
     And I should see the text "Add to groups"
     And I should see the text "Add to a variant group"

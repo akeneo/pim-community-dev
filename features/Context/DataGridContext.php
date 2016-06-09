@@ -900,30 +900,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $entities
      *
-     * @return Then[]
-     *
-     * @When /^I mass-edit (?:products?|families) (.*)$/
-     */
-    public function iMassEditEntities($entities)
-    {
-        return [
-            new Step\Then(sprintf('I select rows %s', $entities)),
-            new Step\Then('I press mass-edit button')
-        ];
-    }
-
-    /**
-     * @When /^I press mass-edit button$/
-     */
-    public function iPressMassEditButton()
-    {
-        $this->getCurrentPage()->massEdit();
-        $this->wait();
-    }
-
-    /**
-     * @param string $entities
-     *
      * @Then /^I select rows? (.*)$/
      */
     public function iSelectRows($entities)
@@ -970,36 +946,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $entities
-     *
-     * @return Then[]
-     *
-     * @When /^I mass-delete products? (.*)$/
-     */
-    public function iMassDelete($entities)
-    {
-        return [
-            new Step\Then(sprintf('I select rows %s', $entities)),
-            new Step\Then('I press mass-delete button')
-        ];
-    }
-
-    /**
-     * @When /^I press mass-delete button$/
-     */
-    public function iPressMassDeleteButton()
-    {
-        $this->getCurrentPage()->massDelete();
-        $this->wait();
-    }
-
-    /**
      * @When /^I press sequential-edit button$/
      */
     public function iPressSequentialEditButton()
     {
-        $this->getCurrentPage()->sequentialEdit();
-        $this->wait();
+        $this
+            ->getCurrentPage()
+            ->getDropdownButtonItem('Sequential Edit', 'Bulk Actions')
+            ->click();
+
         $this->getNavigationContext()->currentPage = 'Product edit';
     }
 

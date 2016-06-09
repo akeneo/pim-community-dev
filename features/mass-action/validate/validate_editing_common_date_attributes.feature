@@ -41,7 +41,8 @@ Feature: Validate editing common date attributes of multiple products
     And I am on the products page
 
   Scenario: Successfully mass edit a date attribute
-    Given I mass-edit products boots and sneakers
+    Given I select rows boots and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Date attribute
     And I change the Date to "01/01/2015"
@@ -50,7 +51,8 @@ Feature: Validate editing common date attributes of multiple products
     Then attribute Date of "boots" should be "2015-01-01"
     And attribute Date of "sneakers" should be "2015-01-01"
     When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
+    And I select rows boots, sandals and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Date attribute
     And I move on to the next step
@@ -59,7 +61,8 @@ Feature: Validate editing common date attributes of multiple products
     And attribute Date of "sandals" should be ""
     And attribute Date of "sneakers" should be ""
     When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
+    And I select rows boots, sandals and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Date attribute
     And I change the Date to "01/01/2013"

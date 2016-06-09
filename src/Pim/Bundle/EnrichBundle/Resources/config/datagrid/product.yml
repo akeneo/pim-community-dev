@@ -146,7 +146,7 @@ datagrid:
                     _format: xlsx
                     _contentType: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
                     _jobCode: xlsx_product_grid_context_quick_export
-                    _displayedColumnsOnly: true
+                    _displayedColumnsOnly: 1
                 context:
                     withHeader: true
                 messages:
@@ -162,7 +162,7 @@ datagrid:
                     _format: xlsx
                     _contentType: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
                     _jobCode: xlsx_product_quick_export
-                    _displayedColumnsOnly: false
+                    _displayedColumnsOnly: 0
                 context:
                     withHeader: true
                 messages:
@@ -178,7 +178,7 @@ datagrid:
                     _format: csv
                     _contentType: text/csv
                     _jobCode: csv_product_grid_context_quick_export
-                    _displayedColumnsOnly: true
+                    _displayedColumnsOnly: 1
                 context:
                     withHeader: true
                 messages:
@@ -194,7 +194,7 @@ datagrid:
                     _format: csv
                     _contentType: text/csv
                     _jobCode: csv_product_quick_export
-                    _displayedColumnsOnly: false
+                    _displayedColumnsOnly: 0
                 context:
                     withHeader: true
                 messages:

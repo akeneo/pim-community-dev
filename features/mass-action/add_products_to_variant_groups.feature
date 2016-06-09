@@ -13,7 +13,8 @@ Feature: Add products to variant group via a form
       | moon_boots   | red   | 35   |
     And I am logged in as "Julia"
     And I am on the products page
-    Given I mass-edit products kickers, hiking_shoes
+    Given I select rows kickers, hiking_shoes
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Add to a variant group" operation
     And I select the "Caterpillar boots" variant group
     And I move on to the next step

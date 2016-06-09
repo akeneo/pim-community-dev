@@ -50,7 +50,8 @@ Feature: Navigate the application in hash navigation mode
       | sneakers       | sneakers   |        |               |
     And I am logged in as "Julia"
     And I am on the products page
-    When I mass-edit products boots and sneakers
+    When I select rows boots and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I reload the page

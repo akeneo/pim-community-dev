@@ -22,7 +22,8 @@ Feature: Mass edit common attributes for reference data
     And I am on the products page
 
   Scenario: Successfully update single-valued reference data at once
-    Given I mass-edit products heels and platform_shoes
+    Given I select rows heels and platform_shoes
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Heel color attribute
     And I change the "Heel color" to "Light green"
@@ -34,7 +35,8 @@ Feature: Mass edit common attributes for reference data
       | heel_color | Light green |
 
   Scenario: Successfully update multi-valued reference data at once
-    Given I mass-edit products heels and platform_shoes
+    Given I select rows heels and platform_shoes
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Sole fabric attribute
     And I change the "Sole fabric" to "Wool, Kevlar, Jute"

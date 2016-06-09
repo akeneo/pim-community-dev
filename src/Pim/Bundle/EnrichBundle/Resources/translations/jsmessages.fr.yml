@@ -15,6 +15,8 @@ confirmation:
     role: Êtes-vous sûr de vouloir supprimer ce rôle ?
 pim_datagrid:
   mass_action_group:
+    bulk_actions:
+      label: Actions de masse
     quick_export:
       label: Export rapide
   mass_action:

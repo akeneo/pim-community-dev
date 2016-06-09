@@ -19,7 +19,8 @@ Feature: Apply restrictions when mass editing products with variant groups
   Scenario: Add products to a variant group
     Given I am logged in as "Julia"
     And I am on the products page
-    And I mass-edit products moon_boots, gold_sandals and sneakers
+    And I select rows moon_boots, gold_sandals and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
@@ -45,7 +46,8 @@ Feature: Apply restrictions when mass editing products with variant groups
       | laptop     | computers |
     And I am logged in as "Julia"
     And I am on the products page
-    When I mass-edit products gold_watch, laptop
+    When I select rows gold_watch, laptop
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
@@ -66,7 +68,8 @@ Feature: Apply restrictions when mass editing products with variant groups
   Scenario: Add products to a variant group with duplicated variant axis values in selection (and not yet in variant group)
     And I am logged in as "Julia"
     And I am on the products page
-    When I mass-edit products gold_sandals, gold_boots
+    When I select rows gold_sandals, gold_boots
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
