@@ -22,7 +22,7 @@ connector:
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.product
                         processor: pimee_enrich.mass_edit.add_product_value.processor
-                        writer:    pim_connector.writer.doctrine.product
+                        writer:    pim_connector.writer.database.product
         add_product_value_with_permission_and_rules:
             type:  mass_edit
             steps:
@@ -30,7 +30,7 @@ connector:
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.product
                         processor: pimee_enrich.mass_edit.add_product_value.processor
-                        writer:    pim_connector.writer.doctrine.product
+                        writer:    pim_connector.writer.database.product
                 execute_rules:
                      services:
                          reader:    pim_enrich.connector.reader.mass_edit.product
@@ -45,7 +45,7 @@ connector:
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.product
                         processor: pimee_enrich.mass_edit.update_product_value.processor
-                        writer:    pim_connector.writer.doctrine.product
+                        writer:    pim_connector.writer.database.product
         update_product_value_with_permission_and_rules:
             type:  mass_edit
             steps:
@@ -53,7 +53,7 @@ connector:
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.product
                         processor: pimee_enrich.mass_edit.update_product_value.processor
-                        writer:    pim_connector.writer.doctrine.product
+                        writer:    pim_connector.writer.database.product
                 execute_rules:
                      services:
                          reader:    pim_enrich.connector.reader.mass_edit.product
@@ -123,7 +123,7 @@ connector:
                     services:
                         reader:    pim_enrich.connector.reader.mass_edit.variant_group_product
                         processor: pim_enrich.connector.processor.mass_edit.product.add_to_variant_group
-                        writer:    pim_connector.writer.doctrine.product
+                        writer:    pim_connector.writer.database.product
                     parameters:
                         batch_size: 1000
                 execute_rules:

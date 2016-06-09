@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Component\Connector\Reader\Doctrine\BaseReader;
+use Pim\Component\Connector\Reader\Database\BaseReader;
 
 /**
  * Get asset categories
