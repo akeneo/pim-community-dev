@@ -60,6 +60,11 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         'my account'               => 'User profile',
     ];
 
+    protected $elements = [
+        'Dot menu'    => ['css' => '.pin-bar .pin-menus i.icon-ellipsis-horizontal'],
+        'Pinned item' => ['css' => '.pin-bar a[title="%s"]'],
+    ];
+
     /**
      * @param string $baseUrl
      */
@@ -281,10 +286,22 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     public function iClickOnThePinnedItem($label)
     {
         $pinnedItem = $this->spin(function () use ($label) {
-            return $this->getCurrentPage()->find('css', sprintf('.pin-bar a[title="%s"]', $label));
-        });
+            return $this->getCurrentPage()->find('css', sprintf($this->elements['Pinned item']['css'], $label));
+        }, sprintf('Unable to click on the pinned element "%s"', $label));
 
         $pinnedItem->click();
+    }
+
+    /**
+     * @When /^I click on the pin bar dot menu$/
+     */
+    public function iClickOnThePinBarDotMenu()
+    {
+        $pinDotMenu = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', $this->elements['Dot menu']['css']);
+        }, 'Unable to click on the pin bar dot menu');
+
+        $pinDotMenu->click();
     }
 
     /**
