@@ -24,8 +24,8 @@ Feature: Remove a product
 
   Scenario: Successfully mass delete a product and associated drafts
     Given I am on the products page
-    And I select rows jean
-    And I mass-delete products jean
+    And I select row jean
+    And I press "Delete" on the "Bulk Actions" dropdown button
     And I confirm the removal
     Then I should not see product jean
     Then I should get the following proposals:

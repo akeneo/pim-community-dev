@@ -28,7 +28,8 @@ Feature: Publish many products at once
   Scenario: Successfully publish all products
     And I am logged in as "Julia"
     And I am on the products page
-    And I mass-edit products unionjack and jackadi
+    And I select rows unionjack and jackadi
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     Then I should see "The 2 selected products will be published"
     And I should see "Confirm"
@@ -37,7 +38,8 @@ Feature: Publish many products at once
   Scenario: Successfully publish all products
     Given I am logged in as "Julia"
     And I am on the products page
-    And I mass-edit products unionjack
+    And I select rows unionjack
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish

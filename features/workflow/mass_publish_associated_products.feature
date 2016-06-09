@@ -39,7 +39,8 @@ Feature: Publish many products at once
     And I check the row "unionjack"
     And I save the product
     And I am on the products page
-    And I mass-edit products unionjack and jackadi
+    And I select rows unionjack and jackadi
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     Then I should see "The 2 selected products will be published"
     And I move on to the next step
@@ -48,7 +49,8 @@ Feature: Publish many products at once
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
     And I am on the products page
-    And I mass-edit products unionjack and jackadi
+    And I select rows unionjack and jackadi
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     Then I should see "The 2 selected products will be published"
     And I move on to the next step
@@ -77,7 +79,8 @@ Feature: Publish many products at once
     And I check the row "teafortwo"
     And I save the product
     And I am on the products page
-    And I mass-edit products unionjack and jackadi
+    And I select rows unionjack and jackadi
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     Then I should see "The 2 selected products will be published"
     And I move on to the next step
@@ -86,7 +89,8 @@ Feature: Publish many products at once
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
     And I am on the products page
-    And I mass-edit products unionjack and jackadi
+    And I select rows unionjack and jackadi
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     Then I should see "The 2 selected products will be published"
     And I move on to the next step

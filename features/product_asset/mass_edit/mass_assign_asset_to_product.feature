@@ -18,7 +18,8 @@ Feature: Edit asset collection of many products at once
     And I am on the products page
 
   Scenario: Allow editing all attributes on configuration screen
-    Given I mass-edit products boots, sneakers and sandals
+    Given I select rows boots, sneakers and sandals
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Front view attribute
     And I start to manage assets for "Front view"

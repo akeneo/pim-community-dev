@@ -48,7 +48,8 @@ Feature: Publish many products at once
       | my-jacket | customs    | 100 EUR       | tablet |
       | my-shoes  | customs    | 50 EUR        | tablet |
     And I am on the products page
-    And I mass-edit products my-jacket and my-shoes
+    And I select rows my-jacket and my-shoes
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     Then I should see "The 2 selected products will be published"
     And I move on to the next step
