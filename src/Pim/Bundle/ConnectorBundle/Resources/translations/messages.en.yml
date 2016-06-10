@@ -141,7 +141,7 @@ pim_connector:
             help: One character used to set the field separator for decimal
         dateFormat:
             label: Date format
-            help: Specify the format of any date columns in the file, e.g. here DD/MM/YYYY for a 31/04/2014 format.
+            help: Specify the format of any date columns in the file, e.g. here DD/MM/YYYY for a 30/04/2014 format.
 
 job_execution.summary:
     read:       read
