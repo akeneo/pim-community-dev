@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory;
 
-use Pim\Component\Catalog\Model\CurrencyInterface;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 
 /**
  * Class CurrencyFactory
@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\CurrencyInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CurrencyFactory
+class CurrencyFactory implements SimpleFactoryInterface
 {
     /** @var string */
     protected $currencyClass;
@@ -25,7 +25,7 @@ class CurrencyFactory
     }
 
     /**
-     * @return CurrencyInterface
+     * {@inheritdoc}
      */
     public function create()
     {
