@@ -11,12 +11,12 @@ connector:
                 import:
                     services:
                         reader:    pim_connector.reader.file.csv_product
-                        processor: pim_connector.processor.denormalization.product.flat
+                        processor: pim_connector.processor.denormalization.product
                         writer:    pim_connector.writer.database.product
                 import_associations:
                     services:
                         reader:    pim_connector.reader.file.csv_association
-                        processor: pim_connector.processor.denormalization.product_association.flat
+                        processor: pim_connector.processor.denormalization.product_association
                         writer:    pim_connector.writer.database.product_association
                     parameters:
                         batch_size: 1

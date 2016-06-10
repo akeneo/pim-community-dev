@@ -19,7 +19,7 @@ class ProductLoaderProcessorSpec extends ObjectBehavior
     ) {
         $productRepository->findOneByIdentifier('foo')->willReturn($product);
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $this->process(['sku' => 'foo'])->shouldReturn($product);
+        $this->process($this->getItem())->shouldReturn($product);
     }
 
     function it_does_not_process_if_already_an_object($productRepository, ProductInterface $product)
@@ -33,11 +33,24 @@ class ProductLoaderProcessorSpec extends ObjectBehavior
     ) {
         $productRepository->findOneByIdentifier('foo')->willReturn(null);
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $this->process(['sku' => 'foo'])->shouldReturn(null);
+        $this->process($this->getItem())->shouldReturn(null);
     }
 
     function it_should_throw_a_runtime_exception_when_no_identifier_is_set()
     {
-        $this->shouldThrow('\RuntimeException')->during('process', [['sku' => 'foo']]);
+        $this->shouldThrow('\RuntimeException')->during('process', [$this->getItem()]);
+    }
+
+    protected function getItem()
+    {
+        return [
+            'sku' => [
+                [
+                    'scope'  => null,
+                    'locale' => null,
+                    'data'   => 'foo'
+                ]
+            ]
+        ];
     }
 }

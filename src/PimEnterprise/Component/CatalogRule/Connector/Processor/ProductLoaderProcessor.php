@@ -46,6 +46,22 @@ class ProductLoaderProcessor extends AbstractConfigurableStepElement implements 
     }
 
     /**
+     * Get the identifier value from a item formatted in pivot format.
+     * This function uses the fact that pivot format have only one value for identifier attribute.
+     *
+     * With this $item example:
+     * [
+     *   'sku' => [
+     *     [
+     *       'scope'  => null,
+     *       'locale' => null,
+     *       'data'   => 'boot-123'
+     *     ]
+     *   ],
+     *   'color' => [ ... ]
+     * ]
+     * This function will return 'boot-123'.
+     *
      * @param array $item
      *
      * @throws \RuntimeException
@@ -55,11 +71,12 @@ class ProductLoaderProcessor extends AbstractConfigurableStepElement implements 
     protected function getIdentifier(array $item)
     {
         $identifierProperties = $this->productRepository->getIdentifierProperties();
+        $identifierProperty = $identifierProperties[0];
 
-        if (!isset($item[$identifierProperties[0]])) {
-            throw new \RuntimeException(sprintf('Identifier property "%s" is expected', $identifierProperties[0]));
+        if (!isset($item[$identifierProperty][0]['data'])) {
+            throw new \RuntimeException(sprintf('Identifier property "%s" is expected', $identifierProperty));
         }
 
-        return $item[$identifierProperties[0]];
+        return $item[$identifierProperty][0]['data'];
     }
 }

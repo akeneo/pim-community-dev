@@ -26,7 +26,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ProductDraftProcessorSpec extends ObjectBehavior
 {
     function let(
-        ArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
@@ -37,7 +36,6 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         AttributeConverterInterface $localizedConverter
     ) {
         $this->beConstructedWith(
-            $arrayConverter,
             $repository,
             $updater,
             $validator,
@@ -57,7 +55,6 @@ class ProductDraftProcessorSpec extends ObjectBehavior
     }
 
     function it_creates_a_proposal(
-        $arrayConverter,
         $repository,
         $updater,
         $validator,
@@ -80,10 +77,6 @@ class ProductDraftProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        $arrayConverter
-            ->convert($values['original_values'])
-            ->willReturn($values['converted_values']);
-
         $localizedConverter->convertToDefaultFormats($values['converted_values'], [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
@@ -105,12 +98,11 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
         $this
-            ->process($values['original_values'])
+            ->process($values['converted_values'])
             ->shouldReturn($productDraft);
     }
 
     function it_skips_a_proposal_if_there_is_no_identifier(
-        $arrayConverter,
         $repository,
         $localizedConverter,
         $stepExecution,
@@ -127,13 +119,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        unset($values['original_values']['sku']);
         unset($values['converted_values']['sku']);
         unset($values['converted_localized_values']['sku']);
-
-        $arrayConverter
-            ->convert($values['original_values'])
-            ->willReturn($values['converted_values']);
 
         $localizedConverter->convertToDefaultFormats($values['converted_values'], [
             'decimal_separator' => '.',
@@ -145,12 +132,11 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->shouldThrow(new \InvalidArgumentException('Identifier property "sku" is expected'))
             ->during(
                 'process',
-                [$values['original_values']]
+                [$values['converted_values']]
             );
     }
 
     function it_skips_a_proposal_if_product_does_not_exist(
-        $arrayConverter,
         $repository,
         $stepExecution,
         $localizedConverter,
@@ -166,10 +152,6 @@ class ProductDraftProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        $arrayConverter
-            ->convert($values['original_values'])
-            ->willReturn($values['converted_values']);
-
         $localizedConverter->convertToDefaultFormats($values['converted_values'], [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
@@ -178,15 +160,17 @@ class ProductDraftProcessorSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $this
-            ->shouldThrow(new InvalidItemException('Product "my-sku" does not exist', $values['original_values']))
+            ->shouldThrow(new InvalidItemException(
+                'Product "my-sku" does not exist',
+                $values['converted_localized_values']
+            ))
             ->during(
                 'process',
-                [$values['original_values']]
+                [$values['converted_values']]
             );
     }
 
     function it_skips_a_proposal_if_there_is_no_diff_between_product_and_proposal(
-        $arrayConverter,
         $repository,
         $updater,
         $validator,
@@ -207,10 +191,6 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 
         $values = $this->getValues();
-
-        $arrayConverter
-            ->convert($values['original_values'])
-            ->willReturn($values['converted_values']);
 
         $localizedConverter->convertToDefaultFormats($values['converted_values'], [
             'decimal_separator' => '.',
@@ -233,11 +213,10 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->incrementSummaryInfo('proposal_skipped')->shouldBeCalled();
 
-        $this->process($values['original_values'])->shouldReturn(null);
+        $this->process($values['converted_values'])->shouldReturn(null);
     }
 
     function it_skips_a_proposal_when_product_is_invalid(
-        $arrayConverter,
         $repository,
         $updater,
         $validator,
@@ -257,10 +236,6 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 
         $values = $this->getValues();
-
-        $arrayConverter
-            ->convert($values['original_values'])
-            ->willReturn($values['converted_values']);
 
         $localizedConverter->convertToDefaultFormats($values['converted_values'], [
             'decimal_separator' => '.',
@@ -286,22 +261,13 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$values['original_values']]
+                [$values['converted_values']]
             );
     }
 
     function getValues()
     {
         return [
-            'original_values'  => [
-                'sku'                        => 'my-sku',
-                'main_color'                 => 'white',
-                'description-fr_FR-ecommerce'=> '<p>description</p>',
-                'description-en_US-ecommerce'=> '<p>description</p>',
-                'release_date'               => '19/08/1977',
-                'price-EUR'                  => '10,25',
-                'price-USD'                  => '11,25',
-            ],
             'converted_values' => [
                 'sku'          => [
                     [

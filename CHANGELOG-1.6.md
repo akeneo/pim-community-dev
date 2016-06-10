@@ -156,3 +156,4 @@
 - Move and rename `PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\AttributeGroupAccessesStandardConverter` to `PimEnterprise\Component\Security\Connector\ArrayConverter\FlatToStandard\AttributeGroupAccesses`
 - Move and rename `PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\JobProfileAccessesStandardConverter` to `PimEnterprise\Component\Security\Connector\ArrayConverter\FlatToStandard\JobProfileAccesses`
 - Move and rename `PimEnterprise\Component\Workflow\Connector\ArrayConverter\Flat\ProductDraftStandardConverter` to `PimEnterprise\Component\Workflow\Connector\ArrayConverter\FlatToStandard\ProductDraft`
+- Remove parameter `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface` from constructor of `PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor`

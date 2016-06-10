@@ -12,12 +12,10 @@
 namespace PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
-use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
@@ -38,9 +36,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductDraftProcessor extends AbstractProcessor
 {
-    /** @var ArrayConverterInterface */
-    protected $arrayConverter;
-
     /** @var ObjectUpdaterInterface */
     protected $updater;
 
@@ -60,7 +55,6 @@ class ProductDraftProcessor extends AbstractProcessor
     protected $localizedConverter;
 
     /**
-     * @param ArrayConverterInterface               $arrayConverter      array converter
      * @param IdentifiableObjectRepositoryInterface $repository          product repository
      * @param ObjectUpdaterInterface                $updater             product updater
      * @param ValidatorInterface                    $validator           product validator
@@ -70,7 +64,6 @@ class ProductDraftProcessor extends AbstractProcessor
      * @param AttributeConverterInterface           $localizedConverter  attributes localized converter
      */
     public function __construct(
-        ArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
@@ -81,7 +74,6 @@ class ProductDraftProcessor extends AbstractProcessor
     ) {
         parent::__construct($repository);
 
-        $this->arrayConverter      = $arrayConverter;
         $this->updater             = $updater;
         $this->validator           = $validator;
         $this->productDraftBuilder = $productDraftBuilder;
@@ -95,16 +87,14 @@ class ProductDraftProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $convertedItem = $this->convertItemData($item);
-
-        $convertedItem = $this->convertLocalizedAttributes($convertedItem);
-        $violations    = $this->localizedConverter->getViolations();
+        $item = $this->convertLocalizedAttributes($item);
+        $violations = $this->localizedConverter->getViolations();
 
         if ($violations->count() > 0) {
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
-        $identifier = $this->getIdentifier($convertedItem);
+        $identifier = $this->getIdentifier($item);
 
         $product = $this->findProduct($identifier);
         if (!$product) {
@@ -114,7 +104,7 @@ class ProductDraftProcessor extends AbstractProcessor
         $product = $this->applyDraftToProduct($product);
 
         try {
-            $this->updateProduct($product, $convertedItem);
+            $this->updateProduct($product, $item);
         } catch (\InvalidArgumentException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
@@ -124,7 +114,7 @@ class ProductDraftProcessor extends AbstractProcessor
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
-        return $this->buildDraft($product, $item);
+        return $this->buildDraft($product);
     }
 
     /**
@@ -169,16 +159,6 @@ class ProductDraftProcessor extends AbstractProcessor
     protected function getProductDraft(ProductInterface $product)
     {
         return $this->productDraftRepo->findUserProductDraft($product, $this->getCodeInstance());
-    }
-
-    /**
-     * @param array $item
-     *
-     * @return array
-     */
-    protected function convertItemData(array $item)
-    {
-        return $this->arrayConverter->convert($item);
     }
 
     /**
@@ -231,13 +211,12 @@ class ProductDraftProcessor extends AbstractProcessor
      *      deleted in writer
      *
      * @param ProductInterface $product
-     * @param array            $item
      *
      * @throws InvalidItemException
      *
      * @return ProductDraft|null
      */
-    protected function buildDraft(ProductInterface $product, array $item)
+    protected function buildDraft(ProductInterface $product)
     {
         $productDraft = $this->productDraftBuilder->build($product, $this->getCodeInstance());
 

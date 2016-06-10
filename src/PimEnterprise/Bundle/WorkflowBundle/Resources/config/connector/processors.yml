@@ -5,7 +5,6 @@ services:
     pimee_workflow.processor.denormalization.product_draft.flat:
         class: '%pimee_workflow.processor.denormalization.product_draft.class%'
         arguments:
-            - '@pimee_base_connector.array_converter.flat_to_standard.product_draft'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'

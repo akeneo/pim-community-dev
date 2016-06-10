@@ -21,3 +21,6 @@ services:
         class: '%pim_connector.reader.database.base.class%'
         arguments:
             - '@pimee_product_asset.repository.channel_configuration'
+
+    pimee_connector.reader.file.yaml_channel_configuration:
+        alias: 'pim_connector.reader.file.yaml'

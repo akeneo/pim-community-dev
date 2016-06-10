@@ -41,8 +41,8 @@ Feature: Import proposals
       | SKU   | third-jacket |
     And the following CSV file to import:
     """
-    sku;name-en_US;description-en_US-mobile;
-    my-jacket;Jacket;Description;
+    sku;name-en_US;description-en_US-mobile
+    my-jacket;Jacket;Description
     """
     And the following job "csv_clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
@@ -256,8 +256,8 @@ Feature: Import proposals
     And I wait for the "csv_clothing_product_proposal_import" job to finish
     And the following CSV file to import:
     """
-    sku;description-en_US-mobile;description-en_US-tablet;comment;family;groups;categories;enabled;PACK-groups;PACK-products
-    my-jacket;My desc;My description;First comment;jacket;mygroup;cat1,cat2;1;mygroup;myprod1,myprod2
+    sku;description-en_US-mobile;description-en_US-tablet;comment
+    my-jacket;My desc;My description;First comment
     """
     And the following job "csv_clothing_product_proposal_import" configuration:
       | filePath | %file to import% |
