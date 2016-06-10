@@ -361,3 +361,5 @@
 - Add string parameter `$formName` to `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType`
 - Remove method `getItemsName()` from `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface` and deleted from all classes implementing the interface
 - Remove method `getItemsName()` from `Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface` and deleted from all classes implementing the interface
+- Change constructor of `Akeneo\Component\Batch\Job\Job` to add the array $steps argument
+- Remove the methods setSteps, addStep from `Akeneo\Component\Batch\Job\Job`

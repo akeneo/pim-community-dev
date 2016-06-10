@@ -72,21 +72,6 @@ class Job implements JobInterface
     }
 
     /**
-     * Public setter for the steps in this job. Overrides any calls to
-     * addStep(Step).
-     *
-     * @param array $steps the steps to execute
-     *
-     * @return Job
-     */
-    public function setSteps(array $steps)
-    {
-        $this->steps = $steps;
-
-        return $this;
-    }
-
-    /**
      * Retrieve the step with the given name. If there is no Step with the given
      * name, then return null.
      *
@@ -118,17 +103,6 @@ class Job implements JobInterface
         }
 
         return $names;
-    }
-
-    /**
-     * Convenience method for adding a single step to the job.
-     *
-     * @param string        $stepName the name of the step
-     * @param StepInterface $step     a {@link Step} to add
-     */
-    public function addStep($stepName, StepInterface $step)
-    {
-        $this->steps[] = $step;
     }
 
     /**
