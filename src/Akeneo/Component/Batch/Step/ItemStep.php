@@ -78,8 +78,6 @@ class ItemStep extends AbstractStep
      * Get reader
      *
      * @return ItemReaderInterface
-     *
-     * TODO: could be dropped, only used by archiver, to be discussed
      */
     public function getReader()
     {
@@ -88,9 +86,8 @@ class ItemStep extends AbstractStep
 
     /**
      * Get processor
-     * @return ItemProcessorInterface
      *
-     * TODO: could be dropped, not used, to be discussed
+     * @return ItemProcessorInterface
      */
     public function getProcessor()
     {
@@ -99,9 +96,8 @@ class ItemStep extends AbstractStep
 
     /**
      * Get writer
-     * @return ItemWriterInterface
      *
-     * TODO: could be dropped, only used by archiver, to be discussed
+     * @return ItemWriterInterface
      */
     public function getWriter()
     {

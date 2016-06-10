@@ -49,8 +49,6 @@ class ValidatorStep extends AbstractStep
     }
 
     /**
-     * TODO: could be dropped, to be discussed
-     *
      * @return CharsetValidator
      */
     public function getCharsetValidator()
