@@ -69,6 +69,7 @@ services:
             - '@pim_catalog.factory.group'
             - '@pim_catalog.updater.variant_group'
             - '@pim_catalog.validator.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.group:
         class: '%pim_connector.processor.denormalization.simple.class%'
