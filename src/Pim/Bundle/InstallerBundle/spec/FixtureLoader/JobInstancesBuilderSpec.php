@@ -5,13 +5,13 @@ namespace spec\Pim\Bundle\InstallerBundle\FixtureLoader;
 use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Processor\Denormalization\SimpleProcessor;
-use Pim\Component\Connector\Reader\File\Yaml\YamlReader;
+use Pim\Component\Connector\Reader\File\Yaml\Reader;
 use Prophecy\Argument;
 use Symfony\Component\Config\FileLocator;
 
 class JobInstancesBuilderSpec extends ObjectBehavior
 {
-    function let(FileLocator $fileLocator, YamlReader $yamlReader, SimpleProcessor $processor)
+    function let(FileLocator $fileLocator, Reader $yamlReader, SimpleProcessor $processor)
     {
         $this->beConstructedWith($fileLocator, $yamlReader, $processor, ['my/path/community/fixtures_jobs.yml']);
     }

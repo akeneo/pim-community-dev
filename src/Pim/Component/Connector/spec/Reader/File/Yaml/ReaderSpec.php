@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Prophecy\Argument;
 
-class YamlReaderSpec extends ObjectBehavior
+class ReaderSpec extends ObjectBehavior
 {
     function let(ArrayConverterInterface $converter)
     {
@@ -17,7 +17,7 @@ class YamlReaderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Component\Connector\Reader\File\Yaml\YamlReader');
+        $this->shouldHaveType('\Pim\Component\Connector\Reader\File\Yaml\Reader');
     }
 
     function it_is_an_item_reader_step_execution_and_uploaded_file_aware()

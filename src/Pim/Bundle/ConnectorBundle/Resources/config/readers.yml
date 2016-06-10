@@ -4,15 +4,15 @@ parameters:
     pim_connector.reader.database.product.class: Pim\Component\Connector\Reader\Database\ProductReader
     pim_connector.reader.database.base.class:    Pim\Component\Connector\Reader\Database\BaseReader
 
-    pim_connector.reader.file.csv.class:               Pim\Component\Connector\Reader\File\Csv\CsvReader
-    pim_connector.reader.file.csv_variant_group.class: Pim\Component\Connector\Reader\File\Csv\CsvVariantGroupReader
-    pim_connector.reader.file.csv_association.class:   Pim\Component\Connector\Reader\File\Csv\CsvAssociationReader
-    pim_connector.reader.file.csv_product.class:       Pim\Component\Connector\Reader\File\Csv\CsvProductReader
+    pim_connector.reader.file.csv.class:               Pim\Component\Connector\Reader\File\Csv\Reader
+    pim_connector.reader.file.csv_variant_group.class: Pim\Component\Connector\Reader\File\Csv\VariantGroupReader
+    pim_connector.reader.file.csv_association.class:   Pim\Component\Connector\Reader\File\Csv\ProductAssociationReader
+    pim_connector.reader.file.csv_product.class:       Pim\Component\Connector\Reader\File\Csv\ProductReader
 
-    pim_connector.reader.file.xlsx.class:         Pim\Component\Connector\Reader\File\Xlsx\XlsxReader
-    pim_connector.reader.file.xlsx_product.class: Pim\Component\Connector\Reader\File\Xlsx\XlsxProductReader
+    pim_connector.reader.file.xlsx.class:         Pim\Component\Connector\Reader\File\Xlsx\Reader
+    pim_connector.reader.file.xlsx_product.class: Pim\Component\Connector\Reader\File\Xlsx\ProductReader
 
-    pim_connector.reader.file.yaml.class: Pim\Component\Connector\Reader\File\Yaml\YamlReader
+    pim_connector.reader.file.yaml.class: Pim\Component\Connector\Reader\File\Yaml\Reader
 
     pim_connector.reader.file.file_iterator.class:          Pim\Component\Connector\Reader\File\FileIterator
     pim_connector.reader.file.file_iterator_factory.class:  Pim\Component\Connector\Reader\File\FileIteratorFactory

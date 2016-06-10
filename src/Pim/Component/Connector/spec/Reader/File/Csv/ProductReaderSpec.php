@@ -11,7 +11,7 @@ use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Pim\Component\Connector\Reader\File\MediaPathTransformer;
 use Prophecy\Argument;
 
-class CsvProductReaderSpec extends ObjectBehavior
+class ProductReaderSpec extends ObjectBehavior
 {
     function let(
         FileIteratorFactory $fileIteratorFactory,
@@ -25,12 +25,12 @@ class CsvProductReaderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Csv\CsvProductReader');
+        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Csv\ProductReader');
     }
 
     function it_is_a_csv_reader()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Csv\CsvReader');
+        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Csv\Reader');
     }
 
     function it_transforms_media_paths_to_absolute_paths(

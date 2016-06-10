@@ -17,12 +17,12 @@ class CsvProductReaderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Xlsx\XlsxProductReader');
+        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Xlsx\ProductReader');
     }
 
     function it_is_a_csv_reader()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Xlsx\XlsxReader');
+        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Xlsx\Reader');
     }
 
     function it_transforms_media_paths_to_absolute_paths(
