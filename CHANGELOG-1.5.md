@@ -1,4 +1,12 @@
+# 1.5.*
+
+## Bug fixes
+
+- PIM-5843: Prevent product duplication on import when the product is present several time in the same imported file
+
 # 1.5.5 (2016-06-16)
+
+## Bug fixes
 
 - PIM-5711: Don't create empty attribute translations if attributes are imported with empty labels
 - PIM-5829: Fix an issue with wrong parameters order in FamilyUpdater
