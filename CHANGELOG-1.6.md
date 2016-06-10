@@ -364,3 +364,5 @@
 - Change constructor of `Akeneo\Component\Batch\Job\Job` to add the array $steps argument
 - Remove the methods setSteps, addStep from `Akeneo\Component\Batch\Job\Job`
 - Remove the class `Akeneo\Component\Batch\Connector\ConnectorRegistry`, please use `Akeneo\Component\Batch\Job\JobRegistry`
+- Remove the class `Akeneo\Component\Batch\Step\StepFactory` and related service '@akeneo_batch.step_factory'
+- Remove the class `Akeneo\Component\Batch\Job\JobFactory` and related service '@akeneo_batch.job_factory'

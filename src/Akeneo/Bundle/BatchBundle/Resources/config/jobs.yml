@@ -1,7 +1,6 @@
 parameters:
     akeneo_batch.job_parameters_factory.class:              Akeneo\Component\Batch\Job\JobParametersFactory
     akeneo_batch.job_repository.class:                      Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository
-    akeneo_batch.job_factory.class:                         Akeneo\Component\Batch\Job\JobFactory
     akeneo_batch.job.job_registry.class:                                           Akeneo\Component\Batch\Job\JobRegistry
     akeneo_batch.job.job_parameters.default_values_provider_registry.class:        Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderRegistry
     akeneo_batch.job.job_parameters.constraint_collection_provider_registry.class: Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderRegistry
@@ -19,12 +18,6 @@ services:
             - '%akeneo_batch.entity.job_execution.class%'
             - '%akeneo_batch.entity.job_instance.class%'
             - '%pim_import_export.repository.job_instance.class%'
-
-    akeneo_batch.job_factory:
-        class: %akeneo_batch.job_factory.class%
-        arguments:
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
 
     akeneo_batch.job_parameters_factory:
         class: %akeneo_batch.job_parameters_factory.class%

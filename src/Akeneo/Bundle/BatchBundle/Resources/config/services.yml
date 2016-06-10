@@ -1,5 +1,4 @@
 parameters:
-    akeneo_batch.step_factory.class:                          Akeneo\Component\Batch\Step\StepFactory
     akeneo_batch.job_instance_factory.class:                  Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory
     akeneo_batch.logger_subscriber.class:                     Akeneo\Bundle\BatchBundle\EventListener\LoggerSubscriber
     akeneo_batch.notification_subscriber.class:               Akeneo\Bundle\BatchBundle\EventListener\NotificationSubscriber
@@ -39,12 +38,6 @@ services:
             - '@twig'
             - '@mailer'
             - '%akeneo_batch.mail_notifier.sender_email%'
-
-    akeneo_batch.step_factory:
-        class: '%akeneo_batch.step_factory.class%'
-        arguments:
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
 
     akeneo_batch.logger.batch_log_handler:
         class: '%akeneo_batch.logger.batch_log_handler.class%'
