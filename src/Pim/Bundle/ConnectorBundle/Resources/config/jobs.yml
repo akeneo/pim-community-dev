@@ -10,6 +10,8 @@ parameters:
     pim_connector.job_name.csv_family_import: 'csv_family_import'
     pim_connector.job_name.csv_group_export: 'csv_group_export'
     pim_connector.job_name.csv_group_import: 'csv_group_import'
+    pim_connector.job_name.csv_product_export: 'csv_product_export'
+    pim_connector.job_name.csv_product_import: 'csv_product_import'
     pim_connector.job.simple_job.class: Akeneo\Component\Batch\Job\Job
     pim_connector.step.item_step.class: Akeneo\Component\Batch\Step\ItemStep
 
@@ -75,6 +77,19 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.import_type% }
 
+    pim_connector.job.csv_product_import:
+        class: %pim_connector.job.simple_job.class%
+        arguments:
+            - '%pim_connector.job_name.csv_product_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.csv_product_import.import'
+                - '@pim_connector.step.csv_product_import.import_associations'
+        tags:
+            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.import_type% }
+
     # Exports ---------------------------------------------------------------------------------------------------------
     pim_connector.job.csv_attribute_export:
         class: %pim_connector.job.simple_job.class%
@@ -128,5 +143,16 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.csv_group_export.export'
+        tags:
+            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.export_type% }
+
+    pim_connector.job.csv_product_export:
+        class: %pim_connector.job.simple_job.class%
+        arguments:
+            - '%pim_connector.job_name.csv_product_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.csv_product_export.export'
         tags:
             - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.export_type% }

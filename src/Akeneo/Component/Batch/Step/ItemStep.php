@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ItemStep extends AbstractStep
 {
     /** @var int */
-    protected $batchSize = 100;
+    protected $batchSize;
 
     /** @var ItemReaderInterface */
     protected $reader = null;
@@ -43,6 +43,7 @@ class ItemStep extends AbstractStep
      * @param ItemReaderInterface      $reader
      * @param ItemProcessorInterface   $processor
      * @param ItemWriterInterface      $writer
+     * @param integer                  $batchSize
      */
     public function __construct(
         $name,
@@ -50,7 +51,8 @@ class ItemStep extends AbstractStep
         JobRepositoryInterface $jobRepository,
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
-        ItemWriterInterface $writer
+        ItemWriterInterface $writer,
+        $batchSize = 100
     ) {
         $this->name = $name;
         $this->jobRepository = $jobRepository;
@@ -58,20 +60,7 @@ class ItemStep extends AbstractStep
         $this->reader = $reader;
         $this->processor = $processor;
         $this->writer = $writer;
-    }
-
-    /**
-     * Set the batch size
-     *
-     * @param integer $batchSize
-     *
-     * @return $this
-     */
-    public function setBatchSize($batchSize)
-    {
         $this->batchSize = $batchSize;
-
-        return $this;
     }
 
     /**

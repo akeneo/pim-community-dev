@@ -24,7 +24,7 @@ class ItemStepSpec extends ObjectBehavior
         ItemProcessorInterface $processor,
         ItemWriterInterface $writer
     ) {
-        $this->beConstructedWith('myname', $dispatcher, $repository, $reader, $processor, $writer);
+        $this->beConstructedWith('myname', $dispatcher, $repository, $reader, $processor, $writer, 3);
     }
 
     function it_provides_configurable_step_elements($reader, $processor, $writer)
@@ -48,8 +48,6 @@ class ItemStepSpec extends ObjectBehavior
         BatchStatus $status,
         ExitStatus $exitStatus
     ) {
-        $this->setBatchSize(3);
-
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
 
@@ -93,8 +91,6 @@ class ItemStepSpec extends ObjectBehavior
         BatchStatus $status,
         ExitStatus $exitStatus
     ) {
-        $this->setBatchSize(3);
-
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
 

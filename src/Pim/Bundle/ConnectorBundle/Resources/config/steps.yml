@@ -63,6 +63,27 @@ services:
             - '@pim_connector.processor.denormalization.group'
             - '@pim_connector.writer.database.group'
 
+    pim_connector.step.csv_product_import.import:
+        class: %pim_connector.step.item_step.class%
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_product'
+            - '@pim_connector.processor.denormalization.product'
+            - '@pim_connector.writer.database.product'
+
+    pim_connector.step.csv_product_import.import_associations:
+        class: %pim_connector.step.item_step.class%
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_association'
+            - '@pim_connector.processor.denormalization.product_association'
+            - '@pim_connector.writer.database.product_association'
+            - 1
+
     # Export steps ----------------------------------------------------------------------------------------------------
     pim_connector.step.csv_attribute_export.export:
         class: %pim_connector.step.item_step.class%
@@ -113,3 +134,14 @@ services:
             - '@pim_base_connector.reader.repository.group'
             - '@pim_connector.processor.normalization.group'
             - '@pim_connector.writer.file.csv_group'
+
+    pim_connector.step.csv_product_export.export:
+        class: %pim_connector.step.item_step.class%
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.product'
+            - '@pim_base_connector.processor.product_to_flat_array'
+            - '@pim_connector.writer.file.csv_product'
+            - 10

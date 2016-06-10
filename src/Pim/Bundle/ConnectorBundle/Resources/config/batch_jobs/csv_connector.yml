@@ -1,25 +1,6 @@
 connector:
     name: Akeneo CSV Connector
     jobs:
-        csv_product_import:
-            type:  import
-            steps:
-                validation:
-                    class: '%pim_connector.step.validator.class%'
-                    services:
-                        charsetValidator: pim_connector.validator.item.charset_validator
-                import:
-                    services:
-                        reader:    pim_connector.reader.file.csv_product
-                        processor: pim_connector.processor.denormalization.product
-                        writer:    pim_connector.writer.database.product
-                import_associations:
-                    services:
-                        reader:    pim_connector.reader.file.csv_association
-                        processor: pim_connector.processor.denormalization.product_association
-                        writer:    pim_connector.writer.database.product_association
-                    parameters:
-                        batch_size: 1
         csv_variant_group_import:
             type:  import
             steps:
@@ -49,16 +30,6 @@ connector:
                     parameters:
                         batchSize: 1
 
-        csv_product_export:
-            type:  export
-            steps:
-                export:
-                    services:
-                        reader:    pim_connector.reader.database.product
-                        processor: pim_base_connector.processor.product_to_flat_array
-                        writer:    pim_connector.writer.file.csv_product
-                    parameters:
-                        batch_size: 10
         csv_category_export:
             type:  export
             steps:
