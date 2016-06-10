@@ -20,30 +20,6 @@ connector:
                         writer:    pim_connector.writer.database.product_association
                     parameters:
                         batch_size: 1
-        csv_attribute_import:
-            type:  import
-            steps:
-                validation:
-                    class: '%pim_connector.step.validator.class%'
-                    services:
-                        charsetValidator: pim_connector.validator.item.charset_validator
-                import:
-                    services:
-                        reader:    pim_connector.reader.file.csv_attribute
-                        processor: pim_connector.processor.denormalization.attribute
-                        writer:    pim_connector.writer.database.attribute
-        csv_attribute_option_import:
-            type:  import
-            steps:
-                validation:
-                    class: '%pim_connector.step.validator.class%'
-                    services:
-                        charsetValidator: pim_connector.validator.item.charset_validator
-                import:
-                    services:
-                        reader:    pim_connector.reader.file.csv_attribute_option
-                        processor: pim_connector.processor.denormalization.attribute_option
-                        writer:    pim_connector.writer.database.attribute_option
         csv_variant_group_import:
             type:  import
             steps:

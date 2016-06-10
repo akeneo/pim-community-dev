@@ -37,16 +37,18 @@ class Job implements JobInterface
      * @param string                   $name
      * @param EventDispatcherInterface $eventDispatcher
      * @param JobRepositoryInterface   $jobRepository
+     * @param StepInterface[]          $steps
      */
     public function __construct(
         $name,
         EventDispatcherInterface $eventDispatcher,
-        JobRepositoryInterface $jobRepository
+        JobRepositoryInterface $jobRepository,
+        array $steps = []
     ) {
         $this->name = $name;
         $this->eventDispatcher = $eventDispatcher;
         $this->jobRepository = $jobRepository;
-        $this->steps = [];
+        $this->steps = $steps;
     }
 
     /**
