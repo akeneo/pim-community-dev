@@ -165,15 +165,6 @@ class ProductProcessor extends AbstractProcessor
     /**
      * @param array $item
      *
-     * @return array
-     */
-    protected function convertItemData(array $item)
-    {
-    }
-
-    /**
-     * @param array $item
-     *
      * @return string
      */
     protected function getIdentifier(array $item)

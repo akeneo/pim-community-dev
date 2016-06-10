@@ -329,7 +329,7 @@ class Product implements ArrayConverterInterface
     protected function validateOptionalFields(array $item)
     {
         $optionalFields = array_merge(
-            ['family', 'enabled', 'categories', 'groups', 'enabled'],
+            ['family', 'enabled', 'categories', 'groups'],
             $this->attrColumnsResolver->resolveAttributeColumns(),
             $this->getOptionalAssociationFields()
         );

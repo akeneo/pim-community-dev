@@ -45,7 +45,10 @@ class VariantGroupReader extends Reader
         }
 
         if (isset($data['values'])) {
-            $data['values'] = $this->mediaPathTransformer->transform($data['values'], $this->fileIterator->getDirectoryPath());
+            $data['values'] = $this->mediaPathTransformer->transform(
+                $data['values'],
+                $this->fileIterator->getDirectoryPath()
+            );
         }
 
         return $data;

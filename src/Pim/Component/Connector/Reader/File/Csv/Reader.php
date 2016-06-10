@@ -91,7 +91,7 @@ class Reader extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * Returns the options for array converter. It should be overridden in the sub classes.
+     * Returns the options for array converter. It can be overridden in the sub classes.
      *
      * @return array
      */

@@ -60,10 +60,9 @@ If you use in your import standard Akeneo PIM processor and reader services, ple
 ```
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.processor\.normalization\.\(.*\)\.flat/pim_connector\.processor\.normalization\.\1/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.file\.yaml/pim_connector\.reader\.file\.yaml/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Reader\\File\\Product\\CsvReader/Pim\\Component\\Connector\\Reader\\File\\Csv\\CsvReader/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Reader\\File\\CsvProductReader/Pim\\Component\\Connector\\Reader\\File\\Csv\\CsvProductReader/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Reader\\File\\YamlReader/Pim\\Component\\Connector\\Reader\\File\\Yaml\\YamlReader/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Reader\\File\\YamlReader/Pim\\Component\\Connector\\Reader\\File\\Yaml\\YamlReader/g
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Reader\\File\\Product\\CsvReader/Pim\\Component\\Connector\\Reader\\File\\Csv\\Reader/g
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Reader\\File\\CsvProductReader/Pim\\Component\\Connector\\Reader\\File\\Csv\\ProductReader/g
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Reader\\File\\YamlReader/Pim\\Component\\Connector\\Reader\\File\\Yaml\\Reader/g
 ```
 
 ### BaseConnectorBundle

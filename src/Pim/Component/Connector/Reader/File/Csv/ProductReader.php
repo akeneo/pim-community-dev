@@ -55,23 +55,15 @@ class ProductReader extends Reader
      */
     protected function getArrayConverterOptions()
     {
-        return [
-            'mapping'           => $this->getMapping(),
-            'with_associations' => false
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getMapping()
-    {
         $jobParameters = $this->stepExecution->getJobParameters();
 
         return [
-            $jobParameters->get('familyColumn')     => 'family',
-            $jobParameters->get('categoriesColumn') => 'categories',
-            $jobParameters->get('groupsColumn')     => 'groups'
+            'mapping'           => [
+                $jobParameters->get('familyColumn')     => 'family',
+                $jobParameters->get('categoriesColumn') => 'categories',
+                $jobParameters->get('groupsColumn')     => 'groups'
+            ],
+            'with_associations' => false
         ];
     }
 }
