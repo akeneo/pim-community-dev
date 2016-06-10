@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Connector\Step;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Pim\Component\Connector\Reader\File\Csv\CsvReader;
+use Pim\Component\Connector\Reader\File\Csv\Reader;
 use Pim\Component\Connector\Writer\Database\BaseWriter;
 use PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\TagProcessor;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
@@ -36,7 +36,7 @@ class TagStepSpec extends ObjectBehavior
         StepExecution $stepExecution,
         BaseWriter $writer,
         TagProcessor $tagProcessor,
-        CsvReader $csvReader,
+        Reader $reader,
         TagInterface $tag,
         $jobRepository
     ) {
@@ -48,11 +48,11 @@ class TagStepSpec extends ObjectBehavior
             'end_of_use'  => '2018-02-01',
         ];
 
-        $csvReader->read()->willReturn($value, null);
+        $reader->read()->willReturn($value, null);
 
-        $csvReader->setStepExecution($stepExecution)->shouldBeCalled();
-        $csvReader->initialize()->shouldBeCalled();
-        $csvReader->flush()->shouldBeCalled();
+        $reader->setStepExecution($stepExecution)->shouldBeCalled();
+        $reader->initialize()->shouldBeCalled();
+        $reader->flush()->shouldBeCalled();
 
         $tagProcessor->setStepExecution($stepExecution)->shouldBeCalled();
         $tagProcessor->initialize()->shouldBeCalled();
@@ -66,7 +66,7 @@ class TagStepSpec extends ObjectBehavior
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
 
-        $this->setReader($csvReader);
+        $this->setReader($reader);
         $this->setProcessor($tagProcessor);
         $this->setWriter($writer);
 
