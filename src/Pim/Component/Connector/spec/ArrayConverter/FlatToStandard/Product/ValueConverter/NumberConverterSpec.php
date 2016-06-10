@@ -1,22 +1,18 @@
 <?php
 
+
 namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter;
+
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
-class ScalarConverterSpec extends ObjectBehavior
+class NumberConverterSpec extends ObjectBehavior
 {
     function let(FieldSplitter $fieldSplitter)
     {
-        $this->beConstructedWith(
-            $fieldSplitter,
-            [
-                'pim_catalog_date',
-                'pim_catalog_boolean',
-            ]
-        );
+        $this->beConstructedWith($fieldSplitter, ['pim_catalog_number']);
     }
 
     function it_is_a_converter()
@@ -26,54 +22,69 @@ class ScalarConverterSpec extends ObjectBehavior
 
     function it_supports_converter_field()
     {
-        $this->supportsField('pim_catalog_date')->shouldReturn(true);
-        $this->supportsField('pim_catalog_boolean')->shouldReturn(true);
+        $this->supportsField('pim_catalog_number')->shouldReturn(true);
         $this->supportsField('pim_catalog_price')->shouldReturn(false);
     }
 
-    function it_converts_a_date(AttributeInterface $attribute)
+    function it_converts_an_integer(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attribute_code');
         $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
 
-        $value = '30/03/2016';
+        $value = 1234;
 
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => '30/03/2016',
+            'data'   => 1234,
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
     }
 
-    function it_converts_a_boolean(AttributeInterface $attribute)
+    function it_converts_an_integer_formatted_as_string(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attribute_code');
         $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
 
-        $value = false;
+        $value = '1234';
 
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => false,
+            'data'   => 1234,
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
     }
 
-    function it_returns_null_data_if_empty_value_provided(AttributeInterface $attribute)
+    function it_converts_a_float(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attribute_code');
         $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
 
-        $value = '';
+        $value = 1234.36;
 
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => null,
+            'data'   => 1234.36,
+        ]]];
+
+        $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
+    }
+
+    function it_converts_a_float_formatted_as_string(AttributeInterface $attribute)
+    {
+        $attribute->getCode()->willReturn('attribute_code');
+        $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
+
+        $value = '1234.36';
+
+        $expectedResult = ['attribute_code' => [[
+            'locale' => 'en_US',
+            'scope'  => 'mobile',
+            'data'   => 1234.36,
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
