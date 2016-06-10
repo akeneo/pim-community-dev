@@ -363,3 +363,4 @@
 - Remove method `getItemsName()` from `Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface` and deleted from all classes implementing the interface
 - Change constructor of `Akeneo\Component\Batch\Job\Job` to add the array $steps argument
 - Remove the methods setSteps, addStep from `Akeneo\Component\Batch\Job\Job`
+- Remove the class `Akeneo\Component\Batch\Connector\ConnectorRegistry`, please use `Akeneo\Component\Batch\Job\JobRegistry`
