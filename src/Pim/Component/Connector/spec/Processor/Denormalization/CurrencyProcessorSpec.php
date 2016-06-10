@@ -18,13 +18,12 @@ class CurrencyProcessorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $repository,
-        ArrayConverterInterface $currencyConverter,
         CurrencyFactory $currencyFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($repository, $currencyConverter, $currencyFactory, $updater, $validator);
+        $this->beConstructedWith($repository, $currencyFactory, $updater, $validator);
         $this->setStepExecution($stepExecution);
     }
 
@@ -37,7 +36,6 @@ class CurrencyProcessorSpec extends ObjectBehavior
 
     function it_updates_an_existing_currency(
         $repository,
-        $currencyConverter,
         $updater,
         $validator,
         CurrencyInterface $currency,
@@ -50,18 +48,15 @@ class CurrencyProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        $currencyConverter->convert($values['original_values'])->willReturn($values['converted_values']);
-
-        $updater->update($currency, $values['converted_values'])->shouldBeCalled();
+        $updater->update($currency, $values)->shouldBeCalled();
 
         $validator->validate($currency)->willReturn($violationList);
 
-        $this->process($values['original_values'])->shouldReturn($currency);
+        $this->process($values)->shouldReturn($currency);
     }
 
     function it_skips_a_currency_when_update_fails(
         $repository,
-        $currencyConverter,
         $updater,
         $validator,
         CurrencyInterface $currency,
@@ -74,20 +69,17 @@ class CurrencyProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        $currencyConverter->convert($values['original_values'])->willReturn($values['converted_values']);
-
         $validator->validate($currency)->willReturn($violationList);
 
-        $updater->update($currency, $values['converted_values'])->willThrow(new \InvalidArgumentException());
+        $updater->update($currency, $values)->willThrow(new \InvalidArgumentException());
 
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
-            ->during('process', [$values['original_values']]);
+            ->during('process', [$values]);
     }
 
     function it_skips_a_currency_when_object_is_invalid(
         $repository,
-        $currencyConverter,
         $validator,
         CurrencyInterface $currency
     ) {
@@ -98,8 +90,6 @@ class CurrencyProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        $currencyConverter->convert($values['original_values'])->willReturn($values['converted_values']);
-
         $violation = new ConstraintViolation('Error', 'foo', [], 'bar', 'code', 'sizes');
         $violations = new ConstraintViolationList([$violation]);
         $validator->validate($currency)->willReturn($violations);
@@ -108,21 +98,15 @@ class CurrencyProcessorSpec extends ObjectBehavior
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$values['original_values']]
+                [$values]
             );
     }
 
     function getValues()
     {
         return [
-            'original_values' => [
-                'code'       => 'USD',
-                'activated'  => 1,
-            ],
-            'converted_values' => [
-                'code'      => 'USD',
-                'activated' => true,
-            ]
+            'code'      => 'USD',
+            'activated' => true,
         ];
     }
 }

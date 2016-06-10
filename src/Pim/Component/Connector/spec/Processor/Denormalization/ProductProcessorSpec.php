@@ -22,7 +22,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ProductProcessorSpec extends ObjectBehavior
 {
     function let(
-        ArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
         ObjectUpdaterInterface $productUpdater,
@@ -33,7 +32,6 @@ class ProductProcessorSpec extends ObjectBehavior
         AttributeConverterInterface $localizedConverter
     ) {
         $this->beConstructedWith(
-            $arrayConverter,
             $productRepository,
             $productBuilder,
             $productUpdater,
@@ -53,7 +51,6 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_product(
-        $arrayConverter,
         $productRepository,
         $productUpdater,
         $productValidator,
@@ -77,13 +74,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $originalData = [
-            'sku' => 'tshirt',
-            'family' => 'TShirt',
-            'description-en_US-mobile' => 'My description',
-            'name-fr_FR' => 'T-shirt super beau',
-            'name-en_US' => 'My awesome T-shirt'
-        ];
         $convertedData =                 [
             'sku' => [
                 [
@@ -113,14 +103,6 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $converterOptions = [
-            'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
-            'default_values'    => ['enabled' => true],
-            'with_associations' => false,
-        ];
-        $arrayConverter
-            ->convert($originalData, $converterOptions)
-            ->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Summer Tshirt',
@@ -145,7 +127,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $localizedConverter->convertToDefaultFormats($convertedData, [
+        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -161,12 +143,11 @@ class ProductProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($originalData)
+            ->process($convertedData)
             ->shouldReturn($product);
     }
 
     function it_updates_an_existing_product_with_filtered_values(
-        $arrayConverter,
         $productRepository,
         $productUpdater,
         $productValidator,
@@ -190,13 +171,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $originalData = [
-            'sku' => 'tshirt',
-            'family' => 'TShirt',
-            'description-en_US-mobile' => 'My description',
-            'name-fr_FR' => 'T-shirt super beau',
-            'name-en_US' => 'My awesome T-shirt'
-        ];
         $convertedData =                 [
             'sku' => [
                 [
@@ -226,16 +200,8 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $converterOptions = [
-            'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
-            'default_values'    => ['enabled' => true],
-            'with_associations' => false
-        ];
-        $arrayConverter
-            ->convert($originalData, $converterOptions)
-            ->willReturn($convertedData);
 
-        $localizedConverter->convertToDefaultFormats($convertedData, [
+        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -276,12 +242,11 @@ class ProductProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($originalData)
+            ->process($convertedData)
             ->shouldReturn($product);
     }
 
     function it_updates_an_existing_product_without_filtered_values(
-        $arrayConverter,
         $productRepository,
         $productUpdater,
         $productValidator,
@@ -305,13 +270,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $originalData = [
-            'sku' => 'tshirt',
-            'family' => 'TShirt',
-            'description-en_US-mobile' => 'My description',
-            'name-fr_FR' => 'T-shirt super beau',
-            'name-en_US' => 'My awesome T-shirt'
-        ];
         $convertedData =                 [
             'sku' => [
                 [
@@ -341,16 +299,8 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $converterOptions = [
-            'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
-            'default_values'    => ['enabled' => true],
-            'with_associations' => false
-        ];
-        $arrayConverter
-            ->convert($originalData, $converterOptions)
-            ->willReturn($convertedData);
 
-        $localizedConverter->convertToDefaultFormats($convertedData, [
+        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -390,12 +340,11 @@ class ProductProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($originalData)
+            ->process($convertedData)
             ->shouldReturn($product);
     }
 
     function it_creates_a_product(
-        $arrayConverter,
         $productRepository,
         $productBuilder,
         $productUpdater,
@@ -421,13 +370,6 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
-        $originalData = [
-            'sku' => 'tshirt',
-            'family' => 'TShirt',
-            'description-en_US-mobile' => 'My description',
-            'name-fr_FR' => 'T-shirt super beau',
-            'name-en_US' => 'My awesome T-shirt'
-        ];
         $convertedData =                 [
             'sku' => [
                 [
@@ -457,16 +399,8 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $converterOptions = [
-            'mapping' => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
-            'default_values' => ['enabled' => true],
-            'with_associations' => false
-        ];
-        $arrayConverter
-            ->convert($originalData, $converterOptions)
-            ->willReturn($convertedData);
 
-        $localizedConverter->convertToDefaultFormats($convertedData, [
+        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -506,12 +440,11 @@ class ProductProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($originalData)
+            ->process($convertedData)
             ->shouldReturn($product);
     }
 
     function it_skips_a_product_when_identifier_is_empty(
-        $arrayConverter,
         $productRepository,
         $localizedConverter,
         $stepExecution,
@@ -529,10 +462,6 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
 
-        $originalData = [
-            'sku' => '',
-            'family' => 'TShirt'
-        ];
         $convertedData =                 [
             'sku' => [
                 [
@@ -544,16 +473,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'family' => 'Tshirt',
         ];
 
-        $converterOptions = [
-            'mapping' => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
-            'default_values' => ['enabled' => true],
-            'with_associations' => false
-        ];
-        $arrayConverter
-            ->convert($originalData, $converterOptions)
-            ->willReturn($convertedData);
-
-        $localizedConverter->convertToDefaultFormats($convertedData, [
+        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -565,12 +485,11 @@ class ProductProcessorSpec extends ObjectBehavior
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$originalData]
+                [$convertedData]
             );
     }
 
     function it_skips_a_product_when_update_fails(
-        $arrayConverter,
         $productRepository,
         $productBuilder,
         $productUpdater,
@@ -596,13 +515,6 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
-        $originalData = [
-            'sku' => 'tshirt',
-            'family' => 'TShirt',
-            'description-en_US-mobile' => 'My description',
-            'name-fr_FR' => 'T-shirt super beau',
-            'name-en_US' => 'My awesome T-shirt'
-        ];
         $convertedData =                 [
             'sku' => [
                 [
@@ -632,16 +544,8 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $converterOptions = [
-            'mapping' => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
-            'default_values' => ['enabled' => true],
-            'with_associations' => false
-        ];
-        $arrayConverter
-            ->convert($originalData, $converterOptions)
-            ->willReturn($convertedData);
 
-        $localizedConverter->convertToDefaultFormats($convertedData, [
+        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -683,12 +587,11 @@ class ProductProcessorSpec extends ObjectBehavior
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$originalData]
+                [$convertedData]
             );
     }
 
     function it_skips_a_product_when_object_is_invalid(
-        $arrayConverter,
         $productRepository,
         $productBuilder,
         $productUpdater,
@@ -715,13 +618,6 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
-        $originalData = [
-            'sku' => 'tshirt',
-            'family' => 'TShirt',
-            'description-en_US-mobile' => 'My description',
-            'name-fr_FR' => 'T-shirt super beau',
-            'name-en_US' => 'My awesome T-shirt'
-        ];
         $convertedData =                 [
             'sku' => [
                 [
@@ -751,16 +647,8 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $converterOptions = [
-            'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
-            'default_values'    => ['enabled' => true],
-            'with_associations' => false
-        ];
-        $arrayConverter
-            ->convert($originalData, $converterOptions)
-            ->willReturn($convertedData);
 
-        $localizedConverter->convertToDefaultFormats($convertedData, [
+        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -807,12 +695,11 @@ class ProductProcessorSpec extends ObjectBehavior
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$originalData]
+                [$convertedData]
             );
     }
 
     function it_skips_a_product_when_there_is_nothing_to_update(
-        $arrayConverter,
         $productRepository,
         $productUpdater,
         $productDetacher,
@@ -836,13 +723,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
         $product->getId()->willReturn(1);
 
-        $originalData = [
-            'sku' => 'tshirt',
-            'family' => 'TShirt',
-            'description-en_US-mobile' => 'My description',
-            'name-fr_FR' => 'T-shirt super beau',
-            'name-en_US' => 'My awesome T-shirt'
-        ];
         $convertedData =                 [
             'sku' => [
                 [
@@ -872,16 +752,8 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $converterOptions = [
-            'mapping' => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
-            'default_values' => ['enabled' => true],
-            'with_associations' => false
-        ];
-        $arrayConverter
-            ->convert($originalData, $converterOptions)
-            ->willReturn($convertedData);
 
-        $localizedConverter->convertToDefaultFormats($convertedData, [
+        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($convertedData);
@@ -919,12 +791,11 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('product_skipped_no_diff')->shouldBeCalled();
 
         $this
-            ->process($originalData)
+            ->process($convertedData)
             ->shouldReturn(null);
     }
 
     function it_updates_an_existing_product_with_localized_value(
-        $arrayConverter,
         $productRepository,
         $productUpdater,
         $productValidator,
@@ -948,11 +819,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $originalData = [
-            'sku'    => 'tshirt',
-            'number' => '10.00',
-            'date'   => null
-        ];
         $postConverterData = $convertedData = [
             'sku' => [
                 [
@@ -976,14 +842,6 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $converterOptions = [
-            'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
-            'default_values'    => ['enabled' => true],
-            'with_associations' => false,
-        ];
-        $arrayConverter
-            ->convert($originalData, $converterOptions)
-            ->willReturn($convertedData);
 
         $filteredData = [
             'number' => [
@@ -1004,7 +862,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $postConverterData['number'][0]['data'] = '10.45';
         $postConverterData['date'][0]['data'] = '2015-10-20';
-        $localizedConverter->convertToDefaultFormats($convertedData, [
+        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy'
         ])->willReturn($postConverterData);
@@ -1021,12 +879,11 @@ class ProductProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($originalData)
+            ->process($convertedData)
             ->shouldReturn($product);
     }
 
     function it_skips_a_product_if_format_of_localized_attribute_is_not_expected(
-        $arrayConverter,
         $localizedConverter,
         $productRepository,
         $stepExecution,
@@ -1046,10 +903,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $originalData = [
-            'sku'    => 'tshirt',
-            'number' => '10.00'
-        ];
         $convertedData = [
             'sku' => [
                 [
@@ -1066,18 +919,10 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $converterOptions = [
-            'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
-            'default_values'    => ['enabled' => true],
-            'with_associations' => false,
-        ];
-        $arrayConverter
-            ->convert($originalData, $converterOptions)
-            ->willReturn($convertedData);
 
         $data = $convertedData;
         $data['number'][0]['data'] = '10.45';
-        $localizedConverter->convertToDefaultFormats($convertedData, [
+        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
             'decimal_separator' => '.',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($data);
@@ -1092,12 +937,11 @@ class ProductProcessorSpec extends ObjectBehavior
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$originalData]
+                [$convertedData]
             );
     }
 
     function it_skips_a_product_when_there_is_nothing_to_update_with_localized_value(
-        $arrayConverter,
         $productRepository,
         $productBuilder,
         $productUpdater,
@@ -1123,10 +967,6 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productBuilder->createProduct('tshirt', null)->willReturn($product);
 
-        $originalData = [
-            'sku' => 'tshirt',
-            'number' => '10.45',
-        ];
         $postConvertedData = $convertedData = [
             'sku' => [
                 [
@@ -1144,17 +984,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $converterOptions = [
-            'mapping' => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
-            'default_values' => ['enabled' => true],
-            'with_associations' => false
-        ];
-        $arrayConverter
-            ->convert($originalData, $converterOptions)
-            ->willReturn($convertedData);
-
         $postConvertedData['number'][0]['data'] = '10.45';
-        $localizedConverter->convertToDefaultFormats($convertedData, [
+        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
             'decimal_separator' => ',',
             'date_format'       => 'yyyy-MM-dd'
         ])->willReturn($postConvertedData);
@@ -1178,12 +1009,11 @@ class ProductProcessorSpec extends ObjectBehavior
             ->update($product, $filteredData)->shouldNotBeCalled();
 
         $this
-            ->process($originalData)
+            ->process($convertedData)
             ->shouldReturn(null);
     }
 
     function it_updates_an_existing_product_and_does_not_change_his_state(
-        $arrayConverter,
         $productRepository,
         $productUpdater,
         $productValidator,
@@ -1207,13 +1037,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $originalData = [
-            'sku' => 'tshirt',
-            'family' => 'TShirt',
-            'description-en_US-mobile' => 'My description',
-            'name-fr_FR' => 'T-shirt super beau',
-            'name-en_US' => 'My awesome T-shirt',
-        ];
         $convertedData = [
             'sku' => [
                 [
@@ -1244,14 +1067,6 @@ class ProductProcessorSpec extends ObjectBehavior
             ],
             'enabled' => false,
         ];
-        $converterOptions = [
-            'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
-            'default_values'    => ['enabled' => true],
-            'with_associations' => false,
-        ];
-        $arrayConverter
-            ->convert($originalData, $converterOptions)
-            ->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Summer Tshirt',
@@ -1274,6 +1089,7 @@ class ProductProcessorSpec extends ObjectBehavior
                     'data' => 'My awesome description'
                 ]
             ],
+            'enabled' => false,
         ];
 
         $localizedConverter->convertToDefaultFormats($convertedData, [
@@ -1293,12 +1109,11 @@ class ProductProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($originalData)
+            ->process($convertedData)
             ->shouldReturn($product);
     }
 
     function it_creates_a_product_with_sku_and_family_columns(
-        $arrayConverter,
         $productRepository,
         $productBuilder,
         $productUpdater,
@@ -1324,10 +1139,6 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
-        $originalData = [
-            'sku'    => 'tshirt',
-            'family' => 'TShirt',
-        ];
         $convertedData = [
             'sku' => [
                 [
@@ -1339,14 +1150,6 @@ class ProductProcessorSpec extends ObjectBehavior
             'family' => 'Tshirt',
             'enabled' => true
         ];
-        $converterOptions = [
-            "mapping"           => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values"    => ["enabled" => true],
-            "with_associations" => false
-        ];
-        $arrayConverter
-            ->convert($originalData, $converterOptions)
-            ->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -1369,7 +1172,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($originalData)
+            ->process($convertedData)
             ->shouldReturn($product);
     }
 }

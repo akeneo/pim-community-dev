@@ -4,6 +4,7 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Pim\Component\Catalog\Model\GroupInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * Variant group import processor, allows to,
@@ -20,21 +21,21 @@ class VariantGroupProcessor extends GroupProcessor
     /**
      * Find or create the variant group
      *
-     * @param array $convertedItem
+     * @param array $item
      *
      * @return GroupInterface
      */
-    protected function findOrCreateGroup(array $convertedItem)
+    protected function findOrCreateGroup(array $item)
     {
-        if (null === $variantGroup = $this->findObject($this->repository, $convertedItem)) {
-            $variantGroup = $this->groupFactory->createGroup($convertedItem['type']);
+        if (null === $variantGroup = $this->findObject($this->repository, $item)) {
+            $variantGroup = $this->groupFactory->createGroup($item['type']);
         }
 
         $isExistingGroup = (null !== $variantGroup->getType() && false === $variantGroup->getType()->isVariant());
         if ($isExistingGroup) {
             $this->skipItemWithMessage(
-                $convertedItem,
-                sprintf('Cannot process group "%s", only variant groups are accepted', $convertedItem['code'])
+                $item,
+                sprintf('Cannot process group "%s", only variant groups are accepted', $item['code'])
             );
         }
 
@@ -46,7 +47,7 @@ class VariantGroupProcessor extends GroupProcessor
      *
      * @throws InvalidItemException
      *
-     * @return \Symfony\Component\Validator\ConstraintViolationListInterface
+     * @return ConstraintViolationListInterface
      */
     protected function validateGroup(GroupInterface $group)
     {

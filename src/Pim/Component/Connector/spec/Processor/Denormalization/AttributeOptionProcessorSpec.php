@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -17,7 +16,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AttributeOptionProcessorSpec extends ObjectBehavior
 {
     function let(
-        ArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $optionRepository,
         ObjectUpdaterInterface $optionUpdater,
         ValidatorInterface $optionValidator,
@@ -25,7 +23,6 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
     ) {
         $optionClass = 'Pim\Bundle\CatalogBundle\Entity\AttributeOption';
         $this->beConstructedWith(
-            $arrayConverter,
             $optionRepository,
             $optionUpdater,
             $optionValidator,
@@ -42,7 +39,6 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_attribute_option(
-        $arrayConverter,
         $optionRepository,
         $optionUpdater,
         $optionValidator,
@@ -53,9 +49,6 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
         $optionRepository->findOneByIdentifier(Argument::any())->willReturn($option);
         $option->getId()->willReturn(42);
 
-        $arrayConverter
-            ->convert(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
-            ->willReturn(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12]);
         $optionUpdater
             ->update($option, ['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
             ->shouldBeCalled();
@@ -71,7 +64,6 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
     }
 
     function it_creates_an_attribute_option(
-        $arrayConverter,
         $optionRepository,
         $optionUpdater,
         $optionValidator,
@@ -80,9 +72,6 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
         $optionRepository->getIdentifierProperties()->willReturn(['attribute', 'code']);
         $optionRepository->findOneByIdentifier(Argument::any())->willReturn(null);
 
-        $arrayConverter
-            ->convert(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
-            ->willReturn(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12]);
         $optionUpdater
             ->update(Argument::any(), ['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
             ->shouldBeCalled();
@@ -97,16 +86,12 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
     }
 
     function it_skips_an_attribute_option_when_update_fails(
-        $arrayConverter,
         $optionRepository,
         $optionUpdater
     ) {
         $optionRepository->getIdentifierProperties()->willReturn(['attribute', 'code']);
         $optionRepository->findOneByIdentifier(Argument::any())->willReturn(null);
 
-        $arrayConverter
-            ->convert(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
-            ->willReturn(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12]);
         $optionUpdater
             ->update(Argument::any(), ['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
             ->willThrow(new \InvalidArgumentException('attribute does not exists'));
@@ -120,7 +105,6 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
     }
 
     function it_skips_an_attribute_option_when_object_is_invalid(
-        $arrayConverter,
         $optionRepository,
         $optionUpdater,
         $optionValidator,
@@ -129,9 +113,6 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
         $optionRepository->getIdentifierProperties()->willReturn(['attribute', 'code']);
         $optionRepository->findOneByIdentifier(Argument::any())->willReturn($option);
 
-        $arrayConverter
-            ->convert(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
-            ->willReturn(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12]);
         $optionUpdater
             ->update(Argument::any(), ['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
             ->shouldBeCalled();

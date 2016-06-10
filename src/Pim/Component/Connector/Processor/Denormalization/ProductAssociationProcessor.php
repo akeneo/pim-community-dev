@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -19,9 +19,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductAssociationProcessor extends AbstractProcessor
 {
-    /** @var ArrayConverterInterface */
-    protected $arrayConverter;
-
     /** @var IdentifiableObjectRepositoryInterface */
     protected $repository;
 
@@ -41,7 +38,6 @@ class ProductAssociationProcessor extends AbstractProcessor
     protected $enabledComparison = true;
 
     /**
-     * @param ArrayConverterInterface               $arrayConverter     array converter
      * @param IdentifiableObjectRepositoryInterface $repository         product repository
      * @param ObjectUpdaterInterface                $updater            product updater
      * @param ValidatorInterface                    $validator          validator of the object
@@ -49,7 +45,6 @@ class ProductAssociationProcessor extends AbstractProcessor
      * @param ObjectDetacherInterface               $detacher           detacher to remove it from UOW when skip
      */
     public function __construct(
-        ArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
@@ -58,7 +53,6 @@ class ProductAssociationProcessor extends AbstractProcessor
     ) {
         parent::__construct($repository);
 
-        $this->arrayConverter     = $arrayConverter;
         $this->repository         = $repository;
         $this->updater            = $updater;
         $this->validator          = $validator;
@@ -71,8 +65,11 @@ class ProductAssociationProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $convertedItem = $this->convertItemData($item);
-        $identifier    = $this->getIdentifier($convertedItem);
+        $item = array_merge(
+            ['associations' => []],
+            $item
+        );
+        $identifier = $this->getIdentifier($item);
 
         if (null === $identifier) {
             $this->skipItemWithMessage($item, 'The identifier must be filled');
@@ -87,9 +84,9 @@ class ProductAssociationProcessor extends AbstractProcessor
         $parameters = $this->stepExecution->getJobParameters();
         $enabledComparison = $parameters->get('enabledComparison');
         if ($enabledComparison) {
-            $convertedItem = $this->filterIdenticalData($product, $convertedItem);
+            $item = $this->filterIdenticalData($product, $item);
 
-            if (empty($convertedItem)) {
+            if (empty($item)) {
                 $this->detachProduct($product);
                 $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
 
@@ -98,7 +95,7 @@ class ProductAssociationProcessor extends AbstractProcessor
         }
 
         try {
-            $this->updateProduct($product, $convertedItem);
+            $this->updateProduct($product, $item);
         } catch (\InvalidArgumentException $exception) {
             $this->detachProduct($product);
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
@@ -115,52 +112,36 @@ class ProductAssociationProcessor extends AbstractProcessor
 
     /**
      * @param ProductInterface $product
-     * @param array            $convertedItem
+     * @param array            $item
      *
      * @return array
      */
-    protected function filterIdenticalData(ProductInterface $product, array $convertedItem)
+    protected function filterIdenticalData(ProductInterface $product, array $item)
     {
-        return $this->productAssocFilter->filter($product, $convertedItem);
+        return $this->productAssocFilter->filter($product, $item);
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $item
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function updateProduct(ProductInterface $product, array $item)
+    {
+        $this->updater->update($product, $item);
     }
 
     /**
      * @param array $item
      *
-     * @return array
-     */
-    protected function convertItemData(array $item)
-    {
-        $convertedItem = $this->arrayConverter->convert($item, ['with_associations' => true]);
-        $convertedItem = array_merge(
-            ['associations' => []],
-            $convertedItem
-        );
-
-        return $convertedItem;
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param array            $convertedItem
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function updateProduct(ProductInterface $product, array $convertedItem)
-    {
-        $this->updater->update($product, $convertedItem);
-    }
-
-    /**
-     * @param array $convertedItem
-     *
      * @return string
      */
-    protected function getIdentifier(array $convertedItem)
+    protected function getIdentifier(array $item)
     {
         $identifierProperty = $this->repository->getIdentifierProperties();
 
-        return $convertedItem[$identifierProperty[0]][0]['data'];
+        return $item[$identifierProperty[0]][0]['data'];
     }
 
     /**
@@ -178,7 +159,7 @@ class ProductAssociationProcessor extends AbstractProcessor
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Symfony\Component\Validator\ConstraintViolationListInterface|null
+     * @return ConstraintViolationListInterface|null
      */
     protected function validateProductAssociations(ProductInterface $product)
     {

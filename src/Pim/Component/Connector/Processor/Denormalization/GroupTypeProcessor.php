@@ -6,7 +6,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Factory\GroupTypeFactory;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -18,9 +17,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GroupTypeProcessor extends AbstractProcessor
 {
-    /** @var ArrayConverterInterface */
-    protected $groupTypeConverter;
-
     /** @var ObjectUpdaterInterface */
     protected $updater;
 
@@ -32,21 +28,18 @@ class GroupTypeProcessor extends AbstractProcessor
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param ArrayConverterInterface               $groupTypeConverter
      * @param GroupTypeFactory                      $groupTypeFactory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        ArrayConverterInterface $groupTypeConverter,
         GroupTypeFactory $groupTypeFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator
     ) {
         parent::__construct($repository);
 
-        $this->groupTypeConverter = $groupTypeConverter;
         $this->groupTypeFactory   = $groupTypeFactory;
         $this->updater            = $updater;
         $this->validator          = $validator;
@@ -57,11 +50,10 @@ class GroupTypeProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $convertedItem = $this->groupTypeConverter->convert($item);
-        $groupType = $this->findOrCreateGroupType($convertedItem);
+        $groupType = $this->findOrCreateGroupType($item);
 
         try {
-            $this->updater->update($groupType, $convertedItem);
+            $this->updater->update($groupType, $item);
         } catch (\InvalidArgumentException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
@@ -75,13 +67,13 @@ class GroupTypeProcessor extends AbstractProcessor
     }
 
     /**
-     * @param array $convertedItem
+     * @param array $item
      *
      * @return GroupTypeInterface
      */
-    protected function findOrCreateGroupType(array $convertedItem)
+    protected function findOrCreateGroupType(array $item)
     {
-        $groupType = $this->findObject($this->repository, $convertedItem);
+        $groupType = $this->findObject($this->repository, $item);
         if (null === $groupType) {
             return $this->groupTypeFactory->create();
         }

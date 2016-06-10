@@ -31,6 +31,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Model\Association;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -98,8 +99,8 @@ class FixturesContext extends BaseFixturesContext
             $data[$key] = $this->replacePlaceholders($value);
         }
 
-        /** @var ProductProcessor */
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.product.flat');
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.product');
 
         $jobExecution = new JobExecution();
         $provider = new ProductCsvImport(new SimpleCsvExport([]), []);
@@ -112,7 +113,8 @@ class FixturesContext extends BaseFixturesContext
         $stepExecution = new StepExecution('processor', $jobExecution);
         $processor->setStepExecution($stepExecution);
 
-        $product = $processor->process($data);
+        $convertedData = $converter->convert($data);
+        $product = $processor->process($convertedData);
         $this->getProductSaver()->save($product);
 
         // reset the unique value set to allow to update product values
@@ -366,9 +368,11 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $attributeBulks = [];
-        $attributeProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute.flat');
+        $attributeConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute');
+        $attributeProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute');
         foreach ($attributeData as $index => $data) {
-            $attribute = $attributeProcessor->process($data);
+            $convertedData = $attributeConverter->convert($data);
+            $attribute = $attributeProcessor->process($convertedData);
             $this->validate($attribute);
             $attributeBulks[$index % 200][]= $attribute;
         }
@@ -377,9 +381,11 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $optionsBulks = [];
-        $optionProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_option.flat');
+        $optionConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute_option');
+        $optionProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_option');
         foreach ($optionData as $index => $data) {
-            $option = $optionProcessor->process($data);
+            $convertedData = $optionConverter->convert($data);
+            $option = $optionProcessor->process($convertedData);
             $this->validate($option);
             $optionsBulks[$index % 200][]= $option;
         }
@@ -546,6 +552,8 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $locale
      * @param string $channel
+     *
+     * @return Step[]
      *
      * @Given /^I set the "([^"]*)" locales? to the "([^"]*)" channel$/
      */
@@ -1474,6 +1482,7 @@ class FixturesContext extends BaseFixturesContext
      */
     protected function createAttribute($data)
     {
+        // TODO We should use the attribute reader service to avoid all these lines
         if (is_string($data)) {
             $data = [
                 'code'  => $data,
@@ -1522,8 +1531,11 @@ class FixturesContext extends BaseFixturesContext
             }
         }
 
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute.flat');
-        $attribute = $processor->process($data);
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute');
+        $convertedData = $converter->convert($data);
+
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute');
+        $attribute = $processor->process($convertedData);
 
         $familiesToPersist = [];
         if ($families) {
@@ -1593,8 +1605,10 @@ class FixturesContext extends BaseFixturesContext
             $data = [['code' => $data]];
         }
 
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.category.flat');
-        $category = $processor->process($data);
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.category');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.category');
+        $convertedData = $converter->convert($data);
+        $category = $processor->process($convertedData);
 
         /*
          * When using ODM, one must persist and flush category without product
@@ -1726,7 +1740,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @param string $code
      *
-     * @return \Pim\Component\Catalog\Model\AttributeOptionInterface
+     * @return AttributeOptionInterface
      */
     protected function createOption($code)
     {
@@ -1832,8 +1846,11 @@ class FixturesContext extends BaseFixturesContext
             }
         }
 
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family.flat');
-        $family = $processor->process($data);
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.family');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family');
+
+        $convertedData = $converter->convert($data);
+        $family = $processor->process($convertedData);
         $this->getFamilySaver()->save($family);
 
         return $family;
@@ -1852,8 +1869,10 @@ class FixturesContext extends BaseFixturesContext
             $data = ['code' => $data];
         }
 
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_group.flat');
-        $attributeGroup = $processor->process($data);
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute_group');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_group');
+        $convertedData = $converter->convert($data);
+        $attributeGroup = $processor->process($convertedData);
         $this->getContainer()->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
 
         return $attributeGroup;

@@ -6,7 +6,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Factory\CurrencyFactory;
 use Pim\Component\Catalog\Model\CurrencyInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -18,9 +17,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CurrencyProcessor extends AbstractProcessor
 {
-    /** @var ArrayConverterInterface */
-    protected $currencyConverter;
-
     /** @var CurrencyFactory */
     protected $currencyFactory;
 
@@ -32,21 +28,18 @@ class CurrencyProcessor extends AbstractProcessor
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param ArrayConverterInterface               $currencyConverter
      * @param CurrencyFactory                       $currencyFactory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        ArrayConverterInterface $currencyConverter,
         CurrencyFactory $currencyFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator
     ) {
         parent::__construct($repository);
 
-        $this->currencyConverter = $currencyConverter;
         $this->currencyFactory   = $currencyFactory;
         $this->updater           = $updater;
         $this->validator         = $validator;
@@ -57,11 +50,10 @@ class CurrencyProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $convertedItem = $this->currencyConverter->convert($item);
-        $currency = $this->findOrCreateCurrency($convertedItem);
+        $currency = $this->findOrCreateCurrency($item);
 
         try {
-            $this->updater->update($currency, $convertedItem);
+            $this->updater->update($currency, $item);
         } catch (\InvalidArgumentException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
@@ -75,13 +67,13 @@ class CurrencyProcessor extends AbstractProcessor
     }
 
     /**
-     * @param array $convertedItem
+     * @param array $item
      *
      * @return CurrencyInterface
      */
-    protected function findOrCreateCurrency(array $convertedItem)
+    protected function findOrCreateCurrency(array $item)
     {
-        $currency = $this->findObject($this->repository, $convertedItem);
+        $currency = $this->findObject($this->repository, $item);
         if (null === $currency) {
             return $this->currencyFactory->create();
         }

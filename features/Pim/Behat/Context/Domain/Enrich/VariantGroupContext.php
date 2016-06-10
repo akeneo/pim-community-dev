@@ -26,8 +26,10 @@ class VariantGroupContext extends PimContext
             $data = ['code' => $data];
         }
 
-        $processor = $this->getService('pim_connector.processor.denormalization.variant_group.flat');
-        $variantGroup = $processor->process($data);
+        $converter = $this->getService('pim_connector.array_converter.flat_to_standard.variant_group');
+        $processor = $this->getService('pim_connector.processor.denormalization.variant_group');
+        $convertedData = $converter->convert($data);
+        $variantGroup = $processor->process($convertedData);
         $this->saveVariantGroup($variantGroup);
 
         return $variantGroup;

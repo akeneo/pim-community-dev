@@ -1,33 +1,34 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Reader\File;
+namespace spec\Pim\Component\Connector\Reader\File\Xlsx;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
+use Prophecy\Argument;
 
-class XlsxReaderSpec extends ObjectBehavior
+class ReaderSpec extends ObjectBehavior
 {
-    function let(FileIteratorFactory $fileIteratorFactory, StepExecution $stepExecution)
+    function let(
+        FileIteratorFactory $fileIteratorFactory,
+        ArrayConverterInterface $converter,
+        StepExecution $stepExecution)
     {
-        $this->beConstructedWith($fileIteratorFactory);
+        $this->beConstructedWith($fileIteratorFactory, $converter);
         $this->setStepExecution($stepExecution);
     }
 
     function it_read_csv_file(
         $fileIteratorFactory,
+        $converter,
         $stepExecution,
         FileIteratorInterface $fileIterator,
         JobParameters $jobParameters
     ) {
-        $filePath = __DIR__ . DIRECTORY_SEPARATOR . '..' .
-            DIRECTORY_SEPARATOR . '..' .
-            DIRECTORY_SEPARATOR . '..' .
-            DIRECTORY_SEPARATOR . '..' .
-            DIRECTORY_SEPARATOR . '..' .
-            DIRECTORY_SEPARATOR . '..' .
+        $filePath = __DIR__ . DIRECTORY_SEPARATOR .
             DIRECTORY_SEPARATOR . 'features' .
             DIRECTORY_SEPARATOR . 'Context' .
             DIRECTORY_SEPARATOR . 'fixtures' .
@@ -47,6 +48,7 @@ class XlsxReaderSpec extends ObjectBehavior
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->valid()->willReturn(true);
         $fileIterator->current()->willReturn($data);
+        $converter->convert($data, Argument::any())->willReturn($data);
 
         $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
 

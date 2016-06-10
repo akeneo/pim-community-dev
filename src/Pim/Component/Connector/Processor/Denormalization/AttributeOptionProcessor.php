@@ -5,7 +5,6 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -22,9 +21,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeOptionProcessor extends AbstractProcessor
 {
-    /** @var ArrayConverterInterface */
-    protected $arrayConverter;
-
     /** @var ObjectUpdaterInterface */
     protected $updater;
 
@@ -35,14 +31,12 @@ class AttributeOptionProcessor extends AbstractProcessor
     protected $class;
 
     /**
-     * @param ArrayConverterInterface               $arrayConverter array converter
      * @param IdentifiableObjectRepositoryInterface $repository     attribute option repository
      * @param ObjectUpdaterInterface                $updater        attribute option updater
      * @param ValidatorInterface                    $validator      attribute option validator
      * @param string                                $class          attribute option class
      */
     public function __construct(
-        ArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
@@ -50,7 +44,6 @@ class AttributeOptionProcessor extends AbstractProcessor
     ) {
         parent::__construct($repository);
 
-        $this->arrayConverter = $arrayConverter;
         $this->updater = $updater;
         $this->validator = $validator;
         $this->class = $class;
@@ -61,10 +54,9 @@ class AttributeOptionProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $convertedItem = $this->convertItemData($item);
-        $attributeOption = $this->findOrCreateAttributeOption($convertedItem);
+        $attributeOption = $this->findOrCreateAttributeOption($item);
         try {
-            $this->updateAttributeOption($attributeOption, $convertedItem);
+            $this->updateAttributeOption($attributeOption, $item);
         } catch (\InvalidArgumentException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
@@ -75,16 +67,6 @@ class AttributeOptionProcessor extends AbstractProcessor
         }
 
         return $attributeOption;
-    }
-
-    /**
-     * @param array $item
-     *
-     * @return array
-     */
-    protected function convertItemData(array $item)
-    {
-        return $this->arrayConverter->convert($item);
     }
 
     /**

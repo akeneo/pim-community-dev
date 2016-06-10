@@ -7,7 +7,7 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader;
+use Pim\Component\Connector\Reader\File\Yaml\Reader;
 use Symfony\Component\Config\FileLocator;
 
 /**
@@ -22,7 +22,7 @@ class JobInstancesBuilder
     /** @var FileLocator */
     protected $fileLocator;
 
-    /** @var YamlReader */
+    /** @var Reader */
     protected $yamlReader;
 
     /** @var ItemProcessorInterface */
@@ -33,13 +33,13 @@ class JobInstancesBuilder
 
     /**
      * @param FileLocator            $locator
-     * @param YamlReader             $reader
+     * @param Reader             $reader
      * @param ItemProcessorInterface $processor
      * @param array                  $jobsFilePaths
      */
     public function __construct(
         FileLocator $locator,
-        YamlReader $reader,
+        Reader $reader,
         ItemProcessorInterface $processor,
         array $jobsFilePaths
     ) {

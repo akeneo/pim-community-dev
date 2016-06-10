@@ -12,8 +12,8 @@ use Akeneo\Component\Batch\Step\AbstractStep;
 use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
+use Pim\Component\Connector\Reader\File\Yaml\Reader;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -35,7 +35,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
 
     function it_create_a_file_when_reader_is_valid(
         $registry,
-        YamlReader $reader,
+        Reader $reader,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,

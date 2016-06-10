@@ -19,14 +19,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class GroupProcessorSpec extends ObjectBehavior
 {
     function let(
-        ArrayConverterInterface $groupConverter,
         IdentifiableObjectRepositoryInterface $repository,
         GroupFactory $groupFactory,
         ObjectUpdaterInterface $groupUpdater,
         ValidatorInterface $validator,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($groupConverter, $repository, $groupFactory, $groupUpdater, $validator);
+        $this->beConstructedWith($repository, $groupFactory, $groupUpdater, $validator);
         $this->setStepExecution($stepExecution);
     }
 
@@ -38,7 +37,6 @@ class GroupProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_group(
-        $groupConverter,
         $repository,
         $groupUpdater,
         $validator,
@@ -57,12 +55,8 @@ class GroupProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        $groupConverter
-            ->convert($values['original_values'])
-            ->willReturn($values['converted_values']);
-
         $groupUpdater
-            ->update($group, $values['converted_values'])
+            ->update($group, $values)
             ->shouldBeCalled();
 
         $validator
@@ -70,12 +64,11 @@ class GroupProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($values['original_values'])
+            ->process($values)
             ->shouldReturn($group);
     }
 
     function it_skips_a_group_when_update_fails(
-        $groupConverter,
         $repository,
         $groupUpdater,
         $validator,
@@ -93,12 +86,8 @@ class GroupProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        $groupConverter
-            ->convert($values['original_values'])
-            ->willReturn($values['converted_values']);
-
         $groupUpdater
-            ->update($group, $values['converted_values'])
+            ->update($group, $values)
             ->shouldBeCalled();
 
         $validator
@@ -106,23 +95,22 @@ class GroupProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($values['original_values'])
+            ->process($values)
             ->shouldReturn($group);
 
         $groupUpdater
-            ->update($group, $values['converted_values'])
+            ->update($group, $values)
             ->willThrow(new \InvalidArgumentException());
 
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$values['original_values']]
+                [$values]
             );
     }
 
     function it_skips_a_group_when_object_is_invalid(
-        $groupConverter,
         $repository,
         $groupUpdater,
         $validator,
@@ -141,12 +129,8 @@ class GroupProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        $groupConverter
-            ->convert($values['original_values'])
-            ->willReturn($values['converted_values']);
-
         $groupUpdater
-            ->update($group, $values['converted_values'])
+            ->update($group, $values)
             ->shouldBeCalled();
 
         $validator
@@ -154,11 +138,11 @@ class GroupProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($values['original_values'])
+            ->process($values)
             ->shouldReturn($group);
 
         $groupUpdater
-            ->update($group, $values['converted_values'])
+            ->update($group, $values)
             ->willThrow(new \InvalidArgumentException());
 
         $violation = new ConstraintViolation('Error', 'foo', [], 'bar', 'code', 'mycode');
@@ -170,26 +154,18 @@ class GroupProcessorSpec extends ObjectBehavior
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$values['original_values']]
+                [$values]
             );
     }
 
     function getValues()
     {
         return [
-            'original_values' => [
-                'code'                       => 'mycode',
-                'type'                       => 'group',
-                'label-fr_FR'                => 'T-shirt super beau',
-                'label-en_US'                => 'T-shirt very beautiful',
-            ],
-            'converted_values' => [
-                'code'         => 'mycode',
-                'type'         => 'group',
-                'labels'       => [
-                    'fr_FR' => 'T-shirt super beau',
-                    'en_US' => 'T-shirt very beautiful',
-                ],
+            'code'         => 'mycode',
+            'type'         => 'group',
+            'labels'       => [
+                'fr_FR' => 'T-shirt super beau',
+                'en_US' => 'T-shirt very beautiful',
             ]
         ];
     }

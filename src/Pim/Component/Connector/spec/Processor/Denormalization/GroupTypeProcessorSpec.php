@@ -18,13 +18,12 @@ class GroupTypeProcessorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $repository,
-        ArrayConverterInterface $groupTypeConverter,
         GroupTypeFactory $groupTypeFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($repository, $groupTypeConverter, $groupTypeFactory, $updater, $validator);
+        $this->beConstructedWith($repository, $groupTypeFactory, $updater, $validator);
         $this->setStepExecution($stepExecution);
     }
 
@@ -37,7 +36,6 @@ class GroupTypeProcessorSpec extends ObjectBehavior
 
     function it_updates_an_existing_group_type(
         $repository,
-        $groupTypeConverter,
         $updater,
         $validator,
         GroupTypeInterface $groupType,
@@ -50,18 +48,15 @@ class GroupTypeProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        $groupTypeConverter->convert($values['original_values'])->willReturn($values['converted_values']);
-
-        $updater->update($groupType, $values['converted_values'])->shouldBeCalled();
+        $updater->update($groupType, $values)->shouldBeCalled();
 
         $validator->validate($groupType)->willReturn($violationList);
 
-        $this->process($values['original_values'])->shouldReturn($groupType);
+        $this->process($values)->shouldReturn($groupType);
     }
 
     function it_skips_an_attribute_value_when_update_fails(
         $repository,
-        $groupTypeConverter,
         $updater,
         $validator,
         GroupTypeInterface $groupType,
@@ -74,20 +69,17 @@ class GroupTypeProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        $groupTypeConverter->convert($values['original_values'])->willReturn($values['converted_values']);
-
         $validator->validate($groupType)->willReturn($violationList);
 
-        $updater->update($groupType, $values['converted_values'])->willThrow(new \InvalidArgumentException());
+        $updater->update($groupType, $values)->willThrow(new \InvalidArgumentException());
 
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
-            ->during('process', [$values['original_values']]);
+            ->during('process', [$values]);
     }
 
     function it_skips_an_attribute_group_when_object_is_invalid(
         $repository,
-        $groupTypeConverter,
         $validator,
         GroupTypeInterface $groupType
     ) {
@@ -98,8 +90,6 @@ class GroupTypeProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
-        $groupTypeConverter->convert($values['original_values'])->willReturn($values['converted_values']);
-
         $violation = new ConstraintViolation('Error', 'foo', [], 'bar', 'code', 'sizes');
         $violations = new ConstraintViolationList([$violation]);
         $validator->validate($groupType)->willReturn($violations);
@@ -108,26 +98,18 @@ class GroupTypeProcessorSpec extends ObjectBehavior
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$values['original_values']]
+                [$values]
             );
     }
 
     function getValues()
     {
         return [
-            'original_values' => [
-                'code'        => 'variant',
-                'is_variant'  => 1,
-                'label-en_US' => 'variant',
-                'label-fr_FR' => 'variantes'
-            ],
-            'converted_values' => [
-                'code'       => 'variant',
-                'sort_order' => true,
-                'label'      => [
-                    'en_US' => 'variant',
-                    'fr_FR' => 'variantes'
-                ]
+            'code'       => 'variant',
+            'sort_order' => true,
+            'label'      => [
+                'en_US' => 'variant',
+                'fr_FR' => 'variantes'
             ]
         ];
     }
