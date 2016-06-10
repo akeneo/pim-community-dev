@@ -3,7 +3,6 @@ parameters:
     pim_connector.processor.denormalization.product.class:             Pim\Component\Connector\Processor\Denormalization\ProductProcessor
     pim_connector.processor.denormalization.product_association.class: Pim\Component\Connector\Processor\Denormalization\ProductAssociationProcessor
     pim_connector.processor.denormalization.variant_group.class:       Pim\Component\Connector\Processor\Denormalization\VariantGroupProcessor
-    pim_connector.processor.denormalization.group.class:               Pim\Component\Connector\Processor\Denormalization\GroupProcessor
     pim_connector.processor.denormalization.group_type.class:          Pim\Component\Connector\Processor\Denormalization\GroupTypeProcessor
     pim_connector.processor.denormalization.currency.class:            Pim\Component\Connector\Processor\Denormalization\CurrencyProcessor
     pim_connector.processor.denormalization.simple.class:              Pim\Component\Connector\Processor\Denormalization\SimpleProcessor
@@ -74,13 +73,13 @@ services:
             - '@pim_catalog.validator.product'
 
     pim_connector.processor.denormalization.group:
-        class: '%pim_connector.processor.denormalization.group.class%'
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.factory.group'
             - '@pim_catalog.updater.group'
-            - '@pim_catalog.validator.product'
-            - '%pim_catalog.entity.group.class%'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.category:
         class: '%pim_connector.processor.denormalization.simple.class%'
