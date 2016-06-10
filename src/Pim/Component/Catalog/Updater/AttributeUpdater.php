@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\AttributeTypeRegistry;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
@@ -23,22 +24,28 @@ class AttributeUpdater implements ObjectUpdaterInterface
     /** @var AttributeGroupRepositoryInterface */
     protected $attrGroupRepo;
 
-    /** @var PropertyAccessor */
-    protected $accessor;
-
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
+
+    /** @var AttributeTypeRegistry */
+    protected $registry;
+
+    /** @var PropertyAccessor */
+    protected $accessor;
 
     /**
      * @param AttributeGroupRepositoryInterface $attrGroupRepo
      * @param LocaleRepositoryInterface         $localeRepository
+     * @param AttributeTypeRegistry             $registry
      */
     public function __construct(
         AttributeGroupRepositoryInterface $attrGroupRepo,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        AttributeTypeRegistry $registry
     ) {
         $this->attrGroupRepo     = $attrGroupRepo;
         $this->localeRepository  = $localeRepository;
+        $this->registry          = $registry;
         $this->accessor          = PropertyAccess::createPropertyAccessor();
     }
 
@@ -73,6 +80,14 @@ class AttributeUpdater implements ObjectUpdaterInterface
     protected function setData(AttributeInterface $attribute, $field, $data)
     {
         switch ($field) {
+            case 'attributeType':
+                if (null !== $data && '' !== $data) {
+                    $attributeType = $this->registry->get($data);
+                    $attribute->setAttributeType($attributeType->getName());
+                    $attribute->setBackendType($attributeType->getBackendType());
+                    $attribute->setUnique($attributeType->isUnique());
+                }
+                break;
             case 'labels':
                 $this->setLabels($attribute, $data);
                 break;
