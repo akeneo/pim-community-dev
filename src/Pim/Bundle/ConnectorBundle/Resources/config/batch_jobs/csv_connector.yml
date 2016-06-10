@@ -48,42 +48,7 @@ connector:
                         writer:    pim_connector.writer.database.category
                     parameters:
                         batchSize: 1
-        csv_group_import:
-            type:  import
-            steps:
-                validation:
-                    class: '%pim_connector.step.validator.class%'
-                    services:
-                        charsetValidator: pim_connector.validator.item.charset_validator
-                import:
-                    services:
-                        reader:    pim_connector.reader.file.csv_group
-                        processor: pim_connector.processor.denormalization.group
-                        writer:    pim_connector.writer.database.group
-        csv_association_type_import:
-            type: import
-            steps:
-                validation:
-                    class: '%pim_connector.step.validator.class%'
-                    services:
-                        charsetValidator: pim_connector.validator.item.charset_validator
-                import:
-                    services:
-                        reader:    pim_connector.reader.file.csv_association_type
-                        processor: pim_connector.processor.denormalization.association_type
-                        writer:    pim_connector.writer.database.association_type
-        csv_family_import:
-            type: import
-            steps:
-                validation:
-                    class: '%pim_connector.step.validator.class%'
-                    services:
-                        charsetValidator: pim_connector.validator.item.charset_validator
-                import:
-                    services:
-                        reader:    pim_connector.reader.file.csv_family
-                        processor: pim_connector.processor.denormalization.family
-                        writer:    pim_connector.writer.database.family
+
         csv_product_export:
             type:  export
             steps:
