@@ -76,12 +76,34 @@ services:
     pim_connector.step.csv_product_import.import_associations:
         class: %pim_connector.step.item_step.class%
         arguments:
-            - 'import'
+            - 'import_associations'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.file.csv_association'
             - '@pim_connector.processor.denormalization.product_association'
             - '@pim_connector.writer.database.product_association'
+            - 1
+
+    pim_connector.step.csv_variant_group_import.import:
+        class: %pim_connector.step.item_step.class%
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_variant_group'
+            - '@pim_connector.processor.denormalization.variant_group'
+            - '@pim_connector.writer.database.variant_group'
+            - 1
+
+    pim_connector.step.csv_category_import.import:
+        class: %pim_connector.step.item_step.class%
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_category'
+            - '@pim_connector.processor.denormalization.category'
+            - '@pim_connector.writer.database.category'
             - 1
 
     # Export steps ----------------------------------------------------------------------------------------------------
@@ -145,3 +167,23 @@ services:
             - '@pim_base_connector.processor.product_to_flat_array'
             - '@pim_connector.writer.file.csv_product'
             - 10
+
+    pim_connector.step.csv_category_export.export:
+        class: %pim_connector.step.item_step.class%
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_base_connector.reader.orm.category'
+            - '@pim_connector.processor.normalization.category'
+            - '@pim_connector.writer.file.csv_category'
+
+    pim_connector.step.csv_variant_group_export.export:
+        class: %pim_connector.step.item_step.class%
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_base_connector.reader.repository.variant_group'
+            - '@pim_connector.processor.normalization.variant_group'
+            - '@pim_connector.writer.file.csv_variant_group'
