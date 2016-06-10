@@ -6,7 +6,7 @@ services:
     pim_import_export.form.type.job_instance:
         class: '%pim_import_export.form.type.job_instance.class%'
         arguments:
-            - '@akeneo_batch.connectors'
+            - '@akeneo_batch.job.job_registry'
             - '@translator'
             - '@pim_import_export.job_label.translated_label_provider'
             - '@akeneo_batch.job_parameters_factory'
