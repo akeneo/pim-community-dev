@@ -47,6 +47,7 @@ class ProductCsvExport implements DefaultValuesProviderInterface
         $parameters['updated_since_n_days'] = null;
         $parameters['families'] = null;
         $parameters['completeness'] = 'at_least_one_complete';
+        $parameters['product_identifier'] = null;
 
         return $parameters;
     }

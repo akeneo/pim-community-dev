@@ -36,6 +36,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
                 'completeness'           => 'at_least_one_complete',
                 'linesPerFile'           => 10000,
                 'families'               => null,
+                'product_identifier'     => null,
             ]
         );
     }

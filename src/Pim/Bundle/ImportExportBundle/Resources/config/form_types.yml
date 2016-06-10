@@ -2,7 +2,8 @@ parameters:
     pim_import_export.form.type.job_instance.class: Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
     pim_import_export.form.type.job_parameters.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParametersType
     pim_import_export.form.type.product_export.locale_choice.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\LocaleChoiceType
-    pim_import_export.form.type.updated_since_parameter_type.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\UpdatedSinceType
+    pim_import_export.form.type.updated_since_parameter.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\UpdatedSinceType
+    pim_import_export.form.type.pim_product_identifier_choice.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\ProductIdentifierChoiceType
 
 services:
     pim_import_export.form.type.job_instance:
@@ -32,8 +33,9 @@ services:
         tags:
             - { name: form.type, alias: pim_import_export_product_export_locale_choice }
 
-    pim_import_export.form.type.updated_since_parameter_type:
-        class: '%pim_import_export.form.type.updated_since_parameter_type.class%'
+    ## Job Parameter forms
+    pim_import_export.form.type.updated_since_parameter:
+        class: '%pim_import_export.form.type.updated_since_parameter.class%'
         arguments:
             - '@akeneo_batch.job_repository'
             - '@translator'
@@ -43,3 +45,10 @@ services:
             - '%akeneo_batch.entity.job_instance.class%'
         tags:
             - { name: form.type, alias: pim_updated_since_parameter_type }
+
+    pim_import_export.form.type.pim_product_identifier_choice:
+        class: '%pim_import_export.form.type.pim_product_identifier_choice.class%'
+        arguments:
+            - '@router'
+        tags:
+            - { name: form.type, alias: pim_product_identifier_choice }

@@ -3,8 +3,14 @@ parameters:
     pim_import_export.controller.export_profile.class:   Pim\Bundle\ImportExportBundle\Controller\ExportProfileController
     pim_import_export.controller.import_execution.class: Pim\Bundle\ImportExportBundle\Controller\ImportExecutionController
     pim_import_export.controller.export_execution.class: Pim\Bundle\ImportExportBundle\Controller\ExportExecutionController
+    pim_import_export.controller.product.class: Pim\Bundle\ImportExportBundle\Controller\ProductController
 
 services:
+    pim_import_export.controller.product:
+        class: %pim_import_export.controller.product.class%
+        arguments:
+            - '@pim_import_export.repository.product.search'
+
     pim_import_export.controller.export_profile:
         scope: request
         class: '%pim_import_export.controller.export_profile.class%'

@@ -104,6 +104,20 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
                     ]
                 ]
             ],
+            'product_identifier' => [
+                'type'    => 'pim_product_identifier_choice',
+                'options' => [
+                    'route'       => 'pim_import_export_product_identifier_list',
+                    'required'    => false,
+                    'multiple'    => true,
+                    'label'       => 'pim_connector.export.product_identifier.label',
+                    'help'        => 'pim_connector.export.product_identifier.help',
+                    'placeholder' => 'pim_connector.export.product_identifier.placeholder',
+                    'attr'        => [
+                        'data-tab' => 'content',
+                    ]
+                ]
+            ],
             'enabled' => [
                 'type'    => 'choice',
                 'options' => [

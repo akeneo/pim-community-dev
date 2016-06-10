@@ -34,10 +34,12 @@ class ProductCsvExportSpec extends ObjectBehavior
         $fields->shouldHaveKey('enabled');
         $fields->shouldHaveKey('locales');
         $fields->shouldHaveKey('families');
+        $fields->shouldHaveKey('families');
         $fields->shouldHaveKey('completeness');
         $fields->shouldHaveKey('updated_since_strategy');
         $fields->shouldHaveKey('updated_since_date');
         $fields->shouldHaveKey('updated_since_n_days');
+        $fields->shouldHaveKey('product_identifier');
     }
 
     function it_supports_a_job(JobInterface $job)

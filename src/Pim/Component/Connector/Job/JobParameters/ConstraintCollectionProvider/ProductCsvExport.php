@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Component\Catalog\Validator\Constraints\Range;
+use Pim\Component\Catalog\Validator\Constraints\ValidIdentifier;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -67,6 +68,7 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
             'message' => 'pim_connector.export.locales.validation.not_blank'
         ]);
         $constraintFields['families'] = [];
+        $constraintFields['product_identifier'] = new ValidIdentifier(['groups' => 'Execution']);
         $constraintFields['completeness'] = [
             new NotBlank(['groups' => 'Execution']),
             new Choice(['choices' => [

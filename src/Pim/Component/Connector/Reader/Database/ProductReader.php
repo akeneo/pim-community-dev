@@ -11,12 +11,15 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
@@ -62,7 +65,8 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * @param MetricConverter                     $metricConverter
      * @param ObjectDetacherInterface             $objectDetacher
      * @param JobRepositoryInterface              $jobRepository
-     * @param bool                                $generateCompleteness
+     * @param AttributeRepositoryInterface        $attributeRepository
+     * @param bool                                 $generateCompleteness
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -71,6 +75,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         MetricConverter $metricConverter,
         ObjectDetacherInterface $objectDetacher,
         JobRepositoryInterface $jobRepository,
+        AttributeRepositoryInterface $attributeRepository,
         $generateCompleteness
     ) {
         $this->pqbFactory           = $pqbFactory;
@@ -79,6 +84,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $this->metricConverter      = $metricConverter;
         $this->objectDetacher       = $objectDetacher;
         $this->jobRepository        = $jobRepository;
+        $this->attributeRepository  = $attributeRepository;
         $this->generateCompleteness = (bool) $generateCompleteness;
     }
 
@@ -92,11 +98,14 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
 
         $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
         $filters = array_merge($this->getFilters(
-            $channel,
-            $this->rawToStandardProductStatus($parameters->get('enabled')),
-            $this->rawToStandardProductUpdated($parameters),
-            array_filter(explode(',', $parameters->get('families')))
-        ), $this->getCompletenessFilters($parameters));
+                $channel,
+                $this->rawToStandardProductStatus($parameters->get('enabled')),
+                $this->rawToStandardProductUpdated($parameters),
+                array_filter(explode(',', $parameters->get('families')))
+            ),
+            $this->getCompletenessFilters($parameters),
+            $this->getProductIdentifier($parameters)
+        );
 
         foreach ($filters as $filter) {
             $pqb->addFilter(
@@ -312,5 +321,28 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         }
 
         return [];
+    }
+
+    /**
+     * @param JobParameters $parameters
+     *
+     * @return array
+     */
+    protected function getProductIdentifier(JobParameters $parameters)
+    {
+        $filter = [];
+        if (null !== $productIdentifier = $parameters->get('product_identifier')) {
+            $productIdentifier = explode(',', $productIdentifier);
+            $attribute = $this->attributeRepository->findOneBy(['attributeType' => AttributeTypes::IDENTIFIER]);
+
+            $filter[] = [
+                'field'    => $attribute->getCode(),
+                'operator' => Operators::IN_LIST,
+                'value'    => $productIdentifier,
+                'context'  => []
+            ];
+        }
+        
+        return $filter;
     }
 }

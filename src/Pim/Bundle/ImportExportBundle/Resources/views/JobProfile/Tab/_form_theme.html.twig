@@ -51,3 +51,53 @@
         );
     </script>
 {% endblock %}
+
+{% block pim_product_identifier_choice_row %}
+    <div class="control-group">
+        {{ form_label(form, '', { label_attr: label_attr|merge({ class: 'control-label' })}) }}
+        <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
+            {{ form_widget(form, {'attr': {'class': 'select2-container select2-container-multi input-large'}}) }}
+            {{ block('form_info') }}
+            {{ form_errors(form.product_identifier) }}
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'jquery.select2'],
+            function ($) {
+                'use strict';
+
+                $('#{{ form.product_identifier.vars.id }}').select2({
+                    multiple: {{ multiple }},
+                    initSelection: function (element, callback) {
+                        var choices = $.parseJSON('{{ choices|raw }}');
+                        callback(choices);
+                    },
+                    query: function(query) {
+                        var limit = 20;
+                        var page = query.page ? query.page: 1;
+
+                        $.getJSON(
+                            '{{ url }}',
+                            {
+                                search : query.term,
+                                options: {
+                                    limit: limit,
+                                    page: page
+                                }
+                            },
+                            function(data) {
+                                query.callback({
+                                    results: data,
+                                    more: data.length === limit,
+                                    page: page + 1
+                                });
+                            }
+                        )
+                    }
+                });
+            }
+        );
+    </script>
+{% endblock %}

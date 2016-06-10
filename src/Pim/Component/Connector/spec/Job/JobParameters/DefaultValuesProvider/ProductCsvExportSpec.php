@@ -34,6 +34,7 @@ class ProductCsvExportSpec extends ObjectBehavior
             'updated_since_n_days'   => null,
             'families'               => null,
             'completeness'           => 'at_least_one_complete',
+            'product_identifier'     => null,
         ]);
     }
 
