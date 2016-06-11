@@ -111,7 +111,6 @@ pim_enrich:
       update_failed: Błąd aktualizacji
       update_successful: Pomyślnie zaktualizowano
     product:
-      title: produkt
       btn:
         enable: Włacz
         enabled: Włączony
@@ -134,13 +133,9 @@ pim_enrich:
         old_values: Poprzednie wartości
         new_values: Nowe wartości
       info:
-        deletion_successful: Produkt pomyślnie usunięty.
         deletion_failed: Produktu nie można usunąć.
         update_successful: Produkt pomyślnie zaktualizowany.
         update_failed: Produktu nie można zaktualizować.
-        field_not_ready:
-          The product cannot be saved right now. The following fields are not ready:
-            - pola
       error:
         upload: Wystąpił błąd podczas przekazywania pliku
       meta:
