@@ -13,6 +13,9 @@ Option code may contain only letters, numbers and underscores: El Código de opc
 Option code may contain only letters (at least one), numbers and underscores: El código de opción sólo puede contener letras (al menos una), números y guiones bajos
 This color is already used by another channel: Este color está siendo utilizado en otro canal
 This value should not be a decimal.: Este valor no debe ser un decimal.
+The file extension is not allowed (allowed extensions:
+  "%extensions%).":
+    The file extension is not allowed (allowed extensions: '%extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": 'El valor %value% ya es usado en otro producto por el atributo único %attribute%'
 regex.comma_or_semicolon.message: Este campo no debería contener comas o punto y comas.
 file.extensions.message: 'La extensión del fichero no está permitida (las extensiones permitidas son: %extensions%).'
