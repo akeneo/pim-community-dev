@@ -1,5 +1,3 @@
-View the product: Посмотреть продукт
-pimee_enrich.product_history.action.revert: Вернуть к данной версии
 pimee_enrich:
   entity:
     product:

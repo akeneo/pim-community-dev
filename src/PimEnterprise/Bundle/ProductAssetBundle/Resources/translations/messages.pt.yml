@@ -1,0 +1,17 @@
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    validation.label: Validação do ficheiro
+  csv_asset_import:
+    validation.label: Validação do ficheiro
+  csv_tag_import:
+    validation.label: Validação do ficheiro
+  csv_asset_category_import:
+    validation.label: Validação do ficheiro
+  csv_asset_configuration_import:
+    validation.label: Validação do ficheiro
+  xlsx_tag_import:
+    validation.label: Validação do ficheiro
+  xlsx_asset_import:
+    validation.label: Validação do ficheiro
+  xlsx_asset_category_import:
+    validation.label: Validação do ficheiro
