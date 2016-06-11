@@ -146,6 +146,8 @@ pimee_enrich:
       options:
         width: '%value%px de largeur'
         height: '%value%px de hauteur'
+add_product_value_with_permission_and_rules:
+  steps.perform: Ajouter une valeur de produit
 update_product_value_with_permission_and_rules:
   steps.perform: Mise à jour de la valeur produit
 edit_common_attributes_with_permission_and_rules:
@@ -153,16 +155,24 @@ edit_common_attributes_with_permission_and_rules:
   steps.edit_common_attributes_processor.title: Modifier les attributs communs
 batch_jobs:
   add_product_value_with_permission_and_rules:
+    label: Ajouter une valeur de produit avec vérification des permissions et application des règles
+    perform.label: Ajouter une valeur de produit
     execute_rules.label: Exécution des règles
   update_product_value_with_permission_and_rules:
+    label: Mettre à jour une valeur de produit avec vérification des permissions et application des règles
     perform.label: Mise à jour de la valeur produit
     execute_rules.label: Exécution des règles
   edit_common_attributes_with_permission_and_rules:
+    label: Mettre à jour les attributs communs avec vérification des permissions et application des règles
     perform.label: Modifier les attributs communs
     execute_rules.label: Exécution des règles
+    clean.label: Nettoyage des fichiers temporaires
   add_to_variant_group_with_rules:
+    label: Ajouter des produits au groupe de variantes avec application de règles
+    perform.label: Ajouter des produits à un groupe de variantes
     execute_rules.label: Exécution des règles
 add_to_variant_group_with_rules:
+  steps.perform: Ajouter des produits à un groupe de variantes
   steps.excluded.title: Produit exclu
   steps.duplicated.title: Axe dupliqué
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Modifier les attributs communs
@@ -176,3 +186,5 @@ job_execution.summary:
   proposal: Proposition créée
   proposal_deleted: supprimé
 pim_assets_collection: Collection de ressources
+pim_enrich_attribute_form:
+  isReadOnly: Lecture seule

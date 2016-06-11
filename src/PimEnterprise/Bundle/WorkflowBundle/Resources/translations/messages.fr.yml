@@ -140,4 +140,8 @@ batch_jobs:
     label: Rejeter les propositions
     perform.label: Rejeter les propositions
   xlsx_published_product_export:
+    label: Export des produits publiés en XLSX
     export.label: Export des produits publiés
+  xlsx_product_proposal_import:
+    label: Import des propositions en XLSX
+    import.label: Import des propositions en XLSX

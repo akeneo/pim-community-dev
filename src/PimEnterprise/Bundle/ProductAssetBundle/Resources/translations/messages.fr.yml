@@ -160,16 +160,50 @@ batch_jobs:
     label: Export de la configuration des canaux de ressources en Yaml
     export.label: Export de la configuration des canaux de ressources en Yaml
   csv_asset_import:
+    label: Import de ressources en CSV
     validation.label: Validation du fichier
+    import_tags.label: Import des mots clés en CSV
+    import_asset.label: Import de ressources en CSV
+  csv_asset_export:
+    label: Export des ressources en CSV
+    export.label: Export des ressources en CSV
+  csv_asset_variation_export:
+    label: Export des variations de ressources en CSV
+    export.label: Export des variations de ressources en CSV
   csv_tag_import:
+    label: Import des mots clés en CSV
     validation.label: Validation du fichier
+    import.label: Import des mots clés en CSV
   csv_asset_category_import:
+    label: Import des catégories de ressources en CSV
     validation.label: Validation du fichier
+    import_asset_category.label: Import des catégories de ressources en CSV
   csv_asset_configuration_import:
+    label: Import des configurations des transformations pour les canaux en CSV
     validation.label: Validation du fichier
+    import_asset.label: Import des configurations des transformations pour les canaux en CSV
+  csv_asset_category_export:
+    label: Import des catégories de ressources en CSV
+    export.label: Import des catégories de ressources en CSV
   xlsx_tag_import:
+    label: Import des mots clés en XLSX
     validation.label: Validation du fichier
+    import.label: Import des mots clés en XLSX
   xlsx_asset_import:
+    label: Import des ressources en XLSX
     validation.label: Validation du fichier
+    import_tags.label: Import des mots clés en XLSX
+    import_asset.label: Import des ressources en XLSX
   xlsx_asset_category_import:
+    label: Import des catégories de ressources en XLSX
     validation.label: Validation du fichier
+    import_asset_category.label: Import des catégories de ressources en XLSX
+  xlsx_asset_export:
+    label: Export des ressources en XLSX
+    export.label: Export des ressources en XLSX
+  xlsx_asset_category_export:
+    label: Export des catégories de ressources en XLSX
+    export.label: Export des catégories de ressources en XLSX
+  xlsx_asset_variation_export:
+    label: Export des catégories de ressources en XLSX
+    export.label: Export des catégories de ressources en XLSX
