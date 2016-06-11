@@ -1,0 +1,4 @@
+Sorry, page was not loaded correctly: Przepraszamy, strona nie został załadowany prawidłowo
+Your local changes will be lost. Are you sure you want to refresh the page?: Wszystkie zmiany zostaną utracone. Czy na pewno chcesz odświeżyć stronę?
+navigation.message.content.outdated: "Zawartość strony {{ title }} jest nieaktualna, proszę <a href='#' data-action='page-refresh'> odświeżyć stronę</a>"
+Content of pinned page is outdated: Zawartość przypiętej strony jest nieaktualna
