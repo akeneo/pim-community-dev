@@ -7,7 +7,6 @@ pim_user:
       password.title: Hasło
       business_unit.title: Jednostki biznesowe
       interfaces.title: Interfejsy
-      email_synchronization.title: Ustawienia synchronizacji poczty e-mail
 oro.user.controller:
   group.message.saved: Grupa zapisana
   role.message.saved: Rola zapisana
@@ -88,12 +87,9 @@ Role: Rola
 Owner: Właściciel
 General: Ogólne
 Entity: Encja
-Capabilities: Możliwości
 Save and close: Zapisz i zamknij
 Has role: Ma rolę
 role:
-  title: rola
-  overview: rola
   edit: Edytowanie roli
   create: Utwórz rolę
 btn.create.role: Utwórz rolę
@@ -118,8 +114,6 @@ oro_security:
     group:
       view: Przeglądanie grup użytkowników
       create: Tworzenie grup użytkowników
-      edit: Edycja grup użytkowników
-      delete: Usuwanie grup użytkowników
 (default): Domyślne uprawnienia encji
 VIEW: Zobacz
 CREATE: Utwórz
