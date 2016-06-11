@@ -1,0 +1,70 @@
+confirmation:
+  remove:
+    item: Czy na pewno chcesz usunąć ten element?
+    association type: Czy na pewno chcesz usunąć ten typ powiązania?
+    attribute: Czy na pewno chcesz usunąć ten atrybut?
+    family: Czy na pewno chcesz usunąć tę rodzinę?
+    product: Czy na pewno chcesz usunąć ten produkt?
+    channel: Czy na pewno chcesz usunąć ten kanał?
+    group: Czy na pewno chcesz usunąć tę grupę?
+    variant group: Czy na pewno chcesz usunąć tę grupę wariantów?
+    group type: Czy na pewno chcesz usunąć ten typ grupy?
+    import profile: Czy na pewno chcesz usunąć ten profil importu?
+    export profile: Czy na pewno chcesz usunąć ten profil eksportu?
+    user: Czy na pewno chcesz usunąć tego użytkownika?
+    role: Czy na pewno chcesz usunąć tę rolę?
+flash:
+  item:
+    removed: Element usunięty pomyślnie
+  association type:
+    removed: Typ powiązania został pomyślnie usunięty
+  attribute:
+    removed: Atrybut został pomyślnie usunięty
+  family:
+    removed: Rodzina produktów została usunięta pomyślnie
+  product:
+    removed: Produkt pomyślnie usunięty
+  channel:
+    removed: Kanał został pomyślnie usunięty
+  group:
+    removed: Grupa została pomyślnie usunięta
+  variant group:
+    removed: Grupa wariantów została pomyślnie usunięta
+  group type:
+    removed: Typ grupy został pomyślnie usunięty
+  import profile:
+    removed: Profil importu usunięty pomyślnie
+  export profile:
+    removed: Profil eksportu usunięty pomyślnie
+  user:
+    removed: Użytkownik został pomyślnie usunięty
+  role:
+    removed: Rola usunięta pomyślnie
+error:
+  removing:
+    item: Nie można usunąć tego elementu
+    association type: Nie można usunąć tego typu powiązania
+    attribute: Nie można usunąć tego atrybutu
+    family: Nie można usunąć tej rodziny
+    product: Nie można usunąć tego produktu
+    channel: Nie można usunąć tego kanału
+    group: Nie można usunąć tej grupy
+    variant group: Nie można usunąć tego wariantu grupy
+    group type: Nie można usunąć tego typu grupy
+    import profile: Nie można usunąć tego profilu importu
+    export profile: Nie można usunąć tego profilu eksportu
+    user: Nie można usunąć użytkownika
+    role: Nie można usunąć tej roli
+Edit: Edytuj
+Delete: Usuń
+Edit attributes of the product: Edytuj atrybuty produktu
+Classify the product: Klasyfikuj produkt
+Delete the product: Usuń produkt
+Change status: Zmień status
+Toggle status: Ustaw stan
+pim.grid.mass_action.quick_export.csv_all: CSV (wszystkie atrybuty)
+pim.grid.mass_action.delete: Usuń
+pim.grid.mass_action.mass_edit: Edycja masowa
+jstree.create: Utwórz
+switch_on: Tak
+switch_off: Nie
