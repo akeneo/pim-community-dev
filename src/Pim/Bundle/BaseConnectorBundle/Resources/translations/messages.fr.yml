@@ -52,6 +52,7 @@ pim_base_connector:
       help: Déterminer le format des champs de type date
     families:
       label: Famille
+      help: Les familles que vous souhaitez exporter
       placeholder: Choisissez une famille
   import:
     enabled:

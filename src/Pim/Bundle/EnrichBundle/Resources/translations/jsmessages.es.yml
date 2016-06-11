@@ -183,15 +183,34 @@ pim_enrich:
         channel_locale_unavailable: "Este campo traducible no está disponible para el local '{{ locale }}' y el canal '{{ channel }}'"
       media:
         upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
+      create_popin:
+        title: Crear un nuevo producto
+        labels:
+          family: Elija una familia
+          save: Guardar
+          cancel: Cancelar
     attribute_option:
       code: Código
       label: Etiqueta
+    variant_group:
+      info:
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - campos
+        already_in_upload: 'Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"'
+        no_attributes: Este grupo de variantes no tiene aun atributos
+      btn:
+        save: Guardar
+      meta:
+        product_count: Productos
+        created: Creado
+        updated: Actualizado
   confirmation:
     leave: ¿Está usted seguro que desea abandonar esta página?
     discard_changes: 'Perderá los cambios realizados sobre {{ entity }} si abandona esta página.'
     delete_item: Confirmar la eliminación
     delete:
-      product_attribute: ¿Está usted seguro que desea eliminar el atributo de este producto?
+      attribute: ¿Está usted seguro que desea eliminar el atributo de este producto?
   info:
     not_applicable: N/A
     entity:
@@ -268,6 +287,30 @@ pim_enrich:
       switch:
         "no": 'No'
         "yes": Sí
+    variant_group:
+      tab:
+        properties:
+          title: Propiedades
+          general: Propiedades generales
+          code: Código
+          type: Tipo
+          axis: Eje
+          label_translations: Traducciones de etiqueta
+        history:
+          title: Histórico
+        products:
+          title: Productos
+        attributes:
+          title: Atributos
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Agregar
+            add_attributes: Agregar atributos
+          info:
+            search_attributes: Buscar...
+            no_available_attributes: No hay más atributos para agregar
   mass_edit_action:
     edit_common_attributes:
       description: 'Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.'

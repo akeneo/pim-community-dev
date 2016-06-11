@@ -20,7 +20,7 @@ oro.user.grid.users:
     firstName: Imię
     lastName: Nazwisko
     createdAt: Data utworzenia
-    updatedAt: Data aktualizacji
+    updatedAt: Aktualizowano
     enabled: Status
 oro.user.grid.roles:
   columns:

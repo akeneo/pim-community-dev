@@ -64,8 +64,6 @@ pim_connector:
     updated:
       last_execution:
         none: Este trabajo nunca se ha exportado
-        last:
-          Last export: '%date%'
     decimalSeparator:
       label: Separador de decimales
       help: Determinar el separador de decimales

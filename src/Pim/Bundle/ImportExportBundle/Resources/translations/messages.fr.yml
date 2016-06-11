@@ -31,6 +31,7 @@ pim_import_export:
     tab:
       property.title: Propriétés générales
       history.title: Historique
+      job_content.title: Contenu
 pim_title.export_profile.index: "Gestion de profils d'export"
 pim_title.export_profile.edit: "Profile d'export %job.label% | Edition"
 pim_title.export_profile.show: "Profile d'export %job.label% | Visualisation"
@@ -120,6 +121,7 @@ History: Historique
 pane.accordion:
   properties: Propriétés
   global_settings: Paramètres généraux
+  filters: Filtres
 popin.create:
   export_profile.title: "Créer un nouveau profil d'export"
   import_profile.title: "Créer un nouveau profil d'import"
@@ -156,3 +158,4 @@ STOPPED: ARRÊTÉ
 FAILED: EN ÉCHEC
 ABANDONED: ABANDONNÉ
 UNKNOWN: INCONNU
+warning.label: Attention

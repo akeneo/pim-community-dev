@@ -15,33 +15,33 @@ pim_enrich:
       history.title: Historia
   attribute_group:
     tab:
-      property.title: Właściwości
+      property.title: Ustawienia
       attribute.title: Atrybuty
       history.title: Historia
   family:
     tab:
-      property.title: Właściwości
+      property.title: Ustawienia
       attribute.title: Atrybuty
       history.title: Historia
   association_type:
     tab:
-      property.title: Właściwości
+      property.title: Ustawienia
       history.title: Historia
   group_type:
     tab:
-      property.title: Właściwości
+      property.title: Ustawienia
   channel:
     pick_conversion_unit: Wybierz jednostkę konwersji dla każdej metryki używanej podczas eksportu produktów
     tab:
-      property.title: Właściwości
+      property.title: Ustawienia
       history.title: Historia
   category:
     tab:
-      property.title: Właściwości
+      property.title: Ustawienia
       history.title: Historia
   locale:
     tab:
-      property.title: Właściwości
+      property.title: Ustawienia
       permission.title: Uprawnienia
   group:
     axis.help: Oś wskazuje atrybuty, które powinny odróżniać produkty w grupie. Osie są atrybutami z ustawieniami, bez tłumaczenie i zasięgu. Nie mogą one zostać zmienione po utworzeniu grypy wariantów.
@@ -52,7 +52,7 @@ pim_enrich:
       RELATED: Powiązane
     tab:
       product.title: Produkty
-      property.title: Właściwości
+      property.title: Ustawienia
       history.title: Historia
   variant_group:
     type:
@@ -62,7 +62,7 @@ pim_enrich:
       RELATED: Powiązane
     tab:
       product.title: Produkty
-      property.title: Właściwości
+      property.title: Ustawienia
       history.title: Historia
       attribute.title: Atrybuty
     info:
@@ -80,8 +80,8 @@ pim_enrich:
       page_title: Produkty
       page_subtitle: 'Masowa edycja (1 produkt) | Masowa edycja (%count% produktów)'
       title: Wybierz działanie
-      subtitle: 'Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach'
-      confirm: 'Zamierzasz zaktualizować produkt o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% produkty(ów) o następujące informacje, proszę potwierdź.'
+      subtitle: 'Wybierz operację, którą chcesz wykonać na wybranym produkcie | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach'
+      confirm: 'Proszę o potwierdzenie aktualizacji produktu według poniższych danych. | Proszę o potwierdzenie aktualizacji %count% produktów według poniższych danych.'
       steps:
         first: Wybierz produkty
         second: Wybierz działanie
@@ -94,7 +94,7 @@ pim_enrich:
       subtitle: 'Wybierz operację, którą chcesz wykonać dla wybranej rodziny | Wybierz operację, którą chcesz wykonać dla %count% zaznaczonych rodzin'
       confirm: 'Zamierzasz zaktualizować rodzinę o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% rodzin o następujące informacje, proszę potwierdź.'
       steps:
-        first: Wybierz rodziny
+        first: Wybierz rodziny produktów
         second: Wybierz działanie
         third: Konfiguruj
         fourth: Potwierdź
@@ -106,7 +106,7 @@ pim_enrich:
     edit-common-attributes:
       label: Edytuj atrybuty
       description: Atrybuty wybranych produktów zostaną zaktualizowane o następujące wartości, przy wybranym ustawieniu regionalnym.
-      empty: Proszę wybrać atrybut(y), które chcesz edytować
+      empty: Proszę wybrać atrybut(y), do edycji
       success_flash: Zadanie aktualizacji statusu produktów jest aktualnie wykonywane
       launched_flash: 'Zadanie masowej "edycji wspólnych atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
       message:
@@ -116,10 +116,10 @@ pim_enrich:
     classify:
       label: Klasyfikuj produkty w kategorie
       description: Produkty zostanie umieszczony w następujących kategoriach, istniejące rozmieszczenie nie zostanie zmienione.
-      success_flash: Produkt(y) został(y) zaklasyfikowane do wybranych kategorii
+      success_flash: Produkt(y) zostały zaklasyfikowane do wybranych kategorii
       launched_flash: 'Zadanie masowej "klasyfikacji" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
     change-family:
-      label: Zmień rodzinę produktów
+      label: Zmiana rodziny produktów
       description: Rodzina wybranych produktów zostanie zamieniona na wybraną rodzinę
       success_flash: Rodzina wybranego produktu(ów) została zmieniona pomyślnie
       launched_flash: 'Zadanie masowej "zmiany rodziny" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
@@ -331,15 +331,15 @@ btn:
   create:
     attribute: utwórz atrybut
     attribute group: utwórz grupę atrybutów
-    category: utwórz kategorię
-    tree: utwórz drzewo
-    channel: utwórz kanał
-    currency: utwórz walutę
+    category: Utwórz kategorię
+    tree: Utwórz drzewo
+    channel: Utwórz kanał
+    currency: Utwórz walutę
     family: utwórz rodzinę
-    locale: utwórz ustawienie regionalne
-    product: utwórz produkt
-    group: utwórz grupę
-    variant group: utwórz grupę wariantów
+    locale: Utwórz język
+    product: Utwórz produkt
+    group: Utwórz grupę
+    variant group: Utwórz grupę wariantów
     association type: utwórz typ powiązania
     group type: utwórz typ grupy
     drag_or_upload: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
@@ -591,7 +591,7 @@ None: Brak
 URL: URL
 Regular expression: Wyrażenie regularne
 Minimum input length: Minimalna długość danych wejściowych
-Default: Domyślny
+Default: Domyślnie
 Attributes: Atrybuty
 Title: Tytuł
 pim_title.attribute_group:
@@ -743,7 +743,7 @@ Properties: Właściwości
 History: Historia
 pane.accordion:
   node_values: Wartości węzła
-  general_properties: Ustawienia ogólne
+  general_properties: Ogólne właściwości
   locale_values: Wartości ustawienia regionalnego
   general_parameters: Parametry ogólne
   label_translations: Tłumaczenia etykiety
@@ -769,7 +769,7 @@ Status: Status
 Change History: Historia zmian
 Data Audit: Inspekcja danych
 Data Audit - System: 'Inspekcja danych - system'
-Action: Akcja
+Action: Działanie
 Version: Wersja
 Entity type: Typ encji
 Entity name: Nazwa encji
