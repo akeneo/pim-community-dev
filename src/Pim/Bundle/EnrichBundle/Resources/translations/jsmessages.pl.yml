@@ -26,25 +26,27 @@ flash:
   item:
     removed: Element usunięty pomyślnie
   association type:
-    removed: Typ powiązania został pomyślnie usunięty
+    removed: Typ powiązania usunięty pomyślnie
   attribute:
-    removed: Atrybut został pomyślnie usunięty
+    removed: Pomyślnie usunięto atrybut
   family:
-    removed: Rodzina produktów została usunięta pomyślnie
+    removed: Rodzina została usunięta pomyślnie
+  product:
+    removed: Produkt pomyślnie usunięty
   channel:
-    removed: Kanał został pomyślnie usunięty
+    removed: Kanał pomyślnie usunięty
   group:
     removed: Grupa została pomyślnie usunięta
   variant group:
-    removed: Grupa wariantów została pomyślnie usunięta
+    removed: Grupa wariantów usunięta pomyślnie
   group type:
-    removed: Typ grupy został pomyślnie usunięty
+    removed: Typ grupy usunięty pomyślnie
   import profile:
     removed: Profil importu usunięty pomyślnie
   export profile:
     removed: Profil eksportu usunięty pomyślnie
   user:
-    removed: Użytkownik został pomyślnie usunięty
+    removed: Użytkownik usunięty pomyślnie
   role:
     removed: Rola usunięta pomyślnie
 error:
@@ -149,10 +151,10 @@ pim_enrich:
         created: Utworzono
         created_by: Przez
         updated_by: Przez
-        updated: Ostatnia aktualizacja
+        updated: Modyfikowany
         family:
           title: Rodzina
-          none: Brak
+          none: Żaden
         groups:
           title: Grupy
           modal:
@@ -176,15 +178,33 @@ pim_enrich:
         remove: Usuń ten atrybut
       media:
         upload: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
+      create_popin:
+        title: Utwórz nowy produkt
+        labels:
+          family: Wybierz rodzinę
+          save: Zapisz
+          cancel: Anuluj
     attribute_option:
       code: Kod
       label: Etykieta
+    variant_group:
+      info:
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - pola
+        no_attributes: Ta grupa wariantów nie posiada jeszcze żadnych atrybutów
+      btn:
+        save: Zapisz
+      meta:
+        product_count: Produkty
+        created: Utworzono
+        updated: Zaktualizowano
   confirmation:
     leave: Czy na pewno chcesz opuścić tę stronę?
     discard_changes: 'Utracisz wszystkie zmiany w {{ entity }}, jeśli opuścisz tę stronę.'
     delete_item: Potwiedź usunięcie
     delete:
-      product_attribute: Czy na pewno chcesz usunąć ten atrybut z produktu?
+      attribute: Czy na pewno chcesz usunąć ten atrybut z produktu?
   info:
     not_applicable: N/A
     entity:
@@ -261,6 +281,30 @@ pim_enrich:
       switch:
         "no": Nie
         "yes": Tak
+    variant_group:
+      tab:
+        properties:
+          title: Właściwości
+          general: Ustawienia ogólne
+          code: Kod
+          type: Typ
+          axis: Oś
+          label_translations: Tłumaczenia etykiety
+        history:
+          title: Historia
+        products:
+          title: Produkty
+        attributes:
+          title: Atrybuty
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Dodaj
+            add_attributes: Dodaj atrybuty
+          info:
+            search_attributes: Szukaj...
+            no_available_attributes: Nie ma więcej atrybutów do dodania
   mass_edit_action:
     edit_common_attributes:
       description: 'Atrybuty wybranych produktów będą edytowane z następującymi danymi dla ustawienia regionalnego <span class = "highlight"> {{ locale }} </span> oraz kanału <span class = "highlight"> {{ channel }} </span>, wybrane z listy produktów.'

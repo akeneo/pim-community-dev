@@ -182,15 +182,34 @@ pim_enrich:
         channel_locale_unavailable: "Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'"
       media:
         upload: Vedä ja pudota ladattavaksi tai klikkaa tästä
+      create_popin:
+        title: Luo uusi tuote
+        labels:
+          family: Valitse perhe
+          save: Tallenna
+          cancel: Peruuta
     attribute_option:
       code: Koodi
       label: Nimike
+    variant_group:
+      info:
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - kentät
+        already_in_upload: 'Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"'
+        no_attributes: Tällä tuotevariaatioryhmällä ei ole attribuutteja vielä
+      btn:
+        save: Tallenna
+      meta:
+        product_count: Tuotteet
+        created: Luotu
+        updated: Päivitetty
   confirmation:
     leave: Oletko varma, että haluat poistua tältä sivulta?
     discard_changes: 'Menetät muutokset tähän {{ entity }}, jos poistut sivulta.'
     delete_item: Vahvista poisto
     delete:
-      product_attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
+      attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
   info:
     not_applicable: N/A
     entity:
@@ -267,5 +286,29 @@ pim_enrich:
       switch:
         "no": Ei
         "yes": Kyllä
+    variant_group:
+      tab:
+        properties:
+          title: Ominaisuudet
+          general: Yleiset ominaisuudet
+          code: Koodi
+          type: Tyyppi
+          axis: Akseli
+          label_translations: Nimikkeiden käännökset
+        history:
+          title: Historia
+        products:
+          title: Tuotteet
+        attributes:
+          title: Attribuutit
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Lisää
+            add_attributes: Lisää attribuutteja
+          info:
+            search_attributes: Hae...
+            no_available_attributes: Ei ole enää attribuutteja lisättäväksi
 pim_enrich.error:
   exception.title: 'Voi ei! {{ status_code }} virhe tapahtui...'

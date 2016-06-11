@@ -89,7 +89,9 @@ Delete the product: Supprimer le produit
 Change status: Changer le statut
 Toggle status: Changer le statut
 pim.grid.mass_action.quick_export.csv_all: CSV (tous les attributs)
+pim.grid.mass_action.quick_export.csv_grid_context: CSV (contexte de la grille)
 pim.grid.mass_action.quick_export.xlsx_all: XLSX (tous les attributs)
+pim.grid.mass_action.quick_export.xlsx_grid_context: XLSX (contexte de la grille)
 pim.grid.mass_action.delete: Supprimer
 pim.grid.mass_action.mass_edit: Edition de masse
 pim.grid.mass_action.sequential_edit: Modification séquentielle
@@ -183,15 +185,41 @@ pim_enrich:
         channel_locale_unavailable: "Ce champ traduisible n'est pas disponible pour la locale '{{ locale }}' et le canal '{{ channel }}'"
       media:
         upload: Glisser et déposer pour télécharger ou cliquer ici
+      create_popin:
+        title: Créer un nouveau produit
+        labels:
+          family: Choisissez une famille
+          save: Enregistrer
+          cancel: Annuler
     attribute_option:
       code: Code
       label: Libellé
+    variant_group:
+      title: Groupe de variantes
+      info:
+        deletion_successful: Le groupe de variantes a bien été supprimé.
+        deletion_failed: "Le groupe de variantes n'a pas pu être supprimé."
+        update_successful: Le groupe de variantes a bien été mis à jour.
+        update_failed: "Le groupe de variantes n'a pas pu être mis à jour."
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - champs
+        already_in_upload: 'Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et "{{ scope }}"'
+        no_attributes: "Ce groupe de variantes n'a pas encore d'attributs"
+      btn:
+        save: Enregistrer
+      meta:
+        product_count: Produits
+        created: Créé
+        created_by: Créé par
+        updated: Mis à jour
+        updated_by: Mis à jour par
   confirmation:
     leave: Êtes-vous sûr de vouloir quitter cette page?
     discard_changes: 'Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.'
     delete_item: "Supprimer l'élément."
     delete:
-      product_attribute: Êtes-vous sûr de que vouloir supprimer cet attribut du produit ?
+      attribute: Êtes-vous sûr de que vouloir supprimer cet attribut du produit ?
   info:
     not_applicable: Inconnu
     entity:
@@ -268,6 +296,30 @@ pim_enrich:
       switch:
         "no": Non
         "yes": Oui
+    variant_group:
+      tab:
+        properties:
+          title: Propriétés
+          general: Propriétés générales
+          code: Code
+          type: Type
+          axis: Axes
+          label_translations: Traduction des libellés
+        history:
+          title: Historique
+        products:
+          title: Produits
+        attributes:
+          title: Attributs
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Ajouter
+            add_attributes: Ajouter des attributs
+          info:
+            search_attributes: Rechercher...
+            no_available_attributes: "Il n'y a plus d'attributs disponibles"
   mass_edit_action:
     edit_common_attributes:
       description: 'Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal <span class="highlight">{{ channel }}</span>, choisis dans la grille des produits.'

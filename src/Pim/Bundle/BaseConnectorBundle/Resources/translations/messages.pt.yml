@@ -1,112 +1,130 @@
 pim_base_connector:
-  jobs:
-    csv_product_export:
-      title: Exportação de produto em CSV
-      export.title: Exportação de produto
-    csv_category_export:
-      title: Exportação de categoria em CSV
-      export.title: Exportação de categoria
-    csv_attribute_export:
-      title: Exportação de atributo em CSV
-      export.title: Exportação de atributo
-    csv_attribute_option_export:
-      title: Exportação de opções de atributo em CSV
-      export.title: Exportação de opções de atributo
-    csv_association_type_export:
-      title: Exportação de tipo de associação em CSV
-      export.title: Exportação de tipo de associação
-    csv_group_export:
-      title: Exportação de grupo em CSV
-      export.title: Exportação de grupo
-    csv_product_import:
-      title: Importação de produto em CSV
-      import.title: Importação de produto
-      import_associations.title: Importação de associação
-    csv_category_import:
-      title: Importação de categoria em CSV
-      import.title: Importação de categoria
-    csv_attribute_import:
-      title: Importação de atributo em CSV
-      import.title: Importação de atributo
-    csv_attribute_option_import:
-      title: Importação de opções de atributo em CSV
-      import.title: Importação de opções de atributo
-    csv_association_type_import:
-      title: Importação de tipo de associação em CSV
-      import.title: Importação de tipo de associação
-    csv_group_import:
-      title: Importação de grupo em CSV
-      import.title: Importação de grupo
   steps:
-    dummy_reader.title: Leitor fictício
-    product_reader.title: Extração de produto
-    entity_reader.title: Extração de entidade
+    dummy_reader.title: Leitor dummy
+    product_reader.title: Extração do produto
+    entity_reader.title: Extração da entidade
     csv_reader:
-      title: Leitor de CSV
-      invalid_item_columns_count: 'Eram esperadas %totalColumnsCount% colunas, mas há %itemColumnsCount% colunas em %csvPath%:%lineno%'
-    csv_product_reader.title: Leitor de produto em CSV
-    csv_category_reader.title: Leitor de categoria em CSV
-    dummy_processor.title: Processador fictício
-    product_processor.title: Criação de produto
-    category_processor.title: Criação de categoria
-    association_processor.title: Criação de associação
-    group_processor.title: Criação de grupo
-    attribute_processor.title: Criação de atributo
-    attribute_option_processor.title: Criação de opção de atributo
-    heterogeneous_processor.title: Serializador de produtos em CSV
-    homogeneous_processor.title: Serializador de entidades em CSV
+      title: Leitor CSV
+      invalid_item_columns_count: 'Esperava-se haver %totalColumnsCount% colunas, e na verdade há %itemColumnsCount% de %csvPath%:%lineno%'
+    csv_product_reader.title: Leitor do produto CSV
+    csv_category_reader.title: Leitor da categoria CSV
+    csv_variant_group .title: Leito do grupo variante CSV
+    dummy_processor.title: Processador dummy
+    product_processor.title: Criação do produto
+    variant_group_processor.title: Criação / Atualização do grupo variante
+    category_processor.title: Criação da categoria
+    association_processor.title: Criação da associação
+    product_association_processor.title: Criação da associação
+    group_processor.title: Criação do grupo
+    attribute_processor.title: Criação do atributo
+    attribute_option_processor.title: Criação da opção do atributo
+    heterogeneous_processor.title: Serializador do produto CSV
+    homogeneous_processor.title: Serializador da entidade CSV
     transformer_processor.title: Transformação
-    dummy_writer.title: Escritor fictício
-    file_writer.title: Saída
-    product_writer.title: Armazenamento de produto
-    category_writer.title: Armazenamento de categoria
-    writer.title: Armazenamento de entidade
+    dummy_writer.title: Escritor dummy
+    file_writer.title: Output
+    product_writer.title: Armazenameno do produto
+    category_writer.title: Armazenamento da categoria
+    variant_group_writer.title: Armazenamento do grupo variante
+    writer.title: Armazenamento da entidade
+    csv_writer.title: Escritor CSV
   export:
     delimiter:
       label: Delimitador
-      help: Um caractere usado para definir o delimitador do campo
-    enclosure:
-      label: Invólucro
-      help: Caractere usado para definir o invólucro do campo
+      help: Um carácter usado para definir o delimitador de campo
     withHeader:
-      label: Com cabeçalho
+      label: Com o cabeçalho
       help: Imprimir ou não o nome da coluna
     filePath:
-      label: Caminho do arquivo
-      help: Local no sistema onde o arquivo gerado deve ser gravado
+      label: Caminho do ficheiro
+      help: Onde escrever o ficheiro gerado no sistema de ficheiros
     channel:
       label: Canal
       help: O canal que deseja exportar
   import:
     enabled:
-      label: Habilitar o produto
-      help: Habilitar ou não os produtos importados
+      label: Ativar o produto
+      help: Ativar ou não o produto importado
     categoriesColumn:
-      label: Coluna de categorias
-      help: Nome da coluna de categorias
+      label: Coluna das categorias
+      help: Nome da coluna das categorias
     familyColumn:
-      label: Coluna de famílias
-      help: Nome da coluna de famílias
+      label: Coluna da família
+      help: Nome da coluna da família
     groupsColumn:
-      label: Coluna de grupos
-      help: Nome da coluna de grupos
+      label: Coluna dos groupos
+      help: Nome da coluna dos grupos
     filePath:
-      label: Arquivo
+      label: Ficheiro
+      help: O ficheiro CSV para importar
+    yamlFilePath:
+      label: Ficheiro
+      help: O ficheiro YAML para importar
     uploadAllowed:
-      label: Permitir o upload de arquivo
-      help: Permitir ou não o upload direto do arquivo
+      label: Permitir o upload do ficheiro
+      help: Deve ou não permitir o upload to ficheiro diretamente
     delimiter:
       label: Delimitador
-      help: Um caractere usado para definir o delimitador do campo
-    enclosure:
-      label: Invólucro
-      help: Um caractere usado para definir o invólucro do campo
+      help: Um carácter usado para definir o delimitador de campo
     escape:
-      label: Caractere de escape
-      help: Um caractere usado para definir o campo de escape
+      label: Escape
     circularRefsChecked:
       label: Verificar referências circulares
-      help: Se sim, os dados serão processados para verificar se não há nenhuma referência circular entre as categorias
+      help: Se sim, os dados serão processados para se certificar de que não há nenhuma referência circular entre as categorias
     realTimeVersioning:
-      label: Atualização de histórico em tempo real
-      help: Significa que o histórico do produto é atualizado automaticamente, pode ser desligado para melhorar a velocidade
+      label: Atulização do histórico a tempo real
+      help: Signifca que a história do produto é atualizada automaticmente, pode ser desligado para melhorar a performance
+    copyValuesToProducts:
+      label: Copiar valores da variante de grupo para os produtos
+      help: Significa que os produtos são automaticamente atualizados com valores do grupo variante, pode ser desligado apenas para atualizar o grupo variante
+batch_jobs:
+  csv_product_export:
+    label: Exportar produto para o CSV
+    export.label: Exportar produto
+  csv_category_export:
+    label: Exportar categoria para o CSV
+    export.label: Exportar categoria
+  csv_attribute_export:
+    label: Exportar atributo para o CSV
+    export.label: Exportar atributo
+  csv_attribute_option_export:
+    label: Exportar opção de atributo para o CSV
+    export.label: Exportar opção de atributo
+  csv_association_type_export:
+    label: Exportar tipo de associação para o CSV
+    export.label: Exportar tipo de associação
+  csv_group_export:
+    label: Exportar grupo para o CSV
+    export.label: Exportar grupo
+  csv_variant_group_export:
+    label: Exportar variante do grupo para o CSV
+    export.label: Exportar variante do grupo
+  csv_product_import:
+    label: Importar produto para o CSV
+    validation.label: Validação do ficheiro
+    import.label: Importar produto
+    import_associations.label: Importar associação
+  csv_category_import:
+    label: Importar categoria para o CSV
+    validation.label: Validação do ficheiro
+    import.label: Importar categoria
+  csv_attribute_import:
+    label: Importar atributo para o CSV
+    validation.label: Validação do ficheiro
+    import.label: Importar atributo
+  csv_attribute_option_import:
+    label: Importar opção de atributo para o CSV
+    validation.label: Validação do ficheiro
+    import.label: Importar opção de atributo
+  csv_association_type_import:
+    label: Importar tipo de associação para o CSV
+    validation.label: Validação do ficheiro
+    import.label: Importar tipo de associação
+  csv_group_import:
+    label: Importar grupo para o CSV
+    validation.label: Validação do ficheiro
+    import.label: Importar grupo
+  csv_variant_group_import:
+    label: Importar variante do grupo para o CSV
+    validation.label: Validação do ficheiro
+    import.label: Importar variante do grupo

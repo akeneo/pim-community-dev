@@ -182,15 +182,31 @@ pim_enrich:
         channel_locale_unavailable: 'Это локализуемое поле не доступно для языка «{{ locale }}» и канала «{{ channel }}»'
       media:
         upload: Перетащите чтобы загрузить, или нажмите здесь
+      create_popin:
+        title: Создать новый продукт
+        labels:
+          family: Выберите семейство
+          cancel: Отмена
     attribute_option:
       code: Код
       label: Ярлык
+    variant_group:
+      info:
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - поля
+        already_in_upload: 'Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»'
+        no_attributes: Это группа вариантов пока не имеет атрибутов
+      meta:
+        product_count: Продукты
+        created: Создано
+        updated: Обновлено
   confirmation:
     leave: Вы уверены, что хотите покинуть эту страницу?
     discard_changes: 'Если вы покините страницу изменения будут потеряны для {{ entity }}.'
     delete_item: Подтвердить удаление
     delete:
-      product_attribute: Вы уверены, что хотите удалить этот атрибут из продукта?
+      attribute: Вы уверены, что хотите удалить этот атрибут из продукта?
   info:
     not_applicable: '-'
     entity:
@@ -267,6 +283,29 @@ pim_enrich:
       switch:
         "no": Нет
         "yes": Да
+    variant_group:
+      tab:
+        properties:
+          title: Свойства
+          general: Общие свойства
+          code: Код
+          type: Тип
+          axis: Ось
+          label_translations: Переводы меток
+        history:
+          title: История
+        products:
+          title: Продукты
+        attributes:
+          title: Атрибуты
+    common:
+      tab:
+        attributes:
+          btn:
+            add_attributes: Добавить атрибуты
+          info:
+            search_attributes: Поиск...
+            no_available_attributes: Нет больше атрибутов для добавления
   mass_edit_action:
     edit_common_attributes:
       description: 'Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.'

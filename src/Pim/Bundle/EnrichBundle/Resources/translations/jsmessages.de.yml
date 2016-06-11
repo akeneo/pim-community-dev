@@ -183,15 +183,34 @@ pim_enrich:
         channel_locale_unavailable: "Dieses lokalisierbare Feld ist für das Gebietsschema '{{ locale }}' und den Ausgabekanal '{{ channel }}' nicht verfügbar"
       media:
         upload: 'Upload per Drag & Drop oder hier klicken'
+      create_popin:
+        title: Neues Produkt anlegen
+        labels:
+          family: Wählen Sie eine Produktfamilie
+          save: Speichern
+          cancel: Abbrechen
     attribute_option:
       code: Code
       label: Bezeichnung
+    variant_group:
+      info:
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - Felder
+        already_in_upload: 'Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen'
+        no_attributes: Diese Variantengruppe hat noch keine Attribute
+      btn:
+        save: Speichern
+      meta:
+        product_count: Produkte
+        created: Angelegt
+        updated: Aktualisiert
   confirmation:
     leave: Möchten Sie diese Seite wirklich verlassen?
     discard_changes: 'Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.'
     delete_item: Löschen bestätigen
     delete:
-      product_attribute: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
+      attribute: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
   info:
     not_applicable: N/A
     entity:
@@ -268,6 +287,30 @@ pim_enrich:
       switch:
         "no": Nein
         "yes": Ja
+    variant_group:
+      tab:
+        properties:
+          title: Eigenschaften
+          general: Allgemeine Eigenschaften
+          code: Code
+          type: Typ
+          axis: Achse
+          label_translations: Feldbezeichner-Übersetzungen
+        history:
+          title: Historie
+        products:
+          title: Produkte
+        attributes:
+          title: Attribute
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Hinzufügen
+            add_attributes: Attribute hinzufügen
+          info:
+            search_attributes: Suche...
+            no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
   mass_edit_action:
     edit_common_attributes:
       description: 'Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.'

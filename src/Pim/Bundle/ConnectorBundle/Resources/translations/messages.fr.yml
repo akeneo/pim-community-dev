@@ -35,6 +35,9 @@ pim_connector:
     enclosure:
       label: "Caractère d'encadrement"
       help: Caractère unique utilisé pour encadrer les champs
+    lines_per_files:
+      label: Nombre de lignes par fichier
+      help: Définit la limite de nombre de lignes par fichier
     withHeader:
       label: Avec en-tête
       help: Définit si la première ligne du fichier contient les libellés des colonnes
@@ -46,14 +49,38 @@ pim_connector:
       help: Le canal que vous souhaitez exporter
     locales:
       label: Locales
+      help: La locale que vous souhaitez exporter
+      validation:
+        not_blank: Une locale doit être sélectionnée, veuillez choisir une locale à exporter.
     status:
       label: Statut
+      help: Le statut des produits que vous souhaitez exporter
       choice:
         enabled: Activé
         disabled: Désactivé
         all: Tous
     completeness:
       label: Complétude
+      help: La complétude des produits que vous souhaitez exporter
+      choice:
+        at_least_one_complete: Complet sur au moins une locale sélectionnée
+        all_complete: Complet sur toutes les locales sélectionnées
+        all_incomplete: Non complet sur toutes les locales sélectionnées
+        all: Pas de condition de complétude
+    updated:
+      updated_since_strategy:
+        label: Condition de date de mise à jour
+        help: La condition sur la date de mise à jour des produits que vous voulez exporter
+        choice:
+          since_date: Produits mis à jours depuis une date définie
+          last_export: Produits mis à jour depuis le dernier export
+          all: Pas de condition de date
+      updated_since_date:
+        placeholder: Choisissez la date
+        error: La date doit être remplie
+      last_execution:
+        none: "Ce job n'a jamais été exporté"
+        last: 'Dernier export : %date%'
     decimalSeparator:
       label: Séparateur de décimales
       help: Détermine le séparateur de décimale
@@ -185,36 +212,59 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des groupes de variantes
   xlsx_category_import:
+    label: Import des catégories en XLSX
     validation.label: Validation du fichier
     import.label: Import des catégories
   xlsx_association_type_import:
+    label: "Import des types d'association en XLSX"
     validation.label: Validation du fichier
     import.label: "Import des types d'association"
   xlsx_attribute_import:
+    label: Import des attributs en XLSX
     validation.label: Validation du fichier
     import.label: Import des attributs
   xlsx_attribute_option_import:
+    label: "Import des options d'attributs en XLSX"
     validation.label: Validation du fichier
     import.label: "Import des options d'attributs"
   xlsx_family_import:
+    label: Import des familles en XLSX
     validation.label: Validation du fichier
     import.label: Import des familles
   xlsx_product_export:
+    label: Export produits en XLSX
     export.label: Export des produits
   xlsx_product_import:
+    label: Import des produits en XLSX
     validation.label: Validation du fichier
     import.label: Import des produits
     import_associations.label: Import des associations de produits
   xlsx_group_export:
+    label: Export des groupes en XLSX
     export.label: Export de groupes
   xlsx_variant_group_export:
+    label: Export des groupes de variantes en XLSX
     export.label: Export des groupes de variantes
   xlsx_group_import:
+    label: Import des groupes en XLSX
     validation.label: Validation du fichier
     import.label: Import des groupes
   xlsx_variant_group_import:
+    label: Import des groupes de variantes en XLSX
     validation.label: Validation du fichier
+    import.label: Import des groupes de variantes
   xlsx_family_export:
+    label: Export des familles en XLSX
     export.label: Export des familles
   xlsx_category_export:
+    label: Export des catégories en XLSX
     export.label: Export des catégories
+  xlsx_attribute_export:
+    label: Export des attributs en XLSX
+    export.label: Export des attributs en XLSX
+  xlsx_attribute_option_export:
+    label: "Export des options d'attributs en XLSX"
+    export.label: "Export des options d'attributs en XLSX"
+  xlsx_association_type_export:
+    label: "Export des types d'association en XLSX"
+    export.label: "Export des types d'association en XLSX"

@@ -13,7 +13,7 @@ Edit: Edytuj
 Unexpected error occured. Please contact system administrator.: Wystąpił nieoczekiwany błąd. Prosimy skontaktować się z administratorem systemu.
 Now: Teraz
 Prev: Poprzednia
-Next: Następny
+Next: Następna
 Today: Dzisiaj
 Wk: Tydz.
 Done: Gotowe
@@ -44,7 +44,7 @@ jstree:
     unclassified: Niesklasyfikowane produkty
   no_tree: Brak dostępnego drzewa
   include_sub: Wraz z pod-kategoriami
-  loading: Wczytywanie ...
+  loading: Ładuję ...
 datetimepicker:
   days:
     Sunday: Niedziela
