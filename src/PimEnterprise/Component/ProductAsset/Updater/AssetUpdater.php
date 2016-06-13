@@ -15,8 +15,7 @@ use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Factory\ReferenceFactory;
+use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
@@ -36,11 +35,8 @@ class AssetUpdater implements ObjectUpdaterInterface
     /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
-    /** @var ReferenceFactory */
-    protected $referenceFactory;
-
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
+    /** @var AssetFactory */
+    protected $assetFactory;
 
     /** @var PropertyAccessor */
     protected $accessor;
@@ -48,19 +44,16 @@ class AssetUpdater implements ObjectUpdaterInterface
     /**
      * @param TagRepositoryInterface      $tagRepository
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param ReferenceFactory            $referenceFactory
-     * @param LocaleRepositoryInterface   $localeRepository
+     * @param AssetFactory                $assetFactory
      */
     public function __construct(
         TagRepositoryInterface $tagRepository,
         CategoryRepositoryInterface $categoryRepository,
-        ReferenceFactory $referenceFactory,
-        LocaleRepositoryInterface $localeRepository
+        AssetFactory $assetFactory
     ) {
         $this->tagRepository      = $tagRepository;
         $this->categoryRepository = $categoryRepository;
-        $this->referenceFactory   = $referenceFactory;
-        $this->localeRepository   = $localeRepository;
+        $this->assetFactory       = $assetFactory;
         $this->accessor           = PropertyAccess::createPropertyAccessor();
     }
 
@@ -248,16 +241,6 @@ class AssetUpdater implements ObjectUpdaterInterface
      */
     protected function setLocalized(AssetInterface $asset, $isLocalized)
     {
-        if (null === $asset->getId()) {
-            if (true === $isLocalized) {
-                foreach ($this->localeRepository->getActivatedLocales() as $locale) {
-                    $reference = $this->referenceFactory->create($locale);
-                    $reference->setAsset($asset);
-                }
-            } else {
-                $reference = $this->referenceFactory->create();
-                $reference->setAsset($asset);
-            }
-        }
+        $this->assetFactory->createReferences($asset, $isLocalized);
     }
 }

@@ -111,5 +111,5 @@ Feature: Mass uploads assets
     And I should see "man_wall"
     And I should have 1 new notification
     And I should see notification:
-      | type    | message                                        |
+      | type    | message              |
       | success | Mass upload executed |

@@ -239,8 +239,9 @@ class ProductAssetController extends Controller
             $uploadedFile = $form->get('reference_file')->get('uploadedFile')->getData();
             $isLocalized  = $form->get('isLocalized')->getData();
 
-            $asset = $this->assetFactory->create($isLocalized);
+            $asset = $this->assetFactory->create();
             $asset->setCode($form->get('code')->getData());
+            $this->assetFactory->createReferences($asset, $isLocalized);
 
             try {
                 if (!$isLocalized && null !== $uploadedFile) {

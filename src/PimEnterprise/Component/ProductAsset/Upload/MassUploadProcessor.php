@@ -171,8 +171,9 @@ class MassUploadProcessor
         $asset = $this->assetRepository->findOneByIdentifier($parsedFilename->getAssetCode());
 
         if (null === $asset) {
-            $asset = $this->assetFactory->create($isLocalized);
+            $asset = $this->assetFactory->create();
             $asset->setCode($parsedFilename->getAssetCode());
+            $this->assetFactory->createReferences($asset, $isLocalized);
         }
 
         $file = $this->fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true);

@@ -10,6 +10,8 @@ services:
     pimee_product_asset.factory.asset:
         class: '%pimee_product_asset.factory.asset.class%'
         arguments:
+            - '@pimee_product_asset.factory.reference'
+            - '@pim_catalog.repository.locale'
             - '%pimee_product_asset.model.asset.class%'
 
     pimee_product_asset.factory.reference:

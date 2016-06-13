@@ -12,6 +12,8 @@
 namespace PimEnterprise\Component\ProductAsset\Factory;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
  * Asset factory
@@ -20,14 +22,27 @@ use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
  */
 class AssetFactory implements SimpleFactoryInterface
 {
+    /** @var ReferenceFactory */
+    protected $referenceFactory;
+
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
     /** @var string */
     protected $assetClass;
 
     /**
-     * @param string $assetClass
+     * @param ReferenceFactory          $referenceFactory
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param string                    $assetClass
      */
-    public function __construct($assetClass)
-    {
+    public function __construct(
+        ReferenceFactory $referenceFactory,
+        LocaleRepositoryInterface $localeRepository,
+        $assetClass
+    ) {
+        $this->referenceFactory = $referenceFactory;
+        $this->localeRepository = $localeRepository;
         $this->assetClass       = $assetClass;
     }
 
@@ -37,5 +52,26 @@ class AssetFactory implements SimpleFactoryInterface
     public function create()
     {
         return new $this->assetClass();
+    }
+
+    /**
+     * Create references for an asset.
+     *
+     * @param AssetInterface $asset
+     * @param bool           $isLocalized
+     */
+    public function createReferences(AssetInterface $asset, $isLocalized)
+    {
+        if (null === $asset->getId()) {
+            if (true === $isLocalized) {
+                foreach ($this->localeRepository->getActivatedLocales() as $locale) {
+                    $reference = $this->referenceFactory->create($locale);
+                    $reference->setAsset($asset);
+                }
+            } else {
+                $reference = $this->referenceFactory->create();
+                $reference->setAsset($asset);
+            }
+        }
     }
 }
