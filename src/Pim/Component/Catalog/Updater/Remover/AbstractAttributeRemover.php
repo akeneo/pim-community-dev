@@ -62,7 +62,7 @@ abstract class AbstractAttributeRemover implements AttributeRemoverInterface
             throw InvalidArgumentException::expectedFromPreviousException(
                 $e,
                 $attribute->getCode(),
-                'setter',
+                'remover',
                 $type
             );
         }
