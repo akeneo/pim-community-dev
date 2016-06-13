@@ -24,6 +24,7 @@ use Pim\Behat\Context\Domain\System\PermissionsContext;
 use Pim\Behat\Context\Domain\TreeContext;
 use Pim\Behat\Context\HookContext;
 use Pim\Behat\Context\JobContext;
+use Pim\Behat\Context\JsTreeContext;
 use Pim\Behat\Context\Storage\FileInfoStorage;
 use Pim\Behat\Context\Storage\ProductStorage;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -83,6 +84,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('attribute-validation', new AttributeValidationContext());
         $this->useContext('role', new PermissionsContext());
         $this->useContext('export-builder', new ExportBuilderContext());
+        $this->useContext('jstree', new JsTreeContext());
 
         $this->setTimeout($parameters);
     }

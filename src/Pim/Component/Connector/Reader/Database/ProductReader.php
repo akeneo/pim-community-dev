@@ -11,7 +11,6 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
@@ -108,7 +107,8 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
                 array_filter(explode(',', $parameters->get('families')))
             ),
             $this->getCompletenessFilters($parameters),
-            $this->getProductIdentifiersFilter($parameters)
+            $this->getProductIdentifiersFilter($parameters),
+            $this->getCategoryFilters($parameters)
         );
 
         foreach ($filters as $filter) {
@@ -283,7 +283,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      *
      * @param JobParameters $parameters
      *
-     * @return array|null
+     * @return array
      */
     protected function getCompletenessFilters(JobParameters $parameters)
     {
@@ -347,7 +347,41 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
                 'context'  => []
             ];
         }
-        
+
         return $filter;
+    }
+
+    /**
+     * Transform category fields into PQB filters
+     *
+     * @param JobParameters $parameters
+     *
+     * @return array
+     */
+    protected function getCategoryFilters(JobParameters $parameters)
+    {
+        $included = $parameters->get('categories_included');
+        $excluded = $parameters->get('categories_excluded');
+        $filters  = [];
+
+        if (!empty($included)) {
+            $filters[] = [
+                'field'    => 'categories.id',
+                'operator' => Operators::IN_CHILDREN_LIST,
+                'value'    => $included,
+                'context'  => []
+            ];
+        }
+
+        if (!empty($excluded)) {
+            $filters[] = [
+                'field'    => 'categories.id',
+                'operator' => Operators::NOT_IN_LIST,
+                'value'    => $excluded,
+                'context'  => []
+            ];
+        }
+
+        return $filters;
     }
 }

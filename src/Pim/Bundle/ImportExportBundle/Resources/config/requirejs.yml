@@ -3,3 +3,12 @@ config:
         pim/job-execution-view: pimimportexport/js/job-execution-view
         pim/product-export/locales-selector: pimimportexport/js/product-export/locales-selector
         pim/product-export/updated-since-selector: pimimportexport/js/product-export/updated-since-selector
+        pim/product-export/categories-selector: pimimportexport/js/product-export/categories-selector
+        pim/product-export/categories-selector-tree: pimimportexport/js/product-export/categories-selector-tree
+
+        # Models
+        pim/model/product-export/tree: pimimportexport/js/model/product-export/tree
+
+        # Templates
+        pim/template/product-export/categories-selector: pimimportexport/templates/product-export/categories-selector.html
+        pim/template/product-export/categories-selector-tree: pimimportexport/templates/product-export/categories-selector-tree.html

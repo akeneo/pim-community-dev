@@ -71,3 +71,56 @@
         );
     </script>
 {% endblock %}
+
+{% block pim_import_export_product_export_categories_widget %}
+
+    {{ form_widget(form.categories_included) }}
+    {{ form_widget(form.categories_excluded) }}
+
+    <div id="{{ form.vars.id }}"
+         data-included-input="{{ form.categories_included.vars.id }}"
+         data-excluded-input="{{ form.categories_excluded.vars.id }}"
+         data-channel-input="{{ form.parent.channel.vars.id }}"
+         class="input-group select2-container input-large">
+    </div>
+
+    {{ form_errors(form) }}
+
+    {% if help is defined %}
+        <div class="icons-container">
+            <i class="icon-info-sign"
+               data-toggle="tooltip"
+               data-placement="right"
+               data-original-title="{{ help|trans }}">
+            </i>
+        </div>
+    {% endif %}
+
+    {% if info is defined %}
+        <div class="legend">
+            {{ info|trans }}
+        </div>
+    {% endif %}
+
+    <script>
+        require(
+                ['jquery', 'backbone', 'pim/product-export/categories-selector', 'pim/model/product-export/tree'],
+                function ($, Backbone, CategoriesSelectorView, TreeModel) {
+                    'use strict';
+
+                    $(function () {
+                        new CategoriesSelectorView({
+                            el: $("#{{ form.vars.id }}"),
+                            model: new TreeModel({
+                                included: {{ form.categories_included.vars.data|json_encode|raw }},
+                                excluded: {{ form.categories_excluded.vars.data|json_encode|raw }}
+                            }),
+                            attributes: {
+                                disabled: Boolean({{ form.vars.disabled|default(false) }})
+                            }
+                        }).render();
+                    });
+                }
+        );
+    </script>
+{% endblock %}

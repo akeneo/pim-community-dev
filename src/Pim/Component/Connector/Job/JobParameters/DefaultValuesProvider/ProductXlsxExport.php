@@ -46,6 +46,8 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
         $parameters['updated_since_date'] = null;
         $parameters['updated_since_n_days'] = null;
         $parameters['completeness'] = 'at_least_one_complete';
+        $parameters['categories_included'] = [];
+        $parameters['categories_excluded'] = [];
         $parameters['linesPerFile'] = 10000;
         $parameters['families'] = null;
         $parameters['product_identifier'] = null;

@@ -33,6 +33,8 @@ class ProductCsvExportSpec extends ObjectBehavior
             'updated_since_date'     => null,
             'updated_since_n_days'   => null,
             'families'               => null,
+            'categories_included'    => [],
+            'categories_excluded'    => [],
             'completeness'           => 'at_least_one_complete',
             'product_identifier'     => null,
         ]);

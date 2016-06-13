@@ -31,6 +31,13 @@ class JobContext extends PimContext
 
             if ($this->isJobParameterArray($property)) {
                 $value = $this->getMainContext()->listToArray($value);
+
+                if (in_array($property, ['categories_included', 'categories_excluded'])) {
+                    $repository = $this->getMainContext()->getContainer()->get('pim_catalog.repository.category');
+                    foreach ($value as $key => $code) {
+                        $value[$key] = $repository->findOneByCode($code)->getId();
+                    }
+                }
             }
 
             if (in_array($property, ['updated_since_date'])) {
@@ -220,6 +227,6 @@ class JobContext extends PimContext
      */
     protected function isJobParameterArray($property)
     {
-        return in_array($property, ['locales']);
+        return in_array($property, ['locales', 'categories_included', 'categories_excluded']);
     }
 }

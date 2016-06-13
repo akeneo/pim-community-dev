@@ -57,6 +57,20 @@ class JsNodeDecorator extends ElementDecorator
     }
 
     /**
+     * Is the node checked ?
+     *
+     * @return boolean
+     */
+    public function isChecked()
+    {
+        $checkbox = $this->find('css', '.jstree-checkbox');
+
+        assertNotNull($checkbox);
+
+        return $this->hasClass('jstree-checked');
+    }
+
+    /**
      * Get the name of the node
      *
      * @return string

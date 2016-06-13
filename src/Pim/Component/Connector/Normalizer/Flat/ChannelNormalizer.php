@@ -36,4 +36,16 @@ class ChannelNormalizer extends BaseNormalizer
 
         return implode(',', $locales);
     }
+
+    /**
+     * Returns category tree code
+     *
+     * @param ChannelInterface $channel
+     *
+     * @return string
+     */
+    protected function normalizeCategoryTree(ChannelInterface $channel)
+    {
+        return $channel->getCategory()->getCode();
+    }
 }

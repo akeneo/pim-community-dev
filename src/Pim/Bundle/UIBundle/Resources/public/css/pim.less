@@ -1782,3 +1782,21 @@ h3.tab-header {
 .translation-container .validation-error {
   display: block;
 }
+
+.flex-space-between {
+  display:flex;
+  justify-content: space-between;
+}
+
+.input-like {
+  padding: 3px;
+
+  &.disabled {
+    background-color: @color-disabled;
+  }
+
+  .form-control {
+    line-height: 28px;
+    padding-left: 7px;
+  }
+}

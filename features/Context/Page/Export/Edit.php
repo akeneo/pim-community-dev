@@ -30,6 +30,10 @@ class Edit extends Form
                 'Updated time condition' => [
                     'css'        => '.updated-since-parameter .controls',
                     'decorators' => ['Pim\Behat\Decorator\Export\Filter\UpdatedTimeConditionDecorator'],
+                ],
+                'jsTree' => [
+                    'css'        => '.jstree',
+                    'decorators' => ['Pim\Behat\Decorator\Tree\JsTreeDecorator']
                 ]
             ],
             $this->elements

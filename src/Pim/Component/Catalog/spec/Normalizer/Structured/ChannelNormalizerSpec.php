@@ -44,7 +44,9 @@ class ChannelNormalizerSpec extends ObjectBehavior
         $en->getCode()->willReturn('en_US');
         $fr->getCode()->willReturn('fr_FR');
         $channel->getCategory()->willReturn($category);
-        $category->getCode()->willReturn('Master catalog');
+        $category->getCode()->willReturn('master');
+        $category->getId()->willReturn(42);
+        $category->getLabel()->willReturn('Master catalog');
         $channel->getConversionUnits()->willReturn(
             [
                 'Weight' => 'Kilogram',
@@ -58,7 +60,11 @@ class ChannelNormalizerSpec extends ObjectBehavior
                 'label'            => 'Ecommerce',
                 'currencies'       => ['EUR', 'USD'],
                 'locales'          => ['en_US', 'fr_FR'],
-                'category'         => 'Master catalog',
+                'category'         => [
+                    'id' => 42,
+                    'code' => 'master',
+                    'label' => 'Master catalog',
+                ],
                 'conversion_units' => 'Weight: Kilogram, Size: Centimeter'
             ]
         );

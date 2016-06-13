@@ -188,11 +188,7 @@ class CategoryTreeController extends Controller
             throw new AccessDeniedException();
         }
 
-        try {
-            $parent = $this->findCategory($request->get('id'));
-        } catch (NotFoundHttpException $e) {
-            return ['categories' => []];
-        }
+        $parent = $this->findCategory($request->get('id'));
 
         $selectNodeId = $request->get('select_node_id', -1);
 

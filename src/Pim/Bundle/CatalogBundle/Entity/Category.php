@@ -154,9 +154,7 @@ class Category extends BaseCategory implements CategoryInterface
     }
 
     /**
-     * Get label
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {

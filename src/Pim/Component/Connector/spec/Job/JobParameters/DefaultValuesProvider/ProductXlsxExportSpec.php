@@ -34,6 +34,8 @@ class ProductXlsxExportSpec extends ObjectBehavior
                 'updated_since_date'     => null,
                 'updated_since_n_days'   => null,
                 'completeness'           => 'at_least_one_complete',
+                'categories_included'    => [],
+                'categories_excluded'    => [],
                 'linesPerFile'           => 10000,
                 'families'               => null,
                 'product_identifier'     => null,

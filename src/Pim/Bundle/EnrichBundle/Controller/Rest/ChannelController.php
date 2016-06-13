@@ -44,4 +44,18 @@ class ChannelController
 
         return new JsonResponse($normalizedChannels);
     }
+
+    /**
+     * @return JsonResponse
+     */
+    public function getAction($identifier)
+    {
+        $channel = $this->channelRepository->findOneByIdentifier($identifier);
+
+        if (null === $channel) {
+            return new JsonResponse(null, 404);
+        }
+
+        return new JsonResponse($this->normalizer->normalize($channel, 'json'));
+    }
 }

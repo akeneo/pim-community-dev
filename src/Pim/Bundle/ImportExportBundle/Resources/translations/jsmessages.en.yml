@@ -5,6 +5,14 @@ job_execution:
 
 pim_connector:
     export:
+        categories:
+            selector:
+                modal:
+                    title: Categories selection
+                    cancel: Cancel
+                    confirm: Confirm
+                label: "{0} All products|{1} One category selected|]1,Inf[ {{ count }} categories selected"
+                edit: Edit
         locales:
             validation:
                 not_blank: One locale must be selected, please choose a locale to export.

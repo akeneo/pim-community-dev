@@ -32,4 +32,11 @@ interface CategoryInterface extends
      * @return ProductInterface[]
      */
     public function getProducts();
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel();
 }
