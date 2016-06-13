@@ -65,6 +65,7 @@ class Attribute implements ArrayConverterInterface
                 $convertedItem['labels'][$labelLocale] = $data;
                 break;
             case 'type':
+                // TODO: Remove this weird key to the original one (type)
                 $convertedItem['attributeType'] = $data;
                 break;
             case 'number_min':
