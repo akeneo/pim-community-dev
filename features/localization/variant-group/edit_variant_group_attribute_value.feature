@@ -19,7 +19,7 @@ Feature: Editing localized attribute values of a variant group also updates prod
     And I add the "fr_FR" locale to the "mobile" channel
     And I am logged in as "Julien"
     And I am on the "caterpillar_boots" variant group page
-    And I visit the "Attributes" tab
+    And I visit the "Attributs" tab
 
   Scenario: Successfully change a pim_catalog_metric attribute of a variant group
     When I fill in the following information:
