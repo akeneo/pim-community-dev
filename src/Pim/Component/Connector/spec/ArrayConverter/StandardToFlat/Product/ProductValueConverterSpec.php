@@ -2,187 +2,61 @@
 
 namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat\Product;
 
+use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter;
+use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\ValueConverterRegistry;
+use Prophecy\Argument;
 
 class ProductValueConverterSpec extends ObjectBehavior
 {
-    function let(AttributeColumnsResolver $columnsResolver)
-    {
-        $this->beConstructedWith($columnsResolver);
+    function let(
+        ValueConverterRegistry $converterRegistry,
+        CachedObjectRepositoryInterface $attributeRepo
+    ) {
+        $this->beConstructedWith($converterRegistry, $attributeRepo);
     }
 
-    function it_converts_boolean_fields_from_standard_to_flat_format($columnsResolver)
-    {
-        $columnsResolver->resolveFlatAttributeName('auto_focus_lock', null, 'print')->willReturn('auto_focus_lock-print');
-        $columnsResolver->resolveFlatAttributeName('iscolor', null, null)->willReturn('iscolor');
+    function it_converts_product_value_fields_from_standard_to_flat_format(
+        $converterRegistry,
+        $attributeRepo,
+        AttributeInterface $attribute,
+        AbstractValueConverter $arrayConverter
+    ) {
+        $attributeRepo->findOneByIdentifier('description')->willReturn($attribute);
+        $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $converterRegistry->getConverter('pim_catalog_textarea')->willReturn($arrayConverter);
 
-        $expected1 = ['auto_focus_lock-print' => '0'];
-        $expected2 = ['iscolor' => '1'];
-
-        // auto_focus_lock
-        $data1 = [
-            [
-                'locale' => null,
-                'scope'  => 'print',
-                'data'   => false
-            ]
-        ];
-
-        // iscolor
-        $data2 = [
-            [
-                'locale' => null,
-                'scope'  => null,
-                'data'   => true
-            ]
-        ];
-
-        $this->convertField('auto_focus_lock', $data1)->shouldReturn($expected1);
-        $this->convertField('iscolor', $data2)->shouldReturn($expected2);
-    }
-
-    function it_converts_metric_fields_from_standard_to_flat_format($columnsResolver)
-    {
-        $columnsResolver->resolveFlatAttributeName('weight', 'de_DE', 'print')->willReturn('weight-de_DE-print');
-        $columnsResolver->resolveFlatAttributeName('maximum_scan_size', null, null)->willReturn('maximum_scan_size');
-
-        $expected1 = [
-            'weight-de_DE-print'      => '100',
-            'weight-de_DE-print-unit' => 'MEGAHERTZ',
-        ];
-
-        $expected2 = [
-            'maximum_scan_size'      => '50',
-            'maximum_scan_size-unit' => 'MILLIMETER',
-        ];
-
-        // weight
-        $data1 = [
-            [
-                'locale' => 'de_DE',
-                'scope'  => 'print',
-                'data'   => [
-                    'unit' => 'MEGAHERTZ',
-                    'data' => '100'
-                ]
-            ]
-        ];
-
-        // maximum_scan_size
-        $data2 = [
-            [
-                'locale' => null,
-                'scope'  => null,
-                'data'   => [
-                    'unit' => 'MILLIMETER',
-                    'data' => '50'
-                ]
-            ]
-        ];
-
-        $this->convertField('weight', $data1)->shouldReturn($expected1);
-        $this->convertField('maximum_scan_size', $data2)->shouldReturn($expected2);
-    }
-
-    function it_converts_price_fields_from_standard_to_flat_format($columnsResolver)
-    {
-        $columnsResolver->resolveFlatAttributeName('super_price', 'de_DE', 'ecommerce')->willReturn('super_price-de_DE-ecommerce');
-        $columnsResolver->resolveFlatAttributeName('super_price', 'fr_FR', 'ecommerce')->willReturn('super_price-fr_FR-ecommerce');
-
-        $expected = [
-            'super_price-de_DE-ecommerce-EUR' => '10',
-            'super_price-de_DE-ecommerce-USD' => '9',
-            'super_price-fr_FR-ecommerce-EUR' => '30',
-            'super_price-fr_FR-ecommerce-USD' => '29',
-        ];
-
-        // super_price
         $data = [
             [
-                'locale' => 'de_DE',
-                'scope'  => 'ecommerce',
-                'data'   => [
-                    [
-                        'data'     => '10',
-                        'currency' => 'EUR'
-                    ],
-                    [
-                        'data'     => '9',
-                        'currency' => 'USD'
-                    ],
-                ]
-            ],
-            [
                 'locale' => 'fr_FR',
-                'scope'  => 'ecommerce',
-                'data'   => [
-                    [
-                        'data'     => '30',
-                        'currency' => 'EUR'
-                    ],
-                    [
-                        'data'     => '29',
-                        'currency' => 'USD'
-                    ],
-                ]
+                'scope'  => null,
+                'data'   => 'T-Rex en plastique.'
             ]
         ];
 
-        $this->convertField('super_price', $data)->shouldReturn($expected);
+        $converterResult = [
+            'description-fr_FR' => 'T-Rex en plastique.'
+        ];
+
+        $arrayConverter->convert('description', $data)->shouldBeCalled()->willReturn($converterResult);
+
+        $this->convertField('description', $data)->shouldReturn($converterResult);
+
     }
 
-    function it_converts_fields_from_standard_to_flat_format($columnsResolver)
-    {
-        $columnsResolver->resolveFlatAttributeName('sku', null, null)->willReturn('sku');
-        $columnsResolver->resolveFlatAttributeName('total_megapixels', null, null)->willReturn('total_megapixels');
-        $columnsResolver->resolveFlatAttributeName('tshirt_materials', null, null)->willReturn('tshirt_materials');
-        $columnsResolver->resolveFlatAttributeName('tshirt_style', null, null)->willReturn('tshirt_style');
+    function it_throws_a_logic_exception_if_no_converter_available(
+        $converterRegistry,
+        $attributeRepo,
+        AttributeInterface $attribute
+    ) {
+        $attributeRepo->findOneByIdentifier('weight')->willReturn($attribute);
+        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $converterRegistry->getConverter('pim_catalog_metric')->willReturn(null);
 
-        $expected1 = ['sku' => '10699783'];
-        $expected2 = ['total_megapixels' => '50'];
-        $expected3 = ['tshirt_materials' => ''];
-        $expected4 = ['tshirt_style' => 'vneck,large'];
-
-        // sku
-        $data1 = [
-            [
-                'locale' => null,
-                'scope'  => null,
-                'data'   => '10699783'
-            ]
-        ];
-
-        // total_megapixels
-        $data2 = [
-            [
-                'locale' => null,
-                'scope'  => null,
-                'data'   => '50'
-            ]
-        ];
-
-        // tshirt_materials
-        $data3 = [
-            [
-                'locale' => null,
-                'scope'  => null,
-                'data'   => []
-            ]
-        ];
-
-        // tshirt_style
-        $data4 = [
-            [
-                'locale' => null,
-                'scope'  => null,
-                'data'   => ['vneck', 'large']
-            ]
-        ];
-
-        $this->convertField('sku', $data1)->shouldReturn($expected1);
-        $this->convertField('total_megapixels', $data2)->shouldReturn($expected2);
-        $this->convertField('tshirt_materials', $data3)->shouldReturn($expected3);
-        $this->convertField('tshirt_style', $data4)->shouldReturn($expected4);
+        $this->shouldThrow(
+            new \LogicException('No standard to flat array converter found for attribute type "pim_catalog_metric"')
+        )->during('convertField', ['weight', [], []]);
     }
 }

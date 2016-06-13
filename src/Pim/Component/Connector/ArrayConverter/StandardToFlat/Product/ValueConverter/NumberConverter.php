@@ -1,0 +1,61 @@
+<?php
+
+namespace Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
+
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
+
+/**
+ * Number array converter.
+ * Convert a standard number array format to a flat one.
+ *
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+class NumberConverter extends AbstractValueConverter
+{
+    /**
+     * @param AttributeColumnsResolver $columnsResolver
+     * @param array                    $supportedFieldType
+     */
+    public function __construct(AttributeColumnsResolver $columnsResolver, array $supportedFieldType)
+    {
+        parent::__construct($columnsResolver);
+
+        $this->supportedFieldType = $supportedFieldType;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Given a 'score' $field with this $data:
+     * [
+     *     [
+     *         'locale' => null,
+     *         'scope'  => null,
+     *         'data'   => 19.9
+     *     ],
+     * ]
+     *
+     * It will return:
+     * [
+     *     'score' => 19.9,
+     * ]
+     */
+    public function convert($attributeCode, $data)
+    {
+        $convertedItem = [];
+
+        foreach ($data as $value) {
+            $flatName = $this->columnsResolver->resolveFlatAttributeName(
+                $attributeCode,
+                $value['locale'],
+                $value['scope']
+            );
+
+            $convertedItem[$flatName] = floatval($value['data']);
+        }
+
+        return $convertedItem;
+    }
+}

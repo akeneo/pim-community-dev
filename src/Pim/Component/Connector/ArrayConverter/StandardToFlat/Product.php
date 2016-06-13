@@ -64,7 +64,10 @@ class Product implements ArrayConverterInterface
                 $convertedItem = $this->convertGroups($data, $convertedItem);
                 break;
             default:
-                $convertedItem = array_merge($convertedItem, $this->valueConverter->convertField($field, $data));
+                $convertedItem = array_merge(
+                    $convertedItem,
+                    $this->valueConverter->convertField($field, $data)
+                );
                 break;
         }
 

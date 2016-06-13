@@ -3,13 +3,21 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
 
 class VariantGroupSpec extends ObjectBehavior
 {
-    function let(ProductValueConverter $valueConverter)
-    {
-        $this->beConstructedWith($valueConverter);
+    function let(
+        ProductValueConverter $valueConverter,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $identifierAttribute
+    ) {
+        $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
+        $identifierAttribute->getCode()->willReturn('sku');
+
+        $this->beConstructedWith($valueConverter, $attributeRepository);
     }
 
     function it_converts_from_standard_to_flat_format($valueConverter)
@@ -28,28 +36,20 @@ class VariantGroupSpec extends ObjectBehavior
             'blade_length-unit' => 'CENTIMETER',
         ]);
 
-        $valueConverter->convertField('blade_material', [
-            [
-                'locale' => null,
-                'scope'  => null,
-                'data'   => ['wood', 'leather']
-            ]
-        ])->willReturn(['blade_material' => 'wood,leather']);
-
         $valueConverter->convertField('description', [
             [
                 'locale' => 'fr_FR',
                 'scope'  => 'ecommerce',
-                'data'   => '<p>description</p>',
+                'data'   => '<p>description FR</p>',
             ],
             [
                 'locale' => 'en_US',
                 'scope'  => 'ecommerce',
-                'data'   => '<p>description</p>',
+                'data'   => '<p>description EN</p>',
             ]
         ])->willReturn([
-            'description-fr_FR-ecommerce' => '<p>description</p>',
-            'description-en_US-ecommerce' => '<p>description</p>',
+            'description-fr_FR-ecommerce' => '<p>description FR</p>',
+            'description-en_US-ecommerce' => '<p>description EN</p>',
         ]);
 
         $expected = [
@@ -60,9 +60,8 @@ class VariantGroupSpec extends ObjectBehavior
             'type'                        => 'VARIANT',
             'blade_length'                => '80',
             'blade_length-unit'           => 'CENTIMETER',
-            'blade_material'              => 'wood,leather',
-            'description-fr_FR-ecommerce' => '<p>description</p>',
-            'description-en_US-ecommerce' => '<p>description</p>',
+            'description-fr_FR-ecommerce' => '<p>description FR</p>',
+            'description-en_US-ecommerce' => '<p>description EN</p>',
         ];
 
         $item = [
@@ -84,23 +83,16 @@ class VariantGroupSpec extends ObjectBehavior
                         ]
                     ]
                 ],
-                'blade_material' => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => ['wood', 'leather']
-                    ]
-                ],
                 'description'    => [
                     [
                         'locale' => 'fr_FR',
                         'scope'  => 'ecommerce',
-                        'data'   => '<p>description</p>',
+                        'data'   => '<p>description FR</p>',
                     ],
                     [
                         'locale' => 'en_US',
                         'scope'  => 'ecommerce',
-                        'data'   => '<p>description</p>',
+                        'data'   => '<p>description EN</p>',
                     ]
                 ]
             ]
