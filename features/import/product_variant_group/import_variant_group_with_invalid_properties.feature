@@ -85,22 +85,3 @@ Feature: Execute an import with invalid properties
       | code   | label-en_US | label-fr_FR | axis       | type    |
       | SANDAL | Sandal      |             | color,size | VARIANT |
       | NOT_VG | Not VG      |             |            | RELATED |
-
-  Scenario: Skip the line when encounter an existing group which is not a variant group
-    Given the following CSV file to import:
-      """
-      code;type;axis;label-en_US
-      NOT_VG;VARIANT;;"My standard not updatable group"
-      """
-    And the following job "csv_footwear_variant_group_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_variant_group_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_variant_group_import" job to finish
-    Then I should see "Cannot process group \"NOT_VG\", only variant groups are accepted"
-    And I should see "read lines 1"
-    And I should see "Skipped 1"
-    And there should be the following groups:
-      | code   | label-en_US | label-fr_FR | axis       | type    |
-      | SANDAL | Sandal      |             | color,size | VARIANT |
-      | NOT_VG | Not VG      |             |            | RELATED |
