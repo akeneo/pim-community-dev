@@ -8,19 +8,19 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Register flat to standard array converters ordered by priority
+ * Register standard to flat array converters ordered by priority
  *
- * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class RegisterFlatToStandardConverterPass implements CompilerPassInterface
+class RegisterStandardToFlatConverterPass implements CompilerPassInterface
 {
     /** @staticvar */
-    const CONVERTER_REGISTRY = 'pim_connector.array_converter.flat_to_standard.product.value_converter.registry';
+    const CONVERTER_REGISTRY = 'pim_connector.array_converter.standard_to_flat.product.value_converter.registry';
 
     /** @staticvar */
-    const CONVERTER_TAG = 'pim_connector.array_converter.flat_to_standard.product.value_converter';
+    const CONVERTER_TAG = 'pim_connector.array_converter.standard_to_flat.product.value_converter';
 
     /** @staticvar int The default priority in registry stack */
     const DEFAULT_PRIORITY = 100;

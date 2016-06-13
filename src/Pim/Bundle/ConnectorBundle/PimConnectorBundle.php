@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\ConnectorBundle;
 
-use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterConverterPass;
+use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterFlatToStandardConverterPass;
+use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterStandardToFlatConverterPass;
 use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -22,6 +23,8 @@ class PimConnectorBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new RegisterConverterPass());
+            ->addCompilerPass(new RegisterFlatToStandardConverterPass())
+            ->addCompilerPass(new RegisterStandardToFlatConverterPass())
+        ;
     }
 }
