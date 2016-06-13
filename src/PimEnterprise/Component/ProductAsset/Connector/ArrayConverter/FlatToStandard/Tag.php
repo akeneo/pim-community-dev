@@ -24,7 +24,7 @@ class Tag implements ArrayConverterInterface
     /**
      * {@inheritdoc}
      *
-     * Converts flat csv array to standard structured array.
+     * Converts flat csv array (from asset file) to standard structured array of tags.
      * This converter returns the set of parsed items.
      *
      * Before:

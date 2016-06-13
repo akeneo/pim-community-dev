@@ -1,5 +1,6 @@
 parameters:
-    pimee_connector.reader.file.csv_tag.class: PimEnterprise\Bundle\ProductAssetBundle\Reader\Csv\TagReader
+    pimee_connector.reader.file.csv_tag.class:  PimEnterprise\Bundle\ProductAssetBundle\Reader\Csv\TagReader
+    pimee_connector.reader.file.xlsx_tag.class: PimEnterprise\Bundle\ProductAssetBundle\Reader\Xlsx\TagReader
 
 services:
     pimee_product_asset.reader.file.csv_tag:
@@ -21,10 +22,16 @@ services:
         alias: pim_connector.reader.file.csv
 
     pimee_product_asset.reader.file.xlsx_tag:
-        alias: pim_connector.reader.file.xlsx
+        class: '%pimee_connector.reader.file.xlsx_tag.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pimee_product_asset.array_converter.flat_to_standard.tag'
 
     pimee_product_asset.reader.file.xlsx_asset:
-        alias: pim_connector.reader.file.xlsx
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pimee_product_asset.array_converter.flat_to_standard.asset'
 
     pimee_product_asset.reader.file.xlsx_asset_category:
         alias: pim_connector.reader.file.xlsx_category
