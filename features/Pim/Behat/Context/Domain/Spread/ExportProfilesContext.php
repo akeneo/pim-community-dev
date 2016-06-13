@@ -191,15 +191,14 @@ class ExportProfilesContext extends PimContext
         unset($actualLines[0]);
         unset($expectedLines[0]);
 
-        foreach ($actualLines as $actualLine) {
-            $rows = array_filter($expectedLines, function ($item) use ($actualLine) {
-                return 0 === count(array_diff($item, $actualLine));
+        foreach ($expectedLines as $expectedLine) {
+            $rows = array_filter($actualLines, function ($actualLine) use ($expectedLine) {
+                return 0 === count(array_diff($expectedLine, $actualLine));
             });
-
 
             if (1 !== count($rows)) {
                 throw new \Exception(
-                    sprintf('Could not find a line containing "%s" in %s', implode(' | ', $actualLine), $path)
+                    sprintf('Could not find a line containing "%s" in %s', implode(' | ', $expectedLine), $path)
                 );
             }
         }

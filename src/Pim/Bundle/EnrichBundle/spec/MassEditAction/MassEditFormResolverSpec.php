@@ -33,7 +33,7 @@ class MassEditFormResolverSpec extends ObjectBehavior
     ) {
         $gridName = 'awesome-grid';
 
-        $operationRegistry->getAllByGridName($gridName)->willReturn([
+        $operationRegistry->getAllByGridNameAndGroup($gridName, 'mass-edit')->willReturn([
             'duplicate' => $duplicateOperation,
             'erase'     => $eraseOperation
         ]);
@@ -45,7 +45,7 @@ class MassEditFormResolverSpec extends ObjectBehavior
             ]
         ])->shouldBeCalled();
 
-        $this->getAvailableOperationsForm($gridName);
+        $this->getAvailableOperationsForm($gridName, 'mass-edit');
     }
 
     function it_returns_the_operation_configuration_form_and_initialize_operation(

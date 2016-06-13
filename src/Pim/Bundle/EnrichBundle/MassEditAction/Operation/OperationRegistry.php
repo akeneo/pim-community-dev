@@ -45,8 +45,13 @@ class OperationRegistry implements OperationRegistryInterface
      *
      * @throws \InvalidArgumentException If the operation is already registered
      */
-    public function register(MassEditOperationInterface $operation, $operationAlias, $acl = null, $gridName = null)
-    {
+    public function register(
+        MassEditOperationInterface $operation,
+        $operationAlias,
+        $gridName,
+        $operationGroup,
+        $acl = null
+    ) {
         if (isset($this->operations[$operationAlias])) {
             throw new \InvalidArgumentException(
                 sprintf('An operation with the alias "%s" is already registered', $operationAlias)
@@ -57,14 +62,7 @@ class OperationRegistry implements OperationRegistryInterface
             return;
         }
 
-        if (null !== $gridName) {
-            if (!isset($this->gridOperations[$gridName])) {
-                $this->gridOperations[$gridName] = [];
-            }
-
-            $this->gridOperations[$gridName][$operationAlias] = $operation;
-        }
-
+        $this->gridOperations[$gridName][$operationGroup][$operationAlias] = $operation;
         $this->operations[$operationAlias] = $operation;
     }
 
@@ -87,16 +85,16 @@ class OperationRegistry implements OperationRegistryInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \InvalidArgumentException If no operation is registered for the given datagrid name
+     * @throws \InvalidArgumentException If no operation is registered for the given datagrid name and group
      */
-    public function getAllByGridName($gridName)
+    public function getAllByGridNameAndGroup($gridName, $operationGroup)
     {
-        if (!isset($this->gridOperations[$gridName])) {
+        if (!isset($this->gridOperations[$gridName][$operationGroup])) {
             throw new \InvalidArgumentException(
-                sprintf('No operation is registered for datagrid "%s"', $gridName)
+                sprintf('No operation is registered for datagrid "%s" and group "%s"', $gridName, $operationGroup)
             );
         }
 
-        return $this->gridOperations[$gridName];
+        return $this->gridOperations[$gridName][$operationGroup];
     }
 }

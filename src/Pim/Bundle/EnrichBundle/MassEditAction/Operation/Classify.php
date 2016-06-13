@@ -13,11 +13,11 @@ use Pim\Component\Catalog\Model\CategoryInterface;
  */
 class Classify extends AbstractMassEditOperation
 {
-    /** @var CategoryInterface[] */
-    protected $categories;
-
     /** @var string The background job code to launch */
     protected $batchJobCode;
+
+    /** @var CategoryInterface[] */
+    protected $categories;
 
     /**
      * @param string $batchJobCode

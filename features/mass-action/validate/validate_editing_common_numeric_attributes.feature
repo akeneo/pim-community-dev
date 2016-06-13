@@ -41,7 +41,8 @@ Feature: Validate editing common numeric attributes of multiple products
     And I am on the products page
 
   Scenario: Successfully mass edit a metric attribute
-    Given I mass-edit products boots and sneakers
+    Given I select rows boots and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Length attribute
     And I change the Length to "10"
@@ -49,14 +50,16 @@ Feature: Validate editing common numeric attributes of multiple products
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the metric "Length" of products boots and sneakers should be "10"
     When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
+    And I select rows boots, sandals and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Length attribute
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the metric "Length" of products boots, sandals and sneakers should be ""
     When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
+    And I select rows boots, sandals and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Length attribute
     And I change the Length to "foo"
@@ -65,7 +68,8 @@ Feature: Validate editing common numeric attributes of multiple products
     Then the metric "Length" of products boots, sandals and sneakers should be ""
 
   Scenario: Successfully mass edit a number attribute
-    Given I mass-edit products boots and sneakers
+    Given I select rows boots and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Number in stock attribute
     And I change the "Number in stock" to "10"
@@ -74,7 +78,8 @@ Feature: Validate editing common numeric attributes of multiple products
     Then attribute number_in_stock of "boots" should be "10"
     And attribute number_in_stock of "sneakers" should be "10"
     When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
+    And I select rows boots, sandals and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Number in stock attribute
     And I move on to the next step
@@ -83,7 +88,8 @@ Feature: Validate editing common numeric attributes of multiple products
     And attribute number_in_stock of "sandals" should be ""
     And attribute number_in_stock of "sneakers" should be ""
     When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
+    And I select rows boots, sandals and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Number in stock attribute
     And I change the "Number in stock" to "-10"
@@ -94,7 +100,8 @@ Feature: Validate editing common numeric attributes of multiple products
     And attribute number_in_stock of "sneakers" should be ""
 
   Scenario: Successfully mass edit a price attribute
-    Given I mass-edit products boots and sneakers
+    Given I select rows boots and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Price attribute
     And I change the "Price" to "10 USD"
@@ -106,7 +113,8 @@ Feature: Validate editing common numeric attributes of multiple products
       | 10     | USD      |
       | 15     | EUR      |
     When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
+    And I select rows boots, sandals and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Price attribute
     And I move on to the next step
@@ -116,7 +124,8 @@ Feature: Validate editing common numeric attributes of multiple products
       |        | USD      |
       |        | EUR      |
     When I am on the products page
-    And I mass-edit products boots, sandals and sneakers
+    And I select rows boots, sandals and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Price attribute
     And I change the "Price" to "500 USD"

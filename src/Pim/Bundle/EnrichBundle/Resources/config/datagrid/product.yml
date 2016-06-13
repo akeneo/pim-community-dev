@@ -91,9 +91,10 @@ datagrid:
                 icon:  retweet
                 link:  toggle_status_link
         mass_actions_groups:
+            bulk_actions:
+                label: pim_datagrid.mass_action_group.bulk_actions.label
             quick_export:
                 label: pim_datagrid.mass_action_group.quick_export.label
-                icon: download-alt
         mass_actions:
             delete:
                 type: delete
@@ -109,11 +110,36 @@ datagrid:
                     error: pim_datagrid.mass_action.delete.error
                     empty_selection: pim_datagrid.mass_action.delete.empty_selection
                 launcherOptions:
-                    icon: trash
+                    group: bulk_actions
+            mass_edit:
+                type: edit
+                acl_resource: pim_enrich_mass_edit
+                label: pim.grid.mass_action.mass_edit
+                handler: product_mass_edit
+                route: pim_enrich_mass_edit_action_choose
+                launcherOptions:
+                    group: bulk_actions
+            category_edit:
+                type: edit
+                acl_resource: pim_enrich_mass_edit
+                label: pim.grid.mass_action.category_edit
+                handler: product_mass_edit
+                route: pim_enrich_mass_edit_action_choose
+                route_parameters:
+                    operationGroup: category-edit
+                launcherOptions:
+                    group: bulk_actions
+            sequential_edit:
+                type: edit
+                acl_resource: pim_enrich_product_edit_attributes
+                label: pim.grid.mass_action.sequential_edit
+                handler: sequential_edit
+                route: pim_enrich_mass_edit_action_sequential_edit
+                launcherOptions:
+                    group: bulk_actions
             quick_export_grid_context_xlsx:
                 type: export
                 label: pim.grid.mass_action.quick_export.xlsx_grid_context
-                icon: download
                 handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:
@@ -130,7 +156,6 @@ datagrid:
             quick_export_xlsx:
                 type: export
                 label: pim.grid.mass_action.quick_export.xlsx_all
-                icon: download
                 handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:
@@ -147,7 +172,6 @@ datagrid:
             quick_export_grid_context_csv:
                 type: export
                 label: pim.grid.mass_action.quick_export.csv_grid_context
-                icon: download
                 handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:
@@ -164,7 +188,6 @@ datagrid:
             quick_export_csv:
                 type: export
                 label: pim.grid.mass_action.quick_export.csv_all
-                icon: download
                 handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:
@@ -178,21 +201,6 @@ datagrid:
                     empty_selection: pim_datagrid.mass_action.delete.empty_selection
                 launcherOptions:
                     group: quick_export
-            mass_edit:
-                type: edit
-                acl_resource: pim_enrich_mass_edit
-                label: pim.grid.mass_action.mass_edit
-                handler: product_mass_edit
-                route: pim_enrich_mass_edit_action_choose
-                icon: edit
-
-            sequential_edit:
-                type: edit
-                acl_resource: pim_enrich_product_edit_attributes
-                label: pim.grid.mass_action.sequential_edit
-                handler: sequential_edit
-                route: pim_enrich_mass_edit_action_sequential_edit
-                icon: sort-by-attributes
         sorters:
             columns:
                 family:

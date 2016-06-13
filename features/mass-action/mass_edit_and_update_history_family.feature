@@ -32,7 +32,8 @@ Feature: Update product history when mass editing products
     And I wait to be on the "sandals" product page
     And I save the product
     And I am on the products page
-    And I mass-edit products boots, sandals and sneakers
+    And I select rows boots, sandals and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
 
   Scenario: Display history when changing product family
     Given I choose the "Change the family of products" operation

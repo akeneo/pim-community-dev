@@ -13,7 +13,8 @@ Feature: Add products to many groups at once via a form
       | moon_boots   |
     And I am logged in as "Julia"
     And I am on the products page
-    Given I mass-edit products kickers, hiking_shoes and moon_boots
+    Given I select rows kickers, hiking_shoes and moon_boots
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Add to groups" operation
     And I check "Similar boots"
     When I move on to the next step

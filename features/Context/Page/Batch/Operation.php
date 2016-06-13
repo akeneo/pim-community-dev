@@ -24,6 +24,7 @@ class Operation extends Wizard
         'Add to a variant group'           => 'Batch AddToVariantGroup',
         'Set attribute requirements'       => 'Batch SetAttributeRequirements',
         'Classify products in categories'  => 'Batch Classify',
+        'Move products to categories'      => 'Batch Classify',
     );
 
     /**

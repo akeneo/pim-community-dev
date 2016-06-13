@@ -14,7 +14,8 @@ Feature: Edit common attributes with permissions
   Scenario: Successfully select attribute when user have no "add attributes" permission
     Given I am logged in as "Mary"
     And I am on the products page
-    And I mass-edit products boots
+    And I select row boots
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     When I choose the "Edit common attributes" operation
     Then I should see the text "Select attributes"
     And I display the Name attribute

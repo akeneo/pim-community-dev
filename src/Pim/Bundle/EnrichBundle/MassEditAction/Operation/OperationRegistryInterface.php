@@ -16,10 +16,18 @@ interface OperationRegistryInterface
      *
      * @param MassEditOperationInterface $operation
      * @param string                     $operationAlias
-     * @param string                     $acl
      * @param string                     $gridName
+     * @param string                     $operationGroup
+     * @param string|null                $acl
+     * @return
      */
-    public function register(MassEditOperationInterface $operation, $operationAlias, $acl = null, $gridName = null);
+    public function register(
+        MassEditOperationInterface $operation,
+        $operationAlias,
+        $gridName,
+        $operationGroup,
+        $acl = null
+    );
 
     /**
      * Get the mass edit operation registered with the given $operationAlias.
@@ -31,11 +39,12 @@ interface OperationRegistryInterface
     public function get($operationAlias);
 
     /**
-     * Get all mass edit operations registered for the given $gridName
+     * Get all mass edit operations registered for the given $gridName and $operationGroup
      *
      * @param string $gridName
+     * @param string $operationGroup
      *
      * @return MassEditOperationInterface[]
      */
-    public function getAllByGridName($gridName);
+    public function getAllByGridNameAndGroup($gridName, $operationGroup);
 }

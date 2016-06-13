@@ -40,17 +40,15 @@ class RegisterMassEditOperationsPass implements CompilerPassInterface
         $registry   = $container->getDefinition(self::OPERATION_REGISTRY);
         $operations = $container->findTaggedServiceIds(self::OPERATION_TAG);
 
-        foreach ($operations as $operationsId => $operation) {
-            $config   = $operation[0];
-            $alias    = $config['alias'];
-            $acl      = isset($config['acl']) ? $config['acl'] : null;
-            $gridName = isset($config['datagrid']) ? $config['datagrid'] : null;
+        foreach ($operations as $operationId => $operation) {
+            $config = $operation[0];
 
             $registry->addMethodCall('register', [
-                $this->referenceFactory->createReference($operationsId),
-                $alias,
-                $acl,
-                $gridName
+                $this->referenceFactory->createReference($operationId),
+                $config['alias'],
+                $config['datagrid'],
+                $config['operation_group'],
+                isset($config['acl']) ? $config['acl'] : null
             ]);
         }
     }

@@ -49,7 +49,8 @@ Feature: Browse families
       | vans        | sneakers |
     And I am logged in as "Julia"
     And I am on the products page
-    And I sort by "family" value ascending
-    And the rows should be sorted ascending by family
-    Then I mass-edit products caterpillar and dr-martens
-    And I should see "Mass Edit (2 products)"
+    When I sort by "family" value ascending
+    Then the rows should be sorted ascending by family
+    When I select rows caterpillar and dr-martens
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    Then I should see "Mass Edit (2 products)"

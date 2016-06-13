@@ -98,7 +98,6 @@ class Grid extends Index
                 'View selector'         => ['css' => '#view-selector'],
                 'Views list'            => ['css' => '.ui-multiselect-menu.highlight-hover'],
                 'Select2 results'       => ['css' => '#select2-drop .select2-results'],
-                'Mass Edit'             => ['css' => '.mass-actions-panel .action i.icon-edit'],
                 'Main context selector' => [
                     'css'        => '#container',
                     'decorators' => [
@@ -817,43 +816,6 @@ class Grid extends Index
     public function moveColumn($source, $target)
     {
         return $this->getElement('Configuration Popin')->moveColumn($source, $target);
-    }
-
-    /**
-     * Press the mass edit button
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function massEdit()
-    {
-        $button = $this->getElement('Mass Edit');
-        $parent = $button->getParent();
-
-        if (null === $parent) {
-            throw new \InvalidArgumentException('"Mass edit" button not found');
-        }
-
-        $this->pressButton($parent->getText());
-    }
-
-    /**
-     * Press the mass delete button
-     */
-    public function massDelete()
-    {
-        $this->pressButton('Delete');
-    }
-
-    /**
-     * Press the sequential edit button
-     */
-    public function sequentialEdit()
-    {
-        $this->spin(function () {
-            $this->pressButton('Sequential Edit');
-
-            return true;
-        }, 'Cannot find "Sequential Edit" button');
     }
 
     /**

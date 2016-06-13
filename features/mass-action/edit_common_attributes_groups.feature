@@ -21,7 +21,8 @@ Feature: Edit common attributes of many products at once
     And I am on the products page
     And I filter by "scope" with operator "equals" and value "Mobile"
     And I switch the locale to "fr_FR"
-    When I mass-edit products boots and sandals
+    When I select rows boots and sandals
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Nom and Taille attributes
     Then I should see "[info]"

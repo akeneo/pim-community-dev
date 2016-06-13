@@ -30,19 +30,21 @@ Feature: Delete many product at once
     And I am on the products page
 
   Scenario: Display a message when try to delete none product
-    Given I press mass-delete button
+    Given I press "Delete" on the "Bulk Actions" dropdown button
     Then I should see the flash message "No product selected"
     And I should be on the products page
 
   Scenario: Successfully remove many products
-    Given I mass-delete products boots_S36, boots_S37 and boots_S38
+    Given I select rows boots_S36, boots_S37 and boots_S38
+    And I press "Delete" on the "Bulk Actions" dropdown button
     Then I should see "Are you sure you want to delete selected products?"
     When I confirm the removal
     Then I should not see products boots_S36, product boots_S37 and boots_S38
     And the grid should contain 8 elements
 
   Scenario: Successfully "mass" delete one product
-    Given I mass-delete product boots_S38
+    Given I select row boots_S38
+    And I press "Delete" on the "Bulk Actions" dropdown button
     Then I should see "Are you sure you want to delete selected products?"
     When I confirm the removal
     Then I should not see product boots_S38
@@ -51,7 +53,7 @@ Feature: Delete many product at once
   Scenario: Successfully mass delete visible products
     Given I sort by "SKU" value ascending
     And I select all visible products
-    Then I press mass-delete button
+    Then I press "Delete" on the "Bulk Actions" dropdown button
     And I should see "Are you sure you want to delete selected products?"
     When I confirm the removal
     Then the grid should contain 1 element
@@ -59,7 +61,7 @@ Feature: Delete many product at once
 
   Scenario: Successfully mass delete all products
     Given I select all products
-    Then I press mass-delete button
+    Then I press "Delete" on the "Bulk Actions" dropdown button
     And I should see "Are you sure you want to delete selected products?"
     When I confirm the removal
     Then the grid should contain 0 elements
@@ -74,7 +76,7 @@ Feature: Delete many product at once
     And I filter by "scope" with operator "equals" and value "Mobile"
     And I filter by "completeness" with operator "equals" and value "yes"
     And I select all visible products
-    When I press mass-delete button
+    When I press "Delete" on the "Bulk Actions" dropdown button
     Then I should see "Are you sure you want to delete selected products?"
     When I confirm the removal
     Then the grid should contain 0 element

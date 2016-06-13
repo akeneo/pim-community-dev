@@ -30,7 +30,8 @@ Feature: Display jobs execution in job tracker
       | sneakers  | sneakers   |
       | sandals   | sandals    |
     When I am on the products page
-    Then I mass-edit products boots, sandals and sneakers
+    Then I select rows boots, sandals and sneakers
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
