@@ -65,6 +65,7 @@ class AttributeColumnsResolver
     public function resolveAttributeColumns()
     {
         if (empty($this->attributesFields)) {
+            // TODO: Put a Cursor to avoid a findAll on attributes (╯°□°)╯︵ ┻━┻
             $attributes = $this->attributeRepository->findAll();
             $currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
             $values = $this->valuesResolver->resolveEligibleValues($attributes);
