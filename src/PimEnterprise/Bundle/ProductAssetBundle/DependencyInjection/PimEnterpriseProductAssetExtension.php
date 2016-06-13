@@ -67,7 +67,6 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
         $loader->load('services.yml');
-        $loader->load('steps.yml');
         $loader->load('subscribers.yml');
         $loader->load('transformers.yml');
         $loader->load('twig_extension.yml');

@@ -24,80 +24,53 @@ class Tag implements ArrayConverterInterface
     /**
      * {@inheritdoc}
      *
-     * Converts flat csv array to standard structured array:
+     * Converts flat csv array to standard structured array.
+     * This converter returns the set of parsed items.
      *
      * Before:
      * [
-     *      'tags' => 'dog,flowers,cities,animal,sunset',
+     *     'tags' => 'dog,flowers,cities,animal,sunset',
      * ]
      *
      * After:
      * [
-     *      'tags'        => [
-     *          'dog',
-     *          'flowers',
-     *          'cities',
-     *          'animal',
-     *          'sunset',
-     *      ]
+     *     ['code' => 'dog'],
+     *     ['code' => 'flowers'],
+     *     ['code' => 'cities'],
+     *     ['code' => 'animal'],
+     *     ['code' => 'sunset'],
      * ]
      */
     public function convert(array $item, array $options = [])
     {
         $this->validate($item);
 
-        $convertedItem = ['tags' => []];
+        $convertedItems = [];
         foreach ($item as $field => $data) {
-            if ('' !== $data) {
-                $convertedItem = $this->convertField($convertedItem, $field, $data);
+            if (('tags' === $field) && ('' !== $data)) {
+                foreach (explode(',', $data) as $tagCode) {
+                    $convertedItems[] = ['code' => $tagCode];
+                }
             }
         }
 
-        return $convertedItem;
+        return $convertedItems;
     }
 
     /**
-     * @param array  $convertedItem
-     * @param string $field
-     * @param mixed  $data
+     * Validate the item to be parsed.
      *
-     * @return array
-     */
-    protected function convertField(array $convertedItem, $field, $data)
-    {
-        if ('tags' === $field) {
-            $convertedItem['tags'] = array_unique(explode(',', $data));
-        }
-
-        return $convertedItem;
-    }
-
-    /**
      * @param array $item
      */
     protected function validate(array $item)
     {
-        $this->validateRequiredFields($item, ['tags']);
-    }
-
-    /**
-     * @param array $item
-     * @param array $requiredFields
-     *
-     * @throws ArrayConversionException
-     */
-    protected function validateRequiredFields(array $item, array $requiredFields)
-    {
-        foreach ($requiredFields as $requiredField) {
-            if (!in_array($requiredField, array_keys($item))) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" is expected, provided fields are "%s"',
-                        $requiredField,
-                        implode(', ', array_keys($item))
-                    )
-                );
-            }
+        if (!isset($item['tags'])) {
+            throw new ArrayConversionException(
+                sprintf(
+                    'Field "tags" is expected, provided fields are "%s"',
+                    implode(', ', array_keys($item))
+                )
+            );
         }
     }
 }

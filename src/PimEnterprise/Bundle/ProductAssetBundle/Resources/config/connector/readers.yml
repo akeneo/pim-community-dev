@@ -1,6 +1,12 @@
+parameters:
+    pimee_connector.reader.file.csv_tag.class: PimEnterprise\Bundle\ProductAssetBundle\Reader\Csv\TagReader
+
 services:
     pimee_product_asset.reader.file.csv_tag:
-        alias: pim_connector.reader.file.csv
+        class: '%pimee_connector.reader.file.csv_tag.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pimee_product_asset.array_converter.flat_to_standard.tag'
 
     pimee_product_asset.reader.file.csv_asset:
         alias: pim_connector.reader.file.csv

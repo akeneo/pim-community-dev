@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Factory;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 
 /**
@@ -18,7 +19,7 @@ use PimEnterprise\Component\ProductAsset\Model\TagInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class TagFactory
+class TagFactory implements SimpleFactoryInterface
 {
     /** @var string */
     protected $tagClass;
@@ -32,12 +33,22 @@ class TagFactory
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function create()
+    {
+        return new $this->tagClass();
+    }
+
+    /**
      * Create a new empty Tag
      *
      * @return TagInterface
+     *
+     * @deprecated Will be removed in 1.7. Use create() instead.
      */
     public function createTag()
     {
-        return new $this->tagClass();
+        return $this->create();
     }
 }

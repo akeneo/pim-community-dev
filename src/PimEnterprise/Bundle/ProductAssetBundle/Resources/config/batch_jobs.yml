@@ -36,11 +36,12 @@ connector:
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_tags:
-                    class: '%pimee_product_asset.step.tag.class%'
                     services:
                         reader:    pimee_product_asset.reader.file.csv_tag
                         processor: pimee_product_asset.processor.denormalization.tag.flat
                         writer:    pimee_product_asset.writer.doctrine.tag
+                    parameters:
+                        batchSize: 1
                 import_asset:
                     services:
                         reader:    pimee_product_asset.reader.file.csv_asset
@@ -92,11 +93,12 @@ connector:
                     services:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_tags:
-                    class: '%pimee_product_asset.step.tag.class%'
                     services:
                         reader:    pimee_product_asset.reader.file.xlsx_tag
                         processor: pimee_product_asset.processor.denormalization.tag.flat
                         writer:    pimee_product_asset.writer.doctrine.tag
+                    parameters:
+                        batchSize: 1
                 import_asset:
                     services:
                         reader:    pimee_product_asset.reader.file.xlsx_asset
