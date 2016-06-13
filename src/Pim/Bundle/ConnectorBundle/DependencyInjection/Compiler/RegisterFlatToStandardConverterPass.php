@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\Reference;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RegisterConverterPass implements CompilerPassInterface
+class RegisterFlatToStandardConverterPass implements CompilerPassInterface
 {
     /** @staticvar */
     const CONVERTER_REGISTRY = 'pim_connector.array_converter.flat_to_standard.product.value_converter.registry';
