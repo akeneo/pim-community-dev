@@ -5,9 +5,9 @@ parameters:
     pim_connector.processor.denormalization.product_association.class: Pim\Component\Connector\Processor\Denormalization\ProductAssociationProcessor
     pim_connector.processor.denormalization.variant_group.class:       Pim\Component\Connector\Processor\Denormalization\VariantGroupProcessor
     pim_connector.processor.denormalization.job_instance.class:        Pim\Component\Connector\Processor\Denormalization\JobInstanceProcessor
-    pim_connector.processor.normalization.simple.class:                Pim\Component\Connector\Processor\Normalization\SimpleProcessor
-    # TODO: no csv in the following class name!
-    pim_connector.processor.normalization.csv_variant_group.class:     Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor
+
+    pim_connector.processor.normalization.simple.class:        Pim\Component\Connector\Processor\Normalization\SimpleProcessor
+    pim_connector.processor.normalization.variant_group.class: Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor
 
 services:
     # Dummy processor
@@ -189,7 +189,7 @@ services:
             - 'flat'
 
     pim_connector.processor.normalization.variant_group:
-        class: '%pim_connector.processor.normalization.csv_variant_group.class%'
+        class: '%pim_connector.processor.normalization.variant_group.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_serializer'
