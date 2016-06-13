@@ -11,61 +11,31 @@
 
 namespace PimEnterprise\Component\ProductAsset\Factory;
 
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 
 /**
  * Asset factory
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class AssetFactory
+class AssetFactory implements SimpleFactoryInterface
 {
     /** @var string */
     protected $assetClass;
 
-    /** @var ReferenceFactory */
-    protected $referenceFactory;
-
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
     /**
-     * @param ReferenceFactory          $referenceFactory
-     * @param LocaleRepositoryInterface $localeRepository
-     * @param string                    $assetClass
+     * @param string $assetClass
      */
-    public function __construct(
-        ReferenceFactory $referenceFactory,
-        LocaleRepositoryInterface $localeRepository,
-        $assetClass
-    ) {
-        $this->localeRepository = $localeRepository;
-        $this->referenceFactory = $referenceFactory;
+    public function __construct($assetClass)
+    {
         $this->assetClass       = $assetClass;
     }
 
     /**
-     * Create a new Asset with its Reference and Variation
-     *
-     * @param bool $isLocalized This parameter is used to know how to create Reference
-     *
-     * @return AssetInterface
+     * {@inheritdoc}
      */
-    public function create($isLocalized = false)
+    public function create()
     {
-        $asset = new $this->assetClass();
-
-        if ($isLocalized) {
-            foreach ($this->localeRepository->getActivatedLocales() as $locale) {
-                $reference = $this->referenceFactory->create($locale);
-                $reference->setAsset($asset);
-            }
-        } else {
-            $reference = $this->referenceFactory->create();
-            $reference->setAsset($asset);
-        }
-
-        return $asset;
+        return new $this->assetClass();
     }
 }

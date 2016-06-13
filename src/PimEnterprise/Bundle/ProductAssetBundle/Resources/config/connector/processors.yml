@@ -1,5 +1,4 @@
 parameters:
-    pimee_product_asset.processor.denormalization.asset.class:                 PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\AssetProcessor
     pimee_product_asset.processor.denormalization.channel_configuration.class: PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\ChannelConfigurationProcessor
     pimee_product_asset.processor.normalization.channel_configuration.class:   PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\ChannelConfigurationProcessor
     pimee_product_asset.processor.normalization.asset.class:                   PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\AssetProcessor
@@ -16,13 +15,13 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_product_asset.processor.denormalization.asset.flat:
-        class: '%pimee_product_asset.processor.denormalization.asset.class%'
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
-            - '@pimee_product_asset.array_converter.flat_to_standard.asset'
             - '@pimee_product_asset.repository.asset'
-            - '@pimee_product_asset.updater.asset'
             - '@pimee_product_asset.factory.asset'
+            - '@pimee_product_asset.updater.asset'
             - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_product_asset.processor.denormalization.channel_configuration.flat:
         class: '%pimee_product_asset.processor.denormalization.channel_configuration.class%'
