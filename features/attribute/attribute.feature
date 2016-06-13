@@ -41,8 +41,10 @@ Feature: Display available field options
     And I check the "Read only" switch
     And I save the "attribute"
     And I am on the products page
-    And I mass-edit products my-jacket
-    And I am on the "my-jacket" product page
+    When I select row my-jacket
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
+    And I choose the "Edit common attributes" operation
+    And I display the Description attribute
     Then the field Description should be disabled
 
   Scenario: Successfully display read only attributes
@@ -50,7 +52,8 @@ Feature: Display available field options
     And I check the "Read only" switch
     And I save the "attribute"
     And I am on the products page
-    And I mass-edit products my-jacket
+    And I select rows my-jacket
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     Then I should see available attributes Name and Description in group "Product information"
     When I display the Name and Description attributes

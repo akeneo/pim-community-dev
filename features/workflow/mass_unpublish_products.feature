@@ -16,7 +16,8 @@ Feature: Unpublish many products at once
   Scenario: Successfully unpublish all products
     Given I am logged in as "Julia"
     And I am on the published page
-    And I mass-edit products unionjack and jackadi
+    And I select rows unionjack and jackadi
+    And I press the "Mass Edit" button
     When I choose the "Unpublish products" operation
     Then I should see "The 2 selected products will be unpublished"
     And I move on to the next step
@@ -28,7 +29,8 @@ Feature: Unpublish many products at once
   Scenario: Only unpublish products on which user is the owner
     Given I am logged in as "Julia"
     And I am on the published page
-    And I mass-edit products unionjack, jackadi and teafortwo
+    And I select rows unionjack, jackadi and teafortwo
+    And I press the "Mass Edit" button
     When I choose the "Unpublish products" operation
     And I move on to the next step
     And I wait for the "unpublish" mass-edit job to finish
@@ -41,7 +43,8 @@ Feature: Unpublish many products at once
   Scenario: Unpublish nothing if the user is the owner of no product
     Given I am logged in as "Mary"
     And I am on the published page
-    And I mass-edit products unionjack, jackadi and teafortwo
+    And I select rows unionjack, jackadi and teafortwo
+    And I press the "Mass Edit" button
     When I choose the "Unpublish products" operation
     And I move on to the next step
     And I wait for the "unpublish" mass-edit job to finish

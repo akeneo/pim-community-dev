@@ -17,7 +17,8 @@ Feature: Apply permissions for an assets collection attribute during mass action
 
   Scenario: Apply permissions for an assets collection attribute during editing common attributes
     Given I am on the products page
-    And I mass-edit products leather jacket and wool jacket
+    And I select rows leather jacket and wool jacket
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     When I display the Front view attribute
     And I start to manage assets for "Front view"

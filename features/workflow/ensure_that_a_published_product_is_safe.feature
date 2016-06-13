@@ -84,7 +84,8 @@ Feature: Ensure that a published product is safe
       | sku          | categories | family  |
       | black-jacket | jackets    | jackets |
     And I am on the products page
-    And I mass-delete products my-jacket and black-jacket
+    And I select rows my-jacket and black-jacket
+    And I press "Delete" on the "Bulk Actions" dropdown button
     And I confirm the removal
     And the grid should contain 2 elements
     And I should see products my-jacket and black-jacket

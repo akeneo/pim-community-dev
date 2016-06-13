@@ -32,7 +32,8 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
   Scenario: Successfully creates proposal on editable products
     Given I am logged in as "Mary"
     And I am on the products page
-    When I mass-edit products viewable, editable and owned
+    When I select rows viewable, editable and owned
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I should see available attributes Name, Manufacturer and Description in group "Product information"
     And I display the Name attribute

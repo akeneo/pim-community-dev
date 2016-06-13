@@ -28,7 +28,8 @@ Feature: Publish many products at once
   Scenario: Only publish products on which user is the owner
     Given I am logged in as "Julia"
     And I am on the products page
-    When I mass-edit products unionjack, jackadi and teafortwo
+    When I select rows unionjack, jackadi and teafortwo
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Publish products" operation
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
@@ -40,7 +41,8 @@ Feature: Publish many products at once
   Scenario: Publish nothing if the user is the owner of no product
     And I am logged in as "Mary"
     And I am on the products page
-    And I mass-edit products unionjack, jackadi and teafortwo
+    And I select rows unionjack, jackadi and teafortwo
+    And I press "Mass Edit" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
