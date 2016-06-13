@@ -5,6 +5,7 @@ parameters:
     pimee_product_asset.processor.normalization.variation.class:               PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\VariationProcessor
 
 services:
+    # Denormalizers
     pimee_product_asset.processor.denormalization.tag.flat:
         class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
@@ -32,6 +33,16 @@ services:
             - '@pimee_product_asset.factory.channel_configuration'
             - '@validator'
 
+    pimee_product_asset.processor.denormalization.category.flat:
+        class: '%pim_connector.processor.denormalization.simple.class%'
+        arguments:
+            - '@pimee_product_asset.repository.category'
+            - '@pimee_product_asset.factory.category'
+            - '@pimee_product_asset.updater.category'
+            - '@pim_catalog.validator.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    # Normalizers
     pimee_product_asset.processor.normalization.asset.flat:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
@@ -56,12 +67,3 @@ services:
             - '@pim_serializer'
             - '@pim_catalog.repository.locale'
             - '@pim_product_asset.normalizer.structured.channel_configuration'
-
-    pimee_product_asset.processor.denormalization.category.flat:
-        class: '%pim_connector.processor.denormalization.simple.class%'
-        arguments:
-            - '@pimee_product_asset.repository.category'
-            - '@pimee_product_asset.factory.category'
-            - '@pimee_product_asset.updater.category'
-            - '@pim_catalog.validator.product'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
