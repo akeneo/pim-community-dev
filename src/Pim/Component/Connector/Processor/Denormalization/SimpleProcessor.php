@@ -65,7 +65,7 @@ class SimpleProcessor extends AbstractProcessor
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
-        $violations = $this->getViolations($entity);;
+        $violations = $this->getViolations($entity);
         if ($violations->count() > 0) {
             $this->objectDetacher->detach($entity);
             $this->skipItemWithConstraintViolations($item, $violations);
