@@ -6,7 +6,7 @@ use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
 
 /**
- * Standard to flat array converter for variant group
+ * Convert standard format to flat format for variant group
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

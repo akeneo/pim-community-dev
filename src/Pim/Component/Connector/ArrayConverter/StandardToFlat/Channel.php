@@ -5,7 +5,7 @@ namespace Pim\Component\Connector\ArrayConverter\StandardToFlat;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 
 /**
- * Standard to flat array converter for channel
+ * Convert standard format to flat format for channel
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

@@ -108,27 +108,14 @@ class AttributeColumnsResolver
      */
     public function resolveFlatAttributeName($attributeCode, $localeCode, $scopeCode)
     {
-        if (null !== $localeCode && null !== $scopeCode) {
-            $field = sprintf(
-                '%s-%s-%s',
-                $attributeCode,
-                $localeCode,
-                $scopeCode
-            );
-        } elseif (null !== $localeCode) {
-            $field = sprintf(
-                '%s-%s',
-                $attributeCode,
-                $localeCode
-            );
-        } elseif (null !== $scopeCode) {
-            $field = sprintf(
-                '%s-%s',
-                $attributeCode,
-                $scopeCode
-            );
-        } else {
-            $field = $attributeCode;
+        $field = $attributeCode;
+
+        if (null !== $localeCode) {
+            $field = sprintf('%s-%s', $field, $localeCode);
+        }
+
+        if (null !== $scopeCode) {
+            $field = sprintf('%s-%s', $field, $scopeCode);
         }
 
         return $field;
