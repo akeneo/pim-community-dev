@@ -12,7 +12,6 @@ use Symfony\Component\Validator\ConstraintViolationList;
 
 class AttributeConverterSpec extends ObjectBehavior
 {
-
     function let(LocalizerRegistryInterface $localizerRegistry, AttributeRepositoryInterface $attributeRepository)
     {
         $this->beConstructedWith($localizerRegistry, $attributeRepository);

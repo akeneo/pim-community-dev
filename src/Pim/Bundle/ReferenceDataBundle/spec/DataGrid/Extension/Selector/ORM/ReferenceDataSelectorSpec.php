@@ -11,7 +11,8 @@ use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
 
 class ReferenceDataSelectorSpec extends ObjectBehavior
 {
-    function let(SelectorInterface $predecessor) {
+    function let(SelectorInterface $predecessor)
+    {
         $this->beConstructedWith($predecessor);
     }
 

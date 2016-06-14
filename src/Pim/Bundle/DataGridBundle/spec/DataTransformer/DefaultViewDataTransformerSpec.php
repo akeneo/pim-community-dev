@@ -7,7 +7,6 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 
-
 class DefaultViewDataTransformerSpec extends ObjectBehavior
 {
     function let(DatagridViewRepositoryInterface $datagridViewRepo)

@@ -13,7 +13,6 @@ use Pim\Behat\Context\PimContext;
  */
 class GridPaginationContext extends PimContext
 {
-
     /**
      * @param int $num
      *

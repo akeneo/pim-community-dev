@@ -79,4 +79,3 @@ class FamilyRequirementsValidatorSpec extends ObjectBehavior
         $this->validate($family, $minimumRequirements);
     }
 }
-

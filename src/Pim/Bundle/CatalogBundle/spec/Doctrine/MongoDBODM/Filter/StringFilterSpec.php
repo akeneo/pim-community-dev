@@ -156,7 +156,8 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'EMPTY', null, null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_not_empty_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku) {
+    function it_adds_a_not_empty_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
+    {
         $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
 

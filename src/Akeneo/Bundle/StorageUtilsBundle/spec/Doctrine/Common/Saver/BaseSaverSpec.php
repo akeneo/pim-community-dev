@@ -14,7 +14,7 @@ class BaseSaverSpec extends ObjectBehavior
 {
     function let(ObjectManager $objectManager, SavingOptionsResolverInterface $optionsResolver, EventDispatcherInterface $eventDispatcher)
     {
-        $this->beConstructedWith($objectManager, $optionsResolver, $eventDispatcher,'Pim\Component\Catalog\Model\GroupTypeInterface');
+        $this->beConstructedWith($objectManager, $optionsResolver, $eventDispatcher, 'Pim\Component\Catalog\Model\GroupTypeInterface');
     }
 
     function it_is_a_saver()

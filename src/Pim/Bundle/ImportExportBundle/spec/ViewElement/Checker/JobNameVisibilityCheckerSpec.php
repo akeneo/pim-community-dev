@@ -27,15 +27,17 @@ class JobNameVisibilityCheckerSpec extends ObjectBehavior
 
     function it_checks_if_the_given_job_code_exists_in_the_context(JobInstance $jobInstance)
     {
-        $jobInstance->getCode()->willReturn('a_job_code');
+        $jobInstance->getAlias()->willReturn('a_job_code');
         $this->isVisible(['job_names' => ['a_job_code']], ['jobInstance' => $jobInstance])->shouldReturn(true);
 
-        $jobInstance->getCode()->willReturn('another_job_code');
+        $jobInstance->getAlias()->willReturn('another_job_code');
         $this->isVisible(['job_names' => ['a_job_code']], ['jobInstance' => $jobInstance])->shouldReturn(false);
     }
 
-    function it_hides_the_element_if_job_instance_exists_but_is_null()
+    function it_thows_exception_if_no_job_instance_is_provided()
     {
-        $this->isVisible(['job_names' => ['a_job_code']], ['jobInstance' => null])->shouldReturn(false);
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringIsVisible([['job_names' => ['a_job_code']], ['jobInstance' => null]]);
     }
 }

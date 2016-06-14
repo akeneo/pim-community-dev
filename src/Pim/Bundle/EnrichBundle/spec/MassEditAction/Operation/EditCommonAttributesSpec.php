@@ -140,9 +140,9 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $this->setValues(json_encode($rawData));
 
         $localizer->delocalize(
-            [['data' => '45,59', 'currency' => 'EUR'],['data' => '18,22', 'currency' => 'USD']],
+            [['data' => '45,59', 'currency' => 'EUR'], ['data' => '18,22', 'currency' => 'USD']],
             ["locale" => "fr"]
-        )->willReturn([['data' => '45.59', 'currency' => 'EUR'],['data' => '18.22', 'currency' => 'USD']]);
+        )->willReturn([['data' => '45.59', 'currency' => 'EUR'], ['data' => '18.22', 'currency' => 'USD']]);
 
         $sanitizedData = [
             'normal_attr' => [['data' => 'foo', 'scope' => null, 'locale' => null]],

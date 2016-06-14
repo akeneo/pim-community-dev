@@ -65,4 +65,3 @@ class FamilyRepositorySpec extends ObjectBehavior
         $this->hasAttribute(10, 'attribute_code')->shouldReturn(false);
     }
 }
-

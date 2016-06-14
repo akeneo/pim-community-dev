@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class LocaleResolverSpec extends ObjectBehavior
 {
-    function let(RequestStack $requestStack) {
+    function let(RequestStack $requestStack)
+    {
         $this->beConstructedWith($requestStack, 'en');
     }
 

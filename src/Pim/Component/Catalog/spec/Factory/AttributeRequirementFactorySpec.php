@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 
 class AttributeRequirementFactorySpec extends ObjectBehavior
 {
-    function let ()
+    function let()
     {
         $this->beConstructedWith('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement');
     }

@@ -66,7 +66,6 @@ class JobTemplateProvider implements JobTemplateProviderInterface
 
         if (isset($this->jobTemplates[$jobAlias]) &&
             isset($this->jobTemplates[$jobAlias]['templates']['edit'])) {
-
             return $this->jobTemplates[$jobAlias]['templates']['edit'];
         }
 

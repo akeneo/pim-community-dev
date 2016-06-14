@@ -74,5 +74,4 @@ class BulkVersionBuilderSpec extends ObjectBehavior
             ->buildVersions([$versionable_a, $versionable_b, $versionable_c])
             ->shouldReturn([$version_a, $version_b]);
     }
-
 }

@@ -10,7 +10,8 @@ use Pim\Component\Catalog\Updater\Adder\FieldAdderInterface;
 
 class AdderRegistrySpec extends ObjectBehavior
 {
-    function let(AttributeRepositoryInterface $attributeRepository) {
+    function let(AttributeRepositoryInterface $attributeRepository)
+    {
         $this->beConstructedWith($attributeRepository);
     }
 

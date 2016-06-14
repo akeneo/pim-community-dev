@@ -10,7 +10,8 @@ use Pim\Component\Catalog\Updater\Copier\FieldCopierInterface;
 
 class CopierRegistrySpec extends ObjectBehavior
 {
-    function let(AttributeRepositoryInterface $attributeRepository) {
+    function let(AttributeRepositoryInterface $attributeRepository)
+    {
         $this->beConstructedWith($attributeRepository);
     }
 

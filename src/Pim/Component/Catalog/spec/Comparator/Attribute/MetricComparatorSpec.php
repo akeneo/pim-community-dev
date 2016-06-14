@@ -90,5 +90,4 @@ class MetricComparatorSpec extends ObjectBehavior
 
         $this->compare($data, $originals)->shouldReturn(null);
     }
-
 }

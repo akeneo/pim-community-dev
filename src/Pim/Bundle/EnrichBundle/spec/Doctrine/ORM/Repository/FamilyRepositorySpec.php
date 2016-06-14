@@ -58,5 +58,4 @@ class FamilyRepositorySpec extends ObjectBehavior
             11 => '[family_other_code]',
         ]);
     }
-
 }

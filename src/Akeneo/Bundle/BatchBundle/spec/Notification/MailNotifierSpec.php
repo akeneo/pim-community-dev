@@ -32,5 +32,4 @@ class MailNotifierSpec extends ObjectBehavior
 
         $this->notify($jobExecution);
     }
-
 }

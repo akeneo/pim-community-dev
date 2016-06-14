@@ -28,7 +28,8 @@ class ChoicesBuilderSpec extends ObjectBehavior
         );
     }
 
-    function it_throws_an_exception_when_handling_invalid_items(ChosableInterface $validItem) {
+    function it_throws_an_exception_when_handling_invalid_items(ChosableInterface $validItem)
+    {
         $validItem->getChoiceValue()->willReturn('val_1');
         $validItem->getChoiceLabel()->willReturn('Choice 1');
         $invalidItem = new \stdClass();

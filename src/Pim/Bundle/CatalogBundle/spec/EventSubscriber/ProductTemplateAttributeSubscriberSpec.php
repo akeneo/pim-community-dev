@@ -49,11 +49,13 @@ class ProductTemplateAttributeSubscriberSpec extends ObjectBehavior
         $productTplRepository,
         RemoveEvent $event,
         AttributeInterface $object,
-        ProductTemplateInterface $productTemplate1, // First will become empty so remove have to be called
-        ProductTemplateInterface $productTemplate2  // Second will have to be persisted
+        ProductTemplateInterface $productTemplate1,
+        ProductTemplateInterface $productTemplate2
     ) {
-        $objectManager->persist($productTemplate2)->shouldBeCalled();
+        // First will become empty so remove have to be called
         $objectManager->remove($productTemplate1)->shouldBeCalled();
+        // Second will have to be persisted
+        $objectManager->persist($productTemplate2)->shouldBeCalled();
 
         $productTemplate1->getAttributeCodes()->willReturn([]);
         $productTemplate2->getAttributeCodes()->willReturn(['code']);

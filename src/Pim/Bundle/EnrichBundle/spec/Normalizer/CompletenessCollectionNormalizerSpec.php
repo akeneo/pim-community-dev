@@ -12,15 +12,17 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CompletenessCollectionNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer) {
+    function let(NormalizerInterface $normalizer)
+    {
         $this->beConstructedWith($normalizer);
     }
 
-    function it_supports_iterables() {
+    function it_supports_iterables()
+    {
         $this->supportsNormalization(Argument::any())->shouldReturn(false);
     }
 
-    function it_normalizes_completenesses_and_indexes_them (
+    function it_normalizes_completenesses_and_indexes_them(
         $normalizer,
         AttributeInterface $attribute,
         AttributeTranslation $attributeTranslationFr,

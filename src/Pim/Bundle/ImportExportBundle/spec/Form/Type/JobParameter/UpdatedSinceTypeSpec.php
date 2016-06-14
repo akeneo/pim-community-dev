@@ -29,10 +29,10 @@ class UpdatedSinceTypeSpec extends ObjectBehavior
         DateFactory $dateFactory
     ) {
         $this->beConstructedWith(
-            $jobRepository, 
-            $translator, 
-            $localeResolver, 
-            $datePresenter, 
+            $jobRepository,
+            $translator,
+            $localeResolver,
+            $datePresenter,
             $dateFactory,
             'Akeneo\Component\Batch\Model\JobInstance'
         );
@@ -70,7 +70,7 @@ class UpdatedSinceTypeSpec extends ObjectBehavior
         ])->willReturn($builder);
 
         $builder->add('updated_since_date', 'datetime', Argument::that(function ($value) {
-            return 
+            return
                 isset($value['widget']) && 'single_text' === $value['widget'] &&
                 isset($value['format']) && 'y-m-d' === $value['format'] &&
                 isset($value['input']) && 'string' === $value['input'] &&

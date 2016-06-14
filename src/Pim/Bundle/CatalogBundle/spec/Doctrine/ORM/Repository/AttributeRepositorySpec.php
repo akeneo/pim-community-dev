@@ -87,4 +87,3 @@ class AttributeRepositorySpec extends ObjectBehavior
         ]);
     }
 }
-

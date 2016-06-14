@@ -6,6 +6,11 @@ use PhpSpec\ObjectBehavior;
 
 class EmptyConstraintCollectionProviderSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith(['job_name']);
+    }
+
     function it_is_a_contraint_collection_provider()
     {
         $this->shouldImplement('Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface');
