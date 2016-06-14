@@ -14,7 +14,6 @@ namespace PimEnterprise\Component\Security\Connector\Denormalization;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -26,9 +25,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class LocaleAccessProcessor extends AbstractProcessor
 {
-    /** @var ArrayConverterInterface */
-    protected $accessConverter;
-
     /** @var SimpleFactoryInterface */
     protected $accessFactory;
 
@@ -40,21 +36,18 @@ class LocaleAccessProcessor extends AbstractProcessor
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param ArrayConverterInterface               $accessConverter
      * @param SimpleFactoryInterface                $accessFactory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        ArrayConverterInterface $accessConverter,
         SimpleFactoryInterface $accessFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator
     ) {
         parent::__construct($repository);
 
-        $this->accessConverter = $accessConverter;
         $this->accessFactory   = $accessFactory;
         $this->updater         = $updater;
         $this->validator       = $validator;
@@ -65,25 +58,20 @@ class LocaleAccessProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $localeAccesses = [];
-        $convertedItems = $this->accessConverter->convert($item);
-        foreach ($convertedItems as $convertedItem) {
-            $localeAccess = $this->findOrCreateLocaleAccess($convertedItem);
-            $localeAccesses[] = $localeAccess;
+        $localeAccess = $this->findOrCreateLocaleAccess($item);
 
-            try {
-                $this->updater->update($localeAccess, $convertedItem);
-            } catch (\InvalidArgumentException $exception) {
-                $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
-            }
-
-            $violations = $this->validator->validate($localeAccess);
-            if (0 < $violations->count()) {
-                $this->skipItemWithConstraintViolations($item, $violations);
-            }
+        try {
+            $this->updater->update($localeAccess, $item);
+        } catch (\InvalidArgumentException $exception) {
+            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
-        return $localeAccesses;
+        $violations = $this->validator->validate($localeAccess);
+        if (0 < $violations->count()) {
+            $this->skipItemWithConstraintViolations($item, $violations);
+        }
+
+        return $localeAccess;
     }
 
     /**

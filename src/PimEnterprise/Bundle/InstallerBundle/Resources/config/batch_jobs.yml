@@ -6,7 +6,7 @@ connector:
             steps:
                 import:
                     services:
-                        reader:    pim_connector.reader.file.csv
+                        reader:    pim_connector.reader.file.csv_attribute_group_accesses
                         processor: pimee_security.processor.denormalization.attribute_group_access.flat
                         writer:    pimee_security.writer.doctrine.attribute_group_access
 
@@ -15,7 +15,7 @@ connector:
             steps:
                 import:
                     services:
-                        reader:    pim_connector.reader.file.csv
+                        reader:    pim_connector.reader.file.csv_product_category_accesses
                         processor: pimee_security.processor.denormalization.product_category_access.flat
                         writer:    pimee_security.writer.doctrine.product_category_access
 
@@ -39,7 +39,7 @@ connector:
             steps:
                 import:
                     services:
-                        reader:    pim_connector.reader.file.csv
+                        reader:    pim_connector.reader.file.csv_job_profile_accesses
                         processor: pimee_security.processor.denormalization.job_profile_access.flat
                         writer:    pimee_security.writer.doctrine.job_profile_access
 
@@ -48,7 +48,7 @@ connector:
             steps:
                 import:
                     services:
-                        reader:    pim_connector.reader.file.csv
+                        reader:    pim_connector.reader.file.csv_locale_accesses
                         processor: pimee_security.processor.denormalization.locale_access.flat
                         writer:    pimee_security.writer.doctrine.locale_access
 
@@ -82,7 +82,7 @@ connector:
             steps:
                 import:
                     services:
-                        reader:    pim_connector.reader.file.csv
+                        reader:    pim_connector.reader.file.csv_asset_category_accesses
                         processor: pimee_security.processor.denormalization.asset_category_access.flat
                         writer:    pimee_security.writer.doctrine.asset_category_access
 

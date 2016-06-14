@@ -14,7 +14,6 @@ namespace PimEnterprise\Component\Security\Connector\Denormalization;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -26,9 +25,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductCategoryAccessProcessor extends AbstractProcessor
 {
-    /** @var ArrayConverterInterface */
-    protected $accessConverter;
-
     /** @var SimpleFactoryInterface */
     protected $accessFactory;
 
@@ -40,21 +36,18 @@ class ProductCategoryAccessProcessor extends AbstractProcessor
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param ArrayConverterInterface               $accessConverter
      * @param SimpleFactoryInterface                $accessFactory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        ArrayConverterInterface $accessConverter,
         SimpleFactoryInterface $accessFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator
     ) {
         parent::__construct($repository);
 
-        $this->accessConverter = $accessConverter;
         $this->accessFactory   = $accessFactory;
         $this->updater         = $updater;
         $this->validator       = $validator;
@@ -65,25 +58,20 @@ class ProductCategoryAccessProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $categoryAccesses = [];
-        $convertedItems = $this->accessConverter->convert($item);
-        foreach ($convertedItems as $convertedItem) {
-            $categoryAccess = $this->findOrCreateProductCategoryAccess($convertedItem);
-            $categoryAccesses[] = $categoryAccess;
+        $categoryAccess = $this->findOrCreateProductCategoryAccess($item);
 
-            try {
-                $this->updater->update($categoryAccess, $convertedItem);
-            } catch (\InvalidArgumentException $exception) {
-                $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
-            }
-
-            $violations = $this->validator->validate($categoryAccess);
-            if (0 < $violations->count()) {
-                $this->skipItemWithConstraintViolations($item, $violations);
-            }
+        try {
+            $this->updater->update($categoryAccess, $item);
+        } catch (\InvalidArgumentException $exception) {
+            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
-        return $categoryAccesses;
+        $violations = $this->validator->validate($categoryAccess);
+        if (0 < $violations->count()) {
+            $this->skipItemWithConstraintViolations($item, $violations);
+        }
+
+        return $categoryAccess;
     }
 
     /**

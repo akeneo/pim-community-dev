@@ -1,0 +1,33 @@
+parameters:
+    pimee_connector.reader.file.csv_array.class: PimEnterprise\Component\Connector\Reader\File\Csv\ArrayReader
+
+services:
+    pim_connector.reader.file.csv_attribute_group_accesses:
+        class: '%pimee_connector.reader.file.csv_array.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pimee_security.array_converter.flat_to_standard.attribute_group_accesses'
+
+    pim_connector.reader.file.csv_locale_accesses:
+        class: '%pimee_connector.reader.file.csv_array.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pimee_security.array_converter.flat_to_standard.locale_accesses'
+
+    pim_connector.reader.file.csv_asset_category_accesses:
+        class: '%pimee_connector.reader.file.csv_array.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pimee_security.array_converter.flat_to_standard.asset_category_accesses'
+
+    pim_connector.reader.file.csv_product_category_accesses:
+        class: '%pimee_connector.reader.file.csv_array.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pimee_security.array_converter.flat_to_standard.product_category_accesses'
+
+    pim_connector.reader.file.csv_job_profile_accesses:
+        class: '%pimee_connector.reader.file.csv_array.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pimee_security.array_converter.flat_to_standard.job_profile_accesses'

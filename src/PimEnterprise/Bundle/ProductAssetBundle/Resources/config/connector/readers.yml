@@ -1,6 +1,6 @@
 parameters:
-    pimee_connector.reader.file.csv_tag.class:  PimEnterprise\Bundle\ProductAssetBundle\Reader\Csv\TagReader
-    pimee_connector.reader.file.xlsx_tag.class: PimEnterprise\Bundle\ProductAssetBundle\Reader\Xlsx\TagReader
+    pimee_connector.reader.file.csv_tag.class:  PimEnterprise\Component\Connector\Reader\File\Csv\ArrayReader
+    pimee_connector.reader.file.xlsx_tag.class: PimEnterprise\Component\Connector\Reader\File\Xlsx\ArrayReader
 
 services:
     # CSV readers

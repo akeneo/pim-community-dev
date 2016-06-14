@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Reader\Csv;
-
+namespace PimEnterprise\Component\Connector\Reader\File\Xlsx;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Reader\File\Csv\Reader;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
+use Pim\Component\Connector\Reader\File\Xlsx\Reader;
 
 /**
- * The Tag Reader allows to read file CSV file containing 'tags' column, then return tag one by one.
+ * The Array Reader allows to read file XLSX file, where each line will return an array of items. The main function
+ * will return elements one by one.
  * This class is stateful because it contains the next items to return.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class TagReader extends Reader
+class ArrayReader extends Reader
 {
     /** @var array */
     protected $remainingItems;
