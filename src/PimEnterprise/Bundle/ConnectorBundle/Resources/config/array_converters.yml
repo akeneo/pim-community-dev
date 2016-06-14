@@ -13,3 +13,17 @@ services:
                 - 'decimals_allowed'
                 - 'negative_allowed'
                 - 'is_read_only'
+
+    pim_connector.array_converter.standard_to_flat.attribute:
+        class: '%pim_connector.array_converter.standard_to_flat.attribute.class%'
+        arguments:
+            -
+                - 'localizable'
+                - 'useable_as_grid_filter'
+                - 'unique'
+                - 'required'
+                - 'scopable'
+                - 'wysiwyg_enabled'
+                - 'decimals_allowed'
+                - 'negative_allowed'
+                - 'is_read_only'
