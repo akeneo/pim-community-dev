@@ -50,7 +50,9 @@ define([
             Datepicker.init(
                 this.$('[name="filter-value"]').parent(),
                 {format: 'yyyy-MM-dd hh:mm:ss', defaultFormat: 'yyyy-MM-dd hh:mm:ss', pickTime: true}
-            );
+            ).on('changeDate', this.updateState.bind(this));
+
+            this.$('[name="filter-value"]').on('changeDate', this.updateState.bind(this));
 
             this.delegateEvents();
 

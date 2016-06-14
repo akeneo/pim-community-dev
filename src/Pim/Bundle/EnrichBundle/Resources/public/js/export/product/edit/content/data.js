@@ -89,7 +89,8 @@ define(
                             filterConfig = {
                                 field: attribute.code,
                                 view: config[attribute.type].view,
-                                removable: true
+                                removable: true,
+                                context: {attribute: attribute}
                             };
                         }
 
