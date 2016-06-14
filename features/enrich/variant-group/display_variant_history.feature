@@ -27,8 +27,8 @@ Feature: Display the variant group history
       | 1       | axis     | size              |
 
   Scenario: Successfully edit a variant group attribute and see the change in history
-    And I am on the variant groups page
-    When I create a new variant group
+    Given I am on the variant groups page
+    And I create a new variant group
     And I fill in the following information in the popin:
       | Code | converse_sneakers |
       | Axis | Size              |
