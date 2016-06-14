@@ -136,7 +136,7 @@ Feature: Import attributes
     And I launch the import job
     And I wait for the "csv_footwear_attribute_import" job to finish
     Then I should see "skipped 1"
-    And I should see "attributeType: This value should not be blank."
+    And I should see "attributeType must be filled."
 
   Scenario: Successfully import and update existing attribute
     Given the "footwear" catalog configuration

@@ -81,12 +81,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     {
         switch ($field) {
             case 'attributeType':
-                if (('' !== $data) && (null !== $data)) {
-                    $attributeType = $this->registry->get($data);
-                    $attribute->setAttributeType($attributeType->getName());
-                    $attribute->setBackendType($attributeType->getBackendType());
-                    $attribute->setUnique($attributeType->isUnique());
-                }
+                $this->setType($attribute, $data);
                 break;
             case 'labels':
                 $this->setLabels($attribute, $data);
@@ -170,6 +165,26 @@ class AttributeUpdater implements ObjectUpdaterInterface
             $attribute->setGroup($attributeGroup);
         } else {
             throw new \InvalidArgumentException(sprintf('AttributeGroup "%s" does not exist', $data));
+        }
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param string|null        $data
+     */
+    protected function setType($attribute, $data)
+    {
+        if (('' === $data) || (null === $data)) {
+            throw new \InvalidArgumentException('attributeType must be filled.');
+        }
+
+        try {
+            $attributeType = $this->registry->get($data);
+            $attribute->setAttributeType($attributeType->getName());
+            $attribute->setBackendType($attributeType->getBackendType());
+            $attribute->setUnique($attributeType->isUnique());
+        } catch (\LogicException $exception) {
+            throw new \InvalidArgumentException(sprintf('AttributeType "%s" does not exist.', $data));
         }
     }
 
