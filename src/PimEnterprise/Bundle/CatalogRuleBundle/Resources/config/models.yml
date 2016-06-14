@@ -3,3 +3,4 @@ parameters:
     pimee_catalog_rule.model.copy_action.class:       PimEnterprise\Component\CatalogRule\Model\ProductCopyAction
     pimee_catalog_rule.model.set_action.class:        PimEnterprise\Component\CatalogRule\Model\ProductSetAction
     pimee_catalog_rule.model.add_action.class:        PimEnterprise\Component\CatalogRule\Model\ProductAddAction
+    pimee_catalog_rule.model.remove_action.class:     PimEnterprise\Component\CatalogRule\Model\ProductRemoveAction

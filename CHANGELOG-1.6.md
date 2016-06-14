@@ -9,6 +9,7 @@
 - PIM-5582: Read only attribute
 - PIM-5427: Add possibility to filter by families for product export
 - PIM-5431: export the products updated since a defined date
+- PIM-5665: Add "remove" action in rule engine
 
 ## Technical improvements
 
