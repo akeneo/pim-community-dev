@@ -14,7 +14,8 @@ class TagSpec extends ObjectBehavior
         ];
 
         $this->convert($fields)->shouldReturn([
-            'tags' => ['dog', 'flowers']
+            ['code' => 'dog'],
+            ['code' => 'flowers'],
         ]);
     }
 

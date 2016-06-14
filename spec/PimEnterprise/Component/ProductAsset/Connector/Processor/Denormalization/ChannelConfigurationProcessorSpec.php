@@ -4,7 +4,6 @@ namespace spec\PimEnterprise\Component\ProductAsset\Connector\Processor\Denormal
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
@@ -19,7 +18,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ChannelConfigurationProcessorSpec extends ObjectBehavior
 {
     function let(
-        ArrayConverterInterface $configurationConverter,
         IdentifiableObjectRepositoryInterface $configurationRepository,
         IdentifiableObjectRepositoryInterface $channelRepository,
         ChannelConfigurationFactory $configurationFactory,
@@ -27,7 +25,6 @@ class ChannelConfigurationProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
-            $configurationConverter,
             $configurationRepository,
             $channelRepository,
             $configurationFactory,
@@ -44,7 +41,6 @@ class ChannelConfigurationProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_channel_configuration(
-        $configurationConverter,
         $channelRepository,
         $configurationRepository,
         $validator,
@@ -52,10 +48,6 @@ class ChannelConfigurationProcessorSpec extends ObjectBehavior
         ChannelVariationsConfigurationInterface $configuration,
         ConstraintViolationListInterface $violationList
     ) {
-        $item = [
-            'channel'       => 'ecommerce',
-            'configuration' => '{"scale":{"ratio":0.5}}'
-        ];
         $convertedItem = [
             'channel'       => 'ecommerce',
             'configuration' => ['scale' => ['ratio' => 0.5]]
@@ -66,10 +58,6 @@ class ChannelConfigurationProcessorSpec extends ObjectBehavior
         $configurationRepository->getIdentifierProperties()->willReturn(['channel']);
         $configurationRepository->findOneByIdentifier($channel)->willReturn($configuration);
 
-        $configurationConverter
-            ->convert($item)
-            ->willReturn($convertedItem);
-
         $configuration
             ->setConfiguration($convertedItem['configuration'])
             ->shouldBeCalled();
@@ -79,12 +67,11 @@ class ChannelConfigurationProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($item)
+            ->process($convertedItem)
             ->shouldReturn($configuration);
     }
 
     function it_creates_a_channel_configuration(
-        $configurationConverter,
         $channelRepository,
         $configurationRepository,
         $configurationFactory,
@@ -93,10 +80,6 @@ class ChannelConfigurationProcessorSpec extends ObjectBehavior
         ChannelVariationsConfigurationInterface $configuration,
         ConstraintViolationListInterface $violationList
     ) {
-        $item = [
-            'channel'       => 'ecommerce',
-            'configuration' => '{"scale":{"ratio":0.5}}'
-        ];
         $convertedItem = [
             'channel'       => 'ecommerce',
             'configuration' => ['scale' => ['ratio' => 0.5]]
@@ -107,10 +90,6 @@ class ChannelConfigurationProcessorSpec extends ObjectBehavior
         $configurationRepository->getIdentifierProperties()->willReturn(['channel']);
         $configurationRepository->findOneByIdentifier($channel)->willReturn(null);
         $configurationFactory->createChannelConfiguration()->willReturn($configuration);
-
-        $configurationConverter
-            ->convert($item)
-            ->willReturn($convertedItem);
 
         $configuration
             ->setChannel($channel)
@@ -125,22 +104,17 @@ class ChannelConfigurationProcessorSpec extends ObjectBehavior
             ->willReturn($violationList);
 
         $this
-            ->process($item)
+            ->process($convertedItem)
             ->shouldReturn($configuration);
     }
 
     function it_skips_a_channel_configuration_when_object_is_invalid(
-        $configurationConverter,
         $channelRepository,
         $configurationRepository,
         $validator,
         ChannelInterface $channel,
         ChannelVariationsConfigurationInterface $configuration
     ) {
-        $item = [
-            'channel'       => 'ecommerce',
-            'configuration' => '{"scale":{"ratio":0.5}}'
-        ];
         $convertedItem = [
             'channel'       => 'ecommerce',
             'configuration' => ['scale' => ['ratio' => 0.5]]
@@ -150,10 +124,6 @@ class ChannelConfigurationProcessorSpec extends ObjectBehavior
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($channel);
         $configurationRepository->getIdentifierProperties()->willReturn(['channel']);
         $configurationRepository->findOneByIdentifier($channel)->willReturn($configuration);
-
-        $configurationConverter
-            ->convert($item)
-            ->willReturn($convertedItem);
 
         $configuration
             ->setConfiguration($convertedItem['configuration'])
@@ -170,7 +140,7 @@ class ChannelConfigurationProcessorSpec extends ObjectBehavior
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
-                [$item]
+                [$convertedItem]
             );
     }
 }

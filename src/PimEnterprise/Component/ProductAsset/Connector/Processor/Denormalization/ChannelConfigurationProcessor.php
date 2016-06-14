@@ -13,7 +13,6 @@ namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalizati
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\ProductAsset\Factory\ChannelConfigurationFactory;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
