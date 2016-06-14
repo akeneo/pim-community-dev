@@ -1,6 +1,7 @@
 <?php
 
 namespace Pim\Component\Connector\Reader\File;
+
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
@@ -26,7 +27,6 @@ use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class ArrayReader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
     StepExecutionAwareInterface,
@@ -81,7 +81,9 @@ class ArrayReader extends AbstractConfigurableStepElement implements
      */
     public function setStepExecution(StepExecution $stepExecution)
     {
-        $this->reader->setStepExecution($stepExecution);
+        if ($this->reader instanceof StepExecutionAwareInterface) {
+            $this->reader->setStepExecution($stepExecution);
+        }
     }
 
     /**
@@ -89,6 +91,8 @@ class ArrayReader extends AbstractConfigurableStepElement implements
      */
     public function flush()
     {
-        $this->reader->flush();
+        if ($this->reader instanceof FlushableInterface) {
+            $this->reader->flush();
+        }
     }
 }
