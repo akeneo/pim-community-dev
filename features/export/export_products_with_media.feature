@@ -78,3 +78,23 @@ Feature: Export products with media
     """
     And export directory of "footwear_product_export" should contain the following media:
       | files/FLIPFLOP-1R/picture/akeneo.jpg |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5844
+  Scenario: Successfully export products with media with identifier containing slash
+    Given the following products:
+      | sku       | family   | categories        | price          | size | color    | name-en_US |
+      | SN/KRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    |
+    And the following product values:
+      | product   | attribute | value                    |
+      | SN/KRS-1B | side_view | %fixtures%/SNKRS-1R.png |
+    And I launched the completeness calculator
+    And I am on the "footwear_product_export" export job page
+    When I launch the export job
+    And I wait for the "footwear_product_export" job to finish
+    Then exported file of "footwear_product_export" should contain:
+    """
+    sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+    SN/KRS-1B;summer_collection;black;;1;sneakers;;;;"Model 1";50.00;70.00;;files/SN_KRS-1B/side_view/SNKRS-1R.png;45;;
+    """
+    And export directory of "footwear_product_export" should contain the following media:
+      | files/SN_KRS-1B/side_view/SNKRS-1R.png |
