@@ -1,11 +1,7 @@
-parameters:
-    pimee_connector.reader.file.csv_tag.class:  PimEnterprise\Component\Connector\Reader\File\Csv\ArrayReader
-    pimee_connector.reader.file.xlsx_tag.class: PimEnterprise\Component\Connector\Reader\File\Xlsx\ArrayReader
-
 services:
     # CSV readers
     pimee_product_asset.reader.file.csv_tag:
-        class: '%pimee_connector.reader.file.csv_tag.class%'
+        class: '%pim_connector.reader.file.csv_array.class%'
         arguments:
             - '@pim_connector.reader.file.csv_iterator_factory'
             - '@pimee_product_asset.array_converter.flat_to_standard.tag'
@@ -30,7 +26,7 @@ services:
 
     # XLSX readers
     pimee_product_asset.reader.file.xlsx_tag:
-        class: '%pimee_connector.reader.file.xlsx_tag.class%'
+        class: '%pim_connector.reader.file.xlsx_array.class%'
         arguments:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@pimee_product_asset.array_converter.flat_to_standard.tag'
