@@ -27,7 +27,6 @@ services:
     pimee_product_asset.processor.denormalization.channel_configuration.flat:
         class: '%pimee_product_asset.processor.denormalization.channel_configuration.class%'
         arguments:
-            - '@pimee_product_asset.array_converter.flat_to_standard.channel_configuration'
             - '@pimee_product_asset.repository.channel_configuration'
             - '@pim_catalog.repository.channel'
             - '@pimee_product_asset.factory.channel_configuration'

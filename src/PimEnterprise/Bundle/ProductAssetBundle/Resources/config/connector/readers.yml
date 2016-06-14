@@ -23,7 +23,10 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.category'
 
     pimee_product_asset.reader.file.csv_channel_configuration:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pimee_product_asset.array_converter.flat_to_standard.channel_configuration'
 
     # XLSX readers
     pimee_product_asset.reader.file.xlsx_tag:

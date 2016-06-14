@@ -28,8 +28,16 @@ class ChannelConfiguration implements ArrayConverterInterface
      *
      * Before:
      * [
-     *      'code'          => 'mycode',
-     *      'configuration' => [],
+     *      'code'          => 'myChannelCode',
+     *      'configuration' => [
+     *          'ecommerce' => ['scale' => ['ratio' => 0.5]],
+     *          'tablet'    => ['scale' => ['ratio' => 0.25]],
+     *          'mobile'    => [
+     *              'scale'      => ['width'      => 200],
+     *              'colorspace' => ['colorspace' => 'gray'],
+     *          ],
+     *          'print'     => ['resize' => ['width' => 400, 'height' => 200]],
+     *      ],
      * ]
      *
      * After:
