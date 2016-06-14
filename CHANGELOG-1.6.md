@@ -157,3 +157,9 @@
 - Move and rename `PimEnterprise\Component\Security\Connector\ArrayConverter\Flat\JobProfileAccessesStandardConverter` to `PimEnterprise\Component\Security\Connector\ArrayConverter\FlatToStandard\JobProfileAccesses`
 - Move and rename `PimEnterprise\Component\Workflow\Connector\ArrayConverter\Flat\ProductDraftStandardConverter` to `PimEnterprise\Component\Workflow\Connector\ArrayConverter\FlatToStandard\ProductDraft`
 - Remove parameter `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface` from constructor of `PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor`
+- Remove `PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\AssetProcessor` and `PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\TagProcessor`
+- Remove `PimEnterprise\Component\Security\Connector\Denormalization\AssetCategoryAccessProcessor`, `PimEnterprise\Component\Security\Connector\Denormalization\AttributeGroupAccessProcessor`, `PimEnterprise\Component\Security\Connector\Denormalization\JobProfileAccessProcessor`, `PimEnterprise\Component\Security\Connector\Denormalization\LocaleAccessProcessor` and `PimEnterprise\Component\Security\Connector\Denormalization\ProductCategoryAccessProcessor`
+- Remove `PimEnterprise\Component\ProductAsset\Connector\Step\TagStep`
+- Remove `PimEnterprise\Component\Security\Connector\Writer\AccessesWriter`
+- Change constructor of `PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\ChannelConfigurationProcessor`, remove `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface` parameter
+- Change constructor of `PimEnterprise\Component\ProductAsset\Updater\AssetUpdater`, add `PimEnterprise\Component\ProductAsset\Factory\AssetFactory` as last parameter
