@@ -67,7 +67,7 @@ class BooleanAttributeSetter extends AbstractAttributeSetter
         }
 
         if (1 === $data || '1' === $data || 0 === $data || '0' === $data) {
-            $data = (bool) $data;
+            $data = boolval($data);
         }
 
         $value->setData($data);
