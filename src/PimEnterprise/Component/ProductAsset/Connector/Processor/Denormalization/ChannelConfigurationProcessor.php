@@ -13,7 +13,6 @@ namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalizati
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\ProductAsset\Factory\ChannelConfigurationFactory;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
@@ -30,24 +29,19 @@ class ChannelConfigurationProcessor extends AbstractProcessor
     /** @var IdentifiableObjectRepositoryInterface */
     protected $channelRepository;
 
-    /** @var ArrayConverterInterface */
-    protected $configurationConverter;
+    /** @var ChannelConfigurationFactory */
+    protected $configurationFactory;
 
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var ChannelConfigurationFactory */
-    protected $configurationFactory;
-
     /**
-     * @param ArrayConverterInterface               $configurationConverter
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param ChannelConfigurationFactory           $configurationFactory
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
-        ArrayConverterInterface $configurationConverter,
         IdentifiableObjectRepositoryInterface $repository,
         IdentifiableObjectRepositoryInterface $channelRepository,
         ChannelConfigurationFactory $configurationFactory,
@@ -56,7 +50,6 @@ class ChannelConfigurationProcessor extends AbstractProcessor
         parent::__construct($repository);
 
         $this->channelRepository      = $channelRepository;
-        $this->configurationConverter = $configurationConverter;
         $this->configurationFactory   = $configurationFactory;
         $this->validator              = $validator;
     }
@@ -66,11 +59,10 @@ class ChannelConfigurationProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $convertedItem = $this->convertItemData($item);
-        $channelConfiguration = $this->findOrCreateChannelConfiguration($convertedItem);
+        $channelConfiguration = $this->findOrCreateChannelConfiguration($item);
 
         try {
-            $this->updateChannelConfiguration($channelConfiguration, $convertedItem);
+            $this->updateChannelConfiguration($channelConfiguration, $item);
         } catch (\InvalidArgumentException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
 
@@ -83,16 +75,6 @@ class ChannelConfigurationProcessor extends AbstractProcessor
         }
 
         return $channelConfiguration;
-    }
-
-    /**
-     * @param array $item
-     *
-     * @return array
-     */
-    protected function convertItemData(array $item)
-    {
-        return $this->configurationConverter->convert($item);
     }
 
     /**

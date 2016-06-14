@@ -15,6 +15,7 @@ use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
@@ -28,13 +29,14 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class AssetUpdater implements ObjectUpdaterInterface
 {
-    const INNER_SEPARATOR = ',';
-
     /** @var TagRepositoryInterface */
     protected $tagRepository;
 
     /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
+
+    /** @var AssetFactory */
+    protected $assetFactory;
 
     /** @var PropertyAccessor */
     protected $accessor;
@@ -42,11 +44,16 @@ class AssetUpdater implements ObjectUpdaterInterface
     /**
      * @param TagRepositoryInterface      $tagRepository
      * @param CategoryRepositoryInterface $categoryRepository
+     * @param AssetFactory                $assetFactory
      */
-    public function __construct(TagRepositoryInterface $tagRepository, CategoryRepositoryInterface $categoryRepository)
-    {
+    public function __construct(
+        TagRepositoryInterface $tagRepository,
+        CategoryRepositoryInterface $categoryRepository,
+        AssetFactory $assetFactory
+    ) {
         $this->tagRepository      = $tagRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->assetFactory       = $assetFactory;
         $this->accessor           = PropertyAccess::createPropertyAccessor();
     }
 
@@ -90,6 +97,9 @@ class AssetUpdater implements ObjectUpdaterInterface
             case 'end_of_use':
                 $this->validateDateFormat($data);
                 $asset->setEndOfUseAt(new \DateTime($data));
+                break;
+            case 'localized':
+                $this->setLocalized($asset, $data);
                 break;
             default:
                 $this->accessor->setValue($asset, $field, $data);
@@ -223,5 +233,14 @@ class AssetUpdater implements ObjectUpdaterInterface
         foreach ($categories as $categoryCode) {
             $asset->removeCategory($this->getCategoryByCode($categoryCode));
         }
+    }
+
+    /**
+     * @param AssetInterface $asset
+     * @param bool           $isLocalized
+     */
+    protected function setLocalized(AssetInterface $asset, $isLocalized)
+    {
+        $this->assetFactory->createReferences($asset, $isLocalized);
     }
 }

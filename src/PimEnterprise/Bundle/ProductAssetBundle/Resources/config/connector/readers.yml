@@ -1,21 +1,44 @@
 services:
+    # CSV readers
     pimee_product_asset.reader.file.csv_tag:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.array_reader.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv'
+            - '@pimee_product_asset.array_converter.flat_to_standard.tag'
 
     pimee_product_asset.reader.file.csv_asset:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pimee_product_asset.array_converter.flat_to_standard.asset'
 
     pimee_product_asset.reader.file.csv_asset_category:
-        alias: pim_connector.reader.file.csv_category
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.category'
 
     pimee_product_asset.reader.file.csv_channel_configuration:
-        alias: pim_connector.reader.file.csv
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pimee_product_asset.array_converter.flat_to_standard.channel_configuration'
 
+    # XLSX readers
     pimee_product_asset.reader.file.xlsx_tag:
-        alias: pim_connector.reader.file.xlsx
+        class: '%pim_connector.reader.file.array_reader.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx'
+            - '@pimee_product_asset.array_converter.flat_to_standard.tag'
 
     pimee_product_asset.reader.file.xlsx_asset:
-        alias: pim_connector.reader.file.xlsx
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pimee_product_asset.array_converter.flat_to_standard.asset'
 
     pimee_product_asset.reader.file.xlsx_asset_category:
-        alias: pim_connector.reader.file.xlsx_category
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.category'

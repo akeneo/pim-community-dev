@@ -457,7 +457,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
      */
     public function getIdentifierProperties()
     {
-        return ['category', 'userGroup'];
+        return ['category', 'user_group'];
     }
 
     /**

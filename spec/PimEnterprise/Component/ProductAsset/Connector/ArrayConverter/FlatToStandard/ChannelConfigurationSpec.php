@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Exception\ArrayConversionException;
 
 class ChannelConfigurationSpec extends ObjectBehavior
 {

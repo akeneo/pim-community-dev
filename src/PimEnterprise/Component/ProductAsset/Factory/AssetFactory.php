@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Factory;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
@@ -19,16 +20,16 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class AssetFactory
+class AssetFactory implements SimpleFactoryInterface
 {
-    /** @var string */
-    protected $assetClass;
-
     /** @var ReferenceFactory */
     protected $referenceFactory;
 
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
+
+    /** @var string */
+    protected $assetClass;
 
     /**
      * @param ReferenceFactory          $referenceFactory
@@ -40,32 +41,37 @@ class AssetFactory
         LocaleRepositoryInterface $localeRepository,
         $assetClass
     ) {
-        $this->localeRepository = $localeRepository;
         $this->referenceFactory = $referenceFactory;
+        $this->localeRepository = $localeRepository;
         $this->assetClass       = $assetClass;
     }
 
     /**
-     * Create a new Asset with its Reference and Variation
-     *
-     * @param bool $isLocalized This parameter is used to know how to create Reference
-     *
-     * @return AssetInterface
+     * {@inheritdoc}
      */
-    public function create($isLocalized = false)
+    public function create()
     {
-        $asset = new $this->assetClass();
+        return new $this->assetClass();
+    }
 
-        if ($isLocalized) {
-            foreach ($this->localeRepository->getActivatedLocales() as $locale) {
-                $reference = $this->referenceFactory->create($locale);
+    /**
+     * Create references for an asset.
+     *
+     * @param AssetInterface $asset
+     * @param bool           $isLocalized
+     */
+    public function createReferences(AssetInterface $asset, $isLocalized)
+    {
+        if (null === $asset->getId()) {
+            if (true === $isLocalized) {
+                foreach ($this->localeRepository->getActivatedLocales() as $locale) {
+                    $reference = $this->referenceFactory->create($locale);
+                    $reference->setAsset($asset);
+                }
+            } else {
+                $reference = $this->referenceFactory->create();
                 $reference->setAsset($asset);
             }
-        } else {
-            $reference = $this->referenceFactory->create();
-            $reference->setAsset($asset);
         }
-
-        return $asset;
     }
 }

@@ -1,33 +1,30 @@
-parameters:
-    pimee_security.writer.doctrine.accesses_writer.class: PimEnterprise\Component\Security\Connector\Writer\AccessesWriter
-
 services:
     pimee_security.writer.doctrine.asset_category_access:
-        class: '%pimee_security.writer.doctrine.accesses_writer.class%'
+        class: '%pim_connector.writer.database.base.class%'
         arguments:
             - '@pimee_security.saver.asset_category_access'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_security.writer.doctrine.locale_access:
-        class: '%pimee_security.writer.doctrine.accesses_writer.class%'
+        class: '%pim_connector.writer.database.base.class%'
         arguments:
             - '@pimee_security.saver.locale_access'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_security.writer.doctrine.job_profile_access:
-        class: '%pimee_security.writer.doctrine.accesses_writer.class%'
+        class: '%pim_connector.writer.database.base.class%'
         arguments:
             - '@pimee_security.saver.job_profile_access'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_security.writer.doctrine.product_category_access:
-        class: '%pimee_security.writer.doctrine.accesses_writer.class%'
+        class: '%pim_connector.writer.database.base.class%'
         arguments:
             - '@pimee_security.saver.product_category_access'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_security.writer.doctrine.attribute_group_access:
-        class: '%pimee_security.writer.doctrine.accesses_writer.class%'
+        class: '%pim_connector.writer.database.base.class%'
         arguments:
             - '@pimee_security.saver.attribute_group_access'
             - '@akeneo_storage_utils.doctrine.object_detacher'

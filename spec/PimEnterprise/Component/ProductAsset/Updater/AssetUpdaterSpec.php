@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
@@ -13,9 +14,12 @@ use Prophecy\Argument;
 
 class AssetUpdaterSpec extends ObjectBehavior
 {
-    function let(TagRepositoryInterface $tagRepository, CategoryRepositoryInterface $categoryRepository)
-    {
-        $this->beConstructedWith($tagRepository, $categoryRepository);
+    function let(
+        TagRepositoryInterface $tagRepository,
+        CategoryRepositoryInterface $categoryRepository,
+        AssetFactory $assetFactory
+    ) {
+        $this->beConstructedWith($tagRepository, $categoryRepository, $assetFactory);
     }
 
     function it_is_initializable()

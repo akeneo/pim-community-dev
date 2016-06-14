@@ -7,7 +7,7 @@ connector:
                 import:
                     services:
                         reader:    pimee_workflow.reader.file.csv_product_draft
-                        processor: pimee_workflow.processor.denormalization.product_draft.flat
+                        processor: pimee_workflow.processor.denormalization.product_draft
                         writer:    pim_base_connector.writer.doctrine.product_draft
                     parameters:
                         batch_size: 10

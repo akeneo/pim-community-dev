@@ -129,7 +129,7 @@ class JobProfileAccessRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
-        return ['jobProfile', 'userGroup'];
+        return ['job_profile', 'user_group'];
     }
 
     /**

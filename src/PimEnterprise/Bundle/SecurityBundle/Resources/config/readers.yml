@@ -1,0 +1,30 @@
+services:
+    pim_connector.reader.file.csv_attribute_group_access:
+        class: '%pim_connector.reader.file.array_reader.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv'
+            - '@pimee_security.array_converter.flat_to_standard.attribute_group_accesses'
+
+    pim_connector.reader.file.csv_locale_access:
+        class: '%pim_connector.reader.file.array_reader.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv'
+            - '@pimee_security.array_converter.flat_to_standard.locale_accesses'
+
+    pim_connector.reader.file.csv_asset_category_access:
+        class: '%pim_connector.reader.file.array_reader.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv'
+            - '@pimee_security.array_converter.flat_to_standard.asset_category_accesses'
+
+    pim_connector.reader.file.csv_product_category_access:
+        class: '%pim_connector.reader.file.array_reader.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv'
+            - '@pimee_security.array_converter.flat_to_standard.product_category_accesses'
+
+    pim_connector.reader.file.csv_job_profile_access:
+        class: '%pim_connector.reader.file.array_reader.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv'
+            - '@pimee_security.array_converter.flat_to_standard.job_profile_accesses'

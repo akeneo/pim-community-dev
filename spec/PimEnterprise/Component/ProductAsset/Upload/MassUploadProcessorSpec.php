@@ -87,8 +87,9 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $assetRepository->findOneByIdentifier('foobar')
             ->willReturn(null);
 
-        $assetFactory->create(false)
+        $assetFactory->create()
             ->willReturn($asset);
+        $assetFactory->createReferences($asset, false)->shouldBeCalled();
 
         $asset->setCode('foobar')
             ->shouldBeCalled();
@@ -138,8 +139,9 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $assetRepository->findOneByIdentifier('foobar')
             ->willReturn(null);
 
-        $assetFactory->create(true)
+        $assetFactory->create()
             ->willReturn($asset);
+        $assetFactory->createReferences($asset, true)->shouldBeCalled();
 
         $asset->setCode('foobar')
             ->shouldBeCalled();
@@ -189,7 +191,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $assetRepository->findOneByIdentifier('foobar')
             ->willReturn($asset);
 
-        $assetFactory->create(Argument::any())
+        $assetFactory->create()
             ->shouldNotBeCalled();
 
         $asset->getCode()
