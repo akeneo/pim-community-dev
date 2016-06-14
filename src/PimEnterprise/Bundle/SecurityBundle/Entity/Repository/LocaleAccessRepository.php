@@ -77,7 +77,7 @@ class LocaleAccessRepository extends EntityRepository implements IdentifiableObj
      */
     public function getIdentifierProperties()
     {
-        return ['locale', 'userGroup'];
+        return ['locale', 'user_group'];
     }
 
     /**

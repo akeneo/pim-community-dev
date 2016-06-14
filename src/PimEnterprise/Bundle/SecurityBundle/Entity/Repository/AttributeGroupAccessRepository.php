@@ -302,7 +302,7 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
      */
     public function getIdentifierProperties()
     {
-        return ['attributeGroup', 'userGroup'];
+        return ['attribute_group', 'user_group'];
     }
 
     /**
