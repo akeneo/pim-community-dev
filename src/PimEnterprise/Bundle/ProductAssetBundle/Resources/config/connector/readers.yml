@@ -1,9 +1,9 @@
 services:
     # CSV readers
     pimee_product_asset.reader.file.csv_tag:
-        class: '%pim_connector.reader.file.csv_array.class%'
+        class: '%pim_connector.reader.file.array_reader.class%'
         arguments:
-            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.reader.file.csv'
             - '@pimee_product_asset.array_converter.flat_to_standard.tag'
 
     pimee_product_asset.reader.file.csv_asset:
@@ -26,9 +26,9 @@ services:
 
     # XLSX readers
     pimee_product_asset.reader.file.xlsx_tag:
-        class: '%pim_connector.reader.file.xlsx_array.class%'
+        class: '%pim_connector.reader.file.array_reader.class%'
         arguments:
-            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.reader.file.xlsx'
             - '@pimee_product_asset.array_converter.flat_to_standard.tag'
 
     pimee_product_asset.reader.file.xlsx_asset:
