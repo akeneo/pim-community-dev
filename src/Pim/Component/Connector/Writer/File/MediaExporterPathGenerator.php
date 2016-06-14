@@ -37,7 +37,7 @@ class MediaExporterPathGenerator implements FileExporterPathGeneratorInterface
 
         $identifier = $options['identifier'];
         $identifier = null !== $identifier ? $identifier : $value->getEntity()->getIdentifier();
-        $target = sprintf('files/%s/%s', $identifier, $attribute->getCode());
+        $target = sprintf('files/%s/%s', str_replace(DIRECTORY_SEPARATOR, '_', $identifier), $attribute->getCode());
 
         if ($attribute->isLocalizable()) {
             $target .= DIRECTORY_SEPARATOR . $value->getLocale();

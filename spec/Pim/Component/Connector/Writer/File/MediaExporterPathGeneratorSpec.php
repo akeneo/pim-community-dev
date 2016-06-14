@@ -109,4 +109,20 @@ class MediaExporterPathGeneratorSpec extends ObjectBehavior
 
         $this->generate($value, ['identifier' => 'sku001'])->shouldReturn('files/sku001/picture/fr_FR/ecommerce/file.jpg');
     }
+
+    function it_generates_the_path_when_the_sku_contains_slash(
+        ProductValueInterface $value,
+        FileInfoInterface $fileInfo,
+        AttributeInterface $attribute
+    ) {
+        $value->getMedia()->willReturn($fileInfo);
+        $value->getLocale()->willReturn(null);
+        $value->getAttribute()->willReturn($attribute);
+        $fileInfo->getOriginalFilename()->willReturn('file.jpg');
+        $attribute->getCode()->willReturn('picture');
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+
+        $this->generate($value, ['identifier' => 'sku/001'])->shouldReturn('files/sku_001/picture/file.jpg');
+    }
 }
