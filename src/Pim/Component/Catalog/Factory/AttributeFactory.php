@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Pim\Component\Catalog\AttributeTypeRegistry;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
@@ -12,7 +13,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeFactory
+class AttributeFactory implements SimpleFactoryInterface
 {
     /** @var AttributeTypeRegistry */
     protected $registry;
@@ -36,6 +37,17 @@ class AttributeFactory
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function create()
+    {
+        $attribute = new $this->attributeClass();
+        $attribute->setEntityType($this->productClass);
+
+        return $attribute;
+    }
+
+    /**
      * Create and configure an attribute
      *
      * @param string|null $type
@@ -44,8 +56,7 @@ class AttributeFactory
      */
     public function createAttribute($type = null)
     {
-        $attribute = new $this->attributeClass();
-        $attribute->setEntityType($this->productClass);
+        $attribute = $this->create();
 
         if (null !== $type && '' !== $type) {
             $attributeType = $this->registry->get($type);

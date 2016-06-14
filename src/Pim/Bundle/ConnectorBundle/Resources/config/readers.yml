@@ -1,8 +1,8 @@
 parameters:
     pim_connector.reader.dummy_item.class: Pim\Component\Connector\Reader\DummyItemReader
 
-    pim_connector.reader.database.product.class: Pim\Component\Connector\Reader\Database\ProductReader
     pim_connector.reader.database.base.class:    Pim\Component\Connector\Reader\Database\BaseReader
+    pim_connector.reader.database.product.class: Pim\Component\Connector\Reader\Database\ProductReader
 
     pim_connector.reader.file.csv.class:               Pim\Component\Connector\Reader\File\Csv\Reader
     pim_connector.reader.file.csv_variant_group.class: Pim\Component\Connector\Reader\File\Csv\VariantGroupReader
@@ -17,6 +17,7 @@ parameters:
     pim_connector.reader.file.file_iterator.class:          Pim\Component\Connector\Reader\File\FileIterator
     pim_connector.reader.file.file_iterator_factory.class:  Pim\Component\Connector\Reader\File\FileIteratorFactory
     pim_connector.reader.file.media_path_transformer.class: Pim\Component\Connector\Reader\File\MediaPathTransformer
+    pim_connector.reader.file.array_reader.class:           Pim\Component\Connector\Reader\File\ArrayReader
 
 services:
     pim_connector.reader.database.product:
@@ -56,7 +57,7 @@ services:
         class: '%pim_connector.reader.file.csv.class%'
         arguments:
             - '@pim_connector.reader.file.csv_iterator_factory'
-            - '@pim_connector.array_converter.identity'
+            - '@pim_connector.array_converter.dummy'
 
     pim_connector.reader.file.csv_association_type:
         class: '%pim_connector.reader.file.csv.class%'
@@ -167,7 +168,7 @@ services:
         class: '%pim_connector.reader.file.xlsx.class%'
         arguments:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
-            - '@pim_connector.array_converter.identity'
+            - '@pim_connector.array_converter.dummy'
 
     pim_connector.reader.file.xlsx_product:
        class: '%pim_connector.reader.file.xlsx_product.class%'
@@ -228,7 +229,7 @@ services:
     pim_connector.reader.file.yaml:
         class: '%pim_connector.reader.file.yaml.class%'
         arguments:
-            - '@pim_connector.array_converter.identity'
+            - '@pim_connector.array_converter.dummy'
 
     pim_connector.reader.file.yaml_job_instance:
         class: '%pim_connector.reader.file.yaml.class%'

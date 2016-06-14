@@ -1,18 +1,13 @@
 parameters:
     pim_connector.processor.dummy_item.class:                          Pim\Component\Connector\Processor\DummyItemProcessor
-    pim_connector.processor.denormalization.attribute_option.class:    Pim\Component\Connector\Processor\Denormalization\AttributeOptionProcessor
+    pim_connector.processor.denormalization.simple.class:              Pim\Component\Connector\Processor\Denormalization\SimpleProcessor
     pim_connector.processor.denormalization.product.class:             Pim\Component\Connector\Processor\Denormalization\ProductProcessor
     pim_connector.processor.denormalization.product_association.class: Pim\Component\Connector\Processor\Denormalization\ProductAssociationProcessor
     pim_connector.processor.denormalization.variant_group.class:       Pim\Component\Connector\Processor\Denormalization\VariantGroupProcessor
-    pim_connector.processor.denormalization.group.class:               Pim\Component\Connector\Processor\Denormalization\GroupProcessor
-    pim_connector.processor.denormalization.group_type.class:          Pim\Component\Connector\Processor\Denormalization\GroupTypeProcessor
-    pim_connector.processor.denormalization.currency.class:            Pim\Component\Connector\Processor\Denormalization\CurrencyProcessor
-    pim_connector.processor.denormalization.simple.class:              Pim\Component\Connector\Processor\Denormalization\SimpleProcessor
-    pim_connector.processor.denormalization.attribute.class:           Pim\Component\Connector\Processor\Denormalization\AttributeProcessor
     pim_connector.processor.denormalization.job_instance.class:        Pim\Component\Connector\Processor\Denormalization\JobInstanceProcessor
-    pim_connector.processor.normalization.simple.class:                Pim\Component\Connector\Processor\Normalization\SimpleProcessor
-    # TODO: no csv in the following class name!
-    pim_connector.processor.normalization.csv_variant_group.class:     Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor
+
+    pim_connector.processor.normalization.simple.class:        Pim\Component\Connector\Processor\Normalization\SimpleProcessor
+    pim_connector.processor.normalization.variant_group.class: Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor
 
 services:
     # Dummy processor
@@ -21,20 +16,22 @@ services:
 
     # Denormalization processors
     pim_connector.processor.denormalization.attribute_option:
-        class: '%pim_connector.processor.denormalization.attribute_option.class%'
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.attribute_option'
+            - '@pim_catalog.factory.attribute_option'
             - '@pim_catalog.updater.attribute_option'
             - '@validator'
-            - '%pim_catalog.entity.attribute_option.class%'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.attribute:
-        class: '%pim_connector.processor.denormalization.attribute.class%'
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.factory.attribute'
             - '@pim_catalog.updater.attribute'
             - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.association_type:
         class: '%pim_connector.processor.denormalization.simple.class%'
@@ -72,15 +69,16 @@ services:
             - '@pim_catalog.factory.group'
             - '@pim_catalog.updater.variant_group'
             - '@pim_catalog.validator.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.group:
-        class: '%pim_connector.processor.denormalization.group.class%'
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.factory.group'
             - '@pim_catalog.updater.group'
-            - '@pim_catalog.validator.product'
-            - '%pim_catalog.entity.group.class%'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.category:
         class: '%pim_connector.processor.denormalization.simple.class%'
@@ -88,7 +86,7 @@ services:
             - '@pim_catalog.repository.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.updater.category'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.family:
@@ -97,7 +95,7 @@ services:
             - '@pim_catalog.repository.family'
             - '@pim_catalog.factory.family'
             - '@pim_catalog.updater.family'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.channel:
@@ -106,7 +104,7 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.channel'
             - '@pim_catalog.updater.channel'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.locale:
@@ -115,7 +113,7 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.factory.locale'
             - '@pim_catalog.updater.locale'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.attribute_group:
@@ -124,24 +122,26 @@ services:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_catalog.factory.attribute_group'
             - '@pim_catalog.updater.attribute_group'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.group_type:
-        class: '%pim_connector.processor.denormalization.group_type.class%'
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.group_type'
             - '@pim_catalog.factory.group_type'
             - '@pim_catalog.updater.group_type'
-            - '@pim_catalog.validator.product'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.currency:
-        class: '%pim_connector.processor.denormalization.currency.class%'
+        class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pim_catalog.repository.currency'
             - '@pim_catalog.factory.currency'
             - '@pim_catalog.updater.currency'
-            - '@pim_catalog.validator.product'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.user:
         class: '%pim_connector.processor.denormalization.simple.class%'
@@ -149,7 +149,7 @@ services:
             - '@pim_user.repository.user'
             - '@pim_user.factory.user'
             - '@pim_user.updater.user'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.user_group:
@@ -158,7 +158,7 @@ services:
             - '@pim_user.repository.group'
             - '@pim_user.factory.group'
             - '@pim_user.updater.group'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.user_role:
@@ -167,7 +167,7 @@ services:
             - '@pim_user.repository.role'
             - '@pim_user.factory.role'
             - '@pim_user.updater.role'
-            - '@pim_catalog.validator.product'
+            - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.denormalization.job_instance:
@@ -189,7 +189,7 @@ services:
             - 'flat'
 
     pim_connector.processor.normalization.variant_group:
-        class: '%pim_connector.processor.normalization.csv_variant_group.class%'
+        class: '%pim_connector.processor.normalization.variant_group.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_serializer'
@@ -215,13 +215,13 @@ services:
             - 'flat'
 
     pim_connector.processor.normalization.attribute_option:
-          class: '%pim_connector.processor.normalization.simple.class%'
-          arguments:
-              - '@pim_serializer.normalizer.flat.option'
-              - 'flat'
+        class: '%pim_connector.processor.normalization.simple.class%'
+        arguments:
+            - '@pim_serializer.normalizer.flat.option'
+            - 'flat'
 
     pim_connector.processor.normalization.association_type:
-          class: '%pim_connector.processor.normalization.simple.class%'
-          arguments:
-              - '@pim_serializer.normalizer.flat.association_type'
-              - 'flat'
+        class: '%pim_connector.processor.normalization.simple.class%'
+        arguments:
+            - '@pim_serializer.normalizer.flat.association_type'
+            - 'flat'

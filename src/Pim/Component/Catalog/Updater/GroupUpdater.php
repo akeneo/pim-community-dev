@@ -22,7 +22,7 @@ class GroupUpdater implements ObjectUpdaterInterface
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
-
+    
     /**
      * @param GroupTypeRepositoryInterface $groupTypeRepository
      * @param AttributeRepositoryInterface $attributeRepository
@@ -107,9 +107,18 @@ class GroupUpdater implements ObjectUpdaterInterface
     protected function setType(GroupInterface $group, $type)
     {
         $groupType = $this->groupTypeRepository->findOneByIdentifier($type);
+
         if (null === $groupType) {
             throw new \InvalidArgumentException(sprintf('Type "%s" does not exist', $type));
         }
+
+        if ($groupType->isVariant()) {
+            throw new \InvalidArgumentException(sprintf(
+                'Cannot process variant group "%s", only groups are accepted',
+                $group->getCode()
+            ));
+        }
+
         $group->setType($groupType);
     }
 

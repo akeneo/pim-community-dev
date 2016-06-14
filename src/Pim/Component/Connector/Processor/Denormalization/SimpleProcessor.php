@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -64,7 +65,7 @@ class SimpleProcessor extends AbstractProcessor
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
-        $violations = $this->validator->validate($entity);
+        $violations = $this->validate($entity);
         if ($violations->count() > 0) {
             $this->objectDetacher->detach($entity);
             $this->skipItemWithConstraintViolations($item, $violations);
@@ -86,5 +87,17 @@ class SimpleProcessor extends AbstractProcessor
         }
 
         return $entity;
+    }
+
+    /**
+     * Validates the processed entity.
+     *
+     * @param mixed $entity
+     *
+     * @return ConstraintViolationListInterface
+     */
+    protected function validate($entity)
+    {
+        return $this->validator->validate($entity);
     }
 }

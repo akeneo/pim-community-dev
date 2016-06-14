@@ -111,6 +111,7 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_catalog.repository.locale'
+            - '@pim_catalog.registry.attribute_type'
 
     pim_catalog.updater.category:
         class: '%akeneo_classification.updater.category.class%'

@@ -66,7 +66,11 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
         $references = [];
         foreach ($properties as $property) {
             if (!isset($data[$property])) {
-                throw new MissingIdentifierException();
+                throw new MissingIdentifierException(sprintf(
+                    'Missing identifier column "%s". Columns found: %s.',
+                    $property,
+                    implode(', ', array_keys($data))
+                ));
             }
             $references[] = $data[$property];
         }

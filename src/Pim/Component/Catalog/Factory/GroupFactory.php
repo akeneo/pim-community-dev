@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupFactory
+class GroupFactory implements SimpleFactoryInterface
 {
     /** @var string */
     protected $metricClass;
@@ -40,6 +40,14 @@ class GroupFactory
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function create()
+    {
+        return new $this->groupClass();
+    }
+
+    /**
      * Create and configure a group instance
      *
      * @param string $groupTypeCode
@@ -48,7 +56,7 @@ class GroupFactory
      */
     public function createGroup($groupTypeCode = null)
     {
-        $group = new $this->groupClass();
+        $group = $this->create();
 
         if (null !== $groupTypeCode) {
             $groupType = $this->groupTypeRepository->findOneByIdentifier($groupTypeCode);

@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -24,9 +25,10 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         GroupFactory $groupFactory,
         ObjectUpdaterInterface $variantUpdater,
         ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($repository, $groupFactory, $variantUpdater, $validator);
+        $this->beConstructedWith($repository, $groupFactory, $variantUpdater, $validator, $detacher);
         $this->setStepExecution($stepExecution);
     }
 

@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory;
 
-use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 
 /**
  * Class GroupTypeFactory
@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\GroupTypeInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupTypeFactory
+class GroupTypeFactory implements SimpleFactoryInterface
 {
     /** @var string */
     protected $groupTypeClass;
@@ -25,7 +25,7 @@ class GroupTypeFactory
     }
 
     /**
-     * @return GroupTypeInterface
+     * {@inheritdoc}
      */
     public function create()
     {
