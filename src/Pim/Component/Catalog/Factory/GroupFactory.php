@@ -53,6 +53,8 @@ class GroupFactory implements SimpleFactoryInterface
      * @param string $groupTypeCode
      *
      * @return GroupInterface
+     *
+     * @deprecated Will be removed in 1.7. Use create() instead then GroupUpdater.
      */
     public function createGroup($groupTypeCode = null)
     {

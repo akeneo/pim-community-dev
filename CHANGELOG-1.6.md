@@ -39,6 +39,7 @@
 - TIP-245: Add datetime filters in the Product Query Builder, allowing to select products on "created at" and "updated at" fields.
 - PIM-5657: Introduce a `JobTemplateProvider` that holds the job template codes to use for creating, showing, editing job profiles. The provider uses configuration files in order to retrieve overridden templates for specific job names
 - TIP-458: Move the Converters from Processors to Readers. Now, all the readers return a standard format as output, and all the processors get a standard format as input.
+- TIP-459: Standardize the denormalization Processors, to use SimpleProcessor in most of the cases.
 
 ## BC breaks
 
@@ -353,6 +354,8 @@
   `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
 - Invert the two first arguments or the constructor of `Pim\Component\Connector\Processor\Denormalization\AttributeProcessor`
 - Move `Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor` to `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor`
+- Change constructor of `Pim\Component\Catalog\Updater\AttributeUpdater`, add `Pim\Component\Catalog\AttributeTypeRegistry` as last parameter.
+- Remove `Pim\Component\Connector\Processor\Denormalization\AttributeOptionProcessor`, `Pim\Component\Connector\Processor\Denormalization\AttributeProcessor`, `Pim\Component\Connector\Processor\Denormalization\CurrencyProcessor`, `Pim\Component\Connector\Processor\Denormalization\GroupProcessor` and `Pim\Component\Connector\Processor\Denormalization\GroupTypeProcessor`.
 - Add parameter `$operationGroup` to `Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver::getAvailableOperationsForm()`
 - Add parameter `$operationGroup` to `Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface::register()`
 - Replace method `getAllByGridName()` by `getAllByGridNameAndGroup()` in `Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface`

@@ -22,8 +22,7 @@ class GroupUpdater implements ObjectUpdaterInterface
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
-
-
+    
     /**
      * @param GroupTypeRepositoryInterface $groupTypeRepository
      * @param AttributeRepositoryInterface $attributeRepository
