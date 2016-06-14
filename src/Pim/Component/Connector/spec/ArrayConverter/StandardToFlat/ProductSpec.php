@@ -38,14 +38,14 @@ class ProductSpec extends ObjectBehavior
                     'locale' => 'de_DE',
                     'scope'  => 'print',
                     'data'   => [
-                        'unit' => 'MEGAHERTZ',
+                        'unit' => 'KILOGRAM',
                         'data' => '100'
                     ]
                 ]
             ]
         )->willReturn([
             'weight-de_DE-print' => '100',
-            'weight-de_DE-print-unit' => 'MEGAHERTZ',
+            'weight-de_DE-print-unit' => 'KILOGRAM',
         ]);
 
         $expected = [
@@ -59,7 +59,7 @@ class ProductSpec extends ObjectBehavior
             'X_SELL-products'         => 'AKN_TS,ORO_TSH',
             'sku'                     => '10699783',
             'weight-de_DE-print'      => '100',
-            'weight-de_DE-print-unit' => 'MEGAHERTZ',
+            'weight-de_DE-print-unit' => 'KILOGRAM',
         ];
 
         $item = [
@@ -90,7 +90,7 @@ class ProductSpec extends ObjectBehavior
                     'locale' => 'de_DE',
                     'scope'  => 'print',
                     'data'   => [
-                        'unit' => 'MEGAHERTZ',
+                        'unit' => 'KILOGRAM',
                         'data' => '100'
                     ]
                 ]
