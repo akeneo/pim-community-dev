@@ -130,7 +130,6 @@ Feature: Import assets
     And I launch the import job
     And I wait for the "csv_clothing_asset_import" job to finish
     Then I should see the text "Field \"localized\" must be filled"
-    And I should see the text "Skipped 1"
 
   Scenario: Import asset with invalid value for field localized
     Given the "clothing" catalog configuration
