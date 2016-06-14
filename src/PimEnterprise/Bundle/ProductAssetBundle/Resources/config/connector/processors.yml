@@ -6,7 +6,7 @@ parameters:
 
 services:
     # Denormalizers
-    pimee_product_asset.processor.denormalization.tag.flat:
+    pimee_product_asset.processor.denormalization.tag:
         class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pimee_product_asset.repository.tag'
@@ -15,7 +15,7 @@ services:
             - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
-    pimee_product_asset.processor.denormalization.asset.flat:
+    pimee_product_asset.processor.denormalization.asset:
         class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pimee_product_asset.repository.asset'
@@ -24,7 +24,7 @@ services:
             - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
-    pimee_product_asset.processor.denormalization.channel_configuration.flat:
+    pimee_product_asset.processor.denormalization.channel_configuration:
         class: '%pimee_product_asset.processor.denormalization.channel_configuration.class%'
         arguments:
             - '@pimee_product_asset.repository.channel_configuration'
@@ -32,7 +32,7 @@ services:
             - '@pimee_product_asset.factory.channel_configuration'
             - '@validator'
 
-    pimee_product_asset.processor.denormalization.category.flat:
+    pimee_product_asset.processor.denormalization.category:
         class: '%pim_connector.processor.denormalization.simple.class%'
         arguments:
             - '@pimee_product_asset.repository.category'

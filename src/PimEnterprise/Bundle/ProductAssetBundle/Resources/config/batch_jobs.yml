@@ -18,7 +18,7 @@ connector:
                 import_asset:
                     services:
                         reader:    pimee_connector.reader.file.yaml_channel_configuration
-                        processor: pimee_product_asset.processor.denormalization.channel_configuration.flat
+                        processor: pimee_product_asset.processor.denormalization.channel_configuration
                         writer:    pimee_product_asset.writer.doctrine.channel_configuration
         yml_asset_channel_configuration_export:
             type:  export
@@ -38,14 +38,14 @@ connector:
                 import_tags:
                     services:
                         reader:    pimee_product_asset.reader.file.csv_tag
-                        processor: pimee_product_asset.processor.denormalization.tag.flat
+                        processor: pimee_product_asset.processor.denormalization.tag
                         writer:    pimee_product_asset.writer.doctrine.tag
                     parameters:
                         batchSize: 1
                 import_asset:
                     services:
                         reader:    pimee_product_asset.reader.file.csv_asset
-                        processor: pimee_product_asset.processor.denormalization.asset.flat
+                        processor: pimee_product_asset.processor.denormalization.asset
                         writer:    pimee_product_asset.writer.doctrine.asset
         csv_asset_category_import:
             type:  import
@@ -57,7 +57,7 @@ connector:
                 import_asset_category:
                     services:
                         reader:    pimee_product_asset.reader.file.csv_asset_category
-                        processor: pimee_product_asset.processor.denormalization.category.flat
+                        processor: pimee_product_asset.processor.denormalization.category
                         writer:    pimee_product_asset.writer.doctrine.category
                     parameters:
                         batchSize: 1
@@ -95,14 +95,14 @@ connector:
                 import_tags:
                     services:
                         reader:    pimee_product_asset.reader.file.xlsx_tag
-                        processor: pimee_product_asset.processor.denormalization.tag.flat
+                        processor: pimee_product_asset.processor.denormalization.tag
                         writer:    pimee_product_asset.writer.doctrine.tag
                     parameters:
                         batchSize: 1
                 import_asset:
                     services:
                         reader:    pimee_product_asset.reader.file.xlsx_asset
-                        processor: pimee_product_asset.processor.denormalization.asset.flat
+                        processor: pimee_product_asset.processor.denormalization.asset
                         writer:    pimee_product_asset.writer.doctrine.asset
         xlsx_asset_category_import:
             type:  import
@@ -114,7 +114,7 @@ connector:
                 import_asset_category:
                     services:
                         reader:    pimee_product_asset.reader.file.xlsx_asset_category
-                        processor: pimee_product_asset.processor.denormalization.category.flat
+                        processor: pimee_product_asset.processor.denormalization.category
                         writer:    pimee_product_asset.writer.doctrine.category
                     parameters:
                         batchSize: 1

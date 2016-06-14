@@ -2,7 +2,7 @@ parameters:
     pimee_workflow.processor.denormalization.product_draft.class: PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor
 
 services:
-    pimee_workflow.processor.denormalization.product_draft.flat:
+    pimee_workflow.processor.denormalization.product_draft:
         class: '%pimee_workflow.processor.denormalization.product_draft.class%'
         arguments:
             - '@pim_catalog.repository.product'

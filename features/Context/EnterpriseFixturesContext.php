@@ -998,7 +998,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         }
 
         $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.category');
-        $processor = $this->getContainer()->get('pimee_product_asset.processor.denormalization.category.flat');
+        $processor = $this->getContainer()->get('pimee_product_asset.processor.denormalization.category');
         $convertedData = $converter->convert($data);
         $category = $processor->process($convertedData);
 
