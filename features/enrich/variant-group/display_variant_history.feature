@@ -27,13 +27,19 @@ Feature: Display the variant group history
       | 1       | axis     | size              |
 
   Scenario: Successfully edit a variant group attribute and see the change in history
-    And I am on the "caterpillar_boots" variant group page
+    And I am on the variant groups page
+    When I create a new variant group
+    And I fill in the following information in the popin:
+      | Code | converse_sneakers |
+      | Axis | Size              |
+    And I press the "Save" button in the popin
+    And I am on the "converse_sneakers" variant group page
     And I visit the "Attributes" tab
     And I add available attributes Name and Length
     And I change the "Name" to "Ultra boots"
     And I change the "Length" to "5"
     And I save the variant group
-    When I am on the "caterpillar_boots" variant group page
+    When I am on the "converse_sneakers" variant group page
     And I visit the "History" tab
     And I should see history:
       | version | property   | value       |
