@@ -362,7 +362,11 @@ interface AttributeInterface extends
     public function setDateMin($dateMin);
 
     /**
-     * {@inheritdoc}
+     * Set attribute type
+     *
+     * @param string $type
+     *
+     * @return AttributeInterface
      */
     public function setAttributeType($type);
 

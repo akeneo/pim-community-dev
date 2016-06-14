@@ -3,7 +3,9 @@
 namespace spec\Pim\Component\Catalog\Updater;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
+use Pim\Component\Catalog\AttributeTypeRegistry;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
@@ -16,9 +18,10 @@ class AttributeUpdaterSpec extends ObjectBehavior
 {
     function let(
         AttributeGroupRepositoryInterface $attrGroupRepo,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        AttributeTypeRegistry $registry
     ) {
-        $this->beConstructedWith($attrGroupRepo, $localeRepository);
+        $this->beConstructedWith($attrGroupRepo, $localeRepository, $registry);
     }
 
     function it_is_initializable()
@@ -33,10 +36,12 @@ class AttributeUpdaterSpec extends ObjectBehavior
 
     function it_updates_a_new_attribute(
         $attrGroupRepo,
+        $registry,
         AttributeInterface $attribute,
         AttributeTranslation $translation,
         AttributeGroupInterface $attributeGroup,
-        PropertyAccessor $accessor
+        PropertyAccessor $accessor,
+        AttributeTypeInterface $attributeType
     ) {
         $attribute->getId()->willReturn(null);
         $attribute->getAttributeType()->willReturn('pim_reference_data_multiselect');
@@ -57,6 +62,13 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $attrGroupRepo->findOneByIdentifier('marketing')->willReturn($attributeGroup);
         $attribute->setGroup($attributeGroup)->shouldBeCalled();
         $attribute->setAttributeType('pim_catalog_text')->shouldBeCalled();
+        $attribute->setBackendType('backend')->shouldBeCalled();
+        $attribute->setUnique(true)->shouldBeCalled();
+
+        $registry->get('pim_catalog_text')->willReturn($attributeType);
+        $attributeType->getName()->willReturn('pim_catalog_text');
+        $attributeType->getBackendType()->willReturn('backend');
+        $attributeType->isUnique()->willReturn(true);
 
         $accessor->setValue($attribute, 'attributeType', 'pim_catalog_text');
 
@@ -65,8 +77,10 @@ class AttributeUpdaterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_no_groups_found(
         $attrGroupRepo,
+        $registry,
         AttributeInterface $attribute,
-        AttributeTranslation $translation
+        AttributeTranslation $translation,
+        AttributeTypeInterface $attributeType
     ) {
         $attribute->getId()->willReturn(null);
         $attribute->getAttributeType()->willReturn('pim_reference_data_simpleselect');
@@ -85,6 +99,10 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $translation->setLabel('Test2')->shouldBeCalled();
 
         $attrGroupRepo->findOneByIdentifier('marketing')->willReturn(null);
+        $registry->get('pim_catalog_text')->willReturn($attributeType);
+        $attributeType->getName()->willReturn('pim_catalog_text');
+        $attributeType->getBackendType()->willReturn('backend');
+        $attributeType->isUnique()->willReturn(true);
 
         $this->shouldThrow(new \InvalidArgumentException('AttributeGroup "marketing" does not exist'))->during(
             'update',
