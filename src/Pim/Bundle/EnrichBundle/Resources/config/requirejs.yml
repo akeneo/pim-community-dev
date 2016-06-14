@@ -223,6 +223,7 @@ config:
         # Filters
         pim/filter/filter:          pimenrich/js/filter/filter
         pim/filter/text:            pimenrich/js/filter/text
+        pim/filter/simpleselect:    pimenrich/js/filter/simpleselect
         pim/filter/product/family:  pimenrich/js/filter/product/family
         pim/filter/product/enabled: pimenrich/js/filter/product/enabled
         pim/filter/product/updated: pimenrich/js/filter/product/updated
@@ -369,6 +370,7 @@ config:
 
         # Filters
         pim/template/filter/text:            pimenrich/templates/filter/text.html
+        pim/template/filter/simpleselect:    pimenrich/templates/filter/simpleselect.html
         pim/template/filter/product/family:  pimenrich/templates/filter/product/family.html
         pim/template/filter/product/enabled: pimenrich/templates/filter/product/enabled.html
         pim/template/filter/product/updated: pimenrich/templates/filter/product/updated.html

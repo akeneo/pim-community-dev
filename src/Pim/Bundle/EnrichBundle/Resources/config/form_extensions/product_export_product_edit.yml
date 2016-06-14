@@ -75,8 +75,7 @@ filters:
             view: pim-filter-text
             # view: pim-filter-multiselect
         pim_catalog_simpleselect:
-            view: pim-filter-text
-            # view: pim-filter-simpleselect
+            view: pim-filter-simpleselect
         pim_catalog_date:
             view: pim-filter-text
             # view: pim-filter-date
@@ -84,8 +83,7 @@ filters:
             view: pim-filter-text
             # view: pim-filter-boolean
         pim_reference_data_simpleselect: #to move in reference data bundle
-            view: pim-filter-text
-            # view: pim-filter-simpleselect
+            view: pim-filter-simpleselect
         pim_reference_data_multiselect:
             view: pim-filter-text
             # view: pim-filter-multiselect

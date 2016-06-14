@@ -117,7 +117,7 @@ define(
                     Routing.generate(
                         'pim_ui_ajaxentity_list',
                         {
-                            'class': 'PimCatalogBundle:AttributeOption',
+                            'class': 'PimCatalogBundle:AttributeOption', //Should be passed as configuration
                             'dataLocale': this.context.locale,
                             'collectionId': this.attribute.id,
                             'options': {'type': 'code'}

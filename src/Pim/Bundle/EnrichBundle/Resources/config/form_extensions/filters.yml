@@ -16,3 +16,6 @@ extensions:
 
     pim-filter-product-updated:
         module: pim/filter/product/updated
+
+    pim-filter-simpleselect:
+        module: pim/filter/simpleselect
