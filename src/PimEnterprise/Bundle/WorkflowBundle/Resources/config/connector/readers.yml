@@ -10,6 +10,10 @@ services:
     pimee_workflow.reader.file.xlsx_product_draft:
         parent: pim_connector.reader.file.xlsx_product
         class: '%pim_connector.reader.file.xlsx_product.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pimee_base_connector.array_converter.flat_to_standard.product_draft'
+            - '@pim_connector.reader.file.media_path_transformer'
 
     pimee_workflow.connector.reader.mass_edit.published_product:
         class: '%pim_enrich.connector.reader.mass_edit.product.class%'
