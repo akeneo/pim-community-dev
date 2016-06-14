@@ -102,7 +102,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
             'my_original_file--ecommerce.txt'
         )->willReturn($variationFileInfo);
         $metadataBuilder->build($variationFileInfo)->willReturn($fileMetadata);
-        $fileStorer->store($variationFileInfo, self::STORAGE_FS)->willReturn($variationFile);
+        $fileStorer->store($variationFileInfo, self::STORAGE_FS, true)->willReturn($variationFile);
 
         $fileMetadata->setFileInfo($variationFile)->shouldBeCalled();
         $metadataSaver->save($fileMetadata)->shouldBeCalled();

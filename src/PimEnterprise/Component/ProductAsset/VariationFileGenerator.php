@@ -32,6 +32,7 @@ use Symfony\Component\Filesystem\Filesystem;
  *      - extract the metadata from the variation file
  *      - store the variation file in STORAGE
  *      - set the variation file to the variation and save the variation to the database
+ *      - remove generated files (variation & source) from /tmp
  *
  * Where STORAGE is the virtual filesystem where files are stored.
  *
@@ -118,7 +119,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
             $outputFilename
         );
         $variationMetadata = $this->extractMetadata($variationFileInfo);
-        $variationFile     = $this->fileStorer->store($variationFileInfo, $this->filesystemAlias);
+        $variationFile     = $this->fileStorer->store($variationFileInfo, $this->filesystemAlias, true);
 
         $variationMetadata->setFileInfo($variationFile);
         $this->metadataSaver->save($variationMetadata);
