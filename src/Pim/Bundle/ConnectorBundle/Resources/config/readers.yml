@@ -5,11 +5,13 @@ parameters:
     pim_connector.reader.database.product.class: Pim\Component\Connector\Reader\Database\ProductReader
 
     pim_connector.reader.file.csv.class:               Pim\Component\Connector\Reader\File\Csv\Reader
+    pim_connector.reader.file.csv_array.class:         Pim\Component\Connector\Reader\File\Csv\ArrayReader
     pim_connector.reader.file.csv_variant_group.class: Pim\Component\Connector\Reader\File\Csv\VariantGroupReader
     pim_connector.reader.file.csv_association.class:   Pim\Component\Connector\Reader\File\Csv\ProductAssociationReader
     pim_connector.reader.file.csv_product.class:       Pim\Component\Connector\Reader\File\Csv\ProductReader
 
     pim_connector.reader.file.xlsx.class:         Pim\Component\Connector\Reader\File\Xlsx\Reader
+    pim_connector.reader.file.xlsx_array.class:   Pim\Component\Connector\Reader\File\Xlsx\ArrayReader
     pim_connector.reader.file.xlsx_product.class: Pim\Component\Connector\Reader\File\Xlsx\ProductReader
 
     pim_connector.reader.file.yaml.class: Pim\Component\Connector\Reader\File\Yaml\Reader

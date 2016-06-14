@@ -65,7 +65,7 @@ class SimpleProcessor extends AbstractProcessor
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
-        $violations = $this->getViolations($entity);
+        $violations = $this->validate($entity);
         if ($violations->count() > 0) {
             $this->objectDetacher->detach($entity);
             $this->skipItemWithConstraintViolations($item, $violations);
@@ -90,13 +90,13 @@ class SimpleProcessor extends AbstractProcessor
     }
 
     /**
-     * Returns the list of violations for the processed entity.
+     * Validates the processed entity.
      *
      * @param mixed $entity
      *
      * @return ConstraintViolationListInterface
      */
-    protected function getViolations($entity)
+    protected function validate($entity)
     {
         return $this->validator->validate($entity);
     }

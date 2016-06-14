@@ -81,7 +81,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     {
         switch ($field) {
             case 'attributeType':
-                if (null !== $data && '' !== $data) {
+                if (('' !== $data) && (null !== $data)) {
                     $attributeType = $this->registry->get($data);
                     $attribute->setAttributeType($attributeType->getName());
                     $attribute->setBackendType($attributeType->getBackendType());

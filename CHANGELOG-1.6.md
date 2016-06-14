@@ -301,10 +301,6 @@
 - Remove property color from the model `Pim\Bundle\CatalogBundle\Entity\Channel` and interface `Pim\Component\Catalog\Model\ChannelInterface`
 - Rename `Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface` to `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface`
 - Remove `Pim\Component\Connector\ArrayConverter\Structured\AttributeOptionStandardConverter`
-- Remove `Pim\Component\Connector\ArrayConverter\Structured\JobInstanceConverter`
-- Remove `Pim\Component\Connector\ArrayConverter\Flat\LocaleStandardConverter`
-- Remove `Pim\Component\Connector\ArrayConverter\Flat\UserGroupStandardConverter`
-- Remove `Pim\Component\Connector\ArrayConverter\Flat\UserRoleStandardConverter`
 - Move and rename `Pim\Component\Connector\ArrayConverter\Flat\AttributeOptionStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\AttributeOption`
 - Move and rename `Pim\Component\Connector\ArrayConverter\Flat\AttributeStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Attribute`
 - Move and rename `Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product`
@@ -314,11 +310,6 @@
 - Move and rename `Pim\Component\Connector\ArrayConverter\Flat\CategoryStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Category`
 - Move and rename `Pim\Component\Connector\ArrayConverter\Flat\AssociationTypeStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\AssociationType`
 - Move and rename `Pim\Component\Connector\ArrayConverter\Flat\FamilyStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Family`
-- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\ChannelStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Channel`
-- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\AttributeGroupStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\AttributeGroup`
-- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\GroupTypeStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\GroupType`
-- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\CurrencyStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Currency`
-- Move and rename `Pim\Component\Connector\ArrayConverter\Flat\UserStandardConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\User`
 - Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistry` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterRegistry`
 - Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\AbstractValueConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\AbstractValueConverter`
 - Move `Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\PriceConverter` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\PriceConverter`
@@ -339,23 +330,13 @@
 - Move `Pim\Component\Connector\Reader\File\CsvProductReader` to `Pim\Component\Connector\Reader\File\Csv\ProductReader`. Change constructor to remove `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, decimalSeparators and dateFormats to add `Pim\Component\Connector\Reader\File\FileIteratorFactory`, `Pim\Component\Connector\Reader\File\MediaPathTransformer` and `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface`.
 - Move `Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader` to `Pim\Component\Connector\Reader\File\Yaml\Reader`. Change constructor to add `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface` as first parameter.
 - Remove `Pim\Component\Connector\Processor\Denormalization\AssociationTypeProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
-- Remove `Pim\Component\Connector\Processor\Denormalization\AttributeGroupProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
 - Remove `Pim\Component\Connector\Processor\Denormalization\CategoryProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
 - Remove `Pim\Component\Connector\Processor\Denormalization\FamilyProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
-- Remove `Pim\Component\Connector\Processor\Denormalization\ChannelProcessor` and replaced it by `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
-- Remove parameter `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface` from constructors of
-  `Pim\Component\Connector\Processor\Denormalization\AttributeOptionProcessor`,
-  `Pim\Component\Connector\Processor\Denormalization\AttributeProcessor`,
-  `Pim\Component\Connector\Processor\Denormalization\CurrencyProcessor`,
-  `Pim\Component\Connector\Processor\Denormalization\GroupProcessor`,
-  `Pim\Component\Connector\Processor\Denormalization\GroupTypeProcessor`,
-  `Pim\Component\Connector\Processor\Denormalization\ProductAssociationProcessor`,
-  `Pim\Component\Connector\Processor\Denormalization\ProductProcessor` and
-  `Pim\Component\Connector\Processor\Denormalization\SimpleProcessor`
+- Remove parameter `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface` from constructors of `Pim\Component\Connector\Processor\Denormalization\ProductAssociationProcessor` and `Pim\Component\Connector\Processor\Denormalization\ProductProcessor`.
 - Invert the two first arguments or the constructor of `Pim\Component\Connector\Processor\Denormalization\AttributeProcessor`
 - Move `Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor` to `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor`
 - Change constructor of `Pim\Component\Catalog\Updater\AttributeUpdater`, add `Pim\Component\Catalog\AttributeTypeRegistry` as last parameter.
-- Remove `Pim\Component\Connector\Processor\Denormalization\AttributeOptionProcessor`, `Pim\Component\Connector\Processor\Denormalization\AttributeProcessor`, `Pim\Component\Connector\Processor\Denormalization\CurrencyProcessor`, `Pim\Component\Connector\Processor\Denormalization\GroupProcessor` and `Pim\Component\Connector\Processor\Denormalization\GroupTypeProcessor`.
+- Remove `Pim\Component\Connector\Processor\Denormalization\AttributeOptionProcessor`, `Pim\Component\Connector\Processor\Denormalization\AttributeProcessor`, `Pim\Component\Connector\Processor\Denormalization\GroupProcessor`.
 - Add parameter `$operationGroup` to `Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver::getAvailableOperationsForm()`
 - Add parameter `$operationGroup` to `Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface::register()`
 - Replace method `getAllByGridName()` by `getAllByGridNameAndGroup()` in `Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface`

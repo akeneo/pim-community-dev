@@ -53,8 +53,6 @@ class AttributeFactory implements SimpleFactoryInterface
      * @param string|null $type
      *
      * @return AttributeInterface
-     *
-     * @deprecated Will be removed in 1.7. Please use create() then AttributeUpdater.
      */
     public function createAttribute($type = null)
     {

@@ -21,9 +21,9 @@ class VariantGroupProcessor extends SimpleProcessor
     /**
      * {@inheritdoc}
      */
-    protected function getViolations($group)
+    protected function validate($group)
     {
-        $violations = parent::getViolations($group);
+        $violations = parent::validate($group);
 
         $template = $group->getProductTemplate();
         if (null !== $template) {
