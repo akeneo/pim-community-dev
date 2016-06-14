@@ -79,7 +79,7 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     public function theAssetBasketItemShouldContainThumbnailForContext($code, $channelCode, $localeCode = null)
     {
         $baksetItem = $this->getAssetBasketItem($code);
-        $thumbnail  = $this->spin(function() use ($baksetItem) {
+        $thumbnail  = $this->spin(function () use ($baksetItem) {
              return $baksetItem->find('css', '.asset-thumbnail');
         }, 'Impossible to find the thumbnail');
 

@@ -42,7 +42,7 @@ class ProductCategoryController extends BaseProductCategoryController
     }
 
     /**
-     * Overridden trees to return only granted categories 
+     * Overridden trees to return only granted categories
      *
      * @param array $trees
      *

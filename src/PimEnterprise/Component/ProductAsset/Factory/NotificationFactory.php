@@ -62,7 +62,7 @@ class NotificationFactory extends AbstractNotificationFactory implements Notific
             ->setMessage('pimee_product_asset.mass_upload.executed')
             ->setMessageParams(['%label%' => $jobExecution->getJobInstance()->getLabel()])
             ->setRoute('pim_enrich_job_tracker_show')
-            ->setRouteParams(['id' => $jobExecution->getId()])
+            ->setRouteParams(['id'     => $jobExecution->getId()])
             ->setContext(['actionType' => $type]);
 
         return $notification;
