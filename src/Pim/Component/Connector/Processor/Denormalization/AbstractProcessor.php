@@ -8,8 +8,8 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Pim\Component\Connector\Exception\MissingIdentifierException;
-use Pim\Component\Connector\Item\InvalidItemExceptionFromViolations;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -113,6 +113,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
             $this->stepExecution->incrementSummaryInfo('skip');
         }
 
-        throw new InvalidItemExceptionFromViolations($violations, $item, [], 0, $previousException);
+        throw new InvalidItemFromViolationsException($violations, $item, [], 0, $previousException);
     }
 }

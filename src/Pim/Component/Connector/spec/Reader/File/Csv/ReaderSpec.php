@@ -95,7 +95,7 @@ class ReaderSpec extends ObjectBehavior
             new DataArrayConversionException('message', 0, null, new ConstraintViolationList())
         );
 
-        $this->shouldThrow('Pim\Component\Connector\Item\InvalidItemExceptionFromViolations')->during('read');
+        $this->shouldThrow('Pim\Component\Connector\Exception\InvalidItemFromViolationsException')->during('read');
     }
 
     private function getPath()

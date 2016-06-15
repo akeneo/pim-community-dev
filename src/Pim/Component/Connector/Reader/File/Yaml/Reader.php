@@ -10,7 +10,7 @@ use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Exception\DataArrayConversionException;
-use Pim\Component\Connector\Item\InvalidItemExceptionFromViolations;
+use Pim\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Yaml\Yaml;
 
@@ -168,7 +168,7 @@ class Reader extends FileReader implements
      * @param DataArrayConversionException $exception
      *
      * @throws InvalidItemException
-     * @throws InvalidItemExceptionFromViolations
+     * @throws InvalidItemFromViolationsException
      */
     protected function skipItemFromConversionException(array $item, DataArrayConversionException $exception)
     {
@@ -177,7 +177,7 @@ class Reader extends FileReader implements
         }
 
         if (null !== $exception->getViolations()) {
-            throw new InvalidItemExceptionFromViolations($exception->getViolations(), $item, [], 0, $exception);
+            throw new InvalidItemFromViolationsException($exception->getViolations(), $item, [], 0, $exception);
         }
 
         throw new InvalidItemException($exception->getMessage(), $item, [], 0, $exception);

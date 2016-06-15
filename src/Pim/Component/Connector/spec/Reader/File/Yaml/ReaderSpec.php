@@ -84,7 +84,7 @@ class ReaderSpec extends ObjectBehavior
             new DataArrayConversionException('message', 0, null, new ConstraintViolationList())
         );
 
-        $this->shouldThrow('Pim\Component\Connector\Item\InvalidItemExceptionFromViolations')->during('read');
+        $this->shouldThrow('Pim\Component\Connector\Exception\InvalidItemFromViolationsException')->during('read');
     }
 
     function it_reads_entities_from_a_yml_file_one_by_one(

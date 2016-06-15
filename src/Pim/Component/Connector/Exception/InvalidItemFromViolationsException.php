@@ -1,7 +1,6 @@
 <?php
 
-
-namespace Pim\Component\Connector\Item;
+namespace Pim\Component\Connector\Exception;
 
 use Akeneo\Component\Batch\Item\InvalidItemException as BaseInvalidItemException;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
@@ -9,13 +8,14 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
- * Extends the InvalidItemExceptionFromViolations to be able to build one from a Symfony constraints violations list.
+ * Extends the {@link  Akeneo\Component\Batch\Item\InvalidItemException}
+ * to be able to build one from a Symfony constraints violations list.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InvalidItemExceptionFromViolations extends BaseInvalidItemException
+class InvalidItemFromViolationsException extends BaseInvalidItemException
 {
     /** @var ConstraintViolationListInterface */
     protected $violations;
@@ -61,5 +61,4 @@ class InvalidItemExceptionFromViolations extends BaseInvalidItemException
 
         parent::__construct(implode("\n", $errors), $item, $messageParameters, $code, $previous);
     }
-
 }
