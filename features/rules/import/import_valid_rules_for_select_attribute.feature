@@ -111,3 +111,31 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see the text "manufacturer"
     Then I should see the text "is copied into"
+
+  Scenario: Import valid rule for "multi select" attribute in conditions and "remove value" actions
+    Given the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_weather:
+            conditions:
+                - field:    weather_conditions.code
+                  operator: IN
+                  value:
+                      - dry
+            actions:
+                - type:  remove
+                  field: weather_conditions
+                  items:
+                      - dry
+                      - wet
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    Then I should see the text "created 1"
+    When I am on the "weather_conditions" attribute page
+    And I visit the "Rules" tab
+    Then I should see the text "dry"
+    And I should see the text "wet"

@@ -262,15 +262,27 @@ Feature: Import rules
                 - type:   set
                   field:  weather_conditions
                   value:  The new Sony description
+        remove_sony_weather_conditions:
+            conditions:
+                -
+                  field:    weather_conditions.code
+                  operator: IN
+                  value:    not an array
+            actions:
+                -
+                  type:   remove
+                  field:  weather_conditions
+                  items:  The new Sony description
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should see the text "skipped 2"
+    Then I should see the text "skipped 3"
     And I should see the text "conditions[0]: Attribute or field \"weather_conditions\" expects an array as data, \"string\" given (for filter options)."
     And I should see the text "actions[0]: Attribute or field \"weather_conditions\" expects an array as data, \"string\" given (for setter multi select)."
+    And I should see the text "actions[0]: Attribute or field \"weather_conditions\" expects an array as data, \"string\" given (for remover multi select)."
     When I am on the "weather_conditions" attribute page
     And I visit the "Rules" tab
     Then I should see the text "dry"
