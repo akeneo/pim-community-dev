@@ -10,7 +10,7 @@ use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Prophecy\Argument;
 
-class CsvReaderSpec extends ObjectBehavior
+class ReaderSpec extends ObjectBehavior
 {
     function let(
         FileIteratorFactory $fileIteratorFactory,

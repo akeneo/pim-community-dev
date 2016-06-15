@@ -118,8 +118,7 @@ class ProductReaderSpec extends ObjectBehavior
         ProductInterface $product2,
         ProductInterface $product3,
         JobParameters $jobParameters
-    )
-    {
+    ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('channel')->willReturn('mobile');
         $jobParameters->get('enabled')->willReturn('enabled');

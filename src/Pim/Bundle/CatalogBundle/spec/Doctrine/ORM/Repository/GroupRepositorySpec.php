@@ -39,7 +39,6 @@ class GroupRepositorySpec extends ObjectBehavior
         QueryBuilder $queryBuilder1,
         AbstractQuery $query1
     ) {
-
         $em->createQueryBuilder()->willReturn($queryBuilder1);
 
         $queryBuilder1->select('g')->willReturn($queryBuilder1);

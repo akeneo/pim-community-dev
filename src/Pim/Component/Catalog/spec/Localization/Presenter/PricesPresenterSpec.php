@@ -88,7 +88,7 @@ class PricesPresenterSpec extends ObjectBehavior
         $numberFormatter->formatCurrency(123.5, 'EUR')->willReturn('€123.5');
 
         $this
-            ->present([['data' => 125, 'currency' => 'USD'],['data' => 123.5, 'currency' => 'EUR']])
+            ->present([['data' => 125, 'currency' => 'USD'], ['data' => 123.5, 'currency' => 'EUR']])
             ->shouldReturn('$125, €123.5');
     }
 

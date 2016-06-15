@@ -11,7 +11,6 @@ namespace Akeneo\Bundle\MeasureBundle\Family;
  */
 interface DurationFamilyInterface
 {
-    
     /**
      * Family measure name
      * @staticvar string

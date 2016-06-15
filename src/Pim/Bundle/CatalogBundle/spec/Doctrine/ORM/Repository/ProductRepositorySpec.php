@@ -69,8 +69,7 @@ class ProductRepositorySpec extends ObjectBehavior
         Expr $expr,
         AbstractQuery $query,
         ProductQueryBuilder $pqb
-    )
-    {
+    ) {
         $pqbFactory->create()->willReturn($pqb);
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $pqb->getQueryBuilder()->willReturn($queryBuilder);
@@ -199,4 +198,3 @@ class ProductRepositorySpec extends ObjectBehavior
         $this->countAll();
     }
 }
-

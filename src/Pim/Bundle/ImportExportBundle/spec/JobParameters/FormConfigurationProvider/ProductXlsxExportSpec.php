@@ -16,7 +16,6 @@ class ProductXlsxExportSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         FamilyRepositoryInterface $familyRepository
     ) {
-
         $this->beConstructedWith(
             $simpleCsvExport,
             $channelRepository,

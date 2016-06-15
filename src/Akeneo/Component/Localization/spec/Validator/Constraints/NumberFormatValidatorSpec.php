@@ -39,7 +39,7 @@ class NumberFormatValidatorSpec extends ObjectBehavior
         $this->validate('12', $constraint);
         $this->validate('0', $constraint);
         $this->validate(0, $constraint);
-   }
+    }
 
     function it_adds_violation_when_format_is_not_respected(
         $context,

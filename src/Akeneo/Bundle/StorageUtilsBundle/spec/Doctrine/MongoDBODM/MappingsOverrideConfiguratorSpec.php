@@ -21,8 +21,8 @@ class MappingsOverrideConfiguratorSpec extends ObjectBehavior
         $dm->getConfiguration()->willReturn($configuration);
     }
 
-    function it_configures_the_mappings_of_an_original_model_that_is_override($configuration) {
-
+    function it_configures_the_mappings_of_an_original_model_that_is_override($configuration)
+    {
         $metadataInfo = new ClassMetadataInfo('Foo\Bar\OriginalQux');
         $metadataInfo->mapOneReference(['fieldName' => 'relation1', 'targetEntity' => 'Foo']);
         $metadataInfo->mapManyReference(['fieldName' => 'relation2', 'targetEntity' => 'Foo']);
@@ -63,7 +63,7 @@ class MappingsOverrideConfiguratorSpec extends ObjectBehavior
     public function getMatchers()
     {
         return [
-            'beAnOverrideModel' => function($subject) {
+            'beAnOverrideModel' => function ($subject) {
                 $mappings = $subject->associationMappings;
 
                 return $subject->isMappedSuperclass &&
@@ -73,7 +73,15 @@ class MappingsOverrideConfiguratorSpec extends ObjectBehavior
     }
 }
 
-class OriginalQux1 {}
-class OriginalQux2 {}
-class OverrideQux1 extends OriginalQux1 {}
-class OverrideQux2 extends OriginalQux2 {}
+class OriginalQux1
+{
+}
+class OriginalQux2
+{
+}
+class OverrideQux1 extends OriginalQux1
+{
+}
+class OverrideQux2 extends OriginalQux2
+{
+}

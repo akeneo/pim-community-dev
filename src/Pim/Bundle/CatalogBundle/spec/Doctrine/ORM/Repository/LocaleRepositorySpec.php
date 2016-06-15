@@ -48,4 +48,3 @@ class LocaleRepositorySpec extends ObjectBehavior
         $this->countAllActivated();
     }
 }
-

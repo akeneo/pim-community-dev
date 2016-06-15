@@ -2,17 +2,25 @@
 
 namespace spec\Pim\Component\Connector\Reader\File\Xlsx;
 
+use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Reader\File\FileIterator;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Pim\Component\Connector\Reader\File\MediaPathTransformer;
 use Prophecy\Argument;
 
-class CsvProductReaderSpec extends ObjectBehavior
+class ProductReaderSpec extends ObjectBehavior
 {
-    function let(FileIterator $fileIterator, MediaPathTransformer $mediaPath)
-    {
-        $this->beConstructedWith($fileIterator, $mediaPath, ['.', ','], ['Y-m-d', 'd-m-Y']);
+    function let(
+        FileIteratorFactory $fileIteratorFactory,
+        ArrayConverterInterface $arrayConverter,
+        MediaPathTransformer $mediaPathTransformer,
+        StepExecution $stepExecution
+    ) {
+        $this->beConstructedWith($fileIteratorFactory, $arrayConverter, $mediaPathTransformer);
+        $this->setStepExecution($stepExecution);
     }
 
     function it_is_initializable()
@@ -27,37 +35,69 @@ class CsvProductReaderSpec extends ObjectBehavior
 
     function it_transforms_media_paths_to_absolute_paths(
         $fileIteratorFactory,
+        $arrayConverter,
+        $mediaPathTransformer,
+        $stepExecution,
         FileIteratorInterface $fileIterator,
-        $mediaPath
+        JobParameters $jobParameters
     ) {
-        $data = [
+        $filePath = __DIR__ . '/../../../../../../../../features/Context/fixtures/with_media.csv';
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filePath')->willReturn($filePath);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+
+        $fileIteratorFactory->create($filePath)->willReturn($fileIterator);
+
+        $item = [
             'sku'          => 'SKU-001',
             'name'         => 'door',
             'view'         => 'fixtures/sku-001.jpg',
             'manual-fr_FR' => 'fixtures/sku-001.txt',
         ];
-
-        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
-        $this->setFilePath($filePath);
-        $fileIteratorFactory->create($filePath, [
-            'fieldDelimiter' => ';',
-            'fieldEnclosure' => '"',
-        ])->willReturn($fileIterator);
+        $convertedItem = [
+            'sku' => [
+                'locale' => null,
+                'scope'  => null,
+                'data'   => 'SKU-001',
+            ],
+            'name' => [
+                'locale' => null,
+                'scope'  => null,
+                'data'   => 'door',
+            ],
+            'view' => [
+                'locale' => null,
+                'scope'  => null,
+                'data'   => 'fixtures/sku-001.jpg',
+            ],
+            'manual' => [
+                'locale' => 'fr_FR',
+                'scope'  => null,
+                'data'   => 'fixtures/sku-001.txt',
+            ],
+        ];
+        $converterOptions = [
+            'mapping' => [
+                'family'     => 'family',
+                'categories' => 'categories',
+                'groups'     => 'groups',
+            ],
+            'with_associations' => false,
+        ];
 
         $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
-        $fileIterator->current()->willReturn($data);
+        $fileIterator->current()->willReturn($item);
         $fileIterator->valid()->willReturn(true);
+        $fileIterator->getDirectoryPath()->willReturn($filePath);
 
-        $absolutePath = [
-            'sku'          => 'SKU-001',
-            'name'         => 'door',
-            'view'         => __DIR__ . '/../../../../../../features/Context/fixtures/sku-001.jpg',
-            'manual-fr_FR' => __DIR__ . '/../../../../../../features/Context/fixtures/sku-001.txt',
-        ];
+        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+        $arrayConverter->convert($item, $converterOptions)->willReturn($convertedItem);
+        $mediaPathTransformer->transform($convertedItem, $filePath)->shouldBeCalled();
 
-        $mediaPath->transform($data, $filePath)->willReturn($absolutePath);
-
-        $this->read()->shouldReturn($absolutePath);
+        $this->read();
     }
 }

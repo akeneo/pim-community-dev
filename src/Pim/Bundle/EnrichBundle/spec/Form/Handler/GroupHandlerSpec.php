@@ -20,8 +20,7 @@ class GroupHandlerSpec extends ObjectBehavior
         SaverInterface $saver,
         ProductRepositoryInterface $repository,
         AttributeConverterInterface $localizedConverter
-    )
-    {
+    ) {
         $this->beConstructedWith($form, $request, $saver, $repository, $localizedConverter);
     }
 

@@ -37,6 +37,4 @@ class FileDenormalizerSpec extends ObjectBehavior
 
         unlink($pathname);
     }
-
-
 }

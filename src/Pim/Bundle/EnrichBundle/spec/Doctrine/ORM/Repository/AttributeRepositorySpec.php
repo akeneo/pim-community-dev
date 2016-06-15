@@ -69,5 +69,4 @@ class AttributeRepositorySpec extends ObjectBehavior
             '[group_other_code]' => [11 => '[group_attribute_code]'],
         ]);
     }
-
 }

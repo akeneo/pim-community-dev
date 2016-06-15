@@ -45,4 +45,3 @@ class ChannelRepositorySpec extends ObjectBehavior
         $this->countAll();
     }
 }
-

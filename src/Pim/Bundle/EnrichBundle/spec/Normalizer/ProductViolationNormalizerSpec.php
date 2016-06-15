@@ -125,7 +125,7 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         $violation->getPropertyPath()->willReturn('values[price].float');
 
         $this
-            ->shouldThrow(new \InvalidArgumentException( 'Expects a product context'))
+            ->shouldThrow(new \InvalidArgumentException('Expects a product context'))
             ->duringNormalize($violation, 'internal_api');
     }
 
@@ -134,7 +134,7 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         $violation->getPropertyPath()->willReturn('values[price].float');
 
         $this
-            ->shouldThrow(new \InvalidArgumentException( 'Expects a product or a product template as context'))
+            ->shouldThrow(new \InvalidArgumentException('Expects a product or a product template as context'))
             ->duringNormalize($violation, 'internal_api', ['product' => new ProductValue()]);
     }
 }
