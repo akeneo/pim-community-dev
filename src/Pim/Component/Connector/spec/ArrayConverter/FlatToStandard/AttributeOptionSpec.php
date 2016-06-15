@@ -59,10 +59,10 @@ class AttributeOptionSpec extends ObjectBehavior
 
         $fieldChecker
             ->checkFieldsPresence($item, ['attribute', 'code'])
-            ->willThrow('Pim\Component\Connector\Exception\ArrayConversionException');
+            ->willThrow('Pim\Component\Connector\Exception\StructureArrayConversionException');
 
         $this
-            ->shouldThrow('Pim\Component\Connector\Exception\ArrayConversionException')
+            ->shouldThrow('Pim\Component\Connector\Exception\StructureArrayConversionException')
             ->during('convert', [$item]);
     }
 
@@ -71,7 +71,7 @@ class AttributeOptionSpec extends ObjectBehavior
         $localeRepository->getActivatedLocaleCodes()->willReturn(['de_DE', 'en_US', 'fr_FR']);
 
         $this
-            ->shouldThrow('Pim\Component\Connector\Exception\ArrayConversionException')
+            ->shouldThrow('Pim\Component\Connector\Exception\StructureArrayConversionException')
             ->during(
                 'convert',
                 [

@@ -11,7 +11,8 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldConverter;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterRegistryInterface;
-use Pim\Component\Connector\Exception\ArrayConversionException;
+use Pim\Component\Connector\Exception\DataArrayConversionException;
+use Pim\Component\Connector\Exception\StructureArrayConversionException;
 
 /**
  * Product Converter
@@ -310,8 +311,6 @@ class Product implements ArrayConverterInterface
     /**
      * @param array $item
      * @param bool  $withRequiredSku
-     *
-     * @throws ArrayConversionException
      */
     protected function validateItem(array $item, $withRequiredSku)
     {
@@ -324,7 +323,7 @@ class Product implements ArrayConverterInterface
     /**
      * @param array $item
      *
-     * @throws ArrayConversionException
+     * @throws StructureArrayConversionException
      */
     protected function validateOptionalFields(array $item)
     {
@@ -344,14 +343,14 @@ class Product implements ArrayConverterInterface
         if (0 < count($unknownFields)) {
             $message = count($unknownFields) > 1 ? 'The fields "%s" do not exist' : 'The field "%s" does not exist';
 
-            throw new ArrayConversionException(sprintf($message, implode(', ', $unknownFields)));
+            throw new StructureArrayConversionException(sprintf($message, implode(', ', $unknownFields)));
         }
     }
 
     /**
      * @param array $item
      *
-     * @throws ArrayConversionException
+     * @throws DataArrayConversionException
      */
     protected function validateFieldValueTypes(array $item)
     {
@@ -359,7 +358,7 @@ class Product implements ArrayConverterInterface
 
         foreach ($item as $field => $value) {
             if (in_array($field, $stringFields) && !is_string($value)) {
-                throw new ArrayConversionException(
+                throw new DataArrayConversionException(
                     sprintf('The field "%s" should contain a string, "%s" provided', $field, $value)
                 );
             }

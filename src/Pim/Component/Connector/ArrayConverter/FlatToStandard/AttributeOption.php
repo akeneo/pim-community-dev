@@ -5,7 +5,7 @@ namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\Exception\ArrayConversionException;
+use Pim\Component\Connector\Exception\StructureArrayConversionException;
 
 /**
  * Convert flat format to standard format for attribute option
@@ -86,7 +86,7 @@ class AttributeOption implements ArrayConverterInterface
     /**
      * @param array $item
      *
-     * @throws ArrayConversionException
+     * @throws StructureArrayConversionException
      */
     protected function validate(array $item)
     {
@@ -102,7 +102,7 @@ class AttributeOption implements ArrayConverterInterface
 
         foreach (array_keys($item) as $field) {
             if (!in_array($field, $authorizedFields)) {
-                throw new ArrayConversionException(
+                throw new StructureArrayConversionException(
                     sprintf(
                         'Field "%s" is provided, authorized fields are: "%s"',
                         $field,

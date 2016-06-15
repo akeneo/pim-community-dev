@@ -13,7 +13,7 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
-use Pim\Component\Connector\Exception\ArrayConversionException;
+use Pim\Component\Connector\Exception\StructureArrayConversionException;
 use Prophecy\Argument;
 
 class ProductSpec extends ObjectBehavior
@@ -298,7 +298,7 @@ class ProductSpec extends ObjectBehavior
         $converterRegistry->getConverter(Argument::any())->willReturn(null);
 
         $this->shouldThrow(
-            new ArrayConversionException('The fields "unknown_field, other_unknown_field" do not exist')
+            new StructureArrayConversionException('The fields "unknown_field, other_unknown_field" do not exist')
         )->during(
             'convert',
             [$item],
@@ -335,7 +335,7 @@ class ProductSpec extends ObjectBehavior
         $converterRegistry->getConverter(Argument::any())->willReturn(null);
 
         $this->shouldThrow(
-            new ArrayConversionException('The fields "unknown-products, unknown-groups" do not exist')
+            new StructureArrayConversionException('The fields "unknown-products, unknown-groups" do not exist')
         )->during(
             'convert',
             [$item],
