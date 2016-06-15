@@ -8,9 +8,11 @@ services:
             -
                 - 'add_product_value_with_permission'
                 - 'update_product_value_with_permission'
+                - 'remove_product_value_with_permission'
                 - 'edit_common_attributes_with_permission'
                 - 'add_product_value_with_permission_and_rules'
                 - 'update_product_value_with_permission_and_rules'
+                - 'remove_product_value_with_permission_and_rules'
                 - 'edit_common_attributes_with_permission_and_rules'
                 - 'add_to_variant_group_with_rules'
         tags:

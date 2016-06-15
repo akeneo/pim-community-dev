@@ -29,6 +29,21 @@ jobs:
         alias:     update_product_value_with_permission_and_rules
         label:     Mass update products values with permission check & rules application
         type:      mass_edit
+    remove_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     remove_product_value
+        label:     Mass remove products values
+        type:      mass_edit
+    remove_product_value_with_permission:
+        connector: Akeneo Mass Edit Connector
+        alias:     remove_product_value_with_permission
+        label:     Mass remove products values with permission check
+        type:      mass_edit
+    remove_product_value_with_permission_and_rules:
+        connector: Akeneo Mass Edit Connector
+        alias:     remove_product_value_with_permission_and_rules
+        label:     Mass remove products values with permission check & rules application
+        type:      mass_edit
     publish_product:
         connector: Akeneo Mass Edit Connector
         alias:     publish_product

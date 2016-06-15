@@ -118,6 +118,19 @@ services:
                 operation_group: category-edit
                 acl: pim_enrich_product_categories_view
 
+    pim_enrich.mass_edit_action.classify.remove:
+        public: false
+        class: '%pim_enrich.mass_edit_action.classify.class%'
+        arguments:
+            - 'remove_product_value_with_permission_and_rules'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: classify-remove
+                datagrid: product-grid
+                operation_group: category-edit
+                acl: pim_enrich_product_categories_view
+
     pim_enrich.mass_edit_action.change_family:
         public: false
         class: '%pim_enrich.mass_edit_action.change_family.class%'
