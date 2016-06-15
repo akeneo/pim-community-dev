@@ -6,7 +6,9 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\Exception\DataArrayConversionException;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 class ReaderSpec extends ObjectBehavior
 {
@@ -59,6 +61,30 @@ class ReaderSpec extends ObjectBehavior
         $this->read()->shouldReturn([
             'sku' => 'mouse_akeneo'
         ]);
+    }
+
+    function it_skips_an_item_in_case_of_conversion_error(
+        ArrayConverterInterface $converter,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->beConstructedWith($converter, false, false);
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
+
+        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+
+        $data = [
+            'sku'  => 'mug_akeneo',
+        ];
+
+        $stepExecution->incrementSummaryInfo("skip")->shouldBeCalled();
+        $converter->convert($data, Argument::any())->willThrow(
+            new DataArrayConversionException('message', 0, null, new ConstraintViolationList())
+        );
+
+        $this->shouldThrow('Pim\Component\Connector\Item\InvalidItemExceptionFromViolations')->during('read');
     }
 
     function it_reads_entities_from_a_yml_file_one_by_one(

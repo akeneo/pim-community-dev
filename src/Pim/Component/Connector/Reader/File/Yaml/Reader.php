@@ -3,12 +3,14 @@
 namespace Pim\Component\Connector\Reader\File\Yaml;
 
 use Akeneo\Component\Batch\Item\FlushableInterface;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Symfony\Component\HttpFoundation\File\File;
+use Pim\Component\Connector\Exception\DataArrayConversionException;
+use Pim\Component\Connector\Item\InvalidItemExceptionFromViolations;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Yaml\Yaml;
 
@@ -59,7 +61,7 @@ class Reader extends FileReader implements
      *
      * @param string $codeField
      *
-     * @return YamlReader
+     * @return Reader
      */
     public function setCodeField($codeField)
     {
@@ -105,11 +107,17 @@ class Reader extends FileReader implements
                 $this->stepExecution->incrementSummaryInfo('read_lines');
             }
 
-            return $this->converter->convert($data);
-        } else {
-            // if not used in the context of an ItemStep, the previous read file will be returned
-            $this->flush();
+            try {
+                $data = $this->converter->convert($data);
+            } catch (DataArrayConversionException $e) {
+                $this->skipItemFromConversionException($data, $e);
+            }
+
+            return $data;
         }
+
+        // if not used in the context of an ItemStep, the previous read file will be returned
+        $this->flush();
 
         return null;
     }
@@ -153,5 +161,25 @@ class Reader extends FileReader implements
     public function flush()
     {
         $this->yaml = null;
+    }
+
+    /**
+     * @param array                        $item
+     * @param DataArrayConversionException $exception
+     *
+     * @throws InvalidItemException
+     * @throws InvalidItemExceptionFromViolations
+     */
+    protected function skipItemFromConversionException(array $item, DataArrayConversionException $exception)
+    {
+        if (null !== $this->stepExecution) {
+            $this->stepExecution->incrementSummaryInfo('skip');
+        }
+
+        if (null !== $exception->getViolations()) {
+            throw new InvalidItemExceptionFromViolations($exception->getViolations(), $item, [], 0, $exception);
+        }
+
+        throw new InvalidItemException($exception->getMessage(), $item, [], 0, $exception);
     }
 }

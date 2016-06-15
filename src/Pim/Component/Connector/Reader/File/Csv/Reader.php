@@ -4,10 +4,13 @@ namespace Pim\Component\Connector\Reader\File\Csv;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\FlushableInterface;
+use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\Exception\DataArrayConversionException;
+use Pim\Component\Connector\Item\InvalidItemExceptionFromViolations;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -71,7 +74,17 @@ class Reader extends AbstractConfigurableStepElement implements
 
         $item = $this->fileIterator->current();
 
-        return (null === $item) ? null : $this->converter->convert($item, $this->getArrayConverterOptions());
+        if (null === $item) {
+           return null;
+        }
+
+        try {
+            $item = $this->converter->convert($item, $this->getArrayConverterOptions());
+        } catch (DataArrayConversionException $e) {
+            $this->skipItemFromConversionException($item, $e);
+        }
+
+        return $item;
     }
 
     /**
@@ -98,5 +111,25 @@ class Reader extends AbstractConfigurableStepElement implements
     protected function getArrayConverterOptions()
     {
         return [];
+    }
+
+    /**
+     * @param array                        $item
+     * @param DataArrayConversionException $exception
+     *
+     * @throws InvalidItemException
+     * @throws InvalidItemExceptionFromViolations
+     */
+    protected function skipItemFromConversionException(array $item, DataArrayConversionException $exception)
+    {
+        if (null !== $this->stepExecution) {
+            $this->stepExecution->incrementSummaryInfo('skip');
+        }
+
+        if (null !== $exception->getViolations()) {
+            throw new InvalidItemExceptionFromViolations($exception->getViolations(), $item, [], 0, $exception);
+        }
+
+        throw new InvalidItemException($exception->getMessage(), $item, [], 0, $exception);
     }
 }
