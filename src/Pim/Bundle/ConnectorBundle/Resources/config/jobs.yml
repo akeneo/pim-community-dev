@@ -20,7 +20,7 @@ parameters:
     pim_connector.step.item_step.class: Akeneo\Component\Batch\Step\ItemStep
 
 services:
-    # Imports ---------------------------------------------------------------------------------------------------------
+    # CSV Imports -----------------------------------------------------------------------------------------------------
     pim_connector.job.csv_attribute_import:
         class: %pim_connector.job.simple_job.class%
         arguments:
@@ -118,7 +118,7 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.import_type% }
 
-    # Exports ---------------------------------------------------------------------------------------------------------
+    # CSV Exports -----------------------------------------------------------------------------------------------------
     pim_connector.job.csv_attribute_export:
         class: %pim_connector.job.simple_job.class%
         arguments:

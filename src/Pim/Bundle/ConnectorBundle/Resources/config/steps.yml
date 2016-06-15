@@ -12,7 +12,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_connector.validator.item.charset_validator'
 
-    # Import steps ----------------------------------------------------------------------------------------------------
+    # CSV Import steps ------------------------------------------------------------------------------------------------
     pim_connector.step.csv_attribute_import.import:
         class: %pim_connector.step.item_step.class%
         arguments:
@@ -106,7 +106,7 @@ services:
             - '@pim_connector.writer.database.category'
             - 1
 
-    # Export steps ----------------------------------------------------------------------------------------------------
+    # CSV Export steps ------------------------------------------------------------------------------------------------
     pim_connector.step.csv_attribute_export.export:
         class: %pim_connector.step.item_step.class%
         arguments:
