@@ -693,18 +693,25 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with|in list) ([^">=<]*)|^empty$/';
 
-        $datePattern = '#^(more than|less than|between|not between) (\d{2}/\d{2}/\d{4})( and )?(\d{2}/\d{2}/\d{4})?$#';
+        $datePattern = '#^(more than|less than|between|not between) (\d{2}/\d{2}/\d{4}( \d{2}:\d{2} \w{2})?)( and )?(\d{2}/\d{2}/\d{4}( \d{2}:\d{2} \w{2})?)?$#';
         $operator    = false;
 
         $matches = [];
         if (preg_match($datePattern, $value, $matches)) {
             $operator = $matches[1];
             $date     = $matches[2];
-            if (5 === count($matches)) {
-                $date   = [$date];
-                $date[] = $matches[4];
+            $selector = '.date-visual-element';
+
+            if (count($matches) > 5) {
+                $date = [$date];
+                $date[] = $matches[5];
+
+                if (isset($matches[6])) {
+                    $selector = '.datetime-visual-element';
+                }
             }
-            $this->filterByDate($filterName, $date, $operator);
+
+            $this->filterByDate($filterName, $date, $operator, $selector);
             $this->wait();
 
             return;
@@ -1199,10 +1206,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $filterName
      * @param mixed  $values
      * @param string $operator
+     * @param string $selector
      *
      * @throws \InvalidArgumentException
      */
-    protected function filterByDate($filterName, $values, $operator)
+    protected function filterByDate($filterName, $values, $operator, $selector)
     {
         if (!is_array($values)) {
             $values = [$values, $values];
@@ -1215,7 +1223,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $criteriaElt = $filter->find('css', 'div.filter-criteria');
         $criteriaElt->find('css', 'select.filter-select-oro')->selectOption($operator);
 
-        $datepickers = $filter->findAll('css', '.date-visual-element');
+        $datepickers = $filter->findAll('css', $selector);
         foreach ($datepickers as $i => $datepicker) {
             if ($datepicker->isVisible()) {
                 $datepicker->setValue($values[$i]);
