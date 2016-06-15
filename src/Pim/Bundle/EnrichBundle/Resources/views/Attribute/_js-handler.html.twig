@@ -1,7 +1,7 @@
 <script type="text/javascript">
 require(
-    ['jquery', 'underscore', 'datepicker', 'oro/mediator', 'jquery.select2', 'bootstrap.bootstrapswitch'],
-    function ($, _, datepicker, mediator) {
+    ['jquery', 'underscore', 'datepicker', 'oro/mediator', 'pim/date-context', 'jquery.select2', 'bootstrap.bootstrapswitch'],
+    function ($, _, datepicker, mediator, dateContext) {
         'use strict';
         $(function() {
             var measures = {% include 'PimUIBundle::measures.html.twig' with measures %};
@@ -60,7 +60,11 @@ require(
                 });
 
                 _.each($(formName + ' input.datepicker:not(.hasPicker)'), function (field) {
-                    datepicker.init($(field).closest('div'));
+                    datepicker.init($(field).closest('div'), {
+                        format: dateContext.get('date').format,
+                        defaultFormat: dateContext.get('date').defaultFormat,
+                        language: dateContext.get('language'),
+                    });
                 });
 
                 $(formName+'_metricFamily').select2({

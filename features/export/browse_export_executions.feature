@@ -19,8 +19,10 @@ Feature: Browse export executions
     And the rows should be sorted descending by Date
     And I should be able to sort the rows by Code, Label, Job, Date and Status
     And I should be able to use the following filters:
-      | filter | value                   | result                                           |
-      | Code   | product                 | footwear_product_export, footwear_product_export |
-      | Label  | category                | footwear_category_export                         |
-      | Job    | Attribute export in CSV | footwear_attribute_export                        |
-      | Status | STOPPING                |                                                  |
+      | filter | value                                               | result                                                                                                |
+      | Code   | product                                             | footwear_product_export, footwear_product_export                                                      |
+      | Label  | category                                            | footwear_category_export                                                                              |
+      | Job    | Attribute export in CSV                             | footwear_attribute_export                                                                             |
+      | Status | STOPPING                                            |                                                                                                       |
+      | Date   | more than 09/01/2015 05:00 PM                       | footwear_product_export, footwear_category_export, footwear_attribute_export, footwear_product_export |
+      | Date   | between 09/01/2050 05:00 PM and 09/01/2100 05:00 AM |                                                                                                       |

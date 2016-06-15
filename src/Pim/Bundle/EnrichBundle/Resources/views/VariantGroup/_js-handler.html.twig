@@ -1,7 +1,19 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'pim/optionform', 'pim/scopable', 'pim/currencyfield', 'datepicker', 'pim/dialog', 'pim/dialogform', 'oro/mediator', 'backbone/bootstrap-modal'],
-        function ($, _, optionform, Scopable, CurrencyField, datepicker, Dialog, DialogForm, mediator) {
+        [
+            'jquery',
+            'underscore',
+            'pim/optionform',
+            'pim/scopable',
+            'pim/currencyfield',
+            'datepicker',
+            'pim/dialog',
+            'pim/dialogform',
+            'oro/mediator',
+            'pim/date-context',
+            'backbone/bootstrap-modal'
+        ],
+        function ($, _, optionform, Scopable, CurrencyField, datepicker, Dialog, DialogForm, mediator, DateContext) {
             'use strict';
 
             $(function () {
@@ -18,7 +30,11 @@
                 });
 
                 _.each($('form input.datepicker'), function (field) {
-                    datepicker.init($(field).closest('div'));
+                    datepicker.init($(field).closest('div'), {
+                        format: DateContext.get('date').format,
+                        defaultFormat: DateContext.get('date').defaultFormat,
+                        language: DateContext.get('language'),
+                    });
                 });
 
                 mediator.trigger('pim:reinit');
