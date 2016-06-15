@@ -8,9 +8,8 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Connector\Exception\MissingIdentifierException;
-use Symfony\Component\Validator\ConstraintViolationInterface;
+use Pim\Component\Connector\Item\InvalidItemExceptionFromViolations;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -114,29 +113,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
             $this->stepExecution->incrementSummaryInfo('skip');
         }
 
-        $errors = [];
-        /** @var ConstraintViolationInterface $violation */
-        foreach ($violations as $violation) {
-            // TODO re-format the message, property path doesn't exist for class constraint
-            // for instance cf VariantGroupAxis
-            $invalidValue = $violation->getInvalidValue();
-            if ($invalidValue instanceof ProductPriceInterface) {
-                $invalidValue = sprintf('%s %s', $invalidValue->getData(), $invalidValue->getCurrency());
-            } elseif (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
-                $invalidValue = (string) $invalidValue;
-            } elseif (is_object($invalidValue)) {
-                $invalidValue = get_class($invalidValue);
-            } elseif (is_array($invalidValue)) {
-                $invalidValue = implode(', ', $invalidValue);
-            }
-            $errors[] = sprintf(
-                "%s: %s: %s\n",
-                $violation->getPropertyPath(),
-                $violation->getMessage(),
-                $invalidValue
-            );
-        }
-
-        throw new InvalidItemException(implode("\n", $errors), $item, [], 0, $previousException);
+        throw new InvalidItemExceptionFromViolations($violations, $item, [], 0, $previousException);
     }
 }
