@@ -1,6 +1,7 @@
 parameters:
     pim_enrich.connector.processor.mass_edit.product.update_value.class:           Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor
     pim_enrich.connector.processor.mass_edit.product.add_value.class:              Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor
+    pim_enrich.connector.processor.mass_edit.product.remove_value.class:           Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\RemoveProductValueProcessor
     pim_enrich.connector.processor.mass_edit.product.edit_common_attributes.class: Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor
     pim_enrich.connector.processor.mass_edit.product.add_to_variant_group.class:   Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor
     pim_enrich.connector.processor.mass_edit.family.set_requirements.class:        Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements
@@ -17,6 +18,12 @@ services:
         class: '%pim_enrich.connector.processor.mass_edit.product.add_value.class%'
         arguments:
             - '@pim_catalog.updater.product_property_adder'
+            - '@pim_catalog.validator.product'
+
+    pim_enrich.connector.processor.mass_edit.product.remove_value:
+        class: '%pim_enrich.connector.processor.mass_edit.product.remove_value.class%'
+        arguments:
+            - '@pim_catalog.updater.product_property_remover'
             - '@pim_catalog.validator.product'
 
     pim_enrich.connector.processor.mass_edit.product.edit_common_attributes:

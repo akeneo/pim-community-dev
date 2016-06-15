@@ -9,6 +9,7 @@ services:
             -
                 - 'update_product_value'
                 - 'add_product_value'
+                - 'remove_product_value'
                 - 'edit_common_attributes'
                 - 'set_attribute_requirements'
                 - 'add_to_variant_group'
