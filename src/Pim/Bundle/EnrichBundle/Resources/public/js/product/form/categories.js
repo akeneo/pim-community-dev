@@ -16,9 +16,10 @@ define(
         'text!pim/template/product/tab/categories',
         'pim/user-context',
         'routing',
-        'pim/tree/associate'
+        'pim/tree/associate',
+        'oro/mediator'
     ],
-    function ($, _, Backbone, BaseForm, formTemplate, UserContext, Routing, TreeAssociate) {
+    function ($, _, Backbone, BaseForm, formTemplate, UserContext, Routing, TreeAssociate, mediator) {
         return BaseForm.extend({
             template: _.template(formTemplate),
             className: 'tab-pane active',
@@ -116,6 +117,7 @@ define(
 
                 var categoryCodes = _.map(selectedIds, this.getCategoryCode.bind(this));
                 this.getFormModel().set('categories', categoryCodes);
+                mediator.trigger('pim_enrich:form:entity:update_state');
             },
 
             /**

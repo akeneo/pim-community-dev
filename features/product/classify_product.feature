@@ -61,3 +61,14 @@ Feature: Classify a product
     When I visit the "Attributes" tab
     Then I visit the "Categories" tab
     Then I should see 2 category count
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5851
+  Scenario: Change the product state when it is classified
+    Given I edit the "tea" product
+    When I visit the "Categories" tab
+    And I select the "2014 collection" tree
+    And I expand the "2014 collection" category
+    And I click on the "Summer collection" category
+    Then I should see "There are unsaved changes."
+    When I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
