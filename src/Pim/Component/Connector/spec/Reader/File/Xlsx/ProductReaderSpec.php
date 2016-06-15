@@ -28,7 +28,7 @@ class ProductReaderSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Connector\Reader\File\Xlsx\ProductReader');
     }
 
-    function it_is_a_csv_reader()
+    function it_is_a_xlsx_reader()
     {
         $this->shouldHaveType('Pim\Component\Connector\Reader\File\Xlsx\Reader');
     }
@@ -48,6 +48,8 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('familyColumn')->willReturn('family');
         $jobParameters->get('categoriesColumn')->willReturn('categories');
         $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('YYYY-mm-dd');
 
         $fileIteratorFactory->create($filePath)->willReturn($fileIterator);
 
@@ -86,6 +88,8 @@ class ProductReaderSpec extends ObjectBehavior
                 'groups'     => 'groups',
             ],
             'with_associations' => false,
+            'decimal_separator' => '.',
+            'date_format'       => 'YYYY-mm-dd',
         ];
 
         $fileIterator->rewind()->shouldBeCalled();

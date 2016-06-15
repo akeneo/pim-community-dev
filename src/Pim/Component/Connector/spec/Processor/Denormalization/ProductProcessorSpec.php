@@ -11,8 +11,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -28,8 +26,7 @@ class ProductProcessorSpec extends ObjectBehavior
         ValidatorInterface $productValidator,
         StepExecution $stepExecution,
         ObjectDetacherInterface $productDetacher,
-        ProductFilterInterface $productFilter,
-        AttributeConverterInterface $localizedConverter
+        ProductFilterInterface $productFilter
     ) {
         $this->beConstructedWith(
             $productRepository,
@@ -37,8 +34,7 @@ class ProductProcessorSpec extends ObjectBehavior
             $productUpdater,
             $productValidator,
             $productDetacher,
-            $productFilter,
-            $localizedConverter
+            $productFilter
         );
         $this->setStepExecution($stepExecution);
     }
@@ -55,7 +51,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productFilter,
-        $localizedConverter,
         $stepExecution,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
@@ -127,11 +122,6 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($convertedData);
-        $localizedConverter->getViolations()->willReturn($violationList);
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -152,7 +142,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productFilter,
-        $localizedConverter,
         $stepExecution,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
@@ -201,12 +190,6 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($convertedData);
-        $localizedConverter->getViolations()->willReturn($violationList);
-
         $preFilteredData = $filteredData = [
             'family' => 'Tshirt',
             'name' => [
@@ -251,7 +234,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productFilter,
-        $localizedConverter,
         $stepExecution,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
@@ -300,12 +282,6 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($convertedData);
-        $localizedConverter->getViolations()->willReturn($violationList);
-
         $filteredData = [
             'family' => 'Tshirt',
             'name' => [
@@ -350,7 +326,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productFilter,
-        $localizedConverter,
         $stepExecution,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
@@ -370,7 +345,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -397,14 +372,9 @@ class ProductProcessorSpec extends ObjectBehavior
                     'scope' =>  'mobile',
                     'data' => 'My description'
                 ]
-            ]
+            ],
+            'enabled' => true
         ];
-
-        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($convertedData);
-        $localizedConverter->getViolations()->willReturn($violationList);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -426,7 +396,8 @@ class ProductProcessorSpec extends ObjectBehavior
                     'scope' =>  'mobile',
                     'data' => 'My description'
                 ]
-            ]
+            ],
+            'enabled' => true
         ];
 
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
@@ -446,9 +417,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_skips_a_product_when_identifier_is_empty(
         $productRepository,
-        $localizedConverter,
         $stepExecution,
-        ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -473,12 +442,6 @@ class ProductProcessorSpec extends ObjectBehavior
             'family' => 'Tshirt',
         ];
 
-        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($convertedData);
-        $localizedConverter->getViolations()->willReturn($violationList);
-
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
 
         $this
@@ -495,7 +458,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productDetacher,
         $productFilter,
-        $localizedConverter,
         $stepExecution,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
@@ -542,14 +504,9 @@ class ProductProcessorSpec extends ObjectBehavior
                     'scope' =>  'mobile',
                     'data' => 'My description'
                 ]
-            ]
+            ],
+            'enabled' => true
         ];
-
-        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($convertedData);
-        $localizedConverter->getViolations()->willReturn($violationList);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -571,7 +528,8 @@ class ProductProcessorSpec extends ObjectBehavior
                     'scope' =>  'mobile',
                     'data' => 'My description'
                 ]
-            ]
+            ],
+            'enabled' => true
         ];
 
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
@@ -598,7 +556,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productDetacher,
         $productFilter,
-        $localizedConverter,
         $stepExecution,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
@@ -645,14 +602,9 @@ class ProductProcessorSpec extends ObjectBehavior
                     'scope' =>  'mobile',
                     'data' => 'My description'
                 ]
-            ]
+            ],
+            'enabled' => true
         ];
-
-        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($convertedData);
-        $localizedConverter->getViolations()->willReturn($violationList);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -674,7 +626,8 @@ class ProductProcessorSpec extends ObjectBehavior
                     'scope' =>  'mobile',
                     'data' => 'My description'
                 ]
-            ]
+            ],
+            'enabled' => true
         ];
 
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
@@ -704,7 +657,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productDetacher,
         $productFilter,
-        $localizedConverter,
         $stepExecution,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
@@ -753,12 +705,6 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($convertedData);
-        $localizedConverter->getViolations()->willReturn($violationList);
-
         $filteredData = [
             'family' => 'Tshirt',
             'name' => [
@@ -795,230 +741,11 @@ class ProductProcessorSpec extends ObjectBehavior
             ->shouldReturn(null);
     }
 
-    function it_updates_an_existing_product_with_localized_value(
-        $productRepository,
-        $productUpdater,
-        $productValidator,
-        $productFilter,
-        $localizedConverter,
-        $stepExecution,
-        ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
-        JobParameters $jobParameters
-    ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('enabledComparison')->willReturn(true);
-        $jobParameters->get('familyColumn')->willReturn('family');
-        $jobParameters->get('categoriesColumn')->willReturn('categories');
-        $jobParameters->get('groupsColumn')->willReturn('groups');
-        $jobParameters->get('enabled')->willReturn(true);
-        $jobParameters->get('decimalSeparator')->willReturn(',');
-        $jobParameters->get('dateFormat')->willReturn('dd/MM/yyyy');
-
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
-        $product->getId()->willReturn(42);
-
-        $postConverterData = $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope'  =>  null,
-                    'data'   => 'tshirt'
-                ],
-            ],
-            'number' => [
-                [
-                    'locale' => null,
-                    'scope'  =>  null,
-                    'data'   => '10,45'
-                ]
-            ],
-            'date' => [
-                [
-                    'locale' => null,
-                    'scope'  =>  null,
-                    'data'   => '20/10/2015'
-                ]
-            ]
-        ];
-
-        $filteredData = [
-            'number' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => '10.45'
-                ]
-            ],
-            'date' => [
-                [
-                    'locale' => null,
-                    'scope'  =>  null,
-                    'data'   => '2015-10-20'
-                ]
-            ]
-        ];
-
-        $postConverterData['number'][0]['data'] = '10.45';
-        $postConverterData['date'][0]['data'] = '2015-10-20';
-        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
-            'decimal_separator' => ',',
-            'date_format'       => 'dd/MM/yyyy'
-        ])->willReturn($postConverterData);
-        $localizedConverter->getViolations()->willReturn($violationList);
-
-        $productFilter->filter($product, $filteredData)->willReturn($filteredData);
-
-        $productUpdater
-            ->update($product, $filteredData)
-            ->shouldBeCalled();
-
-        $productValidator
-            ->validate($product)
-            ->willReturn($violationList);
-
-        $this
-            ->process($convertedData)
-            ->shouldReturn($product);
-    }
-
-    function it_skips_a_product_if_format_of_localized_attribute_is_not_expected(
-        $localizedConverter,
-        $productRepository,
-        $stepExecution,
-        ProductInterface $product,
-        JobParameters $jobParameters
-    ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('enabledComparison')->willReturn(true);
-        $jobParameters->get('familyColumn')->willReturn('family');
-        $jobParameters->get('categoriesColumn')->willReturn('categories');
-        $jobParameters->get('groupsColumn')->willReturn('groups');
-        $jobParameters->get('enabled')->willReturn(true);
-        $jobParameters->get('decimalSeparator')->willReturn('.');
-        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
-        $product->getId()->willReturn(42);
-
-        $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope'  =>  null,
-                    'data'   => 'tshirt'
-                ],
-            ],
-            'number' => [
-                [
-                    'locale' => null,
-                    'scope'  =>  null,
-                    'data'   => '10,45'
-                ]
-            ]
-        ];
-
-        $data = $convertedData;
-        $data['number'][0]['data'] = '10.45';
-        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($data);
-
-        $violation = new ConstraintViolation(Argument::any(), Argument::any(), [], $product, 'number', '10,45');
-        $violations = new ConstraintViolationList([$violation]);
-        $localizedConverter->getViolations()->willReturn($violations);
-
-        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
-
-        $this
-            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
-            ->during(
-                'process',
-                [$convertedData]
-            );
-    }
-
-    function it_skips_a_product_when_there_is_nothing_to_update_with_localized_value(
-        $productRepository,
-        $productBuilder,
-        $productUpdater,
-        $productFilter,
-        $localizedConverter,
-        $stepExecution,
-        ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
-        JobParameters $jobParameters
-    ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('enabledComparison')->willReturn(true);
-        $jobParameters->get('familyColumn')->willReturn('family');
-        $jobParameters->get('categoriesColumn')->willReturn('categories');
-        $jobParameters->get('groupsColumn')->willReturn('groups');
-        $jobParameters->get('enabled')->willReturn(true);
-        $jobParameters->get('decimalSeparator')->willReturn(',');
-        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
-        $product->getId()->willReturn(42);
-
-        $productBuilder->createProduct('tshirt', null)->willReturn($product);
-
-        $postConvertedData = $convertedData = [
-            'sku' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => 'tshirt'
-                ],
-            ],
-            'number' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => '10,45'
-                ],
-            ]
-        ];
-
-        $postConvertedData['number'][0]['data'] = '10.45';
-        $localizedConverter->convertToDefaultFormats(array_merge($convertedData, ['enabled' => true]), [
-            'decimal_separator' => ',',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($postConvertedData);
-        $localizedConverter->getViolations()->willReturn($violationList);
-
-        $filteredData = [
-            'number' => [
-                [
-                    'locale' => null,
-                    'scope' =>  null,
-                    'data' => '10.45'
-                ],
-            ]
-        ];
-
-        $productFilter->filter($product, $filteredData)->willReturn([]);
-
-        $stepExecution->incrementSummaryInfo('product_skipped_no_diff')->shouldBeCalled();
-
-        $productUpdater
-            ->update($product, $filteredData)->shouldNotBeCalled();
-
-        $this
-            ->process($convertedData)
-            ->shouldReturn(null);
-    }
-
     function it_updates_an_existing_product_and_does_not_change_his_state(
         $productRepository,
         $productUpdater,
         $productValidator,
         $productFilter,
-        $localizedConverter,
         $stepExecution,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
@@ -1091,12 +818,6 @@ class ProductProcessorSpec extends ObjectBehavior
             ],
             'enabled' => false,
         ];
-
-        $localizedConverter->convertToDefaultFormats($convertedData, [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($convertedData);
-        $localizedConverter->getViolations()->willReturn($violationList);
 
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
@@ -1119,7 +840,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productFilter,
-        $localizedConverter,
         $stepExecution,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
@@ -1156,11 +876,6 @@ class ProductProcessorSpec extends ObjectBehavior
             'enabled' => true
         ];
 
-        $localizedConverter->convertToDefaultFormats($convertedData, [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($convertedData);
-        $localizedConverter->getViolations()->willReturn($violationList);
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater

@@ -75,7 +75,7 @@ class Reader extends AbstractConfigurableStepElement implements
         $item = $this->fileIterator->current();
 
         if (null === $item) {
-           return null;
+            return null;
         }
 
         try {

@@ -15,7 +15,11 @@ use Pim\Component\Connector\Exception\DataArrayConversionException;
 use Pim\Component\Connector\Exception\StructureArrayConversionException;
 
 /**
- * Product Converter
+ * Convert a Product from Flat to Standard structure.
+ * This conversion does not result in the standard format, as the values are not delocalized here.
+ *
+ * To get a real standardized from the flat format, please
+ * see {@link \Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductDelocalized }
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
