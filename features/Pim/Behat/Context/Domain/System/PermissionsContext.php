@@ -10,15 +10,36 @@ use Pim\Behat\Context\PimContext;
 class PermissionsContext extends PimContext
 {
     /**
-     * @param string $permission
-     * @param string $resources
+     * @param string $action
+     * @param string $acls
      *
-     * @When /^I (grant|revoke) rights to resources? (.*)$/
+     * @throws \InvalidArgumentException If $action is not a defined method
+     *
+     * @When /^I (grant|revoke) rights to (resources?|groups?) (.*)$/
      */
-    public function iSetRightsToACLResources($permission, $resources)
+    public function iSetRightsToACL($action, $type, $acls)
     {
-        foreach ($this->listToArray($resources) as $resource) {
-            $this->getCurrentPage()->executeActionOnResource($permission, $resource);
+        if (false !== strpos($type, 'resource')) {
+            $type = 'Resource';
+        } elseif (false !== strpos($type, 'group')) {
+            $type = 'Group';
+        }
+
+        $permissionElement = $this->getCurrentPage()->getElement('Permission');
+        switch ($action) {
+            case 'grant':
+                $method = 'grant' . $type;
+                break;
+            case 'revoke':
+                $method = 'revoke' . $type;
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Action "%s" does not exist.', $action));
+                break;
+        }
+
+        foreach ($this->listToArray($acls) as $acl) {
+            $permissionElement->$method($acl);
         }
     }
 
@@ -27,19 +48,10 @@ class PermissionsContext extends PimContext
      */
     public function iGrantAllRightsToACLResources()
     {
-        $this->getCurrentPage()->grantAllResourceRights();
-    }
+        $iconSelector = '.acl-permission .acl-permission-toggle.non-granted';
 
-    /**
-     * @param string $action (grant|remove)
-     * @param string $group
-     *
-     * @When /^I (grant|revoke) rights to groups? (.*)$/
-     */
-    public function iSetRightsToACLGroups($action, $groups)
-    {
-        foreach ($this->listToArray($groups) as $group) {
-            $this->getCurrentPage()->executeActionOnGroup($action, $group);
-        }
+        $this->getSession()->executeScript(
+            sprintf('$("%s").each(function () { $(this).click(); });', $iconSelector)
+        );
     }
 }
