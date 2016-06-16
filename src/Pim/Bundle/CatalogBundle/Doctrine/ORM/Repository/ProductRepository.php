@@ -163,14 +163,15 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByIds(array $ids)
+    public function findByIds(array $productIds)
     {
         $qb = $this->createQueryBuilder('Product');
         $this->addJoinToValueTables($qb);
         $rootAlias = current($qb->getRootAliases());
         $qb->andWhere(
-            $qb->expr()->in($rootAlias.'.id', $ids)
+            $qb->expr()->in($rootAlias.'.id', ':product_ids')
         );
+        $qb->setParameter(':product_ids', $productIds);
 
         return $qb->getQuery()->execute();
     }

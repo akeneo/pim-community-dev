@@ -176,7 +176,8 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
         }
 
         $qb = $this->createQueryBuilder('f');
-        $qb->where($qb->expr()->in('f.id', $familyIds));
+        $qb->where($qb->expr()->in('f.id', ':family_ids'));
+        $qb->setParameter(':family_ids', $familyIds);
 
         return $qb->getQuery()->getResult();
     }

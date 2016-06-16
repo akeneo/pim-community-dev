@@ -129,6 +129,20 @@ class CommandContext extends PimContext
     }
 
     /**
+     * @When /^I launch the purge versions command for entity "([^"]*)"$/
+     * @When /^I launch the purge versions command"$/
+     *
+     * @param string $entityName
+     */
+    public function iLaunchThePurgeCommandForEntityOlderThanDays($entityName = '')
+    {
+        $commandLauncher = $this->getService('pim_catalog.command_launcher');
+        $commandLauncher->executeForeground(
+            sprintf('pim:versioning:purge %s --more-than-days 0 --force', $entityName)
+        );
+    }
+
+    /**
      * @param string $rawActions
      *
      * @return string

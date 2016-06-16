@@ -6,6 +6,8 @@ use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler;
+use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler\RegisterUpdateGuessersPass;
+use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler\RegisterVersionPurgerAdvisorPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -24,11 +26,12 @@ class PimVersioningBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new Compiler\RegisterUpdateGuessersPass())
-            ->addCompilerPass(new RegisterSerializerPass('pim_versioning.serializer'));
+            ->addCompilerPass(new RegisterSerializerPass('pim_versioning.serializer'))
+            ->addCompilerPass(new RegisterUpdateGuessersPass())
+            ->addCompilerPass(new RegisterVersionPurgerAdvisorPass());
 
         $versionMappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Component\Versioning\Model'
+            realpath(__DIR__.'/Resources/config/model/doctrine') => 'Akeneo\Component\Versioning\Model',
         ];
 
         $container->addCompilerPass(

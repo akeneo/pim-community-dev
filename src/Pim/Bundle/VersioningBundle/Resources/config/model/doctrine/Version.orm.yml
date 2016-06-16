@@ -13,6 +13,12 @@ Akeneo\Component\Versioning\Model\Version:
         pending_idx:
             columns:
                 - pending
+        version_idx:
+            columns:
+                - version
+        logged_at_idx:
+            columns:
+                - logged_at
     fields:
         id:
             type: integer
