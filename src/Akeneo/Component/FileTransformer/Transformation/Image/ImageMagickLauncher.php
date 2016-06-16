@@ -48,8 +48,8 @@ class ImageMagickLauncher
         $cmd    = sprintf(
             '%s %s %s %s',
             $this->getConvertBinaryPath(),
-            $command,
             escapeshellarg($pathName),
+            $command,
             escapeshellarg($pathName)
         );
 
