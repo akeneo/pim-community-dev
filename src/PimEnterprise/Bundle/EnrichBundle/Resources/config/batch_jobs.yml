@@ -61,6 +61,29 @@ connector:
                          writer:    pimee_catalog_rule.executor.rules
                      parameters:
                          batch_size: 100
+        remove_product_value_with_permission:
+            type:  mass_edit
+            steps:
+                perform:
+                    services:
+                        reader:    pim_enrich.connector.reader.mass_edit.product
+                        processor: pimee_enrich.mass_edit.remove_product_value.processor
+                        writer:    pim_connector.writer.database.product
+        remove_product_value_with_permission_and_rules:
+            type:  mass_edit
+            steps:
+                perform:
+                    services:
+                        reader:    pim_enrich.connector.reader.mass_edit.product
+                        processor: pimee_enrich.mass_edit.remove_product_value.processor
+                        writer:    pim_connector.writer.database.product
+                execute_rules:
+                     services:
+                         reader:    pim_enrich.connector.reader.mass_edit.product
+                         processor: pimee_catalog_rule.processor.product_loader
+                         writer:    pimee_catalog_rule.executor.rules
+                     parameters:
+                         batch_size: 100
         edit_common_attributes_with_permission:
             type:  mass_edit
             steps:
