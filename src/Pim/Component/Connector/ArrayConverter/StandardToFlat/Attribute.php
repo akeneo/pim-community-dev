@@ -55,7 +55,7 @@ class Attribute implements ArrayConverterInterface
                     $convertedItem[$labelKey] = $label;
                 }
                 break;
-            case 'attributeType':
+            case 'attribute_type':
                 $convertedItem['type'] = $data;
                 break;
             case 'options':

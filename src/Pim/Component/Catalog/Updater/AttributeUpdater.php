@@ -80,7 +80,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     protected function setData(AttributeInterface $attribute, $field, $data)
     {
         switch ($field) {
-            case 'attributeType':
+            case 'attribute_type':
                 $this->setType($attribute, $data);
                 break;
             case 'labels':

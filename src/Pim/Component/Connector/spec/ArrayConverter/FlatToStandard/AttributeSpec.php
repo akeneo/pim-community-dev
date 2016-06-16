@@ -49,12 +49,12 @@ class AttributeSpec extends ObjectBehavior
         ];
 
         $result = [
-            'labels' => [
+            'labels'                 => [
                 'de_DE' => 'SKU',
                 'en_US' => 'SKU',
                 'fr_FR' => 'SKU',
             ],
-            'attributeType'          => 'pim_catalog_identifier',
+            'attribute_type'         => 'pim_catalog_identifier',
             'code'                   => 'sku',
             'group'                  => 'marketing',
             'unique'                 => true,
@@ -90,12 +90,12 @@ class AttributeSpec extends ObjectBehavior
         ];
 
         $result = [
-            'labels' => [
+            'labels'                 => [
                 'de_DE' => 'SKU',
                 'en_US' => 'SKU',
                 'fr_FR' => 'SKU',
             ],
-            'attributeType'          => 'pim_catalog_identifier',
+            'attribute_type'         => 'pim_catalog_identifier',
             'code'                   => 'sku',
             'group'                  => 'marketing',
             'unique'                 => true,
@@ -114,30 +114,30 @@ class AttributeSpec extends ObjectBehavior
     function it_fills_options_only_when_not_blank()
     {
         $itemBlank = [
-            'attributeType' => 'pim_catalog_integer',
-            'code'          => 'num',
-            'number_min'    => '',
-            'number_max'    => '',
+            'attribute_type' => 'pim_catalog_integer',
+            'code'           => 'num',
+            'number_min'     => '',
+            'number_max'     => '',
         ];
         $itemFilled = [
-            'attributeType' => 'pim_catalog_integer',
-            'code'          => 'num',
-            'number_min'    => '12',
-            'number_max'    => '15',
+            'attribute_type' => 'pim_catalog_integer',
+            'code'           => 'num',
+            'number_min'     => '12',
+            'number_max'     => '15',
         ];
         $this->convert($itemBlank)->shouldReturn([
-            'labels'        => [],
-            'attributeType' => 'pim_catalog_integer',
-            'code'          => 'num',
-            'number_min'    => null,
-            'number_max'    => null,
+            'labels'         => [],
+            'attribute_type' => 'pim_catalog_integer',
+            'code'           => 'num',
+            'number_min'     => null,
+            'number_max'     => null,
         ]);
         $this->convert($itemFilled)->shouldReturn([
-            'labels'        => [],
-            'attributeType' => 'pim_catalog_integer',
-            'code'          => 'num',
-            'number_min'    => 12.0,
-            'number_max'    => 15.0,
+            'labels'         => [],
+            'attribute_type' => 'pim_catalog_integer',
+            'code'           => 'num',
+            'number_min'     => 12.0,
+            'number_max'     => 15.0,
         ]);
     }
 }
