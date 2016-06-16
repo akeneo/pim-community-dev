@@ -129,7 +129,27 @@ connector:
                         writer:    pim_connector.writer.file.csv_product
                     parameters:
                         batch_size: 1000
+        csv_published_product_grid_context_quick_export:
+            type: quick_export
+            steps:
+                export:
+                    services:
+                        reader:    pimee_workflow.connector.reader.mass_edit.published_product
+                        processor: pim_enrich.connector.processor.quick_export.product_to_flat_array
+                        writer:    pim_connector.writer.file.csv_product
+                    parameters:
+                        batch_size: 1000
         xlsx_published_product_quick_export:
+             type:  quick_export
+             steps:
+                 export:
+                     services:
+                         reader:    pimee_workflow.connector.reader.mass_edit.published_product
+                         processor: pim_enrich.connector.processor.quick_export.product_to_flat_array
+                         writer:    pim_connector.writer.file.xlsx_product
+                     parameters:
+                         batch_size: 1000
+        xlsx_published_product_grid_context_quick_export:
              type:  quick_export
              steps:
                  export:

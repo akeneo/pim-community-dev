@@ -48,6 +48,7 @@ apply_assets_mass_upload;All;
 csv_product_quick_export;All;
 csv_product_grid_context_quick_export;All
 csv_published_product_quick_export;All;
+csv_published_product_grid_context_quick_export;All;
 csv_family_import;IT support,Manager,Redactor;IT support,Manager
 csv_family_export;IT support,Manager,Redactor;IT support,Manager
 xlsx_product_export;IT support,Manager,Redactor;IT support,Manager
@@ -55,6 +56,7 @@ xlsx_published_product_export;IT support,Manager,Redactor;IT support,Manager
 xlsx_product_quick_export;All;
 xlsx_product_grid_context_quick_export;All
 xlsx_published_product_quick_export;All;
+xlsx_published_product_grid_context_quick_export;All;
 rule_impacted_product_count;All;
 xlsx_product_import;IT support,Manager,Redactor;IT support,Manager
 xlsx_product_import_with_rules;IT support,Manager,Redactor;IT support,Manager

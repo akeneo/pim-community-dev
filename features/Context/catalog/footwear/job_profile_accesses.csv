@@ -52,4 +52,6 @@ xlsx_footwear_category_export;IT support,Manager,Redactor;IT support,Manager,Red
 xlsx_footwear_option_export;IT support,Manager,Redactor;IT support,Manager,Redactor
 xlsx_footwear_family_export;IT support,Manager,Redactor;IT support,Manager,Redactor
 csv_product_grid_context_quick_export;IT support,Manager,Redactor;
+csv_published_product_grid_context_quick_export;IT support,Manager,Redactor;
 xlsx_product_grid_context_quick_export;IT support,Manager,Redactor;
+xlsx_published_product_grid_context_quick_export;IT support,Manager,Redactor;

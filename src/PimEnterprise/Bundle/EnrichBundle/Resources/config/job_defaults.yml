@@ -33,6 +33,7 @@ services:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_export'
             -
                 - 'csv_published_product_quick_export'
+                - 'csv_published_product_grid_context_quick_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -42,5 +43,6 @@ services:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export'
             -
                 - 'xlsx_published_product_quick_export'
+                - 'xlsx_published_product_grid_context_quick_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
