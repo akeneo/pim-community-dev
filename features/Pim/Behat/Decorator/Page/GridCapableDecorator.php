@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Behat\Decorator\PageDecorator;
+namespace Pim\Behat\Decorator\Page;
 
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;

@@ -52,7 +52,7 @@ class Edit extends ProductEditForm
                 'Category tree'           => [
                     'css'        => '#trees',
                     'decorators' => [
-                        'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
+                        'Pim\Behat\Decorator\Tree\JsTreeDecorator'
                     ]
                 ],
                 'Copy actions'            => ['css' => '.copy-actions'],
@@ -64,14 +64,14 @@ class Edit extends ProductEditForm
                 'Attribute tab'           => [
                     'css'        => '.tab-container .object-attributes',
                     'decorators' => [
-                        'Pim\Behat\Decorator\TabDecorator\ComparableTabDecorator'
+                        'Pim\Behat\Decorator\Tab\ComparableTabDecorator'
                     ]
                 ],
                 'Comparison panel' => [
                     'css'        => '.tab-container .attribute-actions .attribute-copy-actions',
                     'decorators' => [
                         'Pim\Behat\Decorator\ContextSwitcherDecorator',
-                        'Pim\Behat\Decorator\TabElementDecorator\ComparisonPanelDecorator'
+                        'Pim\Behat\Decorator\TabElement\ComparisonPanelDecorator'
                     ]
                 ],
                 'Main context selector' => [

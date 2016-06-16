@@ -45,7 +45,7 @@ class Form extends Base
                 'Save'                            => ['css' => 'button.btn-submit'],
                 'Panel sidebar'                   => [
                     'css'        => '.edit-form > .content',
-                    'decorators' => ['Pim\Behat\Decorator\PageDecorator\PanelableDecorator']
+                    'decorators' => ['Pim\Behat\Decorator\Page\PanelableDecorator']
                 ]
             ],
             $this->elements

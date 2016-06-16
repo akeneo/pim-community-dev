@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Behat\Decorator\TreeDecorator;
+namespace Pim\Behat\Decorator\Tree;
 
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
