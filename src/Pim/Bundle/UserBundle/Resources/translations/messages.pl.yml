@@ -3,7 +3,7 @@ pim_user:
     tab:
       general.title: Ogólne
       additional.title: Dodatkowe
-      group_and_role.title: Grupy i Role
+      group_and_role.title: Grupy i role
       password.title: Hasło
       business_unit.title: Jednostki biznesowe
       email_synchronization.title: Ustawienia synchronizacji poczty e-mail
@@ -20,7 +20,7 @@ oro.user.grid.users:
     firstName: Imię
     lastName: Nazwisko
     createdAt: Data utworzenia
-    updatedAt: Aktualizowano
+    updatedAt: Data aktualizacji
     enabled: Status
 oro.user.grid.roles:
   columns:

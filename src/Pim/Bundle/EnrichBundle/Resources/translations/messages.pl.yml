@@ -15,33 +15,33 @@ pim_enrich:
       history.title: Historia
   attribute_group:
     tab:
-      property.title: Ustawienia
+      property.title: Właściwości
       attribute.title: Atrybuty
       history.title: Historia
   family:
     tab:
-      property.title: Ustawienia
+      property.title: Właściwości
       attribute.title: Atrybuty
       history.title: Historia
   association_type:
     tab:
-      property.title: Ustawienia
+      property.title: Właściwości
       history.title: Historia
   group_type:
     tab:
-      property.title: Ustawienia
+      property.title: Właściwości
   channel:
     pick_conversion_unit: Wybierz jednostkę konwersji dla każdej metryki używanej podczas eksportu produktów
     tab:
-      property.title: Ustawienia
+      property.title: Właściwości
       history.title: Historia
   category:
     tab:
-      property.title: Ustawienia
+      property.title: Właściwości
       history.title: Historia
   locale:
     tab:
-      property.title: Ustawienia
+      property.title: Właściwości
       permission.title: Uprawnienia
   group:
     axis.help: Oś wskazuje atrybuty, które powinny odróżniać produkty w grupie. Osie są atrybutami z ustawieniami, bez tłumaczenie i zasięgu. Nie mogą one zostać zmienione po utworzeniu grypy wariantów.
@@ -52,7 +52,7 @@ pim_enrich:
       RELATED: Powiązane
     tab:
       product.title: Produkty
-      property.title: Ustawienia
+      property.title: Właściwości
       history.title: Historia
   variant_group:
     type:
@@ -62,7 +62,7 @@ pim_enrich:
       RELATED: Powiązane
     tab:
       product.title: Produkty
-      property.title: Ustawienia
+      property.title: Właściwości
       history.title: Historia
       attribute.title: Atrybuty
     info:
@@ -106,7 +106,7 @@ pim_enrich:
     edit-common-attributes:
       label: Edytuj atrybuty
       description: Atrybuty wybranych produktów zostaną zaktualizowane o następujące wartości, przy wybranym ustawieniu regionalnym.
-      empty: Proszę wybrać atrybut(y), do edycji
+      empty: Proszę wybrać atrybut(y), które chcesz edytować
       success_flash: Zadanie aktualizacji statusu produktów jest aktualnie wykonywane
       launched_flash: 'Zadanie masowej "edycji wspólnych atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.'
       message:
@@ -494,6 +494,16 @@ info:
     auto option sorting: Jeśli włączone, opcje będą sortowane automatycznie po ich przetłumaczonych etykietach
   completeness:
     not calculated: Jeszcze nie przeliczone
+color:
+  title: Kolor
+  gray: Szary
+  white: Biały
+  yellow: Żółty
+  orange: Pomarańczowy
+  magenta: Purpurowy (Magenta)
+  violet: Fioletowy
+  blue: Niebieski
+  cyan: Cyjan
 Options: Ustawienia
 Created at: Data utworzenia
 Updated at: Data aktualizacji
@@ -543,7 +553,7 @@ Translate from: Przetłumacz z
 switch_on: Tak
 switch_off: Nie
 Close: Zamknij
-Search: Szukaj
+Choose a color: Wybierz kolor
 Choose the attribute type: Wybierz typ atrybutu
 Choose the attribute group: Wybierz grupę atrybutów
 Drop a file or click here: Upuścić plik lub kliknij tutaj
@@ -591,7 +601,7 @@ None: Brak
 URL: URL
 Regular expression: Wyrażenie regularne
 Minimum input length: Minimalna długość danych wejściowych
-Default: Domyślnie
+Default: Domyślny
 Attributes: Atrybuty
 Title: Tytuł
 pim_title.attribute_group:
@@ -769,7 +779,7 @@ Status: Status
 Change History: Historia zmian
 Data Audit: Inspekcja danych
 Data Audit - System: 'Inspekcja danych - system'
-Action: Działanie
+Action: Akcja
 Version: Wersja
 Entity type: Typ encji
 Entity name: Nazwa encji

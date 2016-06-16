@@ -51,8 +51,7 @@ class BatchCommand extends ContainerAwareCommand
                 'c',
                 InputOption::VALUE_REQUIRED,
                 'Override job configuration (formatted as json. ie: ' .
-                'php app/console akeneo:batch:job -c \'[{"reader":{"filePath":"/tmp/foo.csv"}}]\' ' .
-                'acme_product_import)'
+                'php app/console akeneo:batch:job -c "{\"filePath\":\"/tmp/foo.csv\"}" acme_product_import)'
             )
             ->addOption(
                 'email',
@@ -81,8 +80,11 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         $code = $input->getArgument('code');
-        /** @var JobInstance $jobInstance */
-        $jobInstance = $this->getJobManager()->getRepository('Akeneo\Component\Batch\Model\JobInstance')->findOneByCode($code);
+        $jobInstance = $this
+            ->getJobManager()
+            ->getRepository('Akeneo\Component\Batch\Model\JobInstance')
+            ->findOneByCode($code);
+
         if (!$jobInstance) {
             throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
         }

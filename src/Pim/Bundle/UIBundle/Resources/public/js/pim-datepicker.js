@@ -1,13 +1,11 @@
 define(
-    ['jquery', 'underscore', 'oro/translator', 'pim/date-context', 'bootstrap.datetimepicker'],
-    function ($, _, __, DateContext) {
+    ['jquery', 'underscore', 'oro/translator', 'bootstrap.datetimepicker'],
+    function ($, _, __) {
         'use strict';
 
         return {
             options: {
-                format: DateContext.get('date').format,
-                defaultFormat: DateContext.get('date').defaultFormat,
-                language: DateContext.get('language'),
+                language: 'en',
                 pickTime: false
             },
             init: function ($target, options) {

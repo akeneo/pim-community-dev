@@ -66,6 +66,10 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         'Pim\Behat\Decorator\PageDecorator\GridCapableDecorator',
     ];
 
+    protected $elements = [
+        'Dot menu' => ['css' => '.pin-bar .pin-menus i.icon-ellipsis-horizontal'],
+    ];
+    
     /**
      * @param string $baseUrl
      */
@@ -317,6 +321,18 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         }, sprintf('Cannot find "%s" pin item', $label));
 
         $pinnedItem->click();
+    }
+
+    /**
+     * @When /^I click on the pin bar dot menu$/
+     */
+    public function iClickOnThePinBarDotMenu()
+    {
+        $pinDotMenu = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', $this->elements['Dot menu']['css']);
+        }, 'Unable to click on the pin bar dot menu');
+
+        $pinDotMenu->click();
     }
 
     /**

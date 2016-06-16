@@ -6,6 +6,7 @@ define(
         'oro/translator',
         'oro/datafilter/choice-filter',
         'datepicker',
+        'pim/date-context',
         'text!pim/template/datagrid/filter/date-filter'
     ],
 function(
@@ -14,6 +15,7 @@ function(
     __,
     ChoiceFilter,
     Datepicker,
+    DateContext,
     template
 ) {
     'use strict';
@@ -58,7 +60,11 @@ function(
          *
          * @property
          */
-        datetimepickerOptions: {},
+        datetimepickerOptions: {
+            format: DateContext.get('date').format,
+            defaultFormat: DateContext.get('date').defaultFormat,
+            language: DateContext.get('language'),
+        },
 
         /**
          * References to date widgets
@@ -221,8 +227,8 @@ function(
                 if (dateValue) {
                     value.value[name] = this._formatDate(
                         dateValue,
-                        Datepicker.options.defaultFormat,
-                        Datepicker.options.format
+                        this.datetimepickerOptions.defaultFormat,
+                        this.datetimepickerOptions.format
                     );
                 }
             }, this);
@@ -238,8 +244,8 @@ function(
                 if (dateValue) {
                     value.value[name] = this._formatDate(
                         dateValue,
-                        Datepicker.options.format,
-                        Datepicker.options.defaultFormat
+                        this.datetimepickerOptions.format,
+                        this.datetimepickerOptions.defaultFormat
                     );
                 }
             }, this);

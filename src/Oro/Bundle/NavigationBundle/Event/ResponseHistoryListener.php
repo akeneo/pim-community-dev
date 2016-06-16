@@ -104,7 +104,8 @@ class ResponseHistoryListener
                 && !$request->headers->get(ResponseHashnavListener::HASH_NAVIGATION_HEADER))
             || $route[0] == '_'
             || $route == 'oro_default'
-            || is_null($this->user));
+            || is_null($this->user)
+            || 'pim_enrich_product_edit' === $route);
     }
 
     /**
