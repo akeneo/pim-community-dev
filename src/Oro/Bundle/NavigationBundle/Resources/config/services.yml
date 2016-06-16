@@ -36,6 +36,9 @@ parameters:
 
     oro_navigation.breadcrumbs_manager.class:                  Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager
 
+    oro_navigation.history.forbidden_routes:
+        - 'oro_default'
+
 services:
     oro_menu.cache:
         parent: oro.cache.abstract

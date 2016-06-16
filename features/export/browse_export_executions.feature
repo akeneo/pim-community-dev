@@ -24,5 +24,5 @@ Feature: Browse export executions
       | label  | contains  | category                                    | csv_footwear_category_export                                                                          |
       | alias  |           | Attribute export in CSV                     | csv_footwear_attribute_export                                                                         |
       | status |           | STOPPING                                    |                                                                                                       |
-      | Date   | more than | 09/01/2015 05:00 PM                         | footwear_product_export, footwear_category_export, footwear_attribute_export, footwear_product_export |
-      | Date   | between   | 09/01/2050 05:00 PM and 09/01/2100 05:00 AM |                                                                                                       |
+      | date   | more than | 09/01/2015 05:00 PM                         | footwear_product_export, footwear_category_export, footwear_attribute_export, footwear_product_export |
+      | date   | between   | 09/01/2050 05:00 PM and 09/01/2100 05:00 AM |                                                                                                       |

@@ -69,8 +69,8 @@ Feature: Classify a product
     Given I edit the "tea" product
     When I visit the "Categories" tab
     And I select the "2014 collection" tree
-    And I expand the "2014 collection" category
-    And I click on the "Summer collection" category
+    And I expand the "2014_collection" category
+    And I click on the "summer_collection" category
     Then I should see "There are unsaved changes."
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."

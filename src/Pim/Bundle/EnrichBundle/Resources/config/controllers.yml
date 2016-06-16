@@ -30,7 +30,7 @@ parameters:
     pim_enrich.controller.rest.locale.class:                  Pim\Bundle\EnrichBundle\Controller\Rest\LocaleController
     pim_enrich.controller.rest.measures.class:                Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController
     pim_enrich.controller.rest.media.class:                   Pim\Bundle\EnrichBundle\Controller\Rest\MediaController
-    pim_enrich.controller.rest.navigation_history.class: Pim\Bundle\EnrichBundle\Controller\Rest\NavigationHistoryController
+    pim_enrich.controller.rest.navigation_history.class:      Pim\Bundle\EnrichBundle\Controller\Rest\NavigationHistoryController
     pim_enrich.controller.rest.product.class:                 Pim\Bundle\EnrichBundle\Controller\Rest\ProductController
     pim_enrich.controller.rest.product_category.class:        Pim\Bundle\EnrichBundle\Controller\Rest\ProductCategoryController
     pim_enrich.controller.rest.product_comment.class:         Pim\Bundle\EnrichBundle\Controller\Rest\ProductCommentController

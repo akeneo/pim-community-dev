@@ -90,13 +90,13 @@ Feature: Export products with media
       | product   | attribute | value                    |
       | SN/KRS-1B | side_view | %fixtures%/SNKRS-1R.png |
     And I launched the completeness calculator
-    And I am on the "footwear_product_export" export job page
+    And I am on the "csv_footwear_product_export" export job page
     When I launch the export job
-    And I wait for the "footwear_product_export" job to finish
-    Then exported file of "footwear_product_export" should contain:
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
     """
     sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
     SN/KRS-1B;summer_collection;black;;1;sneakers;;;;"Model 1";50.00;70.00;;files/SN_KRS-1B/side_view/SNKRS-1R.png;45;;
     """
-    And export directory of "footwear_product_export" should contain the following media:
+    And export directory of "csv_footwear_product_export" should contain the following media:
       | files/SN_KRS-1B/side_view/SNKRS-1R.png |

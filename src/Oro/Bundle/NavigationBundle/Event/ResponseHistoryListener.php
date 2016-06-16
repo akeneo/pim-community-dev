@@ -103,9 +103,8 @@ class ResponseHistoryListener
             || ($request->isXmlHttpRequest()
                 && !$request->headers->get(ResponseHashnavListener::HASH_NAVIGATION_HEADER))
             || $route[0] == '_'
-            || $route == 'oro_default'
             || is_null($this->user)
-            || 'pim_enrich_product_edit' === $route);
+            || in_array($route, $this->getForbiddenRoutes()));
     }
 
     /**
@@ -130,5 +129,13 @@ class ResponseHistoryListener
     final protected function getItemFactory()
     {
         return $this->container->get('oro_navigation.item.factory');
+    }
+
+    /**
+     * @return string[]
+     */
+    final protected function getForbiddenRoutes()
+    {
+        return $this->container->getParameter('oro_navigation.history.forbidden_routes');
     }
 }
