@@ -32,6 +32,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
                 'enabled'                => 'enabled',
                 'updated_since_strategy' => 'all',
                 'updated_since_date'     => null,
+                'updated_since_n_days'   => null,
                 'completeness'           => 'at_least_one_complete',
                 'linesPerFile'           => 10000,
                 'families'               => null,

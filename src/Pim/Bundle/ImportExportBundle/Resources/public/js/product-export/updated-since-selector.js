@@ -12,6 +12,7 @@ define(
         return {
             $exportedSinceStrategy: null,
             $exportedSinceDate: null,
+            $exportedSinceNDays: null,
             $validationTooltip: null,
             $legend: null,
 
@@ -22,15 +23,19 @@ define(
                 var $container = $(container);
 
                 this.$exportedSinceStrategy = $container.find('select');
-                this.$exportedSinceDate = $container.find('input.datepicker');
-                this.$validationTooltip = $container.find('.validation-tooltip');
+                this.$exportedSinceDate = $container.find('.exported-since-date-wrapper input');
+                this.$exportedSinceNDays = $container.find('.exported-since-n-days-wrapper input');
+                this.$dateValidationTooltip = $container.find('.exported-since-date-wrapper .validation-tooltip');
+                this.$nDaysValidationTooltip = $container.find('.exported-since-n-days-wrapper .validation-tooltip');
                 this.$legend = $container.find('.legend');
 
                 this._displayDateElement();
                 this._displayLegendElement();
+                this._displayPeriodElement();
 
                 this.$exportedSinceStrategy.on('change', this._displayDateElement.bind(this));
                 this.$exportedSinceStrategy.on('change', this._displayLegendElement.bind(this));
+                this.$exportedSinceStrategy.on('change', this._displayPeriodElement.bind(this));
 
                 Datepicker.init(this.$exportedSinceDate.parent());
             },
@@ -42,11 +47,28 @@ define(
              */
             _displayDateElement: function () {
                 if ('since_date' === this.$exportedSinceStrategy.val()) {
-                    this.$exportedSinceDate.show().prop('disabled', false);
-                    this.$validationTooltip.show();
+                    this.$exportedSinceDate.show();
+                    this.$dateValidationTooltip.show();
+                    this._disableElement(this.$exportedSinceDate);
                 } else {
                     this.$exportedSinceDate.hide().prop('disabled', true);
-                    this.$validationTooltip.hide();
+                    this.$dateValidationTooltip.hide();
+                }
+            },
+
+            /**
+             * Display or hide the n days depending condition time value
+             *
+             * @private
+             */
+            _displayPeriodElement: function () {
+                if ('since_n_days' === this.$exportedSinceStrategy.val()) {
+                    this.$exportedSinceNDays.show();
+                    this.$nDaysValidationTooltip.show();
+                    this._disableElement(this.$exportedSinceNDays);
+                } else {
+                    this.$exportedSinceNDays.hide().prop('disabled', true);
+                    this.$nDaysValidationTooltip.hide();
                 }
             },
 
@@ -60,6 +82,19 @@ define(
                     this.$legend.show();
                 } else {
                     this.$legend.hide();
+                }
+            },
+
+            /**
+             * Disable an filter value if the strategy is disabled
+             *
+             * @param {object} $element
+             *
+             * @private
+             */
+            _disableElement: function ($element) {
+                if (!this.$exportedSinceStrategy.is(':disabled')) {
+                    $element.prop('disabled', false);
                 }
             }
         };

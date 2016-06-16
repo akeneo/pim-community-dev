@@ -28,7 +28,6 @@ class ProductXlsxExportSpec extends ObjectBehavior
         $collection =  $this->getConstraintCollection();
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
-        $fields->shouldHaveCount(10);
         $fields->shouldHaveKey('decimalSeparator');
         $fields->shouldHaveKey('dateFormat');
         $fields->shouldHaveKey('enabled');
@@ -37,6 +36,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
         $fields->shouldHaveKey('completeness');
         $fields->shouldHaveKey('updated_since_strategy');
         $fields->shouldHaveKey('updated_since_date');
+        $fields->shouldHaveKey('updated_since_n_days');
         $fields->shouldHaveKey('linesPerFile');
         $fields->shouldHaveKey('families');
     }

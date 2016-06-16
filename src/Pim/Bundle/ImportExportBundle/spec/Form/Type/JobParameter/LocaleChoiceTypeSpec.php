@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ImportExportBundle\Form\Type\ProductExport;
+namespace spec\Pim\Bundle\ImportExportBundle\Form\Type\JobParameter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;

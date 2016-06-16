@@ -44,6 +44,7 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
         $parameters['enabled'] = 'enabled';
         $parameters['updated_since_strategy'] = 'all';
         $parameters['updated_since_date'] = null;
+        $parameters['updated_since_n_days'] = null;
         $parameters['completeness'] = 'at_least_one_complete';
         $parameters['linesPerFile'] = 10000;
         $parameters['families'] = null;

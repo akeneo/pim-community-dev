@@ -1,7 +1,7 @@
 parameters:
     pim_import_export.form.type.job_instance.class: Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType
     pim_import_export.form.type.job_parameters.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParametersType
-    pim_import_export.form.type.product_export.locale_choice.class: Pim\Bundle\ImportExportBundle\Form\Type\ProductExport\LocaleChoiceType
+    pim_import_export.form.type.product_export.locale_choice.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\LocaleChoiceType
     pim_import_export.form.type.updated_since_parameter_type.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\UpdatedSinceType
 
 services:

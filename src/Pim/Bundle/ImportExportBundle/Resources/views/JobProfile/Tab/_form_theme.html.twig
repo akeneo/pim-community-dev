@@ -5,10 +5,20 @@
             {{ form_widget(form.updated_since_strategy) }}
 
             <span class="exported-since-date-wrapper">
-                {{ form_widget(form.updated_since_date) }}
+                {{
+                    form_widget(form.updated_since_date, {'attr': {
+                        'placeholder': 'pim_connector.export.updated.updated_since_date.placeholder',
+                        'class':'datepicker add-on input-large',
+                        'autocomplete': 'off',
+                    }})
+                }}
+                {{ form_errors(form.updated_since_date) }}
             </span>
 
-            {{ form_errors(form.updated_since_date) }}
+            <span class="exported-since-n-days-wrapper">
+                {{ form_widget(form.updated_since_n_days) }}
+                {{ form_errors(form.updated_since_n_days) }}
+            </span>
 
             {% if help is defined %}
             <div class="icons-container">

@@ -5,6 +5,7 @@ namespace Pim\Behat\Decorator\Field;
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\SpinException;
+use Context\Spin\TimeoutException;
 use Pim\Behat\Decorator\ElementDecorator;
 
 class Select2Decorator extends ElementDecorator
@@ -120,5 +121,50 @@ class Select2Decorator extends ElementDecorator
 
             return $widget;
         }, 'Could not find the select2 widget drop');
+    }
+
+    /**
+     * Get the value of the the HTML select (value='xxx')
+     *
+     * @throws TimeoutException
+     * @throws \Exception
+     *
+     * @return array
+     */
+    public function getCodes()
+    {
+        if (false !== strpos('select2-container-multi', $this->getAttribute('class'))) {
+            throw new \Exception('Not implement yet');
+        }
+
+        $id = $this->getAttribute('id');
+        $id = sprintf('#%s', substr($id, 5, strlen($id)));
+
+        $select = $this->spin(function () use ($id) {
+            return $this->getSession()->getPage()->find('css', $id);
+        }, sprintf('Impossible to find the select element for the select2 %s', $id));
+
+        return [$select->getValue()];
+    }
+
+    /**
+     * Get the label of the options displayed in the select2
+     *
+     * @throws TimeoutException
+     * @throws \Exception
+     *
+     * @return array
+     */
+    public function getValues()
+    {
+        if (false !== strpos('select2-container-multi', $this->getAttribute('class'))) {
+            throw new \Exception('Not implement yet');
+        }
+
+        $element = $this->spin(function () {
+            return $this->find('css', '.select2-chosen');
+        }, 'Impossible to find the open of the the select2');
+
+        return [$element->getHtml()];
     }
 }

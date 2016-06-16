@@ -1,11 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\ImportExportBundle\Constraints;
+namespace spec\Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\ImportExportBundle\Constraints\UpdatedSinceStrategy;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceDate;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceNDays;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\Blank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -13,9 +14,14 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class UpdatedSinceStrategyValidatorSpec extends ObjectBehavior
 {
+    function let(ExecutionContextInterface $executionContext)
+    {
+        $this->initialize($executionContext);
+    }
+    
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\ImportExportBundle\Constraints\UpdatedSinceStrategyValidator');
+        $this->shouldHaveType('Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceStrategyValidator');
     }
     
     function it_is_validator()
@@ -24,12 +30,10 @@ class UpdatedSinceStrategyValidatorSpec extends ObjectBehavior
     }
 
     function it_does_not_adds_a_violation_if_job_parameter_is_valid(
+        $executionContext,
         JobInstance $jobInstance,
-        UpdatedSinceStrategy $constraint,
-        ExecutionContextInterface $executionContext
+        \Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceDate $constraint
     ) {
-        $this->initialize($executionContext);
-        
         $jobInstance->getRawConfiguration()->willReturn([
             'updated_since_strategy' => 'since_date',
         ]);
@@ -41,20 +45,38 @@ class UpdatedSinceStrategyValidatorSpec extends ObjectBehavior
     }
 
     function it_adds_a_violation_if_updated_since_date_is_empty(
+        $executionContext,
         JobInstance $jobInstance,
-        UpdatedSinceStrategy $constraint,
-        ExecutionContextInterface $executionContext,
+        UpdatedSinceDate $constraint,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {
-        $this->initialize($executionContext);
-        
         $jobInstance->getRawConfiguration()->willReturn([
             'updated_since_strategy' => 'since_date',
         ]);
 
         $constraint->jobInstance = $jobInstance;
+        $constraint->strategy = 'since_date';
 
-        $executionContext->buildViolation(Argument::type('string'))->willReturn($constraintViolationBuilder);
+        $executionContext->buildViolation('pim_connector.export.updated.updated_since_date.error')->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->addViolation()->shouldBeCalled();
+
+        $this->validate('', $constraint)->shouldReturn(null);
+    }
+    
+    function it_adds_a_violation_if_updated_since_n_days_is_empty(
+        $executionContext,
+        JobInstance $jobInstance,
+        UpdatedSinceNDays $constraint,
+        ConstraintViolationBuilderInterface $constraintViolationBuilder
+    ) {
+        $jobInstance->getRawConfiguration()->willReturn([
+            'updated_since_strategy' => 'since_n_days',
+        ]);
+
+        $constraint->jobInstance = $jobInstance;
+        $constraint->strategy = 'since_n_days';
+
+        $executionContext->buildViolation('pim_connector.export.updated.updated_since_n_days.error')->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate('', $constraint)->shouldReturn(null);

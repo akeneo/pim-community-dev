@@ -17,6 +17,7 @@
 - PIM-5761: The channel no more contains any color information as it was not used anymore in the UI.
 - PIM-5431: Export the products updated since a defined date
 - PIM-5602: Introduce "move to categories" action in products mass edit
+- PIM-5432: Export the products updated for a period
 
 ## Scalability improvements
 
@@ -80,10 +81,10 @@
 - Change constructor of `Pim\Bundle\NotificationBundle\Controller\NotificationController`. Remove deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and add `Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface` and `Akeneo\Component\StorageUtils\Remover\RemoverInterface`.
 - Change constructor of `Pim\Bundle\NotificationBundle\EventSubscriber\JobExecutionNotifier`. Remove deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and add `Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry` and `Pim\Bundle\NotificationBundle\NotifierInterface`.
 - Change constructor of `Pim\Bundle\NotificationBundle\Twig\NotificationExtension`. Replace deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` by `Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface`.
-- Change constructor of `Pim\Bundle\EnrichBundle\Controller\FileController`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
-- Change constructor of `Pim\Bundle\EnrichBundle\Imagine\Loader\FlysystemLoader`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
-- Change constructor of `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
-- Change constructor of `Pim\Component\Connector\Writer\File\FileExporter`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`. 
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\FileController`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`.
+- Change constructor of `Pim\Bundle\EnrichBundle\Imagine\Loader\FlysystemLoader`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`.
+- Change constructor of `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`.
+- Change constructor of `Pim\Component\Connector\Writer\File\FileExporter`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`.
 - Move `Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry` to `Pim\Component\Catalog\AttributeTypeRegistry`
 - Move `Pim\Bundle\CatalogBundle\Factory\AttributeFactory` to `Pim\Component\Catalog\Factory\AttributeFactory`
 - Remove `Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager`
@@ -193,7 +194,7 @@
 - Change constructor of `Pim\Component\Catalog\Updater\GroupUpdater` and `Pim\Component\Catalog\Updater\VariantGroupUpdater`, add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
 - Change constructor of `Akeneo\Bundle\BatchBundle\Job\Pim\Bundle\TransformBundle\Normalizer\Structured\FamilyNormalizer` to inject two more dependendies `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` and `Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface`
 - Remove class `Pim\Bundle\ConnectorBundle\JobLauncher\SimpleJobLauncher`  which overrides `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` we now always use `@akeneo_batch.launcher.simple_job_launcher` and not anymore `@pim_connector.launcher.simple_job_launcher`
-- Remove parameter `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface` from constructors of 
+- Remove parameter `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface` from constructors of
     `Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor`
     `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements`
     `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor`

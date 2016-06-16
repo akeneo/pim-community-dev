@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Form\Type\ProductExport;
+namespace Pim\Bundle\ImportExportBundle\Form\Type\JobParameter;
 
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Form\AbstractType;

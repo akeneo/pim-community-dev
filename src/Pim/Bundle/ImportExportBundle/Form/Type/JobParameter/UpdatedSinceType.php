@@ -8,15 +8,15 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Localization\Factory\DateFactory;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
-use Pim\Bundle\ImportExportBundle\Constraints\UpdatedSinceStrategy;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceDate;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceNDays;
+use Pim\Component\Catalog\Validator\Constraints\Range;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Updated time condition type use in export builder
@@ -81,24 +81,24 @@ class UpdatedSinceType extends AbstractType
         $builder
             ->add('updated_since_strategy', 'choice', [
                 'choices' => [
-                    'all'         => 'pim_connector.export.updated.updated_since_strategy.choice.all',
-                    'last_export' => 'pim_connector.export.updated.updated_since_strategy.choice.last_export',
-                    'since_date'  => 'pim_connector.export.updated.updated_since_strategy.choice.since_date',
+                    'all'          => 'pim_connector.export.updated.updated_since_strategy.choice.all',
+                    'last_export'  => 'pim_connector.export.updated.updated_since_strategy.choice.last_export',
+                    'since_date'   => 'pim_connector.export.updated.updated_since_strategy.choice.since_date',
+                    'since_n_days' => 'pim_connector.export.updated.updated_since_strategy.choice.since_n_days',
                 ],
                 'select2'  => true,
-                'label'    => false,
             ])
             ->add('updated_since_date', 'datetime', [
-                'widget' => 'single_text',
-                'format' => $dateFormatter->getPattern(),
-                'label'  => false,
-                'input'  => 'string',
-                'attr'   => [
-                    'placeholder'  => 'pim_connector.export.updated.updated_since_date.placeholder',
-                    'class'        => 'datepicker add-on input-large',
-                    'autocomplete' => 'off',
-                ],
-                'constraints' => new UpdatedSinceStrategy($options['job_instance'])
+                'widget'      => 'single_text',
+                'format'      => $dateFormatter->getPattern(),
+                'input'       => 'string',
+                'constraints' => new UpdatedSinceDate($options['job_instance'])
+            ])
+            ->add('updated_since_n_days', 'number', [
+                'constraints' => [
+                    new UpdatedSinceNDays($options['job_instance']),
+                    new Range(['min' => 0]),
+                ]
             ])
         ;
     }

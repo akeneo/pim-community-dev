@@ -1,7 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Constraints;
+namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceDate;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceNDays;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -20,12 +22,13 @@ class UpdatedSinceStrategyValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof UpdatedSinceStrategy) {
+        if (!$constraint instanceof UpdatedSinceDate &&
+            !$constraint instanceof UpdatedSinceNDays) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\UpdateSinceStrategy');
         }
 
-        if (empty($value) &&
-            'since_date' === $constraint->jobInstance->getRawConfiguration()['updated_since_strategy']) {
+        $strategy = $constraint->jobInstance->getRawConfiguration()['updated_since_strategy'];
+        if (empty($value) && $constraint->strategy === $strategy) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }

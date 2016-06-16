@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Constraints;
+namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
 use Akeneo\Component\Batch\Model\JobInstance;
 use Symfony\Component\Validator\Constraint;
@@ -12,13 +12,16 @@ use Symfony\Component\Validator\Constraint;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UpdatedSinceStrategy extends Constraint
+class UpdatedSinceNDays extends Constraint
 {
     /** @var JobInstance */
     public $jobInstance;
-    
+
     /** @var string */
-    public $message = 'pim_connector.export.updated.updated_since_date.error';
+    public $message = 'pim_connector.export.updated.updated_since_n_days.error';
+
+    /** @var string */
+    public $strategy = 'since_n_days';
     
     /**
      * {@inheritdoc}
@@ -26,5 +29,13 @@ class UpdatedSinceStrategy extends Constraint
     public function getDefaultOption()
     {
         return 'jobInstance';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validatedBy()
+    {
+        return 'updated_since_strategy';
     }
 }

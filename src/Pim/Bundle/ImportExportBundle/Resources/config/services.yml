@@ -1,8 +1,14 @@
 parameters:
     pim_import_export.job_template.config:         ~
     pim_import_export.job_template.provider.class: Pim\Bundle\ImportExportBundle\JobTemplate\JobTemplateProvider
+    pim_import_export.updated_since_date.class: Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceStrategyValidator
 
 services:
     pim_import_export.provider.job_template:
         class: '%pim_import_export.job_template.provider.class%'
         arguments: ['%pim_import_export.job_template.config%']
+
+    pim_import_export.updated_since_strategy:
+        class: '%pim_import_export.updated_since_date.class%'
+        tags:
+            - { name: validator.constraint_validator, alias: updated_since_strategy }

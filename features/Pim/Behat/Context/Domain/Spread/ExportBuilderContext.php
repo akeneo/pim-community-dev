@@ -2,49 +2,94 @@
 
 namespace Pim\Behat\Context\Domain\Spread;
 
+use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
+use Pim\Behat\Decorator\Export\Filter\UpdatedTimeConditionDecorator;
 
 class ExportBuilderContext extends PimContext
 {
     use SpinCapableTrait;
     
     /**
-     * @When /^I filter by "Updated time condition" with operator "([^"]*)" with value "([^"]*)"$/
+     * Set the operator and the value of a filter
+     *
+     * Example:
+     * When I filter exported products by operator "Updated products since the defined date" with value "05/25/2016"
+     *
+     * @param string $expectedOperator
+     * @param string $exceptedValue
+     * 
+     * @When /^I filter exported products by operator "([^"]*)" and value "([^"]*)"$/
      */
-    public function iChangeExportedTimeStrategyTo($operator, $value)
+    public function iFilterBy($expectedOperator, $exceptedValue)
     {
-        $select = $this->getCurrentPage()->getElement('export_time_strategy');
-        $select->setValue($operator);
+        $filterElement = $this->getCurrentPage()->getElement('Updated time condition');
 
-        $date = $this->getCurrentPage()->getElement('export_time_date');
-        $date->setValue($value);
+        $filterElement->setValue($expectedOperator, $exceptedValue);
     }
 
     /**
-     * @Then /^I should not see the exported time date$/
+     * Check the value and the operator of the filter
+     *
+     * Example:
+     * Then the filter should contain operator "Updated products since the last n days" with value "10"
+     *
+     * @param string $expectedOperator
+     * @param string $exceptedValue
+     * 
+     * @throws ExpectationException
+     * 
+     * @Then /^the filter should contain operator "([^"]*)" and value "([^"]*)"$/
      */
-    public function iShouldNotSeeTheDateInput()
+    public function theFilterShouldContains($expectedOperator, $exceptedValue)
     {
-        $input = $this->getCurrentPage()->getElement('export_time_date');
-        
-        if ($input->isVisible()) {
-            throw new \Exception('The date input for the updated condition time should not be visible');
+        /** @var UpdatedTimeConditionDecorator $filter */
+        $filterElement = $this->getCurrentPage()->getElement('Updated time condition');
+        $value = $filterElement->getValue();
+        $operator = $filterElement->getOperator();
+
+        if ($expectedOperator !== $operator) {
+            throw new ExpectationException(
+                sprintf(
+                    'The value of operator does not contain "%s" but "%s"',
+                    $expectedOperator,
+                    $operator
+                ),
+                $this->getSession()->getDriver()
+            );
+        }
+
+        if ($exceptedValue !== $value) {
+            throw new ExpectationException(
+                sprintf('The value of filter does not contain "%s" but "%s"', $exceptedValue, $value),
+                $this->getSession()->getDriver()
+            );
         }
     }
 
     /**
-     * @Then /^the filter "Updated time condition" should contain operator "([^"]*)" with value "([^"]*)"$/
+     * Check if the element is visible
+     * 
+     * Example:
+     * Then I should not see the "updated since n days" element in the filter "Updated time condition"
+     *
+     * @param string $field
+     * @param string $filterElement
+     * 
+     * @throws \Exception
+     * 
+     * @Then /^I should not see the "([^"]*)" element in the filter "([^"]*)"$/
      */
-    public function theDateInputShouldContains($operator, $exceptedValue)
+    public function iShouldNotSeeTheElement($field, $filterElement)
     {
-        $input = $this->getCurrentPage()->getElement('export_time_date');
+        /** @var UpdatedTimeConditionDecorator $filterElement */
+        $filterElement = $this->getCurrentPage()->getElement($filterElement);
         
-        $value = $input->getValue();
-
-        if ($exceptedValue !== $value) {
-            throw new \Exception(
-                sprintf('The exported time date does not contain "%s" but "%s"', $exceptedValue, $value)
+        if ($filterElement->checkValueElementVisibility($field)) {
+            throw new ExpectationException(
+                sprintf('The element "%s" should not be visible', $field),
+                $this->getSession()->getDriver()
             );
         }
     }
