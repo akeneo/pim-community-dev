@@ -22,6 +22,34 @@ class ChannelConfiguration implements ArrayConverterInterface
 {
     /**
      * {@inheritdoc}
+     *
+     * Before:
+     * [
+     *      'channel'          => 'myChannelCode',
+     *      'configuration' => [
+     *          'ecommerce' => ['scale' => ['ratio' => 0.5]],
+     *          'tablet'    => ['scale' => ['ratio' => 0.25]],
+     *          'mobile'    => [
+     *              'scale'      => ['width'      => 200],
+     *              'colorspace' => ['colorspace' => 'gray'],
+     *          ],
+     *          'print'     => ['resize' => ['width' => 400, 'height' => 200]],
+     *      ],
+     * ]
+     *
+     * After:
+     * [
+     *      'code'       => 'myChannelCode',
+     *      'configuration' => [
+     *          'ecommerce' => ['scale' => ['ratio' => 0.5]],
+     *          'tablet'    => ['scale' => ['ratio' => 0.25]],
+     *          'mobile'    => [
+     *              'scale'      => ['width'      => 200],
+     *              'colorspace' => ['colorspace' => 'gray'],
+     *          ],
+     *          'print'     => ['resize' => ['width' => 400, 'height' => 200]],
+     *      ]
+     * ]
      */
     public function convert(array $item, array $options = [])
     {
@@ -45,11 +73,9 @@ class ChannelConfiguration implements ArrayConverterInterface
     {
         switch ($field) {
             case 'channel':
-                // TODO: Why from 'channel' to 'code'?! We should change the flat to standard converter
                 $convertedItem['code'] = (string) $data;
                 break;
             case 'configuration':
-                // TODO: Seems weird.. as the flat should be... flat. But done this way in the flat to standard
                 $convertedItem[$field] = $data;
                 break;
         }

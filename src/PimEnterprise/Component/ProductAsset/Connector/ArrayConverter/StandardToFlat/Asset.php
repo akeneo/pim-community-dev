@@ -54,8 +54,6 @@ class Asset implements ArrayConverterInterface
      *      'tags'          => 'dog,flowers,cities,animal,sunset',
      *      'end_of_use'    => '2018-02-01',
      * ]
-     *
-
      */
     public function convert(array $item, array $options = [])
     {
