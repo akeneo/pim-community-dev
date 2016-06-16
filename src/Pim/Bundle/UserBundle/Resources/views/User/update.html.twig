@@ -13,8 +13,8 @@
 
 {% block head_script %}
     <script type="text/javascript">
-        require(['jquery', 'pim/initselect2', 'datepicker', 'jquery.jstree', 'jstree/jquery.hotkeys'],
-        function ($, initSelect2, datepicker) {
+        require(['jquery', 'pim/initselect2', 'datepicker', 'pim/date-context', 'jquery.jstree', 'jstree/jquery.hotkeys'],
+        function ($, initSelect2, datepicker, dateContext) {
             $(function() {
                 $('.navbar-content.pull-left').css('width', '80%')
 
@@ -22,7 +22,11 @@
                 initSelect2.init($('#{{ form.vars.id }}'));
 
                 _.each($('#{{ form.vars.id }} input.datepicker:not(.hasPicker)'), function (field) {
-                    datepicker.init($(field).closest('div'));
+                    datepicker.init($(field).closest('div'), {
+                        format: dateContext.get('date').format,
+                        defaultFormat: dateContext.get('date').defaultFormat,
+                        language: dateContext.get('language'),
+                    });
                 });
 
                 {% if form.rolesCollection is defined %}

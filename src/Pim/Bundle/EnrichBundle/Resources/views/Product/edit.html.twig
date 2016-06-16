@@ -53,8 +53,32 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation', 'oro/loading-mask'],
-                            function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog, mediator, Error, Navigation, LoadingMask) {
+                            [
+                                'jquery',
+                                'pim/fetcher-registry',
+                                'pim/form-builder',
+                                'pim/product-manager',
+                                'pim/user-context',
+                                'pim/dialog',
+                                'oro/mediator',
+                                'pim/error',
+                                'oro/navigation',
+                                'pim/history-item-manager',
+                                'oro/loading-mask'
+                            ],
+                            function(
+                                $,
+                                FetcherRegistry,
+                                FormBuilder,
+                                ProductManager,
+                                UserContext,
+                                Dialog,
+                                mediator,
+                                Error,
+                                Navigation,
+                                HistoryItemManager,
+                                LoadingMask
+                            ) {
                                 $(function() {
                                     var loadingMask = new LoadingMask();
                                     loadingMask.render().$el.appendTo($('#container')).show();
@@ -70,6 +94,7 @@
                                                 navTitle.params = {'%product.sku%': sku};
                                                 navigation.setPinButtonsData('title', navTitle);
                                                 navigation.setPinButtonsData('title-rendered-short', newTitle);
+                                                HistoryItemManager.save(navigation.url, navTitle);
 
                                                 FormBuilder.build(product.meta.form)
                                                     .then(function (form) {

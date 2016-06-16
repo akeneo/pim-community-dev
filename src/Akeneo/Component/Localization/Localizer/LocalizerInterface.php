@@ -5,7 +5,7 @@ namespace Akeneo\Component\Localization\Localizer;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
- * A localizer ;
+ * A localizer :
  *    - check if data provided respects the expected format
  *    - convert a localized value to the default format
  *    - convert a default value to a localized format

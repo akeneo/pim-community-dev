@@ -12,13 +12,15 @@ define(
         'pim/field',
         'underscore',
         'text!pim/template/product/field/date',
-        'datepicker'
+        'datepicker',
+        'pim/date-context'
     ],
     function (
         Field,
         _,
         fieldTemplate,
-        Datepicker
+        Datepicker,
+        DateContext
     ) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
@@ -26,11 +28,16 @@ define(
                 'change .field-input:first input[type="text"]': 'updateModel',
                 'click .field-input:first input[type="text"]': 'click'
             },
+            datetimepickerOptions: {
+                format: DateContext.get('date').format,
+                defaultFormat: DateContext.get('date').defaultFormat,
+                language: DateContext.get('language')
+            },
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
             click: function () {
-                Datepicker.init(this.$('.datetimepicker')).datetimepicker('show');
+                Datepicker.init(this.$('.datetimepicker'), this.datetimepickerOptions).datetimepicker('show');
 
                 this.$('.datetimepicker').on('changeDate', function (e) {
                     this.setCurrentValue(this.$(e.target).find('input[type="text"]').val());

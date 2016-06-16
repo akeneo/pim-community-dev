@@ -2,6 +2,10 @@
 
 - PIM-5711: Don't create empty attribute translations if attributes are imported with empty labels
 - PIM-5829: Fix an issue with wrong parameters order in FamilyUpdater
+- PIM-5828: Correctly render product SKU in history pin bar
+- PIM-5844: Fix export with medias when identifier contains slash
+- PIM-4346: Fix datetimepicker on grid filters
+- PIM-5851: Display product state changes when classifying/declassifying a product
 
 # 1.5.4 (2016-06-01)
 

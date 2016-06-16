@@ -44,21 +44,22 @@ class FormatController
      */
     public function dateAction()
     {
-        $locale    = $this->localeResolver->getCurrentLocale();
+        $locale = $this->localeResolver->getCurrentLocale();
         $dateFormatter = $this->dateFactory->create(['locale' => $locale]);
-        $timeFormatter = $this->datetimeFactory->create(['locale' => $locale, 'timetype' => \IntlDateFormatter::SHORT]);
+        $timeFormatter = $this->datetimeFactory->create(['locale' => $locale]);
 
         return new JsonResponse(
             [
-                'date'     => [
+                'date'           => [
                     'format'        => $dateFormatter->getPattern(),
                     'defaultFormat' => LocalizerInterface::DEFAULT_DATE_FORMAT,
                 ],
-                'time'     => [
+                'time'           => [
                     'format'        => $timeFormatter->getPattern(),
                     'defaultFormat' => LocalizerInterface::DEFAULT_DATETIME_FORMAT,
                 ],
-                'language' => $locale,
+                'language'       => $locale,
+                '12_hour_format' => false !== strpos($timeFormatter->getPattern(), 'a')
             ]
         );
     }
