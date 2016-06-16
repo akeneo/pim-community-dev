@@ -1,0 +1,12 @@
+parameters:
+    pim_versioning.purger.advisor.published_products.class: PimEnterprise\Bundle\VersioningBundle\Purger\PublishedProductVersionPurgerAdvisor
+
+services:
+    # advisors
+    pim_versioning.purger.advisor.published_products:
+        class: '%pim_versioning.purger.advisor.published_products.class%'
+        arguments:
+            - '@pimee_workflow.repository.published_product'
+            - '%pim_catalog.entity.product.class%'
+        tags:
+            - { name: pim_versioning.purger.advisor, priority: 100 }

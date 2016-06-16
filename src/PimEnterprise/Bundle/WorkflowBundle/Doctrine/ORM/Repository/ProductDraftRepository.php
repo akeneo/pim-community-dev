@@ -197,10 +197,11 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
     /**
      * {@inheritdoc}
      */
-    public function findByIds(array $ids)
+    public function findByIds(array $productDraftIds)
     {
         $qb = $this->createQueryBuilder('d');
-        $qb->where($qb->expr()->in('d.id', $ids));
+        $qb->where($qb->expr()->in('d.id', ':product_draft_ids'));
+        $qb->setParameter(':product_draft_ids', $productDraftIds);
 
         return $qb->getQuery()->getResult();
     }
