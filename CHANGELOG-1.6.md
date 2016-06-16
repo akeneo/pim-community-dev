@@ -18,6 +18,7 @@
 - PIM-5431: Export the products updated since a defined date
 - PIM-5602: Introduce "move to categories" action in products mass edit
 - PIM-5432: Export the products updated for a period
+- PIM-5604: Introduce "remove from categories" action in products mass edit
 
 ## Scalability improvements
 

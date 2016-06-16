@@ -41,7 +41,7 @@ class AddProductValueProcessor extends AbstractProcessor
         $actions = $this->getConfiguredActions();
         $this->addData($product, $actions);
 
-        if (null === $product || (null !== $product && !$this->isProductValid($product))) {
+        if (!$this->isProductValid($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
 
             return null;
@@ -78,7 +78,5 @@ class AddProductValueProcessor extends AbstractProcessor
         foreach ($actions as $action) {
             $this->propertyAdder->addData($product, $action['field'], $action['value']);
         }
-
-        return $this;
     }
 }

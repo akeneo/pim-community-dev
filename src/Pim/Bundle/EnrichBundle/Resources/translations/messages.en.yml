@@ -145,6 +145,12 @@ pim_enrich:
             success_flash:  Product(s) have been moved to selected categories
             launched_flash: The bulk action "move to categories" has been launched. You will be notified when it is done.
 
+        classify-remove:
+            label:          Remove products from categories
+            description:    The products will be removed from the following categories.
+            success_flash:  Product(s) have been removed from the selected categories
+            launched_flash: The bulk action "remove from categories" has been launched. You will be notified when it is done.
+
         change-family:
             label:          Change the family of products
             description:    The family of the selected products will be changed to the chosen family
@@ -965,6 +971,7 @@ pim_mass_edit_execution_show:  Mass edit executions | Details
 
 edit_common_attributes.steps.edit_common_attributes_processor.title: Edit common attributes
 update_product_value.steps.update_product_value_processor.title: Update product value
+remove_product_value.steps.update_product_value_processor.title: Remove product value
 add_to_variant_group_clean.steps.excluded.title: Excluded product
 add_to_variant_group_clean.steps.duplicated.title: Duplicated Axis
 add_to_variant_group.steps.excluded.title: Excluded product

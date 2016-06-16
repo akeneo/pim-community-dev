@@ -2,36 +2,36 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
-use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Processor to update product value in a mass edit
+ * Processor to remove product value in a mass edit
  *
- * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UpdateProductValueProcessor extends AbstractProcessor
+class RemoveProductValueProcessor extends AbstractProcessor
 {
-    /** @var PropertySetterInterface */
-    protected $propertySetter;
+    /** @var PropertyRemoverInterface */
+    protected $propertyRemover;
 
     /** @var ValidatorInterface */
     protected $validator;
 
     /**
-     * @param PropertySetterInterface             $propertySetter
-     * @param ValidatorInterface                  $validator
+     * @param PropertyRemoverInterface $propertyRemover
+     * @param ValidatorInterface       $validator
      */
     public function __construct(
-        PropertySetterInterface $propertySetter,
+        PropertyRemoverInterface $propertyRemover,
         ValidatorInterface $validator
     ) {
-        $this->propertySetter = $propertySetter;
-        $this->validator      = $validator;
+        $this->propertyRemover = $propertyRemover;
+        $this->validator       = $validator;
     }
 
     /**
@@ -40,7 +40,7 @@ class UpdateProductValueProcessor extends AbstractProcessor
     public function process($product)
     {
         $actions = $this->getConfiguredActions();
-        $this->setData($product, $actions);
+        $this->removeValuesFromProduct($product, $actions);
 
         if (!$this->isProductValid($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
@@ -74,10 +74,10 @@ class UpdateProductValueProcessor extends AbstractProcessor
      *
      * @return UpdateProductValueProcessor
      */
-    protected function setData(ProductInterface $product, array $actions)
+    protected function removeValuesFromProduct(ProductInterface $product, array $actions)
     {
         foreach ($actions as $action) {
-            $this->propertySetter->setData($product, $action['field'], $action['value']);
+            $this->propertyRemover->removeData($product, $action['field'], $action['value']);
         }
     }
 }
