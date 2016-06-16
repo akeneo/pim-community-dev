@@ -20,6 +20,7 @@
 
 ## BC breaks
 
+- Change constructor of `PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor`. Remove `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`.
 - Change constructor of `PimEnterprise\Component\Workflow\Applier\ProductDraftApplier`. Add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`.
 - Remove `PimEnterprise\Bundle\CatalogBundle\Manager\ProductCategoryManager`
 - In `PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository`, remove method `getGrantedCategoryIdsFromQB` and replace it by `getGrantedChildrenIds`

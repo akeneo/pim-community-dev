@@ -5,5 +5,5 @@ services:
     pimee_base_connector.array_converter.flat_to_standard.product_draft:
         class: '%pimee_base_connector.array_converter.flat_to_standard.product_draft.class%'
         arguments:
-            - '@pim_connector.array_converter.flat_to_standard.product'
+            - '@pim_connector.array_converter.flat_to_standard.product_delocalized'
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
