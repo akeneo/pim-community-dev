@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Behat\Decorator\TabDecorator;
+namespace Pim\Behat\Decorator\Tab;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Spin\SpinCapableTrait;
