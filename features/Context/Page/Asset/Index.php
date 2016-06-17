@@ -32,7 +32,7 @@ class Index extends Grid
                 'Category tree' => [
                     'css'        => '#tree',
                     'decorators' => [
-                        'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
+                        'Pim\Behat\Decorator\Tree\JsTreeDecorator'
                     ]
                 ],
                 'Main context selector' => [

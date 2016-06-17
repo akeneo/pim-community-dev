@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Behat\Decorator\WidgetDecorator;
+namespace PimEnterprise\Behat\Decorator\Widget;
 
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
