@@ -36,7 +36,7 @@ class Index extends Base
             [
                 'Proposal widget' => [
                     'css'        => '#proposal-widget',
-                    'decorators' => ['PimEnterprise\Behat\Decorator\WidgetDecorator\ProposalWidgetDecorator']
+                    'decorators' => ['PimEnterprise\Behat\Decorator\Widget\ProposalWidgetDecorator']
                 ],
             ]
         );

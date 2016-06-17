@@ -33,7 +33,7 @@ class Edit extends Form
                 'Category tree'    => [
                     'css'        => '#trees',
                     'decorators' => [
-                        'Pim\Behat\Decorator\TreeDecorator\JsTreeDecorator'
+                        'Pim\Behat\Decorator\Tree\JsTreeDecorator'
                     ]
                 ],
                 'Main context selector' => [
