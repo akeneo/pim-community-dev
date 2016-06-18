@@ -1,0 +1,11 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: Nenhuma operação encontrada
+      status: Estado
+      type: Tipo
+      profile name: Nome do Perfil
+      details: Detalhes
+      job_type:
+        import: Importação
+        export: Exportação
