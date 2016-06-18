@@ -83,6 +83,9 @@ pim_connector:
     delimiter:
       label: Delimitador
       help: Um carácter usado para definir o delimitador de campo
+    enclosure:
+      label: Invólucro
+      help: Caractere usado para definir o invólucro do campo
     withHeader:
       label: Com o cabeçalho
       help: Imprimir ou não o nome da coluna
@@ -117,8 +120,12 @@ pim_connector:
     delimiter:
       label: Delimitador
       help: Um carácter usado para definir o delimitador de campo
+    enclosure:
+      label: Invólucro
+      help: Caractere usado para definir o invólucro do campo
     escape:
       label: Escape
+      help: Um caractere usado para definir o campo de escape
     circularRefsChecked:
       label: Verificar referências circulares
       help: Se sim, os dados serão processados para se certificar de que não há nenhuma referência circular entre as categorias
@@ -128,3 +135,20 @@ pim_connector:
     copyValuesToProducts:
       label: Copiar valores da variante de grupo para os produtos
       help: Significa que os produtos são automaticamente atualizados com valores do grupo variante, pode ser desligado apenas para atualizar o grupo variante
+    enabledComparison:
+      label: Comparar valores
+      help: Permitir a comparação entre os valores originais e importados. Pode acelerar a importação se os valores importados forem muito semelhantes aos valores originais
+job_execution.summary:
+  read: ler
+  read_lines: linhas lidas
+  write: escrito
+  skip: ignorado
+  create: criado
+  process: processado
+  update_products: produtos atualizados
+  process_products: produtos processados
+  skip_products: produtos ignorados
+  displayed: primeiros avisos exibidos
+  charset_validator:
+    title: 'codificação do ficheiro:'
+  product_skipped_no_diff: produtos ignorados (sem diferenças)
