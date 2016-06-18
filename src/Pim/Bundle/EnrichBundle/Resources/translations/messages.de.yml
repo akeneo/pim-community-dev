@@ -113,11 +113,10 @@ pim_enrich:
         warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
         invalid_attribute: 'Das Attribut mit dem Code "attribute_code" ist kein gemeinsames Attribut der ausgewählten Produkte. Attribut übersprungen.'
         no_valid_attribute: Keines der ausgewählten Attribute kann auf dieses Produkt angewendet werden.
-    classify:
+    classify-add:
       label: Zuordnung von Produkten in Kategorien
       description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
       success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
-      launched_flash: 'Die Massenbearbeitung "Klassifikation" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.'
     change-family:
       label: Produktfamilie der Produkte ändern
       description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
