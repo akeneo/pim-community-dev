@@ -1,0 +1,36 @@
+oro.user.grid.users:
+  columns:
+    createdAt: Criado em
+    updatedAt: Atualizado em
+    enabled: Estado
+oro.user.grid.roles:
+  columns:
+    label: Rótulo
+oro.user.grid.groups:
+  columns:
+    name: Nome
+pim_title:
+  user.index: Utilizadores
+  user_role.index: Funções
+  user_group.index: Grupos
+  system_configuration.index: Configuração
+user.title: Utilizador
+user.overview: Utilizador
+user:
+  default_grid_view:
+    none: Nenhum
+Entity: Entidade
+oro_security:
+  acl_group:
+    user: Utilizadores
+    role: Funções
+CREATE: Criar
+EDIT: Editar
+DELETE: Eliminar
+oro:
+  security:
+    access-level:
+      BASIC: Utilizador
+      SYSTEM: Sistema
+      NONE: Nenhum
+user-group.overview: Grupos
