@@ -241,6 +241,37 @@ services:
             - '@pim_connector.processor.denormalization.family'
             - '@pim_connector.writer.database.family'
 
+    pim_connector.step.xlsx_group_import.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_group'
+            - '@pim_connector.processor.denormalization.group'
+            - '@pim_connector.writer.database.group'
+
+    pim_connector.step.xlsx_product_import.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_product'
+            - '@pim_connector.processor.denormalization.product'
+            - '@pim_connector.writer.database.product'
+
+    pim_connector.step.xlsx_product_import.import_associations:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_association'
+            - '@pim_connector.processor.denormalization.product_association'
+            - '@pim_connector.writer.database.product_association'
+            - 1
+
     # XLSX Export steps -----------------------------------------------------------------------------------------------
     pim_connector.step.xlsx_attribute_export.export:
         class: '%pim_connector.step.item_step.class%'
@@ -283,4 +314,26 @@ services:
             - '@pim_base_connector.reader.orm.family'
             - '@pim_connector.processor.normalization.family'
             - '@pim_connector.writer.file.xlsx_family'
+            - 10
+
+    pim_connector.step.xlsx_group_export.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_base_connector.reader.repository.group'
+            - '@pim_connector.processor.normalization.group'
+            - '@pim_connector.writer.file.xlsx_group'
+            - 10
+
+    pim_connector.step.xlsx_product_export.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.product'
+            - '@pim_base_connector.processor.product_to_flat_array'
+            - '@pim_connector.writer.file.xlsx_product'
             - 10

@@ -1,25 +1,6 @@
 connector:
     name: Akeneo XLSX Connector
     jobs:
-        xlsx_product_import:
-            type:  import
-            steps:
-                validation:
-                    class: '%pim_connector.step.validator.class%'
-                    services:
-                        charsetValidator: pim_connector.validator.item.charset_validator
-                import:
-                    services:
-                        reader:    pim_connector.reader.file.xlsx_product
-                        processor: pim_connector.processor.denormalization.product
-                        writer:    pim_connector.writer.database.product
-                import_associations:
-                    services:
-                        reader:    pim_connector.reader.file.xlsx_association
-                        processor: pim_connector.processor.denormalization.product_association
-                        writer:    pim_connector.writer.database.product_association
-                    parameters:
-                        batch_size: 1
         xlsx_category_import:
             type:  import
             steps:
@@ -34,26 +15,6 @@ connector:
                         writer:    pim_connector.writer.database.category
                     parameters:
                         batchSize: 1
-        xlsx_product_export:
-             type:  export
-             steps:
-                 export:
-                     services:
-                         reader:    pim_connector.reader.database.product
-                         processor: pim_base_connector.processor.product_to_flat_array
-                         writer:    pim_connector.writer.file.xlsx_product
-                     parameters:
-                         batch_size: 10
-        xlsx_group_export:
-            type:  export
-            steps:
-                export:
-                    services:
-                        reader:    pim_connector.reader.database.group
-                        processor: pim_connector.processor.normalization.group
-                        writer:    pim_connector.writer.file.xlsx_group
-                    parameters:
-                        batch_size: 10
         xlsx_variant_group_export:
             type:  export
             steps:
@@ -64,18 +25,6 @@ connector:
                         writer:    pim_connector.writer.file.xlsx_variant_group
                     parameters:
                         batch_size: 10
-        xlsx_group_import:
-            type:  import
-            steps:
-                validation:
-                    class: '%pim_connector.step.validator.class%'
-                    services:
-                        charsetValidator: pim_connector.validator.item.charset_validator
-                import:
-                    services:
-                        reader:    pim_connector.reader.file.xlsx_group
-                        processor: pim_connector.processor.denormalization.group
-                        writer:    pim_connector.writer.database.group
         xlsx_variant_group_import:
             type:  import
             steps:
