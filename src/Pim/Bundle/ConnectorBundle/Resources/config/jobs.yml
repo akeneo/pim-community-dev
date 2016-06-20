@@ -1,7 +1,6 @@
 parameters:
     pim_connector.connector_name.csv: 'Akeneo CSV Connector'
     pim_connector.connector_name.xlsx: 'Akeneo XLSX Connector'
-    pim_connector.connector_name.mass_edit: 'Akeneo Mass Edit Connector'
     pim_connector.job_name.csv_attribute_export: 'csv_attribute_export'
     pim_connector.job_name.csv_attribute_import: 'csv_attribute_import'
     pim_connector.job_name.csv_attribute_option_export: 'csv_attribute_option_export'
@@ -18,8 +17,6 @@ parameters:
     pim_connector.job_name.csv_category_import: 'csv_category_import'
     pim_connector.job_name.csv_variant_group_export: 'csv_variant_group_export'
     pim_connector.job_name.csv_variant_group_import: 'csv_variant_group_import'
-    pim_connector.job_name.csv_product_quick_export: 'csv_product_quick_export'
-    pim_connector.job_name.csv_product_grid_context_quick_export: 'csv_product_grid_context_quick_export'
     pim_connector.job_name.xlsx_attribute_export: 'xlsx_attribute_export'
     pim_connector.job_name.xlsx_attribute_import: 'xlsx_attribute_import'
     pim_connector.job_name.xlsx_attribute_option_export: 'xlsx_attribute_option_export'
@@ -226,29 +223,6 @@ services:
                 - '@pim_connector.step.csv_variant_group_export.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.export_type%' }
-
-    # CSV Quick Exports -----------------------------------------------------------------------------------------------
-    pim_connector.job.csv_product_quick_export:
-        class: '%pim_connector.job.simple_job.class%'
-        arguments:
-            - '%pim_connector.job_name.csv_product_quick_export%'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            -
-                - '@pim_connector.step.csv_product_quick_export.export'
-        tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.quick_export_type%' }
-
-    pim_connector.job.csv_product_grid_context_quick_export:
-        class: '%pim_connector.job.simple_job.class%'
-        arguments:
-            - '%pim_connector.job_name.csv_product_grid_context_quick_export%'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            -
-                - '@pim_connector.step.csv_product_quick_export.export'
-        tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.quick_export_type%' }
 
     # XLSX Imports ----------------------------------------------------------------------------------------------------
     pim_connector.job.xlsx_attribute_import:
