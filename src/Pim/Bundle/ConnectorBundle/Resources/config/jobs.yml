@@ -1,5 +1,6 @@
 parameters:
     pim_connector.connector_name.csv: 'Akeneo CSV Connector'
+    pim_connector.connector_name.mass_edit: 'Akeneo Mass Edit Connector'
     pim_connector.job_name.csv_attribute_export: 'csv_attribute_export'
     pim_connector.job_name.csv_attribute_import: 'csv_attribute_import'
     pim_connector.job_name.csv_attribute_option_export: 'csv_attribute_option_export'
@@ -16,13 +17,15 @@ parameters:
     pim_connector.job_name.csv_category_import: 'csv_category_import'
     pim_connector.job_name.csv_variant_group_export: 'csv_variant_group_export'
     pim_connector.job_name.csv_variant_group_import: 'csv_variant_group_import'
+    pim_connector.job_name.csv_product_quick_export: 'csv_product_quick_export'
+    pim_connector.job_name.csv_product_grid_context_quick_export: 'csv_product_grid_context_quick_export'
     pim_connector.job.simple_job.class: Akeneo\Component\Batch\Job\Job
     pim_connector.step.item_step.class: Akeneo\Component\Batch\Step\ItemStep
 
 services:
     # CSV Imports -----------------------------------------------------------------------------------------------------
     pim_connector.job.csv_attribute_import:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_attribute_import%'
             - '@event_dispatcher'
@@ -31,10 +34,10 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_attribute_import.import'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.import_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
 
     pim_connector.job.csv_attribute_option_import:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_attribute_option_import%'
             - '@event_dispatcher'
@@ -43,10 +46,10 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_attribute_option_import.import'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.import_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
 
     pim_connector.job.csv_association_type_import:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_association_type_import%'
             - '@event_dispatcher'
@@ -55,10 +58,10 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_association_type_import.import'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.import_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
 
     pim_connector.job.csv_family_import:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_family_import%'
             - '@event_dispatcher'
@@ -67,10 +70,10 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_family_import.import'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.import_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
 
     pim_connector.job.csv_group_import:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_group_import%'
             - '@event_dispatcher'
@@ -79,10 +82,10 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_group_import.import'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.import_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
 
     pim_connector.job.csv_product_import:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_product_import%'
             - '@event_dispatcher'
@@ -92,10 +95,10 @@ services:
                 - '@pim_connector.step.csv_product_import.import'
                 - '@pim_connector.step.csv_product_import.import_associations'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.import_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
 
     pim_connector.job.csv_category_import:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_category_import%'
             - '@event_dispatcher'
@@ -104,10 +107,10 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_category_import.import'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.import_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
 
     pim_connector.job.csv_variant_group_import:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_variant_group_import%'
             - '@event_dispatcher'
@@ -116,11 +119,11 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_variant_group_import.import'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.import_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
 
     # CSV Exports -----------------------------------------------------------------------------------------------------
     pim_connector.job.csv_attribute_export:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_attribute_export%'
             - '@event_dispatcher'
@@ -128,10 +131,10 @@ services:
             -
                 - '@pim_connector.step.csv_attribute_export.export'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.export_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.export_type%' }
 
     pim_connector.job.csv_attribute_option_export:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_attribute_option_export%'
             - '@event_dispatcher'
@@ -139,10 +142,10 @@ services:
             -
                 - '@pim_connector.step.csv_attribute_option_export.export'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.export_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.export_type%' }
 
     pim_connector.job.csv_association_type_export:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_association_type_export%'
             - '@event_dispatcher'
@@ -150,10 +153,10 @@ services:
             -
                 - '@pim_connector.step.csv_association_type_export.export'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.export_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.export_type%' }
 
     pim_connector.job.csv_family_export:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_family_export%'
             - '@event_dispatcher'
@@ -161,10 +164,10 @@ services:
             -
                 - '@pim_connector.step.csv_family_export.export'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.export_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.export_type%' }
 
     pim_connector.job.csv_group_export:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_group_export%'
             - '@event_dispatcher'
@@ -172,10 +175,10 @@ services:
             -
                 - '@pim_connector.step.csv_group_export.export'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.export_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.export_type%' }
 
     pim_connector.job.csv_product_export:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_product_export%'
             - '@event_dispatcher'
@@ -183,10 +186,10 @@ services:
             -
                 - '@pim_connector.step.csv_product_export.export'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.export_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.export_type%' }
 
     pim_connector.job.csv_category_export:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_category_export%'
             - '@event_dispatcher'
@@ -194,10 +197,10 @@ services:
             -
                 - '@pim_connector.step.csv_category_export.export'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.export_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.export_type%' }
 
     pim_connector.job.csv_variant_group_export:
-        class: %pim_connector.job.simple_job.class%
+        class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pim_connector.job_name.csv_variant_group_export%'
             - '@event_dispatcher'
@@ -205,4 +208,27 @@ services:
             -
                 - '@pim_connector.step.csv_variant_group_export.export'
         tags:
-            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.export_type% }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.export_type%' }
+
+    # CSV Quick Exports -----------------------------------------------------------------------------------------------
+    pim_connector.job.csv_product_quick_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.csv_product_quick_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.csv_product_quick_export.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.quick_export_type%' }
+
+    pim_connector.job.csv_product_grid_context_quick_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.csv_product_grid_context_quick_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.csv_product_quick_export.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.quick_export_type%' }

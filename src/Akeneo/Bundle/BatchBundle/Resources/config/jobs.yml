@@ -9,10 +9,11 @@ parameters:
     akeneo_batch.job.job_parameters_validator.class:                               Akeneo\Component\Batch\Job\JobParametersValidator
     akeneo_batch.job.import_type: import
     akeneo_batch.job.export_type: export
+    akeneo_batch.job.quick_export_type: quick_export
 
 services:
     akeneo_batch.job_repository:
-        class: %akeneo_batch.job_repository.class%
+        class: '%akeneo_batch.job_repository.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%akeneo_batch.entity.job_execution.class%'
@@ -20,22 +21,22 @@ services:
             - '%pim_import_export.repository.job_instance.class%'
 
     akeneo_batch.job_parameters_factory:
-        class: %akeneo_batch.job_parameters_factory.class%
+        class: '%akeneo_batch.job_parameters_factory.class%'
         arguments:
             - '@akeneo_batch.job.job_parameters.default_values_provider_registry'
-            - %akeneo_batch.job.job_parameters.class%
+            - '%akeneo_batch.job.job_parameters.class%'
 
     akeneo_batch.job.job_parameters.default_values_provider_registry:
-        class: %akeneo_batch.job.job_parameters.default_values_provider_registry.class%
+        class: '%akeneo_batch.job.job_parameters.default_values_provider_registry.class%'
 
     akeneo_batch.job.job_parameters.constraint_collection_provider_registry:
-        class: %akeneo_batch.job.job_parameters.constraint_collection_provider_registry.class%
+        class: '%akeneo_batch.job.job_parameters.constraint_collection_provider_registry.class%'
 
     akeneo_batch.job.job_parameters_validator:
-        class: %akeneo_batch.job.job_parameters_validator.class%
+        class: '%akeneo_batch.job.job_parameters_validator.class%'
         arguments:
             - '@validator'
             - '@akeneo_batch.job.job_parameters.constraint_collection_provider_registry'
 
     akeneo_batch.job.job_registry:
-        class: %akeneo_batch.job.job_registry.class%
+        class: '%akeneo_batch.job.job_registry.class%'

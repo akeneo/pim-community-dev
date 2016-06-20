@@ -5,7 +5,7 @@ parameters:
 services:
     # Validator steps -------------------------------------------------------------------------------------------------
     pim_connector.step.charset_validator:
-        class: %pim_connector.step.validator.class%
+        class: '%pim_connector.step.validator.class%'
         arguments:
             - 'validation'
             - '@event_dispatcher'
@@ -14,7 +14,7 @@ services:
 
     # CSV Import steps ------------------------------------------------------------------------------------------------
     pim_connector.step.csv_attribute_import.import:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
             - '@event_dispatcher'
@@ -24,7 +24,7 @@ services:
             - '@pim_connector.writer.database.attribute'
 
     pim_connector.step.csv_attribute_option_import.import:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
             - '@event_dispatcher'
@@ -34,7 +34,7 @@ services:
             - '@pim_connector.writer.database.attribute_option'
 
     pim_connector.step.csv_association_type_import.import:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
             - '@event_dispatcher'
@@ -44,7 +44,7 @@ services:
             - '@pim_connector.writer.database.association_type'
 
     pim_connector.step.csv_family_import.import:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
             - '@event_dispatcher'
@@ -54,7 +54,7 @@ services:
             - '@pim_connector.writer.database.family'
 
     pim_connector.step.csv_group_import.import:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
             - '@event_dispatcher'
@@ -64,7 +64,7 @@ services:
             - '@pim_connector.writer.database.group'
 
     pim_connector.step.csv_product_import.import:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
             - '@event_dispatcher'
@@ -74,7 +74,7 @@ services:
             - '@pim_connector.writer.database.product'
 
     pim_connector.step.csv_product_import.import_associations:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import_associations'
             - '@event_dispatcher'
@@ -85,7 +85,7 @@ services:
             - 1
 
     pim_connector.step.csv_variant_group_import.import:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
             - '@event_dispatcher'
@@ -96,7 +96,7 @@ services:
             - 1
 
     pim_connector.step.csv_category_import.import:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
             - '@event_dispatcher'
@@ -108,7 +108,7 @@ services:
 
     # CSV Export steps ------------------------------------------------------------------------------------------------
     pim_connector.step.csv_attribute_export.export:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
             - '@event_dispatcher'
@@ -118,7 +118,7 @@ services:
             - '@pim_connector.writer.file.csv_attribute'
 
     pim_connector.step.csv_attribute_option_export.export:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
             - '@event_dispatcher'
@@ -128,7 +128,7 @@ services:
             - '@pim_connector.writer.file.csv_attribute_option'
 
     pim_connector.step.csv_association_type_export.export:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
             - '@event_dispatcher'
@@ -138,7 +138,7 @@ services:
             - '@pim_connector.writer.file.csv_association_type'
 
     pim_connector.step.csv_family_export.export:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
             - '@event_dispatcher'
@@ -148,7 +148,7 @@ services:
             - '@pim_connector.writer.file.csv_family'
 
     pim_connector.step.csv_group_export.export:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
             - '@event_dispatcher'
@@ -158,7 +158,7 @@ services:
             - '@pim_connector.writer.file.csv_group'
 
     pim_connector.step.csv_product_export.export:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
             - '@event_dispatcher'
@@ -169,7 +169,7 @@ services:
             - 10
 
     pim_connector.step.csv_category_export.export:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
             - '@event_dispatcher'
@@ -179,7 +179,7 @@ services:
             - '@pim_connector.writer.file.csv_category'
 
     pim_connector.step.csv_variant_group_export.export:
-        class: %pim_connector.step.item_step.class%
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
             - '@event_dispatcher'
@@ -187,3 +187,14 @@ services:
             - '@pim_base_connector.reader.repository.variant_group'
             - '@pim_connector.processor.normalization.variant_group'
             - '@pim_connector.writer.file.csv_variant_group'
+
+    # CSV Quick Export steps ------------------------------------------------------------------------------------------
+    pim_connector.step.csv_product_quick_export.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'quick_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.connector.reader.mass_edit.product'
+            - '@pim_enrich.connector.processor.quick_export.product_to_flat_array'
+            - '@pim_connector.writer.file.csv_product'
