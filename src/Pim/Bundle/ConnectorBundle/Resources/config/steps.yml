@@ -198,3 +198,46 @@ services:
             - '@pim_enrich.connector.reader.mass_edit.product'
             - '@pim_enrich.connector.processor.quick_export.product_to_flat_array'
             - '@pim_connector.writer.file.csv_product'
+
+    # XLSX Import steps -----------------------------------------------------------------------------------------------
+    pim_connector.step.xlsx_attribute_import.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_attribute'
+            - '@pim_connector.processor.denormalization.attribute'
+            - '@pim_connector.writer.database.attribute'
+
+    pim_connector.step.xlsx_attribute_option_import.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_attribute_option'
+            - '@pim_connector.processor.denormalization.attribute_option'
+            - '@pim_connector.writer.database.attribute_option'
+
+    # XLSX Export steps -----------------------------------------------------------------------------------------------
+    pim_connector.step.xlsx_attribute_export.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_base_connector.reader.orm.attribute'
+            - '@pim_connector.processor.normalization.attribute'
+            - '@pim_connector.writer.file.xlsx_attribute'
+            - 10
+    pim_connector.step.xlsx_attribute_option_export.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_base_connector.reader.orm.attribute_option'
+            - '@pim_connector.processor.normalization.attribute_option'
+            - '@pim_connector.writer.file.xlsx_attribute_option'
+            - 10

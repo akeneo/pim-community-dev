@@ -34,30 +34,6 @@ connector:
                         writer:    pim_connector.writer.database.category
                     parameters:
                         batchSize: 1
-        xlsx_attribute_import:
-            type:  import
-            steps:
-                validation:
-                    class: '%pim_connector.step.validator.class%'
-                    services:
-                        charsetValidator: pim_connector.validator.item.charset_validator
-                import:
-                    services:
-                        reader:    pim_connector.reader.file.xlsx_attribute
-                        processor: pim_connector.processor.denormalization.attribute
-                        writer:    pim_connector.writer.database.attribute
-        xlsx_attribute_option_import:
-            type:  import
-            steps:
-                validation:
-                    class: '%pim_connector.step.validator.class%'
-                    services:
-                        charsetValidator: pim_connector.validator.item.charset_validator
-                import:
-                    services:
-                        reader:    pim_connector.reader.file.xlsx_attribute_option
-                        processor: pim_connector.processor.denormalization.attribute_option
-                        writer:    pim_connector.writer.database.attribute_option
         xlsx_association_type_import:
             type: import
             steps:
