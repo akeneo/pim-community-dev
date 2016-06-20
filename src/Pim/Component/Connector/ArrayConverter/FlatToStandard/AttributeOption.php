@@ -75,10 +75,9 @@ class AttributeOption implements ArrayConverterInterface
                 $convertedItem[$field] = $data;
             }
         }
-        if (!isset($convertedItem['sort_order'])) {
-            $convertedItem['sort_order'] = 1;
+        if (isset($convertedItem['sort_order'])) {
+            $convertedItem['sort_order'] = (int) $convertedItem['sort_order'];
         }
-        $convertedItem['sort_order'] = (int) $convertedItem['sort_order'];
 
         return $convertedItem;
     }

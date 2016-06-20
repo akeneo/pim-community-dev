@@ -279,4 +279,14 @@ class FixturesContext extends PimContext
             $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
         }
     }
+
+    /**
+     * @param $object
+     */
+    public function detach($object)
+    {
+        if (is_object($object)) {
+            $this->getSmartRegistry()->getManagerForClass(get_class($object))->detach($object);
+        }
+    }
 }

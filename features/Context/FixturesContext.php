@@ -456,9 +456,30 @@ class FixturesContext extends BaseFixturesContext
             );
             $option->setLocale('en_US');
             assertEquals($data['label-en_US'], (string) $option);
+            $this->detach($option);
         }
     }
 
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following options with this order:$/
+     */
+    public function thereShouldBeTheFollowingOptionsWithThisOrder(TableNode $table)
+    {
+        foreach ($table->getHash() as $i => $data) {
+            $attribute = $this->getEntityOrException('Attribute', ['code' => $data['attribute']]);
+            $option    = $this->getEntityOrException(
+                'AttributeOption',
+                ['code' => $data['code'], 'attribute' => $attribute]
+            );
+            $option->setLocale('en_US');
+            assertEquals($i+1, $option->getSortOrder());
+            assertEquals($data['code'], $option->getCode());
+            assertEquals($data['label-en_US'], $option->getOptionValue()->getValue());
+            $this->detach($option);
+        }
+    }
     /**
      * @param TableNode $table
      *

@@ -171,3 +171,36 @@ Feature: Import options
       | brand     | TimberLand  | TimberLand  |
       | brand     | Nike        | Nike        |
       | brand     | Caterpillar | Caterpillar |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5682
+    Scenario: Successfully update options without sort order
+      Given the "footwear" catalog configuration
+      And I am logged in as "Julia"
+      Then there should be the following options with this order:
+        | attribute          | code  | label-en_US |
+        | weather_conditions | dry   | Dry         |
+        | weather_conditions | wet   | Wet         |
+        | weather_conditions | hot   | Hot         |
+        | weather_conditions | cold  | Cold        |
+        | weather_conditions | snowy | Snowy       |
+      And the following XLSX file to import:
+      """
+      attribute;code;label-en_US
+      weather_conditions;wet;Watery
+      weather_conditions;dry;Rainy
+      weather_conditions;cold;Very cold
+      weather_conditions;snowy;Snow
+      weather_conditions;hot;Sunny
+      """
+      And the following job "xlsx_footwear_option_import" configuration:
+        | filePath | %file to import% |
+      When I am on the "xlsx_footwear_option_import" import job page
+      And I launch the import job
+      And I wait for the "xlsx_footwear_option_import" job to finish
+      Then there should be the following options with this order:
+        | attribute          | code  | label-en_US |
+        | weather_conditions | dry   | Rainy       |
+        | weather_conditions | wet   | Watery      |
+        | weather_conditions | hot   | Sunny       |
+        | weather_conditions | cold  | Very cold   |
+        | weather_conditions | snowy | Snow        |
