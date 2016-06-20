@@ -68,7 +68,16 @@ define(
                 }
             },
             getLocales: function () {
-                return this.getFormData().structure.locales;
+                var structure = this.getFormData().structure;
+
+                if (_.isUndefined(structure)) {
+                    return [];
+                }
+
+                return _.isUndefined(structure.locales) ? [] : structure.locales;
+            },
+            getScope: function () {
+                return this.getFormData().structure.scope;
             },
             channelUpdated: function () {
                 this.setDefaultLocales()
@@ -78,7 +87,7 @@ define(
             },
             setDefaultLocales: function () {
                 return fetcherRegistry.getFetcher('channel')
-                    .fetch(this.getFormData().structure.scope)
+                    .fetch(this.getScope())
                     .then(function (scope) {
                         this.setLocales(scope.locales);
 

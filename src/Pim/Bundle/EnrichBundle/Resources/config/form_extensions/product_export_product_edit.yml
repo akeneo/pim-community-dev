@@ -44,11 +44,11 @@ extensions:
                 -
                     field: updated
                     view: pim-filter-product-updated
-
-    pim-product-export-edit-content-data-add-filter:
-        module: pim/product-edit-form/attributes/add-attribute #to change
-        parent: pim-product-export-edit-content-data
-        targetZone: headings
+#
+#    pim-product-export-edit-content-data-add-filter:
+#        module: pim/product-edit-form/attributes/add-attribute #to change
+#        parent: pim-product-export-edit-content-data
+#        targetZone: headings
 
 filters:
     pim-product-export-edit-content:

@@ -45,6 +45,8 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
         $constraintFields = $baseConstraint->fields;
         $constraintFields['decimalSeparator'] = new NotBlank();
         $constraintFields['dateFormat'] = new NotBlank();
+        $constraintFields['channel'] = []; // TODO
+        $constraintFields['locales'] = []; // ToDO
 //        $constraintFields['channel'] = [
 //            new NotBlank(['groups' => 'Execution']),
 //            new Channel()

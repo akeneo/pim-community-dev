@@ -22,28 +22,29 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
+            configure: function() {
+                return fetcherRegistry.getFetcher('channel').fetchAll().then(function (channels) {
+                    if (!this.getScope()) {
+                        this.setScope(_.first(channels).code);
+                    }
+                }.bind(this));
+            },
             render: function () {
                 if (!this.configured) {
                     return this;
                 }
 
-                fetcherRegistry.getFetcher('channel').fetchAll().then(function (channels) {
-                    if (!this.getScope()) {
-                        this.setScope(_.first(channels).code);
-                    }
+                this.$el.html(
+                    this.template({
+                        locale: UserContext.get('uiLocale'),
+                        channels: channels,
+                        scope: this.getScope()
+                    })
+                );
 
-                    this.$el.html(
-                        this.template({
-                            locale: UserContext.get('uiLocale'),
-                            channels: channels,
-                            scope: this.getScope()
-                        })
-                    );
+                this.$('.select2').select2().on('change', this.updateModel.bind(this));
 
-                    this.$('.select2').select2().on('change', this.updateModel.bind(this));
-
-                    this.renderExtensions();
-                }.bind(this));
+                this.renderExtensions();
             },
             updateModel: function(event) {
                 this.setScope(event.target.value);
@@ -60,7 +61,13 @@ define(
                 }
             },
             getScope: function () {
-                return this.getFormData().structure.scope
+                var structure = this.getFormData().structure;
+
+                if (_.isUndefined(structure)) {
+                    return [];
+                }
+
+                return _.isUndefined(structure.scope) ? [] : structure.scope;
             }
         });
     }
