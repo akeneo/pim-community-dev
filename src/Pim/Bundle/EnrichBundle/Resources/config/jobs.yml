@@ -1,0 +1,55 @@
+parameters:
+    pim_connector.connector_name.mass_edit: 'Akeneo Mass Edit Connector'
+    pim_enrich.job_name.csv_product_quick_export: 'csv_product_quick_export'
+    pim_enrich.job_name.csv_product_grid_context_quick_export: 'csv_product_grid_context_quick_export'
+    pim_enrich.job_name.xlsx_product_quick_export: 'xlsx_product_quick_export'
+    pim_enrich.job_name.xlsx_product_grid_context_quick_export: 'xlsx_product_grid_context_quick_export'
+    pim_enrich.job.simple_job.class: Akeneo\Component\Batch\Job\Job
+    pim_enrich.step.item_step.class: Akeneo\Component\Batch\Step\ItemStep
+
+services:
+    # CSV Quick Exports -----------------------------------------------------------------------------------------------
+    pim_enrich.job.csv_product_quick_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job_name.csv_product_quick_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.csv_product_quick_export.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.quick_export_type%' }
+
+    pim_enrich.job.csv_product_grid_context_quick_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job_name.csv_product_grid_context_quick_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.csv_product_quick_export.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.quick_export_type%' }
+
+    # XLSX Quick Exports ----------------------------------------------------------------------------------------------
+    pim_enrich.job.xlsx_product_quick_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job_name.xlsx_product_quick_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.xlsx_product_quick_export.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.quick_export_type%' }
+
+    pim_enrich.job.xlsx_product_grid_context_quick_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job_name.xlsx_product_grid_context_quick_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.xlsx_product_quick_export.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.quick_export_type%' }

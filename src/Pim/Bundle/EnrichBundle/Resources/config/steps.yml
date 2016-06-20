@@ -1,2 +1,27 @@
 parameters:
     pim_enrich.step.mass_edit.step.class: Pim\Bundle\EnrichBundle\Connector\Step\MassEditStep
+
+services:
+    # CSV Quick Export steps ------------------------------------------------------------------------------------------
+    pim_enrich.step.csv_product_quick_export.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'quick_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.connector.reader.mass_edit.product'
+            - '@pim_enrich.connector.processor.quick_export.product_to_flat_array'
+            - '@pim_connector.writer.file.csv_product'
+            - 1000
+
+    # XLSX Quick Export steps -----------------------------------------------------------------------------------------
+    pim_enrich.step.xlsx_product_quick_export.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'quick_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.connector.reader.mass_edit.product'
+            - '@pim_enrich.connector.processor.quick_export.product_to_flat_array'
+            - '@pim_connector.writer.file.xlsx_product'
+            - 1000
