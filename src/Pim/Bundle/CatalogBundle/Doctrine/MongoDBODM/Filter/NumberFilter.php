@@ -57,10 +57,7 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
 
-        if (null !== $value &&
-            !is_int($value) &&
-            !is_float($value)
-        ) {
+        if (null !== $value && !is_numeric($value)) {
             throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'number', gettype($value));
         }
 
