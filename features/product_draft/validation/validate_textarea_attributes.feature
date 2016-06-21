@@ -1,5 +1,5 @@
 @javascript
-Feature: Validate textarea attributes of a product
+Feature: Validate textarea attributes of a draft
   In order to keep my data consistent
   As a regular user
   I need to be able to see validation errors for textarea attributes

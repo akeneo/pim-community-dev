@@ -1,5 +1,5 @@
 @javascript @info More user-friendly validation to be done in the scope of @jira https://akeneo.atlassian.net/browse/PIM-2029
-Feature: Validate image attributes of a product
+Feature: Validate image attributes of a draft
   In order to keep my data consistent
   As a regular user
   I need to be able to see validation errors for image attributes
