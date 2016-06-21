@@ -1,5 +1,5 @@
 @javascript
-Feature:
+Feature: Validate variant combination within a draft
   In order to have only one combination of variant of product in a variant group
   as Julia
   I need to be prevented from saving a variant product with an existing combination

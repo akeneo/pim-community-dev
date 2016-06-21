@@ -7,19 +7,15 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Item\InvalidItemException;
-use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -32,8 +28,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         ProductDraftBuilderInterface $productDraftBuilder,
         ProductDraftApplierInterface $productDraftApplier,
         ProductDraftRepositoryInterface $productDraftRepo,
-        StepExecution $stepExecution,
-        AttributeConverterInterface $localizedConverter
+        StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $repository,
@@ -41,8 +36,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             $validator,
             $productDraftBuilder,
             $productDraftApplier,
-            $productDraftRepo,
-            $localizedConverter
+            $productDraftRepo
         );
         $this->setStepExecution($stepExecution);
     }
@@ -60,31 +54,19 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $validator,
         $productDraftBuilder,
         $stepExecution,
-        $localizedConverter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         ProductDraft $productDraft,
         JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        JobParameters $jobParameters
+        JobInstance $jobInstance
     ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('decimalSeparator')->willReturn('.');
-        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-
         $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 
         $values = $this->getValues();
 
-        $localizedConverter->convertToDefaultFormats($values['converted_values'], [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($values['converted_localized_values']);
-        $localizedConverter->getViolations()->willReturn($violationList);;
-
         $updater
-            ->update($product, $values['converted_localized_values'])
+            ->update($product, $values['converted_values'])
             ->shouldBeCalled();
 
         $validator
@@ -104,29 +86,14 @@ class ProductDraftProcessorSpec extends ObjectBehavior
 
     function it_skips_a_proposal_if_there_is_no_identifier(
         $repository,
-        $localizedConverter,
-        $stepExecution,
-        ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
-        JobParameters $jobParameters
+        ProductInterface $product
     ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('decimalSeparator')->willReturn('.');
-        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-
         $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 
         $values = $this->getValues();
 
         unset($values['converted_values']['sku']);
-        unset($values['converted_localized_values']['sku']);
-
-        $localizedConverter->convertToDefaultFormats($values['converted_values'], [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($values['converted_localized_values']);
-        $localizedConverter->getViolations()->willReturn($violationList);;
 
         $this
             ->shouldThrow(new \InvalidArgumentException('Identifier property "sku" is expected'))
@@ -138,31 +105,18 @@ class ProductDraftProcessorSpec extends ObjectBehavior
 
     function it_skips_a_proposal_if_product_does_not_exist(
         $repository,
-        $stepExecution,
-        $localizedConverter,
-        ConstraintViolationListInterface $violationList,
-        JobParameters $jobParameters
+        $stepExecution
     ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('decimalSeparator')->willReturn('.');
-        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-
         $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn(null);
 
         $values = $this->getValues();
 
-        $localizedConverter->convertToDefaultFormats($values['converted_values'], [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($values['converted_localized_values']);
-        $localizedConverter->getViolations()->willReturn($violationList);;
-
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $this
             ->shouldThrow(new InvalidItemException(
                 'Product "my-sku" does not exist',
-                $values['converted_localized_values']
+                $values['converted_values']
             ))
             ->during(
                 'process',
@@ -176,30 +130,18 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $validator,
         $productDraftBuilder,
         $stepExecution,
-        $localizedConverter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        JobParameters $jobParameters
+        JobInstance $jobInstance
     ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('decimalSeparator')->willReturn('.');
-        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-
         $repository->getIdentifierProperties()->willReturn(['sku']);
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 
         $values = $this->getValues();
 
-        $localizedConverter->convertToDefaultFormats($values['converted_values'], [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($values['converted_localized_values']);
-        $localizedConverter->getViolations()->willReturn($violationList);;
-
         $updater
-            ->update($product, $values['converted_localized_values'])
+            ->update($product, $values['converted_values'])
             ->shouldBeCalled();
 
         $validator
@@ -216,110 +158,10 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $this->process($values['converted_values'])->shouldReturn(null);
     }
 
-    function it_skips_a_proposal_when_product_is_invalid(
-        $repository,
-        $updater,
-        $validator,
-        $stepExecution,
-        $localizedConverter,
-        ProductInterface $product,
-        JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        ConstraintViolationListInterface $violationList,
-        JobParameters $jobParameters
-    ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('decimalSeparator')->willReturn('.');
-        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-
-        $repository->getIdentifierProperties()->willReturn(['sku']);
-        $repository->findOneByIdentifier('my-sku')->willReturn($product);
-
-        $values = $this->getValues();
-
-        $localizedConverter->convertToDefaultFormats($values['converted_values'], [
-            'decimal_separator' => '.',
-            'date_format'       => 'yyyy-MM-dd'
-        ])->willReturn($values['converted_localized_values']);
-        $localizedConverter->getViolations()->willReturn($violationList);;
-
-        $updater
-            ->update($product, $values['converted_localized_values'])
-            ->willThrow(new \InvalidArgumentException('A locale must be provided to create a value for the localizable attribute name'));
-
-        $violation  = new ConstraintViolation('Error', 'foo', [], 'bar', 'code', 'mycode');
-        $violations = new ConstraintViolationList([$violation]);
-        $validator->validate($product)
-            ->willReturn($violations);
-
-        $jobInstance->getCode()->willReturn('csv_product_proposal_import');
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
-
-        $this
-            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
-            ->during(
-                'process',
-                [$values['converted_values']]
-            );
-    }
-
     function getValues()
     {
         return [
             'converted_values' => [
-                'sku'          => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data' => 'my-sku'
-                    ]
-                ],
-                'main_color'   => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   =>'white'
-                    ]
-                ],
-                'description'  => [
-                    [
-                        'locale' => 'fr_FR',
-                        'scope'  => 'ecommerce',
-                        'data'   => '<p>description</p>'
-                    ],
-                    [
-                        'locale' => 'en_US',
-                        'scope'  => 'ecommerce',
-                        'data'   => '<p>description</p>'
-                    ],
-                ],
-                'release_date' => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => '19/08/1977'
-                    ]
-                ],
-                'price'        => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => [
-                            [
-                                'currency' => 'EUR',
-                                'data'     => '10,25'
-                            ],
-                            [
-                                'currency' => 'USD',
-                                'data'     => '11,5'
-                            ],
-                        ]
-                    ]
-                ],
-            ],
-            'converted_localized_values' => [
                 'sku'          => [
                     [
                         'locale' => null,

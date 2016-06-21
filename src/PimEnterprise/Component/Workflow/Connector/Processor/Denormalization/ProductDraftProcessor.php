@@ -14,7 +14,6 @@ namespace PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
@@ -51,9 +50,6 @@ class ProductDraftProcessor extends AbstractProcessor
     /** @var ProductDraftRepositoryInterface */
     protected $productDraftRepo;
 
-    /** @var AttributeConverterInterface */
-    protected $localizedConverter;
-
     /**
      * @param IdentifiableObjectRepositoryInterface $repository          product repository
      * @param ObjectUpdaterInterface                $updater             product updater
@@ -61,7 +57,6 @@ class ProductDraftProcessor extends AbstractProcessor
      * @param ProductDraftBuilderInterface          $productDraftBuilder product draft builder
      * @param ProductDraftApplierInterface          $productDraftApplier product draft applier
      * @param ProductDraftRepositoryInterface       $productDraftRepo    product draft repository
-     * @param AttributeConverterInterface           $localizedConverter  attributes localized converter
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -69,8 +64,7 @@ class ProductDraftProcessor extends AbstractProcessor
         ValidatorInterface $validator,
         ProductDraftBuilderInterface $productDraftBuilder,
         ProductDraftApplierInterface $productDraftApplier,
-        ProductDraftRepositoryInterface $productDraftRepo,
-        AttributeConverterInterface $localizedConverter
+        ProductDraftRepositoryInterface $productDraftRepo
     ) {
         parent::__construct($repository);
 
@@ -79,7 +73,6 @@ class ProductDraftProcessor extends AbstractProcessor
         $this->productDraftBuilder = $productDraftBuilder;
         $this->productDraftApplier = $productDraftApplier;
         $this->productDraftRepo    = $productDraftRepo;
-        $this->localizedConverter  = $localizedConverter;
     }
 
     /**
@@ -87,13 +80,6 @@ class ProductDraftProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $item = $this->convertLocalizedAttributes($item);
-        $violations = $this->localizedConverter->getViolations();
-
-        if ($violations->count() > 0) {
-            $this->skipItemWithConstraintViolations($item, $violations);
-        }
-
         $identifier = $this->getIdentifier($item);
 
         $product = $this->findProduct($identifier);
@@ -115,22 +101,6 @@ class ProductDraftProcessor extends AbstractProcessor
         }
 
         return $this->buildDraft($product);
-    }
-
-    /**
-     * Checks and converts localized attributes to default format
-     *
-     * @param array $convertedItem
-     *
-     * @return array
-     */
-    protected function convertLocalizedAttributes(array $convertedItem)
-    {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        return $this->localizedConverter->convertToDefaultFormats($convertedItem, [
-            'decimal_separator' => $jobParameters->get('decimalSeparator'),
-            'date_format'       => $jobParameters->get('dateFormat'),
-        ]);
     }
 
     /**

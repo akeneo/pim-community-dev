@@ -1,5 +1,5 @@
 @javascript
-Feature: Validate metric attributes of a product
+Feature: Validate metric attributes of a draft
   In order to keep my data consistent
   As a regular user
   I need to be able to see validation errors for metric attributes
