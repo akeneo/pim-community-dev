@@ -102,10 +102,7 @@ class MassEditActionController
         ConnectorRegistry $connectorRegistry,
         OperationRegistryInterface $operationRegistry,
         MassEditFormResolver $massEditFormResolver,
-        array $gridNameRouteMapping = [
-            'family-grid' => 'pim_enrich_family_index',
-            'default'     => 'pim_enrich_product_index'
-        ]
+        array $gridNameRouteMapping
     ) {
         $this->request              = $request;
         $this->templating           = $templating;
@@ -238,9 +235,7 @@ class MassEditActionController
                 $this->tokenStorage->getToken()->getUser(),
                 $configuration
             );
-        }
 
-        if ($form->isValid()) {
             $this->request->getSession()
                 ->getFlashBag()
                 ->add(
