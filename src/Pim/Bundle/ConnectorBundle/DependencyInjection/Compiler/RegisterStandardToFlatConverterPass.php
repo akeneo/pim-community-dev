@@ -16,13 +16,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterStandardToFlatConverterPass implements CompilerPassInterface
 {
-    /** @staticvar */
     const CONVERTER_REGISTRY = 'pim_connector.array_converter.standard_to_flat.product.value_converter.registry';
-
-    /** @staticvar */
     const CONVERTER_TAG = 'pim_connector.array_converter.standard_to_flat.product.value_converter';
-
-    /** @staticvar int The default priority in registry stack */
     const DEFAULT_PRIORITY = 100;
 
     /**
@@ -30,32 +25,24 @@ class RegisterStandardToFlatConverterPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $this->registerConverters($container);
-    }
-
-    /**
-     * @param ContainerBuilder $container
-     */
-    protected function registerConverters(ContainerBuilder $container)
-    {
         if (!$container->hasDefinition(static::CONVERTER_REGISTRY)) {
             return;
         }
 
-        $registry = $container->getDefinition(static::CONVERTER_REGISTRY);
+        $registryDefinition = $container->getDefinition(static::CONVERTER_REGISTRY);
         $converters = $container->findTaggedServiceIds(static::CONVERTER_TAG);
 
         foreach ($converters as $serviceId => $tags) {
-            $this->registerConverter($registry, $serviceId, $tags);
+            $this->registerConverter($registryDefinition, $tags, $serviceId);
         }
     }
 
     /**
      * @param Definition $registry
-     * @param string     $serviceId
      * @param string[]   $tags
+     * @param string     $serviceId
      */
-    protected function registerConverter(Definition $registry, $serviceId, $tags)
+    protected function registerConverter(Definition $registry, array $tags, $serviceId)
     {
         foreach ($tags as $tag) {
             $priority = isset($tag['priority']) ? (int)$tag['priority'] : static::DEFAULT_PRIORITY;
