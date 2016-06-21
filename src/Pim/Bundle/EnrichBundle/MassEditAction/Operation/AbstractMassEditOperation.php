@@ -20,6 +20,9 @@ abstract class AbstractMassEditOperation implements
     /** @var array */
     protected $actions;
 
+    /** @var string The background job code to launch */
+    protected $batchJobCode;
+
     /**
      * {@inheritdoc}
      */
@@ -73,6 +76,14 @@ abstract class AbstractMassEditOperation implements
             'filters' => $this->getFilters(),
             'actions' => $this->getActions(),
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchJobCode()
+    {
+        return $this->batchJobCode;
     }
 
     /**

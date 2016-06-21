@@ -16,9 +16,6 @@ class ChangeFamily extends AbstractMassEditOperation
     /** @var FamilyInterface $family The family to change the product family to */
     protected $family;
 
-    /** @var string The background job code to launch */
-    protected $batchJobCode;
-
     /**
      * @param string $batchJobCode
      */
@@ -92,13 +89,5 @@ class ChangeFamily extends AbstractMassEditOperation
                 'value' => null !== $family ? $family->getCode() : null,
             ]
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchJobCode()
-    {
-        return $this->batchJobCode;
     }
 }

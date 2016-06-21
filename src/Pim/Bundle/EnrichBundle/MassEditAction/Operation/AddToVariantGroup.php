@@ -16,9 +16,6 @@ class AddToVariantGroup extends AbstractMassEditOperation
     /** @var GroupInterface */
     protected $group;
 
-    /** @var string The background job code to launch */
-    protected $batchJobCode;
-
     /**
      * @param string $batchJobCode
      */
@@ -76,14 +73,6 @@ class AddToVariantGroup extends AbstractMassEditOperation
                 'field' => 'variant_group',
                 'value' => $this->getGroup()->getCode(),
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchJobCode()
-    {
-        return $this->batchJobCode;
     }
 
     /**

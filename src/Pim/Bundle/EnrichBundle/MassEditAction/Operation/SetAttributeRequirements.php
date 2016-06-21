@@ -37,9 +37,6 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     /** @var array */
     protected $attributes;
 
-    /** @var string The background job code to launch */
-    protected $batchJobCode;
-
     /**
      * @param ChannelRepositoryInterface   $channelRepository
      * @param AttributeRepositoryInterface $attributeRepository
@@ -182,13 +179,5 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     public function getItemsName()
     {
         return 'family';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchJobCode()
-    {
-        return $this->batchJobCode;
     }
 }
