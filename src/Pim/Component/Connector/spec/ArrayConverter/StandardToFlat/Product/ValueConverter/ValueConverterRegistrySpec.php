@@ -3,36 +3,38 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter;
 
 class ValueConverterRegistrySpec extends ObjectBehavior
 {
     function it_increments_priority_if_service_already_registered(
+        AttributeInterface $attribute,
         AbstractValueConverter $converter1,
         AbstractValueConverter $converter2
     ) {
-        $converter1->supportsAttribute('pim_catalog_identifier')->willReturn(true);
-        $converter2->supportsAttribute('pim_catalog_identifier')->willReturn(true);
+        $converter1->supportsAttribute($attribute)->willReturn(true);
+        $converter2->supportsAttribute($attribute)->willReturn(true);
 
         $this->register($converter1, 100);
         $this->register($converter2, 100);
 
-        $this->getConverter('pim_catalog_identifier')->shouldReturn($converter1);
+        $this->getConverter($attribute)->shouldReturn($converter1);
     }
 
-    function it_gets_converters(AbstractValueConverter $converter)
+    function it_gets_converters(AttributeInterface $attribute, AbstractValueConverter $converter)
     {
-        $converter->supportsAttribute('pim_catalog_identifier')->willReturn(true);
+        $converter->supportsAttribute($attribute)->willReturn(true);
         $this->register($converter, 100);
 
-        $this->getConverter('pim_catalog_identifier')->shouldReturn($converter);
+        $this->getConverter($attribute)->shouldReturn($converter);
     }
 
-    function it_does_not_find_supported_converters(AbstractValueConverter $converter)
+    function it_does_not_find_supported_converters(AttributeInterface $attribute, AbstractValueConverter $converter)
     {
-        $converter->supportsAttribute('pim_catalog_identifier')->willReturn(false);
+        $converter->supportsAttribute($attribute)->willReturn(false);
         $this->register($converter, 100);
 
-        $this->getConverter('pim_catalog_identifier')->shouldReturn(null);
+        $this->getConverter($attribute)->shouldReturn(null);
     }
 }

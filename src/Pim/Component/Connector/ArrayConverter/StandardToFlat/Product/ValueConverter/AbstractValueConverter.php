@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
 
 /**
@@ -26,11 +27,15 @@ abstract class AbstractValueConverter
     }
 
     /**
-     * {@inheritdoc}
+     * Does the converter supports the attribute
+     *
+     * @param AttributeInterface $attribute
+     *
+     * @return bool
      */
-    public function supportsAttribute($attributeType)
+    public function supportsAttribute(AttributeInterface $attribute)
     {
-        return in_array($attributeType, $this->supportedFieldType);
+        return in_array($attribute->getAttributeType(), $this->supportedFieldType);
     }
 
     /**

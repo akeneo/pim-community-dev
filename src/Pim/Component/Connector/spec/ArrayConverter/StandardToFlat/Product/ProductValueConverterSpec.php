@@ -26,7 +26,7 @@ class ProductValueConverterSpec extends ObjectBehavior
     ) {
         $attributeRepo->findOneByIdentifier('description')->willReturn($attribute);
         $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $converterRegistry->getConverter('pim_catalog_textarea')->willReturn($arrayConverter);
+        $converterRegistry->getConverter($attribute)->willReturn($arrayConverter);
 
         $data = [
             [
@@ -53,7 +53,7 @@ class ProductValueConverterSpec extends ObjectBehavior
     ) {
         $attributeRepo->findOneByIdentifier('weight')->willReturn($attribute);
         $attribute->getAttributeType()->willReturn('pim_catalog_metric');
-        $converterRegistry->getConverter('pim_catalog_metric')->willReturn(null);
+        $converterRegistry->getConverter($attribute)->willReturn(null);
 
         $this->shouldThrow(
             new \LogicException('No standard to flat array converter found for attribute type "pim_catalog_metric"')

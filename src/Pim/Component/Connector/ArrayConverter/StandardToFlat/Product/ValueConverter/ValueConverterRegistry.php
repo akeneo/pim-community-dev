@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
+use Pim\Component\Catalog\Model\AttributeInterface;
+
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -30,14 +32,14 @@ class ValueConverterRegistry
     }
 
     /**
-     * @param $attributeType
+     * @param AttributeInterface $attribute
      *
-     * @return null|AbstractValueConverter
+     * @return AbstractValueConverter|null
      */
-    public function getConverter($attributeType)
+    public function getConverter(AttributeInterface $attribute)
     {
         foreach ($this->converters as $converter) {
-            if ($converter->supportsAttribute($attributeType)) {
+            if ($converter->supportsAttribute($attribute)) {
                 return $converter;
             }
         }

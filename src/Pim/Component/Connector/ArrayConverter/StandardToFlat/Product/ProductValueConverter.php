@@ -41,7 +41,7 @@ class ProductValueConverter
     public function convertAttribute($attributeCode, $data)
     {
         $attribute = $this->attributeRepo->findOneByIdentifier($attributeCode);
-        $converter = $this->converterRegistry->getConverter($attribute->getAttributeType());
+        $converter = $this->converterRegistry->getConverter($attribute);
 
         if (null === $converter) {
             throw new \LogicException(
