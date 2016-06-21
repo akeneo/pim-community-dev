@@ -13,9 +13,6 @@ use Pim\Component\Catalog\Model\CategoryInterface;
  */
 class Classify extends AbstractMassEditOperation
 {
-    /** @var string The background job code to launch */
-    protected $batchJobCode;
-
     /** @var CategoryInterface[] */
     protected $categories;
 
@@ -93,14 +90,6 @@ class Classify extends AbstractMassEditOperation
                 'value' => $this->getCategoriesCode($categories)
             ]
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchJobCode()
-    {
-        return $this->batchJobCode;
     }
 
     /**

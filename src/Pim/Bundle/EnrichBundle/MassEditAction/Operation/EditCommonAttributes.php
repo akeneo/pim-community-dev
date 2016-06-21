@@ -66,9 +66,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var string */
     protected $errors;
 
-    /** @var string The background job code to launch */
-    protected $batchJobCode;
-
     /**
      * @param ProductBuilderInterface      $productBuilder
      * @param UserContext                  $userContext
@@ -194,16 +191,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
         ];
 
         return $actions;
-    }
-
-    /**
-     * Get the code of the JobInstance
-     *
-     * @return string
-     */
-    public function getBatchJobCode()
-    {
-        return $this->batchJobCode;
     }
 
     /**

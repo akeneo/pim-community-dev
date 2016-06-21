@@ -17,9 +17,6 @@ class AddToGroups extends AbstractMassEditOperation
     /** @var ArrayCollection */
     protected $groups;
 
-    /** @var string The background job code to launch */
-    protected $batchJobCode;
-
     /**
      * @param string $batchJobCode
      */
@@ -86,14 +83,6 @@ class AddToGroups extends AbstractMassEditOperation
                 'value' => $this->getGroupsCode($groups),
             ]
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchJobCode()
-    {
-        return $this->batchJobCode;
     }
 
     /**
