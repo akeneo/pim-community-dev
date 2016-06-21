@@ -95,7 +95,7 @@ class JobInstanceProcessor extends AbstractProcessor
 
         $rawConfiguration = $entity->getRawConfiguration();
         if (!empty($rawConfiguration)) {
-            $job = $this->jobRegistry()->get($entity->getAlias());
+            $job = $this->jobRegistry->get($entity->getAlias());
             $parameters = $this->jobParamsFactory->create($job, $rawConfiguration);
             $violations = $this->jobParamsValidator->validate($job, $parameters);
             if ($violations->count() > 0) {

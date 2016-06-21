@@ -11,6 +11,7 @@ parameters:
     akeneo_batch.job.export_type: export
     akeneo_batch.job.quick_export_type: quick_export
     akeneo_batch.job.mass_edit_type: mass_edit
+    akeneo_batch.job.fixture_type: fixtures
 
 services:
     akeneo_batch.job_repository:
