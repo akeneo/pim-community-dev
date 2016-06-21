@@ -80,3 +80,8 @@ jobs:
         alias:     edit_common_attributes_with_permission_and_rules
         label:     Mass edit common product attributes & rules application
         type:      mass_edit
+    classify_assets:
+        connector: Akeneo Product Asset Connector
+        alias:     classify_assets
+        label:     Mass classify product assets
+        type:      mass_edit

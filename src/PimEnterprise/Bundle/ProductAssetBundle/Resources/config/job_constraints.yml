@@ -1,5 +1,3 @@
-parameters: ~
-
 services:
     # Validation constraints for Exports ------------------------------------------------------------------------------
     pimee_product_asset.job.job_parameters.constraint_collection_provider.simple_csv_export:
@@ -63,5 +61,13 @@ services:
         arguments:
             -
                 - 'apply_assets_mass_upload'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    # Mass Edit -------------------------------------------------------------------------------------------------------
+    pimee_product_asset.connector.job.job_parameters.constraints.mass_edit_asset:
+        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit.class%'
+        arguments:
+            - ['classify_assets']
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

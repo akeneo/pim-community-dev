@@ -21,14 +21,6 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation;
 class Publish extends AbstractMassEditOperation
 {
     /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->setActions([]);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getFormType()
@@ -42,14 +34,6 @@ class Publish extends AbstractMassEditOperation
     public function getOperationAlias()
     {
         return 'publish';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchJobCode()
-    {
-        return 'publish_product';
     }
 
     /**

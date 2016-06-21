@@ -12,6 +12,7 @@
 - PIM-5665: Add "remove" action in rule engine
 - PIM-5757: Add delete bulk action on the rules datagrid
 - PIM-5530: Change the label and the position of the button "Schedule" in "Upload assets" screen
+- PIM-5488: Add a bulk action on the product assets grid, to move them in categories
 
 ## Technical improvements
 
@@ -22,9 +23,9 @@
 
 ## BC breaks
 
-- Rename `PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\AssetCategoryReader` to `PimEnterprise\Component\ProductAsset\Connector\Reader\Database\AssetCategoryReader`. 
-- Change constructor of `PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\ChannelConfigurationProcessor`. Remove `Symfony\Component\Serializer\SerializerInterface` and `Pim\Component\Catalog\Repository\LocaleRepositoryInterface`. 
-- Change constructor of `PimEnterprise\Component\CatalogRule\Connector\Processor\Normalization\RuleDefinitionProcessor`. Remove `Symfony\Component\Serializer\SerializerInterface` and `Pim\Component\Catalog\Repository\LocaleRepositoryInterface`. 
+- Rename `PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\AssetCategoryReader` to `PimEnterprise\Component\ProductAsset\Connector\Reader\Database\AssetCategoryReader`.
+- Change constructor of `PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\ChannelConfigurationProcessor`. Remove `Symfony\Component\Serializer\SerializerInterface` and `Pim\Component\Catalog\Repository\LocaleRepositoryInterface`.
+- Change constructor of `PimEnterprise\Component\CatalogRule\Connector\Processor\Normalization\RuleDefinitionProcessor`. Remove `Symfony\Component\Serializer\SerializerInterface` and `Pim\Component\Catalog\Repository\LocaleRepositoryInterface`.
 - Rename `PimEnterprise\Component\Workflow\Connector\ArrayConverter\FlatToStandard\ProductDraft` to `PimEnterprise\Component\Workflow\Connector\ArrayConverter\FlatToStandard\ProductDraftChanges`
 - Rename `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\Tag` to `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\Tags`
 - Change constructor of `PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor`. Remove `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`.
@@ -174,3 +175,7 @@
 - Change constructor of `PimEnterprise\Component\ProductAsset\Updater\AssetUpdater`, add `PimEnterprise\Component\ProductAsset\Factory\AssetFactory` as last parameter
 - Remove `PimEnterprise\Component\CatalogRule\Validator\SupportedOperatorConditionValidator`
 - Change `PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingFilterField` from property to class constraint
+- Change constructor of `PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType`, add string as parameter in the constructor, which is the form type as last parameter
+- Rename method `Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface::getBatchJobCode` into `getJobInstanceCode`
+- Change constructor of `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Publish`, add string as parameter in the constructor, which is the instance job code
+- Change constructor of `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Unpublish`, add string as parameter in the constructor, which is the instance job code

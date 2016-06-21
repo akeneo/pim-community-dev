@@ -64,17 +64,6 @@ pim_enrich:
                 warning: You're not the owner of all the selected products. You can't publish the products "%notGranted%".
                 info: The %nbProducts% selected products will be published.
             not_editable: You don't have the permission to edit the products "%identifiers%".
-        published_product:
-            page_title: Published products
-            page_subtitle: Mass Edit (1 published product)|Mass Edit (%count% published products)
-            title: Choose operation
-            subtitle: Choose the operation you wish to perform on the selected published product|Choose the operation you wish to perform on the selected %count% published products
-            confirm: You are about to update a published product with the following information, please confirm.|You are about to update %count% published products with the following information, please confirm.
-            steps:
-                first: Choose published products
-                second: Choose operation
-                third: Configure
-                fourth: Confirm
         unpublish:
             label: Unpublish products
             description: Unpublish the selected products, the current published data will be erased.

@@ -31,3 +31,7 @@ pimee_workflow_categorytree:
 pimee_workflow_rest_product:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/rest/product.yml'
     prefix: /workflow
+
+pimee_workflow_mass_edit_action:
+    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/mass_edit_action.yml'
+    prefix: /workflow/mass-edit-action

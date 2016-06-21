@@ -1,28 +1,28 @@
-job_profile;execute_job_profile;edit_job_profile
-csv_clothing_association_type_export;IT support,Redactor;IT support
-csv_clothing_attribute_export;IT support,Manager,Redactor;IT support
-csv_clothing_category_export;IT support,Manager,Redactor;IT support
-csv_clothing_asset_category_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_clothing_asset_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_clothing_asset_variation_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_clothing_group_export;IT support,Manager,Redactor;IT support
+job_profile;execute_job_profile;edit_job_profile;
+csv_clothing_association_type_export;IT support,Redactor;IT support;
+csv_clothing_attribute_export;IT support,Manager,Redactor;IT support;
+csv_clothing_category_export;IT support,Manager,Redactor;IT support;
+csv_clothing_asset_category_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_clothing_asset_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_clothing_asset_variation_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_clothing_group_export;IT support,Manager,Redactor;IT support;
 csv_clothing_option_export;IT support,Redactor;
-csv_clothing_product_export;IT support,Manager,Redactor;IT support
+csv_clothing_product_export;IT support,Manager,Redactor;IT support;
 csv_clothing_association_type_import;IT support,Redactor;
-csv_clothing_attribute_import;IT support,Manager,Redactor;IT support
-csv_clothing_category_import;IT support,Redactor;IT support
-csv_clothing_group_import;IT support,Manager,Redactor;IT support
-csv_clothing_option_import;IT support,Redactor;IT support
-csv_clothing_product_import;IT support,Manager,Redactor;IT support
-csv_clothing_mobile_published_product_export;IT support,Manager,Redactor;IT support
-csv_clothing_product_proposal_import;IT support,Manager,Redactor;IT support
-csv_clothing_asset_import;IT support,Manager,Redactor;IT support,Manager
-csv_clothing_asset_category_import;IT support,Manager,Redactor;IT support,Manager
-csv_clothing_product_import_with_rules;IT support,Manager,Redactor;IT support
-clothing_asset_channel_configuration_import;IT support,Manager,Redactor;IT support,Manager
-clothing_asset_channel_configuration_export;IT support,Manager,Redactor;IT support,Manager
-clothing_rule_export;IT support,Manager,Redactor;IT support
-clothing_rule_import;IT support,Manager,Redactor;IT support
+csv_clothing_attribute_import;IT support,Manager,Redactor;IT support;
+csv_clothing_category_import;IT support,Redactor;IT support;
+csv_clothing_group_import;IT support,Manager,Redactor;IT support;
+csv_clothing_option_import;IT support,Redactor;IT support;
+csv_clothing_product_import;IT support,Manager,Redactor;IT support;
+csv_clothing_mobile_published_product_export;IT support,Manager,Redactor;IT support;
+csv_clothing_product_proposal_import;IT support,Manager,Redactor;IT support;
+csv_clothing_asset_import;IT support,Manager,Redactor;IT support,Manager;
+csv_clothing_asset_category_import;IT support,Manager,Redactor;IT support,Manager;
+csv_clothing_product_import_with_rules;IT support,Manager,Redactor;IT support;
+clothing_asset_channel_configuration_import;IT support,Manager,Redactor;IT support,Manager;
+clothing_asset_channel_configuration_export;IT support,Manager,Redactor;IT support,Manager;
+clothing_rule_export;IT support,Manager,Redactor;IT support;
+clothing_rule_import;IT support,Manager,Redactor;IT support;
 add_product_value;IT support,Manager,Redactor;
 add_product_value_with_permission;IT support,Manager,Redactor;
 add_product_value_with_permission_and_rules;IT support,Manager,Redactor;
@@ -45,11 +45,12 @@ csv_published_product_quick_export;IT support,Manager,Redactor;
 approve_product_draft;IT support,Manager;
 refuse_product_draft;IT support,Manager;
 apply_assets_mass_upload;IT support,Manager;
-xlsx_clothing_asset_import;IT support,Manager,Redactor;IT support,Manager
-xlsx_clothing_asset_category_import;IT support,Manager,Redactor;IT support,Manager
-xlsx_clothing_asset_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_clothing_asset_category_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_clothing_asset_variation_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_clothing_product_proposal_import;IT support,Manager,Redactor;IT support
-xlsx_clothing_product_import_with_rules;IT support,Manager,Redactor;IT support
-xlsx_clothing_mobile_published_product_export;IT support,Manager,Redactor;IT support
+xlsx_clothing_asset_import;IT support,Manager,Redactor;IT support,Manager;
+xlsx_clothing_asset_category_import;IT support,Manager,Redactor;IT support,Manager;
+xlsx_clothing_asset_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_clothing_asset_category_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_clothing_asset_variation_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_clothing_product_proposal_import;IT support,Manager,Redactor;IT support;
+xlsx_clothing_product_import_with_rules;IT support,Manager,Redactor;IT support;
+xlsx_clothing_mobile_published_product_export;IT support,Manager,Redactor;IT support;
+classify_assets;All;

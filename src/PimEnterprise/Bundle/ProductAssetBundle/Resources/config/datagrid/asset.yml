@@ -115,3 +115,17 @@ datagrid:
                 params:
                     - id
                     - dataLocale
+        mass_actions_groups:
+            bulk_actions:
+                label: pim_datagrid.mass_action_group.bulk_actions.label
+        mass_actions:
+            classify_move:
+                type: edit
+                label: pim.grid.mass_action.mass_classify_assets
+                acl_resource: pim_enrich_mass_edit
+                route: pimee_product_asset_mass_edit_asset_action_configure
+                route_parameters:
+                    operationGroup: category-edit
+                    operationAlias: asset-classify-move
+                launcherOptions:
+                    group: bulk_actions

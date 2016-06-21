@@ -716,3 +716,8 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/asset_variation.xlsx
+    classify_assets:
+        connector: Akeneo Product Asset Connector
+        alias:     classify_assets
+        label:     Mass classify product assets
+        type:      mass_edit

@@ -178,41 +178,6 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     }
 
     /**
-     * Apply an in list filter
-     *
-     * @param QueryBuilder $qb
-     * @param string       $field
-     * @param mixed        $value
-     */
-    protected function applyFilterInList(QueryBuilder $qb, $field, $value)
-    {
-        if (!empty($value)) {
-            $qb->andWhere($qb->expr()->in($field, $value));
-        }
-    }
-
-    /**
-     * Apply a is_empty filter
-     *
-     * @param QueryBuilder $qb
-     * @param string       $field
-     */
-    protected function applyFilterEmpty(QueryBuilder $qb, $field)
-    {
-        $qb->andWhere($qb->expr()->isNull($field));
-    }
-
-    /**
-     * Alias of the repository
-     *
-     * @return string
-     */
-    protected function getAlias()
-    {
-        return 'asset';
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function findProducts(AssetInterface $asset, $hydrationMode = Query::HYDRATE_OBJECT)
@@ -290,5 +255,93 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
             ->setParameter(':endOfUse2', $endOfUse2);
 
         return $qb->getQuery()->getArrayResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyMassActionParameters($qb, $inset, array $values)
+    {
+        if (!empty($values)) {
+            $rootAlias = $qb->getRootAlias();
+            $valueWhereCondition =
+                $inset
+                    ? $qb->expr()->in($rootAlias, $values)
+                    : $qb->expr()->notIn($rootAlias, $values);
+            $qb->andWhere($valueWhereCondition);
+        }
+
+        if (null !== $qb->getDQLPart('where')) {
+            $whereParts = $qb->getDQLPart('where')->getParts();
+            $qb->resetDQLPart('where');
+
+            foreach ($whereParts as $part) {
+                if (!is_string($part) || !strpos($part, 'entityIds')) {
+                    $qb->andWhere($part);
+                }
+            }
+        }
+
+        $qb->setParameters(
+            $qb->getParameters()->filter(
+                function ($parameter) {
+                    return $parameter->getName() !== 'entityIds';
+                }
+            )
+        );
+
+        $qb->resetDQLPart('orderBy');
+        $qb->setMaxResults(null);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByIds(array $assetIds)
+    {
+        if (empty($assetIds)) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('a');
+        $qb->where($qb->expr()->in('a.id', ':asset_ids'));
+        $qb->setParameter(':asset_ids', $assetIds);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Apply an in list filter
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     * @param mixed        $value
+     */
+    protected function applyFilterInList(QueryBuilder $qb, $field, $value)
+    {
+        if (!empty($value)) {
+            $qb->andWhere($qb->expr()->in($field, $value));
+        }
+    }
+
+    /**
+     * Apply a is_empty filter
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     */
+    protected function applyFilterEmpty(QueryBuilder $qb, $field)
+    {
+        $qb->andWhere($qb->expr()->isNull($field));
+    }
+
+    /**
+     * Alias of the repository
+     *
+     * @return string
+     */
+    protected function getAlias()
+    {
+        return 'asset';
     }
 }

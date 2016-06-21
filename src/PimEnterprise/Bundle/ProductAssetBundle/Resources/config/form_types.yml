@@ -1,0 +1,9 @@
+services:
+    pimee_product_asset.form.type.classify:
+        class: '%pim_enrich.form.type.classify.class%'
+        arguments:
+            - '@pimee_product_asset.repository.category'
+            - '%pim_enrich.mass_edit_action.classify.class%'
+            - 'pimee_product_asset_mass_classify'
+        tags:
+            - { name: form.type, alias: pimee_product_asset_mass_classify }

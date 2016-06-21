@@ -1,3 +1,6 @@
+parameters:
+    pimee_product_asset.reader.database.mass_edit_asset.class: PimEnterprise\Bundle\ProductAssetBundle\Connector\Reader\MassEdit\FilteredAssetReader
+
 services:
     # CSV readers
     pimee_product_asset.reader.file.csv_tag:
@@ -36,3 +39,8 @@ services:
         arguments:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.category'
+
+    pimee_product_asset.reader.database.mass_edit_asset:
+        class: '%pimee_product_asset.reader.database.mass_edit_asset.class%'
+        arguments:
+            - '@pimee_product_asset.repository.asset'

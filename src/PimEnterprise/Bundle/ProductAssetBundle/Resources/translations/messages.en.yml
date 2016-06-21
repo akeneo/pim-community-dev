@@ -139,6 +139,29 @@ pimee_product_asset:
             apply_on_children.label: Apply changes on children
             apply_on_children.help: Copy the permissions changes on all children, existing permissions on children are kept
 
+    mass_edit_action:
+        asset:
+            page_title: Assets
+            page_subtitle: Mass Edit (1 asset)|Mass Edit (%count% assets)
+            confirm: You are about to update an asset with the following information, please confirm.|You are about to update %count% assets with the following information, please confirm.
+            steps:
+                first: Choose assets
+                second: Configure
+                third: Confirm
+
+pim_enrich:
+    mass_edit_action:
+        asset-classify-move:
+            label:          Move assets to categories
+            description:    The assets will be positioned into the following categories, the existing placement is lost
+            success_flash:  Asset(s) have been moved to selected categories
+            launched_flash: The bulk action "move to categories" has been launched. You will be notified when it is done.
+
+pim:
+    grid:
+        mass_action:
+            mass_classify_assets: Classify
+
 btn.create.asset: Create an asset
 btn.drag_or_upload: Drag and drop a file or click here
 
@@ -214,3 +237,5 @@ batch_jobs:
     xlsx_asset_variation_export:
         label: Asset category export in XLSX
         export.label: Asset category export in XLSX
+    classify_assets:
+        perform.label: Move assets to categories

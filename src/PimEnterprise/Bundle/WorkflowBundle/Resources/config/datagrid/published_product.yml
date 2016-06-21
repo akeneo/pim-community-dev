@@ -78,7 +78,7 @@ datagrid:
                 acl_resource: pimee_workflow_published_product_index
                 label: pim.grid.mass_action.mass_edit
                 handler: product_mass_edit
-                route: pim_enrich_mass_edit_action_choose
+                route: pimee_workflow_mass_edit_published_action_choose
                 icon: edit
             quick_export_grid_context_xlsx:
                 type: export

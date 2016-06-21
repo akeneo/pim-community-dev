@@ -102,24 +102,6 @@ services:
         arguments:
             - '@pimee_product_asset.repository.channel_configuration'
 
-    pim_enrich.controller.mass_edit_action:
-        scope: request
-        class: '%pim_enrich.controller.mass_edit_action.class%'
-        arguments:
-            - '@request'
-            - '@templating'
-            - '@router'
-            - '@security.token_storage'
-            - '@doctrine'
-            - '@oro_datagrid.mass_action.parameters_parser'
-            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
-            - '@akeneo_batch.launcher.simple_job_launcher'
-            - '@akeneo_batch.job_repository'
-            - '@akeneo_batch.connectors'
-            - '@pim_enrich.mass_edit_action.operation.registry'
-            - '@pim_enrich.mass_edit_action.form_resolver'
-            - {family-grid: 'pim_enrich_family_index', published-product-grid: 'pimee_workflow_published_product_index', default: 'pim_enrich_product_index'}
-
     pim_enrich.controller.rest.product_category:
         class: '%pim_enrich.controller.rest.product_category.class%'
         arguments:

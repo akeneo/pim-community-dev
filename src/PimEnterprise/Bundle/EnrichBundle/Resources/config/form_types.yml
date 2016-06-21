@@ -53,6 +53,7 @@ services:
             - '@pim_catalog.manager.category'
             - '@security.token_storage'
             - '%pim_enrich.mass_edit_action.classify.class%'
+            - 'pim_enrich_mass_classify'
         tags:
             - { name: form.type, alias: pim_enrich_mass_classify }
 
