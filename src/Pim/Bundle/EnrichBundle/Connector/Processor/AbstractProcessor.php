@@ -41,9 +41,9 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
 
     /**
      * @param ConstraintViolationListInterface $violations
-     * @param ProductInterface                 $product
+     * @param mixed                            $item
      */
-    protected function addWarningMessage(ConstraintViolationListInterface $violations, ProductInterface $product)
+    protected function addWarningMessage(ConstraintViolationListInterface $violations, $item)
     {
         foreach ($violations as $violation) {
             // TODO re-format the message, property path doesn't exist for class constraint
@@ -60,7 +60,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
                 $violation->getMessage(),
                 $invalidValue
             );
-            $this->stepExecution->addWarning($errors, [], $product);
+            $this->stepExecution->addWarning($errors, [], $item);
         }
     }
 

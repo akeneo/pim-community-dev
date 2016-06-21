@@ -4,10 +4,9 @@
     <div class="row wizard-header">
         <ul class="wizard">
             {% spaceless %}
-            <li>{{ ('pim_enrich.mass_edit_action.' ~ itemsName ~  '.steps.first')|trans }}</li>
-            <li>{{ ('pim_enrich.mass_edit_action.' ~ itemsName ~  '.steps.second')|trans }}</li>
-            <li>{{ ('pim_enrich.mass_edit_action.' ~ itemsName ~  '.steps.third')|trans }}</li>
-            <li>{{ ('pim_enrich.mass_edit_action.' ~ itemsName ~  '.steps.fourth')|trans }}</li>
+                {% for stepLabel in stepLabels|default([]) %}
+                    <li>{{ stepLabel|default('step label')|trans }}</li>
+                {% endfor %}
             {% endspaceless %}
         </ul>
     </div>

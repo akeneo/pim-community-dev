@@ -21,17 +21,22 @@ class ClassifyType extends AbstractType
     /** @var string */
     protected $dataClass;
 
+    /** @var string */
+    protected $formName;
+
     /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
     /**
      * @param CategoryRepositoryInterface $categoryRepository
      * @param string                      $dataClass
+     * @param string                      $formName
      */
-    public function __construct(CategoryRepositoryInterface $categoryRepository, $dataClass)
+    public function __construct(CategoryRepositoryInterface $categoryRepository, $dataClass, $formName)
     {
         $this->categoryRepository = $categoryRepository;
         $this->dataClass          = $dataClass;
+        $this->formName           = $formName;
     }
 
     /**
@@ -87,6 +92,6 @@ class ClassifyType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_enrich_mass_classify';
+        return $this->formName;
     }
 }

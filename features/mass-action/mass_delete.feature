@@ -52,7 +52,7 @@ Feature: Delete many product at once
 
   Scenario: Successfully mass delete visible products
     Given I sort by "SKU" value ascending
-    And I select all visible products
+    And I select all visible entities
     Then I press "Delete" on the "Bulk Actions" dropdown button
     And I should see "Are you sure you want to delete selected products?"
     When I confirm the removal
@@ -60,7 +60,7 @@ Feature: Delete many product at once
     And I should see product sneakers_S43
 
   Scenario: Successfully mass delete all products
-    Given I select all products
+    Given I select all entities
     Then I press "Delete" on the "Bulk Actions" dropdown button
     And I should see "Are you sure you want to delete selected products?"
     When I confirm the removal
@@ -75,7 +75,7 @@ Feature: Delete many product at once
     And I reload the page
     And I filter by "scope" with operator "equals" and value "Mobile"
     And I filter by "completeness" with operator "equals" and value "yes"
-    And I select all visible products
+    And I select all visible entities
     When I press "Delete" on the "Bulk Actions" dropdown button
     Then I should see "Are you sure you want to delete selected products?"
     When I confirm the removal

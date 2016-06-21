@@ -47,11 +47,6 @@ interface MassEditOperationInterface
     public function setActions(array $actions);
 
     /**
-     * @return string
-     */
-    public function getItemsName();
-
-    /**
      * Return this operation instance
      *
      * @return mixed

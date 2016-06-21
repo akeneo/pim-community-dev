@@ -39,11 +39,6 @@ class ChangeFamilySpec extends ObjectBehavior
         $this->getFormOptions()->shouldReturn([]);
     }
 
-    function it_provides_items_name_it_works_on()
-    {
-        $this->getItemsName()->shouldReturn('product');
-    }
-
     function it_provides_an_alias()
     {
         $this->getOperationAlias()->shouldReturn('change-family');
@@ -80,7 +75,7 @@ class ChangeFamilySpec extends ObjectBehavior
 
     function it_provides_a_batch_job_code()
     {
-        $this->getBatchJobCode()->shouldReturn('update_product_value');
+        $this->getJobInstanceCode()->shouldReturn('update_product_value');
     }
 
     function it_provides_formatted_batch_config_for_the_job(FamilyInterface $mugs)

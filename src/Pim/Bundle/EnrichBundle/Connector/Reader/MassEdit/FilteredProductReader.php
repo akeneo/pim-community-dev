@@ -46,6 +46,7 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     public function read()
     {
         $filters = $this->getConfiguredFilters();
+
         if (null === $filters) {
             return null;
         }
@@ -121,7 +122,7 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     }
 
     /**
-     * @return array|null
+     * @return array
      */
     protected function getConfiguredFilters()
     {

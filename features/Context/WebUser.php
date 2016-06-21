@@ -1681,7 +1681,7 @@ class WebUser extends RawMinkContext
             );
         }
 
-        $code = $operation->getBatchJobCode();
+        $code = $operation->getJobInstanceCode();
 
         $this->waitForMassEditJobToFinish($code);
     }
