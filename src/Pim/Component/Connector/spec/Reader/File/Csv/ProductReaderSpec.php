@@ -11,7 +11,7 @@ use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Pim\Component\Connector\Reader\File\MediaPathTransformer;
 use Prophecy\Argument;
 
-class ProductReaderSpec extends ObjectBehavior
+class  ProductReaderSpec extends ObjectBehavior
 {
     function let(
         FileIteratorFactory $fileIteratorFactory,
@@ -19,7 +19,7 @@ class ProductReaderSpec extends ObjectBehavior
         MediaPathTransformer $mediaPath,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($fileIteratorFactory, $converter, $mediaPath, ['.', ','], ['Y-m-d', 'd-m-Y']);
+        $this->beConstructedWith($fileIteratorFactory, $converter, $mediaPath);
         $this->setStepExecution($stepExecution);
     }
 
@@ -49,6 +49,8 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('familyColumn')->willReturn('family');
         $jobParameters->get('categoriesColumn')->willReturn('category');
         $jobParameters->get('groupsColumn')->willReturn('group');
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('YYYY-mm-dd');
 
         $data = [
             'sku'          => 'SKU-001',
@@ -86,7 +88,9 @@ class ProductReaderSpec extends ObjectBehavior
                 'category' => 'categories',
                 'group' => 'groups'
             ],
-            'with_associations' => false
+            'with_associations' => false,
+            'decimal_separator' => '.',
+            'date_format'       => 'YYYY-mm-dd',
         ])->willReturn($absolutePath);
 
         $this->read()->shouldReturn($absolutePath);

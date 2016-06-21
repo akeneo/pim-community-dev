@@ -2,7 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter;
 
-use Pim\Component\Connector\Exception\ArrayConversionException;
+use Pim\Component\Connector\Exception\DataArrayConversionException;
+use Pim\Component\Connector\Exception\StructureArrayConversionException;
 
 /**
  * Simple validator to check if required fields are present and filled.
@@ -19,13 +20,13 @@ class FieldsRequirementChecker
      * @param array $item
      * @param array $fields
      *
-     * @throws ArrayConversionException
+     * @throws StructureArrayConversionException
      */
     public function checkFieldsPresence(array $item, array $fields)
     {
         foreach ($fields as $field) {
             if (!in_array($field, array_keys($item))) {
-                throw new ArrayConversionException(
+                throw new StructureArrayConversionException(
                     sprintf(
                         'Field "%s" is expected, provided fields are "%s"',
                         $field,
@@ -42,13 +43,13 @@ class FieldsRequirementChecker
      * @param array $item
      * @param array $fields
      *
-     * @throws ArrayConversionException
+     * @throws DataArrayConversionException
      */
     public function checkFieldsFilling(array $item, array $fields)
     {
         foreach ($fields as $field) {
             if ('' == $item[$field]) {
-                throw new ArrayConversionException(
+                throw new DataArrayConversionException(
                     sprintf(
                         'Field "%s" must be filled',
                         $field

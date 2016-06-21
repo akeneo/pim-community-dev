@@ -46,6 +46,7 @@
 
 ## BC breaks
 
+- Change constructor of `Pim\Component\Connector\Processor\Denormalization\ProductProcessor`. Remove argument `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`.
 - Add method `findPotentiallyPurgeableBy` to interface `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface`
 - Add method `getNewestVersionIdForResource` to interface `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface`
 - Move `Pim\Component\Connector\Writer\Doctrine` to `Pim\Component\Connector\Writer\Database`

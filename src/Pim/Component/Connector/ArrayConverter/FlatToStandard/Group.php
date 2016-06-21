@@ -5,7 +5,7 @@ namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\Exception\ArrayConversionException;
+use Pim\Component\Connector\Exception\StructureArrayConversionException;
 
 /**
  * Group Flat Converter
@@ -110,7 +110,7 @@ class Group implements ArrayConverterInterface
      * @param array $item
      * @param array $authorizedFields
      *
-     * @throws ArrayConversionException
+     * @throws StructureArrayConversionException
      */
     protected function validateAuthorizedFields(array $item, array $authorizedFields)
     {
@@ -121,7 +121,7 @@ class Group implements ArrayConverterInterface
 
         foreach (array_keys($item) as $field) {
             if (!in_array($field, $authorizedFields)) {
-                throw new ArrayConversionException(
+                throw new StructureArrayConversionException(
                     sprintf(
                         'Field "%s" is provided, authorized fields are: "%s"',
                         $field,

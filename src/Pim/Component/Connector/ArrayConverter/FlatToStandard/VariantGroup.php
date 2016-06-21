@@ -6,7 +6,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\Exception\ArrayConversionException;
+use Pim\Component\Connector\Exception\StructureArrayConversionException;
 
 /**
  * Variant group Flat Converter
@@ -156,7 +156,7 @@ class VariantGroup implements ArrayConverterInterface
      * @param array $item
      * @param array $authorizedFields
      *
-     * @throws ArrayConversionException
+     * @throws StructureArrayConversionException
      */
     protected function validateAuthorizedFields(array $item, array $authorizedFields)
     {
@@ -167,7 +167,7 @@ class VariantGroup implements ArrayConverterInterface
 
         foreach (array_keys($item) as $field) {
             if (!in_array($field, $authorizedFields) && !$this->isAttribute($field)) {
-                throw new ArrayConversionException(
+                throw new StructureArrayConversionException(
                     sprintf(
                         'Field "%s" is provided, authorized fields are: "%s"',
                         $field,

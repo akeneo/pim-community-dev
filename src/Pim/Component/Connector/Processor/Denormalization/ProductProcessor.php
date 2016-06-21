@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
-use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -41,9 +40,6 @@ class ProductProcessor extends AbstractProcessor
     /** @var ProductFilterInterface */
     protected $productFilter;
 
-    /** @var AttributeConverterInterface */
-    protected $localizedConverter;
-
     /**
      * @param IdentifiableObjectRepositoryInterface $repository         product repository
      * @param ProductBuilderInterface               $builder            product builder
@@ -51,7 +47,6 @@ class ProductProcessor extends AbstractProcessor
      * @param ValidatorInterface                    $validator          product validator
      * @param ObjectDetacherInterface               $detacher           detacher to remove it from UOW when skip
      * @param ProductFilterInterface                $productFilter      product filter
-     * @param AttributeConverterInterface           $localizedConverter attributes localized converter
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -59,8 +54,7 @@ class ProductProcessor extends AbstractProcessor
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
-        ProductFilterInterface $productFilter,
-        AttributeConverterInterface $localizedConverter
+        ProductFilterInterface $productFilter
     ) {
         parent::__construct($repository);
 
@@ -69,7 +63,6 @@ class ProductProcessor extends AbstractProcessor
         $this->validator          = $validator;
         $this->detacher           = $detacher;
         $this->productFilter      = $productFilter;
-        $this->localizedConverter = $localizedConverter;
     }
 
     /**
@@ -80,13 +73,6 @@ class ProductProcessor extends AbstractProcessor
         $itemHasStatus = isset($item['enabled']);
         if (!isset($item['enabled'])) {
             $item['enabled'] = $jobParameters = $this->stepExecution->getJobParameters()->get('enabled');
-        }
-
-        $item = $this->convertLocalizedAttributes($item);
-        $violations = $this->localizedConverter->getViolations();
-
-        if ($violations->count() > 0) {
-            $this->skipItemWithConstraintViolations($item, $violations);
         }
 
         $identifier = $this->getIdentifier($item);
@@ -132,23 +118,6 @@ class ProductProcessor extends AbstractProcessor
         }
 
         return $product;
-    }
-
-    /**
-     * Check and convert localized attributes to default format
-     *
-     * @param array $item
-     *
-     * @return array
-     */
-    protected function convertLocalizedAttributes(array $item)
-    {
-        $jobParameters = $this->stepExecution->getJobParameters();
-
-        return $this->localizedConverter->convertToDefaultFormats($item, [
-            'decimal_separator' => $jobParameters->get('decimalSeparator'),
-            'date_format'       => $jobParameters->get('dateFormat')
-        ]);
     }
 
     /**
