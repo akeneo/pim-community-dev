@@ -4,3 +4,6 @@ parameters:
 services:
     pimee_catalog_rule.repository.rule_definition_mass_action:
         class: '%pimee_catalog_rule.repository.rule_definition_mass_action.class%'
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '%akeneo_rule_engine.model.rule_definition.class%'

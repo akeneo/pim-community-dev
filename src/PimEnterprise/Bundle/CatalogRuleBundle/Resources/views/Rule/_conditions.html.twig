@@ -1,5 +1,9 @@
 {% for condition in value.conditions %}
     <p class="no-margin">
+        {% if condition.value is not defined %}
+            {% set condition = condition|merge({'value': ''}) %}
+        {% endif %}
+
         {{ 'pimee_catalog_rule.condition.label'|trans({
             "%field%": condition.field|highlight,
             "%operator%": ('pimee_catalog_rule.condition.operators.' ~ condition.operator)|trans,

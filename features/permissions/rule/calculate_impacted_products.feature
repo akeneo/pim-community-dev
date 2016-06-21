@@ -24,7 +24,8 @@ Feature: Manage permissions to calculate impacted product by a rule
             locale: en_US
       """
     When I am on the rules page
-    Then I should see the text "Calculate the matching products for the rules"
+    And I press the "Bulk Actions" button
+    Then I should see the text "Calculate the matching products"
     When I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I grant rights to group Rules
@@ -32,4 +33,5 @@ Feature: Manage permissions to calculate impacted product by a rule
     And I save the Role
     Then I should not see the text "There are unsaved changes."
     When I am on the rules page
-    Then I should not see the text "Calculate the matching products for the rules"
+    And I press the "Bulk Actions" button
+    Then I should not see the text "Calculate the matching products"
