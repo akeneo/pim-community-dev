@@ -28,7 +28,7 @@ class MetricConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      *
-     * Convert a standard formatted metric field to a flat one.
+     * Convert a standard formatted metric product value to a flat one.
      *
      * Given a 'weight' $attributeCode with this $data:
      * [

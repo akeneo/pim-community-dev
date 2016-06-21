@@ -28,9 +28,9 @@ class PriceConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      *
-     * Convert a standard formatted price field to a flat one.
+     * Convert a standard formatted price product value to a flat one.
      *
-     * Given a 'super_price' $field with this $data:
+     * Given a 'super_price' $attributeCode with this $data:
      * [
      *     [
      *         'locale' => 'de_DE',

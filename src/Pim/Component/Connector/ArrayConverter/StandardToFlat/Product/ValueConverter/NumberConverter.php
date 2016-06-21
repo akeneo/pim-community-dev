@@ -28,7 +28,7 @@ class NumberConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      *
-     * Given a 'score' $field with this $data:
+     * Given a 'score' $attributeCode with this $data:
      * [
      *     [
      *         'locale' => null,

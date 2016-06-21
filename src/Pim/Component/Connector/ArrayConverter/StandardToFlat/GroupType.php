@@ -16,9 +16,9 @@ class GroupType extends AbstractSimpleArrayConverter implements ArrayConverterIn
     /**
      * {@inheritdoc}
      */
-    protected function convertField($field, $data, array $convertedItem, array $options)
+    protected function convertProperty($property, $data, array $convertedItem, array $options)
     {
-        switch ($field) {
+        switch ($property) {
             case 'label':
                 foreach ($data as $localeCode => $label) {
                     $labelKey = sprintf('label-%s', $localeCode);
@@ -26,10 +26,10 @@ class GroupType extends AbstractSimpleArrayConverter implements ArrayConverterIn
                 }
                 break;
             case 'is_variant':
-                $convertedItem[$field] = (true === $data) ? '1' : '0';
+                $convertedItem[$property] = (true === $data) ? '1' : '0';
                 break;
             default:
-                $convertedItem[$field] = (string) $data;
+                $convertedItem[$property] = (string) $data;
         }
 
         return $convertedItem;

@@ -18,7 +18,7 @@ class ProductValueConverterSpec extends ObjectBehavior
         $this->beConstructedWith($converterRegistry, $attributeRepo);
     }
 
-    function it_converts_product_value_fields_from_standard_to_flat_format(
+    function it_converts_product_value_attributes_from_standard_to_flat_format(
         $converterRegistry,
         $attributeRepo,
         AttributeInterface $attribute,
@@ -42,7 +42,7 @@ class ProductValueConverterSpec extends ObjectBehavior
 
         $arrayConverter->convert('description', $data)->shouldBeCalled()->willReturn($converterResult);
 
-        $this->convertField('description', $data)->shouldReturn($converterResult);
+        $this->convertAttribute('description', $data)->shouldReturn($converterResult);
 
     }
 
@@ -57,6 +57,6 @@ class ProductValueConverterSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException('No standard to flat array converter found for attribute type "pim_catalog_metric"')
-        )->during('convertField', ['weight', [], []]);
+        )->during('convertAttribute', ['weight', [], []]);
     }
 }

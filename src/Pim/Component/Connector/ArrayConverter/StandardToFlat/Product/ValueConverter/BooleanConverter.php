@@ -28,9 +28,9 @@ class BooleanConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      *
-     * Convert a standard formatted boolean field to a flat one.
+     * Convert a standard formatted boolean product value to a flat one.
      *
-     * Given a 'auto_lock' $field with this $data:
+     * Given a 'auto_lock' $property with this $data:
      * [
      *     [
      *         'locale' => 'de_DE',

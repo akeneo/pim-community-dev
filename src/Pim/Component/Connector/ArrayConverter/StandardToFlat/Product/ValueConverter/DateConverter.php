@@ -25,7 +25,7 @@ class DateConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      *
-     * Given a 'release_date' $field with this $data:
+     * Given a 'release_date' $attributeCode with this $data:
      * [
      *     [
      *         'locale' => null,

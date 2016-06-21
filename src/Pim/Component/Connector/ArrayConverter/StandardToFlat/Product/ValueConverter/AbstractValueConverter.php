@@ -28,7 +28,7 @@ abstract class AbstractValueConverter
     /**
      * {@inheritdoc}
      */
-    public function supportsField($attributeType)
+    public function supportsAttribute($attributeType)
     {
         return in_array($attributeType, $this->supportedFieldType);
     }

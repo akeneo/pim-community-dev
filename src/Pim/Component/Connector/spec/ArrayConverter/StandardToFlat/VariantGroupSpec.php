@@ -22,7 +22,7 @@ class VariantGroupSpec extends ObjectBehavior
 
     function it_converts_from_standard_to_flat_format($valueConverter)
     {
-        $valueConverter->convertField('blade_length', [
+        $valueConverter->convertAttribute('blade_length', [
             [
                 'locale' => null,
                 'scope'  => null,
@@ -36,7 +36,7 @@ class VariantGroupSpec extends ObjectBehavior
             'blade_length-unit' => 'CENTIMETER',
         ]);
 
-        $valueConverter->convertField('description', [
+        $valueConverter->convertAttribute('description', [
             [
                 'locale' => 'fr_FR',
                 'scope'  => 'ecommerce',

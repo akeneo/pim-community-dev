@@ -16,9 +16,9 @@ class Category extends AbstractSimpleArrayConverter implements ArrayConverterInt
     /**
      * {@inheritdoc}
      */
-    protected function convertField($field, $data, array $convertedItem, array $options)
+    protected function convertProperty($property, $data, array $convertedItem, array $options)
     {
-        switch ($field) {
+        switch ($property) {
             case 'labels':
                 foreach ($data as $localeCode => $label) {
                     $labelKey = sprintf('label-%s', $localeCode);
@@ -26,7 +26,7 @@ class Category extends AbstractSimpleArrayConverter implements ArrayConverterInt
                 }
                 break;
             default:
-                $convertedItem[$field] = (string) $data;
+                $convertedItem[$property] = (string) $data;
         }
 
         return $convertedItem;

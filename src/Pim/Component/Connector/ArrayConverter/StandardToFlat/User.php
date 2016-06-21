@@ -16,18 +16,18 @@ class User extends AbstractSimpleArrayConverter implements ArrayConverterInterfa
     /**
      * {@inheritdoc}
      */
-    protected function convertField($field, $data, array $convertedItem, array $options)
+    protected function convertProperty($property, $data, array $convertedItem, array $options)
     {
-        switch ($field) {
+        switch ($property) {
             case 'enabled':
-                $convertedItem[$field] = (true === $data) ? '1' : '0';
+                $convertedItem[$property] = (true === $data) ? '1' : '0';
                 break;
             case 'roles':
             case 'groups':
-                $convertedItem[$field] = implode(',', $data);
+                $convertedItem[$property] = implode(',', $data);
                 break;
             default:
-                $convertedItem[$field] = (string) $data;
+                $convertedItem[$property] = (string) $data;
         }
 
         return $convertedItem;

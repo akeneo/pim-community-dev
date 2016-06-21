@@ -28,9 +28,9 @@ class MultiSelectConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      *
-     * Convert a standard multiselect field to a flat one.
+     * Convert a standard multiselect product value to a flat one.
      *
-     * Given a 'colors' $field with this $data:
+     * Given a 'colors' $attributeCode with this $data:
      * [
      *     [
      *         'locale' => 'de_DE',

@@ -27,9 +27,9 @@ class Attribute extends AbstractSimpleArrayConverter implements ArrayConverterIn
     /**
      * {@inheritdoc}
      */
-    protected function convertField($field, $data, array $convertedItem, array $options)
+    protected function convertProperty($property, $data, array $convertedItem, array $options)
     {
-        switch ($field) {
+        switch ($property) {
             case 'labels':
                 foreach ($data as $localeCode => $label) {
                     $labelKey = sprintf('label-%s', $localeCode);
@@ -41,13 +41,13 @@ class Attribute extends AbstractSimpleArrayConverter implements ArrayConverterIn
                 break;
             case 'options':
             case 'available_locales':
-                $convertedItem[$field] = implode(',', $data);
+                $convertedItem[$property] = implode(',', $data);
                 break;
-            case in_array($field, $this->booleanFields):
-                $convertedItem[$field] = (true === $data) ? '1' : '0';
+            case in_array($property, $this->booleanFields):
+                $convertedItem[$property] = (true === $data) ? '1' : '0';
                 break;
             default:
-                $convertedItem[$field] = (string) $data;
+                $convertedItem[$property] = (string) $data;
         }
 
         return $convertedItem;

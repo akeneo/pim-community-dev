@@ -28,9 +28,9 @@ class VariantGroup extends AbstractSimpleArrayConverter implements ArrayConverte
     /**
      * {@inheritdoc}
      */
-    protected function convertField($field, $data, array $convertedItem, array $options)
+    protected function convertProperty($property, $data, array $convertedItem, array $options)
     {
-        switch ($field) {
+        switch ($property) {
             case 'labels':
                 foreach ($data as $localeCode => $label) {
                     $labelKey = sprintf('label-%s', $localeCode);
@@ -38,20 +38,20 @@ class VariantGroup extends AbstractSimpleArrayConverter implements ArrayConverte
                 }
                 break;
             case 'axis':
-                $convertedItem[$field] = implode(',', $data);
+                $convertedItem[$property] = implode(',', $data);
                 break;
             case 'values':
                 foreach ($data as $valueField => $valueData) {
                     $convertedItem = array_merge(
                         $convertedItem,
-                        $this->valueConverter->convertField($valueField, $valueData)
+                        $this->valueConverter->convertAttribute($valueField, $valueData)
                     );
                 }
                 break;
             case 'code':
             case 'type':
             default:
-                $convertedItem[$field] = (string) $data;
+                $convertedItem[$property] = (string) $data;
                 break;
         }
 

@@ -28,18 +28,18 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
     /**
      * {@inheritdoc}
      */
-    protected function convertField($field, $data, array $convertedItem, array $options)
+    protected function convertProperty($property, $data, array $convertedItem, array $options)
     {
-        switch ($field) {
+        switch ($property) {
             case 'associations':
                 $convertedItem = $this->convertAssociations($data, $convertedItem);
                 break;
             case 'categories':
-                $convertedItem[$field] = implode(',', $data);
+                $convertedItem[$property] = implode(',', $data);
                 break;
             case 'enabled':
             case 'family':
-                $convertedItem[$field] = (string) $data;
+                $convertedItem[$property] = (string) $data;
                 break;
             case 'groups':
             case 'variant_group':
@@ -48,7 +48,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
             default:
                 $convertedItem = array_merge(
                     $convertedItem,
-                    $this->valueConverter->convertField($field, $data)
+                    $this->valueConverter->convertAttribute($property, $data)
                 );
                 break;
         }
@@ -109,8 +109,8 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
     {
         foreach ($data as $assocName => $associations) {
             foreach ($associations as $assocType => $entities) {
-                $fieldName = sprintf('%s-%s', $assocName, $assocType);
-                $convertedItem[$fieldName] = implode(',', $entities);
+                $propertyName = sprintf('%s-%s', $assocName, $assocType);
+                $convertedItem[$propertyName] = implode(',', $entities);
             }
         }
 

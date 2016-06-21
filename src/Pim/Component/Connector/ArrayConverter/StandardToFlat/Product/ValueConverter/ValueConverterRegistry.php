@@ -37,7 +37,7 @@ class ValueConverterRegistry
     public function getConverter($attributeType)
     {
         foreach ($this->converters as $converter) {
-            if ($converter->supportsField($attributeType)) {
+            if ($converter->supportsAttribute($attributeType)) {
                 return $converter;
             }
         }

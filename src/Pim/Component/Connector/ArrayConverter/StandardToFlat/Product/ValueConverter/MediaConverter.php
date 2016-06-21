@@ -28,9 +28,9 @@ class MediaConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      *
-     * Convert a standard formatted media field to a flat one.
+     * Convert a standard formatted media product value to a flat one.
      *
-     * Given a 'front_picture' $field with this $data:
+     * Given a 'front_picture' $attributeCode with this $data:
      * [
      *     [
      *         'locale' => 'de_DE',

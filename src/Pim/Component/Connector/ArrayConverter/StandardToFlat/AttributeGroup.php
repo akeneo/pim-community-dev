@@ -16,9 +16,9 @@ class AttributeGroup extends AbstractSimpleArrayConverter implements ArrayConver
     /**
      * {@inheritdoc}
      */
-    protected function convertField($field, $data, array $convertedItem, array $options)
+    protected function convertProperty($property, $data, array $convertedItem, array $options)
     {
-        switch ($field) {
+        switch ($property) {
             case 'label':
                 foreach ($data as $localeCode => $label) {
                     $labelKey = sprintf('label-%s', $localeCode);
@@ -26,10 +26,10 @@ class AttributeGroup extends AbstractSimpleArrayConverter implements ArrayConver
                 }
                 break;
             case 'attributes':
-                $convertedItem[$field] = implode(',', $data);
+                $convertedItem[$property] = implode(',', $data);
                 break;
             default:
-                $convertedItem[$field] = (string) $data;
+                $convertedItem[$property] = (string) $data;
         }
 
         return $convertedItem;

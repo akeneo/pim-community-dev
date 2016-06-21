@@ -22,7 +22,7 @@ class ProductSpec extends ObjectBehavior
 
     function it_converts_from_standard_to_flat_format($valueConverter)
     {
-        $valueConverter->convertField('sku',
+        $valueConverter->convertAttribute('sku',
             [
                 [
                     'locale' => null,
@@ -32,7 +32,7 @@ class ProductSpec extends ObjectBehavior
             ]
         )->willReturn(['sku' => '10699783']);
 
-        $valueConverter->convertField('weight',
+        $valueConverter->convertAttribute('weight',
             [
                 [
                     'locale' => 'de_DE',

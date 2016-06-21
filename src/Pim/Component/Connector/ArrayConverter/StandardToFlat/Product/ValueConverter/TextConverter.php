@@ -28,9 +28,9 @@ class TextConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      *
-     * Convert a standard formatted text field to a flat one.
+     * Convert a standard formatted text product value to a flat one.
      *
-     * Given a 'name' $field with this $data:
+     * Given a 'name' $attributeCode with this $data:
      * [
      *     [
      *         'locale' => 'de_DE',

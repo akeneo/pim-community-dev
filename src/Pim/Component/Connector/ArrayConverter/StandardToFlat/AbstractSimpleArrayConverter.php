@@ -21,20 +21,20 @@ abstract class AbstractSimpleArrayConverter implements ArrayConverterInterface
     {
         $convertedItem = [];
 
-        foreach ($item as $field => $data) {
-            $convertedItem = $this->convertField($field, $data, $convertedItem, $options);
+        foreach ($item as $property => $data) {
+            $convertedItem = $this->convertProperty($property, $data, $convertedItem, $options);
         }
 
         return $convertedItem;
     }
 
     /**
-     * @param string $field
+     * @param string $property
      * @param mixed  $data
      * @param array  $convertedItem
      * @param array  $options
      *
      * @return array the converted item
      */
-    abstract protected function convertProperty($field, $data, array $convertedItem, array $options);
+    abstract protected function convertProperty($property, $data, array $convertedItem, array $options);
 }

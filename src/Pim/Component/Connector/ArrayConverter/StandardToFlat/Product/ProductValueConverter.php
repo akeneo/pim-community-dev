@@ -38,7 +38,7 @@ class ProductValueConverter
      *
      * @return array
      */
-    public function convertField($attributeCode, $data)
+    public function convertAttribute($attributeCode, $data)
     {
         $attribute = $this->attributeRepo->findOneByIdentifier($attributeCode);
         $converter = $this->converterRegistry->getConverter($attribute->getAttributeType());

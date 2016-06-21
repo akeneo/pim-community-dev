@@ -28,9 +28,9 @@ class SimpleSelectConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      *
-     * Convert a standard simpleselect field to a flat one.
+     * Convert a standard simpleselect product value to a flat one.
      *
-     * Given a 'gift_type' $field with this $data:
+     * Given a 'gift_type' $attributeCode with this $data:
      * [
      *     [
      *         'locale' => 'de_DE',
