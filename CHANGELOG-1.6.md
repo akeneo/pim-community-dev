@@ -18,7 +18,7 @@
 - PIM-5431: Export the products updated since a defined date
 - PIM-5602: Introduce "move to categories" action in products mass edit
 - PIM-5432: Export the products updated for a period
-- PIM-5633: Export a list of product with their identifiers
+- PIM-5633: Export products by identifiers
 - PIM-5604: Introduce "remove from categories" action in products mass edit
 - PIM-5681: Introduce a new command to purge entity versions stored in the PIM (see pim:versioning:purge command)
 
@@ -347,4 +347,3 @@
 - Add parameter `$operationGroup` to `Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver::getAvailableOperationsForm()`
 - Add parameter `$operationGroup` to `Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface::register()`
 - Replace method `getAllByGridName()` by `getAllByGridNameAndGroup()` in `Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface`
-- Change constructor of `Pim\Component\Connector\Reader\Database\ProductReader`. Add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` as the seventh argument.

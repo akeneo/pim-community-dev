@@ -4,4 +4,4 @@ No products to remove: No products to remove
 
 pim_catalog:
     constraint:
-        valid_identifier: These identifiers "%s" does not exist.
+        product_identifier: These identifiers "%s" don't exist.

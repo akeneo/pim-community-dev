@@ -7,7 +7,6 @@ use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterfa
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Component\Catalog\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Choice;
-use Pim\Component\Catalog\Validator\Constraints\ValidIdentifier;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\GreaterThan;
@@ -76,6 +75,7 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
             new GreaterThan(1)
         ];
         $constraintFields['families'] = [];
+        $constraintFields['product_identifier'] = [];
         $constraintFields['completeness'] = [
             new NotBlank(['groups' => 'Execution']),
             new Choice(['choices' => [
@@ -85,7 +85,6 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
                 'all',
             ], 'groups' => 'Execution'])
         ];
-        $constraintFields['product_identifier'] = new ValidIdentifier(['groups' => 'Execution']);
 
         return new Collection(['fields' => $constraintFields]);
     }

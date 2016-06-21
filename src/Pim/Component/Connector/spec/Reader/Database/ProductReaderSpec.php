@@ -641,6 +641,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('updated_since_strategy')->willReturn('since_n_days');
         $jobParameters->get('updated_since_n_days')->willReturn(10);
         $jobParameters->get('families')->willReturn('');
+        $jobParameters->get('product_identifier')->willReturn(null);
         
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);

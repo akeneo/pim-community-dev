@@ -48,7 +48,5 @@ services:
 
     pim_import_export.form.type.pim_product_identifier_choice:
         class: '%pim_import_export.form.type.pim_product_identifier_choice.class%'
-        arguments:
-            - '@router'
         tags:
             - { name: form.type, alias: pim_product_identifier_choice }

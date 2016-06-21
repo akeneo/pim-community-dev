@@ -58,6 +58,9 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /** @var CursorInterface */
     protected $products;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
@@ -66,7 +69,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * @param ObjectDetacherInterface             $objectDetacher
      * @param JobRepositoryInterface              $jobRepository
      * @param AttributeRepositoryInterface        $attributeRepository
-     * @param bool                                 $generateCompleteness
+     * @param bool                                $generateCompleteness
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -97,14 +100,15 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $parameters = $this->stepExecution->getJobParameters();
 
         $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
-        $filters = array_merge($this->getFilters(
+        $filters = array_merge(
+            $this->getFilters(
                 $channel,
                 $this->rawToStandardProductStatus($parameters->get('enabled')),
                 $this->rawToStandardProductUpdated($parameters),
                 array_filter(explode(',', $parameters->get('families')))
             ),
             $this->getCompletenessFilters($parameters),
-            $this->getProductIdentifier($parameters)
+            $this->getProductIdentifiersFilter($parameters)
         );
 
         foreach ($filters as $filter) {
@@ -328,17 +332,18 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      *
      * @return array
      */
-    protected function getProductIdentifier(JobParameters $parameters)
+    protected function getProductIdentifiersFilter(JobParameters $parameters)
     {
         $filter = [];
-        if (null !== $productIdentifier = $parameters->get('product_identifier')) {
-            $productIdentifier = explode(',', $productIdentifier);
+        $productIdentifiers = $parameters->get('product_identifier');
+        if (null !== $productIdentifiers) {
+            $productIdentifiers = explode(',', $productIdentifiers);
             $attribute = $this->attributeRepository->findOneBy(['attributeType' => AttributeTypes::IDENTIFIER]);
 
             $filter[] = [
                 'field'    => $attribute->getCode(),
                 'operator' => Operators::IN_LIST,
-                'value'    => $productIdentifier,
+                'value'    => $productIdentifiers,
                 'context'  => []
             ];
         }

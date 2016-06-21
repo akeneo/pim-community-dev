@@ -40,23 +40,5 @@ class PimImportExportExtension extends Extension
         $loader->load('services.yml');
         $loader->load('view_elements.yml');
         $loader->load('view_elements/job_profile.yml');
-
-        $this->loadStorageDriver($container);
-    }
-
-
-    /**
-     * Load the mapping for product and product storage
-     *
-     * @param ContainerBuilder $container
-     */
-    protected function loadStorageDriver(ContainerBuilder $container)
-    {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
-        $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
-        if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
-            $loader->load($storageConfig);
-        }
     }
 }

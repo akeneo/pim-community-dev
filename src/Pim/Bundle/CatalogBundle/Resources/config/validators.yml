@@ -38,7 +38,7 @@ parameters:
     pim_catalog.validator.mapping.delegating_class_metadata_factory.class: Pim\Component\Catalog\Validator\Mapping\DelegatingClassMetadataFactory
     pim_catalog.validator.mapping.product_value_metadata_factory.class:    Pim\Component\Catalog\Validator\Mapping\ProductValueMetadataFactory
     pim_catalog.validator.unique_value_set.class:                          Pim\Component\Catalog\Validator\UniqueValuesSet
-    pim_catalog.constraint.valid_identifier.class:                         Pim\Component\Catalog\Validator\Constraints\ValidIdentifierValidator
+    pim_catalog.constraint.product_identifier.class:                       Pim\Component\Catalog\Validator\Constraints\ValidIdentifierValidator
 
 services:
     # Helpers
@@ -290,10 +290,3 @@ services:
             - '@pim_catalog.validator.mapping.delegating_class_metadata_factory'
             - '@validator.validator_factory'
             - []
-
-    pim_catalog.constraint.valid_identifier:
-        class: '%pim_catalog.constraint.valid_identifier.class%'
-        arguments:
-            - '@pim_catalog.repository.product'
-        tags:
-            - { name: validator.constraint_validator, alias: valid_identifier }
