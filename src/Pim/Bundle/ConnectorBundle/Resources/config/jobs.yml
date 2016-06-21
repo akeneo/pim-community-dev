@@ -1,6 +1,8 @@
 parameters:
     pim_connector.connector_name.csv: 'Akeneo CSV Connector'
     pim_connector.connector_name.xlsx: 'Akeneo XLSX Connector'
+    pim_connector.connector_name.mass_edit: 'Akeneo Mass Edit Connector'
+    pim_connector.connector_name.data_fixtures: 'Data fixtures'
     pim_connector.job_name.csv_attribute_export: 'csv_attribute_export'
     pim_connector.job_name.csv_attribute_import: 'csv_attribute_import'
     pim_connector.job_name.csv_attribute_option_export: 'csv_attribute_option_export'

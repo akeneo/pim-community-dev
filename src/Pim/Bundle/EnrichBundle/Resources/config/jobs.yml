@@ -1,5 +1,4 @@
 parameters:
-    pim_connector.connector_name.mass_edit: 'Akeneo Mass Edit Connector'
     pim_enrich.job_name.csv_product_quick_export: 'csv_product_quick_export'
     pim_enrich.job_name.csv_product_grid_context_quick_export: 'csv_product_grid_context_quick_export'
     pim_enrich.job_name.xlsx_product_quick_export: 'xlsx_product_quick_export'
