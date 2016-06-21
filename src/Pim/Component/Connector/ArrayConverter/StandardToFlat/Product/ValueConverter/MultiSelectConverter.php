@@ -15,17 +15,6 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColum
 class MultiSelectConverter extends AbstractValueConverter implements ValueConverterInterface
 {
     /**
-     * @param AttributeColumnsResolver $columnsResolver
-     * @param array                    $supportedFieldType
-     */
-    public function __construct(AttributeColumnsResolver $columnsResolver, array $supportedFieldType)
-    {
-        parent::__construct($columnsResolver);
-
-        $this->supportedFieldType = $supportedFieldType;
-    }
-
-    /**
      * {@inheritdoc}
      *
      * Convert a standard multiselect product value to a flat one.

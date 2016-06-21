@@ -16,14 +16,16 @@ abstract class AbstractValueConverter implements ValueConverterInterface
     protected $columnsResolver;
 
     /** @var array */
-    protected $supportedFieldType;
+    protected $supportedAttributeTypes;
 
     /**
      * @param AttributeColumnsResolver $columnsResolver
+     * @param array                    $supportedAttributeTypes
      */
-    public function __construct(AttributeColumnsResolver $columnsResolver)
+    public function __construct(AttributeColumnsResolver $columnsResolver, array $supportedAttributeTypes)
     {
         $this->columnsResolver = $columnsResolver;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
     }
 
     /**
@@ -31,6 +33,6 @@ abstract class AbstractValueConverter implements ValueConverterInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return in_array($attribute->getAttributeType(), $this->supportedFieldType);
+        return in_array($attribute->getAttributeType(), $this->supportedAttributeTypes);
     }
 }

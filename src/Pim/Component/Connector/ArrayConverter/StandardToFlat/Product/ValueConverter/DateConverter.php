@@ -12,17 +12,6 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColum
 class DateConverter extends AbstractValueConverter implements ValueConverterInterface
 {
     /**
-     * @param AttributeColumnsResolver $columnsResolver
-     * @param array                    $supportedFieldType
-     */
-    public function __construct(AttributeColumnsResolver $columnsResolver, array $supportedFieldType)
-    {
-        parent::__construct($columnsResolver);
-
-        $this->supportedFieldType = $supportedFieldType;
-    }
-
-    /**
      * {@inheritdoc}
      *
      * Given a 'release_date' $attributeCode with this $data:
