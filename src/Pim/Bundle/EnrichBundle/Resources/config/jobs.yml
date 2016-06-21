@@ -4,6 +4,12 @@ parameters:
     pim_enrich.job_name.csv_product_grid_context_quick_export: 'csv_product_grid_context_quick_export'
     pim_enrich.job_name.xlsx_product_quick_export: 'xlsx_product_quick_export'
     pim_enrich.job_name.xlsx_product_grid_context_quick_export: 'xlsx_product_grid_context_quick_export'
+    pim_enrich.job.name.update_product_value: 'update_product_value'
+    pim_enrich.job.name.add_product_value: 'add_product_value'
+    pim_enrich.job.name.remove_product_value: 'remove_product_value'
+    pim_enrich.job.name.edit_common_attributes: 'edit_common_attributes'
+    pim_enrich.job.name.set_attribute_requirements: 'set_attribute_requirements'
+    pim_enrich.job.name.add_to_variant_group: 'add_to_variant_group'
     pim_enrich.job.simple_job.class: Akeneo\Component\Batch\Job\Job
     pim_enrich.step.item_step.class: Akeneo\Component\Batch\Step\ItemStep
 
@@ -53,3 +59,71 @@ services:
                 - '@pim_enrich.step.xlsx_product_quick_export.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.quick_export_type%' }
+
+    # Mass Edit -------------------------------------------------------------------------------------------------------
+    pim_enrich.job.update_product_value:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.update_product_value%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.update_product_value.mass_edit'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pim_enrich.job.add_product_value:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.add_product_value%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.add_product_value.mass_edit'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pim_enrich.job.remove_product_value:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.remove_product_value%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.remove_product_value.mass_edit'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pim_enrich.job.edit_common_attributes:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.edit_common_attributes%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.edit_common_attributes.mass_edit'
+                - '@pim_enrich.step.cleaner'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pim_enrich.job.set_attribute_requirements:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.set_attribute_requirements%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.set_attribute_requirements.mass_edit'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pim_enrich.job.add_to_variant_group:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.add_to_variant_group%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.add_to_variant_group.mass_edit'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
