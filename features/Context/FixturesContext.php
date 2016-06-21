@@ -474,7 +474,13 @@ class FixturesContext extends BaseFixturesContext
                 ['code' => $data['code'], 'attribute' => $attribute]
             );
             $option->setLocale('en_US');
-            assertEquals($i+1, $option->getSortOrder());
+
+            if (!isset($data['sort_order'])) {
+                assertEquals($i+1, $option->getSortOrder());
+            } else {
+                assertEquals($data['sort_order'], $option->getSortOrder());
+            }
+
             assertEquals($data['code'], $option->getCode());
             assertEquals($data['label-en_US'], $option->getOptionValue()->getValue());
             $this->detach($option);
