@@ -10,7 +10,7 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColum
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-abstract class AbstractValueConverter
+abstract class AbstractValueConverter implements ValueConverterInterface
 {
     /** @var AttributeColumnsResolver */
     protected $columnsResolver;
@@ -27,22 +27,10 @@ abstract class AbstractValueConverter
     }
 
     /**
-     * Does the converter supports the attribute
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array($attribute->getAttributeType(), $this->supportedFieldType);
     }
-
-    /**
-     * @param string $attributeCode
-     * @param mixed  $data
-     *
-     * @return array
-     */
-    abstract public function convert($attributeCode, $data);
 }

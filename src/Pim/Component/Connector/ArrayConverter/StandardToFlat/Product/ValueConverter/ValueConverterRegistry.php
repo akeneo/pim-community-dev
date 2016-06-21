@@ -11,13 +11,13 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class ValueConverterRegistry
 {
-    /** @var AbstractValueConverter[] */
+    /** @var ValueConverterInterface[] */
     protected $converters = [];
 
     /**
      * {@inheritdoc}
      */
-    public function register(AbstractValueConverter $converter, $priority)
+    public function register(ValueConverterInterface $converter, $priority)
     {
         $priority = (int)$priority;
         if (!isset($this->converters[$priority])) {
@@ -34,7 +34,7 @@ class ValueConverterRegistry
     /**
      * @param AttributeInterface $attribute
      *
-     * @return AbstractValueConverter|null
+     * @return ValueConverterInterface|null
      */
     public function getConverter(AttributeInterface $attribute)
     {
