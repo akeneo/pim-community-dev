@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
 class ExistingFilterField extends Constraint
 {
     /** @var string */
-    public $message = 'The field "%field%" cannot be filtered.';
+    public $message = 'The field "%field%" cannot be filtered or cannot be used with operator "%operator%".';
 
     /**
      * {@inheritdoc}
@@ -29,5 +29,13 @@ class ExistingFilterField extends Constraint
     public function validatedBy()
     {
         return 'pimee_filter_field_validator';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTargets()
+    {
+        return static::CLASS_CONSTRAINT;
     }
 }
