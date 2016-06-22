@@ -58,6 +58,10 @@ Feature: List all rules
           - field:    enabled
             operator: =
             value:    false
+          - field: description
+            locale: en_US
+            scope: mobile
+            operator: EMPTY
         actions:
           - type:   set
             field:  description
@@ -123,6 +127,7 @@ Feature: List all rules
       | column    | value                                                               |
       | Condition | If categories.code in tees                                          |
       | Condition | If enabled equals false                                             |
+      | Condition | If description is empty [ en \| mobile ]                            |
       | Action    | Then une belle description is set into description [ fr \| mobile ] |
       | Action    | Then 800 is set into number_in_stock [ tablet ]                     |
       | Action    | Then 05/26/2015 is set into release_date [ mobile ]                 |
@@ -143,3 +148,11 @@ Feature: List all rules
     And I should see the text "Are you sure you want to delete this item?"
     And I confirm the deletion
     And the grid should contain 1 elements
+
+  Scenario: Successfully delete a set of rules using bulk action
+    When I select rows copy_description and update_tees_collection
+    And I press "Delete the selected rules" on the "Bulk Action" dropdown button
+    Then I should see the text "Delete confirmation"
+    And I should see the text "Are you sure you want to delete the selected rules?"
+    When I confirm the deletion
+    Then the grid should contain 0 elements

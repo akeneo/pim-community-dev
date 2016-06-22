@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Repository;
 
+use Doctrine\ORM\EntityManager;
 use Pim\Component\Catalog\Repository\MassActionRepositoryInterface;
 
 /**
@@ -18,6 +19,22 @@ use Pim\Component\Catalog\Repository\MassActionRepositoryInterface;
  */
 class RuleDefinitionMassEditRepository implements MassActionRepositoryInterface
 {
+    /** @var string */
+    protected $entityName;
+
+    /** @var EntityManager */
+    protected $em;
+
+    /**
+     * @param EntityManager $em
+     * @param string        $entityName
+     */
+    public function __construct(EntityManager $em, $entityName)
+    {
+        $this->em         = $em;
+        $this->entityName = $entityName;
+    }
+
     /**
      * @param mixed $qb
      * @param bool  $inset
@@ -37,5 +54,26 @@ class RuleDefinitionMassEditRepository implements MassActionRepositoryInterface
         $qb
             ->resetDQLPart('orderBy')
             ->setMaxResults(null);
+    }
+
+    /**
+     * Delete a list of rules
+     *
+     * @param mixed[] $ids
+     *
+     * @return int number of impacted rows
+     */
+    public function deleteFromIds(array $ids)
+    {
+        if (empty($ids)) {
+            return 0;
+        }
+
+        return $this->em->createQueryBuilder()
+            ->delete($this->entityName, 'r')
+            ->where('r.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->execute();
     }
 }

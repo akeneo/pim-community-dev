@@ -13,7 +13,8 @@ pimee_catalog_rule:
                     count: "{0,1}%count% matching product|]1,Inf[ %count% matching products"
                     no_yet_calculated: Not yet calculated
             mass_edit_action:
-                impacted_product_count: Calculate the matching products for the rules
+                impacted_product_count: Calculate the matching products
+                delete: Delete the selected rules
     actions:
         type:
             "copy": Then %from_field% is copied into %to_field%
@@ -29,8 +30,8 @@ pimee_catalog_rule:
             "ENDS WITH": ends with
             "CONTAINS": contains
             "DOES NOT CONTAIN": does not contain
-            "EMPTY": empty
-            "NOT EMPTY": not empty
+            "EMPTY": is empty
+            "NOT EMPTY": is not empty
             "IN": in
             "NOT IN": not in
             "IN CHILDREN": in children
