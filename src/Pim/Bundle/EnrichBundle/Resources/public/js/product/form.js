@@ -148,6 +148,25 @@ define(
             },
 
             /**
+             * Remove all attributes from the root model
+             */
+            clearData: function (options) {
+                options = options || {};
+
+                if (!options.silent) {
+                    this.getRoot().trigger('pim_enrich:form:entity:pre_update', {});
+                }
+
+                this.getRoot().model.clear();
+
+                if (!options.silent) {
+                    this.getRoot().trigger('pim_enrich:form:entity:post_update', {});
+                }
+
+                return this;
+            },
+
+            /**
              * Get the form raw data (vanilla javascript object)
              *
              * @return {Object}
