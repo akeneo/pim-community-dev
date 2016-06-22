@@ -396,7 +396,7 @@ services:
     pim_connector.job.xlsx_category_export:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - '%%pim_connector.job_name.xlsx_category_export%'
+            - '%pim_connector.job_name.xlsx_category_export%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
@@ -407,7 +407,7 @@ services:
     pim_connector.job.xlsx_variant_group_export:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - '%%pim_connector.job_name.xlsx_variant_group_export%'
+            - '%pim_connector.job_name.xlsx_variant_group_export%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
