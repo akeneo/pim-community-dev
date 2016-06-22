@@ -20,6 +20,9 @@ class JobRegistry
     /** @var JobInterface[][] */
     protected $jobsByConnector = [];
 
+    /** @var JobInterface[][] */
+    protected $jobsByTypeGroupByConnector = [];
+
     /**
      * @param JobInterface $job
      * @param string       $jobType
@@ -36,6 +39,7 @@ class JobRegistry
         }
         $this->jobs[$job->getName()] = $job;
         $this->jobsByType[$jobType][$job->getName()] = $job;
+        $this->jobsByTypeGroupByConnector[$jobType][$connector][$job->getName()] = $job;
         $this->jobsByConnector[$connector][$job->getName()] = $job;
     }
 
@@ -81,6 +85,24 @@ class JobRegistry
         }
 
         return $this->jobsByType[$jobType];
+    }
+
+    /**
+     * @param string $jobType
+     *
+     * @throws UndefinedJobException
+     *
+     * @return JobInterface[]
+     */
+    public function allByTypeGroupByConnector($jobType)
+    {
+        if (!isset($this->jobsByTypeGroupByConnector[$jobType])) {
+            throw new UndefinedJobException(
+                sprintf('There is no registered job with the type "%s"', $jobType)
+            );
+        }
+
+        return $this->jobsByTypeGroupByConnector[$jobType];
     }
 
     /**

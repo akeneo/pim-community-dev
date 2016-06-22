@@ -298,7 +298,7 @@ services:
                 - '@pim_connector.step.xlsx_product_import.import'
                 - '@pim_connector.step.xlsx_product_import.import_associations'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%akeneo_batch.job.import_type%' }
 
     pim_connector.job.xlsx_category_import:
         class: '%pim_connector.job.simple_job.class%'
@@ -310,7 +310,7 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.xlsx_category_import.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%akeneo_batch.job.import_type%' }
 
     pim_connector.job.xlsx_variant_group_import:
         class: '%pim_connector.job.simple_job.class%'
@@ -322,7 +322,7 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.xlsx_variant_group_import.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%akeneo_batch.job.import_type%' }
 
     # XLSX Exports ----------------------------------------------------------------------------------------------------
     pim_connector.job.xlsx_attribute_export:

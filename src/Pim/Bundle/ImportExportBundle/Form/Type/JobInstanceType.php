@@ -172,7 +172,7 @@ class JobInstanceType extends AbstractType
     protected function addJobNameField(FormBuilderInterface $builder)
     {
         $choices = [];
-        foreach ($this->jobRegistry->allByType($this->jobType) as $connector => $jobs) {
+        foreach ($this->jobRegistry->allByTypeGroupByConnector($this->jobType) as $connector => $jobs) {
             foreach ($jobs as $key => $job) {
                 $choices[$connector][$key] = $this->jobLabelProvider->getJobLabel($job->getName());
             }
