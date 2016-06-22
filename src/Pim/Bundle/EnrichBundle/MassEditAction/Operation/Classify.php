@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 
 /**
- * Batch operation to classify products
+ * Batch operation to classify entities
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -16,12 +16,22 @@ class Classify extends AbstractMassEditOperation
     /** @var CategoryInterface[] */
     protected $categories;
 
+    /** @var string */
+    protected $itemsName;
+
+    /** @var string */
+    protected $formType;
+
     /**
      * @param string $batchJobCode
+     * @param string $itemsName
+     * @param string $formType
      */
-    public function __construct($batchJobCode)
+    public function __construct($batchJobCode, $itemsName, $formType)
     {
         $this->batchJobCode = $batchJobCode;
+        $this->itemsName = $itemsName;
+        $this->formType = $formType;
         $this->categories = [];
     }
 
@@ -58,7 +68,7 @@ class Classify extends AbstractMassEditOperation
      */
     public function getFormType()
     {
-        return 'pim_enrich_mass_classify';
+        return $this->formType;
     }
 
     /**
@@ -74,7 +84,7 @@ class Classify extends AbstractMassEditOperation
      */
     public function getItemsName()
     {
-        return 'product';
+        return $this->itemsName;
     }
 
     /**
