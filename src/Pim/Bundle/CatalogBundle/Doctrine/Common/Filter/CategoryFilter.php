@@ -37,8 +37,6 @@ class CategoryFilter implements FieldFilterInterface
     protected $supportedOperators;
 
     /**
-     * Instanciate the base filter
-     *
      * @param CategoryRepositoryInterface           $categoryRepository
      * @param CategoryFilterableRepositoryInterface $itemCategoryRepo
      * @param ObjectIdResolverInterface             $objectIdResolver
@@ -113,6 +111,14 @@ class CategoryFilter implements FieldFilterInterface
     public function supportsField($field)
     {
         return in_array($field, $this->supportedFields);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFields()
+    {
+        return $this->supportedFields;
     }
 
     /**

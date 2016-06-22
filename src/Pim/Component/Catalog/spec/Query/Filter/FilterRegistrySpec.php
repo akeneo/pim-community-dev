@@ -26,28 +26,43 @@ class FilterRegistrySpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FilterRegistryInterface');
     }
 
-    function it_returns_a_supported_field_filter($fieldFilter)
+    function it_returns_a_supported_field_filter_and_operator($fieldFilter)
     {
         $fieldFilter->supportsField('field')->willReturn(true);
-        $this->getFieldFilter('field')->shouldReturn($fieldFilter);
+        $fieldFilter->supportsOperator('>')->willReturn(true);
+        $this->getFieldFilter('field', '>')->shouldReturn($fieldFilter);
     }
 
-    function it_returns_null_when_not_supported_field_filter($fieldFilter)
+    function it_returns_null_when_not_supported_field_filter_or_operator($fieldFilter)
     {
         $fieldFilter->supportsField('field')->willReturn(false);
-        $this->getFieldFilter('field')->shouldReturn(null);
+        $fieldFilter->supportsOperator('>')->willReturn(true);
+        $this->getFieldFilter('field', '>')->shouldReturn(null);
+
+        $fieldFilter->supportsField('another_field')->willReturn(true);
+        $fieldFilter->supportsOperator('>')->willReturn(false);
+        $this->getFieldFilter('another_field', '>')->shouldReturn(null);
     }
 
-    function it_returns_a_supported_attribute_filter($attributeFilter, AttributeInterface $attribute)
+    function it_returns_a_supported_attribute_filter_and_operator($attributeFilter, AttributeInterface $attribute)
     {
         $attributeFilter->supportsAttribute($attribute)->willReturn(true);
-        $this->getAttributeFilter($attribute)->shouldReturn($attributeFilter);
+        $attributeFilter->supportsOperator('<')->willReturn(true);
+        $this->getAttributeFilter($attribute, '<')->shouldReturn($attributeFilter);
     }
 
-    function it_returns_null_when_not_supported_attribute_filter($attributeFilter, AttributeInterface $attribute)
-    {
+    function it_returns_null_when_not_supported_attribute_filter_or_operator(
+        $attributeFilter,
+        AttributeInterface $attribute,
+        AttributeInterface $attribute2
+    ) {
         $attributeFilter->supportsAttribute($attribute)->willReturn(false);
-        $this->getAttributeFilter($attribute)->shouldReturn(null);
+        $attributeFilter->supportsOperator('<')->willReturn(true);
+        $this->getAttributeFilter($attribute, '<')->shouldReturn(null);
+
+        $attributeFilter->supportsAttribute($attribute2)->willReturn(true);
+        $attributeFilter->supportsOperator('<')->willReturn(false);
+        $this->getAttributeFilter($attribute2, '<')->shouldReturn(null);
     }
 
     function it_returns_a_supported_filter($attributeFilter, $attributeRepository, AttributeInterface $attribute)
@@ -55,6 +70,17 @@ class FilterRegistrySpec extends ObjectBehavior
         $attributeRepository->findOneBy(Argument::any())->willReturn($attribute);
 
         $attributeFilter->supportsAttribute($attribute)->willReturn(true);
-        $this->getAttributeFilter($attribute)->shouldReturn($attributeFilter);
+        $attributeFilter->supportsOperator('EMPTY')->willReturn(true);
+        $this->getFilter('name', 'EMPTY')->shouldReturn($attributeFilter);
+    }
+
+    function it_returns_field_filters($fieldFilter)
+    {
+        $this->getFieldFilters()->shouldReturn([$fieldFilter]);
+    }
+
+    function it_returns_attribute_filters($attributeFilter)
+    {
+        $this->getAttributeFilters()->shouldReturn([$attributeFilter]);
     }
 }

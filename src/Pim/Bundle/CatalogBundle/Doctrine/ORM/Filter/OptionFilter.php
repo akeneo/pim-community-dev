@@ -20,9 +20,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var array */
-    protected $supportedAttributes;
-
     /** @var ObjectIdResolverInterface */
     protected $objectIdResolver;
 
@@ -30,23 +27,21 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected $resolver;
 
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper  $attrValidatorHelper
      * @param ObjectIdResolverInterface $objectIdResolver
-     * @param array                     $supportedAttributes
+     * @param array                     $supportedAttributeTypes
      * @param array                     $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         ObjectIdResolverInterface $objectIdResolver,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->objectIdResolver    = $objectIdResolver;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
+        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->objectIdResolver        = $objectIdResolver;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedOperators      = $supportedOperators;
 
         $this->resolver = new OptionsResolver();
         $this->configureOptions($this->resolver);
@@ -81,7 +76,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $this->checkValue($field, $value);
         }
 
-        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
 
         // prepare join value condition
         $optionAlias = $joinAlias . '.option';
@@ -114,14 +109,6 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
         }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
     }
 
     /**

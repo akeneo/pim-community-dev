@@ -19,29 +19,24 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterInterface, FieldFilterInterface
 {
     /** @var array */
-    protected $supportedAttributes;
-
-    /** @var array */
     protected $supportedFields;
 
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributes
+     * @param array                    $supportedAttributeTypes
      * @param array                    $supportedFields
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedFields     = $supportedFields;
-        $this->supportedOperators  = $supportedOperators;
+        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedFields         = $supportedFields;
+        $this->supportedOperators      = $supportedOperators;
     }
 
     /**
@@ -100,16 +95,16 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
     /**
      * {@inheritdoc}
      */
-    public function supportsField($field)
+    public function getFields()
     {
-        return in_array($field, $this->supportedFields);
+        return $this->supportedFields;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AttributeInterface $attribute)
+    public function supportsField($field)
     {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
+        return in_array($field, $this->supportedFields);
     }
 }

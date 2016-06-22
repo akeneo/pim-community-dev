@@ -17,7 +17,7 @@ class FilterRegistry implements FilterRegistryInterface
     /** @var AttributeFilterInterface[] priorized attribute filters */
     protected $attributeFilters = [];
 
-    /** @var FieldSorterInterface[] priorized field filters */
+    /** @var FieldFilterInterface[] priorized field filters */
     protected $fieldFilters = [];
 
     /** @var AttributeRepositoryInterface */
@@ -47,24 +47,24 @@ class FilterRegistry implements FilterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getFilter($code)
+    public function getFilter($code, $operator)
     {
         $attribute = $this->attributeRepository->findOneBy(['code' => FieldFilterHelper::getCode($code)]);
 
         if (null !== $attribute) {
-            return $this->getAttributeFilter($attribute);
+            return $this->getAttributeFilter($attribute, $operator);
         }
 
-        return $this->getFieldFilter($code);
+        return $this->getFieldFilter($code, $operator);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFieldFilter($field)
+    public function getFieldFilter($field, $operator)
     {
         foreach ($this->fieldFilters as $filter) {
-            if ($filter->supportsField($field)) {
+            if ($filter->supportsField($field) && $filter->supportsOperator($operator)) {
                 return $filter;
             }
         }
@@ -75,14 +75,30 @@ class FilterRegistry implements FilterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeFilter(AttributeInterface $attribute)
+    public function getAttributeFilter(AttributeInterface $attribute, $operator)
     {
         foreach ($this->attributeFilters as $filter) {
-            if ($filter->supportsAttribute($attribute)) {
+            if ($filter->supportsAttribute($attribute) && $filter->supportsOperator($operator)) {
                 return $filter;
             }
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFieldFilters()
+    {
+        return $this->fieldFilters;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeFilters()
+    {
+        return $this->attributeFilters;
     }
 }

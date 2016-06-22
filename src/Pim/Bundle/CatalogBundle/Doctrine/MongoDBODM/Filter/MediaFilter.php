@@ -18,30 +18,19 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var array */
-    protected $supportedAttributes;
-
     /**
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributes
+     * @param array                    $supportedAttributeTypes
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
+        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedOperators      = $supportedOperators;
     }
 
     /**
@@ -117,7 +106,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
      * @param AttributeInterface $attribute
      * @param mixed              $value
      */
-    public function checkValue(AttributeInterface $attribute, $value)
+    protected function checkValue(AttributeInterface $attribute, $value)
     {
         if (!is_string($value)) {
             throw InvalidArgumentException::stringExpected(

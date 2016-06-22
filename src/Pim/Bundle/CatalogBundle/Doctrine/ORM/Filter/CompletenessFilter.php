@@ -13,11 +13,8 @@ use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
+class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    /** @var array */
-    protected $supportedFields;
-
     /**
      * @param array $supportedFields
      * @param array $supportedOperators
@@ -67,13 +64,5 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
         if (null === $scope) {
             throw InvalidArgumentException::scopeExpected($field, 'filter', 'completeness');
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsField($field)
-    {
-        return in_array($field, $this->supportedFields);
     }
 }

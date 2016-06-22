@@ -22,6 +22,11 @@ class FamilyFilterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FieldFilterInterface');
     }
 
+    function it_returns_supported_fields()
+    {
+        $this->getFields()->shouldReturn(['family', 'groups']);
+    }
+
     function it_supports_operators()
     {
         $this->getOperators()->shouldReturn(['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']);

@@ -180,4 +180,9 @@ class CompletenessFilterSpec extends ObjectBehavior
             InvalidArgumentException::numericExpected('completeness', 'filter', 'completeness', gettype('123'))
         )->during('addFieldFilter', ['completeness', '=', '12a3', 'fr_FR', 'mobile']);
     }
+
+    function it_returns_supported_fields()
+    {
+        $this->getFields()->shouldReturn(['completeness']);
+    }
 }

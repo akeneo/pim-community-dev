@@ -120,4 +120,9 @@ class GroupsFilterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgumentException::numericExpected('groups', 'filter', 'groups', gettype('WRONG')))
             ->during('addFieldFilter', ['groups.id', 'IN', [1, 2, 'WRONG']]);
     }
+
+    function it_returns_supported_fields()
+    {
+        $this->getFields()->shouldReturn(['groups.id', 'groups.code']);
+    }
 }

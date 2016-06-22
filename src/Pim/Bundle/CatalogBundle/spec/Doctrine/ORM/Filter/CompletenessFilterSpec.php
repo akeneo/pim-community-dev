@@ -30,6 +30,11 @@ class CompletenessFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
+    function it_returns_supported_fields()
+    {
+        $this->getFields()->shouldReturn(['completeness']);
+    }
+
     function it_adds_an_equal_filter_on_a_field_in_the_query(
         $qb,
         Expr $expr,

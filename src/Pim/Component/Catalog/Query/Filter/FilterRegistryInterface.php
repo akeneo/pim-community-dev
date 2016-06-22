@@ -23,27 +23,44 @@ interface FilterRegistryInterface
     /**
      * Get the filter (field or attribute)
      *
-     * @param string $code the field or the attribute code
+     * @param string $code     the field or the attribute code
+     * @param string $operator supported operator
      *
      * @return FilterInterface|null
      */
-    public function getFilter($code);
+    public function getFilter($code, $operator);
 
     /**
      * Get the field filter
      *
-     * @param string $field the field
+     * @param string $field     the field
+     * @param string $operator  supported operator
      *
-     * @return FilterInterface|null
+     * @return FieldFilterInterface|null
      */
-    public function getFieldFilter($field);
+    public function getFieldFilter($field, $operator);
 
     /**
      * Get the attribute filter
      *
      * @param AttributeInterface $attribute
+     * @param string             $operator  supported operator
      *
-     * @return FilterInterface|null
+     * @return AttributeFilterInterface|null
      */
-    public function getAttributeFilter(AttributeInterface $attribute);
+    public function getAttributeFilter(AttributeInterface $attribute, $operator);
+
+    /**
+     * Returns all field filters
+     *
+     * @return FieldFilterInterface[]
+     */
+    public function getFieldFilters();
+
+    /**
+     * Returns all attribute filters
+     *
+     * @return AttributeFilterInterface[]
+     */
+    public function getAttributeFilters();
 }

@@ -19,6 +19,25 @@ abstract class AbstractAttributeFilter extends AbstractFilter implements Attribu
     /** @var AttributeValidatorHelper */
     protected $attrValidatorHelper;
 
+    /** @var string[] */
+    protected $supportedAttributeTypes;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeTypes()
+    {
+        return $this->supportedAttributeTypes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AttributeInterface $attribute)
+    {
+        return in_array($attribute->getAttributeType(), $this->supportedAttributeTypes);
+    }
+
     /**
      * Check locale and scope are valid
      *

@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Command\ProductQueryHelp;
 
 use Pim\Bundle\CatalogBundle\Command\DumperInterface;
+use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Console\Helper\HelperSet;
@@ -29,7 +31,7 @@ class AttributeFilterDumper implements DumperInterface
      */
     public function __construct(FilterRegistryInterface $registry, AttributeRepositoryInterface $repository)
     {
-        $this->registry = $registry;
+        $this->registry   = $registry;
         $this->repository = $repository;
     }
 
@@ -39,30 +41,104 @@ class AttributeFilterDumper implements DumperInterface
     public function dump(OutputInterface $output, HelperSet $helperSet)
     {
         $output->writeln("<info>Useable attributes filters...</info>");
-        $attributes = $this->repository->findAll();
+        $attributeFilters = $this->getAttributeFilters();
+        $attributes       = $this->repository->findAll();
+
         $rows = [];
         foreach ($attributes as $attribute) {
-            $field = $attribute->getCode();
-            $filter = $this->registry->getAttributeFilter($attribute);
-            if ($filter) {
-                $class = get_class($filter);
-                $operators = implode(', ', $filter->getOperators());
-            } else {
-                $class = 'Not supported';
-                $operators = '';
-            }
-            $rows[] = [
-                $field,
-                $attribute->isLocalizable() ? 'yes' : 'no',
-                $attribute->isScopable() ? 'yes' : 'no',
-                $attribute->getAttributeType(),
-                $class,
-                $operators
-            ];
+            $rows = array_merge($rows, $this->getFilterInformationForAttribute($attribute, $attributeFilters));
         }
-        $table = $helperSet->get('table');
-        $headers = ['attribute', 'localizable', 'scopable', 'attribute type', 'filter_class', 'operators'];
+
+        $table   = $helperSet->get('table');
+        $headers = ['attribute', 'localizable', 'scopable', 'attribute type', 'operators', 'filter_class'];
         $table->setHeaders($headers)->setRows($rows);
         $table->render($output);
+    }
+
+    /**
+     * Returns all registered filters indexed by their supported attributes
+     *
+     * @return array
+     */
+    protected function getAttributeFilters()
+    {
+        $attributeFilters = [];
+        foreach ($this->registry->getAttributeFilters() as $filter) {
+            $supportedAttributes = $filter->getAttributeTypes();
+
+            if (null !== $supportedAttributes) {
+                foreach ($supportedAttributes as $attribute) {
+                    $attributeFilters[$attribute][] = $filter;
+                }
+            }
+        }
+
+        return $attributeFilters;
+    }
+
+    /**
+     * Returns available information for the attribute and filters which supports it
+     *
+     * @param AttributeInterface $attribute
+     * @param array              $attributeFilters
+     *
+     * @return array
+     */
+    protected function getFilterInformationForAttribute(AttributeInterface $attribute, array $attributeFilters)
+    {
+        $field         = $attribute->getCode();
+        $attributeType = $attribute->getAttributeType();
+        $isLocalizable = $attribute->isLocalizable() ? 'yes' : 'no';
+        $isScopable    = $attribute->isScopable() ? 'yes' : 'no';
+
+        $newEntries = [];
+        if (array_key_exists($attributeType, $attributeFilters)) {
+            foreach ($attributeFilters[$attributeType] as $filter) {
+                $class     = get_class($filter);
+                $operators = implode(', ', $filter->getOperators());
+
+                $newEntries[] = [
+                    $field,
+                    $isLocalizable,
+                    $isScopable,
+                    $attributeType,
+                    $operators,
+                    $class
+                ];
+            }
+
+            return $newEntries;
+        }
+
+        if ($attribute->isBackendTypeReferenceData()) {
+            foreach ($this->registry->getAttributeFilters() as $filter) {
+                if ($filter->supportsAttribute($attribute)) {
+                    $class     = get_class($filter);
+                    $operators = implode(', ', $filter->getOperators());
+
+                    $newEntries[] = [
+                        $field,
+                        $isLocalizable,
+                        $isScopable,
+                        $attributeType,
+                        $operators,
+                        $class
+                    ];
+                }
+            }
+
+            return $newEntries;
+        }
+
+        return [
+            [
+                $field,
+                $isLocalizable,
+                $isScopable,
+                $attributeType,
+                '',
+                'Not supported'
+            ]
+        ];
     }
 }

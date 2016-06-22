@@ -20,9 +20,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var array */
-    protected $supportedAttributes;
-
     /** @var ObjectIdResolverInterface */
     protected $objectIdResolver;
 
@@ -32,19 +29,19 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
     /**
      * @param AttributeValidatorHelper  $attrValidatorHelper
      * @param ObjectIdResolverInterface $objectIdResolver
-     * @param array                     $supportedAttributes
+     * @param array                     $supportedAttributeTypes
      * @param array                     $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         ObjectIdResolverInterface $objectIdResolver,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->objectIdResolver    = $objectIdResolver;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
+        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->objectIdResolver        = $objectIdResolver;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedOperators      = $supportedOperators;
 
         $this->resolver = new OptionsResolver();
         $this->configureOptions($this->resolver);
@@ -120,14 +117,6 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
         }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
     }
 
     /**

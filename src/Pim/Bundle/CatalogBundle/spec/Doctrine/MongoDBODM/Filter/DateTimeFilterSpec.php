@@ -146,4 +146,9 @@ class DateTimeFilterSpec extends ObjectBehavior
             )
         )->during('addFieldFilter', ['updated', '>', [123, 123, 'three']]);
     }
+
+    function it_returns_supported_fields()
+    {
+        $this->getFields()->shouldReturn(['created', 'updated']);
+    }
 }

@@ -134,4 +134,9 @@ class FamilyFilterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgumentException::numericExpected('family', 'filter', 'family', gettype('WRONG')))
             ->during('addFieldFilter', ['family', 'IN', [1, 2, 'WRONG']]);
     }
+
+    function it_returns_supported_fields()
+    {
+        $this->getFields()->shouldReturn(['family.id', 'family.code']);
+    }
 }

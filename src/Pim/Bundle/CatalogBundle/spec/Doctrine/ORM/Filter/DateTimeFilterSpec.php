@@ -31,6 +31,11 @@ class DateTimeFilterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Query\Filter\FieldFilterInterface');
     }
 
+    function it_returns_supported_fields()
+    {
+        $this->getFields()->shouldReturn(['created', 'updated']);
+    }
+
     function it_supports_operators()
     {
         $this->getOperators()->shouldReturn(['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']);

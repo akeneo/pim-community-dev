@@ -30,6 +30,11 @@ class GroupsFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
+    function it_returns_supported_fields()
+    {
+        $this->getFields()->shouldReturn(['groups']);
+    }
+
     function it_adds_a_in_filter_on_a_field_in_the_query($qb, Expr $expr)
     {
         $qb->getRootAlias()->willReturn('f');

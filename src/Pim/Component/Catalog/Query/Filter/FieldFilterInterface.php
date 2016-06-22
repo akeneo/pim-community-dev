@@ -33,4 +33,11 @@ interface FieldFilterInterface extends FilterInterface
      * @return bool
      */
     public function supportsField($field);
+
+    /**
+     * Returns supported fields
+     *
+     * @return string[]|array
+     */
+    public function getFields();
 }
