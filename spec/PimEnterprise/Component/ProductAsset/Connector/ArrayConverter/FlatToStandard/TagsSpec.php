@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Fla
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
-class TagSpec extends ObjectBehavior
+class TagsSpec extends ObjectBehavior
 {
     function it_converts()
     {

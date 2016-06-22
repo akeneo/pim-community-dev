@@ -20,6 +20,7 @@
 
 ## BC breaks
 
+- Rename `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\Tag` to `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\Tags`
 - Change constructor of `PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor`. Remove `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`.
 - Change constructor of `PimEnterprise\Component\Workflow\Applier\ProductDraftApplier`. Add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`.
 - Remove `PimEnterprise\Bundle\CatalogBundle\Manager\ProductCategoryManager`

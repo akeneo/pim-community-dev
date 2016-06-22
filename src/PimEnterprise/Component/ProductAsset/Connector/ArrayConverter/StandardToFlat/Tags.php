@@ -14,11 +14,11 @@ namespace PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Standard
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 
 /**
- * Standard to flat array converter for asset tag
+ * Standard to flat array converter for asset tag collection
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class Tag implements ArrayConverterInterface
+class Tags implements ArrayConverterInterface
 {
     /**
      * {@inheritdoc}
