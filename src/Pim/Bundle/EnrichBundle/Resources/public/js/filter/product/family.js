@@ -18,16 +18,8 @@ define([
             'change [name="filter-operator"], [name="filter-value"]': 'updateState',
             'click .remove': 'removeFilter'
         },
-        initialize: function () {
-            this.config = { //To remove
-                operators: [
-                    'IN',
-                    'NOT IN',
-                    'EMPTY',
-                    'NOT EMPTY'
-                ],
-                url: 'pim_enrich_family_rest_index'
-            };
+        initialize: function (config) {
+            this.config = config.config;
 
             this.selectOptions = {
                 allowClear: true,

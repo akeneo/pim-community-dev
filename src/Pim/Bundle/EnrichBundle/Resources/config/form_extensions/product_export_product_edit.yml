@@ -37,7 +37,7 @@ extensions:
                     view: pim-filter-product-enabled
                 -
                     field: completeness
-                    view: pim-filter-text
+                    view: pim-filter-product-completeness
                 -
                     field: family.code
                     view: pim-filter-product-family

@@ -10,6 +10,16 @@ extensions:
                 - NOT IN
                 - EMPTY
                 - NOT EMPTY
+            url: pim_enrich_family_rest_index
+
+    pim-filter-product-completeness:
+        module: pim/filter/product/completeness
+        config:
+            operators:
+                - IN
+                - NOT IN
+                - EMPTY
+                - NOT EMPTY
 
     pim-filter-product-enabled:
         module: pim/filter/product/enabled

@@ -1,0 +1,11 @@
+<label class="control-label required"><%- __('pim_enrich.export.product.filter.completeness.title') %></label>
+<div class="controls" style="width: 600px;">
+    <select class="" name="filter-value">
+    <% _.each(operators, function (availableOperator) { %>
+    <option value="<%- availableOperator %>" <%- availableOperator === operator ? 'selected' : '' %>>
+    <%- __('pim_enrich.export.product.filter.completeness.operators.' + availableOperator) %>
+    </option>
+    <% }); %>
+    </select>
+    <% if (removable) { %><i class="remove icon-trash"></i><% } %>
+</div>

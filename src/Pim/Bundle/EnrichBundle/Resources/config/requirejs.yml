@@ -221,12 +221,13 @@ config:
         pim/export/product/edit/content/structure:                 pimenrich/js/export/product/edit/content/structure
 
         # Filters
-        pim/filter/filter:          pimenrich/js/filter/filter
-        pim/filter/text:            pimenrich/js/filter/text
-        pim/filter/simpleselect:    pimenrich/js/filter/simpleselect
-        pim/filter/product/family:  pimenrich/js/filter/product/family
-        pim/filter/product/enabled: pimenrich/js/filter/product/enabled
-        pim/filter/product/updated: pimenrich/js/filter/product/updated
+        pim/filter/filter:                pimenrich/js/filter/filter
+        pim/filter/text:                  pimenrich/js/filter/text
+        pim/filter/simpleselect:          pimenrich/js/filter/simpleselect
+        pim/filter/product/family:        pimenrich/js/filter/product/family
+        pim/filter/product/completeness:  pimenrich/js/filter/product/completeness
+        pim/filter/product/enabled:       pimenrich/js/filter/product/enabled
+        pim/filter/product/updated:       pimenrich/js/filter/product/updated
 
         # Product edit form
         pim/field-manager:                  pimenrich/js/product/field-manager
@@ -374,3 +375,4 @@ config:
         pim/template/filter/product/family:  pimenrich/templates/filter/product/family.html
         pim/template/filter/product/enabled: pimenrich/templates/filter/product/enabled.html
         pim/template/filter/product/updated: pimenrich/templates/filter/product/updated.html
+        pim/template/filter/product/completeness:  pimenrich/templates/filter/product/completeness.html

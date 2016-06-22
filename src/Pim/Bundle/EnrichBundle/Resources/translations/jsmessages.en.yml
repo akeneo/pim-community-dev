@@ -359,6 +359,14 @@ pim_enrich:
                         all: All
                         enabled: Enabled
                         disabled: Disabled
+                completeness:
+                    title: Completeness
+                    operators:
+                        IN: Complete on at least one selected locale
+                        "NOT IN": Complete on all selected locales
+                        EMPTY: Not complete on all selected locales
+                        "NOT EMPTY": No condition on completeness
+                    empty_selection: Select a family
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
