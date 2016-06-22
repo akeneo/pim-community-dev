@@ -70,8 +70,6 @@ class AddProductValueProcessor extends AbstractProcessor
      *
      * @param ProductInterface $product
      * @param array            $actions
-     *
-     * @return AddProductValueProcessor
      */
     protected function addData(ProductInterface $product, array $actions)
     {
