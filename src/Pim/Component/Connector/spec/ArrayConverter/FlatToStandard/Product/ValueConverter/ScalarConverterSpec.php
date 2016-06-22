@@ -14,8 +14,6 @@ class ScalarConverterSpec extends ObjectBehavior
             $fieldSplitter,
             [
                 'pim_catalog_date',
-                'pim_catalog_boolean',
-                'pim_catalog_number'
             ]
         );
     }
@@ -28,8 +26,6 @@ class ScalarConverterSpec extends ObjectBehavior
     function it_supports_converter_field()
     {
         $this->supportsField('pim_catalog_date')->shouldReturn(true);
-        $this->supportsField('pim_catalog_boolean')->shouldReturn(true);
-        $this->supportsField('pim_catalog_number')->shouldReturn(true);
         $this->supportsField('pim_catalog_price')->shouldReturn(false);
     }
 
@@ -44,38 +40,6 @@ class ScalarConverterSpec extends ObjectBehavior
             'locale' => 'en_US',
             'scope'  => 'mobile',
             'data'   => '30/03/2016',
-        ]]];
-
-        $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
-    }
-
-    function it_converts_a_boolean(AttributeInterface $attribute)
-    {
-        $attribute->getCode()->willReturn('attribute_code');
-        $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
-
-        $value = false;
-
-        $expectedResult = ['attribute_code' => [[
-            'locale' => 'en_US',
-            'scope'  => 'mobile',
-            'data'   => false,
-        ]]];
-
-        $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
-    }
-
-    function it_converts_a_number(AttributeInterface $attribute)
-    {
-        $attribute->getCode()->willReturn('attribute_code');
-        $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
-
-        $value = 1234;
-
-        $expectedResult = ['attribute_code' => [[
-            'locale' => 'en_US',
-            'scope'  => 'mobile',
-            'data'   => 1234,
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
