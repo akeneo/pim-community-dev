@@ -13,7 +13,7 @@ define([
         'pim/user-context',
         'pim/i18n',
         'jquery.select2'
-    ], function (_, __, BaseFilter, Routing, template, fetcherRegistry, userContext, i18n, initSelect2) {
+    ], function (_, __, BaseFilter, Routing, template) {
     return BaseFilter.extend({
         template: _.template(template),
         removable: false,
@@ -25,13 +25,18 @@ define([
             this.$el.empty();
 
             if (undefined === this.getValue()) {
-                this.setValue('');
+                this.setValue(null);
             }
 
             this.$el.append(this.template({
-                __: __,
-                field: this.getField(),
-                operator: this.getOperator(),
+                labels: {
+                    title: __('pim_enrich.export.product.filter.enabled.title'),
+                    valueChoices: {
+                        all: __('pim_enrich.export.product.filter.enabled.value.all'),
+                        enabled: __('pim_enrich.export.product.filter.enabled.value.enabled'),
+                        disabled: __('pim_enrich.export.product.filter.enabled.value.disabled')
+                    }
+                },
                 value: this.getValue(),
                 removable: this.isRemovable()
             }));

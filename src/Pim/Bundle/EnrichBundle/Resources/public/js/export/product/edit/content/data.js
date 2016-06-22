@@ -24,20 +24,11 @@ define(
         formBuilder
     ) {
         return BaseForm.extend({
-            filterDataCollection: [],
+            dataFilterCollection: [],
             filterViews: {},
             template: _.template(template),
             initialize: function (config) {
-                //change that after variant group merge
-                this.config = config || {
-                    filters: [
-                        {field: 'enabled', view: 'pim-filter-product-enabled'},
-                        {field: 'completeness', view: 'pim-filter-text'},
-                        {field: 'family.code', view: 'pim-filter-product-family'},
-                        {field: 'updated', view: 'pim-filter-product-updated'}
-                    ]
-                };
-
+                this.config = config.config;
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -79,7 +70,7 @@ define(
                     configProvider.getFilters(this.getRoot().code)
                 ).then(function (attributes, config) {
                     return $.when.apply($, _.map(fields, function (field) {
-                        var attribute = _.findWhere(attributes, {code: field})
+                        var attribute = _.findWhere(attributes, {code: field});
                         var filterConfig = {};
 
                         if (undefined === attribute) {
@@ -107,7 +98,7 @@ define(
 
                     return view;
                 }).then(function (filterView) {
-                    var filterData = _.findWhere(this.filterDataCollection, {field: filterView.getField()});
+                    var filterData = _.findWhere(this.dataFilterCollection, {field: filterView.getField()});
                     if (null !== filterData) {
                         filterView.setData(filterData);
                     }
@@ -121,16 +112,16 @@ define(
                 }.bind(this));
             },
             updateModel: function () {
-                this.filterDataCollection = [];
+                this.dataFilterCollection = [];
 
-                _.each(this.filterViews, function (filterView, code) {
+                _.each(this.filterViews, function (filterView) {
                     if (!_.isEmpty(filterView.getFormData())) {
-                        this.filterDataCollection.push(filterView.getFormData());
+                        this.dataFilterCollection.push(filterView.getFormData());
                     }
                 }.bind(this));
 
                 var formData = this.getFormData();
-                formData.data = this.filterDataCollection;
+                formData.data = this.dataFilterCollection;
                 this.setData(formData);
             },
             updateFiltersData: function () {

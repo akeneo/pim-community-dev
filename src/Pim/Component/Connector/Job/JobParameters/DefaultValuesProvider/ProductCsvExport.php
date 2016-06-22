@@ -36,18 +36,12 @@ class ProductCsvExport implements DefaultValuesProviderInterface
      */
     public function getDefaultValues()
     {
-        $filters = [
-            'structure' => [
-                'locales' => [],
-                'channel' => null
-            ]
-        ];
         $parameters = $this->simpleProvider->getDefaultValues();
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
-        $parameters['filters'] = json_encode([]);
-        $parameters['channel'] = null;
-//        $parameters['filters']['structure']['locales'] = json_encode([]);
+//        $parameters['channel'] = 'mobile';
+//        $parameters['locales'] = ['fr_FR'];
+        $parameters['filters'] = json_encode(['data' => [], 'structure' => []]);
 //        $parameters['enabled'] = 'enabled';
 //        $parameters['updated_since_strategy'] = 'all';
 //        $parameters['updated_since_date'] = null;

@@ -1,9 +1,9 @@
-<label class="control-label required"><%- __('pim_enrich.export.product.filter.enabled.title') %></label>
+<label class="control-label required"><%- labels.title %></label>
 <div class="controls" style="width: 600px;">
     <select class="select2" name="filter-value">
-        <option value="all" <%- value === null ? 'selected' : '' %>><%- __('pim_enrich.export.product.filter.enabled.value.all') %></option>
-        <option value="true" <%- value === true ? 'selected' : '' %>><%- __('pim_enrich.export.product.filter.enabled.value.enabled') %></option>
-        <option value="false" <%- value === false ? 'selected' : '' %>><%- __('pim_enrich.export.product.filter.enabled.value.disabled') %></option>
+        <option value="all"<%- value === null ? ' selected' : '' %>><%- labels.valueChoices.all %></option>
+        <option value="enabled"<%- value === true ? ' selected' : '' %>><%- labels.valueChoices.enabled %></option>
+        <option value="disabled"<%- value === false ? ' selected' : '' %>><%- labels.valueChoices.disabled %></option>
     </select>
     <% if (removable) { %><i class="remove icon-trash"></i><% } %>
 </div>

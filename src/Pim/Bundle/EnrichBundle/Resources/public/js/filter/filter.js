@@ -1,9 +1,6 @@
-/* global console */
 'use strict';
 
-define([
-        'pim/form',
-    ], function (BaseForm) {
+define(['pim/form'], function (BaseForm) {
     return BaseForm.extend({
         removable: false,
         setField: function (field) {

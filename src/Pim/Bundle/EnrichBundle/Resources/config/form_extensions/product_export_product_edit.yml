@@ -20,11 +20,11 @@ extensions:
         targetZone: filters
         position: 100
 
-    pim-product-export-edit-content-structure-attributes:
-        module: pim/export/product/edit/content/structure/attributes
-        parent: pim-product-export-edit-content-structure
-        targetZone: filters
-        position: 110
+#    pim-product-export-edit-content-structure-attributes:
+#        module: pim/export/product/edit/content/structure/attributes
+#        parent: pim-product-export-edit-content-structure
+#        targetZone: filters
+#        position: 110
 
     pim-product-export-edit-content-data:
         module: pim/export/product/edit/content/data
