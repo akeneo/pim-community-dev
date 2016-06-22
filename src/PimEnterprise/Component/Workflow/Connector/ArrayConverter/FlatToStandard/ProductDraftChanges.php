@@ -16,11 +16,11 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColum
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
- * Product draft converter.
+ * Product draft changes converter.
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ProductDraft implements ArrayConverterInterface
+class ProductDraftChanges implements ArrayConverterInterface
 {
     /** @var ArrayConverterInterface */
     protected $productConverter;

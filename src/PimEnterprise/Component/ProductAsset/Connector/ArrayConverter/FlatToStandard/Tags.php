@@ -15,11 +15,11 @@ use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
- * Product Asset Tag Converter
+ * Tag collection converter
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class Tag implements ArrayConverterInterface
+class Tags implements ArrayConverterInterface
 {
     /**
      * {@inheritdoc}

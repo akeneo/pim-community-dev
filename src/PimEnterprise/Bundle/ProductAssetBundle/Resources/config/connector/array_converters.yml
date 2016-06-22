@@ -1,14 +1,22 @@
 parameters:
-    pimee_product_asset.array_converter.flat_to_standard.asset.class:                 PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\Asset
-    pimee_product_asset.array_converter.flat_to_standard.tag.class:                   PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\Tag
-    pimee_product_asset.array_converter.flat_to_standard.channel_configuration.class: PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\ChannelConfiguration
+    pimee_product_asset.array_converter.flat_to_standard.asset.class: PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\Asset
+    pimee_product_asset.array_converter.flat_to_standard.tags.class:  PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\Tags
+
+    pimee_product_asset.array_converter.standard_to_flat.asset.class: PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\StandardToFlat\Asset
+    pimee_product_asset.array_converter.standard_to_flat.tags.class:  PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\StandardToFlat\Tags
 
 services:
     pimee_product_asset.array_converter.flat_to_standard.asset:
         class: '%pimee_product_asset.array_converter.flat_to_standard.asset.class%'
 
-    pimee_product_asset.array_converter.flat_to_standard.tag:
-        class: '%pimee_product_asset.array_converter.flat_to_standard.tag.class%'
+    pimee_product_asset.array_converter.standard_to_flat.asset:
+        class: '%pimee_product_asset.array_converter.standard_to_flat.asset.class%'
 
-    pimee_product_asset.array_converter.flat_to_standard.channel_configuration:
-        class: '%pimee_product_asset.array_converter.flat_to_standard.channel_configuration.class%'
+    pimee_product_asset.array_converter.flat_to_standard.tags:
+        class: '%pimee_product_asset.array_converter.flat_to_standard.tags.class%'
+
+    pimee_product_asset.array_converter.standard_to_flat.tags:
+        class: '%pimee_product_asset.array_converter.standard_to_flat.tags.class%'
+
+    pimee_product_asset.array_converter.dummy.channel_configuration:
+        alias: pim_connector.array_converter.dummy

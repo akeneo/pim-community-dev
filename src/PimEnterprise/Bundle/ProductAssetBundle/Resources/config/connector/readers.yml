@@ -4,7 +4,7 @@ services:
         class: '%pim_connector.reader.file.array_reader.class%'
         arguments:
             - '@pim_connector.reader.file.csv'
-            - '@pimee_product_asset.array_converter.flat_to_standard.tag'
+            - '@pimee_product_asset.array_converter.flat_to_standard.tags'
 
     pimee_product_asset.reader.file.csv_asset:
         class: '%pim_connector.reader.file.csv.class%'
@@ -18,18 +18,12 @@ services:
             - '@pim_connector.reader.file.csv_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.category'
 
-    pimee_product_asset.reader.file.csv_channel_configuration:
-        class: '%pim_connector.reader.file.csv.class%'
-        arguments:
-            - '@pim_connector.reader.file.csv_iterator_factory'
-            - '@pimee_product_asset.array_converter.flat_to_standard.channel_configuration'
-
     # XLSX readers
     pimee_product_asset.reader.file.xlsx_tag:
         class: '%pim_connector.reader.file.array_reader.class%'
         arguments:
             - '@pim_connector.reader.file.xlsx'
-            - '@pimee_product_asset.array_converter.flat_to_standard.tag'
+            - '@pimee_product_asset.array_converter.flat_to_standard.tags'
 
     pimee_product_asset.reader.file.xlsx_asset:
         class: '%pim_connector.reader.file.xlsx.class%'
