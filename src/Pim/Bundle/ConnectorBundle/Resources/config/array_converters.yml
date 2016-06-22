@@ -42,7 +42,6 @@ parameters:
     pim_connector.array_converter.flat_to_standard.product.value_converter.scalar.class:          Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ScalarConverter
 
     pim_connector.array_converter.standard_to_flat.product.value_converter.registry.class:        Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\ValueConverterRegistry
-    pim_connector.array_converter.standard_to_flat.product.value_converter.abstract.class:        Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter
     pim_connector.array_converter.standard_to_flat.product.value_converter.price.class:           Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\PriceConverter
     pim_connector.array_converter.standard_to_flat.product.value_converter.metric.class:          Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MetricConverter
     pim_connector.array_converter.standard_to_flat.product.value_converter.multiselect.class:     Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MultiSelectConverter
