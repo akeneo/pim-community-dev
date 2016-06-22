@@ -12,68 +12,49 @@
 namespace PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\StandardToFlat;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
 
 /**
  * Standard to flat array converter for asset
  *
+ * Before:
+ * [
+ *      'code'        => 'mycode',
+ *      'localized'   => false,
+ *      'description' => 'My awesome description',
+ *      'categories'  => [
+ *          'myCat1',
+ *          'myCat2',
+ *          'myCat3',
+ *      ],
+ *      'tags'        => [
+ *          'dog',
+ *          'flowers',
+ *          'cities',
+ *          'animal',
+ *          'sunset',
+ *      ],
+ *      'end_of_use'  => '2018-02-01',
+ * ]
+ *
+ * After:
+ * [
+ *      'code'          => 'mycode',
+ *      'localized'     => 0,
+ *      'description'   => 'My awesome description',
+ *      'categories'    => 'myCat1,myCat2,myCat3'
+ *      'tags'          => 'dog,flowers,cities,animal,sunset',
+ *      'end_of_use'    => '2018-02-01',
+ * ]
+ *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class Asset implements ArrayConverterInterface
+class Asset extends AbstractSimpleArrayConverter implements ArrayConverterInterface
 {
     /**
      * {@inheritdoc}
-     *
-     * Converts standard array to a flat one.
-     *
-     * Before:
-     * [
-     *      'code'        => 'mycode',
-     *      'localized'   => false,
-     *      'description' => 'My awesome description',
-     *      'categories'  => [
-     *          'myCat1',
-     *          'myCat2',
-     *          'myCat3',
-     *      ],
-     *      'tags'        => [
-     *          'dog',
-     *          'flowers',
-     *          'cities',
-     *          'animal',
-     *          'sunset',
-     *      ],
-     *      'end_of_use'  => '2018-02-01',
-     * ]
-     *
-     * After:
-     * [
-     *      'code'          => 'mycode',
-     *      'localized'     => 0,
-     *      'description'   => 'My awesome description',
-     *      'categories'    => 'myCat1,myCat2,myCat3'
-     *      'tags'          => 'dog,flowers,cities,animal,sunset',
-     *      'end_of_use'    => '2018-02-01',
-     * ]
      */
-    public function convert(array $item, array $options = [])
-    {
-        $convertedItem = [];
-
-        foreach ($item as $field => $data) {
-            $convertedItem = $this->convertField($field, $data, $convertedItem);
-        }
-
-        return $convertedItem;
-    }
-
-    /**
-     * @param string $field
-     * @param mixed  $data
-     * @param array  $convertedItem
-     *
-     * @return array
-     */
-    protected function convertField($field, $data, array $convertedItem)
+    protected function convertProperty($field, $data, array $convertedItem, array $options)
     {
         switch ($field) {
             case 'code':

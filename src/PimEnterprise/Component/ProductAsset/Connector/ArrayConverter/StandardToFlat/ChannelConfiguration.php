@@ -12,64 +12,47 @@
 namespace PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\StandardToFlat;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
 
 /**
  * Standard to flat array converter for channel asset configuration
  *
+ * Before:
+ * [
+ *      'channel'          => 'myChannelCode',
+ *      'configuration' => [
+ *          'ecommerce' => ['scale' => ['ratio' => 0.5]],
+ *          'tablet'    => ['scale' => ['ratio' => 0.25]],
+ *          'mobile'    => [
+ *              'scale'      => ['width'      => 200],
+ *              'colorspace' => ['colorspace' => 'gray'],
+ *          ],
+ *          'print'     => ['resize' => ['width' => 400, 'height' => 200]],
+ *      ],
+ * ]
+ *
+ * After:
+ * [
+ *      'code'       => 'myChannelCode',
+ *      'configuration' => [
+ *          'ecommerce' => ['scale' => ['ratio' => 0.5]],
+ *          'tablet'    => ['scale' => ['ratio' => 0.25]],
+ *          'mobile'    => [
+ *              'scale'      => ['width'      => 200],
+ *              'colorspace' => ['colorspace' => 'gray'],
+ *          ],
+ *          'print'     => ['resize' => ['width' => 400, 'height' => 200]],
+ *      ]
+ * ]
+ *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class ChannelConfiguration implements ArrayConverterInterface
+class ChannelConfiguration extends AbstractSimpleArrayConverter implements ArrayConverterInterface
 {
     /**
      * {@inheritdoc}
-     *
-     * Before:
-     * [
-     *      'channel'          => 'myChannelCode',
-     *      'configuration' => [
-     *          'ecommerce' => ['scale' => ['ratio' => 0.5]],
-     *          'tablet'    => ['scale' => ['ratio' => 0.25]],
-     *          'mobile'    => [
-     *              'scale'      => ['width'      => 200],
-     *              'colorspace' => ['colorspace' => 'gray'],
-     *          ],
-     *          'print'     => ['resize' => ['width' => 400, 'height' => 200]],
-     *      ],
-     * ]
-     *
-     * After:
-     * [
-     *      'code'       => 'myChannelCode',
-     *      'configuration' => [
-     *          'ecommerce' => ['scale' => ['ratio' => 0.5]],
-     *          'tablet'    => ['scale' => ['ratio' => 0.25]],
-     *          'mobile'    => [
-     *              'scale'      => ['width'      => 200],
-     *              'colorspace' => ['colorspace' => 'gray'],
-     *          ],
-     *          'print'     => ['resize' => ['width' => 400, 'height' => 200]],
-     *      ]
-     * ]
      */
-    public function convert(array $item, array $options = [])
-    {
-        $convertedItem = [];
-
-        foreach ($item as $field => $data) {
-            $convertedItem = $this->convertField($field, $data, $convertedItem);
-        }
-
-        return $convertedItem;
-    }
-
-    /**
-     * @param string $field
-     * @param mixed  $data
-     * @param array  $convertedItem
-     *
-     * @return array
-     */
-    protected function convertField($field, $data, array $convertedItem)
+    protected function convertProperty($field, $data, array $convertedItem, array $options)
     {
         switch ($field) {
             case 'channel':
