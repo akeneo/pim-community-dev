@@ -1,6 +1,5 @@
 parameters:
     pimee_base_connector.array_converter.flat_to_standard.product_draft.class: PimEnterprise\Component\Workflow\Connector\ArrayConverter\FlatToStandard\ProductDraft
-    pimee_base_connector.array_converter.standard_to_flat.product_draft.class: PimEnterprise\Component\Workflow\Connector\ArrayConverter\StandardToFlat\ProductDraft
 
 services:
     pimee_base_connector.array_converter.flat_to_standard.product_draft:
@@ -8,8 +7,3 @@ services:
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product_delocalized'
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
-
-    pimee_base_connector.array_converter.standard_to_flat.product_draft:
-        class: '%pimee_base_connector.array_converter.standard_to_flat.product_draft.class%'
-        arguments:
-            - '@pim_connector.array_converter.standard_to_flat.product'

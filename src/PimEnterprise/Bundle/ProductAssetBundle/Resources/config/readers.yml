@@ -26,3 +26,5 @@ services:
         class: '%pim_connector.reader.file.yaml.class%'
         arguments:
             - '@pimee_product_asset.array_converter.dummy.channel_configuration'
+            - false
+            - 'channel'
