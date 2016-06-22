@@ -75,6 +75,7 @@ class AttributeColumnInfoExtractor
         if (!isset($this->fieldNameInfoCache[$fieldName]) && !in_array($fieldName, $this->excludedFieldNames)) {
             $explodedFieldName = explode(self::FIELD_SEPARATOR, $fieldName);
             $attributeCode = $explodedFieldName[0];
+            // TODO: We re-fetch attribute here but we did a findAll in another service (╯°□°)╯︵ ┻━┻
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
             if (null !== $attribute) {

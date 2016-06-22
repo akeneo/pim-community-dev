@@ -4,7 +4,7 @@ namespace Pim\Component\Connector\ArrayConverter;
 
 /**
  * Dummy array converter.
- * It "converts" to the exact same array format but checks for fields presence & filling.
+ * It "converts" to the exact same array format but checks for fields presence & filling if asked.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -26,8 +26,11 @@ class DummyConverter implements ArrayConverterInterface
      * @param array                    $fieldsPresence
      * @param array                    $fieldsFilling
      */
-    public function __construct(FieldsRequirementChecker $checker, array $fieldsPresence, array $fieldsFilling)
-    {
+    public function __construct(
+        FieldsRequirementChecker $checker,
+        array $fieldsPresence = [],
+        array $fieldsFilling = []
+    ) {
         $this->checker        = $checker;
         $this->fieldsPresence = $fieldsPresence;
         $this->fieldsFilling  = $fieldsFilling;
@@ -38,8 +41,12 @@ class DummyConverter implements ArrayConverterInterface
      */
     public function convert(array $item, array $options = [])
     {
-        $this->checker->checkFieldsPresence($item, $this->fieldsPresence);
-        $this->checker->checkFieldsFilling($item, $this->fieldsFilling);
+        if (!empty($this->fieldsPresence)) {
+            $this->checker->checkFieldsPresence($item, $this->fieldsPresence);
+        }
+        if (!empty($this->fieldsFilling)) {
+            $this->checker->checkFieldsFilling($item, $this->fieldsFilling);
+        }
 
         return $item;
     }

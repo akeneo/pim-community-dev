@@ -49,7 +49,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $data = [
             'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],
             'group' => 'marketing',
-            'attributeType' => 'pim_catalog_text'
+            'attribute_type' => 'pim_catalog_text'
         ];
 
         $attribute->setLocale('en_US')->shouldBeCalled();
@@ -70,7 +70,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $attributeType->getBackendType()->willReturn('backend');
         $attributeType->isUnique()->willReturn(true);
 
-        $accessor->setValue($attribute, 'attributeType', 'pim_catalog_text');
+        $accessor->setValue($attribute, 'attribute_type', 'pim_catalog_text');
 
         $this->update($attribute, $data);
     }
@@ -88,7 +88,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $data = [
             'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],
             'group' => 'marketing',
-            'attributeType' => 'pim_catalog_text'
+            'attribute_type' => 'pim_catalog_text'
         ];
 
         $attribute->setLocale('en_US')->shouldBeCalled();

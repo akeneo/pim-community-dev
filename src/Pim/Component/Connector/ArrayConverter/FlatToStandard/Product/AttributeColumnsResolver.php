@@ -65,32 +65,12 @@ class AttributeColumnsResolver
     public function resolveAttributeColumns()
     {
         if (empty($this->attributesFields)) {
+            // TODO: Put a Cursor to avoid a findAll on attributes (╯°□°)╯︵ ┻━┻
             $attributes = $this->attributeRepository->findAll();
             $currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
             $values = $this->valuesResolver->resolveEligibleValues($attributes);
             foreach ($values as $value) {
-                if (null !== $value['locale'] && null !== $value['scope']) {
-                    $field = sprintf(
-                        '%s-%s-%s',
-                        $value['attribute'],
-                        $value['locale'],
-                        $value['scope']
-                    );
-                } elseif (null !== $value['locale']) {
-                    $field = sprintf(
-                        '%s-%s',
-                        $value['attribute'],
-                        $value['locale']
-                    );
-                } elseif (null !== $value['scope']) {
-                    $field = sprintf(
-                        '%s-%s',
-                        $value['attribute'],
-                        $value['scope']
-                    );
-                } else {
-                    $field = $value['attribute'];
-                }
+                $field = $this->resolveFlatAttributeName($value['attribute'], $value['locale'], $value['scope']);
 
                 if (AttributeTypes::PRICE_COLLECTION === $value['type']) {
                     $this->attributesFields[] = $field;
@@ -109,5 +89,35 @@ class AttributeColumnsResolver
         }
 
         return $this->attributesFields;
+    }
+
+    /**
+     * Resolve the full flat attribute name depending on the $attributeCode, the $localeCode and the $scopeCode.
+     *
+     * Examples:
+     *
+     *  description-en_US-mobile
+     *  name-ecommerce
+     *  weight
+     *
+     * @param string $attributeCode
+     * @param string $localeCode
+     * @param string $scopeCode
+     *
+     * @return string
+     */
+    public function resolveFlatAttributeName($attributeCode, $localeCode, $scopeCode)
+    {
+        $field = $attributeCode;
+
+        if (null !== $localeCode) {
+            $field = sprintf('%s-%s', $field, $localeCode);
+        }
+
+        if (null !== $scopeCode) {
+            $field = sprintf('%s-%s', $field, $scopeCode);
+        }
+
+        return $field;
     }
 }

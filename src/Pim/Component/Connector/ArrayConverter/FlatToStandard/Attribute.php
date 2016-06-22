@@ -65,7 +65,7 @@ class Attribute implements ArrayConverterInterface
                 $convertedItem['labels'][$labelLocale] = $data;
                 break;
             case 'type':
-                $convertedItem['attributeType'] = $data;
+                $convertedItem['attribute_type'] = $data;
                 break;
             case 'number_min':
             case 'number_max':
