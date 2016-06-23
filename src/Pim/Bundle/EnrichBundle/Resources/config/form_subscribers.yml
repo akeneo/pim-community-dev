@@ -4,7 +4,6 @@ parameters:
     pim_enrich.form.subscriber.family_disable_fields_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFamilyFieldsSubscriber
     pim_enrich.form.subscriber.family_attribute_label_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeAsLabelSubscriber
     pim_enrich.form.subscriber.set_attribute_group_sort_order.class: Pim\Bundle\EnrichBundle\Form\Subscriber\SetAttributeGroupSortOrderSubscriber
-    pim_enrich.form.subscriber.transform_product_template_values.class: Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber
     pim_enrich.form.subscriber.add_variant_group_template.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddVariantGroupTemplateSubscriber
     pim_enrich.form.subscriber.add_variant_group_axes.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddVariantGroupAxesSubscriber
 
@@ -38,13 +37,6 @@ services:
         class: '%pim_enrich.form.subscriber.set_attribute_group_sort_order.class%'
         arguments:
             - '@pim_catalog.repository.attribute_group'
-
-    pim_enrich.form.subscriber.transform_product_template_values:
-        class: '%pim_enrich.form.subscriber.transform_product_template_values.class%'
-        arguments:
-            - '@pim_serializer'
-            - '@pim_serializer'
-            - '@pim_enrich.resolver.locale'
 
     pim_enrich.form.subscriber.add_variant_group_template:
         class: '%pim_enrich.form.subscriber.add_variant_group_template.class%'
