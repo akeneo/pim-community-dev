@@ -52,5 +52,7 @@ class PimEnterpriseEnrichExtension extends Extension
         $loader->load('view_elements/category.yml');
         $loader->load('view_elements/channel.yml');
         $loader->load('view_updaters.yml');
+        $loader->load('jobs.yml');
+        $loader->load('steps.yml');
     }
 }

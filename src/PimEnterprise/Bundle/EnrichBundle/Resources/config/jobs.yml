@@ -1,0 +1,168 @@
+parameters:
+    pimee_enrich.job_name.publish_product: 'publish_product'
+    pimee_enrich.job_name.unpublish_product: 'unpublish_product'
+    pimee_enrich.job_name.add_product_value_with_permission: 'add_product_value_with_permission'
+    pimee_enrich.job_name.add_product_value_with_permission_and_rules: 'add_product_value_with_permission_and_rules'
+    pimee_enrich.job_name.update_product_value_with_permission: 'update_product_value_with_permission'
+    pimee_enrich.job_name.update_product_value_with_permission_and_rules: 'update_product_value_with_permission_and_rules'
+    pimee_enrich.job_name.remove_product_value_with_permission: 'remove_product_value_with_permission'
+    pimee_enrich.job_name.remove_product_value_with_permission_and_rules: 'remove_product_value_with_permission_and_rules'
+    pimee_enrich.job_name.edit_common_attributes_with_permission: 'edit_common_attributes_with_permission'
+    pimee_enrich.job_name.edit_common_attributes_with_permission_and_rules: 'edit_common_attributes_with_permission_and_rules'
+    pimee_enrich.job_name.csv_published_product_quick_export: 'csv_published_product_quick_export'
+    pimee_enrich.job_name.xlsx_published_product_quick_export: 'xlsx_published_product_quick_export'
+    pimee_enrich.job_name.add_to_variant_group_with_rules: 'add_to_variant_group_with_rules'
+
+services:
+    # Mass Edit -------------------------------------------------------------------------------------------------------
+    pimee_enrich.job.publish_product:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.publish_product%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.publish_product.perform'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pimee_enrich.job.unpublish_product:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.unpublish_product%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.unpublish_product.perform'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pimee_enrich.job.add_product_value_with_permission:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.add_product_value_with_permission%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.add_product_value_with_permission.perform'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pimee_enrich.job.add_product_value_with_permission_and_rules:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.add_product_value_with_permission_and_rules%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.add_product_value_with_permission.perform'
+                - '@pimee_enrich.step.execute_rules'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pimee_enrich.job.update_product_value_with_permission:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.update_product_value_with_permission%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.update_product_value_with_permission.perform'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pimee_enrich.job.update_product_value_with_permission_and_rules:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.update_product_value_with_permission_and_rules%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.update_product_value_with_permission.perform'
+                - '@pimee_enrich.step.execute_rules'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pimee_enrich.job.remove_product_value_with_permission:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.remove_product_value_with_permission%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.remove_product_value_with_permission.perform'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pimee_enrich.job.remove_product_value_with_permission_and_rules:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.remove_product_value_with_permission_and_rules%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.remove_product_value_with_permission.perform'
+                - '@pimee_enrich.step.execute_rules'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pimee_enrich.job.edit_common_attributes_with_permission:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.edit_common_attributes_with_permission%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.edit_common_attributes_with_permission.perform'
+                - '@pim_enrich.step.clean'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pimee_enrich.job.edit_common_attributes_with_permission_and_rules:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.edit_common_attributes_with_permission_and_rules%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.edit_common_attributes_with_permission.perform'
+                - '@pim_enrich.step.clean'
+                - '@pimee_enrich.step.execute_rules'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pimee_enrich.job.add_to_variant_group_with_rules:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.add_to_variant_group_with_rules%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.add_to_variant_group_with_rules.perform'
+                - '@pimee_enrich.step.execute_rules'
+         tags:
+             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    # CSV Quick Exports -----------------------------------------------------------------------------------------------
+    pimee_enrich.job.csv_published_product_quick_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.csv_published_product_quick_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.csv_published_product_quick_export.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.quick_export_type%' }
+
+    # XLSX Quick Exports ----------------------------------------------------------------------------------------------
+    pimee_enrich.job.xlsx_published_product_quick_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.xlsx_published_product_quick_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.xlsx_published_product_quick_export.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%akeneo_batch.job.quick_export_type%' }
