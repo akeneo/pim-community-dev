@@ -19,14 +19,8 @@ define([
             'change [name="filter-operator"], [name="filter-value"]': 'updateState',
             'click .remove': 'removeFilter'
         },
-        initialize: function () {
-            this.config = { //To remove
-                operators: {
-                    'before': '>',
-                    'after': '<',
-                    'all': ''
-                }
-            };
+        initialize: function (config) {
+            this.config = config.config;
 
             return BaseFilter.prototype.initialize.apply(this, arguments);
         },
@@ -43,30 +37,41 @@ define([
                 operator: this.getOperator(),
                 value: this.getValue(),
                 removable: this.isRemovable(),
-                operators: this.config.operators
+                operatorChoices: this.config.operators
             }));
 
             this.$('[name="filter-operator"]').select2();
-            Datepicker.init(
-                this.$('[name="filter-value"]').parent(),
-                {format: 'yyyy-MM-dd hh:mm:ss', defaultFormat: 'yyyy-MM-dd hh:mm:ss', pickTime: true}
-            ).on('changeDate', this.updateState.bind(this));
 
-            this.$('[name="filter-value"]').on('changeDate', this.updateState.bind(this));
+            if ('SINCE DATE' === this.getOperator()) {
+                Datepicker
+                    .init(this.$('[name="filter-value"]').parent())
+                    .on('changeDate', this.updateState.bind(this));
+            }
 
             this.delegateEvents();
 
             return this;
         },
         updateState: function () {
+            var oldOperator = this.getFormData().operator;
+
             var value    = this.$('[name="filter-value"]').val();
             var operator = this.$('[name="filter-operator"]').val();
-            operator     = this.config.operators[operator];
+
+            if ('ALL' === operator) {
+                this.clearData();
+
+                return;
+            }
+
+            if (operator !== oldOperator) {
+                value = null;
+            }
 
             this.setData({
                 field: this.getField(),
                 operator: operator,
-                value: '' !== operator ? value : ''
+                value: value
             });
         }
     });

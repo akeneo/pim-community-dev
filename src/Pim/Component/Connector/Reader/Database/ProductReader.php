@@ -93,10 +93,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
         $filters = json_decode($parameters->get('filters'), true);
 
-        $filters = array_filter($filters['data'], function ($filter) {
-            return isset($filter['operator']) && '' !== $filter['operator'];
-        });
-
         foreach ($filters as $filter) {
             $filter['context'] = [];
 

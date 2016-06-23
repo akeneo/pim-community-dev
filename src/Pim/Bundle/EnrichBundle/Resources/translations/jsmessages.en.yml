@@ -350,9 +350,10 @@ pim_enrich:
                 updated:
                     title: Updated
                     operators:
-                        before: Before
-                        after: After
-                        all: All
+                        ALL: No date condition
+                        "SINCE N DAYS": Updated products since the last n days
+                        "SINCE DATE": Updated products since the defined date
+                        "LAST EXPORT": Updated products since last export
                 enabled:
                     title: Status
                     value:

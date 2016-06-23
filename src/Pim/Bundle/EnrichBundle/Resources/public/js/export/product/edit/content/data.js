@@ -37,15 +37,13 @@ define(
                     this.addFilters(event.codes);
                 }.bind(this));
 
-                $.when.apply($, _.map(this.config.filters, function (filter) {
-                    return this.addFilterView(filter.view, filter.field, false);
-                }.bind(this))).then(function () {
-                    this.render();
+                _.each(this.config.filters, function (filter) {
+                    this.addFilterView(filter.view, filter.field, false);
                 }.bind(this));
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.updateFiltersData.bind(this));
 
-                BaseForm.prototype.configure.apply(this, arguments);
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
                 if (!this.configured) {
@@ -63,7 +61,7 @@ define(
                 this.renderExtensions();
             },
             addFilters: function (fields) {
-                var fields = _.without(fields, _.keys(this.filterViews));
+                var fields = _.difference(fields, _.keys(this.filterViews));
 
                 return $.when(
                     fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(fields),
@@ -125,9 +123,7 @@ define(
                 this.setData(formData);
             },
             updateFiltersData: function () {
-                var fields = _.map(this.getFormData()['data'], function (filter) {
-                    return filter.field;
-                });
+                var fields = _.pluck(this.getFormData()['data'], 'field');
 
                 this.addFilters(fields).then(function () {
                     _.each(this.getFormData()['data'], function (filterData) {

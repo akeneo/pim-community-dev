@@ -11,12 +11,15 @@
                     FetcherRegistry.initialize().done(function () {
                         FormBuilder.build('pim-product-export-edit-content')
                             .then(function (form) {
-                                form.setData(JSON.parse($('#{{ form.configuration.filters.vars.id }}').val()));
+                                form
+                                    .setElement('#pim-product-export-edit-content')
+                                    .setData(JSON.parse($('#{{ form.configuration.filters.vars.id }}').val()), {silent: true})
+                                    .render();
 
-                                form.setElement('#pim-product-export-edit-content').render();
                                 form.on('pim_enrich:form:entity:post_update', function () {
                                     document.getElementById('{{ form.configuration.filters.vars.id }}').value = JSON.stringify(form.getFormData());
                                 });
+
                                 loadingMask.remove();
                             });
                     })

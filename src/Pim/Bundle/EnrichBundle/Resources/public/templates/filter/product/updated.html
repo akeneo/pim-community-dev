@@ -1,16 +1,18 @@
 <label class="control-label required"><%- __('pim_enrich.export.product.filter.updated.title') %></label>
 <div class="controls" style="width: 800px;">
     <select class="select2" name="filter-operator">
-        <% _.each(operators, function (availableOperator, key) { %>
-            <option value="<%- key %>" <%- availableOperator === operator ? 'selected' : '' %>>
-                <%- __('pim_enrich.export.product.filter.updated.operators.' + key) %>
+        <% _.each(operatorChoices, function (operatorChoice) { %>
+            <option value="<%- operatorChoice %>"<%- operator === operatorChoice ? ' selected' : '' %>>
+                <%- __('pim_enrich.export.product.filter.updated.operators.' + operatorChoice) %>
             </option>
         <% }); %>
     </select>
-    <% if ('' !==  operator) { %>
-    <span class="date-wrapper">
-        <input name="filter-value" class="datepicker add-on input-large" type="text" value="<%- value ? value : '' %>" />
-    </span>
+    <% if ('SINCE DATE' === operator) { %>
+        <span class="date-wrapper">
+            <input name="filter-value" class="datepicker add-on input-large" type="text" value="<%- value ? value : '' %>">
+        </span>
+    <% } else if ('SINCE N DAYS' === operator) { %>
+        <input name="filter-value" class="input-large" type="text" value="<%- value ? value : '' %>">
     <% } %>
     <% if (removable) { %><i class="remove icon-trash"></i><% } %>
 </div>

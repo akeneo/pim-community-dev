@@ -26,6 +26,12 @@ extensions:
 
     pim-filter-product-updated:
         module: pim/filter/product/updated
+        config:
+            operators:
+                - ALL
+                - SINCE N DAYS
+                - SINCE DATE
+                - LAST EXPORT
 
     pim-filter-simpleselect:
         module: pim/filter/simpleselect
