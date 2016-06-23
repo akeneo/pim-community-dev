@@ -120,7 +120,7 @@ pimee_product_asset:
     add_files: ajouter des fichiers
     start: Démarrer le téléchargement
     cancel: Annuler le téléchargement
-    schedule: programmation
+    import: programmation
     executed: Téléchargement massif exécuté
     error:
       upload: "Une erreur s'est produite lors du téléchargement"

@@ -120,7 +120,7 @@ pimee_product_asset:
         add_files: add files
         start: Start upload
         cancel: Cancel upload
-        schedule: schedule
+        import: Import
         executed: Mass upload executed
         error:
             upload: An error occured while uploading

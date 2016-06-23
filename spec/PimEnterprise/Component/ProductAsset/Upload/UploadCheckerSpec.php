@@ -57,7 +57,7 @@ class UploadCheckerSpec extends ObjectBehavior
 
         $assetRepo->findOneByCode('foobar')->willReturn(null);
 
-        $this->validateFilenameFormat($parsedFilename, 'dummySourceDir', 'dummyScheduledDir');
+        $this->validateFilenameFormat($parsedFilename, 'dummySourceDir', 'dummyImportDir');
     }
 
     function it_checks_an_invalid_filename_for_existing_asset_without_locale(
@@ -75,7 +75,7 @@ class UploadCheckerSpec extends ObjectBehavior
         $asset->getLocales()->willReturn([]);
 
         $this->shouldThrow('PimEnterprise\Component\ProductAsset\Upload\Exception\InvalidLocaleException')
-            ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyScheduledDir']);
+            ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyImportDir']);
     }
 
     function it_checks_an_invalid_filename_for_existing_asset_with_other_locale(
@@ -94,7 +94,7 @@ class UploadCheckerSpec extends ObjectBehavior
         $asset->getLocales()->willReturn(['en_US' => $localeEn]);
 
         $this->shouldThrow('PimEnterprise\Component\ProductAsset\Upload\Exception\InvalidLocaleException')
-            ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyScheduledDir']);
+            ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyImportDir']);
     }
 
     function it_checks_an_invalid_filename_for_non_activated_locale(ParsedFilenameInterface $parsedFilename, $localeFr)
@@ -105,7 +105,7 @@ class UploadCheckerSpec extends ObjectBehavior
         $localeFr->isActivated()->willReturn(false);
 
         $this->shouldThrow('PimEnterprise\Component\ProductAsset\Upload\Exception\InvalidLocaleException')
-            ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyScheduledDir']);
+            ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyImportDir']);
     }
 
     function it_checks_an_invalid_filename_for_unknown_locale(ParsedFilenameInterface $parsedFilename)
@@ -114,7 +114,7 @@ class UploadCheckerSpec extends ObjectBehavior
         $parsedFilename->getLocaleCode()->willReturn('fo_FO');
 
         $this->shouldThrow(new \RuntimeException(sprintf('Locale code %s is unknown', 'fo_FO')))
-            ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyScheduledDir']);
+            ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyImportDir']);
     }
 
     function it_checks_a_valid_filename_for_existing_asset_with_locale(
@@ -132,7 +132,7 @@ class UploadCheckerSpec extends ObjectBehavior
         $localeEn->isActivated()->willReturn(true);
         $localeFr->isActivated()->willReturn(true);
 
-        $this->validateFilenameFormat($parsedFilename, 'dummySourceDir', 'dummyScheduledDir');
+        $this->validateFilenameFormat($parsedFilename, 'dummySourceDir', 'dummyImportDir');
     }
 
     function it_checks_an_invalid_filename_for_existing_uploaded_file(
@@ -151,10 +151,10 @@ class UploadCheckerSpec extends ObjectBehavior
         $assetRepo->findOneByCode('foobar')->willReturn(null);
 
         $this->shouldThrow('PimEnterprise\Component\ProductAsset\Upload\Exception\DuplicateFileException')
-            ->during('validateUpload', [$parsedFilename, $sourceDirectory, 'dummyScheduledDir']);
+            ->during('validateUpload', [$parsedFilename, $sourceDirectory, 'dummyImportDir']);
     }
 
-    function it_checks_an_invalid_filename_for_existing_scheduled_file(
+    function it_checks_an_invalid_filename_for_existing_imported_file(
         ParsedFilenameInterface $parsedFilename,
         $assetRepo
     ) {
@@ -163,16 +163,16 @@ class UploadCheckerSpec extends ObjectBehavior
         $parsedFilename->getCleanFilename()->willReturn('foobar-fr_FR.png');
 
         $this->createUploadBaseDirectory();
-        $sourceDirectory    = $this->createSourceDirectory();
-        $scheduledDirectory = $this->createScheduledDirectory();
+        $sourceDirectory = $this->createSourceDirectory();
+        $importDirectory = $this->createImportDirectory();
 
         $filename = 'foobar-fr_FR.png';
-        file_put_contents($scheduledDirectory . DIRECTORY_SEPARATOR . $filename, 'foobar');
+        file_put_contents($importDirectory . DIRECTORY_SEPARATOR . $filename, 'foobar');
 
         $assetRepo->findOneByCode('foobar')->willReturn(null);
 
         $this->shouldThrow('PimEnterprise\Component\ProductAsset\Upload\Exception\DuplicateFileException')
-            ->during('validateUpload', [$parsedFilename, $sourceDirectory, $scheduledDirectory]);
+            ->during('validateUpload', [$parsedFilename, $sourceDirectory, $importDirectory]);
     }
 
     protected function createUploadBaseDirectory()
@@ -229,9 +229,9 @@ class UploadCheckerSpec extends ObjectBehavior
     /**
      * @return string
      */
-    protected function createScheduledDirectory()
+    protected function createImportDirectory()
     {
-        $directory = $this->uploadDirectory . DIRECTORY_SEPARATOR . 'scheduled';
+        $directory = $this->uploadDirectory . DIRECTORY_SEPARATOR . 'imported';
         if (!is_dir($directory)) {
             mkdir($directory, 0700, true);
         }

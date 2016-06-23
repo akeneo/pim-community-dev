@@ -63,16 +63,16 @@ Feature: Mass uploads assets
       | akeneo.jpg  |
     And I cancel assets mass upload
     Then I should not see "akeneo.jpg"
-    And I should not see "schedule"
+    And I should not see "Import"
     When I select the assets to upload:
       | name        |
       | akeneo.jpg  |
     And I start assets mass upload
     Then I should see "Success" status for asset "akeneo.jpg"
-    And I should see "Schedule"
+    And I should see "Import"
     When I delete asset upload
     Then I should not see "akeneo.jpg"
-    And I should not see "Schedule"
+    And I should not see "Import"
     When I select the assets to upload:
       | name              |
       | akeneo.jpg        |
@@ -80,11 +80,11 @@ Feature: Mass uploads assets
     And I start assets mass upload
     Then I should see "Success" status for asset "akeneo.jpg"
     And I should see "Success" status for asset "akeneo2.jpg"
-    And I should see "Schedule"
+    And I should see "Import"
     When I cancel assets mass upload
     Then I should not see "akeneo.jpg"
     And I should not see "akeneo2.jpg"
-    And I should not see "schedule"
+    And I should not see "Import"
 
   Scenario: Complete mass upload
     And I am on the asset mass upload page
@@ -95,7 +95,7 @@ Feature: Mass uploads assets
       | logo_akeneo-fr_FR.jpg |
       | man-wall.jpg          |
     And I start assets mass upload
-    And I schedule assets mass upload
+    And I import assets mass upload
     And I wait 5 seconds
     Then I should be on the last "apply_assets_mass_upload" import job page
     And I should see "Asset created from file 3"

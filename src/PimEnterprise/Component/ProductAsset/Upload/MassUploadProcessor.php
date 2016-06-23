@@ -33,7 +33,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 /**
  * Process mass uploaded files
  * For a given username :
- * - read all scheduled files
+ * - read all imported files
  * - create or update asset
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
@@ -43,8 +43,8 @@ class MassUploadProcessor
     /** @var UploadCheckerInterface */
     protected $uploadChecker;
 
-    /** @var SchedulerInterface */
-    protected $scheduler;
+    /** @var ImporterInterface */
+    protected $importer;
 
     /** @var AssetFactory */
     protected $assetFactory;
@@ -72,7 +72,7 @@ class MassUploadProcessor
 
     /**
      * @param UploadCheckerInterface    $uploadChecker
-     * @param SchedulerInterface        $scheduler
+     * @param ImporterInterface         $importer
      * @param AssetFactory              $assetFactory
      * @param AssetRepositoryInterface  $assetRepository
      * @param SaverInterface            $assetSaver
@@ -84,7 +84,7 @@ class MassUploadProcessor
      */
     public function __construct(
         UploadCheckerInterface $uploadChecker,
-        SchedulerInterface $scheduler,
+        ImporterInterface $importer,
         AssetFactory $assetFactory,
         AssetRepositoryInterface $assetRepository,
         SaverInterface $assetSaver,
@@ -95,7 +95,7 @@ class MassUploadProcessor
         TranslatorInterface $translator
     ) {
         $this->uploadChecker    = $uploadChecker;
-        $this->scheduler        = $scheduler;
+        $this->importer         = $importer;
         $this->assetFactory     = $assetFactory;
         $this->assetRepository  = $assetRepository;
         $this->assetSaver       = $assetSaver;
@@ -107,7 +107,7 @@ class MassUploadProcessor
     }
 
     /**
-     * Process all scheduled uploaded files
+     * Process all imported uploaded files
      *
      * @param UploadContext $uploadContext
      *
@@ -117,11 +117,11 @@ class MassUploadProcessor
     {
         $processedFiles = new ProcessedItemList();
 
-        $scheduledFiles = $this->scheduler->getScheduledFiles($uploadContext);
+        $importedFiles = $this->importer->getImportedFiles($uploadContext);
 
-        foreach ($scheduledFiles as $file) {
+        foreach ($importedFiles as $file) {
             try {
-                $asset  = $this->applyScheduledUpload($file);
+                $asset  = $this->applyImportedUpload($file);
                 $reason = null === $asset->getId() ? UploadMessages::STATUS_NEW : UploadMessages::STATUS_UPDATED;
 
                 $parsedFilename = $this->uploadChecker->getParsedFilename($file->getFilename());
@@ -161,7 +161,7 @@ class MassUploadProcessor
      *
      * @return AssetInterface
      */
-    public function applyScheduledUpload(\SplFileInfo $file)
+    public function applyImportedUpload(\SplFileInfo $file)
     {
         $parsedFilename = $this->uploadChecker->getParsedFilename($file->getFilename());
         $this->uploadChecker->validateFilenameFormat($parsedFilename);
@@ -178,7 +178,9 @@ class MassUploadProcessor
 
         $file = $this->fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true);
 
-        $locale = $isLocalized ? $this->localeRepository->findOneBy(['code' => $parsedFilename->getLocaleCode()]) : null;
+        $locale = $isLocalized ?
+            $this->localeRepository->findOneBy(['code' => $parsedFilename->getLocaleCode()]) :
+            null;
 
         $reference = $asset->getReference($locale);
 

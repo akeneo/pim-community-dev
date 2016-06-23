@@ -11,6 +11,7 @@
 - PIM-5431: export the products updated since a defined date
 - PIM-5665: Add "remove" action in rule engine
 - PIM-5757: Add delete bulk action on the rules datagrid
+- PIM-5530: Change the label and the position of the button "Schedule" in "Upload assets" screen
 
 ## Technical improvements
 
@@ -98,7 +99,7 @@
 - Remove class `PimEnterprise\Bundle\BaseConnectorBundle\Processor\JobProfileAccessProcessor`
 - Remove class `PimEnterprise\Bundle\BaseConnectorBundle\Processor\LocaleAccessProcessor`
 - Remove class `Pim\Bundle\ConnectorBundle\JobLauncher\SimpleJobLauncher`  which overrides `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` we now always use `@akeneo_batch.launcher.simple_job_launcher` and not anymore `@pim_connector.launcher.simple_job_launcher`
-- Remove parameter `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface` from constructors of 
+- Remove parameter `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface` from constructors of
     `Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor`
     `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements`
     `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor`
@@ -151,7 +152,7 @@
 	`PimEnterprise\Component\CatalogRule\Connector\Tasklet\ImpactedProductCountTasklet`
 	`PimEnterprise\Component\Workflow\Connector\Tasklet\ApproveTasklet`
 	`PimEnterprise\Component\Workflow\Connector\Tasklet\RefuseTasklet` we can access to the JobParameters from the StepExecution
-- Change constructor of `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType`, add `Akeneo\Component\Batch\Job\JobParametersFactory` argument 
+- Change constructor of `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType`, add `Akeneo\Component\Batch\Job\JobParametersFactory` argument
 - Move and rename `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat\AssetStandardConverter` to `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\Asset`
 - Move and rename `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat\TagStandardConverter` to `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\Tag`
 - Move and rename `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat\ChannelConfigurationStandardConverter` to `PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard\ChannelConfiguration`

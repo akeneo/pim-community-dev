@@ -29,23 +29,23 @@ pimee_product_asset:
             add_files: Add files
             cancel: Cancel upload
             delete: Delete
-            schedule: Schedule
+            import: Import
             start: Start upload
         success:
             new: A new asset will be created
-            scheduled: Files scheduled for asset processing
+            imported: Files imported for asset processing
             canceled: Upload successfully canceled
             deleted: Uploaded file successfully deleted
         error:
             list: Cannot read already uploaded files
             upload: An error occured while uploading
             delete: Cannot delete file from server
-            schedule: An error occured while scheduling upload processing
+            import: An error occured during import
             filename: Invalid file name for asset
             code: Invalid code format for asset
             locale: An asset exists but is not localizable
             invalid_locale: The locale is disabled or invalid
-            exists: A file with the same name is already scheduled for upload
+            exists: A file with the same name is already imported
             conflicts: File names conflict
         grid:
             medias: medias

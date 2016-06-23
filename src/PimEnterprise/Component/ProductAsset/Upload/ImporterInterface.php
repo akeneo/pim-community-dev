@@ -12,25 +12,25 @@
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
 /**
- * Schedule uploaded assets files for processing
+ * Import uploaded assets files
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-interface SchedulerInterface
+interface ImporterInterface
 {
     /**
-     * Schedule all uploaded files
+     * Import all uploaded files
      *
      * @param UploadContext $uploadContext
      *
      * @return array
      */
-    public function schedule(UploadContext $uploadContext);
+    public function import(UploadContext $uploadContext);
 
     /**
      * @param UploadContext $uploadContext
      *
      * @return \SplFileInfo[]
      */
-    public function getScheduledFiles(UploadContext $uploadContext);
+    public function getImportedFiles(UploadContext $uploadContext);
 }

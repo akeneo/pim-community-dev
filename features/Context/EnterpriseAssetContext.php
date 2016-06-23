@@ -278,7 +278,7 @@ class EnterpriseAssetContext extends RawMinkContext
     }
 
     /**
-     * @When /^I (start|schedule|cancel) assets mass upload$/
+     * @When /^I (start|import|cancel) assets mass upload$/
      */
     public function iDoAssetMassUploadAction($action)
     {
@@ -288,17 +288,17 @@ class EnterpriseAssetContext extends RawMinkContext
         if ('start' === $action) {
             $actionButton = $this->spin(function () use ($currentPage) {
                 return $currentPage->find('css', '.btn.start');
-            }, sprintf('Unable to find the %s buton for mass upload', $action));
+            }, sprintf('Unable to find the %s button for mass upload', $action));
         }
-        if ('schedule' === $action) {
+        if ('import' === $action) {
             $actionButton = $this->spin(function () use ($currentPage) {
-                return $currentPage->find('css', '.btn.schedule');
-            }, sprintf('Unable to find the %s buton for mass upload', $action));
+                return $currentPage->find('css', '.btn.import');
+            }, sprintf('Unable to find the %s button for mass upload', $action));
         }
         if ('cancel' === $action) {
             $actionButton = $this->spin(function () use ($currentPage) {
                 return $currentPage->find('css', '.btn.cancel');
-            }, sprintf('Unable to find the %s buton for mass upload', $action));
+            }, sprintf('Unable to find the %s button for mass upload', $action));
         }
         $actionButton->click();
         $this->getMainContext()->wait();
@@ -315,7 +315,7 @@ class EnterpriseAssetContext extends RawMinkContext
         if ('delete' === $action) {
             $actionButton = $this->spin(function () use ($currentPage) {
                 return $currentPage->find('css', '.btn.delete');
-            }, sprintf('Unable to find the %s buton for upload', $action));
+            }, sprintf('Unable to find the %s button for upload', $action));
         }
         $actionButton->click();
         $this->getMainContext()->wait();

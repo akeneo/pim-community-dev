@@ -72,9 +72,9 @@ pimee_product_asset_mass_upload:
     defaults: { _controller: pimee_product_asset.controller.product_asset:massUploadAction }
     methods: [GET]
 
-pimee_product_asset_mass_upload_rest_schedule:
-    path: /rest/mass-upload/schedule
-    defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:scheduleAction, _format: json }
+pimee_product_asset_mass_upload_rest_import:
+    path: /rest/mass-upload/import
+    defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:importAction, _format: json }
     methods: [GET]
 
 pimee_product_asset_mass_upload_rest_list:

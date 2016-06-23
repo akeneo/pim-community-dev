@@ -28,18 +28,18 @@ pimee_product_asset:
       add_files: Lisää tiedostoja
       cancel: Peruuta lataaminen
       delete: Poista
-      schedule: Aikataulu
+      import: Aikataulu
       start: Aloita lataus
     success:
       new: Uusi resurssi luodaan
-      scheduled: Resurssin käsittelyä varten aikataulutetut tiedostot
+      imported: Resurssin käsittelyä varten aikataulutetut tiedostot
       canceled: Tuonti onnistuneesti keskeytetty
       deleted: Tuotu tiedosto onnistuneesti poistettu
     error:
       list: Jo tuotuja tiedostoja ei voida lukea
       upload: Virhe tapahtui tuonnin yhteydessä
       delete: Tiedostoa ei voida poistaa palvelimelta
-      schedule: Tuonnin prosessoinnin aikataulutuksen yhteydessä tapahtui virhe
+      import: Tuonnin prosessoinnin aikataulutuksen yhteydessä tapahtui virhe
       filename: Resurssin tiedostonimi ei ole pätevä
       code: Resurssin koodiformaatti ei ole pätevä
       locale: Resurssi on olemassa, mutta se ei ole lokalisoitavissa

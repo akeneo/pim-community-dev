@@ -76,7 +76,7 @@ class UploadChecker implements UploadCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function validateUpload(ParsedFilenameInterface $parsedFilename, $tmpUploadDir, $tmpScheduleDir)
+    public function validateUpload(ParsedFilenameInterface $parsedFilename, $tmpUploadDir, $tmpImportDir)
     {
         $this->validateFilenameFormat($parsedFilename);
 
@@ -85,8 +85,8 @@ class UploadChecker implements UploadCheckerInterface
             throw new DuplicateFileException();
         }
 
-        $schedulePath = $tmpScheduleDir . DIRECTORY_SEPARATOR . $parsedFilename->getCleanFilename();
-        if (file_exists($schedulePath)) {
+        $importPath = $tmpImportDir . DIRECTORY_SEPARATOR . $parsedFilename->getCleanFilename();
+        if (file_exists($importPath)) {
             throw new DuplicateFileException();
         }
     }
