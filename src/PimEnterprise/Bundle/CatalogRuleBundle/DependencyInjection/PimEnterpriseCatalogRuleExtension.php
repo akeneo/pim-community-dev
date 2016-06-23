@@ -37,6 +37,7 @@ class PimEnterpriseCatalogRuleExtension extends AkeneoStorageUtilsExtension
         $loader->load('controllers.yml');
         $loader->load('datagrid_extensions.yml');
         $loader->load('datagrid_filters.yml');
+        $loader->load('datagrid_handlers.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('doctrine.yml');
         $loader->load('engine.yml');
