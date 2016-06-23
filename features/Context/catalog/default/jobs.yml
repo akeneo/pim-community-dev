@@ -30,7 +30,7 @@ jobs:
         label:     Set family attribute requirements
         type:      mass_edit
     csv_product_quick_export:
-        connector: Akeneo Mass Edit Connector
+        connector: Akeneo CSV Connector
         alias: csv_product_quick_export
         label: CSV product quick export
         type: quick_export
@@ -40,7 +40,7 @@ jobs:
             withHeader: true
             filePath:   /tmp/products-quick-export.csv
     csv_product_grid_context_quick_export:
-        connector: Akeneo Mass Edit Connector
+        connector: Akeneo CSV Connector
         alias: csv_product_grid_context_quick_export
         label: CSV product quick export grid context
         type: quick_export
@@ -50,7 +50,7 @@ jobs:
             withHeader: true
             filePath:   /tmp/products_export_grid_context_%locale%_%scope%.csv
     xlsx_product_quick_export:
-        connector: Akeneo Mass Edit Connector
+        connector: Akeneo XLSX Connector
         alias: xlsx_product_quick_export
         label: XLSX product quick export
         type: quick_export
@@ -59,7 +59,7 @@ jobs:
             linesPerFile: 10000
             filePath:   /tmp/products_export_%locale%_%scope%.xlsx
     xlsx_product_grid_context_quick_export:
-        connector: Akeneo Mass Edit Connector
+        connector: Akeneo XLSX Connector
         alias: xlsx_product_grid_context_quick_export
         label: XLSX product quick export grid context
         type: quick_export
