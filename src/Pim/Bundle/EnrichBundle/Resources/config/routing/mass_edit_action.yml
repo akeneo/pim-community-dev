@@ -1,17 +1,17 @@
 pim_enrich_mass_edit_action_choose:
     path: /choose/{operationGroup}
-    defaults: { _controller: pim_enrich.controller.mass_edit_action:chooseAction, operationGroup: mass-edit }
+    defaults: { _controller: PimEnrichBundle:MassEdit\Product:choose, operationGroup: mass-edit }
     requirements:
         _method: GET|POST
 
 pim_enrich_mass_edit_action_configure:
     path: /{operationAlias}/configure
-    defaults: { _controller: pim_enrich.controller.mass_edit_action:configureAction }
+    defaults: { _controller: PimEnrichBundle:MassEdit\Product:configure }
     requirements:
         _method: GET|POST
 
 pim_enrich_mass_edit_action_perform:
     path: /{operationAlias}/perform
-    defaults: { _controller: pim_enrich.controller.mass_edit_action:performAction }
+    defaults: { _controller: PimEnrichBundle:MassEdit\Product:perform }
     requirements:
         _method: POST

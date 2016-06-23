@@ -1,9 +1,7 @@
 {% extends 'PimEnrichBundle:MassEditAction:layout.html.twig' %}
 
 {% block content %}
-    {% set title = ('pim_enrich.mass_edit_action.' ~ itemsName ~ '.page_title')|trans %}
-    {% set subtitle = ('pim_enrich.mass_edit_action.' ~ itemsName ~ '.page_subtitle')|transchoice(productCount) %}
-    {{ elements.page_header(title, null, subtitle) }}
+    {{ elements.page_header(title|default('title')|trans, null, subtitle|default('subtitle')|transchoice(itemsCount)) }}
 
     {{ parent() }}
 
@@ -24,7 +22,7 @@
 
         <div class="row offset1 span12 buffer-top confirmation hide">
             <div class="alert alert-info">
-                {{ ('pim_enrich.mass_edit_action.' ~ itemsName ~ '.confirm')|transchoice(productCount) }}
+                {{ confirmLabel|default('confirm')|transchoice(itemsCount) }}
             </div>
         </div>
 
