@@ -68,7 +68,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_enrich.step.update_product_value.mass_edit'
+                - '@pim_enrich.step.update_product_value.perform'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
 
@@ -79,7 +79,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_enrich.step.add_product_value.mass_edit'
+                - '@pim_enrich.step.add_product_value.perform'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
 
@@ -90,7 +90,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_enrich.step.remove_product_value.mass_edit'
+                - '@pim_enrich.step.remove_product_value.perform'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
 
@@ -101,8 +101,8 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_enrich.step.edit_common_attributes.mass_edit'
-                - '@pim_enrich.step.cleaner'
+                - '@pim_enrich.step.edit_common_attributes.perform'
+                - '@pim_enrich.step.clean'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
 
@@ -113,7 +113,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_enrich.step.set_attribute_requirements.mass_edit'
+                - '@pim_enrich.step.set_attribute_requirements.perform'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
 
@@ -124,6 +124,6 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_enrich.step.add_to_variant_group.mass_edit'
+                - '@pim_enrich.step.add_to_variant_group.perform'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
