@@ -15,13 +15,13 @@ use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Schedule previously uploaded files for processing
+ * Import previously uploaded files
  * - read uploaded files
- * - move them to schedule directory where they will be collected by the processor
+ * - move them to import directory where they will be collected by the processor
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class Scheduler implements SchedulerInterface
+class Importer implements ImporterInterface
 {
     /** @var UploadCheckerInterface */
     protected $uploadChecker;
@@ -45,19 +45,19 @@ class Scheduler implements SchedulerInterface
      * {@inheritdoc}
      *
      * - check uploaded files
-     * - Move files from tmp uploaded storage to tmp scheduled storage
+     * - Move files from tmp uploaded storage to tmp imported storage
      */
-    public function schedule(UploadContext $uploadContext)
+    public function import(UploadContext $uploadContext)
     {
-        $files             = [];
-        $fileSystem        = new Filesystem();
-        $uploadDirectory   = $uploadContext->getTemporaryUploadDirectory();
-        $scheduleDirectory = $uploadContext->getTemporaryScheduleDirectory();
+        $files           = [];
+        $fileSystem      = new Filesystem();
+        $uploadDirectory = $uploadContext->getTemporaryUploadDirectory();
+        $importDirectory = $uploadContext->getTemporaryImportDirectory();
 
         $storedFiles = array_diff(scandir($uploadDirectory), ['.', '..']);
 
-        if (!is_dir($scheduleDirectory)) {
-            $fileSystem->mkdir($scheduleDirectory);
+        if (!is_dir($importDirectory)) {
+            $fileSystem->mkdir($importDirectory);
         }
 
         foreach ($storedFiles as $file) {
@@ -65,13 +65,13 @@ class Scheduler implements SchedulerInterface
                 'file'  => $file,
                 'error' => null,
             ];
-            if (!$this->isValidScheduledFilename($storedFiles, $file)) {
+            if (!$this->isValidImportedFilename($storedFiles, $file)) {
                 $result['error'] = UploadMessages::ERROR_CONFLICTS;
                 $files[]         = $result;
             } else {
-                $filepath = $uploadDirectory . DIRECTORY_SEPARATOR . $file;
-                $newPath  = $scheduleDirectory . DIRECTORY_SEPARATOR . $file;
-                $fileSystem->rename($filepath, $newPath);
+                $filePath = $uploadDirectory . DIRECTORY_SEPARATOR . $file;
+                $newPath  = $importDirectory . DIRECTORY_SEPARATOR . $file;
+                $fileSystem->rename($filePath, $newPath);
                 $files[] = $result;
             }
         }
@@ -82,18 +82,18 @@ class Scheduler implements SchedulerInterface
     /**
      * {@inheritdoc}
      */
-    public function getScheduledFiles(UploadContext $uploadContext)
+    public function getImportedFiles(UploadContext $uploadContext)
     {
-        $scheduleDir    = $uploadContext->getTemporaryScheduleDirectory();
-        $scheduledFiles = [];
-        if (is_dir($scheduleDir)) {
-            $scheduledFiles = array_diff(scandir($scheduleDir), ['.', '..']);
-            $scheduledFiles = array_map(function ($filename) use ($scheduleDir) {
-                return new \SplFileInfo($scheduleDir . DIRECTORY_SEPARATOR . $filename);
-            }, $scheduledFiles);
+        $importDir    = $uploadContext->getTemporaryImportDirectory();
+        $importedFiles = [];
+        if (is_dir($importDir)) {
+            $importedFiles = array_diff(scandir($importDir), ['.', '..']);
+            $importedFiles = array_map(function ($filename) use ($importDir) {
+                return new \SplFileInfo($importDir . DIRECTORY_SEPARATOR . $filename);
+            }, $importedFiles);
         }
 
-        return $scheduledFiles;
+        return $importedFiles;
     }
 
     /**
@@ -106,7 +106,7 @@ class Scheduler implements SchedulerInterface
      *
      * @return bool
      */
-    protected function isValidScheduledFilename(array $storedFiles, $filenameToCheck)
+    protected function isValidImportedFilename(array $storedFiles, $filenameToCheck)
     {
         $otherFilenames = array_diff($storedFiles, [$filenameToCheck]);
 

@@ -41,9 +41,9 @@ interface UploadCheckerInterface
      *
      * @param ParsedFilenameInterface $parsedFilename
      * @param string                  $tmpUploadDir   Temporary directory for uploaded files
-     * @param string                  $tmpScheduleDir Temporary directory for scheduled files
+     * @param string                  $tmpImportDir Temporary directory for importd files
      *
      * @throws UploadException
      */
-    public function validateUpload(ParsedFilenameInterface $parsedFilename, $tmpUploadDir, $tmpScheduleDir);
+    public function validateUpload(ParsedFilenameInterface $parsedFilename, $tmpUploadDir, $tmpImportDir);
 }

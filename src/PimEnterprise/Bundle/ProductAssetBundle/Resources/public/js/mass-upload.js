@@ -44,7 +44,7 @@ define(
             events: {
                 'click .navbar-buttons .start': 'startAll',
                 'click .navbar-buttons .cancel': 'cancelAll',
-                'click .navbar-buttons .schedule': 'scheduleAll'
+                'click .navbar-buttons .import': 'importAll'
             },
 
             /**
@@ -74,7 +74,7 @@ define(
 
                 myDropzone.on('removedfile', function () {
                     if (0 === myDropzone.getFilesWithStatus(Dropzone.SUCCESS).length) {
-                        this.$('.navbar-buttons .btn.schedule').addClass('hide');
+                        this.$('.navbar-buttons .btn.import').addClass('hide');
                     }
                 }.bind(this));
 
@@ -131,7 +131,7 @@ define(
 
                 myDropzone.on('queuecomplete', function () {
                     if (myDropzone.getFilesWithStatus(Dropzone.SUCCESS).length > 0) {
-                        this.$('.navbar-buttons .btn.schedule').removeClass('hide');
+                        this.$('.navbar-buttons .btn.import').removeClass('hide');
                     }
                 }.bind(this));
 
@@ -203,7 +203,7 @@ define(
              * Cancel all uploads and delete already uploaded files
              */
             cancelAll: function () {
-                this.$('.navbar-buttons .btn.schedule').addClass('hide');
+                this.$('.navbar-buttons .btn.import').addClass('hide');
                 this.myDropzone.removeAllFiles(true);
                 messenger.notificationFlashMessage(
                     'success',
@@ -212,23 +212,23 @@ define(
             },
 
             /**
-             * Schedule uploaded files for asset processing
+             * Import uploaded files for asset processing
              */
-            scheduleAll: function () {
-                this.$('.navbar-buttons .btn.schedule').addClass('hide');
+            importAll: function () {
+                this.$('.navbar-buttons .btn.import').addClass('hide');
                 $.get(
-                    Routing.generate('pimee_product_asset_mass_upload_rest_schedule')
+                    Routing.generate('pimee_product_asset_mass_upload_rest_import')
                 ).done(function (response) {
                         var jobReportUrl = Routing.generate('pim_enrich_job_tracker_show', {id: response.jobId});
                         messenger.notificationFlashMessage(
                             'success',
-                            _.__('pimee_product_asset.mass_upload.success.scheduled')
+                            _.__('pimee_product_asset.mass_upload.success.imported')
                         );
                         Navigation.getInstance().setLocation(jobReportUrl);
                     }.bind(this)).fail(function () {
                         messenger.notificationFlashMessage(
                             'error',
-                            _.__('pimee_product_asset.mass_upload.error.schedule')
+                            _.__('pimee_product_asset.mass_upload.error.import')
                         );
                     });
             },

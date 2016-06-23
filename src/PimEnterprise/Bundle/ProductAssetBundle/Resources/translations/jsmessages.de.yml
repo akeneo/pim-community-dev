@@ -28,18 +28,18 @@ pimee_product_asset:
       add_files: Dateien hinzufügen
       cancel: Upload abbrechen
       delete: Löschen
-      schedule: Einplanen
+      import: Einplanen
       start: Upload starten
     success:
       new: Ein neues Asset wird erstellt
-      scheduled: Zur Verarbeitung von Assets eingeplante Dateien
+      imported: Zur Verarbeitung von Assets eingeplante Dateien
       canceled: Upload erfolgreich abgebrochen
       deleted: Hochgeladene Datei erfolgreich gelöscht
     error:
       list: Bereits hochgeladene Dateien können nicht gelesen werden
       upload: Während des Hochladens ist ein Fehler aufgetreten
       delete: Datei kann nicht vom Server gelöscht werden
-      schedule: Während des Einplanens der Uploadverarbeitung ist ein Fehler aufgetreten
+      import: Während des Einplanens der Uploadverarbeitung ist ein Fehler aufgetreten
       filename: Ungültiger Dateiname für Asset
       code: Ungültiges Code-Format für Asset
       locale: Ein Asset existiert, ist aber nicht lokalisierbar

@@ -41,7 +41,7 @@ services:
         arguments:
             - '@pimee_product_asset.repository.asset'
             - '@pimee_product_asset.upload_checker'
-            - '@pimee_product_asset.upload_scheduler'
+            - '@pimee_product_asset.upload_importer'
             - '@security.token_storage'
             - '@akeneo_batch.launcher.simple_job_launcher'
             - '@pim_import_export.repository.job_instance'

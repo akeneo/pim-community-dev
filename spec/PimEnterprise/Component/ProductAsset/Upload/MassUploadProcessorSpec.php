@@ -14,7 +14,7 @@ use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\ParsedFilename;
-use PimEnterprise\Component\ProductAsset\Upload\SchedulerInterface;
+use PimEnterprise\Component\ProductAsset\Upload\ImporterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 use Prophecy\Argument;
 use SplFileInfo;
@@ -25,7 +25,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
 {
     function let(
         UploadCheckerInterface $uploadChecker,
-        SchedulerInterface $scheduler,
+        ImporterInterface $importer,
         AssetFactory $assetFactory,
         AssetRepositoryInterface $assetRepository,
         AssetSaver $assetSaver,
@@ -37,7 +37,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $uploadChecker,
-            $scheduler,
+            $importer,
             $assetFactory,
             $assetRepository,
             $assetSaver,
@@ -67,7 +67,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $fileStorer,
         $localeRepository
     ) {
-        $this->initializeApplyScheduledUpload($file,
+        $this->initializeApplyImportedUpload($file,
             $fileInfo,
             $asset,
             $reference,
@@ -100,7 +100,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $localeRepository->findOneBy(Argument::any())
             ->shouldNotBeCalled();
 
-        $this->applyScheduledUpload($file)
+        $this->applyImportedUpload($file)
             ->shouldReturn($asset);
     }
 
@@ -117,7 +117,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $fileStorer,
         $localeRepository
     ) {
-        $this->initializeApplyScheduledUpload($file,
+        $this->initializeApplyImportedUpload($file,
             $fileInfo,
             $asset,
             $reference,
@@ -152,7 +152,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $localeRepository->findOneBy(['code' => 'en_US'])
             ->shouldBeCalled();
 
-        $this->applyScheduledUpload($file)
+        $this->applyImportedUpload($file)
             ->shouldReturn($asset);
     }
 
@@ -169,7 +169,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $fileStorer,
         $localeRepository
     ) {
-        $this->initializeApplyScheduledUpload($file,
+        $this->initializeApplyImportedUpload($file,
             $fileInfo,
             $asset,
             $reference,
@@ -200,11 +200,11 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $localeRepository->findOneBy(['code' => 'en_US'])
             ->shouldBeCalled();
 
-        $this->applyScheduledUpload($file)
+        $this->applyImportedUpload($file)
             ->shouldReturn($asset);
     }
 
-    protected function initializeApplyScheduledUpload(
+    protected function initializeApplyImportedUpload(
         SplFileInfo $file,
         FileInfoInterface $fileInfo,
         AssetInterface $asset,

@@ -25,7 +25,7 @@ final class UploadMessages
     const STATUS_UPDATED = 'pimee_product_asset.mass_upload.updated';
 
     /** @var string */
-    const STATUS_SCHEDULED = 'pimee_product_asset.mass_upload.scheduled';
+    const STATUS_IMPORTED = 'pimee_product_asset.mass_upload.imported';
 
     /** @var string */
     const ERROR_CODE = 'pimee_product_asset.mass_upload.error.code';

@@ -292,7 +292,7 @@ class EnterpriseAssetContext extends RawMinkContext
         }
         if ('import' === $action) {
             $actionButton = $this->spin(function () use ($currentPage) {
-                return $currentPage->find('css', '.btn.schedule');
+                return $currentPage->find('css', '.btn.import');
             }, sprintf('Unable to find the %s button for mass upload', $action));
         }
         if ('cancel' === $action) {

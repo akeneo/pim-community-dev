@@ -38,9 +38,9 @@ class UploadContextSpec extends ObjectBehavior
             ->shouldReturn($this->uploadDirectory
                 . DIRECTORY_SEPARATOR . UploadContext::DIR_UPLOAD_TMP
                 . DIRECTORY_SEPARATOR . 'foobar');
-        $this->getTemporaryScheduleDirectory()
+        $this->getTemporaryImportDirectory()
             ->shouldReturn($this->uploadDirectory
-                . DIRECTORY_SEPARATOR . UploadContext::DIR_UPLOAD_SCHEDULED
+                . DIRECTORY_SEPARATOR . UploadContext::DIR_UPLOAD_IMPORTED
                 . DIRECTORY_SEPARATOR . 'foobar');
     }
 }

@@ -24,10 +24,13 @@ class UploadContext
     const DIR_UPLOAD_TMP = 'mass_upload_tmp';
 
     /** @var string */
-    const DIR_UPLOAD_SCHEDULED = 'mass_upload_scheduled';
+    const DIR_UPLOAD_IMPORTED = 'mass_upload_imported';
 
     /** @var string */
     protected $uploadDirectory;
+
+    /** @var string */
+    protected $importDirectory;
 
     /** @var string */
     protected $username;
@@ -38,8 +41,8 @@ class UploadContext
      */
     public function __construct($uploadDirectory, $username)
     {
-        $this->uploadDirectory    = $uploadDirectory . DIRECTORY_SEPARATOR . static::DIR_UPLOAD_TMP;
-        $this->scheduledDirectory = $uploadDirectory . DIRECTORY_SEPARATOR . static::DIR_UPLOAD_SCHEDULED;
+        $this->uploadDirectory = $uploadDirectory . DIRECTORY_SEPARATOR . static::DIR_UPLOAD_TMP;
+        $this->importDirectory = $uploadDirectory . DIRECTORY_SEPARATOR . static::DIR_UPLOAD_IMPORTED;
 
         if (empty($username)) {
             throw new \RuntimeException('Username must be set to initialize the upload context');
@@ -58,8 +61,8 @@ class UploadContext
     /**
      * @return string
      */
-    public function getTemporaryScheduleDirectory()
+    public function getTemporaryImportDirectory()
     {
-        return $this->scheduledDirectory . DIRECTORY_SEPARATOR . $this->username;
+        return $this->importDirectory . DIRECTORY_SEPARATOR . $this->username;
     }
 }

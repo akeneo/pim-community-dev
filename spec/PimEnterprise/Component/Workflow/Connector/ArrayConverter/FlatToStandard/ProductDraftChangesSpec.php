@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 
-class ProductDraftSpec extends ObjectBehavior
+class ProductDraftChangesSpec extends ObjectBehavior
 {
     function let(
         ArrayConverterInterface $productConverter,

@@ -11,7 +11,7 @@
 - PIM-5431: export the products updated since a defined date
 - PIM-5665: Add "remove" action in rule engine
 - PIM-5757: Add delete bulk action on the rules datagrid
-- PIM-5530: Change the label and the position of the button "Schedule"
+- PIM-5530: Change the label and the position of the button "Schedule" in "Upload assets" screen
 
 ## Technical improvements
 
