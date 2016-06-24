@@ -102,7 +102,7 @@ class ProductController
 
                 $configureRoute = $this
                     ->router
-                    ->generate('pim_enrich_mass_edit_action_configure', $queryParams);
+                    ->generate('pim_enrich_mass_edit_product_action_configure', $queryParams);
 
                 return new RedirectResponse($configureRoute);
             }
