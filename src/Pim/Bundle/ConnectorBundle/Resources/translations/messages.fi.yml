@@ -108,7 +108,6 @@ pim_connector:
       help: Yksi merkki asettaa kenttäerottimen desimaaleja varten
     dateFormat:
       label: Päivämäärän muoto
-      help: Määritä minkä tahansa päivämäärä-sarakkeen muoto tiedostossa, esim, tässä DD/MM/YYYY 31/04/2014 formaattia varten.
 job_execution.summary:
   read: lue
   read_lines: lue rivit

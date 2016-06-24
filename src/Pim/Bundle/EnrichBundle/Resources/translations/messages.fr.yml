@@ -116,12 +116,10 @@ pim_enrich:
         invalid_attribute: |-
           L'attribut ayant pour code "attribute_code" n'est pas un attribut commun aux produits sélectionnés, attribut ignoré.
         no_valid_attribute: Aucun des attributs sélectionnés ne peut être appliqué à ce produit.
-    classify:
+    classify-add:
       label: Classer les produits dans des catégories
       description: "Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé."
       success_flash: Le(s) produit(s) ont été classés dans les catégories sélectionnées
-      launched_flash: |-
-        L'action en masse "classification" a été lancée. Vous serez notifié lorsque la modification sera terminée.
     change-family:
       label: Changer la famille des produits
       description: La famille des produits sélectionnés sera remplacée par la famille choisie
