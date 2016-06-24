@@ -11,7 +11,7 @@ use Akeneo\Component\Batch\Step\AbstractStep;
 use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
+use Pim\Component\Connector\Writer\File\CsvWriter;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

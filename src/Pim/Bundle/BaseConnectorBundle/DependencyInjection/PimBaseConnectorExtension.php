@@ -22,17 +22,9 @@ class PimBaseConnectorExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('readers.yml');
-        $loader->load('processors.yml');
-        $loader->load('writers.yml');
         $loader->load('archiving.yml');
+        $loader->load('processors.yml');
+        $loader->load('readers.yml');
         $loader->load('validators.yml');
-        $loader->load('cache.yml');
-
-        $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
-        $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
-        if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
-            $loader->load($storageConfig);
-        }
     }
 }

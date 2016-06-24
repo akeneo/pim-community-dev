@@ -1,3 +1,0 @@
-parameters:
-    pim_base_connector.reader.doctrine.product.class: Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ODMProductReader
-
