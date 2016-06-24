@@ -142,7 +142,7 @@ class MassEditActionController
 
                 return new RedirectResponse(
                     $this->router->generate(
-                        'pim_enrich_mass_edit_action_configure',
+                        'pim_enrich_mass_edit_product_action_configure',
                         $this->getQueryParams() + ['operationAlias' => $data['operationAlias']]
                     )
                 );
