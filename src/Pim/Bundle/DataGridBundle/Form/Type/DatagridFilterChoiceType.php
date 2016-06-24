@@ -30,7 +30,7 @@ class DatagridFilterChoiceType extends AbstractType
     protected $disallowed = ['scope', 'locale'];
 
     /**
-     * @param Manager             $configuration
+     * @param Manager             $manager
      * @param FiltersConfigurator $configurator
      * @param string              $datagrid
      */

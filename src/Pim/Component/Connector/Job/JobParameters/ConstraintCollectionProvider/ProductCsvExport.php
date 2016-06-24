@@ -67,6 +67,7 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
             'message' => 'pim_connector.export.locales.validation.not_blank'
         ]);
         $constraintFields['families'] = [];
+        $constraintFields['product_identifier'] = [];
         $constraintFields['completeness'] = [
             new NotBlank(['groups' => 'Execution']),
             new Choice(['choices' => [

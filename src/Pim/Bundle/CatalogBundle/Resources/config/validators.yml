@@ -38,6 +38,7 @@ parameters:
     pim_catalog.validator.mapping.delegating_class_metadata_factory.class: Pim\Component\Catalog\Validator\Mapping\DelegatingClassMetadataFactory
     pim_catalog.validator.mapping.product_value_metadata_factory.class:    Pim\Component\Catalog\Validator\Mapping\ProductValueMetadataFactory
     pim_catalog.validator.unique_value_set.class:                          Pim\Component\Catalog\Validator\UniqueValuesSet
+    pim_catalog.constraint.product_identifier.class:                       Pim\Component\Catalog\Validator\Constraints\ValidIdentifierValidator
 
 services:
     # Helpers

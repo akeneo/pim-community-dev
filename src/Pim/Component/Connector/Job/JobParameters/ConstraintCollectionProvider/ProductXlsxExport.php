@@ -75,6 +75,7 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
             new GreaterThan(1)
         ];
         $constraintFields['families'] = [];
+        $constraintFields['product_identifier'] = [];
         $constraintFields['completeness'] = [
             new NotBlank(['groups' => 'Execution']),
             new Choice(['choices' => [
