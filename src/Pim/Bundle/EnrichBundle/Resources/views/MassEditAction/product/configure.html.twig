@@ -1,6 +1,7 @@
-{% extends 'PimEnrichBundle:MassEditAction:choose.html.twig' %}
+{% extends 'PimEnrichBundle:MassEditAction:configure.html.twig' %}
 
 {% block content %}
+    {#TODO: Keep this in content block?!#}
     {% set firstStepLabel = 'pim_enrich.mass_edit_action.product.steps.first' %}
     {% set secondStepLabel = 'pim_enrich.mass_edit_action.product.steps.second' %}
     {% set thirdStepLabel = 'pim_enrich.mass_edit_action.product.steps.third' %}
@@ -8,9 +9,7 @@
 
     {% set title = 'pim_enrich.mass_edit_action.product.page_title' %}
     {% set subtitle = 'pim_enrich.mass_edit_action.product.page_subtitle' %}
-
-    {% set actionPath = 'pim_enrich_mass_edit_action_choose' %}
-    {% set canceledPath = 'pim_enrich_product_index' %}
+    {% set confirmLabel = 'pim_enrich.mass_edit_action.product.confirm' %}
 
     {{ parent() }}
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'PimEnrichBundle:MassEditAction:configure/layout.html.twig' %}
+{% extends 'PimEnrichBundle:MassEditAction:choose.html.twig' %}
 
 {% block content %}
     {% set firstStepLabel = 'pim_enrich.mass_edit_action.product.steps.first' %}
@@ -8,7 +8,11 @@
 
     {% set title = 'pim_enrich.mass_edit_action.product.page_title' %}
     {% set subtitle = 'pim_enrich.mass_edit_action.product.page_subtitle' %}
-    {% set confirmLabel = 'pim_enrich.mass_edit_action.product.confirm' %}
 
+    {% set actionPath = 'pim_enrich_mass_edit_action_choose' %}
+    {% set canceledPath = 'pim_enrich_product_index' %}
+
+    {# TODO: Put all this files in MassEditAction/product/...#}
     {{ parent() }}
 {% endblock %}
+
