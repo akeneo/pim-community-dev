@@ -1,15 +1,4 @@
 services:
-    # Deprecated: Will be removed in 1.7, please use @pimee_workflow.reader.published_product instead.
-    pimee_workflow.reader.doctrine.published_product:
-        class: '%pim_base_connector.reader.doctrine.product.class%'
-        arguments:
-            - '@pimee_workflow.repository.published_product'
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.manager.completeness'
-            - '@pim_catalog.converter.metric'
-            - '@pim_catalog.object_manager.product'
-            - false
-
     pimee_workflow.reader.published_product:
         class: '%pim_connector.reader.database.product.class%'
         arguments:

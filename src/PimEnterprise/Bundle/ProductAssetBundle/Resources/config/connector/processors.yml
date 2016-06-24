@@ -63,6 +63,4 @@ services:
     pimee_product_asset.processor.normalization.channel_configuration.flat:
         class: '%pimee_product_asset.processor.normalization.channel_configuration.class%'
         arguments:
-            - '@pim_serializer'
-            - '@pim_catalog.repository.locale'
             - '@pim_product_asset.normalizer.structured.channel_configuration'

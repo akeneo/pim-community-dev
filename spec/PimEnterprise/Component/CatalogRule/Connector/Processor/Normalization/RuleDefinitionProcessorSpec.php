@@ -4,23 +4,13 @@ namespace spec\PimEnterprise\Component\CatalogRule\Connector\Processor\Normaliza
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class RuleDefinitionProcessorSpec extends ObjectBehavior
 {
-    function let(
-        SerializerInterface $serializer,
-        LocaleRepositoryInterface $localeRepository,
-        NormalizerInterface $ruleNormalizer)
+    function let(normalizerinterface $ruleNormalizer)
     {
-        $this->beConstructedWith($serializer, $localeRepository, $ruleNormalizer);
-    }
-
-    function it_implements()
-    {
-        $this->shouldHaveType('Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor');
+        $this->beConstructedWith($ruleNormalizer);
     }
 
     function it_processes_rules(

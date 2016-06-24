@@ -22,11 +22,6 @@ class VariationProcessorSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
-    function it_is_a_configurable_step_execution_aware_processor()
-    {
-        $this->shouldImplement('Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor');
-    }
-
     function it_processes(
         $assetNormalizer,
         $serializer,
