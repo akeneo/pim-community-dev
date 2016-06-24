@@ -730,7 +730,11 @@ pim_title.group_type:
     index: "Group types"
     edit: "Group types %group type.label% | Edit"
 
-pim_title.mass_edit_action:
+pim_title.mass_edit_product_action:
+    choose: "Mass Edit | Choose"
+    configure: "Mass Edit | Configure"
+
+pim_title.mass_edit_family_action:
     choose: "Mass Edit | Choose"
     configure: "Mass Edit | Configure"
 
