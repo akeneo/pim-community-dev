@@ -19,4 +19,5 @@ services:
             - '@pim_catalog.converter.metric'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@akeneo_batch.job_repository'
+            - '@pim_catalog.repository.attribute'
             - false
