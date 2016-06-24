@@ -90,7 +90,7 @@ Change status: Cambiar el estado
 Toggle status: Alternar Estado
 pim.grid.mass_action.quick_export.csv_all: CSV (todos los atributos)
 pim.grid.mass_action.delete: Eliminar
-pim.grid.mass_action.mass_edit: Edición masiva
+pim.grid.mass_action.mass_edit: Edición en masa
 pim.grid.mass_action.sequential_edit: Edición secuencial
 jstree.create: Crear
 switch_on: SÍ
