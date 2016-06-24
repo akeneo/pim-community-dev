@@ -12,3 +12,5 @@ Akeneo\Component\Batch\Model\JobInstance:
                 message: The code must only contain alphanumeric characters and underscore.
         label:
             - NotBlank: ~
+        alias:
+            - NotBlank: ~
