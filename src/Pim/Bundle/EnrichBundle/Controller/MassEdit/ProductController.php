@@ -2,12 +2,19 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\MassEdit;
 
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
+use Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
+use Pim\Bundle\EnrichBundle\MassEditAction\OperationJobLauncher;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
@@ -18,8 +25,56 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ProductController extends Controller
+class ProductController
 {
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var MassActionParametersParser */
+    protected $parametersParser;
+
+    /** @var GridFilterAdapterInterface */
+    protected $gridFilterAdapter;
+
+    /** @var MassEditFormResolver */
+    protected $massEditFormResolver;
+
+    /** @var OperationRegistryInterface */
+    protected $operationRegistry;
+
+    /** @var OperationJobLauncher */
+    protected $operationLauncher;
+
+    /**
+     * @param RouterInterface            $router
+     * @param EngineInterface            $templating
+     * @param MassActionParametersParser $parametersParser
+     * @param GridFilterAdapterInterface $gridFilterAdapter
+     * @param MassEditFormResolver       $massEditFormResolver
+     * @param OperationRegistryInterface $operationRegistry
+     * @param OperationJobLauncher       $operationLauncher
+     */
+    public function __construct(
+        RouterInterface $router,
+        EngineInterface $templating,
+        MassActionParametersParser $parametersParser,
+        GridFilterAdapterInterface $gridFilterAdapter,
+        MassEditFormResolver $massEditFormResolver,
+        OperationRegistryInterface $operationRegistry,
+        OperationJobLauncher $operationLauncher
+    ) {
+        $this->router = $router;
+        $this->templating = $templating;
+        $this->parametersParser = $parametersParser;
+        $this->gridFilterAdapter = $gridFilterAdapter;
+        $this->massEditFormResolver = $massEditFormResolver;
+        $this->operationRegistry = $operationRegistry;
+        $this->operationLauncher = $operationLauncher;
+    }
+
     /**
      * Display the form to choose the mass edit action to execute.
      *
@@ -33,7 +88,7 @@ class ProductController extends Controller
     public function chooseAction(Request $request, $operationGroup)
     {
         $form = $this
-            ->get('pim_enrich.mass_edit_action.form_resolver')
+            ->massEditFormResolver
             ->getAvailableOperationsForm('product-grid', $operationGroup);
 
         $queryParams = $this->getQueryParams($request);
@@ -46,7 +101,7 @@ class ProductController extends Controller
                 $queryParams += ['operationAlias' => $data['operationAlias']];
 
                 $configureRoute = $this
-                    ->get('router')
+                    ->router
                     ->generate('pim_enrich_mass_edit_action_configure', $queryParams);
 
                 return new RedirectResponse($configureRoute);
@@ -55,7 +110,7 @@ class ProductController extends Controller
 
         $itemsCount = $request->get('itemsCount');
 
-        return $this->render('PimEnrichBundle:ProductMassEditAction:choose.html.twig', [
+        return $this->templating->renderResponse('PimEnrichBundle:MassEditAction:product/choose.html.twig', [
             'form'        => $form->createView(),
             'itemsCount'  => $itemsCount,
             'queryParams' => array_merge($queryParams, ['operationGroup' => $operationGroup]),
@@ -75,17 +130,17 @@ class ProductController extends Controller
     public function configureAction(Request $request, $operationAlias)
     {
         $operation = $this
-            ->get('pim_enrich.mass_edit_action.operation.registry')
+            ->operationRegistry
             ->get($operationAlias);
 
         $form = $this
-            ->get('pim_enrich.mass_edit_action.form_resolver')
+            ->massEditFormResolver
             ->getConfigurationForm($operationAlias);
 
         $itemsCount = $request->get('itemsCount');
-        $configureRoute = sprintf('PimEnrichBundle:ProductMassEditAction/configure:%s.html.twig', $operationAlias);
+        $configureTemplate = sprintf('PimEnrichBundle:MassEditAction:product/configure/%s.html.twig', $operationAlias);
 
-        return $this->render($configureRoute,
+        return $this->templating->renderResponse($configureTemplate,
             [
                 'form'           => $form->createView(),
                 'operationAlias' => $operationAlias,
@@ -111,11 +166,11 @@ class ProductController extends Controller
     public function performAction(Request $request, $operationAlias)
     {
         $form = $this
-            ->get('pim_enrich.mass_edit_action.form_resolver')
+            ->massEditFormResolver
             ->getConfigurationForm($operationAlias);
 
         $itemsCount = $request->get('itemsCount');
-        $configureRoute = sprintf('MassEditAction/configure/%s.html.twig', $operationAlias);
+        $configureTemplate = sprintf('MassEditAction/configure/%s.html.twig', $operationAlias);
 
         $form->remove('operationAlias');
         $form->submit($request);
@@ -124,29 +179,31 @@ class ProductController extends Controller
 
         if ($form->isValid()) {
             $pimFilters = $this
-                ->get('pim_datagrid.adapter.oro_to_pim_grid_filter')
+                ->gridFilterAdapter
                 ->adapt($request);
 
             $operation = $form->getData();
             $operation->setFilters($pimFilters);
 
             $this
-                ->get('pim_enrich.mass_edit_action.operation_job_launcher')
+                ->operationLauncher
                 ->launch($operation);
 
-            $this->addFlash(
-                'success',
-                new Message(sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias))
-            );
+            $request
+                ->getSession()
+                ->getFlashBag()
+                ->add('success', new Message(
+                    sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias))
+                );
 
-            $route = 'pim_enrich_product_index';
+            $redirectRoute = 'pim_enrich_product_index';
 
             return new RedirectResponse(
-                $this->get('router')->generate($route, ['dataLocale' => $queryParams['dataLocale']])
+                $this->router->generate($redirectRoute, ['dataLocale' => $queryParams['dataLocale']])
             );
         }
 
-        return $this->render($configureRoute,
+        return $this->templating->renderResponse($configureTemplate,
             [
                 'form'           => $form->createView(),
                 'operationAlias' => $operationAlias,
@@ -166,7 +223,7 @@ class ProductController extends Controller
     protected function getQueryParams(Request $request)
     {
         $params = $this
-            ->get('oro_datagrid.mass_action.parameters_parser')
+            ->parametersParser
             ->parse($request);
 
         $params['gridName']   = $request->get('gridName');
