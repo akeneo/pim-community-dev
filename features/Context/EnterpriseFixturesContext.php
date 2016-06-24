@@ -1043,6 +1043,18 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Given /^the following assets tag(?:|s):$/
+     */
+    public function theFollowingAssetsTags(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->createAssetTag($data);
+        }
+    }
+
+    /**
      * @param array|string $data
      *
      * @return CategoryInterface
@@ -1070,6 +1082,25 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         }
 
         return $category;
+    }
+
+    /**
+     * @param array|string $data
+     *
+     * @return TagInterface
+     */
+    protected function createAssetTag($data)
+    {
+        if (is_string($data)) {
+            $data = [['code' => $data]];
+        }
+
+        $processor = $this->getContainer()->get('pimee_product_asset.processor.denormalization.tag');
+        $tag       = $processor->process($data);
+
+        $this->getContainer()->get('pimee_product_asset.saver.tag')->save($tag);
+
+        return $tag;
     }
 
     /**

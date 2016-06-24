@@ -4,6 +4,7 @@ parameters:
     pimee_product_asset.processor.normalization.asset.class:                   PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\AssetProcessor
     pimee_product_asset.processor.normalization.variation.class:               PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\VariationProcessor
     pimee_product_asset.processor.classify_assets.class:                       PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassEdit\Asset\ClassifyAssetsProcessor
+    pimee_product_asset.processor.add_tags_to_assets.class:                    PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassEdit\Asset\AddTagsToAssetsProcessor
 
 services:
     # Denormalizers
@@ -71,4 +72,10 @@ services:
         class: '%pimee_product_asset.processor.classify_assets.class%'
         arguments:
             - '@pimee_product_asset.updater.asset'
+            - '@validator'
+
+    pimee_product_asset.processor.add_tags_to_assets:
+        class: '%pimee_product_asset.processor.add_tags_to_assets.class%'
+        arguments:
+            - '@pimee_product_asset.repository.tag'
             - '@validator'

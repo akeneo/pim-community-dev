@@ -253,6 +253,16 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
+     * @param string $page
+     *
+     * @When /^I set the current page to "([^"]*)"$/
+     */
+    public function iSetTheCurrentPageTo($page)
+    {
+        $this->getMainContext()->getSubcontext('navigation')->setCurrentPage($page);
+    }
+
+    /**
      * Gets expecting proposal changes from header and value
      * Return [
      *     'attribute' => (string) attribute label,

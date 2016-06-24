@@ -129,3 +129,13 @@ datagrid:
                     operationAlias: asset-classify-move
                 launcherOptions:
                     group: bulk_actions
+            add_tags_to_assets:
+                type: edit
+                label: pim.grid.mass_action.add_tags_to_assets
+                acl_resource: pim_enrich_mass_edit
+                route: pimee_product_asset_mass_edit_asset_action_configure
+                route_parameters:
+                    operationGroup: mass-edit
+                    operationAlias: add-tags-to-assets
+                launcherOptions:
+                    group: bulk_actions

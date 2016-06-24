@@ -1,0 +1,10 @@
+{% extends 'PimEnterpriseProductAssetBundle:MassEditAction/asset:configure.html.twig' %}
+
+{% block formContent %}
+    <div class="control-group attribute-field {{ operationAlias }}">
+        <label class="control-label">{{'pimee_product_asset.enrich_asset.view.tag'|trans}}</label>
+        <div class="controls form-field">
+            {{ form_widget(form.operation.tags) }}
+        </div>
+    </div>
+{% endblock %}
