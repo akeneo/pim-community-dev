@@ -22,7 +22,6 @@ pimee_catalog_rule:
       ENDS WITH: finit par
       CONTAINS: contient
       DOES NOT CONTAIN: ne contient pas
-      EMPTY: est vide
       IN: est dans
       NOT IN: "n'est pas dans"
       IN CHILDREN: est dans les enfants

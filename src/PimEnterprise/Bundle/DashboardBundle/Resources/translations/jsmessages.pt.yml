@@ -1,0 +1,4 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      product: Produto

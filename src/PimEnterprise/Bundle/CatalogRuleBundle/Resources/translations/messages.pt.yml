@@ -1,0 +1,24 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Eliminar
+      column:
+        code: Código
+        conditions: Condição
+        actions: Ação
+  condition:
+    operators:
+      STARTS WITH: começa com
+      ENDS WITH: termina com
+      CONTAINS: contém
+      DOES NOT CONTAIN: não contém
+      BETWEEN: entre
+      NOT BETWEEN: não está entre
+      <: menor que
+  attribute:
+    grid:
+      is_smart.label: Inteligente
+  product:
+    tooltip:
+      loading.title: A carregar...

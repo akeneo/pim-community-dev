@@ -1,0 +1,13 @@
+pimee_workflow:
+  product_draft:
+    status:
+      label: Estado
+    action:
+      remove: Remover
+  product:
+    permission:
+      label: Permissões
+      edit: Editar
+      view: Ver
+Attributes.title: Atributos
+Completeness.title: '% de Dados Completos'

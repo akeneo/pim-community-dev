@@ -133,7 +133,6 @@ pimee_product_asset:
     add_files: agregar ficheros
     start: Comenzar carga
     cancel: Cancelar carga
-    schedule: programar
     executed: Carga en masa iniciada
     error:
       upload: Un error ha ocurrido al intentar cargar
