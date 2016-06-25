@@ -88,10 +88,14 @@ Classify the product: Luokittele tuote
 Delete the product: Poista tuote
 Change status: Muuta tuotteen tila
 Toggle status: Vaihda tuotteen tilaa
-pim.grid.mass_action.quick_export.csv_all: CSV (kaikki määritteet)
-pim.grid.mass_action.delete: Poista
-pim.grid.mass_action.mass_edit: Massaedit
-pim.grid.mass_action.sequential_edit: Peräkkäiset muokkaukset
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (kaikki määritteet)
+      delete: Poista
+      mass_edit: Massaedit
+      sequential_edit: Peräkkäiset muokkaukset
 jstree.create: Luo
 switch_on: Kyllä
 switch_off: Ei

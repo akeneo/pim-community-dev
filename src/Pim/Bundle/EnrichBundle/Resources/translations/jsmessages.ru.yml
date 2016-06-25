@@ -88,10 +88,14 @@ Classify the product: Классифицировать продукт
 Delete the product: Удалить продукт
 Change status: Изменить статус
 Toggle status: Переключить состояние
-pim.grid.mass_action.quick_export.csv_all: CSV (Все атрибуты)
-pim.grid.mass_action.delete: Удалить
-pim.grid.mass_action.mass_edit: Массовое редактирование
-pim.grid.mass_action.sequential_edit: Последовательное редактирование
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (Все атрибуты)
+      delete: Удалить
+      mass_edit: Массовое редактирование
+      sequential_edit: Последовательное редактирование
 jstree.create: Создать
 switch_on: Да
 switch_off: Нет

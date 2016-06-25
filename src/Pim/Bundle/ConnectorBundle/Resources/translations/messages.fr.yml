@@ -77,7 +77,6 @@ pim_connector:
           all: Pas de condition de date
       updated_since_date:
         placeholder: Choisissez la date
-        error: La date doit être remplie
       last_execution:
         none: "Ce job n'a jamais été exporté"
         last: 'Dernier export : %date%'
@@ -137,7 +136,6 @@ pim_connector:
       help: Caractère unique utilisé comme séparateur de décimales
     dateFormat:
       label: Format de date
-      help: Spécifie le format de chaque colonne de type date dans le fichier, par exemple DD/MM/YYYY pour une date au format 31/04/2014.
 job_execution.summary:
   read: lu
   read_lines: lignes lues
