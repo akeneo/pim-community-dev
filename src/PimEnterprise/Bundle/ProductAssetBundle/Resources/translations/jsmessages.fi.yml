@@ -28,23 +28,20 @@ pimee_product_asset:
       add_files: Lisää tiedostoja
       cancel: Peruuta lataaminen
       delete: Poista
-      import: Aikataulu
+      import: Tuonti
       start: Aloita lataus
     success:
       new: Uusi resurssi luodaan
-      imported: Resurssin käsittelyä varten aikataulutetut tiedostot
       canceled: Tuonti onnistuneesti keskeytetty
       deleted: Tuotu tiedosto onnistuneesti poistettu
     error:
       list: Jo tuotuja tiedostoja ei voida lukea
       upload: Virhe tapahtui tuonnin yhteydessä
       delete: Tiedostoa ei voida poistaa palvelimelta
-      import: Tuonnin prosessoinnin aikataulutuksen yhteydessä tapahtui virhe
       filename: Resurssin tiedostonimi ei ole pätevä
       code: Resurssin koodiformaatti ei ole pätevä
       locale: Resurssi on olemassa, mutta se ei ole lokalisoitavissa
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
-      exists: Samanniminen tiedosto on jo aikataulutettu tuotavaksi
       conflicts: Tiedostonimissä on konflikti
     grid:
       medias: mediat

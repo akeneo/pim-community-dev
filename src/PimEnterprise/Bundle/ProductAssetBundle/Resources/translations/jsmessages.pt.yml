@@ -1,0 +1,18 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage_asset:
+          cancel: Cancelar
+          confirm: Confirmar
+  enrich_variation:
+    popin:
+      delete:
+        title: Confirmar eliminação
+  mass_upload:
+    btn:
+      delete: Eliminar
+      import: Importação
+    action:
+      cancel: Cancelar
+      delete: Eliminar

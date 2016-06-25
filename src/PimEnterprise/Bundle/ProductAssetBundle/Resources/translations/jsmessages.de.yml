@@ -28,23 +28,20 @@ pimee_product_asset:
       add_files: Dateien hinzufügen
       cancel: Upload abbrechen
       delete: Löschen
-      import: Einplanen
+      import: Import
       start: Upload starten
     success:
       new: Ein neues Asset wird erstellt
-      imported: Zur Verarbeitung von Assets eingeplante Dateien
       canceled: Upload erfolgreich abgebrochen
       deleted: Hochgeladene Datei erfolgreich gelöscht
     error:
       list: Bereits hochgeladene Dateien können nicht gelesen werden
       upload: Während des Hochladens ist ein Fehler aufgetreten
       delete: Datei kann nicht vom Server gelöscht werden
-      import: Während des Einplanens der Uploadverarbeitung ist ein Fehler aufgetreten
       filename: Ungültiger Dateiname für Asset
       code: Ungültiges Code-Format für Asset
       locale: Ein Asset existiert, ist aber nicht lokalisierbar
       invalid_locale: Das Gebietsschema ist deaktiviert oder ungültig
-      exists: Eine Datei mit gleichem Namen wurde bereits zum Upload eingeplant
       conflicts: Konflikt der Dateinamen
     grid:
       medias: Medien

@@ -19,3 +19,7 @@ pimee_catalog_rule:
     rule-grid:
       mass_edit_action:
         confirm_ok: OK
+      mass_action:
+        delete:
+          confirm_ok: OK
+          confirm_title: Poista vahvistus

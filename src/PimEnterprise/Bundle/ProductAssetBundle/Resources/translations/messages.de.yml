@@ -120,7 +120,7 @@ pimee_product_asset:
     add_files: Dateien hinzufügen
     start: Upload starten
     cancel: Upload abbrechen
-    import: Zeitplan
+    import: Import
     executed: Massenupload ausgeführt
     error:
       upload: Während des Hochladens ist ein Fehler aufgetreten
@@ -140,7 +140,6 @@ pimee_product_asset:
 btn.create.asset: Asset erstellen
 btn.drag_or_upload: 'Drag & Drop einer Datei oder hier klicken'
 job_execution.summary:
-  asset_file_processed: Assetdatei verarbeitet
   variations_not_generated: Variationen nicht generiert
   pimee_product_asset.mass_upload.new: Asset aus Datei erzeugt
   pimee_product_asset.mass_upload.updated: Asset aktualisiert

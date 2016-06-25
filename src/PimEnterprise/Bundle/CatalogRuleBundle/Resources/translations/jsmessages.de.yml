@@ -21,6 +21,10 @@ pimee_catalog_rule:
         confirm_title: Berechnungs-Bestätigung
         confirm_content: Sind Sie sicher, dass Sie die übereinstimmenden Produkte für die Regeln berechnen möchten?
         confirm_ok: OK
+      mass_action:
+        delete:
+          confirm_ok: OK
+          confirm_title: Löschbestätigung
 confirmation:
   remove:
     rule: Sind Sie sicher, dass Sie diese Regel löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden

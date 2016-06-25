@@ -13,7 +13,8 @@ pimee_catalog_rule:
           count: '{0,1}%count% produit impacté|]1,Inf[%count% produits impactés'
           no_yet_calculated: Pas encore calculé
       mass_edit_action:
-        impacted_product_count: Calculer les produits impactés par les règles
+        impacted_product_count: Calculer les produits correspondants
+        delete: Supprimer les règles sélectionnées
   actions:
     type:
       copy: 'Alors %from_field% est copié dans %to_field%'
@@ -29,7 +30,6 @@ pimee_catalog_rule:
       CONTAINS: contient
       DOES NOT CONTAIN: ne contient pas
       EMPTY: est vide
-      NOT EMPTY: non vide
       IN: est dans
       NOT IN: "n'est pas dans"
       IN CHILDREN: est dans les enfants
@@ -90,6 +90,12 @@ batch_jobs:
   csv_product_import_with_rules:
     label: Import de produits en CSV avec règles
     execute_rules.label: Exécution des règles
+    validation.label: Validation du fichier
+    import.label: Import des produits
+    import_associations.label: Import des associations de produits
   xlsx_product_import_with_rules:
     label: Import de produits en XLSX avec règles
     execute_rules.label: Exécution des règles
+    validation.label: Validation du fichier
+    import.label: Import des produits
+    import_associations.label: Import des associations de produits

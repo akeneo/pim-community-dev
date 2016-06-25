@@ -1,0 +1,30 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Eliminar
+      column:
+        code: Código
+        conditions: Condição
+        actions: Ação
+        impacted_product_count:
+          no_yet_calculated: Ainda não calculado
+  condition:
+    operators:
+      STARTS WITH: começa com
+      ENDS WITH: termina com
+      CONTAINS: contém
+      DOES NOT CONTAIN: não contém
+      EMPTY: está vazio
+      BETWEEN: entre
+      NOT BETWEEN: não está entre
+      <: menor que
+batch_jobs:
+  csv_product_import_with_rules:
+    validation.label: Validação do ficheiro
+    import.label: Importar produto
+    import_associations.label: Importar associação
+  xlsx_product_import_with_rules:
+    validation.label: Validação do ficheiro
+    import.label: Importar produto
+    import_associations.label: Importar associação

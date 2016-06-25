@@ -162,6 +162,8 @@ batch_jobs:
     label: Mettre à jour une valeur de produit avec vérification des permissions et application des règles
     perform.label: Mise à jour de la valeur produit
     execute_rules.label: Exécution des règles
+  remove_product_value_with_permission_and_rules:
+    execute_rules.label: Exécution des règles
   edit_common_attributes_with_permission_and_rules:
     label: Mettre à jour les attributs communs avec vérification des permissions et application des règles
     perform.label: Modifier les attributs communs

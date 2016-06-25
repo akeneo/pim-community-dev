@@ -16,6 +16,7 @@ pimee_catalog_rule:
       ENDS WITH: päättyy
       CONTAINS: sisältää
       DOES NOT CONTAIN: ei sisällä
+      EMPTY: on tyhjä
       BETWEEN: välillä
       NOT BETWEEN: ei välillä
       <: pienempi kuin
@@ -51,3 +52,11 @@ batch_jobs:
   yml_rule_export:
     label: Sääntöjen vienti YAML-muodossa
     export.label: Sääntöjen vienti
+  csv_product_import_with_rules:
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tuotteiden tuonti
+    import_associations.label: Liitännäisten tuonti
+  xlsx_product_import_with_rules:
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tuotteiden tuonti
+    import_associations.label: Liitännäisten tuonti

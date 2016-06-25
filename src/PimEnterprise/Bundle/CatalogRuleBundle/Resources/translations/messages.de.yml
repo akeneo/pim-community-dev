@@ -12,8 +12,6 @@ pimee_catalog_rule:
           label: Übereinstimmende Produkte
           count: '{0,1}%count% übereinstimmende Produkte|] 1, Inf [%count% übereinstimmende Produkte'
           no_yet_calculated: Noch nicht berechnet
-      mass_edit_action:
-        impacted_product_count: Berechnen Sie die übereinstimmenden Produkte für die Regeln
   actions:
     type:
       copy: 'Dann wird %from_field% in %to_field% kopiert.'
@@ -28,8 +26,7 @@ pimee_catalog_rule:
       ENDS WITH: endet mit
       CONTAINS: enthält
       DOES NOT CONTAIN: enthält nicht
-      EMPTY: leer
-      NOT EMPTY: nicht leer
+      EMPTY: ist leer
       IN: in
       NOT IN: nicht in
       IN CHILDREN: in Kindelementen
@@ -50,7 +47,6 @@ pimee_catalog_rule:
     rule:
       view_permissions: Regeln ansehen
       delete_permissions: Regeln löschen
-      impacted_product_count_permissions: Berechnen Sie die übereinstimmenden Produkte für die Regeln
   attribute:
     tab:
       rule.title: Regeln
@@ -86,5 +82,11 @@ batch_jobs:
     export.label: Regelexport
   csv_product_import_with_rules:
     execute_rules.label: Regel-Ausführung
+    validation.label: Dateivalidierung
+    import.label: Produkt import
+    import_associations.label: Produktverbindungen-Import
   xlsx_product_import_with_rules:
     execute_rules.label: Regel-Ausführung
+    validation.label: Dateivalidierung
+    import.label: Produkt import
+    import_associations.label: Produktverbindungen-Import

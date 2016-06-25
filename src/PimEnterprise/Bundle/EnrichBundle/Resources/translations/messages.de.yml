@@ -151,6 +151,8 @@ batch_jobs:
   update_product_value_with_permission_and_rules:
     perform.label: Wert des Produkts aktualisieren
     execute_rules.label: Regel-Ausführung
+  remove_product_value_with_permission_and_rules:
+    execute_rules.label: Regel-Ausführung
   edit_common_attributes_with_permission_and_rules:
     perform.label: Gemeinsame Attribute bearbeiten
     execute_rules.label: Regel-Ausführung

@@ -1,0 +1,4 @@
+pimee_import_export:
+  job_profile:
+    tab:
+      permission.title: Permissões

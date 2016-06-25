@@ -8,3 +8,15 @@ pimee_catalog_rule:
         actions: Действие
         impacted_product_count:
           no_yet_calculated: не подсчитана
+  condition:
+    operators:
+      EMPTY: пусто
+batch_jobs:
+  csv_product_import_with_rules:
+    validation.label: Подтверждение файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций
+  xlsx_product_import_with_rules:
+    validation.label: Подтверждение файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций
