@@ -132,7 +132,6 @@ pimee_product_asset:
     add_files: Dateien hinzufügen
     start: Upload starten
     cancel: Upload abbrechen
-    schedule: Zeitplan
     executed: Massenupload ausgeführt
     error:
       upload: Während des Hochladens ist ein Fehler aufgetreten
