@@ -72,11 +72,15 @@ pim_connector:
         label: Condition de date de mise à jour
         help: La condition sur la date de mise à jour des produits que vous voulez exporter
         choice:
+          since_n_days: Produits mis à jours depuis les derniers n jours
           since_date: Produits mis à jours depuis une date définie
           last_export: Produits mis à jour depuis le dernier export
           all: Pas de condition de date
       updated_since_date:
         placeholder: Choisissez la date
+        error: La date ne doit pas être vide.
+      updated_since_n_days:
+        error: Cette valeur ne doit pas être vide.
       last_execution:
         none: "Ce job n'a jamais été exporté"
         last: 'Dernier export : %date%'
@@ -136,6 +140,7 @@ pim_connector:
       help: Caractère unique utilisé comme séparateur de décimales
     dateFormat:
       label: Format de date
+      help: Spécifie le format de chaque colonne de type date dans le fichier, par exemple DD/MM/YYYY pour une date au format 30/04/2014.
 job_execution.summary:
   read: lu
   read_lines: lignes lues
