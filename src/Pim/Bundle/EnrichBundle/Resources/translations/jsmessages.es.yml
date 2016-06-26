@@ -88,11 +88,14 @@ Classify the product: Clasificar el producto
 Delete the product: Eliminar el producto
 Change status: Cambiar el estado
 Toggle status: Alternar Estado
-pim.grid.mass_action.quick_export.csv_all: CSV (todos los atributos)
-pim.grid.mass_action.quick_export.xlsx_all: XLSX (todos los atributos)
-pim.grid.mass_action.delete: Borrar
-pim.grid.mass_action.mass_edit: Edición masiva
-pim.grid.mass_action.sequential_edit: Edición secuencial
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (todos los atributos)
+      delete: Eliminar
+      mass_edit: Edición en masa
+      sequential_edit: Edición secuencial
 jstree.create: Crear
 switch_on: Sí
 switch_off: 'No'

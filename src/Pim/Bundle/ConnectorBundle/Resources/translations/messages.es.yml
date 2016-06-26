@@ -120,7 +120,6 @@ pim_connector:
       help: Único carácter utilizado para fijar el separador de campo por decimal
     dateFormat:
       label: Formato de fecha
-      help: Especifique el formato de cada columna tipo fecha en el archivo, por ejemplo DD/MM/YYYY para el formato 31/04/2014.
 job_execution.summary:
   read: leer
   read_lines: leer líneas
