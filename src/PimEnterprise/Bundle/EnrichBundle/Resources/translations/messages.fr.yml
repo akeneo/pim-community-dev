@@ -163,6 +163,8 @@ batch_jobs:
     perform.label: Mise à jour de la valeur produit
     execute_rules.label: Exécution des règles
   remove_product_value_with_permission_and_rules:
+    label: Supprime une valeur de produit avec vérification des permissions et application des règles
+    perform.label: Mise à jour de la valeur du produit
     execute_rules.label: Exécution des règles
   edit_common_attributes_with_permission_and_rules:
     label: Mettre à jour les attributs communs avec vérification des permissions et application des règles
@@ -180,6 +182,7 @@ add_to_variant_group_with_rules:
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Modifier les attributs communs
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Ajouter la valeur du produit avec permission
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Mettre à jour la valeur du produit avec la permission
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Mettre à jour la valeur du produit avec permissions
 edit_common_attributes_with_permission: Édition des attributs communs avec permission
 edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Édition des attributs communs avec permission
 job_execution.summary:

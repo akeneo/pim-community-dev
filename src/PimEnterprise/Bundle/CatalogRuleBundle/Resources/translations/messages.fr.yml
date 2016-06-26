@@ -22,6 +22,7 @@ pimee_catalog_rule:
       set: 'Alors %value% est défini dans %field%'
       set_value: 'Alors %value% est défini dans %field%'
       add: 'Alors %value% est ajouté à %field%'
+      remove: 'Alors %value% est retiré de %field%'
   condition:
     label: 'Si %field% %operator% %value%'
     operators:
@@ -30,6 +31,7 @@ pimee_catalog_rule:
       CONTAINS: contient
       DOES NOT CONTAIN: ne contient pas
       EMPTY: est vide
+      NOT EMPTY: "n'est pas vide"
       IN: est dans
       NOT IN: "n'est pas dans"
       IN CHILDREN: est dans les enfants
@@ -75,6 +77,7 @@ pimee_catalog_rule:
   notification:
     mass_edit_rule:
       success: Calcul des produits impactés par les règles terminé
+      error: Une erreur que s’est produite lors du calcul des produits correspondants aux règles
 mass_edit_rule: Paramètres des règles
 job_execution.summary.rule_calculated: Nombre de règles
 batch_jobs:

@@ -143,6 +143,7 @@ job_execution.summary:
   variations_not_generated: Variations non générées
   pimee_product_asset.mass_upload.new: Ressource créée depuis le fichier
   pimee_product_asset.mass_upload.updated: Ressource mise à jour
+  error: Erreur sur le processus de fichiers actifs
 assets_mass_upload.steps:
   asset_mass_upload.title: Téléchargement massif de ressources
 import_asset.steps.channel_configuration_processor.title: Traiter les configurations des canaux

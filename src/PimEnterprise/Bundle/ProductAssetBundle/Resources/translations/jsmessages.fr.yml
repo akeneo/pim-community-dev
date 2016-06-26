@@ -32,16 +32,19 @@ pimee_product_asset:
       start: Démarrer le téléchargement
     success:
       new: Une nouvelle ressource sera créée
+      imported: Fichiers importés pour le traitement des ressources
       canceled: Téléchargement annulé avec succès
       deleted: Le fichier téléchargé a été supprimé
     error:
       list: Impossible de lire les fichiers déjà téléchargés
       upload: "Une erreur s'est produite lors du téléchargement"
       delete: Impossible de supprimer le fichier du serveur
+      import: "Une erreur s'est produite lors de l'import"
       filename: Nom de fichier incorrect pour la ressource
       code: Format de code non valide pour la ressource
       locale: "Une ressource existe mais n'est pas traduisible"
       invalid_locale: Les paramètres régionaux sont désactivés ou non valides
+      exists: Un fichier ayant le même nom est déjà importé
       conflicts: Conflit de noms de fichiers
     grid:
       medias: medias
