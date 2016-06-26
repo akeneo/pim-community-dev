@@ -120,7 +120,7 @@ pimee_product_asset:
     add_files: agregar ficheros
     start: Comenzar carga
     cancel: Cancelar carga
-    import: programar
+    import: Importar
     executed: Carga en masa iniciada
     error:
       upload: Un error ha ocurrido al intentar cargar
@@ -140,7 +140,6 @@ pimee_product_asset:
 btn.create.asset: Crear un recurso
 btn.drag_or_upload: Arrastrar y soltar un fichero o haga clic aquí
 job_execution.summary:
-  asset_file_processed: Fichero de recurso procesado
   variations_not_generated: Variaciones no generadas
   pimee_product_asset.mass_upload.new: Recurso creado desde el fichero
   pimee_product_asset.mass_upload.updated: Recurso cargado

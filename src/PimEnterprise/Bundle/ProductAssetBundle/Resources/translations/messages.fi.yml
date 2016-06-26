@@ -120,7 +120,7 @@ pimee_product_asset:
     add_files: lisää tiedostoja
     start: Aloita tuonti
     cancel: Keskeytä tuonti
-    import: aikataulu
+    import: Tuonti
     executed: Massatuonti suoritettu
     error:
       upload: Tuonnin yhteydessä tapahtui virhe
@@ -140,7 +140,6 @@ pimee_product_asset:
 btn.create.asset: Luo resurssi
 btn.drag_or_upload: Vedä ja tiputa tiedosto tai klikkaa tästä
 job_execution.summary:
-  asset_file_processed: Resurssitiedosto kästelty
   variations_not_generated: Variaatioita ei luotu
   pimee_product_asset.mass_upload.new: Resurssi luotu tiedostosta
   pimee_product_asset.mass_upload.updated: Resurssi päivitetty

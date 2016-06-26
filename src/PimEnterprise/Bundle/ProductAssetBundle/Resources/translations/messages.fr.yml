@@ -120,7 +120,7 @@ pimee_product_asset:
     add_files: ajouter des fichiers
     start: Démarrer le téléchargement
     cancel: Annuler le téléchargement
-    import: programmation
+    import: Import
     executed: Téléchargement massif exécuté
     error:
       upload: "Une erreur s'est produite lors du téléchargement"
@@ -140,7 +140,6 @@ pimee_product_asset:
 btn.create.asset: Créer une ressource
 btn.drag_or_upload: Glisser-déposer un fichier ou cliquer ici
 job_execution.summary:
-  asset_file_processed: Fichier de ressource traité
   variations_not_generated: Variations non générées
   pimee_product_asset.mass_upload.new: Ressource créée depuis le fichier
   pimee_product_asset.mass_upload.updated: Ressource mise à jour

@@ -15,6 +15,8 @@ pimee_product_asset:
   tabs:
     properties.title: Свойства
     categories.title: Категории
+  mass_upload:
+    import: Импорт
 batch_jobs:
   yml_asset_channel_configuration_import:
     validation.label: Подтверждение файла

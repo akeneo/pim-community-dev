@@ -1,4 +1,35 @@
+pim_enrich:
+  mass_edit_action:
+    product:
+      page_title: Produtos
+      page_subtitle: 'Editar em Massa (1 produto) | Editar em Massa (%count% produtos)'
+      title: Escolher operação
+      subtitle: 'Escolha a operação que deseja executar no produto selecionado | Escolha a operação que deseja executar nos %count% produtos selecionados'
+      confirm: 'Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.'
+      steps:
+        first: Escolher produtos
+        second: Escolher operação
+        third: Configurar
+        fourth: Confirmar
 pimee_enrich:
+  locale:
+    tab:
+      permission.title: Permissões
   asset_transformation:
     title:
       transformation: Transformação
+      options: Opções
+update_product_value_with_permission_and_rules:
+  steps.perform: Atualizar o valor do produto
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Editar atributos comuns
+  steps.edit_common_attributes_processor.title: Editar atributos comuns
+batch_jobs:
+  update_product_value_with_permission_and_rules:
+    perform.label: Atualizar o valor do produto
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Editar atributos comuns
+add_to_variant_group_with_rules:
+  steps.excluded.title: Produto excluído
+  steps.duplicated.title: Eixo duplicado
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Editar atributos comuns

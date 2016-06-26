@@ -1,4 +1,6 @@
 pimee_product_asset:
   mass_upload:
+    btn:
+      import: Импорт
     action:
       delete: Удалить

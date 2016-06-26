@@ -28,23 +28,20 @@ pimee_product_asset:
       add_files: Agregar ficheros
       cancel: Cancelar carga
       delete: Eliminar
-      import: Programar
+      import: Importar
       start: Comenzar la carga
     success:
       new: Un nuevo recurso será creado
-      imported: Ficheros programados para el tratamiento de recursos
       canceled: Carga cancelada con éxito
       deleted: Fichero cargado eliminado con éxito
     error:
       list: Imposible de leer los ficheros ya cargados
       upload: Un error ocurrió al intentar cargar el fichero
       delete: Imposible eliminar el fichero del servidor
-      import: Un error ocurrió al intentar programar el proceso de carga
       filename: Nombre de fichero inválido para el recurso
       code: Formato de código inválido para el recurso
       locale: Un recurso existe pero no se puede traducir
       invalid_locale: El local está desactivado o es inválido
-      exists: Un fichero con el mismo nombre ya está programado para la carga
       conflicts: Conflicto de nombre de ficheros
     grid:
       medias: medias

@@ -1,0 +1,6 @@
+batch_jobs:
+  csv_published_product_export:
+    label: Publicada a exportação de produtos em CSV
+    export.label: Publicada a exportação de produtos
+  xlsx_published_product_export:
+    export.label: Publicada a exportação de produtos
