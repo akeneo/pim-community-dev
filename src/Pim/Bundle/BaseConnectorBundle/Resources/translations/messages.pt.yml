@@ -82,6 +82,9 @@ pim_base_connector:
     delimiter:
       label: Delimitador
       help: Um carácter usado para definir o delimitador de campo
+    enclosure:
+      label: Invólucro
+      help: Caractere usado para definir o invólucro do campo
     withHeader:
       label: Com o cabeçalho
       help: Imprimir ou não o nome da coluna
@@ -116,8 +119,12 @@ pim_base_connector:
     delimiter:
       label: Delimitador
       help: Um carácter usado para definir o delimitador de campo
+    enclosure:
+      label: Invólucro
+      help: Caractere usado para definir o invólucro do campo
     escape:
       label: Escape
+      help: Um caractere usado para definir o campo de escape
     circularRefsChecked:
       label: Verificar referências circulares
       help: Se sim, os dados serão processados para se certificar de que não há nenhuma referência circular entre as categorias

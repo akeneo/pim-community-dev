@@ -1,0 +1,100 @@
+confirmation:
+  remove:
+    item: Tem a certeza que pretende remover este item?
+    association type: Tem certeza que deseja eliminar este tipo de associação?
+    attribute: Tem certeza que deseja eliminar este atributo?
+    family: Tem certeza que deseja eliminar esta família?
+    product: Tem certeza que deseja eliminar este produto?
+    channel: Tem certeza que deseja eliminar este canal?
+    group: Tem certeza que deseja eliminar este grupo?
+    variant group: Tem certeza que deseja eliminar este grupo variante?
+    group type: Tem certeza que deseja eliminar este tipo de grupo?
+    import profile: Tem certeza que deseja eliminar este perfil de importação?
+    export profile: Tem certeza que deseja eliminar este perfil de exportação?
+    user: Tem a certeza que deseja eliminar este utilizador?
+    role: Tem certeza que deseja eliminar esta função?
+pim_datagrid:
+  mass_action:
+    delete:
+      confirm_content: Tem certeza que deseja eliminar os produtos selecionados?
+      success: Produtos selecionados eliminados com sucesso.
+      error: Ocorreu um erro ao tentar eliminar os produtos seleccionados, por favor tente novamente.
+flash:
+  item:
+    removed: Item removido com sucesso
+  association type:
+    removed: Tipo de associação removido com sucesso
+  attribute:
+    removed: Atributo removido com sucesso
+  family:
+    removed: Família removida com sucesso
+  product:
+    removed: Produto removido com sucesso
+  channel:
+    removed: Canal removido com sucesso
+  group:
+    removed: Grupo removido com sucesso
+  variant group:
+    removed: Grupo variante removido com sucesso
+  group type:
+    removed: Tipo de grupo removido com sucesso
+  import profile:
+    removed: Perfil de importação removido com sucesso
+  export profile:
+    removed: Perfil de exportação removido com sucesso
+  user:
+    removed: Utilizador removido com sucesso
+  role:
+    removed: Função removida com sucesso
+error:
+  removing:
+    item: Não é possível eliminar este item
+    association type: Não é possível eliminar este tipo de associação
+    attribute: Não é possível eliminar este atributo
+    family: Não é possível eliminar esta família
+    product: Não é possível eliminar este produto
+    channel: Não é possível eliminar este canal
+    group: Não é possível eliminar este grupo
+    variant group: Não é possível eliminar este grupo variante
+    group type: Não é possível eliminar este tipo de grupo
+    import profile: Não é possível eliminar este perfil de importação
+    export profile: Não é possível eliminar este perfil de exportação
+    user: Não é possível eliminar este utilizador
+    role: Não é possível eliminar esta função
+    attribute_option: Erro na eliminação da opção de atributo
+  saving:
+    attribute_option: Não é possível gravar opção de atributo
+alert:
+  attribute_option:
+    error_occured_during_submission: Ocorreu um erro durante o envio do formulário para o servidor
+    save_before_edit_other: Por favor, registe as suas modificações noutras linhas antes de editar esta
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: Atenção, irá perder os dados não guardados. Tem certeza que deseja cancelar a modificação desta nova opção?
+    cancel_edition_on_new_option_title: Cancelar a modificação
+label:
+  attribute_option:
+    add_option: Adicionar uma opção
+Code: Código
+Edit: Editar
+Delete: Eliminar
+Edit attributes of the product: Editar atributos do produto
+Classify the product: Classificar o produto
+Delete the product: Eliminar o produto
+Change status: Alterar estado
+Toggle status: Ativar estado
+pim.grid.mass_action.quick_export.csv_all: CSV (todos os atributos)
+pim.grid.mass_action.delete: Eliminar
+pim.grid.mass_action.mass_edit: Editar em massa
+pim.grid.mass_action.sequential_edit: Edição sequencial
+jstree.create: Criar
+switch_on: Sim
+switch_off: Não
+pim_enrich:
+  item:
+    list:
+      delete.label: Eliminar
+      delete.error: Erro durante a eliminação do item
+    delete:
+      confirm.content: 'Tem certeza que deseja eliminar este {{ itemName }}? Não é possível desfazer essa ação'
+      confirm.title: 'Eliminar este {{ itemName }}'
