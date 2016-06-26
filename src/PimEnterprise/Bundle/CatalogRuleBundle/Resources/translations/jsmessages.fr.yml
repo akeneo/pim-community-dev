@@ -15,6 +15,7 @@ pimee_catalog_rule:
       set.label: est modifié dans
       copy.label: est copié dans
       add.label: est ajouté dans
+      remove.label: est retirée de
   datagrid:
     rule-grid:
       mass_edit_action:
@@ -25,6 +26,10 @@ pimee_catalog_rule:
         delete:
           confirm_ok: OK
           confirm_title: Confirmation de la suppression
+          confirm_content: Êtes-vous sûr de vouloir supprimer la (les) règle(s) sélectionnée(s) ?
+          success: Vous avez supprimé avec succès les règles.
+          error: "Une erreur s'est produite lors de la suppression des règles."
+          empty_selection: "Aucune règle n'a été sélectionnée."
 confirmation:
   remove:
     rule: "Êtes-vous sûr de vouloir supprimer cette règle ? Il est impossible d'annuler cette action"
