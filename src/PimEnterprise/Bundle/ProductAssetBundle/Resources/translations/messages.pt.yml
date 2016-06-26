@@ -1,0 +1,17 @@
+pimee_product_asset:
+  enrich_asset:
+    button:
+      delete: Eliminar
+    view:
+      code: Código
+  popin.create:
+    is_localized: Multilingue
+  code:
+    label: Código
+  status:
+    label: Estado
+  createdAt:
+    label: Criado em
+  tabs:
+    properties.title: Propriedades
+    categories.title: Categorias

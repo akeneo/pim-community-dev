@@ -132,7 +132,6 @@ pimee_product_asset:
     add_files: lisää tiedostoja
     start: Aloita tuonti
     cancel: Keskeytä tuonti
-    schedule: aikataulu
     executed: Massatuonti suoritettu
     error:
       upload: Tuonnin yhteydessä tapahtui virhe
