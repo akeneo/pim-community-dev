@@ -74,8 +74,8 @@ Feature: Import media with products
     And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
     And import directory of "csv_footwear_product_import" contains the following media:
-      | sneakers-manual.txt |
-      | bic-core-148.txt    |
+      | random/sneakers-manual.txt |
+      | bic-core-148.txt           |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -91,9 +91,6 @@ Feature: Import media with products
       bic-core-148;sneakers;;warranty.txt;"Bic Core 148";warranty.txt;2014_collection
       fanatic-freewave-76;sneakers;;warranty.txt;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
       """
-    And the following random files:
-      | filename            | size |
-      | sneakers-manual.txt | 3    |
     And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
     And import directory of "csv_footwear_product_import" contains the following media:
