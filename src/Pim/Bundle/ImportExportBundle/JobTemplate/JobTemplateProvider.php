@@ -48,10 +48,10 @@ class JobTemplateProvider implements JobTemplateProviderInterface
      */
     public function getShowTemplate(JobInstance $jobInstance)
     {
-        $jobAlias = $jobInstance->getJobName();
+        $jobName = $jobInstance->getJobName();
 
-        if (isset($this->jobTemplates[$jobAlias]['templates']['show'])) {
-            return $this->jobTemplates[$jobAlias]['templates']['show'];
+        if (isset($this->jobTemplates[$jobName]['templates']['show'])) {
+            return $this->jobTemplates[$jobName]['templates']['show'];
         }
 
         return sprintf(self::DEFAULT_SHOW_TEMPLATE, ucfirst($jobInstance->getType()));
@@ -62,11 +62,11 @@ class JobTemplateProvider implements JobTemplateProviderInterface
      */
     public function getEditTemplate(JobInstance $jobInstance)
     {
-        $jobAlias = $jobInstance->getJobName();
+        $jobName = $jobInstance->getJobName();
 
-        if (isset($this->jobTemplates[$jobAlias]) &&
-            isset($this->jobTemplates[$jobAlias]['templates']['edit'])) {
-            return $this->jobTemplates[$jobAlias]['templates']['edit'];
+        if (isset($this->jobTemplates[$jobName]) &&
+            isset($this->jobTemplates[$jobName]['templates']['edit'])) {
+            return $this->jobTemplates[$jobName]['templates']['edit'];
         }
 
         return sprintf(self::DEFAULT_EDIT_TEMPLATE, ucfirst($jobInstance->getType()));

@@ -23,10 +23,10 @@ Akeneo\Component\Batch\Model\JobInstance:
             length: 255
             nullable: true
             column: label
-        alias:
+        jobName:
             type: string
             length: 50
-            column: alias
+            column: job_name
         status:
             type: integer
             lenght: 11

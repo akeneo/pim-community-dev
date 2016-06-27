@@ -9,7 +9,7 @@ datagrid:
                 label: Code
             label:
                 label: Label
-            alias:
+            job_name:
                 label:     Job
                 type:      job_name
             connector:
@@ -69,9 +69,9 @@ datagrid:
                 label:
                     type:      string
                     data_name: j.label
-                alias:
+                job_name:
                     type:      choice
-                    data_name: j.alias
+                    data_name: j.jobName
                     options:
                         field_options:
                             multiple: true

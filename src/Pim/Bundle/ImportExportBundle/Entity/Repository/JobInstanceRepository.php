@@ -26,7 +26,7 @@ class JobInstanceRepository extends EntityRepository implements IdentifiableObje
     {
         $qb = $this->createQueryBuilder('j');
         $qb
-            ->addSelect("j.alias as jobAlias")
+            ->addSelect("j.jobName as jobName")
             ->addSelect(
                 "CONCAT('pim_import_export.status.', j.status) as statusLabel"
             )
