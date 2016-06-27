@@ -110,7 +110,7 @@ pim_enrich:
       empty: Veuillez sélectionner le ou les attribut(s) à modifier
       success_flash: "Le processus de mise à jour du statut de produit(s) est en cours d'exécution"
       launched_flash: |-
-        L'action en masse "édition des attributs communs" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+        L'action de masse "édition des attributs communs" a été lancée. Vous serez notifié lorsque la modification sera terminée.
       message:
         warning: "Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection."
         invalid_attribute: |-
@@ -121,31 +121,31 @@ pim_enrich:
       description: "Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé."
       success_flash: Le(s) produit(s) ont été classés dans les catégories sélectionnées
       launched_flash: |-
-        L'action en masse "ajout aux catégories" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+        L'action de masse "ajout aux catégories" a été lancée. Vous serez notifié lorsque la modification sera terminée.
     classify-move:
       label: Déplacer des produits vers des catégories
       description: "Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera perdu."
       success_flash: Le(s) produit(s) ont été déplacés dans les catégories sélectionnées
       launched_flash: |-
-        L'action en masse "déplacement dans les catégories" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+        L'action de masse "déplacement dans les catégories" a été lancée. Vous serez notifié lorsque la modification sera terminée.
     classify-remove:
       label: Supprimer des produits de catégories
       description: Les produits seront retirés les catégories suivantes.
       success_flash: Le(s) produit(s) ont été supprimés des catégories sélectionnées
       launched_flash: |-
-        L'action en masse "suppression des catégories" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+        L'action de masse "suppression des catégories" a été lancée. Vous serez notifié lorsque la modification sera terminée.
     change-family:
       label: Changer la famille des produits
       description: La famille des produits sélectionnés sera remplacée par la famille choisie
       success_flash: La famille de(s) produit(s) sélectionné(s) a été modifiée avec succès
       launched_flash: |-
-        L'action en masse "changement de famille" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+        L'action de masse "changement de famille" a été lancée. Vous serez notifié lorsque la modification sera terminée.
     add-to-groups:
       label: Ajouter aux groupes
       description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
       success_flash: Les produits ont été ajoutés aux groupes sélectionnés
       launched_flash: |-
-        L'action en masse "ajout aux groupes" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+        L'action de masse "ajout aux groupes" a été lancée. Vous serez notifié lorsque la modification sera terminée.
       no_group: "Aucun groupe pour l'instant. Veuillez commencer par créer un groupe."
     add-to-variant-group:
       label: Ajouter à un groupe de variantes
@@ -157,13 +157,13 @@ pim_enrich:
       some_variant_groups_are_skipped:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: |-
-        L'action en masse "ajout au groupe de variantes" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+        L'action de masse "ajout au groupe de variantes" a été lancée. Vous serez notifié lorsque la modification sera terminée.
     set-attribute-requirements:
       label: Choisir les attributs requis
       description: "Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées"
       success_flash: "Les exigences d'attributs ont été appliqués aux familles sélectionnées"
       launched_flash: |-
-        L'action en masse "définition des attributs requis" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+        L'action de masse "définition des attributs requis" a été lancée. Vous serez notifié lorsque la modification sera terminée.
     mass_action:
       quick_export:
         launched_flash: "Le processus d'export des produits est en cours d'exécution"
@@ -725,7 +725,7 @@ pim_enrich.mass_edit_action:
     success_flash: Le(s) attribut(s) ont été mise à jour
     message.warning: "Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection."
     no_attribute.warning: "Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection."
-    truncated_by_variant_attribute.warning: "Certains attributs des produits sélectionnés sont liés à un groupe de variantes. Ils ne sont pas disponibles pour l'édition en masse : %attributes%."
+    truncated_by_variant_attribute.warning: "Certains attributs des produits sélectionnés sont liés à un groupe de variantes. Ils ne sont pas disponibles pour l'édition de masse : %attributes%."
   classify:
     label: Classer les produits dans des catégories
     description: "Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé."

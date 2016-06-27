@@ -16,7 +16,7 @@ confirmation:
 pim_datagrid:
   mass_action_group:
     bulk_actions:
-      label: Action en masse
+      label: Actions de masse
     quick_export:
       label: Export rapide
   mass_action:
