@@ -11,16 +11,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ChannelConfigurationProcessorSpec extends ObjectBehavior
 {
-    function let(
-        SerializerInterface $serializer,
-        LocaleRepositoryInterface $localeRepository,
-        NormalizerInterface $channelNormalizer
-    ) {
-        $this->beConstructedWith(
-            $serializer,
-            $localeRepository,
-            $channelNormalizer
-        );
+    function let(NormalizerInterface $channelNormalizer)
+    {
+        $this->beConstructedWith($channelNormalizer);
     }
 
     function it_is_a_configurable_step_execution_aware_processor()

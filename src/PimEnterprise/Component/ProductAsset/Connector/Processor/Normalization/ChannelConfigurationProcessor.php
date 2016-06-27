@@ -11,33 +11,32 @@
 
 namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization;
 
-use Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Processes and transforms ChannelVariationsConfiguration to an array of channel configuration
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ChannelConfigurationProcessor extends Processor
+class ChannelConfigurationProcessor extends AbstractConfigurableStepElement implements
+    ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
+    /** @var StepExecution */
+    protected $stepExecution;
+
     /** @var NormalizerInterface */
     protected $channelNormalizer;
 
     /**
-     * @param SerializerInterface       $serializer
-     * @param LocaleRepositoryInterface $localeRepository
-     * @param NormalizerInterface       $channelNormalizer
+     * @param NormalizerInterface $channelNormalizer
      */
-    public function __construct(
-        SerializerInterface $serializer,
-        LocaleRepositoryInterface $localeRepository,
-        NormalizerInterface $channelNormalizer
-    ) {
-        parent::__construct($serializer, $localeRepository);
-
+    public function __construct(NormalizerInterface $channelNormalizer)
+    {
         $this->channelNormalizer = $channelNormalizer;
     }
 
@@ -47,5 +46,13 @@ class ChannelConfigurationProcessor extends Processor
     public function process($channelConf)
     {
         return $normalizedChannels = $this->channelNormalizer->normalize($channelConf);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 }

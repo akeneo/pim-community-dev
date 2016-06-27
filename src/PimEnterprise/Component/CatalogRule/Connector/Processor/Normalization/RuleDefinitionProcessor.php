@@ -11,33 +11,32 @@
 
 namespace PimEnterprise\Component\CatalogRule\Connector\Processor\Normalization;
 
-use Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Processes and transforms rules definition to array of rules
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleDefinitionProcessor extends Processor
+class RuleDefinitionProcessor extends AbstractConfigurableStepElement implements
+    ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
+    /** @var StepExecution */
+    protected $stepExecution;
+
     /** @var NormalizerInterface */
     protected $ruleNormalizer;
 
     /**
-     * @param SerializerInterface       $serializer
-     * @param LocaleRepositoryInterface $localeRepository
-     * @param NormalizerInterface       $ruleNormalizer
+     * @param NormalizerInterface $ruleNormalizer
      */
-    public function __construct(
-        SerializerInterface $serializer,
-        LocaleRepositoryInterface $localeRepository,
-        NormalizerInterface $ruleNormalizer
-    ) {
-        parent::__construct($serializer, $localeRepository);
-
+    public function __construct(NormalizerInterface $ruleNormalizer)
+    {
         $this->ruleNormalizer = $ruleNormalizer;
     }
 
@@ -54,5 +53,13 @@ class RuleDefinitionProcessor extends Processor
         $rule[$item->getCode()] = $normalizedRule;
 
         return $rule;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 }

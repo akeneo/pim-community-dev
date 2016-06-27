@@ -11,7 +11,10 @@
 
 namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization;
 
-use Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor;
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -23,8 +26,19 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @deprecated will be removed in 1.7 use @pim_connector.processor.normalization.simple.class
  */
-class VariationProcessor extends Processor
+class VariationProcessor extends AbstractConfigurableStepElement implements
+    ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
+    /** @var StepExecution */
+    protected $stepExecution;
+
+    /** @var SerializerInterface */
+    protected $serializer;
+
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
     /** @var NormalizerInterface */
     protected $variationNormalizer;
 
@@ -38,8 +52,8 @@ class VariationProcessor extends Processor
         LocaleRepositoryInterface $localeRepository,
         NormalizerInterface $variationNormalizer
     ) {
-        parent::__construct($serializer, $localeRepository);
-
+        $this->serializer = $serializer;
+        $this->localeRepository = $localeRepository;
         $this->variationNormalizer = $variationNormalizer;
     }
 
@@ -61,5 +75,13 @@ class VariationProcessor extends Processor
                 'locales'       => $this->localeRepository->getActivatedLocaleCodes(),
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 }
