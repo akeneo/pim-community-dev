@@ -458,11 +458,6 @@ jobs:
         label:     Demo XLSX product export
         type:      export
         configuration:
-            channel:    mobile
-            locales:
-                - en_US
-                - fr_FR
-                - de_DE
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/product.xlsx
@@ -472,11 +467,6 @@ jobs:
         label:     Demo XLSX published product export
         type:      export
         configuration:
-            channel:    mobile
-            locales:
-                - en_US
-                - fr_FR
-                - de_DE
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/published-product.xlsx
