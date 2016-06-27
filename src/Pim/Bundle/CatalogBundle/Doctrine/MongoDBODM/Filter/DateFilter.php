@@ -20,30 +20,19 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
 {
     const DATETIME_FORMAT = 'Y-m-d';
 
-    /** @var array */
-    protected $supportedAttributes;
-
     /**
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributes
+     * @param array                    $supportedAttributeTypes
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
+        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedOperators      = $supportedOperators;
     }
 
     /**

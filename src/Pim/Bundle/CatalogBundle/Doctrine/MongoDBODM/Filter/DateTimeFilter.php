@@ -14,12 +14,9 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateTimeFilter extends AbstractFilter implements FieldFilterInterface
+class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
     const DATETIME_FORMAT = 'Y-m-d H:i:s';
-
-    /** @var array */
-    protected $supportedFields;
 
     /**
      * @param array $supportedFields
@@ -31,14 +28,6 @@ class DateTimeFilter extends AbstractFilter implements FieldFilterInterface
     ) {
         $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsField($field)
-    {
-        return in_array($field, $this->supportedFields);
     }
 
     /**

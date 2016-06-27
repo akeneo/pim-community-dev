@@ -42,4 +42,11 @@ interface AttributeFilterInterface extends FilterInterface
      * @return bool
      */
     public function supportsAttribute(AttributeInterface $attribute);
+
+    /**
+     * Returns supported attributes types
+     *
+     * @return string[]|array
+     */
+    public function getAttributeTypes();
 }

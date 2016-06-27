@@ -25,28 +25,25 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     /** @var MeasureConverter */
     protected $measureConverter;
 
-    /** @var array */
-    protected $supportedAttributes;
-
     /**
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param MeasureManager           $measureManager
      * @param MeasureConverter         $measureConverter
-     * @param array                    $supportedAttributes
+     * @param array                    $supportedAttributeTypes
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         MeasureManager $measureManager,
         MeasureConverter $measureConverter,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->measureManager      = $measureManager;
-        $this->measureConverter    = $measureConverter;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
+        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->measureManager          = $measureManager;
+        $this->measureConverter        = $measureConverter;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedOperators      = $supportedOperators;
     }
 
     /**
@@ -74,14 +71,6 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
-    }
-
-    /**
      * Add empty or not empty filter to the qb
      *
      * @param AttributeInterface $attribute
@@ -96,7 +85,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null
     ) {
         $backendType   = $attribute->getBackendType();
-        $joinAlias     = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias     = $this->getUniqueAlias('filter' . $attribute->getCode());
         $joinCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
         $this->qb->leftJoin(
@@ -131,7 +120,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode());
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);

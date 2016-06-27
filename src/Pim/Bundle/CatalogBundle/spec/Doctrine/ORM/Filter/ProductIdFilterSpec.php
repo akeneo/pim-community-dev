@@ -20,6 +20,11 @@ class ProductIdFilterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FieldFilterInterface');
     }
 
+    function it_returns_supported_fields()
+    {
+        $this->getFields()->shouldReturn(['id']);
+    }
+
     function it_supports_operators()
     {
         $this->getOperators()->shouldReturn(['=']);

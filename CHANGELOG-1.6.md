@@ -45,6 +45,7 @@
 - PIM-5657: Introduce a `JobTemplateProvider` that holds the job template codes to use for creating, showing, editing job profiles. The provider uses configuration files in order to retrieve overridden templates for specific job names
 - TIP-458: Move the Converters from Processors to Readers. Now, all the readers return a standard format as output, and all the processors get a standard format as input.
 - TIP-459: Standardize the denormalization Processors, to use SimpleProcessor in most of the cases.
+- TIP-255: Allow to select PQB filter on supported operator, to add new operators easily on existing fields/attribute types
 - PIM-5781: Introduce a new command to get system information from the command line
 
 ## BC breaks
@@ -349,3 +350,7 @@
 - Add parameter `$operationGroup` to `Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver::getAvailableOperationsForm()`
 - Add parameter `$operationGroup` to `Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface::register()`
 - Replace method `getAllByGridName()` by `getAllByGridNameAndGroup()` in `Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface`
+- Change visibility of `checkValue()` method of `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MediaFilter` from public to protected
+- Add `getAttributeTypes()` method to `Pim\Component\Catalog\Query\Filter\AttributeFilterInterface`
+- Add `getField()` method to `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
+- Add `getAttributeFilters()` and `getFieldFilters()` to `Pim\Component\Catalog\Query\Filter\FilterRegistryInterface`

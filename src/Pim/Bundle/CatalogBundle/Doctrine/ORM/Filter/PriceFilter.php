@@ -21,27 +21,21 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
-    /** @var array */
-    protected $supportedAttributes;
-
     /**
-     * Instanciate the base filter
-
-     *
      * @param AttributeValidatorHelper    $attrValidatorHelper
      * @param CurrencyRepositoryInterface $currencyRepository
-     * @param array                       $supportedAttributes
+     * @param array                       $supportedAttributeTypes
      * @param array                       $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         CurrencyRepositoryInterface $currencyRepository,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
         $this->currencyRepository  = $currencyRepository;
-        $this->supportedAttributes = $supportedAttributes;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators  = $supportedOperators;
     }
 
@@ -69,14 +63,6 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
-    }
-
-    /**
      * @param AttributeInterface $attribute
      * @param array              $value
      * @param string             $operator
@@ -91,7 +77,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode());
 
         // join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -133,7 +119,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode());
 
         // join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);

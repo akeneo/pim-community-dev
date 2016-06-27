@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Command\ProductQueryHelp;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Console\Helper\HelperSet;
@@ -21,13 +22,32 @@ class FieldFilterDumperSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Command\DumperInterface');
     }
 
-    function it_dumps_field_filters(OutputInterface $output, HelperSet $helperSet, TableHelper $table)
-    {
+    function it_dumps_field_filters(
+        $registry,
+        OutputInterface $output,
+        HelperSet $helperSet,
+        TableHelper $table,
+        FieldFilterInterface $groupFilter
+    ) {
         $output->writeln(Argument::any())->shouldBeCalled();
+
+        $operators = ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY'];
+        $fields    = ['groups.id', 'groups.code'];
+        $registry->getFieldFilters()->willReturn([$groupFilter]);
+        $groupFilter->getOperators()->willReturn($operators);
+        $groupFilter->getFields()->willReturn($fields);
+
         $helperSet->get('table')->willReturn($table);
-        $headers = ['field', 'filter_class', 'operators'];
+        $headers = ['field', 'operators', 'filter_class'];
         $table->setHeaders($headers)->shouldBeCalled()->willReturn($table);
-        $table->setRows(Argument::any())->shouldBeCalled();
+        $table->setRows(Argument::that(function ($param) {
+            return 'groups.id' === $param[0][0] &&
+                'IN, NOT IN, EMPTY, NOT EMPTY' === $param[0][1] &&
+                false !== strpos($param[0][2], 'FieldFilterInterface') &&
+                'groups.code' === $param[1][0] &&
+                'IN, NOT IN, EMPTY, NOT EMPTY' === $param[1][1] &&
+                false !== strpos($param[1][2], 'FieldFilterInterface');
+        }))->shouldBeCalled();
         $table->render(Argument::any())->shouldBeCalled();
 
         $this->dump($output, $helperSet);

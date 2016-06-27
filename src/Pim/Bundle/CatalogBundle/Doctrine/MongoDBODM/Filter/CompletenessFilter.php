@@ -18,13 +18,10 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
+class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
-
-    /** @var array */
-    protected $supportedFields;
 
     /**
      * @param ChannelRepositoryInterface $channelRepository
@@ -39,14 +36,6 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
         $this->channelRepository  = $channelRepository;
         $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsField($field)
-    {
-        return in_array($field, $this->supportedFields);
     }
 
     /**

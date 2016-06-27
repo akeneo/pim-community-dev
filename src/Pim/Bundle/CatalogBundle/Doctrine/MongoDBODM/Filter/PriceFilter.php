@@ -22,33 +22,22 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
-    /** @var array */
-    protected $supportedAttributes;
-
     /**
      * @param AttributeValidatorHelper    $attrValidatorHelper
      * @param CurrencyRepositoryInterface $currencyRepository
-     * @param array                       $supportedAttributes
+     * @param array                       $supportedAttributeTypes
      * @param array                       $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         CurrencyRepositoryInterface $currencyRepository,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->currencyRepository  = $currencyRepository;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
+        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->currencyRepository      = $currencyRepository;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedOperators      = $supportedOperators;
     }
 
     /**

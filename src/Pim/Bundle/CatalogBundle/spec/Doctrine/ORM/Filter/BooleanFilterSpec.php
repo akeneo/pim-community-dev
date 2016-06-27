@@ -37,6 +37,11 @@ class BooleanFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
+    function it_returns_supported_fields()
+    {
+        $this->getFields()->shouldReturn(['enabled']);
+    }
+
     function it_checks_if_field_is_supported()
     {
         $this->supportsField('enabled')->shouldReturn(true);

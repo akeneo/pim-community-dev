@@ -28,9 +28,6 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /** @var ConfigurationRegistryInterface */
     protected $registry;
 
-    /** @var array */
-    protected $supportedAttributes;
-
     /** @var ReferenceDataIdResolver */
     protected $idsResolver;
 
@@ -38,8 +35,6 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     protected $optionsResolver;
 
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper       $attrValidatorHelper
      * @param ConfigurationRegistryInterface $registry
      * @param ReferenceDataIdResolver        $idsResolver
@@ -113,7 +108,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $locale = null,
         $scope = null
     ) {
-        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -149,7 +144,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $locale = null,
         $scope = null
     ) {
-        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);

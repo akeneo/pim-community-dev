@@ -106,4 +106,14 @@ class BooleanFilterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgumentException::booleanExpected('enabled', 'filter', 'boolean', gettype('not a boolean')))
             ->during('addFieldFilter', ['enabled', '=', 'not a boolean']);
     }
+
+    function it_returns_supported_fields()
+    {
+        $this->getFields()->shouldReturn(['enabled']);
+    }
+
+    function it_returns_supported_attributes()
+    {
+        $this->getAttributeTypes()->shouldReturn(['pim_catalog_boolean']);
+    }
 }

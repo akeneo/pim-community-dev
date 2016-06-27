@@ -14,11 +14,8 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupsFilter extends AbstractFilter implements FieldFilterInterface
+class GroupsFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    /** @var array */
-    protected $supportedFields;
-
     /** @var ObjectIdResolverInterface */
     protected $objectIdResolver;
 
@@ -75,14 +72,6 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
         }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsField($field)
-    {
-        return in_array($field, $this->supportedFields);
     }
 
     /**

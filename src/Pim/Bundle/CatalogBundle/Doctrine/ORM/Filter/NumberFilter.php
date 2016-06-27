@@ -17,24 +17,19 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var array */
-    protected $supportedAttributes;
-
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributes
+     * @param array                    $supportedAttributeTypes
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
+        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedOperators      = $supportedOperators;
     }
 
     /**
@@ -77,13 +72,5 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
         }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
     }
 }

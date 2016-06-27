@@ -92,4 +92,9 @@ class CategoryFilterSpec extends ObjectBehavior
         $itemRepo->applyFilterByCategoryIdsOrUnclassified($qb, [42, 84])->shouldBeCalled();
         $this->addFieldFilter('categories', 'IN OR UNCLASSIFIED', [42, 84]);
     }
+
+    function it_returns_supported_fields()
+    {
+        $this->getFields()->shouldReturn(['categories']);
+    }
 }

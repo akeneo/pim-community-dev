@@ -20,25 +20,22 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterface, AttributeFilterInterface
 {
     /** @var array */
-    protected $supportedAttributes;
-
-    /** @var array */
     protected $supportedFields;
 
     /**
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributes
+     * @param array                    $supportedAttributeTypes
      * @param array                    $supportedFields
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->supportedAttributes = $supportedAttributes;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedFields     = $supportedFields;
         $this->supportedOperators  = $supportedOperators;
     }
@@ -54,9 +51,9 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AttributeInterface $attribute)
+    public function getFields()
     {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
+        return $this->supportedFields;
     }
 
     /**

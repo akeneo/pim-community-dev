@@ -13,6 +13,7 @@ class ProductIdFilterSpec extends ObjectBehavior
 {
     function let(Builder $queryBuilder)
     {
+        $this->beConstructedWith(['id'], ['=', 'IN', 'NOT IN', '!=']);
         $this->setQueryBuilder($queryBuilder);
     }
 
@@ -33,5 +34,10 @@ class ProductIdFilterSpec extends ObjectBehavior
     {
         $this->shouldThrow(InvalidArgumentException::expected('id', 'array or string value', 'filter', 'productId', 1234))
             ->during('addFieldFilter', ['id', '=', 1234]);
+    }
+
+    function it_returns_supported_fields()
+    {
+        $this->getFields()->shouldReturn(['id']);
     }
 }

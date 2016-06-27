@@ -31,12 +31,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /** @var ReferenceDataIdResolver */
     protected $idsResolver;
 
-    /** @var array */
-    protected $supportedAttributes;
-
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper       $attrValidatorHelper
      * @param ConfigurationRegistryInterface $registry
      * @param ReferenceDataIdResolver        $idsResolver

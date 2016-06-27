@@ -108,20 +108,14 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         $attribute = $this->attributeRepository->findOneByIdentifier(FieldFilterHelper::getCode($field));
 
         if (null !== $attribute) {
-            $filter = $this->filterRegistry->getAttributeFilter($attribute);
+            $filter = $this->filterRegistry->getAttributeFilter($attribute, $operator);
         } else {
-            $filter = $this->filterRegistry->getFieldFilter($field);
+            $filter = $this->filterRegistry->getFieldFilter($field, $operator);
         }
 
         if (null === $filter) {
             throw new \LogicException(
-                sprintf('Filter on field "%s" is not supported', $field)
-            );
-        }
-
-        if (!$filter->supportsOperator($operator)) {
-            throw new \LogicException(
-                sprintf('Filter on field "%s" doesn\'t provide operator "%s"', $field, $operator)
+                sprintf('Filter on property "%s" is not supported or does not support operator "%s"', $field, $operator)
             );
         }
 

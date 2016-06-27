@@ -18,27 +18,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class StringFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var array */
-    protected $supportedAttributes;
-
     /** @var OptionsResolver */
     protected $resolver;
 
     /**
-     * Instanciate the base filter
-     *
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributes
+     * @param array                    $supportedAttributeTypes
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        array $supportedAttributes = [],
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators  = $supportedOperators;
+        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+        $this->supportedOperators      = $supportedOperators;
 
         $this->resolver = new OptionsResolver();
         $this->configureOptions($this->resolver);
@@ -103,14 +98,6 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
         }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
     }
 
     /**
