@@ -252,7 +252,7 @@ services:
     pim_connector.step.xlsx_product_import.import_associations:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'import'
+            - 'import_associations'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.file.xlsx_association'

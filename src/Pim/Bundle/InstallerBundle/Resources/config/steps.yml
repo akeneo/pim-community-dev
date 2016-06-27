@@ -124,7 +124,7 @@ services:
     pim_installer.step.fixtures_product_csv.import_associations:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'import'
+            - 'import_associations'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.file.csv_association'
