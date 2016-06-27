@@ -1,0 +1,5 @@
+pimee_base_connector:
+  jobs:
+    csv_published_product_export:
+      title: Exportación en CSV de productos publicados
+      export.title: Exportación de productos publicados
