@@ -194,16 +194,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
     }
 
     /**
-     * Get the name of items this operation applies to
-     *
-     * @return string
-     */
-    public function getItemsName()
-    {
-        return 'product';
-    }
-
-    /**
      * Add constraint on product values integrity.
      *
      * It registers constraint assertion that "hasValidValues" must return true on

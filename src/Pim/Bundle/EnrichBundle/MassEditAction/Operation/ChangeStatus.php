@@ -69,14 +69,6 @@ class ChangeStatus extends AbstractMassEditOperation
     /**
      * {@inheritdoc}
      */
-    public function getItemsName()
-    {
-        return 'product';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getActions()
     {
         return [

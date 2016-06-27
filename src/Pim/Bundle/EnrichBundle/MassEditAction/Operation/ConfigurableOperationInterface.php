@@ -24,13 +24,6 @@ interface ConfigurableOperationInterface
     public function getFormOptions();
 
     /**
-     * Get the name of items this operation applies to
-     *
-     * @return string
-     */
-    public function getItemsName();
-
-    /**
      * Initialize the operation, allowing to retrieve entities or whatever useful
      * to configure this operation
      */

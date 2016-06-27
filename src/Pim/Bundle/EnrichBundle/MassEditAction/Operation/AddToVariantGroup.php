@@ -74,12 +74,4 @@ class AddToVariantGroup extends AbstractMassEditOperation
                 'value' => $this->getGroup()->getCode(),
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemsName()
-    {
-        return 'product';
-    }
 }

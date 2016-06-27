@@ -63,14 +63,6 @@ class ChangeFamily extends AbstractMassEditOperation
     /**
      * {@inheritdoc}
      */
-    public function getItemsName()
-    {
-        return 'product';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getOperationAlias()
     {
         return 'change-family';
