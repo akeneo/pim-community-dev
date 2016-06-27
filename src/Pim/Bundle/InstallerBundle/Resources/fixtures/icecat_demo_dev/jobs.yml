@@ -23,11 +23,6 @@ jobs:
         label:     Demo CSV product export
         type:      export
         configuration:
-            channel:    mobile
-            locales:
-                - fr_FR
-                - en_US
-                - de_DE
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
@@ -237,15 +232,9 @@ jobs:
         label:     Demo XLSX product export
         type:      export
         configuration:
-            channel:    mobile
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/product.xlsx
-            channel:    mobile
-            locales:
-                - fr_FR
-                - en_US
-                - de_DE
     xlsx_group_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_group_export
