@@ -59,7 +59,7 @@ class CreateJobCommand extends ContainerAwareCommand
         $factory = $this->getJobInstanceFactory();
         $jobInstance = $factory->createJobInstance($type);
         $jobInstance->setConnector($connector);
-        $jobInstance->setAlias($jobName);
+        $jobInstance->setJobName($jobName);
         $jobInstance->setCode($code);
         $jobInstance->setLabel($label);
         $jobInstance->setRawConfiguration($rawConfig);

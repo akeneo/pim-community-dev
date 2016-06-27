@@ -41,7 +41,7 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
         $jobParametersFactory->create($job, ['filePath' => 'currencies.csv'])->willReturn($jobParameters);
         $jobParameters->all()->willReturn(['filePath' => 'currencies.csv']);
 
-        $jobInstance->setAlias('fixtures_currency_csv')->shouldBeCalled();
+        $jobInstance->setJobName('fixtures_currency_csv')->shouldBeCalled();
         $jobInstance->setCode('fixtures_currency_csv')->shouldBeCalled();
         $jobInstance->setConnector('Data fixtures')->shouldBeCalled();
         $jobInstance->setLabel('Currencies data fixtures')->shouldBeCalled();

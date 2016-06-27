@@ -44,7 +44,7 @@ class JobAliasSubscriber implements EventSubscriberInterface
         $alias = $form->get('alias')->getData();
 
         $jobInstance
-            ->setAlias($alias)
+            ->setJobName($alias)
             ->setConnector($connector);
     }
 }

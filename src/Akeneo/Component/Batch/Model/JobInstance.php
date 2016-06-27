@@ -43,7 +43,7 @@ class JobInstance
     protected $label;
 
     /** @var string */
-    protected $alias;
+    protected $jobName;
 
     /** @var integer */
     protected $status = self::STATUS_READY;
@@ -69,13 +69,13 @@ class JobInstance
      *
      * @param string $connector
      * @param string $type
-     * @param string $alias
+     * @param string $jobName
      */
-    public function __construct($connector = null, $type = null, $alias = null)
+    public function __construct($connector = null, $type = null, $jobName = null)
     {
         $this->connector     = $connector;
         $this->type          = $type;
-        $this->alias         = $alias;
+        $this->jobName       = $jobName;
         $this->jobExecutions = new ArrayCollection();
     }
 
@@ -160,15 +160,13 @@ class JobInstance
     }
 
     /**
-     * TODO TIP-384, rename to getJobName as in spring batch
-     *
-     * Get alias
+     * Get job name
      *
      * @return string
      */
     public function getJobName()
     {
-        return $this->alias;
+        return $this->jobName;
     }
 
     /**
@@ -308,25 +306,23 @@ class JobInstance
     }
 
     /**
-     * TODO TIP-384, rename to setJobName as in spring batch
+     * Set job name
      *
-     * Set alias
+     * Throws logic exception if job name property is already set.
      *
-     * Throws logic exception if alias property is already set.
-     *
-     * @param string $alias
+     * @param string $jobName
      *
      * @throws \LogicException
      *
      * @return JobInstance
      */
-    public function setAlias($alias)
+    public function setJobName($jobName)
     {
-        if ($this->alias !== null) {
-            throw new \LogicException('Alias already set in JobInstance');
+        if ($this->jobName !== null) {
+            throw new \LogicException('Job name already set in JobInstance');
         }
 
-        $this->alias = $alias;
+        $this->jobName = $jobName;
 
         return $this;
     }

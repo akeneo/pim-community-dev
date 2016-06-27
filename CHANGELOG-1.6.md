@@ -355,3 +355,4 @@
 - Add `getField()` method to `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
 - Add `getAttributeFilters()` and `getFieldFilters()` to `Pim\Component\Catalog\Query\Filter\FilterRegistryInterface`
 - Rename method `getAlias` to `getJobName` in `Akeneo\Component\Batch\Model\JobInstance`
+- Rename method `setAlias` to `setJobName` in `Akeneo\Component\Batch\Model\JobInstance`
