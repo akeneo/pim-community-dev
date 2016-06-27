@@ -9,7 +9,6 @@ use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\OperationJobLauncher;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -140,7 +139,8 @@ class FamilyController
         $itemsCount = $request->get('itemsCount');
         $configureTemplate = sprintf('PimEnrichBundle:MassEditAction:family/configure/%s.html.twig', $operationAlias);
 
-        return $this->templating->renderResponse($configureTemplate,
+        return $this->templating->renderResponse(
+            $configureTemplate,
             [
                 'form'           => $form->createView(),
                 'operationAlias' => $operationAlias,
@@ -192,8 +192,9 @@ class FamilyController
             $request
                 ->getSession()
                 ->getFlashBag()
-                ->add('success', new Message(
-                    sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias))
+                ->add(
+                    'success',
+                    new Message(sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias))
                 );
 
             $redirectRoute = 'pim_enrich_family_index';
@@ -203,7 +204,8 @@ class FamilyController
             );
         }
 
-        return $this->templating->renderResponse($configureTemplate,
+        return $this->templating->renderResponse(
+            $configureTemplate,
             [
                 'form'           => $form->createView(),
                 'operationAlias' => $operationAlias,

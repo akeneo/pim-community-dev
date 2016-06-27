@@ -140,7 +140,8 @@ class ProductController
         $itemsCount = $request->get('itemsCount');
         $configureTemplate = sprintf('PimEnrichBundle:MassEditAction:product/configure/%s.html.twig', $operationAlias);
 
-        return $this->templating->renderResponse($configureTemplate,
+        return $this->templating->renderResponse(
+            $configureTemplate,
             [
                 'form'           => $form->createView(),
                 'operationAlias' => $operationAlias,
@@ -192,8 +193,9 @@ class ProductController
             $request
                 ->getSession()
                 ->getFlashBag()
-                ->add('success', new Message(
-                    sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias))
+                ->add(
+                    'success',
+                    new Message(sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias))
                 );
 
             $redirectRoute = 'pim_enrich_product_index';
@@ -203,7 +205,8 @@ class ProductController
             );
         }
 
-        return $this->templating->renderResponse($configureTemplate,
+        return $this->templating->renderResponse(
+            $configureTemplate,
             [
                 'form'           => $form->createView(),
                 'operationAlias' => $operationAlias,
