@@ -301,3 +301,27 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then the category of the product "jacket" should be "123"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5843
+  Scenario: Successfully import a product with option values on several lines in the same file
+    Given the following products:
+      | sku    | weather_conditions |
+      | jacket |                    |
+    And the following CSV file to import:
+      """
+      sku;weather_conditions
+      jacket;dry
+      jacket;foo
+      jacket;hot
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "read lines 3"
+    And I should see "skipped 1"
+    And I should see "processed 2"
+    And there should be 1 product
+    And the product "jacket" should have the following values:
+      | weather_conditions | [hot] |

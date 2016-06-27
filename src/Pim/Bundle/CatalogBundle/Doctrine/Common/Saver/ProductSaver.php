@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\UnitOfWork;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -69,7 +70,6 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
-
         $this->objectManager->persist($product);
 
         if (true === $options['schedule'] || true === $options['recalculate']) {
@@ -103,6 +103,12 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $itemOptions['flush'] = false;
 
         foreach ($products as $product) {
+            if (null !== $product->getId() &&
+                UnitOfWork::STATE_DETACHED === $this->objectManager->getUnitOfWork()->getEntityState($product)
+            ) {
+                $product = $this->objectManager->merge($product);
+            }
+
             $this->save($product, $itemOptions);
         }
 

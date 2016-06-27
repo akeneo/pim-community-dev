@@ -476,7 +476,7 @@ class ProductProcessor extends AbstractProcessor
 
     /**
      * Detaches the product from the unit of work is the responsibility of the writer but in this case we
-     * want ensure that an updated and invalid product will not be used in the association processor
+     * want to ensure that an updated and invalid product will not be used in the association processor
      *
      * @param ProductInterface $product
      */
