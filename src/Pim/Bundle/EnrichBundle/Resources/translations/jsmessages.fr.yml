@@ -16,7 +16,7 @@ confirmation:
 pim_datagrid:
   mass_action_group:
     bulk_actions:
-      label: Actions de masse
+      label: Action en masse
     quick_export:
       label: Export rapide
   mass_action:
@@ -90,13 +90,18 @@ Classify the product: Classer le produit
 Delete the product: Supprimer le produit
 Change status: Changer le statut
 Toggle status: Changer le statut
-pim.grid.mass_action.quick_export.csv_all: CSV (tous les attributs)
-pim.grid.mass_action.quick_export.csv_grid_context: CSV (contexte de la grille)
-pim.grid.mass_action.quick_export.xlsx_all: XLSX (tous les attributs)
-pim.grid.mass_action.quick_export.xlsx_grid_context: XLSX (contexte de la grille)
-pim.grid.mass_action.delete: Supprimer
-pim.grid.mass_action.mass_edit: Edition de masse
-pim.grid.mass_action.sequential_edit: Modification séquentielle
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (tous les attributs)
+        csv_grid_context: CSV (contexte de la grille)
+        xlsx_all: XLSX (tous les attributs)
+        xlsx_grid_context: XLSX (contexte de la grille)
+      delete: Supprimer
+      mass_edit: Edition de masse
+      category_edit: Edition de catégorie
+      sequential_edit: Modification séquentielle
 jstree.create: Créer
 switch_on: Oui
 switch_off: Non

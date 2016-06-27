@@ -55,11 +55,11 @@ class DBDataCollectorSpec extends ObjectBehavior
         $this->collect()->shouldReturn(
             [
                 "nb_channels"   => 3,
+                "nb_locales"    => 3,
                 "nb_products"   => 1121,
                 "nb_attributes" => 55,
-                "nb_locales"    => 3,
                 "nb_families"   => 14,
-                "nb_users"      => 5
+                "nb_users"      => 5,
             ]
         );
     }

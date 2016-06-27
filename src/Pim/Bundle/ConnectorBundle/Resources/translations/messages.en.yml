@@ -71,6 +71,10 @@ pim_connector:
                 all_complete: Complete on all selected locales
                 all_incomplete: Not complete on all selected locales
                 all: No condition on completeness
+        product_identifier:
+            label: Product identifiers
+            help: The products you want to export
+            placeholder: Add your product identifiers
         updated:
             updated_since_strategy:
                 label: Updated time condition

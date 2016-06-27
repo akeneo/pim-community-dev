@@ -1,3 +1,7 @@
 No products to remove: No products to remove
 "dot (.)":   dot (.)
 "comma (,)": comma (,)
+
+pim_catalog:
+    constraint:
+        product_identifier: These identifiers "%s" don't exist.

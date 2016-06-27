@@ -18,8 +18,10 @@
 - PIM-5431: Export the products updated since a defined date
 - PIM-5602: Introduce "move to categories" action in products mass edit
 - PIM-5432: Export the products updated for a period
+- PIM-5633: Export products by identifiers
 - PIM-5604: Introduce "remove from categories" action in products mass edit
 - PIM-5681: Introduce a new command to purge entity versions stored in the PIM (see pim:versioning:purge command)
+- PIM-5781: Add new data on the "system information" screen (data volumetry, information about the operating system)
 
 ## Scalability improvements
 
@@ -44,6 +46,7 @@
 - TIP-458: Move the Converters from Processors to Readers. Now, all the readers return a standard format as output, and all the processors get a standard format as input.
 - TIP-459: Standardize the denormalization Processors, to use SimpleProcessor in most of the cases.
 - TIP-255: Allow to select PQB filter on supported operator, to add new operators easily on existing fields/attribute types
+- PIM-5781: Introduce a new command to get system information from the command line
 
 ## BC breaks
 

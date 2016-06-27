@@ -113,11 +113,10 @@ pim_enrich:
         warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
         invalid_attribute: 'El atributo con el código "attribute_code" no es común para los productos seleccionados, atributo ignorado.'
         no_valid_attribute: Ninguno de los atributos seleccionados puede ser aplicado a este producto.
-    classify:
+    classify-add:
       label: Clasificar los productos en categorías
       description: Los productos se colocará en las siguientes categorías, la posición actual se mantendrá.
       success_flash: Los producto(s) han sido clasificados en las categorías seleccionadas
-      launched_flash: 'La acción en masa "clasificar" ha sido lanzada. Será notificado una vez finalizada.'
     change-family:
       label: Cambiar la familia de los productos
       description: La familia de los productos seleccionados se cambiará a la familia elegida

@@ -2,17 +2,12 @@
 
 namespace Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider;
 
-use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * FormsOptions for product CSV export
@@ -101,6 +96,18 @@ class ProductCsvExport implements FormConfigurationProviderInterface
                     'attr'       => [
                         'data-tab'         => 'content',
                         'data-placeholder' => 'pim_base_connector.export.families.placeholder'
+                    ]
+                ]
+            ],
+            'product_identifier' => [
+                'type'    => 'pim_product_identifier_choice',
+                'options' => [
+                    'multiple'    => true,
+                    'label'       => 'pim_connector.export.product_identifier.label',
+                    'help'        => 'pim_connector.export.product_identifier.help',
+                    'placeholder' => 'pim_connector.export.product_identifier.placeholder',
+                    'attr'        => [
+                        'data-tab' => 'content',
                     ]
                 ]
             ],

@@ -110,7 +110,6 @@ pim_connector:
       help: Einzelnes Zeichen, das als Dezimaltrennzeichen für Felder benutzt wird
     dateFormat:
       label: Datumsformat
-      help: Geben Sie das Datumsformat aller Datumsspalten der Datei an, z.B. DD/MM/YYYY für ein 31/12/2014 Format.
 job_execution.summary:
   read: gelesen
   read_lines: gelesene Zeilen

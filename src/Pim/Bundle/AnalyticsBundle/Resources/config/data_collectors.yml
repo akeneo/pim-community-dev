@@ -6,6 +6,7 @@ parameters:
     pim_analytics.data_collector.version.class:          Pim\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector
     pim_analytics.data_collector.database.class:         Pim\Bundle\AnalyticsBundle\DataCollector\DBDataCollector
     pim_analytics.data_collector.bundles.class:          Pim\Bundle\AnalyticsBundle\DataCollector\BundlesDataCollector
+    pim_analytics.data_collector.storage.class:          Pim\Bundle\AnalyticsBundle\DataCollector\StorageDataCollector
 
 services:
     pim_analytics.data_collector.chained:
@@ -25,16 +26,11 @@ services:
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
 
-    pim_analytics.data_collector.operating_system:
-        class: '%pim_analytics.data_collector.operating_system.class%'
-        tags:
-            - { name: pim_analytics.data_collector, type: update_checker }
-
     pim_analytics.data_collector.version:
         class: '%pim_analytics.data_collector.version.class%'
         arguments:
+            - '@request_stack'
             - '@pim_catalog.version_provider'
-            - '%pim_catalog_product_storage_driver%'
             - '%kernel.environment%'
             - '%installed%'
         tags:
@@ -52,6 +48,13 @@ services:
             - '@pim_user.repository.user'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
+            - { name: pim_analytics.data_collector, type: system_info_report }
+
+    pim_analytics.data_collector.operating_system:
+        class: '%pim_analytics.data_collector.operating_system.class%'
+        tags:
+            - { name: pim_analytics.data_collector, type: update_checker }
+            - { name: pim_analytics.data_collector, type: system_info_report }
 
     pim_analytics.data_collector.bundles:
         class: '%pim_analytics.data_collector.bundles.class%'

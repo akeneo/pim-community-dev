@@ -104,6 +104,18 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
                     ]
                 ]
             ],
+            'product_identifier' => [
+                'type'    => 'pim_product_identifier_choice',
+                'options' => [
+                    'multiple'    => true,
+                    'label'       => 'pim_connector.export.product_identifier.label',
+                    'help'        => 'pim_connector.export.product_identifier.help',
+                    'placeholder' => 'pim_connector.export.product_identifier.placeholder',
+                    'attr'        => [
+                        'data-tab' => 'content',
+                    ]
+                ]
+            ],
             'enabled' => [
                 'type'    => 'choice',
                 'options' => [
@@ -172,7 +184,7 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
                 ]
             ],
         ];
-        
+
         $formOptions = array_merge($formOptions, $this->simpleXlsxExport->getFormConfiguration($jobInstance));
 
         return $formOptions;
