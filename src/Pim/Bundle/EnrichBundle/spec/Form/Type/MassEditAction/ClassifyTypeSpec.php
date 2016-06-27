@@ -15,7 +15,8 @@ class ClassifyTypeSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             $categoryRepository,
-            'Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify'
+            'Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify',
+            'pim_enrich_mass_classify'
         );
     }
 
