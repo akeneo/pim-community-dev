@@ -49,7 +49,7 @@ class AddToVariantGroupSpec extends ObjectBehavior
 
     function it_provides_a_batch_job_code()
     {
-        $this->getBatchJobCode()->shouldReturn('add_to_variant_group');
+        $this->getJobInstanceCode()->shouldReturn('add_to_variant_group');
     }
 
     function it_provides_formatted_batch_config_for_the_job(GroupInterface $oroTshirt)

@@ -18,11 +18,11 @@ class AddToGroups extends AbstractMassEditOperation
     protected $groups;
 
     /**
-     * @param string $batchJobCode
+     * @param string $jobInstanceCode
      */
-    public function __construct($batchJobCode)
+    public function __construct($jobInstanceCode)
     {
-        $this->batchJobCode = $batchJobCode;
+        $this->jobInstanceCode = $jobInstanceCode;
         $this->groups = new ArrayCollection();
     }
 

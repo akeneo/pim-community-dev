@@ -52,7 +52,7 @@ class OperationJobLauncher
      */
     public function launch(BatchableOperationInterface $operation)
     {
-        $jobCode = $operation->getBatchJobCode();
+        $jobCode = $operation->getJobInstanceCode();
         $jobInstance = $this->jobInstanceRepo->findOneBy(['code' => $jobCode]);
 
         if (null === $jobInstance) {
