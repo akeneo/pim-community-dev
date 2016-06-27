@@ -23,6 +23,8 @@ define(
         return Backbone.View.extend({
             code: 'form',
             parent: null,
+            preUpdateEventName: 'pim_enrich:form:entity:pre_update',
+            postUpdateEventName: 'pim_enrich:form:entity:post_update',
 
             /**
              * {@inheritdoc}
@@ -135,13 +137,13 @@ define(
                 options = options || {};
 
                 if (!options.silent) {
-                    this.getRoot().trigger('pim_enrich:form:entity:pre_update', data);
+                    this.getRoot().trigger(this.preUpdateEventName, data);
                 }
 
                 this.getRoot().model.set(data, options);
 
                 if (!options.silent) {
-                    this.getRoot().trigger('pim_enrich:form:entity:post_update', data);
+                    this.getRoot().trigger(this.postUpdateEventName, data);
                 }
 
                 return this;
@@ -154,13 +156,13 @@ define(
                 options = options || {};
 
                 if (!options.silent) {
-                    this.getRoot().trigger('pim_enrich:form:entity:pre_update', {});
+                    this.getRoot().trigger(this.preUpdateEventName, {});
                 }
 
-                this.getRoot().model.clear();
+                this.getRoot().model.clear(options);
 
                 if (!options.silent) {
-                    this.getRoot().trigger('pim_enrich:form:entity:post_update', {});
+                    this.getRoot().trigger(this.postUpdateEventName, {});
                 }
 
                 return this;

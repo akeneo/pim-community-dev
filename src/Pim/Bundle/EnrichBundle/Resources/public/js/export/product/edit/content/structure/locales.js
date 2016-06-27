@@ -8,12 +8,14 @@
  */
 define(
     [
+        'oro/translator',
         'text!pim/template/export/product/edit/content/structure/locales',
         'pim/form',
         'pim/fetcher-registry',
         'jquery.select2'
     ],
     function (
+        __,
         template,
         BaseForm,
         fetcherRegistry
@@ -41,12 +43,14 @@ define(
                 ).then(function (scope) {
                     this.$el.html(
                         this.template({
+                            __: __,
                             locales: this.getLocales(),
                             availableLocales: scope.locales
                         })
                     );
 
                     this.$('.select2').select2().on('change', this.updateModel.bind(this));
+                    this.$('[data-toggle="tooltip"]').tooltip();
 
                     this.renderExtensions();
                 }.bind(this));

@@ -8,6 +8,7 @@
  */
 define(
     [
+        'oro/translator',
         'text!pim/template/export/product/edit/content/structure/scope',
         'pim/form',
         'pim/fetcher-registry',
@@ -15,6 +16,7 @@ define(
         'jquery.select2'
     ],
     function (
+        __,
         template,
         BaseForm,
         fetcherRegistry,
@@ -34,6 +36,7 @@ define(
 
                     this.$el.html(
                         this.template({
+                            __: __,
                             locale: UserContext.get('uiLocale'),
                             channels: channels,
                             scope: this.getScope()
@@ -41,6 +44,7 @@ define(
                     );
 
                     this.$('.select2').select2().on('change', this.updateModel.bind(this));
+                    this.$('[data-toggle="tooltip"]').tooltip();
 
                     this.renderExtensions();
                 }.bind(this));

@@ -30,8 +30,8 @@ extensions:
             operators:
                 - ALL
                 - SINCE N DAYS
-                - SINCE DATE
-                - LAST EXPORT
+                - ">="
+                - SINCE LAST EXPORT
 
     pim-filter-simpleselect:
         module: pim/filter/simpleselect

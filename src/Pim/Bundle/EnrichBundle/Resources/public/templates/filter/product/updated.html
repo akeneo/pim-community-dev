@@ -7,12 +7,15 @@
             </option>
         <% }); %>
     </select>
-    <% if ('SINCE DATE' === operator) { %>
+    <% if ('>=' === operator) { %>
         <span class="date-wrapper">
             <input name="filter-value" class="datepicker add-on input-large" type="text" value="<%- value ? value : '' %>">
         </span>
     <% } else if ('SINCE N DAYS' === operator) { %>
         <input name="filter-value" class="input-large" type="text" value="<%- value ? value : '' %>">
     <% } %>
+    <div class="icons-container">
+        <i class="icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="<%- __('pim_enrich.export.product.filter.updated.help') %>"></i>
+    </div>
     <% if (removable) { %><i class="remove icon-trash"></i><% } %>
 </div>

@@ -37,13 +37,16 @@ define(
                     this.addFilters(event.codes);
                 }.bind(this));
 
+                var promises = [];
                 _.each(this.config.filters, function (filter) {
-                    this.addFilterView(filter.view, filter.field, false);
+                    promises.push(this.addFilterView(filter.view, filter.field, false));
                 }.bind(this));
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.updateFiltersData.bind(this));
 
-                return BaseForm.prototype.configure.apply(this, arguments);
+                promises.push(BaseForm.prototype.configure.apply(this, arguments));
+
+                return $.when(promises);
             },
             render: function () {
                 if (!this.configured) {

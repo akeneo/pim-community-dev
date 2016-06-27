@@ -7,9 +7,6 @@ define([
     'pim/filter/filter',
     'routing',
     'text!pim/template/filter/product/completeness',
-    'pim/fetcher-registry',
-    'pim/user-context',
-    'pim/i18n',
     'jquery.select2'
 ], function (_, __, BaseFilter, Routing, template) {
     return BaseFilter.extend({
