@@ -140,8 +140,8 @@ services:
             -
                 - '@pimee_enrich.step.add_to_variant_group_with_rules.perform'
                 - '@pimee_enrich.step.execute_rules'
-         tags:
-             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
 
     # CSV Quick Exports -----------------------------------------------------------------------------------------------
     pimee_enrich.job.csv_published_product_quick_export:
