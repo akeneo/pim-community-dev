@@ -15,11 +15,11 @@ class ChangeStatus extends AbstractMassEditOperation
     protected $toEnable = false;
 
     /**
-     * @param string $batchJobCode
+     * @param string $jobInstanceCode
      */
-    public function __construct($batchJobCode)
+    public function __construct($jobInstanceCode)
     {
-        $this->batchJobCode = $batchJobCode;
+        $this->jobInstanceCode = $jobInstanceCode;
     }
 
     /**

@@ -77,7 +77,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      * @param LocalizerRegistryInterface   $localizerRegistry
      * @param CollectionFilterInterface    $productValuesFilter
      * @param string                       $tmpStorageDir
-     * @param string                       $batchJobCode
+     * @param string                       $jobInstanceCode
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
@@ -90,7 +90,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         LocalizerRegistryInterface $localizerRegistry,
         CollectionFilterInterface $productValuesFilter,
         $tmpStorageDir,
-        $batchJobCode
+        $jobInstanceCode
     ) {
         $this->productBuilder      = $productBuilder;
         $this->userContext         = $userContext;
@@ -102,7 +102,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $this->localizedConverter  = $localizedConverter;
         $this->localizerRegistry   = $localizerRegistry;
         $this->productValuesFilter = $productValuesFilter;
-        $this->batchJobCode        = $batchJobCode;
+        $this->jobInstanceCode        = $jobInstanceCode;
 
         $this->values = '';
     }

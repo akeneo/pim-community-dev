@@ -67,7 +67,7 @@ class ClassifySpec extends ObjectBehavior
 
     function it_provides_a_batch_job_code()
     {
-        $this->getBatchJobCode()->shouldReturn('add_product_value');
+        $this->getJobInstanceCode()->shouldReturn('add_product_value');
     }
 
     function it_provides_formatted_batch_config_for_the_job(

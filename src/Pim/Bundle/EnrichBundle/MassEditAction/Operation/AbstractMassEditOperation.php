@@ -21,7 +21,7 @@ abstract class AbstractMassEditOperation implements
     protected $actions;
 
     /** @var string The background job code to launch */
-    protected $batchJobCode;
+    protected $jobInstanceCode;
 
     /**
      * {@inheritdoc}
@@ -81,9 +81,9 @@ abstract class AbstractMassEditOperation implements
     /**
      * {@inheritdoc}
      */
-    public function getBatchJobCode()
+    public function getJobInstanceCode()
     {
-        return $this->batchJobCode;
+        return $this->jobInstanceCode;
     }
 
     /**

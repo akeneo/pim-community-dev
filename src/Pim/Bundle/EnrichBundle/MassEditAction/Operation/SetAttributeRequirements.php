@@ -41,18 +41,18 @@ class SetAttributeRequirements extends AbstractMassEditOperation
      * @param ChannelRepositoryInterface   $channelRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param AttributeRequirementFactory  $factory
-     * @param string                       $batchJobCode
+     * @param string                       $jobInstanceCode
      */
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         AttributeRequirementFactory $factory,
-        $batchJobCode
+        $jobInstanceCode
     ) {
         $this->channelRepository   = $channelRepository;
         $this->attributeRepository = $attributeRepository;
         $this->factory             = $factory;
-        $this->batchJobCode        = $batchJobCode;
+        $this->jobInstanceCode        = $jobInstanceCode;
         $this->attRequirements     = new ArrayCollection();
     }
 
