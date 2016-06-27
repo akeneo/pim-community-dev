@@ -122,7 +122,7 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
     public function notifyUsers(JobExecutionEvent $event)
     {
         if (!empty($this->ownerGroupIds)
-            && self::PROPOSAL_IMPORT_ALIAS === $event->getJobExecution()->getJobInstance()->getAlias()) {
+            && self::PROPOSAL_IMPORT_ALIAS === $event->getJobExecution()->getJobInstance()->getJobName()) {
             $author = $this->userRepository->findOneBy(['username' => $event->getJobExecution()->getUser()]);
             $usersToNotify = $this->usersProvider->getUsersToNotify($this->ownerGroupIds);
 

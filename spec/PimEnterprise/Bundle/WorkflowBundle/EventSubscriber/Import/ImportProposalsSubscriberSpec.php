@@ -67,7 +67,7 @@ class ImportProposalsSubscriberSpec extends ObjectBehavior
         $this->saveGroupIdsToNotify($event);
 
         $jobExecutionEvent->getJobExecution()->willReturn($jobExecution);
-        $jobInstance->getAlias()->willReturn('csv_product_proposal_import');
+        $jobInstance->getJobName()->willReturn('csv_product_proposal_import');
         $jobInstance->getCode()->willReturn('csv_clothing_product_proposal_import');
 
         $jobExecution->getJobInstance()->willReturn($jobInstance);
