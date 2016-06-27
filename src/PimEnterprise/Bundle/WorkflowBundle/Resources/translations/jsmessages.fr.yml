@@ -20,7 +20,7 @@ pimee_workflow:
   proposal:
     mass_action_group:
       review:
-        label: Action en masse
+        label: Action de masse
     partial_accept:
       modal.title: Approuver des informations partielles
       modal.label: Laisser un commentaire (facultatif)
