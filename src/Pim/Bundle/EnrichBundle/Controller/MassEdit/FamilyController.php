@@ -9,7 +9,6 @@ use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\OperationJobLauncher;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,14 +17,14 @@ use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
- * Mass Edit controller implementation for products.
+ * Mass Edit controller implementation for families.
  * Handle all the steps from choosing action to run to the launching of the action.
  *
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ProductController
+class FamilyController
 {
     /** @var RouterInterface */
     protected $router;
@@ -89,7 +88,7 @@ class ProductController
     {
         $form = $this
             ->massEditFormResolver
-            ->getAvailableOperationsForm('product-grid', $operationGroup);
+            ->getAvailableOperationsForm('family-grid', $operationGroup);
 
         $queryParams = $this->getQueryParams($request);
 
@@ -102,7 +101,7 @@ class ProductController
 
                 $configureRoute = $this
                     ->router
-                    ->generate('pim_enrich_mass_edit_product_action_configure', $queryParams);
+                    ->generate('pim_enrich_mass_edit_family_action_configure', $queryParams);
 
                 return new RedirectResponse($configureRoute);
             }
@@ -110,7 +109,7 @@ class ProductController
 
         $itemsCount = $request->get('itemsCount');
 
-        return $this->templating->renderResponse('PimEnrichBundle:MassEditAction:product/choose.html.twig', [
+        return $this->templating->renderResponse('PimEnrichBundle:MassEditAction:family/choose.html.twig', [
             'form'        => $form->createView(),
             'itemsCount'  => $itemsCount,
             'queryParams' => array_merge($queryParams, ['operationGroup' => $operationGroup]),
@@ -138,7 +137,7 @@ class ProductController
             ->getConfigurationForm($operationAlias);
 
         $itemsCount = $request->get('itemsCount');
-        $configureTemplate = sprintf('PimEnrichBundle:MassEditAction:product/configure/%s.html.twig', $operationAlias);
+        $configureTemplate = sprintf('PimEnrichBundle:MassEditAction:family/configure/%s.html.twig', $operationAlias);
 
         return $this->templating->renderResponse(
             $configureTemplate,
@@ -171,7 +170,7 @@ class ProductController
             ->getConfigurationForm($operationAlias);
 
         $itemsCount = $request->get('itemsCount');
-        $configureTemplate = sprintf('MassEditAction/configure/%s.html.twig', $operationAlias);
+        $configureTemplate = sprintf('PimEnrichBundle:MassEditAction:family/%s.html.twig', $operationAlias);
 
         $form->remove('operationAlias');
         $form->submit($request);
@@ -198,7 +197,7 @@ class ProductController
                     new Message(sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias))
                 );
 
-            $redirectRoute = 'pim_enrich_product_index';
+            $redirectRoute = 'pim_enrich_family_index';
 
             return new RedirectResponse(
                 $this->router->generate($redirectRoute, ['dataLocale' => $queryParams['dataLocale']])
