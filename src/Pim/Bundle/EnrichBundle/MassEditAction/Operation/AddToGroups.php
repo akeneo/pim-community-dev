@@ -86,14 +86,6 @@ class AddToGroups extends AbstractMassEditOperation
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getItemsName()
-    {
-        return 'product';
-    }
-
-    /**
      * @param ArrayCollection $groups
      *
      * @return array

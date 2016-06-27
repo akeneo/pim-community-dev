@@ -17,9 +17,6 @@ class Classify extends AbstractMassEditOperation
     protected $categories;
 
     /** @var string */
-    protected $itemsName;
-
-    /** @var string */
     protected $formType;
 
     /**
@@ -77,14 +74,6 @@ class Classify extends AbstractMassEditOperation
     public function getFormOptions()
     {
         return [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemsName()
-    {
-        return $this->itemsName;
     }
 
     /**
