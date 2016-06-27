@@ -3,7 +3,7 @@ oro_datagrid.not_found_hint: Aucun résultat trouvé. Essayez de modifier vos cr
 oro_datagrid.label_add_filter: Gérer les filtres
 oro_datagrid.label_loading_mask: Chargement . . .
 oro.grid.mass_action.selected_rows: Lignes sélectionnées
-oro.grid.mass_action.confirm_title: "Confirmation de l'Action de masse"
+oro.grid.mass_action.confirm_title: "Confirmation de l'action de masse"
 oro.grid.mass_action.confirm_content: Êtes-vous sûr de que vouloir faire cela ?
 oro.grid.mass_action.confirm_ok: Oui, le faire
 oro.grid.mass_action.error_title: "Erreur de l'action de masse"
