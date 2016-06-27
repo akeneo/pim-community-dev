@@ -356,3 +356,7 @@
 - Add `getAttributeFilters()` and `getFieldFilters()` to `Pim\Component\Catalog\Query\Filter\FilterRegistryInterface`
 - Rename method `getAlias` to `getJobName` in `Akeneo\Component\Batch\Model\JobInstance`
 - Rename method `setAlias` to `setJobName` in `Akeneo\Component\Batch\Model\JobInstance`
+- Remove `Pim\Bundle\EnrichBundle\Controller\MassEditActionController` and replaced it by `Pim\Bundle\EnrichBundle\Controller\MassEdit\ProductController`, `Pim\Bundle\EnrichBundle\Controller\MassEdit\FamilyController`
+- Add string parameter `$formName` to `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType`
+- Remove method `getItemsName()` from `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface` and deleted from all classes implementing the interface
+- Remove method `getItemsName()` from `Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface` and deleted from all classes implementing the interface
