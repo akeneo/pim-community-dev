@@ -282,7 +282,7 @@ MISSING_SQL;
     protected function getMainSqlPart()
     {
         return <<<MAIN_SQL
-            INSERT INTO pim_catalog_completeness (
+            INSERT IGNORE INTO pim_catalog_completeness (
                 locale_id, channel_id, product_id, ratio, missing_count, required_count
             )
             SELECT
