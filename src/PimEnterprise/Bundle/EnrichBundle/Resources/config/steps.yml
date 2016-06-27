@@ -80,7 +80,7 @@ services:
             - '@pim_connector.writer.file.csv_product'
             - 1000
 
-    # XLSX Quick Export steps ------------------------------------------------------------------------------------------
+    # XLSX Quick Export steps -----------------------------------------------------------------------------------------
     pimee_enrich.step.xlsx_published_product_quick_export.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:

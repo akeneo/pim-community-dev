@@ -1,0 +1,79 @@
+parameters:
+    pimee_workflow.job_name.csv_product_proposal_import: 'csv_product_proposal_import'
+    pimee_workflow.job_name.csv_published_product_export: 'csv_published_product_export'
+    pimee_workflow.job_name.xlsx_product_proposal_import: 'xlsx_product_proposal_import'
+    pimee_workflow.job_name.xlsx_published_product_export: 'xlsx_published_product_export'
+    pimee_workflow.job_name.approve_product_draft: 'approve_product_draft'
+    pimee_workflow.job_name.refuse_product_draft: 'refuse_product_draft'
+
+services:
+    # CSV Imports -----------------------------------------------------------------------------------------------------
+    pimee_workflow.job.csv_product_proposal_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_workflow.job_name.csv_product_proposal_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_workflow.step.csv_product_proposal_import.import'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
+
+    # CSV Exports -----------------------------------------------------------------------------------------------------
+    pimee_workflow.job.csv_published_product_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_workflow.job_name.csv_published_product_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_workflow.step.csv_published_product_export.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.export_type%' }
+
+    # XLSX Imports -----------------------------------------------------------------------------------------------------
+    pimee_workflow.job.xlsx_product_proposal_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_workflow.job_name.xlsx_product_proposal_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_workflow.step.xlsx_product_proposal_import.import'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%akeneo_batch.job.import_type%' }
+
+    # XLSX Exports ----------------------------------------------------------------------------------------------------
+    pimee_workflow.job.xlsx_published_product_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_workflow.job_name.xlsx_published_product_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_workflow.step.xlsx_published_product_export.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%akeneo_batch.job.export_type%' }
+
+    # Mass Edit -------------------------------------------------------------------------------------------------------
+    pimee_workflow.job.approve_product_draft:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_workflow.job_name.approve_product_draft%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_workflow.step.approve_product_draft.perform'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pimee_workflow.job.refuse_product_draft:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_workflow.job_name.refuse_product_draft%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_workflow.step.refuse_product_draft.perform'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%akeneo_batch.job.mass_edit_type%' }

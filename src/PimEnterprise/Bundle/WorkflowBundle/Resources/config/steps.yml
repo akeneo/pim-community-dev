@@ -1,0 +1,65 @@
+services:
+    # CSV Import steps ------------------------------------------------------------------------------------------------
+    pimee_workflow.step.csv_product_proposal_import.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_workflow.reader.file.csv_product_draft'
+            - '@pimee_workflow.processor.denormalization.product_draft'
+            - '@pim_base_connector.writer.doctrine.product_draft'
+            - 10
+
+    # CSV Export steps ------------------------------------------------------------------------------------------------
+    pimee_workflow.step.csv_published_product_export.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_workflow.reader.published_product'
+            - '@pim_base_connector.processor.product_to_flat_array'
+            - '@pim_connector.writer.file.csv_product'
+            - 10
+
+    # XLSX IMport steps -----------------------------------------------------------------------------------------------
+    pimee_workflow.step.xlsx_product_proposal_import.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_workflow.reader.file.xlsx_product_draft'
+            - '@pimee_workflow.processor.denormalization.product_draft'
+            - '@pim_base_connector.writer.doctrine.product_draft'
+            - 10
+
+    # XLSX Export steps -----------------------------------------------------------------------------------------------
+    pimee_workflow.step.xlsx_published_product_export.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_workflow.reader.published_product'
+            - '@pim_base_connector.processor.product_to_flat_array'
+            - '@pim_connector.writer.file.xlsx_product'
+            - 10
+
+    # Draft steps -----------------------------------------------------------------------------------------------------
+    pimee_workflow.step.approve_product_draft.perform:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'perform'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_workflow.mass_review_tasklet.approve_draft'
+
+    pimee_workflow.step.refuse_product_draft.perform:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'perform'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_workflow.mass_review_tasklet.refuse_draft'
