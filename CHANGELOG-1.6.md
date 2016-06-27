@@ -171,3 +171,5 @@
 - Remove `PimEnterprise\Component\Security\Connector\Writer\AccessesWriter`
 - Change constructor of `PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\ChannelConfigurationProcessor`, remove `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface` parameter
 - Change constructor of `PimEnterprise\Component\ProductAsset\Updater\AssetUpdater`, add `PimEnterprise\Component\ProductAsset\Factory\AssetFactory` as last parameter
+- Remove `PimEnterprise\Component\CatalogRule\Validator\SupportedOperatorConditionValidator`
+- Change `PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingFilterField` from property to class constraint

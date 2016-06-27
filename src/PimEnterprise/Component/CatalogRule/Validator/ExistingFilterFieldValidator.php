@@ -36,16 +36,16 @@ class ExistingFilterFieldValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($fieldName, Constraint $constraint)
+    public function validate($productCondition, Constraint $constraint)
     {
-        if (null === $fieldName) {
-            return;
-        }
-
-        $filter = $this->registry->getFilter($fieldName);
+        $filter = $this->registry->getFilter($productCondition->getField(), $productCondition->getOperator());
 
         if (null === $filter) {
-            $this->context->buildViolation($constraint->message, ['%field%' => $fieldName])
+            $this->context
+                ->buildViolation(
+                    $constraint->message,
+                    ['%field%' => $productCondition->getField(), '%operator%' => $productCondition->getOperator()]
+                )
                 ->addViolation();
         }
     }

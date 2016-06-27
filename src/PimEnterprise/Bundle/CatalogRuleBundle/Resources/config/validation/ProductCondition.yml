@@ -1,8 +1,8 @@
 PimEnterprise\Component\CatalogRule\Model\ProductCondition:
     constraints:
-        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\SupportedOperatorCondition: ~
         - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\NonEmptyValueCondition: ~
         - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ValueCondition: ~
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingFilterField: ~
     properties:
         # value is checked with \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\NonEmptyValueCondition
         field:
@@ -12,7 +12,6 @@ PimEnterprise\Component\CatalogRule\Model\ProductCondition:
                 message: The key "field" is missing or empty.
            - Length:
                 max: 255
-           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingFilterField: ~
         operator:
             - NotBlank:
                 message: The key "operator" is missing or empty.

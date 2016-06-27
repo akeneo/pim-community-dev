@@ -976,8 +976,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     And I should see the text "skipped 2"
-    And I should see the text "conditions[0]: The operator \"WRONG\" is not supported by the field \"name\""
-    And I should see the text "conditions[0]: The operator \"ANOTHER WRONG\" is not supported by the field \"name\""
+    And I should see the text "conditions[0]: The field \"name\" cannot be filtered or cannot be used with operator \"WRONG\""
+    And I should see the text "conditions[0]: The field \"name\" cannot be filtered or cannot be used with operator \"ANOTHER WRONG\""
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     And I should see the text "Another good description"
@@ -1030,8 +1030,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 2"
-    And I should see the text "conditions[0].field: The field \"wrong\" cannot be filtered."
-    And I should see the text "conditions[0].field: The field \"another wrong\" cannot be filtered."
+    And I should see the text "conditions[0]: The field \"wrong\" cannot be filtered or cannot be used with operator \"CONTAINS\""
+    And I should see the text "conditions[0]: The field \"another wrong\" cannot be filtered or cannot be used with operator \"CONTAINS\""
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     And I should see the text "Another good description"
