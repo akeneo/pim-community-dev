@@ -7,7 +7,6 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Exception\DataArrayConversionException;
 use Pim\Component\Connector\Exception\InvalidItemFromViolationsException;
@@ -21,7 +20,7 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader extends FileReader implements
+class Reader implements
     ItemReaderInterface,
     StepExecutionAwareInterface,
     FlushableInterface

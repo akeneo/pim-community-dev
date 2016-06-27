@@ -8,16 +8,6 @@ parameters:
     pim_base_connector.reader.cached.class:            Pim\Bundle\BaseConnectorBundle\Reader\CachedReader
 
 services:
-    # Deprecated: Will be removed in 1.7, please use @pim_connector.reader.database.product instead.
-    pim_base_connector.reader.doctrine.product:
-        class: '%pim_base_connector.reader.doctrine.product.class%'
-        arguments:
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.manager.completeness'
-            - '@pim_catalog.converter.metric'
-            - '@pim_catalog.object_manager.product'
-
     pim_base_connector.reader.orm.category:
         class: '%pim_base_connector.reader.orm.category.class%'
         arguments:
@@ -50,10 +40,6 @@ services:
         class: '%pim_base_connector.reader.repository.variant_group.class%'
         arguments:
             - '@pim_catalog.repository.group'
-
-    # Deprecated: This service is deprecated and will be removed in 1.6
-    pim_base_connector.reader.cached_association:
-        class: '%pim_base_connector.reader.cached.class%'
 
     pim_base_connector.reader.orm.family:
         class: '%pim_base_connector.reader.orm.entity.class%'

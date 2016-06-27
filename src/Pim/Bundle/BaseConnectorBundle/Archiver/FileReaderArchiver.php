@@ -7,7 +7,6 @@ use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
-use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
 use Pim\Component\Connector\Reader\File\Csv\Reader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -24,7 +23,8 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
     private $container;
 
     /**
-     * @param Filesystem $filesystem
+     * @param Filesystem         $filesystem
+     * @param ContainerInterface $container
      */
     public function __construct(Filesystem $filesystem, ContainerInterface $container)
     {
@@ -69,7 +69,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      */
     protected function isReaderUsable(ItemReaderInterface $reader)
     {
-        return $reader instanceof FileReader || $reader instanceof Reader;
+        return $reader instanceof Reader;
     }
 
     /**

@@ -12,8 +12,7 @@ use Akeneo\Component\Batch\Step\AbstractStep;
 use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
-use Pim\Component\Connector\Reader\File\Yaml\Reader;
+use Pim\Component\Connector\Reader\File\Csv\Reader as CsvReader;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -35,7 +34,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
 
     function it_create_a_file_when_reader_is_valid(
         $registry,
-        Reader $reader,
+        CsvReader $reader,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
@@ -121,7 +120,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
 
     function it_returns_true_for_the_supported_job(
         $registry,
-        FileReader $reader,
+        CsvReader $reader,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
