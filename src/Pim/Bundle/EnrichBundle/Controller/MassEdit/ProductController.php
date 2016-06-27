@@ -171,7 +171,7 @@ class ProductController
             ->getConfigurationForm($operationAlias);
 
         $itemsCount = $request->get('itemsCount');
-        $configureTemplate = sprintf('MassEditAction/configure/%s.html.twig', $operationAlias);
+        $configureTemplate = sprintf('PimEnrichBundle:MassEditAction:product/configure/%s.html.twig', $operationAlias);
 
         $form->remove('operationAlias');
         $form->submit($request);
