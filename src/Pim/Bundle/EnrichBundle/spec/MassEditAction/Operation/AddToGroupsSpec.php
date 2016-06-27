@@ -46,11 +46,6 @@ class AddToGroupsSpec extends ObjectBehavior
         $this->getFormOptions()->shouldReturn([]);
     }
 
-    function it_provides_items_name_it_works_on()
-    {
-        $this->getItemsName()->shouldReturn('product');
-    }
-
     function it_provides_an_alias()
     {
         $this->getOperationAlias()->shouldReturn('add-to-groups');

@@ -9,7 +9,7 @@ class ClassifySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('add_product_value');
+        $this->beConstructedWith('add_product_value', 'product', 'pim_enrich_mass_classify');
     }
 
     function it_is_a_mass_edit_operation()
@@ -39,11 +39,6 @@ class ClassifySpec extends ObjectBehavior
     function it_provides_form_options()
     {
         $this->getFormOptions()->shouldReturn([]);
-    }
-
-    function it_provides_items_name_it_works_on()
-    {
-        $this->getItemsName()->shouldReturn('product');
     }
 
     function it_provides_an_alias()
