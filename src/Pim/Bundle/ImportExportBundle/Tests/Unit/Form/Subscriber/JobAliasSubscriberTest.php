@@ -60,7 +60,7 @@ class JobAliasSubscriberTest extends \PHPUnit_Framework_TestCase
         $subscriber->submit($event);
 
         $this->assertEquals('myConnector', $jobInstance->getConnector());
-        $this->assertEquals('myAlias', $jobInstance->getAlias());
+        $this->assertEquals('myAlias', $jobInstance->getJobName());
     }
 
     /**

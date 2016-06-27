@@ -48,7 +48,7 @@ class ConnectorRegistry
     public function getJob(JobInstance $jobInstance)
     {
         if ($connector = $this->getConnector($jobInstance->getConnector(), $jobInstance->getType())) {
-            if ($job = $this->getConnectorJob($connector, $jobInstance->getAlias())) {
+            if ($job = $this->getConnectorJob($connector, $jobInstance->getJobName())) {
                 return $job;
             }
         }

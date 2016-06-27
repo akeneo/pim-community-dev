@@ -48,7 +48,7 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
         }
 
         return [
-            'label'          => $this->labelProvider->getJobLabel($object->getJobInstance()->getAlias()),
+            'label'          => $this->labelProvider->getJobLabel($object->getJobInstance()->getJobName()),
             'failures'       => array_map(
                 function ($exception) {
                     return $this->translator->trans($exception['message'], $exception['messageParameters']);

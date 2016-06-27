@@ -13,7 +13,7 @@ class JobInstanceSpec extends ObjectBehavior
         $this->beConstructedWith('connector', 'type', 'alias');
         $this->getConnector()->shouldReturn('connector');
         $this->getType()->shouldReturn('type');
-        $this->getAlias()->shouldReturn('alias');
+        $this->getJobName()->shouldReturn('alias');
     }
 
     function it_is_cloneable(JobExecution $jobExecution)

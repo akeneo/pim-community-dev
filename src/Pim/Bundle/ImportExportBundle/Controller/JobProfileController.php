@@ -528,7 +528,7 @@ class JobProfileController
                     $this->getJobType(),
                     $jobInstance->getConnector(),
                     $jobInstance->getType(),
-                    $jobInstance->getAlias()
+                    $jobInstance->getJobName()
                 )
             );
         }

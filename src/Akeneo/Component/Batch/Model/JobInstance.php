@@ -166,7 +166,7 @@ class JobInstance
      *
      * @return string
      */
-    public function getAlias()
+    public function getJobName()
     {
         return $this->alias;
     }

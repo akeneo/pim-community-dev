@@ -59,7 +59,7 @@ class InvalidItemsCsvArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
 
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getAlias()->willReturn('alias');
+        $jobInstance->getJobName()->willReturn('alias');
 
         $filesystem->put('type/alias/id/invalid/invalid_items.csv', '')->shouldBeCalled();
 

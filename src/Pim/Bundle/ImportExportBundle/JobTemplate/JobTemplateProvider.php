@@ -48,7 +48,7 @@ class JobTemplateProvider implements JobTemplateProviderInterface
      */
     public function getShowTemplate(JobInstance $jobInstance)
     {
-        $jobAlias = $jobInstance->getAlias();
+        $jobAlias = $jobInstance->getJobName();
 
         if (isset($this->jobTemplates[$jobAlias]['templates']['show'])) {
             return $this->jobTemplates[$jobAlias]['templates']['show'];
@@ -62,7 +62,7 @@ class JobTemplateProvider implements JobTemplateProviderInterface
      */
     public function getEditTemplate(JobInstance $jobInstance)
     {
-        $jobAlias = $jobInstance->getAlias();
+        $jobAlias = $jobInstance->getJobName();
 
         if (isset($this->jobTemplates[$jobAlias]) &&
             isset($this->jobTemplates[$jobAlias]['templates']['edit'])) {
