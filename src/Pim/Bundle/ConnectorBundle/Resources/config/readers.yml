@@ -5,6 +5,7 @@ parameters:
     pim_connector.reader.database.product.class: Pim\Component\Connector\Reader\Database\ProductReader
     pim_connector.reader.database.atribute_option.class: Pim\Component\Connector\Reader\Database\AttributeOptionReader
     pim_connector.reader.database.category.class: Pim\Component\Connector\Reader\Database\CategoryReader
+    pim_connector.reader.database.group.class: Pim\Component\Connector\Reader\Database\GroupReader
 
     pim_connector.reader.file.csv.class:               Pim\Component\Connector\Reader\File\Csv\Reader
     pim_connector.reader.file.csv_variant_group.class: Pim\Component\Connector\Reader\File\Csv\VariantGroupReader
@@ -59,6 +60,11 @@ services:
         class: '%pim_connector.reader.database.category.class%'
         arguments:
             - '@pim_catalog.repository.category'
+
+    pim_connector.reader.database.group:
+        class: '%pim_connector.reader.database.group.class%'
+        arguments:
+            - '@pim_catalog.repository.group'
 
     # Misc
     pim_connector.reader.file.csv_iterator_factory:

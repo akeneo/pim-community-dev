@@ -68,6 +68,7 @@ If you use in your import standard Akeneo PIM processor and reader services, ple
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.orm\.association_type/pim_connector\.reader\.database\.association_type/g
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.orm\.attribute_option/pim_connector\.reader\.database\.attribute_option/g
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.orm\.category/pim_connector\.reader\.database\.category/g
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.repository\.group/pim_connector\.reader\.database\.group/g
 ```
 
 ### BaseConnectorBundle

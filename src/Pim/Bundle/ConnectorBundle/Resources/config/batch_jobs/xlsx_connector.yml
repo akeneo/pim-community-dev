@@ -97,7 +97,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_base_connector.reader.repository.group
+                        reader:    pim_connector.reader.database.group
                         processor: pim_connector.processor.normalization.group
                         writer:    pim_connector.writer.file.xlsx_group
                     parameters:
