@@ -153,7 +153,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_base_connector.reader.orm.category
+                        reader:    pim_connector.reader.database.category
                         processor: pim_connector.processor.normalization.category
                         writer:    pim_connector.writer.file.xlsx_category
                     parameters:
