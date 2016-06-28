@@ -31,7 +31,7 @@ Feature: Localize numbers in the product grid
       | column       | value                    |
       | big_price    | 1 000,12 $US, 1 000,01 € |
       | Rate of Sale | 1 000,1234               |
-      | weight       | 1 000,3456 Kilogramme    |
+      | Poids        | 1 000,3456 Kilogramme    |
 
   Scenario: Successfully show English format numbers for French catalog
     Given I am logged in as "Julia"
