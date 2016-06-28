@@ -1,6 +1,4 @@
 parameters:
-    pim_base_connector.reader.repository.variant_group.class: Pim\Bundle\BaseConnectorBundle\Reader\Repository\VariantGroupReader
-
     pim_base_connector.reader.cached.class:            Pim\Bundle\BaseConnectorBundle\Reader\CachedReader
 
 services:
@@ -32,10 +30,10 @@ services:
 #        arguments:
 #            - '@pim_catalog.repository.group'
 
-    pim_base_connector.reader.repository.variant_group:
-        class: '%pim_base_connector.reader.repository.variant_group.class%'
-        arguments:
-            - '@pim_catalog.repository.group'
+#    pim_base_connector.reader.repository.variant_group:
+#        class: '%pim_base_connector.reader.repository.variant_group.class%'
+#        arguments:
+#            - '@pim_catalog.repository.group'
 
 #    pim_base_connector.reader.orm.family:
 #        class: '%pim_base_connector.reader.orm.entity.class%'

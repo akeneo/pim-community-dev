@@ -107,7 +107,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_base_connector.reader.repository.variant_group
+                        reader:    pim_connector.reader.database.variant_group
                         processor: pim_connector.processor.normalization.variant_group
                         writer:    pim_connector.writer.file.xlsx_variant_group
                     parameters:

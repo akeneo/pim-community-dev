@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Reader\Repository;
+namespace Pim\Component\Connector\Reader\Database;
 
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
@@ -27,8 +27,8 @@ class VariantGroupReader extends AbstractReader
     /**
      * {@inheritdoc}
      */
-    protected function readItems()
+    protected function getResults()
     {
-        return $this->repository->getAllVariantGroups();
+        return new \ArrayIterator($this->repository->getAllVariantGroups());
     }
 }
