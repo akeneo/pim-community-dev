@@ -28,7 +28,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                - '@pim_installer.step.fixtures_category_csv.import'
+                - '@pim_connector.step.csv_category_import.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
@@ -100,7 +100,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                - '@pim_installer.step.fixtures_association_type_csv.import'
+                - '@pim_connector.step.csv_association_type_import.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
@@ -112,7 +112,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                - '@pim_installer.step.fixtures_attribute_csv.import'
+                - '@pim_connector.step.csv_attribute_import.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
@@ -124,7 +124,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                - '@pim_installer.step.fixtures_attribute_options_csv.import'
+                - '@pim_connector.step.csv_attribute_option_import.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
@@ -136,7 +136,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                - '@pim_installer.step.fixtures_family_csv.import'
+                - '@pim_connector.step.csv_family_import.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
@@ -148,7 +148,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                - '@pim_installer.step.fixtures_variant_group_csv.import'
+                - '@pim_connector.step.csv_variant_group_import.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
@@ -160,8 +160,8 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                - '@pim_installer.step.fixtures_product_csv.import'
-                - '@pim_installer.step.fixtures_product_csv.import_associations'
+                - '@pim_connector.step.csv_product_import.import'
+                - '@pim_connector.step.csv_product_import.import_associations'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
@@ -209,7 +209,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                - '@pim_installer.step.fixtures_group_csv.import'
+                - '@pim_connector.step.csv_group_import.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 

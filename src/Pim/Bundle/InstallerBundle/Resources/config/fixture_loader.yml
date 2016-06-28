@@ -33,6 +33,8 @@ services:
             - '@pim_installer.fixture_loader.job_instances_configurator'
             - '@service_container'
 
+    # we don't use the connector job instance processor to avoid circular reference detected during the installation for the service
+    # "pim_connector.processor.denormalization.job_instance"
     pim_installer.processor.denormalization.job_instance:
         class: '%pim_connector.processor.denormalization.job_instance.class%'
         arguments:
