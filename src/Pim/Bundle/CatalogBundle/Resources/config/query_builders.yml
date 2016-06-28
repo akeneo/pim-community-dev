@@ -128,6 +128,14 @@ services:
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
+    pim_catalog.doctrine.query.filter.updated_datetime:
+        class: '%pim_catalog.doctrine.query.filter.updated_datetime.class%'
+        arguments:
+            - ['updated']
+            - ['SINCE LAST N DAYS', 'SINCE LAST EXPORT']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
     pim_catalog.doctrine.query.filter.metric:
         class: '%pim_catalog.doctrine.query.filter.metric.class%'
         arguments:

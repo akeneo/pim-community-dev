@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
@@ -90,17 +91,40 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $channel = $this->getConfiguredChannel();
         $parameters = $this->stepExecution->getJobParameters();
 
-        $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
-        $filters = json_decode($parameters->get('filters'), true);
+        $pqb = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
+
+//        $filters = json_decode($parameters->get('filters'), true);
+        $filters = [
+            [
+                'field' => 'completeness',
+                'operator' => 'NOT COMPLETE ON ALL LOCALES',
+                'value' => '',
+                'context' => [
+                    'lastJobExecution' => $this->getLastCompletedJobExecution(),
+                    'locales' => [
+                        'de_DE',
+                        'en_US',
+                        'fr_FR'
+                    ]
+                ]
+            ]
+        ];
+
+        $context = [
+            'lastJobExecution' => $this->getLastCompletedJobExecution(),
+            'locales'          => [
+                'de_DE',
+                'en_US',
+                'fr_FR'
+            ]
+        ];
 
         foreach ($filters as $filter) {
-            $filter['context'] = [];
-
             $pqb->addFilter(
                 $filter['field'],
                 $filter['operator'],
                 $filter['value'],
-                $filter['context']
+                array_merge($filter['context'], $context)
             );
         }
 
@@ -148,15 +172,25 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     protected function getConfiguredChannel()
     {
-        $parameters = $this->stepExecution->getJobParameters();
-        $channelCode = json_decode($parameters->get('filters'), true)['structure']['scope'];
+//        $parameters = $this->stepExecution->getJobParameters();
+//        $channelCode = json_decode($parameters->get('filters'), true)['structure']['scope'];
 
-        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
+        $channel = $this->channelRepository->findOneByIdentifier('mobile');
         if (null === $channel) {
             throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $channelCode));
         }
 
         return $channel;
+    }
+
+    /**
+     * @return JobExecution|null
+     */
+    protected function getLastCompletedJobExecution()
+    {
+        $jobInstance = $this->stepExecution->getJobExecution()->getJobInstance();
+
+        return $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
     }
 
     /**
