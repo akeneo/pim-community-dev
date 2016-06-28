@@ -339,8 +339,15 @@ pim_enrich:
     export:
         product:
             filter:
+                channel:
+                    title: Channel
+                    help: The channel you want to export
+                locales:
+                    title: Locales
+                    help: The locales you want to export
                 family:
                     title: Family
+                    help: The families you want to export
                     operators:
                         IN: In list
                         "NOT IN": Not in list
@@ -349,19 +356,22 @@ pim_enrich:
                     empty_selection: Select a family
                 updated:
                     title: Updated
+                    help: The updated time condition of the products you want to export
                     operators:
                         ALL: No date condition
                         "SINCE N DAYS": Updated products since the last n days
-                        "SINCE DATE": Updated products since the defined date
-                        "LAST EXPORT": Updated products since last export
+                        ">=": Updated products since the defined date
+                        "SINCE LAST EXPORT": Updated products since last export
                 enabled:
                     title: Status
+                    help: The status of the products you want to export
                     value:
                         all: All
                         enabled: Enabled
                         disabled: Disabled
                 completeness:
                     title: Completeness
+                    help: The completeness of the products you want to export
                     operators:
                         IN: Complete on at least one selected locale
                         "NOT IN": Complete on all selected locales

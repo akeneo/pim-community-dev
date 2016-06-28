@@ -42,7 +42,7 @@ define([
 
             this.$('[name="filter-operator"]').select2();
 
-            if ('SINCE DATE' === this.getOperator()) {
+            if ('>=' === this.getOperator()) {
                 Datepicker
                     .init(this.$('[name="filter-value"]').parent())
                     .on('changeDate', this.updateState.bind(this));

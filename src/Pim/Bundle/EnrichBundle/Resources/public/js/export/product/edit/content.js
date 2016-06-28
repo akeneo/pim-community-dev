@@ -24,8 +24,7 @@ define(
         template,
         BaseForm,
         mediator,
-        FetcherRegistry,
-        FieldManager
+        FetcherRegistry
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -50,8 +49,6 @@ define(
                 );
 
                 this.renderExtensions();
-
-                this.getRoot().trigger('pim_enrich:form:render:after');
             },
             unbindEvents: function () {
                 mediator.clear('pim_enrich:form');
