@@ -38,6 +38,7 @@ services:
         class: '%pim_enrich.mass_edit_action.change_status.class%'
         arguments:
             - 'update_product_value'
+            - 'PimEnrichBundle:MassEditAction:product/configure/change-status.html.twig'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -117,6 +118,7 @@ services:
         class: '%pim_enrich.mass_edit_action.change_family.class%'
         arguments:
             - 'update_product_value'
+            - 'PimEnrichBundle:MassEditAction:product/configure/change-family.html.twig'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -129,6 +131,7 @@ services:
         class: '%pim_enrich.mass_edit_action.add_to_groups.class%'
         arguments:
             - 'add_product_value'
+            - 'PimEnrichBundle:MassEditAction:product/configure/add-to-groups.html.twig'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -141,6 +144,7 @@ services:
         class: '%pim_enrich.mass_edit_action.add_to_variant_group.class%'
         arguments:
             - 'add_to_variant_group'
+            - 'PimEnrichBundle:MassEditAction:product/configure/add-to-variant-group.html.twig'
         tags:
             -
                 name: pim_enrich.mass_edit_action

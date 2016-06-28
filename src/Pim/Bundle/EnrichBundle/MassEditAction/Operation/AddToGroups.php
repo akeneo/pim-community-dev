@@ -19,10 +19,12 @@ class AddToGroups extends AbstractMassEditOperation
 
     /**
      * @param string $jobInstanceCode
+     * @param string $templatePath
      */
-    public function __construct($jobInstanceCode)
+    public function __construct($jobInstanceCode, $templatePath)
     {
         $this->jobInstanceCode = $jobInstanceCode;
+        $this->templatePath = $templatePath;
         $this->groups = new ArrayCollection();
     }
 
