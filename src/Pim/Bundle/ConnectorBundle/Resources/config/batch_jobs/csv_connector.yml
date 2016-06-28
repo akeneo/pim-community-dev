@@ -131,7 +131,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_base_connector.reader.orm.attribute
+                        reader:    pim_connector.reader.database.attribute
                         processor: pim_connector.processor.normalization.attribute
                         writer:    pim_connector.writer.file.csv_attribute
         csv_attribute_option_export:
@@ -147,7 +147,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_base_connector.reader.orm.association_type
+                        reader:    pim_connector.reader.database.association_type
                         processor: pim_connector.processor.normalization.association_type
                         writer:    pim_connector.writer.file.csv_association_type
         csv_group_export:
@@ -171,6 +171,6 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_base_connector.reader.orm.family
+                        reader:    pim_connector.reader.database.family
                         processor: pim_connector.processor.normalization.family
                         writer:    pim_connector.writer.file.csv_family

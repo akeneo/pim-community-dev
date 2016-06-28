@@ -20,6 +20,7 @@ parameters:
     pim_connector.reader.file.array_reader.class:           Pim\Component\Connector\Reader\File\ArrayReader
 
 services:
+    # Database readers
     pim_connector.reader.database.product:
         class: '%pim_connector.reader.database.product.class%'
         arguments:
@@ -32,6 +33,22 @@ services:
             - '@pim_catalog.repository.attribute'
             - true
 
+    pim_connector.reader.database.family:
+        class: '%pim_connector.reader.database.base.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
+
+    pim_connector.reader.database.attribute:
+        class: '%pim_connector.reader.database.base.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_connector.reader.database.association_type:
+        class: '%pim_connector.reader.database.base.class%'
+        arguments:
+            - '@pim_catalog.repository.association_type'
+
+    # Misc
     pim_connector.reader.file.csv_iterator_factory:
         class: '%pim_connector.reader.file.file_iterator_factory.class%'
         arguments:
@@ -49,7 +66,6 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
 
-    # Dummy Reader
     pim_connector.reader.dummy_item:
         class: '%pim_connector.reader.dummy_item.class%'
 
