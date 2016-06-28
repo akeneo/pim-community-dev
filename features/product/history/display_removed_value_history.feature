@@ -9,7 +9,7 @@ Feature: Display the product history
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the products page
-    And I create a new product
+    And I press the "Create product" button
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
@@ -40,7 +40,7 @@ Feature: Display the product history
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the products page
-    And I create a new product
+    And I press the "Create product" button
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
@@ -72,7 +72,7 @@ Feature: Display the product history
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
     And I am on the products page
-    And I create a new product
+    And I press the "Create product" button
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
@@ -109,7 +109,7 @@ Feature: Display the product history
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the products page
-    And I create a new product
+    And I press the "Create product" button
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
@@ -140,7 +140,7 @@ Feature: Display the product history
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the products page
-    And I create a new product
+    And I press the "Create product" button
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin

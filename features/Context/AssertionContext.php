@@ -89,9 +89,13 @@ class AssertionContext extends RawMinkContext
         }
 
         if (!$this->getCurrentPage()->findValidationTooltip($error)) {
-            $this->getMainContext()->wait();
-            $errors = $this->getCurrentPage()->getValidationErrors();
-            assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
+            $this->spin(function () use ($error) {
+                return in_array($error, $this->getCurrentPage()->getValidationErrors());
+            }, sprintf(
+                'Could not find any validation error "%s". Existing ones: [%s]',
+                $error,
+                implode(', ', $this->getCurrentPage()->getValidationErrors())
+            ));
         }
     }
 

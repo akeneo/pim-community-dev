@@ -14,9 +14,9 @@ Feature: Delete an attribute
   @jira https://akeneo.atlassian.net/browse/PIM-5347
   Scenario: Sucessfully delete and recreate a text attribute used in a product and filter on it
     Given I am on the products page
-    When I create a new product
+    When I press the "Create product" button
     And I fill in the following information in the popin:
-      | SKU  | caterpillar_1 |
+      | SKU | caterpillar_1 |
     And I press the "Save" button in the popin
     Then I wait to be on the "caterpillar_1" product page
     Then I add available attributes name
