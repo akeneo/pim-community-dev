@@ -7,6 +7,8 @@ use Akeneo\Component\Batch\Step\AbstractStep;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner;
 use Pim\Bundle\EnrichBundle\Step\MassEditRemoveTemporaryMediaStep;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * BatchBundle Step for standard mass edit products
@@ -19,6 +21,22 @@ class MassEditStep extends AbstractStep
 {
     /** @var StepExecutionAwareInterface */
     protected $cleaner;
+
+    /**
+     * @param string                   $name
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param JobRepositoryInterface   $jobRepository
+     * @param TemporaryFileCleaner     $cleaner
+     */
+    public function __construct(
+        $name,
+        EventDispatcherInterface $eventDispatcher,
+        JobRepositoryInterface $jobRepository,
+        TemporaryFileCleaner $cleaner
+    ) {
+        parent::__construct($name, $eventDispatcher, $jobRepository);
+        $this->cleaner = $cleaner;
+    }
 
     /**
      * {@inheritdoc}

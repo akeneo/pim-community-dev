@@ -18,6 +18,12 @@ class TaskletStep extends AbstractStep
     /** @var TaskletInterface */
     protected $tasklet;
 
+    /**
+     * @param string                   $name
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param JobRepositoryInterface   $jobRepository
+     * @param TaskletInterface         $tasklet
+     */
     public function __construct(
         $name,
         EventDispatcherInterface $eventDispatcher,
