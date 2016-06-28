@@ -39,16 +39,7 @@ class ProductCsvExport implements DefaultValuesProviderInterface
         $parameters = $this->simpleProvider->getDefaultValues();
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
-//        $parameters['channel'] = 'mobile';
-//        $parameters['locales'] = ['fr_FR'];
         $parameters['filters'] = json_encode(['data' => [], 'structure' => []]);
-//        $parameters['enabled'] = 'enabled';
-//        $parameters['updated_since_strategy'] = 'all';
-//        $parameters['updated_since_date'] = null;
-//        $parameters['updated_since_n_days'] = null;
-//        $parameters['families'] = null;
-//        $parameters['completeness'] = 'at_least_one_complete';
-//        $parameters['product_identifier'] = null;
 
         return $parameters;
     }

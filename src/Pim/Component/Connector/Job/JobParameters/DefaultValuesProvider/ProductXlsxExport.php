@@ -39,16 +39,8 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
         $parameters = $this->simpleProvider->getDefaultValues();
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
-        $parameters['channel'] = null;
-        $parameters['locales'] = [];
-        $parameters['enabled'] = 'enabled';
-        $parameters['updated_since_strategy'] = 'all';
-        $parameters['updated_since_date'] = null;
-        $parameters['updated_since_n_days'] = null;
-        $parameters['completeness'] = 'at_least_one_complete';
         $parameters['linesPerFile'] = 10000;
-        $parameters['families'] = null;
-        $parameters['product_identifier'] = null;
+        $parameters['filters'] = json_encode(['data' => [], 'structure' => []]);
 
         return $parameters;
     }
