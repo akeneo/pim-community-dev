@@ -2,9 +2,7 @@
 
 namespace Pim\Component\Connector\Reader\Database;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
@@ -15,21 +13,10 @@ use Doctrine\Common\Persistence\ObjectRepository;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseReader extends AbstractConfigurableStepElement implements
-    ItemReaderInterface,
-    StepExecutionAwareInterface
+class BaseReader extends AbstractReader implements ItemReaderInterface, StepExecutionAwareInterface
 {
     /** @var ObjectRepository */
     protected $repository;
-
-    /** @var bool Checks if all objects are sent to the processor */
-    protected $isExecuted = false;
-
-    /** @var StepExecution */
-    protected $stepExecution;
-
-    /** @var \ArrayIterator */
-    protected $results;
 
     /**
      * @param ObjectRepository $repository
@@ -37,33 +24,6 @@ class BaseReader extends AbstractConfigurableStepElement implements
     public function __construct(ObjectRepository $repository)
     {
         $this->repository = $repository;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function read()
-    {
-        if (!$this->isExecuted) {
-            $this->isExecuted = true;
-
-            $this->results = $this->getResults();
-        }
-
-        if (null !== $result = $this->results->current()) {
-            $this->results->next();
-            $this->stepExecution->incrementSummaryInfo('read');
-        }
-
-        return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
     }
 
     /**
