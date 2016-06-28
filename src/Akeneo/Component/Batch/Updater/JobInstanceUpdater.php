@@ -69,7 +69,7 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
                 $jobInstance->setConnector($data);
                 break;
             case 'alias':
-                $jobInstance->setAlias($data);
+                $jobInstance->setJobName($data);
                 break;
             case 'label':
                 $jobInstance->setLabel($data);

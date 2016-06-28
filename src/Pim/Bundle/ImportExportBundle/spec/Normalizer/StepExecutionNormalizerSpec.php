@@ -43,7 +43,7 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getStepName()->willReturn('such_step');
-        $jobInstance->getAlias()->willReturn('wow_job');
+        $jobInstance->getJobName()->willReturn('wow_job');
         $labelProvider->getStepLabel('wow_job', 'such_step')->willReturn('Export step');
 
         $stepExecution->getSummary()->willReturn(['read' => 12, 'write' => 50]);

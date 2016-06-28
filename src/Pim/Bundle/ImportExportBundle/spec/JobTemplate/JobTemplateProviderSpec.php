@@ -34,7 +34,7 @@ class JobTemplateProviderSpec extends ObjectBehavior
 
     function it_retrieves_overridden_job_templates(JobInstance $jobInstance)
     {
-        $jobInstance->getAlias()->willReturn('my_custom_job');
+        $jobInstance->getJobName()->willReturn('my_custom_job');
 
         $this->getShowTemplate($jobInstance)->shouldReturn('show_overridden_template');
         $this->getEditTemplate($jobInstance)->shouldReturn('edit_overridden_template');
@@ -42,7 +42,7 @@ class JobTemplateProviderSpec extends ObjectBehavior
 
     function it_generates_default_import_job_template(JobInstance $jobInstance)
     {
-        $jobInstance->getAlias()->willReturn('an_unknown_job');
+        $jobInstance->getJobName()->willReturn('an_unknown_job');
         $jobInstance->getType()->willReturn('import');
 
         $expectedJobTemplate = sprintf(JobTemplateProvider::DEFAULT_CREATE_TEMPLATE, 'Import');
@@ -57,7 +57,7 @@ class JobTemplateProviderSpec extends ObjectBehavior
 
     function it_generates_default_export_job_template(JobInstance $jobInstance)
     {
-        $jobInstance->getAlias()->willReturn('an_unknown_job');
+        $jobInstance->getJobName()->willReturn('an_unknown_job');
         $jobInstance->getType()->willReturn('export');
 
         $expectedJobTemplate = sprintf(JobTemplateProvider::DEFAULT_CREATE_TEMPLATE, 'Export');

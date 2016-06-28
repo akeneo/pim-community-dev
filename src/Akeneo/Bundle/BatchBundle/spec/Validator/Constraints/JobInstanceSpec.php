@@ -18,7 +18,7 @@ class JobInstanceSpec extends ObjectBehavior
 
     function it_has_a_property()
     {
-        $this->property->shouldBe('alias');
+        $this->property->shouldBe('jobName');
     }
 
     function it_returns_the_name_of_the_class_that_validates_this_constraint()

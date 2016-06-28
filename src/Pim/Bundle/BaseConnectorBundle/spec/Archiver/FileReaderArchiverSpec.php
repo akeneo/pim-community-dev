@@ -49,7 +49,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getAlias()->willReturn('alias');
+        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getReader()->willReturn($reader);
 
@@ -84,7 +84,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getAlias()->willReturn('alias');
+        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getReader()->willReturn($reader);
 
@@ -110,7 +110,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getAlias()->willReturn('alias');
+        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
 
         $filesystem->put(Argument::any())->shouldNotBeCalled();
@@ -130,7 +130,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getAlias()->willReturn('alias');
+        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getReader()->willReturn($reader);
 
@@ -149,7 +149,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getAlias()->willReturn('alias');
+        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getReader()->willReturn($reader);
 

@@ -19,10 +19,10 @@ Feature: Browse export executions
     And the rows should be sorted descending by Date
     And I should be able to sort the rows by Code, Label, Job, Date and Status
     And I should be able to use the following filters:
-      | filter | operator  | value                                       | result                                                                                                |
-      | code   | contains  | product                                     | csv_footwear_product_export, csv_footwear_product_export                                              |
-      | label  | contains  | category                                    | csv_footwear_category_export                                                                          |
-      | alias  |           | Attribute export in CSV                     | csv_footwear_attribute_export                                                                         |
-      | status |           | STOPPING                                    |                                                                                                       |
-      | date   | more than | 09/01/2015 05:00 PM                         | footwear_product_export, footwear_category_export, footwear_attribute_export, footwear_product_export |
-      | date   | between   | 09/01/2050 05:00 PM and 09/01/2100 05:00 AM |                                                                                                       |
+      | filter    | operator  | value                                       | result                                                                                                |
+      | code      | contains  | product                                     | csv_footwear_product_export, csv_footwear_product_export                                              |
+      | label     | contains  | category                                    | csv_footwear_category_export                                                                          |
+      | job_name  |           | Attribute export in CSV                     | csv_footwear_attribute_export                                                                         |
+      | status    |           | STOPPING                                    |                                                                                                       |
+      | date      | more than | 09/01/2015 05:00 PM                         | footwear_product_export, footwear_category_export, footwear_attribute_export, footwear_product_export |
+      | date      | between   | 09/01/2050 05:00 PM and 09/01/2100 05:00 AM |                                                                                                       |

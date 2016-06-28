@@ -47,7 +47,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
                 ['message' => 'error', 'messageParameters' => ['foo' => 'bar']]
             ]
         );
-        $jobInstance->getAlias()->willReturn('wow_job');
+        $jobInstance->getJobName()->willReturn('wow_job');
         $translator->trans('error', ['foo' => 'bar'])->willReturn('Such error');
         $labelProvider->getJobLabel('wow_job')->willReturn('Wow job');
 

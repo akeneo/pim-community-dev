@@ -23,7 +23,7 @@ class JobInstanceFactorySpec extends ObjectBehavior
         $jobInstance = $this->createJobInstance('foo');
         $jobInstance->shouldBeAnInstanceOf(self::TESTED_CLASS);
         $jobInstance->getType()->shouldReturn('foo');
-        $jobInstance->getAlias()->shouldReturn(null);
+        $jobInstance->getJobName()->shouldReturn(null);
         $jobInstance->getConnector()->shouldReturn(null);
     }
 }

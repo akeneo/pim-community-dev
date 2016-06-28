@@ -7,13 +7,13 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 /**
- * Job alias and connector subscriber.
+ * Job name and connector subscriber.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobAliasSubscriber implements EventSubscriberInterface
+class JobInstanceSubscriber implements EventSubscriberInterface
 {
     /**
      * {@inheritdoc}
@@ -41,10 +41,10 @@ class JobAliasSubscriber implements EventSubscriberInterface
 
         $form = $event->getForm();
         $connector = $form->get('connector')->getData();
-        $alias = $form->get('alias')->getData();
+        $jobName = $form->get('jobName')->getData();
 
         $jobInstance
-            ->setAlias($alias)
+            ->setJobName($jobName)
             ->setConnector($connector);
     }
 }

@@ -55,7 +55,7 @@ class StepExecutionNormalizer implements NormalizerInterface
 
         return [
             'label'     => $this->labelProvider->getStepLabel(
-                $object->getJobExecution()->getJobInstance()->getAlias(),
+                $object->getJobExecution()->getJobInstance()->getJobName(),
                 $object->getStepName()
             ),
             'status'    => $this->normalizeStatus($object->getStatus()->getValue()),
