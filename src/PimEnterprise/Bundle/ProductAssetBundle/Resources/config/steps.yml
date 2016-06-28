@@ -10,7 +10,7 @@ services:
             - '%tmp_storage_dir%'
 
     # Import Asset steps ----------------------------------------------------------------------------------------------
-    pimme_product_asset.step.yml_asset_channel_configuration_import.import:
+    pimee_product_asset.step.yml_asset_channel_configuration_import.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import_channel_configuration'
@@ -21,7 +21,7 @@ services:
             - '@pimee_product_asset.writer.doctrine.channel_configuration'
 
     # Export Asset steps ----------------------------------------------------------------------------------------------
-    pimme_product_asset.step.yml_asset_channel_configuration_export.export:
+    pimee_product_asset.step.yml_asset_channel_configuration_export.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export_channel_configuration'
@@ -32,7 +32,7 @@ services:
             - '@pimee_product_asset.writer.file.yaml_asset_channel_configuration'
 
     # CSV Import steps ------------------------------------------------------------------------------------------------
-    pimme_product_asset.step.csv_asset_import.import_tags:
+    pimee_product_asset.step.csv_asset_import.import_tags:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import_tags'
@@ -43,7 +43,7 @@ services:
             - '@pimee_product_asset.writer.doctrine.tag'
             - 1
 
-    pimme_product_asset.step.csv_asset_import.import_asset:
+    pimee_product_asset.step.csv_asset_import.import_asset:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import_asset'
@@ -53,7 +53,7 @@ services:
             - '@pimee_product_asset.processor.denormalization.asset'
             - '@pimee_product_asset.writer.doctrine.asset'
 
-    pimme_product_asset.step.csv_asset_category_import.import:
+    pimee_product_asset.step.csv_asset_category_import.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import_asset_category'

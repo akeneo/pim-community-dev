@@ -1,113 +1,113 @@
 parameters:
-    pim_installer.job_name.fixtures_attribute_group_access_csv: 'fixtures_attribute_group_access_csv'
-    pim_installer.job_name.fixtures_product_category_access_csv: 'fixtures_product_category_access_csv'
-    pim_installer.job_name.fixtures_asset_category_csv: 'fixtures_asset_category_csv'
-    pim_installer.job_name.fixtures_job_profile_access_csv: 'fixtures_job_profile_access_csv'
-    pim_installer.job_name.fixtures_locale_access_csv: 'fixtures_locale_access_csv'
-    pim_installer.job_name.fixtures_rule_yml: 'fixtures_rule_yml'
-    pim_installer.job_name.fixtures_asset_csv: 'fixtures_asset_csv'
-    pim_installer.job_name.fixtures_asset_category_access_csv: 'fixtures_asset_category_access_csv'
-    pim_installer.job_name.fixtures_asset_channel_configurations_yml: 'fixtures_asset_channel_configurations_yml'
+    pimee_installer.job_name.fixtures_attribute_group_access_csv: 'fixtures_attribute_group_access_csv'
+    pimee_installer.job_name.fixtures_product_category_access_csv: 'fixtures_product_category_access_csv'
+    pimee_installer.job_name.fixtures_asset_category_csv: 'fixtures_asset_category_csv'
+    pimee_installer.job_name.fixtures_job_profile_access_csv: 'fixtures_job_profile_access_csv'
+    pimee_installer.job_name.fixtures_locale_access_csv: 'fixtures_locale_access_csv'
+    pimee_installer.job_name.fixtures_rule_yml: 'fixtures_rule_yml'
+    pimee_installer.job_name.fixtures_asset_csv: 'fixtures_asset_csv'
+    pimee_installer.job_name.fixtures_asset_category_access_csv: 'fixtures_asset_category_access_csv'
+    pimee_installer.job_name.fixtures_asset_channel_configurations_yml: 'fixtures_asset_channel_configurations_yml'
 
 services:
     # Data Fixture ----------------------------------------------------------------------------------------------------
-    pim_installer.job.fixtures_attribute_group_access_csv:
+    pimee_installer.job.fixtures_attribute_group_access_csv:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - '%pim_installer.job_name.fixtures_attribute_group_access_csv%'
+            - '%pimee_installer.job_name.fixtures_attribute_group_access_csv%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_installer.step.fixtures_attribute_group_access_csv.import'
+                - '@pimee_installer.step.fixtures_attribute_group_access_csv.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
-    pim_installer.job.fixtures_product_category_access_csv:
+    pimee_installer.job.fixtures_product_category_access_csv:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - '%pim_installer.job_name.fixtures_product_category_access_csv%'
+            - '%pimee_installer.job_name.fixtures_product_category_access_csv%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_installer.step.fixtures_product_category_access_csv.import'
+                - '@pimee_installer.step.fixtures_product_category_access_csv.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
-    pim_installer.job.fixtures_asset_category_csv:
+    pimee_installer.job.fixtures_asset_category_csv:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - '%pim_installer.job_name.fixtures_asset_category_csv%'
+            - '%pimee_installer.job_name.fixtures_asset_category_csv%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                - '@pim_installer.step.fixtures_asset_category_csv.import'
+                - '@pimee_product_asset.step.csv_asset_category_import.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
-    pim_installer.job.fixtures_job_profile_access_csv:
+    pimee_installer.job.fixtures_job_profile_access_csv:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - '%pim_installer.job_name.fixtures_job_profile_access_csv%'
+            - '%pimee_installer.job_name.fixtures_job_profile_access_csv%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_installer.step.fixtures_job_profile_access_csv.import'
+                - '@pimee_installer.step.fixtures_job_profile_access_csv.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
-    pim_installer.job.fixtures_locale_access_csv:
+    pimee_installer.job.fixtures_locale_access_csv:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - '%pim_installer.job_name.fixtures_locale_access_csv%'
+            - '%pimee_installer.job_name.fixtures_locale_access_csv%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_installer.step.fixtures_locale_access_csv.import'
+                - '@pimee_installer.step.fixtures_locale_access_csv.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
-    pim_installer.job.fixtures_rule_yml:
+    pimee_installer.job.fixtures_rule_yml:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - '%pim_installer.job_name.fixtures_rule_yml%'
+            - '%pimee_installer.job_name.fixtures_rule_yml%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_installer.step.fixtures_rule_yml.import'
+                - '@pimee_installer.step.fixtures_rule_yml.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
-    pim_installer.job.fixtures_asset_csv:
+    pimee_installer.job.fixtures_asset_csv:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - '%pim_installer.job_name.fixtures_asset_csv%'
+            - '%pimee_installer.job_name.fixtures_asset_csv%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_installer.step.fixtures_asset_csv.import_tags'
-                - '@pim_installer.step.fixtures_asset_csv.import_asset'
+                - '@pimee_product_asset.step.csv_asset_import.import_tags'
+                - '@pimee_product_asset.step.csv_asset_import.import_asset'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
-    pim_installer.job.fixtures_asset_category_access_csv:
+    pimee_installer.job.fixtures_asset_category_access_csv:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - '%pim_installer.job_name.fixtures_asset_category_access_csv%'
+            - '%pimee_installer.job_name.fixtures_asset_category_access_csv%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_installer.step.fixtures_asset_category_access_csv.import'
+                - '@pimee_installer.step.fixtures_asset_category_access_csv.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
 
-    pim_installer.job.fixtures_asset_channel_configurations_yml:
+    pimee_installer.job.fixtures_asset_channel_configurations_yml:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - '%pim_installer.job_name.fixtures_asset_channel_configurations_yml%'
+            - '%pimee_installer.job_name.fixtures_asset_channel_configurations_yml%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_installer.step.fixtures_asset_channel_configurations_yml.import'
+                - '@pimee_product_asset.step.yml_asset_channel_configuration_import.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
