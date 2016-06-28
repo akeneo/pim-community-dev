@@ -28,7 +28,7 @@ class AttributeOptionReader extends AbstractReader implements ItemReaderInterfac
     }
 
     /**
-     * @return \ArrayIterator
+     * {@inheritdoc}
      */
     protected function getResults()
     {

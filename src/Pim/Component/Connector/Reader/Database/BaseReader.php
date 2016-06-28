@@ -27,7 +27,7 @@ class BaseReader extends AbstractReader implements ItemReaderInterface, StepExec
     }
 
     /**
-     * @return \ArrayIterator
+     * {@inheritdoc}
      */
     protected function getResults()
     {

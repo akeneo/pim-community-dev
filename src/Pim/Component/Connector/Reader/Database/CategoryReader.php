@@ -27,7 +27,7 @@ class CategoryReader extends AbstractReader implements ItemReaderInterface, Step
     }
 
     /**
-     * @return \ArrayIterator
+     * {@inheritdoc}
      */
     protected function getResults()
     {
