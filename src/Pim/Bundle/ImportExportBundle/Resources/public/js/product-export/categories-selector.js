@@ -26,25 +26,26 @@ define(
             template: _.template(template),
 
             events: {
-                'click button.btn.edit': 'open'
+                'click .edit': 'open'
             },
 
             attributes: {
-                disabled: false
+                disabled: false,
+                categories: []
             },
 
             /**
              * Overrides the constructor in order to enable data binding between model and view
              */
             initialize: function () {
-                this.model.bind('change:included', function () {
-                    $('#' + this.$el.data('included-input')).val(this.model.get('included').join());
+                this.listenTo(this, 'change:categories', function () {
+                    $('#' + this.$el.data('categories-input')).val(this.attributes.categories.join(','));
                     this.render();
-                }.bind(this));
+                });
 
-                this.model.bind('change:excluded', function () {
-                    $('#' + this.$el.data('excluded-input')).val(this.model.get('excluded').join());
-                    this.render();
+                $('#' + this.$el.data('channel-input')).bind('change', function () {
+                    this.attributes.categories.clear();
+                    this.trigger('change:categories');
                 }.bind(this));
             },
 
@@ -71,9 +72,9 @@ define(
                 var tree = new CategoryTree({
                     el: modal.$el.find('.modal-body'),
                     attributes: {
-                        'channel': $('#' + this.$el.data('channel-input')).val()
-                    },
-                    model: this.model.clone()
+                        'channel': $('#' + this.$el.data('channel-input')).val(),
+                        'categories': this.attributes.categories
+                    }
                 });
 
                 tree.render();
@@ -85,8 +86,8 @@ define(
                 });
 
                 modal.on('ok', function () {
-                    this.model.set('included', tree.model.get('included'));
-                    this.model.set('excluded', tree.model.get('excluded'));
+                    this.attributes.categories = tree.attributes.categories;
+                    this.trigger('change:categories');
 
                     modal.close();
                     modal.remove();
@@ -99,11 +100,12 @@ define(
              */
             render: function () {
                 this.$el.html(this.template({
+                    titleEdit: __('pim_connector.export.categories.selector.title'),
                     labelEdit: __('pim_connector.export.categories.selector.edit'),
                     labelInfo: __(
                         'pim_connector.export.categories.selector.label',
-                        {count: this.model.get('included').length},
-                        this.model.get('included').length
+                        {count: this.attributes.categories.length},
+                        this.attributes.categories.length
                     ),
                     disabled: this.attributes.disabled
                 }));

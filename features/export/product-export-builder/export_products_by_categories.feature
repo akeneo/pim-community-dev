@@ -44,11 +44,9 @@ Feature: Export products from any given categories
       | locales  | en_US                                   |
     And I am logged in as "Julia"
 
-  @ce
   Scenario: Export the products from a tree
     Given the following job "csv_product_export" configuration:
-      | categories_included | toys_games, dolls, women |
-      | categories_excluded | action_figures |
+      | categories | toys_games, dolls, women |
     When I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish
@@ -57,24 +55,17 @@ Feature: Export products from any given categories
       sku;categories;enabled;family;groups
       toys_games;toys_games;1;default;
       dolls;dolls;1;default;
-      women;women;1;default;
-      clothing;clothing;1;default;
-      shoes;shoes;1;default;
-      jewelry;jewelry;1;default;
       """
 
-  @ce
   Scenario: Export the products from a tree using the UI
     When I am on the "csv_product_export" export job edit page
     And I visit the "Content" tab
     Then I should see the text "Categories All products"
-    When I press the "Edit" button
+    When I press the "Select categories" button
     Then I should see the text "Categories selection"
-    And the "all" jstree node should be checked
-    When I check the jstree node "toys_games"
-    Then the "action_figures" jstree node should be checked
-    And the "all" jstree node should not be checked
-    When I uncheck the jstree node "action_figures"
+    When I click on the "toys_games" category
+    And I expand the "toys_games" category
+    And I click on the "action_figures" category
     And I press the "Confirm" button
     Then I should see the text "Categories 2 categories selected"
     When I press the "Save" button
@@ -85,5 +76,5 @@ Feature: Export products from any given categories
       """
       sku;categories;enabled;family;groups
       toys_games;toys_games;1;default;
-      dolls;dolls;1;default;
+      action_figures;action_figures;1;default;
       """

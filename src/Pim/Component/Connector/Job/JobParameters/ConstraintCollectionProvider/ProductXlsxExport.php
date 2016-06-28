@@ -59,11 +59,7 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
         ]);
 
         $constraintFields['enabled'] = new NotBlank(['groups' => 'Execution']);
-        $constraintFields['categories_included'] = [
-            new NotNull(['groups'  => 'Execution']),
-            new Type(['groups'  => 'Execution', 'type' => 'array']),
-        ];
-        $constraintFields['categories_excluded'] = [
+        $constraintFields['categories'] = [
             new NotNull(['groups'  => 'Execution']),
             new Type(['groups'  => 'Execution', 'type' => 'array']),
         ];

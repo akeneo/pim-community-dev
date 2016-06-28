@@ -25,11 +25,7 @@ class CategoriesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('categories_included', 'hidden');
-        $builder->add('categories_excluded', 'hidden');
-
-        $builder->get('categories_included')->addViewTransformer(new ArrayToStringTransformer(',', false));
-        $builder->get('categories_excluded')->addViewTransformer(new ArrayToStringTransformer(',', false));
+        $builder->addViewTransformer(new ArrayToStringTransformer(',', false));
     }
 
     /**
@@ -38,7 +34,6 @@ class CategoriesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'inherit_data' => true,
             'label'        => 'pim_connector.export.categories.label',
             'help'         => 'pim_connector.export.categories.help',
             'attr'         => ['data-tab' => 'content']
@@ -51,5 +46,13 @@ class CategoriesType extends AbstractType
     public function getName()
     {
         return 'pim_import_export_product_export_categories';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'hidden';
     }
 }

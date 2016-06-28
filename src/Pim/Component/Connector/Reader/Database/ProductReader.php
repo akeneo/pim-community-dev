@@ -360,24 +360,14 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     protected function getCategoryFilters(JobParameters $parameters)
     {
-        $included = $parameters->get('categories_included');
-        $excluded = $parameters->get('categories_excluded');
+        $categories = $parameters->get('categories');
         $filters  = [];
 
-        if (!empty($included)) {
+        if (!empty($categories)) {
             $filters[] = [
-                'field'    => 'categories.id',
-                'operator' => Operators::IN_CHILDREN_LIST,
-                'value'    => $included,
-                'context'  => []
-            ];
-        }
-
-        if (!empty($excluded)) {
-            $filters[] = [
-                'field'    => 'categories.id',
-                'operator' => Operators::NOT_IN_LIST,
-                'value'    => $excluded,
+                'field'    => 'categories.code',
+                'operator' => Operators::IN_LIST,
+                'value'    => $categories,
                 'context'  => []
             ];
         }

@@ -13,6 +13,7 @@ pim_connector:
                     confirm: Confirm
                 label: "{0} All products|{1} One category selected|]1,Inf[ {{ count }} categories selected"
                 edit: Edit
+                title: Select categories
         locales:
             validation:
                 not_blank: One locale must be selected, please choose a locale to export.

@@ -39,8 +39,7 @@ class ProductCsvExportSpec extends ObjectBehavior
         $fields->shouldHaveKey('updated_since_date');
         $fields->shouldHaveKey('updated_since_n_days');
         $fields->shouldHaveKey('product_identifier');
-        $fields->shouldHaveKey('categories_included');
-        $fields->shouldHaveKey('categories_excluded');
+        $fields->shouldHaveKey('categories');
     }
 
     function it_supports_a_job(JobInterface $job)

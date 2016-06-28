@@ -14,11 +14,13 @@ define(
         'routing',
         'oro/translator',
         'oro/loading-mask',
+        'pim/i18n',
         'pim/fetcher-registry',
+        'pim/user-context',
         'text!pim/template/product-export/categories-selector-tree',
         'jquery.jstree'
     ],
-    function ($, _, Backbone, Routing, __, LoadingMask, FetcherRegistry, template) {
+    function ($, _, Backbone, Routing, __, LoadingMask, i18n, FetcherRegistry, UserContext, template) {
 
         return Backbone.View.extend({
 
@@ -45,18 +47,6 @@ define(
                     dots: true,
                     icons: true
                 },
-                json_data: {
-                    ajax: {
-                        url: Routing.generate('pim_enrich_categorytree_children', {_format: 'json'}),
-                        data: function (node) {
-                            if (-1 === node) {
-                                return {id: this.get_container().data('tree-id')};
-                            }
-
-                            return {id: node.attr('id').replace('node_', '')};
-                        }
-                    }
-                },
                 types: {
                     max_depth: -2,
                     max_children: -2,
@@ -73,31 +63,10 @@ define(
                 }
             },
 
-            loadingNode: 0,
+            currentTree: null,
 
-            /**
-             * Overrides the constructor in order to bind some events
-             */
-            initialize: function () {
-                _.extend(this.loadingNode, Backbone.Events);
-
-                this.listenTo(this, 'increase_loading', function () {
-                    if (0 === this.loadingNode) {
-                        var loadingMask = new LoadingMask();
-                        loadingMask.render().$el.appendTo(this.$el.parent());
-                        loadingMask.show();
-                    }
-
-                    this.loadingNode = this.loadingNode + 1;
-                });
-
-                this.listenTo(this, 'decrease_loading', function () {
-                    if (1 === this.loadingNode) {
-                        this.$el.parent().find('.loading-mask').remove();
-                    }
-
-                    this.loadingNode = this.loadingNode - 1;
-                });
+            attributes: {
+                categories: []
             },
 
             /**
@@ -106,25 +75,19 @@ define(
              * @param {Object} data
              */
             checkNode: function (data) {
-                var node = data.rslt.obj;
-                var nodeId = node[0].id.replace('node_', '');
+                var code = data.rslt.obj.data('code');
                 // All products case
-                if ('all' === nodeId) {
+                if ('' === code) {
                     // Uncheck other nodes
                     data.inst.get_container_ul().find('li.jstree-checked:not(.jstree-all)').each(function () {
                         data.inst.uncheck_node(this);
                     });
 
-                    this.model.clear();
+                    this.attributes.categories = [];
                 } else {
-                    this.model.include(nodeId);
-
-                    // Open the node and check children
-                    data.inst.open_node(node, function () {
-                        $('#' + node[0].id + ' > ul > li').each(function () {
-                            data.inst.check_node(this);
-                        });
-                    });
+                    if (!_.contains(this.attributes.categories, code)) {
+                        this.attributes.categories.push(code);
+                    }
 
                     // Uncheck "All products" if checked
                     data.inst.uncheck_node(data.inst.get_container_ul().find('li.jstree-all'));
@@ -137,10 +100,10 @@ define(
              * @param {Object} data
              */
             uncheckNode: function (data) {
-                var nodeId = data.rslt.obj[0].id.replace('node_', '');
+                var code = data.rslt.obj.data('code');
 
-                if ('all' !== nodeId) {
-                    this.model.exclude(nodeId);
+                if ('' !== code) {
+                    this.attributes.categories = _.without(this.attributes.categories, code);
                 }
             },
 
@@ -150,61 +113,79 @@ define(
              * @param {Object} data
              */
             loadNode: function (data) {
-                this.trigger('increase_loading');
-
-                var self = this;
                 var node = data.rslt.obj;
-                var childrens;
 
                 if (-1 === node) {
-                    childrens = data.inst.get_container().find('> ul > li');
-
                     // Add the All products checkbox
                     data.inst.create_node(data.inst.get_container(), 'last', {
                         attr: {
-                            'id': 'node_all',
+                            'id': 'node_',
                             'class': 'jstree-unclassified jstree-all separated',
-                            'data-code': 'all'
+                            'data-code': ''
                         },
                         data: { title: __('jstree.all') }
                     }, function ($node) {
-                        if (0 === this.model.get('included').length) {
+                        if (0 === this.attributes.categories.length) {
                             data.inst.check_node($node);
                         }
                     }.bind(this), true);
-                } else {
-                    childrens = $('#node_' + node[0].id.replace('node_', '') + '> ul > li');
+                } else if (_.contains(this.attributes.categories, node.data('code'))) {
+                    data.inst.check_node(node);
                 }
-
-                // Load all children recursively
-                childrens.each(function () {
-                    if (!data.inst.is_leaf(this)) {
-                        self.trigger('increase_loading');
-                        data.inst.load_node(this, function () {
-                            self.trigger('decrease_loading');
-                        }, $.noop);
-                    }
-
-                    if (self.model.get('included').includes(this.id.replace('node_', '').toString())) {
-                        data.inst.check_node(this);
-                    }
-                });
-
-                this.trigger('decrease_loading');
             },
 
             /**
              * Render the tree in the element's HTML when the channel category is fetched and bind events from jstree
              */
             render: function () {
-                this.trigger('increase_loading');
+                var loadingMask = new LoadingMask();
+                loadingMask.render().$el.appendTo(this.$el.parent());
+                loadingMask.show();
 
                 FetcherRegistry.initialize().then(function () {
                     FetcherRegistry.getFetcher('channel')
                         .fetch(this.attributes.channel)
                         .then(function (channel) {
-                            this.$el.html(this.template({tree: channel.category}));
-                            this.$('.root').jstree(this.config)
+
+                            this.currentTree = channel.category;
+
+                            this.$el.html(this.template({
+                                tree: this.currentTree,
+                                label: i18n.getLabel(
+                                    this.currentTree.labels,
+                                    UserContext.get('uiLocale'),
+                                    this.currentTree.code
+                                )
+                            }));
+
+                            this.$('.root').jstree(_.extend(this.config, {
+                                json_data: {
+                                    ajax: {
+                                        url: function (node) {
+                                            if (-1 === node && 0 < this.attributes.categories.length) {
+                                                // First load of the tree: get the checked categories
+                                                return Routing.generate(
+                                                    'pim_enrich_category_rest_list_selected_children',
+                                                    {
+                                                        identifier: this.currentTree.code,
+                                                        selected: this.attributes.categories
+                                                    }
+                                                );
+                                            }
+
+                                            return Routing.generate('pim_enrich_categorytree_children', {
+                                                _format: 'json'
+                                            });
+                                        }.bind(this),
+                                        data: function (node) {
+                                            if (-1 === node) {
+                                                return {id: this.get_container().data('tree-id')};
+                                            }
+
+                                            return {id: node.attr('id').replace('node_', '')};
+                                        }
+                                    }
+                                }}))
                                 .on('check_node.jstree', function (event, data) {
                                     this.checkNode(data);
                                 }.bind(this))
@@ -216,7 +197,7 @@ define(
                                 }.bind(this));
                         }.bind(this))
                         .done(function () {
-                            this.trigger('decrease_loading');
+                            this.$el.parent().find('.loading-mask').remove();
                         }.bind(this));
                 }.bind(this));
             }

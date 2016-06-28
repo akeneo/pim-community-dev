@@ -70,11 +70,7 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
         ]);
         $constraintFields['families'] = [];
         $constraintFields['product_identifier'] = [];
-        $constraintFields['categories_included'] = [
-            new NotNull(['groups'  => 'Execution']),
-            new Type(['groups'  => 'Execution', 'type' => 'array']),
-        ];
-        $constraintFields['categories_excluded'] = [
+        $constraintFields['categories'] = [
             new NotNull(['groups'  => 'Execution']),
             new Type(['groups'  => 'Execution', 'type' => 'array']),
         ];

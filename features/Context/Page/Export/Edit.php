@@ -31,7 +31,7 @@ class Edit extends Form
                     'css'        => '.updated-since-parameter .controls',
                     'decorators' => ['Pim\Behat\Decorator\Export\Filter\UpdatedTimeConditionDecorator'],
                 ],
-                'jsTree' => [
+                'Category tree' => [
                     'css'        => '.jstree',
                     'decorators' => ['Pim\Behat\Decorator\Tree\JsTreeDecorator']
                 ]

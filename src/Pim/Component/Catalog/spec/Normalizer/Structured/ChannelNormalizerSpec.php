@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryTranslationInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -33,7 +34,8 @@ class ChannelNormalizerSpec extends ObjectBehavior
         CurrencyInterface $usd,
         LocaleInterface $en,
         LocaleInterface $fr,
-        CategoryInterface $category
+        CategoryInterface $category,
+        CategoryTranslationInterface $translation
     ) {
         $channel->getCode()->willReturn('ecommerce');
         $channel->getLabel()->willReturn('Ecommerce');
@@ -46,7 +48,9 @@ class ChannelNormalizerSpec extends ObjectBehavior
         $channel->getCategory()->willReturn($category);
         $category->getCode()->willReturn('master');
         $category->getId()->willReturn(42);
-        $category->getLabel()->willReturn('Master catalog');
+        $translation->getLabel()->willReturn('label');
+        $translation->getLocale()->willReturn('en_US');
+        $category->getTranslations()->willReturn([$translation]);
         $channel->getConversionUnits()->willReturn(
             [
                 'Weight' => 'Kilogram',
@@ -63,7 +67,9 @@ class ChannelNormalizerSpec extends ObjectBehavior
                 'category'         => [
                     'id' => 42,
                     'code' => 'master',
-                    'label' => 'Master catalog',
+                    'labels' => [
+                        ['locale' => 'en_US', 'label' => 'label']
+                    ],
                 ],
                 'conversion_units' => 'Weight: Kilogram, Size: Centimeter'
             ]
