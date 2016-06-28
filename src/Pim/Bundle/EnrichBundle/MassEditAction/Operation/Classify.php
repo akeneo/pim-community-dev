@@ -21,13 +21,11 @@ class Classify extends AbstractMassEditOperation
 
     /**
      * @param string $jobInstanceCode
-     * @param string $itemsName
      * @param string $formType
      */
-    public function __construct($jobInstanceCode, $itemsName, $formType)
+    public function __construct($jobInstanceCode, $formType)
     {
         $this->jobInstanceCode = $jobInstanceCode;
-        $this->itemsName = $itemsName;
         $this->formType = $formType;
         $this->categories = [];
     }
