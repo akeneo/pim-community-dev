@@ -1,6 +1,6 @@
 services:
     # export rules
-    pimee_catalog_rule.reader.doctrine.rule_definition:
+    pimee_catalog_rule.reader.database.rule_definition:
         class: '%pim_connector.reader.database.base.class%'
         arguments:
             - '@akeneo_rule_engine.repository.rule_definition'

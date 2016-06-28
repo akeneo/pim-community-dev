@@ -57,7 +57,7 @@ connector:
             steps:
                 import:
                     services:
-                        reader:    pim_connector.reader.file.yaml_rule
+                        reader:    pimee_catalog_rule.reader.file.yaml_rule
                         processor: pimee_catalog_rule.processor.denormalization.rule_definition
                         writer:    pimee_catalog_rule.writer.doctrine.rule_definition
 
@@ -91,6 +91,6 @@ connector:
             steps:
                 import_asset:
                     services:
-                        reader:    pimee_connector.reader.file.yaml_channel_configuration
+                        reader:    pimee_product_asset.reader.file.yaml_channel_configuration
                         processor: pimee_product_asset.processor.denormalization.channel_configuration
                         writer:    pimee_product_asset.writer.doctrine.channel_configuration

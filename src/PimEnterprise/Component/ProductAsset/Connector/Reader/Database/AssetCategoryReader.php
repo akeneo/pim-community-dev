@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine;
+namespace PimEnterprise\Component\ProductAsset\Connector\Reader\Database;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Component\Connector\Reader\Database\AbstractReader;
