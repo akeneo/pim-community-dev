@@ -23,6 +23,9 @@ abstract class AbstractMassEditOperation implements
     /** @var string The background job code to launch */
     protected $jobInstanceCode;
 
+    /** @var string The twig configuration template path */
+    protected $templatePath;
+
     /**
      * {@inheritdoc}
      */
@@ -98,5 +101,13 @@ abstract class AbstractMassEditOperation implements
      */
     public function finalize()
     {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTemplatePath()
+    {
+        return $this->templatePath;
     }
 }

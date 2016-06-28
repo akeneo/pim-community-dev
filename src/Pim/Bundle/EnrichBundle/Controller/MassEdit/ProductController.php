@@ -138,10 +138,9 @@ class ProductController
             ->getConfigurationForm($operationAlias);
 
         $itemsCount = $request->get('itemsCount');
-        $configureTemplate = sprintf('PimEnrichBundle:MassEditAction:product/configure/%s.html.twig', $operationAlias);
 
         return $this->templating->renderResponse(
-            $configureTemplate,
+            $operation->getTemplatePath(),
             [
                 'form'           => $form->createView(),
                 'operationAlias' => $operationAlias,
@@ -166,12 +165,15 @@ class ProductController
      */
     public function performAction(Request $request, $operationAlias)
     {
+        $operation = $this
+            ->operationRegistry
+            ->get($operationAlias);
+
         $form = $this
             ->massEditFormResolver
             ->getConfigurationForm($operationAlias);
 
         $itemsCount = $request->get('itemsCount');
-        $configureTemplate = sprintf('PimEnrichBundle:MassEditAction:product/configure/%s.html.twig', $operationAlias);
 
         $form->remove('operationAlias');
         $form->submit($request);
@@ -206,7 +208,7 @@ class ProductController
         }
 
         return $this->templating->renderResponse(
-            $configureTemplate,
+            $operation->getTemplatePath(),
             [
                 'form'           => $form->createView(),
                 'operationAlias' => $operationAlias,

@@ -17,6 +17,13 @@ interface ConfigurableOperationInterface
     public function getFormType();
 
     /**
+     * Get the twig configuration template for this operation
+     *
+     * @return string
+     */
+    public function getTemplatePath();
+
+    /**
      * Get the form options to configure the operation
      *
      * @return array
