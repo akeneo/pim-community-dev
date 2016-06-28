@@ -12,14 +12,14 @@
 namespace PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Component\Connector\Reader\Database\BaseReader;
+use Pim\Component\Connector\Reader\Database\AbstractReader;
 
 /**
  * Get asset categories
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class AssetCategoryReader extends BaseReader
+class AssetCategoryReader extends AbstractReader
 {
     /** @var CategoryRepositoryInterface */
     protected $assetCategoryRepository;
@@ -29,8 +29,6 @@ class AssetCategoryReader extends BaseReader
      */
     public function __construct(CategoryRepositoryInterface $assetCategoryRepository)
     {
-        parent::__construct($assetCategoryRepository);
-
         $this->assetCategoryRepository = $assetCategoryRepository;
     }
 
