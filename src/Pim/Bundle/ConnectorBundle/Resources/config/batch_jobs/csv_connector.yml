@@ -139,7 +139,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_base_connector.reader.orm.attribute_option
+                        reader:    pim_connector.reader.database.attribute_option
                         processor: pim_connector.processor.normalization.attribute_option
                         writer:    pim_connector.writer.file.csv_attribute_option
         csv_association_type_export:
