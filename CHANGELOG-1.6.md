@@ -345,3 +345,7 @@
 - Add parameter `$operationGroup` to `Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver::getAvailableOperationsForm()`
 - Add parameter `$operationGroup` to `Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface::register()`
 - Replace method `getAllByGridName()` by `getAllByGridNameAndGroup()` in `Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface`
+- Remove `Pim\Bundle\EnrichBundle\Controller\MassEditActionController` and replaced it by `Pim\Bundle\EnrichBundle\Controller\MassEdit\ProductController`, `Pim\Bundle\EnrichBundle\Controller\MassEdit\FamilyController`
+- Add string parameter `$formName` to `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType`
+- Remove method `getItemsName()` from `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface` and deleted from all classes implementing the interface
+- Remove method `getItemsName()` from `Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface` and deleted from all classes implementing the interface
