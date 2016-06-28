@@ -117,7 +117,7 @@ function(_, FiltersManager) {
             _.each(this.filters, function(filter, name) {
                 var shortName = '__' + name,
                     filterState;
-                if (_.has(state, name)) {
+                if (_.has(state, name) && 0 !== _​.size(state)) {
                     filterState = state[name];
                     if (!_.isObject(filterState)) {
                         filterState = {
