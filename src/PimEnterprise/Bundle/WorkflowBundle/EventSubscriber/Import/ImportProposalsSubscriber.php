@@ -198,8 +198,8 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
     protected function isProposalImport($code)
     {
         return null !== $this->jobRepository->findOneBy([
-            'alias' => self::PROPOSAL_IMPORT_ALIAS,
-            'code'  => $code
+            'jobName' => self::PROPOSAL_IMPORT_ALIAS,
+            'code'    => $code
         ]);
     }
 }
