@@ -75,7 +75,6 @@ services:
         class: '%pim_enrich.mass_edit_action.classify.class%'
         arguments:
             - 'add_product_value'
-            - 'product'
             - 'pim_enrich_mass_classify'
         tags:
             -
@@ -90,7 +89,6 @@ services:
         class: '%pim_enrich.mass_edit_action.classify.class%'
         arguments:
             - 'update_product_value'
-            - 'product'
             - 'pim_enrich_mass_classify'
         tags:
             -
@@ -105,7 +103,6 @@ services:
         class: '%pim_enrich.mass_edit_action.classify.class%'
         arguments:
             - 'remove_product_value'
-            - 'product'
             - 'pim_enrich_mass_classify'
         tags:
             -
