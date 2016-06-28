@@ -66,11 +66,6 @@ jobs:
         label:     Clothing product export
         type:      export
         configuration:
-            channel:    mobile
-            locales:
-                - en_US
-                - fr_FR
-                - de_DE
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
@@ -181,11 +176,6 @@ jobs:
         label:     Published product export for mobile
         type:      export
         configuration:
-            channel:    mobile
-            locales:
-                - en_US
-                - fr_FR
-                - de_DE
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
@@ -196,11 +186,6 @@ jobs:
         label:     Published product export for mobile in XLSX
         type:      export
         configuration:
-            channel: mobile
-            locales:
-                - en_US
-                - fr_FR
-                - de_DE
             withHeader: true
             linesPerFile: 10000
             filePath: /tmp/published-product.csv
