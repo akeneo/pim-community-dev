@@ -17,7 +17,7 @@ connector:
                         charsetValidator: pim_connector.validator.item.charset_validator
                 import_asset:
                     services:
-                        reader:    pimee_connector.reader.file.yaml_channel_configuration
+                        reader:    pimee_product_asset.reader.file.yaml_channel_configuration
                         processor: pimee_product_asset.processor.denormalization.channel_configuration
                         writer:    pimee_product_asset.writer.doctrine.channel_configuration
         yml_asset_channel_configuration_export:
@@ -25,7 +25,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pimee_product_asset.reader.orm.csv_channel_configuration
+                        reader:    pimee_product_asset.reader.database.channel_configuration
                         processor: pimee_product_asset.processor.normalization.channel_configuration.flat
                         writer:    pimee_product_asset.writer.file.yaml_asset_channel_configuration
         csv_asset_import:
@@ -66,7 +66,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pimee_product_asset.reader.orm.asset
+                        reader:    pimee_product_asset.reader.database.asset
                         processor: pimee_product_asset.processor.normalization.asset.flat
                         writer:    pimee_product_asset.writer.file.csv_asset
         csv_asset_category_export:
@@ -74,7 +74,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pimee_product_asset.reader.orm.category
+                        reader:    pimee_product_asset.reader.database.category
                         processor: pimee_product_asset.processor.normalization.category.flat
                         writer:    pimee_product_asset.writer.file.csv_asset_category
         csv_asset_variation_export:
@@ -82,7 +82,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pimee_product_asset.reader.orm.variation
+                        reader:    pimee_product_asset.reader.database.variation
                         processor: pimee_product_asset.processor.normalization.variation.flat
                         writer:    pimee_product_asset.writer.file.csv_asset_variation
         xlsx_asset_import:
@@ -123,7 +123,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pimee_product_asset.reader.orm.asset
+                        reader:    pimee_product_asset.reader.database.asset
                         processor: pimee_product_asset.processor.normalization.asset.flat
                         writer:    pimee_product_asset.writer.file.xlsx_asset
         xlsx_asset_category_export:
@@ -131,7 +131,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pimee_product_asset.reader.orm.category
+                        reader:    pimee_product_asset.reader.database.category
                         processor: pimee_product_asset.processor.normalization.category.flat
                         writer:    pimee_product_asset.writer.file.xlsx_asset_category
         xlsx_asset_variation_export:
@@ -139,6 +139,6 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pimee_product_asset.reader.orm.variation
+                        reader:    pimee_product_asset.reader.database.variation
                         processor: pimee_product_asset.processor.normalization.variation.flat
                         writer:    pimee_product_asset.writer.file.xlsx_asset_variation

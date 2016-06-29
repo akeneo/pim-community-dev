@@ -22,6 +22,7 @@
 
 ## BC breaks
 
+- Rename `PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\AssetCategoryReader` to `PimEnterprise\Component\ProductAsset\Connector\Reader\Database\AssetCategoryReader`. 
 - Change constructor of `PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\ChannelConfigurationProcessor`. Remove `Symfony\Component\Serializer\SerializerInterface` and `Pim\Component\Catalog\Repository\LocaleRepositoryInterface`. 
 - Change constructor of `PimEnterprise\Component\CatalogRule\Connector\Processor\Normalization\RuleDefinitionProcessor`. Remove `Symfony\Component\Serializer\SerializerInterface` and `Pim\Component\Catalog\Repository\LocaleRepositoryInterface`. 
 - Rename `PimEnterprise\Component\Workflow\Connector\ArrayConverter\FlatToStandard\ProductDraft` to `PimEnterprise\Component\Workflow\Connector\ArrayConverter\FlatToStandard\ProductDraftChanges`

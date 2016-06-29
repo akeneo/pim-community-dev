@@ -1,28 +1,28 @@
 parameters:
-    pimee_product_asset.reader.orm.category.class:  PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\AssetCategoryReader
+    pimee_product_asset.reader.database.category.class:  PimEnterprise\Component\ProductAsset\Connector\Reader\Database\AssetCategoryReader
 
 services:
-    pimee_product_asset.reader.orm.category:
-        class: '%pimee_product_asset.reader.orm.category.class%'
+    pimee_product_asset.reader.database.category:
+        class: '%pimee_product_asset.reader.database.category.class%'
         arguments:
             - '@pimee_product_asset.repository.category'
 
-    pimee_product_asset.reader.orm.asset:
+    pimee_product_asset.reader.database.asset:
         class: '%pim_connector.reader.database.base.class%'
         arguments:
             - '@pimee_product_asset.repository.asset'
 
-    pimee_product_asset.reader.orm.variation:
+    pimee_product_asset.reader.database.variation:
         class: '%pim_connector.reader.database.base.class%'
         arguments:
             - '@pimee_product_asset.repository.variation'
 
-    pimee_product_asset.reader.orm.csv_channel_configuration:
+    pimee_product_asset.reader.database.channel_configuration:
         class: '%pim_connector.reader.database.base.class%'
         arguments:
             - '@pimee_product_asset.repository.channel_configuration'
 
-    pimee_connector.reader.file.yaml_channel_configuration:
+    pimee_product_asset.reader.file.yaml_channel_configuration:
         class: '%pim_connector.reader.file.yaml.class%'
         arguments:
             - '@pimee_product_asset.array_converter.dummy.channel_configuration'

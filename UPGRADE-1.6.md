@@ -27,4 +27,12 @@
     find ./src -type f -print0 | xargs -0 sed -i 's/pimee_product_asset\.array_converter.flat_to_standard.tag/pimee_product_asset.array_converter.flat_to_standard.tags/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Workflow\\Connector\\ArrayConverter\\FlatToStandard\\ProductDraft/PimEnterprise\\Component\\Workflow\\Connector\\ArrayConverter\\FlatToStandard\\ProductDraftChanges/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/pimee_base_connector\.array_converter\.flat_to_standard\.product_draft/pimee_base_connector\.array_converter\.flat_to_standard\.product_draft_changes/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pimee_catalog_rule\.reader\.doctrine\.rule_definition/pimee_catalog_rule\.reader\.database\.rule_definition/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pimee_product_asset\.reader\.orm\.asset/pimee_product_asset\.reader\.database\.asset/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pimee_product_asset\.reader\.orm\.csv_channel_configuration/pimee_product_asset\.reader\.database\.channel_configuration/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pimee_product_asset\.reader\.orm\.variation/pimee_product_asset\.reader\.database\.variation/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Connector\\Reader\\Doctrine\\AssetCategoryReader/PimEnterprise\\Component\\ProductAsset\\Connector\\Reader\\Database\\AssetCategoryReader/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pimee_product_asset\.reader\.orm\.category/pimee_product_asset\.reader\.database\.category/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pimee_connector\.reader\.file\.yaml_channel_configuration/pimee_product_asset\.reader\.file\.yaml_channel_configuration/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/pim_connector\.reader\.file\.yaml_rule/pimee_catalog_rule\.reader\.file\.yaml_rule/g'
 ```
