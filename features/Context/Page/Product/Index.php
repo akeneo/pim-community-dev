@@ -2,7 +2,6 @@
 
 namespace Context\Page\Product;
 
-use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Grid;
@@ -41,11 +40,6 @@ class Index extends Grid
                 'Locales dropdown'        => ['css' => '#locale-switcher'],
                 'Sidebar collapse button' => ['css' => '.sidebar .sidebar-controls i.icon-double-angle-left'],
                 'Sidebar expand button'   => ['css' => '.separator.collapsed i.icon-double-angle-right'],
-                'Modal identifier field'  => ['css' => '#new-product-identifier'],
-                'Modal family field'      => [
-                    'css'        => '.modal .select2-container',
-                    'decorators' => ['Pim\Behat\Decorator\Field\Select2Decorator'],
-                ],
             ]
         );
     }
@@ -139,43 +133,5 @@ class Index extends Grid
         }
 
         $elt->click();
-    }
-
-    /**
-     * This method is overridden for the modal fill (sku + family).
-     * TODO This have to be refactored.
-     *
-     * {@inheritdoc}
-     */
-    public function fillField($locator, $value, Element $modal = null)
-    {
-        $availableLocators = [
-            'SKU'    => 'Modal identifier field',
-            'family' => 'Modal family field',
-        ];
-
-        if (!array_key_exists($locator, $availableLocators)) {
-            return parent::fillField($locator, $value);
-        }
-        $elementName = $availableLocators[$locator];
-
-        $this->spin(function () use ($elementName) {
-            $element = $this->getElement($elementName);
-
-            return $element->isVisible() ? $element : null;
-        }, sprintf('Can not find visible "%s" element.', $elementName))->setValue($value);
-    }
-
-    /**
-     * Returns the validation errors for modal on object creation only.
-     * TODO This have to be refactored.
-     *
-     * @return string[]
-     */
-    public function getValidationErrors()
-    {
-        return array_map(function ($element) {
-            return $element->getHtml();
-        }, $this->findAll('css', '.validation-errors .error-message'));
     }
 }

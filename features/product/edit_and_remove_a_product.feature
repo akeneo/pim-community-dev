@@ -11,10 +11,10 @@ Feature: Edit and remove a product
       | shoes | sku, name, description, price, rating, size, color, manufacturer, length |
     And I am logged in as "Julia"
     And I am on the products page
-    And I press the "Create product" button
+    And I create a new product
     And I fill in the following information in the popin:
-      | SKU    | boots |
-      | family | shoes |
+      | SKU             | boots |
+      | Choose a family | shoes |
     And I press the "Save" button in the popin
     And I wait to be on the "boots" product page
     And I fill in the following information:

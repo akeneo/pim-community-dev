@@ -9,7 +9,7 @@ Feature: Update the product history
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the products page
-    And I press the "Create product" button
+    And I create a new product
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
@@ -53,7 +53,7 @@ Feature: Update the product history
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the products page
-    And I press the "Create product" button
+    And I create a new product
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin
@@ -95,7 +95,7 @@ Feature: Update the product history
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the products page
-    And I press the "Create product" button
+    And I create a new product
     And I fill in the following information in the popin:
       | SKU | boots |
     And I press the "Save" button in the popin

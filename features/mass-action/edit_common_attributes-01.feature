@@ -81,10 +81,10 @@ Feature: Edit common attributes of many products at once
 
   @info https://akeneo.atlassian.net/browse/PIM-3070
   Scenario: Successfully mass edit a price not added to the product
-    Given I press the "Create product" button
+    Given I create a new product
     And I fill in the following information in the popin:
-      | SKU    | Shoes |
-      | family | Heels |
+      | SKU             | Shoes |
+      | Choose a family | Heels |
     And I press the "Save" button in the popin
     Then I should be on the product "Shoes" edit page
     And I am on the products page

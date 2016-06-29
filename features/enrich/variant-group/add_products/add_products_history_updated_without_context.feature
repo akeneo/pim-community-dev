@@ -16,7 +16,7 @@ Feature: Add products to a variant group
       | SANDAL | comment      | New comment |        |       |
     And I am logged in as "admin"
     And I am on the products page
-    And I press the "Create product" button
+    And I create a new product
     And I fill in the following information in the popin:
       | SKU    | sandal-white-37 |
       | family | Sandals         |
