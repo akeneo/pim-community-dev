@@ -88,7 +88,7 @@ abstract class AbstractMassEditController
     {
         $form = $this
             ->massEditFormResolver
-            ->getAvailableOperationsForm('family-grid', $operationGroup);
+            ->getAvailableOperationsForm($this->getGridName(), $operationGroup);
 
         $queryParams = $this->getQueryParams($request);
 
@@ -101,7 +101,7 @@ abstract class AbstractMassEditController
 
                 $configureRoute = $this
                     ->router
-                    ->generate($this->getChooseRoute(), $queryParams);
+                    ->generate($this->getChooseOperationRoute(), $queryParams);
 
                 return new RedirectResponse($configureRoute);
             }
@@ -109,7 +109,7 @@ abstract class AbstractMassEditController
 
         $itemsCount = $request->get('itemsCount');
 
-        return $this->templating->renderResponse($this->getChooseTemplate(), [
+        return $this->templating->renderResponse($this->getChooseOperationTemplate(), [
             'form'        => $form->createView(),
             'itemsCount'  => $itemsCount,
             'queryParams' => array_merge($queryParams, ['operationGroup' => $operationGroup]),
@@ -137,7 +137,7 @@ abstract class AbstractMassEditController
             ->getConfigurationForm($operationAlias);
 
         $itemsCount = $request->get('itemsCount');
-        $configureTemplate = sprintf($this->getConfigureTemplate(), $operationAlias);
+        $configureTemplate = $this->getConfigureOperationTemplate($operationAlias);
 
         return $this->templating->renderResponse(
             $configureTemplate,
@@ -170,7 +170,7 @@ abstract class AbstractMassEditController
             ->getConfigurationForm($operationAlias);
 
         $itemsCount = $request->get('itemsCount');
-        $configureTemplate = sprintf($this->getPerformTemplate(), $operationAlias);
+        $configureTemplate = $this->getPerformOperationTemplate($operationAlias);
 
         $form->remove('operationAlias');
         $form->submit($request);
@@ -194,10 +194,10 @@ abstract class AbstractMassEditController
                 ->getFlashBag()
                 ->add(
                     'success',
-                    new Message(sprintf($this->getPerformRoute(), $operationAlias))
+                    new Message(sprintf($this->getPerformOperationRoute(), $operationAlias))
                 );
 
-            $redirectRoute = $this->getPerformRedirectRoute();
+            $redirectRoute = $this->getPerformOperationRedirectRoute();
 
             return new RedirectResponse(
                 $this->router->generate($redirectRoute, ['dataLocale' => $queryParams['dataLocale']])
@@ -239,32 +239,48 @@ abstract class AbstractMassEditController
     }
 
     /**
+     * Should return the grid name.
+     *
      * @return string
      */
-    abstract protected function getChooseRoute();
+    abstract protected function getGridName();
 
     /**
+     * Should return the choose route
+     *
      * @return string
      */
-    abstract protected function getConfigureTemplate();
+    abstract protected function getChooseOperationRoute();
 
     /**
+     * Should return the configure template
+     *
+     * @param string $operationAlias
+     *
      * @return string
      */
-    abstract protected function getChooseTemplate();
+    abstract protected function getConfigureOperationTemplate($operationAlias);
 
     /**
+     * Should return the choose template
+     *
      * @return string
      */
-    abstract protected function getPerformRoute();
+    abstract protected function getChooseOperationTemplate();
 
     /**
+     * Should return the perform template
+     *
+     * @param string $operationAlias
+     *
      * @return string
      */
-    abstract protected function getPerformTemplate();
+    abstract protected function getPerformOperationTemplate($operationAlias);
 
     /**
+     * Should return the route redirection
+     *
      * @return string
      */
-    abstract protected function getPerformRedirectRoute();
+    abstract protected function getPerformOperationRedirectRoute();
 }
