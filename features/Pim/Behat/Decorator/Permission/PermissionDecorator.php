@@ -18,7 +18,7 @@ class PermissionDecorator extends ElementDecorator
     use SpinCapableTrait;
 
     protected $selectors = [
-        'Group'           => '.tab-groups .tab:contains("%s")',
+        'Group'           => '.tab-groups .tab:contains("%s") a',
         'Resource'        => '.acl-permission:contains("%s")',
         'Resource Toggle' => '.acl-permission-toggle.granted, .acl-permission-toggle.non-granted'
     ];

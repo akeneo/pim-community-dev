@@ -38,7 +38,6 @@ Feature: Define user rights
       | Create a group              | product groups    | Create group            | ProductGroup creation    |
       | Create a variant group      | variant groups    | Create variant group    | VariantGroup creation    |
       | Create a group type         | group types       | Create group type       | GroupType creation       |
-      | Create a product            | products          | Create product          | Product creation         |
       | Create an attribute         | attributes        | Create attribute        | Attribute creation       |
       | Create an export profile    | exports           | Create export profile   | Export creation          |
       | Create an import profile    | imports           | Create import profile   | Import creation          |
