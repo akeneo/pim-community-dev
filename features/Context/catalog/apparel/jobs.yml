@@ -38,6 +38,15 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/products.csv
+            filters:
+                data: {}
+                structure:
+                    channel: ecommerce
+                    locales:
+                        - en_US
+                        - en_GB
+                        - fr_FR
+                        - de_DE
     tablet_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
@@ -48,6 +57,13 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/products.csv
+            filters:
+                data: {}
+                structure:
+                    channel: tablet
+                    locales:
+                        - en_US
+                        - en_GB
     xlsx_tablet_product_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_export
@@ -57,6 +73,13 @@ jobs:
             filePath: /tmp/products.xlsx
             linesPerFile: 10000
             withHeader: true
+            filters:
+                data: {}
+                structure:
+                    channel: tablet
+                    locales:
+                        - en_US
+                        - en_GB
     print_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
@@ -67,6 +90,13 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/products.csv
+            filters:
+                data: {}
+                structure:
+                    channel: print
+                    locales:
+                        - en_US
+                        - de_DE
     csv_apparel_family_export:
         connector: Akeneo CSV Connector
         alias:     csv_family_export

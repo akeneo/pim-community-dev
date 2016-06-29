@@ -37,6 +37,10 @@ class JobContext extends PimContext
                 $value = (new \DateTime($value))->format('Y-m-d H:i:s');
             }
 
+            if ('filters' === $property) {
+                $value = json_decode($value, true);
+            }
+
             $configuration[$property] = $value;
         }
 

@@ -1,6 +1,6 @@
 <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="job-profile-content-tab tab-pane buffer-top">
     <div id="pim-product-export-edit-content"></div>
-    <input id="{{ form.configuration.filters.vars.id }}" value="{{ form.configuration.filters.vars.value }}" type="hidden"/>
+    <input id="{{ form.configuration.filters.vars.id }}" name="{{ form.configuration.filters.vars.full_name }}" value="{{ form.configuration.filters.vars.value|json_encode }}" type="hidden"/>
     <script>
         require(
             ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'oro/loading-mask'],

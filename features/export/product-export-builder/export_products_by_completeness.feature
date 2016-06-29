@@ -22,9 +22,8 @@ Feature: Export products according to a completeness policy
       | connector            | type   | alias              | code               | label              |
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
     Given the following job "csv_product_export" configuration:
-      | channel  | ecommerce                               |
-      | filePath | %tmp%/product_export/product_export.csv |
-      | locales  | fr_FR, en_US                            |
+      | filePath | %tmp%/product_export/product_export.csv                                          |
+      | filters  | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"}, "data": {}} |
     And I am logged in as "Julia"
 
   @ce

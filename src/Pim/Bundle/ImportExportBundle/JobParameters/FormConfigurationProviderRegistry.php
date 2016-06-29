@@ -40,6 +40,7 @@ class FormConfigurationProviderRegistry
                 return $options;
             }
         }
+
         throw new NonExistingServiceException(
             sprintf('No form configuration provider has been defined for the Job "%s"', $job->getName())
         );

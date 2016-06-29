@@ -6,6 +6,7 @@ use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderRegistry;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderRegistry;
+use Pim\Bundle\ImportExportBundle\JobParameters\FormModelTransformerProviderRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
@@ -30,6 +31,9 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     /** @var ConstraintCollectionProviderRegistry */
     protected $constraintProviderRegistry;
 
+    /** @var FormModelTransformerProviderRegistry */
+    protected $modelTransformerProviderRegistry;
+
     /** @var ContainerInterface */
     private $container;
 
@@ -39,19 +43,22 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     /**
      * @param FormConfigurationProviderRegistry    $configProviderRegistry
      * @param ConstraintCollectionProviderRegistry $constraintProviderRegistry
+     * @param FormModelTransformerProviderRegistry $modelTransformerProviderRegistry
      * @param ContainerInterface                   $container
      * @param string                               $jobParamsClass
      */
     public function __construct(
         FormConfigurationProviderRegistry $configProviderRegistry,
         ConstraintCollectionProviderRegistry $constraintProviderRegistry,
+        FormModelTransformerProviderRegistry $modelTransformerProviderRegistry,
         ContainerInterface $container,
         $jobParamsClass
     ) {
-        $this->configProviderRegistry = $configProviderRegistry;
-        $this->constraintProviderRegistry = $constraintProviderRegistry;
-        $this->container = $container;
-        $this->jobParamsClass = $jobParamsClass;
+        $this->configProviderRegistry           = $configProviderRegistry;
+        $this->constraintProviderRegistry       = $constraintProviderRegistry;
+        $this->modelTransformerProviderRegistry = $modelTransformerProviderRegistry;
+        $this->container                        = $container;
+        $this->jobParamsClass                   = $jobParamsClass;
     }
 
     /**
@@ -61,22 +68,21 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     {
         $builder->setDataMapper($this);
         $factory = $builder->getFormFactory();
-        $configProviderRegistry = $this->configProviderRegistry;
-        $constraintProviderRegistry = $this->constraintProviderRegistry;
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($factory, $configProviderRegistry, $constraintProviderRegistry) {
+            function (FormEvent $event) use ($factory) {
                 $form   = $event->getForm();
                 $jobInstance = $form->getRoot()->getData();
-                if (null == $jobInstance->getId()) {
+                if (null === $jobInstance->getId()) {
                     return;
                 }
-                $job = $this->getConnectorRegistry()->getJob($jobInstance);
-                $configProvider = $configProviderRegistry->get($job);
-                $configs = $configProvider->getFormConfiguration($jobInstance);
-                $constraintProvider = $constraintProviderRegistry->get($job);
-                $collection = $constraintProvider->getConstraintCollection();
-                $fieldConstraints = $collection->fields;
+
+                $job                   = $this->getConnectorRegistry()->getJob($jobInstance);
+                $configProvider        = $this->configProviderRegistry->get($job);
+                $configs               = $configProvider->getFormConfiguration($jobInstance);
+                $constraintProvider    = $this->constraintProviderRegistry->get($job);
+                $constraintsCollection = $constraintProvider->getConstraintCollection();
+                $fieldConstraints      = $constraintsCollection->fields;
 
                 foreach ($configs as $parameter => $config) {
                     if (isset($config['system']) && true === $config['system']) {
@@ -104,6 +110,34 @@ class JobParametersType extends AbstractType implements DataMapperInterface
 
                     $form->add($factory->createNamed($parameter, $config['type'], null, $options));
                 }
+            }
+        );
+
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            function (FormEvent $event) {
+                $form = $event->getForm();
+                $jobInstance = $form->getRoot()->getData();
+                if (null === $jobInstance->getId()) {
+                    return;
+                }
+                $job                      = $this->getConnectorRegistry()->getJob($jobInstance);
+                $modelTransformerProvider = $this->modelTransformerProviderRegistry->get($job);
+                $configProvider           = $this->configProviderRegistry->get($job);
+                $configs                  = $configProvider->getFormConfiguration($jobInstance);
+
+                $modelTransformers = (null !== $modelTransformerProvider) ?
+                    $modelTransformerProvider->getFormModelTransformers($jobInstance) :
+                    [];
+
+                $data = $event->getData();
+                foreach (array_keys($configs) as $parameter) {
+                    if (isset($data[$parameter]) && isset($modelTransformers[$parameter])) {
+                        $data[$parameter] = $modelTransformers[$parameter]->reverseTransform($data[$parameter]);
+                    }
+                }
+
+                $event->setData($data);
             }
         );
     }

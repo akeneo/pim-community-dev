@@ -17,6 +17,11 @@ parameters:
     pim_import_export.job_parameters.form_configuration_provider.variant_group_csv_import.class:  Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\VariantGroupCsvImport
     pim_import_export.job_parameters.form_configuration_provider.variant_group_xlsx_import.class: Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider\VariantGroupCsvImport
 
+    pim_import_export.job_parameters.model_transformer_provider_registry.class:                    Pim\Bundle\ImportExportBundle\JobParameters\FormModelTransformerProviderRegistry
+    pim_import_export.job_parameters.model_transformer_provider.container_model_transformer.class: Pim\Bundle\ImportExportBundle\JobParameters\FormModelTransformerProvider\ContainerModelTransformerProvider
+
+
+
 services:
     pim_import_export.job_parameters.form_configuration_provider_registry:
         class: '%pim_import_export.job_parameters.form_configuration_provider_registry.class%'
@@ -167,3 +172,18 @@ services:
             - '%pim_catalog.localization.date_formats%'
         tags:
             - { name: pim_import_export.job_parameters.form_configuration_provider }
+
+    # Form model transformers for export
+    pim_import_export.job_parameters.model_transformer_provider_registry:
+        class: '%pim_import_export.job_parameters.model_transformer_provider_registry.class%'
+
+    pim_import_export.job_parameters.model_transformer_provider.container_model_transformer:
+        class: '%pim_import_export.job_parameters.model_transformer_provider.container_model_transformer.class%'
+        arguments:
+            -
+                - 'csv_product_export'
+                - 'xlsx_product_export'
+            -
+                filters: @pim_import_export.model_transformer.json
+        tags:
+            - { name: pim_import_export.job_parameters.model_transformer_provider }
