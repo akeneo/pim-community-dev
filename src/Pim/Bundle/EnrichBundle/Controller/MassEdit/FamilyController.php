@@ -161,7 +161,7 @@ class FamilyController
      *
      * @throws NotFoundResourceException
      *
-     * @return Response
+     * @return Response|RedirectResponse
      */
     public function performAction(Request $request, $operationAlias)
     {
@@ -197,10 +197,8 @@ class FamilyController
                     new Message(sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias))
                 );
 
-            $redirectRoute = 'pim_enrich_family_index';
-
             return new RedirectResponse(
-                $this->router->generate($redirectRoute, ['dataLocale' => $queryParams['dataLocale']])
+                $this->router->generate('pim_enrich_family_index', ['dataLocale' => $queryParams['dataLocale']])
             );
         }
 
@@ -228,12 +226,14 @@ class FamilyController
             ->parametersParser
             ->parse($request);
 
-        $params['gridName']   = $request->get('gridName');
-        $params['actionName'] = $request->get('actionName');
-        $params['values']     = implode(',', $params['values']);
-        $params['filters']    = json_encode($params['filters']);
-        $params['dataLocale'] = $request->get('dataLocale', null);
-        $params['itemsCount'] = $request->get('itemsCount');
+        $params = array_merge($params, [
+            'gridName'   => $request->get('gridName'),
+            'actionName' => $request->get('actionName'),
+            'values'     => implode(',', $params['values']),
+            'filters'    => json_encode($params['filters']),
+            'dataLocale' => $request->get('dataLocale', null),
+            'itemsCount' => $request->get('itemsCount'),
+        ]);
 
         return $params;
     }

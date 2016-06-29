@@ -922,7 +922,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Then /^I select all visible (products|entities)$/
+     * @Then /^I select all visible entities$/
      */
     public function iSelectAllVisible()
     {
@@ -930,7 +930,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Then /^I select none (product|entity)$/
+     * @Then /^I select none entity$/
      */
     public function iSelectNone()
     {
@@ -938,7 +938,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Then /^I select all (products|entities)$/
+     * @Then /^I select all entities$/
      */
     public function iSelectAll()
     {

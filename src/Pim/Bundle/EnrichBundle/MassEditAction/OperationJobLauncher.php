@@ -52,11 +52,11 @@ class OperationJobLauncher
      */
     public function launch(BatchableOperationInterface $operation)
     {
-        $jobCode = $operation->getJobInstanceCode();
-        $jobInstance = $this->jobInstanceRepo->findOneBy(['code' => $jobCode]);
+        $jobInstanceCode = $operation->getJobInstanceCode();
+        $jobInstance = $this->jobInstanceRepo->findOneBy(['code' => $jobInstanceCode]);
 
         if (null === $jobInstance) {
-            throw new NotFoundResourceException(sprintf('No job found with job code "%s"', $jobCode));
+            throw new NotFoundResourceException(sprintf('No JobInstance found with code "%s"', $jobInstanceCode));
         }
 
         if ($operation instanceof ConfigurableOperationInterface) {

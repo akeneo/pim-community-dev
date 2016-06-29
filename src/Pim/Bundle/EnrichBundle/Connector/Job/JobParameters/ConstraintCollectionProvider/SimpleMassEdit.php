@@ -22,7 +22,7 @@ class SimpleMassEdit implements ConstraintCollectionProviderInterface
     protected $supportedJobNames;
 
     /**
-     * @param array $supportedJobNames
+     * @param string[] $supportedJobNames
      */
     public function __construct(array $supportedJobNames)
     {
