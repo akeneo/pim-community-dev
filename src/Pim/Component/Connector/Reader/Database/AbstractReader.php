@@ -1,23 +1,27 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Reader\Repository;
+namespace Pim\Component\Connector\Reader\Database;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
- * Abstract repository reader, returns items one by one
+ * Abstract reader
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @author    Julien Janvier <jjanvier@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 abstract class AbstractReader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
     StepExecutionAwareInterface
 {
+    /** @var bool Checks if all objects are sent to the processor */
+    protected $isExecuted = false;
+
     /** @var StepExecution */
     protected $stepExecution;
 
@@ -29,9 +33,10 @@ abstract class AbstractReader extends AbstractConfigurableStepElement implements
      */
     public function read()
     {
-        if (null === $this->results) {
-            $items = $this->readItems();
-            $this->results = new \ArrayIterator($items);
+        if (!$this->isExecuted) {
+            $this->isExecuted = true;
+
+            $this->results = $this->getResults();
         }
 
         if (null !== $result = $this->results->current()) {
@@ -45,23 +50,21 @@ abstract class AbstractReader extends AbstractConfigurableStepElement implements
     /**
      * {@inheritdoc}
      */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
     }
 
     /**
-     * Reads the items
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    abstract protected function readItems();
+    public function initialize()
+    {
+        $this->isExecuted = false;
+    }
+
+    /**
+     * @return \ArrayIterator
+     */
+    abstract protected function getResults();
 }
