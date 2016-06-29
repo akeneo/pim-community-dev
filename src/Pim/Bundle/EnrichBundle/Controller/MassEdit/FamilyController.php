@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\MassEdit;
 
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
 /**
  * Mass Edit controller implementation for families.
  * Handle all the steps from choosing action to run to the launching of the action.

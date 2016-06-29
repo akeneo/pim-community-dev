@@ -194,7 +194,7 @@ abstract class AbstractMassEditController
                 ->getFlashBag()
                 ->add(
                     'success',
-                    new Message(sprintf($this->getPerformOperationRoute(), $operationAlias))
+                    new Message(sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias))
                 );
 
             $redirectRoute = $this->getPerformOperationRedirectRoute();
@@ -228,12 +228,14 @@ abstract class AbstractMassEditController
             ->parametersParser
             ->parse($request);
 
-        $params['gridName']   = $request->get('gridName');
-        $params['actionName'] = $request->get('actionName');
-        $params['values']     = implode(',', $params['values']);
-        $params['filters']    = json_encode($params['filters']);
-        $params['dataLocale'] = $request->get('dataLocale', null);
-        $params['itemsCount'] = $request->get('itemsCount');
+        $params = array_merge($params, [
+            'gridName'   => $request->get('gridName'),
+            'actionName' => $request->get('actionName'),
+            'values'     => implode(',', $params['values']),
+            'filters'    => json_encode($params['filters']),
+            'dataLocale' => $request->get('dataLocale', null),
+            'itemsCount' => $request->get('itemsCount'),
+        ]);
 
         return $params;
     }
