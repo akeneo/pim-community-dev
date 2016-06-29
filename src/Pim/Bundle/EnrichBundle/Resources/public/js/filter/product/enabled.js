@@ -18,17 +18,14 @@ define([
         template: _.template(template),
         removable: false,
         events: {
-            'change [name="filter-value"]': 'updateState',
-            'click .remove': 'removeFilter'
+            'change [name="filter-value"]': 'updateState'
         },
-        render: function () {
-            this.$el.empty();
-
+        renderInput: function () {
             if (undefined === this.getValue()) {
                 this.setValue(null);
             }
 
-            this.$el.append(this.template({
+            return this.template({
                 labels: {
                     title: __('pim_enrich.export.product.filter.enabled.title'),
                     valueChoices: {
@@ -37,15 +34,11 @@ define([
                         disabled: __('pim_enrich.export.product.filter.enabled.value.disabled')
                     }
                 },
-                value: this.getValue(),
-                removable: this.isRemovable()
-            }));
-
+                value: this.getValue()
+            });
+        },
+        postRender: function () {
             this.$('[name="filter-value"]').select2();
-
-            this.delegateEvents();
-
-            return this;
         },
         updateState: function () {
             var value = this.$('[name="filter-value"]').val();

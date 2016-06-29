@@ -46,7 +46,7 @@ define(
 
                 promises.push(BaseForm.prototype.configure.apply(this, arguments));
 
-                return $.when(promises);
+                return $.when.apply($, promises);
             },
             render: function () {
                 if (!this.configured) {

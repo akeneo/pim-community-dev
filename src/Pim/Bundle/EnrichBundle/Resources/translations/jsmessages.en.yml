@@ -345,7 +345,7 @@ pim_enrich:
                 locales:
                     title: Locales
                     help: The locales you want to export
-                family:
+                family.code:
                     title: Family
                     help: The families you want to export
                     operators:

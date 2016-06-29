@@ -23,6 +23,7 @@ define(
         UserContext
     ) {
         return BaseForm.extend({
+            className: 'control-group',
             template: _.template(template),
             render: function () {
                 if (!this.configured) {

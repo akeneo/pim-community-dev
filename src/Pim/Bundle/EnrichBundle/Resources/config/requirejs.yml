@@ -28,6 +28,9 @@ config:
         pim/cache-invalidator:
             events:
                 - 'pim_enrich:form:entity:post_fetch'
+        pim/export/product/edit/content:
+            forwarded-events:
+                'pim_enrich:filter:extension:add': 'pim_enrich:filter:extension:add'
         pim/variant-group-manager:
             urls:
                 get: pim_enrich_variant_group_rest_get
@@ -213,11 +216,13 @@ config:
         pim/product-edit-form/attributes:                          pimenrich/js/product/form/attributes
         pim/product-edit-form/back-to-grid:                        pimenrich/js/product/form/back-to-grid
 
+        # Exports
         pim/export/product/edit/content/structure/scope:           pimenrich/js/export/product/edit/content/structure/scope
         pim/export/product/edit/content/structure/locales:         pimenrich/js/export/product/edit/content/structure/locales
         pim/export/product/edit/content/structure/attributes:      pimenrich/js/export/product/edit/content/structure/attributes
         pim/export/product/edit/content:                           pimenrich/js/export/product/edit/content
         pim/export/product/edit/content/data:                      pimenrich/js/export/product/edit/content/data
+        pim/export/product/edit/content/data/help:                 pimenrich/js/export/product/edit/content/data/help
         pim/export/product/edit/content/structure:                 pimenrich/js/export/product/edit/content/structure
 
         # Filters
@@ -364,15 +369,17 @@ config:
         # Exports
         pim/template/export/product/edit/content:                      pimenrich/templates/export/product/edit/content.html
         pim/template/export/product/edit/content/data:                 pimenrich/templates/export/product/edit/content/data.html
+        pim/template/export/product/edit/content/data/help:            pimenrich/templates/export/product/edit/content/data/help.html
         pim/template/export/product/edit/content/structure:            pimenrich/templates/export/product/edit/content/structure.html
         pim/template/export/product/edit/content/structure/scope:      pimenrich/templates/export/product/edit/content/structure/scope.html
         pim/template/export/product/edit/content/structure/locales:    pimenrich/templates/export/product/edit/content/structure/locales.html
         pim/template/export/product/edit/content/structure/attributes: pimenrich/templates/export/product/edit/content/structure/attributes.html
 
         # Filters
-        pim/template/filter/text:            pimenrich/templates/filter/text.html
-        pim/template/filter/simpleselect:    pimenrich/templates/filter/simpleselect.html
-        pim/template/filter/product/family:  pimenrich/templates/filter/product/family.html
-        pim/template/filter/product/enabled: pimenrich/templates/filter/product/enabled.html
-        pim/template/filter/product/updated: pimenrich/templates/filter/product/updated.html
-        pim/template/filter/product/completeness:  pimenrich/templates/filter/product/completeness.html
+        pim/template/filter/filter:               pimenrich/templates/filter/filter.html
+        pim/template/filter/text:                 pimenrich/templates/filter/text.html
+        pim/template/filter/simpleselect:         pimenrich/templates/filter/simpleselect.html
+        pim/template/filter/product/family:       pimenrich/templates/filter/product/family.html
+        pim/template/filter/product/enabled:      pimenrich/templates/filter/product/enabled.html
+        pim/template/filter/product/updated:      pimenrich/templates/filter/product/updated.html
+        pim/template/filter/product/completeness: pimenrich/templates/filter/product/completeness.html

@@ -44,6 +44,10 @@ extensions:
                 -
                     field: updated
                     view: pim-filter-product-updated
+
+    pim-product-export-edit-content-data-help:
+        module: pim/export/product/edit/content/data/help
+        parent: pim-product-export-edit-content-data
 #
 #    pim-product-export-edit-content-data-add-filter:
 #        module: pim/product-edit-form/attributes/add-attribute #to change

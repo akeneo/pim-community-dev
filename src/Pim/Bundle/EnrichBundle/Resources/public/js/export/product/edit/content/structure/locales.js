@@ -21,6 +21,7 @@ define(
         fetcherRegistry
     ) {
         return BaseForm.extend({
+            className: 'control-group',
             template: _.template(template),
             configure: function () {
                 this.listenTo(this.getRoot(), 'channel:update:after', this.channelUpdated.bind(this));

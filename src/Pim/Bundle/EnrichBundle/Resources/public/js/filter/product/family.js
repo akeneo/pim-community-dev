@@ -15,8 +15,7 @@ define([
     return BaseFilter.extend({
         template: _.template(template),
         events: {
-            'change [name="filter-operator"], [name="filter-value"]': 'updateState',
-            'click .remove': 'removeFilter'
+            'change [name="filter-operator"], [name="filter-value"]': 'updateState'
         },
         initialize: function (config) {
             this.config = config.config;
@@ -72,28 +71,22 @@ define([
 
             return BaseFilter.prototype.initialize.apply(this, arguments);
         },
-        render: function () {
-            this.$el.empty();
-
+        renderInput: function () {
             if (undefined === this.getOperator()) {
                 this.setOperator(_.first(this.config.operators));
             }
 
-            this.$el.append(this.template({
+            return this.template({
                 __: __,
                 field: this.getField(),
                 operator: this.getOperator(),
                 value: this.getValue(),
-                removable: this.isRemovable(),
-                operators: this.config.operators
-            }));
-
+                operatorChoices: this.config.operators
+            });
+        },
+        postRender: function () {
             this.$('[name="filter-operator"]').select2();
             this.$('[name="filter-value"]').select2(this.selectOptions);
-
-            this.delegateEvents();
-
-            return this;
         },
         updateState: function () {
             var value = this.$('[name="filter-value"]').val();
