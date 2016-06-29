@@ -15,14 +15,6 @@ class ChangeStatus extends AbstractMassEditOperation
     protected $toEnable = false;
 
     /**
-     * @param string $jobInstanceCode
-     */
-    public function __construct($jobInstanceCode)
-    {
-        $this->jobInstanceCode = $jobInstanceCode;
-    }
-
-    /**
      * @param bool $toEnable
      *
      * @return ChangeStatus

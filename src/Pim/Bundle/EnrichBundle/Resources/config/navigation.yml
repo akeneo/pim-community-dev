@@ -155,11 +155,11 @@ oro_titles:
     pim_enrich_associationtype_edit:       pim_title.association_type.edit
     pim_enrich_grouptype_index:            pim_title.group_type.index
     pim_enrich_grouptype_edit:             pim_title.group_type.edit
-    pim_enrich_mass_edit_family_action_choose:    pim_title.mass_edit_family_action.choose
+    pim_enrich_mass_edit_family_action_choose: pim_title.mass_edit_family_action.choose
     pim_enrich_mass_edit_product_action_choose: pim_title.mass_edit_product_action.choose
     pim_enrich_mass_edit_family_action_configure: pim_title.mass_edit_family_action.configure
     pim_enrich_mass_edit_product_action_configure: pim_title.mass_edit_product_action.configure
-    pim_enrich_mass_edit_family_action_perform:   pim_title.mass_edit_family_action.configure
+    pim_enrich_mass_edit_family_action_perform: pim_title.mass_edit_family_action.configure
     pim_enrich_mass_edit_product_action_perform: pim_title.mass_edit_product_action.configure
     pim_enrich_job_tracker_index:          pim_title.job_tracker.index
     pim_enrich_job_tracker_show:           pim_title.job_tracker.show

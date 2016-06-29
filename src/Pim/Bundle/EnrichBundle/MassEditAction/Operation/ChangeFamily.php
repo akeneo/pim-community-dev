@@ -17,14 +17,6 @@ class ChangeFamily extends AbstractMassEditOperation
     protected $family;
 
     /**
-     * @param string $jobInstanceCode
-     */
-    public function __construct($jobInstanceCode)
-    {
-        $this->jobInstanceCode = $jobInstanceCode;
-    }
-
-    /**
      * @param FamilyInterface $family
      *
      * @return ChangeFamily

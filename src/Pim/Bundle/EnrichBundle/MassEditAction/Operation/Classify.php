@@ -25,7 +25,8 @@ class Classify extends AbstractMassEditOperation
      */
     public function __construct($jobInstanceCode, $formType)
     {
-        $this->jobInstanceCode = $jobInstanceCode;
+        parent::__construct($jobInstanceCode);
+
         $this->formType = $formType;
         $this->categories = [];
     }

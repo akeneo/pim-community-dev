@@ -22,7 +22,8 @@ class AddToGroups extends AbstractMassEditOperation
      */
     public function __construct($jobInstanceCode)
     {
-        $this->jobInstanceCode = $jobInstanceCode;
+        parent::__construct($jobInstanceCode);
+
         $this->groups = new ArrayCollection();
     }
 

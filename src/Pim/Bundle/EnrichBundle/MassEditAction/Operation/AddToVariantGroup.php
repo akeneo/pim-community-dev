@@ -17,14 +17,6 @@ class AddToVariantGroup extends AbstractMassEditOperation
     protected $group;
 
     /**
-     * @param string $jobInstanceCode
-     */
-    public function __construct($jobInstanceCode)
-    {
-        $this->jobInstanceCode = $jobInstanceCode;
-    }
-
-    /**
      * @param GroupInterface $group
      */
     public function setGroup(GroupInterface $group)

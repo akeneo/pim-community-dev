@@ -24,6 +24,16 @@ abstract class AbstractMassEditOperation implements
     protected $jobInstanceCode;
 
     /**
+     * @param string $jobInstanceCode
+     */
+    public function __construct($jobInstanceCode)
+    {
+        $this->filters = [];
+        $this->actions = [];
+        $this->jobInstanceCode = $jobInstanceCode;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getFilters()
