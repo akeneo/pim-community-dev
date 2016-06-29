@@ -18,7 +18,7 @@ class SimpleMassEdit implements DefaultValuesProviderInterface
     protected $supportedJobNames;
 
     /**
-     * @param array $supportedJobNames
+     * @param string[] $supportedJobNames
      */
     public function __construct(array $supportedJobNames)
     {
