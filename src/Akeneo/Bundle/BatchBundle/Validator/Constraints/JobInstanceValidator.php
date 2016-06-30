@@ -3,6 +3,8 @@
 namespace Akeneo\Bundle\BatchBundle\Validator\Constraints;
 
 use Akeneo\Component\Batch\Job\JobRegistry;
+use Akeneo\Component\Batch\Job\UndefinedJobException;
+use Akeneo\Component\Batch\Model\JobInstance as JobInstanceModel;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -33,13 +35,17 @@ class JobInstanceValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if ($entity instanceof JobInstance) {
-            if (!$this->jobRegistry->get($entity->getAlias())) {
-                $this->context->buildViolation(
-                    $constraint->message,
-                    ['%job_type%' => $entity->getType()]
-                )->atPath($constraint->property)
-                ->addViolation();
+        if ($entity instanceof JobInstanceModel) {
+            try {
+                $this->jobRegistry->get($entity->getJobName());
+            } catch (UndefinedJobException $e) {
+                $this->context
+                    ->buildViolation(
+                        $constraint->message,
+                        ['%job_type%' => $entity->getType()]
+                    )
+                    ->atPath($constraint->property)
+                    ->addViolation();
             }
         }
     }
