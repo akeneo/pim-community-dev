@@ -42,7 +42,7 @@ class JobContext extends PimContext
 
         /** @var JobRegistry $jobRegistry */
         $jobRegistry = $this->getMainContext()->getContainer()->get('akeneo_batch.job.job_registry');
-        $job = $jobRegistry->get($jobInstance->getAlias());
+        $job = $jobRegistry->get($jobInstance->getJobName());
 
         /** @var JobParametersFactory $jobParamsFactory */
         $jobParamsFactory = $this->getMainContext()->getContainer()->get('akeneo_batch.job_parameters_factory');

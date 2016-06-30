@@ -225,7 +225,7 @@ class JobProfileController
             $uploadAllowed = true;
             $uploadForm = $this->createUploadForm()->createView();
         }
-        $job = $this->jobRegistry->get($jobInstance->getAlias());
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
 
         return $this->templating->renderResponse(
             $this->jobTemplateProvider->getShowTemplate($jobInstance),
@@ -277,7 +277,7 @@ class JobProfileController
         }
 
         $this->eventDispatcher->dispatch(JobProfileEvents::POST_EDIT, new GenericEvent($jobInstance));
-        $job = $this->jobRegistry->get($jobInstance->getAlias());
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
 
         return $this->templating->renderResponse(
             $this->jobTemplateProvider->getEditTemplate($jobInstance),
@@ -400,7 +400,7 @@ class JobProfileController
     protected function validateJobInstance(JobInstance $jobInstance, array $validationGroups)
     {
         $rawConfiguration = $jobInstance->getRawConfiguration();
-        $job = $this->jobRegistry->get($jobInstance->getAlias());
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
         $jobParameters = $this->jobParametersFactory->create($job, $rawConfiguration);
 
         /** @var ConstraintViolationListInterface $jobParamsViolations */
@@ -515,7 +515,7 @@ class JobProfileController
             );
         }
 
-        $job = $this->jobRegistry->get($jobInstance->getAlias());
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
 
         if (!$job) {
             throw new NotFoundHttpException(
