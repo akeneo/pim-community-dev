@@ -20,6 +20,10 @@ define(
             events: {
                 'change input': 'updateModel'
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (!this.configured) {
                     return this;
@@ -34,6 +38,10 @@ define(
 
                 this.renderExtensions();
             },
+
+            /**
+             * Update the form model on field update
+             */
             updateModel: function() {
                 var data = this.getFormData();
                 data.structure.attributes = JSON.parse(event.target.value);

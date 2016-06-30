@@ -15,6 +15,10 @@ define([
 ], function (__, BaseForm, template) {
     return BaseForm.extend({
         template: _.template(template),
+
+        /**
+         * {@inherit}
+         */
         configure: function () {
             this.listenTo(this.getRoot(), 'pim_enrich:filter:extension:add', this.addFilterExtension.bind(this));
 

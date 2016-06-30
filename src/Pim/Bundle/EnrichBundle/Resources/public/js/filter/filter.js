@@ -22,33 +22,80 @@ define([
             'click .remove': 'removeFilter'
         },
 
+        /**
+         * Field setter
+         *
+         * @param {string} field
+         */
         setField: function (field) {
             var data = this.getFormData();
             data.field = field;
             this.setData(data, {silent: true});
         },
+
+        /**
+         * Get the field identifier
+         *
+         * @return {string}
+         */
         getField: function () {
             return this.getFormData().field;
         },
+
+        /**
+         * Set the field operator
+         *
+         * @param {string} operator
+         */
         setOperator: function (operator) {
             var data = this.getFormData();
             data.operator = operator;
             this.setData(data, {silent: true});
         },
+
+        /**
+         * Get the field operator
+         *
+         * @return {string}
+         */
         getOperator: function () {
             return this.getFormData().operator;
         },
+
+        /**
+         * Get the field value
+         *
+         * @return {string}
+         */
         setValue: function (value) {
             var data = this.getFormData();
             data.value = value;
             this.setData(data, {silent: true});
         },
+
+        /**
+         * Get the field operator
+         *
+         * @return {string}
+         */
         getValue: function () {
             return this.getFormData().value;
         },
+
+        /**
+         * set if the filter removable
+         *
+         * @param {boolean} removable
+         */
         setRemovable: function (removable) {
             this.removable = removable;
         },
+
+        /**
+         * Is the filter removable
+         *
+         * @return {boolean}
+         */
         isRemovable: function () {
             return this.removable;
         },

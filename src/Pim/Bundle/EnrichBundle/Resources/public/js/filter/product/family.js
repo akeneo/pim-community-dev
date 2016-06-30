@@ -17,6 +17,10 @@ define([
         events: {
             'change [name="filter-operator"], [name="filter-value"]': 'updateState'
         },
+
+        /**
+         * {@inherit}
+         */
         initialize: function (config) {
             this.config = config.config;
 
@@ -71,6 +75,10 @@ define([
 
             return BaseFilter.prototype.initialize.apply(this, arguments);
         },
+
+        /**
+         * {@inherit}
+         */
         renderInput: function () {
             if (undefined === this.getOperator()) {
                 this.setOperator(_.first(this.config.operators));
@@ -84,10 +92,18 @@ define([
                 operatorChoices: this.config.operators
             });
         },
+
+        /**
+         * {@inherit}
+         */
         postRender: function () {
             this.$('[name="filter-operator"]').select2();
             this.$('[name="filter-value"]').select2(this.selectOptions);
         },
+
+        /**
+         * {@inherit}
+         */
         updateState: function () {
             var value = this.$('[name="filter-value"]').val();
             value = undefined !== value ? value.split(',') : value;

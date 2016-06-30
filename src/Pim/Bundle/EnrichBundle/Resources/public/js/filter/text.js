@@ -11,6 +11,10 @@ define([
             'blur input': 'updateState',
             'click .remove': 'removeFilter'
         },
+
+        /**
+         * {@inherit}
+         */
         render: function () {
             this.$el.empty().append(this.template({filter: this.getFormData(), removable: this.isRemovable()}));
 
@@ -18,6 +22,10 @@ define([
 
             return this;
         },
+
+        /**
+         * Udpate the sate on field change
+         */
         updateState: function () {
             var value = '';
             try {

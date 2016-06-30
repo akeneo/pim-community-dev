@@ -27,11 +27,19 @@ define(
             dataFilterCollection: [],
             filterViews: {},
             template: _.template(template),
+
+            /**
+             * {@inherit}
+             */
             initialize: function (config) {
                 this.config = config.config;
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
+
+            /**
+             * {@inherit}
+             */
             configure: function () {
                 this.onExtensions('add-attribute:add', function (event) {
                     this.addFilters(event.codes);
@@ -48,6 +56,10 @@ define(
 
                 return $.when.apply($, promises);
             },
+
+            /**
+             * {@inherit}
+             */
             render: function () {
                 if (!this.configured) {
                     return this;
@@ -63,6 +75,12 @@ define(
 
                 this.renderExtensions();
             },
+
+            /**
+             * Add filters to the form for the given fields
+             *
+             * @param {array} fields
+             */
             addFilters: function (fields) {
                 var fields = _.difference(fields, _.keys(this.filterViews));
 
@@ -92,6 +110,14 @@ define(
                     this.render();
                 }.bind(this));
             },
+
+            /**
+             * Create and add the filter view to the form
+             *
+             * @param {string}  viewCode
+             * @param {string}  fieldCode
+             * @param {boolean} removable
+             */
             addFilterView: function (viewCode, fieldCode, removable) {
                 return formBuilder.build(viewCode).then(function(view) {
                     view.setField(fieldCode);
@@ -112,6 +138,10 @@ define(
                     return filterView;
                 }.bind(this));
             },
+
+            /**
+             * Update the form model
+             */
             updateModel: function () {
                 this.dataFilterCollection = [];
 
@@ -125,6 +155,10 @@ define(
                 formData.data = this.dataFilterCollection;
                 this.setData(formData);
             },
+
+            /**
+             * Set back the data to the filters view
+             */
             updateFiltersData: function () {
                 var fields = _.pluck(this.getFormData()['data'], 'field');
 
@@ -136,6 +170,12 @@ define(
                     }.bind(this));
                 }.bind(this));
             },
+
+            /**
+             * remove the filter for the given field
+             *
+             * @param {string} field
+             */
             removeFilter: function (field) {
                 delete this.filterViews[field];
                 this.updateModel();
