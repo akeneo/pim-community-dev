@@ -1,17 +1,18 @@
 parameters:
-    pim_enrich.connector.job.job_parameters.default_values_provider.simple_mass_edit.class:     Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider\SimpleMassEdit
+    pim_enrich.connector.job.job_parameters.default_values_provider.product_mass_edit.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider\ProductMassEdit
     pim_enrich.connector.job.job_parameters.default_values_provider.product_quick_export.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider\ProductQuickExport
+    pim_enrich.connector.job.job_parameters.default_values_provider.simple_mass_edit.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider\SimpleMassEdit
+
 
 services:
-    pim_enrich.connector.job.job_parameters.default_values_provider.simple_mass_edit:
-        class: '%pim_enrich.connector.job.job_parameters.default_values_provider.simple_mass_edit.class%'
+    pim_enrich.connector.job.job_parameters.default_values_provider.product_mass_edit:
+        class: '%pim_enrich.connector.job.job_parameters.default_values_provider.product_mass_edit.class%'
         arguments:
             -
                 - 'update_product_value'
                 - 'add_product_value'
                 - 'remove_product_value'
                 - 'edit_common_attributes'
-                - 'set_attribute_requirements'
                 - 'add_to_variant_group'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
@@ -33,5 +34,14 @@ services:
             -
                 - 'xlsx_product_quick_export'
                 - 'xlsx_product_grid_context_quick_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+
+    pim_enrich.connector.job.job_parameters.default_values_provider.simple_mass_edit:
+        class: '%pim_enrich.connector.job.job_parameters.default_values_provider.simple_mass_edit.class%'
+        arguments:
+            -
+                - 'set_attribute_requirements'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }

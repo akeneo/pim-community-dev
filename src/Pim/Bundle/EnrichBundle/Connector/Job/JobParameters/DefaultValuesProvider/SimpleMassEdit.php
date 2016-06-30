@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 
 /**
- * DefaultParameters for simple mass edit
+ * DefaultParameters for product mass edit
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -14,7 +14,7 @@ use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
  */
 class SimpleMassEdit implements DefaultValuesProviderInterface
 {
-    /** @var array */
+    /** @var string[] */
     protected $supportedJobNames;
 
     /**
@@ -31,9 +31,8 @@ class SimpleMassEdit implements DefaultValuesProviderInterface
     public function getDefaultValues()
     {
         return [
-            'filters'            => null,
-            'actions'            => null,
-            'realTimeVersioning' => true
+            'filters' => [],
+            'actions' => [],
         ];
     }
 

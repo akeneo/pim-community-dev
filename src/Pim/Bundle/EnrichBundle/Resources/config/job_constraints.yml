@@ -1,10 +1,11 @@
 parameters:
-    pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit.class:     Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleMassEdit
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_mass_edit.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductMassEdit
     pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_quick_export.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductQuickExport
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleMassEdit
 
 services:
-    pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit:
-        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit.class%'
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_mass_edit:
+        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_mass_edit.class%'
         arguments:
             -
                 - 'update_product_value'
@@ -33,5 +34,12 @@ services:
             -
                 - 'xlsx_product_quick_export'
                 - 'xlsx_product_grid_context_quick_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit:
+        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit.class%'
+        arguments:
+            - []
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

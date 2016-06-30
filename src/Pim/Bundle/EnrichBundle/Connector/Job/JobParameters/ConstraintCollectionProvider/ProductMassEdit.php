@@ -5,16 +5,18 @@ namespace Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollecti
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
- * Constraints for simple mass edit
+ * Constraints for product mass edit
  *
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleMassEdit implements ConstraintCollectionProviderInterface
+class ProductMassEdit implements ConstraintCollectionProviderInterface
 {
     /** @var array */
     protected $supportedJobNames;
@@ -35,8 +37,9 @@ class SimpleMassEdit implements ConstraintCollectionProviderInterface
         return new Collection(
             [
                 'fields' => [
-                    'filters' => new NotNull(),
-                    'actions' => new NotNull(),
+                    'filters'            => new NotNull(),
+                    'actions'            => new NotNull(),
+                    'realTimeVersioning' => new Type('bool'),
                 ]
             ]
         );
