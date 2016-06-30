@@ -93,38 +93,13 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
 
         $pqb = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
 
-//        $filters = json_decode($parameters->get('filters'), true);
-        $filters = [
-            [
-                'field' => 'completeness',
-                'operator' => 'NOT COMPLETE ON ALL LOCALES',
-                'value' => '',
-                'context' => [
-                    'lastJobExecution' => $this->getLastCompletedJobExecution(),
-                    'locales' => [
-                        'de_DE',
-                        'en_US',
-                        'fr_FR'
-                    ]
-                ]
-            ]
-        ];
-
-        $context = [
-            'lastJobExecution' => $this->getLastCompletedJobExecution(),
-            'locales'          => [
-                'de_DE',
-                'en_US',
-                'fr_FR'
-            ]
-        ];
-
-        foreach ($filters as $filter) {
+        $filters = $parameters->get('filters');
+        foreach ($filters['data'] as $filter) {
             $pqb->addFilter(
                 $filter['field'],
                 $filter['operator'],
                 $filter['value'],
-                array_merge($filter['context'], $context)
+                is_array($filter['context']) ? $filter['context'] : []
             );
         }
 
@@ -172,73 +147,14 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     protected function getConfiguredChannel()
     {
-//        $parameters = $this->stepExecution->getJobParameters();
-//        $channelCode = json_decode($parameters->get('filters'), true)['structure']['scope'];
+        $parameters = $this->stepExecution->getJobParameters();
+        $channelCode = $parameters->get('filters')['structure']['scope'];
 
-        $channel = $this->channelRepository->findOneByIdentifier('mobile');
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
             throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $channelCode));
         }
 
         return $channel;
-    }
-
-    /**
-     * @return JobExecution|null
-     */
-    protected function getLastCompletedJobExecution()
-    {
-        $jobInstance = $this->stepExecution->getJobExecution()->getJobInstance();
-
-        return $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
-    }
-
-    /**
-     * Transform completeness choice into PQB filter
-     *
-     * @param JobParameters $parameters
-     *
-     * @return array|null
-     */
-    protected function getCompletenessFilters(JobParameters $parameters)
-    {
-        if ('at_least_one_complete' === $parameters->get('completeness')) {
-            return [[
-                'field'    => 'completeness',
-                'operator' => Operators::EQUALS,
-                'value'    => 100,
-                'context'  => []
-            ]];
-        }
-
-        if ('all_complete' === $parameters->get('completeness')) {
-            $filters = [];
-            foreach ($parameters->get('locales') as $locale) {
-                $filters[] = [
-                    'field'    => 'completeness',
-                    'operator' => Operators::EQUALS,
-                    'value'    => 100,
-                    'context'  => ['locale' => $locale]
-                ];
-            }
-
-            return $filters;
-        }
-
-        if ('all_incomplete' === $parameters->get('completeness')) {
-            $filters = [];
-            foreach ($parameters->get('locales') as $locale) {
-                $filters[] = [
-                    'field'    => 'completeness',
-                    'operator' => Operators::LOWER_THAN,
-                    'value'    => 100,
-                    'context'  => ['locale' => $locale]
-                ];
-            }
-
-            return $filters;
-        }
-
-        return [];
     }
 }

@@ -59,7 +59,9 @@ define(
                 return this;
             },
             updateModel: function (event) {
-                this.setLocales($(event.target).val());
+                var locales = $(event.target).val();
+                locales = null === locales ? [] : locales;
+                this.setLocales(locales);
             },
             setLocales: function (codes) {
                 var data = this.getFormData();
