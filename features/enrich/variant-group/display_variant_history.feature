@@ -37,4 +37,4 @@ Feature: Display the variant group history
     And I should see history:
       | version | property   | value       |
       | 2       | name-en_US | Ultra boots |
-      | 2       | length     | 5           |
+      | 2       | my_length  | 5           |

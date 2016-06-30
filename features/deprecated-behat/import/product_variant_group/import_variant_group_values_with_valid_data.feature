@@ -219,7 +219,7 @@ Feature: Execute an import
   Scenario: Successfully import a csv file of variant group values with metrics in many fields
     Given the following CSV file to import:
     """
-    code;type;length;length-unit
+    code;type;my_length;my_length-unit
     SANDAL;VARIANT;4000;CENTIMETER
     """
     And the following job "footwear_variant_group_import" configuration:
@@ -232,14 +232,14 @@ Feature: Execute an import
     And I should see "Processed 1"
     And I should see "Updated products 6"
     And the product "sandal-white-37" should have the following value:
-      | length | 4000.0000 CENTIMETER |
+      | my_length | 4000.0000 CENTIMETER |
     And the product "sandal-white-38" should have the following value:
-      | length | 4000.0000 CENTIMETER |
+      | my_length | 4000.0000 CENTIMETER |
 
   Scenario: Successfully import a csv file of variant group values with metrics in a single field
     Given the following CSV file to import:
     """
-    code;type;length
+    code;type;my_length
     SANDAL;VARIANT;4000 CENTIMETER
     """
     And the following job "footwear_variant_group_import" configuration:
@@ -252,9 +252,9 @@ Feature: Execute an import
     And I should see "Processed 1"
     And I should see "Updated products 6"
     And the product "sandal-white-37" should have the following value:
-      | length | 4000.0000 CENTIMETER |
+      | my_length | 4000.0000 CENTIMETER |
     And the product "sandal-white-38" should have the following value:
-      | length | 4000.0000 CENTIMETER |
+      | my_length | 4000.0000 CENTIMETER |
 
   Scenario: Successfully import a csv file of variant group values with medias and files
     Given the following attributes:

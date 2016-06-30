@@ -31,7 +31,7 @@ Feature: Validate editing common date attributes of multiple products
       | info      | Info      | textarea |                    |            | 25             |
     And the following family:
       | code          | attributes                                                                                                             |
-      | master_family | sku, side_view, length, weather_conditions, number_in_stock, price, manufacturer, comment, available, date, file, info |
+      | master_family | sku, side_view, my_length, weather_conditions, number_in_stock, price, manufacturer, comment, available, date, file, info |
     And the following products:
       | sku      | family        |
       | boots    | master_family |

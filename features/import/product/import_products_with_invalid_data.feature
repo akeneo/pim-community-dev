@@ -97,7 +97,7 @@ Feature: Execute a job
   Scenario: Skip new products with invalid metrics during an import
     Given the following CSV file to import:
       """
-      sku;length
+      sku;my_length
       SKU-001;4000 CENTIMETER
       SKU-002;12 invalid
       """
@@ -109,17 +109,17 @@ Feature: Execute a job
     Then I should see "skipped 1"
     And there should be 1 products
     And the product "SKU-001" should have the following value:
-      | length | 4000.0000 CENTIMETER |
+      | my_length | 4000.0000 CENTIMETER |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing products with invalid metrics during an import
     Given the following products:
-      | sku     | length        |
+      | sku     | my_length     |
       | SKU-001 | 98 CENTIMETER |
       | SKU-002 | 2 KILOMETER   |
     And the following CSV file to import:
       """
-      sku;length
+      sku;my_length
       SKU-001;4000 CENTIMETER
       SKU-002;12 invalid
       """
@@ -131,9 +131,9 @@ Feature: Execute a job
     Then I should see "skipped 1"
     And there should be 2 products
     And the product "SKU-001" should have the following value:
-      | length | 4000.0000 CENTIMETER |
+      | my_length | 4000.0000 CENTIMETER |
     And the product "SKU-002" should have the following value:
-      | length | 2.0000 KILOMETER |
+      | my_length | 2.0000 KILOMETER |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new products with invalid number during an import, as a not allowed negative number
@@ -312,7 +312,7 @@ Feature: Execute a job
   Scenario: Skip new products with invalid metric during an import
     Given the following CSV file to import:
       """
-      sku;length
+      sku;my_length
       renault-kangoo;2500 CENTIMETER
       honda-civic;2 METER
       seat-ibiza;4 TON
@@ -327,16 +327,16 @@ Feature: Execute a job
     Then I should see "skipped 2"
     And there should be 3 products
     And the product "renault-kangoo" should have the following value:
-      | length | 2500.0000 CENTIMETER |
+      | my_length | 2500.0000 CENTIMETER |
     And the product "honda-civic" should have the following value:
-      | length | 2.0000 METER |
+      | my_length | 2.0000 METER |
     And the product "fiat-panda" should have the following value:
-      | length | |
+      | my_length | |
 
   Scenario: Skip new products with invalid metric (two columns) during an import
     Given the following CSV file to import:
       """
-      sku;length;length-unit
+      sku;my_length;my_length-unit
       renault-kangoo;2500;CENTIMETER
       fiat-panda;;CENTIMETER
       fiat-uno;2000;
@@ -350,9 +350,9 @@ Feature: Execute a job
     Then I should see "skipped 2"
     And there should be 2 product
     And the product "renault-kangoo" should have the following value:
-      | length | 2500.0000 CENTIMETER |
+      | my_length | 2500.0000 CENTIMETER |
     And the product "fiat-500" should have the following value:
-      | length | |
+      | my_length | |
 
   Scenario: Skip new products with invalid price during an import
     Given the following attributes:

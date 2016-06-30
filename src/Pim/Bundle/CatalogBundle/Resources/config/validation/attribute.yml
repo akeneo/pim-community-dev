@@ -32,8 +32,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Length:
                 max: 255
             - Regex:
-                pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|family|groups|associations|products|scope|treeId|values|category|(.)*_(products|groups))$)/
-                message: This code is not available
+                pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|family|groups|associations|products|scope|treeId|values|category|length|(.)*_(products|groups))$)/
+                message: This code cannot be used
         localizable:
             - Type: bool
             - 'IsFalse':

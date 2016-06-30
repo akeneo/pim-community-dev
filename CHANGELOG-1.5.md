@@ -1,3 +1,9 @@
+# 1.5.*
+
+## Bug fixes
+
+- PIM-5855: Attribute Length generates issues in Product Grid
+
 # 1.5.5 (2016-06-16)
 
 - PIM-5711: Don't create empty attribute translations if attributes are imported with empty labels

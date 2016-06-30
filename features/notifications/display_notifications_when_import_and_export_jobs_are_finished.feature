@@ -23,7 +23,7 @@ Feature: Display notifications for import and export jobs
       """
       type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit
       pim_catalog_simpleselect;lace_color;"New lace color";colors;0;1;0;0;;;
-      pim_catalog_metric;length;"New length";info;0;0;0;0;;Length;INVALID_LENGTH
+      pim_catalog_metric;my_length;"New length";info;0;0;0;0;;Length;INVALID_LENGTH
 
       """
     And the following job "attribute_import" configuration:

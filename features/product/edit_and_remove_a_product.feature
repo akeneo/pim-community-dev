@@ -7,8 +7,8 @@ Feature: Edit and remove a product
   Background:
     Given the "footwear" catalog configuration
     And the following family:
-      | code  | attributes                                                               |
-      | shoes | sku, name, description, price, rating, size, color, manufacturer, length |
+      | code  | attributes                                                                  |
+      | shoes | sku, name, description, price, rating, size, color, manufacturer, my_length |
     And I am logged in as "Julia"
     And I am on the products page
     And I create a new product

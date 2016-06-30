@@ -29,7 +29,7 @@ Feature: Order attributes
 
   Scenario: Update an attribute position in the product view
     Given the following product:
-      | sku      | description-en_US-mobile | manufacturer | weather_conditions | length        |
+      | sku      | description-en_US-mobile | manufacturer | weather_conditions | my_length     |
       | boot-001 | Nice dark rangers        | Caterpillar  | Wet                | 50 CENTIMETER |
     When I am on the "boot-001" product page
     Then the attribute "SKU" should be in position 1

@@ -6,7 +6,7 @@ Feature: Filter on metric attributes
   Scenario: Successfully filter on metric attributes
     Given a "footwear" catalog configuration
     And the following products:
-      | sku       | length        | volume              |
+      | sku       | my_length     | volume              |
       | SUSHIROLL | 12 CENTIMETER |                     |
       | OBELISK   | 35 CENTIMETER |                     |
       | CASSAVA   | 44 CENTIMETER |                     |
@@ -17,13 +17,13 @@ Feature: Filter on metric attributes
       | POOL      |               | 15 CUBIC_METER      |
     Then I should get the following results for the given filters:
       | filter                                                                                                                                                               | result                                     |
-      | [{"field":"length", "operator":"=",     "value": {"data": 44, "unit": "CENTIMETER"}}]                                                                                | ["CASSAVA"]                                |
-      | [{"field":"length", "operator":"<",     "value": {"data": 25, "unit": "CENTIMETER"}}]                                                                                | ["PEN", "SUSHIROLL"]                       |
-      | [{"field":"length", "operator":"<=",    "value": {"data": 44, "unit": "CENTIMETER"}}]                                                                                | ["OBELISK", "CASSAVA", "PEN", "SUSHIROLL"] |
-      | [{"field":"length", "operator":">=",    "value": {"data": 35, "unit": "CENTIMETER"}}]                                                                                | ["CASSAVA", "OBELISK"]                     |
-      | [{"field":"length", "operator":">",     "value": {"data": 35, "unit": "CENTIMETER"}}]                                                                                | ["CASSAVA"]                                |
-      | [{"field":"length", "operator":"<=", "value": {"data": 44, "unit": "CENTIMETER"}}, {"field":"length", "operator":">=", "value": {"data": 12, "unit": "CENTIMETER"}}] | ["OBELISK", "CASSAVA", "SUSHIROLL"]        |
-      | [{"field":"length", "operator":"EMPTY", "value": null}]                                                                                                              | ["FINGER", "MOUTH", "SAUCEPAN", "POOL"]    |
+      | [{"field":"my_length", "operator":"=",     "value": {"data": 44, "unit": "CENTIMETER"}}]                                                                                | ["CASSAVA"]                                |
+      | [{"field":"my_length", "operator":"<",     "value": {"data": 25, "unit": "CENTIMETER"}}]                                                                                | ["PEN", "SUSHIROLL"]                       |
+      | [{"field":"my_length", "operator":"<=",    "value": {"data": 44, "unit": "CENTIMETER"}}]                                                                                | ["OBELISK", "CASSAVA", "PEN", "SUSHIROLL"] |
+      | [{"field":"my_length", "operator":">=",    "value": {"data": 35, "unit": "CENTIMETER"}}]                                                                                | ["CASSAVA", "OBELISK"]                     |
+      | [{"field":"my_length", "operator":">",     "value": {"data": 35, "unit": "CENTIMETER"}}]                                                                                | ["CASSAVA"]                                |
+      | [{"field":"my_length", "operator":"<=", "value": {"data": 44, "unit": "CENTIMETER"}}, {"field":"my_length", "operator":">=", "value": {"data": 12, "unit": "CENTIMETER"}}] | ["OBELISK", "CASSAVA", "SUSHIROLL"]        |
+      | [{"field":"my_length", "operator":"EMPTY", "value": null}]                                                                                                              | ["FINGER", "MOUTH", "SAUCEPAN", "POOL"]    |
       | [{"field":"volume", "operator":"=", "value":{"data": 12, "unit":"CUBIC_MILLIMETER"}}]                                                                                | ["MOUTH"]                                  |
       | [{"field":"volume", "operator":"<", "value":{"data": 1, "unit":"CUBIC_METER"}}]                                                                                      | ["MOUTH", "SAUCEPAN"]                      |
       | [{"field":"volume", "operator":">", "value":{"data": 100, "unit":"CUBIC_MILLIMETER"}}]                                                                               | ["POOL"]                                   |

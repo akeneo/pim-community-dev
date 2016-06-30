@@ -26,7 +26,7 @@ Feature: Editing attribute values of a variant group also updates products
     And the following variant group values:
       | group             | attribute          | value         | locale | scope  |
       | caterpillar_boots | destocking_date    | 2012-02-22    |        |        |
-      | caterpillar_boots | length             | 10 CENTIMETER |        |        |
+      | caterpillar_boots | my_length          | 10 CENTIMETER |        |        |
       | caterpillar_boots | weather_conditions | Dry           |        |        |
       | caterpillar_boots | number_in_stock    | 1900          |        |        |
       | caterpillar_boots | price              | 39.99 EUR     |        |        |
@@ -65,7 +65,7 @@ Feature: Editing attribute values of a variant group also updates products
     And I save the variant group
     And I should see the flash message "Variant group successfully updated"
     Then the product "boot" should have the following values:
-      | length | 5.0000 CENTIMETER |
+      | my_length | 5.0000 CENTIMETER |
 
   Scenario: Change a pim_catalog_multiselect attribute of a variant group
     When I change the "Weather conditions" to "Wet, Cold"

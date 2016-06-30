@@ -9,12 +9,12 @@ Feature: Validate metric attributes of a product
     And the following attributes:
       | code   | label-en_US | type   | scopable | metric_family | default_metric_unit | negative_allowed | decimals_allowed | number_min | number_max |
       | area   | Area        | metric | no       | Area          | HECTARE             | no               | no               |            |            |
-      | length | Length      | metric | yes      | Length        | METER               | no               | no               |            |            |
+      | my_length | Length      | metric | yes      | Length        | METER               | no               | no               |            |            |
       | power  | Power       | metric | no       | Power         | WATT                | yes              | yes              | -200       | -100       |
       | speed  | Speed       | metric | yes      | Speed         | YARD_PER_HOUR       | yes              | yes              | 5.50       | 100        |
     And the following family:
       | code | label-en_US | attributes                      |
-      | baz  | Baz         | sku, area, length, power, speed |
+      | baz  | Baz         | sku, area, my_length, power, speed |
     And the following product:
       | sku | family |
       | foo | baz    |
