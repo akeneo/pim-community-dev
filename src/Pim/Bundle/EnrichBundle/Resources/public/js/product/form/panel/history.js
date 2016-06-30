@@ -197,7 +197,6 @@ define(
              */
             expandHistory: function () {
                 this.getParent().openFullPanel();
-                this.render();
             },
 
             /**
@@ -205,7 +204,6 @@ define(
              */
             collapseHistory: function () {
                 this.getParent().closeFullPanel();
-                this.render();
             },
 
             /**
