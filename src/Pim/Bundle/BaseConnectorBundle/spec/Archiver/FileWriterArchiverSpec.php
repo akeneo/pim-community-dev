@@ -38,7 +38,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         Job $job,
         ItemStep $step
     ) {
-        $jobInstance->getAlias()->willReturn('my_job_name');
+        $jobInstance->getJobName()->willReturn('my_job_name');
         $jobRegistry->get('my_job_name')->willReturn($job);
 
         $pathname = tempnam(sys_get_temp_dir(), 'spec');
@@ -47,7 +47,6 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getJobName()->willReturn('alias');
 
         $job->getSteps()->willReturn([$step]);
 
@@ -79,12 +78,11 @@ class FileWriterArchiverSpec extends ObjectBehavior
         Job $job,
         ItemStep $step
     ) {
-        $jobInstance->getAlias()->willReturn('my_job_name');
+        $jobInstance->getJobName()->willReturn('my_job_name');
         $jobRegistry->get('my_job_name')->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
 
@@ -106,12 +104,11 @@ class FileWriterArchiverSpec extends ObjectBehavior
         Job $job,
         AbstractStep $step
     ) {
-        $jobInstance->getAlias()->willReturn('my_job_name');
+        $jobInstance->getJobName()->willReturn('my_job_name');
         $jobRegistry->get('my_job_name')->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
 
         $filesystem->put(Argument::cetera())->shouldNotBeCalled();
@@ -127,7 +124,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         Job $job,
         ItemStep $step
     ) {
-        $jobInstance->getAlias()->willReturn('my_job_name');
+        $jobInstance->getJobName()->willReturn('my_job_name');
         $jobRegistry->get('my_job_name')->willReturn($job);
         $pathname = tempnam(sys_get_temp_dir(), 'spec');
         $filename = basename($pathname);
@@ -135,7 +132,6 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
         $writer->getWrittenFiles()->willReturn([$pathname => $filename]);
@@ -154,12 +150,11 @@ class FileWriterArchiverSpec extends ObjectBehavior
         Job $job,
         ItemStep $step
     ) {
-        $jobInstance->getAlias()->willReturn('my_job_name');
+        $jobInstance->getJobName()->willReturn('my_job_name');
         $jobRegistry->get('my_job_name')->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
 

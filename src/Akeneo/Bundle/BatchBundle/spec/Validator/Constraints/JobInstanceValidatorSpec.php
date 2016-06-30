@@ -11,6 +11,7 @@ use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
+use Akeneo\Component\Batch\Job\UndefinedJobException;
 
 class JobInstanceValidatorSpec extends ObjectBehavior
 {
@@ -39,7 +40,7 @@ class JobInstanceValidatorSpec extends ObjectBehavior
         JobInstance $jobInstance,
         JobInterface $job
     ) {
-        $jobInstance->getAlias()->willReturn('my_job_name');
+        $jobInstance->getJobName()->willReturn('my_job_name');
         $jobRegistry->get('my_job_name')->willReturn($job);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -53,8 +54,9 @@ class JobInstanceValidatorSpec extends ObjectBehavior
         JobInstance $jobInstance,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $jobInstance->getAlias()->willReturn('my_job_name');
-        $jobRegistry->get('my_job_name')->willReturn(null);
+        $jobInstance->getJobName()->willReturn(null);
+        $jobRegistry->get(null)->willThrow(new UndefinedJobException('The job "" is not registered'));
+
         $jobInstance->getType()->willReturn('import');
 
         $context

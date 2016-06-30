@@ -41,7 +41,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      */
     public function archive(JobExecution $jobExecution)
     {
-        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getAlias());
+        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
             if (!$step instanceof ItemStep) {
                 continue;
@@ -71,7 +71,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      */
     public function supports(JobExecution $jobExecution)
     {
-        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getAlias());
+        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
             if ($step instanceof ItemStep && $this->isUsableWriter($step->getWriter())) {
                 return true;

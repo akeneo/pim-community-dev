@@ -206,7 +206,7 @@ class JobInstanceType extends AbstractType
     protected function addJobConfigurationField(FormBuilderInterface $builder)
     {
         // TODO: TIP-426: rename this field to parameters
-        $jobName = $builder->getData()->getAlias();
+        $jobName = $builder->getData()->getJobName();
 
         if (null !== $jobName) {
             $job = $this->jobRegistry->get($jobName);

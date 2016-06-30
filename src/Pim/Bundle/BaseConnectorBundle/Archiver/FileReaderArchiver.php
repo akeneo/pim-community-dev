@@ -39,7 +39,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      */
     public function archive(JobExecution $jobExecution)
     {
-        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getAlias());
+        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
             if (!$step instanceof ItemStep) {
                 continue;
@@ -89,7 +89,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      */
     public function supports(JobExecution $jobExecution)
     {
-        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getAlias());
+        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
             if ($step instanceof ItemStep && $this->isReaderUsable($step->getReader())) {
                 return true;

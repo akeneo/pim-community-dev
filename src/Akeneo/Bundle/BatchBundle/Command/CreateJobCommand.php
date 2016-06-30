@@ -66,7 +66,7 @@ class CreateJobCommand extends ContainerAwareCommand
         $jobInstance->setRawConfiguration($rawConfig);
 
         /** @var JobInterface */
-        $job = $this->getJobRegistry()->get($jobInstance->getAlias());
+        $job = $this->getJobRegistry()->get($jobInstance->getJobName());
         if (null === $job) {
             $output->writeln(
                 sprintf(

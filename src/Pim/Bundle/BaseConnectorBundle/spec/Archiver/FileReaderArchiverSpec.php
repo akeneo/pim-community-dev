@@ -30,7 +30,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
     }
 
     function it_create_a_file_when_reader_is_valid(
-        $registry,
+        $jobRegistry,
         CsvReader $reader,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -42,12 +42,11 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $pathname = tempnam(sys_get_temp_dir(), 'spec');
         $filename = basename($pathname);
 
-        $jobInstance->getAlias()->willReturn('my_job_name');
+        $jobInstance->getJobName()->willReturn('my_job_name');
         $jobRegistry->get('my_job_name')->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getReader()->willReturn($reader);
 
@@ -77,12 +76,11 @@ class FileReaderArchiverSpec extends ObjectBehavior
         ItemStep $step,
         $filesystem
     ) {
-        $jobInstance->getAlias()->willReturn('my_job_name');
+        $jobInstance->getJobName()->willReturn('my_job_name');
         $jobRegistry->get('my_job_name')->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getReader()->willReturn($reader);
 
@@ -104,12 +102,11 @@ class FileReaderArchiverSpec extends ObjectBehavior
         AbstractStep $step,
         $filesystem
     ) {
-        $jobInstance->getAlias()->willReturn('my_job_name');
+        $jobInstance->getJobName()->willReturn('my_job_name');
         $jobRegistry->get('my_job_name')->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
 
         $filesystem->put(Argument::any())->shouldNotBeCalled();
@@ -118,19 +115,18 @@ class FileReaderArchiverSpec extends ObjectBehavior
     }
 
     function it_returns_true_for_the_supported_job(
-        $registry,
+        $jobRegistry,
         CsvReader $reader,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
         ItemStep $step
     ) {
-        $jobInstance->getAlias()->willReturn('my_job_name');
+        $jobInstance->getJobName()->willReturn('my_job_name');
         $jobRegistry->get('my_job_name')->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getReader()->willReturn($reader);
 
@@ -145,12 +141,11 @@ class FileReaderArchiverSpec extends ObjectBehavior
         Job $job,
         ItemStep $step
     ) {
-        $jobInstance->getAlias()->willReturn('my_job_name');
+        $jobInstance->getJobName()->willReturn('my_job_name');
         $jobRegistry->get('my_job_name')->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getReader()->willReturn($reader);
 

@@ -115,7 +115,7 @@ class SimpleJobLauncher implements JobLauncherInterface
      */
     protected function createJobExecution(JobInstance $jobInstance, UserInterface $user)
     {
-        $job = $this->jobRegistry->get($jobInstance->getAlias());
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
         $jobParameters = $this->jobParametersFactory->create($job, $jobInstance->getRawConfiguration());
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance, $jobParameters);
         $jobExecution->setUser($user->getUsername());

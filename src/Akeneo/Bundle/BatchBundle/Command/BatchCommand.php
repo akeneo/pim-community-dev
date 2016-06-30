@@ -89,7 +89,7 @@ class BatchCommand extends ContainerAwareCommand
             throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
         }
 
-        $job = $this->getJobRegistry()->get($jobInstance->getAlias());
+        $job = $this->getJobRegistry()->get($jobInstance->getJobName());
         $jobParamsFactory = $this->getJobParametersFactory();
         if ($config = $input->getOption('config')) {
             $rawConfiguration = $this->decodeConfiguration($config);

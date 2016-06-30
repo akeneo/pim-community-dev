@@ -169,7 +169,7 @@ class JobProfileController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $job = $this->jobRegistry->get($jobInstance->getAlias());
+                $job = $this->jobRegistry->get($jobInstance->getJobName());
                 $jobParameters = $this->jobParametersFactory->create($job);
                 $jobInstance->setRawConfiguration($jobParameters->all());
 
