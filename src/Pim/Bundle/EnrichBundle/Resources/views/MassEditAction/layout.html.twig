@@ -4,7 +4,7 @@
     <div class="row wizard-header">
         <ul class="wizard">
             {% spaceless %}
-                {% for stepLabel in stepLabels %}
+                {% for stepLabel in stepLabels|default([]) %}
                     <li>{{ stepLabel|default('step label')|trans }}</li>
                 {% endfor %}
             {% endspaceless %}

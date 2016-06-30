@@ -1,9 +1,13 @@
 {% extends 'PimEnrichBundle:MassEditAction:configure.html.twig' %}
 
-{% set firstStepLabel = 'pim_enrich.mass_edit_action.product.steps.first' %}
-{% set secondStepLabel = 'pim_enrich.mass_edit_action.product.steps.second' %}
-{% set thirdStepLabel = 'pim_enrich.mass_edit_action.product.steps.third' %}
-{% set fourthStepLabel = 'pim_enrich.mass_edit_action.product.steps.fourth' %}
+{%
+    set stepLabels = [
+        'pim_enrich.mass_edit_action.product.steps.first',
+        'pim_enrich.mass_edit_action.product.steps.second',
+        'pim_enrich.mass_edit_action.product.steps.third',
+        'pim_enrich.mass_edit_action.product.steps.fourth'
+    ]
+%}
 
 {% set title = 'pim_enrich.mass_edit_action.product.page_title' %}
 {% set subtitle = 'pim_enrich.mass_edit_action.product.page_subtitle' %}

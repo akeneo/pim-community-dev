@@ -1,1 +1,13 @@
-{% extends 'PimEnrichBundle:MassEditAction:product/configure/classify-add.html.twig' %}
+{% extends 'PimEnrichBundle:MassEditAction:product/configure.html.twig' %}
+
+{%
+    set vars = {
+        'listCategoriesRoute': 'pim_enrich_product_listcategories',
+        'listCategoryChildrenRoute': 'pim_enrich_categorytree_children',
+        'domTreeId': 'trees'
+    }
+%}
+
+{% block formContent %}
+    {% include 'PimEnrichBundle:MassEditAction:product/configure/classify.html.twig' with vars %}
+{% endblock %}
