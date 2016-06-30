@@ -61,7 +61,7 @@ class ImportProposalsSubscriberSpec extends ObjectBehavior
         $productDraft->getProduct()->willReturn($product);
         $productDraft->getAuthor()->willReturn('import_code');
         $jobRepository
-            ->findOneBy(['alias' => 'csv_product_proposal_import', 'code' => 'import_code'])
+            ->findOneBy(['jobName' => 'csv_product_proposal_import', 'code' => 'import_code'])
             ->willReturn($jobInstance);
         $ownerGroupsProvider->getOwnerGroupIds($product)->willReturn(['42']);
         $this->saveGroupIdsToNotify($event);

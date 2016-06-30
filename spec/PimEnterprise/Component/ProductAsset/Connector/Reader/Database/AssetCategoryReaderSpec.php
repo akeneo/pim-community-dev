@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine;
+namespace spec\PimEnterprise\Component\ProductAsset\Connector\Reader\Database;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
