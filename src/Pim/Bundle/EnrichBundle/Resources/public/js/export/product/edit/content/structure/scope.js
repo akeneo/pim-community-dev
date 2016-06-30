@@ -25,6 +25,12 @@ define(
         return BaseForm.extend({
             className: 'control-group',
             template: _.template(template),
+
+            /**
+             * Renders scopes dropdown.
+             *
+             * @return {Object}
+             */
             render: function () {
                 if (!this.configured) {
                     return this;
@@ -44,15 +50,29 @@ define(
                         })
                     );
 
-                    this.$('.select2').select2().on('change', this.updateModel.bind(this));
+                    this.$('.select2').select2().on('change', this.updateState.bind(this));
                     this.$('[data-toggle="tooltip"]').tooltip();
 
                     this.renderExtensions();
                 }.bind(this));
+
+                return this;
             },
-            updateModel: function(event) {
+
+            /**
+             * Sets new scope on field change.
+             *
+             * @param {Object} event
+             */
+            updateState: function(event) {
                 this.setScope(event.target.value);
             },
+
+            /**
+             * Sets specified scope into root model.
+             *
+             * @param {String} code
+             */
             setScope: function (code) {
                 var data = this.getFormData();
                 var before = data.structure.scope;
@@ -64,6 +84,12 @@ define(
                     this.getRoot().trigger('channel:update:after', data.structure.scope);
                 }
             },
+
+            /**
+             * Gets scope from root model.
+             *
+             * @returns {String}
+             */
             getScope: function () {
                 var structure = this.getFormData().structure;
 

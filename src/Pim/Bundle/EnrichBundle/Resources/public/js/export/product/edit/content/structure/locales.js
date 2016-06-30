@@ -23,11 +23,23 @@ define(
         return BaseForm.extend({
             className: 'control-group',
             template: _.template(template),
+
+            /**
+             * Configures this extension.
+             *
+             * @return {Promise}
+             */
             configure: function () {
                 this.listenTo(this.getRoot(), 'channel:update:after', this.channelUpdated.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * Renders locales dropdown.
+             *
+             * @returns {Object}
+             */
             render: function () {
                 if (!this.configured) {
                     return this;
@@ -50,7 +62,7 @@ define(
                         })
                     );
 
-                    this.$('.select2').select2().on('change', this.updateModel.bind(this));
+                    this.$('.select2').select2().on('change', this.updateState.bind(this));
                     this.$('[data-toggle="tooltip"]').tooltip();
 
                     this.renderExtensions();
@@ -58,11 +70,21 @@ define(
 
                 return this;
             },
-            updateModel: function (event) {
-                var locales = $(event.target).val();
-                locales = null === locales ? [] : locales;
-                this.setLocales(locales);
+
+            /**
+             * Sets new locales on field change.
+             *
+             * @param {Object} event
+             */
+            updateState: function (event) {
+                this.setLocales($(event.target).val());
             },
+
+            /**
+             * Sets specified locales into root model.
+             *
+             * @param {Array} codes
+             */
             setLocales: function (codes) {
                 var data = this.getFormData();
                 var before = data.structure.locales;
@@ -74,6 +96,12 @@ define(
                     this.getRoot().trigger('locales:update:after', codes);
                 }
             },
+
+            /**
+             * Gets locales from root model.
+             *
+             * @returns {Array}
+             */
             getLocales: function () {
                 var structure = this.getFormData().structure;
 
@@ -83,23 +111,37 @@ define(
 
                 return _.isUndefined(structure.locales) ? [] : structure.locales;
             },
-            getScope: function () {
-                return this.getFormData().structure.scope;
-            },
+
+            /**
+             * Resets locales after channel has been modified then re-renders the view.
+             */
             channelUpdated: function () {
-                this.setDefaultLocales()
+                this.setLocales([])
                     .then(function () {
                         this.render();
                     }.bind(this));
             },
+
+            /**
+             * Sets locales corresponding to the current scope (default state).
+             *
+             * @return {Promise}
+             */
             setDefaultLocales: function () {
                 return fetcherRegistry.getFetcher('channel')
-                    .fetch(this.getScope())
+                    .fetch(this.getCurrentScope())
                     .then(function (scope) {
                         this.setLocales(scope.locales);
-
-                        return;
                     }.bind(this));
+            },
+
+            /**
+             * Gets current scope from root model.
+             *
+             * @return {String}
+             */
+            getCurrentScope: function () {
+                return this.getFormData().structure.scope;
             }
         });
     }

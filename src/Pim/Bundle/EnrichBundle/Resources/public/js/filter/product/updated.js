@@ -18,11 +18,23 @@ define([
         events: {
             'change [name="filter-operator"], [name="filter-value"]': 'updateState'
         },
+
+        /**
+         * Initializes configuration.
+         *
+         * @param config
+         */
         initialize: function (config) {
             this.config = config.config;
 
             return BaseFilter.prototype.initialize.apply(this, arguments);
         },
+
+        /**
+         * Returns rendered input.
+         *
+         * @return {String}
+         */
         renderInput: function () {
             if (undefined === this.getOperator()) {
                 this.setOperator(_.first(_.values(this.config.operators)));
@@ -36,6 +48,10 @@ define([
                 operatorChoices: this.config.operators
             });
         },
+
+        /**
+         * Initializes select2 and datepicker after rendering.
+         */
         postRender: function () {
             this.$('[name="filter-operator"]').select2();
 
@@ -45,6 +61,11 @@ define([
                     .on('changeDate', this.updateState.bind(this));
             }
         },
+
+        /**
+         * Updates operator and value on fields change.
+         * Value is reset after operator has changed.
+         */
         updateState: function () {
             var oldOperator = this.getFormData().operator;
 

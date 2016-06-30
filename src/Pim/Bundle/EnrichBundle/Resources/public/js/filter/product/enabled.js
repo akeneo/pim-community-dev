@@ -20,6 +20,12 @@ define([
         events: {
             'change [name="filter-value"]': 'updateState'
         },
+
+        /**
+         * Returns rendered input.
+         *
+         * @return {String}
+         */
         renderInput: function () {
             if (undefined === this.getValue()) {
                 this.setValue(null);
@@ -37,9 +43,17 @@ define([
                 value: this.getValue()
             });
         },
+
+        /**
+         * Initializes select2 after rendering.
+         */
         postRender: function () {
             this.$('[name="filter-value"]').select2();
         },
+
+        /**
+         * Updates operator and value on fields change.
+         */
         updateState: function () {
             var value = this.$('[name="filter-value"]').val();
 

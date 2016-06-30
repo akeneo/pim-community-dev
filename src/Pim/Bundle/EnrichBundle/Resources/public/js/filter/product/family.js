@@ -49,7 +49,7 @@ define([
                         _.each(families, function (value, key) {
                             data.results.push({
                                 id: key,
-                                text: i18n.getLabel(value.label, userContext.get('uiLocale'), value.code)
+                                text: i18n.getLabel(value.labels, userContext.get('uiLocale'), value.code)
                             });
                         });
 
