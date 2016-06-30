@@ -1,13 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
+namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\Query\Expr\Comparison;
+use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
@@ -30,68 +28,26 @@ class UpdatedDateTimeFilterSpec extends ObjectBehavior
         $this->setQueryBuilder($qb);
     }
 
-    function it_is_a_field_filter()
-    {
-        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FieldFilterInterface');
-    }
-
-    function it_supports_operators()
-    {
-        $this->getOperators()->shouldReturn([Operators::SINCE_LAST_N_DAYS, Operators::SINCE_LAST_EXPORT]);
-        $this->supportsOperator('IN')->shouldReturn(false);
-        $this->supportsOperator(Operators::SINCE_LAST_N_DAYS)->shouldReturn(true);
-    }
-
-    function it_returns_supported_fields()
-    {
-        $this->getFields()->shouldReturn(['updated']);
-    }
-
-    function it_adds_an_updated_since_last_n_days_filter($qb, Expr $expr, Comparison $comparison)
-    {
-        $qb->getRootAliases()->willReturn(['alias']);
-        $qb->andWhere($comparison)->shouldBeCalled();
-        $qb->expr()->willReturn($expr);
-        $expr->gt('alias.updated', Argument::type('string'))->shouldBeCalled()->willReturn($comparison);
-
-        $expr->literal(Argument::type('string'))->shouldBeCalled()->willReturn('2016-06-20 16:42:42');
-        $expr->gt('alias.updated', '2016-06-20 16:42:42')->shouldBeCalled()->willReturn($comparison);
-
-        $this->addFieldFilter(
-            'updated',
-            Operators::SINCE_LAST_N_DAYS,
-            30,
-            null,
-            null
-        );
-    }
-
-    function it_adds_an_updated_since_last_export_filter(
+    function it_adds_a_filter_on_products_updated_since_last_export(
         $qb,
         $jobInstanceRepository,
         $jobRepository,
         JobInstance $jobInstance,
         JobExecution $jobExecution,
-        \DateTime $startTime,
-        Expr $expr,
-        Comparison $comparison
+        \DateTime $startTime
     ) {
         $jobInstanceRepository->findOneBy(['code' => 'csv_product_export'])->willReturn($jobInstance);
         $jobRepository->getLastJobExecution($jobInstance, 1)->shouldBeCalled()->willReturn($jobExecution);
 
         $jobExecution->getStartTime()->willReturn($startTime);
-        $startTime->format('Y-m-d H:i:s')->willReturn('2016-06-20 16:42:42');
+        $startTime->format('Y-m-d H:i:s')->willReturn('2016-08-13 14:00:00');
 
-        $qb->getRootAliases()->willReturn(['alias']);
-        $qb->expr()->willReturn($expr);
-        $qb->andWhere($comparison)->shouldBeCalled();
-
-        $expr->literal('2016-06-20 16:42:42')->shouldBeCalled()->willReturn('2016-06-20 16:42:42');
-        $expr->gt('alias.updated', '2016-06-20 16:42:42')->shouldBeCalled()->willReturn($comparison);
+        $qb->field('normalizedData.updated')->shouldBeCalled()->willReturn($qb);
+        $qb->gt('2016-08-13 14:00:00')->shouldBeCalled();
 
         $this->addFieldFilter(
             'updated',
-            Operators::SINCE_LAST_EXPORT,
+            'SINCE LAST EXPORT',
             'csv_product_export',
             null,
             null
@@ -100,16 +56,33 @@ class UpdatedDateTimeFilterSpec extends ObjectBehavior
 
     function it_does_not_add_an_updated_since_last_export_filter_if_no_option_given(
         $qb,
-        $jobInstanceRepository
+        $jobInstanceRepository,
+        $jobRepository
     ) {
         $jobInstanceRepository->findOneBy(['code' => 'csv_product_export'])->willReturn(null);
+        $jobRepository->getLastJobExecution(Argument::cetera())->shouldNotBeCalled();
 
-        $qb->andWhere(Argument::cetera())->shouldNotBeCalled();
+        $qb->field(Argument::any())->shouldNotBeCalled();
+        $qb->gt(Argument::any())->shouldNotBeCalled();
 
         $this->addFieldFilter(
             'updated',
-            Operators::SINCE_LAST_EXPORT,
+            'SINCE LAST EXPORT',
             'csv_product_export',
+            null,
+            null
+        );
+    }
+
+    function it_adds_a_filter_on_products_updated_since_last_n_days($qb)
+    {
+        $qb->field('normalizedData.updated')->shouldBeCalled()->willReturn($qb);
+        $qb->gt(Argument::any())->shouldBeCalled();
+
+        $this->addFieldFilter(
+            'updated',
+            'SINCE LAST N DAYS',
+            30,
             null,
             null
         );

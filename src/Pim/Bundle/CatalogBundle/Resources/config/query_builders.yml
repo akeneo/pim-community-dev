@@ -131,6 +131,8 @@ services:
     pim_catalog.doctrine.query.filter.updated_datetime:
         class: '%pim_catalog.doctrine.query.filter.updated_datetime.class%'
         arguments:
+            - '@pim_import_export.repository.job_instance'
+            - '@akeneo_batch.job_repository'
             - ['updated']
             - ['SINCE LAST N DAYS', 'SINCE LAST EXPORT']
         tags:

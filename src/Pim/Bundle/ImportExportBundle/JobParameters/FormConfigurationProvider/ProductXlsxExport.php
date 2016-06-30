@@ -78,7 +78,7 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
     {
         $formOptions = [
             'filters' => [
-                'type' => 'hidden',
+                'type'    => 'hidden',
                 'options' => [
                     'attr' => [
                         'data-tab' => 'content'

@@ -4,10 +4,8 @@ namespace Pim\Component\Connector\Reader\Database;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
-use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
@@ -16,7 +14,6 @@ use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
@@ -88,7 +85,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     public function initialize()
     {
-        $channel = $this->getConfiguredChannel();
+        $channel    = $this->getConfiguredChannel();
         $parameters = $this->stepExecution->getJobParameters();
 
         $pqb = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);

@@ -23,6 +23,14 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
+    /** @var array Allow to map complex operators to simpler operators */
+    protected $operatorsMapping = [
+        Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES => Operators::GREATER_OR_EQUAL_THAN,
+        Operators::GREATER_THAN_ON_ALL_LOCALES           => Operators::GREATER_THAN,
+        Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES   => Operators::LOWER_OR_EQUAL_THAN,
+        Operators::LOWER_THAN_ON_ALL_LOCALES             => Operators::LOWER_THAN,
+    ];
+
     /**
      * @param ChannelRepositoryInterface $channelRepository
      * @param array                      $supportedFields
@@ -46,24 +54,27 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        $this->checkValue($field, $value, $locale, $scope);
-
-        $localeCodes = (null !== $locale) ?
-            [$locale] :
-            $this->getChannelByCode($scope)->getLocaleCodes();
+        $this->checkScopeAndValue($field, $scope, $value);
 
         $expr = $this->qb->expr();
 
-        foreach ($localeCodes as $localeCode) {
-            $field = sprintf(
-                "%s.%s.%s-%s",
-                ProductQueryUtility::NORMALIZED_FIELD,
-                'completenesses',
-                $scope,
-                $localeCode
-            );
-            $value = intval($value);
-            $expr->addOr($this->getExpr($value, $field, $operator));
+        if (array_key_exists($operator, $this->operatorsMapping)) {
+            $this->checkOptions($field, $options);
+
+            foreach ($options['locales'] as $localeCode) {
+                $field = $this->getNormalizedField($scope, $localeCode);
+                $expr->addAnd($this->getExpr($value, $field, $this->operatorsMapping[$operator]));
+            }
+        } else {
+            $localeCodes = (null !== $locale) ?
+                [$locale] :
+                $this->getChannelByCode($scope)->getLocaleCodes();
+
+            foreach ($localeCodes as $localeCode) {
+                $field = $this->getNormalizedField($scope, $localeCode);
+                $value = (int) $value;
+                $expr->addOr($this->getExpr($value, $field, $operator));
+            }
         }
 
         $this->qb->addAnd($expr);
@@ -72,22 +83,20 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
     }
 
     /**
-     * Check if value is valid
+     * @param string $scope
+     * @param string $localeCode
      *
-     * @param string      $field
-     * @param mixed       $value
-     * @param string|null $locale
-     * @param string|null $scope
+     * @return string
      */
-    protected function checkValue($field, $value, $locale, $scope)
+    protected function getNormalizedField($scope, $localeCode)
     {
-        if (!is_numeric($value)) {
-            throw InvalidArgumentException::numericExpected($field, 'filter', 'completeness', gettype($value));
-        }
-
-        if (null === $scope) {
-            throw InvalidArgumentException::scopeExpected($field, 'filter', 'completeness');
-        }
+        return sprintf(
+            "%s.%s.%s-%s",
+            ProductQueryUtility::NORMALIZED_FIELD,
+            'completenesses',
+            $scope,
+            $localeCode
+        );
     }
 
     /**
@@ -143,5 +152,55 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
         }
 
         return $channel;
+    }
+
+    /**
+     * Check if scope and value are valid
+     *
+     * @param string $field
+     * @param mixed  $scope
+     * @param mixed  $value
+     */
+    protected function checkScopeAndValue($field, $scope, $value)
+    {
+        if (!is_numeric($value)) {
+            throw InvalidArgumentException::numericExpected($field, 'filter', 'completeness', gettype($value));
+        }
+
+        if (null === $scope) {
+            throw InvalidArgumentException::scopeExpected($field, 'filter', 'completeness');
+        }
+    }
+
+    /**
+     * Check if options are valid for complex operators
+     *      GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES
+     *      GREATER_THAN_ON_ALL_LOCALES
+     *      LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES
+     *      LOWER_THAN_ON_ALL_LOCALES
+     *
+     * @param string $field
+     * @param array  $options
+     */
+    protected function checkOptions($field, array $options)
+    {
+        if (!array_key_exists('locales', $options)) {
+            throw InvalidArgumentException::arrayKeyExpected(
+                $field,
+                'locales',
+                'filter',
+                'completeness',
+                print_r(array_keys($options), true)
+            );
+        }
+
+        if (!isset($options['locales']) || !is_array($options['locales'])) {
+            throw InvalidArgumentException::arrayOfArraysExpected(
+                $field,
+                'filter',
+                'completeness',
+                print_r($options, true)
+            );
+        }
     }
 }
