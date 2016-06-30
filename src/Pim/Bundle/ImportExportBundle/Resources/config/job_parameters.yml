@@ -20,8 +20,6 @@ parameters:
     pim_import_export.job_parameters.model_transformer_provider_registry.class:                    Pim\Bundle\ImportExportBundle\JobParameters\FormModelTransformerProviderRegistry
     pim_import_export.job_parameters.model_transformer_provider.container_model_transformer.class: Pim\Bundle\ImportExportBundle\JobParameters\FormModelTransformerProvider\ContainerModelTransformerProvider
 
-
-
 services:
     pim_import_export.job_parameters.form_configuration_provider_registry:
         class: '%pim_import_export.job_parameters.form_configuration_provider_registry.class%'

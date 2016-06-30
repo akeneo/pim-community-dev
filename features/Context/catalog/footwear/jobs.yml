@@ -31,7 +31,7 @@ jobs:
                 structure:
                     channel: mobile
                     locales:
-                        en_US
+                        - en_US
     csv_footwear_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import

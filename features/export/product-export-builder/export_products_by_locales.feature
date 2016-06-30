@@ -36,7 +36,6 @@ Feature: Export products according to a locale policy
     Then exported file of "csv_product_export" should contain:
       """
       sku;baguette-fr_FR;categories;enabled;family;groups;name-fr_FR
-      french;Yes;default;1;localized;;French
       english;Yes;default;1;localized;;
       complete;Yes;default;1;localized;;Complete
       """
