@@ -36,7 +36,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function __construct()
     {
         $this->gridNames = [
-            'products' => 'product-grid'
+            'products'           => 'product-grid',
+            'published products' => 'published-product-grid'
         ];
     }
 

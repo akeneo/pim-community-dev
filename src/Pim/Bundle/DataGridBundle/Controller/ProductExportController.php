@@ -95,10 +95,11 @@ class ProductExportController
         ];
         
         if ($displayedColumnsOnly) {
-            if (isset($this->request->get('product-grid')['_parameters'])) {
-                $columns = explode(',', $this->request->get('product-grid')['_parameters']['view']['columns']);
+            $gridName = (null !== $this->request->get('gridName')) ? $this->request->get('gridName') : 'product-grid';
+            if (isset($this->request->get($gridName)['_parameters'])) {
+                $columns = explode(',', $this->request->get($gridName)['_parameters']['view']['columns']);
             } else {
-                $columns = array_keys($this->datagridManager->getConfigurationForGrid('product-grid')['columns']);
+                $columns = array_keys($this->datagridManager->getConfigurationForGrid($gridName)['columns']);
             }
 
             $dynamicConfiguration = array_merge(

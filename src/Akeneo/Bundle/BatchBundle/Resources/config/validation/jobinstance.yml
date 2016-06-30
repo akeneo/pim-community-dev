@@ -3,7 +3,7 @@ Akeneo\Component\Batch\Model\JobInstance:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         # TODO move this constraint!
         - Akeneo\Bundle\BatchBundle\Validator\Constraints\JobInstance:
-            property: alias
+            property: jobName
     properties:
         code:
             - NotBlank: ~

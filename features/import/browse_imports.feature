@@ -22,6 +22,6 @@ Feature: Browse imports
       | filter    | operator | value                | result                                                                                                                                                |
       | code      | contains | at                   | association_type_import, attribute_import and category_import                                                                                         |
       | label     | contains | Product              | product_import and xlsx_product_import                                                                                                                |
-      | alias     | contains | Group import in CSV  | group_import                                                                                                                                          |
+      | job_name  | contains | Group import in CSV  | group_import                                                                                                                                          |
       | connector | contains | Akeneo CSV Connector | product_import, category_import, association_type_import, variant_group_import, group_import, attribute_import, option_import                         |
       | status    | contains | Ready                | product_import, category_import, association_type_import, variant_group_import, group_import, attribute_import, option_import and xlsx_product_import |

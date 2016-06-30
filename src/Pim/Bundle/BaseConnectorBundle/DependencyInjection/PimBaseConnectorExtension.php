@@ -24,7 +24,6 @@ class PimBaseConnectorExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('archiving.yml');
         $loader->load('processors.yml');
-        $loader->load('readers.yml');
         $loader->load('validators.yml');
     }
 }

@@ -40,6 +40,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
         $fields->shouldHaveKey('linesPerFile');
         $fields->shouldHaveKey('families');
         $fields->shouldHaveKey('product_identifier');
+        $fields->shouldHaveKey('categories');
     }
 
     function it_supports_a_job(JobInterface $job)

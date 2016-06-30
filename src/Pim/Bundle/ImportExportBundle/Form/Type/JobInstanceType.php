@@ -6,7 +6,7 @@ use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\DataTransformer\ConfigurationToJobParametersTransformer;
-use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobAliasSubscriber;
+use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobInstanceSubscriber;
 use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
@@ -67,10 +67,10 @@ class JobInstanceType extends AbstractType
             ->addCodeField($builder)
             ->addLabelField($builder)
             ->addConnectorField($builder)
-            ->addAliasField($builder)
+            ->addJobNameField($builder)
             ->addJobConfigurationField($builder);
 
-        $builder->addEventSubscriber(new JobAliasSubscriber());
+        $builder->addEventSubscriber(new JobInstanceSubscriber());
 
         foreach ($this->subscribers as $subscriber) {
             $builder->addEventSubscriber($subscriber);
@@ -163,13 +163,13 @@ class JobInstanceType extends AbstractType
     }
 
     /**
-     * Add alias field
+     * Add job name field
      *
      * @param FormBuilderInterface $builder
      *
      * @return JobInstanceType
      */
-    protected function addAliasField(FormBuilderInterface $builder)
+    protected function addJobNameField(FormBuilderInterface $builder)
     {
         $choices = [];
         foreach ($this->connectorRegistry->getJobs($this->jobType) as $connector => $jobs) {
@@ -180,7 +180,7 @@ class JobInstanceType extends AbstractType
 
         $builder
             ->add(
-                'alias',
+                'jobName',
                 'choice',
                 [
                     'choices'      => $choices,

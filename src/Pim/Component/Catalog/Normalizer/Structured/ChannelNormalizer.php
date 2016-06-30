@@ -91,7 +91,7 @@ class ChannelNormalizer implements NormalizerInterface
     }
 
     /**
-     * Returns category tree code
+     * Returns normalized category
      *
      * @param ChannelInterface $channel
      *
@@ -99,7 +99,21 @@ class ChannelNormalizer implements NormalizerInterface
      */
     protected function normalizeCategoryTree(ChannelInterface $channel)
     {
-        return $channel->getCategory()->getCode();
+        $translations = $channel->getCategory()->getTranslations();
+        $labels = [];
+
+        foreach ($translations as $translation) {
+            $labels[] = [
+                'locale' => $translation->getLocale(),
+                'label'  => $translation->getLabel(),
+            ];
+        }
+
+        return [
+            'id'     => $channel->getCategory()->getId(),
+            'code'   => $channel->getCategory()->getCode(),
+            'labels' => $labels,
+        ];
     }
 
     /**

@@ -30,6 +30,6 @@ class JobNameVisibilityChecker implements VisibilityCheckerInterface
 
         $jobInstance = $context['jobInstance'];
 
-        return in_array($jobInstance->getAlias(), $config['job_names']);
+        return in_array($jobInstance->getJobName(), $config['job_names']);
     }
 }

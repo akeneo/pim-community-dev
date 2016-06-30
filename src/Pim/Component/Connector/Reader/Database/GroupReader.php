@@ -1,17 +1,17 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Reader\Repository;
+namespace Pim\Component\Connector\Reader\Database;
 
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
 /**
- * The variant group repository reader
+ * The group repository reader
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupReader extends AbstractReader
+class GroupReader extends AbstractReader
 {
     /** @var GroupRepositoryInterface */
     protected $repository;
@@ -27,8 +27,8 @@ class VariantGroupReader extends AbstractReader
     /**
      * {@inheritdoc}
      */
-    protected function readItems()
+    protected function getResults()
     {
-        return $this->repository->getAllVariantGroups();
+        return new \ArrayIterator($this->repository->getAllGroupsExceptVariant());
     }
 }

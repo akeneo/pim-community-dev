@@ -42,7 +42,7 @@ class ConnectorRegistrySpec extends ObjectBehavior
         $rawConfiguration = ['my raw conf'];
         $jobInstance->getConnector()->willReturn('Data fixtures');
         $jobInstance->getType()->willReturn('fixtures');
-        $jobInstance->getAlias()->willReturn('fixtures_category_csv');
+        $jobInstance->getJobName()->willReturn('fixtures_category_csv');
         $jobInstance->getRawConfiguration()->willReturn($rawConfiguration);
         $this->getJob($jobInstance)->shouldReturn($job);
     }

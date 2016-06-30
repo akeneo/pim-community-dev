@@ -97,7 +97,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_base_connector.reader.repository.group
+                        reader:    pim_connector.reader.database.group
                         processor: pim_connector.processor.normalization.group
                         writer:    pim_connector.writer.file.xlsx_group
                     parameters:
@@ -107,7 +107,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_base_connector.reader.repository.variant_group
+                        reader:    pim_connector.reader.database.variant_group
                         processor: pim_connector.processor.normalization.variant_group
                         writer:    pim_connector.writer.file.xlsx_variant_group
                     parameters:
@@ -143,7 +143,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_base_connector.reader.orm.family
+                        reader:    pim_connector.reader.database.family
                         processor: pim_connector.processor.normalization.family
                         writer:    pim_connector.writer.file.xlsx_family
                     parameters:
@@ -153,7 +153,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_base_connector.reader.orm.category
+                        reader:    pim_connector.reader.database.category
                         processor: pim_connector.processor.normalization.category
                         writer:    pim_connector.writer.file.xlsx_category
                     parameters:
@@ -163,7 +163,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_base_connector.reader.orm.attribute
+                        reader:    pim_connector.reader.database.attribute
                         processor: pim_connector.processor.normalization.attribute
                         writer:    pim_connector.writer.file.xlsx_attribute
                     parameters:
@@ -173,7 +173,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_base_connector.reader.orm.attribute_option
+                        reader:    pim_connector.reader.database.attribute_option
                         processor: pim_connector.processor.normalization.attribute_option
                         writer:    pim_connector.writer.file.xlsx_attribute_option
                     parameters:
@@ -183,7 +183,7 @@ connector:
             steps:
                 export:
                     services:
-                        reader:    pim_base_connector.reader.orm.association_type
+                        reader:    pim_connector.reader.database.association_type
                         processor: pim_connector.processor.normalization.association_type
                         writer:    pim_connector.writer.file.xlsx_association_type
                     parameters:

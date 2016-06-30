@@ -11,10 +11,10 @@ datagrid:
             label:
                 label:     Label
                 data_name: jobLabel
-            alias:
+            job_name:
                 label:     Job
                 type:      translateable
-                data_name: jobAlias
+                data_name: jobName
             date:
                 label:         Date
                 data_name:     date
@@ -43,8 +43,8 @@ datagrid:
                     data_name: jobCode
                 label:
                     data_name: jobLabel
-                alias:
-                    data_name: jobAlias
+                job_name:
+                    data_name: jobName
                 date:
                     data_name: date
                 status:
@@ -59,9 +59,9 @@ datagrid:
                 label:
                     type:      string
                     data_name: j.label
-                alias:
+                job_name:
                     type:      choice
-                    data_name: j.alias
+                    data_name: j.jobName
                     options:
                         field_options:
                             multiple: true

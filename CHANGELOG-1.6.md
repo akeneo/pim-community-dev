@@ -13,6 +13,7 @@
 - PIM-5427: It is now possible to filter by families for product export
 - PIM-5145: It is now possible to filter product exports by locale
 - PIM-5426: It is now possible to filter product exports by completeness
+- PIM-5833: It is now possible to filter product exports by categories
 - PIM-5600: Introduce the product quick export with grid context in CSV and XLSX (exports selected products with a channel, a local and the shown columns)
 - PIM-5761: The channel no more contains any color information as it was not used anymore in the UI.
 - PIM-5431: Export the products updated since a defined date
@@ -354,3 +355,5 @@
 - Add `getAttributeTypes()` method to `Pim\Component\Catalog\Query\Filter\AttributeFilterInterface`
 - Add `getField()` method to `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
 - Add `getAttributeFilters()` and `getFieldFilters()` to `Pim\Component\Catalog\Query\Filter\FilterRegistryInterface`
+- Rename method `getAlias` to `getJobName` in `Akeneo\Component\Batch\Model\JobInstance`
+- Rename method `setAlias` to `setJobName` in `Akeneo\Component\Batch\Model\JobInstance`

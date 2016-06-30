@@ -223,16 +223,6 @@ class WebUser extends RawMinkContext
     /**
      * @param string $group
      *
-     * @Given /^I click on the "([^"]*)" ACL group$/
-     */
-    public function iClickOnTheACLGroup($group)
-    {
-        $this->getCurrentPage()->selectGroup($group);
-    }
-
-    /**
-     * @param string $group
-     *
      * @Given /^I click on the "([^"]*)" ACL role/
      */
     public function iClickOnTheACLRole($group)

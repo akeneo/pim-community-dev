@@ -48,7 +48,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getAlias()->willReturn('alias');
+        $jobInstance->getJobName()->willReturn('alias');
 
         $job->getSteps()->willReturn([$step]);
 
@@ -84,7 +84,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getAlias()->willReturn('alias');
+        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
 
@@ -110,7 +110,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getAlias()->willReturn('alias');
+        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
 
         $filesystem->put(Argument::cetera())->shouldNotBeCalled();
@@ -133,7 +133,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getAlias()->willReturn('alias');
+        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
         $writer->getWrittenFiles()->willReturn([$pathname => $filename]);
@@ -156,7 +156,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getAlias()->willReturn('alias');
+        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
 

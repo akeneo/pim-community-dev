@@ -21,6 +21,7 @@ parameters:
     pim_enrich.controller.rest.association_type.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AssociationTypeController
     pim_enrich.controller.rest.attribute.class:               Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController
     pim_enrich.controller.rest.attribute_group.class:         Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController
+    pim_enrich.controller.rest.category.class:                Pim\Bundle\EnrichBundle\Controller\Rest\CategoryController
     pim_enrich.controller.rest.channel.class:                 Pim\Bundle\EnrichBundle\Controller\Rest\ChannelController
     pim_enrich.controller.rest.completeness.class:            Pim\Bundle\EnrichBundle\Controller\Rest\CompletenessController
     pim_enrich.controller.rest.currency.class:                Pim\Bundle\EnrichBundle\Controller\Rest\CurrencyController
@@ -315,6 +316,12 @@ services:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_serializer'
             - '@pim_catalog.filter.chained'
+
+    pim_enrich.controller.rest.category:
+        class: '%pim_enrich.controller.rest.category.class%'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_enrich.twig.category_extension'
 
     pim_enrich.controller.rest.currency:
         class: '%pim_enrich.controller.rest.currency.class%'

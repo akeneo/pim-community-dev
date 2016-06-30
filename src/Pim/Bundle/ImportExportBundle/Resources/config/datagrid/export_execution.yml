@@ -10,7 +10,7 @@ datagrid:
                 route: pim_importexport_export_execution_show
         filters:
             columns:
-                alias:
+                job_name:
                     options:
                         field_options:
                             choices: '@pim_import_export.datagrid.provider.job->getExportJobChoices'
