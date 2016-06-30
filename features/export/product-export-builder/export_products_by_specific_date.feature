@@ -26,6 +26,7 @@ Feature: Export products according to a date
     When I edit the "SNKRS-1B" product
     And I change the "Weather conditions" to "Hot"
     And I save the product
+    And I should not see the text "There are unsaved changes"
     And I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
@@ -45,6 +46,7 @@ Feature: Export products according to a date
     Then I should not see the "updated since n days" element in the filter "Updated time condition"
     When I filter exported products by operator "Updated products since the defined date" and value "05/25/2016"
     And I press "Save"
+    And I should not see the text "There are unsaved changes"
     Then I should be on the "csv_footwear_product_export" export job page
     When I follow "Content"
     Then the filter should contain operator "Updated products since the defined date" and value "05/25/2016"
@@ -52,6 +54,7 @@ Feature: Export products according to a date
     And I follow "Content"
     And I filter exported products by operator "Updated products since the last n days" and value "10"
     And I press "Save"
+    And I should not see the text "There are unsaved changes"
     Then I should be on the "csv_footwear_product_export" export job page
     When I follow "Content"
     Then the filter should contain operator "Updated products since the last n days" and value "10"
