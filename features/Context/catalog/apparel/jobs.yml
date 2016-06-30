@@ -41,7 +41,7 @@ jobs:
             filters:
                 data: {}
                 structure:
-                    channel: ecommerce
+                    scope: ecommerce
                     locales:
                         - en_US
                         - en_GB
@@ -60,7 +60,7 @@ jobs:
             filters:
                 data: {}
                 structure:
-                    channel: tablet
+                    scope: tablet
                     locales:
                         - en_US
                         - en_GB
@@ -76,7 +76,7 @@ jobs:
             filters:
                 data: {}
                 structure:
-                    channel: tablet
+                    scope: tablet
                     locales:
                         - en_US
                         - en_GB
@@ -93,7 +93,7 @@ jobs:
             filters:
                 data: {}
                 structure:
-                    channel: print
+                    scope: print
                     locales:
                         - en_US
                         - de_DE
