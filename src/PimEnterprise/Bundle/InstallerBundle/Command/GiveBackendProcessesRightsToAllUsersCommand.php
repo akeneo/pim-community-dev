@@ -84,9 +84,11 @@ class GiveBackendProcessesRightsToAllUsersCommand extends ContainerAwareCommand
             'csv_product_quick_export',
             'csv_product_grid_context_quick_export',
             'csv_published_product_quick_export',
+            'csv_published_product_grid_context_quick_export',
             'xlsx_product_quick_export',
             'xlsx_product_grid_context_quick_export',
-            'xlsx_published_product_quick_export'
+            'xlsx_published_product_quick_export',
+            'xlsx_published_product_grid_context_quick_export',
         ];
     }
 
