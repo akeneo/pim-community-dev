@@ -50,6 +50,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         'Published'     => 'PimEnterprise\Component\Workflow\Model\PublishedProduct',
         'AssetCategory' => 'PimEnterprise\Component\ProductAsset\Model\Category',
         'User'          => 'PimEnterprise\Bundle\UserBundle\Entity\User',
+        'JobProfile'    => 'Akeneo\Component\Batch\Model\JobInstance',
     ];
 
     /**
@@ -797,6 +798,16 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
         }
 
+        if (in_array($type, ['job profile'])) {
+            switch ($action) {
+                case 'edit':
+                    return Attributes::EDIT;
+                case 'execute':
+                default:
+                    return Attributes::EXECUTE;
+            }
+        }
+
         throw new \Exception('Undefined access type');
     }
 
@@ -984,6 +995,51 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         foreach ($table->getHash() as $data) {
             $this->createAssetCategory($data);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function theFollowingJobs(TableNode $table)
+    {
+        parent::theFollowingJobs($table);
+
+        $accesses = new TableNode();
+        $accesses->addRow(['job profile', 'user group', 'access']);
+
+        $rows = $table->getRows();
+        array_shift($rows);
+
+        foreach ($rows as $row) {
+            foreach (['IT support', 'Manager', 'Redactor'] as $role) {
+                $accesses->addRow([$row[3], $role, 'execute']);
+                $accesses->addRow([$row[3], $role, 'edit']);
+            }
+        }
+
+        $this->createAccesses($accesses, 'job profile');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function theFollowingCategories(TableNode $table)
+    {
+        parent::theFollowingCategories($table);
+
+        $accesses = new TableNode();
+        $accesses->addRow(['product category', 'user group', 'access']);
+
+        $rows = $table->getRows();
+        array_shift($rows);
+
+        foreach ($rows as $row) {
+            foreach (['IT support', 'Manager', 'Redactor'] as $role) {
+                $accesses->addRow([$row[0], $role, 'own']);
+            }
+        }
+
+        $this->createAccesses($accesses, 'product category');
     }
 
     /**
