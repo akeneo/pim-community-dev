@@ -46,7 +46,7 @@ services:
             - 'import'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.file.yaml_rule'
+            - '@pimee_catalog_rule.reader.file.yaml_rule'
             - '@pimee_catalog_rule.processor.denormalization.rule_definition'
             - '@pimee_catalog_rule.writer.doctrine.rule_definition'
 

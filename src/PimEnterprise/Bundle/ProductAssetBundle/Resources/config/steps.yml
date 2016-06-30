@@ -16,7 +16,7 @@ services:
             - 'import_channel_configuration'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pimee_connector.reader.file.yaml_channel_configuration'
+            - '@pimee_product_asset.reader.file.yaml_channel_configuration'
             - '@pimee_product_asset.processor.denormalization.channel_configuration'
             - '@pimee_product_asset.writer.doctrine.channel_configuration'
 
@@ -27,7 +27,7 @@ services:
             - 'export_channel_configuration'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pimee_product_asset.reader.orm.csv_channel_configuration'
+            - '@pimee_product_asset.reader.database.channel_configuration'
             - '@pimee_product_asset.processor.normalization.channel_configuration.flat'
             - '@pimee_product_asset.writer.file.yaml_asset_channel_configuration'
 
@@ -71,7 +71,7 @@ services:
             - 'export_asset'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pimee_product_asset.reader.orm.asset'
+            - '@pimee_product_asset.reader.database.asset'
             - '@pimee_product_asset.processor.normalization.asset.flat'
             - '@pimee_product_asset.writer.file.csv_asset'
 
@@ -81,7 +81,7 @@ services:
             - 'export_asset_category'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pimee_product_asset.reader.orm.category'
+            - '@pimee_product_asset.reader.database.category'
             - '@pimee_product_asset.processor.normalization.category.flat'
             - '@pimee_product_asset.writer.file.csv_asset_category'
 
@@ -91,7 +91,7 @@ services:
             - 'export_asset_variation'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pimee_product_asset.reader.orm.variation'
+            - '@pimee_product_asset.reader.database.variation'
             - '@pimee_product_asset.processor.normalization.variation.flat'
             - '@pimee_product_asset.writer.file.csv_asset_variation'
 
@@ -135,7 +135,7 @@ services:
             - 'export_asset'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pimee_product_asset.reader.orm.asset'
+            - '@pimee_product_asset.reader.database.asset'
             - '@pimee_product_asset.processor.normalization.asset.flat'
             - '@pimee_product_asset.writer.file.xlsx_asset'
 
@@ -145,7 +145,7 @@ services:
             - 'export_asset_category'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pimee_product_asset.reader.orm.category'
+            - '@pimee_product_asset.reader.database.category'
             - '@pimee_product_asset.processor.normalization.category.flat'
             - '@pimee_product_asset.writer.file.xlsx_asset_category'
 
@@ -155,6 +155,6 @@ services:
             - 'export_asset_variation'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pimee_product_asset.reader.orm.variation'
+            - '@pimee_product_asset.reader.database.variation'
             - '@pimee_product_asset.processor.normalization.variation.flat'
             - '@pimee_product_asset.writer.file.xlsx_asset_variation'

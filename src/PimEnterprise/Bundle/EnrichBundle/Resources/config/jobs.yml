@@ -11,6 +11,8 @@ parameters:
     pimee_enrich.job_name.edit_common_attributes_with_permission_and_rules: 'edit_common_attributes_with_permission_and_rules'
     pimee_enrich.job_name.csv_published_product_quick_export: 'csv_published_product_quick_export'
     pimee_enrich.job_name.xlsx_published_product_quick_export: 'xlsx_published_product_quick_export'
+    pimee_enrich.job_name.csv_published_product_grid_context_quick_export: 'csv_published_product_grid_context_quick_export'
+    pimee_enrich.job_name.xlsx_published_product_grid_context_quick_export: 'xlsx_published_product_grid_context_quick_export'
     pimee_enrich.job_name.add_to_variant_group_with_rules: 'add_to_variant_group_with_rules'
 
 services:
@@ -155,11 +157,33 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.quick_export_type%' }
 
+    pimee_enrich.job.csv_published_product_grid_context_quick_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.csv_published_product_grid_context_quick_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.csv_published_product_quick_export.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.quick_export_type%' }
+
     # XLSX Quick Exports ----------------------------------------------------------------------------------------------
     pimee_enrich.job.xlsx_published_product_quick_export:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
             - '%pimee_enrich.job_name.xlsx_published_product_quick_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.xlsx_published_product_quick_export.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%akeneo_batch.job.quick_export_type%' }
+
+    pimee_enrich.job.xlsx_published_product_grid_context_quick_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.xlsx_published_product_grid_context_quick_export%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
