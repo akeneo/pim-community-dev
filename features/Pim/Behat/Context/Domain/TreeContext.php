@@ -111,4 +111,26 @@ class TreeContext extends PimContext
             $this->wait();
         }
     }
+
+    /**
+     * @Given /^the "([^"]*)" category node should be selected/
+     */
+    public function theNodeShouldBeChecked($code)
+    {
+        $node = $this->getCurrentPage()->getElement('Category tree')->findNodeInTree($code);
+
+        assertNotNull($node);
+        assertTrue($node->isSelected());
+    }
+
+    /**
+     * @Given /^the "([^"]*)" category node should not be selected/
+     */
+    public function theNodeShouldNotBeChecked($code)
+    {
+        $node = $this->getCurrentPage()->getElement('Category tree')->findNodeInTree($code);
+
+        assertNotNull($node);
+        assertFalse($node->isSelected());
+    }
 }

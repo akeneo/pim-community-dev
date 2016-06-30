@@ -73,6 +73,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('completeness')->willReturn('all');
         $jobParameters->get('updated_since_strategy')->willReturn('all');
         $jobParameters->get('product_identifier')->willReturn(null);
+        $jobParameters->get('categories')->willReturn([]);
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -133,6 +134,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('completeness')->willReturn('all');
         $jobParameters->get('updated_since_strategy')->willReturn(null);
         $jobParameters->get('product_identifier')->willReturn(null);
+        $jobParameters->get('categories')->willReturn([]);
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -171,6 +173,39 @@ class ProductReaderSpec extends ObjectBehavior
         $this->read()->shouldReturn(null);
     }
 
+    function it_reads_categorized_products(
+        $pqbFactory,
+        $channelRepository,
+        $stepExecution,
+        ChannelInterface $channel,
+        CategoryInterface $channelRoot,
+        ProductQueryBuilderInterface $pqb,
+        JobParameters $jobParameters
+    ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('channel')->willReturn('mobile');
+        $jobParameters->get('enabled')->willReturn('all');
+        $jobParameters->get('updated')->willReturn('all');
+        $jobParameters->get('locales')->willReturn(['fr_FR', 'en_US']);
+        $jobParameters->get('families')->willReturn('');
+        $jobParameters->get('completeness')->willReturn('all');
+        $jobParameters->get('categories')->willReturn([1, 3]);
+        $jobParameters->get('product_identifier')->willReturn(null);
+        $jobParameters->get('updated_since_strategy')->willReturn(null);
+
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
+        $channel->getCategory()->willReturn($channelRoot);
+        $channelRoot->getId()->willReturn(42);
+        $channel->getCode()->willReturn('mobile');
+
+        $pqbFactory->create(['default_scope' => 'mobile'])->shouldBeCalled()->willReturn($pqb);
+        $pqb->addFilter('categories.id', 'IN CHILDREN', [42], [])->shouldBeCalled();
+        $pqb->addFilter('categories.code', 'IN', [1, 3], [])->shouldBeCalled();
+        $pqb->execute()->shouldBeCalled();
+
+        $this->initialize();
+    }
+
     function it_reads_complete_products(
         $pqbFactory,
         $channelRepository,
@@ -189,6 +224,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('completeness')->willReturn('all_complete');
         $jobParameters->get('updated_since_strategy')->willReturn(null);
         $jobParameters->get('product_identifier')->willReturn(null);
+        $jobParameters->get('categories')->willReturn([]);
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -225,6 +261,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('completeness')->willReturn('all_incomplete');
         $jobParameters->get('updated_since_strategy')->willReturn(null);
         $jobParameters->get('product_identifier')->willReturn(null);
+        $jobParameters->get('categories')->willReturn([]);
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -260,6 +297,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('completeness')->willReturn('at_least_one_complete');
         $jobParameters->get('updated_since_strategy')->willReturn(null);
         $jobParameters->get('product_identifier')->willReturn(null);
+        $jobParameters->get('categories')->willReturn([]);
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -299,6 +337,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('families')->willReturn('');
         $jobParameters->get('completeness')->willReturn('at_least_one_complete');
         $jobParameters->get('product_identifier')->willReturn(null);
+        $jobParameters->get('categories')->willReturn([]);
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -358,6 +397,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('completeness')->willReturn('at_least_one_complete');
         $jobParameters->get('updated_since_strategy')->willReturn('all');
         $jobParameters->get('product_identifier')->willReturn(null);
+        $jobParameters->get('categories')->willReturn([]);
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -412,6 +452,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('completeness')->willReturn('at_least_one_complete');
         $jobParameters->get('updated_since_strategy')->willReturn('all');
         $jobParameters->get('product_identifier')->willReturn(null);
+        $jobParameters->get('categories')->willReturn([]);
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -449,6 +490,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('completeness')->willReturn('at_least_one_complete');
         $jobParameters->get('updated_since_strategy')->willReturn('last_export');
         $jobParameters->get('product_identifier')->willReturn(null);
+        $jobParameters->get('categories')->willReturn([]);
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -516,7 +558,8 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('updated_since_date')->willReturn('2016-06-06');
         $jobParameters->get('families')->willReturn('');
         $jobParameters->get('product_identifier')->willReturn(null);
-        
+        $jobParameters->get('categories')->willReturn([]);
+
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
         $channelRoot->getId()->willReturn(42);
@@ -577,6 +620,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('updated_since_strategy')->willReturn('all');
         $jobParameters->get('families')->willReturn('');
         $jobParameters->get('product_identifier')->willReturn('sku1,sku2');
+        $jobParameters->get('categories')->willReturn([]);
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
@@ -616,7 +660,7 @@ class ProductReaderSpec extends ObjectBehavior
         $this->read()->shouldReturn($product3);
         $this->read()->shouldReturn(null);
     }
-    
+
     function it_reads_only_products_updated_since_a_n_days(
         $pqbFactory,
         $channelRepository,
@@ -633,7 +677,7 @@ class ProductReaderSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $updated = (new \DateTime())->sub(new \DateInterval('P10D'))->setTime(0, 0);
-        
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('channel')->willReturn('mobile');
         $jobParameters->get('enabled')->willReturn('all');
@@ -642,7 +686,8 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('updated_since_n_days')->willReturn(10);
         $jobParameters->get('families')->willReturn('');
         $jobParameters->get('product_identifier')->willReturn(null);
-        
+        $jobParameters->get('categories')->willReturn([]);
+
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCategory()->willReturn($channelRoot);
         $channelRoot->getId()->willReturn(42);

@@ -4,6 +4,7 @@ parameters:
     pim_import_export.form.type.product_export.locale_choice.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\LocaleChoiceType
     pim_import_export.form.type.updated_since_parameter.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\UpdatedSinceType
     pim_import_export.form.type.pim_product_identifier_choice.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\ProductIdentifierChoiceType
+    pim_import_export.form.type.product_export.categories.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\CategoriesType
 
 services:
     pim_import_export.form.type.job_instance:
@@ -34,6 +35,11 @@ services:
             - { name: form.type, alias: pim_import_export_product_export_locale_choice }
 
     ## Job Parameter forms
+    pim_import_export.form.type.product_export.categories:
+        class: '%pim_import_export.form.type.product_export.categories.class%'
+        tags:
+            - { name: form.type, alias: pim_import_export_product_export_categories }
+
     pim_import_export.form.type.updated_since_parameter:
         class: '%pim_import_export.form.type.updated_since_parameter.class%'
         arguments:

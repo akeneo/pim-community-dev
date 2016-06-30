@@ -220,6 +220,6 @@ class JobContext extends PimContext
      */
     protected function isJobParameterArray($property)
     {
-        return in_array($property, ['locales']);
+        return in_array($property, ['locales', 'categories']);
     }
 }

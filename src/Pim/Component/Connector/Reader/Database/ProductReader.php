@@ -11,7 +11,6 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
@@ -108,7 +107,8 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
                 array_filter(explode(',', $parameters->get('families')))
             ),
             $this->getCompletenessFilters($parameters),
-            $this->getProductIdentifiersFilter($parameters)
+            $this->getProductIdentifiersFilter($parameters),
+            $this->getCategoryFilters($parameters)
         );
 
         foreach ($filters as $filter) {
@@ -283,7 +283,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      *
      * @param JobParameters $parameters
      *
-     * @return array|null
+     * @return array
      */
     protected function getCompletenessFilters(JobParameters $parameters)
     {
@@ -347,7 +347,31 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
                 'context'  => []
             ];
         }
-        
+
         return $filter;
+    }
+
+    /**
+     * Transform category fields into PQB filters
+     *
+     * @param JobParameters $parameters
+     *
+     * @return array
+     */
+    protected function getCategoryFilters(JobParameters $parameters)
+    {
+        $categories = $parameters->get('categories');
+        $filters  = [];
+
+        if (!empty($categories)) {
+            $filters[] = [
+                'field'    => 'categories.code',
+                'operator' => Operators::IN_LIST,
+                'value'    => $categories,
+                'context'  => []
+            ];
+        }
+
+        return $filters;
     }
 }

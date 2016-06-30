@@ -11,6 +11,8 @@ use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Constraints for product XLSX export
@@ -57,6 +59,10 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
         ]);
 
         $constraintFields['enabled'] = new NotBlank(['groups' => 'Execution']);
+        $constraintFields['categories'] = [
+            new NotNull(['groups'  => 'Execution']),
+            new Type(['groups'  => 'Execution', 'type' => 'array']),
+        ];
         $constraintFields['completeness'] = new NotBlank(['groups' => 'Execution']);
         $constraintFields['updated_since_strategy'] = [
             new NotBlank(['groups' => 'Execution']),

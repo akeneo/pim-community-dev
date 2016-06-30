@@ -13,6 +13,7 @@
 - PIM-5427: It is now possible to filter by families for product export
 - PIM-5145: It is now possible to filter product exports by locale
 - PIM-5426: It is now possible to filter product exports by completeness
+- PIM-5833: It is now possible to filter product exports by categories
 - PIM-5600: Introduce the product quick export with grid context in CSV and XLSX (exports selected products with a channel, a local and the shown columns)
 - PIM-5761: The channel no more contains any color information as it was not used anymore in the UI.
 - PIM-5431: Export the products updated since a defined date

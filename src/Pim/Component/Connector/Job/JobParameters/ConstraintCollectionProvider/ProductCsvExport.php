@@ -10,6 +10,8 @@ use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Constraints for product CSV export
@@ -68,6 +70,10 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
         ]);
         $constraintFields['families'] = [];
         $constraintFields['product_identifier'] = [];
+        $constraintFields['categories'] = [
+            new NotNull(['groups'  => 'Execution']),
+            new Type(['groups'  => 'Execution', 'type' => 'array']),
+        ];
         $constraintFields['completeness'] = [
             new NotBlank(['groups' => 'Execution']),
             new Choice(['choices' => [

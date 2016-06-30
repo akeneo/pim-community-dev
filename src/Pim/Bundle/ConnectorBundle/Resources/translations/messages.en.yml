@@ -75,6 +75,9 @@ pim_connector:
             label: Product identifiers
             help: The products you want to export
             placeholder: Add your product identifiers
+        categories:
+            label: Categories
+            help: The categories of the products you want to export
         updated:
             updated_since_strategy:
                 label: Updated time condition
