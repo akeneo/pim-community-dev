@@ -4,10 +4,9 @@
     <div class="row wizard-header">
         <ul class="wizard">
             {% spaceless %}
-            <li>{{ firstStepLabel|default('first step')|trans }}</li>
-            <li>{{ secondStepLabel|default('second step')|trans }}</li>
-            <li>{{ thirdStepLabel|default('third step')|trans }}</li>
-            <li>{{ fourthStepLabel|default('fourth step')|trans }}</li>
+                {% for stepLabel in stepLabels %}
+                    <li>{{ stepLabel|default('step label')|trans }}</li>
+                {% endfor %}
             {% endspaceless %}
         </ul>
     </div>
