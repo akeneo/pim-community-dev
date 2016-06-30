@@ -1003,13 +1003,21 @@ batch_jobs:
         perform:
             label: Set attribute requirements
     csv_product_quick_export:
-        label: Csv product quick export
+        export.label: Csv product quick export
         perform:
             label: Csv product quick export
+    csv_product_grid_context_quick_export:
+        export.label: Csv product grid context quick export
+        perform:
+            label: Csv product grid context quick export
     xlsx_product_quick_export:
-        label: Xlsx product quick export
+        export.label: Xlsx product quick export
         perform:
             label: Xlsx product quick export
+    xlsx_product_grid_context_quick_export:
+        export.label: Xlsx product grid context quick export
+        perform:
+            label: Xlsx product grid context quick export
     add_to_variant_group:
         label: Add to variant group
         perform:
