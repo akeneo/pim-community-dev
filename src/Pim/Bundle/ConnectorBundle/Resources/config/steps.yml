@@ -113,7 +113,7 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.reader.orm.attribute'
+            - '@pim_connector.reader.database.attribute'
             - '@pim_connector.processor.normalization.attribute'
             - '@pim_connector.writer.file.csv_attribute'
 
@@ -123,7 +123,7 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.reader.orm.attribute_option'
+            - '@pim_connector.reader.database.attribute_option'
             - '@pim_connector.processor.normalization.attribute_option'
             - '@pim_connector.writer.file.csv_attribute_option'
 
@@ -133,7 +133,7 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.reader.orm.association_type'
+            - '@pim_connector.reader.database.association_type'
             - '@pim_connector.processor.normalization.association_type'
             - '@pim_connector.writer.file.csv_association_type'
 
@@ -143,7 +143,7 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.reader.orm.family'
+            - '@pim_connector.reader.database.family'
             - '@pim_connector.processor.normalization.family'
             - '@pim_connector.writer.file.csv_family'
 
@@ -153,7 +153,7 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.reader.repository.group'
+            - '@pim_connector.reader.database.group'
             - '@pim_connector.processor.normalization.group'
             - '@pim_connector.writer.file.csv_group'
 
@@ -174,7 +174,7 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.reader.orm.category'
+            - '@pim_connector.reader.database.category'
             - '@pim_connector.processor.normalization.category'
             - '@pim_connector.writer.file.csv_category'
 
@@ -184,7 +184,7 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.reader.repository.variant_group'
+            - '@pim_connector.reader.database.variant_group'
             - '@pim_connector.processor.normalization.variant_group'
             - '@pim_connector.writer.file.csv_variant_group'
 
@@ -289,7 +289,7 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.reader.orm.attribute'
+            - '@pim_connector.reader.database.attribute'
             - '@pim_connector.processor.normalization.attribute'
             - '@pim_connector.writer.file.xlsx_attribute'
             - 10
@@ -299,7 +299,7 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.reader.orm.attribute_option'
+            - '@pim_connector.reader.database.attribute_option'
             - '@pim_connector.processor.normalization.attribute_option'
             - '@pim_connector.writer.file.xlsx_attribute_option'
             - 10
@@ -310,7 +310,7 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.reader.orm.association_type'
+            - '@pim_connector.reader.database.association_type'
             - '@pim_connector.processor.normalization.association_type'
             - '@pim_connector.writer.file.xlsx_association_type'
             - 10
@@ -321,7 +321,7 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.reader.orm.family'
+            - '@pim_connector.reader.database.family'
             - '@pim_connector.processor.normalization.family'
             - '@pim_connector.writer.file.xlsx_family'
             - 10
@@ -332,7 +332,7 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.reader.repository.group'
+            - '@pim_connector.reader.database.group'
             - '@pim_connector.processor.normalization.group'
             - '@pim_connector.writer.file.xlsx_group'
             - 10
@@ -354,7 +354,7 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.reader.orm.category'
+            - '@pim_connector.reader.database.category'
             - '@pim_connector.processor.normalization.category'
             - '@pim_connector.writer.file.xlsx_category'
             - 10
@@ -365,7 +365,7 @@ services:
             - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.reader.repository.variant_group'
+            - '@pim_connector.reader.database.variant_group'
             - '@pim_connector.processor.normalization.variant_group'
             - '@pim_connector.writer.file.xlsx_variant_group'
             - 10
