@@ -30,14 +30,16 @@ class ClassifyType extends BaseClassifyType
      * @param CategoryManager             $categoryManager
      * @param TokenStorageInterface       $tokenStorage
      * @param string                      $dataClass
+     * @param string                      $formType
      */
     public function __construct(
         CategoryRepositoryInterface $categoryRepository,
         CategoryManager $categoryManager,
         TokenStorageInterface $tokenStorage,
-        $dataClass
+        $dataClass,
+        $formType
     ) {
-        parent::__construct($categoryRepository, $dataClass);
+        parent::__construct($categoryRepository, $dataClass, $formType);
 
         $this->tokenStorage = $tokenStorage;
         $this->categoryManager = $categoryManager;

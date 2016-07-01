@@ -1,20 +1,20 @@
-job_profile;execute_job_profile;edit_job_profile
-csv_footwear_association_type_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_attribute_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_category_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_group_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_variant_group_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_option_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_product_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_family_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_association_type_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_attribute_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_category_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_variant_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_option_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_product_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-csv_footwear_family_import;IT support,Manager,Redactor;IT support,Manager,Redactor
+job_profile;execute_job_profile;edit_job_profile;
+csv_footwear_association_type_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_attribute_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_category_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_group_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_variant_group_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_option_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_product_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_family_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_association_type_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_attribute_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_category_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_variant_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_option_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_product_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+csv_footwear_family_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
 add_product_value;IT support,Manager,Redactor;
 add_product_value_with_permission;IT support,Manager,Redactor;
 add_product_value_with_permission_and_rules;IT support,Manager,Redactor;
@@ -35,23 +35,24 @@ set_attribute_requirements;IT support,Manager,Redactor;
 csv_product_quick_export;IT support,Manager,Redactor;
 csv_published_product_quick_export;IT support,Manager,Redactor;
 rule_impacted_product_count;All;
-xlsx_footwear_product_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_footwear_product_import_fr;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_footwear_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_footwear_variant_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_footwear_category_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_footwear_association_type_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_footwear_attribute_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_footwear_option_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_footwear_family_import;IT support,Manager,Redactor;IT support,Manager,Redactor
+xlsx_footwear_product_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_footwear_product_import_fr;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_footwear_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_footwear_variant_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_footwear_category_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_footwear_association_type_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_footwear_attribute_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_footwear_option_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_footwear_family_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
 xlsx_product_quick_export;IT support,Manager,Redactor;
 xlsx_published_product_quick_export;IT support,Manager,Redactor;
-xlsx_footwear_association_type_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_footwear_attribute_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_footwear_category_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_footwear_option_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-xlsx_footwear_family_export;IT support,Manager,Redactor;IT support,Manager,Redactor
+xlsx_footwear_association_type_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_footwear_attribute_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_footwear_category_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_footwear_option_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+xlsx_footwear_family_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
 csv_product_grid_context_quick_export;IT support,Manager,Redactor;
 csv_published_product_grid_context_quick_export;IT support,Manager,Redactor;
 xlsx_product_grid_context_quick_export;IT support,Manager,Redactor;
 xlsx_published_product_grid_context_quick_export;IT support,Manager,Redactor;
+classify_assets;All;

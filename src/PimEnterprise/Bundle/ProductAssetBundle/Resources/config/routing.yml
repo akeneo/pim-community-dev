@@ -9,3 +9,7 @@ asset_categorytree:
 asset_picker_categorytree:
     resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/asset_picker_categorytree.yml'
     prefix: /enrich/asset-picker-category-tree
+
+asset_mass_edit_action:
+    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/mass_edit_action.yml'
+    prefix: /enrich/asset-mass-edit-action

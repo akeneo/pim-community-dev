@@ -105,4 +105,20 @@ interface AssetRepositoryInterface extends
      * @return AssetInterface|null
      */
     public function findOneByCode($assetCode);
+
+    /**
+     * @param mixed $qb
+     * @param bool  $inset
+     * @param array $values
+     *
+     * @return mixed
+     */
+    public function applyMassActionParameters($qb, $inset, array $values);
+
+    /**
+     * @param array $assetIds
+     *
+     * @return array
+     */
+    public function findByIds(array $assetIds);
 }

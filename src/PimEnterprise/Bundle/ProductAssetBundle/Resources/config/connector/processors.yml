@@ -3,6 +3,7 @@ parameters:
     pimee_product_asset.processor.normalization.channel_configuration.class:   PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\ChannelConfigurationProcessor
     pimee_product_asset.processor.normalization.asset.class:                   PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\AssetProcessor
     pimee_product_asset.processor.normalization.variation.class:               PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\VariationProcessor
+    pimee_product_asset.processor.classify_assets.class:                       PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassEdit\Asset\ClassifyAssetsProcessor
 
 services:
     # Denormalizers
@@ -64,3 +65,10 @@ services:
         class: '%pimee_product_asset.processor.normalization.channel_configuration.class%'
         arguments:
             - '@pim_product_asset.normalizer.structured.channel_configuration'
+
+    # Mass Edit
+    pimee_product_asset.processor.classify_assets:
+        class: '%pimee_product_asset.processor.classify_assets.class%'
+        arguments:
+            - '@pimee_product_asset.updater.asset'
+            - '@validator'

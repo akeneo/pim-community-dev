@@ -1,22 +1,22 @@
-job_profile;execute_job_profile;edit_job_profile
-association_type_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-attribute_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-category_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-group_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-option_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-ecommerce_product_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-print_product_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-tablet_product_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-variant_group_export;IT support,Manager,Redactor;IT support,Manager,Redactor
-association_type_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-attribute_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-category_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-group_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-option_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-product_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-variant_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor
-apparel_asset_channel_configuration_import;IT support,Manager,Redactor;IT support,Manager
-apparel_asset_channel_configuration_export;IT support,Manager,Redactor;IT support,Manager
+job_profile;execute_job_profile;edit_job_profile;
+association_type_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+attribute_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+category_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+group_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+option_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+ecommerce_product_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+print_product_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+tablet_product_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+variant_group_export;IT support,Manager,Redactor;IT support,Manager,Redactor;
+association_type_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+attribute_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+category_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+group_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+option_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+product_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+variant_group_import;IT support,Manager,Redactor;IT support,Manager,Redactor;
+apparel_asset_channel_configuration_import;IT support,Manager,Redactor;IT support,Manager;
+apparel_asset_channel_configuration_export;IT support,Manager,Redactor;IT support,Manager;
 update_product_value;IT support,Manager,Redactor;
 update_product_value_with_permission;IT support,Manager,Redactor;
 update_product_value_with_permission_and_rules;IT support,Manager,Redactor;
@@ -37,3 +37,4 @@ csv_product_quick_export;IT support,Manager,Redactor;
 xlsx_tablet_product_export;IT support,Manager,Redactor;
 xlsx_variant_group_export;IT support,Manager,Redactor;
 xlsx_group_export;IT support,Manager,Redactor;
+classify_assets;All;

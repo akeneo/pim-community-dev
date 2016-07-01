@@ -142,3 +142,11 @@ connector:
                         reader:    pimee_product_asset.reader.database.variation
                         processor: pimee_product_asset.processor.normalization.variation.flat
                         writer:    pimee_product_asset.writer.file.xlsx_asset_variation
+        classify_assets:
+            type:  mass_edit
+            steps:
+                perform:
+                    services:
+                        reader:    pimee_product_asset.reader.database.mass_edit_asset
+                        processor: pimee_product_asset.processor.classify_assets
+                        writer:    pimee_product_asset.writer.doctrine.asset

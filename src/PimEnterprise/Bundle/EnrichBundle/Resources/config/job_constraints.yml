@@ -2,8 +2,8 @@ parameters:
     pimee_enrich.connector.job.job_parameters.constraint_collection_provider.mass_publish.class: PimEnterprise\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\MassPublish
 
 services:
-    pimee_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit:
-        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit.class%'
+    pimee_enrich.connector.job.job_parameters.constraint_collection_provider.product_mass_edit:
+        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_mass_edit.class%'
         arguments:
             -
                 - 'add_product_value_with_permission'

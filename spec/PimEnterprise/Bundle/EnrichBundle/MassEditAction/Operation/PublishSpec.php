@@ -6,6 +6,11 @@ use PhpSpec\ObjectBehavior;
 
 class PublishSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith('publish_product');
+    }
+
     function it_is_a_mass_edit_operation()
     {
         $this->shouldImplement('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');
@@ -40,7 +45,7 @@ class PublishSpec extends ObjectBehavior
 
     function it_provides_a_batch_job_code()
     {
-        $this->getBatchJobCode()->shouldReturn('publish_product');
+        $this->getJobInstanceCode()->shouldReturn('publish_product');
     }
 
     function it_provides_formatted_batch_config_for_the_job()

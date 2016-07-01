@@ -1,0 +1,14 @@
+{% extends 'PimEnterpriseProductAssetBundle:MassEditAction:asset/configure.html.twig' %}
+
+{%
+    set vars = {
+        'listCategoriesRoute': 'pimee_asset_categorytree_listtree',
+        'listCategoryChildrenRoute': 'pimee_asset_categorytree_children',
+        'domTreeId': 'tree',
+        'defaultTreeCode': null != app.user.defaultAssetTree ? app.user.defaultAssetTree.code : ''
+    }
+%}
+
+{% block formContent %}
+    {% include 'PimEnrichBundle:MassEditAction:product/configure/classify.html.twig' with vars %}
+{% endblock %}

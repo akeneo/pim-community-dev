@@ -23,7 +23,8 @@ class ClassifyTypeSpec extends ObjectBehavior
             $categoryRepository,
             $categoryManager,
             $tokenStorage,
-            'PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify'
+            'PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify',
+            'pim_enrich_mass_classify'
         );
     }
 

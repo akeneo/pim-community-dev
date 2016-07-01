@@ -69,6 +69,19 @@ pimee_workflow:
         product_draft_processor.title: Proposal processor
         approve.title: Approve proposal
         refuse.title: Refuse proposal
+
+    mass_edit_action:
+        published:
+            page_title: Published products
+            page_subtitle: Mass Edit (1 published product)|Mass Edit (%count% published products)
+            title: Choose operation
+            subtitle: Choose the operation you wish to perform on the selected published product|Choose the operation you wish to perform on the selected %count% published products
+            confirm: You are about to update a published product with the following information, please confirm.|You are about to update %count% published products with the following information, please confirm.
+            steps:
+                first: Choose published products
+                second: Choose operation
+                third: Configure
+                fourth: Confirm
 pimee_workflow_product_draft_notification_new_proposal: New proposal
 pimee_workflow_import_notification_new_proposals: New proposals from import
 
