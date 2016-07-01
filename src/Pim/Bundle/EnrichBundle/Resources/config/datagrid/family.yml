@@ -71,6 +71,6 @@ datagrid:
             mass_edit:
                 type: edit
                 label: pim.grid.mass_action.mass_edit
-                route: pim_enrich_mass_edit_action_choose
+                route: pim_enrich_mass_edit_family_action_choose
                 acl_resource: pim_enrich_family_edit_attributes
                 icon: edit

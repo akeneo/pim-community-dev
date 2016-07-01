@@ -20,6 +20,19 @@ abstract class AbstractMassEditOperation implements
     /** @var array */
     protected $actions;
 
+    /** @var string The background job code to launch */
+    protected $jobInstanceCode;
+
+    /**
+     * @param string $jobInstanceCode
+     */
+    public function __construct($jobInstanceCode)
+    {
+        $this->filters = [];
+        $this->actions = [];
+        $this->jobInstanceCode = $jobInstanceCode;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -73,6 +86,14 @@ abstract class AbstractMassEditOperation implements
             'filters' => $this->getFilters(),
             'actions' => $this->getActions(),
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJobInstanceCode()
+    {
+        return $this->jobInstanceCode;
     }
 
     /**
