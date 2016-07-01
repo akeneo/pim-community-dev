@@ -15,7 +15,7 @@ Feature: Show a user
     And I should see "en_US"
 
   Scenario: Successfully show my locale
-    Given I am on my profile page
+    Given I am on the User profile show page
     And I visit the "Interfaces" tab
     Then I should see "Ui locale"
     And I should see "en_US"
