@@ -1,13 +1,12 @@
-parameters:
-    pimee_product_asset.step.tasklet.class: PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet
-
 services:
     # Mass Upload steps -----------------------------------------------------------------------------------------------
     pimee_product_asset.step.apply_assets_mass_upload.perform:
-        class: '%pimee_product_asset.step.tasklet.class%'
+        class: '%pim_connector.step.tasklet.class%'
         arguments:
-            - '@pimee_product_asset.mass_upload_processor'
-            - '%tmp_storage_dir%'
+            - 'perform'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.mass_upload.tasklet'
 
     # Import Asset steps ----------------------------------------------------------------------------------------------
     pimee_product_asset.step.yml_asset_channel_configuration_import.import:
