@@ -1,12 +1,23 @@
 services:
     # Execute Rules steps ---------------------------------------------------------------------------------------------
-    pimee_catalog_rule.step.product_import_with_rules.execute_rules:
+    pimee_catalog_rule.step.csv_product_import_with_rules.execute_rules:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'execute_rules'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_catalog_rule.reader.file.csv_product_with_rule'
+            - '@pimee_catalog_rule.processor.product_loader'
+            - '@pimee_catalog_rule.executor.rules'
+            - 100
+
+    pimee_catalog_rule.step.xlsx_product_import_with_rules.execute_rules:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'execute_rules'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_catalog_rule.reader.file.xlsx_product_with_rule'
             - '@pimee_catalog_rule.processor.product_loader'
             - '@pimee_catalog_rule.executor.rules'
             - 100

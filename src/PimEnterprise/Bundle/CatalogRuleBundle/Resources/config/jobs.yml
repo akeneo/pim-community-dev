@@ -19,7 +19,7 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_product_import.import'
                 - '@pim_connector.step.csv_product_import.import_associations'
-                - '@pimee_catalog_rule.step.product_import_with_rules.execute_rules'
+                - '@pimee_catalog_rule.step.csv_product_import_with_rules.execute_rules'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
 
@@ -34,7 +34,7 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.xlsx_product_import.import'
                 - '@pim_connector.step.xlsx_product_import.import_associations'
-                - '@pimee_catalog_rule.step.product_import_with_rules.execute_rules'
+                - '@pimee_catalog_rule.step.xlsx_product_import_with_rules.execute_rules'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%akeneo_batch.job.import_type%' }
 
