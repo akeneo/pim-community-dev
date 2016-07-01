@@ -34,5 +34,5 @@ Feature: Create an export
       | Code  | PRODUCT_EXPORT  |
       | Label | Products export |
     And I press the "Save" button
-    Then I should see validation error "This value should not be blank."
+    Then I should see validation error "Failed to create an export with an unknown job definition"
 
