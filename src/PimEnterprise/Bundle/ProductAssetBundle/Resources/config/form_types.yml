@@ -1,3 +1,6 @@
+parameters:
+    pimee_product_asset.form.type.add_tags_to_assets.class: PimEnterprise\Bundle\ProductAssetBundle\Form\Type\MassEditAction\AddTagsToAssetsType
+
 services:
     pimee_product_asset.form.type.classify:
         class: '%pim_enrich.form.type.classify.class%'
@@ -7,3 +10,12 @@ services:
             - 'pimee_product_asset_mass_classify'
         tags:
             - { name: form.type, alias: pimee_product_asset_mass_classify }
+
+    pimee_product_asset.form.type.add_tags_to_assets:
+        class: '%pimee_product_asset.form.type.add_tags_to_assets.class%'
+        arguments:
+            - '%pim_enrich.mass_edit_action.add_tags.class%'
+            - 'pimee_product_asset_mass_add_tags'
+            - '%pimee_product_asset.model.tag.class%'
+        tags:
+            - { name: form.type, alias: pimee_product_asset_mass_add_tags }

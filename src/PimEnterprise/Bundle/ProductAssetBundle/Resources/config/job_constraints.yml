@@ -68,6 +68,8 @@ services:
     pimee_product_asset.connector.job.job_parameters.constraints.mass_edit_asset:
         class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit.class%'
         arguments:
-            - ['classify_assets']
+            -
+                - 'classify_assets'
+                - 'add_tags_to_assets'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

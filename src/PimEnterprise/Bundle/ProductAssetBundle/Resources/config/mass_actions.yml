@@ -1,3 +1,6 @@
+parameters:
+    pim_enrich.mass_edit_action.add_tags.class: PimEnterprise\Bundle\ProductAssetBundle\MassEditAction\Operation\AddTags
+
 services:
     pimee_product_asset.mass_edit_action.classify.move:
         public: false
@@ -12,3 +15,17 @@ services:
                 datagrid: asset-grid
                 operation_group: category-edit
                 acl: pimee_product_asset_categories_view
+
+    pimee_product_asset.mass_edit_action.add_tags:
+        public: false
+        class: '%pim_enrich.mass_edit_action.add_tags.class%'
+        arguments:
+            - 'add_tags_to_assets'
+            - 'pimee_product_asset_mass_add_tags'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: add-tags-to-assets
+                datagrid: asset-grid
+                operation_group: mass-edit
+                acl: pimee_product_asset_index

@@ -156,11 +156,18 @@ pim_enrich:
             description:    The assets will be positioned into the following categories, the existing placement is lost
             success_flash:  Asset(s) have been moved to selected categories
             launched_flash: The bulk action "move to categories" has been launched. You will be notified when it is done.
+        add-tags-to-assets:
+            label:          Add tags to assets
+            description:    Tags will be added to the assets. If some tags does not exist, they will be created.
+            success_flash:  Tag(s) have been added to asset(s)
+            launched_flash: The bulk action "Add tags to assets" has been launched. You will be notified when it is done.
+            message.error:  There provided tag does not exists
 
 pim:
     grid:
         mass_action:
             mass_classify_assets: Classify
+            add_tags_to_assets: Add tags
 
 btn.create.asset: Create an asset
 btn.drag_or_upload: Drag and drop a file or click here
@@ -170,6 +177,7 @@ job_execution.summary:
     pimee_product_asset.mass_upload.new: Asset created from file
     pimee_product_asset.mass_upload.updated: Asset updated
     error: Error on asset file process
+    skipped_assets: Skipped assets
 
 assets_mass_upload.steps:
     asset_mass_upload.title: Assets mass upload
@@ -239,3 +247,5 @@ batch_jobs:
         export.label: Asset category export in XLSX
     classify_assets:
         perform.label: Move assets to categories
+    add_tags_to_assets:
+        perform.label: Add tags to assets

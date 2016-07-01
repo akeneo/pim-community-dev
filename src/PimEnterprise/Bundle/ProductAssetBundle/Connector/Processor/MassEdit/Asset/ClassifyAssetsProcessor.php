@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassEdit\Asset;
 
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Updater\AssetUpdater;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Processor to change assets' categories
@@ -25,17 +25,17 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ClassifyAssetsProcessor extends AbstractProcessor
 {
-    /** @var AssetUpdater */
+    /** @var ObjectUpdaterInterface */
     protected $updater;
 
     /** @var ValidatorInterface */
     protected $validator;
 
     /**
-     * @param AssetUpdater       $updater
-     * @param ValidatorInterface $validator
+     * @param ObjectUpdaterInterface $updater
+     * @param ValidatorInterface     $validator
      */
-    public function __construct(AssetUpdater $updater, ValidatorInterface $validator)
+    public function __construct(ObjectUpdaterInterface $updater, ValidatorInterface $validator)
     {
         $this->updater = $updater;
         $this->validator = $validator;

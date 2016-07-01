@@ -8,7 +8,7 @@ Feature: Mass edit assets to change their categories
     Given the "clothing" catalog configuration
 
   Scenario: Mass classify several assets with a bulk action from the grid
-    Given I am logged in as "Julia"
+    Given I am logged in as "Pamela"
     And I am on the assets page
     And I select rows minivan, machine and bridge
     And I press "Classify" on the "Bulk Actions" dropdown button
@@ -31,7 +31,7 @@ Feature: Mass edit assets to change their categories
     And asset category of "bridge" should be "print"
 
   Scenario: Mass classify all assets with a bulk action from the grid
-    Given I am logged in as "Julia"
+    Given I am logged in as "Pamela"
     And I am on the assets page
     And I select all entities
     And I press "Classify" on the "Bulk Actions" dropdown button

@@ -85,3 +85,8 @@ jobs:
         alias:     classify_assets
         label:     Mass classify product assets
         type:      mass_edit
+    add_tags_to_assets:
+        connector: Akeneo Product Asset Connector
+        alias:     add_tags_to_assets
+        label:     Add tags to assets
+        type:      mass_edit

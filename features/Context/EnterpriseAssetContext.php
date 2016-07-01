@@ -340,6 +340,20 @@ class EnterpriseAssetContext extends RawMinkContext
     }
 
     /**
+     * @param string $assetCode
+     * @param string $expectedTagCodes
+     *
+     * @Given /^asset tags of "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theAssetTagsOfShouldBe($assetCode, $expectedTagCodes)
+    {
+        $asset = $this->getFixturesContext()->getAsset($assetCode);
+
+        $assetTagCodes = $asset->getTagCodes();
+        assertEquals($this->getMainContext()->listToArray($expectedTagCodes), $assetTagCodes);
+    }
+
+    /**
      * @Given /^the asset temporary file storage has been cleared$/
      */
     public function clearAssetTmpFileStorage()
