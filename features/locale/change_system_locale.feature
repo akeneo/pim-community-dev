@@ -22,13 +22,6 @@ Feature: Change system locale
 
   Scenario: Successfully display a localized login form according to the system locale
     Given I am on the System index page
-    And I select German locale
-    When I save the configuration
-    Then I should see the text "Successfully updated"
-    When I logout
-    Then I should see the "Anmelden" button
-    When I am logged in as "Julia"
-    And I am on the System index page
     And I select French locale
     And I save the configuration
     Then I should see the text "Successfully updated"
