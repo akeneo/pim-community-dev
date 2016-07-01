@@ -15,7 +15,7 @@ Feature: Disable attribute fields updated by a variant group
       | description | Description | textarea     | no       | no          |               |                     |
       | dimension   | Dimension   | number       | yes      | yes         |               |                     |
       | price       | Price       | prices       | no       | no          |               |                     |
-      | length      | Length      | metric       | no       | no          | Length        | CENTIMETER          |
+      | my_length   | Length      | metric       | no       | no          | Length        | CENTIMETER          |
     And the following "options" attribute options: Blue
     And the following "color" attribute options: Red, black and Green
     And the following product groups:
@@ -28,7 +28,7 @@ Feature: Disable attribute fields updated by a variant group
       | tshirt_akeneo | options     | blue             |        | mobile    |
       | tshirt_akeneo | description | nice description |        |           |
       | tshirt_akeneo | price-EUR   | 10.0             |        |           |
-      | tshirt_akeneo | length      | 15.0 CENTIMETER  |        |           |
+      | tshirt_akeneo | my_length   | 15.0 CENTIMETER  |        |           |
     And the following products:
       | sku  | color | groups        |
       | sku1 | red   | tshirt_akeneo |

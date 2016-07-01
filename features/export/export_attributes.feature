@@ -28,7 +28,7 @@ Feature: Export attributes
     pim_catalog_simpleselect;size;Size;sizes;0;1;;;;;0;0
     pim_catalog_simpleselect;color;Color;colors;0;1;;;;;0;0
     pim_catalog_simpleselect;lace_color;"Lace color";colors;0;1;;;;;0;0
-    pim_catalog_metric;length;Length;info;0;0;;Length;CENTIMETER;;0;0
+    pim_catalog_metric;my_length;Length;info;0;0;;Length;CENTIMETER;;0;0
     pim_catalog_metric;volume;Volume;info;0;0;;Volume;CUBIC_MILLIMETER;;0;0
     pim_catalog_number;number_in_stock;"Number in stock";other;0;0;;;;;0;0
     pim_catalog_date;destocking_date;"Destocking date";other;0;1;;;;;0;0
@@ -68,7 +68,7 @@ Feature: Export attributes
     pim_catalog_simpleselect;size;Size;;sizes;0;1;;;;;0;0
     pim_catalog_simpleselect;color;Color;;colors;0;1;;;;;0;0
     pim_catalog_simpleselect;lace_color;"Lace color";;colors;0;1;;;;;0;0
-    pim_catalog_metric;length;Length;;info;0;0;;Length;CENTIMETER;;0;0
+    pim_catalog_metric;my_length;Length;;info;0;0;;Length;CENTIMETER;;0;0
     pim_catalog_metric;volume;Volume;;info;0;0;;Volume;CUBIC_MILLIMETER;;0;0
     pim_catalog_number;number_in_stock;"Number in stock";;other;0;0;;;;;0;0
     pim_catalog_date;destocking_date;"Destocking date";;other;0;1;;;;;0;0

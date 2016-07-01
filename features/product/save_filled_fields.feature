@@ -46,7 +46,7 @@ Feature: Save only filled fields after a save
       | Weight |               |
     And I save the product
     Then the product "summer-sneaker" should have the following values:
-      | length | 30.0000 CENTIMETER |
+      | my_length | 30.0000 CENTIMETER |
     But the product "summer-sneaker" should not have the following values:
       | weight |
     And I should not see the Weight field

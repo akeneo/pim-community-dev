@@ -71,7 +71,7 @@ Feature: Display the product history
   Scenario: Update product history when updating product metric
     Given a "footwear" catalog configuration
     And the following product:
-      | sku   | length        |
+      | sku   | my_length        |
       | boots | 30 CENTIMETER |
     And I am logged in as "Julia"
     When I edit the "boots" product

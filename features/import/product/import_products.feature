@@ -152,7 +152,7 @@ Feature: Execute a job
   Scenario: Successfully import products metrics
     Given the following CSV file to import:
       """
-      sku;length
+      sku;my_length
       SKU-001;4000 CENTIMETER
       """
     And the following job "footwear_product_import" configuration:
@@ -162,12 +162,12 @@ Feature: Execute a job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
-      | length | 4000.0000 CENTIMETER |
+      | my_length | 4000.0000 CENTIMETER |
 
   Scenario: Successfully import products metrics splitting the data and unit
     Given the following CSV file to import:
       """
-      sku;length;length-unit
+      sku;my_length;my_length-unit
       SKU-001;4000;CENTIMETER
       """
     And the following job "footwear_product_import" configuration:
@@ -177,7 +177,7 @@ Feature: Execute a job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
-      | length | 4000.0000 CENTIMETER |
+      | my_length | 4000.0000 CENTIMETER |
 
   Scenario: Successfully skip a product without modification
     Given the following product:

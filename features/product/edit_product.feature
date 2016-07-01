@@ -14,7 +14,7 @@ Feature: Edit a product
       | other_name  | text     | yes         |                 | Other Name  | yes      |
     And the following attributes:
       | code        | label      | type   | metric family | default metric unit |
-      | length      | Shoes size | metric | Length        | CENTIMETER          |
+      | my_length   | Shoes size | metric | Length        | CENTIMETER          |
     And the following products:
       | sku    |
       | sandal |
@@ -25,7 +25,7 @@ Feature: Edit a product
       | sandal  | other_name  | My awesome sandals                   | en_US  | ecommerce |
       | sandal  | other_name  | My awesome sandals for mobile        | en_US  | mobile    |
       | sandal  | name        | My sandals name                      |        |           |
-      | sandal  | length      | 29 CENTIMETER                        |        |           |
+      | sandal  | my_length   | 29 CENTIMETER                        |        |           |
 
   Scenario: Successfully create, edit and save a product
     Given I am logged in as "Mary"

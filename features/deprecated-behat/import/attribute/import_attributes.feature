@@ -94,7 +94,7 @@ Feature: Import attributes
       """
       type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit
       pim_catalog_simpleselect;lace_color;"New lace color";colors;0;1;0;0;;;
-      pim_catalog_metric;length;"New length";info;0;0;0;0;;Length;INVALID_LENGTH
+      pim_catalog_metric;my_length;"New length";info;0;0;0;0;;Length;INVALID_LENGTH
 
       """
     And the following job "footwear_attribute_import" configuration:
@@ -106,7 +106,7 @@ Feature: Import attributes
     And there should be the following attributes:
       | type         | code       | label-en_US    | group  | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit |
       | simpleselect | lace_color | New lace color | colors | 0      | 1                      | 0           | 0        |                    |               |                     |
-      | metric       | length     | Length         | info   | 0      | 0                      | 0           | 0        |                    | Length        | CENTIMETER          |
+      | metric       | my_length  | Length         | info   | 0      | 0                      | 0           | 0        |                    | Length        | CENTIMETER          |
 
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311

@@ -256,7 +256,7 @@ attributes:
                 labels:
                     en_US: White
                 sortOrder: 3
-    length:
+    my_length:
         labels:
             en_US: Length
         type:  pim_catalog_metric

@@ -33,7 +33,7 @@ Feature: Export variant groups
       | caterpillar_boots | comment            | Best worn in winter   |        |        |
       | caterpillar_boots | price              | 100 EUR, 150 USD      |        |        |
       | caterpillar_boots | side_view          | %fixtures%/akeneo.jpg |        |        |
-      | caterpillar_boots | length             | 30 CENTIMETER         |        |        |
+      | caterpillar_boots | my_length          | 30 CENTIMETER         |        |        |
       | caterpillar_boots | number_in_stock    | 50                    |        |        |
       | caterpillar_boots | destocking_date    | 2015-03-05            |        |        |
       | caterpillar_boots | handmade           | 1                     |        |        |
@@ -48,7 +48,7 @@ Feature: Export variant groups
     And I should see "Written 1"
     And exported file of "footwear_variant_group_export" should contain:
     """
-    code;attachment;axis;comment;description-en_US-mobile;destocking_date;handmade;label-en_US;length;length-unit;manufacturer;number_in_stock;price-EUR;price-USD;side_view;type;weather_conditions
+    code;attachment;axis;comment;description-en_US-mobile;destocking_date;handmade;label-en_US;my_length;my_length-unit;manufacturer;number_in_stock;price-EUR;price-USD;side_view;type;weather_conditions
     caterpillar_boots;files/caterpillar_boots/attachment/akeneo.txt;color,size;"Best worn in winter";"Nice boots";2015-03-05;1;"Caterpillar boots";30;CENTIMETER;Caterpillar;50;100.00;150.00;files/caterpillar_boots/side_view/akeneo.jpg;VARIANT;dry,wet
     """
     And export directory of "footwear_variant_group_export" should contain the following media:

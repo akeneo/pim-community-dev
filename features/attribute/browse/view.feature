@@ -12,5 +12,5 @@ Feature: View attributes
   Scenario: Successfully view attributes
     Then the grid should contain 26 elements
     And I should see the columns Code, Label, Type, Scopable, Localizable and Group
-    And I should see attributes sku, name, manufacturer, volume, weather_conditions, description, price, rating, side_view, top_view, size, color, lace_color, length, number_in_stock, heel_color, sole_color, sole_fabric, lace_fabric, cap_color, rate_sale, weight and 123
+    And I should see attributes sku, name, manufacturer, volume, weather_conditions, description, price, rating, side_view, top_view, size, color, lace_color, my_length, number_in_stock, heel_color, sole_color, sole_fabric, lace_fabric, cap_color, rate_sale, weight and 123
     And the rows should be sorted ascending by Code
