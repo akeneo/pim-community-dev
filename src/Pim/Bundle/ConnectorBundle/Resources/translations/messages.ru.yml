@@ -54,6 +54,8 @@ pim_connector:
         all: Все
     completeness:
       label: Завершенность
+    categories:
+      label: Категории
     decimalSeparator:
       label: Десятичный разделитель
       help: Введите десятичный разделитель

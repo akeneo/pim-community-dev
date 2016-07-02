@@ -61,6 +61,8 @@ pim_connector:
         all: Todos
     completeness:
       label: Completitud
+    categories:
+      label: Categorías
     updated:
       last_execution:
         none: Este trabajo nunca se ha exportado
