@@ -175,6 +175,22 @@ batch_jobs:
     label: Ajouter des produits au groupe de variantes avec application de règles
     perform.label: Ajouter des produits à un groupe de variantes
     execute_rules.label: Exécution des règles
+  csv_published_product_quick_export:
+    export.label: Export rapide CSV des produits publiés
+    perform:
+      label: Export rapide CSV des produits publiés
+  csv_published_product_grid_context_quick_export:
+    export.label: Export rapide CSV des produits publiés dans le contexte de grille
+    perform:
+      label: Export rapide CSV des produits publiés dans le contexte de grille
+  xlsx_published_product_quick_export:
+    export.label: Export rapide XLSX des produits publiés
+    perform:
+      label: Export rapide XLSX des produits publiés
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Export rapide XLSX des produits publiés dans le contexte de grille
+    perform:
+      label: Export rapide CSV des produits publiés dans le contexte de grille
 add_to_variant_group_with_rules:
   steps.perform: Ajouter des produits à un groupe de variantes
   steps.excluded.title: Produit exclu
