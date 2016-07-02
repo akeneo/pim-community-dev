@@ -54,6 +54,8 @@ pim_connector:
         all: Alle
     completeness:
       label: Vollständigkeit
+    categories:
+      label: Kategorien
     decimalSeparator:
       label: Dezimaltrennzeichen
       help: Wählen Sie ein Dezimaltrennzeichen

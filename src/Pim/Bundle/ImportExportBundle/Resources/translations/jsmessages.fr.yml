@@ -4,6 +4,15 @@ job_execution:
     hide_item: Voir moins
 pim_connector:
   export:
+    categories:
+      selector:
+        modal:
+          title: Sélection des catégories
+          cancel: Annuler
+          confirm: Confirmer
+        label: '{0} Tous les produits|{1} Une categorie sélectionnée|]1,Inf[ {{ count }} catégories sélectionnées'
+        edit: Modifier
+        title: Sélectionner la/les catégorie(s)
     locales:
       validation:
         not_blank: Une locale doit être sélectionnée, veuillez choisir une locale à exporter.

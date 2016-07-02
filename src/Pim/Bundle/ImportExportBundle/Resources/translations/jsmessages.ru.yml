@@ -2,3 +2,10 @@ job_execution:
   summary:
     display_item: Показать элемент
     hide_item: Скрыть элемент
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          cancel: Отмена
+        edit: Редактировать

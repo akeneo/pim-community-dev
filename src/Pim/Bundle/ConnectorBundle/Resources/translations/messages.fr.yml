@@ -67,6 +67,13 @@ pim_connector:
         all_complete: Complet sur toutes les locales sélectionnées
         all_incomplete: Non complet sur toutes les locales sélectionnées
         all: Pas de condition de complétude
+    product_identifier:
+      label: Identifiants de produits
+      help: Les produits à exporter
+      placeholder: Ajouter vos identifiants produit
+    categories:
+      label: Catégories
+      help: Les catégories des produits que vous souhaitez exporter
     updated:
       updated_since_strategy:
         label: Condition de date de mise à jour
