@@ -27,8 +27,8 @@ Feature: Display localized numbers in proposals
       | Marketing           | Price          | 15.25 USD        |
 
   Scenario: Successfully display localized attributes of a proposal in the french format
-    And I am logged in as "Julia"
-    And I edit my profile
+    Given I am logged in as "Julia"
+    And I am on the User profile edit page
     And I visit the "Interfaces" tab
     And I fill in the following information:
       | UI locale | French (France) |

@@ -17,21 +17,21 @@ Feature: Manage notifications preferences
 
   Scenario: I can only edit notifications preferences that are relevant to me
     Given I am logged in as "Julia"
-    And I am on my profile page
+    And I am on the User profile show page
     And I press the "Edit" button
     And I visit the "Notifications" tab
     Then I should see "When new proposal to review"
     And I should see "When proposal is accepted or rejected"
     And I logout
     Given I am logged in as "Mary"
-    And I am on my profile page
+    And I am on the User profile show page
     And I press the "Edit" button
     And I visit the "Notifications" tab
     Then I should not see "When new proposal to review"
     And I should see "When proposal is accepted or rejected"
     And I logout
     Given I am logged in as "Peter"
-    And I am on my profile page
+    And I am on the User profile show page
     And I press the "Edit" button
     And I visit the "Notifications" tab
     Then I should see "When new proposal to review"
@@ -39,7 +39,7 @@ Feature: Manage notifications preferences
 
   Scenario: I can disable notification I receive when there is a new proposal on product I own
     Given I am logged in as "Julia"
-    And I am on my profile page
+    And I am on the User profile show page
     And I press the "Edit" button
     Then I should see the text "Edit user - Julia Stark"
     When I visit the "Notifications" tab
@@ -56,7 +56,7 @@ Feature: Manage notifications preferences
 
   Scenario: I can disable notification I receive when someone updated my proposal
     Given I am logged in as "Mary"
-    When I am on my profile page
+    When I am on the User profile show page
     And I press the "Edit" button
     Then I should see the text "Edit user - Mary Smith"
     When I visit the "Notifications" tab
