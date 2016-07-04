@@ -78,7 +78,6 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-//        $jobInstance->getJobName()->willReturn('my_job_name');
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
         $writer->getWrittenFiles()->willReturn(['path_one', 'path_two']);
@@ -100,7 +99,6 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-//        $jobInstance->getJobName()->willReturn('my_job_name');
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
 
@@ -120,7 +118,6 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-//        $jobInstance->getJobName()->willReturn('my_job_name');
         $job->getSteps()->willReturn([$step]);
 
         $filesystem->put(Argument::any())->shouldNotBeCalled();
@@ -146,7 +143,6 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
-//        $jobInstance->getJobName()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
         $writer->getWrittenFiles()->willReturn([$file1 => 'file1', $file2 => 'file2']);
