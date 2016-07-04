@@ -39,14 +39,12 @@ Feature: Export products from any given categories
       | connector            | type   | alias              | code               | label              |
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
     And the following job "csv_product_export" configuration:
-      | channel  | ecommerce                               |
       | filePath | %tmp%/product_export/product_export.csv |
-      | locales  | en_US                                   |
     And I am logged in as "Julia"
 
   Scenario: Export the products from a tree
     Given the following job "csv_product_export" configuration:
-      | categories | toys_games, dolls, women |
+      | filters    | {"structure": {"locales": ["en_US"], "scope": "ecommerce"}, "data": [{"field": "categories.code", "value": ["toys_games", "dolls", "women"], "operator": "IN"}]} |
     When I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish
