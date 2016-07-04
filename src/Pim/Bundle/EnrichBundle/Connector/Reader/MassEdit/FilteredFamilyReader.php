@@ -95,7 +95,7 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * @return array|null
+     * @return array
      */
     protected function getConfiguredFilters()
     {

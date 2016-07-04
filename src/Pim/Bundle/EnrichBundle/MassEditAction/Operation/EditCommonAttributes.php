@@ -66,9 +66,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var string */
     protected $errors;
 
-    /** @var string The background job code to launch */
-    protected $batchJobCode;
-
     /**
      * @param ProductBuilderInterface      $productBuilder
      * @param UserContext                  $userContext
@@ -80,7 +77,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      * @param LocalizerRegistryInterface   $localizerRegistry
      * @param CollectionFilterInterface    $productValuesFilter
      * @param string                       $tmpStorageDir
-     * @param string                       $batchJobCode
+     * @param string                       $jobInstanceCode
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
@@ -93,8 +90,10 @@ class EditCommonAttributes extends AbstractMassEditOperation
         LocalizerRegistryInterface $localizerRegistry,
         CollectionFilterInterface $productValuesFilter,
         $tmpStorageDir,
-        $batchJobCode
+        $jobInstanceCode
     ) {
+        parent::__construct($jobInstanceCode);
+
         $this->productBuilder      = $productBuilder;
         $this->userContext         = $userContext;
         $this->attributeRepository = $attributeRepository;
@@ -105,7 +104,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $this->localizedConverter  = $localizedConverter;
         $this->localizerRegistry   = $localizerRegistry;
         $this->productValuesFilter = $productValuesFilter;
-        $this->batchJobCode        = $batchJobCode;
 
         $this->values = '';
     }
@@ -194,26 +192,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
         ];
 
         return $actions;
-    }
-
-    /**
-     * Get the code of the JobInstance
-     *
-     * @return string
-     */
-    public function getBatchJobCode()
-    {
-        return $this->batchJobCode;
-    }
-
-    /**
-     * Get the name of items this operation applies to
-     *
-     * @return string
-     */
-    public function getItemsName()
-    {
-        return 'product';
     }
 
     /**

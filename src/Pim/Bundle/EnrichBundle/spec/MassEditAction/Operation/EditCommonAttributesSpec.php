@@ -64,19 +64,14 @@ class EditCommonAttributesSpec extends ObjectBehavior
 
     function it_gets_the_batch_job_code()
     {
-        $this->getBatchJobCode()->shouldReturn('edit_common_attributes');
-    }
-
-    function it_gets_the_item_names_it_works_on()
-    {
-        $this->getItemsName()->shouldReturn('product');
+        $this->getJobInstanceCode()->shouldReturn('edit_common_attributes');
     }
 
     function it_gets_configuration($userContext, LocaleInterface $locale)
     {
         $locale->getCode()->willReturn('fr_FR');
         $expected = [
-            'filters' => null,
+            'filters' => [],
             'actions' => [
                 'normalized_values' => '',
                 'ui_locale'         => 'fr_FR',

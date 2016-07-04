@@ -16,7 +16,7 @@ Feature: Apply a mass action on all entities
 
   Scenario: Edit common attributes of all products
     When I am on the products page
-    And I select all products
+    And I select all entities
     And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
@@ -37,7 +37,7 @@ Feature: Apply a mass action on all entities
     And I filter by "category" with operator "" and value "winter_collection"
     And I filter by "scope" with operator "" and value "Mobile"
     And I filter by "completeness" with operator "" and value "yes"
-    When I select all products
+    When I select all entities
     And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Change the family of products" operation
     And I change the Family to "Sandals"
@@ -55,7 +55,7 @@ Feature: Apply a mass action on all entities
       | characters | Lego characters |
     When I am on the families page
     And I filter by "label" with operator "contains" and value "blocks"
-    And I select all products
+    And I select all entities
     And I press the "Mass Edit" button
     And I choose the "Set attribute requirements" operation
     And I display the Length attribute
@@ -68,7 +68,7 @@ Feature: Apply a mass action on all entities
   @jira https://akeneo.atlassian.net/browse/PIM-5000
   Scenario: Not applying a mass edit operation on unchecked products after "all" was selected
     Given I am on the products page
-    And I select all products
+    And I select all entities
     And I unselect row mega_boots
     When I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Change status (enable / disable)" operation

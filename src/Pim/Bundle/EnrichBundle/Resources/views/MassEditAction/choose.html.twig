@@ -1,20 +1,18 @@
 {% extends 'PimEnrichBundle:MassEditAction:layout.html.twig' %}
 
 {% block content %}
-    {% set title = ('pim_enrich.mass_edit_action.' ~ itemsName ~  '.page_title')|trans %}
-    {% set subtitle = ('pim_enrich.mass_edit_action.' ~ itemsName ~ '.page_subtitle')|transchoice(count) %}
-    {{ elements.page_header(title, null, subtitle) }}
+    {{ elements.page_header(title|trans, null, subtitle|transchoice(itemsCount)) }}
 
     {{ parent() }}
 
     <div class="row">
         <div class="offset1">
-            <h3>{{ title }}</h3>
-            <h4>{{ subtitle }}</h4>
+            <h3>{{ title|default('title')|trans }}</h3>
+            <h4>{{ subtitle|default('subtitle')|transchoice(itemsCount) }}</h4>
         </div>
     </div>
 
-    {{ form_start(form, { 'action': path('pim_enrich_mass_edit_action_choose', queryParams) }) }}
+    {{ form_start(form, { 'action': path(actionPath, queryParams) }) }}
 
         <div class="row">
             <div class="offset1">
@@ -24,12 +22,6 @@
 
         <div class="row buffer-top">
             <div class="offset1 configuration">
-                {% if itemsName == 'family' %}
-                    {% set canceledPath = 'pim_enrich_family_index' %}
-                {% else %}
-                    {% set canceledPath = 'pim_enrich_product_index' %}
-                {% endif %}
-
                 {{ elements.link('btn.cancel', path(canceledPath), {icon: 'chevron-left', class: 'btn-cancel'}) }}
                 {{ elements.submitBtn('btn.next','chevron-right') }}
             </div>

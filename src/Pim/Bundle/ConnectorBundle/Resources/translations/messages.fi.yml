@@ -54,6 +54,8 @@ pim_connector:
         all: Kaikki
     completeness:
       label: Valmistumisaste
+    categories:
+      label: Kategoriat
     decimalSeparator:
       label: Desimaalierotin
       help: Määritä desimaalierotin

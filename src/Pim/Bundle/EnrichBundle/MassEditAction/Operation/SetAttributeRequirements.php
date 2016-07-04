@@ -37,25 +37,23 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     /** @var array */
     protected $attributes;
 
-    /** @var string The background job code to launch */
-    protected $batchJobCode;
-
     /**
      * @param ChannelRepositoryInterface   $channelRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param AttributeRequirementFactory  $factory
-     * @param string                       $batchJobCode
+     * @param string                       $jobInstanceCode
      */
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         AttributeRequirementFactory $factory,
-        $batchJobCode
+        $jobInstanceCode
     ) {
+        parent::__construct($jobInstanceCode);
+
         $this->channelRepository   = $channelRepository;
         $this->attributeRepository = $attributeRepository;
         $this->factory             = $factory;
-        $this->batchJobCode        = $batchJobCode;
         $this->attRequirements     = new ArrayCollection();
     }
 
@@ -174,21 +172,5 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     public function getOperationAlias()
     {
         return 'set-attribute-requirements';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemsName()
-    {
-        return 'family';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchJobCode()
-    {
-        return $this->batchJobCode;
     }
 }

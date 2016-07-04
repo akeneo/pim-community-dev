@@ -4,6 +4,12 @@ job_execution:
     hide_item: Ocultar elemento
 pim_connector:
   export:
+    categories:
+      selector:
+        modal:
+          cancel: Cancelar
+          confirm: Confirmar
+        edit: Editar
     locales:
       validation:
         not_blank: Un local debe ser seleccionado, por favor seleccione un local para exportar.

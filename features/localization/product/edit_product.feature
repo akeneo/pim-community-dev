@@ -60,7 +60,7 @@ Feature: Edit a product with localized attributes
       | date | 2015-12-01 |
 
   Scenario: Switching locale should change the displayed format
-    When I edit my profile
+    When I am on the User profile edit page
     And I visit the "Interfaces" tab
     And I fill in the following information:
       | Langage de l'interface | anglais (Royaume-Uni) |

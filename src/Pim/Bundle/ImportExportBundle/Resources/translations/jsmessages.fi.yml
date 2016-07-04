@@ -2,3 +2,11 @@ job_execution:
   summary:
     display_item: Näytä kohde
     hide_item: Piilota kohde
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          cancel: Peruuta
+          confirm: Vahvista
+        edit: Muokkaa

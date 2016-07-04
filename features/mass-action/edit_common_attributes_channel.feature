@@ -45,7 +45,7 @@ Feature: Edit common attributes of many products at once
     When I show the filter "description"
     And I filter by "scope" with operator "" and value "Tablet"
     And I filter by "description" with operator "contains" and value "A beautiful description"
-    And I select all products
+    And I select all entities
     And I press "Mass Edit" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Weight attribute

@@ -40,30 +40,6 @@ class NavigationContext extends BaseNavigationContext
     }
 
     /**
-     * @Given /^I edit my profile$/
-     */
-    public function iAmOnMyProfileEditPage()
-    {
-        $this->openPage('User profile edit');
-    }
-
-    /**
-     * @Given /^I am on my profile page$/
-     */
-    public function iAmOnMyProfilePage()
-    {
-        $this->openPage('User profile show');
-    }
-
-    /**
-     * @Given /^I edit the system configuration$/
-     */
-    public function iAmOnTheSystemEditPage()
-    {
-        $this->openPage('System index');
-    }
-
-    /**
      * @param string $identifier
      *
      * @Given /^I edit the "([^"]*)" user group$/

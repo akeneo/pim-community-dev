@@ -67,6 +67,8 @@ pim_connector:
         all_complete: Completo em todas as linguagens escolhidas
         all_incomplete: Não completo em todas as linguagens escolhidas
         all: Sem restrições em relação ao nível de preenchimento da informação
+    categories:
+      label: Categorias
     updated:
       updated_since_strategy:
         label: Condição para a data de atualização

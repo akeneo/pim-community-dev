@@ -17,15 +17,13 @@ class AddToGroups extends AbstractMassEditOperation
     /** @var ArrayCollection */
     protected $groups;
 
-    /** @var string The background job code to launch */
-    protected $batchJobCode;
-
     /**
-     * @param string $batchJobCode
+     * @param string $jobInstanceCode
      */
-    public function __construct($batchJobCode)
+    public function __construct($jobInstanceCode)
     {
-        $this->batchJobCode = $batchJobCode;
+        parent::__construct($jobInstanceCode);
+
         $this->groups = new ArrayCollection();
     }
 
@@ -86,22 +84,6 @@ class AddToGroups extends AbstractMassEditOperation
                 'value' => $this->getGroupsCode($groups),
             ]
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchJobCode()
-    {
-        return $this->batchJobCode;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemsName()
-    {
-        return 'product';
     }
 
     /**

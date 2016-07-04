@@ -836,11 +836,11 @@ batch_jobs:
     perform:
       label: Estabelecer requisitos do atributo
   csv_product_quick_export:
-    label: Csv exportação rápida de produtos
+    export.label: Csv exportação rápida de produtos
     perform:
       label: Csv exportação rápida de produtos
   xlsx_product_quick_export:
-    label: Xlsx exportação rápida de produtos
+    export.label: Xlsx exportação rápida de produtos
     perform:
       label: Xlsx exportação rápida de produtos
   add_to_variant_group:

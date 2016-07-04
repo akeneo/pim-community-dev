@@ -23,5 +23,5 @@ interface BatchableOperationInterface
      *
      * @return string
      */
-    public function getBatchJobCode();
+    public function getJobInstanceCode();
 }

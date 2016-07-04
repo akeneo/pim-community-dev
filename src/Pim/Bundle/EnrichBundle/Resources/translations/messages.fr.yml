@@ -893,13 +893,21 @@ batch_jobs:
     perform:
       label: Choisir les attributs requis
   csv_product_quick_export:
-    label: Export rapide de produits en CSV
+    export.label: Export rapide de produits en CSV
     perform:
       label: Export rapide de produits en CSV
+  csv_product_grid_context_quick_export:
+    export.label: Export rapide CSV des produits dans le contexte de grille
+    perform:
+      label: Export rapide CSV des produits dans le contexte de grille
   xlsx_product_quick_export:
-    label: Export rapide de produits en XLSX
+    export.label: Export rapide de produits en XLSX
     perform:
       label: Export rapide de produits en XLSX
+  xlsx_product_grid_context_quick_export:
+    export.label: Export rapide XLSX des produits dans le contexte de grille
+    perform:
+      label: Export rapide XLSX des produits dans le contexte de grille
   add_to_variant_group:
     label: Ajouter au groupe de variantes
     perform:
