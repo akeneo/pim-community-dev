@@ -3,7 +3,7 @@ parameters:
 
 services:
     # CSV Quick Export steps ------------------------------------------------------------------------------------------
-    pim_enrich.step.csv_product_quick_export.export:
+    pim_enrich.step.csv_product.quick_export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'quick_export'
@@ -15,7 +15,7 @@ services:
             - 1000
 
     # XLSX Quick Export steps -----------------------------------------------------------------------------------------
-    pim_enrich.step.xlsx_product_quick_export.export:
+    pim_enrich.step.xlsx_product.quick_export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'quick_export'

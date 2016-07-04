@@ -13,7 +13,7 @@ services:
             - '@pim_connector.validator.item.charset_validator'
 
     # CSV Import steps ------------------------------------------------------------------------------------------------
-    pim_connector.step.csv_attribute_import.import:
+    pim_connector.step.csv_attribute.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -23,7 +23,7 @@ services:
             - '@pim_connector.processor.denormalization.attribute'
             - '@pim_connector.writer.database.attribute'
 
-    pim_connector.step.csv_attribute_option_import.import:
+    pim_connector.step.csv_attribute_option.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -33,7 +33,7 @@ services:
             - '@pim_connector.processor.denormalization.attribute_option'
             - '@pim_connector.writer.database.attribute_option'
 
-    pim_connector.step.csv_association_type_import.import:
+    pim_connector.step.csv_association_type.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -43,7 +43,7 @@ services:
             - '@pim_connector.processor.denormalization.association_type'
             - '@pim_connector.writer.database.association_type'
 
-    pim_connector.step.csv_family_import.import:
+    pim_connector.step.csv_family.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -53,7 +53,7 @@ services:
             - '@pim_connector.processor.denormalization.family'
             - '@pim_connector.writer.database.family'
 
-    pim_connector.step.csv_group_import.import:
+    pim_connector.step.csv_group.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -63,7 +63,7 @@ services:
             - '@pim_connector.processor.denormalization.group'
             - '@pim_connector.writer.database.group'
 
-    pim_connector.step.csv_product_import.import:
+    pim_connector.step.csv_product.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -73,7 +73,7 @@ services:
             - '@pim_connector.processor.denormalization.product'
             - '@pim_connector.writer.database.product'
 
-    pim_connector.step.csv_product_import.import_associations:
+    pim_connector.step.csv_product.import_associations:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import_associations'
@@ -84,7 +84,7 @@ services:
             - '@pim_connector.writer.database.product_association'
             - 1
 
-    pim_connector.step.csv_variant_group_import.import:
+    pim_connector.step.csv_variant_group.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -95,7 +95,7 @@ services:
             - '@pim_connector.writer.database.variant_group'
             - 1
 
-    pim_connector.step.csv_category_import.import:
+    pim_connector.step.csv_category.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -107,7 +107,7 @@ services:
             - 1
 
     # CSV Export steps ------------------------------------------------------------------------------------------------
-    pim_connector.step.csv_attribute_export.export:
+    pim_connector.step.csv_attribute.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -117,7 +117,7 @@ services:
             - '@pim_connector.processor.normalization.attribute'
             - '@pim_connector.writer.file.csv_attribute'
 
-    pim_connector.step.csv_attribute_option_export.export:
+    pim_connector.step.csv_attribute_option.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -127,7 +127,7 @@ services:
             - '@pim_connector.processor.normalization.attribute_option'
             - '@pim_connector.writer.file.csv_attribute_option'
 
-    pim_connector.step.csv_association_type_export.export:
+    pim_connector.step.csv_association_type.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -137,7 +137,7 @@ services:
             - '@pim_connector.processor.normalization.association_type'
             - '@pim_connector.writer.file.csv_association_type'
 
-    pim_connector.step.csv_family_export.export:
+    pim_connector.step.csv_family.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -147,7 +147,7 @@ services:
             - '@pim_connector.processor.normalization.family'
             - '@pim_connector.writer.file.csv_family'
 
-    pim_connector.step.csv_group_export.export:
+    pim_connector.step.csv_group.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -157,7 +157,7 @@ services:
             - '@pim_connector.processor.normalization.group'
             - '@pim_connector.writer.file.csv_group'
 
-    pim_connector.step.csv_product_export.export:
+    pim_connector.step.csv_product.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -168,7 +168,7 @@ services:
             - '@pim_connector.writer.file.csv_product'
             - 10
 
-    pim_connector.step.csv_category_export.export:
+    pim_connector.step.csv_category.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -178,7 +178,7 @@ services:
             - '@pim_connector.processor.normalization.category'
             - '@pim_connector.writer.file.csv_category'
 
-    pim_connector.step.csv_variant_group_export.export:
+    pim_connector.step.csv_variant_group.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -189,7 +189,7 @@ services:
             - '@pim_connector.writer.file.csv_variant_group'
 
     # XLSX Import steps -----------------------------------------------------------------------------------------------
-    pim_connector.step.xlsx_attribute_import.import:
+    pim_connector.step.xlsx_attribute.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -199,7 +199,7 @@ services:
             - '@pim_connector.processor.denormalization.attribute'
             - '@pim_connector.writer.database.attribute'
 
-    pim_connector.step.xlsx_attribute_option_import.import:
+    pim_connector.step.xlsx_attribute_option.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -209,7 +209,7 @@ services:
             - '@pim_connector.processor.denormalization.attribute_option'
             - '@pim_connector.writer.database.attribute_option'
 
-    pim_connector.step.xlsx_association_type_import.import:
+    pim_connector.step.xlsx_association_type.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -219,7 +219,7 @@ services:
             - '@pim_connector.processor.denormalization.association_type'
             - '@pim_connector.writer.database.association_type'
 
-    pim_connector.step.xlsx_family_import.import:
+    pim_connector.step.xlsx_family.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -229,7 +229,7 @@ services:
             - '@pim_connector.processor.denormalization.family'
             - '@pim_connector.writer.database.family'
 
-    pim_connector.step.xlsx_group_import.import:
+    pim_connector.step.xlsx_group.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -239,7 +239,7 @@ services:
             - '@pim_connector.processor.denormalization.group'
             - '@pim_connector.writer.database.group'
 
-    pim_connector.step.xlsx_product_import.import:
+    pim_connector.step.xlsx_product.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -249,7 +249,7 @@ services:
             - '@pim_connector.processor.denormalization.product'
             - '@pim_connector.writer.database.product'
 
-    pim_connector.step.xlsx_product_import.import_associations:
+    pim_connector.step.xlsx_product.import_associations:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import_associations'
@@ -260,7 +260,7 @@ services:
             - '@pim_connector.writer.database.product_association'
             - 1
 
-    pim_connector.step.xlsx_category_import.import:
+    pim_connector.step.xlsx_category.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -271,7 +271,7 @@ services:
             - '@pim_connector.writer.database.category'
             - 1
 
-    pim_connector.step.xlsx_variant_group_import.import:
+    pim_connector.step.xlsx_variant_group.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -283,7 +283,7 @@ services:
             - 1
 
     # XLSX Export steps -----------------------------------------------------------------------------------------------
-    pim_connector.step.xlsx_attribute_export.export:
+    pim_connector.step.xlsx_attribute.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -293,7 +293,7 @@ services:
             - '@pim_connector.processor.normalization.attribute'
             - '@pim_connector.writer.file.xlsx_attribute'
             - 10
-    pim_connector.step.xlsx_attribute_option_export.export:
+    pim_connector.step.xlsx_attribute_option.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -304,7 +304,7 @@ services:
             - '@pim_connector.writer.file.xlsx_attribute_option'
             - 10
 
-    pim_connector.step.xlsx_association_type_export.export:
+    pim_connector.step.xlsx_association_type.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -315,7 +315,7 @@ services:
             - '@pim_connector.writer.file.xlsx_association_type'
             - 10
 
-    pim_connector.step.xlsx_family_export.export:
+    pim_connector.step.xlsx_family.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -326,7 +326,7 @@ services:
             - '@pim_connector.writer.file.xlsx_family'
             - 10
 
-    pim_connector.step.xlsx_group_export.export:
+    pim_connector.step.xlsx_group.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -337,7 +337,7 @@ services:
             - '@pim_connector.writer.file.xlsx_group'
             - 10
 
-    pim_connector.step.xlsx_product_export.export:
+    pim_connector.step.xlsx_product.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -348,7 +348,7 @@ services:
             - '@pim_connector.writer.file.xlsx_product'
             - 10
 
-    pim_connector.step.xlsx_category_export.export:
+    pim_connector.step.xlsx_category.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -359,7 +359,7 @@ services:
             - '@pim_connector.writer.file.xlsx_category'
             - 10
 
-    pim_connector.step.xlsx_variant_group_export.export:
+    pim_connector.step.xlsx_variant_group.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
