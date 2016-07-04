@@ -21,12 +21,6 @@ class ProductCsvExport implements FormConfigurationProviderInterface
     /** @var FormConfigurationProviderInterface */
     protected $simpleCsvExport;
 
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var FamilyRepositoryInterface */
-    protected $familyRepository;
-
     /** @var string */
     protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
 
@@ -47,26 +41,20 @@ class ProductCsvExport implements FormConfigurationProviderInterface
 
     /**
      * @param FormConfigurationProviderInterface $simpleCsvExport
-     * @param ChannelRepositoryInterface         $channelRepository
-     * @param FamilyRepositoryInterface          $familyRepository
      * @param array                              $supportedJobNames
      * @param array                              $decimalSeparators
      * @param array                              $dateFormats
      */
     public function __construct(
         FormConfigurationProviderInterface $simpleCsvExport,
-        ChannelRepositoryInterface $channelRepository,
-        FamilyRepositoryInterface $familyRepository,
         array $supportedJobNames,
         array $decimalSeparators,
         array $dateFormats
     ) {
-        $this->simpleCsvExport = $simpleCsvExport;
-        $this->familyRepository  = $familyRepository;
-        $this->channelRepository = $channelRepository;
+        $this->simpleCsvExport   = $simpleCsvExport;
         $this->supportedJobNames = $supportedJobNames;
         $this->decimalSeparators = $decimalSeparators;
-        $this->dateFormats = $dateFormats;
+        $this->dateFormats      = $dateFormats;
     }
 
     /**

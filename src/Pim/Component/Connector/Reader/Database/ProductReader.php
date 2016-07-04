@@ -90,8 +90,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
 
         $pqb = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
 
-        $filters         = $parameters->get('filters');
-        $filters['data'] = array_merge($filters['data'], [['field' => 'completeness', 'value' => 100, 'operator' => '=']]);
+        $filters = $parameters->get('filters');
         foreach ($filters['data'] as $filter) {
             $pqb->addFilter(
                 $filter['field'],
