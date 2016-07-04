@@ -17,8 +17,8 @@ Feature: Export products according to their skus
 
   Scenario: Export products by their skus
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath           | %tmp%/product_export/product_export.csv |
-      | product_identifier | SNKRS-1B                                |
+      | filePath | %tmp%/product_export/product_export.csv |
+      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "sku", "operator": "IN", "value": ["SNKRS-1B"]}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish

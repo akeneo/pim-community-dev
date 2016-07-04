@@ -29,14 +29,6 @@ class JobContext extends PimContext
                 $value = 'yes' === $value;
             }
 
-            if ($this->isJobParameterArray($property)) {
-                $value = $this->getMainContext()->listToArray($value);
-            }
-
-            if (in_array($property, ['updated_since_date'])) {
-                $value = (new \DateTime($value))->format('Y-m-d H:i:s');
-            }
-
             if ('filters' === $property) {
                 $value = json_decode($value, true);
             }
