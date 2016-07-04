@@ -29,7 +29,7 @@ Feature: Export products according to a locale policy
   @ce
   Scenario: Export only the product values from the selected locale
     Given the following job "csv_product_export" configuration:
-      | filters | {"structure": {"locales": ["fr_FR"], "scope": "ecommerce"}, "data": {}} |
+      | filters | {"structure": {"locales": ["fr_FR"], "scope": "ecommerce"}, "data": []} |
     When I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish
@@ -44,7 +44,7 @@ Feature: Export products according to a locale policy
   @ce
   Scenario: Export only the product values from locale specific attributes
     Given the following job "csv_product_export" configuration:
-      | filters | {"structure": {"locales": ["en_US"], "scope": "ecommerce"}, "data": {}} |
+      | filters | {"structure": {"locales": ["en_US"], "scope": "ecommerce"}, "data": []} |
     When I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish
@@ -59,7 +59,7 @@ Feature: Export products according to a locale policy
   @ce
   Scenario: Remove the locales from the channel after we set the export configuration
     Given the following job "csv_product_export" configuration:
-      | filters | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"}, "data": {}} |
+      | filters | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"}, "data": []} |
     When I set the "English (United States)" locale to the "ecommerce" channel
     And I am on the "csv_product_export" export job page
     And I launch the export job
@@ -74,7 +74,7 @@ Feature: Export products according to a locale policy
   @ce
   Scenario: Selecting a channel from the export profile updates the locale choices
     Given the following job "csv_product_export" configuration:
-      | filters | {"structure": {"locales": ["fr_FR"], "scope": "ecommerce"}, "data": {}} |
+      | filters | {"structure": {"locales": ["fr_FR"], "scope": "ecommerce"}, "data": []} |
     And I am on the "csv_product_export" export job edit page
     When I visit the "Content" tab
     Then I should see the text "fr_FR"

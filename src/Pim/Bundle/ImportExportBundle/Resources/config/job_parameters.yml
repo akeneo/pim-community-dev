@@ -56,8 +56,7 @@ services:
         class: '%pim_import_export.job_parameters.form_configuration_provider.product_csv_export.class%'
         arguments:
             - '@pim_import_export.job_parameters.form_configuration_provider.simple_csv_export'
-            -
-                - 'csv_product_export'
+            - ['csv_product_export']
             - '%pim_catalog.localization.decimal_separators%'
             - '%pim_catalog.localization.date_formats%'
         tags:
