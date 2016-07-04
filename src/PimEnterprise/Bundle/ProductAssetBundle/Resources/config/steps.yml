@@ -157,3 +157,24 @@ services:
             - '@pimee_product_asset.reader.database.variation'
             - '@pimee_product_asset.processor.normalization.variation.flat'
             - '@pimee_product_asset.writer.file.xlsx_asset_variation'
+
+    # Mass Edit steps -------------------------------------------------------------------------------------------------
+    pimee_product_asset.step.classify_assets.perform:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'mass_edit'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.database.mass_edit_asset'
+            - '@pimee_product_asset.processor.classify_assets'
+            - '@pimee_product_asset.writer.doctrine.asset'
+
+    pimee_product_asset.step.add_tags_to_assets.perform:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'mass_edit'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.database.mass_edit_asset'
+            - '@pimee_product_asset.processor.add_tags_to_assets'
+            - '@pimee_product_asset.writer.doctrine.asset'

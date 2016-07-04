@@ -13,6 +13,8 @@ parameters:
     pimee_product_asset.job_name.xlsx_asset_export: 'xlsx_asset_export'
     pimee_product_asset.job_name.xlsx_asset_category_export: 'xlsx_asset_category_export'
     pimee_product_asset.job_name.xlsx_asset_variation_export: 'xlsx_asset_variation_export'
+    pimee_product_asset.job_name.classify_assets: 'classify_assets'
+    pimee_product_asset.job_name.add_tags_to_assets: 'add_tags_to_assets'
 
 services:
     # Mass Upload -----------------------------------------------------------------------------------------------------
@@ -171,3 +173,26 @@ services:
                 - '@pimee_product_asset.step.xlsx_asset_variation_export.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.export_type%' }
+
+    # Mass Edit -------------------------------------------------------------------------------------------------------
+    pimee_product_asset.job.classify_assets:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.classify_assets%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_product_asset.step.classify_assets.perform'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.mass_edit_type%' }
+
+    pimee_product_asset.job.add_tags_to_assets:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.add_tags_to_assets%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_product_asset.step.add_tags_to_assets.perform'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.mass_edit_type%' }
