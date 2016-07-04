@@ -8,7 +8,7 @@ Feature: Export products according to a date
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_product_export" configuration:
       | filePath               | %tmp%/product_export/product_export.csv |
-      | updated_since_strategy | last_export                             |
+      | filters                | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": "SINCE LAST EXPORT", "value": "csv_footwear_product_export"}]} |
     And the following products:
       | sku      | family   | categories        | price          | size | color    | name-en_US |
       | SNKRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    |
@@ -91,9 +91,7 @@ Feature: Export products according to a date
       | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    |
     And the following job "csv_footwear_product_export" configuration:
       | filePath               | %tmp%/product_export/product_export.csv |
-      | updated_since_strategy | since_date                              |
-      | updated_since_date     | 2016-04-25                              |
-      | locales                | en_US                                   |
+      | filters                | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": ">", "value": "2016-04-25 00:00:00"}]} |
     And I am logged in as "Julia"
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
@@ -105,7 +103,7 @@ Feature: Export products according to a date
       SNKRS-1R;summer_collection;red;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
       """
     When the following job "csv_footwear_product_export" configuration:
-      | updated_since_date | NOW +1 day |
+      | filters                | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": "<", "value": "2016-04-25 00:00:00"}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
