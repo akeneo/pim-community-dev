@@ -21,7 +21,7 @@ services:
                 - '@pimee_catalog_rule.step.csv_product.import_associations'
                 - '@pimee_catalog_rule.step.csv_product.execute_rules'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
     # XLSX Imports ----------------------------------------------------------------------------------------------------
     pimee_catalog_rule.job.xlsx_product_import_with_rules:
@@ -36,7 +36,7 @@ services:
                 - '@pimee_catalog_rule.step.xlsx_product.import_associations'
                 - '@pimee_catalog_rule.step.xlsx_product.execute_rules'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%akeneo_batch.job.import_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 
     # YML Imports -----------------------------------------------------------------------------------------------------
     pimee_catalog_rule.job.yml_rule_import:
@@ -48,7 +48,7 @@ services:
             -
                 - '@pimee_catalog_rule.step.yml_rule.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%akeneo_batch.job.import_type%' }
+            - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%pim_connector.job.import_type%' }
 
     # YML Exports -----------------------------------------------------------------------------------------------------
     pimee_catalog_rule.job.yml_rule_export:
@@ -60,7 +60,7 @@ services:
             -
                 - '@pimee_catalog_rule.step.yml_rule.export'
         tags:
-            - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%akeneo_batch.job.export_type%' }
+            - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%pim_connector.job.export_type%' }
 
     # YML Rules count -------------------------------------------------------------------------------------------------
     pimee_catalog_rule.job.rule_impacted_product_count:

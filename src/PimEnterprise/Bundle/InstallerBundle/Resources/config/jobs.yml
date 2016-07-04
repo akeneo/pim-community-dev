@@ -20,7 +20,7 @@ services:
             -
                 - '@pimee_installer.step.fixtures_attribute_group_access_csv.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
     pimee_installer.job.fixtures_product_category_access_csv:
         class: '%pim_connector.job.simple_job.class%'
@@ -31,7 +31,7 @@ services:
             -
                 - '@pimee_installer.step.fixtures_product_category_access_csv.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
     pimee_installer.job.fixtures_asset_category_csv:
         class: '%pim_connector.job.simple_job.class%'
@@ -43,7 +43,7 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pimee_product_asset.step.csv_asset_category.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
     pimee_installer.job.fixtures_job_profile_access_csv:
         class: '%pim_connector.job.simple_job.class%'
@@ -54,7 +54,7 @@ services:
             -
                 - '@pimee_installer.step.fixtures_job_profile_access_csv.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
     pimee_installer.job.fixtures_locale_access_csv:
         class: '%pim_connector.job.simple_job.class%'
@@ -65,7 +65,7 @@ services:
             -
                 - '@pimee_installer.step.fixtures_locale_access_csv.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
     pimee_installer.job.fixtures_rule_yml:
         class: '%pim_connector.job.simple_job.class%'
@@ -76,7 +76,7 @@ services:
             -
                 - '@pimee_installer.step.fixtures_rule_yml.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
     pimee_installer.job.fixtures_asset_csv:
         class: '%pim_connector.job.simple_job.class%'
@@ -88,7 +88,7 @@ services:
                 - '@pimee_product_asset.step.csv_asset.import_tags'
                 - '@pimee_product_asset.step.csv_asset.import_asset'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
     pimee_installer.job.fixtures_asset_category_access_csv:
         class: '%pim_connector.job.simple_job.class%'
@@ -99,7 +99,7 @@ services:
             -
                 - '@pimee_installer.step.fixtures_asset_category_access_csv.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
     pimee_installer.job.fixtures_asset_channel_configurations_yml:
         class: '%pim_connector.job.simple_job.class%'
@@ -110,4 +110,4 @@ services:
             -
                 - '@pimee_product_asset.step.yml_asset_channel_configuration.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%akeneo_batch.job.fixture_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
