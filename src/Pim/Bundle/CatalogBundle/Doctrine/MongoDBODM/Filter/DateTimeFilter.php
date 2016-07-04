@@ -2,7 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Akeneo\Component\Batch\Job\BatchStatus;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Pim\Bundle\CatalogBundle\ProductQueryUtility;
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -18,16 +21,28 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
     const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
+    /** @var JobRepositoryInterface */
+    protected $jobRepository;
+
+    /** @var JobInstanceRepository */
+    protected $jobInstanceRepository;
+
     /**
+     * @param JobInstanceRepository  $jobInstanceRepository
+     * @param JobRepositoryInterface $jobRepository
      * @param array $supportedFields
      * @param array $supportedOperators
      */
     public function __construct(
+        JobInstanceRepository $jobInstanceRepository,
+        JobRepositoryInterface $jobRepository,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields    = $supportedFields;
-        $this->supportedOperators = $supportedOperators;
+        $this->supportedFields       = $supportedFields;
+        $this->supportedOperators    = $supportedOperators;
+        $this->jobInstanceRepository = $jobInstanceRepository;
+        $this->jobRepository         = $jobRepository;
     }
 
     /**
@@ -35,8 +50,37 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
+        if (Operators::IS_EMPTY !== $operator &&
+            Operators::IS_NOT_EMPTY !== $operator &&
+            Operators::SINCE_LAST_EXPORT !== $operator &&
+            Operators::SINCE_LAST_N_DAYS !== $operator
+        ) {
             $value = $this->formatValues($field, $value);
+        }
+
+        if (Operators::SINCE_LAST_EXPORT === $operator) {
+            if (!is_string($value)) {
+                throw InvalidArgumentException::stringExpected($field, 'filter', 'updated', gettype($value));
+            }
+
+            $jobInstance = $this->jobInstanceRepository->findOneBy(['code' => $value]);
+            $lastCompletedJobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
+            if (null === $lastCompletedJobExecution) {
+                return $this;
+            }
+            $lastJobStartTime = $lastCompletedJobExecution->getStartTime();
+            $value            = $lastJobStartTime->format(static::DATETIME_FORMAT);
+            $operator         = Operators::GREATER_THAN;
+        }
+
+        if (Operators::SINCE_LAST_N_DAYS === $operator) {
+            if (!is_numeric($value)) {
+                throw InvalidArgumentException::numericExpected($field, 'filter', 'updated', gettype($value));
+            }
+
+            $fromDate = new \DateTime(sprintf('%s days ago', $value), new \DateTimeZone('UTC'));
+            $value    = $fromDate->format(static::DATETIME_FORMAT);
+            $operator = Operators::GREATER_THAN;
         }
 
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
