@@ -29,7 +29,7 @@ extensions:
         config:
             operators:
                 - ALL
-                - SINCE N DAYS
+                - SINCE LAST N DAYS
                 - ">="
                 - SINCE LAST EXPORT
 

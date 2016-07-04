@@ -359,7 +359,7 @@ pim_enrich:
                     help: The updated time condition of the products you want to export
                     operators:
                         ALL: No date condition
-                        "SINCE N DAYS": Updated products since the last n days
+                        "SINCE LAST N DAYS": Updated products since the last n days
                         ">=": Updated products since the defined date
                         "SINCE LAST EXPORT": Updated products since last export
                 enabled:
