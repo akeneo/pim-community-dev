@@ -12,7 +12,7 @@ define([
     return BaseFilter.extend({
         template: _.template(template),
         events: {
-            'change [name="filter-value"]': 'updateState'
+            'change [name="filter-operator"]': 'updateState'
         },
 
         /**
@@ -46,16 +46,16 @@ define([
          * Initializes select2 after rendering.
          */
         postRender: function () {
-            this.$('[name="filter-value"]').select2();
+            this.$('[name="filter-operator"]').select2();
         },
 
         /**
          * Updates operator and value on fields change.
          */
         updateState: function () {
-            var value = this.$('[name="filter-value"]').val();
+            var operator = this.$('[name="filter-operator"]').val();
 
-            if ('all' === value) {
+            if ('ALL' === operator) {
                 this.clearData();
 
                 return;
@@ -63,8 +63,8 @@ define([
 
             this.setData({
                 field: this.getField(),
-                operator: '=',
-                value: 'enabled' === value
+                operator: operator,
+                value: 100
             });
         }
     });
