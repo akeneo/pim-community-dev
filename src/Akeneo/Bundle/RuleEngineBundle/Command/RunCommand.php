@@ -11,14 +11,18 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Command;
 
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Command to run a rule
@@ -37,6 +41,8 @@ class RunCommand extends ContainerAwareCommand
             ->addArgument('code', InputArgument::OPTIONAL, 'Code of the rule to run')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Dry run')
             ->addOption('stop-on-error', null, InputOption::VALUE_NONE, 'Stop rules execution on error')
+            ->addOption('username', null, InputOption::VALUE_REQUIRED, 'Name of the user launching the rule. '.
+                'This should not be used from the command line, only from Akeneo command launcher.')
             ->setDescription('Runs all the rules or only one if a code is provided.')
         ;
     }
@@ -49,13 +55,22 @@ class RunCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $code = $input->hasArgument('code') ? $input->getArgument('code') : null;
+        $username = $input->hasOption('username') ? $input->getOption('username') : null;
         $rules = $this->getRulesToRun($code);
         $runnerRegistry = $this->getRuleRunner();
+        $eventDispatcher = $this->getEventDispatcher();
 
         $stopOnError = $input->getOption('stop-on-error') ?: false;
         $dryRun = $input->getOption('dry-run') ?: false;
 
         $message = $dryRun ? 'Dry running rule <info>%s</info>...' : 'Running rule <info>%s</info>...';
+
+        $user = $this->getUser($username);
+
+        $eventDispatcher->dispatch(RuleEvents::BEFORE_COMMAND_EXECUTION, new GenericEvent(
+            $rules,
+            ['user' => $user]
+        ));
 
         foreach ($rules as $rule) {
             $output->writeln(sprintf($message, $rule->getCode()));
@@ -67,6 +82,11 @@ class RunCommand extends ContainerAwareCommand
                 $stopOnError
             );
         }
+
+        $eventDispatcher->dispatch(RuleEvents::AFTER_COMMAND_EXECUTION, new GenericEvent(
+            $rules,
+            ['user' => $user]
+        ));
 
         $output->writeln('<info>Done !</info>');
     }
@@ -134,6 +154,16 @@ class RunCommand extends ContainerAwareCommand
     }
 
     /**
+     * @param string $username
+     *
+     * @return UserInterface|null
+     */
+    protected function getUser($username)
+    {
+        return $this->getContainer()->get('pim_user.repository.user')->findOneByIdentifier($username);
+    }
+
+    /**
      * @return RuleDefinitionRepositoryInterface
      */
     protected function getRuleDefinitionRepository()
@@ -147,5 +177,13 @@ class RunCommand extends ContainerAwareCommand
     protected function getRuleRunner()
     {
         return $this->getContainer()->get('akeneo_rule_engine.runner.chained');
+    }
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    protected function getEventDispatcher()
+    {
+        return $this->getContainer()->get('event_dispatcher');
     }
 }

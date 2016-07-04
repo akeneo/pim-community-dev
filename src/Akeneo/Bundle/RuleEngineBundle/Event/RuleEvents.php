@@ -23,8 +23,6 @@ final class RuleEvents
      *
      * The event listener receives an
      * Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent instance.
-     *
-     * @staticvar string
      */
     const PRE_BUILD = 'pim_rule_engine.rule.pre_build';
 
@@ -33,8 +31,6 @@ final class RuleEvents
      *
      * The event listener receives an
      * Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent instance.
-     *
-     * @staticvar string
      */
     const POST_BUILD = 'pim_rule_engine.rule.post_build';
 
@@ -43,8 +39,6 @@ final class RuleEvents
      *
      * The event listener receives an
      * Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent instance.
-     *
-     * @staticvar string
      */
     const PRE_SELECT = 'pim_rule_engine.rule.pre_select';
 
@@ -53,8 +47,6 @@ final class RuleEvents
      *
      * The event listener receives an
      * Akeneo\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent instance.
-     *
-     * @staticvar string
      */
     const SKIP = 'pim_rule_engine.rule.skip';
 
@@ -63,8 +55,6 @@ final class RuleEvents
      *
      * The event listener receives an
      * Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent instance.
-     *
-     * @staticvar string
      */
     const POST_SELECT = 'pim_rule_engine.rule.post_select';
 
@@ -73,8 +63,6 @@ final class RuleEvents
      *
      * The event listener receives an
      * Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent instance.
-     *
-     * @staticvar string
      */
     const PRE_APPLY = 'pim_rule_engine.rule.pre_apply';
 
@@ -83,8 +71,6 @@ final class RuleEvents
      *
      * The event listener receives an
      * Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent instance.
-     *
-     * @staticvar string
      */
     const POST_APPLY = 'pim_rule_engine.rule.post_apply';
 
@@ -93,8 +79,6 @@ final class RuleEvents
      *
      * The event listener receives an
      * Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent instance.
-     *
-     * @staticvar string
      */
     const PRE_REMOVE = 'pim_rule_engine.rule.pre_remove';
 
@@ -103,8 +87,6 @@ final class RuleEvents
      *
      * The event listener receives an
      * Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent instance.
-     *
-     * @staticvar string
      */
     const POST_REMOVE = 'pim_rule_engine.rule.post_remove';
 
@@ -113,8 +95,6 @@ final class RuleEvents
      *
      * The event listener receives an
      * Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent instance.
-     *
-     * @staticvar string
      */
     const PRE_SAVE = 'pim_rule_engine.rule.pre_save';
 
@@ -123,8 +103,6 @@ final class RuleEvents
      *
      * The event listener receives an
      * Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent instance.
-     *
-     * @staticvar string
      */
     const POST_SAVE = 'pim_rule_engine.rule.post_save';
 
@@ -133,8 +111,6 @@ final class RuleEvents
      *
      * The event listener receives an
      * Akeneo\Bundle\RuleEngineBundle\Event\BulkRuleEvent instance.
-     *
-     * @staticvar string
      */
     const PRE_SAVE_ALL = 'pim_rule_engine.rule.pre_save_all';
 
@@ -143,8 +119,22 @@ final class RuleEvents
      *
      * The event listener receives an
      * Akeneo\Bundle\RuleEngineBundle\Event\BulkRuleEvent instance.
-     *
-     * @staticvar string
      */
     const POST_SAVE_ALL = 'pim_rule_engine.rule.post_save_all';
+
+    /**
+     * This event is thrown before the RunCommand is launched.
+     *
+     * The event listener receives a
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     */
+    const BEFORE_COMMAND_EXECUTION = 'pim_rule_engine.command.before_execution';
+
+    /**
+     * This event is thrown after the RunCommand is launched.
+     *
+     * The event listener receives a
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     */
+    const AFTER_COMMAND_EXECUTION  = 'pim_rule_engine.command.after_execution';
 }

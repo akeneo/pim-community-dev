@@ -10,7 +10,7 @@ pimee_catalog_rule:
                 actions: Action
                 impacted_product_count:
                     label: Matching products
-                    count: "{0,1}%count% matching product|]1,Inf[ %count% matching products"
+                    count: '{0,1} %count% matching product|]1,Inf[ %count% matching products'
                     no_yet_calculated: Not yet calculated
             mass_edit_action:
                 impacted_product_count: Calculate the matching products
@@ -76,6 +76,8 @@ pimee_catalog_rule:
         rules_execution.title:                Rules execution
 
     notification:
+        rule:
+            executed: Execution of the rule(s) finished
         mass_edit_rule:
             success: Calculation of the matching products for the rules finished
             error: An error as occurred during the calculation of the matching products for the rules

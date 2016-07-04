@@ -1,5 +1,6 @@
 parameters:
-    pimee_catalog_rule.event_subscriber.rule_relation.class: PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber\RuleRelationSubscriber
+    pimee_catalog_rule.event_subscriber.rule_relation.class:  PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber\RuleRelationSubscriber
+    pimee_catalog_rule.event_subscriber.rule_execution.class: PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber\RuleExecutionSubscriber
 
 services:
     pimee_catalog_rule.event_subscriber.rule_relation:
@@ -10,5 +11,13 @@ services:
             - '@pimee_catalog_rule.remover.rule_relation'
             - '@akeneo_rule_engine.repository.rule_relation'
             - '@pimee_catalog_rule.builder.product'
+        tags:
+            - { name: kernel.event_subscriber}
+
+    pimee_catalog_rule.event_subscriber.rule_execution:
+        class: '%pimee_catalog_rule.event_subscriber.rule_execution.class%'
+        arguments:
+            - '@pim_notification.registry.factory.notification'
+            - '@pim_notification.notifier'
         tags:
             - { name: kernel.event_subscriber}
