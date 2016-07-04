@@ -16,10 +16,10 @@ extensions:
         module: pim/filter/product/completeness
         config:
             operators:
-                - IN
-                - NOT IN
-                - EMPTY
-                - NOT EMPTY
+                - ALL
+                - ">="
+                - GREATER OR EQUALS THAN ON ALL LOCALES
+                - LOWER THAN ON ALL LOCALES
 
     pim-filter-product-enabled:
         module: pim/filter/product/enabled
