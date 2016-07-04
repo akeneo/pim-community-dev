@@ -1,6 +1,20 @@
 services:
+    # CSV Product Import steps ----------------------------------------------------------------------------------------
+    pimee_catalog_rule.step.csv_product.import:
+        alias: pim_connector.step.csv_product.import
+
+    pimee_catalog_rule.step.csv_product.import_associations:
+        alias: pim_connector.step.csv_product.import_associations
+
+    # XLSX Product Import steps ---------------------------------------------------------------------------------------
+    pimee_catalog_rule.step.xlsx_product.import:
+        alias: pim_connector.step.xlsx_product.import
+
+    pimee_catalog_rule.step.xlsx_product.import_associations:
+        alias: pim_connector.step.xlsx_product.import_associations
+
     # Execute Rules steps ---------------------------------------------------------------------------------------------
-    pimee_catalog_rule.step.csv_product_import_with_rules.execute_rules:
+    pimee_catalog_rule.step.csv_product.execute_rules:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'execute_rules'
@@ -11,7 +25,7 @@ services:
             - '@pimee_catalog_rule.executor.rules'
             - 100
 
-    pimee_catalog_rule.step.xlsx_product_import_with_rules.execute_rules:
+    pimee_catalog_rule.step.xlsx_product.execute_rules:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'execute_rules'
@@ -23,7 +37,7 @@ services:
             - 100
 
     # Import Rules steps ----------------------------------------------------------------------------------------------
-    pimee_catalog_rule.step.yml_rule_import.import:
+    pimee_catalog_rule.step.yml_rule.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'execute_rules'
@@ -34,7 +48,7 @@ services:
             - '@pimee_catalog_rule.writer.doctrine.rule_definition'
 
     # Export Rules steps ----------------------------------------------------------------------------------------------
-    pimee_catalog_rule.step.yml_rule_export.export:
+    pimee_catalog_rule.step.yml_rule.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'execute_rules'

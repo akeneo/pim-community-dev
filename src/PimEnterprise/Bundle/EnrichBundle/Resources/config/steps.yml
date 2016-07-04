@@ -69,7 +69,7 @@ services:
             - 1000
 
     # CSV Quick Export steps ------------------------------------------------------------------------------------------
-    pimee_enrich.step.csv_published_product_quick_export.export:
+    pimee_enrich.step.csv_published_product.quick_export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -81,7 +81,7 @@ services:
             - 1000
 
     # XLSX Quick Export steps -----------------------------------------------------------------------------------------
-    pimee_enrich.step.xlsx_published_product_quick_export.export:
+    pimee_enrich.step.xlsx_published_product.quick_export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -103,3 +103,7 @@ services:
             - '@pimee_catalog_rule.processor.product_loader'
             - '@pimee_catalog_rule.executor.rules'
             - 100
+
+    # Clean steps -----------------------------------------------------------------------------------------------------
+    pimee_enrich.step.clean:
+        alias: pim_enrich.step.clean

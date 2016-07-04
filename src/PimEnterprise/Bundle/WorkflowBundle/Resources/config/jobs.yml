@@ -15,7 +15,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pimee_workflow.step.csv_product_proposal_import.import'
+                - '@pimee_workflow.step.csv_product_proposal.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.import_type%' }
 
@@ -27,7 +27,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pimee_workflow.step.csv_published_product_export.export'
+                - '@pimee_workflow.step.csv_published_product.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%akeneo_batch.job.export_type%' }
 
@@ -39,7 +39,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pimee_workflow.step.xlsx_product_proposal_import.import'
+                - '@pimee_workflow.step.xlsx_product_proposal.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%akeneo_batch.job.import_type%' }
 
@@ -51,7 +51,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pimee_workflow.step.xlsx_published_product_export.export'
+                - '@pimee_workflow.step.xlsx_published_product.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%akeneo_batch.job.export_type%' }
 

@@ -9,10 +9,10 @@ services:
             - '@pimee_product_asset.mass_upload.tasklet'
 
     # Import Asset steps ----------------------------------------------------------------------------------------------
-    pimee_product_asset.step.yml_asset_channel_configuration_import.import:
+    pimee_product_asset.step.yml_asset_channel_configuration.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'import_channel_configuration'
+            - 'import'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.file.yaml_channel_configuration'
@@ -20,10 +20,10 @@ services:
             - '@pimee_product_asset.writer.doctrine.channel_configuration'
 
     # Export Asset steps ----------------------------------------------------------------------------------------------
-    pimee_product_asset.step.yml_asset_channel_configuration_export.export:
+    pimee_product_asset.step.yml_asset_channel_configuration.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'export_channel_configuration'
+            - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.channel_configuration'
@@ -31,7 +31,7 @@ services:
             - '@pimee_product_asset.writer.file.yaml_asset_channel_configuration'
 
     # CSV Import steps ------------------------------------------------------------------------------------------------
-    pimee_product_asset.step.csv_asset_import.import_tags:
+    pimee_product_asset.step.csv_asset.import_tags:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import_tags'
@@ -42,7 +42,7 @@ services:
             - '@pimee_product_asset.writer.doctrine.tag'
             - 1
 
-    pimee_product_asset.step.csv_asset_import.import_asset:
+    pimee_product_asset.step.csv_asset.import_asset:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import_asset'
@@ -52,7 +52,7 @@ services:
             - '@pimee_product_asset.processor.denormalization.asset'
             - '@pimee_product_asset.writer.doctrine.asset'
 
-    pimee_product_asset.step.csv_asset_category_import.import:
+    pimee_product_asset.step.csv_asset_category.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import_asset_category'
@@ -64,30 +64,30 @@ services:
             - 1
 
     # CSV Export steps ------------------------------------------------------------------------------------------------
-    pimee_product_asset.step.csv_asset_export.export:
+    pimee_product_asset.step.csv_asset.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'export_asset'
+            - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.asset'
             - '@pimee_product_asset.processor.normalization.asset.flat'
             - '@pimee_product_asset.writer.file.csv_asset'
 
-    pimee_product_asset.step.csv_asset_category_export.export:
+    pimee_product_asset.step.csv_asset_category.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'export_asset_category'
+            - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.category'
             - '@pimee_product_asset.processor.normalization.category.flat'
             - '@pimee_product_asset.writer.file.csv_asset_category'
 
-    pimee_product_asset.step.csv_asset_variation_export.export:
+    pimee_product_asset.step.csv_asset_variation.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'export_asset_variation'
+            - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.variation'
@@ -95,7 +95,7 @@ services:
             - '@pimee_product_asset.writer.file.csv_asset_variation'
 
     # XLSX Import steps -----------------------------------------------------------------------------------------------
-    pimee_product_asset.step.xlsx_asset_import.import_tags:
+    pimee_product_asset.step.xlsx_asset.import_tags:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import_tags'
@@ -106,7 +106,7 @@ services:
             - '@pimee_product_asset.writer.doctrine.tag'
             - 1
 
-    pimee_product_asset.step.xlsx_asset_import.import_asset:
+    pimee_product_asset.step.xlsx_asset.import_asset:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import_asset'
@@ -116,7 +116,7 @@ services:
             - '@pimee_product_asset.processor.denormalization.asset'
             - '@pimee_product_asset.writer.doctrine.asset'
 
-    pimee_product_asset.step.xlsx_asset_category_import.import:
+    pimee_product_asset.step.xlsx_asset_category.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import_asset_category'
@@ -128,30 +128,30 @@ services:
             - 1
 
     # XLSX Export steps -----------------------------------------------------------------------------------------------
-    pimee_product_asset.step.xlsx_asset_export.export:
+    pimee_product_asset.step.xlsx_asset.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'export_asset'
+            - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.asset'
             - '@pimee_product_asset.processor.normalization.asset.flat'
             - '@pimee_product_asset.writer.file.xlsx_asset'
 
-    pimee_product_asset.step.xlsx_asset_category_export.export:
+    pimee_product_asset.step.xlsx_asset_category.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'export_asset_category'
+            - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.category'
             - '@pimee_product_asset.processor.normalization.category.flat'
             - '@pimee_product_asset.writer.file.xlsx_asset_category'
 
-    pimee_product_asset.step.xlsx_asset_variation_export.export:
+    pimee_product_asset.step.xlsx_asset_variation.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'export_asset_variation'
+            - 'export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.variation'

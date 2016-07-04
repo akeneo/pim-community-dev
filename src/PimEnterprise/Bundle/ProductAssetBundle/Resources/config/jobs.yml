@@ -38,7 +38,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                - '@pimee_product_asset.step.yml_asset_channel_configuration_import.import'
+                - '@pimee_product_asset.step.yml_asset_channel_configuration.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.import_type%' }
 
@@ -50,7 +50,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pimee_product_asset.step.yml_asset_channel_configuration_export.export'
+                - '@pimee_product_asset.step.yml_asset_channel_configuration.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.export_type%' }
 
@@ -63,8 +63,8 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                - '@pimee_product_asset.step.csv_asset_import.import_tags'
-                - '@pimee_product_asset.step.csv_asset_import.import_asset'
+                - '@pimee_product_asset.step.csv_asset.import_tags'
+                - '@pimee_product_asset.step.csv_asset.import_asset'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.import_type%' }
 
@@ -76,7 +76,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                - '@pimee_product_asset.step.csv_asset_category_import.import'
+                - '@pimee_product_asset.step.csv_asset_category.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.import_type%' }
 
@@ -88,7 +88,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pimee_product_asset.step.csv_asset_export.export'
+                - '@pimee_product_asset.step.csv_asset.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.export_type%' }
 
@@ -99,7 +99,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pimee_product_asset.step.csv_asset_category_export.export'
+                - '@pimee_product_asset.step.csv_asset_category.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.export_type%' }
 
@@ -110,7 +110,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pimee_product_asset.step.csv_asset_variation_export.export'
+                - '@pimee_product_asset.step.csv_asset_variation.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.export_type%' }
 
@@ -123,8 +123,8 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                - '@pimee_product_asset.step.xlsx_asset_import.import_tags'
-                - '@pimee_product_asset.step.xlsx_asset_import.import_asset'
+                - '@pimee_product_asset.step.xlsx_asset.import_tags'
+                - '@pimee_product_asset.step.xlsx_asset.import_asset'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.import_type%' }
 
@@ -136,7 +136,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                - '@pimee_product_asset.step.xlsx_asset_category_import.import'
+                - '@pimee_product_asset.step.xlsx_asset_category.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.import_type%' }
 
@@ -148,7 +148,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pimee_product_asset.step.xlsx_asset_export.export'
+                - '@pimee_product_asset.step.xlsx_asset.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.export_type%' }
 
@@ -159,7 +159,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pimee_product_asset.step.xlsx_asset_category_export.export'
+                - '@pimee_product_asset.step.xlsx_asset_category.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.export_type%' }
 
@@ -170,7 +170,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pimee_product_asset.step.xlsx_asset_variation_export.export'
+                - '@pimee_product_asset.step.xlsx_asset_variation.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%akeneo_batch.job.export_type%' }
 

@@ -1,6 +1,6 @@
 services:
     # CSV Import steps ------------------------------------------------------------------------------------------------
-    pimee_workflow.step.csv_product_proposal_import.import:
+    pimee_workflow.step.csv_product_proposal.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -12,7 +12,7 @@ services:
             - 10
 
     # CSV Export steps ------------------------------------------------------------------------------------------------
-    pimee_workflow.step.csv_published_product_export.export:
+    pimee_workflow.step.csv_published_product.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
@@ -24,7 +24,7 @@ services:
             - 10
 
     # XLSX IMport steps -----------------------------------------------------------------------------------------------
-    pimee_workflow.step.xlsx_product_proposal_import.import:
+    pimee_workflow.step.xlsx_product_proposal.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'import'
@@ -36,7 +36,7 @@ services:
             - 10
 
     # XLSX Export steps -----------------------------------------------------------------------------------------------
-    pimee_workflow.step.xlsx_published_product_export.export:
+    pimee_workflow.step.xlsx_published_product.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'export'
