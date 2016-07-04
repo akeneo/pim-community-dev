@@ -72,6 +72,7 @@ Feature: Export products
     Given an "apparel" catalog configuration
     And the following job "tablet_product_export" configuration:
       | filePath | %tmp%/tablet_product_export/tablet_product_export.csv |
+      | filters  | {"structure": {"locales": ["en_US", "en_GB"], "scope": "tablet"},"data":[{"field":"completeness","operator":"=","value":100}, {"field":"categories.code","operator":"IN CHILDREN","value":["2013_collection"]}]} |
     And the following products:
       | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture |
       | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
@@ -101,6 +102,7 @@ Feature: Export products
     Given an "apparel" catalog configuration
     And the following job "tablet_product_export" configuration:
       | filePath | %tmp%/tablet_product_export/tablet_product_export.csv |
+      | filters  | {"structure": {"locales": ["en_US", "en_GB"], "scope": "tablet"},"data":[{"field":"completeness","operator":"=","value":100}, {"field":"categories.code","operator":"IN CHILDREN","value":["2013_collection"]}]} |
     And the following attributes:
       | code                      | type | localizable | available_locales |
       | locale_specific_attribute | text | yes         | en_US,fr_FR       |
