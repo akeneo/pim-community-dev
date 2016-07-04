@@ -14,16 +14,35 @@ define(
         };
 
         return {
+            /**
+             * Returns configuration for extensions.
+             *
+             * @return {Promise}
+             */
             getExtensionMap: function () {
                 return loadConfig().then(function (config) {
                     return config.extensions;
                 });
             },
+
+            /**
+             * Returns configuration for attribute fields.
+             *
+             * @return {Promise}
+             */
             getAttributeFields: function () {
                 return loadConfig().then(function (config) {
                     return config.attribute_fields;
                 });
             },
+
+            /**
+             * Returns configuration for the specified filter.
+             *
+             * @param {String} code
+             *
+             * @return {Promise}
+             */
             getFilters: function (code) {
                 return loadConfig().then(function (config) {
                     return config.filters[code];

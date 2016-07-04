@@ -14,9 +14,21 @@ define([
         events: {
             'change [name="filter-value"]': 'updateState'
         },
+
+        /**
+         * Initializes configuration.
+         *
+         * @param config
+         */
         initialize: function (config) {
             this.config = config.config;
         },
+
+        /**
+         * Returns rendered input.
+         *
+         * @return {String}
+         */
         renderInput: function () {
             if (undefined === this.getOperator()) {
                 this.setOperator(_.first(this.config.operators));
@@ -29,9 +41,17 @@ define([
                 operatorChoices: this.config.operators
             });
         },
+
+        /**
+         * Initializes select2 after rendering.
+         */
         postRender: function () {
             this.$('[name="filter-value"]').select2();
         },
+
+        /**
+         * Updates operator and value on fields change.
+         */
         updateState: function () {
             var value = this.$('[name="filter-value"]').val();
 

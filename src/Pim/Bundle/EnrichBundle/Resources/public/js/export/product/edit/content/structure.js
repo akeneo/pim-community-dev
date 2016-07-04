@@ -17,6 +17,12 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
+
+            /**
+             * Renders this view.
+             *
+             * @return {Object}
+             */
             render: function () {
                 if (!this.configured) {
                     return this;
@@ -26,6 +32,8 @@ define(
                 );
 
                 this.renderExtensions();
+
+                return this;
             }
         });
     }
