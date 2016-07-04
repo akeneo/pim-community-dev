@@ -44,7 +44,7 @@ define(
                 });
 
                 $('#' + this.$el.data('channel-input')).bind('change', function () {
-                    this.attributes.categories.clear();
+                    this.attributes.categories = [];
                     this.trigger('change:categories');
                 }.bind(this));
             },

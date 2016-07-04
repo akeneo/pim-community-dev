@@ -78,3 +78,8 @@ Feature: Export products from any given categories
       toys_games;toys_games;1;default;
       action_figures;action_figures;1;default;
       """
+    When I am on the "csv_product_export" export job edit page
+    And I visit the "Content" tab
+    And I fill in the following information:
+      | Channel | Mobile |
+    Then I should see the text "Categories All products"
