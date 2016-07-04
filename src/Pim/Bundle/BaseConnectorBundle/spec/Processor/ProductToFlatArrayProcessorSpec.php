@@ -54,7 +54,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $productBuilder,
         $stepExecution,
         $detacher,
-        Filesystem $filesystem,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
@@ -67,34 +66,43 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         AttributeInterface $identifierAttribute,
         JobParameters $jobParameters
     ) {
+        $filters = [
+            'data' => [
+                [
+                    'field'    => 'enabled',
+                    'operator' => '=',
+                    'value'    => true
+                ]
+            ],
+            'structure' => [
+                'scope'   => 'mobile',
+                'locales' => ['fr_FR', 'en_US'],
+            ]
+        ];
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('channel')->willReturn('foobar');
+        $jobParameters->get('filters')->willReturn($filters);
         $jobParameters->get('decimalSeparator')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-        $jobParameters->get('locales')->willReturn(['fr_FR', 'en_US']);
 
-        $channel->getCode()->willReturn('foobar');
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
+        $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
+
         $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
 
-        $media1->getKey()->willReturn('key/to/media1.jpg');
-        $media2->getKey()->willReturn('key/to/media2.jpg');
+        $product->getValues()->willReturn([$value1, $value2, $identifierValue]);
 
         $value1->getAttribute()->willReturn($attribute);
         $value1->getMedia()->willReturn($media1);
+
         $value2->getAttribute()->willReturn($attribute);
         $value2->getMedia()->willReturn($media2);
-        $attribute->getAttributeType()->willReturn('pim_catalog_image');
-        $product->getValues()->willReturn([$value1, $value2, $identifierValue]);
 
         $identifierValue->getAttribute()->willReturn($identifierAttribute);
-        $identifierAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
-        $product->getIdentifier()->willReturn($identifierValue);
-        $identifierValue->getData()->willReturn('data');
 
-        $filesystem->has('key/to/media1.jpg')->willReturn(true);
-        $filesystem->has('key/to/media2.jpg')->willReturn(true);
+        $attribute->getAttributeType()->willReturn('pim_catalog_image');
+        $identifierAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
 
         $serializer
             ->normalize($media1, 'flat', ['field_name' => 'media', 'prepare_copy' => true, 'value' => $value1])
@@ -102,6 +110,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $serializer
             ->normalize($media2, 'flat', ['field_name' => 'media', 'prepare_copy' => true, 'value' => $value2])
             ->willReturn(['normalized_media2']);
+
         $serializer
             ->normalize(
                 $product,
@@ -116,8 +125,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             ->willReturn(['normalized_product']);
 
         $detacher->detach($product)->shouldBeCalled();
-
-        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
 
         $this->process($product)->shouldReturn(
             [
@@ -138,13 +145,26 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         Serializer $serializer,
         JobParameters $jobParameters
     ) {
+        $filters = [
+            'data' => [
+                [
+                    'field'    => 'enabled',
+                    'operator' => '=',
+                    'value'    => true
+                ]
+            ],
+            'structure' => [
+                'scope'   => 'mobile',
+                'locales' => ['fr_FR', 'en_US'],
+            ]
+        ];
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('channel')->willReturn('foobar');
+        $jobParameters->get('filters')->willReturn($filters);
         $jobParameters->get('decimalSeparator')->willReturn(',');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-        $jobParameters->get('locales')->willReturn(['en_US']);
 
-        $channel->getCode()->willReturn('foobar');
+        $channel->getCode()->willReturn('mobile');
         $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
         $channel->getLocaleCodes()->willReturn(['en_US']);
         $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
@@ -155,15 +175,15 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                 $product,
                 'flat',
                 [
-                    'scopeCode' => 'foobar',
-                    'localeCodes' => ['en_US'],
+                    'scopeCode'         => 'mobile',
+                    'localeCodes'       => ['en_US'],
                     'decimal_separator' => ',',
                     'date_format'       => 'yyyy-MM-dd',
                 ]
             )
             ->willReturn(['normalized_product']);
 
-        $channelRepository->findOneByIdentifier('foobar')->willReturn($channel);
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
 
         $detacher->detach($product)->shouldBeCalled();
 

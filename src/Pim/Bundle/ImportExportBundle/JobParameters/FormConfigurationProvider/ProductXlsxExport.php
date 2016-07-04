@@ -26,9 +26,6 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
     /** @var FormConfigurationProviderInterface */
     protected $simpleXlsxExport;
 
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
     /** @var string */
     protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
 
@@ -44,31 +41,22 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
     /** @var array */
     protected $supportedJobNames;
 
-    /** @var FamilyRepositoryInterface */
-    protected $familyRepository;
-
     /**
      * @param FormConfigurationProviderInterface $simpleXlsxExport
-     * @param ChannelRepositoryInterface         $channelRepository
-     * @param FamilyRepositoryInterface          $familyRepository
      * @param array                              $supportedJobNames
      * @param array                              $decimalSeparators
      * @param array                              $dateFormats
      */
     public function __construct(
         FormConfigurationProviderInterface $simpleXlsxExport,
-        ChannelRepositoryInterface $channelRepository,
-        FamilyRepositoryInterface $familyRepository,
         array $supportedJobNames,
         array $decimalSeparators,
         array $dateFormats
     ) {
-        $this->simpleXlsxExport = $simpleXlsxExport;
-        $this->channelRepository = $channelRepository;
+        $this->simpleXlsxExport  = $simpleXlsxExport;
         $this->supportedJobNames = $supportedJobNames;
         $this->decimalSeparators = $decimalSeparators;
-        $this->dateFormats = $dateFormats;
-        $this->familyRepository = $familyRepository;
+        $this->dateFormats       = $dateFormats;
     }
 
     /**
@@ -78,7 +66,7 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
     {
         $formOptions = [
             'filters' => [
-                'type' => 'hidden',
+                'type'    => 'hidden',
                 'options' => [
                     'attr' => [
                         'data-tab' => 'content'

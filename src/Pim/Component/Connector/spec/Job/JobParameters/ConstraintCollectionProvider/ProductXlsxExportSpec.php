@@ -30,17 +30,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
         $fields = $collection->fields;
         $fields->shouldHaveKey('decimalSeparator');
         $fields->shouldHaveKey('dateFormat');
-        $fields->shouldHaveKey('enabled');
-        $fields->shouldHaveKey('channel');
-        $fields->shouldHaveKey('locales');
-        $fields->shouldHaveKey('completeness');
-        $fields->shouldHaveKey('updated_since_strategy');
-        $fields->shouldHaveKey('updated_since_date');
-        $fields->shouldHaveKey('updated_since_n_days');
-        $fields->shouldHaveKey('linesPerFile');
-        $fields->shouldHaveKey('families');
-        $fields->shouldHaveKey('product_identifier');
-        $fields->shouldHaveKey('categories');
+        $fields->shouldHaveKey('filters');
     }
 
     function it_supports_a_job(JobInterface $job)

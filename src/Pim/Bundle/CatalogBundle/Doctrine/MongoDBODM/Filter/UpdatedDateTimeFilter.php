@@ -1,16 +1,19 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
+namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
+use Pim\Bundle\CatalogBundle\ProductQueryUtility;
 use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
- * Datetime filter for Updated field. It includes specific operators SINCE_LAST_EXPORT and SINCE_LAST_N_DAYS
+ * Datetime filter ODM for Updated field. It includes specific operators SINCE_LAST_EXPORT and SINCE_LAST_N_DAYS
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -40,8 +43,8 @@ class UpdatedDateTimeFilter extends AbstractFieldFilter implements FieldFilterIn
     ) {
         $this->supportedFields       = $supportedFields;
         $this->supportedOperators    = $supportedOperators;
-        $this->jobRepository         = $jobRepository;
         $this->jobInstanceRepository = $jobInstanceRepository;
+        $this->jobRepository         = $jobRepository;
     }
 
     /**
@@ -50,6 +53,7 @@ class UpdatedDateTimeFilter extends AbstractFieldFilter implements FieldFilterIn
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         $this->checkValue($field, $operator, $value);
+        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
         if (Operators::SINCE_LAST_EXPORT === $operator) {
             $this->addUpdatedSinceLastExport($field, $value);
@@ -58,20 +62,6 @@ class UpdatedDateTimeFilter extends AbstractFieldFilter implements FieldFilterIn
         }
 
         return $this;
-    }
-
-    /**
-     * Add a filter for products updated since N ($value) days to the query builder
-     *
-     * @param string $field
-     * @param string $value
-     */
-    protected function addSinceLastNDays($field, $value)
-    {
-        $fromDate = new \DateTime(sprintf('%s days ago', $value), new \DateTimeZone('UTC'));
-        $updatedField = current($this->qb->getRootAliases()) . '.' . $field;
-
-        $this->applyGreaterThanFilter($updatedField, $fromDate->format(static::DATETIME_FORMAT));
     }
 
     /**
@@ -89,23 +79,20 @@ class UpdatedDateTimeFilter extends AbstractFieldFilter implements FieldFilterIn
 
         $lastCompletedJobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
         $lastJobStartTime = $lastCompletedJobExecution->getStartTime();
-        $updatedField = current($this->qb->getRootAliases()) . '.' . $field;
 
-        $this->applyGreaterThanFilter($updatedField, $lastJobStartTime->format(static::DATETIME_FORMAT));
+        $this->qb->field($field)->gt($lastJobStartTime->format(static::DATETIME_FORMAT));
     }
 
     /**
+     * Add a filter for products updated since N ($value) days to the query builder
+     *
      * @param string $field
-     * @param string $datetime
+     * @param string $value
      */
-    protected function applyGreaterThanFilter($field, $datetime)
+    protected function addSinceLastNDays($field, $value)
     {
-        $this->qb->andWhere(
-            $this->qb->expr()->gt(
-                $field,
-                $this->qb->expr()->literal($datetime)
-            )
-        );
+        $fromDate = new \DateTime(sprintf('%s days ago', $value), new \DateTimeZone('UTC'));
+        $this->qb->field($field)->gt($fromDate->format(static::DATETIME_FORMAT));
     }
 
     /**

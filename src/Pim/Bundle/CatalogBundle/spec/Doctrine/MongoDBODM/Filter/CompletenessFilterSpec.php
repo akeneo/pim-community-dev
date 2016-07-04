@@ -17,7 +17,22 @@ class CompletenessFilterSpec extends ObjectBehavior
 {
     function let(ChannelRepositoryInterface $channelRepository, Builder $qb)
     {
-        $this->beConstructedWith($channelRepository, ['completeness'], ['=', '<', '>', '>=', '<=', '!=']);
+        $this->beConstructedWith(
+            $channelRepository,
+            ['completeness'],
+            [
+                '=',
+                '<',
+                '>',
+                '>=',
+                '<=',
+                '!=',
+                'GREATER THAN ON ALL LOCALES',
+                'GREATER OR EQUALS THAN ON ALL LOCALES',
+                'LOWER OR EQUALS THAN ON ALL LOCALES',
+                'LOWER THAN ON ALL LOCALES'
+            ]
+        );
         $this->setQueryBuilder($qb);
     }
 
@@ -28,9 +43,76 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['=', '<', '>', '>=', '<=', '!=']);
+        $this->getOperators()->shouldReturn([
+            '=',
+            '<',
+            '>',
+            '>=',
+            '<=',
+            '!=',
+            'GREATER THAN ON ALL LOCALES',
+            'GREATER OR EQUALS THAN ON ALL LOCALES',
+            'LOWER OR EQUALS THAN ON ALL LOCALES',
+            'LOWER THAN ON ALL LOCALES'
+        ]);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
+    }
+
+    function it_adds_filter_on_products_completes_on_all_locales($qb, Expr $expr, Expr $subExprEn, Expr $subExprFr)
+    {
+        $qb->expr()->willReturn($expr, $subExprEn, $subExprFr);
+        $qb->addAnd($expr)->shouldBeCalled();
+
+        $expr->addAnd($subExprEn)->shouldBeCalled();
+        $expr->addAnd($subExprFr)->shouldBeCalled();
+
+        $subExprEn->field('normalizedData.completenesses.mobile-en_US')
+            ->shouldBeCalled()
+            ->willReturn($subExprEn);
+        $subExprEn->gte(100)->shouldBeCalled();
+
+        $subExprFr->field('normalizedData.completenesses.mobile-fr_FR')
+            ->shouldBeCalled()
+            ->willReturn($subExprFr);
+        $subExprFr->gte(100)->shouldBeCalled();
+
+        $this->addFieldFilter(
+            'completeness',
+            'GREATER OR EQUALS THAN ON ALL LOCALES',
+            100,
+            'en_US',
+            'mobile',
+            ['locales' => ['en_US', 'fr_FR']]
+        );
+    }
+
+    function it_adds_filter_on_products_not_completes_on_all_locales($qb, Expr $expr, Expr $subExprEn, Expr $subExprFr)
+    {
+        $qb->expr()->willReturn($expr, $subExprEn, $subExprFr);
+        $qb->addAnd($expr)->shouldBeCalled();
+
+        $expr->addAnd($subExprEn)->shouldBeCalled();
+        $expr->addAnd($subExprFr)->shouldBeCalled();
+
+        $subExprEn->field('normalizedData.completenesses.mobile-en_US')
+            ->shouldBeCalled()
+            ->willReturn($subExprEn);
+        $subExprEn->lt('100')->shouldBeCalled();
+
+        $subExprFr->field('normalizedData.completenesses.mobile-fr_FR')
+            ->shouldBeCalled()
+            ->willReturn($subExprFr);
+        $subExprFr->lt('100')->shouldBeCalled();
+
+        $this->addFieldFilter(
+            'completeness',
+            'LOWER THAN ON ALL LOCALES',
+            100,
+            'en_US',
+            'mobile',
+            ['locales' => ['en_US', 'fr_FR']]
+        );
     }
 
     function it_adds_an_equals_filter_on_completeness_in_the_query($qb, Expr $expr, Expr $subExpr)
@@ -179,6 +261,50 @@ class CompletenessFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::numericExpected('completeness', 'filter', 'completeness', gettype('123'))
         )->during('addFieldFilter', ['completeness', '=', '12a3', 'fr_FR', 'mobile']);
+    }
+
+    function it_throws_an_exception_if_options_are_not_set_correctly()
+    {
+        $this
+            ->shouldThrow(
+                InvalidArgumentException::arrayKeyExpected(
+                    'completeness',
+                    'locales',
+                    'filter',
+                    'completeness',
+                    print_r(['wrong_key'], true)
+                )
+            )->during(
+                'addFieldFilter',
+                [
+                    'completeness',
+                    'LOWER THAN ON ALL LOCALES',
+                    100,
+                    'en_US',
+                    'mobile',
+                    ['wrong_key' => ['en_US', 'fr_FR']]
+                ]
+            );
+
+        $this
+            ->shouldThrow(
+                InvalidArgumentException::arrayOfArraysExpected(
+                    'completeness',
+                    'filter',
+                    'completeness',
+                    print_r(['locales' => 'en_US'], true)
+                )
+            )->during(
+                'addFieldFilter',
+                [
+                    'completeness',
+                    'LOWER THAN ON ALL LOCALES',
+                    100,
+                    'en_US',
+                    'mobile',
+                    ['locales' => 'en_US']
+                ]
+            );
     }
 
     function it_returns_supported_fields()

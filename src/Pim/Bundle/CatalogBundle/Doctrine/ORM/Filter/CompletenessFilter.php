@@ -16,6 +16,14 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  */
 class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
+    /** @var array Allow to map complex operators to simpler operators */
+    protected $operatorsMapping = [
+        Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES => Operators::GREATER_OR_EQUAL_THAN,
+        Operators::GREATER_THAN_ON_ALL_LOCALES           => Operators::GREATER_THAN,
+        Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES   => Operators::LOWER_OR_EQUAL_THAN,
+        Operators::LOWER_THAN_ON_ALL_LOCALES             => Operators::LOWER_THAN,
+    ];
+
     /**
      * @param array $supportedFields
      * @param array $supportedOperators
@@ -36,27 +44,16 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        switch ($operator) {
-            case Operators::COMPLETE_ON_ALL_LOCALES:
-                $this->checkOptions($field, $options);
+        $this->checkScopeAndValue($field, $scope, $value);
 
-                foreach ($options['locales'] as $locale) {
-                    $this->addFilter(Operators::EQUALS, '100', $locale, $scope);
-                }
-                break;
+        if (array_key_exists($operator, $this->operatorsMapping)) {
+            $this->checkOptions($field, $options);
 
-            case Operators::NOT_COMPLETE_ON_ALL_LOCALES:
-                $this->checkOptions($field, $options);
-
-                foreach ($options['locales'] as $locale) {
-                    $this->addFilter(Operators::LOWER_THAN, '100', $locale, $scope);
-                }
-                break;
-
-            default:
-                $this->checkValue($field, $value, $locale, $scope);
-                $this->addFilter($operator, $value, $locale, $scope);
-                break;
+            foreach ($options['locales'] as $localeCode) {
+                $this->applyFilter($this->operatorsMapping[$operator], $value, $localeCode, $scope);
+            }
+        } else {
+            $this->applyFilter($operator, $value, $locale, $scope);
         }
 
         return $this;
@@ -68,7 +65,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      * @param null   $locale
      * @param null   $scope
      */
-    protected function addFilter($operator, $value, $locale = null, $scope = null)
+    protected function applyFilter($operator, $value, $locale = null, $scope = null)
     {
         $joinAlias = $this->getUniqueAlias('filterCompleteness');
         $field     = $joinAlias . '.ratio';
@@ -79,14 +76,13 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
     }
 
     /**
-     * Check if value is valid
+     * Check if scope and value are valid
      *
-     * @param string      $field
-     * @param mixed       $value
-     * @param string|null $locale
-     * @param string|null $scope
+     * @param string $field
+     * @param mixed  $scope
+     * @param mixed  $value
      */
-    protected function checkValue($field, $value, $locale, $scope)
+    protected function checkScopeAndValue($field, $scope, $value)
     {
         if (!is_numeric($value)) {
             throw InvalidArgumentException::numericExpected($field, 'filter', 'completeness', gettype($value));
@@ -98,7 +94,11 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
     }
 
     /**
-     * Check if options are valid for COMPLETE_ON_ALL_LOCALES and NOT_COMPLETE_ON_ALL_LOCALES operators
+     * Check if options are valid for complex operators
+     *      GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES
+     *      GREATER_THAN_ON_ALL_LOCALES
+     *      LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES
+     *      LOWER_THAN_ON_ALL_LOCALES
      *
      * @param string $field
      * @param array  $options

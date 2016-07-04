@@ -50,20 +50,21 @@ parameters:
     pim_catalog.mongodb_odm_query_generator.multiple_option_deleted.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionDeletedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.multiple_option_value_updated.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionValueUpdatedQueryGenerator
 
-    pim_catalog.doctrine.query.filter.number.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\NumberFilter
-    pim_catalog.doctrine.query.filter.string.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter
-    pim_catalog.doctrine.query.filter.boolean.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BooleanFilter
-    pim_catalog.doctrine.query.filter.date.class:         Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter
-    pim_catalog.doctrine.query.filter.datetime.class:     Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateTimeFilter
-    pim_catalog.doctrine.query.filter.product_id.class:   Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter
-    pim_catalog.doctrine.query.filter.family.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter
-    pim_catalog.doctrine.query.filter.groups.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter
-    pim_catalog.doctrine.query.filter.completeness.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter
-    pim_catalog.doctrine.query.filter.option.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\OptionFilter
-    pim_catalog.doctrine.query.filter.options.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\OptionsFilter
-    pim_catalog.doctrine.query.filter.metric.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter
-    pim_catalog.doctrine.query.filter.price.class:        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter
-    pim_catalog.doctrine.query.filter.media.class:        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MediaFilter
+    pim_catalog.doctrine.query.filter.number.class:           Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\NumberFilter
+    pim_catalog.doctrine.query.filter.string.class:           Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter
+    pim_catalog.doctrine.query.filter.boolean.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BooleanFilter
+    pim_catalog.doctrine.query.filter.date.class:             Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter
+    pim_catalog.doctrine.query.filter.datetime.class:         Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateTimeFilter
+    pim_catalog.doctrine.query.filter.updated_datetime.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\UpdatedDateTimeFilter
+    pim_catalog.doctrine.query.filter.product_id.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter
+    pim_catalog.doctrine.query.filter.family.class:           Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter
+    pim_catalog.doctrine.query.filter.groups.class:           Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter
+    pim_catalog.doctrine.query.filter.completeness.class:     Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter
+    pim_catalog.doctrine.query.filter.option.class:           Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\OptionFilter
+    pim_catalog.doctrine.query.filter.options.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\OptionsFilter
+    pim_catalog.doctrine.query.filter.metric.class:           Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter
+    pim_catalog.doctrine.query.filter.price.class:            Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter
+    pim_catalog.doctrine.query.filter.media.class:            Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MediaFilter
 
     pim_catalog.doctrine.query.cursor.class:              Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor\Cursor
     pim_catalog.doctrine.cursor_factory.product.class:    Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor\CursorFactory
@@ -467,6 +468,16 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
             - ['completeness']
-            - ['<', '<=', '=', '>=', '>', '!=']
+            -
+                - '<'
+                - '<='
+                - '='
+                - '>='
+                - '>'
+                - '!='
+                - 'GREATER THAN ON ALL LOCALES'
+                - 'GREATER OR EQUALS THAN ON ALL LOCALES'
+                - 'LOWER OR EQUALS THAN ON ALL LOCALES'
+                - 'LOWER THAN ON ALL LOCALES'
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }

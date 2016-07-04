@@ -17,7 +17,18 @@ class CompletenessFilterSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             ['completeness'],
-            ['<', '<=', '=', '>=', '>', '!=', 'COMPLETE ON ALL LOCALES', 'NOT COMPLETE ON ALL LOCALES']
+            [
+                '=',
+                '<',
+                '>',
+                '>=',
+                '<=',
+                '!=',
+                'GREATER THAN ON ALL LOCALES',
+                'GREATER OR EQUALS THAN ON ALL LOCALES',
+                'LOWER OR EQUALS THAN ON ALL LOCALES',
+                'LOWER THAN ON ALL LOCALES'
+            ]
         );
         $this->setQueryBuilder($qb);
     }
@@ -31,7 +42,18 @@ class CompletenessFilterSpec extends ObjectBehavior
     {
         $this
             ->getOperators()
-            ->shouldReturn(['<', '<=', '=', '>=', '>', '!=', 'COMPLETE ON ALL LOCALES', 'NOT COMPLETE ON ALL LOCALES']);
+            ->shouldReturn([
+                '=',
+                '<',
+                '>',
+                '>=',
+                '<=',
+                '!=',
+                'GREATER THAN ON ALL LOCALES',
+                'GREATER OR EQUALS THAN ON ALL LOCALES',
+                'LOWER OR EQUALS THAN ON ALL LOCALES',
+                'LOWER THAN ON ALL LOCALES'
+            ]);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
@@ -103,9 +125,9 @@ class CompletenessFilterSpec extends ObjectBehavior
         $em->getClassMetadata('Completeness')->willReturn($cm);
         $comparison->__toString()->willReturn('filterCompleteness.ratio = 100');
         $cm->getAssociationMapping('completenesses')->willReturn(['targetEntity' => 'test']);
-        $expr->literal('100')
+        $expr->literal(100)
             ->willReturn('100');
-        $expr->eq(Argument::any(), '100')
+        $expr->gte(Argument::any(), '100')
             ->shouldBeCalledTimes(2)
             ->willReturn($comparison);
 
@@ -137,8 +159,8 @@ class CompletenessFilterSpec extends ObjectBehavior
 
         $this->addFieldFilter(
             'completeness',
-            Operators::COMPLETE_ON_ALL_LOCALES,
-            '',
+            'GREATER OR EQUALS THAN ON ALL LOCALES',
+            100,
             'en_US',
             'mobile',
             ['locales' => ['fr_FR', 'en_US']]
@@ -160,7 +182,7 @@ class CompletenessFilterSpec extends ObjectBehavior
         $comparison->__toString()->willReturn('filterCompleteness.ratio < 100');
         $cm->getAssociationMapping('completenesses')->willReturn(['targetEntity' => 'test']);
         $expr
-            ->literal('100')
+            ->literal(100)
             ->willReturn('100');
         $expr
             ->lt(Argument::any(), '100')
@@ -195,8 +217,8 @@ class CompletenessFilterSpec extends ObjectBehavior
 
         $this->addFieldFilter(
             'completeness',
-            Operators::NOT_COMPLETE_ON_ALL_LOCALES,
-            '',
+            'LOWER THAN ON ALL LOCALES',
+            100,
             'en_US',
             'mobile',
             ['locales' => ['fr_FR', 'en_US']]
@@ -327,8 +349,8 @@ class CompletenessFilterSpec extends ObjectBehavior
                 'addFieldFilter',
                 [
                     'completeness',
-                    'COMPLETE ON ALL LOCALES',
-                    '',
+                    'LOWER THAN ON ALL LOCALES',
+                    100,
                     null,
                     'mobile',
                     []
@@ -348,8 +370,8 @@ class CompletenessFilterSpec extends ObjectBehavior
                 'addFieldFilter',
                 [
                     'completeness',
-                    'COMPLETE ON ALL LOCALES',
-                    '',
+                    'LOWER THAN ON ALL LOCALES',
+                    100,
                     null,
                     'mobile',
                     ['locales' => 'fr_FR']
