@@ -3,9 +3,9 @@
 namespace Pim\Component\Connector\Writer\File\Csv;
 
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
-use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 
 /**
  * Write product data into a csv file on the local filesystem
@@ -23,15 +23,15 @@ class ProductWriter extends Writer
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
      * @param BulkFileExporter          $mediaCopier
-     * @param ColumnSorterInterface     $columnSorter
+     * @param FlatItemBufferFlusher     $flusher
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
         BulkFileExporter $mediaCopier,
-        ColumnSorterInterface $columnSorter
+        FlatItemBufferFlusher $flusher
     ) {
-        parent::__construct($filePathResolver, $flatRowBuffer, $columnSorter);
+        parent::__construct($filePathResolver, $flatRowBuffer, $flusher);
 
         $this->mediaCopier = $mediaCopier;
     }

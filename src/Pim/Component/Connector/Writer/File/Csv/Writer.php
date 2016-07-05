@@ -2,12 +2,11 @@
 
 namespace Pim\Component\Connector\Writer\File\Csv;
 
-use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
-use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -20,10 +19,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Writer extends AbstractFileWriter implements ArchivableWriterInterface
 {
     /** @var FlatItemBuffer */
-    protected $buffer;
+    protected $flatRowBuffer;
 
-    /** @var ColumnSorterInterface */
-    protected $columnSorter;
+    /** @var FlatItemBufferFlusher */
+    protected $flusher;
 
     /** @var array */
     protected $headers = [];
@@ -34,17 +33,17 @@ class Writer extends AbstractFileWriter implements ArchivableWriterInterface
     /**
      * @param FilePathResolverInterface $filePathResolver
      * @param FlatItemBuffer            $flatRowBuffer
-     * @param ColumnSorterInterface     $columnSorter
+     * @param FlatItemBufferFlusher     $flusher
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
-        ColumnSorterInterface $columnSorter
+        FlatItemBufferFlusher $flusher
     ) {
         parent::__construct($filePathResolver);
 
-        $this->buffer = $flatRowBuffer;
-        $this->columnSorter = $columnSorter;
+        $this->flatRowBuffer = $flatRowBuffer;
+        $this->flusher = $flusher;
     }
 
     /**
@@ -60,9 +59,14 @@ class Writer extends AbstractFileWriter implements ArchivableWriterInterface
      */
     public function write(array $items)
     {
+        $exportDirectory = dirname($this->getPath());
+        if (!is_dir($exportDirectory)) {
+            $this->localFs->mkdir($exportDirectory);
+        }
+
         $parameters = $this->stepExecution->getJobParameters();
         $isWithHeader = $parameters->get('withHeader');
-        $this->buffer->write($items, $isWithHeader);
+        $this->flatRowBuffer->write($items, $isWithHeader);
     }
 
     /**
@@ -70,62 +74,25 @@ class Writer extends AbstractFileWriter implements ArchivableWriterInterface
      */
     public function flush()
     {
-        $csvFile = $this->createCsvFile();
+        $this->flusher->setStepExecution($this->stepExecution);
 
-        $headers = $this->columnSorter->sort($this->buffer->getHeaders());
-        $hollowItem = array_fill_keys($headers, '');
-        $this->writeToCsvFile($csvFile, $headers);
-        foreach ($this->buffer->getBuffer() as $incompleteItem) {
-            $item = array_replace($hollowItem, $incompleteItem);
-            $this->writeToCsvFile($csvFile, $item);
-
-            if (null !== $this->stepExecution) {
-                $this->stepExecution->incrementSummaryInfo('write');
-            }
-        }
-
-        fclose($csvFile);
-        $this->writtenFiles[$this->getPath()] = basename($this->getPath());
-    }
-
-    /**
-     * Create the file to write to and return its pointer
-     *
-     * @throws RuntimeErrorException
-     *
-     * @return resource
-     */
-    protected function createCsvFile()
-    {
-        $exportDirectory = dirname($this->getPath());
-        if (!is_dir($exportDirectory)) {
-            $this->localFs->mkdir($exportDirectory);
-        }
-
-        if (false === $file = fopen($this->getPath(), 'w')) {
-            throw new RuntimeErrorException('Failed to open file %path%', ['%path%' => $this->getPath()]);
-        }
-
-        return $file;
-    }
-
-    /**
-     * Write a csv formatted line into the specified file. If an error occurs the file is closed and an exception is
-     * thrown.
-     *
-     * @param resource $csvFile
-     * @param array    $data
-     *
-     * @throws RuntimeErrorException
-     */
-    protected function writeToCsvFile($csvFile, array $data)
-    {
         $parameters = $this->stepExecution->getJobParameters();
-        $delimiter = $parameters->get('delimiter');
-        $enclosure = $parameters->get('enclosure');
-        if (false === fputcsv($csvFile, $data, $delimiter, $enclosure)) {
-            fclose($csvFile);
-            throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
+        $writerOptions = [
+            'type'           => 'csv',
+            'fieldDelimiter' => $parameters->get('delimiter'),
+            'fieldEnclosure' => $parameters->get('enclosure')
+        ];
+
+        $writtenFiles = $this->flusher->flush(
+            $this->flatRowBuffer,
+            $this->getPath(),
+            ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1),
+            $this->filePathResolverOptions,
+            $writerOptions
+        );
+
+        foreach ($writtenFiles as $writtenFile) {
+            $this->writtenFiles[$writtenFile] = basename($writtenFile);
         }
     }
 }
