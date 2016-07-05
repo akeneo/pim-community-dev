@@ -28,12 +28,13 @@ Feature: Edit an export
       | Date format       | yyyy-MM-dd |
     And I uncheck the "With header" switch
     When I visit the "Content" tab
-    Then I should see the Channel, Status, Completeness, Family, Locales fields
+    Then I should see the Channel, Locales fields
+    Then I should see the filters enabled, completeness, updated and family.code
     And I fill in the following information:
       | Channel      | Tablet                               |
-      | Status       | Disabled                             |
-      | Family       | Boots                                |
-      | Completeness | Not complete on all selected locales |
+    Then I filter by "enabled" with operator "=" and value "false"
+    Then I filter by "family.code" with operator "In list" and value "Boots"
+    Then I filter by "completeness" with operator "Not complete on all selected locales" and value ""
     When I press the "Save" button
     Then I should see the text "File path file.csv"
     And I should see the text "Delimiter |"

@@ -78,10 +78,13 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function theGridShouldContainElement($count)
     {
         $count = (int) $count;
-        $this->wait();
 
         if (0 === $count) {
-            assertTrue($this->datagrid->isGridEmpty());
+            $this->spin(function () {
+                assertTrue($this->datagrid->isGridEmpty());
+
+                return true;
+            }, 'Expecting grid to be empty');
 
             return;
         }
@@ -521,7 +524,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $steps = [];
 
         foreach ($table->getHash() as $item) {
-            $count  = count($this->getMainContext()->listToArray($item['result']));
+            if (isset($item['result'])) {
+                $count = count($this->getMainContext()->listToArray($item['result']));
+            }
             $filter = $item['filter'];
             $isCategoryFilter = false !== strpos(strtolower($filter), 'category');
             $countBeforeFilter = null;
@@ -536,8 +541,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 $item['operator'],
                 $item['value']
             ));
-            $steps[] = new Step\Then(sprintf('the grid should contain %d elements', $count));
-            $steps[] = new Step\Then(sprintf('I should see entities %s', $item['result']));
+
+            if (isset($item['result']) && '' !== $item['result']) {
+                $steps[] = new Step\Then(sprintf('the grid should contain %d elements', $count));
+                $steps[] = new Step\Then(sprintf('I should see entities %s', $item['result']));
+            }
             if (!$isCategoryFilter) {
                 $steps[] = new Step\Then(sprintf('I hide the filter "%s"', $filter));
                 if (null !== $countBeforeFilter) {

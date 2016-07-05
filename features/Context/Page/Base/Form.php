@@ -692,11 +692,11 @@ class Form extends Base
 
             $field = $this->find('css', sprintf('#%s', $for));
 
-            if ($field->getTagName() === 'select') {
+            if (null !== $field && $field->getTagName() === 'select') {
                 return 'select';
             }
 
-            if (false !== strpos($field->getAttribute('class'), 'wysiwyg')) {
+            if (null !== $field && false !== strpos($field->getAttribute('class'), 'wysiwyg')) {
                 return 'wysiwyg';
             }
         }
