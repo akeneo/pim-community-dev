@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -95,6 +96,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
      */
     public function updateJobExecution(JobExecution $jobExecution)
     {
+        $this->checkConnection();
         $this->jobManager->persist($jobExecution);
         $this->jobManager->flush($jobExecution);
     }
@@ -104,7 +106,40 @@ class DoctrineJobRepository implements JobRepositoryInterface
      */
     public function updateStepExecution(StepExecution $stepExecution)
     {
+        $this->checkConnection();
         $this->jobManager->persist($stepExecution);
         $this->jobManager->flush($stepExecution);
+    }
+
+    /**
+     * Ping the Server, if not available then reset the connection.
+     * @author Cristian Quiroz <cq@amp.co>
+     */
+    public function checkConnection()
+    {
+        $connection = $this->jobManager->getConnection();
+        if ($this->pingConnection($connection) === false) {
+            $connection->close();
+            $connection->connect();
+        }
+    }
+
+    /**
+     * Pings the server, returns false if it's not available.
+     * There is a ping() method in Doctrine\DBAL\Connection in the doctrine/dbal package
+     * as of 2.5.0, but  we are currently on 2.4.x
+     * @return bool
+     * @author Cristian Quiroz <cq@amp.co>
+     */
+    private function pingConnection()
+    {
+        $connection = $this->jobManager->getConnection();
+        $connection->connect();
+        try {
+            $connection->query($connection->getDatabasePlatform()->getDummySelectSQL());
+            return true;
+        } catch (DBALException $e) {
+            return false;
+        }
     }
 }
