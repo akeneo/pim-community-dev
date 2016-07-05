@@ -51,6 +51,7 @@ class PimEnrichExtension extends Extension
         $loader->load('handlers.yml');
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
+        $loader->load('jobs.yml');
         $loader->load('managers.yml');
         $loader->load('mass_actions.yml');
         $loader->load('normalizers.yml');
@@ -73,7 +74,6 @@ class PimEnrichExtension extends Extension
         $loader->load('view_elements/group_type.yml');
         $loader->load('view_elements/mass_edit.yml');
         $loader->load('view_updaters.yml');
-        $loader->load('jobs.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');

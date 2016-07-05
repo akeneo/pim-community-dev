@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\Step;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\AbstractStep;
@@ -33,9 +32,7 @@ class ValidatorStep extends AbstractStep
         JobRepositoryInterface $jobRepository,
         CharsetValidator $charsetValidator
     ) {
-        $this->name = $name;
-        $this->jobRepository = $jobRepository;
-        $this->eventDispatcher = $eventDispatcher;
+        parent::__construct($name, $eventDispatcher, $jobRepository);
         $this->charsetValidator = $charsetValidator;
     }
 

@@ -1,3 +1,4 @@
+
 # 1.6.x
 
 ## Functional improvements
@@ -372,3 +373,7 @@
 - Remove the class `Akeneo\Component\Batch\Connector\ConnectorRegistry`, please use `Akeneo\Component\Batch\Job\JobRegistry`
 - Remove the class `Akeneo\Component\Batch\Step\StepFactory` and related service '@akeneo_batch.step_factory'
 - Remove the class `Akeneo\Component\Batch\Job\JobFactory` and related service '@akeneo_batch.job_factory'
+- Remove method `setCharsetValidator()` from `Pim\Component\Connector\Step\ValidatorStep` 
+- Change constructor of `Pim\Component\Connector\Step\ValidatorStep` add `Pim\Component\Connector\Item\CharsetValidator` as last parameter
+- Change constructor of `Pim\Component\Connector\Step\TaskletStep` add `Pim\Component\Connector\Step\TaskletInterface` as last parameter
+- Change constructor of `Pim\Bundle\EnrichBundle\Connector\Step\MassEditStep` add `Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner` as last parameter

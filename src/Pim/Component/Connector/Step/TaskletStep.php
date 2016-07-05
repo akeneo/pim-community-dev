@@ -2,10 +2,9 @@
 
 namespace Pim\Component\Connector\Step;
 
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\AbstractStep;
-use Pim\Component\Connector\Step\TaskletInterface;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

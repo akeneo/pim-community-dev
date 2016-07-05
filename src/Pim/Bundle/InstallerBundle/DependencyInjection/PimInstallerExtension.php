@@ -23,8 +23,8 @@ class PimInstallerExtension extends Extension
         $loader->load('fixture_loader.yml');
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
-        $loader->load('services.yml');
         $loader->load('jobs.yml');
+        $loader->load('services.yml');
         $loader->load('steps.yml');
     }
 }
