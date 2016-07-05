@@ -15,10 +15,8 @@ define([
             'change [name="filter-operator"]': 'updateState'
         },
 
-        /**
-         * Initializes configuration.
-         *
-         * @param config
+         /**
+         * {@inherit}
          */
         initialize: function (config) {
             this.config = config.config;
@@ -35,6 +33,7 @@ define([
             }
 
             return this.template({
+                isEditable: this.isEditable(),
                 __: __,
                 operator: this.getOperator(),
                 value: this.getValue(),

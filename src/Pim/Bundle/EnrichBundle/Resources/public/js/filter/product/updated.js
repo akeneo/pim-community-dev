@@ -41,6 +41,7 @@ define([
             }
 
             return this.template({
+                isEditable: this.isEditable(),
                 __: __,
                 field: this.getField(),
                 operator: this.getOperator(),

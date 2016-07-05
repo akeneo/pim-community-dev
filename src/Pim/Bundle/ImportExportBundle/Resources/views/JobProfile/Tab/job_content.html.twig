@@ -1,5 +1,5 @@
 <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="job-profile-content-tab tab-pane buffer-top">
-    <div id="pim-product-export-edit-content"></div>
+    <div id="pim-product-export-edit-content" class="form-horizontal"></div>
     <input id="{{ form.configuration.filters.vars.id }}" name="{{ form.configuration.filters.vars.full_name }}" value="{{ form.configuration.filters.vars.value|json_encode }}" type="hidden"/>
     <script>
         require(
@@ -9,7 +9,7 @@
                     var loadingMask = new LoadingMask();
                     loadingMask.render().$el.appendTo($('#container')).show();
                     FetcherRegistry.initialize().done(function () {
-                        FormBuilder.build('pim-product-export-edit-content')
+                        FormBuilder.build('{{ form.vars.disabled ? 'pim-product-export-show-content' : 'pim-product-export-edit-content' }}')
                             .then(function (form) {
                                 form
                                     .setElement('#pim-product-export-edit-content')

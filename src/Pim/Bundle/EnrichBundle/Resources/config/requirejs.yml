@@ -30,7 +30,7 @@ config:
                 - 'pim_enrich:form:entity:post_fetch'
         pim/export/product/edit/content:
             forwarded-events:
-                'pim_enrich:filter:extension:add': 'pim_enrich:filter:extension:add'
+                'pim_enrich:form:filter:extension:add': 'pim_enrich:form:filter:extension:add'
         pim/variant-group-manager:
             urls:
                 get: pim_enrich_variant_group_rest_get
@@ -217,13 +217,14 @@ config:
         pim/product-edit-form/back-to-grid:                        pimenrich/js/product/form/back-to-grid
 
         # Exports
+        pim/export/product/edit/content:                           pimenrich/js/export/product/edit/content
+        pim/export/product/edit/content/readonly:                  pimenrich/js/export/product/edit/content/readonly
+        pim/export/product/edit/content/structure:                 pimenrich/js/export/product/edit/content/structure
         pim/export/product/edit/content/structure/scope:           pimenrich/js/export/product/edit/content/structure/scope
         pim/export/product/edit/content/structure/locales:         pimenrich/js/export/product/edit/content/structure/locales
         pim/export/product/edit/content/structure/attributes:      pimenrich/js/export/product/edit/content/structure/attributes
-        pim/export/product/edit/content:                           pimenrich/js/export/product/edit/content
         pim/export/product/edit/content/data:                      pimenrich/js/export/product/edit/content/data
         pim/export/product/edit/content/data/help:                 pimenrich/js/export/product/edit/content/data/help
-        pim/export/product/edit/content/structure:                 pimenrich/js/export/product/edit/content/structure
 
         # Filters
         pim/filter/filter:                pimenrich/js/filter/filter

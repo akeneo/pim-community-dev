@@ -20,7 +20,7 @@ define([
          * {@inherit}
          */
         configure: function () {
-            this.listenTo(this.getRoot(), 'pim_enrich:filter:extension:add', this.addFilterExtension.bind(this));
+            this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this));
 
             return BaseForm.prototype.configure.apply(this, arguments);
         },

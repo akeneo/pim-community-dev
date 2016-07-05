@@ -16,6 +16,7 @@ define([
     return BaseForm.extend({
         className: 'control-group',
         elements: {},
+        editable: true,
         removable: false,
         filterTemplate: _.template(filterTemplate),
         events: {
@@ -23,7 +24,7 @@ define([
         },
 
         /**
-         * Field setter
+         * Sets the field code on which this filter operates.
          *
          * @param {string} field
          */
@@ -34,7 +35,7 @@ define([
         },
 
         /**
-         * Get the field identifier
+         * Gets the field code on which this filter operates.
          *
          * @return {string}
          */
@@ -43,7 +44,7 @@ define([
         },
 
         /**
-         * Set the field operator
+         * Sets the current operator.
          *
          * @param {string} operator
          */
@@ -54,7 +55,7 @@ define([
         },
 
         /**
-         * Get the field operator
+         * Gets the current operator.
          *
          * @return {string}
          */
@@ -63,7 +64,7 @@ define([
         },
 
         /**
-         * Get the field value
+         * Sets the current value.
          *
          * @return {string}
          */
@@ -74,7 +75,7 @@ define([
         },
 
         /**
-         * Get the field operator
+         * Gets the current value.
          *
          * @return {string}
          */
@@ -83,7 +84,25 @@ define([
         },
 
         /**
-         * set if the filter removable
+         * Sets this filter as editable or not.
+         *
+         * @param {boolean} editable
+         */
+        setEditable: function (editable) {
+            this.editable = Boolean(editable);
+        },
+
+        /**
+         * Returns whether this filter is editable.
+         *
+         * @returns {boolean}
+         */
+        isEditable: function () {
+            return this.editable;
+        },
+
+        /**
+         * Sets this filter as removable or not.
          *
          * @param {boolean} removable
          */
@@ -92,13 +111,17 @@ define([
         },
 
         /**
-         * Is the filter removable
+         * Is the filter removable?
          *
          * @return {boolean}
          */
         isRemovable: function () {
             return this.removable;
         },
+
+        /**
+         * Triggers the filter removal event.
+         */
         removeFilter: function () {
             this.trigger('filter:remove', this.getField());
         },
@@ -111,8 +134,9 @@ define([
         render: function () {
             var promises  = [];
             this.elements = {};
+            this.setEditable(true);
 
-            mediator.trigger('pim_enrich:filter:extension:add', {filter: this, promises: promises});
+            mediator.trigger('pim_enrich:form:filter:extension:add', {filter: this, promises: promises});
 
             $.when.apply($, promises)
                 .then(this.getTemplateContext.bind(this))
@@ -130,7 +154,7 @@ define([
         },
 
         /**
-         * Get the template context
+         * Gets the template context.
          *
          * @returns {Promise}
          */

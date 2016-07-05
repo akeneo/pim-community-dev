@@ -23,8 +23,18 @@ define(
         UserContext
     ) {
         return BaseForm.extend({
+            config: {},
             className: 'control-group',
             template: _.template(template),
+
+            /**
+             * Initializes configuration.
+             *
+             * @param {Object} config
+             */
+            initialize: function (config) {
+                this.config = config.config;
+            },
 
             /**
              * Renders scopes dropdown.
@@ -43,6 +53,7 @@ define(
 
                     this.$el.html(
                         this.template({
+                            isEditable: this.isEditable(),
                             __: __,
                             locale: UserContext.get('uiLocale'),
                             channels: channels,
@@ -57,6 +68,17 @@ define(
                 }.bind(this));
 
                 return this;
+            },
+
+            /**
+             * Returns whether this filter is editable.
+             *
+             * @returns {boolean}
+             */
+            isEditable: function () {
+                return undefined !== this.config.isEditable ?
+                    this.config.isEditable :
+                    true;
             },
 
             /**

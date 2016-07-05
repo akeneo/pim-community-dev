@@ -32,6 +32,7 @@ define([
             }
 
             return this.template({
+                isEditable: this.isEditable(),
                 labels: {
                     title: __('pim_enrich.export.product.filter.enabled.title'),
                     valueChoices: {

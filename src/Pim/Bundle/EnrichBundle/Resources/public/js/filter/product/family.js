@@ -13,6 +13,7 @@ define([
         'jquery.select2'
     ], function (_, __, BaseFilter, Routing, template, fetcherRegistry, userContext, i18n, initSelect2) {
     return BaseFilter.extend({
+        config: {},
         template: _.template(template),
         events: {
             'change [name="filter-operator"], [name="filter-value"]': 'updateState'
@@ -85,6 +86,7 @@ define([
             }
 
             return this.template({
+                isEditable: this.isEditable(),
                 __: __,
                 field: this.getField(),
                 operator: this.getOperator(),
