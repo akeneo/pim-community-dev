@@ -13,16 +13,17 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Akeneo\Component\Console\CommandLauncher;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Rule controller
@@ -32,6 +33,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class RuleController
 {
     const MASS_RULE_IMPACTED_PRODUCTS = 'rule_impacted_product_count';
+    const RUN_COMMAND                 = 'akeneo:rule:run';
 
     /** @var RuleDefinitionRepositoryInterface */
     protected $repository;
@@ -51,6 +53,9 @@ class RuleController
     /** @var OroToPimGridFilterAdapter */
     protected $gridFilterAdapter;
 
+    /** @var CommandLauncher */
+    protected $commandLauncher;
+
     /**
      * @param RuleDefinitionRepositoryInterface $repository
      * @param RemoverInterface                  $remover
@@ -58,6 +63,7 @@ class RuleController
      * @param JobLauncherInterface              $simpleJobLauncher
      * @param JobInstanceRepository             $jobInstanceRepo
      * @param OroToPimGridFilterAdapter         $gridFilterAdapter
+     * @param CommandLauncher                   $commandLauncher
      */
     public function __construct(
         RuleDefinitionRepositoryInterface $repository,
@@ -65,7 +71,8 @@ class RuleController
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $simpleJobLauncher,
         JobInstanceRepository $jobInstanceRepo,
-        OroToPimGridFilterAdapter $gridFilterAdapter
+        OroToPimGridFilterAdapter $gridFilterAdapter,
+        CommandLauncher $commandLauncher
     ) {
         $this->repository        = $repository;
         $this->remover           = $remover;
@@ -73,6 +80,7 @@ class RuleController
         $this->simpleJobLauncher = $simpleJobLauncher;
         $this->jobInstanceRepo   = $jobInstanceRepo;
         $this->gridFilterAdapter = $gridFilterAdapter;
+        $this->commandLauncher   = $commandLauncher;
     }
 
     /**
@@ -80,9 +88,9 @@ class RuleController
      *
      * @Template
      *
-     * @return JsonResponse
-     *
      * @AclAncestor("pimee_catalog_rule_rule_view_permissions")
+     *
+     * @return array
      */
     public function indexAction()
     {
@@ -92,9 +100,9 @@ class RuleController
     /**
      * Delete a rule
      *
-     * @param int $id
-     *
      * @AclAncestor("pimee_catalog_rule_rule_delete_permissions")
+     *
+     * @param int $id
      *
      * @throws NotFoundHttpException
      * @throws \Exception
@@ -121,7 +129,7 @@ class RuleController
      *
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function massImpactedProductCountAction(Request $request)
     {
@@ -130,13 +138,49 @@ class RuleController
         $jobInstance   = $this->jobInstanceRepo->findOneByIdentifier(self::MASS_RULE_IMPACTED_PRODUCTS);
         $configuration = ['ruleIds' => $params['values']];
 
-        $this->simpleJobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
+        $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $configuration);
 
         return new JsonResponse(
             [
                 'message'    => 'flash.rule.impacted_product_count',
-                'successful' => true
+                'successful' => true,
             ]
         );
+    }
+
+    /**
+     * Launches the execution of all existing rules in backend.
+     *
+     * @AclAncestor("pimee_catalog_rule_rule_execute_permissions")
+     *
+     * @return JsonResponse
+     */
+    public function executeRulesAction()
+    {
+        $command = static::RUN_COMMAND;
+
+        if (null !== $user = $this->getUser()) {
+            $command .= sprintf(' --username=%s', $user->getUsername());
+        }
+
+        $this->commandLauncher->executeBackground($command);
+
+        return new JsonResponse();
+    }
+
+    /**
+     * @return UserInterface|null
+     */
+    protected function getUser()
+    {
+        if (null === $token = $this->tokenStorage->getToken()) {
+            return null;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            return null;
+        }
+
+        return $user;
     }
 }

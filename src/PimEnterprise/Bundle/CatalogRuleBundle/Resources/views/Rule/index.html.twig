@@ -3,7 +3,20 @@
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block content %}
-    {{ elements.page_header('pimee_catalog_rule.datagrid.rule-grid.title'|trans) }}
+    {% set buttons %}
+        {{ elements.confirmLink(
+            path('pimee_catalog_rule_execute_rules'),
+            path('pimee_catalog_rule_rule_index'),
+            'pimee_catalog_rule.notification.rule.launched'|trans,
+            'Execute rules',
+            'play',
+            'pimee_catalog_rule.popin.execute_all_rules'|trans,
+            'btn btn-primary execute-all-rules',
+            ''
+        ) }}
+    {% endset %}
+
+    {{ elements.page_header('pimee_catalog_rule.datagrid.rule-grid.title'|trans, buttons) }}
 
     {{ dataGrid.renderGrid('rule-grid') }}
 {% endblock %}

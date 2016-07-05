@@ -14,6 +14,7 @@
 - PIM-5530: Change the label and the position of the button "Schedule" in "Upload assets" screen
 - PIM-5488: Add a bulk action on the product assets grid, to move them in categories
 - PIM-5489: Add a mass-edit operation to add tags on assets
+- PIM-5813: Add the possibility to launch the rules from the UI
 
 ## Technical improvements
 
