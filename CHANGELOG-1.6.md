@@ -15,6 +15,7 @@
 - PIM-5488: Add a bulk action on the product assets grid, to move them in categories
 - PIM-5489: Add a mass-edit operation to add tags on assets
 - PIM-5813: Add the possibility to launch the rules from the UI
+- PIM-5860: Add the execute mass action on rules
 
 ## Technical improvements
 

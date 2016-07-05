@@ -1,3 +1,6 @@
+parameters:
+    pimee_catalog_rule.datagrid.extension.mass_action.execute_mass_action_handler.class: PimEnterprise\Bundle\CatalogRuleBundle\Datagrid\Extension\MassAction\ExecuteMassActionHandler
+
 services:
     pim_catalog_rule.extension.mass_action.handler.mass_delete_rule:
         class: '%pim_datagrid.extension.mass_action.handler.delete.class%'
@@ -7,3 +10,11 @@ services:
             - '@event_dispatcher'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_delete_rule }
+
+    pimee_catalog_rule.datagrid.extension.mass_action.execute_mass_action_handler:
+        class: '%pimee_catalog_rule.datagrid.extension.mass_action.execute_mass_action_handler.class%'
+        arguments:
+            - '@pim_catalog.command_launcher'
+            - '@security.token_storage'
+        tags:
+            - { name: pim_datagrid.extension.mass_action.handler, alias: mass_execute_rule }
