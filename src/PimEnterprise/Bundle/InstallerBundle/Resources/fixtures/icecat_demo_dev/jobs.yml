@@ -491,7 +491,7 @@ jobs:
             linesPerFile: 10000
             filePath:   /tmp/published-product.xlsx
     xlsx_product_quick_export:
-        connector: Akeneo XLSXConnector
+        connector: Akeneo XLSX Connector
         alias:     xlsx_product_quick_export
         label:     XLSX product quick export
         type:      quick_export

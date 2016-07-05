@@ -62,7 +62,7 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%pim_connector.job.export_type%' }
 
-    # YML Rules count -------------------------------------------------------------------------------------------------
+    # Rules count -----------------------------------------------------------------------------------------------------
     pimee_catalog_rule.job.rule_impacted_product_count:
         class: '%pim_connector.job.simple_job.class%'
         arguments:

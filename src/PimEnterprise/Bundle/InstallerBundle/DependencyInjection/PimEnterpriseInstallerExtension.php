@@ -34,8 +34,8 @@ class PimEnterpriseInstallerExtension extends BasePimInstallerExtension
         $loader->load('fixture_loader.yml');
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
+        $loader->load('jobs.yml');
         $loader->load('services.yml');
         $loader->load('steps.yml');
-        $loader->load('jobs.yml');
     }
 }

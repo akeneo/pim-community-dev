@@ -40,19 +40,19 @@ class PimEnterpriseEnrichExtension extends Extension
         $loader->load('form_types.yml');
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
+        $loader->load('jobs.yml');
         $loader->load('imagine.yml');
         $loader->load('mass_actions.yml');
         $loader->load('normalizers.yml');
         $loader->load('parameters.yml');
         $loader->load('providers.yml');
         $loader->load('repositories.yml');
+        $loader->load('steps.yml');
         $loader->load('twig.yml');
         $loader->load('view_elements/attribute.yml');
         $loader->load('view_elements/attribute_group.yml');
         $loader->load('view_elements/category.yml');
         $loader->load('view_elements/channel.yml');
         $loader->load('view_updaters.yml');
-        $loader->load('jobs.yml');
-        $loader->load('steps.yml');
     }
 }

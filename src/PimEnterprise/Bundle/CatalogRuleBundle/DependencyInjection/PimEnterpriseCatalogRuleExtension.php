@@ -46,6 +46,7 @@ class PimEnterpriseCatalogRuleExtension extends AkeneoStorageUtilsExtension
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
         $loader->load('job_ui_configs.yml');
+        $loader->load('jobs.yml');
         $loader->load('managers.yml');
         $loader->load('models.yml');
         $loader->load('normalizers.yml');
@@ -56,9 +57,8 @@ class PimEnterpriseCatalogRuleExtension extends AkeneoStorageUtilsExtension
         $loader->load('validators.yml');
         $loader->load('view_elements/attribute.yml');
         $loader->load('view_elements/common.yml');
-        $loader->load('twig.yml');
         $loader->load('steps.yml');
-        $loader->load('jobs.yml');
+        $loader->load('twig.yml');
 
         $this->loadStorageDriver($container, __DIR__);
     }
