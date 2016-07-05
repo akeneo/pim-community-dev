@@ -43,7 +43,6 @@ class RegisterJobsPass implements CompilerPassInterface
                 $type = isset($tag['type']) ? $tag['type'] : self::DEFAULT_JOB_TYPE;
                 $job = new Reference($serviceId);
                 $registryDefinition->addMethodCall('register', [$job, $type, $connector]);
-
             }
         }
     }
