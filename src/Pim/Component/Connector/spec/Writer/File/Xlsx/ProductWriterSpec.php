@@ -131,6 +131,7 @@ class ProductWriterSpec extends ObjectBehavior
             $flatRowBuffer,
             Argument::type('string'),
             2,
+            Argument::type('array'),
             Argument::type('array')
         )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
 

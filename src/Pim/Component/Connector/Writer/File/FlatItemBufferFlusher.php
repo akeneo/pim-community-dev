@@ -4,7 +4,7 @@ namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Box\Spout\Common\Type;
+use Box\Spout\Common\Exception\UnsupportedTypeException;
 use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Writer\WriterInterface;
 
@@ -33,8 +33,10 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      * @param FilePathResolverInterface $filePathResolver
      * @param ColumnSorterInterface     $columnSorter
      */
-    public function __construct(FilePathResolverInterface $filePathResolver, ColumnSorterInterface $columnSorter = null)
-    {
+    public function __construct(
+        FilePathResolverInterface $filePathResolver,
+        ColumnSorterInterface $columnSorter = null
+    ) {
         $this->filePathResolver = $filePathResolver;
         $this->columnSorter = $columnSorter;
     }
@@ -44,26 +46,91 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      * Several output files are created if the buffer contains more items that maximum lines authorized per output file.
      *
      * @param FlatItemBuffer $buffer
-     * @param int            $maxLinesPerFile by default -1, which means there is no limit of lines
+     * @param array          $writerOptions
      * @param string         $basePathname
+     * @param int            $maxLinesPerFile by default -1, which means there is no limit of lines
      * @param array          $filePathResolverOptions
      *
      * @return array the list of file paths that have been written
      */
-    public function flush(FlatItemBuffer $buffer, $basePathname, $maxLinesPerFile = -1, array $filePathResolverOptions = [])
+    public function flush(
+        FlatItemBuffer $buffer,
+        array $writerOptions = [],
+        $basePathname,
+        $maxLinesPerFile = -1,
+        array $filePathResolverOptions = []
+    ) {
+        if ($this->areSeveralFilesNeeded($buffer, $maxLinesPerFile)) {
+            $writtenFiles = $this->writeIntoSeveralFiles(
+                $buffer,
+                $writerOptions,
+                $filePathResolverOptions,
+                $maxLinesPerFile,
+                $basePathname
+            );
+        } else {
+            $writtenFiles = $this->writeIntoSingleFile($buffer, $writerOptions, $basePathname);
+        }
+
+        return $writtenFiles;
+    }
+
+    /**
+     * @param FlatItemBuffer $buffer
+     * @param array          $writerOptions
+     * @param string         $filePath
+     *
+     * @return array
+     */
+    protected function writeIntoSingleFile(FlatItemBuffer $buffer, array $writerOptions, $filePath)
     {
         $writtenFiles = [];
-
-        $basePathPattern = $basePathname;
-        if ($this->areSeveralFilesNeeded($buffer, $maxLinesPerFile)) {
-            $basePathPattern = $this->getNumberedPathname($basePathname);
-        }
 
         $headers    = $this->sortHeaders($buffer->getHeaders());
         $hollowItem = array_fill_keys($headers, '');
 
-        $fileCount         = 1;
+        $writer = $this->getWriter($filePath, $writerOptions);
+        $writer->addRow($headers);
+
+        foreach ($buffer->getBuffer() as $incompleteItem) {
+            $item = array_replace($hollowItem, $incompleteItem);
+            $writer->addRow($item);
+
+            if (null !== $this->stepExecution) {
+                $this->stepExecution->incrementSummaryInfo('write');
+            }
+        }
+
+        $writer->close();
+        $writtenFiles[] = $filePath;
+
+        return $writtenFiles;
+    }
+
+    /**
+     * @param FlatItemBuffer $buffer
+     * @param array          $writerOptions
+     * @param array          $filePathResolverOptions
+     * @param int            $maxLinesPerFile
+     * @param string         $basePathname
+     *
+     * @return array
+     */
+    protected function writeIntoSeveralFiles(
+        FlatItemBuffer $buffer,
+        array $writerOptions,
+        array $filePathResolverOptions = [],
+        $maxLinesPerFile,
+        $basePathname
+    ) {
+        $writtenFiles = [];
+        $basePathPattern = $this->getNumberedPathname($basePathname);
         $writtenLinesCount = 0;
+        $fileCount = 1;
+
+        $headers    = $this->sortHeaders($buffer->getHeaders());
+        $hollowItem = array_fill_keys($headers, '');
+
         foreach ($buffer->getBuffer() as $count => $incompleteItem) {
             if (0 === $writtenLinesCount % $maxLinesPerFile) {
                 $filePath = $this->resolveFilePath(
@@ -73,9 +140,8 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
                     $fileCount,
                     $filePathResolverOptions
                 );
-
                 $writtenLinesCount = 0;
-                $writer            = $this->getWriter($filePath);
+                $writer = $this->getWriter($filePath, $writerOptions);
                 $writer->addRow($headers);
             }
 
@@ -103,14 +169,6 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
-    }
-
-    /**
-     * @param ColumnSorterInterface $columnSorter
-     */
-    public function setColumnSorter(ColumnSorterInterface $columnSorter)
-    {
-        $this->columnSorter = $columnSorter;
     }
 
     /**
@@ -200,12 +258,31 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
 
     /**
      * @param string $filePath File path to open with the writer
+     * @param array  $options  Options for Spout writer (delimiter, enclosure, ...)
+     *
+     * @throws UnsupportedTypeException
      *
      * @return WriterInterface
      */
-    protected function getWriter($filePath)
+    protected function getWriter($filePath, array $options = [])
     {
-        $writer = WriterFactory::create(Type::XLSX);
+        if (!isset($options['type'])) {
+            throw new \InvalidArgumentException('Option "type" have to be defined');
+        }
+
+        $writer = WriterFactory::create($options['type']);
+        unset($options['type']);
+
+        foreach ($options as $name => $option) {
+            $setter = 'set' . ucfirst($name);
+            if (method_exists($writer, $setter)) {
+                $writer->$setter($option);
+            } else {
+                $message = sprintf('Option "%s" does not exist in writer "%s"', $setter, get_class($writer));
+                throw new \InvalidArgumentException($message);
+            }
+        }
+
         $writer->openToFile($filePath);
 
         return $writer;

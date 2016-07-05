@@ -97,8 +97,11 @@ class ProductWriter extends AbstractFileWriter implements ItemWriterInterface, A
     {
         $this->flusher->setStepExecution($this->stepExecution);
 
+        $writerOptions = ['type' => 'xlsx'];
+
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,
+            $writerOptions,
             $this->getPath(),
             $this->stepExecution->getJobParameters()->get('linesPerFile'),
             $this->filePathResolverOptions
