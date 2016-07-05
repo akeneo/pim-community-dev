@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Writer\File;
+namespace spec\Pim\Component\Connector\Writer\File\Csv;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -11,11 +11,11 @@ use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Prophecy\Argument;
 
-class CsvWriterSpec extends ObjectBehavior
+class WriterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Writer\File\CsvWriter');
+        $this->shouldHaveType('Pim\Component\Connector\Writer\File\Csv\Writer');
     }
 
     function let(FilePathResolverInterface $filePathResolver, FlatItemBuffer $flatRowBuffer, ColumnSorterInterface $columnSorter)

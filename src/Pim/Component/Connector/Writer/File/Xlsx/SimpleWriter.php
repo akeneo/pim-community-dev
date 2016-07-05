@@ -1,6 +1,12 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\File;
+namespace Pim\Component\Connector\Writer\File\Xlsx;
+
+use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
+use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 
 /**
  * Write simple data into a XLSX file on the local filesystem
@@ -9,7 +15,7 @@ namespace Pim\Component\Connector\Writer\File;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInterface
+class SimpleWriter extends AbstractFileWriter implements ArchivableWriterInterface
 {
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;

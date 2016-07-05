@@ -5,16 +5,16 @@ parameters:
     pim_connector.writer.database.product_association.class:       Pim\Component\Connector\Writer\Database\ProductAssociationWriter
     pim_connector.writer.database.variant_group.class:             Pim\Component\Connector\Writer\Database\VariantGroupWriter
     pim_connector.writer.file.abstract.class:                      Pim\Component\Connector\Writer\File\AbstractFileWriter
-    pim_connector.writer.file.csv.class:                           Pim\Component\Connector\Writer\File\CsvWriter
-    pim_connector.writer.file.csv_product.class:                   Pim\Component\Connector\Writer\File\CsvProductWriter
-    pim_connector.writer.file.csv_variant_group.class:             Pim\Component\Connector\Writer\File\CsvVariantGroupWriter
+    pim_connector.writer.file.csv.class:                           Pim\Component\Connector\Writer\File\Csv\Writer
+    pim_connector.writer.file.csv_product.class:                   Pim\Component\Connector\Writer\File\Csv\ProductWriter
+    pim_connector.writer.file.csv_variant_group.class:             Pim\Component\Connector\Writer\File\Csv\VariantGroupWriter
     pim_connector.writer.file.file_exporter.class:                 Pim\Component\Connector\Writer\File\FileExporter
     pim_connector.writer.file.file_path_resolver.class:            Pim\Component\Connector\Writer\File\FilePathResolver
-    pim_connector.writer.file.yaml.class:                          Pim\Component\Connector\Writer\File\YamlWriter
+    pim_connector.writer.file.yaml.class:                          Pim\Component\Connector\Writer\File\Yaml\Writer
     pim_connector.writer.file.media_exporter_path_generator.class: Pim\Component\Connector\Writer\File\MediaExporterPathGenerator
-    pim_connector.writer.file.xlsx_product.class:                  Pim\Component\Connector\Writer\File\XlsxProductWriter
-    pim_connector.writer.file.xlsx_simple.class:                   Pim\Component\Connector\Writer\File\XlsxSimpleWriter
-    pim_connector.writer.file.xlsx_variant_group.class:            Pim\Component\Connector\Writer\File\XlsxVariantGroupWriter
+    pim_connector.writer.file.xlsx_product.class:                  Pim\Component\Connector\Writer\File\Xlsx\ProductWriter
+    pim_connector.writer.file.xlsx_simple.class:                   Pim\Component\Connector\Writer\File\Xlsx\SimpleWriter
+    pim_connector.writer.file.xlsx_variant_group.class:            Pim\Component\Connector\Writer\File\Xlsx\VariantGroupWriter
     pim_connector.writer.file.flat_item_buffer.class:              Pim\Component\Connector\Writer\File\FlatItemBuffer
     pim_connector.writer.file.product.bulk_file_exporter.class:    Pim\Component\Connector\Writer\File\BulkFileExporter
     pim_connector.writer.file.default.column_sorter.class:         Pim\Component\Connector\Writer\File\DefaultColumnSorter

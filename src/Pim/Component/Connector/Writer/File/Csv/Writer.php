@@ -1,8 +1,13 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\File;
+namespace Pim\Component\Connector\Writer\File\Csv;
 
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
+use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
+use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
+use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -12,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CsvWriter extends AbstractFileWriter implements ArchivableWriterInterface
+class Writer extends AbstractFileWriter implements ArchivableWriterInterface
 {
     /** @var FlatItemBuffer */
     protected $buffer;

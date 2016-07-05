@@ -1,32 +1,35 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\File;
+namespace Pim\Component\Connector\Writer\File\Xlsx;
 
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
-use Box\Spout\Common\Type;
-use Box\Spout\Writer\WriterFactory;
-use Box\Spout\Writer\WriterInterface;
+use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Pim\Component\Connector\Writer\File\BulkFileExporter;
+use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
+use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 
 /**
- * XLSX VariantGroup writer
+ * Write product data into a XLSX file on the local filesystem
  *
- * @author    Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
+class ProductWriter extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
 {
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;
 
-    /** @var BulkFileExporter */
-    protected $fileExporter;
+    /** @var array */
+    protected $writtenFiles;
 
     /** @var FlatItemBufferFlusher */
     protected $flusher;
 
-    /** @var array */
-    protected $writtenFiles;
+    /** @var BulkFileExporter */
+    protected $fileExporter;
 
     /**
      * @param FilePathResolverInterface $filePathResolver
@@ -53,20 +56,25 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
      */
     public function write(array $items)
     {
+        $products = $media = [];
+        foreach ($items as $item) {
+            $products[] = $item['product'];
+            $media[]    = $item['media'];
+        }
+
+        $parameters = $this->stepExecution->getJobParameters();
+        $withHeader = $parameters->get('withHeader');
+        $this->flatRowBuffer->write($products, $withHeader);
+
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
             $this->localFs->mkdir($exportDirectory);
         }
 
-        $variantGroups = $media = [];
-        foreach ($items as $item) {
-            $variantGroups[] = $item['variant_group'];
-            $media[]         = $item['media'];
+        if ($parameters->has('with_media') && !$parameters->get('with_media')) {
+            return;
         }
 
-        $parameters = $this->stepExecution->getJobParameters();
-        $withHeader = $parameters->get('withHeader');
-        $this->flatRowBuffer->write($variantGroups, $withHeader);
         $this->fileExporter->exportAll($media, $exportDirectory);
 
         foreach ($this->fileExporter->getCopiedMedia() as $copy) {
