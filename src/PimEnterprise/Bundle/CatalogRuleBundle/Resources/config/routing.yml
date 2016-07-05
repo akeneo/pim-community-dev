@@ -15,6 +15,6 @@ pimee_catalog_rule_rule_mass_impacted_product_count:
     defaults: { _controller: pimee_catalog_rule.controller.rule:massImpactedProductCountAction }
     methods: [GET]
 
-pimee_catalog_rule_execute_rules:
+pimee_catalog_rule_rule_execute:
     path: /configuration/rules/execute
     defaults: { _controller: pimee_catalog_rule.controller.rule:executeRulesAction }

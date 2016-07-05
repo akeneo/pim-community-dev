@@ -33,7 +33,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class RuleController
 {
     const MASS_RULE_IMPACTED_PRODUCTS = 'rule_impacted_product_count';
-    const RUN_COMMAND                 = 'akeneo:rule:run';
+    const RUN_COMMAND                 = 'akeneo:rule:run --username=%s';
 
     /** @var RuleDefinitionRepositoryInterface */
     protected $repository;
@@ -138,7 +138,7 @@ class RuleController
         $jobInstance   = $this->jobInstanceRepo->findOneByIdentifier(self::MASS_RULE_IMPACTED_PRODUCTS);
         $configuration = ['ruleIds' => $params['values']];
 
-        $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $configuration);
+        $this->simpleJobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
 
         return new JsonResponse(
             [
@@ -153,34 +153,29 @@ class RuleController
      *
      * @AclAncestor("pimee_catalog_rule_rule_execute_permissions")
      *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function executeRulesAction()
+    public function executeRulesAction(Request $request)
     {
-        $command = static::RUN_COMMAND;
+        $command = sprintf(
+            static::RUN_COMMAND,
+            $this->tokenStorage->getToken()->getUsername()
+        );
 
-        if (null !== $user = $this->getUser()) {
-            $command .= sprintf(' --username=%s', $user->getUsername());
+        $ruleCode = $request->get('code');
+        if (null !== $ruleCode) {
+            $command = sprintf('%s %s', $command, $ruleCode);
         }
 
         $this->commandLauncher->executeBackground($command);
 
-        return new JsonResponse();
-    }
-
-    /**
-     * @return UserInterface|null
-     */
-    protected function getUser()
-    {
-        if (null === $token = $this->tokenStorage->getToken()) {
-            return null;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            return null;
-        }
-
-        return $user;
+        return new JsonResponse(
+            [
+                'message'    => 'flash.rule.executed',
+                'successful' => true,
+            ]
+        );
     }
 }

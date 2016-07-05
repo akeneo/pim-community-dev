@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2016 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
-use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -23,22 +22,20 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class RuleExecutionSubscriber implements EventSubscriberInterface
 {
-    /** @var NotificationFactoryRegistry */
-    protected $factoryRegistry;
-
     /** @var NotifierInterface */
     protected $notifier;
 
+    /** @var string */
+    protected $notificationClass;
+
     /**
-     * @param NotificationFactoryRegistry $factoryRegistry
-     * @param NotifierInterface           $notifier
+     * @param NotifierInterface $notifier
+     * @param string            $notificationClass
      */
-    public function __construct(
-        NotificationFactoryRegistry $factoryRegistry,
-        NotifierInterface $notifier
-    ) {
-        $this->factoryRegistry = $factoryRegistry;
-        $this->notifier        = $notifier;
+    public function __construct(NotifierInterface $notifier, $notificationClass)
+    {
+        $this->notifier          = $notifier;
+        $this->notificationClass = $notificationClass;
     }
 
     /**
@@ -47,7 +44,7 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RuleEvents::AFTER_COMMAND_EXECUTION => 'afterJobExecution',
+            RuleEvents::POST_EXECUTE_ALL => 'afterJobExecution',
         ];
     }
 
@@ -60,32 +57,29 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     {
         $rules = $event->getSubject();
         $user  = $event->hasArgument('user') ? $event->getArgument('user') : null;
-        $count = count($rules);
 
-        if (null === $user || 0 === $count) {
+        if (null === $user || 0 === count($rules)) {
             return;
         }
 
-        $notification = $this->createNotification($count);
+        $notification = $this->createNotification();
         $this->notifier->notify($notification, [$user]);
     }
 
     /**
-     * @param string $count
-     *
-     * @throws \LogicException
-     *
      * @return NotificationInterface
      */
-    protected function createNotification($count)
+    protected function createNotification()
     {
-        $factory = $this->factoryRegistry->get('rule');
-
-        if (null === $factory) {
-            throw new \LogicException(sprintf('No notification factory found for the "%s" job type', 'rule'));
-        }
-
-        $notification = $factory->create($count);
+        $notification = new $this->notificationClass();
+        $notification
+            ->setType('success')
+            ->setMessage('pimee_catalog_rule.notification.rule.executed')
+            ->setRoute('pimee_catalog_rule_rule_index')
+            ->setContext([
+                'actionType'       => 'rule',
+                'showReportButton' => false,
+            ]);
 
         return $notification;
     }

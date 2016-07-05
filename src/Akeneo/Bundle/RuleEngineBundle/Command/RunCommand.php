@@ -15,7 +15,6 @@ use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,6 +22,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Command to run a rule
@@ -41,8 +41,12 @@ class RunCommand extends ContainerAwareCommand
             ->addArgument('code', InputArgument::OPTIONAL, 'Code of the rule to run')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Dry run')
             ->addOption('stop-on-error', null, InputOption::VALUE_NONE, 'Stop rules execution on error')
-            ->addOption('username', null, InputOption::VALUE_REQUIRED, 'Name of the user launching the rule. '.
-                'This should not be used from the command line, only from Akeneo command launcher.')
+            ->addOption(
+                'username',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Username of the user to notify once rule(s) executed.'
+            )
             ->setDescription('Runs all the rules or only one if a code is provided.')
         ;
     }
@@ -67,7 +71,7 @@ class RunCommand extends ContainerAwareCommand
 
         $user = $this->getUser($username);
 
-        $eventDispatcher->dispatch(RuleEvents::BEFORE_COMMAND_EXECUTION, new GenericEvent(
+        $eventDispatcher->dispatch(RuleEvents::PRE_EXECUTE_ALL, new GenericEvent(
             $rules,
             ['user' => $user]
         ));
@@ -83,7 +87,7 @@ class RunCommand extends ContainerAwareCommand
             );
         }
 
-        $eventDispatcher->dispatch(RuleEvents::AFTER_COMMAND_EXECUTION, new GenericEvent(
+        $eventDispatcher->dispatch(RuleEvents::POST_EXECUTE_ALL, new GenericEvent(
             $rules,
             ['user' => $user]
         ));

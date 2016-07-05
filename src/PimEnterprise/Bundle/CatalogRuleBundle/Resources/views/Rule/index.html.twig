@@ -5,14 +5,14 @@
 {% block content %}
     {% set buttons %}
         {{ elements.confirmLink(
-            path('pimee_catalog_rule_execute_rules'),
+            path('pimee_catalog_rule_rule_execute'),
             path('pimee_catalog_rule_rule_index'),
             'pimee_catalog_rule.notification.rule.launched'|trans,
             'Execute rules',
             'play',
-            'pimee_catalog_rule.popin.execute_all_rules'|trans,
+            'pimee_catalog_rule.popin.execute_rules.confirm_content'|trans,
             'btn btn-primary execute-all-rules',
-            ''
+            'pimee_catalog_rule.popin.execute_rules.confirm_title'|trans
         ) }}
     {% endset %}
 

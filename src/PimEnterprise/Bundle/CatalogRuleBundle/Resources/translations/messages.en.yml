@@ -3,6 +3,7 @@ pimee_catalog_rule:
         rule-grid:
             actions:
                 delete: Delete
+                execute: Execute
             title: Rules
             column:
                 code: Code
@@ -85,7 +86,9 @@ pimee_catalog_rule:
             error: An error as occurred during the calculation of the matching products for the rules
 
     popin:
-        execute_all_rules: Are you sure you want to execute the rule(s)?
+        execute_rules:
+            confirm_title: Execute confirmation
+            confirm_content: Are you sure you want to execute all the rules?
 
 btn:
     Execute rules: Execute rules

@@ -14,7 +14,6 @@ class Index extends Grid
     /** @var string */
     protected $path = '/configuration/rules';
 
-
     /**
      * {@inheritdoc}
      */
