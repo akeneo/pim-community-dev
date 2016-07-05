@@ -67,3 +67,8 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/products_export_grid_context_%locale%_%scope%.xlsx
+    csv_default_product_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_import
+        label:     CSV default product import
+        type:      import
