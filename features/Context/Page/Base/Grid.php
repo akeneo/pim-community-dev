@@ -863,17 +863,21 @@ class Grid extends Index
     {
         $filter = $this->getFilter($filterName);
         $this->openFilter($filter);
-        
-        $criteriaElt = $this->spin(function() use ($filter) {
-            return $filter->find('css', 'div.filter-criteria');
-        });
+
+        $criteriaElt = $this->spin(
+            function () use ($filter) {
+                return $filter->find('css', 'div.filter-criteria');
+            }
+        );
         $criteriaElt->fillField('value', $value);
 
-        $buttons      = $this->spin(function() use ($filter) {
-            return $filter->findAll('css', '.metricfilter button.dropdown-toggle');
-        });
+        $buttons = $this->spin(
+            function () use ($filter) {
+                return $filter->findAll('css', '.metricfilter button.dropdown-toggle');
+            }
+        );
         $actionButton = array_shift($buttons);
-        $unitButton   = array_shift($buttons);
+        $unitButton = array_shift($buttons);
 
         // Open the dropdown menu with unit list and click on $unit line
         $unitButton->click();
