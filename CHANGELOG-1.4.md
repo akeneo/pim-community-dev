@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.26 (2016-07-05)
 
 ## Bug fix
 - PIM-5371: Fix wrong order for imagemagick arguments
