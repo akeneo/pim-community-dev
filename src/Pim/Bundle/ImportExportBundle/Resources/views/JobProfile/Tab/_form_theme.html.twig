@@ -52,26 +52,6 @@
     </script>
 {% endblock %}
 
-{% block pim_product_identifier_choice_row %}
-    {{ block('form_row_field') }}
-
-    <script type="text/javascript">
-        require(
-                ['jquery', 'jquery.select2'],
-                function ($) {
-
-                    'use strict';
-                    var choices = $.parseJSON('{{ choices|raw }}');
-                    $('#{{ form.product_identifier.vars.id }}').val(choices).select2({
-                        tags: [],
-                        formatNoMatches: '',
-                        tokenSeparators: [',', ' ']
-                    });
-                }
-        );
-    </script>
-{% endblock %}
-
 {% block pim_import_export_product_export_categories_row %}
 
     <div class="control-group">

@@ -3,7 +3,6 @@ parameters:
     pim_import_export.form.type.job_parameters.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParametersType
     pim_import_export.form.type.product_export.locale_choice.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\LocaleChoiceType
     pim_import_export.form.type.updated_since_parameter.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\UpdatedSinceType
-    pim_import_export.form.type.pim_product_identifier_choice.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\ProductIdentifierChoiceType
     pim_import_export.form.type.product_export.categories.class: Pim\Bundle\ImportExportBundle\Form\Type\JobParameter\CategoriesType
 
 services:
@@ -52,8 +51,3 @@ services:
             - '%akeneo_batch.entity.job_instance.class%'
         tags:
             - { name: form.type, alias: pim_updated_since_parameter_type }
-
-    pim_import_export.form.type.pim_product_identifier_choice:
-        class: '%pim_import_export.form.type.pim_product_identifier_choice.class%'
-        tags:
-            - { name: form.type, alias: pim_product_identifier_choice }
