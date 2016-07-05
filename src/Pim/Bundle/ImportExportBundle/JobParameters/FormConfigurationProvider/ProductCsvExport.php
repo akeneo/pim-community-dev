@@ -3,11 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider;
 
 use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 
 /**
  * FormsOptions for product CSV export
@@ -60,7 +57,7 @@ class ProductCsvExport implements FormConfigurationProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormConfiguration(JobInstance $jobInstance)
+    public function getFormConfiguration()
     {
         $formOptions = [
             'filters' => [
@@ -93,7 +90,7 @@ class ProductCsvExport implements FormConfigurationProviderInterface
             ],
         ];
 
-        $formOptions = array_merge($formOptions, $this->simpleCsvExport->getFormConfiguration($jobInstance));
+        $formOptions = array_merge($formOptions, $this->simpleCsvExport->getFormConfiguration());
 
         return $formOptions;
     }

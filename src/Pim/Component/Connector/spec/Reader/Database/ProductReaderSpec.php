@@ -33,7 +33,6 @@ class ProductReaderSpec extends ObjectBehavior
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         ObjectDetacherInterface $objectDetacher,
-        JobRepositoryInterface $jobRepository,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
@@ -42,7 +41,6 @@ class ProductReaderSpec extends ObjectBehavior
             $completenessManager,
             $metricConverter,
             $objectDetacher,
-            $jobRepository,
             true
         );
 

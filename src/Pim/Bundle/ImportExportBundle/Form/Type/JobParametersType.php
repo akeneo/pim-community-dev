@@ -79,7 +79,7 @@ class JobParametersType extends AbstractType implements DataMapperInterface
 
                 $job                   = $this->getConnectorRegistry()->getJob($jobInstance);
                 $configProvider        = $this->configProviderRegistry->get($job);
-                $configs               = $configProvider->getFormConfiguration($jobInstance);
+                $configs               = $configProvider->getFormConfiguration();
                 $constraintProvider    = $this->constraintProviderRegistry->get($job);
                 $constraintsCollection = $constraintProvider->getConstraintCollection();
                 $fieldConstraints      = $constraintsCollection->fields;
@@ -124,7 +124,7 @@ class JobParametersType extends AbstractType implements DataMapperInterface
                 $job                      = $this->getConnectorRegistry()->getJob($jobInstance);
                 $modelTransformerProvider = $this->modelTransformerProviderRegistry->get($job);
                 $configProvider           = $this->configProviderRegistry->get($job);
-                $configs                  = $configProvider->getFormConfiguration($jobInstance);
+                $configs                  = $configProvider->getFormConfiguration();
 
                 $modelTransformers = (null !== $modelTransformerProvider) ?
                     $modelTransformerProvider->getFormModelTransformers($jobInstance) :
