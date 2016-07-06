@@ -7,7 +7,6 @@ use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Write data into a csv file on the filesystem
@@ -85,10 +84,10 @@ class Writer extends AbstractFileWriter implements ArchivableWriterInterface
 
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,
+            $writerOptions,
             $this->getPath(),
             ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1),
-            $this->filePathResolverOptions,
-            $writerOptions
+            $this->filePathResolverOptions
         );
 
         foreach ($writtenFiles as $writtenFile) {

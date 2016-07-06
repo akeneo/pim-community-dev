@@ -6,9 +6,9 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
-use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Prophecy\Argument;
 
 class VariantGroupWriterSpec extends ObjectBehavior
@@ -17,9 +17,9 @@ class VariantGroupWriterSpec extends ObjectBehavior
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
         BulkFileExporter $fileExporter,
-        ColumnSorterInterface $columnSorter
+        FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $fileExporter, $columnSorter);
+        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $fileExporter, $flusher);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.csv');
@@ -101,5 +101,33 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $this->getWrittenFiles()->shouldBeEqualTo([
             '/tmp/export' => 'export'
         ]);
+    }
+
+    function it_writes_the_csv_file(
+        $flusher,
+        $flatRowBuffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+
+        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('linesPerFile')->willReturn(false);
+        $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('enclosure')->willReturn('"');
+        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
+        $jobParameters->has('mainContext')->willReturn(false);
+
+        $flusher->flush(
+            $flatRowBuffer,
+            Argument::type('array'),
+            Argument::type('string'),
+            -1,
+            Argument::type('array')
+        )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
+
+        $this->flush();
     }
 }

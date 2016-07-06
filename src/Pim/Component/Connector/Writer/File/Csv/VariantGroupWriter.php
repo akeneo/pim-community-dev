@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Connector\Writer\File\Csv;
 
+use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
@@ -14,10 +16,19 @@ use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupWriter extends Writer
+class VariantGroupWriter extends AbstractFileWriter implements ArchivableWriterInterface
 {
+    /** @var FlatItemBuffer */
+    protected $flatRowBuffer;
+
     /** @var BulkFileExporter */
     protected $fileExporter;
+
+    /** @var FlatItemBufferFlusher */
+    protected $flusher;
+
+    /** @var array */
+    protected $writtenFiles = [];
 
     /**
      * @param FilePathResolverInterface $filePathResolver
@@ -31,9 +42,11 @@ class VariantGroupWriter extends Writer
         BulkFileExporter $fileExporter,
         FlatItemBufferFlusher $flusher
     ) {
-        parent::__construct($filePathResolver, $flatRowBuffer, $flusher);
+        parent::__construct($filePathResolver);
 
+        $this->flatRowBuffer = $flatRowBuffer;
         $this->fileExporter = $fileExporter;
+        $this->flusher = $flusher;
     }
 
     /**
@@ -52,7 +65,9 @@ class VariantGroupWriter extends Writer
             $media[]         = $item['media'];
         }
 
-        parent::write($variantGroups);
+        $parameters = $this->stepExecution->getJobParameters();
+        $this->flatRowBuffer->write($variantGroups, $parameters->get('withHeader'));
+
         $this->fileExporter->exportAll($media, $exportDirectory);
 
         foreach ($this->fileExporter->getCopiedMedia() as $copy) {
@@ -66,5 +81,40 @@ class VariantGroupWriter extends Writer
                 $error['medium']
             );
         }
+    }
+
+    /**
+     * Flush items into a csv file
+     */
+    public function flush()
+    {
+        $this->flusher->setStepExecution($this->stepExecution);
+
+        $parameters = $this->stepExecution->getJobParameters();
+        $writerOptions = [
+            'type'           => 'csv',
+            'fieldDelimiter' => $parameters->get('delimiter'),
+            'fieldEnclosure' => $parameters->get('enclosure')
+        ];
+
+        $writtenFiles = $this->flusher->flush(
+            $this->flatRowBuffer,
+            $writerOptions,
+            $this->getPath(),
+            ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1),
+            $this->filePathResolverOptions
+        );
+
+        foreach ($writtenFiles as $writtenFile) {
+            $this->writtenFiles[$writtenFile] = basename($writtenFile);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWrittenFiles()
+    {
+        return $this->writtenFiles;
     }
 }

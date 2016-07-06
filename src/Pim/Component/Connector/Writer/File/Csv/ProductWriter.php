@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Connector\Writer\File\Csv;
 
+use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
@@ -14,10 +16,19 @@ use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductWriter extends Writer
+class ProductWriter extends AbstractFileWriter implements ArchivableWriterInterface
 {
+    /** @var FlatItemBuffer */
+    protected $flatRowBuffer;
+
     /** @var BulkFileExporter */
     protected $mediaCopier;
+
+    /** @var FlatItemBufferFlusher */
+    protected $flusher;
+
+    /** @var array */
+    protected $writtenFiles = [];
 
     /**
      * @param FilePathResolverInterface $filePathResolver
@@ -31,9 +42,11 @@ class ProductWriter extends Writer
         BulkFileExporter $mediaCopier,
         FlatItemBufferFlusher $flusher
     ) {
-        parent::__construct($filePathResolver, $flatRowBuffer, $flusher);
+        parent::__construct($filePathResolver);
 
+        $this->flatRowBuffer = $flatRowBuffer;
         $this->mediaCopier = $mediaCopier;
+        $this->flusher = $flusher;
     }
 
     /**
@@ -47,7 +60,8 @@ class ProductWriter extends Writer
             $media[] = $item['media'];
         }
 
-        parent::write($products);
+        $parameters = $this->stepExecution->getJobParameters();
+        $this->flatRowBuffer->write($products, $parameters->get('withHeader'));
 
         $parameters = $this->stepExecution->getJobParameters();
 
@@ -73,5 +87,40 @@ class ProductWriter extends Writer
                 $error['medium']
             );
         }
+    }
+
+    /**
+     * Flush items into a csv file
+     */
+    public function flush()
+    {
+        $this->flusher->setStepExecution($this->stepExecution);
+
+        $parameters = $this->stepExecution->getJobParameters();
+        $writerOptions = [
+            'type'           => 'csv',
+            'fieldDelimiter' => $parameters->get('delimiter'),
+            'fieldEnclosure' => $parameters->get('enclosure')
+        ];
+
+        $writtenFiles = $this->flusher->flush(
+            $this->flatRowBuffer,
+            $writerOptions,
+            $this->getPath(),
+            ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1),
+            $this->filePathResolverOptions
+        );
+
+        foreach ($writtenFiles as $writtenFile) {
+            $this->writtenFiles[$writtenFile] = basename($writtenFile);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWrittenFiles()
+    {
+        return $this->writtenFiles;
     }
 }
