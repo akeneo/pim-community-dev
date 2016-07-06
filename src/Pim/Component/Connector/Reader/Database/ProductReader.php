@@ -41,9 +41,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
 
-    /** @var JobRepositoryInterface */
-    protected $jobRepository;
-
     /** @var bool */
     protected $generateCompleteness;
 
@@ -59,7 +56,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * @param CompletenessManager                 $completenessManager
      * @param MetricConverter                     $metricConverter
      * @param ObjectDetacherInterface             $objectDetacher
-     * @param JobRepositoryInterface              $jobRepository
      * @param bool                                $generateCompleteness
      */
     public function __construct(
@@ -68,7 +64,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         ObjectDetacherInterface $objectDetacher,
-        JobRepositoryInterface $jobRepository,
         $generateCompleteness
     ) {
         $this->pqbFactory           = $pqbFactory;
@@ -76,7 +71,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $this->completenessManager  = $completenessManager;
         $this->metricConverter      = $metricConverter;
         $this->objectDetacher       = $objectDetacher;
-        $this->jobRepository        = $jobRepository;
         $this->generateCompleteness = (bool) $generateCompleteness;
     }
 

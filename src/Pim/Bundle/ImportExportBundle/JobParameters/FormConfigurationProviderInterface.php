@@ -15,11 +15,9 @@ use Akeneo\Component\Batch\Model\JobInstance;
 interface FormConfigurationProviderInterface
 {
     /**
-     * @param JobInstance $jobInstance
-     *
      * @return array
      */
-    public function getFormConfiguration(JobInstance $jobInstance);
+    public function getFormConfiguration();
 
     /**
      * @return boolean

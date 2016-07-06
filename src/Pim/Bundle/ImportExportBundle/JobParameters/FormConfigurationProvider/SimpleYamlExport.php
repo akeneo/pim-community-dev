@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider;
 
 use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Model\JobInstance;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
 
 /**
@@ -29,7 +28,7 @@ class SimpleYamlExport implements FormConfigurationProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormConfiguration(JobInstance $jobInstance)
+    public function getFormConfiguration()
     {
         return [
             'filePath' => [
