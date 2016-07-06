@@ -198,7 +198,7 @@ services:
     pim_connector.processor.normalization.family:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
-            - '@pim_serializer.normalizer.flat.family'
+            - '@pim_serializer.normalizer.family'
 
     pim_connector.processor.normalization.category:
         class: '%pim_connector.processor.normalization.simple.class%'

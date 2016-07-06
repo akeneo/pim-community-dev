@@ -239,7 +239,7 @@ services:
     pim_connector.writer.file.csv_family:
         class: '%pim_connector.writer.file.csv.class%'
         arguments:
-            - '@pim_connector.array_converter.dummy'
+            - '@pim_connector.array_converter.standard_to_flat.family'
             - '@pim_connector.writer.file.file_path_resolver'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
@@ -272,7 +272,7 @@ services:
     pim_connector.writer.file.xlsx_family:
         class: '%pim_connector.writer.file.xlsx.class%'
         arguments:
-             - '@pim_connector.array_converter.dummy'
+             - '@pim_connector.array_converter.standard_to_flat.family'
              - '@pim_connector.writer.file.file_path_resolver'
              - '@pim_connector.writer.file.flat_item_buffer'
              - '@pim_connector.writer.file.flat_item_buffer_flusher'
