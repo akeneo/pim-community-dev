@@ -1,0 +1,180 @@
+services:
+    # Mass Upload steps -----------------------------------------------------------------------------------------------
+    pimee_product_asset.step.apply_assets_mass_upload.perform:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'perform'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.mass_upload.tasklet'
+
+    # Import Asset steps ----------------------------------------------------------------------------------------------
+    pimee_product_asset.step.yml_asset_channel_configuration.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.file.yaml_channel_configuration'
+            - '@pimee_product_asset.processor.denormalization.channel_configuration'
+            - '@pimee_product_asset.writer.doctrine.channel_configuration'
+
+    # Export Asset steps ----------------------------------------------------------------------------------------------
+    pimee_product_asset.step.yml_asset_channel_configuration.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.database.channel_configuration'
+            - '@pimee_product_asset.processor.normalization.channel_configuration.flat'
+            - '@pimee_product_asset.writer.file.yaml_asset_channel_configuration'
+
+    # CSV Import steps ------------------------------------------------------------------------------------------------
+    pimee_product_asset.step.csv_asset.import_tags:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_tags'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.file.csv_tag'
+            - '@pimee_product_asset.processor.denormalization.tag'
+            - '@pimee_product_asset.writer.doctrine.tag'
+            - 1
+
+    pimee_product_asset.step.csv_asset.import_asset:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_asset'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.file.csv_asset'
+            - '@pimee_product_asset.processor.denormalization.asset'
+            - '@pimee_product_asset.writer.doctrine.asset'
+
+    pimee_product_asset.step.csv_asset_category.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_asset_category'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.file.csv_asset_category'
+            - '@pimee_product_asset.processor.denormalization.category'
+            - '@pimee_product_asset.writer.doctrine.category'
+            - 1
+
+    # CSV Export steps ------------------------------------------------------------------------------------------------
+    pimee_product_asset.step.csv_asset.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.database.asset'
+            - '@pimee_product_asset.processor.normalization.asset.flat'
+            - '@pimee_product_asset.writer.file.csv_asset'
+
+    pimee_product_asset.step.csv_asset_category.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.database.category'
+            - '@pimee_product_asset.processor.normalization.category.flat'
+            - '@pimee_product_asset.writer.file.csv_asset_category'
+
+    pimee_product_asset.step.csv_asset_variation.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.database.variation'
+            - '@pimee_product_asset.processor.normalization.variation.flat'
+            - '@pimee_product_asset.writer.file.csv_asset_variation'
+
+    # XLSX Import steps -----------------------------------------------------------------------------------------------
+    pimee_product_asset.step.xlsx_asset.import_tags:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_tags'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.file.xlsx_tag'
+            - '@pimee_product_asset.processor.denormalization.tag'
+            - '@pimee_product_asset.writer.doctrine.tag'
+            - 1
+
+    pimee_product_asset.step.xlsx_asset.import_asset:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_asset'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.file.xlsx_asset'
+            - '@pimee_product_asset.processor.denormalization.asset'
+            - '@pimee_product_asset.writer.doctrine.asset'
+
+    pimee_product_asset.step.xlsx_asset_category.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_asset_category'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.file.xlsx_asset_category'
+            - '@pimee_product_asset.processor.denormalization.category'
+            - '@pimee_product_asset.writer.doctrine.category'
+            - 1
+
+    # XLSX Export steps -----------------------------------------------------------------------------------------------
+    pimee_product_asset.step.xlsx_asset.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.database.asset'
+            - '@pimee_product_asset.processor.normalization.asset.flat'
+            - '@pimee_product_asset.writer.file.xlsx_asset'
+
+    pimee_product_asset.step.xlsx_asset_category.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.database.category'
+            - '@pimee_product_asset.processor.normalization.category.flat'
+            - '@pimee_product_asset.writer.file.xlsx_asset_category'
+
+    pimee_product_asset.step.xlsx_asset_variation.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.database.variation'
+            - '@pimee_product_asset.processor.normalization.variation.flat'
+            - '@pimee_product_asset.writer.file.xlsx_asset_variation'
+
+    # Mass Edit steps -------------------------------------------------------------------------------------------------
+    pimee_product_asset.step.classify_assets.perform:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'mass_edit'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.database.mass_edit_asset'
+            - '@pimee_product_asset.processor.classify_assets'
+            - '@pimee_product_asset.writer.doctrine.asset'
+
+    pimee_product_asset.step.add_tags_to_assets.perform:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'mass_edit'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.reader.database.mass_edit_asset'
+            - '@pimee_product_asset.processor.add_tags_to_assets'
+            - '@pimee_product_asset.writer.doctrine.asset'

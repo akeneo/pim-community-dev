@@ -80,6 +80,8 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('voters.yml');
         $loader->load('workflow/presenters.yml');
         $loader->load('writers.yml');
+        $loader->load('jobs.yml');
+        $loader->load('steps.yml');
 
         $this->loadStorageDriver($container);
     }

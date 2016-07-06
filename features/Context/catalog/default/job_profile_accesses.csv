@@ -30,3 +30,4 @@ xlsx_published_product_grid_context_quick_export;All;
 rule_impacted_product_count;All;
 classify_assets;All;
 add_tags_to_assets;All;
+csv_default_product_import;All;
