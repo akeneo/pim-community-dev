@@ -51,10 +51,10 @@ class CreateProductValueFormEvent extends Event
     public function __construct(ProductValueInterface $value, $formType, $formData, $formOptions, $context)
     {
         $this->productValue = $value;
-        $this->formType     = $formType;
-        $this->formData     = $formData;
-        $this->formOptions  = $formOptions;
-        $this->context      = $context;
+        $this->formType = $formType;
+        $this->formData = $formData;
+        $this->formOptions = $formOptions;
+        $this->context = $context;
     }
 
     /**

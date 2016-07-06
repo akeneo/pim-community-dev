@@ -44,7 +44,7 @@ class CsvVariantGroupWriter extends CsvWriter
         $variantGroups = $media = [];
         foreach ($items as $item) {
             $variantGroups[] = $item['variant_group'];
-            $media[]         = $item['media'];
+            $media[] = $item['media'];
         }
 
         parent::write($variantGroups);

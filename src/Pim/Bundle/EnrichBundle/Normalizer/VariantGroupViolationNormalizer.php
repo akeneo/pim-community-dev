@@ -36,7 +36,7 @@ class VariantGroupViolationNormalizer implements NormalizerInterface
     public function normalize($violations, $format = null, array $context = [])
     {
         $normalizedViolations = [];
-        $accessor             = PropertyAccess::createPropertyAccessor();
+        $accessor = PropertyAccess::createPropertyAccessor();
 
         foreach ($violations as $violation) {
             $path = $violation->getPropertyPath();

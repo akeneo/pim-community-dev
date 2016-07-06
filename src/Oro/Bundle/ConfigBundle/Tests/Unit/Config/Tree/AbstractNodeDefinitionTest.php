@@ -6,7 +6,7 @@ use Oro\Bundle\ConfigBundle\Config\Tree\AbstractNodeDefinition;
 
 class AbstractNodeDefinitionTest extends \PHPUnit_Framework_TestCase
 {
-    const TEST_NAME     = 'testNodeName';
+    const TEST_NAME = 'testNodeName';
     const TEST_PRIORITY = 255;
 
     /** @var AbstractNodeDefinition */

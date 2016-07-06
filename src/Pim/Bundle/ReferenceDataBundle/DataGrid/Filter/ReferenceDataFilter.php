@@ -48,9 +48,9 @@ class ReferenceDataFilter extends ChoiceFilter
      */
     protected function getFormOptions()
     {
-        $attribute         = $this->getAttribute();
+        $attribute = $this->getAttribute();
         $referenceDataName = $attribute->getReferenceDataName();
-        $referenceData     = $this->registry->get($referenceDataName);
+        $referenceData = $this->registry->get($referenceDataName);
 
         if (null === $referenceData) {
             throw new \InvalidArgumentException(sprintf('Reference data "%s" does not exist', $referenceDataName));

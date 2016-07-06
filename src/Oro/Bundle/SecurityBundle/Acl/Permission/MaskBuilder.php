@@ -39,7 +39,7 @@ abstract class MaskBuilder
      * All characters are allowed here, but only a character defined in self::OFF constant
      * is interpreted as bit placeholder.
      */
-    const PATTERN_ALL_OFF       = '................................';
+    const PATTERN_ALL_OFF = '................................';
 
     /**
      * Defines the brief form of a human-readable format of a bitmask

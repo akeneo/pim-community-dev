@@ -44,7 +44,7 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
 
     function it_handles_delete_mass_action($eventDispatcher, $datasource, $massActionRepo, $datagrid, $massAction)
     {
-        $objectIds    = array('foo', 'bar', 'baz');
+        $objectIds = array('foo', 'bar', 'baz');
         $countRemoved = count($objectIds);
 
         $datasource->getResults()->willReturn($objectIds);
@@ -57,7 +57,7 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
 
     function it_dispatches_events($eventDispatcher, $datasource, $massActionRepo, $datagrid, $massAction)
     {
-        $objectIds    = array('foo', 'bar', 'baz');
+        $objectIds = array('foo', 'bar', 'baz');
         $countRemoved = count($objectIds);
 
         $datasource->getResults()->willReturn($objectIds);
@@ -77,7 +77,7 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
 
     function it_returns_successful_response($eventDispatcher, $datasource, $massActionRepo, $datagrid, $massAction)
     {
-        $objectIds    = array('foo', 'bar', 'baz');
+        $objectIds = array('foo', 'bar', 'baz');
         $countRemoved = count($objectIds);
 
         $datasource->getResults()->willReturn($objectIds);
@@ -98,7 +98,7 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
         $massAction,
         $translator
     ) {
-        $objectIds    = array('foo', 'bar', 'baz');
+        $objectIds = array('foo', 'bar', 'baz');
         $errorMessage = 'Error';
 
         $e = new \Exception($errorMessage);

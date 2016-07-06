@@ -29,7 +29,7 @@ class ConfigurationToJobParametersTransformer implements DataTransformerInterfac
     public function __construct(JobParametersFactory $jobParametersFactory, JobInterface $job)
     {
         $this->jobParametersFactory = $jobParametersFactory;
-        $this->job                  = $job;
+        $this->job = $job;
     }
 
     /**

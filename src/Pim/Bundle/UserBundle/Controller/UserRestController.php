@@ -29,7 +29,7 @@ class UserRestController
     public function __construct(TokenStorageInterface $tokenStorage, NormalizerInterface $normalizer)
     {
         $this->tokenStorage = $tokenStorage;
-        $this->normalizer   = $normalizer;
+        $this->normalizer = $normalizer;
     }
 
     /**

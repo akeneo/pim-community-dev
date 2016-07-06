@@ -37,7 +37,7 @@ class Cursor extends AbstractCursor
     public function __construct(Builder $queryBuilder, $batchSize = null)
     {
         $this->queryBuilder = $queryBuilder;
-        $this->batchSize    = $batchSize;
+        $this->batchSize = $batchSize;
         $this->rewind();
     }
 

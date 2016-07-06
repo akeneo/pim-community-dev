@@ -35,7 +35,7 @@ class ConversionUnitsType extends AbstractType
     public function __construct(MeasureManager $measureManager, EntityManager $entityManager, $attributeClass)
     {
         $this->measureManager = $measureManager;
-        $this->entityManager  = $entityManager;
+        $this->entityManager = $entityManager;
         $this->attributeClass = $attributeClass;
     }
 

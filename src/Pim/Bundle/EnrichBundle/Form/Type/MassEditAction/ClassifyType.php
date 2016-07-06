@@ -35,8 +35,8 @@ class ClassifyType extends AbstractType
     public function __construct(CategoryRepositoryInterface $categoryRepository, $dataClass, $formName)
     {
         $this->categoryRepository = $categoryRepository;
-        $this->dataClass          = $dataClass;
-        $this->formName           = $formName;
+        $this->dataClass = $dataClass;
+        $this->formName = $formName;
     }
 
     /**

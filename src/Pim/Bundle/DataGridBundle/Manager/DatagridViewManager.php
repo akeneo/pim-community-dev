@@ -45,10 +45,10 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
         SaverInterface $saver,
         RemoverInterface $remover
     ) {
-        $this->repository      = $repository;
+        $this->repository = $repository;
         $this->datagridManager = $datagridManager;
-        $this->saver           = $saver;
-        $this->remover         = $remover;
+        $this->saver = $saver;
+        $this->remover = $remover;
     }
 
     /**

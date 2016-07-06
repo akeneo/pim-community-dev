@@ -32,7 +32,7 @@ class GroupHandler
      */
     public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
     {
-        $this->form    = $form;
+        $this->form = $form;
         $this->request = $request;
         $this->manager = $manager;
     }

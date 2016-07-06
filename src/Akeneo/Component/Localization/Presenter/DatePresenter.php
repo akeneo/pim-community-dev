@@ -25,7 +25,7 @@ class DatePresenter implements PresenterInterface
      */
     public function __construct(DateFactory $dateFactory, array $attributeTypes)
     {
-        $this->dateFactory    = $dateFactory;
+        $this->dateFactory = $dateFactory;
         $this->attributeTypes = $attributeTypes;
     }
 

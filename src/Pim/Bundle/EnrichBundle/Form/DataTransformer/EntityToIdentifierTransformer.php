@@ -47,10 +47,10 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
         PropertyAccessorInterface $propertyAccessor = null,
         $delimiter = ','
     ) {
-        $this->repository       = $repository;
-        $this->multiple         = $multiple;
+        $this->repository = $repository;
+        $this->multiple = $multiple;
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
-        $this->delimiter        = $delimiter;
+        $this->delimiter = $delimiter;
     }
 
     /**

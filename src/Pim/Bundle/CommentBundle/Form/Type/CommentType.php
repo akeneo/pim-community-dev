@@ -36,7 +36,7 @@ class CommentType extends AbstractType
     {
         $this->repository = $repository;
         $this->translator = $translator;
-        $this->dataClass  = $dataClass;
+        $this->dataClass = $dataClass;
     }
 
     /**

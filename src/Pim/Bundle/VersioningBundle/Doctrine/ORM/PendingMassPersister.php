@@ -63,8 +63,8 @@ class PendingMassPersister extends AbstractPendingMassPersister
         TableNameBuilder $tableNameBuilder
     ) {
         parent::__construct($versionBuilder, $versionManager, $normalizer, $versionContext, $versionClass);
-        $this->connection       = $connection;
-        $this->entityManager    = $entityManager;
+        $this->connection = $connection;
+        $this->entityManager = $entityManager;
         $this->tableNameBuilder = $tableNameBuilder;
     }
 

@@ -29,7 +29,7 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
      */
     public function __construct(TranslatorInterface $translator, TranslatedLabelProvider $labelProvider)
     {
-        $this->translator    = $translator;
+        $this->translator = $translator;
         $this->labelProvider = $labelProvider;
     }
 

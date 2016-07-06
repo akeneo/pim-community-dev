@@ -43,9 +43,9 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
         parent::__construct($filePathResolver);
 
         $this->flatRowBuffer = $flatRowBuffer;
-        $this->fileExporter  = $fileExporter;
-        $this->flusher       = $flusher;
-        $this->writtenFiles  = [];
+        $this->fileExporter = $fileExporter;
+        $this->flusher = $flusher;
+        $this->writtenFiles = [];
     }
 
     /**
@@ -61,7 +61,7 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
         $variantGroups = $media = [];
         foreach ($items as $item) {
             $variantGroups[] = $item['variant_group'];
-            $media[]         = $item['media'];
+            $media[] = $item['media'];
         }
 
         $parameters = $this->stepExecution->getJobParameters();

@@ -81,7 +81,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
             $nbLinks = $this->getMaxPageLinks();
         }
         $links = [];
-        $tmp   = $this->page - floor($nbLinks / 2);
+        $tmp = $this->page - floor($nbLinks / 2);
         $check = $this->lastPage - $nbLinks + 1;
 
         $limit = 1;
@@ -240,7 +240,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
         } else {
             if ($max === 0) {
                 $this->maxPerPage = 0;
-                $this->page       = 0;
+                $this->page = 0;
             } else {
                 $this->maxPerPage = 1;
                 if ($this->page === 0) {

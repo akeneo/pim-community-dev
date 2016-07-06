@@ -34,7 +34,7 @@ class ProductPropertyRemover implements PropertyRemoverInterface
         RemoverRegistryInterface $removerRegistry
     ) {
         $this->attributeRepository = $repository;
-        $this->removerRegistry     = $removerRegistry;
+        $this->removerRegistry = $removerRegistry;
     }
 
     /**

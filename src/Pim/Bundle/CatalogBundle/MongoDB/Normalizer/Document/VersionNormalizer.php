@@ -70,15 +70,15 @@ class VersionNormalizer implements NormalizerInterface, SerializerAwareInterface
             $data[self::MONGO_ID] = $this->mongoFactory->createMongoId();
         }
 
-        $data['author']       = $version->getAuthor();
+        $data['author'] = $version->getAuthor();
         $data['resourceName'] = $version->getResourceName();
-        $data['resourceId']   = (string) $version->getResourceId();
-        $data['snapshot']     = $version->getSnapshot();
-        $data['changeset']    = $version->getChangeset();
-        $data['context']      = $version->getContext();
-        $data['version']      = $version->getVersion();
-        $data['loggedAt']     = $this->normalizer->normalize($version->getLoggedAt(), self::FORMAT);
-        $data['pending']      = $version->isPending();
+        $data['resourceId'] = (string) $version->getResourceId();
+        $data['snapshot'] = $version->getSnapshot();
+        $data['changeset'] = $version->getChangeset();
+        $data['context'] = $version->getContext();
+        $data['version'] = $version->getVersion();
+        $data['loggedAt'] = $this->normalizer->normalize($version->getLoggedAt(), self::FORMAT);
+        $data['pending'] = $version->isPending();
 
         return $data;
     }

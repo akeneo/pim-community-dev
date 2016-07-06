@@ -107,18 +107,18 @@ class ProductController
         ProductBuilderInterface $productBuilder,
         $categoryClass
     ) {
-        $this->router             = $router;
-        $this->tokenStorage       = $tokenStorage;
-        $this->formFactory        = $formFactory;
-        $this->translator         = $translator;
-        $this->productRepository  = $productRepository;
-        $this->userContext        = $userContext;
-        $this->securityFacade     = $securityFacade;
-        $this->productSaver       = $productSaver;
-        $this->seqEditManager     = $seqEditManager;
-        $this->productBuilder     = $productBuilder;
+        $this->router = $router;
+        $this->tokenStorage = $tokenStorage;
+        $this->formFactory = $formFactory;
+        $this->translator = $translator;
+        $this->productRepository = $productRepository;
+        $this->userContext = $userContext;
+        $this->securityFacade = $securityFacade;
+        $this->productSaver = $productSaver;
+        $this->seqEditManager = $seqEditManager;
+        $this->productBuilder = $productBuilder;
         $this->categoryRepository = $categoryRepository;
-        $this->categoryClass      = $categoryClass;
+        $this->categoryClass = $categoryClass;
     }
 
     /**
@@ -192,7 +192,7 @@ class ProductController
     {
         switch ($request->get('action')) {
             case self::CREATE:
-                $route                  = 'pim_enrich_product_edit';
+                $route = 'pim_enrich_product_edit';
                 $params['create_popin'] = true;
                 break;
         }

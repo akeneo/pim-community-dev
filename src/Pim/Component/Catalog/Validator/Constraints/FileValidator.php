@@ -93,10 +93,10 @@ class FileValidator extends ConstraintValidator
     protected function factorizeSizes($size, $limit, $binaryFormat)
     {
         if ($binaryFormat) {
-            $coef       = BaseFileValidator::MIB_BYTES;
+            $coef = BaseFileValidator::MIB_BYTES;
             $coefFactor = BaseFileValidator::KIB_BYTES;
         } else {
-            $coef       = BaseFileValidator::MB_BYTES;
+            $coef = BaseFileValidator::MB_BYTES;
             $coefFactor = BaseFileValidator::KB_BYTES;
         }
 
@@ -117,7 +117,7 @@ class FileValidator extends ConstraintValidator
         while ($sizeAsString === $limitAsString) {
             $coef /= $coefFactor;
             $limitAsString = (string)($limit / $coef);
-            $sizeAsString  = (string)round($size / $coef, 2);
+            $sizeAsString = (string)round($size / $coef, 2);
         }
 
         return [$sizeAsString, $limitAsString, self::$suffices[$coef]];

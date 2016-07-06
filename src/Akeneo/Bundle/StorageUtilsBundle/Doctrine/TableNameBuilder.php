@@ -46,7 +46,7 @@ class TableNameBuilder
         $classMetadata = $this->getClassMetadata($entityParameter);
 
         if (null !== $targetEntity) {
-            $assocMapping  = $classMetadata->getAssociationMapping($targetEntity);
+            $assocMapping = $classMetadata->getAssociationMapping($targetEntity);
             $classMetadata = $assocMapping['targetEntity'];
         }
 

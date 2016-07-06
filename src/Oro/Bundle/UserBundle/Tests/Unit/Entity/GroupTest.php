@@ -22,7 +22,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
 
     public function testGroup()
     {
-        $name  = 'Users';
+        $name = 'Users';
 
         $this->assertEmpty($this->group->getId());
         $this->assertEmpty($this->group->getName());
@@ -34,11 +34,11 @@ class GroupTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRoleLabelsAsString()
     {
-        $roleFoo  = new Role('ROLE_FOO');
+        $roleFoo = new Role('ROLE_FOO');
         $roleFoo->setLabel('Role foo');
         $this->group->addRole($roleFoo);
 
-        $roleBar  = new Role('ROLE_BAR');
+        $roleBar = new Role('ROLE_BAR');
         $roleBar->setLabel('Role bar');
         $this->group->addRole($roleBar);
 

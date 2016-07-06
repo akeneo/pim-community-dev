@@ -163,17 +163,17 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function __construct()
     {
-        $this->options             = new ArrayCollection();
-        $this->required            = false;
-        $this->unique              = false;
-        $this->localizable         = false;
-        $this->scopable            = false;
+        $this->options = new ArrayCollection();
+        $this->required = false;
+        $this->unique = false;
+        $this->localizable = false;
+        $this->scopable = false;
         $this->useableAsGridFilter = false;
-        $this->availableLocales    = new ArrayCollection();
-        $this->families            = new ArrayCollection();
-        $this->translations        = new ArrayCollection();
-        $this->validationRule      = null;
-        $this->properties          = [];
+        $this->availableLocales = new ArrayCollection();
+        $this->families = new ArrayCollection();
+        $this->translations = new ArrayCollection();
+        $this->validationRule = null;
+        $this->properties = [];
     }
 
     /**
@@ -921,7 +921,7 @@ abstract class AbstractAttribute implements AttributeInterface
         }
 
         $translationClass = $this->getTranslationFQCN();
-        $translation      = new $translationClass();
+        $translation = new $translationClass();
         $translation->setLocale($locale);
         $translation->setForeignKey($this);
         $this->addTranslation($translation);

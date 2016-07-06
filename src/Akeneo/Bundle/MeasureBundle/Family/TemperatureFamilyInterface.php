@@ -20,7 +20,7 @@ interface TemperatureFamilyInterface
     /**
      * @staticvar string
      */
-    const CELSIUS    = 'CELSIUS';
+    const CELSIUS = 'CELSIUS';
 
     /**
      * @staticvar string
@@ -30,15 +30,15 @@ interface TemperatureFamilyInterface
     /**
      * @staticvar string
      */
-    const KELVIN     = 'KELVIN';
+    const KELVIN = 'KELVIN';
 
     /**
      * @staticvar string
      */
-    const RANKINE    = 'RANKINE';
+    const RANKINE = 'RANKINE';
 
     /**
      * @staticvar string
      */
-    const REAUMUR    = 'REAUMUR';
+    const REAUMUR = 'REAUMUR';
 }

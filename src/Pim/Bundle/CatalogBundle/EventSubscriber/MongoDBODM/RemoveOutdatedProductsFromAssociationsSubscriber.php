@@ -34,7 +34,7 @@ class RemoveOutdatedProductsFromAssociationsSubscriber implements EventSubscribe
         ProductRepositoryInterface $productRepository,
         AssociationTypeRepositoryInterface $assocTypeRepository
     ) {
-        $this->productRepository   = $productRepository;
+        $this->productRepository = $productRepository;
         $this->assocTypeRepository = $assocTypeRepository;
     }
 

@@ -56,12 +56,12 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         $productTemplateClass
     ) {
-        $this->attributeRepository        = $attributeRepository;
-        $this->groupTypeRepository        = $groupTypeRepository;
-        $this->productBuilder             = $productBuilder;
-        $this->productUpdater             = $productUpdater;
+        $this->attributeRepository = $attributeRepository;
+        $this->groupTypeRepository = $groupTypeRepository;
+        $this->productBuilder = $productBuilder;
+        $this->productUpdater = $productUpdater;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
-        $this->productTemplateClass       = $productTemplateClass;
+        $this->productTemplateClass = $productTemplateClass;
     }
 
     /**

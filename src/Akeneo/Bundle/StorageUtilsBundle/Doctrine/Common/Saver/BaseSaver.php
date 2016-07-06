@@ -44,10 +44,10 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
         EventDispatcherInterface $eventDispatcher,
         $savedClass
     ) {
-        $this->objectManager   = $objectManager;
+        $this->objectManager = $objectManager;
         $this->optionsResolver = $optionsResolver;
         $this->eventDispatcher = $eventDispatcher;
-        $this->savedClass      = $savedClass;
+        $this->savedClass = $savedClass;
     }
 
     /**

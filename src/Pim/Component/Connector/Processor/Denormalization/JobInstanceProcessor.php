@@ -65,9 +65,9 @@ class JobInstanceProcessor extends AbstractProcessor
     ) {
         parent::__construct($repository);
 
-        $this->factory        = $factory;
-        $this->updater        = $updater;
-        $this->validator      = $validator;
+        $this->factory = $factory;
+        $this->updater = $updater;
+        $this->validator = $validator;
         $this->objectDetacher = $objectDetacher;
         $this->jobParamsValidator = $jobParamsValidator;
         $this->jobParamsFactory = $jobParamsFactory;

@@ -52,7 +52,7 @@ class Reader implements
     {
         $this->converter = $converter;
         $this->codeField = $codeField;
-        $this->multiple  = $multiple;
+        $this->multiple = $multiple;
     }
 
     /**

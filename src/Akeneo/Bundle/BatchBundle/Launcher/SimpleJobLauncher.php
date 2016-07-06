@@ -50,11 +50,11 @@ class SimpleJobLauncher implements JobLauncherInterface
         $rootDir,
         $environment
     ) {
-        $this->jobRepository        = $jobRepository;
+        $this->jobRepository = $jobRepository;
         $this->jobParametersFactory = $jobParametersFactory;
-        $this->jobRegistry          = $jobRegistry;
-        $this->rootDir              = $rootDir;
-        $this->environment          = $environment;
+        $this->jobRegistry = $jobRegistry;
+        $this->rootDir = $rootDir;
+        $this->environment = $environment;
     }
 
     /**
@@ -63,8 +63,8 @@ class SimpleJobLauncher implements JobLauncherInterface
     public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = [])
     {
         $jobExecution = $this->createJobExecution($jobInstance, $user);
-        $executionId  = $jobExecution->getId();
-        $pathFinder   = new PhpExecutableFinder();
+        $executionId = $jobExecution->getId();
+        $pathFinder = new PhpExecutableFinder();
 
         $emailParameter = '';
         if (isset($configuration['send_email']) && method_exists($user, 'getEmail')) {

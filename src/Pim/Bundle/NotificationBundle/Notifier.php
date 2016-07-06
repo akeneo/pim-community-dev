@@ -43,10 +43,10 @@ class Notifier implements NotifierInterface
         SaverInterface $notificationSaver,
         BulkSaverInterface $userNotifsSaver
     ) {
-        $this->userNotifFactory    = $userNotifFactory;
-        $this->userProvider        = $userProvider;
-        $this->notificationSaver   = $notificationSaver;
-        $this->userNotifsSaver     = $userNotifsSaver;
+        $this->userNotifFactory = $userNotifFactory;
+        $this->userProvider = $userProvider;
+        $this->notificationSaver = $notificationSaver;
+        $this->userNotifsSaver = $userNotifsSaver;
     }
 
     /**

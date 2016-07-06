@@ -94,15 +94,15 @@ class EditCommonAttributes extends AbstractMassEditOperation
     ) {
         parent::__construct($jobInstanceCode);
 
-        $this->productBuilder      = $productBuilder;
-        $this->userContext         = $userContext;
+        $this->productBuilder = $productBuilder;
+        $this->userContext = $userContext;
         $this->attributeRepository = $attributeRepository;
-        $this->productUpdater      = $productUpdater;
-        $this->productValidator    = $productValidator;
-        $this->tmpStorageDir       = $tmpStorageDir;
-        $this->internalNormalizer  = $internalNormalizer;
-        $this->localizedConverter  = $localizedConverter;
-        $this->localizerRegistry   = $localizerRegistry;
+        $this->productUpdater = $productUpdater;
+        $this->productValidator = $productValidator;
+        $this->tmpStorageDir = $tmpStorageDir;
+        $this->internalNormalizer = $internalNormalizer;
+        $this->localizedConverter = $localizedConverter;
+        $this->localizerRegistry = $localizerRegistry;
         $this->productValuesFilter = $productValuesFilter;
 
         $this->values = '';

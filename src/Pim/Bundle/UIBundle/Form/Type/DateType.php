@@ -33,7 +33,7 @@ class DateType extends AbstractType
     public function __construct(LocaleResolver $localeResolver, DateFactory $dateFactory)
     {
         $this->localeResolver = $localeResolver;
-        $this->dateFactory    = $dateFactory;
+        $this->dateFactory = $dateFactory;
     }
 
     /**

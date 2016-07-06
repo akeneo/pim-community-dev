@@ -22,8 +22,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class User implements UserInterface
 {
-    const ROLE_DEFAULT   = 'ROLE_USER';
-    const GROUP_DEFAULT  = 'All';
+    const ROLE_DEFAULT = 'ROLE_USER';
+    const GROUP_DEFAULT = 'All';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
 
     /** @var int|string */
@@ -145,9 +145,9 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->salt             = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
-        $this->roles            = new ArrayCollection();
-        $this->groups           = new ArrayCollection();
+        $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        $this->roles = new ArrayCollection();
+        $this->groups = new ArrayCollection();
         $this->defaultGridViews = new ArrayCollection();
     }
 
@@ -857,8 +857,8 @@ class User implements UserInterface
      */
     public function beforeSave()
     {
-        $this->createdAt  = new DateTime('now', new \DateTimeZone('UTC'));
-        $this->updatedAt  = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->createdAt = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new DateTime('now', new \DateTimeZone('UTC'));
         $this->loginCount = 0;
     }
 

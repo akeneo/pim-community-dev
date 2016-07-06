@@ -129,7 +129,7 @@ class TitleService implements TitleServiceInterface
         if (!is_null($title) && $isJSON) {
             try {
                 /** @var $data \Oro\Bundle\NavigationBundle\Title\StoredTitle */
-                $data =  $this->serializer->deserialize(
+                $data = $this->serializer->deserialize(
                     $title,
                     'Oro\Bundle\NavigationBundle\Title\StoredTitle',
                     'json'
@@ -146,7 +146,7 @@ class TitleService implements TitleServiceInterface
             } catch (RuntimeException $e) {
                 // wrong json string - ignore title
                 $params = [];
-                $title  = 'Untitled';
+                $title = 'Untitled';
                 $prefix = '';
                 $suffix = '';
             }

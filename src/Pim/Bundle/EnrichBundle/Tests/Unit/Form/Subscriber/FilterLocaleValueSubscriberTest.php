@@ -13,9 +13,9 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;
  */
 class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
 {
-    const CURRENT_LOCALE    = 'fr_FR';
+    const CURRENT_LOCALE = 'fr_FR';
     const COMPARISON_LOCALE = 'fr_BE';
-    const OTHER_LOCALE      = 'en_US';
+    const OTHER_LOCALE = 'en_US';
 
     /**
      * {@inheritdoc}
@@ -46,7 +46,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function testPreSetDataWithNullData()
     {
-        $form  = $this->getFormMock();
+        $form = $this->getFormMock();
         $event = $this->getEventMock(null, $form);
 
         $form->expects($this->never())
@@ -72,7 +72,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
             'not_localizable_attribute' => $this->getProductValueMock($this->getAttributeMock(false), null),
         ];
 
-        $form  = $this->getFormMock();
+        $form = $this->getFormMock();
         $event = $this->getEventMock($data, $form);
 
         $form->expects($this->exactly(1))
@@ -89,7 +89,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
             'name_comparison' => $this->getProductValueMock($this->getAttributeMock(), self::COMPARISON_LOCALE),
         ];
 
-        $form  = $this->getFormMock();
+        $form = $this->getFormMock();
         $event = $this->getEventMock($data, $form);
 
         $form->expects($this->exactly(1))

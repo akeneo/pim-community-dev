@@ -262,11 +262,11 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
         $processor = new ProcessorDecorator();
         $config = $processor->process($config);
 
-        $subscriber    = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber')
+        $subscriber = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber')
             ->setMethods(['__construct'])
             ->disableOriginalConstructor()->getMock();
 
-        $formType      = new FormType($subscriber);
+        $formType = new FormType($subscriber);
         $formFieldType = new FormFieldType();
 
         $extensions = [

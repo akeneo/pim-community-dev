@@ -29,8 +29,8 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->objectIdResolver   = $objectIdResolver;
-        $this->supportedFields    = $supportedFields;
+        $this->objectIdResolver = $objectIdResolver;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 
@@ -47,7 +47,7 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
             }
         }
 
-        $rootAlias   = $this->qb->getRootAlias();
+        $rootAlias = $this->qb->getRootAlias();
         $entityAlias = $this->getUniqueAlias('filter' . FieldFilterHelper::getCode($field));
         $this->qb->leftJoin($rootAlias . '.' . FieldFilterHelper::getCode($field), $entityAlias);
 

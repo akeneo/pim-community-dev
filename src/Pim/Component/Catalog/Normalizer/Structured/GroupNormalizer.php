@@ -40,7 +40,7 @@ class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInt
         DenormalizerInterface $valuesDenormalizer,
         NormalizerInterface $valuesNormalizer
     ) {
-        $this->transNormalizer  = $transNormalizer;
+        $this->transNormalizer = $transNormalizer;
         $this->valuesDenormalizer = $valuesDenormalizer;
         $this->valuesNormalizer = $valuesNormalizer;
     }

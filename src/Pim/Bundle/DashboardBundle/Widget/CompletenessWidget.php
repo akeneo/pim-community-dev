@@ -27,7 +27,7 @@ class CompletenessWidget implements WidgetInterface
     public function __construct(CompletenessRepositoryInterface $completenessRepo, LocaleHelper $localeHelper)
     {
         $this->completenessRepo = $completenessRepo;
-        $this->localeHelper     = $localeHelper;
+        $this->localeHelper = $localeHelper;
     }
 
     /**

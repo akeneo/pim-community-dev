@@ -34,7 +34,7 @@ class ProductPropertyAdder implements PropertyAdderInterface
         AdderRegistryInterface $adderRegistry
     ) {
         $this->attributeRepository = $repository;
-        $this->adderRegistry       = $adderRegistry;
+        $this->adderRegistry = $adderRegistry;
     }
 
     /**

@@ -53,11 +53,11 @@ class ProductAssociationProcessor extends AbstractProcessor
     ) {
         parent::__construct($repository);
 
-        $this->repository         = $repository;
-        $this->updater            = $updater;
-        $this->validator          = $validator;
+        $this->repository = $repository;
+        $this->updater = $updater;
+        $this->validator = $validator;
         $this->productAssocFilter = $productAssocFilter;
-        $this->detacher           = $detacher;
+        $this->detacher = $detacher;
     }
 
     /**

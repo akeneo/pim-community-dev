@@ -31,9 +31,9 @@ class ViewElementExtension extends \Twig_Extension
      */
     public function __construct(ViewElementRegistry $registry, EngineInterface $templating, $debug = false)
     {
-        $this->registry   = $registry;
+        $this->registry = $registry;
         $this->templating = $templating;
-        $this->debug      = $debug;
+        $this->debug = $debug;
     }
 
     /**
@@ -66,7 +66,7 @@ class ViewElementExtension extends \Twig_Extension
     public function renderViewElements(array $context, $type)
     {
         $elements = $this->getViewElements($type, $context);
-        $content  = '';
+        $content = '';
 
         $elementCount = count($elements);
         for ($i = 0; $i < $elementCount; $i++) {

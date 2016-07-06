@@ -40,9 +40,9 @@ class GroupController
         ProductRepositoryInterface $productRepository,
         NormalizerInterface $normalizer
     ) {
-        $this->groupRepository   = $groupRepository;
+        $this->groupRepository = $groupRepository;
         $this->productRepository = $productRepository;
-        $this->normalizer        = $normalizer;
+        $this->normalizer = $normalizer;
     }
 
     /**

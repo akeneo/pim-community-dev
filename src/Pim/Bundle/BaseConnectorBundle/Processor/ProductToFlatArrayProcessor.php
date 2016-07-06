@@ -53,10 +53,10 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
         ObjectDetacherInterface $detacher,
         array $mediaAttributeTypes
     ) {
-        $this->serializer          = $serializer;
-        $this->channelRepository   = $channelRepository;
-        $this->productBuilder      = $productBuilder;
-        $this->detacher            = $detacher;
+        $this->serializer = $serializer;
+        $this->channelRepository = $channelRepository;
+        $this->productBuilder = $productBuilder;
+        $this->detacher = $detacher;
         $this->mediaAttributeTypes = $mediaAttributeTypes;
     }
 
@@ -75,7 +75,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
         );
 
         $data['media'] = [];
-        $mediaValues   = $this->getMediaProductValues($product);
+        $mediaValues = $this->getMediaProductValues($product);
 
         foreach ($mediaValues as $mediaValue) {
             $data['media'][] = $this->serializer->normalize(

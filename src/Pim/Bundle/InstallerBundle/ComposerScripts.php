@@ -35,7 +35,7 @@ class ComposerScripts
      */
     protected static function copyUpgradesFolder(Event $event)
     {
-        $cePath        = static::getDependencyMigrationPath($event, 'pim-community-dev');
+        $cePath = static::getDependencyMigrationPath($event, 'pim-community-dev');
         $migrationPath = static::getMigrationFolderPath($event);
 
         static::copyFiles($event, $cePath, $migrationPath);
@@ -49,11 +49,11 @@ class ComposerScripts
     protected static function copyUpgradeFile(Event $event)
     {
         $finder = new Finder();
-        $ds     = DIRECTORY_SEPARATOR;
+        $ds = DIRECTORY_SEPARATOR;
 
-        $cePath    = static::getDependencyMigrationPath($event, 'pim-community-dev');
+        $cePath = static::getDependencyMigrationPath($event, 'pim-community-dev');
         $ceDepPath = $cePath . '..' . $ds;
-        $ceRoot    = $event->getComposer()->getConfig()->get('vendor-dir') . $ds . '..' . $ds;
+        $ceRoot = $event->getComposer()->getConfig()->get('vendor-dir') . $ds . '..' . $ds;
 
         $finder
             ->files()
@@ -73,7 +73,7 @@ class ComposerScripts
     {
         $ds = DIRECTORY_SEPARATOR;
 
-        $vendorPath    = $event->getComposer()->getConfig()->get('vendor-dir');
+        $vendorPath = $event->getComposer()->getConfig()->get('vendor-dir');
         $migrationPath = $vendorPath . $ds . '..' . $ds . 'upgrades' . $ds;
 
         return $migrationPath;
@@ -89,7 +89,7 @@ class ComposerScripts
     {
         $ds = DIRECTORY_SEPARATOR;
 
-        $vendorPath    = $event->getComposer()->getConfig()->get('vendor-dir');
+        $vendorPath = $event->getComposer()->getConfig()->get('vendor-dir');
         $communityPath = $vendorPath . $ds . 'akeneo' . $ds . $edition . $ds . 'upgrades' . $ds;
 
         return $communityPath;

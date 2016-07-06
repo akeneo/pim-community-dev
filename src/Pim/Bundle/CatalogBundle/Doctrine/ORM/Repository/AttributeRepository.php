@@ -233,8 +233,8 @@ class AttributeRepository extends EntityRepository implements
             }
             $attributes = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
             foreach ($attributes as $data) {
-                $results[$data['code']]['label']      = $data['label'];
-                $results[$data['code']]['group']      = $data['groupLabel'];
+                $results[$data['code']]['label'] = $data['label'];
+                $results[$data['code']]['group'] = $data['groupLabel'];
                 $results[$data['code']]['groupOrder'] = $data['sortOrder'];
             }
         }

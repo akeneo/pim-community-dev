@@ -47,7 +47,7 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
 
     function it_dispatches_events($eventDispatcher, $datasource, $massActionRepo, $datagrid, $massAction)
     {
-        $objectIds    = array('foo', 'bar', 'baz');
+        $objectIds = array('foo', 'bar', 'baz');
         $countRemoved = count($objectIds);
 
         $datasource->getResults()->willReturn($objectIds);

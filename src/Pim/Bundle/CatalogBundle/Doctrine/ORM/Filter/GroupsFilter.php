@@ -29,8 +29,8 @@ class GroupsFilter extends AbstractFieldFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->objectIdResolver   = $objectIdResolver;
-        $this->supportedFields    = $supportedFields;
+        $this->objectIdResolver = $objectIdResolver;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 
@@ -47,7 +47,7 @@ class GroupsFilter extends AbstractFieldFilter implements FieldFilterInterface
             }
         }
 
-        $rootAlias   = $this->qb->getRootAlias();
+        $rootAlias = $this->qb->getRootAlias();
         $entityAlias = $this->getUniqueAlias('filter' . FieldFilterHelper::getCode($field));
         $this->qb->leftJoin($rootAlias . '.' . FieldFilterHelper::getCode($field), $entityAlias);
 
@@ -84,10 +84,10 @@ class GroupsFilter extends AbstractFieldFilter implements FieldFilterInterface
      */
     protected function getNotInSubquery($field, $value)
     {
-        $notInQb      = $this->qb->getEntityManager()->createQueryBuilder();
-        $rootEntity   = current($this->qb->getRootEntities());
-        $notInAlias   = $this->getUniqueAlias('productsNotIn');
-        $joinAlias    = $this->getUniqueAlias('filter' . $field);
+        $notInQb = $this->qb->getEntityManager()->createQueryBuilder();
+        $rootEntity = current($this->qb->getRootEntities());
+        $notInAlias = $this->getUniqueAlias('productsNotIn');
+        $joinAlias = $this->getUniqueAlias('filter' . $field);
 
         $notInQb->select($notInAlias . '.id')
             ->from($rootEntity, $notInAlias, $notInAlias . '.id')

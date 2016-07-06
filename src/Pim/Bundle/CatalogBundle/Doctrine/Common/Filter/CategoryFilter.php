@@ -51,9 +51,9 @@ class CategoryFilter implements FieldFilterInterface
         array $supportedOperators = []
     ) {
         $this->categoryRepository = $categoryRepository;
-        $this->itemCategoryRepo   = $itemCategoryRepo;
-        $this->objectIdResolver   = $objectIdResolver;
-        $this->supportedFields    = $supportedFields;
+        $this->itemCategoryRepo = $itemCategoryRepo;
+        $this->objectIdResolver = $objectIdResolver;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 

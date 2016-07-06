@@ -63,12 +63,12 @@ class DatagridViewController
         TranslatorInterface $translator,
         DatagridViewManager $datagridViewManager
     ) {
-        $this->request             = $request;
-        $this->templating          = $templating;
-        $this->tokenStorage        = $tokenStorage;
-        $this->formFactory         = $formFactory;
-        $this->validator           = $validator;
-        $this->translator          = $translator;
+        $this->request = $request;
+        $this->templating = $templating;
+        $this->tokenStorage = $tokenStorage;
+        $this->formFactory = $formFactory;
+        $this->validator = $validator;
+        $this->translator = $translator;
         $this->datagridViewManager = $datagridViewManager;
     }
 

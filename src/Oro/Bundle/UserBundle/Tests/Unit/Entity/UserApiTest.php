@@ -10,7 +10,7 @@ class UserApiTest extends \PHPUnit_Framework_TestCase
 {
     public function testApi()
     {
-        $api  = $this->getApi();
+        $api = $this->getApi();
         $user = new User();
 
         $this->assertEmpty($api->getId());
@@ -22,8 +22,8 @@ class UserApiTest extends \PHPUnit_Framework_TestCase
 
     public function testKey()
     {
-        $api  = $this->getApi();
-        $key  = $api->generateKey();
+        $api = $this->getApi();
+        $key = $api->generateKey();
 
         $this->assertNotEmpty($key);
 

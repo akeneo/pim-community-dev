@@ -64,8 +64,8 @@ class TextAttributeSetterSpec extends ObjectBehavior
         ProductValue $productValue
     ) {
         $locale = 'fr_FR';
-        $scope  = 'mobile';
-        $data   = 'data';
+        $scope = 'mobile';
+        $data = 'data';
 
         $attribute->getCode()->willReturn('attributeCode');
         $productValue->setData($data)->shouldBeCalled();
@@ -92,8 +92,8 @@ class TextAttributeSetterSpec extends ObjectBehavior
         ProductValue $productValue
     ) {
         $locale = 'fr_FR';
-        $scope  = 'mobile';
-        $data   = '';
+        $scope = 'mobile';
+        $data = '';
 
         $attribute->getCode()->willReturn('attributeCode');
         $productValue->setData(null)->shouldBeCalled();

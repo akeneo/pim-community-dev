@@ -136,7 +136,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     public function __construct()
     {
         $this->options = new ArrayCollection();
-        $this->prices  = new ArrayCollection();
+        $this->prices = new ArrayCollection();
     }
 
     /**

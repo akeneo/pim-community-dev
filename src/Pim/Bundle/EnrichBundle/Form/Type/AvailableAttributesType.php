@@ -44,10 +44,10 @@ class AvailableAttributesType extends AbstractType
         $attributeClass,
         $dataClass
     ) {
-        $this->attributeClass    = $attributeClass;
+        $this->attributeClass = $attributeClass;
         $this->attributeProvider = $attributeProvider;
-        $this->translator        = $translator;
-        $this->dataClass         = $dataClass;
+        $this->translator = $translator;
+        $this->dataClass = $dataClass;
     }
 
     /**

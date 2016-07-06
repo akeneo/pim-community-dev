@@ -19,7 +19,7 @@ class BaseOrmRelationDatagridListener
      * Included/excluded param names
      * populated by oro/datagrid/column-form-listener on frontend
      */
-    const GRID_PARAM_DATA_IN     = 'data_in';
+    const GRID_PARAM_DATA_IN = 'data_in';
     const GRID_PARAM_DATA_NOT_IN = 'data_not_in';
 
     /** @var string */
@@ -35,9 +35,9 @@ class BaseOrmRelationDatagridListener
      */
     public function __construct($paramName, RequestParameters $requestParams, $isEditMode = true)
     {
-        $this->paramName     = $paramName;
+        $this->paramName = $paramName;
         $this->requestParams = $requestParams;
-        $this->isEditMode    = $isEditMode;
+        $this->isEditMode = $isEditMode;
     }
 
     /**

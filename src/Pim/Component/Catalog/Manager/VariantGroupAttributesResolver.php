@@ -23,7 +23,7 @@ class VariantGroupAttributesResolver
      */
     public function __construct(AttributeRepositoryInterface $attributeRepository)
     {
-        $this->attributeRepository  = $attributeRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**

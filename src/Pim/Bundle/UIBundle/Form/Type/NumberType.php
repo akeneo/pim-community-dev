@@ -45,10 +45,10 @@ class NumberType extends AbstractType
         NumberFormatValidator $formatValidator,
         NumberFactory $numberFactory
     ) {
-        $this->localizer       = $localizer;
-        $this->localeResolver  = $localeResolver;
+        $this->localizer = $localizer;
+        $this->localeResolver = $localeResolver;
         $this->formatValidator = $formatValidator;
-        $this->numberFactory   = $numberFactory;
+        $this->numberFactory = $numberFactory;
     }
 
     /**

@@ -30,9 +30,9 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedOperators      = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**

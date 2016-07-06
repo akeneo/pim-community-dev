@@ -40,7 +40,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     public function __construct(LocalizerRegistryInterface $localizerRegistry, $precision = 4)
     {
         $this->localizerRegistry = $localizerRegistry;
-        $this->precision         = $precision;
+        $this->precision = $precision;
     }
 
     /**

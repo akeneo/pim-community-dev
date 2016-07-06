@@ -37,8 +37,8 @@ class StepExecutionNormalizer implements NormalizerInterface
         PresenterInterface $presenter,
         TranslatedLabelProvider $labelProvider
     ) {
-        $this->translator    = $translator;
-        $this->presenter     = $presenter;
+        $this->translator = $translator;
+        $this->presenter = $presenter;
         $this->labelProvider = $labelProvider;
     }
 
@@ -100,7 +100,7 @@ class StepExecutionNormalizer implements NormalizerInterface
         }
 
         foreach ($selectedWarnings as $warning) {
-            $result[] =  [
+            $result[] = [
                 'reason' => $this->translator->trans($warning->getReason(), $warning->getReasonParameters()),
                 'item'   => $warning->getItem(),
             ];

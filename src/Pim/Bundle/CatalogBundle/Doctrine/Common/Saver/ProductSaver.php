@@ -46,10 +46,10 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->objectManager       = $om;
+        $this->objectManager = $om;
         $this->completenessManager = $completenessManager;
-        $this->optionsResolver     = $optionsResolver;
-        $this->eventDispatcher     = $eventDispatcher;
+        $this->optionsResolver = $optionsResolver;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

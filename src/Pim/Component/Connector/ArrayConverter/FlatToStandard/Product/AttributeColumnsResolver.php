@@ -41,9 +41,9 @@ class AttributeColumnsResolver
         CurrencyRepositoryInterface $currencyRepository,
         AttributeValuesResolver $valuesResolver
     ) {
-        $this->currencyRepository  = $currencyRepository;
+        $this->currencyRepository = $currencyRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->valuesResolver      = $valuesResolver;
+        $this->valuesResolver = $valuesResolver;
     }
 
     /**

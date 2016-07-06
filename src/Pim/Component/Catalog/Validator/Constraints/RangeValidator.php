@@ -64,11 +64,11 @@ class RangeValidator extends BaseRangeValidator
         }
 
         $message = null;
-        $params  = [];
+        $params = [];
 
         if (!is_numeric($value)) {
             $message = $constraint->invalidMessage;
-            $params  = ['{{ value }}' => $value];
+            $params = ['{{ value }}' => $value];
         } elseif (null !== $constraint->max && $value > $constraint->max) {
             $message = $constraint->maxMessage;
             $params = [

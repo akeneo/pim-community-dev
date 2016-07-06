@@ -13,9 +13,9 @@ class ToolbarExtension extends AbstractExtension
      */
     const METADATA_KEY = 'options';
 
-    const OPTIONS_PATH                       = '[options]';
-    const TOOLBAR_OPTION_PATH                = '[options][toolbarOptions]';
-    const PAGER_ITEMS_OPTION_PATH            = '[options][toolbarOptions][pageSize][items]';
+    const OPTIONS_PATH = '[options]';
+    const TOOLBAR_OPTION_PATH = '[options][toolbarOptions]';
+    const PAGER_ITEMS_OPTION_PATH = '[options][toolbarOptions][pageSize][items]';
     const PAGER_DEFAULT_PER_PAGE_OPTION_PATH = '[options][toolbarOptions][pageSize][default_per_page]';
 
     /**
@@ -58,7 +58,7 @@ class ToolbarExtension extends AbstractExtension
          */
 
         $perPageDefault = $config->offsetGetByPath(self::PAGER_DEFAULT_PER_PAGE_OPTION_PATH);
-        $pageSizeItems  = $config->offsetGetByPath(self::PAGER_ITEMS_OPTION_PATH);
+        $pageSizeItems = $config->offsetGetByPath(self::PAGER_ITEMS_OPTION_PATH);
 
         $exist = array_filter(
             $pageSizeItems,

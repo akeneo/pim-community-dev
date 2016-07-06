@@ -33,8 +33,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->channelRepository  = $channelRepository;
-        $this->supportedFields    = $supportedFields;
+        $this->channelRepository = $channelRepository;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 

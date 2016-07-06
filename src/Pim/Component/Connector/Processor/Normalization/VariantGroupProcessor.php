@@ -53,10 +53,10 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
         $uploadDirectory,
         $format
     ) {
-        $this->normalizer        = $normalizer;
-        $this->denormalizer      = $denormalizer;
-        $this->uploadDirectory   = $uploadDirectory;
-        $this->format            = $format;
+        $this->normalizer = $normalizer;
+        $this->denormalizer = $denormalizer;
+        $this->uploadDirectory = $uploadDirectory;
+        $this->format = $format;
     }
 
     /**

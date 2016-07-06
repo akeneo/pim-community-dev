@@ -30,7 +30,7 @@ abstract class AbstractItemCategoryRepository implements
      */
     public function __construct(EntityManager $em, $entityName)
     {
-        $this->em         = $em;
+        $this->em = $em;
         $this->entityName = $entityName;
     }
 
@@ -99,7 +99,7 @@ abstract class AbstractItemCategoryRepository implements
      */
     public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true)
     {
-        $rootAlias    = $qb->getRootAlias();
+        $rootAlias = $qb->getRootAlias();
         $filterCatIds = uniqid('filterCatIds');
 
         if ($include) {

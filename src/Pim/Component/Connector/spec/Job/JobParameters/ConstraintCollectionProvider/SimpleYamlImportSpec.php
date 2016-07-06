@@ -22,7 +22,7 @@ class SimpleYamlImportSpec extends ObjectBehavior
 
     function it_provides_constraints_collection()
     {
-        $collection =  $this->getConstraintCollection();
+        $collection = $this->getConstraintCollection();
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
         $fields->shouldHaveCount(2);

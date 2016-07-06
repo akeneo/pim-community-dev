@@ -52,8 +52,8 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->hydrator        = $hydrator;
-        $this->translator      = $translator;
+        $this->hydrator = $hydrator;
+        $this->translator = $translator;
         $this->eventDispatcher = $eventDispatcher;
     }
 

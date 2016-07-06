@@ -19,7 +19,7 @@ class SystemAwareResolverTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
-        $this->resolver  = new SystemAwareResolver($this->container);
+        $this->resolver = new SystemAwareResolver($this->container);
     }
 
     /**
@@ -27,12 +27,12 @@ class SystemAwareResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolveEmpty()
     {
-        $definition     = [];
+        $definition = [];
         $gridDefinition = $this->resolver->resolve('test', $definition);
 
         $this->assertEmpty($gridDefinition);
 
-        $definition     = [
+        $definition = [
             'filters' => [
                 'entityName' => [
                     'choices' => 'test-not-valid'

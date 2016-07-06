@@ -46,7 +46,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         GroupRepositoryInterface $groupRepository
     ) {
         parent::__construct($registry);
-        $this->requestParams   = $requestParams;
+        $this->requestParams = $requestParams;
         $this->groupRepository = $groupRepository;
     }
 
@@ -102,7 +102,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         $this->axisColumns = [];
 
         foreach ($attributes as $attributeCode => $attribute) {
-            $attributeType     = $attribute['attributeType'];
+            $attributeType = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if ($attributeTypeConf && $attributeTypeConf['column']) {

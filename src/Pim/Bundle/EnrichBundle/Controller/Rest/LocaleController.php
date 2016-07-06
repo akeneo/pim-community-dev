@@ -36,7 +36,7 @@ class LocaleController
         CollectionFilterInterface $collectionFilter
     ) {
         $this->localeRepository = $localeRepository;
-        $this->normalizer       = $normalizer;
+        $this->normalizer = $normalizer;
         $this->collectionFilter = $collectionFilter;
     }
 
@@ -47,8 +47,8 @@ class LocaleController
      */
     public function indexAction()
     {
-        $locales           = $this->localeRepository->getActivatedLocales();
-        $filteredLocales   = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');
+        $locales = $this->localeRepository->getActivatedLocales();
+        $filteredLocales = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');
         $normalizedLocales = $this->normalizer->normalize($filteredLocales, 'internal_api');
 
         return new JsonResponse($normalizedLocales);

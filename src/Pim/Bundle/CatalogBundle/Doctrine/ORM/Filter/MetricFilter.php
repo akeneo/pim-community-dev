@@ -39,11 +39,11 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
-        $this->measureManager          = $measureManager;
-        $this->measureConverter        = $measureConverter;
+        $this->attrValidatorHelper = $attrValidatorHelper;
+        $this->measureManager = $measureManager;
+        $this->measureConverter = $measureConverter;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedOperators      = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -84,8 +84,8 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $locale = null,
         $scope = null
     ) {
-        $backendType   = $attribute->getBackendType();
-        $joinAlias     = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $backendType = $attribute->getBackendType();
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
         $joinCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
         $this->qb->leftJoin(
@@ -95,8 +95,8 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $joinCondition
         );
 
-        $joinAliasOpt   = $this->getUniqueAlias('filterM' . $attribute->getCode());
-        $backendField   = sprintf('%s.%s', $joinAliasOpt, 'baseData');
+        $joinAliasOpt = $this->getUniqueAlias('filterM' . $attribute->getCode());
+        $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
         $whereCondition = $this->prepareCriteriaCondition($backendField, $operator, null);
 
         $this->qb->leftJoin($joinAlias . '.' . $backendType, $joinAliasOpt);
@@ -120,7 +120,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -134,7 +134,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         $joinAliasOpt = $this->getUniqueAlias('filterM' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
-        $condition    = $this->prepareCriteriaCondition($backendField, $operator, $value);
+        $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
         $this->qb->innerJoin($joinAlias . '.' . $backendType, $joinAliasOpt, 'WITH', $condition);
     }
 

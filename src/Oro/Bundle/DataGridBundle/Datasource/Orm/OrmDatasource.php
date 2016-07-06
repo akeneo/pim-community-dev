@@ -33,7 +33,7 @@ class OrmDatasource implements DatasourceInterface
         $queryConfig = array_intersect_key($config, array_flip(['query']));
 
         $converter = new YamlConverter();
-        $this->qb  = $converter->parse($queryConfig, $this->em->createQueryBuilder());
+        $this->qb = $converter->parse($queryConfig, $this->em->createQueryBuilder());
 
         $grid->setDatasource(clone $this);
     }
@@ -44,7 +44,7 @@ class OrmDatasource implements DatasourceInterface
     public function getResults()
     {
         $results = $this->qb->getQuery()->execute();
-        $rows    = [];
+        $rows = [];
         foreach ($results as $result) {
             $rows[] = new ResultRecord($result);
         }

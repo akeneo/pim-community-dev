@@ -40,7 +40,7 @@ class OroTranslationExtensionTest extends \PHPUnit_Framework_TestCase
     public function testLoad()
     {
         $actualDefinitions = [];
-        $actualParameters  = [];
+        $actualParameters = [];
 
         $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
             ->setMethods(['setDefinition', 'setParameter', 'getDefinition'])

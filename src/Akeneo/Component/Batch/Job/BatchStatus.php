@@ -38,13 +38,13 @@ class BatchStatus
      * they should be skipped on a restart (so FAILED is the wrong status).
      */
     const COMPLETED = 1;
-    const STARTING  = 2;
-    const STARTED   = 3;
-    const STOPPING  = 4;
-    const STOPPED   = 5;
-    const FAILED    = 6;
+    const STARTING = 2;
+    const STARTED = 3;
+    const STOPPING = 4;
+    const STOPPED = 5;
+    const FAILED = 6;
     const ABANDONED = 7;
-    const UNKNOWN   = 8;
+    const UNKNOWN = 8;
 
     protected static $statusLabels = array(
         self::COMPLETED => 'COMPLETED',

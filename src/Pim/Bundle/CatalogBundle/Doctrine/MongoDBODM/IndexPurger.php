@@ -35,7 +35,7 @@ class IndexPurger
     public function __construct(ManagerRegistry $managerRegistry, $productClass)
     {
         $this->managerRegistry = $managerRegistry;
-        $this->productClass    = $productClass;
+        $this->productClass = $productClass;
     }
 
     /**

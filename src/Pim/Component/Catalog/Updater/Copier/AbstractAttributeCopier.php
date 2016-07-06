@@ -40,7 +40,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
-        $this->productBuilder      = $productBuilder;
+        $this->productBuilder = $productBuilder;
         $this->attrValidatorHelper = $attrValidatorHelper;
 
         $this->resolver = new OptionsResolver();
@@ -53,7 +53,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
         $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
-        $supportsTo   = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
+        $supportsTo = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
 
         return $supportsFrom && $supportsTo;
     }

@@ -98,8 +98,8 @@ class ItemStep extends AbstractStep
      */
     public function doExecute(StepExecution $stepExecution)
     {
-        $itemsToWrite  = array();
-        $writeCount    = 0;
+        $itemsToWrite = array();
+        $writeCount = 0;
 
         $this->initializeStepElements($stepExecution);
 

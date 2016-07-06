@@ -40,9 +40,9 @@ class LastOperationsWidget implements WidgetInterface
         PresenterInterface $presenter,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->manager      = $manager;
-        $this->translator   = $translator;
-        $this->presenter    = $presenter;
+        $this->manager = $manager;
+        $this->translator = $translator;
+        $this->presenter = $presenter;
         $this->tokenStorage = $tokenStorage;
     }
 

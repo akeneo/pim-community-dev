@@ -69,14 +69,14 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         FieldSplitter $fieldSplitter,
         $uploadDirectory
     ) {
-        $this->serializer        = $serializer;
+        $this->serializer = $serializer;
         $this->channelRepository = $channelRepository;
-        $this->productBuilder    = $productBuilder;
-        $this->objectDetacher    = $objectDetacher;
-        $this->userProvider      = $userProvider;
-        $this->tokenStorage      = $tokenStorage;
-        $this->fieldSplitter     = $fieldSplitter;
-        $this->uploadDirectory   = $uploadDirectory;
+        $this->productBuilder = $productBuilder;
+        $this->objectDetacher = $objectDetacher;
+        $this->userProvider = $userProvider;
+        $this->tokenStorage = $tokenStorage;
+        $this->fieldSplitter = $fieldSplitter;
+        $this->uploadDirectory = $uploadDirectory;
     }
 
     /**

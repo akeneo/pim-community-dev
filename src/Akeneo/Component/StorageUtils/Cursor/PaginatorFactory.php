@@ -23,7 +23,7 @@ class PaginatorFactory implements PaginatorFactoryInterface
      */
     public function __construct($paginatorClass, $defaultPageSize)
     {
-        $this->paginatorClass  = $paginatorClass;
+        $this->paginatorClass = $paginatorClass;
         $this->defaultPageSize = $defaultPageSize;
     }
 

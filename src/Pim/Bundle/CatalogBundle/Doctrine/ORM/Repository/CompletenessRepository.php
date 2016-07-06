@@ -33,7 +33,7 @@ class CompletenessRepository implements CompletenessRepositoryInterface
         $productClass
     ) {
         $this->entityManager = $entityManager;
-        $this->productClass  = $productClass;
+        $this->productClass = $productClass;
     }
 
     /**
@@ -98,10 +98,10 @@ SQL;
 
         $categoryMetadata = $this->entityManager->getClassMetadata($categoryMapping['targetEntity']);
 
-        $valueMapping  = $this->entityManager->getClassMetadata($this->productClass)->getAssociationMapping('values');
+        $valueMapping = $this->entityManager->getClassMetadata($this->productClass)->getAssociationMapping('values');
         $valueMetadata = $this->entityManager->getClassMetadata($valueMapping['targetEntity']);
 
-        $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
+        $attributeMapping = $valueMetadata->getAssociationMapping('attribute');
         $attributeMetadata = $this->entityManager->getClassMetadata($attributeMapping['targetEntity']);
 
         return strtr(

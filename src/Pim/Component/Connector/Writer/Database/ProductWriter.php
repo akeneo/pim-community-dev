@@ -47,8 +47,8 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         BulkObjectDetacherInterface $detacher
     ) {
         $this->versionManager = $versionManager;
-        $this->productSaver   = $productSaver;
-        $this->detacher       = $detacher;
+        $this->productSaver = $productSaver;
+        $this->detacher = $detacher;
     }
 
     /**

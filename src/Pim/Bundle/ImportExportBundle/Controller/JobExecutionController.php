@@ -78,15 +78,15 @@ class JobExecutionController
         JobExecutionRepository $jobExecutionRepo,
         $jobType
     ) {
-        $this->templating          = $templating;
-        $this->translator          = $translator;
-        $this->eventDispatcher     = $eventDispatcher;
-        $this->batchLogHandler     = $batchLogHandler;
-        $this->archivist           = $archivist;
-        $this->serializer          = $serializer;
+        $this->templating = $templating;
+        $this->translator = $translator;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->batchLogHandler = $batchLogHandler;
+        $this->archivist = $archivist;
+        $this->serializer = $serializer;
         $this->jobExecutionManager = $jobExecutionManager;
-        $this->jobExecutionRepo    = $jobExecutionRepo;
-        $this->jobType             = $jobType;
+        $this->jobExecutionRepo = $jobExecutionRepo;
+        $this->jobType = $jobType;
     }
 
     /**

@@ -30,7 +30,7 @@ class PricesDenormalizer extends AbstractValueDenormalizer
     {
         parent::__construct($supportedTypes);
 
-        $this->localizer         = $localizer;
+        $this->localizer = $localizer;
         $this->productPriceClass = $productPriceClass;
     }
 

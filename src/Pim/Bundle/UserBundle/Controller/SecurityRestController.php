@@ -28,7 +28,7 @@ class SecurityRestController
     public function __construct(SecurityFacade $securityFacade, AclAnnotationProvider $aclProvider)
     {
         $this->securityFacade = $securityFacade;
-        $this->aclProvider    = $aclProvider;
+        $this->aclProvider = $aclProvider;
     }
 
     /**

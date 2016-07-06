@@ -74,12 +74,12 @@ class JobTrackerController extends Controller
         SerializerInterface $serializer,
         JobExecutionManager $jobExecutionManager
     ) {
-        $this->templating          = $templating;
-        $this->translator          = $translator;
-        $this->eventDispatcher     = $eventDispatcher;
-        $this->jobExecutionRepo    = $jobExecutionRepo;
-        $this->archivist           = $archivist;
-        $this->serializer          = $serializer;
+        $this->templating = $templating;
+        $this->translator = $translator;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->jobExecutionRepo = $jobExecutionRepo;
+        $this->archivist = $archivist;
+        $this->serializer = $serializer;
         $this->jobExecutionManager = $jobExecutionManager;
     }
 

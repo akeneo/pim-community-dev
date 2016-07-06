@@ -42,10 +42,10 @@ class CompletenessRepository implements CompletenessRepositoryInterface
         CategoryRepositoryInterface $categoryRepository,
         $productClass
     ) {
-        $this->documentManager    = $documentManager;
-        $this->channelRepository  = $channelRepository;
+        $this->documentManager = $documentManager;
+        $this->channelRepository = $channelRepository;
         $this->categoryRepository = $categoryRepository;
-        $this->productClass       = $productClass;
+        $this->productClass = $productClass;
     }
 
     /**

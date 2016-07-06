@@ -59,12 +59,12 @@ class UserType extends AbstractType
         GroupRepository $groupRepository,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->tokenStorage     = $tokenStorage;
-        $this->isMyProfilePage  = $request->attributes->get('_route') === 'oro_user_profile_update';
-        $this->subscriber       = $subscriber;
-        $this->roleRepository   = $roleRepository;
-        $this->groupRepository  = $groupRepository;
-        $this->eventDispatcher  = $eventDispatcher;
+        $this->tokenStorage = $tokenStorage;
+        $this->isMyProfilePage = $request->attributes->get('_route') === 'oro_user_profile_update';
+        $this->subscriber = $subscriber;
+        $this->roleRepository = $roleRepository;
+        $this->groupRepository = $groupRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

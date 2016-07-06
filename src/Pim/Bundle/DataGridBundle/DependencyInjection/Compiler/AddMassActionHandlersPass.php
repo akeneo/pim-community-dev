@@ -19,7 +19,7 @@ class AddMassActionHandlersPass implements CompilerPassInterface
     const HANDLER_REGISTRY_SERVICE = 'pim_datagrid.extension.mass_action.handler.registry';
 
     /** @staticvar string */
-    const HANDLER_EXTENSION_TAG    = 'pim_datagrid.extension.mass_action.handler';
+    const HANDLER_EXTENSION_TAG = 'pim_datagrid.extension.mass_action.handler';
 
     /**
      * {@inheritdoc}
@@ -27,7 +27,7 @@ class AddMassActionHandlersPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $handlerRegistry = $container->getDefinition(self::HANDLER_REGISTRY_SERVICE);
-        $taggedServices  = $container->findTaggedServiceIds(self::HANDLER_EXTENSION_TAG);
+        $taggedServices = $container->findTaggedServiceIds(self::HANDLER_EXTENSION_TAG);
 
         foreach ($taggedServices as $serviceId => $tags) {
             $alias = (isset($tags[0]['alias'])) ? $tags[0]['alias'] : $serviceId;

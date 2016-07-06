@@ -107,19 +107,19 @@ class AttributeGroupController
         AttributeGroupRepositoryInterface $attributeGroupRepo,
         AttributeRepositoryInterface $attributeRepo
     ) {
-        $this->request            = $request;
-        $this->router             = $router;
-        $this->formFactory        = $formFactory;
-        $this->translator         = $translator;
-        $this->eventDispatcher    = $eventDispatcher;
-        $this->securityFacade     = $securityFacade;
-        $this->formHandler        = $formHandler;
-        $this->form               = $form;
-        $this->manager            = $manager;
-        $this->attributeSaver     = $attributeSaver;
-        $this->attrGroupRemover   = $attrGroupRemover;
+        $this->request = $request;
+        $this->router = $router;
+        $this->formFactory = $formFactory;
+        $this->translator = $translator;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->securityFacade = $securityFacade;
+        $this->formHandler = $formHandler;
+        $this->form = $form;
+        $this->manager = $manager;
+        $this->attributeSaver = $attributeSaver;
+        $this->attrGroupRemover = $attrGroupRemover;
         $this->attributeGroupRepo = $attributeGroupRepo;
-        $this->attributeRepo      = $attributeRepo;
+        $this->attributeRepo = $attributeRepo;
     }
 
     /**
@@ -315,10 +315,10 @@ class AttributeGroupController
      */
     public function addAttributesAction(Request $request, $id)
     {
-        $group               = $this->findAttributeGroupOr404($id);
+        $group = $this->findAttributeGroupOr404($id);
         $availableAttributes = new AvailableAttributes();
 
-        $attributesForm      = $this->getAvailableAttributesForm(
+        $attributesForm = $this->getAvailableAttributesForm(
             $this->getGroupedAttributes(),
             $availableAttributes
         );
@@ -345,7 +345,7 @@ class AttributeGroupController
      */
     public function removeAttributeAction($groupId, $attributeId)
     {
-        $group     = $this->findAttributeGroupOr404($groupId);
+        $group = $this->findAttributeGroupOr404($groupId);
         $attribute = $this->findAttributeOr404($attributeId);
 
         if (false === $group->hasAttribute($attribute)) {

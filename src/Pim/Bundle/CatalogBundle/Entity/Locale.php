@@ -131,7 +131,7 @@ class Locale implements LocaleInterface, VersionableInterface
      */
     public function setChannels($channels)
     {
-        $this->channels  = new ArrayCollection();
+        $this->channels = new ArrayCollection();
         $this->activated = false;
 
         foreach ($channels as $channel) {

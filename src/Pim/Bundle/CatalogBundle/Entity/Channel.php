@@ -44,7 +44,7 @@ class Channel implements ChannelInterface
     public function __construct()
     {
         $this->currencies = new ArrayCollection();
-        $this->locales    = new ArrayCollection();
+        $this->locales = new ArrayCollection();
     }
 
     /**

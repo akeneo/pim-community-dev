@@ -37,7 +37,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
     public function __construct($attributeClass, FormFactoryInterface $factory, SecurityFacade $securityFacade)
     {
         $this->attributeClass = $attributeClass;
-        $this->factory        = $factory;
+        $this->factory = $factory;
         $this->securityFacade = $securityFacade;
     }
 

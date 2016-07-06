@@ -29,7 +29,7 @@ class ProductValueConverter
         CachedObjectRepositoryInterface $attributeRepo
     ) {
         $this->converterRegistry = $converterRegistry;
-        $this->attributeRepo     = $attributeRepo;
+        $this->attributeRepo = $attributeRepo;
     }
 
     /**

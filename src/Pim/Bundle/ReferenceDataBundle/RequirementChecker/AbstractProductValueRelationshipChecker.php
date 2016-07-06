@@ -28,7 +28,7 @@ abstract class AbstractProductValueRelationshipChecker implements CheckerInterfa
      */
     public function __construct(ObjectManager $om, $productValueClass)
     {
-        $this->om                = $om;
+        $this->om = $om;
         $this->productValueClass = $productValueClass;
     }
 

@@ -40,7 +40,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
      */
     public function __construct(LocaleRepositoryInterface $localeRepository, SimpleFactoryInterface $optionValueFactory)
     {
-        $this->localeRepository   = $localeRepository;
+        $this->localeRepository = $localeRepository;
         $this->optionValueFactory = $optionValueFactory;
     }
 
@@ -88,7 +88,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
     protected function ensureEmptyOptionValues(Collection $optionValues)
     {
         $activeLocales = $this->getActiveLocales();
-        $usedLocales   = [];
+        $usedLocales = [];
 
         foreach ($optionValues as $optionValue) {
             $usedLocales[] = $optionValue->getLocale();

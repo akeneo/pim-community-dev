@@ -58,11 +58,11 @@ class VariantGroupController
         GroupFactory $groupFactory,
         ProductTemplateBuilderInterface $productTemplateBuilder
     ) {
-        $this->router                 = $router;
-        $this->groupTypeRepository    = $groupTypeRepository;
-        $this->groupFactory           = $groupFactory;
-        $this->groupForm              = $groupForm;
-        $this->groupHandler           = $groupHandler;
+        $this->router = $router;
+        $this->groupTypeRepository = $groupTypeRepository;
+        $this->groupFactory = $groupFactory;
+        $this->groupForm = $groupForm;
+        $this->groupHandler = $groupHandler;
         $this->productTemplateBuilder = $productTemplateBuilder;
     }
 

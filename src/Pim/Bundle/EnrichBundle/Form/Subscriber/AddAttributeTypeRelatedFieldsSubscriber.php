@@ -51,8 +51,8 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
         AttributeGroupRepositoryInterface $groupRepository
     ) {
         $this->attributeTypeRegistry = $attributeTypeRegistry;
-        $this->securityFacade        = $securityFacade;
-        $this->groupRepository       = $groupRepository;
+        $this->securityFacade = $securityFacade;
+        $this->groupRepository = $groupRepository;
     }
 
     /**
@@ -109,7 +109,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     protected function customizeForm(FormInterface $form, AttributeInterface $attribute)
     {
         $attributeTypeClass = $this->attributeTypeRegistry->get($attribute->getAttributeType());
-        $fields             = $attributeTypeClass->buildAttributeFormTypes($this->factory, $attribute);
+        $fields = $attributeTypeClass->buildAttributeFormTypes($this->factory, $attribute);
 
         foreach ($fields as $field) {
             $form->add($field);
@@ -126,12 +126,12 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     {
         // get form field and properties
         $formField = $form->get($name);
-        $type      = $formField->getConfig()->getType();
-        $options   = $formField->getConfig()->getOptions();
+        $type = $formField->getConfig()->getType();
+        $options = $formField->getConfig()->getOptions();
 
         // replace by disabled and read-only
-        $options['disabled']        = true;
-        $options['read_only']       = true;
+        $options['disabled'] = true;
+        $options['read_only'] = true;
         $options['auto_initialize'] = false;
         $formField = $this->factory->createNamed($name, $type, null, $options);
         $form->add($formField);
@@ -154,7 +154,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
         $formField = $form->get('group');
         $options = $formField->getConfig()->getOptions();
 
-        $newOptions =            [
+        $newOptions = [
             'data'      => $group,
             'class'     => $options['class'],
             'choices'   => [$group],

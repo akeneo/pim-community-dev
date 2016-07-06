@@ -85,16 +85,16 @@ class AttributeOptionController
         AttributeRepositoryInterface $attributeRepository,
         AttributeOptionRepositoryInterface $attributeOptionRepository
     ) {
-        $this->normalizer          = $normalizer;
-        $this->entityManager       = $entityManager;
-        $this->formFactory         = $formFactory;
-        $this->viewHandler         = $viewHandler;
-        $this->sorter              = $sorter;
-        $this->optionFactory       = $optionFactory;
-        $this->optionRemover       = $optionRemover;
-        $this->optionSaver         = $optionSaver;
+        $this->normalizer = $normalizer;
+        $this->entityManager = $entityManager;
+        $this->formFactory = $formFactory;
+        $this->viewHandler = $viewHandler;
+        $this->sorter = $sorter;
+        $this->optionFactory = $optionFactory;
+        $this->optionRemover = $optionRemover;
+        $this->optionSaver = $optionSaver;
         $this->attributeRepository = $attributeRepository;
-        $this->optionRepository    = $attributeOptionRepository;
+        $this->optionRepository = $attributeOptionRepository;
     }
 
     /**

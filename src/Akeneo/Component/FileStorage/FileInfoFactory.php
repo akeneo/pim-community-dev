@@ -27,7 +27,7 @@ class FileInfoFactory implements FileInfoFactoryInterface
     public function __construct(PathGeneratorInterface $pathGenerator, $fileClass)
     {
         $this->pathGenerator = $pathGenerator;
-        $this->fileClass     = $fileClass;
+        $this->fileClass = $fileClass;
     }
 
     /**
@@ -36,17 +36,17 @@ class FileInfoFactory implements FileInfoFactoryInterface
     public function createFromRawFile(\SplFileInfo $rawFile, $destFsAlias)
     {
         $pathInfo = $this->pathGenerator->generate($rawFile);
-        $sha1     = sha1_file($rawFile->getPathname());
+        $sha1 = sha1_file($rawFile->getPathname());
 
         if ($rawFile instanceof UploadedFile) {
             $originalFilename = $rawFile->getClientOriginalName();
-            $extension        = $rawFile->getClientOriginalExtension();
+            $extension = $rawFile->getClientOriginalExtension();
         } else {
             $originalFilename = $rawFile->getFilename();
-            $extension        = $rawFile->getExtension();
+            $extension = $rawFile->getExtension();
         }
 
-        $size     = filesize($rawFile->getPathname());
+        $size = filesize($rawFile->getPathname());
         $mimeType = MimeTypeGuesser::getInstance()->guess($rawFile->getPathname());
 
         $file = new $this->fileClass();

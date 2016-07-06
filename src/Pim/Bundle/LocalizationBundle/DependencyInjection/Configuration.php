@@ -33,7 +33,7 @@ class Configuration implements ConfigurationInterface
             ->end();
 
         $builder = new TreeBuilder();
-        $node    = $builder
+        $node = $builder
             ->root('settings')
             ->addDefaultsIfNotSet()
             ->children()

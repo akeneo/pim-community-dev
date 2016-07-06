@@ -26,7 +26,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields    = $supportedFields;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 

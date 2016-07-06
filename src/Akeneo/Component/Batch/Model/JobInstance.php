@@ -26,8 +26,8 @@ use Doctrine\Common\Collections\Collection;
  */
 class JobInstance
 {
-    const STATUS_READY       = 0;
-    const STATUS_DRAFT       = 1;
+    const STATUS_READY = 0;
+    const STATUS_DRAFT = 1;
     const STATUS_IN_PROGRESS = 2;
 
     const TYPE_IMPORT = 'import';
@@ -73,9 +73,9 @@ class JobInstance
      */
     public function __construct($connector = null, $type = null, $jobName = null)
     {
-        $this->connector     = $connector;
-        $this->type          = $type;
-        $this->jobName       = $jobName;
+        $this->connector = $connector;
+        $this->type = $type;
+        $this->jobName = $jobName;
         $this->jobExecutions = new ArrayCollection();
     }
 

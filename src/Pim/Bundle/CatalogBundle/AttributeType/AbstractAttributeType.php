@@ -38,7 +38,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     public function __construct($backendType, $formType)
     {
         $this->backendType = $backendType;
-        $this->formType    = $formType;
+        $this->formType = $formType;
     }
 
     /**

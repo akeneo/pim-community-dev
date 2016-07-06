@@ -35,7 +35,7 @@ class MetricAttributeCopier extends AbstractAttributeCopier
         array $supportedToTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
-        $this->metricFactory  = $metricFactory;
+        $this->metricFactory = $metricFactory;
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
     }

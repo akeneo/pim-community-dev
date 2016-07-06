@@ -73,7 +73,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
-        $options =  [
+        $options = [
             'background' => true,
             'w'          => 0
         ];
@@ -117,7 +117,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
-        $options =  [
+        $options = [
             'background' => true,
             'w'          => 0
         ];
@@ -159,7 +159,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
-        $options =  [
+        $options = [
             'background' => true,
             'w'          => 0
         ];
@@ -183,7 +183,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
-        $options =  [
+        $options = [
             'background' => true,
             'w'          => 0
         ];
@@ -210,7 +210,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
-        $options =  [
+        $options = [
             'background' => true,
             'w'          => 0
         ];
@@ -236,7 +236,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
-        $options =  [
+        $options = [
             'background' => true,
             'w'          => 0
         ];
@@ -272,7 +272,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
-        $options =  [
+        $options = [
             'background' => true,
             'w'          => 0
         ];
@@ -297,7 +297,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
-        $options =  [
+        $options = [
             'background' => true,
             'w'          => 0
         ];
@@ -325,7 +325,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
-        $options =  [
+        $options = [
             'background' => true,
             'w'          => 0
         ];
@@ -353,7 +353,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
-        $options =  [
+        $options = [
             'background' => true,
             'w'          => 0
         ];

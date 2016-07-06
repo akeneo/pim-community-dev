@@ -33,7 +33,7 @@ class FileIteratorFactory
         }
 
         $this->className = $className;
-        $this->type      = $type;
+        $this->type = $type;
     }
 
     /**

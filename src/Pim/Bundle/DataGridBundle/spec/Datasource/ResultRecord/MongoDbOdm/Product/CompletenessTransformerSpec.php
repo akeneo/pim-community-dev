@@ -12,7 +12,7 @@ class CompletenessTransformerSpec extends ObjectBehavior
     function it_transforms_product_completeness_result(\MongoId $id)
     {
         $locale = 'fr_FR';
-        $scope  = 'ecommerce';
+        $scope = 'ecommerce';
         $result = [
             'normalizedData' => [
                 'completenesses' => [

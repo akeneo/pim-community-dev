@@ -31,9 +31,9 @@ class DummyConverter implements ArrayConverterInterface
         array $fieldsPresence = [],
         array $fieldsFilling = []
     ) {
-        $this->checker        = $checker;
+        $this->checker = $checker;
         $this->fieldsPresence = $fieldsPresence;
-        $this->fieldsFilling  = $fieldsFilling;
+        $this->fieldsFilling = $fieldsFilling;
     }
 
     /**

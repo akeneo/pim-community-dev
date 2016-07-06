@@ -32,7 +32,7 @@ class EditMassActionHandler implements MassActionHandlerInterface
         HydratorInterface $hydrator,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->hydrator        = $hydrator;
+        $this->hydrator = $hydrator;
         $this->eventDispatcher = $eventDispatcher;
     }
 

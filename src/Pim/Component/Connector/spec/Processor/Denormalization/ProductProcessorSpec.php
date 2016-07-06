@@ -69,7 +69,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -160,7 +160,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -252,7 +252,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -431,7 +431,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -477,7 +477,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -575,7 +575,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -675,7 +675,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
         $product->getId()->willReturn(1);
 
-        $convertedData =                 [
+        $convertedData = [
             'sku' => [
                 [
                     'locale' => null,

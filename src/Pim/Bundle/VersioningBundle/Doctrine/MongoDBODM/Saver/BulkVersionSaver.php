@@ -38,8 +38,8 @@ class BulkVersionSaver implements BulkSaverInterface
         $versionClass
     ) {
         $this->documentManager = $documentManager;
-        $this->normalizer      = $normalizer;
-        $this->versionClass    = $versionClass;
+        $this->normalizer = $normalizer;
+        $this->versionClass = $versionClass;
     }
 
     /**

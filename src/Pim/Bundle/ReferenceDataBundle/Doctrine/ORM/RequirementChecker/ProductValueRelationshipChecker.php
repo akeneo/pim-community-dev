@@ -29,10 +29,10 @@ class ProductValueRelationshipChecker extends AbstractProductValueRelationshipCh
         }
 
         if (ConfigurationInterface::TYPE_MULTI === $configuration->getType()) {
-            $expectedType    = ClassMetadataInfo::MANY_TO_MANY;
+            $expectedType = ClassMetadataInfo::MANY_TO_MANY;
             $relationExample = 'options';
         } else {
-            $expectedType    = ClassMetadataInfo::MANY_TO_ONE;
+            $expectedType = ClassMetadataInfo::MANY_TO_ONE;
             $relationExample = 'option';
         }
 

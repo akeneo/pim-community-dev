@@ -12,12 +12,12 @@ use Symfony\Component\Serializer\Serializer;
 
 class AssociationDenormalizerSpec extends ObjectBehavior
 {
-    const ENTITY_CLASS     = 'Pim\Component\Catalog\Model\Association';
+    const ENTITY_CLASS = 'Pim\Component\Catalog\Model\Association';
     const ASSOC_TYPE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\AssociationType';
-    const GROUP_CLASS      = 'Pim\Bundle\CatalogBundle\Entity\Group';
-    const PRODUCT_CLASS    = 'Pim\Component\Catalog\Model\ProductInterface';
+    const GROUP_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Group';
+    const PRODUCT_CLASS = 'Pim\Component\Catalog\Model\ProductInterface';
 
-    const FORMAT_CSV    = 'csv';
+    const FORMAT_CSV = 'csv';
 
     function let(ManagerRegistry $registry)
     {

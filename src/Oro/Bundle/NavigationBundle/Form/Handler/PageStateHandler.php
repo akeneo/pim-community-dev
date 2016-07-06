@@ -43,9 +43,9 @@ class PageStateHandler
         ObjectManager $manager,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->form         = $form;
-        $this->request      = $request;
-        $this->manager      = $manager;
+        $this->form = $form;
+        $this->request = $request;
+        $this->manager = $manager;
         $this->tokenStorage = $tokenStorage;
     }
 

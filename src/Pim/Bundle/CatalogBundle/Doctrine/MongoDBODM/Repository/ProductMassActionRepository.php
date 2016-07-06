@@ -33,7 +33,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
     public function __construct(DocumentManager $dm, $documentName, FamilyRepositoryInterface $familyRepository)
     {
         $this->dm = $dm;
-        $this->documentName     = $documentName;
+        $this->documentName = $documentName;
         $this->familyRepository = $familyRepository;
     }
 

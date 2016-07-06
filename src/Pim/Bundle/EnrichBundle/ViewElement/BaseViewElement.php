@@ -32,8 +32,8 @@ class BaseViewElement implements ViewElementInterface
      */
     public function __construct($alias, $template, array $parameters = [])
     {
-        $this->alias      = $alias;
-        $this->template   = $template;
+        $this->alias = $alias;
+        $this->template = $template;
         $this->parameters = $parameters;
     }
 

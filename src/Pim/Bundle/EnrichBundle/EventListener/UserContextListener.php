@@ -56,10 +56,10 @@ class UserContextListener implements EventSubscriberInterface
         CatalogContext $catalogContext,
         UserContext $userContext
     ) {
-        $this->tokenStorage   = $tokenStorage;
-        $this->listener       = $listener;
+        $this->tokenStorage = $tokenStorage;
+        $this->listener = $listener;
         $this->catalogContext = $catalogContext;
-        $this->userContext    = $userContext;
+        $this->userContext = $userContext;
     }
 
     /**

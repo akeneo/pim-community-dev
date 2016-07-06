@@ -40,7 +40,7 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->objectManager   = $objectManager;
+        $this->objectManager = $objectManager;
         $this->optionsResolver = $optionsResolver;
         $this->eventDispatcher = $eventDispatcher;
     }

@@ -37,7 +37,7 @@ class BaseWriter extends AbstractConfigurableStepElement implements
         BulkSaverInterface $bulkSaver,
         BulkObjectDetacherInterface $bulkDetacher
     ) {
-        $this->bulkSaver    = $bulkSaver;
+        $this->bulkSaver = $bulkSaver;
         $this->bulkDetacher = $bulkDetacher;
     }
 

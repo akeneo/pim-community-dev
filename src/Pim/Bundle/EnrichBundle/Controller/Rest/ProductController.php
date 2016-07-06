@@ -104,19 +104,19 @@ class ProductController
         AttributeConverterInterface $localizedConverter,
         ProductFilterInterface $emptyValuesFilter
     ) {
-        $this->productRepository     = $productRepository;
-        $this->attributeRepository   = $attributeRepository;
-        $this->productUpdater        = $productUpdater;
-        $this->productSaver          = $productSaver;
-        $this->normalizer            = $normalizer;
-        $this->validator             = $validator;
-        $this->userContext           = $userContext;
-        $this->objectFilter          = $objectFilter;
+        $this->productRepository = $productRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->productUpdater = $productUpdater;
+        $this->productSaver = $productSaver;
+        $this->normalizer = $normalizer;
+        $this->validator = $validator;
+        $this->userContext = $userContext;
+        $this->objectFilter = $objectFilter;
         $this->productEditDataFilter = $productEditDataFilter;
-        $this->productRemover        = $productRemover;
-        $this->productBuilder        = $productBuilder;
-        $this->localizedConverter    = $localizedConverter;
-        $this->emptyValuesFilter     = $emptyValuesFilter;
+        $this->productRemover = $productRemover;
+        $this->productBuilder = $productBuilder;
+        $this->localizedConverter = $localizedConverter;
+        $this->emptyValuesFilter = $emptyValuesFilter;
     }
 
     /**
@@ -145,7 +145,7 @@ class ProductController
      */
     public function getAction($id)
     {
-        $product  = $this->findProductOr404($id);
+        $product = $this->findProductOr404($id);
         $this->productBuilder->addMissingAssociations($product);
 
         $normalizationContext = $this->userContext->toArray() + [

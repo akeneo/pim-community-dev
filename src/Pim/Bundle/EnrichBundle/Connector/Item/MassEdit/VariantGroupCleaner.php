@@ -59,12 +59,12 @@ class VariantGroupCleaner
         ProductRepositoryInterface $productRepository,
         TranslatorInterface $translator
     ) {
-        $this->pqbFactory           = $pqbFactory;
-        $this->paginatorFactory     = $paginatorFactory;
-        $this->objectDetacher       = $objectDetacher;
-        $this->groupRepository      = $groupRepository;
-        $this->productRepository    = $productRepository;
-        $this->translator           = $translator;
+        $this->pqbFactory = $pqbFactory;
+        $this->paginatorFactory = $paginatorFactory;
+        $this->objectDetacher = $objectDetacher;
+        $this->groupRepository = $groupRepository;
+        $this->productRepository = $productRepository;
+        $this->translator = $translator;
     }
 
     /**

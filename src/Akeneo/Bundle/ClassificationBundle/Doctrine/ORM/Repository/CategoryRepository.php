@@ -73,7 +73,7 @@ class CategoryRepository extends NestedTreeRepository implements
             return new ArrayCollection();
         }
 
-        $meta   = $this->getClassMetadata();
+        $meta = $this->getClassMetadata();
         $config = $this->listener->getConfiguration($this->_em, $meta->name);
 
         $qb = $this->_em->createQueryBuilder();
@@ -122,7 +122,7 @@ class CategoryRepository extends NestedTreeRepository implements
         $parentsIds = [];
         foreach ($categories as $category) {
             $categoryParentsIds = [];
-            $path               = $this->getPath($category);
+            $path = $this->getPath($category);
 
             if ($path[0]->getId() === $root->getId()) {
                 foreach ($path as $pathItem) {
@@ -142,7 +142,7 @@ class CategoryRepository extends NestedTreeRepository implements
     public function getAllChildrenIds(CategoryInterface $parent, $includeNode = false)
     {
         $categoryQb = $this->getAllChildrenQueryBuilder($parent, $includeNode);
-        $rootAlias  = current($categoryQb->getRootAliases());
+        $rootAlias = current($categoryQb->getRootAliases());
         $rootEntity = current($categoryQb->getRootEntities());
         $categoryQb->select($rootAlias.'.id');
         $categoryQb->resetDQLPart('from');

@@ -72,11 +72,11 @@ class ProductSaver extends BaseProductSaver
         parent::__construct($documentManager, $completenessManager, $optionsResolver, $eventDispatcher);
 
         $this->bulkVersionBuilder = $bulkVersionBuilder;
-        $this->versionSaver       = $versionSaver;
-        $this->normalizer         = $normalizer;
-        $this->mongoFactory       = $mongoFactory;
-        $this->productClass       = $productClass;
-        $this->databaseName       = $databaseName;
+        $this->versionSaver = $versionSaver;
+        $this->normalizer = $normalizer;
+        $this->mongoFactory = $mongoFactory;
+        $this->productClass = $productClass;
+        $this->databaseName = $databaseName;
 
         $this->collection = $this->objectManager->getDocumentCollection($this->productClass);
     }

@@ -57,8 +57,8 @@ class TranslationFactory
         }
 
         $this->translationClass = $translationClass;
-        $this->entityClass      = $entityClass;
-        $this->field            = $field;
+        $this->entityClass = $entityClass;
+        $this->field = $field;
     }
 
     /**

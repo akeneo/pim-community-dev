@@ -30,7 +30,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
     public function __construct(EntityManagerInterface $entityManager, $entityName)
     {
         $this->entityManager = $entityManager;
-        $this->entityName    = $entityName;
+        $this->entityName = $entityName;
     }
 
     /**

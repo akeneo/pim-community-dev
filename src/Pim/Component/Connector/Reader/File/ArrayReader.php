@@ -49,7 +49,7 @@ class ArrayReader extends AbstractConfigurableStepElement implements
         ItemReaderInterface $reader,
         ArrayConverterInterface $converter
     ) {
-        $this->reader    = $reader;
+        $this->reader = $reader;
         $this->converter = $converter;
 
         $this->remainingItems = [];

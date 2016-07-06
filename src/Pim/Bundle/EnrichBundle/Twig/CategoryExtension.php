@@ -25,7 +25,7 @@ class CategoryExtension extends \Twig_Extension
     public function __construct(CategoryItemsCounterRegistryInterface $categoryItemsCounter, $itemsLimitRemoval = null)
     {
         $this->categoryItemsCounter = $categoryItemsCounter;
-        $this->itemsLimitRemoval    = $itemsLimitRemoval;
+        $this->itemsLimitRemoval = $itemsLimitRemoval;
     }
 
     /**

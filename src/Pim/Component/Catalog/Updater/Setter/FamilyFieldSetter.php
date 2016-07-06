@@ -28,7 +28,7 @@ class FamilyFieldSetter extends AbstractFieldSetter
         array $supportedFields
     ) {
         $this->familyRepository = $familyRepository;
-        $this->supportedFields  = $supportedFields;
+        $this->supportedFields = $supportedFields;
     }
 
     /**

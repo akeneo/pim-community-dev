@@ -17,10 +17,10 @@ use Pim\Component\Catalog\Validator\Constraints\File;
 class FileGuesser implements ConstraintGuesserInterface
 {
     /** @staticvar string */
-    const MEGABYTE_UNIT       = 'M';
+    const MEGABYTE_UNIT = 'M';
 
     /** @staticvar string */
-    const KILOBYTE_UNIT       = 'k';
+    const KILOBYTE_UNIT = 'k';
 
     /** @staticvar string */
     const KILOBYTE_MULTIPLIER = 1024;
@@ -45,15 +45,15 @@ class FileGuesser implements ConstraintGuesserInterface
     public function guessConstraints(AttributeInterface $attribute)
     {
         $constraints = [];
-        $options     = [];
+        $options = [];
 
         if ($maxSize = $attribute->getMaxFileSize()) {
             if ($maxSize == (int) $maxSize) {
                 $maxSize = (int) $maxSize;
-                $unit    = self::MEGABYTE_UNIT;
+                $unit = self::MEGABYTE_UNIT;
             } else {
                 $maxSize = intval($maxSize * self::KILOBYTE_MULTIPLIER);
-                $unit    = self::KILOBYTE_UNIT;
+                $unit = self::KILOBYTE_UNIT;
             }
             if ($maxSize > 0) {
                 $options['maxSize'] = sprintf('%d%s', $maxSize, $unit);

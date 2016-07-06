@@ -12,22 +12,22 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
  */
 interface PropertyInterface
 {
-    const TYPE_DATE     = 'date';
+    const TYPE_DATE = 'date';
     const TYPE_DATETIME = 'datetime';
-    const TYPE_DECIMAL  = 'decimal';
-    const TYPE_INTEGER  = 'integer';
-    const TYPE_PERCENT  = 'percent';
-    const TYPE_SELECT   = 'select';
-    const TYPE_STRING   = 'string';
-    const TYPE_HTML     = 'html';
-    const TYPE_BOOLEAN  = 'boolean';
+    const TYPE_DECIMAL = 'decimal';
+    const TYPE_INTEGER = 'integer';
+    const TYPE_PERCENT = 'percent';
+    const TYPE_SELECT = 'select';
+    const TYPE_STRING = 'string';
+    const TYPE_HTML = 'html';
+    const TYPE_BOOLEAN = 'boolean';
 
     const METADATA_NAME_KEY = 'name';
     const METADATA_TYPE_KEY = 'type';
 
-    const TYPE_KEY          = 'type';
-    const NAME_KEY          = 'name';
-    const DATA_NAME_KEY     = 'data_name';
+    const TYPE_KEY = 'type';
+    const NAME_KEY = 'name';
+    const DATA_NAME_KEY = 'data_name';
     const FRONTEND_TYPE_KEY = 'frontend_type';
 
     /**

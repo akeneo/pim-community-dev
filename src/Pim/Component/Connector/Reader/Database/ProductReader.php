@@ -80,13 +80,13 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         AttributeRepositoryInterface $attributeRepository,
         $generateCompleteness
     ) {
-        $this->pqbFactory           = $pqbFactory;
-        $this->channelRepository    = $channelRepository;
-        $this->completenessManager  = $completenessManager;
-        $this->metricConverter      = $metricConverter;
-        $this->objectDetacher       = $objectDetacher;
-        $this->jobRepository        = $jobRepository;
-        $this->attributeRepository  = $attributeRepository;
+        $this->pqbFactory = $pqbFactory;
+        $this->channelRepository = $channelRepository;
+        $this->completenessManager = $completenessManager;
+        $this->metricConverter = $metricConverter;
+        $this->objectDetacher = $objectDetacher;
+        $this->jobRepository = $jobRepository;
+        $this->attributeRepository = $attributeRepository;
         $this->generateCompleteness = (bool) $generateCompleteness;
     }
 
@@ -98,7 +98,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $channel = $this->getConfiguredChannel();
         $parameters = $this->stepExecution->getJobParameters();
 
-        $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
+        $pqb = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
         $filters = array_merge(
             $this->getFilters(
                 $channel,
@@ -361,7 +361,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     protected function getCategoryFilters(JobParameters $parameters)
     {
         $categories = $parameters->get('categories');
-        $filters  = [];
+        $filters = [];
 
         if (!empty($categories)) {
             $filters[] = [

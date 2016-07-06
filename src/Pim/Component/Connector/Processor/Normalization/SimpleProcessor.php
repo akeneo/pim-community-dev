@@ -28,7 +28,7 @@ class SimpleProcessor extends AbstractConfigurableStepElement implements ItemPro
     public function __construct(NormalizerInterface $normalizer, $format)
     {
         $this->normalizer = $normalizer;
-        $this->format     = $format;
+        $this->format = $format;
     }
 
     /**

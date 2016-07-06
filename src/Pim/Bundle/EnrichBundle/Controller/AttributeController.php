@@ -137,24 +137,24 @@ class AttributeController
         SimpleFactoryInterface $optionValueFactory,
         $measuresConfig
     ) {
-        $this->request             = $request;
-        $this->router              = $router;
-        $this->formFactory         = $formFactory;
-        $this->translator          = $translator;
-        $this->attributeHandler    = $attributeHandler;
-        $this->attributeForm       = $attributeForm;
-        $this->localeRepository    = $localeRepository;
-        $this->versionManager      = $versionManager;
-        $this->measuresConfig      = $measuresConfig;
-        $this->attributeSaver      = $attributeSaver;
-        $this->attributeRemover    = $attributeRemover;
-        $this->optionSaver         = $optionSaver;
+        $this->request = $request;
+        $this->router = $router;
+        $this->formFactory = $formFactory;
+        $this->translator = $translator;
+        $this->attributeHandler = $attributeHandler;
+        $this->attributeForm = $attributeForm;
+        $this->localeRepository = $localeRepository;
+        $this->versionManager = $versionManager;
+        $this->measuresConfig = $measuresConfig;
+        $this->attributeSaver = $attributeSaver;
+        $this->attributeRemover = $attributeRemover;
+        $this->optionSaver = $optionSaver;
         $this->attributeRepository = $attributeRepository;
-        $this->groupRepository     = $groupRepository;
-        $this->registry            = $registry;
-        $this->factory             = $factory;
-        $this->optionFactory       = $optionFactory;
-        $this->optionValueFactory  = $optionValueFactory;
+        $this->groupRepository = $groupRepository;
+        $this->registry = $registry;
+        $this->factory = $factory;
+        $this->optionFactory = $optionFactory;
+        $this->optionValueFactory = $optionValueFactory;
     }
 
     /**

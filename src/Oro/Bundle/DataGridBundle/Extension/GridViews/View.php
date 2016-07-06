@@ -15,7 +15,7 @@ class View
 
     public function __construct($name, array $filtersData = [], array $sortersData = [])
     {
-        $this->name        = $name;
+        $this->name = $name;
         $this->filtersData = $filtersData;
         $this->sortersData = $sortersData;
     }

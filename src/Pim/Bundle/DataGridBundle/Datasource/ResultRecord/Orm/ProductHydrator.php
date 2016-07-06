@@ -24,7 +24,7 @@ class ProductHydrator implements HydratorInterface
         $query = $qb->getQuery();
         $results = $query->getArrayResult();
 
-        $rows    = [];
+        $rows = [];
         foreach ($results as $result) {
             $entityFields = [];
             if (isset($result[0])) {

@@ -55,7 +55,7 @@ class ExportMassActionSpec extends ObjectBehavior
     function it_overwrites_default_values()
     {
         $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
-        $context     = array('baz' => 'qux');
+        $context = array('baz' => 'qux');
         $params = array(
             'route_parameters' => $routeParams,
             'context'          => $context,
@@ -76,7 +76,7 @@ class ExportMassActionSpec extends ObjectBehavior
     function it_gets_export_context()
     {
         $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
-        $context     = array('baz' => 'qux');
+        $context = array('baz' => 'qux');
         $params = array(
             'route_parameters' => $routeParams,
             'context'          => $context

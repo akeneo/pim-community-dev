@@ -61,13 +61,13 @@ class ProductExportController
         JobLauncherInterface $jobLauncher,
         DataGridManager $datagridManager
     ) {
-        $this->request              = $request;
+        $this->request = $request;
         $this->massActionDispatcher = $massActionDispatcher;
-        $this->gridFilterAdapter    = $gridFilterAdapter;
-        $this->jobInstanceRepo      = $jobInstanceRepo;
-        $this->tokenStorage         = $tokenStorage;
-        $this->jobLauncher          = $jobLauncher;
-        $this->datagridManager      = $datagridManager;
+        $this->gridFilterAdapter = $gridFilterAdapter;
+        $this->jobInstanceRepo = $jobInstanceRepo;
+        $this->tokenStorage = $tokenStorage;
+        $this->jobLauncher = $jobLauncher;
+        $this->datagridManager = $datagridManager;
     }
 
     /**
@@ -78,16 +78,16 @@ class ProductExportController
     public function indexAction()
     {
         $displayedColumnsOnly = (bool) $this->request->get('_displayedColumnsOnly');
-        $jobCode              = $this->request->get('_jobCode');
-        $jobInstance          = $this->jobInstanceRepo->findOneByIdentifier(['code' => $jobCode]);
+        $jobCode = $this->request->get('_jobCode');
+        $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(['code' => $jobCode]);
 
         if (null === $jobInstance) {
             throw new \RuntimeException(sprintf('Jobinstance "%s" is not well configured', $jobCode));
         }
 
-        $filters          = $this->gridFilterAdapter->adapt($this->request);
+        $filters = $this->gridFilterAdapter->adapt($this->request);
         $rawConfiguration = $jobInstance->getRawConfiguration();
-        $mainContext      = $this->getContextParameters();
+        $mainContext = $this->getContextParameters();
 
         $dynamicConfiguration = [
             'filters'     => $filters,
@@ -144,8 +144,8 @@ class ProductExportController
     protected function getContextParameters()
     {
         $datagridName = $this->request->get('gridName');
-        $datagrid     = $this->datagridManager->getDatagrid($datagridName);
-        $dataSource   = $datagrid->getDatasource();
+        $datagrid = $this->datagridManager->getDatagrid($datagridName);
+        $dataSource = $datagrid->getDatasource();
 
         if (!$dataSource instanceof ProductDatasource) {
             throw new \LogicException('getContextParameters is only implemented for ProductDatasource');
@@ -153,7 +153,7 @@ class ProductExportController
 
         $user = $this->getUser();
         $dataSourceParams = $dataSource->getParameters();
-        $contextParams    = [];
+        $contextParams = [];
         if (is_array($dataSourceParams)) {
             $contextParams = [
                 'locale'    => $dataSourceParams['dataLocale'],

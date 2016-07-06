@@ -30,7 +30,7 @@ class MetricDenormalizer extends AbstractValueDenormalizer
     {
         parent::__construct($supportedTypes);
 
-        $this->factory   = $factory;
+        $this->factory = $factory;
         $this->localizer = $localizer;
     }
 

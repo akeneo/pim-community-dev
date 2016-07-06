@@ -54,10 +54,10 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         ChannelRepositoryInterface $channelRepository,
         FamilyRepositoryInterface $familyRepository
     ) {
-        $this->documentManager   = $documentManager;
-        $this->productClass      = $productClass;
+        $this->documentManager = $documentManager;
+        $this->productClass = $productClass;
         $this->channelRepository = $channelRepository;
-        $this->familyRepository  = $familyRepository;
+        $this->familyRepository = $familyRepository;
     }
 
     /**
@@ -150,7 +150,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
         foreach ($missingComps as $missingComp) {
             $requiredCount = $this->getRequiredCount($normalizedReqs, $missingComp);
-            $missingCount  = $this->getMissingCount($normalizedReqs, $normalizedData, $dataFields, $missingComp);
+            $missingCount = $this->getMissingCount($normalizedReqs, $normalizedData, $dataFields, $missingComp);
 
             $ratio = round(($requiredCount - $missingCount) / $requiredCount * 100);
 
@@ -180,7 +180,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected function getRequiredCount(array $normalizedReqs, $missingComp)
     {
         $attributesReqs = $normalizedReqs[$missingComp]['reqs']['attributes'];
-        $pricesReqs     = $normalizedReqs[$missingComp]['reqs']['prices'];
+        $pricesReqs = $normalizedReqs[$missingComp]['reqs']['prices'];
 
         return count($attributesReqs) + count($pricesReqs);
     }
@@ -196,7 +196,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected function getMissingCount(array $normalizedReqs, array $normalizedData, array $dataFields, $missingComp)
     {
         $attributesReqs = $normalizedReqs[$missingComp]['reqs']['attributes'];
-        $pricesReqs     = $normalizedReqs[$missingComp]['reqs']['prices'];
+        $pricesReqs = $normalizedReqs[$missingComp]['reqs']['prices'];
 
         $missingAttributes = array_diff($attributesReqs, $dataFields);
 

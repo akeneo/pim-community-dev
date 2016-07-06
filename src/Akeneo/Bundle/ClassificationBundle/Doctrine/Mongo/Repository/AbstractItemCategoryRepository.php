@@ -41,9 +41,9 @@ abstract class AbstractItemCategoryRepository implements
     public function __construct(DocumentManager $docManager, $documentName, EntityManager $em, $categoryClass)
     {
         $this->documentManager = $docManager;
-        $this->documentName    = $documentName;
-        $this->em              = $em;
-        $this->categoryClass   = $categoryClass;
+        $this->documentName = $documentName;
+        $this->em = $em;
+        $this->categoryClass = $categoryClass;
     }
 
     /**

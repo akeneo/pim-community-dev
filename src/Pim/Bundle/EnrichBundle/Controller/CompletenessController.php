@@ -48,10 +48,10 @@ class CompletenessController
         EngineInterface $templating
     ) {
         $this->completenessManager = $completenessManager;
-        $this->productRepository   = $productRepository;
-        $this->channelRepository   = $channelRepository;
-        $this->userContext         = $userContext;
-        $this->templating          = $templating;
+        $this->productRepository = $productRepository;
+        $this->channelRepository = $channelRepository;
+        $this->userContext = $userContext;
+        $this->templating = $templating;
     }
 
     /**

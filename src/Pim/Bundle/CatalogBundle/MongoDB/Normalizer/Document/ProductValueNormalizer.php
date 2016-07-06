@@ -36,7 +36,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function __construct(MongoObjectsFactory $mongoFactory, ManagerRegistry $managerRegistry)
     {
-        $this->mongoFactory    = $mongoFactory;
+        $this->mongoFactory = $mongoFactory;
         $this->managerRegistry = $managerRegistry;
     }
 
@@ -66,8 +66,8 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         }
 
         $productCollection = $context[ProductNormalizer::MONGO_COLLECTION_NAME];
-        $productId         = $context[ProductNormalizer::MONGO_ID];
-        $databaseName      = $context[ProductNormalizer::MONGO_DATABASE_NAME];
+        $productId = $context[ProductNormalizer::MONGO_ID];
+        $databaseName = $context[ProductNormalizer::MONGO_DATABASE_NAME];
 
         $data = [];
         $data['_id'] = $this->mongoFactory->createMongoId();
@@ -81,10 +81,10 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             $data['scope'] = $value->getScope();
         }
 
-        $attribute   = $value->getAttribute();
+        $attribute = $value->getAttribute();
         $backendType = $attribute->getBackendType();
-        $key         = $this->getKeyForValue($value, $attribute, $backendType);
-        $data[$key]  = $this->normalizeValueData($value->getData(), $backendType, $context);
+        $key = $this->getKeyForValue($value, $attribute, $backendType);
+        $data[$key] = $this->normalizeValueData($value->getData(), $backendType, $context);
 
         return $data;
     }
@@ -160,9 +160,9 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     protected function getReferenceDataFieldName(ProductValueInterface $value, $refDataName)
     {
         $valueClass = ClassUtils::getClass($value);
-        $manager    = $this->managerRegistry->getManagerForClass($valueClass);
-        $metadata   = $manager->getClassMetadata($valueClass);
-        $fieldName  = $metadata->getFieldMapping($refDataName);
+        $manager = $this->managerRegistry->getManagerForClass($valueClass);
+        $metadata = $manager->getClassMetadata($valueClass);
+        $fieldName = $metadata->getFieldMapping($refDataName);
 
         if (!isset($fieldName['idsField'])) {
             throw new \LogicException(sprintf('No field name defined for reference data "%s"', $refDataName));

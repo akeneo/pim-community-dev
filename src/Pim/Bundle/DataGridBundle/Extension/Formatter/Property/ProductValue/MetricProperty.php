@@ -30,7 +30,7 @@ class MetricProperty extends TwigProperty
         parent::__construct($environment);
 
         $this->translator = $translator;
-        $this->presenter  = $presenter;
+        $this->presenter = $presenter;
     }
 
     /**

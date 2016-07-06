@@ -78,7 +78,7 @@ class SettingsBuilderTest extends \PHPUnit_Framework_TestCase
 
         $children = $this->getField($root, 'children');
         $settings = $this->getField($children['settings'], 'children');
-        $list     = $this->getField($settings['list'], 'children');
+        $list = $this->getField($settings['list'], 'children');
 
         $this->assertCount(2, $children);
         $this->assertArrayHasKey('value', $list);

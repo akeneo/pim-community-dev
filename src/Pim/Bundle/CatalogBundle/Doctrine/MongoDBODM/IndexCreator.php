@@ -54,10 +54,10 @@ class IndexCreator
         $attributeClass
     ) {
         $this->managerRegistry = $managerRegistry;
-        $this->namingUtility   = $namingUtility;
-        $this->productClass    = $productClass;
-        $this->logger          = $logger;
-        $this->attributeClass  = $attributeClass;
+        $this->namingUtility = $namingUtility;
+        $this->productClass = $productClass;
+        $this->logger = $logger;
+        $this->attributeClass = $attributeClass;
     }
 
     /**

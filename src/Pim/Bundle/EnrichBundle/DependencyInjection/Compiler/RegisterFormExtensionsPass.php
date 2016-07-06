@@ -76,7 +76,7 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
             $file = $directory . '.yml';
 
             if (is_file($file)) {
-                $files[] =  new \SplFileInfo($file);
+                $files[] = new \SplFileInfo($file);
             }
 
             if (is_dir($directory)) {

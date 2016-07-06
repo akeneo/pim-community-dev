@@ -34,9 +34,9 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->currencyRepository  = $currencyRepository;
+        $this->currencyRepository = $currencyRepository;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedOperators  = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -77,7 +77,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
 
         // join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -91,10 +91,10 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
 
         // join to price
         $joinAliasPrice = $this->getUniqueAlias('filterP' . $attribute->getCode());
-        $priceData      = $joinAlias . '.' . $backendType;
+        $priceData = $joinAlias . '.' . $backendType;
         $this->qb->leftJoin($priceData, $joinAliasPrice);
 
-        $priceCondition   = $this->preparePriceCondition($value, $joinAliasPrice, $operator);
+        $priceCondition = $this->preparePriceCondition($value, $joinAliasPrice, $operator);
         $priceIdCondition = $this->prepareCriteriaCondition($joinAliasPrice . '.id', $operator, null);
         if (Operators::IS_NOT_EMPTY === $operator) {
             $where = $this->qb->expr()->andX($priceCondition, $priceIdCondition);
@@ -119,7 +119,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
 
         // join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -132,7 +132,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         );
 
         $joinAliasPrice = $this->getUniqueAlias('filterP' . $attribute->getCode());
-        $condition      = $this->preparePriceCondition($value, $joinAliasPrice, $operator);
+        $condition = $this->preparePriceCondition($value, $joinAliasPrice, $operator);
 
         $this->qb->innerJoin($joinAlias . '.' .$backendType, $joinAliasPrice, 'WITH', $condition);
     }
@@ -148,10 +148,10 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
      */
     protected function preparePriceCondition(array $value, $joinAlias, $operator)
     {
-        $valueField     = sprintf('%s.%s', $joinAlias, 'data');
+        $valueField = sprintf('%s.%s', $joinAlias, 'data');
         $valueCondition = $this->prepareCriteriaCondition($valueField, $operator, $value['data']);
 
-        $currencyField     = sprintf('%s.%s', $joinAlias, 'currency');
+        $currencyField = sprintf('%s.%s', $joinAlias, 'currency');
         $currencyCondition = $this->prepareCriteriaCondition($currencyField, '=', $value['currency']);
 
         return sprintf('%s AND %s', $currencyCondition, $valueCondition);

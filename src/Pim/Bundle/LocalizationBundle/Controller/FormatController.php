@@ -32,9 +32,9 @@ class FormatController
      */
     public function __construct(DateFactory $dateFactory, DateFactory $datetimeFactory, LocaleResolver $localeResolver)
     {
-        $this->dateFactory     = $dateFactory;
+        $this->dateFactory = $dateFactory;
         $this->datetimeFactory = $datetimeFactory;
-        $this->localeResolver  = $localeResolver;
+        $this->localeResolver = $localeResolver;
     }
 
     /**

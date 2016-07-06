@@ -30,7 +30,7 @@ class WidgetController
     public function __construct(Registry $widgetRegistry, EngineInterface $templating)
     {
         $this->widgetRegistry = $widgetRegistry;
-        $this->templating     = $templating;
+        $this->templating = $templating;
     }
 
     /**

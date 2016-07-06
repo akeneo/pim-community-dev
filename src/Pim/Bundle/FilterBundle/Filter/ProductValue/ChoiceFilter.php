@@ -46,7 +46,7 @@ class ChoiceFilter extends AjaxChoiceFilter
     ) {
         parent::__construct($factory, $util);
 
-        $this->userContext     = $userContext;
+        $this->userContext = $userContext;
         $this->optionRepoClass = $optionRepoClass;
         $this->attributeRepository = $attributeRepository;
     }

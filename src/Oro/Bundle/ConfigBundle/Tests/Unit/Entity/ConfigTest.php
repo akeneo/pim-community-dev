@@ -39,7 +39,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testRecordId()
     {
         $object = $this->object;
-        $id     = 5;
+        $id = 5;
 
         $this->assertEmpty($object->getRecordId());
 
@@ -53,7 +53,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetOrCreateValue()
     {
-        $object   = $this->object;
+        $object = $this->object;
 
         $value = $object->getOrCreateValue('oro_user', 'level');
 

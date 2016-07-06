@@ -59,7 +59,7 @@ class UserController extends Controller
     public function apigenAction($id)
     {
         $userRepository = $this->container->get('pim_user.repository.user');
-        $user           = $userRepository->findOneBy(['id' => $id]);
+        $user = $userRepository->findOneBy(['id' => $id]);
 
         if (!$api = $user->getApi()) {
             $api = new UserApi();

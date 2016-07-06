@@ -52,11 +52,11 @@ class BulkVersionBuilder implements BulkVersionBuilderInterface
         EventDispatcherInterface $eventDispatcher,
         $versionClass
     ) {
-        $this->versionBuilder  = $versionBuilder;
-        $this->versionContext  = $versionContext;
+        $this->versionBuilder = $versionBuilder;
+        $this->versionContext = $versionContext;
         $this->documentManager = $documentManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->versionClass    = $versionClass;
+        $this->versionClass = $versionClass;
     }
 
     /**
@@ -67,16 +67,16 @@ class BulkVersionBuilder implements BulkVersionBuilderInterface
     public function buildVersions(array $versionables)
     {
         $author = VersionManager::DEFAULT_SYSTEM_USER;
-        $event  = $this->eventDispatcher->dispatch(BuildVersionEvents::PRE_BUILD, new BuildVersionEvent());
+        $event = $this->eventDispatcher->dispatch(BuildVersionEvents::PRE_BUILD, new BuildVersionEvent());
         if (null !== $event && null !== $event->getUsername()) {
             $author = $event->getUsername();
         }
 
         $versions = [];
         foreach ($versionables as $versionable) {
-            $context         = $this->versionContext->getContextInfo(ClassUtils::getClass($versionable));
+            $context = $this->versionContext->getContextInfo(ClassUtils::getClass($versionable));
             $previousVersion = $this->getPreviousVersion($versionable);
-            $newVersion      = $this->versionBuilder->buildVersion($versionable, $author, $previousVersion, $context);
+            $newVersion = $this->versionBuilder->buildVersion($versionable, $author, $previousVersion, $context);
 
             if (0 < count($newVersion->getChangeSet())) {
                 $versions[] = $newVersion;
@@ -100,7 +100,7 @@ class BulkVersionBuilder implements BulkVersionBuilderInterface
     protected function getPreviousVersion(VersionableInterface $versionable)
     {
         $resourceName = ClassUtils::getClass($versionable);
-        $resourceId   = $versionable->getId();
+        $resourceId = $versionable->getId();
 
         $version = $this->documentManager
             ->createQueryBuilder($this->versionClass)

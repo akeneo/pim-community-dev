@@ -34,8 +34,8 @@ class GroupFactory implements SimpleFactoryInterface
         SimpleFactoryInterface $productTemplateFactory,
         $groupClass
     ) {
-        $this->groupClass             = $groupClass;
-        $this->groupTypeRepository    = $groupTypeRepository;
+        $this->groupClass = $groupClass;
+        $this->groupTypeRepository = $groupTypeRepository;
         $this->productTemplateFactory = $productTemplateFactory;
     }
 

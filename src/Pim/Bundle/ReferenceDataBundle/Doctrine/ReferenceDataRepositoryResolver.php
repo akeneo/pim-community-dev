@@ -30,7 +30,7 @@ class ReferenceDataRepositoryResolver implements ReferenceDataRepositoryResolver
         RegistryInterface $doctrineRegistry
     ) {
         $this->configurationRegistry = $configurationRegistry;
-        $this->doctrineRegistry      = $doctrineRegistry;
+        $this->doctrineRegistry = $doctrineRegistry;
     }
 
     /**

@@ -31,7 +31,7 @@ class AddUserSubscriber implements EventSubscriberInterface
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage = null
     ) {
-        $this->tokenStorage         = $tokenStorage;
+        $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
     }
 

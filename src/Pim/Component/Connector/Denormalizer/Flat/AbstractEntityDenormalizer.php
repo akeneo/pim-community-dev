@@ -38,7 +38,7 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
     public function __construct(ManagerRegistry $managerRegistry, $entityClass)
     {
         $this->managerRegistry = $managerRegistry;
-        $this->entityClass     = $entityClass;
+        $this->entityClass = $entityClass;
     }
 
     /**

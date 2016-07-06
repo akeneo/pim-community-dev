@@ -36,9 +36,9 @@ class BaseHandler implements HandlerInterface
         Request $request,
         SaverInterface $saver
     ) {
-        $this->form    = $form;
+        $this->form = $form;
         $this->request = $request;
-        $this->saver   = $saver;
+        $this->saver = $saver;
     }
 
     /**

@@ -15,7 +15,7 @@ class AbstractExtensionTestCase extends \PHPUnit_Framework_TestCase
      * Test parameters
      */
     const TEST_TEMPLATE_NAME = 'test_template_name';
-    const TEST_BLOCK_HTML    = 'test_block_html';
+    const TEST_BLOCK_HTML = 'test_block_html';
     /**#@-*/
 
     /**
