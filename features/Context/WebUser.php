@@ -192,7 +192,9 @@ class WebUser extends RawMinkContext
             return false;
         }, 'Cannot expand history');
 
-        $this->wait();
+        $this->spin(function () {
+            return $this->getCurrentPage()->find('css', 'div.full-panel div.panels');
+        }, 'History as full panel can not be found.');
     }
 
     /**

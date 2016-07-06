@@ -399,14 +399,14 @@ class AssertionContext extends RawMinkContext
                 return $block->find('css', 'tr[data-version="' . $data['version'] . '"]');
             }, sprintf('Cannot find the row %s', $data['version']));
 
-            if (!$row) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting to see history row for version %s, not found', $data['version'])
-                );
-            }
-            if (!$row->hasClass('expanded')) {
-                $row->click();
-            }
+            $this->spin(function () use ($row) {
+                if (!$row->hasClass('expanded')) {
+                    $row->click();
+                }
+
+                return $row->hasClass('expanded');
+            }, sprintf('Can not expand row %d', $data['version']));
+
             if (isset($data['author'])) {
                 $author = $row->find('css', 'td.author')->getText();
                 assertEquals(
@@ -421,18 +421,13 @@ class AssertionContext extends RawMinkContext
                 );
             }
 
-            $changeset = $row->getParent()->find('css', 'tr.changeset:not(.hide) tbody');
-            if (!$changeset) {
-                throw $this->createExpectationException(
-                    sprintf('No changeset found for version %s', $data['version'])
-                );
-            }
-            $changesetRows = $changeset->findAll('css', 'tr');
-            if (!$changesetRows) {
-                throw $this->createExpectationException(
-                    sprintf('No changeset rows found for version %s', $data['version'])
-                );
-            }
+            $changeset = $this->spin(function () use ($row) {
+                return $row->getParent()->find('css', 'tr.changeset:not(.hide) tbody');
+            }, sprintf('No changeset found for version %s', $data['version']));
+
+            $changesetRows = $this->spin(function () use ($changeset) {
+                return $changeset->findAll('css', 'tr');
+            }, sprintf('No changeset rows found for version %s', $data['version']));
 
             $matchingRow = null;
             $parsedText = '';
