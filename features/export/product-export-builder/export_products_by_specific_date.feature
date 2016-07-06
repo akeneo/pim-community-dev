@@ -42,24 +42,14 @@ Feature: Export products according to a date
     And I am logged in as "Julia"
     When I am on the "csv_footwear_product_export" export job edit page
     And I follow "Content"
-    Then I should not see the "updated since date" element in the filter "Updated time condition"
-    Then I should not see the "updated since n days" element in the filter "Updated time condition"
-    When I filter exported products by operator "Updated products since the defined date" and value "05/25/2016"
+    Then I filter by "updated" with operator "No date condition" and value ""
+    Then I filter by "updated" with operator "Updated products since the last n days" and value ""
+    Then I filter by "updated" with operator "Updated products since the defined date" and value ""
+    Then I filter by "updated" with operator "Updated products since last export" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
-    Then I should be on the "csv_footwear_product_export" export job page
-    When I follow "Content"
-    Then the filter should contain operator "Updated products since the defined date" and value "05/25/2016"
-    When I am on the "csv_footwear_product_export" export job edit page
-    And I follow "Content"
-    And I filter exported products by operator "Updated products since the last n days" and value "10"
-    And I press "Save"
-    And I should not see the text "There are unsaved changes"
-    Then I should be on the "csv_footwear_product_export" export job page
-    When I follow "Content"
-    Then the filter should contain operator "Updated products since the last n days" and value "10"
 
-  @javascript
+  @javascript @skip # No validation for now
   Scenario: Error management when the updated time condition field is updated
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -103,7 +93,7 @@ Feature: Export products according to a date
       SNKRS-1R;summer_collection;red;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
       """
     When the following job "csv_footwear_product_export" configuration:
-      | filters                | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": "<", "value": "2016-04-25 00:00:00"}]} |
+      | filters | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": "<", "value": "2016-04-25 00:00:00"}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish

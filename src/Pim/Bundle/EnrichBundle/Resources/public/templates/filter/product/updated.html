@@ -1,4 +1,4 @@
-<select class="select2" name="filter-operator"<%- isEditable ? '' : ' disabled' %>>
+<select class="select2 operator" <%- isEditable ? '' : 'disabled' %> name="filter-operator">
     <% _.each(operatorChoices, function (operatorChoice) { %>
         <option value="<%- operatorChoice %>"<%- operator === operatorChoice ? ' selected' : '' %>>
             <%- __('pim_enrich.export.product.filter.updated.operators.' + operatorChoice) %>
@@ -7,7 +7,7 @@
 </select>
 <% if ('>=' === operator) { %>
     <span class="date-wrapper">
-        <input name="filter-value" class="datepicker add-on input-large" type="text" value="<%- value ? value : '' %>"<%- isEditable ? '' : ' disabled' %>>
+        <input name="filter-value" class="datepicker add-on input-large value" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- value ? value : '' %>">
     </span>
 <% } else if ('SINCE N DAYS' === operator) { %>
     <input name="filter-value" class="input-large" type="text" value="<%- value ? value : '' %>"<%- isEditable ? '' : ' disabled' %>>

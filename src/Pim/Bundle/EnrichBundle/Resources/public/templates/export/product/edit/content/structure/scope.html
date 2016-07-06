@@ -1,6 +1,6 @@
-<label class="control-label required"><%- __('pim_enrich.export.product.filter.channel.title') %></label>
+<label class="control-label required" for="pim_enrich.export.product.filter.channel"><%- __('pim_enrich.export.product.filter.channel.title') %></label>
 <div class="controls">
-    <select class="select2"<%- isEditable ? '' : ' disabled' %>>
+    <select class="select2" <%- isEditable ? '' : 'disabled' %> id="pim_enrich.export.product.filter.channel">
         <% _.each(channels, function (channel) { %>
             <option value="<%- channel.code %>" <%- channel.code === scope ? 'selected' : '' %>><%- channel.label %></option>
         <% }); %>

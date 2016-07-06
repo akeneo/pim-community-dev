@@ -1,4 +1,4 @@
-<select class="select2" name="filter-operator"<%- isEditable ? '' : ' disabled' %>>
+<select class="select2 operator" <%- isEditable ? '' : 'disabled' %> name="filter-operator">
     <% _.each(operatorChoices, function (operatorChoice) { %>
         <option value="<%- operatorChoice %>" <%- operatorChoice === operator ? 'selected' : '' %>>
             <%- __('pim_enrich.export.product.filter.' + field + '.operators.' + operatorChoice) %>
@@ -7,7 +7,7 @@
 </select>
 <% if (_.contains(['IN', 'NOT IN'], operator)) { %><!-- could be done by configuration -->
 <input
-    class="select2"
+    class="select2 value"
     name="filter-value"
     type="hidden"
     value="<%- value ? value : '' %>"

@@ -14,7 +14,7 @@ define([
     filterTemplate
 ) {
     return BaseForm.extend({
-        className: 'control-group',
+        className: 'control-group filter-item',
         elements: {},
         editable: true,
         removable: false,
@@ -44,7 +44,25 @@ define([
         },
 
         /**
-         * Sets the current operator.
+         * Type setter
+         *
+         * @param {string} type
+         */
+        setType: function (type) {
+            this.type = type;
+        },
+
+        /**
+         * Get the type identifier
+         *
+         * @return {string}
+         */
+        getType: function () {
+            return this.type;
+        },
+
+        /**
+         * Set the field operator
          *
          * @param {string} operator
          */
@@ -141,6 +159,9 @@ define([
             $.when.apply($, promises)
                 .then(this.getTemplateContext.bind(this))
                 .then(function (templateContext) {
+                    this.el.dataset.name = this.getField();
+                    this.el.dataset.type = this.getType();
+
                     this.$el.html(this.filterTemplate(templateContext));
 
                     this.$('.filter-input').append(this.renderInput(templateContext));

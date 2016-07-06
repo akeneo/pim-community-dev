@@ -122,6 +122,7 @@ define(
                 return formBuilder.build(viewCode).then(function(view) {
                     view.setField(fieldCode);
                     view.setRemovable(removable);
+                    view.setType(viewCode);
 
                     return view;
                 }).then(function (filterView) {
