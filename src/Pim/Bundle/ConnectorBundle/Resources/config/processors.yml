@@ -185,7 +185,7 @@ services:
     pim_connector.processor.normalization.group:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
-            - '@pim_serializer.normalizer.flat.group'
+            - '@pim_serializer.normalizer.group'
 
     pim_connector.processor.normalization.variant_group:
         class: '%pim_connector.processor.normalization.variant_group.class%'
