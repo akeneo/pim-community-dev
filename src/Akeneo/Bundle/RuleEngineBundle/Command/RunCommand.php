@@ -14,15 +14,17 @@ namespace Akeneo\Bundle\RuleEngineBundle\Command;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
-use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
+use Akeneo\Bundle\RuleEngineBundle\Runner\BulkDryRunnerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\User\ChainUserProvider;
 
 /**
  * Command to run a rule
@@ -59,82 +61,49 @@ class RunCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $code = $input->hasArgument('code') ? $input->getArgument('code') : null;
-        $username = $input->hasOption('username') ? $input->getOption('username') : null;
-        $rules = $this->getRulesToRun($code);
-        $runnerRegistry = $this->getRuleRunner();
-        $eventDispatcher = $this->getEventDispatcher();
-
+        $username = $input->getOption('username') ?: null;
         $stopOnError = $input->getOption('stop-on-error') ?: false;
         $dryRun = $input->getOption('dry-run') ?: false;
 
-        $message = $dryRun ? 'Dry running rule <info>%s</info>...' : 'Running rule <info>%s</info>...';
+        $this->setUserInToken($username);
 
-        $user = $this->getUser($username);
+        $message = $dryRun ? 'Dry running rules...' : 'Running rules...';
+        $output->writeln($message);
 
-        $eventDispatcher->dispatch(RuleEvents::PRE_EXECUTE_ALL, new GenericEvent(
-            $rules,
-            ['user' => $user]
-        ));
+        $rules = $this->getRulesToRun($code);
 
-        foreach ($rules as $rule) {
-            $output->writeln(sprintf($message, $rule->getCode()));
-            $this->runRule(
-                $runnerRegistry,
-                $output,
-                $rule,
-                $dryRun,
-                $stopOnError
+        $progressBar = new ProgressBar($output, count($rules));
+
+        $this->getContainer()
+            ->get('event_dispatcher')
+            ->addListener(
+                RuleEvents::POST_EXECUTE,
+                function () use ($progressBar) {
+                    $progressBar->advance();
+                }
             );
-        }
 
-        $eventDispatcher->dispatch(RuleEvents::POST_EXECUTE_ALL, new GenericEvent(
-            $rules,
-            ['user' => $user]
-        ));
+        $this->runRules($rules, $dryRun, $stopOnError);
 
-        $output->writeln('<info>Done !</info>');
+        $progressBar->finish();
     }
 
     /**
-     * Run a single rule
-     *
-     * @param DryRunnerInterface      $runnerRegistry
-     * @param OutputInterface         $output
-     * @param RuleDefinitionInterface $rule
-     * @param bool                    $dryRun
-     * @param bool                    $stopOnError
+     * @param RuleDefinitionInterface[] $rules
+     * @param bool                      $dryRun
+     * @param bool                      $stopOnError
      *
      * @throws \Exception
      */
-    protected function runRule(
-        DryRunnerInterface $runnerRegistry,
-        OutputInterface $output,
-        RuleDefinitionInterface $rule,
-        $dryRun,
-        $stopOnError
-    ) {
-        try {
-            if ($dryRun) {
-                $subjectSet = $runnerRegistry->dryRun($rule);
-                $message = '<info>%d</info> subjects impacted by the rule <info>%s</info>.';
-                $output->writeln(sprintf($message, count($subjectSet->getSubjectsCursor()), $rule->getCode()));
-                $output->writeln('');
-            } else {
-                $runnerRegistry->run($rule);
-            }
-        } catch (\Exception $e) {
-            if ($stopOnError) {
-                throw $e;
-            } else {
-                $message = '<error>Error</error> during the execution of the rule <info>%s</info>: <error>%s</error>.';
-                $output->writeln(sprintf($message, $rule->getCode(), $e->getMessage()));
-                $output->writeln('');
-            }
-        }
+    protected function runRules(array $rules, $dryRun, $stopOnError)
+    {
+        $chainedRunner = $this->getRuleRunner($stopOnError);
+
+        $dryRun ? $chainedRunner->dryRunAll($rules) : $chainedRunner->runAll($rules);
     }
 
     /**
-     * @param $ruleCode
+     * @param string $ruleCode
      *
      * @return RuleDefinitionInterface[]
      */
@@ -159,12 +128,32 @@ class RunCommand extends ContainerAwareCommand
 
     /**
      * @param string $username
-     *
-     * @return UserInterface|null
      */
-    protected function getUser($username)
+    protected function setUserInToken($username)
     {
-        return $this->getContainer()->get('pim_user.repository.user')->findOneByIdentifier($username);
+        if (empty($username)) {
+            return;
+        }
+
+        $user = $this->getUserProvider()->loadUserByUsername($username);
+        $token = new UsernamePasswordToken($user, null, 'main');
+        $this->getTokenStorage()->setToken($token);
+    }
+
+    /**
+     * @return ChainUserProvider
+     */
+    protected function getUserProvider()
+    {
+        return $this->getContainer()->get('security.user.provider.concrete.chain_provider');
+    }
+
+    /**
+     * @return TokenStorageInterface
+     */
+    protected function getTokenStorage()
+    {
+        return $this->getContainer()->get('security.token_storage');
     }
 
     /**
@@ -176,10 +165,16 @@ class RunCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return DryRunnerInterface
+     * @param bool $stopOnError
+     *
+     * @return BulkDryRunnerInterface
      */
-    protected function getRuleRunner()
+    protected function getRuleRunner($stopOnError)
     {
+        if ($stopOnError) {
+            return $this->getContainer()->get('akeneo_rule_engine.runner.strict_chained');
+        }
+
         return $this->getContainer()->get('akeneo_rule_engine.runner.chained');
     }
 

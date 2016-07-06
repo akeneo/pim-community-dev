@@ -16,12 +16,16 @@ use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@gmail.com>
  */
 class RuleExecutionSubscriber implements EventSubscriberInterface
 {
+    protected $tokenStorage;
+
     /** @var NotifierInterface */
     protected $notifier;
 
@@ -29,11 +33,13 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     protected $notificationClass;
 
     /**
-     * @param NotifierInterface $notifier
-     * @param string            $notificationClass
+     * @param TokenStorageInterface $tokenStorage
+     * @param NotifierInterface     $notifier
+     * @param string                $notificationClass
      */
-    public function __construct(NotifierInterface $notifier, $notificationClass)
+    public function __construct(TokenStorageInterface $tokenStorage, NotifierInterface $notifier, $notificationClass)
     {
+        $this->tokenStorage      = $tokenStorage;
         $this->notifier          = $notifier;
         $this->notificationClass = $notificationClass;
     }
@@ -56,7 +62,7 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     public function afterJobExecution(GenericEvent $event)
     {
         $rules = $event->getSubject();
-        $user  = $event->hasArgument('user') ? $event->getArgument('user') : null;
+        $user  = $this->getUser();
 
         if (null === $user || 0 === count($rules)) {
             return;
@@ -82,5 +88,19 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
             ]);
 
         return $notification;
+    }
+
+    /**
+     * @return UserInterface|null
+     */
+    protected function getUser()
+    {
+        $user = null;
+
+        if (null !== $token = $this->tokenStorage->getToken()) {
+            $user = $token->getUser();
+        };
+
+        return $user;
     }
 }

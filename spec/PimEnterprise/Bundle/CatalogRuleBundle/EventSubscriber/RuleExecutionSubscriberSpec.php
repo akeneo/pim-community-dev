@@ -4,17 +4,18 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\Rule;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class RuleExecutionSubscriberSpec extends ObjectBehavior
 {
-    function let(NotifierInterface $notifier)
+    function let(TokenStorageInterface $tokenStorage, NotifierInterface $notifier)
     {
-        $this->beConstructedWith($notifier, 'Pim\Bundle\NotificationBundle\Entity\Notification');
+        $this->beConstructedWith($tokenStorage, $notifier, 'Pim\Bundle\NotificationBundle\Entity\Notification');
     }
 
     function it_is_initializable()
@@ -35,15 +36,17 @@ class RuleExecutionSubscriberSpec extends ObjectBehavior
     }
 
     function it_notify_a_user_if_the_rules_are_executed_with_its_user_name(
+        $tokenStorage,
         $notifier,
         GenericEvent $event,
         Rule $rule1,
         Rule $rule2,
+        TokenInterface $token,
         UserInterface $user
     ) {
         $event->getSubject()->willReturn([$rule1, $rule2]);
-        $event->hasArgument('user')->willReturn(true);
-        $event->getArgument('user')->shouldBeCalled()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->shouldBeCalled()->willReturn($user);
 
         $notifier->notify(Argument::cetera(), [$user])->shouldBeCalled();
 
@@ -51,13 +54,16 @@ class RuleExecutionSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_not_notify_a_user_if_the_rules_are_executed_anonimously(
+        $tokenStorage,
         $notifier,
         GenericEvent $event,
         Rule $rule1,
-        Rule $rule2
+        Rule $rule2,
+        TokenInterface $token
     ) {
         $event->getSubject()->willReturn([$rule1, $rule2]);
-        $event->hasArgument('user')->willReturn(false);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->shouldBeCalled()->willReturn(null);
 
         $event->getArgument()->shouldNotBeCalled();
         $notifier->notify()->shouldNotBeCalled();
@@ -66,14 +72,15 @@ class RuleExecutionSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_not_notify_a_user_if_there_is_no_rules_to_execute(
+        $tokenStorage,
         $notifier,
         GenericEvent $event,
-        UserInterface $user
+        UserInterface $user,
+        TokenInterface $token
     ) {
         $event->getSubject()->willReturn([]);
-        $event->hasArgument('user')->willReturn(true);
-
-        $event->getArgument('user')->shouldBeCalled()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->shouldBeCalled()->willReturn($user);
 
         $notifier->notify()->shouldNotBeCalled();
 

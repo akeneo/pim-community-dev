@@ -123,7 +123,23 @@ final class RuleEvents
     const POST_SAVE_ALL = 'pim_rule_engine.rule.post_save_all';
 
     /**
-     * This event is thrown before the RunCommand execute its rules.
+     * This event is thrown before a rule is executed.
+     *
+     * The event listener receives a
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     */
+    const PRE_EXECUTE = 'pim_rule_engine.rule.pre_execute';
+
+    /**
+     * This event is thrown after a rule is executed.
+     *
+     * The event listener receives a
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     */
+    const POST_EXECUTE  = 'pim_rule_engine.rule.post_execute';
+
+    /**
+     * This event is thrown before a set of rules is executed.
      *
      * The event listener receives a
      * Symfony\Component\EventDispatcher\GenericEvent instance.
@@ -131,7 +147,7 @@ final class RuleEvents
     const PRE_EXECUTE_ALL = 'pim_rule_engine.rule.pre_execute_all';
 
     /**
-     * This event is thrown after the RunCommand execute its rules.
+     * This event is thrown after a set of rules is executed.
      *
      * The event listener receives a
      * Symfony\Component\EventDispatcher\GenericEvent instance.
