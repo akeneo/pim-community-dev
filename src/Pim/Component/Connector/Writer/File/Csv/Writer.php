@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Connector\Writer\File\Csv;
 
+use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Buffer\BufferFactory;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
@@ -15,13 +17,16 @@ use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer extends AbstractFileWriter implements ArchivableWriterInterface
+class Writer extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
 {
     /** @var FlatItemBuffer */
-    protected $flatRowBuffer;
+    protected $flatRowBuffer = null;
 
     /** @var FlatItemBufferFlusher */
     protected $flusher;
+
+    /** @var BufferFactory */
+    protected $bufferFactory;
 
     /** @var array */
     protected $headers = [];
@@ -31,18 +36,28 @@ class Writer extends AbstractFileWriter implements ArchivableWriterInterface
 
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param FlatItemBuffer            $flatRowBuffer
+     * @param BufferFactory             $bufferFactory
      * @param FlatItemBufferFlusher     $flusher
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
-        FlatItemBuffer $flatRowBuffer,
+        BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher
     ) {
         parent::__construct($filePathResolver);
 
-        $this->flatRowBuffer = $flatRowBuffer;
+        $this->bufferFactory = $bufferFactory;
         $this->flusher = $flusher;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        if (null === $this->flatRowBuffer) {
+            $this->flatRowBuffer = $this->bufferFactory->create();
+        }
     }
 
     /**
@@ -64,8 +79,9 @@ class Writer extends AbstractFileWriter implements ArchivableWriterInterface
         }
 
         $parameters = $this->stepExecution->getJobParameters();
-        $isWithHeader = $parameters->get('withHeader');
-        $this->flatRowBuffer->write($items, $isWithHeader);
+        $options = [];
+        $options['withHeader'] = $parameters->get('withHeader');
+        $this->flatRowBuffer->write($items, $options);
     }
 
     /**

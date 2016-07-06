@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\Writer\File\Xlsx;
 
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Buffer\BufferFactory;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
@@ -20,10 +21,10 @@ use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 class ProductWriter extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
 {
     /** @var FlatItemBuffer */
-    protected $flatRowBuffer;
+    protected $flatRowBuffer = null;
 
     /** @var array */
-    protected $writtenFiles;
+    protected $writtenFiles = [];
 
     /** @var FlatItemBufferFlusher */
     protected $flusher;
@@ -31,24 +32,36 @@ class ProductWriter extends AbstractFileWriter implements ItemWriterInterface, A
     /** @var BulkFileExporter */
     protected $fileExporter;
 
+    /** @var BufferFactory */
+    protected $bufferFactory;
+
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param FlatItemBuffer            $flatRowBuffer
+     * @param BufferFactory             $bufferFactory
      * @param BulkFileExporter          $fileExporter
      * @param FlatItemBufferFlusher     $flusher
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
-        FlatItemBuffer $flatRowBuffer,
+        BufferFactory $bufferFactory,
         BulkFileExporter $fileExporter,
         FlatItemBufferFlusher $flusher
     ) {
         parent::__construct($filePathResolver);
 
-        $this->flatRowBuffer = $flatRowBuffer;
+        $this->bufferFactory = $bufferFactory;
         $this->fileExporter  = $fileExporter;
         $this->flusher       = $flusher;
-        $this->writtenFiles  = [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        if (null === $this->flatRowBuffer) {
+            $this->flatRowBuffer = $this->bufferFactory->create();
+        }
     }
 
     /**
@@ -56,15 +69,15 @@ class ProductWriter extends AbstractFileWriter implements ItemWriterInterface, A
      */
     public function write(array $items)
     {
-        $products = $media = [];
+        $products = $media = $options = [];
         foreach ($items as $item) {
             $products[] = $item['product'];
             $media[]    = $item['media'];
         }
 
         $parameters = $this->stepExecution->getJobParameters();
-        $withHeader = $parameters->get('withHeader');
-        $this->flatRowBuffer->write($products, $withHeader);
+        $options['withHeader'] = $parameters->get('withHeader');
+        $this->flatRowBuffer->write($products, $options);
 
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {

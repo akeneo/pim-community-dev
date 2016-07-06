@@ -16,8 +16,9 @@ interface BufferInterface extends \Iterator
 {
     /**
      * @param mixed $item                   The item to write in the buffer
+     * @param array $options                The options required by the buffer
      *
      * @throws UnsupportedItemTypeException If the buffer implementation does not support item of this type
      */
-    public function write($item);
+    public function write($item, array $options = []);
 }
