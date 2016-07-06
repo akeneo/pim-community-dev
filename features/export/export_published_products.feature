@@ -117,10 +117,8 @@ Feature: Export published products
       | tee-black | name        | Tshirt noir     | fr_FR  |
       | tee-black | name        | Schwarz t-shirt | de_DE  |
     And the following job "csv_clothing_mobile_published_product_export" configuration:
-      | filePath               | %tmp%/ecommerce_product_export/csv_clothing_mobile_published_product_export.csv |
-      | updated_since_strategy | since_date                                                                      |
-      | updated_since_date     | 2016-04-25                                                                      |
-      | locales                | en_US                                                                           |
+      | filePath | %tmp%/ecommerce_product_export/csv_clothing_mobile_published_product_export.csv                                                     |
+      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": ">", "value": "2016-04-25 00:00:00"}]} |
     When I edit the "tee-white" product
     And I press the "Publish" button
     And I confirm the publishing
@@ -137,7 +135,7 @@ Feature: Export published products
       tee-black;winter_collection;;1;tees;;black;;"Black tee";10.00;15.00;;;XL
       """
     When the following job "csv_clothing_mobile_published_product_export" configuration:
-      | updated_since_date | NOW +1 day |
+      | filters                | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": "<", "value": "2016-04-25 00:00:00"}]} |
     And I am on the "csv_clothing_mobile_published_product_export" export job page
     And I launch the export job
     And I wait for the "csv_clothing_mobile_published_product_export" job to finish
