@@ -25,6 +25,15 @@ define(
             template: _.template(template),
 
             /**
+             * Initializes configuration.
+             *
+             * @param {Object} config
+             */
+            initialize: function (config) {
+                this.config = config.config;
+            },
+
+            /**
              * Configures this extension.
              *
              * @return {Promise}
@@ -56,6 +65,7 @@ define(
                 ).then(function (scope) {
                     this.$el.html(
                         this.template({
+                            isEditable: this.isEditable(),
                             __: __,
                             locales: this.getLocales(),
                             availableLocales: scope.locales
@@ -69,6 +79,17 @@ define(
                 }.bind(this));
 
                 return this;
+            },
+
+            /**
+             * Returns whether this filter is editable.
+             *
+             * @returns {boolean}
+             */
+            isEditable: function () {
+                return undefined !== this.config.isEditable ?
+                    this.config.isEditable :
+                    true;
             },
 
             /**

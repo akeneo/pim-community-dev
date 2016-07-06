@@ -1,6 +1,6 @@
 <label class="control-label required"><%- __('pim_enrich.export.product.filter.locales.title') %></label>
 <div class="controls">
-    <select class="select2" multiple>
+    <select class="select2" multiple<%- isEditable ? '' : ' disabled' %>>
         <% _.each(availableLocales, function (locale) { %>
             <option value="<%- locale %>" <%- _.contains(locales, locale) ? 'selected' : '' %>><%- locale %></option>
         <% }); %>

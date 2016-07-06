@@ -33,7 +33,7 @@ define(
              * {@inherit}
              */
             configure: function () {
-                mediator.clear('pim_enrich:form');
+                this.unbindEvents();
                 Backbone.Router.prototype.once('route', this.unbindEvents);
 
                 if (_.has(module.config(), 'forwarded-events')) {
