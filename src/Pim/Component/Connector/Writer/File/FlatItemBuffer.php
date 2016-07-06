@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\Buffer\BufferFactory;
 use Akeneo\Component\Buffer\BufferInterface;
+use Akeneo\Component\Buffer\JSONFileBuffer;
 
 /**
  * Puts items into a buffer and calculate headers during a flat file export
@@ -12,7 +12,7 @@ use Akeneo\Component\Buffer\BufferInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlatItemBuffer implements \Countable
+class FlatItemBuffer extends JSONFileBuffer implements BufferInterface, \Countable
 {
     /** @var BufferInterface */
     protected $buffer;
@@ -23,29 +23,24 @@ class FlatItemBuffer implements \Countable
     /** @var int */
     protected $count;
 
-    /**
-     * @param BufferFactory $bufferFactory
-     */
-    public function __construct(BufferFactory $bufferFactory)
+    public function __construct()
     {
-        $this->buffer = $bufferFactory->create();
-        $this->count  = 0;
+        parent::__construct();
+
+        $this->count = 0;
     }
 
     /**
      * Write an item into the buffer
      *
      * @param array $items
-     * @param bool  $addToHeaders
      */
-    public function write(array $items, $addToHeaders)
+    public function write($items)
     {
         foreach ($items as $item) {
-            if ($addToHeaders) {
-                $this->addToHeaders(array_keys($item));
-            }
+            $this->addToHeaders(array_keys($item));
 
-            $this->buffer->write($item);
+            parent::write($item);
             $this->count++;
         }
     }
@@ -56,16 +51,6 @@ class FlatItemBuffer implements \Countable
     public function count()
     {
         return $this->count;
-    }
-
-    /**
-     * Return the buffer
-     *
-     * @return BufferInterface
-     */
-    public function getBuffer()
-    {
-        return $this->buffer;
     }
 
     /**
