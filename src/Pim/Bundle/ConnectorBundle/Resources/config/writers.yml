@@ -13,7 +13,7 @@ parameters:
     pim_connector.writer.file.yaml.class:                          Pim\Component\Connector\Writer\File\Yaml\Writer
     pim_connector.writer.file.media_exporter_path_generator.class: Pim\Component\Connector\Writer\File\MediaExporterPathGenerator
     pim_connector.writer.file.xlsx_product.class:                  Pim\Component\Connector\Writer\File\Xlsx\ProductWriter
-    pim_connector.writer.file.xlsx_simple.class:                   Pim\Component\Connector\Writer\File\Xlsx\SimpleWriter
+    pim_connector.writer.file.xlsx.class:                          Pim\Component\Connector\Writer\File\Xlsx\Writer
     pim_connector.writer.file.xlsx_variant_group.class:            Pim\Component\Connector\Writer\File\Xlsx\VariantGroupWriter
     pim_connector.writer.file.flat_item_buffer.class:              Pim\Component\Connector\Writer\File\FlatItemBuffer
     pim_connector.writer.file.product.bulk_file_exporter.class:    Pim\Component\Connector\Writer\File\BulkFileExporter
@@ -221,7 +221,7 @@ services:
 
     # XLSX
     pim_connector.writer.file.xlsx:
-        class: '%pim_connector.writer.file.xlsx_simple.class%'
+        class: '%pim_connector.writer.file.xlsx.class%'
         arguments:
              - '@pim_connector.writer.file.file_path_resolver'
              - '@pim_connector.writer.file.flat_item_buffer'

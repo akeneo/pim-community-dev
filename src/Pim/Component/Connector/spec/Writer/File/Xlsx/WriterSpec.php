@@ -10,7 +10,7 @@ use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Prophecy\Argument;
 
-class SimpleWriterSpec extends ObjectBehavior
+class WriterSpec extends ObjectBehavior
 {
     function let(
         FilePathResolverInterface $filePathResolver,
@@ -26,7 +26,7 @@ class SimpleWriterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Writer\File\Xlsx\SimpleWriter');
+        $this->shouldHaveType('Pim\Component\Connector\Writer\File\Xlsx\Writer');
     }
 
     function it_is_step_execution_aware()

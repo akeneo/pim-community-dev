@@ -15,7 +15,7 @@ use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleWriter extends AbstractFileWriter implements ArchivableWriterInterface
+class Writer extends AbstractFileWriter implements ArchivableWriterInterface
 {
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;
