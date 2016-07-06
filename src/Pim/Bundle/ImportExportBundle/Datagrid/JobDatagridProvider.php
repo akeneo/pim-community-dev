@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Datagrid;
 
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 
 /**
@@ -17,7 +17,7 @@ class JobDatagridProvider
     /**
      * Connector registry
      *
-     * @var ConnectorRegistry
+     * @var JobRegistry
      */
     protected $registry;
 
@@ -25,10 +25,10 @@ class JobDatagridProvider
     protected $labelProvider;
 
     /**
-     * @param ConnectorRegistry $registry
+     * @param JobRegistry              $registry
      * @param TranslatedLabelProvider  $labelProvider
      */
-    public function __construct(ConnectorRegistry $registry, TranslatedLabelProvider $labelProvider)
+    public function __construct(JobRegistry $registry, TranslatedLabelProvider $labelProvider)
     {
         $this->registry = $registry;
         $this->labelProvider = $labelProvider;
@@ -84,15 +84,14 @@ class JobDatagridProvider
     protected function getJobChoices($type)
     {
         $choices = [];
-        $registryJobs = $this->registry->getJobs($type);
+        $jobs = $this->registry->allByType($type);
 
-        foreach ($registryJobs as $connectorJobs) {
-            foreach ($connectorJobs as $code => $job) {
-                $choices[$code] = $this->labelProvider->getJobLabel($job->getName());
-            }
+        foreach ($jobs as $job) {
+            $choices[$job->getName()] = $this->labelProvider->getJobLabel($job->getName());
         }
+        asort($choices);
 
-        return array_unique($choices);
+        return $choices;
     }
 
     /**
@@ -104,7 +103,7 @@ class JobDatagridProvider
      */
     protected function getConnectorChoices($type)
     {
-        $connectors = array_keys($this->registry->getJobs($type));
+        $connectors = $this->registry->getConnectors();
 
         return empty($connectors) ? [] : array_combine($connectors, $connectors);
     }

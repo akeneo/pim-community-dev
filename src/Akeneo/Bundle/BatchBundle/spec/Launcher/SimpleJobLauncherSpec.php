@@ -3,19 +3,19 @@
 namespace spec\Akeneo\Bundle\BatchBundle\Launcher;
 
 use Akeneo\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SimpleJobLauncherSpec extends ObjectBehavior
 {
     function let(
         JobRepositoryInterface $jobRepository,
         JobParametersFactory $jobParametersFactory,
-        ContainerInterface $container
+        JobRegistry $jobRegistry
     ) {
-        $this->beConstructedWith($jobRepository, $jobParametersFactory, $container, '/', 'prod');
+        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, '/', 'prod');
     }
 
     function it_is_a_job_launcher()

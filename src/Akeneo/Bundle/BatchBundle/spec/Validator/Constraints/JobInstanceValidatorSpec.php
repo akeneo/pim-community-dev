@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Bundle\BatchBundle\Validator\Constraints;
 
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Job\JobInterface;
 use PhpSpec\ObjectBehavior;
@@ -11,12 +11,13 @@ use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
+use Akeneo\Component\Batch\Job\UndefinedJobException;
 
 class JobInstanceValidatorSpec extends ObjectBehavior
 {
-    function let(ConnectorRegistry $connectorRegistry, ExecutionContextInterface $context)
+    function let(JobRegistry $jobRegistry, ExecutionContextInterface $context)
     {
-        $this->beConstructedWith($connectorRegistry);
+        $this->beConstructedWith($jobRegistry);
         $this->initialize($context);
     }
 
@@ -33,26 +34,29 @@ class JobInstanceValidatorSpec extends ObjectBehavior
     }
 
     function it_validates_that_a_job_instance_has_a_known_type(
-        $connectorRegistry,
+        $jobRegistry,
         $context,
         Constraint $constraint,
         JobInstance $jobInstance,
         JobInterface $job
     ) {
-        $connectorRegistry->getJob($jobInstance)->willReturn($job);
+        $jobInstance->getJobName()->willReturn('my_job_name');
+        $jobRegistry->get('my_job_name')->willReturn($job);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($jobInstance, $constraint);
     }
 
     function it_adds_a_violation_if_job_instance_has_an_unknown_type(
-        $connectorRegistry,
+        $jobRegistry,
         $context,
         JobInstanceConstraint $constraint,
         JobInstance $jobInstance,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $connectorRegistry->getJob($jobInstance)->willReturn(null);
+        $jobInstance->getJobName()->willReturn(null);
+        $jobRegistry->get(null)->willThrow(new UndefinedJobException('The job "" is not registered'));
+
         $jobInstance->getType()->willReturn('import');
 
         $context

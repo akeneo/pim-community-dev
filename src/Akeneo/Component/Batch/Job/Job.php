@@ -37,16 +37,18 @@ class Job implements JobInterface
      * @param string                   $name
      * @param EventDispatcherInterface $eventDispatcher
      * @param JobRepositoryInterface   $jobRepository
+     * @param StepInterface[]          $steps
      */
     public function __construct(
         $name,
         EventDispatcherInterface $eventDispatcher,
-        JobRepositoryInterface $jobRepository
+        JobRepositoryInterface $jobRepository,
+        array $steps = []
     ) {
         $this->name = $name;
         $this->eventDispatcher = $eventDispatcher;
         $this->jobRepository = $jobRepository;
-        $this->steps = [];
+        $this->steps = $steps;
     }
 
     /**
@@ -67,21 +69,6 @@ class Job implements JobInterface
     public function getSteps()
     {
         return $this->steps;
-    }
-
-    /**
-     * Public setter for the steps in this job. Overrides any calls to
-     * addStep(Step).
-     *
-     * @param array $steps the steps to execute
-     *
-     * @return Job
-     */
-    public function setSteps(array $steps)
-    {
-        $this->steps = $steps;
-
-        return $this;
     }
 
     /**
@@ -116,17 +103,6 @@ class Job implements JobInterface
         }
 
         return $names;
-    }
-
-    /**
-     * Convenience method for adding a single step to the job.
-     *
-     * @param string        $stepName the name of the step
-     * @param StepInterface $step     a {@link Step} to add
-     */
-    public function addStep($stepName, StepInterface $step)
-    {
-        $this->steps[] = $step;
     }
 
     /**

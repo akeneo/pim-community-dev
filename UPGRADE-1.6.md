@@ -25,6 +25,101 @@ In 1.6, you only have to add a translation key following this convention,
  - for a Step, batch_jobs.job_name.step_name.label (batch_jobs.csv_product_export.export.label: "Product export step")
 Migration, you need to remove your 'title' configuration from your custom batch_jobs.yml file.
 
+## Definition of Batch Jobs services
+
+Since the v1.0, the definition of Jobs is done through a dedicated batch_jobs.yml configuration file.
+This file is automatically found and parsed by a dedicated compiler pass scanning all bundles.
+The v1.6 allows to use standard symfony services for batch jobs services configuration.
+This changes allows to,
+- Avoid to instanciate all jobs and steps on each http/cli call (use tagged services for job and JobRegistry and no systematic instanciation in the ConnectorRegistry causing circular dep issue)
+- Allow to easily create a new kind of Job (no need of JobFactory) http://docs.spring.io/spring-batch/apidocs/org/springframework/batch/core/Job.html
+- Allow to easily create a new kind of Step (no need of StepFactory) http://docs.spring.io/spring-batch/apidocs/org/springframework/batch/core/Step.html
+- Allow to make item step immutable (using constructor and no setters for reader, processor, writer, etc)
+- No more need of systematic Step + StepElement, for instance the ValidatorStep could contains the CharsetValidator logic
+- Less magic by using a standard Symfony way to declare services (taggued services for jobs, steps are standard services)
+
+Before the v1.6 the batch_jobs.yml contains,
+```
+connector:
+    name: Akeneo CSV Connector
+    jobs:
+        csv_attribute_import:
+            type:  import
+            steps:
+                validation:
+                    class: '%pim_connector.step.validator.class%'
+                    services:
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import:
+                    services:
+                        reader:    pim_connector.reader.file.csv_attribute
+                        processor: pim_connector.processor.denormalization.attribute.flat
+                        writer:    pim_connector.writer.doctrine.attribute
+```
+
+Since the v1.6, in a standard "jobs.yml" services file,
+```
+parameters:
+    pim_connector.connector_name.csv: 'Akeneo CSV Connector'
+    pim_connector.job_name.csv_attribute_import: 'csv_attribute_import'
+    pim_connector.job.simple_job.class: Akeneo\Component\Batch\Job\Job
+    pim_connector.step.item_step.class: Akeneo\Component\Batch\Step\ItemStep
+
+services:
+    pim_connector.job.csv_attribute_import:
+        class: %pim_connector.job.simple_job.class%
+        arguments:
+            - '%pim_connector.job_name.csv_attribute_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.csv_attribute_import.import'
+        tags:
+            - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.import_type% }
+```
+
+After, in a standard "steps.yml" services file,
+```
+parameters:
+    pim_connector.step.validator.class: Pim\Component\Connector\Step\ValidatorStep
+    pim_connector.step.tasklet.class:   Pim\Component\Connector\Step\TaskletStep
+
+services:
+    pim_connector.step.charset_validator:
+        class: %pim_connector.step.validator.class%
+        arguments:
+            - 'validation'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.validator.item.charset_validator'
+
+    pim_connector.step.csv_attribute_import.import:
+        class: %pim_connector.step.item_step.class%
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_attribute'
+            - '@pim_connector.processor.denormalization.attribute.flat'
+            - '@pim_connector.writer.doctrine.attribute'
+```
+
+These files have to be declared in the the bundle extension, for instance,
+```
+namespace Pim\Bundle\ConnectorBundle\DependencyInjection;
+// ...
+class PimConnectorExtension extends Extension
+{
+    public function load(array $configs, ContainerBuilder $container)
+    {
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('jobs.yml');
+        $loader->load('steps.yml');
+    }
+}
+```
+
 ## Deprecated imports
 
 We've removed `TransformBundle` and `BaseConnectorBundle` because they are deprecated since the new import system has been created.

@@ -573,14 +573,10 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingJobs(TableNode $table)
     {
-        $registry = $this->getContainer()->get('akeneo_batch.connectors');
-
         foreach ($table->getHash() as $data) {
             $jobInstance = new JobInstance($data['connector'], $data['type'], $data['alias']);
             $jobInstance->setCode($data['code']);
             $jobInstance->setLabel($data['label']);
-
-            $job = $registry->getJob($jobInstance);
             $this->getContainer()->get('akeneo_batch.saver.job_instance')->save($jobInstance);
         }
     }

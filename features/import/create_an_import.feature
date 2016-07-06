@@ -18,7 +18,7 @@ Feature: Create an import
       | Job   | Product import in CSV |
     And I press the "Save" button
     Then I click back to grid
-    And the grid should contain 1 element
+    And the grid should contain 2 element
     And I should see import profile PRODUCT_IMPORT
 
   Scenario: Fail to create a job import

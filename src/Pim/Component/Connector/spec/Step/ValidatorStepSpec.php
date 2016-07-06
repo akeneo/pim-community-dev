@@ -16,8 +16,7 @@ class ValidatorStepSpec extends ObjectBehavior
         JobRepositoryInterface $jobRepository,
         CharsetValidator $validator
     ) {
-        $this->beConstructedWith('aName', $dispatcher, $jobRepository);
-        $this->setCharsetValidator($validator);
+        $this->beConstructedWith('aName', $dispatcher, $jobRepository, $validator);
     }
 
     function it_is_initializable()

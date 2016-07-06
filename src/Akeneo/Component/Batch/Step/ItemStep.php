@@ -8,7 +8,9 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Basic step implementation that read items, process them and write them
@@ -20,7 +22,7 @@ use Akeneo\Component\Batch\Model\StepExecution;
 class ItemStep extends AbstractStep
 {
     /** @var int */
-    protected $batchSize = 100;
+    protected $batchSize;
 
     /** @var ItemReaderInterface */
     protected $reader = null;
@@ -35,33 +37,36 @@ class ItemStep extends AbstractStep
     protected $stepExecution = null;
 
     /**
-     * Set the batch size
-     *
-     * @param integer $batchSize
-     *
-     * @return $this
+     * @param string                   $name
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param JobRepositoryInterface   $jobRepository
+     * @param ItemReaderInterface      $reader
+     * @param ItemProcessorInterface   $processor
+     * @param ItemWriterInterface      $writer
+     * @param integer                  $batchSize
      */
-    public function setBatchSize($batchSize)
-    {
-        $this->batchSize = $batchSize;
-
-        return $this;
-    }
-
-    /**
-     * Set reader
-     *
-     * @param ItemReaderInterface $reader
-     */
-    public function setReader(ItemReaderInterface $reader)
-    {
+    public function __construct(
+        $name,
+        EventDispatcherInterface $eventDispatcher,
+        JobRepositoryInterface $jobRepository,
+        ItemReaderInterface $reader,
+        ItemProcessorInterface $processor,
+        ItemWriterInterface $writer,
+        $batchSize = 100
+    ) {
+        $this->name = $name;
+        $this->jobRepository = $jobRepository;
+        $this->eventDispatcher = $eventDispatcher;
         $this->reader = $reader;
+        $this->processor = $processor;
+        $this->writer = $writer;
+        $this->batchSize = $batchSize;
     }
 
     /**
      * Get reader
      *
-     * @return ItemReaderInterface|null
+     * @return ItemReaderInterface
      */
     public function getReader()
     {
@@ -69,39 +74,23 @@ class ItemStep extends AbstractStep
     }
 
     /**
-     * Set writer
-     * @param ItemWriterInterface $writer
-     */
-    public function setWriter(ItemWriterInterface $writer)
-    {
-        $this->writer = $writer;
-    }
-
-    /**
-     * Get writer
-     * @return ItemWriterInterface|null
-     */
-    public function getWriter()
-    {
-        return $this->writer;
-    }
-
-    /**
-     * Set processor
-     * @param ItemProcessorInterface $processor
-     */
-    public function setProcessor(ItemProcessorInterface $processor)
-    {
-        $this->processor = $processor;
-    }
-
-    /**
      * Get processor
-     * @return ItemProcessorInterface|null
+     *
+     * @return ItemProcessorInterface
      */
     public function getProcessor()
     {
         return $this->processor;
+    }
+
+    /**
+     * Get writer
+     *
+     * @return ItemWriterInterface
+     */
+    public function getWriter()
+    {
+        return $this->writer;
     }
 
     /**
@@ -243,9 +232,9 @@ class ItemStep extends AbstractStep
     protected function getStepElements()
     {
         return array(
-            'reader'    => $this->getReader(),
-            'processor' => $this->getProcessor(),
-            'writer'    => $this->getWriter()
+            'reader'    => $this->reader,
+            'processor' => $this->processor,
+            'writer'    => $this->writer
         );
     }
 }

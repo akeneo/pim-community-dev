@@ -7,7 +7,7 @@ services:
     pim_import_export.form.type.job_instance:
         class: '%pim_import_export.form.type.job_instance.class%'
         arguments:
-            - '@akeneo_batch.connectors'
+            - '@akeneo_batch.job.job_registry'
             - '@translator'
             - '@pim_import_export.job_label.translated_label_provider'
             - '@akeneo_batch.job_parameters_factory'
@@ -20,7 +20,7 @@ services:
             - '@pim_import_export.job_parameters.form_configuration_provider_registry'
             - '@akeneo_batch.job.job_parameters.constraint_collection_provider_registry'
             - '@pim_import_export.job_parameters.model_transformer_provider_registry'
-            - '@service_container'
+            - '@akeneo_batch.job.job_registry'
             - '%akeneo_batch.job.job_parameters.class%'
         tags:
             - { name: form.type, alias: pim_import_export_job_parameters }

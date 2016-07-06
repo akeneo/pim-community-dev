@@ -2,9 +2,10 @@
 
 namespace Pim\Component\Connector\Step;
 
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\AbstractStep;
-use Pim\Component\Connector\Step\TaskletInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -15,6 +16,22 @@ class TaskletStep extends AbstractStep
 {
     /** @var TaskletInterface */
     protected $tasklet;
+
+    /**
+     * @param string                   $name
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param JobRepositoryInterface   $jobRepository
+     * @param TaskletInterface         $tasklet
+     */
+    public function __construct(
+        $name,
+        EventDispatcherInterface $eventDispatcher,
+        JobRepositoryInterface $jobRepository,
+        TaskletInterface $tasklet
+    ) {
+        parent::__construct($name, $eventDispatcher, $jobRepository);
+        $this->tasklet = $tasklet;
+    }
 
     /**
      * {@inheritdoc}

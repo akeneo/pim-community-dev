@@ -2,13 +2,13 @@
 
 namespace Akeneo\Bundle\BatchBundle\Command;
 
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
+use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -89,7 +89,7 @@ class BatchCommand extends ContainerAwareCommand
             throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
         }
 
-        $job = $this->getConnectorRegistry()->getJob($jobInstance);
+        $job = $this->getJobRegistry()->get($jobInstance->getJobName());
         $jobParamsFactory = $this->getJobParametersFactory();
         if ($config = $input->getOption('config')) {
             $rawConfiguration = $this->decodeConfiguration($config);
@@ -267,11 +267,11 @@ class BatchCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return ConnectorRegistry
+     * @return JobRegistry
      */
-    protected function getConnectorRegistry()
+    protected function getJobRegistry()
     {
-        return $this->getContainer()->get('akeneo_batch.connectors');
+        return $this->getContainer()->get('akeneo_batch.job.job_registry');
     }
 
     /**
