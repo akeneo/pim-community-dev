@@ -186,7 +186,6 @@ services:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
             - '@pim_serializer.normalizer.flat.group'
-            - 'flat'
 
     pim_connector.processor.normalization.variant_group:
         class: '%pim_connector.processor.normalization.variant_group.class%'
@@ -200,28 +199,23 @@ services:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
             - '@pim_serializer.normalizer.flat.family'
-            - 'flat'
 
     pim_connector.processor.normalization.category:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
             - '@pim_serializer.normalizer.flat.category'
-            - 'flat'
 
     pim_connector.processor.normalization.attribute:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
             - '@pim_serializer.normalizer.flat.attribute'
-            - 'flat'
 
     pim_connector.processor.normalization.attribute_option:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
             - '@pim_serializer.normalizer.flat.option'
-            - 'flat'
 
     pim_connector.processor.normalization.association_type:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
             - '@pim_serializer.normalizer.flat.association_type'
-            - 'flat'

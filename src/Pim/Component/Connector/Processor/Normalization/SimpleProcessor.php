@@ -7,7 +7,7 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Simple processor to process and normalize entities to the given format
+ * Simple processor to process and normalize entities to the standard format
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -18,26 +18,19 @@ class SimpleProcessor extends AbstractConfigurableStepElement implements ItemPro
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var string */
-    protected $format;
-
     /**
      * @param NormalizerInterface $normalizer
-     * @param string              $format
      */
-    public function __construct(NormalizerInterface $normalizer, $format)
+    public function __construct(NormalizerInterface $normalizer)
     {
         $this->normalizer = $normalizer;
-        $this->format     = $format;
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException if the given format is not a string
      */
     public function process($item)
     {
-        return $this->normalizer->normalize($item, $this->format);
+        return $this->normalizer->normalize($item);
     }
 }

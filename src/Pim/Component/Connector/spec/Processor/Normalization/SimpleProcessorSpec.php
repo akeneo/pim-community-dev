@@ -11,7 +11,7 @@ class SimpleProcessorSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $normalizer)
     {
-        $this->beConstructedWith($normalizer, 'flat');
+        $this->beConstructedWith($normalizer);
     }
 
     function it_is_a_processor()
@@ -27,20 +27,18 @@ class SimpleProcessorSpec extends ObjectBehavior
     function it_processes_items(NormalizerInterface $normalizer, GroupInterface $group)
     {
         $normalizer
-            ->normalize($group, 'flat')
+            ->normalize($group)
             ->shouldBeCalled()
             ->willReturn([
-                'code'        => 'promotion',
-                'type'        => 'RELATED',
-                'label-en_US' => 'Promotion',
-                'label-de_DE' => 'Förderung'
+                'code'   => 'promotion',
+                'type'   => 'RELATED',
+                'labels' => [ 'en_US' => 'Promotion', 'de_DE' => 'Förderung']
             ]);
 
         $this->process($group)->shouldReturn([
-                'code'        => 'promotion',
-                'type'        => 'RELATED',
-                'label-en_US' => 'Promotion',
-                'label-de_DE' => 'Förderung'
+            'code'   => 'promotion',
+            'type'   => 'RELATED',
+            'labels' => [ 'en_US' => 'Promotion', 'de_DE' => 'Förderung']
         ]);
     }
 }
