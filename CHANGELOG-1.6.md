@@ -1,3 +1,4 @@
+
 # 1.6.x
 
 ## Functional improvements
@@ -278,8 +279,14 @@
 - Add argument `Akeneo\Component\Batch\Job\JobParameters` in method `createJobExecution()` of `Akeneo\Component\Batch\Job\JobRepositoryInterface`
 - Remove methods `getConfiguration()`, `setConfiguration()` and `getConfigurableStepElements()` from `Akeneo\Component\Batch\Step\StepInterface`
 - Remove methods `getConfiguration()`, `setConfiguration()` and `getConfigurableStepElements()` from `Akeneo\Component\Batch\Step\AbstractStep`
-- Remove methods `getConfiguration()`, `setConfiguration()` from `Akeneo\Component\Batch\Step\ItemStep`
-- Injects `Symfony\Component\DependencyInjection\ContainerInterface` in constructor of `Akeneo\Component\Batch\Updater\JobInstanceUpdater`, `Pim\Bundle\BaseConnectorBundle\Archiver\ArchivableFileWriterArchiver`, `Pim\Bundle\BaseConnectorBundle\Archiver\FileReaderArchiver`, `Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver`, `Pim\Component\Connector\Processor\Denormalization\JobInstanceProcessor` (avoid a cricular reference due to ConnectorRegistry, should be fixed with TIP-418 by re-working the way we build Jobs)
+- Remove methods `getConfiguration()`, `setConfiguration()`, `setReader()`, `setProcessor()`, `setWriter()`, `setBatchSize()` from `Akeneo\Component\Batch\Step\ItemStep`
+- Change constructor of `Pim\Component\Connector\Processor\Denormalization\JobInstanceProcessor` to add argument `Akeneo\Component\Job\JobRegistry`
+- Change constructor of `Akeneo\Component\Batch\Updater\JobInstanceUpdater` to add argument `Akeneo\Component\Job\JobRegistry`
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Archiver\ArchivableFileWriterArchiver` to add argument `Akeneo\Component\Job\JobRegistry`
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Archiver\FileReaderArchiver` to add argument `Akeneo\Component\Job\JobRegistry`
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver` to add argument `Akeneo\Component\Job\JobRegistry`
+- Change constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add argument `Akeneo\Component\Job\JobRegistry`
+- Change constructor of `Akeneo\Bundle\BatchBundle\Validator\Constraints\JobInstanceValidator` to replace argument `Akeneo\Component\Connector\ConnectorRegistry` by `Akeneo\Component\Job\JobRegistry`
 - Remove argument array $configuration from `Pim\Component\Connector\Step\TaskletInterface::execute()`, we can access to the JobParameters from the StepExecution $stepExecution
 - Change constructor of `Pim\Component\Catalog\Updater\AttributeUpdater`, remove `Pim\Component\ReferenceData\ConfigurationRegistryInterface` and the list of reference data types
 - Move class `Pim\Component\Catalog\Normalizer\Structured\ReferenceDataNormalizer` to `Pim\Component\ReferenceData\Normalizer\Structured\ReferenceDataNormalizer`
@@ -361,3 +368,12 @@
 - Add string parameter `$formName` to `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType`
 - Remove method `getItemsName()` from `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface` and deleted from all classes implementing the interface
 - Remove method `getItemsName()` from `Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface` and deleted from all classes implementing the interface
+- Change constructor of `Akeneo\Component\Batch\Job\Job` to add the array $steps argument
+- Remove the methods setSteps, addStep from `Akeneo\Component\Batch\Job\Job`
+- Remove the class `Akeneo\Component\Batch\Connector\ConnectorRegistry`, please use `Akeneo\Component\Batch\Job\JobRegistry`
+- Remove the class `Akeneo\Component\Batch\Step\StepFactory` and related service '@akeneo_batch.step_factory'
+- Remove the class `Akeneo\Component\Batch\Job\JobFactory` and related service '@akeneo_batch.job_factory'
+- Remove method `setCharsetValidator()` from `Pim\Component\Connector\Step\ValidatorStep` 
+- Change constructor of `Pim\Component\Connector\Step\ValidatorStep` add `Pim\Component\Connector\Item\CharsetValidator` as last parameter
+- Change constructor of `Pim\Component\Connector\Step\TaskletStep` add `Pim\Component\Connector\Step\TaskletInterface` as last parameter
+- Change constructor of `Pim\Bundle\EnrichBundle\Connector\Step\MassEditStep` add `Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner` as last parameter

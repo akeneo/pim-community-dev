@@ -252,11 +252,11 @@ class JobInstance
      *
      * @deprecated will be removed in 1.7, this has been used to configure the job instance in a weird way to be able
      *             to access to the Job from the JobInstance in an execution context only, to access to the Job, we
-     *             must use ConnectorRegistry->getJob($jobInstance)
+     *             must use JobRegistry->get($jobInstance->getAlias())
      */
     public function setJob($job)
     {
-        trigger_error('please use ConnectorRegistry->getJob($jobInstance) instead', E_USER_NOTICE);
+        trigger_error('please use JobRegistry->get($jobInstance->getAlias()) instead', E_USER_NOTICE);
     }
 
     /**
@@ -266,11 +266,11 @@ class JobInstance
      *
      * @deprecated will be removed in 1.7, this has been used to configure the job instance in a weird way to be able
      *             to access to the Job from the JobInstance in an execution context only, to access to the Job, we
-     *             must use ConnectorRegistry->getJob($jobInstance)
+     *             must use JobRegistry->getJob($jobInstance)
      */
     public function getJob()
     {
-        trigger_error('please use ConnectorRegistry->getJob($jobInstance) instead', E_USER_NOTICE);
+        trigger_error('please use JobRegistry->get($jobInstance->getAlias()) instead', E_USER_NOTICE);
     }
 
     /**

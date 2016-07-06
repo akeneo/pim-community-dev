@@ -1,6 +1,4 @@
 parameters:
-    akeneo_batch.connectors.class:                            Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry
-    akeneo_batch.step_factory.class:                          Akeneo\Component\Batch\Step\StepFactory
     akeneo_batch.job_instance_factory.class:                  Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory
     akeneo_batch.logger_subscriber.class:                     Akeneo\Bundle\BatchBundle\EventListener\LoggerSubscriber
     akeneo_batch.notification_subscriber.class:               Akeneo\Bundle\BatchBundle\EventListener\NotificationSubscriber
@@ -13,13 +11,6 @@ parameters:
     akeneo_batch.jobs_config:                                 ~
 
 services:
-    # connectors registry
-    akeneo_batch.connectors:
-        class: '%akeneo_batch.connectors.class%'
-        arguments:
-            - '@akeneo_batch.job_factory'
-            - '@akeneo_batch.step_factory'
-
     akeneo_batch.job_instance_factory:
         class: '%akeneo_batch.job_instance_factory.class%'
         arguments:
@@ -48,12 +39,6 @@ services:
             - '@mailer'
             - '%akeneo_batch.mail_notifier.sender_email%'
 
-    akeneo_batch.step_factory:
-        class: '%akeneo_batch.step_factory.class%'
-        arguments:
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-
     akeneo_batch.logger.batch_log_handler:
         class: '%akeneo_batch.logger.batch_log_handler.class%'
         arguments:
@@ -80,6 +65,6 @@ services:
         arguments:
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.job_parameters_factory'
-            - '@service_container'
+            - '@akeneo_batch.job.job_registry'
             - '%kernel.root_dir%'
             - '%kernel.environment%'

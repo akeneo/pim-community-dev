@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Archiver;
 
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -59,12 +58,12 @@ class InvalidItemsCsvArchiverSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
 
         $jobInstance->getType()->willReturn('type');
-        $jobInstance->getJobName()->willReturn('alias');
+        $jobInstance->getJobName()->willReturn('my_job_name');
 
-        $filesystem->put('type/alias/id/invalid/invalid_items.csv', '')->shouldBeCalled();
+        $filesystem->put('type/my_job_name/id/invalid/invalid_items.csv', '')->shouldBeCalled();
 
         $jobExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn('/tmp/archivist/type/alias/id/invalid/invalid_items.csv');
+        $jobParameters->get('filePath')->willReturn('/tmp/archivist/type/my_job_name/id/invalid/invalid_items.csv');
 
         $writer->setStepExecution(Argument::any())->shouldBeCalled();
         $writer->initialize()->shouldBeCalled();
