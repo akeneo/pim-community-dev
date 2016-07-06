@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-5864: "Attribute used as label" not displayed after being changed in the Family
+
 # 1.5.5 (2016-06-16)
 
 - PIM-5711: Don't create empty attribute translations if attributes are imported with empty labels

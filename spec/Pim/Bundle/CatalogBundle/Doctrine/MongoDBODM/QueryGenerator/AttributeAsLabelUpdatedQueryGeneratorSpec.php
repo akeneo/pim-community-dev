@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 
@@ -24,11 +25,15 @@ class AttributeAsLabelUpdatedQueryGeneratorSpec extends ObjectBehavior
         $this->supports($mobile, '')->shouldReturn(false);
     }
 
-    function it_generates_a_query_to_update_product_families(AttributeInterface $price)
-    {
+    function it_generates_a_query_to_update_product_families(
+        AttributeInterface $price, 
+        AttributeInterface $sku,
+        AttributeInterface $name
+    ) {
+        $name->getCode()->willReturn('name');
         $price->getId()->willReturn(12);
 
-        $this->generateQuery($price, 'attributeAsLabel', 'sku', 'name')->shouldReturn([[
+        $this->generateQuery($price, 'attributeAsLabel', $sku, $name)->shouldReturn([[
             ['family'   => 12],
             ['$set'     => ['normalizedData.family.attributeAsLabel' => 'name']],
             ['multiple' => true]

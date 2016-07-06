@@ -607,17 +607,13 @@ class Edit extends ProductEditForm
         }
 
         if ("" === $state) {
-            if ($completenessCell->find('css', 'div.progress')) {
-                throw new \InvalidArgumentException(
-                    sprintf('No progress bar should be visible for %s:%s', $channelCode, $localeCode)
-                );
-            }
+            $this->spin(function () use ($completenessCell) {
+                return $completenessCell->find('css', 'div.progress');
+            }, sprintf('No progress bar should be visible for %s:%s', $channelCode, $localeCode));
         } else {
-            if (!$completenessCell->find('css', sprintf('div.progress-%s', $state))) {
-                throw new \InvalidArgumentException(
-                    sprintf('Progress bar is not %s for %s:%s', $state, $channelCode, $localeCode)
-                );
-            }
+            $this->spin(function () use ($completenessCell, $state) {
+                return $completenessCell->find('css', sprintf('div.progress-%s', $state));
+            }, sprintf('Progress bar is not %s for %s:%s', $state, $channelCode, $localeCode));
         }
     }
 
