@@ -1,0 +1,68 @@
+services:
+    # CSV Product Import steps ----------------------------------------------------------------------------------------
+    pimee_catalog_rule.step.csv_product.import:
+        alias: pim_connector.step.csv_product.import
+
+    pimee_catalog_rule.step.csv_product.import_associations:
+        alias: pim_connector.step.csv_product.import_associations
+
+    # XLSX Product Import steps ---------------------------------------------------------------------------------------
+    pimee_catalog_rule.step.xlsx_product.import:
+        alias: pim_connector.step.xlsx_product.import
+
+    pimee_catalog_rule.step.xlsx_product.import_associations:
+        alias: pim_connector.step.xlsx_product.import_associations
+
+    # Execute Rules steps ---------------------------------------------------------------------------------------------
+    pimee_catalog_rule.step.csv_product.execute_rules:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'execute_rules'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_catalog_rule.reader.file.csv_product_with_rule'
+            - '@pimee_catalog_rule.processor.product_loader'
+            - '@pimee_catalog_rule.executor.rules'
+            - 100
+
+    pimee_catalog_rule.step.xlsx_product.execute_rules:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'execute_rules'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_catalog_rule.reader.file.xlsx_product_with_rule'
+            - '@pimee_catalog_rule.processor.product_loader'
+            - '@pimee_catalog_rule.executor.rules'
+            - 100
+
+    # Import Rules steps ----------------------------------------------------------------------------------------------
+    pimee_catalog_rule.step.yml_rule.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'execute_rules'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_catalog_rule.reader.file.yaml_rule'
+            - '@pimee_catalog_rule.processor.denormalization.rule_definition'
+            - '@pimee_catalog_rule.writer.doctrine.rule_definition'
+
+    # Export Rules steps ----------------------------------------------------------------------------------------------
+    pimee_catalog_rule.step.yml_rule.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'execute_rules'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_catalog_rule.reader.database.rule_definition'
+            - '@pimee_catalog_rule.processor.normalization.rule_definition'
+            - '@pimee_catalog_rule.writer.file.yaml_rule_definition'
+
+    # Calculate Rules steps -------------------------------------------------------------------------------------------
+    pimee_catalog_rule.step.rule_impacted_product_count:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'execute_rules'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_catalog_rule.tasklet.impacted_product_count'

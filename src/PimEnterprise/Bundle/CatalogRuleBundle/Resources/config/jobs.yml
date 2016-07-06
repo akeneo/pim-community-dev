@@ -1,0 +1,75 @@
+parameters:
+    pimee_catalog_rule.job_name.csv_product_import_with_rules: 'csv_product_import_with_rules'
+    pimee_catalog_rule.job_name.xlsx_product_import_with_rules: 'xlsx_product_import_with_rules'
+    pimee_catalog_rule.job_name.yml_rule_import: 'yml_rule_import'
+    pimee_catalog_rule.job_name.yml_rule_export: 'yml_rule_export'
+    pimee_catalog_rule.job_name.rule_impacted_product_count: 'rule_impacted_product_count'
+    pimee_catalog_rule.connector_name.rule_engine: 'Akeneo Rule Engine Connector'
+    pimee_catalog_rule.mass_edit_type: 'mass_edit_rule'
+
+services:
+    # CSV Imports -----------------------------------------------------------------------------------------------------
+    pimee_catalog_rule.job.csv_product_import_with_rules:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_catalog_rule.job_name.csv_product_import_with_rules%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pimee_catalog_rule.step.csv_product.import'
+                - '@pimee_catalog_rule.step.csv_product.import_associations'
+                - '@pimee_catalog_rule.step.csv_product.execute_rules'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+
+    # XLSX Imports ----------------------------------------------------------------------------------------------------
+    pimee_catalog_rule.job.xlsx_product_import_with_rules:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_catalog_rule.job_name.xlsx_product_import_with_rules%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pimee_catalog_rule.step.xlsx_product.import'
+                - '@pimee_catalog_rule.step.xlsx_product.import_associations'
+                - '@pimee_catalog_rule.step.xlsx_product.execute_rules'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+
+    # YML Imports -----------------------------------------------------------------------------------------------------
+    pimee_catalog_rule.job.yml_rule_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_catalog_rule.job_name.yml_rule_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_catalog_rule.step.yml_rule.import'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%pim_connector.job.import_type%' }
+
+    # YML Exports -----------------------------------------------------------------------------------------------------
+    pimee_catalog_rule.job.yml_rule_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_catalog_rule.job_name.yml_rule_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_catalog_rule.step.yml_rule.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%pim_connector.job.export_type%' }
+
+    # Rules count -----------------------------------------------------------------------------------------------------
+    pimee_catalog_rule.job.rule_impacted_product_count:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_catalog_rule.job_name.rule_impacted_product_count%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_catalog_rule.step.rule_impacted_product_count'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%pimee_catalog_rule.mass_edit_type%' }

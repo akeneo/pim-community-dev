@@ -1,0 +1,199 @@
+parameters:
+    pimee_product_asset.connector_name.product_asset: 'Akeneo Product Asset Connector'
+    pimee_product_asset.job_name.apply_assets_mass_upload: 'apply_assets_mass_upload'
+    pimee_product_asset.job_name.yml_asset_channel_configuration_import: 'yml_asset_channel_configuration_import'
+    pimee_product_asset.job_name.yml_asset_channel_configuration_export: 'yml_asset_channel_configuration_export'
+    pimee_product_asset.job_name.csv_asset_import: 'csv_asset_import'
+    pimee_product_asset.job_name.csv_asset_category_import: 'csv_asset_category_import'
+    pimee_product_asset.job_name.csv_asset_export: 'csv_asset_export'
+    pimee_product_asset.job_name.csv_asset_category_export: 'csv_asset_category_export'
+    pimee_product_asset.job_name.csv_asset_variation_export: 'csv_asset_variation_export'
+    pimee_product_asset.job_name.xlsx_asset_import: 'xlsx_asset_import'
+    pimee_product_asset.job_name.xlsx_asset_category_import: 'xlsx_asset_category_import'
+    pimee_product_asset.job_name.xlsx_asset_export: 'xlsx_asset_export'
+    pimee_product_asset.job_name.xlsx_asset_category_export: 'xlsx_asset_category_export'
+    pimee_product_asset.job_name.xlsx_asset_variation_export: 'xlsx_asset_variation_export'
+    pimee_product_asset.job_name.classify_assets: 'classify_assets'
+    pimee_product_asset.job_name.add_tags_to_assets: 'add_tags_to_assets'
+    pimee_product_asset.job.mass_upload_type: mass_upload
+
+services:
+    # Mass Upload -----------------------------------------------------------------------------------------------------
+    pimee_product_asset.job.apply_assets_mass_upload:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.apply_assets_mass_upload%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_product_asset.step.apply_assets_mass_upload.perform'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pimee_product_asset.job.mass_upload_type%' }
+
+    # YML Imports -----------------------------------------------------------------------------------------------------
+    pimee_product_asset.job.yml_asset_channel_configuration_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.yml_asset_channel_configuration_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pimee_product_asset.step.yml_asset_channel_configuration.import'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_connector.job.import_type%' }
+
+    # YML Exports -----------------------------------------------------------------------------------------------------
+    pimee_product_asset.job.yml_asset_channel_configuration_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.yml_asset_channel_configuration_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_product_asset.step.yml_asset_channel_configuration.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_connector.job.export_type%' }
+
+    # CSV Imports -----------------------------------------------------------------------------------------------------
+    pimee_product_asset.job.csv_asset_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.csv_asset_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pimee_product_asset.step.csv_asset.import_tags'
+                - '@pimee_product_asset.step.csv_asset.import_asset'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_connector.job.import_type%' }
+
+    pimee_product_asset.job.csv_asset_category_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.csv_asset_category_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pimee_product_asset.step.csv_asset_category.import'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_connector.job.import_type%' }
+
+    # CSV Exports -----------------------------------------------------------------------------------------------------
+    pimee_product_asset.job.csv_asset_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.csv_asset_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_product_asset.step.csv_asset.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_connector.job.export_type%' }
+
+    pimee_product_asset.job.csv_asset_category_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.csv_asset_category_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_product_asset.step.csv_asset_category.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_connector.job.export_type%' }
+
+    pimee_product_asset.job.csv_asset_variation_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.csv_asset_variation_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_product_asset.step.csv_asset_variation.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_connector.job.export_type%' }
+
+    # XLSX Imports ----------------------------------------------------------------------------------------------------
+    pimee_product_asset.job.xlsx_asset_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.xlsx_asset_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pimee_product_asset.step.xlsx_asset.import_tags'
+                - '@pimee_product_asset.step.xlsx_asset.import_asset'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_connector.job.import_type%' }
+
+    pimee_product_asset.job.xlsx_asset_category_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.xlsx_asset_category_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pimee_product_asset.step.xlsx_asset_category.import'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_connector.job.import_type%' }
+
+    # XLSX Exports ----------------------------------------------------------------------------------------------------
+    pimee_product_asset.job.xlsx_asset_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.xlsx_asset_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_product_asset.step.xlsx_asset.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_connector.job.export_type%' }
+
+    pimee_product_asset.job.xlsx_asset_category_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.xlsx_asset_category_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_product_asset.step.xlsx_asset_category.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_connector.job.export_type%' }
+
+    pimee_product_asset.job.xlsx_asset_variation_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.xlsx_asset_variation_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_product_asset.step.xlsx_asset_variation.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_connector.job.export_type%' }
+
+    # Mass Edit -------------------------------------------------------------------------------------------------------
+    pimee_product_asset.job.classify_assets:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.classify_assets%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_product_asset.step.classify_assets.perform'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pimee_product_asset.job.add_tags_to_assets:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.add_tags_to_assets%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_product_asset.step.add_tags_to_assets.perform'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_enrich.job.mass_edit_type%' }
