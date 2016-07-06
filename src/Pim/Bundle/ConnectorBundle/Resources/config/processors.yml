@@ -203,7 +203,7 @@ services:
     pim_connector.processor.normalization.category:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
-            - '@pim_serializer.normalizer.flat.category'
+            - '@pim_serializer.normalizer.category'
 
     pim_connector.processor.normalization.attribute:
         class: '%pim_connector.processor.normalization.simple.class%'
