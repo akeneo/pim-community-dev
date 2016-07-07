@@ -11,7 +11,6 @@ pimee_product_asset:
                     title: Manage assets
                     cancel: Cancel
                     confirm: Confirm
-
     enrich_asset:
         grid:
             edit: Edit properties of the asset
@@ -63,6 +62,14 @@ pimee_product_asset:
             uploading: Uploading
             error: Error
             success: Success
+    datagrid:
+        mass_action:
+            delete:
+                confirm_content: Are you sure you want to delete selected assets?
+                success: Selected assets successfully deleted.
+                error: Error ocurred when trying to delete selected assets, please try again.
+                empty_selection: No asset selected
+
 pim_dashboard:
     widget:
         last_operations:

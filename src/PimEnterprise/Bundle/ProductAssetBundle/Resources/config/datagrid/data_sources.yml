@@ -7,5 +7,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pimee_product_asset.datasource.result_record.hydrator.asset'
+        calls:
+            - [ setMassActionRepository, ['@pimee_catalog_rule.repository.asset_mass_action' ]]
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_asset }

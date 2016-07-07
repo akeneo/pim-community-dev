@@ -3,11 +3,11 @@
 namespace spec\PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -29,7 +29,7 @@ class AssetEventSubscriberSpec extends ObjectBehavior
     function it_returns_the_events_it_subscribed_to()
     {
         $this::getSubscribedEvents()->shouldReturn([
-            AssetEvent::PRE_REMOVE => 'checkPublishedProductConsistency',
+            StorageEvents::PRE_REMOVE => 'checkPublishedProductConsistency',
         ]);
     }
 

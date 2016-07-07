@@ -1,0 +1,9 @@
+services:
+    pimee_product_asset.extension.mass_action.handler.mass_delete_asset:
+        class: '%pim_datagrid.extension.mass_action.handler.delete.class%'
+        arguments:
+            - '@pim_datagrid.datasource.result_record.hydrator.orm.object_id'
+            - '@translator'
+            - '@event_dispatcher'
+        tags:
+            - { name: pim_datagrid.extension.mass_action.handler, alias: mass_delete_asset }

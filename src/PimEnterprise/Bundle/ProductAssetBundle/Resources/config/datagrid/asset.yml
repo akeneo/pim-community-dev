@@ -122,7 +122,7 @@ datagrid:
             classify_move:
                 type: edit
                 label: pim.grid.mass_action.mass_classify_assets
-                acl_resource: pim_enrich_mass_edit
+                acl_resource: pimee_product_asset_index
                 route: pimee_product_asset_mass_edit_asset_action_configure
                 route_parameters:
                     operationGroup: category-edit
@@ -132,10 +132,25 @@ datagrid:
             add_tags_to_assets:
                 type: edit
                 label: pim.grid.mass_action.add_tags_to_assets
-                acl_resource: pim_enrich_mass_edit
+                acl_resource: pimee_product_asset_index
                 route: pimee_product_asset_mass_edit_asset_action_configure
                 route_parameters:
                     operationGroup: mass-edit
                     operationAlias: add-tags-to-assets
+                launcherOptions:
+                    group: bulk_actions
+            delete:
+                type: delete
+                label: pim.grid.mass_action.delete
+                entity_name: asset
+                acl_resource: pimee_product_asset_remove
+                handler: mass_delete_asset
+                messages:
+                    confirm_title: pim_datagrid.mass_action.delete.confirm_title
+                    confirm_content: pimee_product_asset.datagrid.mass_action.delete.confirm_content
+                    confirm_ok: pim_datagrid.mass_action.delete.confirm_ok
+                    success: pimee_product_asset.datagrid.mass_action.delete.success
+                    error: pimee_product_asset.datagrid.mass_action.delete.error
+                    empty_selection: pimee_product_asset.datagrid.mass_action.delete.empty_selection
                 launcherOptions:
                     group: bulk_actions

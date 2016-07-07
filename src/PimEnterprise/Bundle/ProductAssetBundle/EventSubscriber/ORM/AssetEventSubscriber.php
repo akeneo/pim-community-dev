@@ -11,10 +11,12 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM;
 
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -50,7 +52,7 @@ class AssetEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AssetEvent::PRE_REMOVE => 'checkPublishedProductConsistency'
+            StorageEvents::PRE_REMOVE => 'checkPublishedProductConsistency',
         ];
     }
 
@@ -65,19 +67,22 @@ class AssetEventSubscriber implements EventSubscriberInterface
      */
     public function checkPublishedProductConsistency(GenericEvent $event)
     {
-        $asset          = $event->getSubject();
-        $attributeCodes = $this->attributeRepository->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION);
+        $asset = $event->getSubject();
 
-        foreach ($attributeCodes as $attributeCode) {
-            $ppqb = $this->pqbFactory->create();
-            $publishedProducts = $ppqb
-                ->addFilter($attributeCode . '.id', 'IN', [$asset->getId()])
-                ->execute();
+        if ($asset instanceof AssetInterface) {
+            $attributeCodes = $this->attributeRepository->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION);
 
-            if ($publishedProducts->count() > 0) {
-                throw new PublishedProductConsistencyException(
-                    'Impossible to remove an asset linked to a published product'
-                );
+            foreach ($attributeCodes as $attributeCode) {
+                $pqb = $this->pqbFactory->create();
+                $publishedProducts = $pqb
+                    ->addFilter($attributeCode . '.id', 'IN', [$asset->getId()])
+                    ->execute();
+
+                if ($publishedProducts->count() > 0) {
+                    throw new PublishedProductConsistencyException(
+                        'Impossible to remove an asset linked to a published product'
+                    );
+                }
             }
         }
 
