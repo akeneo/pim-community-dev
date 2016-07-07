@@ -3,6 +3,9 @@
 ## Bug fixes
 - PIM-5820: Fix product value filtering by channel and locale in structured product normalizer
 - PIM-5687: Fix an issue that prevented the removal of a product from a variant group in MongoDB
+- PIM-5863: Fix an issue that prevented the association of multiple products at once in the association tab
+- PIM-5389: Fix an issue that would render the history panel multiple times
+
 
 # 1.4.24 (2016-05-10)
 

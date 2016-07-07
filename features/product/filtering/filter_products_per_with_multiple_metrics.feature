@@ -28,6 +28,7 @@ Feature: Filter products with multiples metrics filters
     And I am logged in as "Mary"
     And I am on the products page
 
+  @unstable # TODO Do not merge into the master
   Scenario: Successfully filter products with the sames attributes
     Given I show the filter "packaging"
     And I filter by "packaging" with operator ">" and value "30 Gram"

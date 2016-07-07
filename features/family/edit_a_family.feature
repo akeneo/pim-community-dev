@@ -18,6 +18,24 @@ Feature: Edit a family
     Then I should see "Family successfully updated"
     And I should see "My family"
 
+  @javascript
+  Scenario: Successfully edit a family
+    And the following attributes:
+      | label  | type | useable_as_grid_filter |
+      | String | text | yes                    |
+    Given the following family:
+      | code   | attributes        |
+      | guitar | sku, name, string |
+    And the following products:
+      | sku      | family   | name-en_US | string |
+      | les-paul | guitar   | Les Paul   | Elixir |
+    And I am on the "guitar" family page
+    When I fill in the following information:
+      | Attribute used as label | String |
+    And I save the family
+    When I am on the products page
+    And I should see "Elixir"
+
   Scenario: Successfully set the translations of the name
     Given I am on the "Boots" family page
     When I fill in the following information:
