@@ -48,6 +48,12 @@ extensions:
                     field: categories.code
                     view: pim-filter-product-category
 
+    pim-product-export-edit-content-default-attribute-filters:
+        module: pim/export/product/edit/content/data/default-attribute-filters
+        parent: pim-product-export-edit-content-data
+        config:
+            types: ['pim_catalog_identifier']
+
     pim-product-export-edit-content-data-help:
         module: pim/export/product/edit/content/data/help
         parent: pim-product-export-edit-content-data
@@ -67,7 +73,7 @@ filters:
         pim_catalog_textarea:
             view: pim-filter-text
         pim_catalog_identifier:
-            view: pim-filter-text
+            view: pim-filter-product-identifier
         pim_catalog_metric:
             view: pim-filter-text
             # view: pim-filter-metric

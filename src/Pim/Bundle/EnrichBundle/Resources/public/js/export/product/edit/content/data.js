@@ -192,21 +192,32 @@ define(
              * Sets back the data to the filters view.
              */
             updateFiltersData: function () {
-                var defaultFields = _.pluck(this.config.filters, 'field');
-                var modelFields   = _.pluck(this.getFormData()['data'], 'field');
+                var promises = [];
+                this.getRoot().trigger('pim_enrich:form:filter:set-default', promises);
 
-                this.addFilters(_.union(defaultFields, modelFields)).then(function () {
-                    _.each(this.getFormData()['data'], function (filterData) {
-                        if (!_.has(this.filterViews, filterData.field)) {
-                            return;
-                        }
-                        var filterView = this.filterViews[filterData.field];
+                $.when.apply($, promises).then(function () {
+                    var defaultFields = 0 !== arguments.length ?
+                        _.union(_.flatten(_.toArray(arguments))) :
+                        [];
+                    var configFields  = _.pluck(this.config.filters, 'field');
 
-                        filterView.setData(filterData, {silent: true});
+                    return _.union(configFields, defaultFields);
+                }.bind(this)).then(function (defaultFields) {
+                    var modelFields   = _.pluck(this.getFormData()['data'], 'field');
+
+                    this.addFilters(_.union(defaultFields, modelFields)).then(function () {
+                        _.each(this.getFormData()['data'], function (filterData) {
+                            if (!_.has(this.filterViews, filterData.field)) {
+                                return;
+                            }
+                            var filterView = this.filterViews[filterData.field];
+
+                            filterView.setData(filterData, {silent: true});
+                        }.bind(this));
+
+                        this.render();
                     }.bind(this));
-
-                    this.render();
-                }.bind(this));
+                }.bind(this))
             },
 
             /**
