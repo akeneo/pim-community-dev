@@ -19,7 +19,7 @@
         }
     },
     "require": {
-        "php": ">=5.4.4",
+        "php": ">=5.6.0",
         "akeneo/measure-bundle": "0.5.0",
         "apy/jsfv-bundle": "2.0.1",
         "ass/xmlsecurity": "1.1.1",
