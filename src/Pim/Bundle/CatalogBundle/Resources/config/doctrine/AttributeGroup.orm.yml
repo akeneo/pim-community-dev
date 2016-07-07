@@ -25,7 +25,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
             type: datetime
             gedmo:
                 timestampable:
-                    on: create
+                    on: update
     oneToMany:
         attributes:
             targetEntity: Pim\Component\Catalog\Model\AttributeInterface

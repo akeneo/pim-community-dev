@@ -40,6 +40,7 @@ function($, _, __, mediator, Modal, AbstractListener) {
 
             this.$gridContainer.on('preExecute:refresh:' + this.gridName, this._onExecuteRefreshAction.bind(this));
             this.$gridContainer.on('preExecute:reset:' + this.gridName, this._onExecuteResetAction.bind(this));
+            mediator.on('grid_load:complete', this._restoreState.bind(this));
 
             this._clearState();
             this._restoreState();
@@ -114,8 +115,6 @@ function($, _, __, mediator, Modal, AbstractListener) {
             if (this.selectors.excluded) {
                 $(this.selectors.excluded).val(excluded.join(','));
             }
-            mediator.trigger('datagrid:setParam:' + this.gridName, 'data_in', included);
-            mediator.trigger('datagrid:setParam:' + this.gridName, 'data_not_in', excluded);
         },
 
         /**
@@ -149,8 +148,6 @@ function($, _, __, mediator, Modal, AbstractListener) {
                 this.set('excluded', excluded)
             }
             if (included || excluded) {
-                mediator.trigger('datagrid:setParam:' + this.gridName, 'data_in', included);
-                mediator.trigger('datagrid:setParam:' + this.gridName, 'data_not_in', excluded);
                 mediator.trigger('datagrid:restoreState:' + this.gridName, this.columnName, this.dataField, included, excluded);
             }
          },

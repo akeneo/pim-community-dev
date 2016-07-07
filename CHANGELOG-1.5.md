@@ -1,4 +1,10 @@
-# 1.5.*
+# 1.5.6 (2016-07-06)
+
+## Bug fixes
+
+- PIM-5864: "Attribute used as label" not displayed after being changed in the Family
+
+# 1.5.5 (2016-06-16)
 
 - PIM-5711: Don't create empty attribute translations if attributes are imported with empty labels
 - PIM-5829: Fix an issue with wrong parameters order in FamilyUpdater
