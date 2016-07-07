@@ -28,5 +28,8 @@ extensions:
                 - ">="
                 - SINCE LAST EXPORT
 
+    pim-filter-product-identifier:
+        module: pim/filter/product/identifier
+
     pim-filter-simpleselect:
         module: pim/filter/simpleselect

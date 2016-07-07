@@ -378,6 +378,9 @@ pim_enrich:
                         "GREATER OR EQUALS THAN ON ALL LOCALES": Complete on all selected locales
                         LOWER THAN ON ALL LOCALES: Not complete on all selected locales
                     empty_selection: Select a family
+                id:
+                    title: Product identifiers
+                    help: The product identifiers you want to export
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
