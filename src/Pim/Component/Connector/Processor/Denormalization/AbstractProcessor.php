@@ -93,7 +93,12 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
             $this->stepExecution->incrementSummaryInfo('skip');
         }
 
-        throw new InvalidItemException($message, new FileInvalidItem($item), [], 0, $previousException);
+        $invalidItem = new FileInvalidItem(
+            $item,
+            ($this->stepExecution->getSummaryInfo('read_lines') + 1)
+        );
+
+        throw new InvalidItemException($message, $invalidItem, [], 0, $previousException);
     }
 
     /**

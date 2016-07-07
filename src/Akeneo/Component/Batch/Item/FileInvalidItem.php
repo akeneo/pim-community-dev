@@ -19,10 +19,12 @@ class FileInvalidItem implements InvalidItemInterface
 
     /**
      * @param array $invalidData
+     * @param int   $lineNumber
      */
-    public function __construct(array $invalidData)
+    public function __construct(array $invalidData, $lineNumber)
     {
         $this->invalidData = $invalidData;
+        $this->lineNumber = $lineNumber;
     }
 
     /**
