@@ -221,7 +221,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = [])
     {
         $qb = $this->createQueryBuilder('o')
-            ->select('o.id as id, COALESCE(t.label, CONCAT(\'[\', o.code, \']\')) as text')
+            ->select('o.id as id, COALESCE(t.label, \'\'), CONCAT(\'[\', o.code, \']\')) as text')
             ->leftJoin('o.translations', 't', 'WITH', 't.locale=:locale')
             ->addOrderBy('text', 'ASC')
             ->setParameter('locale', $dataLocale);

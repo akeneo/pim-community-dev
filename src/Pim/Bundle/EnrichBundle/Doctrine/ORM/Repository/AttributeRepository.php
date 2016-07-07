@@ -36,8 +36,8 @@ class AttributeRepository extends EntityRepository implements TranslatedLabelsPr
     {
         $queryBuilder = $this->createQueryBuilder('a')
             ->select('a.id')
-            ->addSelect('COALESCE(at.label, CONCAT(\'[\', a.code, \']\')) as attribute_label')
-            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\')) as group_label')
+            ->addSelect('COALESCE(NULLIF(at.label, \'\'), CONCAT(\'[\', a.code, \']\')) as attribute_label')
+            ->addSelect('COALESCE(NULLIF(gt.label, \'\'), CONCAT(\'[\', g.code, \']\')) as group_label')
             ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :locale_code')
             ->leftJoin('a.group', 'g')
             ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :locale_code')

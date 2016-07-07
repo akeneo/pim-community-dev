@@ -31,7 +31,7 @@ class AttributeGroupRepository extends EntityRepository implements TranslatedLab
     {
         $queryBuilder = $this->createQueryBuilder('g')
             ->select('g.code')
-            ->addSelect('COALESCE(t.label, CONCAT(\'[\', g.code, \']\')) as label')
+            ->addSelect('COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', g.code, \']\')) as label')
             ->leftJoin('g.translations', 't', 'WITH', 't.locale = :locale')
             ->setParameter('locale', $this->userContext->getCurrentLocaleCode())
             ->orderBy('t.label')
