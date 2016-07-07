@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\Reader\File\Csv;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
@@ -130,6 +131,6 @@ class Reader extends AbstractConfigurableStepElement implements
             throw new InvalidItemFromViolationsException($exception->getViolations(), $item, [], 0, $exception);
         }
 
-        throw new InvalidItemException($exception->getMessage(), $item, [], 0, $exception);
+        throw new InvalidItemException($exception->getMessage(), new FileInvalidItem($item), [], 0, $exception);
     }
 }

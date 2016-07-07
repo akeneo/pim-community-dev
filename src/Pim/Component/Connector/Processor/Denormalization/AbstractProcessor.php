@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -92,7 +93,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
             $this->stepExecution->incrementSummaryInfo('skip');
         }
 
-        throw new InvalidItemException($message, $item, [], 0, $previousException);
+        throw new InvalidItemException($message, new FileInvalidItem($item), [], 0, $previousException);
     }
 
     /**

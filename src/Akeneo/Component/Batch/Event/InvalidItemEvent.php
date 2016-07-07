@@ -2,6 +2,7 @@
 
 namespace Akeneo\Component\Batch\Event;
 
+use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -22,7 +23,7 @@ class InvalidItemEvent extends Event implements EventInterface
     /** @var array */
     protected $reasonParameters;
 
-    /** @var array */
+    /** @var InvalidItemInterface */
     protected $item;
 
     /**
@@ -31,9 +32,9 @@ class InvalidItemEvent extends Event implements EventInterface
      * @param string $class
      * @param string $reason
      * @param array  $reasonParameters
-     * @param array  $item
+     * @param InvalidItemInterface  $item
      */
-    public function __construct($class, $reason, array $reasonParameters, array $item)
+    public function __construct($class, $reason, array $reasonParameters, InvalidItemInterface $item)
     {
         $this->class            = $class;
         $this->reason           = $reason;
@@ -74,7 +75,7 @@ class InvalidItemEvent extends Event implements EventInterface
     /**
      * Get the invalid item
      *
-     * @return array
+     * @return InvalidItemInterface
      */
     public function getItem()
     {

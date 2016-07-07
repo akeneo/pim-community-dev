@@ -35,7 +35,7 @@ class InvalidItemsCollector implements EventSubscriberInterface
      */
     public function collect(InvalidItemEvent $event)
     {
-        $this->invalidItems[$this->getHashKey($event->getItem())] = $event->getItem();
+        $this->invalidItems[$this->getHashKey($event->getItem()->getData())] = $event->getItem();
     }
 
     /**

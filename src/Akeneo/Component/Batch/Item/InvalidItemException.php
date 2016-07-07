@@ -11,7 +11,7 @@ namespace Akeneo\Component\Batch\Item;
  */
 class InvalidItemException extends \Exception
 {
-    /** @var array */
+    /** @var InvalidItemInterface */
     protected $item;
 
     /** @var array */
@@ -21,14 +21,14 @@ class InvalidItemException extends \Exception
      * Constructor
      *
      * @param string     $message
-     * @param array      $item
+     * @param InvalidItemInterface $item
      * @param array      $messageParameters
      * @param int        $code
      * @param \Exception $previous
      */
     public function __construct(
         $message,
-        array $item,
+        InvalidItemInterface $item,
         array $messageParameters = array(),
         $code = 0,
         \Exception $previous = null
@@ -52,7 +52,7 @@ class InvalidItemException extends \Exception
     /**
      * Get the invalid item
      *
-     * @return array
+     * @return InvalidItemInterface
      */
     public function getItem()
     {
