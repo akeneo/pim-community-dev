@@ -218,4 +218,4 @@ services:
     pim_connector.processor.normalization.association_type:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
-            - '@pim_serializer.normalizer.flat.association_type'
+            - '@pim_serializer.normalizer.association_type'
