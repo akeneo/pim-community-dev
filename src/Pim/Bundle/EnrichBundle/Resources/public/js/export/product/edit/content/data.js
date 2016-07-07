@@ -45,16 +45,9 @@ define(
                     this.addFilters(event.codes);
                 }.bind(this));
 
-                var promises = [];
-                _.each(this.config.filters, function (filter) {
-                    promises.push(this.addFilterView(filter.view, filter.field, false));
-                }.bind(this));
-
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.updateFiltersData.bind(this));
 
-                promises.push(BaseForm.prototype.configure.apply(this, arguments));
-
-                return $.when.apply($, promises);
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
@@ -65,9 +58,7 @@ define(
                     return this;
                 }
 
-                this.$el.html(
-                    this.template({})
-                );
+                this.$el.html(this.template());
 
                 _.each(this.filterViews, function (filterView) {
                     this.$('.filters').append(filterView.render().$el);
@@ -77,51 +68,89 @@ define(
             },
 
             /**
-             * Add filters to the form for the given fields
+             * Adds filters to the form for the specified fields.
              *
              * @param {array} fields
+             *
+             * @return {Promise}
              */
             addFilters: function (fields) {
-                var fields = _.difference(fields, _.keys(this.filterViews));
+                var filterFields = _.difference(fields, _.keys(this.filterViews));
+                if (_.isEmpty(filterFields)) {
+                    return $.Deferred().resolve();
+                }
 
+                return this.getFiltersConfig(filterFields)
+                    .then(function (filtersConfig) {
+                        var promises = [];
+                        _.each(filtersConfig, function (filterConfig) {
+                            promises.push(
+                                this.addFilterView(
+                                    filterConfig.view,
+                                    filterConfig.field,
+                                    filterConfig.isRemovable
+                                )
+                            );
+                        }.bind(this));
+
+                        return $.when.apply($, promises);
+                    }.bind(this));
+            },
+
+            /**
+             * Returns the filters configuration corresponding to the specified fields.
+             * The config can come from an attribute or from this extension's config (e.g. family, completeness, etc.).
+             *
+             * @param {Array} filterFields
+             *
+             * @return {Promise}
+             */
+            getFiltersConfig: function (filterFields) {
                 return $.when(
-                    fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(fields),
+                    fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(filterFields),
                     configProvider.getFilters(this.getRoot().code)
                 ).then(function (attributes, config) {
-                    return $.when.apply($, _.map(fields, function (field) {
-                        var attribute = _.findWhere(attributes, {code: field});
+                    var filtersConfig = [];
+
+                    _.each(filterFields, function (field) {
+                        var attribute    = _.findWhere(attributes, {code: field});
                         var filterConfig = {};
 
                         if (undefined === attribute) {
                             filterConfig = _.findWhere(this.config.filters, {field: field});
-                            filterConfig.removable = false;
+                            if (undefined === filterConfig) {
+                                return;
+                            }
+
+                            filterConfig.isRemovable = false;
                         } else {
                             filterConfig = {
                                 field: attribute.code,
                                 view: config[attribute.type].view,
-                                removable: true,
-                                context: {attribute: attribute}
+                                isRemovable: true
                             };
                         }
 
-                        return this.addFilterView(filterConfig.view, filterConfig.field, filterConfig.removable);
-                    }.bind(this)));
-                }.bind(this)).then(function () {
-                    this.render();
+                        filtersConfig.push(filterConfig);
+                    }.bind(this));
+
+                    return filtersConfig;
                 }.bind(this));
             },
 
             /**
-             * Create and add the filter view to the form
+             * Creates and add the filter view to the form.
              *
              * @param {string}  viewCode
              * @param {string}  fieldCode
-             * @param {boolean} removable
+             * @param {boolean} isRemovable
+             *
+             * @return {Promise}
              */
-            addFilterView: function (viewCode, fieldCode, removable) {
+            addFilterView: function (viewCode, fieldCode, isRemovable) {
                 return formBuilder.build(viewCode).then(function(view) {
                     view.setField(fieldCode);
-                    view.setRemovable(removable);
+                    view.setRemovable(isRemovable);
                     view.setType(viewCode);
 
                     return view;
@@ -141,7 +170,7 @@ define(
             },
 
             /**
-             * Update the form model
+             * Updates the form model.
              */
             updateModel: function () {
                 this.dataFilterCollection = [];
@@ -158,7 +187,7 @@ define(
             },
 
             /**
-             * Set back the data to the filters view
+             * Sets back the data to the filters view.
              */
             updateFiltersData: function () {
                 var fields = _.pluck(this.getFormData()['data'], 'field');
@@ -167,13 +196,15 @@ define(
                     _.each(this.getFormData()['data'], function (filterData) {
                         var filterView = this.filterViews[filterData.field];
 
-                        filterView.setData(filterData, {silent: true}).render();
+                        filterView.setData(filterData, {silent: true});
                     }.bind(this));
+
+                    this.render();
                 }.bind(this));
             },
 
             /**
-             * remove the filter for the given field
+             * Removes the filter for the given field then renders the whole view.
              *
              * @param {string} field
              */
