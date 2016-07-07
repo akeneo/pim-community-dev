@@ -61,6 +61,6 @@ class AttributeOptionNormalizer implements NormalizerInterface
             }
         }
 
-        return ['label' => $labels];
+        return ['labels' => $labels];
     }
 }

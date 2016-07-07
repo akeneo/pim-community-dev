@@ -213,7 +213,7 @@ services:
     pim_connector.processor.normalization.attribute_option:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
-            - '@pim_serializer.normalizer.flat.option'
+            - '@pim_serializer.normalizer.attribute_option'
 
     pim_connector.processor.normalization.association_type:
         class: '%pim_connector.processor.normalization.simple.class%'
