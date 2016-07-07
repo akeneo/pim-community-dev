@@ -114,16 +114,14 @@ define(
              * @return {Object}
              */
             getRoot: function () {
-                /* jscs:disable safeContextKeyword */
-                var root = this;
-                /* jscs:enable safeContextKeyword */
+                var rootView = this;
                 var parent = this.getParent();
                 while (parent) {
-                    root = parent;
+                    rootView = parent;
                     parent = parent.getParent();
                 }
 
-                return root;
+                return rootView;
             },
 
             /**
@@ -216,12 +214,11 @@ define(
              * Render a single extension
              *
              * @param {Object} extension
-             *
-             * @return {Object}
              */
             renderExtension: function (extension) {
                 this.getZone(extension.targetZone).appendChild(extension.el);
-                return extension.render();
+
+                extension.render();
             },
 
             /**

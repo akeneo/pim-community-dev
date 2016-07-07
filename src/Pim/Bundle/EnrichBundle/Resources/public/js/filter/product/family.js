@@ -16,7 +16,7 @@ define([
         config: {},
         template: _.template(template),
         events: {
-            'change [name="filter-operator"], [name="filter-value"]': 'updateState'
+            'change [name="filter-value"]': 'updateState'
         },
 
         /**
@@ -81,17 +81,11 @@ define([
          * {@inherit}
          */
         renderInput: function () {
-            if (undefined === this.getOperator()) {
-                this.setOperator(_.first(this.config.operators));
-            }
-
             return this.template({
                 isEditable: this.isEditable(),
                 __: __,
                 field: this.getField(),
-                operator: this.getOperator(),
-                value: this.getValue(),
-                operatorChoices: this.config.operators
+                value: this.getValue()
             });
         },
 
@@ -99,7 +93,6 @@ define([
          * {@inherit}
          */
         postRender: function () {
-            this.$('[name="filter-operator"]').select2();
             this.$('[name="filter-value"]').select2(this.selectOptions);
         },
 
@@ -108,10 +101,10 @@ define([
          */
         updateState: function () {
             var value = this.$('[name="filter-value"]').val();
-            value = undefined !== value ? value.split(',') : value;
+            value = value ? value.split(',') : value;
             this.setData({
                 field: this.getField(),
-                operator: this.$('[name="filter-operator"]').val(),
+                operator: 'IN',
                 value: value
             });
         }

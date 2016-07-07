@@ -27,9 +27,7 @@ define(
                 if (!this.configured) {
                     return this;
                 }
-                this.$el.html(
-                    this.template({})
-                );
+                this.$el.html(this.template());
 
                 this.renderExtensions();
 

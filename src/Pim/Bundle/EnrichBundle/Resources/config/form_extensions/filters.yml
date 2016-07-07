@@ -5,11 +5,6 @@ extensions:
     pim-filter-product-family:
         module: pim/filter/product/family
         config:
-            operators: #Maybe we can create a method to get that from the back (not sure)
-                - IN
-                - NOT IN
-                - EMPTY
-                - NOT EMPTY
             url: pim_enrich_family_rest_index
 
     pim-filter-product-completeness:

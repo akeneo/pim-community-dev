@@ -127,7 +127,7 @@ define(
                     return view;
                 }).then(function (filterView) {
                     var filterData = _.findWhere(this.dataFilterCollection, {field: filterView.getField()});
-                    if (null !== filterData) {
+                    if (undefined !== filterData) {
                         filterView.setData(filterData);
                     }
 

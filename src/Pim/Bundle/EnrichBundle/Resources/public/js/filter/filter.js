@@ -29,9 +29,10 @@ define([
          * @param {string} field
          */
         setField: function (field) {
-            var data = this.getFormData();
-            data.field = field;
-            this.setData(data, {silent: true});
+            this.setData(
+                {field: field},
+                {silent: true}
+            );
         },
 
         /**
@@ -67,9 +68,10 @@ define([
          * @param {string} operator
          */
         setOperator: function (operator) {
-            var data = this.getFormData();
-            data.operator = operator;
-            this.setData(data, {silent: true});
+            this.setData(
+                {operator: operator},
+                {silent: true}
+            );
         },
 
         /**
@@ -87,9 +89,10 @@ define([
          * @return {string}
          */
         setValue: function (value) {
-            var data = this.getFormData();
-            data.value = value;
-            this.setData(data, {silent: true});
+            this.setData(
+                {value: value},
+                {silent: true}
+            );
         },
 
         /**
