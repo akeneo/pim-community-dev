@@ -13,7 +13,7 @@
                             .then(function (form) {
                                 form
                                     .setElement('#pim-product-export-edit-content')
-                                    .setData(JSON.parse($('#{{ form.configuration.filters.vars.id }}').val()), {silent: true})
+                                    .setData(JSON.parse($('#{{ form.configuration.filters.vars.id }}').val()))
                                     .render();
 
                                 form.on('pim_enrich:form:entity:post_update', function () {
