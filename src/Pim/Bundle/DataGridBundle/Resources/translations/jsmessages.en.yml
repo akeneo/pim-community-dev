@@ -61,9 +61,9 @@ pim_datagrid:
         remove_column:     Remove
     mass_action:
         delete:
-            confirm_title:   Delete confirmation.
+            confirm_title:   Delete confirmation
             confirm_ok:      OK
-            empty_selection: No product selected.
+            empty_selection: No product selected
 
 # Quick export
 pim.grid.mass_action.quick_export.title: Quick Export
