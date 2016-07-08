@@ -69,8 +69,6 @@ class StringFilter extends OroStringFilter
             return $data;
         }
 
-        $data['value'] = preg_quote($data['value']);
-
         if (null === $data['value'] || '' === $data['value']) {
             return false;
         }

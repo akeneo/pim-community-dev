@@ -18,9 +18,10 @@ Feature: Filter products by text field
       | 13605290 | Canon 5D + EF 24-105 F4L IS    |
       | 13378171 | Canon 5D + EF 24-105mm f/4L IS |
       | 13572541 | Canon 5D + EF 24-105 F5L IS    |
+      | 135-2541 | Canon 5D + EF 25-15 FL         |
     When I am on the products page
     And I display the columns sku, name, family, complete, created and updated
-    Then the grid should contain 4 elements
+    Then the grid should contain 5 elements
     And I should see products "HP LA2206xc + WF722A", "Canon 5D + EF 24-105 F4L IS", "Canon 5D + EF 24-105mm f/4L IS" and "Canon 5D + EF 24-105 F5L IS"
     And I should be able to use the following filters:
       | filter | value                            | result                                                                                      |
@@ -34,6 +35,8 @@ Feature: Filter products by text field
       | name   | does not contain Canon           | HP LA2206xc + WF722A                                                                        |
       | name   | is equal to Canon 5D + EF 24-105 |                                                                                             |
       | name   | f/4L                             | Canon 5D + EF 24-105mm f/4L IS                                                              |
+      | SKU    | is equal to 135-2541             | 135-2541                                                                                    |
+      | SKU    | in list 135-2541, 13572541       | 135-2541, 13572541                                                                          |
 
   Scenario: Successfully filter products by empty value for text and textarea attributes
     Given the following attributes:
