@@ -5,6 +5,7 @@
 
 - PIM-5854: The family code is not displayed at all in the product grid when no family labels
 - PIM-5888: Fix an outline glitch on some buttons
+- PIM-5767: Issue with filter "in list" when SKU contains dashes (-)
 
 ## Functional improvements
 
