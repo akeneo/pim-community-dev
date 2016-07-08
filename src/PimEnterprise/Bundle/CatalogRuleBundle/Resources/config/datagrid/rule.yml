@@ -27,12 +27,28 @@ datagrid:
                 frontend_type: html
         properties:
             id: ~
+            execute_link:
+                type: url
+                route: pimee_catalog_rule_rule_execute
+                params:
+                    - code
             delete_link:
                 type: url
                 route: pimee_catalog_rule_rule_delete
                 params:
                     - id
         actions:
+            execute:
+                type: ajax
+                label: pimee_catalog_rule.datagrid.rule-grid.actions.execute
+                icon: play
+                link: execute_link
+                acl_resource: pimee_catalog_rule_rule_execute_permissions
+                confirmation: true
+                messages:
+                    confirm_title: pimee_catalog_rule.datagrid.rule-grid.actions.execute.confirm_title
+                    confirm_content: pimee_catalog_rule.datagrid.rule-grid.actions.execute.confirm_content
+                    confirm_ok: pimee_catalog_rule.datagrid.rule-grid.actions.execute.confirm_ok
             delete:
                 type: delete
                 label: pimee_catalog_rule.datagrid.rule-grid.actions.delete

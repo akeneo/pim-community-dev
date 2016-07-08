@@ -8,18 +8,19 @@
 - PIM-5357: Add the following XLSX job import: assets and asset categories
 - PIM-5582: Read only attribute
 - PIM-5427: Add possibility to filter by families for product export
-- PIM-5431: export the products updated since a defined date
+- PIM-5431: Export the products updated since a defined date
 - PIM-5665: Add "remove" action in rule engine
 - PIM-5757: Add delete bulk action on the rules datagrid
 - PIM-5530: Change the label and the position of the button "Schedule" in "Upload assets" screen
 - PIM-5488: Add a bulk action on the product assets grid, to move them in categories
 - PIM-5489: Add a mass-edit operation to add tags on assets
+- PIM-5813: Add the possibility to launch the rules from the UI
 
 ## Technical improvements
 
-- PIM-5589: introduce a channels, attribute groups, group types, currencies, locale accesses, asset category accesses, product category accesses, attribute group accesses and job profile accesses import using the new import system introduced in v1.4
-- PIM-5645: introduces the new Akeneo XLSX Connector
-- TIP-342: be able to launch mass edit processes without having to previously store a JobConfiguration and only rely on dynamic configuration
+- PIM-5589: Introduce a channels, attribute groups, group types, currencies, locale accesses, asset category accesses, product category accesses, attribute group accesses and job profile accesses import using the new import system introduced in v1.4
+- PIM-5645: Introduces the new Akeneo XLSX Connector
+- TIP-342: Be able to launch mass edit processes without having to previously store a JobConfiguration and only rely on dynamic configuration
 - PIM-5577: The completeness is now calculated every time a product is saved, ie during mass edit, rule execution, product import and on edit/save of variant groups.
 
 ## BC breaks
@@ -180,3 +181,4 @@
 - Rename method `Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface::getBatchJobCode` into `getJobInstanceCode`
 - Change constructor of `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Publish`, add string as parameter in the constructor, which is the instance job code
 - Change constructor of `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Unpublish`, add string as parameter in the constructor, which is the instance job code
+- Change constructor of `Akeneo\Bundle\RuleEngineBundle\Runner\ChainedRunner`, add `Akeneo\Bundle\RuleEngineBundle\Runner\RunnerRegistryInterface` and `Symfony\Component\EventDispatcher\EventDispatcherInterface`

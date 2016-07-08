@@ -12,3 +12,8 @@ pimee_catalog_rule_rule_impacted_product_count_permissions:
     type: action
     label: pimee_catalog_rule.acl.rule.impacted_product_count_permissions
     group_name: pimee_catalog_rule.acl_group.rule
+
+pimee_catalog_rule_rule_execute_permissions:
+    type: action
+    label: pimee_catalog_rule.acl.rule.execute_permissions
+    group_name: pimee_catalog_rule.acl_group.rule
