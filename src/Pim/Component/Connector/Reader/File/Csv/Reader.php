@@ -128,7 +128,13 @@ class Reader extends AbstractConfigurableStepElement implements
         }
 
         if (null !== $exception->getViolations()) {
-            throw new InvalidItemFromViolationsException($exception->getViolations(), $item, [], 0, $exception);
+            throw new InvalidItemFromViolationsException(
+                $exception->getViolations(),
+                new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('read_lines') + 1)),
+                [],
+                0,
+                $exception
+            );
         }
 
         $invalidItem = new FileInvalidItem(

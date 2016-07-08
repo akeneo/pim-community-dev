@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 
+use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
@@ -103,10 +104,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
             } catch (FileNotFoundException $e) {
                 throw new InvalidItemException(
                     $e->getMessage(),
-                    [
-                        'item'            => $product->getIdentifier()->getData(),
-                        'uploadDirectory' => $this->uploadDirectory,
-                    ]
+                    new FileInvalidItem([$product], ($this->stepExecution->getSummaryInfo('read_lines') + 1))
                 );
             }
         }

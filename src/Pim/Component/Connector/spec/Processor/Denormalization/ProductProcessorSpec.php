@@ -443,6 +443,7 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
 
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
@@ -460,7 +461,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productFilter,
         $stepExecution,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -474,6 +474,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
@@ -574,6 +575,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
+        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
 
         $convertedData =                 [
             'sku' => [
@@ -659,7 +661,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productFilter,
         $stepExecution,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);

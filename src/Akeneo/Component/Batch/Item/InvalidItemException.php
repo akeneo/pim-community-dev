@@ -20,16 +20,16 @@ class InvalidItemException extends \Exception
     /**
      * Constructor
      *
-     * @param string     $message
+     * @param string               $message
      * @param InvalidItemInterface $item
-     * @param array      $messageParameters
-     * @param int        $code
-     * @param \Exception $previous
+     * @param array                $messageParameters
+     * @param int                  $code
+     * @param \Exception           $previous
      */
     public function __construct(
         $message,
         InvalidItemInterface $item,
-        array $messageParameters = array(),
+        array $messageParameters = [],
         $code = 0,
         \Exception $previous = null
     ) {

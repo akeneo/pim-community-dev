@@ -192,7 +192,7 @@ abstract class AbstractStep implements StepInterface
      */
     protected function dispatchInvalidItemEvent($class, $reason, array $reasonParameters, InvalidItemInterface $item)
     {
-        $event = new InvalidItemEvent($class, $reason, $reasonParameters, $item);
+        $event = new InvalidItemEvent($item, $class, $reason, $reasonParameters);
         $this->dispatch(EventInterface::INVALID_ITEM, $event);
     }
 

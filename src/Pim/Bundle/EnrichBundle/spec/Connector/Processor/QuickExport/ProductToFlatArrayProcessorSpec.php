@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 
+use Akeneo\Component\Batch\Item\FileInvalidItem;
+use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -229,7 +231,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductValueInterface $value,
         ProductValueInterface $value2,
         AttributeInterface $attribute,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        InvalidItemInterface $invalidItem
     ) {
         $configuration = [
             'filters'     => [],
@@ -262,12 +265,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             new FileNotFoundException('upload/path/img.jpg')
         );
 
-        $this->shouldThrow(
-            new InvalidItemException(
-                'The file "upload/path/img.jpg" does not exist',
-                ['item' => 23, 'uploadDirectory' => 'upload/path/']
-            )
-        )->duringProcess($product);
+        $invalidItem->getData()->willReturn(['item' => 23, 'uploadDirectory' => 'upload/path/']);
+        $stepExecution->getSummaryInfo("read_lines")->shouldBeCalled();
+
+        $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')->duringProcess($product);
     }
 
     function it_returns_flat_data_with_english_attributes(

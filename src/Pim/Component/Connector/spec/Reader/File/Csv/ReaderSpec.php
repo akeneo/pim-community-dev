@@ -77,6 +77,7 @@ class ReaderSpec extends ObjectBehavior
             'sku'  => 'SKU-001',
             'name' => 'door',
         ];
+        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
 
         $fileIteratorFactory->create($filePath, [
             'fieldDelimiter' => ';',

@@ -74,6 +74,7 @@ class ReaderSpec extends ObjectBehavior
         $jobParameters->get('filePath')->willReturn(realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml'));
 
         $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
 
         $data = [
             'sku'  => 'mug_akeneo',

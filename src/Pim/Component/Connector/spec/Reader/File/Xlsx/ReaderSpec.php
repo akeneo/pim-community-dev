@@ -78,6 +78,8 @@ class ReaderSpec extends ObjectBehavior
             'name' => 'door',
         ];
 
+        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
+
         $fileIteratorFactory->create($filePath)->willReturn($fileIterator);
 
         $fileIterator->rewind()->shouldBeCalled();

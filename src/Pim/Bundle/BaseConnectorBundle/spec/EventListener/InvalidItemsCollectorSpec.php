@@ -3,20 +3,24 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\EventListener;
 
 use Akeneo\Component\Batch\Event\InvalidItemEvent;
+use Akeneo\Component\Batch\Item\FileInvalidItem;
 use PhpSpec\ObjectBehavior;
 
 class InvalidItemsCollectorSpec extends ObjectBehavior
 {
-    function it_collects_invalid_items_from_event(InvalidItemEvent $event)
+    function it_collects_invalid_items_from_event(InvalidItemEvent $event, FileInvalidItem $invalidItem)
     {
         $item = [
             'sku' => 'sku-001',
             'name_en-us' => 'Black shoes',
             'name_fr-fr' => 'Chaussures noires'
         ];
+
+        $invalidItem->getData()->willReturn($item);
+
         $hashKey = md5(serialize($item));
 
-        $event->getItem()->willReturn($item);
+        $event->getItem()->willReturn($invalidItem);
 
         $this->collect($event);
         $this->getInvalidItems()->shouldReturn([$hashKey => $item]);
@@ -25,7 +29,10 @@ class InvalidItemsCollectorSpec extends ObjectBehavior
     function it_collects_several_invalid_items_from_events(
         InvalidItemEvent $event1,
         InvalidItemEvent $event2,
-        InvalidItemEvent $event3
+        InvalidItemEvent $event3,
+        FileInvalidItem $invalidItem1,
+        FileInvalidItem $invalidItem2,
+        FileInvalidItem $invalidItem3
     ) {
         $item1 = [
             'sku' => 'sku-001',
@@ -43,13 +50,17 @@ class InvalidItemsCollectorSpec extends ObjectBehavior
             'name_fr-fr' => 'Chaussures jaunes'
         ];
 
+        $invalidItem1->getData()->willReturn($item1);
+        $invalidItem2->getData()->willReturn($item2);
+        $invalidItem3->getData()->willReturn($item3);
+
         $hashKeyItem1 = md5(serialize($item1));
         $hashKeyItem2 = md5(serialize($item2));
         $hashKeyItem3 = md5(serialize($item3));
 
-        $event1->getItem()->willReturn($item1);
-        $event2->getItem()->willReturn($item2);
-        $event3->getItem()->willReturn($item3);
+        $event1->getItem()->willReturn($invalidItem1);
+        $event2->getItem()->willReturn($invalidItem2);
+        $event3->getItem()->willReturn($invalidItem3);
 
         $this->collect($event1);
         $this->collect($event2);
@@ -61,21 +72,24 @@ class InvalidItemsCollectorSpec extends ObjectBehavior
         ]);
     }
 
-    function it_does_not_collect_duplicate_invalid_items(InvalidItemEvent $event1, InvalidItemEvent $event2)
-    {
+    function it_does_not_collect_duplicate_invalid_items(
+        InvalidItemEvent $event,
+        FileInvalidItem $invalidItem
+    ) {
         $item = [
             'sku' => 'sku-001',
             'name_en-us' => 'Black shoes',
             'name_fr-fr' => 'Chaussures noires'
         ];
 
+        $invalidItem->getData()->willReturn($item);
+
         $hashKeyItem = md5(serialize($item));
 
-        $event1->getItem()->willReturn($item);
-        $event2->getItem()->willReturn($item);
+        $event->getItem()->willReturn($invalidItem);
 
-        $this->collect($event1);
-        $this->collect($event2);
+        $this->collect($event);
+
         $this->getInvalidItems()->shouldReturn([$hashKeyItem => $item]);
     }
 }
