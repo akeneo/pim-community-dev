@@ -176,23 +176,22 @@ define(
                 this.dataFilterCollection = [];
 
                 _.each(this.filterViews, function (filterView) {
-                    if (!_.isEmpty(filterView.getFormData())) {
+                    if (!filterView.isEmpty()) {
                         this.dataFilterCollection.push(filterView.getFormData());
                     }
                 }.bind(this));
 
-                var formData = this.getFormData();
-                formData.data = this.dataFilterCollection;
-                this.setData(formData);
+                this.setData({data: this.dataFilterCollection});
             },
 
             /**
              * Sets back the data to the filters view.
              */
             updateFiltersData: function () {
-                var fields = _.pluck(this.getFormData()['data'], 'field');
+                var defaultFields = _.pluck(this.config.filters, 'field');
+                var modelFields   = _.pluck(this.getFormData()['data'], 'field');
 
-                this.addFilters(fields).then(function () {
+                this.addFilters(_.union(defaultFields, modelFields)).then(function () {
                     _.each(this.getFormData()['data'], function (filterData) {
                         var filterView = this.filterViews[filterData.field];
 

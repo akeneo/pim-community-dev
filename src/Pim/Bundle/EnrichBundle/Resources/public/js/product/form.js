@@ -148,25 +148,6 @@ define(
             },
 
             /**
-             * Remove all attributes from the root model
-             */
-            clearData: function (options) {
-                options = options || {};
-
-                if (!options.silent) {
-                    this.getRoot().trigger(this.preUpdateEventName, {});
-                }
-
-                this.getRoot().model.clear(options);
-
-                if (!options.silent) {
-                    this.getRoot().trigger(this.postUpdateEventName, {});
-                }
-
-                return this;
-            },
-
-            /**
              * Get the form raw data (vanilla javascript object)
              *
              * @return {Object}

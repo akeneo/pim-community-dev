@@ -49,20 +49,18 @@ define([
         },
 
         /**
+         * {@inherit}
+         */
+        isEmpty: function () {
+            return 'ALL' === this.getOperator();
+        },
+
+        /**
          * Updates operator and value on fields change.
          */
         updateState: function () {
-            var operator = this.$('[name="filter-operator"]').val();
-
-            if ('ALL' === operator) {
-                this.clearData();
-
-                return;
-            }
-
             this.setData({
-                field: this.getField(),
-                operator: operator,
+                operator: this.$('[name="filter-operator"]').val(),
                 value: 100
             });
         }

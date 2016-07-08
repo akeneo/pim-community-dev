@@ -53,21 +53,23 @@ define([
         },
 
         /**
+         * {@inherit}
+         */
+        isEmpty: function () {
+            return null === this.getValue();
+        },
+
+        /**
          * Updates operator and value on fields change.
          */
         updateState: function () {
             var value = this.$('[name="filter-value"]').val();
 
-            if ('all' === value) {
-                this.clearData();
-
-                return;
-            }
-
             this.setData({
-                field: this.getField(),
                 operator: '=',
-                value: 'enabled' === value
+                value: 'all' === value ?
+                    null :
+                    'enabled' === value
             });
         }
     });

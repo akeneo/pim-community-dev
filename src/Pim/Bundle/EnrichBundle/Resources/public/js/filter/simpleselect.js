@@ -100,9 +100,8 @@ define([
         },
         updateState: function () {
             this.setData({
-                'field': this.getField(),
-                'operator': this.$('input[name="filter-operator"]').val(),
-                'value': this.$('input[name="filter-value"]').val().split(',')
+                operator: this.$('input[name="filter-operator"]').val(),
+                value: this.$('input[name="filter-value"]').val().split(',')
             });
         }
     });

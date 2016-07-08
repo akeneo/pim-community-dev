@@ -99,13 +99,21 @@ define([
         /**
          * {@inherit}
          */
+        isEmpty: function () {
+            return _.isEmpty(this.getValue());
+        },
+
+        /**
+         * {@inherit}
+         */
         updateState: function () {
             var value = this.$('[name="filter-value"]').val();
-            value = value ? value.split(',') : value;
+
             this.setData({
-                field: this.getField(),
                 operator: 'IN',
-                value: value
+                value: '' === value ?
+                    [] :
+                    value.split(',')
             });
         }
     });
