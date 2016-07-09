@@ -642,7 +642,10 @@ pim_title.association_type:
 pim_title.group_type:
   index: Ryhmätyypit
   edit: 'Ryhmätyypit %group type.label% | Muokkaa'
-pim_title.mass_edit_action:
+pim_title.mass_edit_product_action:
+  choose: Massaedit | Valitse
+  configure: Massaedit | Määritä
+pim_title.mass_edit_family_action:
   choose: Massaedit | Valitse
   configure: Massaedit | Määritä
 pim_title.job_tracker:
