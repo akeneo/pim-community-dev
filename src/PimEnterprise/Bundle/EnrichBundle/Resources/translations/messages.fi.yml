@@ -49,12 +49,8 @@ pim_enrich:
       not_editable: 'Sinulla ei ole käyttöoikeuksia muokata tuotteita "%identifiers%".'
     published_product:
       page_title: Julkaistut tuotteet
-      page_subtitle: 'Massamuokkaa (1 julkaistu tuote) | Massamuokkaa (%count% julkaistua tuotetta)'
       title: Valitse toiminto
-      subtitle: 'Valitse toimenpide, jonka haluat suorittaa valitulle julkaistulle tuotteelle | Valitse toimenpide jonka haluat suorittaa valituille %count% julkaistulle tuotteelle'
-      confirm: 'Olet päivittämässä julkaistua tuotetta seuraavilla tiedoila, ole hyvä ja vahvista. | Olet päivittämässä %count% julkaistua tuotetta seuraavilla tiedoila, ole hyvä ja vahvista.'
       steps:
-        first: Valitse julkaistut tuotteet
         second: Valitse toiminto
         third: Konfiguroi
         fourth: Vahvista
