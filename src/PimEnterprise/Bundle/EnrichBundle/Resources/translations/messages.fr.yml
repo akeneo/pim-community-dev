@@ -60,17 +60,6 @@ pim_enrich:
         info: 'Les %nbProducts% produits sélectionnés vont être publiés.'
       not_editable: |-
         Vous n'avez pas les permissions d'éditer les produits "%identifiers%".
-    published_product:
-      page_title: Produits publiés
-      page_subtitle: 'Edition en masse (1 produit publié)|Edition en masse (%count% produits publiés)'
-      title: Choisissez une action
-      subtitle: "Choisissez l'action que vous souhaitez réaliser sur le produit publié sélectionné|Choisissez l'action que vous souhaitez réaliser sur les %count% produits publiés sélectionnés"
-      confirm: "Vous êtes sur le point de mettre à jour un produit publié avec les informations suivantes, veuillez confirmer s'il vous plaît|Vous êtes sur le point de mettre à jour les %count% produits publiés sélectionnés, veuillez confirmer s'il vous plait."
-      steps:
-        first: Choisissez les produits publiés
-        second: "Choix de l'opération"
-        third: Configuration
-        fourth: Confirmation
     unpublish:
       label: Dépublier des produits
       description: Dépublier les produits sélectionnés, les données actuellement publiées seront supprimées.
