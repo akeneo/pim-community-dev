@@ -144,7 +144,7 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
      */
     public function supports(JobExecution $jobExecution)
     {
-        return true;
+        return false;
     }
 
     /**
@@ -154,6 +154,6 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
      */
     public function getName()
     {
-        return 'invalid';
+        return 'invalid_csv';
     }
 }

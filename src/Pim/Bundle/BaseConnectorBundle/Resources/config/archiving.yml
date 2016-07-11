@@ -38,9 +38,6 @@ services:
 #        tags:
 #            - { name: pim_base_connector.archiver }
 
-    pim_base_connector.archiver.invalid_item_csv_writer:
-        parent: pim_connector.writer.file.csv
-
     pim_base_connector.archiver.file_writer_archiver:
         class: '%pim_base_connector.archiver.file_writer_archiver.class%'
         arguments:
@@ -62,8 +59,18 @@ services:
         class: Pim\Bundle\BaseConnectorBundle\Archiver\CsvInvalidItemWriter
         arguments:
             - '@pim_base_connector.event_listener.invalid_items_collector'
-            - '@pim_base_connector.archiver.invalid_item_csv_writer'
+            - '@pim_connector.writer.file.csv'
             - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@oneup_flysystem.archivist_filesystem'
+        tags:
+            - { name: pim_base_connector.invalid_items_writer }
+
+    pim_base_connector.archiver.invalid_item_xlsx_writer:
+        class: Pim\Bundle\BaseConnectorBundle\Archiver\XlsxInvalidItemWriter
+        arguments:
+            - '@pim_base_connector.event_listener.invalid_items_collector'
+            - '@pim_connector.writer.file.xlsx'
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@oneup_flysystem.archivist_filesystem'
         tags:
             - { name: pim_base_connector.invalid_items_writer }
