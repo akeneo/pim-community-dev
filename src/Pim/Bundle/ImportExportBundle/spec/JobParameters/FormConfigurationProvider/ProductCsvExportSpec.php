@@ -85,6 +85,13 @@ class ProductCsvExportSpec extends ObjectBehavior
                     'help'  => 'pim_connector.export.withHeader.help'
                 ]
             ],
+            'with_media' => [
+                'type'    => 'switch',
+                'options' => [
+                    'label' => 'pim_connector.export.with_media.label',
+                    'help'  => 'pim_connector.export.with_media.help'
+                ]
+            ],
         ];
 
         $exportConfig = [

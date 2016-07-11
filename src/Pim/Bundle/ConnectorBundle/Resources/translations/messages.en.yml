@@ -45,6 +45,9 @@ pim_connector:
         withHeader:
             label: With header
             help: Whether or not to print the column name
+        with_media:
+            label: Export files and images
+            help: Whether or not to export product files and images
         filePath:
             label: File path
             help: Where to write the generated file on the file system
