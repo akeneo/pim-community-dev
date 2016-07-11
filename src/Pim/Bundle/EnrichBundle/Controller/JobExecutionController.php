@@ -5,7 +5,6 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
-use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemWriterResolver;
 use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
@@ -62,9 +61,6 @@ class JobExecutionController
     /** @var JobExecutionRepository */
     protected $jobExecutionRepo;
 
-    /** @var InvalidItemWriterResolver */
-    protected $invalidItemWriterResolver;
-
     /**
      * @param Request                   $request
      * @param EngineInterface           $templating
@@ -75,7 +71,6 @@ class JobExecutionController
      * @param SerializerInterface       $serializer
      * @param JobExecutionManager       $jobExecutionManager
      * @param JobExecutionRepository    $jobExecutionRepo
-     * @param InvalidItemWriterResolver $invalidItemWriterResolver
      * @param string                    $jobType
      */
     public function __construct(
@@ -88,7 +83,6 @@ class JobExecutionController
         SerializerInterface $serializer,
         JobExecutionManager $jobExecutionManager,
         JobExecutionRepository $jobExecutionRepo,
-        InvalidItemWriterResolver $invalidItemWriterResolver,
         $jobType
     ) {
         $this->batchLogHandler     = $batchLogHandler;
@@ -101,7 +95,6 @@ class JobExecutionController
         $this->translator          = $translator;
         $this->jobExecutionRepo    = $jobExecutionRepo;
         $this->jobType             = $jobType;
-        $this->invalidItemWriterResolver = $invalidItemWriterResolver;
     }
 
     /**

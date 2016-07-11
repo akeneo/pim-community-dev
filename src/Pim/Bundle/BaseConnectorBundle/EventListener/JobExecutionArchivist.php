@@ -98,7 +98,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
                     $result[$archiver->getName()] = $archives;
                 }
             }
-            $result[] = $this->invalidItemWriterResolver->getArchives($jobExecution);
+            $result = $result + $this->invalidItemWriterResolver->getArchives($jobExecution);
         }
 
 
