@@ -44,11 +44,11 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     # Normalizers
-    pimee_product_asset.processor.normalization.asset.flat:
+    pimee_product_asset.processor.normalization.asset:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
-            - '@pim_product_asset.normalizer.flat.asset'
-            - 'flat'
+            - '@pim_product_asset.normalizer.structured.asset'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_product_asset.processor.normalization.category.flat:
         class: '%pim_connector.processor.normalization.simple.class%'

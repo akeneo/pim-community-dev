@@ -71,7 +71,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.asset'
-            - '@pimee_product_asset.processor.normalization.asset.flat'
+            - '@pimee_product_asset.processor.normalization.asset'
             - '@pimee_product_asset.writer.file.csv_asset'
 
     pimee_product_asset.step.csv_asset_category.export:
@@ -135,7 +135,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.asset'
-            - '@pimee_product_asset.processor.normalization.asset.flat'
+            - '@pimee_product_asset.processor.normalization.asset'
             - '@pimee_product_asset.writer.file.xlsx_asset'
 
     pimee_product_asset.step.xlsx_asset_category.export:
