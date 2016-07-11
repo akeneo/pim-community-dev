@@ -5,6 +5,7 @@ namespace Pim\Behat\Context\Domain\Collect;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ExpectationException;
 use Box\Spout\Common\Type;
 use Box\Spout\Writer\WriterFactory;
 use Pim\Behat\Context\PimContext;
@@ -134,5 +135,36 @@ class ImportProfilesContext extends PimContext
     public function iAmOnTheImportJobEditPage(JobInstance $job)
     {
         $this->getNavigationContext()->openPage('Import edit', ['id' => $job->getId()]);
+    }
+
+    /**
+     * @param string       $code
+     * @param PyStringNode $data
+     *
+     * @Given /^the invalid data file of "([^"]*)" should contain:$/
+     *
+     * @throws ExpectationException
+     */
+    public function theInvalidDataFileOfShouldContain($code, PyStringNode $data)
+    {
+        // TODO: Do this method body once invalid data writers are done.
+
+//        $jobInstance = $this->getMainContext()->getSubcontext('fixtures')->getJobInstance($code);
+//
+//        $jobExecution = $jobInstance->getJobExecutions()->first();
+//        $archivist = $this->getMainContext()->getContainer()->get('pim_base_connector.event_listener.archivist');
+//        $file = $archivist->getArchive($jobExecution, 'invalid', 'invalid_items.csv');
+//
+//        $file->open(new \Gaufrette\StreamMode('r'));
+//        $content = $file->read(1024);
+//        while (!$file->eof()) {
+//            $content .= $file->read(1024);
+//        }
+//
+//        if ($content !== (string) $data) {
+//            throw $this->createExpectationException(
+//                sprintf("Invalid data file contains:\n\"\"\"\n%s\n\"\"\"", $content)
+//            );
+//        }
     }
 }
