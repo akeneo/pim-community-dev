@@ -46,6 +46,9 @@ pimee_workflow:
   steps:
     product_draft_processor.title: Процессор предложений
     approve.title: Принять предложение
+  mass_edit_action:
+    published:
+      page_title: Опубликованные продукты
 pimee_workflow_product_draft_notification_new_proposal: Новое предложение
 btn.publish: Опубликовать
 btn.unpublish: Снять с публикации

@@ -68,6 +68,18 @@ pimee_workflow:
     product_draft_processor.title: Processeur de proposition
     approve.title: Approuver la proposition
     refuse.title: Rejeter la proposition
+  mass_edit_action:
+    published:
+      page_title: Produits publiés
+      page_subtitle: 'Edition en masse (1 produit publié)|Edition en masse (%count% produits publiés)'
+      title: Choisir une opération
+      subtitle: "Choisissez l'action que vous souhaitez réaliser sur le produit publié sélectionné|Choisissez l'action que vous souhaitez réaliser sur les %count% produits publiés sélectionnés"
+      confirm: "Vous êtes sur le point de mettre à jour un produit publié avec les informations suivantes, veuillez confirmer s'il vous plaît|Vous êtes sur le point de mettre à jour les %count% produits publiés sélectionnés, veuillez confirmer s'il vous plait."
+      steps:
+        first: Choisissez les produits publiés
+        second: Choisir une opération
+        third: Configurer
+        fourth: Confirmer
 pimee_workflow_product_draft_notification_new_proposal: Nouvelle proposition
 pimee_workflow_import_notification_new_proposals: "Nouvelles propositions de relectures venant d'un import"
 btn.publish: Publier

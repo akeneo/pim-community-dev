@@ -137,6 +137,12 @@ pimee_product_asset:
       no_access_to_products: Usted no tiene acceso a recursos en ningún árbol, por favor contacte a su administrador
       apply_on_children.label: Aplicar cambios en sub categorías
       apply_on_children.help: Copiar los cambios de permisos en todas las sub categorías, los permisos existentes en las sub categorías son conservados
+  mass_edit_action:
+    asset:
+      page_title: Recursos
+      steps:
+        second: Configurar
+        third: Confirmar
 btn.create.asset: Crear un recurso
 btn.drag_or_upload: Arrastrar y soltar un fichero o haga clic aquí
 job_execution.summary:
