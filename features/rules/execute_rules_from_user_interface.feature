@@ -36,9 +36,9 @@ Feature: Execute rules from the user interface
             scope:  mobile
       """
     And I am logged in as "Julia"
-    And I am on the rules page
 
   Scenario: Successfully execute all rules from the user interface
+    Given I am on the rules page
     When I press the "Execute rules" button
     Then I should see the text "Execute Confirmation"
     When I confirm the rules execution
@@ -49,6 +49,7 @@ Feature: Execute rules from the user interface
       | success | Execution of the rule(s) finished |
 
   Scenario: Successfully execute one rule from the rule datagrid
+    Given I am on the rules page
     When I click on the "Execute" action of the row which contains "copy_description"
     Then I should see the text "Execute Confirmation"
     When I confirm the rule execution
@@ -57,3 +58,13 @@ Feature: Execute rules from the user interface
     And I should see notification:
       | type    | message                           |
       | success | Execution of the rule(s) finished |
+
+  Scenario: Successfully do not execute
+    Given I am on the "Catalog manager" role page
+    And I visit the "Permissions" tab
+    And I revoke rights to resources Execute rules
+    And I save the role
+    And I should not see the text "There are unsaved changes."
+    When I am on the rules page
+    Then I should not see the "Execute rules" button
+    And I should not be able to view the "Execute" action of the row which contains "copy_description"
