@@ -65,13 +65,13 @@ class ProductWriter extends AbstractFileWriter implements ArchivableWriterInterf
 
         $parameters = $this->stepExecution->getJobParameters();
 
-        if ($parameters->has('with_media') && !$parameters->get('with_media')) {
-            return;
-        }
-
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
             $this->localFs->mkdir($exportDirectory);
+        }
+
+        if ($parameters->has('with_media') && !$parameters->get('with_media')) {
+            return;
         }
 
         $this->mediaCopier->exportAll($media, $exportDirectory);
