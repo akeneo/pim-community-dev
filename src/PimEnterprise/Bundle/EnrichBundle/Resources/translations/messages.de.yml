@@ -49,12 +49,8 @@ pim_enrich:
       not_editable: 'Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.'
     published_product:
       page_title: Veröffentlichte Produkte
-      page_subtitle: 'Massenbearbeitung (1 veröffentlichtes Produkt)|Massenbearbeitung (%count% veröffentlichte Produkte)'
       title: Aktion auswählen
-      subtitle: 'Wählen Sie die Aktion aus, die Sie auf das ausgewählte, veröffentlichte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten, %count% veröffentlichten Produkt anwenden wollen'
-      confirm: 'Sie sind dabei, ein veröffentlichtes Produkt mit den folgenden Informationen zu aktualisieren, bitte bestätigen Sie das.|Sie sind dabei, %count% veröffentlichte Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen Sie das.'
       steps:
-        first: Veröffentlichte Produkte auswählen
         second: Aktion auswählen
         third: Konfigurieren
         fourth: Bestätigen
