@@ -49,6 +49,7 @@ class ProductCsvExport implements DefaultValuesProviderInterface
         $parameters['categories'] = [];
         $parameters['completeness'] = 'at_least_one_complete';
         $parameters['product_identifier'] = null;
+        $parameters['with_media'] = true;
 
         return $parameters;
     }

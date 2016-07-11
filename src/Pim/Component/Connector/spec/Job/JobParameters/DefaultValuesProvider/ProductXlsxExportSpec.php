@@ -38,6 +38,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
                 'linesPerFile'           => 10000,
                 'families'               => null,
                 'product_identifier'     => null,
+                'with_media'             => true,
             ]
         );
     }

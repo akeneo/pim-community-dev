@@ -51,6 +51,8 @@ class XlsxProductWriterSpec extends ObjectBehavior
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn('my/file/path');
         $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('with_media')->willReturn(true);
+        $jobParameters->get('with_media')->willReturn(true);
 
         $items = $this->getItemToExport();
 
@@ -133,6 +135,40 @@ class XlsxProductWriterSpec extends ObjectBehavior
         )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
 
         $this->flush();
+    }
+
+    function it_does_not_copy_media_if_parameters_with_media_is_false(
+        $flatRowBuffer,
+        $mediaCopier,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn('my/file/path');
+        $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('with_media')->willReturn(true);
+        $jobParameters->get('with_media')->willReturn(false);
+
+        $flatRowBuffer->write([['id' => 123, 'family' => 12]], true)->shouldBeCalled();
+        $mediaCopier->exportAll(Argument::cetera())->shouldNotBeCalled();
+
+        $this->write([
+            [
+                'product' => [
+                    'id' => 123,
+                    'family' => 12,
+                ],
+                'media' => [
+                    'filePath' => null,
+                    'exportPath' => 'export',
+                    'storageAlias' => 'storageAlias',
+                ],
+            ]
+        ]);
+
+        $this->getWrittenFiles()->shouldBeEqualTo([]);
     }
 
     private function getItemToExport()

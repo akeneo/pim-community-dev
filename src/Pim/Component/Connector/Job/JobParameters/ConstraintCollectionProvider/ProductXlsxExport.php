@@ -91,6 +91,7 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
                 'all',
             ], 'groups' => 'Execution'])
         ];
+        $constraintFields['with_media'] = new Type('bool');
 
         return new Collection(['fields' => $constraintFields]);
     }

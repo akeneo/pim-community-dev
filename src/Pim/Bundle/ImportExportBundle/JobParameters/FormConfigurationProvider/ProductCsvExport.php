@@ -71,7 +71,17 @@ class ProductCsvExport implements FormConfigurationProviderInterface
      */
     public function getFormConfiguration(JobInstance $jobInstance)
     {
-        $formOptions = [
+        $csvFormOptions = array_merge($this->simpleCsvExport->getFormConfiguration($jobInstance), [
+            'with_media' => [
+                'type'    => 'switch',
+                'options' => [
+                    'label' => 'pim_connector.export.with_media.label',
+                    'help'  => 'pim_connector.export.with_media.help'
+                ]
+            ],
+        ]);
+
+        $productFormOptions = [
             'channel' => [
                 'type'    => 'choice',
                 'options' => [
@@ -173,10 +183,8 @@ class ProductCsvExport implements FormConfigurationProviderInterface
                 ]
             ],
         ];
-        
-        $formOptions = array_merge($formOptions, $this->simpleCsvExport->getFormConfiguration($jobInstance));
 
-        return $formOptions;
+        return array_merge($productFormOptions, $csvFormOptions);
     }
 
     /**

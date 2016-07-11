@@ -36,6 +36,7 @@ class ProductCsvExportSpec extends ObjectBehavior
             'categories'             => [],
             'completeness'           => 'at_least_one_complete',
             'product_identifier'     => null,
+            'with_media'             => true,
         ]);
     }
 

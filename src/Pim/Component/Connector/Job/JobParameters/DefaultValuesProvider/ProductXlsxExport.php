@@ -50,6 +50,7 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
         $parameters['linesPerFile'] = 10000;
         $parameters['families'] = null;
         $parameters['product_identifier'] = null;
+        $parameters['with_media'] = true;
 
         return $parameters;
     }

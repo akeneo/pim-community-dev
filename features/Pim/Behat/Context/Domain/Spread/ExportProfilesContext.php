@@ -138,6 +138,31 @@ class ExportProfilesContext extends PimContext
      */
     public function exportDirectoryOfShouldContainTheFollowingMedia($code, TableNode $table)
     {
+        $this->checkExportDirectoryFiles($code, true, $table);
+    }
+
+    /**
+     * @param string    $code
+     * @param TableNode $table
+     *
+     * @Then /^export directory of "([^"]*)" should not contain the following media:$/
+     *
+     * @throws ExpectationException
+     */
+    public function exportDirectoryOfShouldNotContainTheFollowingMedia($code, TableNode $table)
+    {
+        $this->checkExportDirectoryFiles($code, false, $table);
+    }
+
+    /**
+     * Check if files should be in the export directory of the job with the given $code
+     *
+     * @param string    $code                Code of the job instance
+     * @param bool      $shouldBeInDirectory true if the files should be in the directory, false otherwise
+     * @param TableNode $table               Files to check
+     */
+    protected function checkExportDirectoryFiles($code, $shouldBeInDirectory, TableNode $table)
+    {
         $config = $this->getFixturesContext()->getJobInstance($code)->getRawConfiguration();
 
         $path = dirname($config['filePath']);
@@ -151,9 +176,15 @@ class ExportProfilesContext extends PimContext
         foreach ($table->getRows() as $data) {
             $file = rtrim($path, '/') . '/' .$data[0];
 
-            if (!is_file($file)) {
+            if (!is_file($file) && $shouldBeInDirectory) {
                 throw $this->getMainContext()->createExpectationException(
                     sprintf('File \"%s\" doesn\'t exist', $file)
+                );
+            }
+
+            if (is_file($file) && !$shouldBeInDirectory) {
+                throw $this->getMainContext()->createExpectationException(
+                    sprintf('File \"%s\" exists, but it should not', $file)
                 );
             }
         }
