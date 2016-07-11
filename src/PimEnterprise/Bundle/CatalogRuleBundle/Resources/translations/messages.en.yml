@@ -89,7 +89,7 @@ pimee_catalog_rule:
     popin:
         execute_rules:
             confirm_title: Execute confirmation
-            confirm_content: Are you sure you want to execute all the rules?
+            confirm_content: Are you sure you want to execute all the rules? (this can take a long time)
 
 btn:
     Execute rules: Execute rules
