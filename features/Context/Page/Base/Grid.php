@@ -83,23 +83,19 @@ class Grid extends Index
         ],
         'pim-filter-product-enabled' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
-            'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
+            'Pim\Behat\Decorator\Export\Filter\BooleanDecorator',
         ],
         'pim-filter-product-family' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
-            'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
+            'Pim\Behat\Decorator\Export\Filter\FamilyDecorator',
         ],
         'pim-filter-product-completeness' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
-            'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
+            'Pim\Behat\Decorator\Export\Filter\CompletenessDecorator',
         ],
         'pim-filter-product-updated' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\UpdatedDecorator',
-        ],
-        'pim-filter-product-identifier' => [
-            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
-            'Pim\Behat\Decorator\Export\Filter\IdentifierDecorator',
         ]
     ];
 

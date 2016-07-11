@@ -15,7 +15,7 @@ Feature: Export products according to their skus
       | SNKRS-1R | 1       | rangers | summer_collection | Black rangers |
     And I am logged in as "Julia"
 
-  Scenario: Export products by their identifiers
+  Scenario: Export products by their skus
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "sku", "operator": "IN", "value": ["SNKRS-1B"]}]} |

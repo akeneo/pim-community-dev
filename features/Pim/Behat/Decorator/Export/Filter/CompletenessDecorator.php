@@ -5,7 +5,7 @@ namespace Pim\Behat\Decorator\Export\Filter;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 
-class IdentifierDecorator extends ElementDecorator
+class CompletenessDecorator extends ElementDecorator
 {
     use SpinCapableTrait;
 
@@ -17,9 +17,10 @@ class IdentifierDecorator extends ElementDecorator
      */
     public function filter($operator, $value)
     {
-        $field = $this->spin(function () {
-            return $this->find('css', '.identifier');
-        }, 'Cannot find identifier element.');
-        $field->setValue($value);
+        $operatorField = $this->decorate(
+            $this->find('css', '.operator.select2-container'),
+            ['Pim\Behat\Decorator\Field\Select2Decorator']
+        );
+        $operatorField->setValue($operator);
     }
 }
