@@ -8,20 +8,20 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
-use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvExport;
-use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
+use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductXlsxExport;
+use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport;
 use Pim\Component\Connector\Reader\File\FileIterator;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
-use Pim\Component\Connector\Writer\File\CsvWriter;
+use Pim\Component\Connector\Writer\File\XlsxSimpleWriter;
 
 /**
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @author    Soulet Olivier <olivier.soulet@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  *
  * TODO: Find a better, faster, stronger naming
  */
-class CsvInvalidItemWriter extends AbstractFilesystemArchiver
+class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
 {
     /** @var JobExecution */
     protected $jobExecution;
@@ -35,7 +35,7 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
     /** @var InvalidItemsCollector */
     protected $collector;
 
-    /** @var CsvWriter */
+    /** @var XlsxSimpleWriter */
     protected $writer;
 
     /** @var int */
@@ -45,13 +45,13 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
      * CsvInvalidItemWriter constructor.
      *
      * @param InvalidItemsCollector $collector
-     * @param CsvWriter             $writer
+     * @param XlsxSimpleWriter      $writer
      * @param FileIteratorFactory   $fileIteratorFactory
      * @param Filesystem            $filesystem
      */
     public function __construct(
         InvalidItemsCollector $collector,
-        CsvWriter $writer,
+        XlsxSimpleWriter $writer,
         FileIteratorFactory $fileIteratorFactory,
         Filesystem $filesystem
     ) {
@@ -65,12 +65,7 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
     {
         if (null === $this->fileIterator) {
             $filePath = $jobParameters->get('filePath');
-            $delimiter = $jobParameters->get('delimiter');
-            $enclosure = $jobParameters->get('enclosure');
-            $this->fileIterator = $this->fileIteratorFactory->create($filePath, [
-                'fieldDelimiter' => $delimiter,
-                'fieldEnclosure' => $enclosure
-            ]);
+            $this->fileIterator = $this->fileIteratorFactory->create($filePath);
             $this->fileIterator->rewind();
         }
 
@@ -79,20 +74,23 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
         return $this->fileIterator->current();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function archive(JobExecution $jobExecution)
     {
         if (!$this->collector->getInvalidItems()) {
             return;
         }
 
-        // Parameters for reading the imported CSV file
+        // Parameters for reading the imported XLSX file
         $readJobParameters = $jobExecution->getJobParameters();
 
-        $key = strtr($this->getRelativeArchivePath($jobExecution), ['%filename%' => 'invalid_items.csv']);
+        $key = strtr($this->getRelativeArchivePath($jobExecution), ['%filename%' => 'invalid_items.xlsx']);
         $this->filesystem->put($key, '');
 
-        // Parameters for writing the invalid data CSV file
-        $provider = new ProductCsvExport(new SimpleCsvExport([]), []);
+        // Parameters for writing the invalid data XLSX file
+        $provider = new ProductXlsxExport(new SimpleXlsxExport([]), []);
         $writeParams = $provider->getDefaultValues();
         $writeParams['filePath'] = $this->filesystem->getAdapter()->getPathPrefix() . $key;
 
@@ -144,7 +142,7 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
      */
     public function supports(JobExecution $jobExecution)
     {
-        return true;
+        return false;
     }
 
     /**
@@ -154,6 +152,6 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
      */
     public function getName()
     {
-        return 'invalid_csv';
+        return 'invalid_xlsx';
     }
 }

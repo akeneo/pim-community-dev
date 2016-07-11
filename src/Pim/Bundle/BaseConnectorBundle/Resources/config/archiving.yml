@@ -8,6 +8,7 @@ parameters:
     pim_base_connector.archiver.archivable_file_writer_archiver.class: Pim\Bundle\BaseConnectorBundle\Archiver\ArchivableFileWriterArchiver
     pim_base_connector.archiver.invalid_item_csv_writer.class: Pim\Bundle\BaseConnectorBundle\Archiver\CsvInvalidItemWriter
     pim_base_connector.archiver.invalid_item_xlsx_writer.class: Pim\Bundle\BaseConnectorBundle\Archiver\XlsxInvalidItemWriter
+    pim_base_connector.event_listener.invalid_items_writer_register.class: Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemWriterResolver
 
 services:
     pim_base_connector.event_listener.archivist:
@@ -78,4 +79,6 @@ services:
             - { name: pim_base_connector.invalid_items_writer }
 
     pim_base_connector.event_listener.invalid_items_writer_register:
-        class: Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemWriterResolver
+        class: '%pim_base_connector.event_listener.invalid_items_writer_register.class%'
+        tags:
+            - { name: kernel.event_subscriber }

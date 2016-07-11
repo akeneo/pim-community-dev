@@ -53,4 +53,14 @@ class ExportExecutionController extends JobExecutionController
     {
         return parent::downloadFilesAction($id, $archiver, $key);
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @AclAncestor("pim_importexport_export_execution_download_files")
+     */
+    public function downloadInvalidItemsAction($id, $writer, $key)
+    {
+        return parent::downloadInvalidItemsAction($id, $writer, $key);
+    }
 }

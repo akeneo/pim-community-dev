@@ -20,6 +20,7 @@ class PimBaseConnectorBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new DependencyInjection\Compiler\RegisterArchiversPass());
+            ->addCompilerPass(new DependencyInjection\Compiler\RegisterArchiversPass())
+            ->addCompilerPass(new DependencyInjection\Compiler\RegisterInvalidItemWritersPass());
     }
 }

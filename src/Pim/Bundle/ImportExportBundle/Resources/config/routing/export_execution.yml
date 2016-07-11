@@ -22,3 +22,9 @@ pim_importexport_export_execution_download_file:
     defaults: { _controller: pim_import_export.controller.export_execution:downloadFilesAction }
     requirements:
         id: \d+
+
+pim_importexport_export_execution_download_invalid_items:
+    path: /{id}/download/{writer}/{key}
+    defaults: { _controller: pim_import_export.controller.export_execution:downloadInvalidItemsAction }
+    requirements:
+        id: \d+

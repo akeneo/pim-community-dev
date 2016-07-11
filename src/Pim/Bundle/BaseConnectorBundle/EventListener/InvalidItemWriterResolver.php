@@ -4,6 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\EventListener;
 
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -16,18 +17,6 @@ class InvalidItemWriterResolver implements EventSubscriberInterface
 {
     /** @var array */
     protected $writers = [];
-
-    /** @var InvalidItemsCollector */
-    protected $invalidItemsCollector;
-
-    /**
-     * @param InvalidItemsCollector $invalidItemsCollector
-     */
-    public function __construct(InvalidItemsCollector $invalidItemsCollector)
-    {
-        $this->invalidItemsCollector = $invalidItemsCollector;
-    }
-
 
     /**
      * {@inheritdoc}
@@ -72,12 +61,31 @@ class InvalidItemWriterResolver implements EventSubscriberInterface
     {
         $jobExecution = $event->getJobExecution();
 
-        $items = $this->invalidItemsCollector->getInvalidItems();
-
         foreach ($this->writers as $writer) {
-            if ($writer->supports($items)) {
+            if ($writer->supports($jobExecution)) {
                 $writer->archive($jobExecution);
             }
         }
+    }
+    /**
+     * Get the invalid item file
+     *
+     * @param JobExecution $jobExecution
+     * @param string       $writer
+     * @param string       $key
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return resource
+     */
+    public function getInvalidItemFile(JobExecution $jobExecution, $writer, $key)
+    {
+        if (!isset($this->writers[$writer])) {
+            throw new \InvalidArgumentException(
+                sprintf('Writer "%s" is not registered', $writer)
+            );
+        }
+
+        return $this->writers[$writer]->getArchive($jobExecution, $key);
     }
 }
