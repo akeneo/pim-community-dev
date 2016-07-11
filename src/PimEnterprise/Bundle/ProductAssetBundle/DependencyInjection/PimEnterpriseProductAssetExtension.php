@@ -80,7 +80,6 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('view_elements/category.yml');
         $loader->load('voters.yml');
         $loader->load('workflow/presenters.yml');
-        $loader->load('writers.yml');
         $loader->load('jobs.yml');
         $loader->load('steps.yml');
 
