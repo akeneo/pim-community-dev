@@ -449,6 +449,7 @@ class StepExecution
      */
     public function addWarning($reason, array $reasonParameters, $item)
     {
+        $item = $item->getData();
         if (is_object($item)) {
             $item = [
                 'class'  => ClassUtils::getClass($item),
