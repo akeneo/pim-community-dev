@@ -17,7 +17,7 @@ define(
         'pim/i18n',
         'pim/fetcher-registry',
         'pim/user-context',
-        'text!pim/template/product-export/categories-selector-tree',
+        'text!pim/template/filter/product/category/selector',
         'jquery.jstree'
     ],
     function ($, _, Backbone, Routing, __, LoadingMask, i18n, FetcherRegistry, UserContext, template) {

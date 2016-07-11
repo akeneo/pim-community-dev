@@ -61,6 +61,7 @@ define(
                 this.$el.html(this.template());
 
                 _.each(this.filterViews, function (filterView) {
+                    filterView.setParentForm(this);
                     this.$('.filters').append(filterView.render().$el);
                 }.bind(this));
 
@@ -162,6 +163,9 @@ define(
 
                     this.listenTo(filterView, 'pim_enrich:form:entity:post_update', this.updateModel.bind(this));
                     this.listenTo(filterView, 'filter:remove', this.removeFilter.bind(this));
+                    this.listenTo(this.getRoot(), 'channel:update:after', function (scope) {
+                        filterView.trigger('channel:update:after', scope)
+                    }.bind(this));
 
                     this.filterViews[filterView.getField()] = filterView;
 
@@ -193,6 +197,9 @@ define(
 
                 this.addFilters(_.union(defaultFields, modelFields)).then(function () {
                     _.each(this.getFormData()['data'], function (filterData) {
+                        if (!_.has(this.filterViews, filterData.field)) {
+                            return;
+                        }
                         var filterView = this.filterViews[filterData.field];
 
                         filterView.setData(filterData, {silent: true});

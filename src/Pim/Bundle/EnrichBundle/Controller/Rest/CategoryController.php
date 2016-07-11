@@ -56,7 +56,7 @@ class CategoryController
             $categories
         );
 
-        // Exclude root as we when children only
+        // Returns only children of the given category without the node itself
         if (!empty($tree)) {
             $tree = $tree[0]['children'];
         }

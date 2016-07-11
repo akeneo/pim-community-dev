@@ -111,7 +111,7 @@ class Grid extends Index
                 'Grid container'        => ['css' => '.grid-container'],
                 'Grid'                  => ['css' => 'table.grid'],
                 'Grid content'          => ['css' => 'table.grid tbody'],
-                'Filters'               => ['css' => 'div.filter-box'],
+                'Filters'               => ['css' => '.filter-box, .filter-wrapper'],
                 'Grid toolbar'          => ['css' => 'div.grid-toolbar'],
                 'Manage filters'        => ['css' => 'div.filter-list'],
                 'Configure columns'     => ['css' => 'a:contains("Columns")'],
@@ -545,7 +545,7 @@ class Grid extends Index
     public function showFilter($filterName)
     {
         $this->spin(function () {
-            return $this->getElement('Body')->find('css', '.filter-box');
+            return $this->getElement('Body')->find('css', '.filter-box, .filter-wrapper');
         }, 'The filter box is not loaded');
 
         $filter = $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));

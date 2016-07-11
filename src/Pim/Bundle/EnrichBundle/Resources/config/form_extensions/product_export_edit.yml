@@ -44,6 +44,9 @@ extensions:
                 -
                     field: updated
                     view: pim-filter-product-updated
+                -
+                    field: categories.code
+                    view: pim-filter-product-category
 
     pim-product-export-edit-content-data-help:
         module: pim/export/product/edit/content/data/help

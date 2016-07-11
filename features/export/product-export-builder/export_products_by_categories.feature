@@ -59,14 +59,14 @@ Feature: Export products from any given categories
   Scenario: Export the products from a tree using the UI
     When I am on the "csv_product_export" export job edit page
     And I visit the "Content" tab
-    Then I should see the text "Categories All products"
+    Then I should see the text "All products"
     When I press the "Select categories" button
     Then I should see the text "Categories selection"
     When I click on the "toys_games" category
     And I expand the "toys_games" category
     And I click on the "action_figures" category
     And I press the "Confirm" button
-    Then I should see the text "Categories 2 categories selected"
+    Then I should see the text "2 categories selected"
     When I press the "Save" button
     And I am on the "csv_product_export" export job page
     And I launch the export job
@@ -81,4 +81,4 @@ Feature: Export products from any given categories
     And I visit the "Content" tab
     And I fill in the following information:
       | Channel | Mobile |
-    Then I should see the text "Categories All products"
+    Then I should see the text "All products"

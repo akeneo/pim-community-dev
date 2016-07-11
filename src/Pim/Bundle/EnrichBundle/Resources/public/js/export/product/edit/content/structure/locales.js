@@ -127,7 +127,7 @@ define(
                 var structure = this.getFormData().structure;
 
                 if (_.isUndefined(structure)) {
-                    return [];
+                    return {};
                 }
 
                 return _.isUndefined(structure.locales) ? [] : structure.locales;
@@ -137,7 +137,7 @@ define(
              * Resets locales after channel has been modified then re-renders the view.
              */
             channelUpdated: function () {
-                this.setLocales([])
+                this.setDefaultLocales()
                     .then(function () {
                         this.render();
                     }.bind(this));
