@@ -134,7 +134,7 @@ Feature: Execute a job
   @jira https://akeneo.atlassian.net/browse/PIM-5696
   Scenario: Successfully import products with associations and numeric value as SKU
     Given the following XLSX file to import:
-    """
+      """
       sku;family;groups;X_SELL-groups
       123;boots;CROSS;CROSS
       """

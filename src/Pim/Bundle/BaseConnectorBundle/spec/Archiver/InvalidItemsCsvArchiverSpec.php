@@ -10,14 +10,14 @@ use League\Flysystem\Adapter\Local as LocalAdapter;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
-use Pim\Component\Connector\Writer\File\CsvWriter;
+use Pim\Component\Connector\Writer\File\Csv\Writer;
 use Prophecy\Argument;
 
 class InvalidItemsCsvArchiverSpec extends ObjectBehavior
 {
     function let(
         InvalidItemsCollector $collector,
-        CsvWriter $writer,
+        Writer $writer,
         Filesystem $filesystem,
         LocalAdapter $adapter
     ) {
@@ -33,7 +33,7 @@ class InvalidItemsCsvArchiverSpec extends ObjectBehavior
 
     function it_doesnt_create_a_file_when_there_are_no_invalid_items(
         InvalidItemsCollector $collector,
-        CsvWriter $writer,
+        Writer $writer,
         JobExecution $jobExecution
     ) {
         $collector->getInvalidItems()->willReturn(null);
@@ -46,7 +46,7 @@ class InvalidItemsCsvArchiverSpec extends ObjectBehavior
 
     function it_archives_unvalid_items(
         InvalidItemsCollector $collector,
-        CsvWriter $writer,
+        Writer $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Filesystem $filesystem,

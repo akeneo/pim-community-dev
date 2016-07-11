@@ -13,9 +13,8 @@ use League\Flysystem\Adapter\Local as LocalAdapter;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory;
-use Pim\Component\Connector\Writer\File\CsvWriter;
+use Pim\Component\Connector\Writer\File\Csv\Writer;
 use Prophecy\Argument;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ArchivableFileWriterArchiverSpec extends ObjectBehavior
 {
@@ -38,7 +37,7 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
     function it_doesnt_create_a_file_when_writer_is_invalid(
         $filesystem,
         $jobRegistry,
-        CsvWriter $writer,
+        Writer $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
@@ -67,7 +66,7 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
 
     function it_returns_true_for_the_supported_job(
         $jobRegistry,
-        CsvWriter $writer,
+        Writer $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
@@ -127,7 +126,7 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
 
     function it_creates_a_file_if_writer_is_correct(
         $jobRegistry,
-        CsvWriter $writer,
+        Writer $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,

@@ -9,7 +9,7 @@ use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvExport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
-use Pim\Component\Connector\Writer\File\CsvWriter;
+use Pim\Component\Connector\Writer\File\Csv\Writer;
 
 /**
  * Archiver of invalid items into a csv file
@@ -23,19 +23,19 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
     /** @var InvalidItemsCollector */
     protected $collector;
 
-    /** @var CsvWriter */
+    /** @var Writer */
     protected $writer;
 
     /**
      * Constructor
      *
      * @param InvalidItemsCollector $collector
-     * @param CsvWriter             $writer
+     * @param Writer                $writer
      * @param Filesystem            $filesystem
      */
     public function __construct(
         InvalidItemsCollector $collector,
-        CsvWriter $writer,
+        Writer $writer,
         Filesystem $filesystem
     ) {
         $this->collector  = $collector;

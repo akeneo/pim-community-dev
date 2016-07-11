@@ -14,28 +14,22 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
  */
 class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInterface
 {
-    /** @var FieldSplitter */
-    protected $fieldSplitter;
-
     /** @var IdentifiableObjectRepositoryInterface */
     protected $productRepository;
 
-    /** @var array */
-    protected $firstDefaultColumns;
-
     /**
-     * @param FieldSplitter $fieldSplitter
+     * @param FieldSplitter                         $fieldSplitter
      * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param array $firstDefaultColumns
+     * @param array                                 $firstDefaultColumns
      */
     public function __construct(
         FieldSplitter $fieldSplitter,
         IdentifiableObjectRepositoryInterface $productRepository,
         array $firstDefaultColumns
     ) {
-        $this->fieldSplitter = $fieldSplitter;
-        $this->productRepository = $productRepository;
         parent::__construct($fieldSplitter, $firstDefaultColumns);
+
+        $this->productRepository = $productRepository;
     }
 
     /**

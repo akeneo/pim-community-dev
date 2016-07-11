@@ -1,11 +1,14 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\File;
+namespace Pim\Component\Connector\Writer\File\Xlsx;
 
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
-use Box\Spout\Common\Type;
-use Box\Spout\Writer\WriterFactory;
-use Box\Spout\Writer\WriterInterface;
+use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Pim\Component\Connector\Writer\File\BulkFileExporter;
+use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
+use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 
 /**
  * Write product data into a XLSX file on the local filesystem
@@ -14,7 +17,7 @@ use Box\Spout\Writer\WriterInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
+class ProductWriter extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
 {
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;
@@ -94,8 +97,11 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     {
         $this->flusher->setStepExecution($this->stepExecution);
 
+        $writerOptions = ['type' => 'xlsx'];
+
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,
+            $writerOptions,
             $this->getPath(),
             $this->stepExecution->getJobParameters()->get('linesPerFile'),
             $this->filePathResolverOptions

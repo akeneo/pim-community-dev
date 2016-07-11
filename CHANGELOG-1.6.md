@@ -53,6 +53,9 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Connector\Writer\File\CsvWriter` to `Pim\Component\Connector\Writer\File\Csv\Writer`
+- Move `Pim\Component\Connector\Writer\File\CsvProductWriter` to `Pim\Component\Connector\Writer\File\Csv\ProductWriter`
+- Move `Pim\Component\Connector\Writer\File\CsvVariantGroupWriter` to `Pim\Component\Connector\Writer\File\Csv\VariantGroupWriter`
 - Change constructor of `Pim\Component\Connector\Processor\Denormalization\ProductProcessor`. Remove argument `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`.
 - Add method `findPotentiallyPurgeableBy` to interface `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface`
 - Add method `getNewestVersionIdForResource` to interface `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface`
@@ -69,12 +72,9 @@
 - Remove properties editTemplate, showTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Remove methods setShowTemplate, setEditTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Change constructor of `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`. Add `Akeneo\Bundle\BatchBundle\Connector\JobTemplateProviderInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\CsvWriter` . Add parameter `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\CsvProductWriter` . Add parameter `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\CsvVariantGroupWriter` . Add parameter `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\XlsxSimpleWriter` . Add `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\XlsxProductWriter` . Add `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\XlsxVariantGroupWriter` . Add `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
+- Change constructor of `Pim\Component\Connector\Writer\File\Csv\Writer` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher`
+- Change constructor of `Pim\Component\Connector\Writer\File\Csv\ProductWriter` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher`
+- Change constructor of `Pim\Component\Connector\Writer\File\Csv\VariantGroupWriter` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher`
 - Remove method `setAvailableLocales` in `Pim\Component\Catalog\Model\AttributeInterface` and `Pim\Component\Catalog\Model\AbstractAttribute`
 - `Pim\Component\Connector\Writer\File\FlatItemBuffer` implements `\Countable`
 - `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`

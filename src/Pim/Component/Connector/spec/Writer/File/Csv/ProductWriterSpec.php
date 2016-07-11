@@ -1,27 +1,27 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Writer\File;
+namespace spec\Pim\Component\Connector\Writer\File\Csv;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
-use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Pim\Component\Connector\Writer\File\FlatItemBufferInterface;
 use Pim\Component\Connector\Writer\File\BulkFileExporterInterface;
 use Prophecy\Argument;
 
-class CsvProductWriterSpec extends ObjectBehavior
+class ProductWriterSpec extends ObjectBehavior
 {
     function let(
         FilePathResolverInterface $filePathResolver,
         FlatItemBuffer $flatRowBuffer,
         BulkFileExporter $mediaCopier,
-        ColumnSorterInterface $columnSorter
+        FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier, $columnSorter);
+        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier, $flusher);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.csv');
@@ -29,7 +29,7 @@ class CsvProductWriterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Writer\File\CsvProductWriter');
+        $this->shouldHaveType('Pim\Component\Connector\Writer\File\Csv\ProductWriter');
     }
 
     function it_prepares_the_export(
@@ -144,5 +144,33 @@ class CsvProductWriterSpec extends ObjectBehavior
         ]);
 
         $this->getWrittenFiles()->shouldBeEqualTo([]);
+    }
+
+    function it_writes_the_csv_file(
+        $flusher,
+        $flatRowBuffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+
+        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('linesPerFile')->willReturn(false);
+        $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('enclosure')->willReturn('"');
+        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
+        $jobParameters->has('mainContext')->willReturn(false);
+
+        $flusher->flush(
+            $flatRowBuffer,
+            Argument::type('array'),
+            Argument::type('string'),
+            -1,
+            Argument::type('array')
+        )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
+
+        $this->flush();
     }
 }

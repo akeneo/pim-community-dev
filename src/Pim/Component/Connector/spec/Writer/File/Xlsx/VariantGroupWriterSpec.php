@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Writer\File;
+namespace spec\Pim\Component\Connector\Writer\File\Xlsx;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -11,7 +11,7 @@ use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
 use Prophecy\Argument;
 
-class XlsxVariantGroupWriterSpec extends ObjectBehavior
+class VariantGroupWriterSpec extends ObjectBehavior
 {
     function let(
         FilePathResolverInterface $filePathResolver,
@@ -27,7 +27,7 @@ class XlsxVariantGroupWriterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Writer\File\XlsxVariantGroupWriter');
+        $this->shouldHaveType('Pim\Component\Connector\Writer\File\Xlsx\VariantGroupWriter');
     }
 
     function it_is_a_configurable_step()
@@ -158,6 +158,7 @@ class XlsxVariantGroupWriterSpec extends ObjectBehavior
 
         $flusher->flush(
             $flatRowBuffer,
+            Argument::type('array'),
             Argument::type('string'),
             2,
             Argument::type('array')

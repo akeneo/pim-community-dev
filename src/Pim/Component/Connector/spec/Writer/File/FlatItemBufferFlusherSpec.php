@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Prophecy\Argument;
 use Prophecy\Exception\Prediction\FailedPredictionException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -45,7 +46,7 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $buffer->getBuffer()->willReturn([['fooA', 'fooB'], ['barA', 'barB'], ['bazA', 'bazB']]);
         $buffer->getHeaders()->willReturn(['colA', 'colB']);
 
-        $this->flush($buffer, $this->directory . 'output');
+        $this->flush($buffer, ['type' => 'csv'], $this->directory . 'output');
 
         if (!file_exists($this->directory . 'output')) {
             throw new FailedPredictionException(
@@ -67,7 +68,7 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $filePathResolver->resolve('/tmp/spec/output%fileNb%', ['parameters' => ['%fileNb%' => '_2']])
             ->willReturn('/tmp/spec/output_2');
 
-        $this->flush($buffer, $this->directory . 'output', 2);
+        $this->flush($buffer, ['type' => 'csv'], $this->directory . 'output', 2);
 
         if (!file_exists($this->directory . 'output_1')) {
             throw new FailedPredictionException(
@@ -95,7 +96,7 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $filePathResolver->resolve('/tmp/spec/output%fileNb%.txt', ['parameters' => ['%fileNb%' => '_2']])
             ->willReturn('/tmp/spec/output_2.txt');
 
-        $this->flush($buffer, $this->directory . 'output.txt', 2);
+        $this->flush($buffer, ['type' => 'csv'], $this->directory . 'output.txt', 2);
 
         if (!file_exists($this->directory . 'output_1.txt')) {
             throw new FailedPredictionException(
@@ -108,5 +109,25 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
                 sprintf('File "%s" should have been flushed', $this->directory . 'output_2.txt')
             );
         }
+    }
+
+    function it_throws_an_exception_if_type_is_not_defined($columnSorter, FlatItemBuffer $buffer)
+    {
+        $columnSorter->sort(Argument::any())->willReturn(['colA', 'colB']);
+
+        $buffer->getHeaders()->willReturn(['colA', 'colB']);
+
+        $this->shouldThrow('InvalidArgumentException')
+            ->during('flush', [$buffer, [], Argument::any()]);
+    }
+
+    function it_throws_an_exception_if_type_is_not_recognized($columnSorter, FlatItemBuffer $buffer)
+    {
+        $columnSorter->sort(Argument::any())->willReturn(['colA', 'colB']);
+
+        $buffer->getHeaders()->willReturn(['colA', 'colB']);
+
+        $this->shouldThrow('Box\Spout\Common\Exception\UnsupportedTypeException')
+            ->during('flush', [$buffer, ['type' => 'undefined'], Argument::any()]);
     }
 }
