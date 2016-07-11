@@ -24,6 +24,7 @@
 - PIM-5604: Introduce "remove from categories" action in products mass edit
 - PIM-5681: Introduce a new command to purge entity versions stored in the PIM (see pim:versioning:purge command)
 - PIM-5781: Add new data on the "system information" screen (data volumetry, information about the operating system)
+- PIM-5110: Add product export configuration to customize product media export policy
 
 ## Scalability improvements
 
