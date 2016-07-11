@@ -75,7 +75,7 @@ class InvalidItemWriterResolver implements EventSubscriberInterface
         $items = $this->invalidItemsCollector->getInvalidItems();
 
         foreach ($this->writers as $writer) {
-            if ($writer->supports($item)) {
+            if ($writer->supports($items)) {
                 $writer->archive($jobExecution);
             }
         }
