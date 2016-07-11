@@ -94,7 +94,8 @@ class VariantGroupWriter extends AbstractFileWriter implements ArchivableWriterI
         $writerOptions = [
             'type'           => 'csv',
             'fieldDelimiter' => $parameters->get('delimiter'),
-            'fieldEnclosure' => $parameters->get('enclosure')
+            'fieldEnclosure' => $parameters->get('enclosure'),
+            'shouldAddBOM'   => false,
         ];
 
         $writtenFiles = $this->flusher->flush(
