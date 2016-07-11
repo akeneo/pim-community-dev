@@ -2,18 +2,14 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\Buffer\BufferFactory;
-use Akeneo\Component\Buffer\BufferInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class FlatItemBufferSpec extends ObjectBehavior
 {
-    function let(BufferFactory $bufferFactory, BufferInterface $buffer)
+    function it_is_a_buffer()
     {
-        $bufferFactory->create()->willReturn($buffer);
-
-        $this->beConstructedWith($bufferFactory);
+        $this->shouldImplement('Akeneo\Component\Buffer\BufferInterface');
     }
 
     function it_is_initializable()
@@ -21,18 +17,8 @@ class FlatItemBufferSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Connector\Writer\File\FlatItemBuffer');
     }
 
-    function it_writes_item_to_the_buffer($buffer)
+    function it_writes_item_with_headers()
     {
-        $buffer->write([
-            'id' => 123,
-            'family' => 12,
-        ])->shouldbeCalled();
-
-        $buffer->write([
-            'id' => 165,
-            'family' => 45,
-        ])->shouldbeCalled();
-
         $this->write([
             [
                 'id' => 123,
@@ -42,7 +28,7 @@ class FlatItemBufferSpec extends ObjectBehavior
                 'id' => 165,
                 'family' => 45,
             ],
-        ], true);
+        ], ['withHeader' => true]);
 
         $this->getHeaders()->shouldReturn(['id', 'family']);
     }
@@ -58,7 +44,7 @@ class FlatItemBufferSpec extends ObjectBehavior
                 'id' => 165,
                 'family' => 45,
             ],
-        ], true);
+        ]);
 
         $this->count()->shouldReturn(2);
 
@@ -67,13 +53,8 @@ class FlatItemBufferSpec extends ObjectBehavior
                 'id' => 456,
                 'family' => 12,
             ],
-        ], true);
+        ]);
 
         $this->count()->shouldReturn(3);
-    }
-
-    function it_has_a_buffer($buffer)
-    {
-        $this->getBuffer()->shouldReturn($buffer);
     }
 }
