@@ -112,13 +112,14 @@ class RunCommand extends ContainerAwareCommand
         $repository = $this->getRuleDefinitionRepository();
 
         if (null !== $ruleCode) {
-            $rule = $repository->findOneBy(['code' => $ruleCode]);
+            $rules = $repository->findBy(
+                ['code' => explode(',', $ruleCode)],
+                ['priority' => 'DESC']
+            );
 
-            if (null === $rule) {
-                throw new \InvalidArgumentException(sprintf('The rule %s does not exists', $ruleCode));
+            if (empty($rules)) {
+                throw new \InvalidArgumentException(sprintf('The rule(s) %s does not exists', $ruleCode));
             }
-
-            $rules = [$rule];
         } else {
             $rules = $repository->findAllOrderedByPriority();
         }

@@ -156,3 +156,58 @@ Feature: List all rules
     And I should see the text "Are you sure you want to delete the selected rules?"
     When I confirm the deletion
     Then the grid should contain 0 elements
+
+  Scenario: Successfully execute a set of rules using bulk action
+    Given the following products:
+      | sku       | family  |
+      | my-jacket | jackets |
+    And the following product values:
+      | product   | attribute   | value    | locale | scope  |
+      | my-jacket | name        | Original | en_US  |        |
+    And the following product rule definitions:
+      """
+      set_name_to_Ipsum:
+        priority: 30
+        conditions:
+          - field:    sku
+            operator: =
+            value:    my-jacket
+        actions:
+          - type:   set
+            field:  name
+            value:  Ipsum
+            locale: en_US
+      copy_en_to_fr:
+        priority: 20
+        conditions:
+          - field:    sku
+            operator: =
+            value:    my-jacket
+        actions:
+          - type:        copy
+            from_field:  name
+            from_locale: en_US
+            to_field:    name
+            to_locale:   fr_FR
+      set_name_to_Lorem:
+        priority: 10
+        conditions:
+          - field:    sku
+            operator: =
+            value:    my-jacket
+        actions:
+          - type:   set
+            field:  name
+            value:  Lorem
+            locale: en_US
+      """
+    And I am logged in as "Julia"
+    And I am on the rules page
+    When I select rows set_name_to_Lorem and copy_en_to_fr
+    And I press "Execute the selected rules" on the "Bulk Action" dropdown button
+    Then I should see the text "Execute confirmation"
+    And I should see the text "Are you sure you want to execute the selected rules?"
+    When I confirm the execution
+    Then the product "my-jacket" should have the following values:
+      | name-fr_FR | Original |
+      | name-en_US | Lorem |

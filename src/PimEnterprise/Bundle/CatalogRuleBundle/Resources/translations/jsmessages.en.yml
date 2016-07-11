@@ -28,6 +28,13 @@ pimee_catalog_rule:
                 confirm_content: Are you sure you want to calculate the matching products for the rules?
                 confirm_ok: OK
             mass_action:
+                execute:
+                    confirm_ok: OK
+                    confirm_title: Execute confirmation
+                    confirm_content: Are you sure you want to execute the selected rules?
+                    success: The bulk action to execute the selected rules has been launched. You will be notified when it is done
+                    error: An error occured during the execution of the rules.
+                    empty_selection: No rules selected.
                 delete:
                     confirm_ok: OK
                     confirm_title: Delete confirmation
