@@ -40,7 +40,12 @@ services:
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pimee_product_asset.writer.file.csv_asset_variation:
-        alias: pim_connector.writer.file.csv
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pimee_product_asset.array_converter.standard_to_flat.asset_variation'
+            - '@pim_connector.writer.file.file_path_resolver'
+            - '@pim_connector.writer.file.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pimee_product_asset.writer.file.xlsx_asset:
         class: '%pim_connector.writer.file.xlsx.class%'
@@ -59,7 +64,12 @@ services:
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pimee_product_asset.writer.file.xlsx_asset_variation:
-        alias: pim_connector.writer.file.xlsx
+        class: '%pim_connector.writer.file.xlsx.class%'
+        arguments:
+            - '@pimee_product_asset.array_converter.standard_to_flat.asset_variation'
+            - '@pim_connector.writer.file.file_path_resolver'
+            - '@pim_connector.writer.file.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pimee_product_asset.writer.file.yaml_asset_channel_configuration:
         class: '%pim_connector.writer.file.yaml.class%'

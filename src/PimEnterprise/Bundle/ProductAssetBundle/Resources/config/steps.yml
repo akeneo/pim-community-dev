@@ -91,7 +91,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.variation'
-            - '@pimee_product_asset.processor.normalization.variation.flat'
+            - '@pimee_product_asset.processor.normalization.variation'
             - '@pimee_product_asset.writer.file.csv_asset_variation'
 
     # XLSX Import steps -----------------------------------------------------------------------------------------------

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Normalizer\Flat;
+namespace PimEnterprise\Component\ProductAsset\Normalizer\Structured;
 
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class VariationNormalizer implements NormalizerInterface
 {
     /** @var array */
-    protected $supportedFormats = ['csv', 'flat'];
+    protected $supportedFormats = ['structured'];
 
     /**
      * {@inheritdoc}
