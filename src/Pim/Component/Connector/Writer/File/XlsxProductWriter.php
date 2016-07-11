@@ -53,11 +53,6 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
      */
     public function write(array $items)
     {
-        $exportDirectory = dirname($this->getPath());
-        if (!is_dir($exportDirectory)) {
-            $this->localFs->mkdir($exportDirectory);
-        }
-
         $products = $media = [];
         foreach ($items as $item) {
             $products[] = $item['product'];
@@ -67,6 +62,16 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
         $parameters = $this->stepExecution->getJobParameters();
         $withHeader = $parameters->get('withHeader');
         $this->flatRowBuffer->write($products, $withHeader);
+
+        $exportDirectory = dirname($this->getPath());
+        if (!is_dir($exportDirectory)) {
+            $this->localFs->mkdir($exportDirectory);
+        }
+
+        if ($parameters->has('with_media') && !$parameters->get('with_media')) {
+            return;
+        }
+
         $this->fileExporter->exportAll($media, $exportDirectory);
 
         foreach ($this->fileExporter->getCopiedMedia() as $copy) {

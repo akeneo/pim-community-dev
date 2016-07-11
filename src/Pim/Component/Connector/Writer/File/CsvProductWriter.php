@@ -36,11 +36,6 @@ class CsvProductWriter extends CsvWriter
      */
     public function write(array $items)
     {
-        $exportDirectory = dirname($this->getPath());
-        if (!is_dir($exportDirectory)) {
-            $this->localFs->mkdir($exportDirectory);
-        }
-
         $products = $media = [];
         foreach ($items as $item) {
             $products[] = $item['product'];
@@ -48,6 +43,17 @@ class CsvProductWriter extends CsvWriter
         }
 
         parent::write($products);
+
+        $parameters = $this->stepExecution->getJobParameters();
+
+        if ($parameters->has('with_media') && !$parameters->get('with_media')) {
+            return;
+        }
+
+        $exportDirectory = dirname($this->getPath());
+        if (!is_dir($exportDirectory)) {
+            $this->localFs->mkdir($exportDirectory);
+        }
 
         $this->mediaCopier->exportAll($media, $exportDirectory);
 
