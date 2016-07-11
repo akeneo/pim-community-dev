@@ -9,6 +9,6 @@
     <span class="date-wrapper">
         <input name="filter-value" class="datepicker add-on input-large value" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- value ? value : '' %>">
     </span>
-<% } else if ('SINCE N DAYS' === operator) { %>
+<% } else if ('SINCE LAST N DAYS' === operator) { %>
     <input name="filter-value" class="input-large" type="text" value="<%- value ? value : '' %>"<%- isEditable ? '' : ' disabled' %>>
 <% } %>

@@ -34,9 +34,8 @@ define([
                 value = this.$('input[name="filter-value"]').val();
             }
             this.setData({
-                'field': this.getField(),
-                'operator': this.$('input[name="operator"]').val(),
-                'value': value
+                operator: this.$('input[name="operator"]').val(),
+                value: value
             });
         }
     });

@@ -64,6 +64,13 @@ define([
         },
 
         /**
+         * {@inherit}
+         */
+        isEmpty: function () {
+            return 'ALL' === this.getOperator();
+        },
+
+        /**
          * Updates operator and value on fields change.
          * Value is reset after operator has changed.
          */
@@ -73,18 +80,11 @@ define([
             var value    = this.$('[name="filter-value"]').val();
             var operator = this.$('[name="filter-operator"]').val();
 
-            if ('ALL' === operator) {
-                this.clearData();
-
-                return;
-            }
-
             if (operator !== oldOperator) {
                 value = null;
             }
 
             this.setData({
-                field: this.getField(),
                 operator: operator,
                 value: value
             });
