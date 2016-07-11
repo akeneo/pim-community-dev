@@ -15,11 +15,12 @@ use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Writer\File\CsvWriter;
 
 /**
+ * Writer for invalid items coming from a CSV import.
+ * It writes invalid items (ie. invalid products, families, etc...) into a new CSV file, available for download.
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- *
- * TODO: Find a better, faster, stronger naming
  */
 class CsvInvalidItemWriter extends AbstractFilesystemArchiver
 {
@@ -42,8 +43,6 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
     protected $batchSize = 100;
 
     /**
-     * CsvInvalidItemWriter constructor.
-     *
      * @param InvalidItemsCollector $collector
      * @param CsvWriter             $writer
      * @param FileIteratorFactory   $fileIteratorFactory
@@ -61,7 +60,78 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
         $this->filesystem = $filesystem;
     }
 
-    protected function read(JobParameters $jobParameters)
+    /**
+     * {@inheritdoc}
+     *
+     * Re-parse the imported file and write into a new one the invalid lines.
+     */
+    public function archive(JobExecution $jobExecution)
+    {
+        if (!$this->collector->getInvalidItems()) {
+            return;
+        }
+
+        $invalidLineNumbers = new ArrayCollection();
+        foreach ($this->collector->getInvalidItems() as $invalidItem) {
+            $invalidLineNumbers->add($invalidItem->getLineNumber());
+        }
+
+        $readJobParameters = $jobExecution->getJobParameters();
+        $currentLineNumber = $readJobParameters->get('withHeader') ? 1 : 0;
+        $itemsToWrite = [];
+
+        $this->setupWriter($jobExecution);
+
+        foreach ($this->readInputFile($readJobParameters) as $readItem) {
+            $currentLineNumber++;
+
+            if ($invalidLineNumbers->contains($currentLineNumber)) {
+                $itemsToWrite[] = $readItem;
+                $invalidLineNumbers->removeElement($currentLineNumber);
+            }
+
+            if (count($itemsToWrite) > 0 && 0 === count($itemsToWrite) % $this->batchSize) {
+                $this->writer->write($itemsToWrite);
+                $itemsToWrite = [];
+            }
+
+            if ($invalidLineNumbers->isEmpty()) {
+                break;
+            }
+        }
+
+        if (count($itemsToWrite) > 0) {
+            $this->writer->write($itemsToWrite);
+        }
+
+        $this->writer->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports(JobExecution $jobExecution)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'invalid_csv';
+    }
+
+    /**
+     * Read the input file for the given $jobParameters and return the current read element.
+     * Return null if the used fileIterator has no more item to read.
+     *
+     * @param JobParameters $jobParameters
+     *
+     * @return array|mixed|null
+     */
+    protected function readInputFile(JobParameters $jobParameters)
     {
         if (null === $this->fileIterator) {
             $filePath = $jobParameters->get('filePath');
@@ -79,81 +149,26 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
         return $this->fileIterator->current();
     }
 
-    public function archive(JobExecution $jobExecution)
-    {
-        if (!$this->collector->getInvalidItems()) {
-            return;
-        }
-
-        // Parameters for reading the imported CSV file
-        $readJobParameters = $jobExecution->getJobParameters();
-
-        $key = strtr($this->getRelativeArchivePath($jobExecution), ['%filename%' => 'invalid_items.csv']);
-        $this->filesystem->put($key, '');
-
-        // Parameters for writing the invalid data CSV file
-        $provider = new ProductCsvExport(new SimpleCsvExport([]), []);
-        $writeParams = $provider->getDefaultValues();
-        $writeParams['filePath'] = $this->filesystem->getAdapter()->getPathPrefix() . $key;
-
-        $writeJobParameters = new JobParameters($writeParams);
-        $jobExecution = new JobExecution();
-        $jobExecution->setJobParameters($writeJobParameters);
-        $stepExecution = new StepExecution('processor', $jobExecution);
-
-        $this->writer->setStepExecution($stepExecution);
-
-        $invalidLineNumbers = new ArrayCollection();
-        foreach ($this->collector->getInvalidItems() as $invalidItem) {
-            $invalidLineNumbers->add($invalidItem->getLineNumber());
-        }
-
-        $currentLineNumber = $readJobParameters->get('withHeader') ? 1 : 0;
-        $writeCount = 0;
-        $itemsToWrite = [];
-
-        while (!$invalidLineNumbers->isEmpty()) {
-            $readItem = $this->read($readJobParameters);
-            $currentLineNumber++;
-
-            if ($invalidLineNumbers->contains($currentLineNumber)) {
-                $itemsToWrite[] = $readItem;
-                $writeCount++;
-                $invalidLineNumbers->removeElement($currentLineNumber);
-            }
-
-            if (0 === $writeCount % $this->batchSize && $writeCount > 0) {
-                $this->writer->write($itemsToWrite);
-                $itemsToWrite = [];
-            }
-        }
-
-        if (count($itemsToWrite) > 0) {
-            $this->writer->write($itemsToWrite);
-        }
-
-        $this->writer->flush();
-    }
-
     /**
-     * Check if the job execution is supported
+     * Setup the writer with a new JobExecution to write the invalid_items file.
+     * We need to setup the writer manually because it's usally set up by the ItemStep.
      *
      * @param JobExecution $jobExecution
-     *
-     * @return bool
      */
-    public function supports(JobExecution $jobExecution)
+    protected function setupWriter(JobExecution $jobExecution)
     {
-        return true;
-    }
+        $fileKey = strtr($this->getRelativeArchivePath($jobExecution), ['%filename%' => 'invalid_items.csv']);
+        $this->filesystem->put($fileKey, '');
 
-    /**
-     * Get the archiver name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'invalid_csv';
+        $provider = new ProductCsvExport(new SimpleCsvExport([]), []);
+        $writeParams = $provider->getDefaultValues();
+        $writeParams['filePath'] = $this->filesystem->getAdapter()->getPathPrefix() . $fileKey;
+
+        $writeJobParameters = new JobParameters($writeParams);
+        $writeJobExecution  = new JobExecution();
+        $writeJobExecution->setJobParameters($writeJobParameters);
+
+        $stepExecution = new StepExecution('processor', $writeJobExecution);
+        $this->writer->setStepExecution($stepExecution);
     }
 }
