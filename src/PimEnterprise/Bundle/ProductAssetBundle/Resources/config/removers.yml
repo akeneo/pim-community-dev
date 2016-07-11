@@ -1,5 +1,4 @@
 parameters:
-    pimee_product_asset.remover.asset.class:          PimEnterprise\Component\ProductAsset\Remover\AssetRemover
     pimee_product_asset.remover.category_asset.class: PimEnterprise\Component\ProductAsset\Remover\CategoryAssetRemover
 
 services:
@@ -20,7 +19,7 @@ services:
             - '%pimee_product_asset.model.channel_variations_configuration.class%'
 
     pimee_product_asset.remover.asset:
-        class:  '%pimee_product_asset.remover.asset.class%'
+        class:  '%akeneo_storage_utils.remover.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'

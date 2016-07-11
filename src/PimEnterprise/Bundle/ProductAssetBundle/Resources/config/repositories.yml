@@ -5,6 +5,7 @@ parameters:
     pimee_product_asset.repository.reference.class:             PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ReferenceRepository
     pimee_product_asset.repository.variation.class:             PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\VariationRepository
     pimee_product_asset.repository.asset_category.class:        PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetCategoryRepository
+    pimee_catalog_rule.repository.asset_mass_action.class:      PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetMassEditRepository
     pimee_product_asset.repository.category.class:              Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
     pimee_product_asset.repository.tag.class:                   Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\TagRepository
 
@@ -88,3 +89,9 @@ services:
             - { name: 'pim_repository' }
         calls:
             - [setTableNameBuilder, ['@akeneo_storage_utils.doctrine.table_name_builder']]
+
+    pimee_catalog_rule.repository.asset_mass_action:
+        class: '%pimee_catalog_rule.repository.asset_mass_action.class%'
+        arguments:
+            - '@pimee_product_asset.repository.asset'
+            - '@pimee_product_asset.remover.asset'

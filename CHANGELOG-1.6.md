@@ -13,9 +13,10 @@
 - PIM-5757: Add delete bulk action on the rules datagrid
 - PIM-5530: Change the label and the position of the button "Schedule" in "Upload assets" screen
 - PIM-5488: Add a bulk action on the product assets grid, to move them in categories
-- PIM-5489: Add a mass-edit operation to add tags on assets
+- PIM-5489: Add a bulk action on the product assets grid, to add tags on assets
 - PIM-5813: Add the possibility to launch the rules from the UI
 - PIM-5860: Add the execute mass action on rules
+- PIM-5490: Add delete bulk action on the product assets grid
 
 ## Technical improvements
 
@@ -183,3 +184,6 @@
 - Change constructor of `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Publish`, add string as parameter in the constructor, which is the instance job code
 - Change constructor of `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Unpublish`, add string as parameter in the constructor, which is the instance job code
 - Change constructor of `Akeneo\Bundle\RuleEngineBundle\Runner\ChainedRunner`, add `Akeneo\Bundle\RuleEngineBundle\Runner\RunnerRegistryInterface` and `Symfony\Component\EventDispatcher\EventDispatcherInterface`
+- Remove `PimEnterprise\Component\ProductAsset\Remover\AssetRemover`
+- Removed event `pimee_product_asset.pre_remove.asset`, use `akeneo.storage.pre_remove` instead
+- Removed event `pimee_product_asset.post_remove.asset`, use `akeneo.storage.post_remove` instead
