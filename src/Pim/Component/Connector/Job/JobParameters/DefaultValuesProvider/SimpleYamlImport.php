@@ -31,8 +31,9 @@ class SimpleYamlImport implements DefaultValuesProviderInterface
     public function getDefaultValues()
     {
         return [
-            'filePath'      => null,
-            'uploadAllowed' => true
+            'filePath'                  => null,
+            'uploadAllowed'             => true,
+            'invalid_items_file_format' => 'yaml',
         ];
     }
 

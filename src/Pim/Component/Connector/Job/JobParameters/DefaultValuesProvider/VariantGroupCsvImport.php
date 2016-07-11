@@ -41,6 +41,7 @@ class VariantGroupCsvImport implements DefaultValuesProviderInterface
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $parameters['copyValues'] = true;
+        $parameters['invalid_items_file_format'] = 'csv';
 
         return $parameters;
     }

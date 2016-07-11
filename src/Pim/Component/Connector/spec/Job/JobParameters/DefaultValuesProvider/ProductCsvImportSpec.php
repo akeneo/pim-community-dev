@@ -24,15 +24,16 @@ class ProductCsvImportSpec extends ObjectBehavior
         $decoratedProvider->getDefaultValues()->willReturn(['decoratedParam' => true]);
         $this->getDefaultValues()->shouldReturn(
             [
-                'decoratedParam'     => true,
-                'decimalSeparator'   => ".",
-                'dateFormat'         => "yyyy-MM-dd",
-                'enabled'            => true,
-                'categoriesColumn'   => "categories",
-                'familyColumn'       => "family",
-                'groupsColumn'       => "groups",
-                'enabledComparison'  => true,
-                'realTimeVersioning' => true,
+                'decoratedParam'            => true,
+                'decimalSeparator'          => ".",
+                'dateFormat'                => "yyyy-MM-dd",
+                'enabled'                   => true,
+                'categoriesColumn'          => "categories",
+                'familyColumn'              => "family",
+                'groupsColumn'              => "groups",
+                'enabledComparison'         => true,
+                'realTimeVersioning'        => true,
+                'invalid_items_file_format' => 'csv',
             ]
         );
     }

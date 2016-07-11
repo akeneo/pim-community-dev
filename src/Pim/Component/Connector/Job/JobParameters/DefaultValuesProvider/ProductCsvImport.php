@@ -45,6 +45,7 @@ class ProductCsvImport implements DefaultValuesProviderInterface
         $parameters['groupsColumn'] = 'groups';
         $parameters['enabledComparison'] = true;
         $parameters['realTimeVersioning'] = true;
+        $parameters['invalid_items_file_format'] = 'csv';
 
         return $parameters;
     }
