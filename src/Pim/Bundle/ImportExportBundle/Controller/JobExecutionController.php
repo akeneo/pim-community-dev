@@ -5,7 +5,6 @@ namespace Pim\Bundle\ImportExportBundle\Controller;
 use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
-use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemWriterResolver;
 use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
@@ -57,20 +56,16 @@ class JobExecutionController
     /** @var JobExecutionRepository */
     protected $jobExecutionRepo;
 
-    /** @var InvalidItemWriterResolver */
-    protected $invalidItemWriterResolver;
-
     /**
-     * @param EngineInterface           $templating
-     * @param TranslatorInterface       $translator
-     * @param EventDispatcherInterface  $eventDispatcher
-     * @param BatchLogHandler           $batchLogHandler
-     * @param JobExecutionArchivist     $archivist
-     * @param SerializerInterface       $serializer
-     * @param JobExecutionManager       $jobExecutionManager
-     * @param JobExecutionRepository    $jobExecutionRepo
-     * @param InvalidItemWriterResolver $invalidItemWriterResolver
-     * @param string                    $jobType
+     * @param EngineInterface          $templating
+     * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param BatchLogHandler          $batchLogHandler
+     * @param JobExecutionArchivist    $archivist
+     * @param SerializerInterface      $serializer
+     * @param JobExecutionManager      $jobExecutionManager
+     * @param JobExecutionRepository   $jobExecutionRepo
+     * @param string                   $jobType
      */
     public function __construct(
         EngineInterface $templating,
@@ -81,7 +76,6 @@ class JobExecutionController
         SerializerInterface $serializer,
         JobExecutionManager $jobExecutionManager,
         JobExecutionRepository $jobExecutionRepo,
-        InvalidItemWriterResolver $invalidItemWriterResolver,
         $jobType
     ) {
         $this->templating          = $templating;
@@ -93,7 +87,6 @@ class JobExecutionController
         $this->jobExecutionManager = $jobExecutionManager;
         $this->jobExecutionRepo    = $jobExecutionRepo;
         $this->jobType             = $jobType;
-        $this->invalidItemWriterResolver = $invalidItemWriterResolver;
     }
 
     /**
@@ -209,30 +202,6 @@ class JobExecutionController
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
 
         $stream = $this->archivist->getArchive($jobExecution, $archiver, $key);
-
-        return new StreamedFileResponse($stream);
-    }
-
-    /**
-     * Download invalid items file
-     *
-     * @param int    $id
-     * @param string $writer
-     * @param string $key
-     *
-     * @return StreamedResponse
-     */
-    public function downloadInvalidItemsAction($id, $writer, $key)
-    {
-        $jobExecution = $this->jobExecutionRepo->find($id);
-
-        if (null === $jobExecution) {
-            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
-        }
-
-        $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
-
-        $stream = $this->invalidItemWriterResolver->getInvalidItemFile($jobExecution, $writer, $key);
 
         return new StreamedFileResponse($stream);
     }

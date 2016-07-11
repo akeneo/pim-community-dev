@@ -61,7 +61,6 @@ services:
             - '@pim_serializer'
             - '@akeneo_batch.manager.job_execution'
             - '@pim_import_export.repository.job_execution'
-            - '@pim_base_connector.event_listener.invalid_items_writer_register'
             - export
 
     pim_import_export.controller.import_execution:
@@ -76,5 +75,4 @@ services:
             - '@pim_serializer'
             - '@akeneo_batch.manager.job_execution'
             - '@pim_import_export.repository.job_execution'
-            - '@pim_base_connector.event_listener.invalid_items_writer_register'
             - import

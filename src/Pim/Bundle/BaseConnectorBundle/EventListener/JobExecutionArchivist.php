@@ -20,6 +20,17 @@ class JobExecutionArchivist implements EventSubscriberInterface
     /** @var array */
     protected $archivers = [];
 
+    /** @var InvalidItemWriterResolver */
+    protected $invalidItemWriterResolver;
+
+    /**
+     * @param InvalidItemWriterResolver $invalidItemWriterResolver
+     */
+    public function __construct(InvalidItemWriterResolver $invalidItemWriterResolver)
+    {
+        $this->invalidItemWriterResolver = $invalidItemWriterResolver;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -66,6 +77,8 @@ class JobExecutionArchivist implements EventSubscriberInterface
                 $archiver->archive($jobExecution);
             }
         }
+        
+        $this->invalidItemWriterResolver->beforeStatusUpgrade($event);
     }
 
     /**
@@ -85,7 +98,9 @@ class JobExecutionArchivist implements EventSubscriberInterface
                     $result[$archiver->getName()] = $archives;
                 }
             }
+            $result[] = $this->invalidItemWriterResolver->getArchives($jobExecution);
         }
+
 
         return $result;
     }
@@ -104,9 +119,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
     public function getArchive(JobExecution $jobExecution, $archiver, $key)
     {
         if (!isset($this->archivers[$archiver])) {
-            throw new \InvalidArgumentException(
-                sprintf('Archiver "%s" is not registered', $archiver)
-            );
+            return $this->invalidItemWriterResolver->getArchive($jobExecution, $archiver, $key);
         }
 
         return $this->archivers[$archiver]->getArchive($jobExecution, $key);

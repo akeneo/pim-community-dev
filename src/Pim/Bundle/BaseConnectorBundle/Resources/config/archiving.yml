@@ -13,6 +13,8 @@ parameters:
 services:
     pim_base_connector.event_listener.archivist:
         class: '%pim_base_connector.event_listener.archivist.class%'
+        arguments:
+              - '@pim_base_connector.event_listener.invalid_items_writer_register'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -80,5 +82,3 @@ services:
 
     pim_base_connector.event_listener.invalid_items_writer_register:
         class: '%pim_base_connector.event_listener.invalid_items_writer_register.class%'
-        tags:
-            - { name: kernel.event_subscriber }

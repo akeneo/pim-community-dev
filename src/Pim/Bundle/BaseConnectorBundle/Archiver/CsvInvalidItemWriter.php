@@ -112,7 +112,7 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
      */
     public function supports(JobExecution $jobExecution)
     {
-        return true;
+        return false;
     }
 
     /**

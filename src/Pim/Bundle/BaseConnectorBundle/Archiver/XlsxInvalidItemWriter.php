@@ -112,7 +112,7 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
      */
     public function supports(JobExecution $jobExecution)
     {
-        return false;
+        return true;
     }
 
     /**
