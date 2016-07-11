@@ -27,7 +27,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.channel_configuration'
-            - '@pimee_product_asset.processor.normalization.channel_configuration.flat'
+            - '@pimee_product_asset.processor.normalization.channel_configuration'
             - '@pimee_product_asset.writer.file.yaml_asset_channel_configuration'
 
     # CSV Import steps ------------------------------------------------------------------------------------------------

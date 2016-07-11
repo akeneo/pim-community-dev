@@ -62,7 +62,7 @@ services:
             - '@pim_product_asset.normalizer.structured.variation'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
-    pimee_product_asset.processor.normalization.channel_configuration.flat:
+    pimee_product_asset.processor.normalization.channel_configuration:
         class: '%pimee_product_asset.processor.normalization.channel_configuration.class%'
         arguments:
             - '@pim_product_asset.normalizer.structured.channel_configuration'
