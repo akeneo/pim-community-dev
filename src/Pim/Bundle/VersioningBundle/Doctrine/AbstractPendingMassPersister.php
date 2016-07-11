@@ -47,11 +47,11 @@ abstract class AbstractPendingMassPersister
         VersionContext $versionContext,
         $versionClass
     ) {
-        $this->versionBuilder   = $versionBuilder;
-        $this->versionManager   = $versionManager;
-        $this->normalizer       = $normalizer;
-        $this->versionClass     = $versionClass;
-        $this->versionContext   = $versionContext;
+        $this->versionBuilder = $versionBuilder;
+        $this->versionManager = $versionManager;
+        $this->normalizer = $normalizer;
+        $this->versionClass = $versionClass;
+        $this->versionContext = $versionContext;
     }
 
     /**

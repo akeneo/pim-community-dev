@@ -91,7 +91,7 @@ class CopyVariantGroupValuesCommand extends ContainerAwareCommand
     protected function getVariantGroup($code)
     {
         $repository = $this->getContainer()->get('pim_catalog.repository.group');
-        $group      = $repository->findOneByCode($code);
+        $group = $repository->findOneByCode($code);
 
         return $group;
     }

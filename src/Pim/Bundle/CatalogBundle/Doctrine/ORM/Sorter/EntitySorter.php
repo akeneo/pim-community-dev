@@ -48,7 +48,7 @@ class EntitySorter implements AttributeSorterInterface
     public function addAttributeSorter(AttributeInterface $attribute, $direction, $locale = null, $scope = null)
     {
         $aliasPrefix = 'sorter';
-        $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
+        $joinAlias = $aliasPrefix.'V'.$attribute->getCode();
         $backendType = $attribute->getBackendType();
 
         if (null === $locale) {
@@ -68,11 +68,11 @@ class EntitySorter implements AttributeSorterInterface
 
         // then to option and option value to sort on
         $joinAliasOpt = $aliasPrefix.'O'.$attribute->getCode();
-        $condition    = $joinAliasOpt.".attribute = ".$attribute->getId();
+        $condition = $joinAliasOpt.".attribute = ".$attribute->getId();
         $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
 
         $joinAliasOptVal = $aliasPrefix.'OV'.$attribute->getCode();
-        $condition       = $joinAliasOptVal.'.locale = '.$this->qb->expr()->literal($locale);
+        $condition = $joinAliasOptVal.'.locale = '.$this->qb->expr()->literal($locale);
         $this->qb->leftJoin($joinAliasOpt.'.optionValues', $joinAliasOptVal, 'WITH', $condition);
 
         $this->qb->addOrderBy($joinAliasOpt.'.code', $direction);

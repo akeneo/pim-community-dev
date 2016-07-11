@@ -81,11 +81,11 @@ class ContextConfigurator implements ConfiguratorInterface
         ObjectManager $objectManager,
         GroupRepositoryInterface $productGroupRepository
     ) {
-        $this->productRepository      = $productRepository;
-        $this->attributeRepository    = $attributeRepository;
-        $this->requestParams          = $requestParams;
-        $this->userContext            = $userContext;
-        $this->objectManager          = $objectManager;
+        $this->productRepository = $productRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->requestParams = $requestParams;
+        $this->userContext = $userContext;
+        $this->objectManager = $objectManager;
         $this->productGroupRepository = $productGroupRepository;
     }
 
@@ -228,7 +228,7 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function addRepositoryParameters()
     {
-        $path             = $this->getSourcePath(self::REPOSITORY_PARAMETERS_KEY);
+        $path = $this->getSourcePath(self::REPOSITORY_PARAMETERS_KEY);
         $repositoryParams = $this->configuration->offsetGetByPath($path, null);
 
         if ($repositoryParams) {
@@ -367,7 +367,7 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getAttributesConfig()
     {
-        $attributeIds  = $this->getAttributeIds();
+        $attributeIds = $this->getAttributeIds();
         if (empty($attributeIds)) {
             return [];
         }

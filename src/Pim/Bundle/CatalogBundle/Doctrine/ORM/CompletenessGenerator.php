@@ -52,11 +52,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function __construct(EntityManagerInterface $manager, $productClass, $productValueClass, $attributeClass)
     {
-        $this->manager           = $manager;
-        $this->connection        = $manager->getConnection();
-        $this->productClass      = $productClass;
+        $this->manager = $manager;
+        $this->connection = $manager->getConnection();
+        $this->productClass = $productClass;
         $this->productValueClass = $productValueClass;
-        $this->attributeClass    = $attributeClass;
+        $this->attributeClass = $attributeClass;
     }
 
     /**
@@ -115,7 +115,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function prepareCompletePrices($criteria = [])
     {
-        $cleanupSql  = 'DROP TABLE IF EXISTS ' . self::COMPLETE_PRICES_TABLE . PHP_EOL;
+        $cleanupSql = 'DROP TABLE IF EXISTS ' . self::COMPLETE_PRICES_TABLE . PHP_EOL;
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
@@ -145,7 +145,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function prepareMissingCompletenesses(array $criteria = [])
     {
-        $cleanupSql  = 'DROP TABLE IF EXISTS ' . self::MISSING_TABLE . PHP_EOL;
+        $cleanupSql = 'DROP TABLE IF EXISTS ' . self::MISSING_TABLE . PHP_EOL;
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
@@ -370,13 +370,13 @@ MAIN_SQL;
      */
     protected function applyTableNames($sql)
     {
-        $categoryMapping  = $this->getClassMetadata($this->productClass)->getAssociationMapping('categories');
+        $categoryMapping = $this->getClassMetadata($this->productClass)->getAssociationMapping('categories');
         $categoryMetadata = $this->getClassMetadata($categoryMapping['targetEntity']);
 
-        $valueMapping  = $this->getClassMetadata($this->productClass)->getAssociationMapping('values');
+        $valueMapping = $this->getClassMetadata($this->productClass)->getAssociationMapping('values');
         $valueMetadata = $this->getClassMetadata($valueMapping['targetEntity']);
 
-        $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
+        $attributeMapping = $valueMetadata->getAssociationMapping('attribute');
         $attributeMetadata = $this->getClassMetadata($attributeMapping['targetEntity']);
 
         return strtr(
@@ -558,7 +558,7 @@ MAIN_SQL;
 
             case ClassMetadataInfo::ONE_TO_MANY:
                 $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
-                $relatedMapping  = $relatedMetadata->getAssociationMapping($mapping['mappedBy']);
+                $relatedMapping = $relatedMetadata->getAssociationMapping($mapping['mappedBy']);
 
                 return [
                     sprintf(
@@ -573,7 +573,7 @@ MAIN_SQL;
                 $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
 
                 $joinPattern = 'LEFT JOIN %s %s ON %s.id = v.%s';
-                $joinColumn  = $mapping['joinColumns'][0]['name'];
+                $joinColumn = $mapping['joinColumns'][0]['name'];
 
                 return [
                     sprintf(

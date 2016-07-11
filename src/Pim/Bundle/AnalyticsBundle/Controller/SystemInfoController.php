@@ -22,7 +22,7 @@ class SystemInfoController
      */
     public function __construct(EngineInterface $templating, ChainedDataCollector $dataCollector)
     {
-        $this->templating    = $templating;
+        $this->templating = $templating;
         $this->dataCollector = $dataCollector;
     }
 
@@ -33,7 +33,7 @@ class SystemInfoController
      */
     public function indexAction($_format)
     {
-        $data    = $this->dataCollector->collect('system_info_report');
+        $data = $this->dataCollector->collect('system_info_report');
         $content = $this->templating->render(
             sprintf('PimAnalyticsBundle:SystemInfo:index.%s.twig', $_format),
             ['data' => $data]

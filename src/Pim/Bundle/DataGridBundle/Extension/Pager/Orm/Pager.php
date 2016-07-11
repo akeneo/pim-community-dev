@@ -97,8 +97,8 @@ class Pager extends AbstractPager implements PagerInterface
     {
         $qb = clone $this->getQueryBuilder();
 
-        $rootAlias  = $qb->getRootAlias();
-        $rootField  = $rootAlias.'.id';
+        $rootAlias = $qb->getRootAlias();
+        $rootField = $rootAlias.'.id';
         $qb->groupBy($rootField);
 
         $qb->setFirstResult(null)

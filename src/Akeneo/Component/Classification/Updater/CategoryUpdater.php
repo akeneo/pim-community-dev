@@ -29,7 +29,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
      */
     public function __construct(IdentifiableObjectRepositoryInterface $categoryRepository)
     {
-        $this->accessor           = PropertyAccess::createPropertyAccessor();
+        $this->accessor = PropertyAccess::createPropertyAccessor();
         $this->categoryRepository = $categoryRepository;
     }
 

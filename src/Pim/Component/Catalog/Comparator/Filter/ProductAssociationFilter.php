@@ -30,7 +30,7 @@ class ProductAssociationFilter implements ProductFilterInterface
      */
     public function __construct(NormalizerInterface $normalizer, ComparatorRegistry $comparatorRegistry)
     {
-        $this->normalizer         = $normalizer;
+        $this->normalizer = $normalizer;
         $this->comparatorRegistry = $comparatorRegistry;
     }
 
@@ -40,7 +40,7 @@ class ProductAssociationFilter implements ProductFilterInterface
     public function filter(ProductInterface $product, array $newValues)
     {
         $originalAssociations = $this->getOriginalAssociations($product);
-        $hasAssociation       = $this->hasNewAssociations($newValues);
+        $hasAssociation = $this->hasNewAssociations($newValues);
 
         if (!$hasAssociation && empty($originalAssociations)) {
             return [];

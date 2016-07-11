@@ -32,14 +32,14 @@ class ScalarComparatorSpec extends ObjectBehavior
 
     function it_gets_changes_when_changing_value()
     {
-        $changes   = 'tshirt';
+        $changes = 'tshirt';
         $originals = 'camera';
         $this->compare($changes, $originals)->shouldReturn($changes);
     }
 
     function it_returns_null_when_values_are_the_same()
     {
-        $changes   = 'tshirt';
+        $changes = 'tshirt';
         $originals = 'tshirt';
         $this->compare($changes, $originals)->shouldReturn(null);
     }

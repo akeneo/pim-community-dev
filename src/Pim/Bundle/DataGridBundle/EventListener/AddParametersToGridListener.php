@@ -23,7 +23,7 @@ class AddParametersToGridListener
      *
      * @staticvar string
      */
-    const GRID_PARAM_DATA_IN     = 'data_in';
+    const GRID_PARAM_DATA_IN = 'data_in';
     const GRID_PARAM_DATA_NOT_IN = 'data_not_in';
 
     /** @var array */
@@ -42,9 +42,9 @@ class AddParametersToGridListener
      */
     public function __construct($paramNames, RequestParameters $requestParams, $isEditMode = false)
     {
-        $this->paramNames    = $paramNames;
+        $this->paramNames = $paramNames;
         $this->requestParams = $requestParams;
-        $this->isEditMode    = $isEditMode;
+        $this->isEditMode = $isEditMode;
     }
 
     /**

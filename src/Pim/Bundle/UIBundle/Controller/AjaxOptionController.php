@@ -40,8 +40,8 @@ class AjaxOptionController
      */
     public function listAction(Request $request)
     {
-        $query      = $request->query;
-        $search     = $query->get('search');
+        $query = $request->query;
+        $search = $query->get('search');
         $repository = $this->doctrine->getRepository($query->get('class'));
 
         if ($repository instanceof OptionRepositoryInterface) {

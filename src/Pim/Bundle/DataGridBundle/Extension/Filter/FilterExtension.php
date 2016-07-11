@@ -55,7 +55,7 @@ class FilterExtension extends AbstractExtension
     ) {
         parent::__construct($requestParams);
 
-        $this->translator      = $translator;
+        $this->translator = $translator;
         $this->adapterResolver = $adapterResolver;
     }
 
@@ -91,10 +91,10 @@ class FilterExtension extends AbstractExtension
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
-        $filters           = $this->getFiltersToApply($config);
-        $values            = $this->getValuesToApply($config);
-        $datasourceType    = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
-        $adapterClass      = $this->adapterResolver->getAdapterClass($datasourceType);
+        $filters = $this->getFiltersToApply($config);
+        $values = $this->getValuesToApply($config);
+        $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
+        $adapterClass = $this->adapterResolver->getAdapterClass($datasourceType);
         $datasourceAdapter = new $adapterClass($datasource);
 
         foreach ($filters as $filter) {
@@ -118,12 +118,12 @@ class FilterExtension extends AbstractExtension
      */
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
-        $filtersState    = $data->offsetGetByPath('[state][filters]', []);
-        $filtersConfig   = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
+        $filtersState = $data->offsetGetByPath('[state][filters]', []);
+        $filtersConfig = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
         $filtersMetaData = [];
 
         $filters = $this->getFiltersToApply($config);
-        $values  = $this->getValuesToApply($config);
+        $values = $this->getValuesToApply($config);
 
         foreach ($filters as $filter) {
             $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;
@@ -178,7 +178,7 @@ class FilterExtension extends AbstractExtension
      */
     protected function getFiltersToApply(DatagridConfiguration $config)
     {
-        $filters       = [];
+        $filters = [];
         $filtersConfig = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
         foreach ($filtersConfig as $column => $filter) {
@@ -243,7 +243,7 @@ class FilterExtension extends AbstractExtension
         $filters = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
         $defaultFilters = $config->offsetGetByPath(Configuration::DEFAULT_FILTERS_PATH, []);
-        $filterBy       = $this->requestParams->get(self::FILTER_ROOT_PARAM) ?: $defaultFilters;
+        $filterBy = $this->requestParams->get(self::FILTER_ROOT_PARAM) ?: $defaultFilters;
 
         foreach ($filterBy as $column => $value) {
             if (isset($filters[$column]) || 'category' === $column) {

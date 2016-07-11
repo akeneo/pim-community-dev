@@ -38,9 +38,9 @@ class OperationJobLauncher
         JobInstanceRepository $jobInstanceRepo,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->jobLauncher     = $jobLauncher;
+        $this->jobLauncher = $jobLauncher;
         $this->jobInstanceRepo = $jobInstanceRepo;
-        $this->tokenStorage    = $tokenStorage;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**

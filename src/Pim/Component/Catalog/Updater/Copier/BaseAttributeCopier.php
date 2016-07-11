@@ -70,7 +70,7 @@ class BaseAttributeCopier extends AbstractAttributeCopier
     public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
         $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
-        $supportsTo   = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
+        $supportsTo = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
 
         $sameType = $fromAttribute->getAttributeType() === $toAttribute->getAttributeType();
 

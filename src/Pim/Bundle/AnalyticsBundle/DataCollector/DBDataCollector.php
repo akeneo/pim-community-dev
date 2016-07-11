@@ -59,12 +59,12 @@ class DBDataCollector implements DataCollectorInterface
         FamilyRepositoryInterface $familyRepository,
         UserRepositoryInterface $userRepository
     ) {
-        $this->channelRepository   = $channelRepository;
-        $this->productRepository   = $productRepository;
+        $this->channelRepository = $channelRepository;
+        $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->localeRepository    = $localeRepository;
-        $this->familyRepository    = $familyRepository;
-        $this->userRepository      = $userRepository;
+        $this->localeRepository = $localeRepository;
+        $this->familyRepository = $familyRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**

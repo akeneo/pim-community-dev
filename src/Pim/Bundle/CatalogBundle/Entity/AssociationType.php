@@ -152,7 +152,7 @@ class AssociationType implements AssociationTypeInterface
         }
 
         $translationClass = $this->getTranslationFQCN();
-        $translation      = new $translationClass();
+        $translation = new $translationClass();
         $translation->setLocale($locale);
         $translation->setForeignKey($this);
         $this->addTranslation($translation);

@@ -31,9 +31,9 @@ class AttributeFactory implements SimpleFactoryInterface
      */
     public function __construct(AttributeTypeRegistry $registry, $attributeClass, $productClass)
     {
-        $this->registry       = $registry;
+        $this->registry = $registry;
         $this->attributeClass = $attributeClass;
-        $this->productClass   = $productClass;
+        $this->productClass = $productClass;
     }
 
     /**

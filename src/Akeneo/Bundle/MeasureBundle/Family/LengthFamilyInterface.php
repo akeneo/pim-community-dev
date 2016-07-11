@@ -25,27 +25,27 @@ interface LengthFamilyInterface
     /**
      * @staticvar string
      */
-    const CHAIN      = 'CHAIN';
+    const CHAIN = 'CHAIN';
 
     /**
      * @staticvar string
      */
-    const DECIMETER  = 'DECIMETER';
+    const DECIMETER = 'DECIMETER';
 
     /**
      * @staticvar string
      */
-    const DEKAMETER  = 'DEKAMETER';
+    const DEKAMETER = 'DEKAMETER';
 
     /**
      * @staticvar string
      */
-    const FEET       = 'FEET';
+    const FEET = 'FEET';
 
     /**
      * @staticvar string
      */
-    const FURLONG    = 'FURLONG';
+    const FURLONG = 'FURLONG';
 
     /**
      * @staticvar string
@@ -55,27 +55,27 @@ interface LengthFamilyInterface
     /**
      * @staticvar string
      */
-    const INCH       = 'INCH';
+    const INCH = 'INCH';
 
     /**
      * @staticvar string
      */
-    const KILOMETER  = 'KILOMETER';
+    const KILOMETER = 'KILOMETER';
 
     /**
      * @staticvar string
      */
-    const METER      = 'METER';
+    const METER = 'METER';
 
     /**
      * @staticvar string
      */
-    const MIL        = 'MIL';
+    const MIL = 'MIL';
 
     /**
      * @staticvar string
      */
-    const MILE       = 'MILE';
+    const MILE = 'MILE';
 
     /**
      * @staticvar string
@@ -85,5 +85,5 @@ interface LengthFamilyInterface
     /**
      * @staticvar string
      */
-    const YARD       = 'YARD';
+    const YARD = 'YARD';
 }

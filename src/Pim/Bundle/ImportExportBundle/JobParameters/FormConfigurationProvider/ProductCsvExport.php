@@ -59,7 +59,7 @@ class ProductCsvExport implements FormConfigurationProviderInterface
         array $dateFormats
     ) {
         $this->simpleCsvExport = $simpleCsvExport;
-        $this->familyRepository  = $familyRepository;
+        $this->familyRepository = $familyRepository;
         $this->channelRepository = $channelRepository;
         $this->supportedJobNames = $supportedJobNames;
         $this->decimalSeparators = $decimalSeparators;

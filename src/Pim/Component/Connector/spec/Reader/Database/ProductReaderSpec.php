@@ -152,7 +152,7 @@ class ProductReaderSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($cursor);
 
-        $products      = [$product1, $product2, $product3];
+        $products = [$product1, $product2, $product3];
         $productsCount = count($products);
         $cursor->valid()->will(
             function () use (&$productsCount) {

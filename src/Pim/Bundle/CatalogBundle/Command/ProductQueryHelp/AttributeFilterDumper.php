@@ -31,7 +31,7 @@ class AttributeFilterDumper implements DumperInterface
      */
     public function __construct(FilterRegistryInterface $registry, AttributeRepositoryInterface $repository)
     {
-        $this->registry   = $registry;
+        $this->registry = $registry;
         $this->repository = $repository;
     }
 
@@ -42,14 +42,14 @@ class AttributeFilterDumper implements DumperInterface
     {
         $output->writeln("<info>Useable attributes filters...</info>");
         $attributeFilters = $this->getAttributeFilters();
-        $attributes       = $this->repository->findAll();
+        $attributes = $this->repository->findAll();
 
         $rows = [];
         foreach ($attributes as $attribute) {
             $rows = array_merge($rows, $this->getFilterInformationForAttribute($attribute, $attributeFilters));
         }
 
-        $table   = $helperSet->get('table');
+        $table = $helperSet->get('table');
         $headers = ['attribute', 'localizable', 'scopable', 'attribute type', 'operators', 'filter_class'];
         $table->setHeaders($headers)->setRows($rows);
         $table->render($output);
@@ -86,15 +86,15 @@ class AttributeFilterDumper implements DumperInterface
      */
     protected function getFilterInformationForAttribute(AttributeInterface $attribute, array $attributeFilters)
     {
-        $field         = $attribute->getCode();
+        $field = $attribute->getCode();
         $attributeType = $attribute->getAttributeType();
         $isLocalizable = $attribute->isLocalizable() ? 'yes' : 'no';
-        $isScopable    = $attribute->isScopable() ? 'yes' : 'no';
+        $isScopable = $attribute->isScopable() ? 'yes' : 'no';
 
         $newEntries = [];
         if (array_key_exists($attributeType, $attributeFilters)) {
             foreach ($attributeFilters[$attributeType] as $filter) {
-                $class     = get_class($filter);
+                $class = get_class($filter);
                 $operators = implode(', ', $filter->getOperators());
 
                 $newEntries[] = [
@@ -113,7 +113,7 @@ class AttributeFilterDumper implements DumperInterface
         if ($attribute->isBackendTypeReferenceData()) {
             foreach ($this->registry->getAttributeFilters() as $filter) {
                 if ($filter->supportsAttribute($attribute)) {
-                    $class     = get_class($filter);
+                    $class = get_class($filter);
                     $operators = implode(', ', $filter->getOperators());
 
                     $newEntries[] = [

@@ -61,7 +61,7 @@ class NavigationItemController extends FOSRestController
         }
 
         $params['user'] = $this->getUser();
-        $params['url']  = $this->getStateUrl($params['url']);
+        $params['url'] = $this->getStateUrl($params['url']);
 
         /** @var $entity \Oro\Bundle\NavigationBundle\Entity\NavigationItemInterface */
         $entity = $this->getFactory()->createItem($type, $params);

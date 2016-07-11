@@ -36,7 +36,7 @@ class ProductCategoryRepository extends AbstractItemCategoryRepository implement
      */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
-        $rootAlias  = $qb->getRootAlias();
+        $rootAlias = $qb->getRootAlias();
         if ($include) {
             $expression = $qb->expr()->in($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);

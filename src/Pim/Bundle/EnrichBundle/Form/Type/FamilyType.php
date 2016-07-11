@@ -51,10 +51,10 @@ class FamilyType extends AbstractType
         $dataClass
     ) {
         $this->requireSubscriber = $requireSubscriber;
-        $this->attributeClass    = $attributeClass;
-        $this->fieldsSubscriber  = $fieldsSubscriber;
-        $this->labelSubscriber   = $labelSubscriber;
-        $this->dataClass         = $dataClass;
+        $this->attributeClass = $attributeClass;
+        $this->fieldsSubscriber = $fieldsSubscriber;
+        $this->labelSubscriber = $labelSubscriber;
+        $this->dataClass = $dataClass;
     }
 
     /**

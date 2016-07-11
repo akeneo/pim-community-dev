@@ -26,7 +26,7 @@ class FileComparator implements ComparatorInterface
      */
     public function __construct(array $types, FileInfoRepositoryInterface $repository)
     {
-        $this->types      = $types;
+        $this->types = $types;
         $this->repository = $repository;
     }
 
@@ -43,7 +43,7 @@ class FileComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
-        $default   = ['locale' => null, 'scope' => null, 'data' => ['filePath' => null]];
+        $default = ['locale' => null, 'scope' => null, 'data' => ['filePath' => null]];
         $originals = array_merge($default, $originals);
 
         if (!isset($data['data']['filePath']) && !isset($originals['data']['filePath']) ||

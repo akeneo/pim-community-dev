@@ -131,26 +131,26 @@ class JobProfileController
         JobParametersValidator $jobParametersValidator,
         $jobType
     ) {
-        $this->jobRegistry           = $jobRegistry;
-        $this->jobType               = $jobType;
+        $this->jobRegistry = $jobRegistry;
+        $this->jobType = $jobType;
 
-        $this->jobInstanceType       = $jobInstanceType;
+        $this->jobInstanceType = $jobInstanceType;
         $this->jobInstanceType->setJobType($this->jobType);
 
-        $this->jobInstanceFactory    = $jobInstanceFactory;
-        $this->simpleJobLauncher     = $simpleJobLauncher;
-        $this->formFactory           = $formFactory;
-        $this->request               = $request;
-        $this->router                = $router;
-        $this->templating            = $templating;
-        $this->eventDispatcher       = $eventDispatcher;
-        $this->validator             = $validator;
-        $this->entityManager         = $entityManager;
+        $this->jobInstanceFactory = $jobInstanceFactory;
+        $this->simpleJobLauncher = $simpleJobLauncher;
+        $this->formFactory = $formFactory;
+        $this->request = $request;
+        $this->router = $router;
+        $this->templating = $templating;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->validator = $validator;
+        $this->entityManager = $entityManager;
         $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->jobTemplateProvider   = $jobTemplateProvider;
-        $this->jobParametersFactory  = $jobParametersFactory;
+        $this->jobTemplateProvider = $jobTemplateProvider;
+        $this->jobParametersFactory = $jobParametersFactory;
         $this->jobParametersValidator = $jobParametersValidator;
-        $this->tokenStorage          = $tokenStorage;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**

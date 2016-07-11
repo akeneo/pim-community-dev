@@ -46,10 +46,10 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->objectManager       = $objectManager;
+        $this->objectManager = $objectManager;
         $this->completenessManager = $completenessManager;
-        $this->optionsResolver     = $optionsResolver;
-        $this->eventDispatcher     = $eventDispatcher;
+        $this->optionsResolver = $optionsResolver;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

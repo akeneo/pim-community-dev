@@ -23,7 +23,7 @@ class MailNotifier
      */
     public function __construct(\Swift_Mailer $mailer, $senderEmail)
     {
-        $this->mailer      = $mailer;
+        $this->mailer = $mailer;
         $this->senderEmail = $senderEmail;
     }
 

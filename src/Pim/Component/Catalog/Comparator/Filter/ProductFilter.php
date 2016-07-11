@@ -40,10 +40,10 @@ class ProductFilter implements ProductFilterInterface
         AttributeRepositoryInterface $attributeRepository,
         array $productFields
     ) {
-        $this->normalizer          = $normalizer;
-        $this->comparatorRegistry  = $comparatorRegistry;
+        $this->normalizer = $normalizer;
+        $this->comparatorRegistry = $comparatorRegistry;
         $this->attributeRepository = $attributeRepository;
-        $this->productFields       = $productFields;
+        $this->productFields = $productFields;
     }
 
     /**

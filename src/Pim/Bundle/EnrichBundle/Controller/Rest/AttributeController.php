@@ -49,10 +49,10 @@ class AttributeController
         ObjectFilterInterface $attributeFilter,
         SearchableRepositoryInterface $attributeSearchRepository = null
     ) {
-        $this->attributeRepository       = $attributeRepository;
-        $this->normalizer                = $normalizer;
-        $this->tokenStorage              = $tokenStorage;
-        $this->attributeFilter           = $attributeFilter;
+        $this->attributeRepository = $attributeRepository;
+        $this->normalizer = $normalizer;
+        $this->tokenStorage = $tokenStorage;
+        $this->attributeFilter = $attributeFilter;
         $this->attributeSearchRepository = $attributeSearchRepository;
     }
 

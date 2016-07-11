@@ -20,8 +20,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ProductBuilderSpec extends ObjectBehavior
 {
     const PRODUCT_CLASS = 'Pim\Component\Catalog\Model\Product';
-    const VALUE_CLASS   = 'Pim\Component\Catalog\Model\ProductValue';
-    const PRICE_CLASS   = 'Pim\Bundle\CatalogBundle\Entity\ProductPrice';
+    const VALUE_CLASS = 'Pim\Component\Catalog\Model\ProductValue';
+    const PRICE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\ProductPrice';
     const ASSOCIATION_CLASS = 'Pim\Component\Catalog\Model\Association';
 
     function let(

@@ -57,12 +57,12 @@ class UserUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $roleRepository,
         IdentifiableObjectRepositoryInterface $groupRepository
     ) {
-        $this->userManager        = $userManager;
+        $this->userManager = $userManager;
         $this->categoryRepository = $categoryRepository;
-        $this->localeRepository   = $localeRepository;
-        $this->channelRepository  = $channelRepository;
-        $this->roleRepository     = $roleRepository;
-        $this->groupRepository    = $groupRepository;
+        $this->localeRepository = $localeRepository;
+        $this->channelRepository = $channelRepository;
+        $this->roleRepository = $roleRepository;
+        $this->groupRepository = $groupRepository;
     }
 
     /**

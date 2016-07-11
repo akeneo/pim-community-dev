@@ -52,9 +52,9 @@ class JobInstanceType extends AbstractType
         TranslatedLabelProvider $jobLabelProvider,
         JobParametersFactory $jobParametersFactory
     ) {
-        $this->jobRegistry          = $jobRegistry;
-        $this->translator           = $translator;
-        $this->jobLabelProvider     = $jobLabelProvider;
+        $this->jobRegistry = $jobRegistry;
+        $this->translator = $translator;
+        $this->jobLabelProvider = $jobLabelProvider;
         $this->jobParametersFactory = $jobParametersFactory;
     }
 

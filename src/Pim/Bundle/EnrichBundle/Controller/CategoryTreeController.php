@@ -80,13 +80,13 @@ class CategoryTreeController extends Controller
         SecurityFacade $securityFacade,
         array $rawConfiguration
     ) {
-        $this->eventDispatcher    = $eventDispatcher;
-        $this->userContext        = $userContext;
-        $this->categorySaver      = $categorySaver;
-        $this->categoryRemover    = $categoryRemover;
-        $this->categoryFactory    = $categoryFactory;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->userContext = $userContext;
+        $this->categorySaver = $categorySaver;
+        $this->categoryRemover = $categoryRemover;
+        $this->categoryFactory = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
-        $this->securityFacade     = $securityFacade;
+        $this->securityFacade = $securityFacade;
 
         $resolver = new OptionsResolver();
         $this->configure($resolver);
@@ -145,7 +145,7 @@ class CategoryTreeController extends Controller
         }
 
         $category = $this->findCategory($request->get('id'));
-        $parent   = $this->findCategory($request->get('parent'));
+        $parent = $this->findCategory($request->get('parent'));
         $category->setParent($parent);
 
         $prevSiblingId = $request->get('prev_sibling');
@@ -211,8 +211,8 @@ class CategoryTreeController extends Controller
         }
 
         $withItemsCount = (bool) $request->get('with_items_count', false);
-        $includeParent  = (bool) $request->get('include_parent', false);
-        $includeSub     = (bool) $request->get('include_sub', false);
+        $includeParent = (bool) $request->get('include_parent', false);
+        $includeSub = (bool) $request->get('include_sub', false);
 
         return $this->render(
             $view,
@@ -358,8 +358,8 @@ class CategoryTreeController extends Controller
         }
 
         $category = $this->findCategory($id);
-        $parent   = $category->getParent();
-        $params   = (null !== $parent) ? ['node' => $parent->getId()] : [];
+        $parent = $category->getParent();
+        $params = (null !== $parent) ? ['node' => $parent->getId()] : [];
 
         $this->categoryRemover->remove($category, ['flush' => true]);
 

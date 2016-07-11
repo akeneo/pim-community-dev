@@ -35,7 +35,7 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
     public function __construct(EntityManager $entityManager, TranslatorInterface $translator)
     {
         $this->entityManager = $entityManager;
-        $this->translator    = $translator;
+        $this->translator = $translator;
     }
 
     /**
@@ -43,8 +43,8 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
      */
     public function handle(MassActionMediatorInterface $mediator)
     {
-        $iteration             = 0;
-        $entityName            = null;
+        $iteration = 0;
+        $entityName = null;
         $entityIdentifiedField = null;
 
         $results = $this->prepareIterableResult($mediator->getResults());
@@ -99,7 +99,7 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
      */
     protected function prepareIterableResult(IterableResultInterface $result)
     {
-        $results =  new ConstantPagerIterableResult($result->getSource());
+        $results = new ConstantPagerIterableResult($result->getSource());
         $params = [];
         /** @var Parameter $param */
         foreach ($result->getSource()->getParameters() as $param) {
@@ -118,11 +118,11 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
      */
     protected function getResponse(MassActionMediatorInterface $mediator, $entitiesCount = 0)
     {
-        $massAction      = $mediator->getMassAction();
+        $massAction = $mediator->getMassAction();
         $responseMessage = $massAction->getOptions()->offsetGetByPath('[messages][success]', $this->responseMessage);
 
         $successful = $entitiesCount > 0;
-        $options    = ['count' => $entitiesCount];
+        $options = ['count' => $entitiesCount];
 
         return new MassActionResponse(
             $successful,
@@ -169,7 +169,7 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
         // if we ask identifier that's means that we have plain data in array
         // so we will just use column name without entity alias
         if (strpos('.', $identifier) !== -1) {
-            $parts      = explode('.', $identifier);
+            $parts = explode('.', $identifier);
             $identifier = end($parts);
         }
 

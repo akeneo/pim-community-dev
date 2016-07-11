@@ -63,7 +63,7 @@ class QueryCountCalculator
     protected function processParameterMappings(Query $query, $paramMappings)
     {
         $sqlParams = [];
-        $types     = [];
+        $types = [];
 
         /** @var Parameter $parameter */
         foreach ($query->getParameters() as $parameter) {
@@ -74,7 +74,7 @@ class QueryCountCalculator
             }
 
             $value = $query->processParameterValue($parameter->getValue());
-            $type  = ($parameter->getValue() === $value)
+            $type = ($parameter->getValue() === $value)
                 ? $parameter->getType()
                 : Query\ParameterTypeInferer::inferType($value);
 

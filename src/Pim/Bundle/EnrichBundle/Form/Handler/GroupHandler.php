@@ -49,10 +49,10 @@ class GroupHandler implements HandlerInterface
         ProductRepositoryInterface $productRepository,
         AttributeConverterInterface $localizedConverter
     ) {
-        $this->form               = $form;
-        $this->request            = $request;
-        $this->groupSaver         = $groupSaver;
-        $this->productRepository  = $productRepository;
+        $this->form = $form;
+        $this->request = $request;
+        $this->groupSaver = $groupSaver;
+        $this->productRepository = $productRepository;
         $this->localizedConverter = $localizedConverter;
     }
 
@@ -118,7 +118,7 @@ class GroupHandler implements HandlerInterface
             return;
         }
 
-        $options    = ['locale' => $this->request->getLocale(), 'disable_grouping_separator' => true];
+        $options = ['locale' => $this->request->getLocale(), 'disable_grouping_separator' => true];
         $valuesData = $this->localizedConverter->convertToDefaultFormats($template->getValuesData(), $options);
 
         $template->setValuesData($valuesData);

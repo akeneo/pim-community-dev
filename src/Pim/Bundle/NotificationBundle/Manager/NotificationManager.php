@@ -65,12 +65,12 @@ class NotificationManager
         NotifierInterface $notifier
     ) {
         $this->userNotifRepository = $userNotifRepository;
-        $this->userNotifFactory    = $userNotifFactory;
-        $this->userProvider        = $userProvider;
-        $this->notificationSaver   = $notificationSaver;
-        $this->userNotifsSaver     = $userNotifsSaver;
-        $this->userNotifRemover    = $userNotifRemover;
-        $this->notifier            = $notifier;
+        $this->userNotifFactory = $userNotifFactory;
+        $this->userProvider = $userProvider;
+        $this->notificationSaver = $notificationSaver;
+        $this->userNotifsSaver = $userNotifsSaver;
+        $this->userNotifRemover = $userNotifRemover;
+        $this->notifier = $notifier;
     }
 
     /**

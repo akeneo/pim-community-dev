@@ -13,9 +13,9 @@ use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 class AttributeColumnInfoExtractorSpec extends ObjectBehavior
 {
     const ASSOC_TYPE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\AssociationType';
-    const ATTRIBUTE_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Attribute';
-    const CHANNEL_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Channel';
-    const LOCALE_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Locale';
+    const ATTRIBUTE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Attribute';
+    const CHANNEL_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Channel';
+    const LOCALE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Locale';
 
     function let(
         AttributeRepositoryInterface $attributeRepository,

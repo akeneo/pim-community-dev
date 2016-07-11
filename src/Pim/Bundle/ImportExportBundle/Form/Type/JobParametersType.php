@@ -65,7 +65,7 @@ class JobParametersType extends AbstractType implements DataMapperInterface
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use ($factory, $configProviderRegistry, $constraintProviderRegistry) {
-                $form   = $event->getForm();
+                $form = $event->getForm();
                 $jobInstance = $form->getRoot()->getData();
                 if (null == $jobInstance->getId()) {
                     return;

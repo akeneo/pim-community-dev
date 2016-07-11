@@ -18,7 +18,7 @@ class StringFilter extends AbstractFilter
             return false;
         }
 
-        $operator      = $this->getOperator($data['type']);
+        $operator = $this->getOperator($data['type']);
         $parameterName = $ds->generateParameterName($this->getName());
 
         $this->applyFilterToClause(
@@ -50,7 +50,7 @@ class StringFilter extends AbstractFilter
             return false;
         }
 
-        $data['type']  = isset($data['type']) ? $data['type'] : null;
+        $data['type'] = isset($data['type']) ? $data['type'] : null;
         $data['value'] = sprintf($this->getFormatByComparisonType($data['type']), $data['value']);
 
         return $data;

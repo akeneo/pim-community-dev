@@ -23,7 +23,7 @@ class RoleTest extends \PHPUnit_Framework_TestCase
 
     public function testLabel()
     {
-        $role  = $this->getRole();
+        $role = $this->getRole();
         $label = 'Test role';
 
         $this->assertEmpty($role->getLabel());

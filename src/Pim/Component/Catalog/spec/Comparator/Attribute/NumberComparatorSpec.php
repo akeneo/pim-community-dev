@@ -32,7 +32,7 @@ class NumberComparatorSpec extends ObjectBehavior
 
     function it_get_changes_when_changing_value()
     {
-        $changes   = ['data' => '10', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes = ['data' => '10', 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = ['data' => '11', 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
         $this->compare($changes, $originals)->shouldReturn($changes);
@@ -40,7 +40,7 @@ class NumberComparatorSpec extends ObjectBehavior
 
     function it_returns_null_when_values_are_the_same_with_string()
     {
-        $changes   = ['data' => '10', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes = ['data' => '10', 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = ['data' => 10, 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
         $this->compare($changes, $originals)->shouldReturn(null);
@@ -48,7 +48,7 @@ class NumberComparatorSpec extends ObjectBehavior
 
     function it_returns_null_when_values_are_the_same_as_integer()
     {
-        $changes   = ['data' => 10, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes = ['data' => 10, 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = ['data' => 10, 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
         $this->compare($changes, $originals)->shouldReturn(null);
@@ -56,7 +56,7 @@ class NumberComparatorSpec extends ObjectBehavior
 
     function it_returns_null_when_values_are_the_same_as_float()
     {
-        $changes   = ['data' => 10.00, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes = ['data' => 10.00, 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = ['data' => '10', 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
         $this->compare($changes, $originals)->shouldReturn(null);
@@ -64,7 +64,7 @@ class NumberComparatorSpec extends ObjectBehavior
 
     function it_returns_changes_if_it_compares_0_to_null()
     {
-        $changes   = ['data' => 0, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes = ['data' => 0, 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = ['data' => null, 'locale' => null, 'scope' => null];
 
         $this->compare($changes, $originals)->shouldReturn($changes);

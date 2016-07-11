@@ -10,7 +10,7 @@ class SelectRowFilterType extends AbstractChoiceType
     const NAME = 'oro_type_selectrow_filter';
 
     const NOT_SELECTED_VALUE = 0;
-    const SELECTED_VALUE     = 1;
+    const SELECTED_VALUE = 1;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

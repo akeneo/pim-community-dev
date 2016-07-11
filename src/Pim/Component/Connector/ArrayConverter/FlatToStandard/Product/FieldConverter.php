@@ -32,8 +32,8 @@ class FieldConverter
         AssociationColumnsResolver $assocFieldResolver,
         GroupTypeRepositoryInterface $groupTypeRepository
     ) {
-        $this->assocFieldResolver  = $assocFieldResolver;
-        $this->fieldSplitter       = $fieldSplitter;
+        $this->assocFieldResolver = $assocFieldResolver;
+        $this->fieldSplitter = $fieldSplitter;
         $this->groupTypeRepository = $groupTypeRepository;
     }
 

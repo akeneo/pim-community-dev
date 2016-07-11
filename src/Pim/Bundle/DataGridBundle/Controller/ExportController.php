@@ -40,9 +40,9 @@ class ExportController
         MassActionDispatcher $massActionDispatcher,
         SerializerInterface $serializer
     ) {
-        $this->request              = $request;
+        $this->request = $request;
         $this->massActionDispatcher = $massActionDispatcher;
-        $this->serializer           = $serializer;
+        $this->serializer = $serializer;
     }
 
     /**

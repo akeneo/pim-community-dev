@@ -16,7 +16,7 @@ use Prophecy\Argument;
 class GroupDenormalizerSpec extends ObjectBehavior
 {
     const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Group';
-    const FORMAT_CSV   = 'csv';
+    const FORMAT_CSV = 'csv';
 
     function let(
         ManagerRegistry $registry,

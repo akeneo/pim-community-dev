@@ -43,9 +43,9 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
         parent::__construct($filePathResolver);
 
         $this->flatRowBuffer = $flatRowBuffer;
-        $this->fileExporter  = $fileExporter;
-        $this->flusher       = $flusher;
-        $this->writtenFiles  = [];
+        $this->fileExporter = $fileExporter;
+        $this->flusher = $flusher;
+        $this->writtenFiles = [];
     }
 
     /**
@@ -56,7 +56,7 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
         $products = $media = [];
         foreach ($items as $item) {
             $products[] = $item['product'];
-            $media[]    = $item['media'];
+            $media[] = $item['media'];
         }
 
         $parameters = $this->stepExecution->getJobParameters();

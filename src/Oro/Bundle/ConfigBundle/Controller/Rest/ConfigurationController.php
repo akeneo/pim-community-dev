@@ -29,7 +29,7 @@ class ConfigurationController
     public function __construct(ConfigManager $configManager, array $options = [])
     {
         $this->configManager = $configManager;
-        $this->options       = $options;
+        $this->options = $options;
     }
 
     /**
@@ -44,7 +44,7 @@ class ConfigurationController
         $data = [];
 
         foreach ($this->options as $option) {
-            $viewKey  = $option['section'] . ConfigManager::SECTION_VIEW_SEPARATOR . $option['name'];
+            $viewKey = $option['section'] . ConfigManager::SECTION_VIEW_SEPARATOR . $option['name'];
             $modelKey = $option['section'] . ConfigManager::SECTION_MODEL_SEPARATOR . $option['name'];
             $data[$viewKey] = [
                 'value'                  => $this->configManager->get($modelKey),

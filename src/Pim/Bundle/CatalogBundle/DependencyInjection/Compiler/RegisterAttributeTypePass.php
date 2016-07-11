@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterAttributeTypePass implements CompilerPassInterface
 {
     /** @staticvar string */
-    const ATTRIBUTE_TYPE_TAG      = 'pim_catalog.attribute_type';
+    const ATTRIBUTE_TYPE_TAG = 'pim_catalog.attribute_type';
 
     /** @staticvar string */
     const ATTRIBUTE_TYPE_REGISTRY = 'pim_catalog.registry.attribute_type';

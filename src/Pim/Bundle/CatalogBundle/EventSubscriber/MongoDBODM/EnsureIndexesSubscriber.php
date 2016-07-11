@@ -36,7 +36,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
     public function __construct(IndexCreator $indexCreator, IndexPurger $indexPurger)
     {
         $this->indexCreator = $indexCreator;
-        $this->indexPurger  = $indexPurger;
+        $this->indexPurger = $indexPurger;
     }
 
     /**

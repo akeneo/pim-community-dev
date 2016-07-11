@@ -32,8 +32,8 @@ class FileExporter implements FileExporterInterface
     public function __construct(FilesystemProvider $filesystemProvider, FileFetcherInterface $fileFetcher)
     {
         $this->filesystemProvider = $filesystemProvider;
-        $this->fileFetcher        = $fileFetcher;
-        $this->localFs            = new Filesystem();
+        $this->fileFetcher = $fileFetcher;
+        $this->localFs = new Filesystem();
     }
 
     /**

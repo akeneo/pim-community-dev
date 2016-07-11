@@ -68,14 +68,14 @@ class AssociationTypeController
         RemoverInterface $assocTypeRemover,
         AssociationTypeRepositoryInterface $assocTypeRepo
     ) {
-        $this->request          = $request;
-        $this->router           = $router;
-        $this->translator       = $translator;
-        $this->assocRepository  = $assocRepository;
+        $this->request = $request;
+        $this->router = $router;
+        $this->translator = $translator;
+        $this->assocRepository = $assocRepository;
         $this->assocTypeHandler = $assocTypeHandler;
-        $this->assocTypeForm    = $assocTypeForm;
+        $this->assocTypeForm = $assocTypeForm;
         $this->assocTypeRemover = $assocTypeRemover;
-        $this->assocTypeRepo    = $assocTypeRepo;
+        $this->assocTypeRepo = $assocTypeRepo;
     }
 
     /**

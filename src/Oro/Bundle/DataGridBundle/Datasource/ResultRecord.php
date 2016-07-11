@@ -48,11 +48,11 @@ class ResultRecord implements ResultRecordInterface
             if (is_array($data) && array_key_exists($name, $data)) {
                 return $data[$name];
             } elseif (is_object($data)) {
-                $fieldName          = $name;
+                $fieldName = $name;
                 $camelizedFieldName = self::camelize($fieldName);
-                $getters            = [];
-                $getters[]          = 'get' . $camelizedFieldName;
-                $getters[]          = 'is' . $camelizedFieldName;
+                $getters = [];
+                $getters[] = 'get' . $camelizedFieldName;
+                $getters[] = 'is' . $camelizedFieldName;
 
                 foreach ($getters as $getter) {
                     if (method_exists($data, $getter)) {

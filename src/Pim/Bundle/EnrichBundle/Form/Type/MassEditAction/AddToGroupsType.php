@@ -37,8 +37,8 @@ class AddToGroupsType extends AbstractType
      */
     public function __construct(GroupRepositoryInterface $groupRepository, $groupClassName, $dataClass)
     {
-        $this->groupClassName  = $groupClassName;
-        $this->dataClass       = $dataClass;
+        $this->groupClassName = $groupClassName;
+        $this->dataClass = $dataClass;
         $this->groupRepository = $groupRepository;
     }
 

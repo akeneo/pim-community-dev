@@ -42,9 +42,9 @@ class MassActionEvent extends Event
      */
     public function __construct(DatagridInterface $datagrid, MassActionInterface $massAction, array $objects)
     {
-        $this->datagrid   = $datagrid;
+        $this->datagrid = $datagrid;
         $this->massAction = $massAction;
-        $this->objects    = $objects;
+        $this->objects = $objects;
     }
 
     /**

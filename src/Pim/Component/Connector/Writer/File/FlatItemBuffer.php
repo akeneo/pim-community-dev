@@ -29,7 +29,7 @@ class FlatItemBuffer implements \Countable
     public function __construct(BufferFactory $bufferFactory)
     {
         $this->buffer = $bufferFactory->create();
-        $this->count  = 0;
+        $this->count = 0;
     }
 
     /**

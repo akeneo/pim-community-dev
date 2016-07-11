@@ -20,7 +20,7 @@ class Object implements \ArrayAccess, \IteratorAggregate
     protected function __construct(array $params)
     {
         $this->accessor = PropertyAccess::createPropertyAccessor();
-        $this->params   = $params;
+        $this->params = $params;
     }
 
     /**
@@ -231,7 +231,7 @@ class Object implements \ArrayAccess, \IteratorAggregate
      */
     public function validateConfiguration(ConfigurationInterface $configuration)
     {
-        $processor    = new Processor();
+        $processor = new Processor();
         $this->params = $processor->processConfiguration($configuration, $this->toArray());
 
         return $this;

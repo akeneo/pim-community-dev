@@ -51,10 +51,10 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     ) {
         parent::__construct($jobInstanceCode);
 
-        $this->channelRepository   = $channelRepository;
+        $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->factory             = $factory;
-        $this->attRequirements     = new ArrayCollection();
+        $this->factory = $factory;
+        $this->attRequirements = new ArrayCollection();
     }
 
     /**

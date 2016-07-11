@@ -56,7 +56,7 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
     protected function registerSetters(ContainerBuilder $container)
     {
         $registry = $container->getDefinition(self::SETTER_REGISTRY);
-        $setters  = $container->findTaggedServiceIds(self::SETTER_TAG);
+        $setters = $container->findTaggedServiceIds(self::SETTER_TAG);
 
         foreach (array_keys($setters) as $setterId) {
             $registry->addMethodCall('register', [new Reference($setterId)]);
@@ -69,7 +69,7 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
     protected function registerCopiers(ContainerBuilder $container)
     {
         $registry = $container->getDefinition(self::COPIER_REGISTRY);
-        $copiers  = $container->findTaggedServiceIds(self::COPIER_TAG);
+        $copiers = $container->findTaggedServiceIds(self::COPIER_TAG);
 
         foreach (array_keys($copiers) as $copierId) {
             $registry->addMethodCall('register', [new Reference($copierId)]);
@@ -82,7 +82,7 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
     protected function registerAdders(ContainerBuilder $container)
     {
         $registry = $container->getDefinition(self::ADDER_REGISTRY);
-        $adders   = $container->findTaggedServiceIds(self::ADDER_TAG);
+        $adders = $container->findTaggedServiceIds(self::ADDER_TAG);
 
         foreach (array_keys($adders) as $adderId) {
             $registry->addMethodCall('register', [new Reference($adderId)]);

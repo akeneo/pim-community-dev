@@ -40,10 +40,10 @@ class FamilyFactory implements SimpleFactoryInterface
         AttributeRepositoryInterface $attributeRepository,
         $familyClass
     ) {
-        $this->channelRepository   = $channelRepository;
-        $this->factory             = $factory;
+        $this->channelRepository = $channelRepository;
+        $this->factory = $factory;
         $this->attributeRepository = $attributeRepository;
-        $this->familyClass         = $familyClass;
+        $this->familyClass = $familyClass;
     }
 
     /**
@@ -62,7 +62,7 @@ class FamilyFactory implements SimpleFactoryInterface
     public function create()
     {
         /** @var FamilyInterface $family */
-        $family     = new $this->familyClass();
+        $family = new $this->familyClass();
         $identifier = $this->attributeRepository->getIdentifier();
 
         $family->addAttribute($identifier);

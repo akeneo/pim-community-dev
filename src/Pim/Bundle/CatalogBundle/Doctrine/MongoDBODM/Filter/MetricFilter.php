@@ -40,11 +40,11 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
-        $this->measureManager          = $measureManager;
-        $this->measureConverter        = $measureConverter;
+        $this->attrValidatorHelper = $attrValidatorHelper;
+        $this->measureManager = $measureManager;
+        $this->measureConverter = $measureConverter;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedOperators      = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**

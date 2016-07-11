@@ -27,7 +27,7 @@ class ProductDelocalized implements ArrayConverterInterface
      */
     public function __construct(ArrayConverterInterface $converter, AttributeConverterInterface $delocalizer)
     {
-        $this->converter   = $converter;
+        $this->converter = $converter;
         $this->delocalizer = $delocalizer;
     }
 

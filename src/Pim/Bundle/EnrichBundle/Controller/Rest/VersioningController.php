@@ -36,8 +36,8 @@ class VersioningController
         NormalizerInterface $normalizer
     ) {
         $this->versionRepository = $versionRepository;
-        $this->FQCNResolver      = $FQCNResolver;
-        $this->normalizer        = $normalizer;
+        $this->FQCNResolver = $FQCNResolver;
+        $this->normalizer = $normalizer;
     }
 
     /**

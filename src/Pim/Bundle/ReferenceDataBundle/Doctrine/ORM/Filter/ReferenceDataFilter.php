@@ -123,7 +123,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $referenceDataName = $attribute->getReferenceDataName();
         $joinAliasOpt = $this->getUniqueAlias('reference_data' . $referenceDataName);
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
-        $condition    = $this->prepareCriteriaCondition($backendField, Operators::IS_EMPTY, null);
+        $condition = $this->prepareCriteriaCondition($backendField, Operators::IS_EMPTY, null);
         $this->qb->leftJoin($joinAlias . '.' . $referenceDataName, $joinAliasOpt);
         $this->qb->andWhere($condition);
     }
@@ -159,7 +159,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $referenceDataName = $attribute->getReferenceDataName();
         $joinAliasOpt = $this->getUniqueAlias('reference_data' . $referenceDataName);
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
-        $condition    = $this->prepareCriteriaCondition($backendField, $operator, $value);
+        $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
         $this->qb->innerJoin($joinAlias . '.' . $referenceDataName, $joinAliasOpt, 'WITH', $condition);
     }
 

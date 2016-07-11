@@ -42,10 +42,10 @@ class NotificationController
         UserNotificationRepositoryInterface $userNotifRepository,
         RemoverInterface $userNotifRemover
     ) {
-        $this->templating          = $templating;
-        $this->userContext         = $userContext;
+        $this->templating = $templating;
+        $this->userContext = $userContext;
         $this->userNotifRepository = $userNotifRepository;
-        $this->userNotifRemover    = $userNotifRemover;
+        $this->userNotifRemover = $userNotifRemover;
     }
 
     /**

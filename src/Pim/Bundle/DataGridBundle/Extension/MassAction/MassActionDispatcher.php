@@ -51,9 +51,9 @@ class MassActionDispatcher
         RequestParameters $requestParams,
         MassActionParametersParser $parametersParser
     ) {
-        $this->handlerRegistry  = $handlerRegistry;
-        $this->manager          = $manager;
-        $this->requestParams    = $requestParams;
+        $this->handlerRegistry = $handlerRegistry;
+        $this->manager = $manager;
+        $this->requestParams = $requestParams;
         $this->parametersParser = $parametersParser;
     }
 
@@ -69,10 +69,10 @@ class MassActionDispatcher
     public function dispatch(Request $request)
     {
         $parameters = $this->prepareMassActionParameters($request);
-        $datagrid   = $parameters['datagrid'];
+        $datagrid = $parameters['datagrid'];
         $massAction = $parameters['massAction'];
-        $inset      = $parameters['inset'];
-        $values     = $parameters['values'];
+        $inset = $parameters['inset'];
+        $values = $parameters['values'];
 
         return $this->performMassAction($datagrid, $massAction, $inset, $values);
     }
@@ -91,7 +91,7 @@ class MassActionDispatcher
     public function getRawFilters(Request $request)
     {
         $parameters = $this->prepareMassActionParameters($request);
-        $datagrid   = $parameters['datagrid'];
+        $datagrid = $parameters['datagrid'];
         $datasource = $datagrid->getDatasource();
 
         if (!$datasource instanceof ProductDatasource) {
@@ -143,8 +143,8 @@ class MassActionDispatcher
     protected function prepareMassActionParameters(Request $request)
     {
         $parameters = $this->parametersParser->parse($request);
-        $inset   = $this->prepareInsetParameter($parameters);
-        $values  = $this->prepareValuesParameter($parameters);
+        $inset = $this->prepareInsetParameter($parameters);
+        $values = $this->prepareValuesParameter($parameters);
         $filters = $this->prepareFiltersParameter($parameters);
 
         $actionName = $request->get('actionName');
@@ -153,7 +153,7 @@ class MassActionDispatcher
         }
 
         $datagridName = $request->get('gridName');
-        $datagrid   = $this->manager->getDatagrid($datagridName);
+        $datagrid = $this->manager->getDatagrid($datagridName);
         $massAction = $this->getMassActionByName($actionName, $datagrid);
         $this->requestParams->set(FilterExtension::FILTER_ROOT_PARAM, $filters);
 
@@ -268,7 +268,7 @@ class MassActionDispatcher
     protected function getMassActionHandler(MassActionInterface $massAction)
     {
         $handlerAlias = $massAction->getOptions()->offsetGet('handler');
-        $handler      = $this->handlerRegistry->getHandler($handlerAlias);
+        $handler = $this->handlerRegistry->getHandler($handlerAlias);
 
         return $handler;
     }

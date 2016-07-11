@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidDateRange extends Constraint
 {
-    public $message            = 'The max date must be greater than the min date';
+    public $message = 'The max date must be greater than the min date';
     public $invalidDateMessage = 'This date is not valid';
 
     /**

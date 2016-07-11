@@ -18,16 +18,16 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColum
 class ProductDenormalizer extends AbstractEntityDenormalizer
 {
     /** @staticvar string */
-    const FIELD_ENABLED      = 'enabled';
+    const FIELD_ENABLED = 'enabled';
 
     /** @staticvar string */
-    const FIELD_FAMILY       = 'family';
+    const FIELD_FAMILY = 'family';
 
     /** @staticvar string */
-    const FIELD_CATEGORIES   = 'categories';
+    const FIELD_CATEGORIES = 'categories';
 
     /** @staticvar string */
-    const FIELD_GROUPS       = 'groups';
+    const FIELD_GROUPS = 'groups';
 
     /** @var AttributeColumnInfoExtractor */
     protected $attrFieldExtractor;
@@ -79,14 +79,14 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     ) {
         parent::__construct($managerRegistry, $entityClass);
 
-        $this->productBuilder     = $productBuilder;
-        $this->attFieldExtractor  = $attFieldExtractor;
+        $this->productBuilder = $productBuilder;
+        $this->attFieldExtractor = $attFieldExtractor;
         $this->assocFieldResolver = $assocFieldResolver;
-        $this->associationClass   = $associationClass;
-        $this->categoryClass      = $categoryClass;
-        $this->familyClass        = $familyClass;
-        $this->groupClass         = $groupClass;
-        $this->productValueClass  = $productValueClass;
+        $this->associationClass = $associationClass;
+        $this->categoryClass = $categoryClass;
+        $this->familyClass = $familyClass;
+        $this->groupClass = $groupClass;
+        $this->productValueClass = $productValueClass;
     }
 
     /**
@@ -210,7 +210,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         }
 
         // Get association field names and add associations
-        $assocFieldNames  = $this->assocFieldResolver->resolveAssociationColumns();
+        $assocFieldNames = $this->assocFieldResolver->resolveAssociationColumns();
         foreach ($assocFieldNames as $assocFieldName) {
             if (isset($data[$assocFieldName])) {
                 if (strlen($data[$assocFieldName]) > 0) {

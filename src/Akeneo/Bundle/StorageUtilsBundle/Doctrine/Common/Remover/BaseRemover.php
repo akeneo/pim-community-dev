@@ -44,10 +44,10 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
         EventDispatcherInterface $eventDispatcher,
         $removedClass
     ) {
-        $this->objectManager   = $objectManager;
+        $this->objectManager = $objectManager;
         $this->optionsResolver = $optionsResolver;
         $this->eventDispatcher = $eventDispatcher;
-        $this->removedClass    = $removedClass;
+        $this->removedClass = $removedClass;
     }
 
     /**
@@ -65,7 +65,7 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
             );
         }
 
-        $options  = $this->optionsResolver->resolveRemoveOptions($options);
+        $options = $this->optionsResolver->resolveRemoveOptions($options);
         $objectId = $object->getId();
         $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE, new RemoveEvent($object, $objectId, $options));
 

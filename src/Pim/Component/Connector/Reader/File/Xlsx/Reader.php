@@ -46,7 +46,7 @@ class Reader extends AbstractConfigurableStepElement implements
     public function __construct(FileIteratorFactory $fileIteratorFactory, ArrayConverterInterface $converter)
     {
         $this->fileIteratorFactory = $fileIteratorFactory;
-        $this->converter           = $converter;
+        $this->converter = $converter;
     }
 
     /**

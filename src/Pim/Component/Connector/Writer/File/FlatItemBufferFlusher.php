@@ -59,10 +59,10 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
             $basePathPattern = $this->getNumberedPathname($basePathname);
         }
 
-        $headers    = $this->sortHeaders($buffer->getHeaders());
+        $headers = $this->sortHeaders($buffer->getHeaders());
         $hollowItem = array_fill_keys($headers, '');
 
-        $fileCount         = 1;
+        $fileCount = 1;
         $writtenLinesCount = 0;
         foreach ($buffer->getBuffer() as $count => $incompleteItem) {
             if (0 === $writtenLinesCount % $maxLinesPerFile) {
@@ -75,7 +75,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
                 );
 
                 $writtenLinesCount = 0;
-                $writer            = $this->getWriter($filePath);
+                $writer = $this->getWriter($filePath);
                 $writer->addRow($headers);
             }
 

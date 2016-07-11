@@ -33,8 +33,8 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
         parent::__construct($filePathResolver);
 
         $this->flatRowBuffer = $flatRowBuffer;
-        $this->flusher       = $flusher;
-        $this->writtenFiles  = [];
+        $this->flusher = $flusher;
+        $this->writtenFiles = [];
     }
 
     /**

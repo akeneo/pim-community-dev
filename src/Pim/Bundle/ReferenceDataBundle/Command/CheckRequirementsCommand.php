@@ -57,7 +57,7 @@ class CheckRequirementsCommand extends ContainerAwareCommand
      */
     protected function getCheckers()
     {
-        $checkers   = [];
+        $checkers = [];
         $checkers[] = new ReferenceDataNameChecker();
         $checkers[] = new ReferenceDataInterfaceChecker($this->getReferenceDataInterface());
         $checkers[] = new ReferenceDataUniqueCodeChecker($this->getDoctrineEntityManager());

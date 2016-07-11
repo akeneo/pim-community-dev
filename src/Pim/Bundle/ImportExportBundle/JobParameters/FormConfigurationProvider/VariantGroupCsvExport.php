@@ -46,10 +46,10 @@ class VariantGroupCsvExport implements FormConfigurationProviderInterface
         array $decimalSeparators,
         array $dateFormats
     ) {
-        $this->simpleOptions     = $simpleOptions;
+        $this->simpleOptions = $simpleOptions;
         $this->supportedJobNames = $supportedJobNames;
         $this->decimalSeparators = $decimalSeparators;
-        $this->dateFormats       = $dateFormats;
+        $this->dateFormats = $dateFormats;
     }
 
     /**

@@ -23,7 +23,7 @@ class ProductIdFilter extends AbstractFieldFilter implements FieldFilterInterfac
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields    = $supportedFields;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 

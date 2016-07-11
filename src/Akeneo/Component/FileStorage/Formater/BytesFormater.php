@@ -27,23 +27,23 @@ class BytesFormater
         $terabyte = $gigabyte * $factor;
 
         $value = $bytes;
-        $unit  = '';
+        $unit = '';
 
         if ($bytes >= $kilobyte) {
             $value = $bytes / $kilobyte;
-            $unit  = 'K';
+            $unit = 'K';
         }
         if ($bytes >= $megabyte) {
             $value = $bytes / $megabyte;
-            $unit  = 'M';
+            $unit = 'M';
         }
         if ($bytes >= $gigabyte) {
             $value = $bytes / $gigabyte;
-            $unit  = 'G';
+            $unit = 'G';
         }
         if ($bytes >= $terabyte) {
             $value = $bytes / $terabyte;
-            $unit  = 'T';
+            $unit = 'T';
         }
 
         if (!$isSi || $bytes < $kilobyte) {

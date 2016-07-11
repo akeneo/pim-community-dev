@@ -23,7 +23,7 @@ class ImageProperty extends TwigProperty
         }
 
         $fileName = urlencode($result['key']);
-        $title    = $result['originalFilename'];
+        $title = $result['originalFilename'];
 
         if (!empty($fileName)) {
             return $this->getTemplate()->render(

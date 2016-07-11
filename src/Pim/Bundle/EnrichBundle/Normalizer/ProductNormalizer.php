@@ -55,12 +55,12 @@ class ProductNormalizer implements NormalizerInterface
         StructureVersionProviderInterface $structureVersionProvider,
         FormProviderInterface $formProvider
     ) {
-        $this->productNormalizer        = $productNormalizer;
-        $this->versionNormalizer        = $versionNormalizer;
-        $this->versionManager           = $versionManager;
-        $this->localeRepository         = $localeRepository;
+        $this->productNormalizer = $productNormalizer;
+        $this->versionNormalizer = $versionNormalizer;
+        $this->versionManager = $versionManager;
+        $this->localeRepository = $localeRepository;
         $this->structureVersionProvider = $structureVersionProvider;
-        $this->formProvider             = $formProvider;
+        $this->formProvider = $formProvider;
     }
 
     /**

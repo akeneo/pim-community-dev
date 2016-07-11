@@ -51,11 +51,11 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
         SaverInterface $saver,
         RemoverInterface $remover
     ) {
-        $this->repository        = $repository;
-        $this->factory           = $factory;
+        $this->repository = $repository;
+        $this->factory = $factory;
         $this->productRepository = $productRepository;
-        $this->saver             = $saver;
-        $this->remover           = $remover;
+        $this->saver = $saver;
+        $this->remover = $remover;
     }
 
     /**
@@ -128,7 +128,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
         $currentKey = array_search($product->getId(), $objectSet);
 
         $previous = $this->findPrevious($sequentialEdit, $currentKey);
-        $next     = $this->findNext($sequentialEdit, $currentKey);
+        $next = $this->findNext($sequentialEdit, $currentKey);
 
         $sequentialEdit->setCurrent($product);
         $sequentialEdit->setPrevious($previous);

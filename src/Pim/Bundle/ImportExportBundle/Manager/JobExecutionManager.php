@@ -28,7 +28,7 @@ class JobExecutionManager
      */
     public function __construct(JobExecutionRepository $repository, SecurityFacade $securityFacade)
     {
-        $this->repository     = $repository;
+        $this->repository = $repository;
         $this->securityFacade = $securityFacade;
     }
 

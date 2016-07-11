@@ -26,10 +26,10 @@ abstract class AbstractDateFilter extends AbstractFilter
         $dateStartValue = $data['date_start'];
         /** @var $dateEndValue \DateTime */
         $dateEndValue = $data['date_end'];
-        $type         = $data['type'];
+        $type = $data['type'];
 
         $startDateParameterName = $ds->generateParameterName($this->getName());
-        $endDateParameterName   = $ds->generateParameterName($this->getName());
+        $endDateParameterName = $ds->generateParameterName($this->getName());
 
         $this->applyDependingOnType(
             $type,
@@ -302,8 +302,8 @@ abstract class AbstractDateFilter extends AbstractFilter
     {
         $formView = $this->getForm()->createView();
 
-        $metadata                          = parent::getMetadata();
-        $metadata['typeValues']            = $formView->vars['type_values'];
+        $metadata = parent::getMetadata();
+        $metadata['typeValues'] = $formView->vars['type_values'];
         $metadata['externalWidgetOptions'] = $formView->vars['widget_options'];
 
         return $metadata;

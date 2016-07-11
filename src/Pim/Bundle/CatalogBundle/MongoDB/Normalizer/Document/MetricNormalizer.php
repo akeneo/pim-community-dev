@@ -37,8 +37,8 @@ class MetricNormalizer implements NormalizerInterface
         MeasureManager $manager
     ) {
         $this->mongoFactory = $mongoFactory;
-        $this->converter    = $converter;
-        $this->manager      = $manager;
+        $this->converter = $converter;
+        $this->manager = $manager;
     }
 
     /**
@@ -67,8 +67,8 @@ class MetricNormalizer implements NormalizerInterface
 
         $this->createMetricBaseValues($metric);
 
-        $data['unit']     = $metric->getUnit();
-        $data['data']     = $metric->getData();
+        $data['unit'] = $metric->getUnit();
+        $data['data'] = $metric->getData();
         $data['baseUnit'] = $metric->getBaseUnit();
         $data['baseData'] = $metric->getBaseData();
 

@@ -159,10 +159,10 @@ class OrmSelectorExtension extends AbstractExtension
      */
     protected function getEntityIds(DatasourceInterface $datasource)
     {
-        $getIdsQb   = clone $datasource->getQueryBuilder();
+        $getIdsQb = clone $datasource->getQueryBuilder();
         $rootEntity = current($getIdsQb->getRootEntities());
-        $rootAlias  = $getIdsQb->getRootAlias();
-        $rootField  = $rootAlias.'.id';
+        $rootAlias = $getIdsQb->getRootAlias();
+        $rootField = $rootAlias.'.id';
         $getIdsQb->add('from', new From($rootEntity, $rootAlias, $rootField), false);
         $getIdsQb->groupBy($rootField);
         QueryBuilderUtility::removeExtraParameters($getIdsQb);

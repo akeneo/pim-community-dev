@@ -37,7 +37,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
 
         $requestParams = $this->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\RequestParameters')
             ->disableOriginalConstructor()->getMock();
-        $newExtension  = new SomeExtension($requestParams);
+        $newExtension = new SomeExtension($requestParams);
 
         $result = $method->invoke($newExtension);
         $this->assertSame($requestParams, $result, 'Correct set through constructor');
@@ -54,7 +54,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
     public function testVisitDatasource()
     {
         $datasourceMock = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface');
-        $config         = DatagridConfiguration::create([]);
+        $config = DatagridConfiguration::create([]);
 
         $this->extension->visitDatasource($config, $datasourceMock);
     }
@@ -75,7 +75,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testVisitMetadata()
     {
-        $data   = MetadataObject::create([]);
+        $data = MetadataObject::create([]);
         $config = DatagridConfiguration::create([]);
 
         $this->extension->visitMetadata($config, $data);
@@ -84,7 +84,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
     public function testValidateConfiguration()
     {
         $configBody = [Configuration::NODE => 'test'];
-        $config     = [Configuration::ROOT => $configBody];
+        $config = [Configuration::ROOT => $configBody];
 
         $method = new \ReflectionMethod($this->extension, 'validateConfiguration');
         $method->setAccessible(true);

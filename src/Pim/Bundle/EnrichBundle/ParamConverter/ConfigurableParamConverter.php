@@ -29,7 +29,7 @@ class ConfigurableParamConverter implements ParamConverterInterface
      */
     public function __construct(Container $container, ParamConverterInterface $paramConverter)
     {
-        $this->container      = $container;
+        $this->container = $container;
         $this->paramConverter = $paramConverter;
     }
 

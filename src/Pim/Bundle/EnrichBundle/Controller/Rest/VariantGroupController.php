@@ -80,15 +80,15 @@ class VariantGroupController
         NormalizerInterface $violationNormalizer,
         CollectionFilterInterface $variantGroupDataFilter
     ) {
-        $this->repository             = $repository;
-        $this->normalizer             = $normalizer;
-        $this->updater                = $updater;
-        $this->saver                  = $saver;
-        $this->remover                = $remover;
-        $this->userContext            = $userContext;
-        $this->attributeConverter     = $attributeConverter;
-        $this->validator              = $validator;
-        $this->violationNormalizer    = $violationNormalizer;
+        $this->repository = $repository;
+        $this->normalizer = $normalizer;
+        $this->updater = $updater;
+        $this->saver = $saver;
+        $this->remover = $remover;
+        $this->userContext = $userContext;
+        $this->attributeConverter = $attributeConverter;
+        $this->validator = $validator;
+        $this->violationNormalizer = $violationNormalizer;
         $this->variantGroupDataFilter = $variantGroupDataFilter;
     }
 
@@ -214,7 +214,7 @@ class VariantGroupController
      */
     protected function convertLocalizedAttributes(array $data)
     {
-        $locale         = $this->userContext->getUiLocale()->getCode();
+        $locale = $this->userContext->getUiLocale()->getCode();
         $data['values'] = $this->attributeConverter->convertToDefaultFormats(
             $data['values'],
             ['locale' => $locale]

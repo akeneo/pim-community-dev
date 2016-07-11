@@ -29,7 +29,7 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
      */
     public function __construct($currentLocale, $comparisonLocale)
     {
-        $this->currentLocale    = $currentLocale;
+        $this->currentLocale = $currentLocale;
         $this->comparisonLocale = $comparisonLocale;
     }
 

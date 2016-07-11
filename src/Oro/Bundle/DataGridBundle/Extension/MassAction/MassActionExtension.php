@@ -10,9 +10,9 @@ use Oro\Bundle\DataGridBundle\Extension\Action\Actions\ActionInterface;
 
 class MassActionExtension extends ActionExtension
 {
-    const ACTION_KEY                       = 'mass_actions';
-    const MASS_ACTIONS_GROUPS_KEY          = 'mass_actions_groups';
-    const METADATA_ACTION_KEY              = 'massActions';
+    const ACTION_KEY = 'mass_actions';
+    const MASS_ACTIONS_GROUPS_KEY = 'mass_actions_groups';
+    const METADATA_ACTION_KEY = 'massActions';
     const METADATA_MASS_ACTIONS_GROUPS_KEY = 'massActionsGroups';
 
     /** @var array */

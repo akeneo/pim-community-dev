@@ -36,8 +36,8 @@ class AttributeGroupController
         CollectionFilterInterface $collectionFilter
     ) {
         $this->attributeGroupRepo = $attributeGroupRepo;
-        $this->normalizer         = $normalizer;
-        $this->collectionFilter   = $collectionFilter;
+        $this->normalizer = $normalizer;
+        $this->collectionFilter = $collectionFilter;
     }
 
     /**
@@ -47,7 +47,7 @@ class AttributeGroupController
      */
     public function indexAction()
     {
-        $attributeGroups    = $this->attributeGroupRepo->findAll();
+        $attributeGroups = $this->attributeGroupRepo->findAll();
         $filteredAttrGroups = $this->collectionFilter->filterCollection(
             $attributeGroups,
             'pim.internal_api.attribute_group.view'

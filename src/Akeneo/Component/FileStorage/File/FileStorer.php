@@ -42,8 +42,8 @@ class FileStorer implements FileStorerInterface
         FileInfoFactoryInterface $factory
     ) {
         $this->mountManager = $mountManager;
-        $this->saver        = $saver;
-        $this->factory      = $factory;
+        $this->saver = $saver;
+        $this->factory = $factory;
     }
 
     /**

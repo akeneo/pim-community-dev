@@ -325,7 +325,7 @@ class ProductRepository extends DocumentRepository implements
         $qb = $this->createQueryBuilder('p')->eagerCursor(true);
         $qb->field('_id')->in($ids);
 
-        $cursor   = $qb->getQuery()->execute();
+        $cursor = $qb->getQuery()->execute();
         $products = [];
         foreach ($cursor as $product) {
             $products[] = $product;
@@ -354,7 +354,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
     {
-        $qb     = $this->findAllForVariantGroupQB($variantGroup, $criteria);
+        $qb = $this->findAllForVariantGroupQB($variantGroup, $criteria);
         $cursor = $qb->getQuery()->execute();
 
         $products = [];

@@ -34,10 +34,10 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
-        $this->currencyRepository      = $currencyRepository;
+        $this->attrValidatorHelper = $attrValidatorHelper;
+        $this->currencyRepository = $currencyRepository;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedOperators      = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**

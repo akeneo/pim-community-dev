@@ -38,8 +38,8 @@ class AttributeNormalizer implements NormalizerInterface
         FieldProviderInterface $fieldProvider,
         EmptyValueProviderInterface $emptyValueProvider
     ) {
-        $this->normalizer         = $normalizer;
-        $this->fieldProvider      = $fieldProvider;
+        $this->normalizer = $normalizer;
+        $this->fieldProvider = $fieldProvider;
         $this->emptyValueProvider = $emptyValueProvider;
     }
 

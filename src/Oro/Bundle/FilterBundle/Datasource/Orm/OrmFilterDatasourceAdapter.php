@@ -29,7 +29,7 @@ class OrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
      */
     public function __construct(QueryBuilder $qb)
     {
-        $this->qb                = $qb;
+        $this->qb = $qb;
         $this->expressionBuilder = null;
     }
 

@@ -25,7 +25,7 @@ class UpdateExtension extends \Twig_Extension
      */
     public function __construct(ConfigManager $configManager, $updateServerUrl)
     {
-        $this->configManager   = $configManager;
+        $this->configManager = $configManager;
         $this->updateServerUrl = $updateServerUrl;
     }
 

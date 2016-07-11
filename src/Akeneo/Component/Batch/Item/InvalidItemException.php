@@ -35,7 +35,7 @@ class InvalidItemException extends \Exception
     ) {
         parent::__construct($message, $code, $previous);
 
-        $this->item              = $item;
+        $this->item = $item;
         $this->messageParameters = $messageParameters;
     }
 

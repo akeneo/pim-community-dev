@@ -28,8 +28,8 @@ class BulkFileExporter
      */
     public function __construct(FileExporterInterface $fileExporter)
     {
-        $this->errors       = [];
-        $this->copiedMedia  = [];
+        $this->errors = [];
+        $this->copiedMedia = [];
         $this->fileExporter = $fileExporter;
     }
 
@@ -99,7 +99,7 @@ class BulkFileExporter
     protected function doCopy($medium, $target)
     {
         if (isset($medium['filePath']) && isset($medium['exportPath'])) {
-            $target     = $target . DIRECTORY_SEPARATOR . $medium['exportPath'];
+            $target = $target . DIRECTORY_SEPARATOR . $medium['exportPath'];
             $fileSystem = new Filesystem();
             $fileSystem->mkdir(dirname($target));
 

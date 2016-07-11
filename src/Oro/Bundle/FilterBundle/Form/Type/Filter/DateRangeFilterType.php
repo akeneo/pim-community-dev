@@ -11,11 +11,11 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class DateRangeFilterType extends AbstractType
 {
-    const TYPE_BETWEEN     = 1;
+    const TYPE_BETWEEN = 1;
     const TYPE_NOT_BETWEEN = 2;
-    const TYPE_MORE_THAN   = 3;
-    const TYPE_LESS_THAN   = 4;
-    const NAME             = 'oro_type_date_range_filter';
+    const TYPE_MORE_THAN = 3;
+    const TYPE_LESS_THAN = 4;
+    const NAME = 'oro_type_date_range_filter';
 
     /**
      * @var TranslatorInterface
@@ -84,7 +84,7 @@ class DateRangeFilterType extends AbstractType
     {
         $view->vars['type_values'] = $options['type_values'];
 
-        $widgetOptions                = ['firstDay' => 0];
+        $widgetOptions = ['firstDay' => 0];
         $view->vars['widget_options'] = array_merge($widgetOptions, $options['widget_options']);
     }
 }

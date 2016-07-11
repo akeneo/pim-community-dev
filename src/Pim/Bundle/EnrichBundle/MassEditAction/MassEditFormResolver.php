@@ -36,8 +36,8 @@ class MassEditFormResolver
         FormFactoryInterface $formFactory,
         MassEditChooseActionType $chooseActionFormType
     ) {
-        $this->operationRegistry    = $operationRegistry;
-        $this->formFactory          = $formFactory;
+        $this->operationRegistry = $operationRegistry;
+        $this->formFactory = $formFactory;
         $this->chooseActionFormType = $chooseActionFormType;
     }
 

@@ -43,7 +43,7 @@ class Group
      */
     public function __construct($name = '')
     {
-        $this->name  = $name;
+        $this->name = $name;
         $this->roles = new ArrayCollection();
     }
 

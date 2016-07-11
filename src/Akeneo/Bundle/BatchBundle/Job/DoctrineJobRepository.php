@@ -67,7 +67,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
             $entityManager->getConfiguration()
         );
 
-        $this->jobManager        = $jobManager;
+        $this->jobManager = $jobManager;
         $this->jobExecutionClass = $jobExecutionClass;
 
         // ... there is an ugly fix related to PIM-5589...

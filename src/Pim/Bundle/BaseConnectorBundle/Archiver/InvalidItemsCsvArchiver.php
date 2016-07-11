@@ -38,8 +38,8 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
         CsvWriter $writer,
         Filesystem $filesystem
     ) {
-        $this->collector  = $collector;
-        $this->writer     = $writer;
+        $this->collector = $collector;
+        $this->writer = $writer;
         $this->filesystem = $filesystem;
     }
 
@@ -51,7 +51,7 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
         if (!$this->collector->getInvalidItems()) {
             return;
         }
-        $key =  strtr(
+        $key = strtr(
             $this->getRelativeArchivePath($jobExecution),
             ['%filename%' => 'invalid_items.csv']
         );

@@ -36,7 +36,7 @@ class LocalizableValueValidator extends ConstraintValidator
         /** @var ProductValueInterface */
         if ($productValue instanceof ProductValueInterface) {
             $isLocalizable = $productValue->getAttribute()->isLocalizable();
-            $localeCode    = $productValue->getLocale();
+            $localeCode = $productValue->getLocale();
 
             if ($isLocalizable && null === $localeCode) {
                 $this->addExpectedLocaleViolation($constraint, $productValue);

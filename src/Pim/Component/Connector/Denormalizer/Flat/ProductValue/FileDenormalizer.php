@@ -34,7 +34,7 @@ class FileDenormalizer extends AbstractValueDenormalizer
         parent::__construct($supportedTypes);
 
         $this->repository = $repository;
-        $this->storer     = $storer;
+        $this->storer = $storer;
     }
 
     /**

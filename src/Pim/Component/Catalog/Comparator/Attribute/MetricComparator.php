@@ -51,7 +51,7 @@ class MetricComparator implements ComparatorInterface
             return $data;
         }
 
-        $data['data']['data']      = (float) $data['data']['data'];
+        $data['data']['data'] = (float) $data['data']['data'];
         $originals['data']['data'] = (float) $originals['data']['data'];
 
         $diff = array_diff_assoc((array) $data['data'], (array) $originals['data']);

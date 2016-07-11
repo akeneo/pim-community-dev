@@ -32,9 +32,9 @@ class ProductController extends FOSRestController
      */
     public function getAction(Request $request, $identifier)
     {
-        $userContext       = $this->get('pim_user.context.user');
+        $userContext = $this->get('pim_user.context.user');
         $availableChannels = array_keys($userContext->getChannelChoicesWithUserChannel());
-        $availableLocales  = $userContext->getUserLocaleCodes();
+        $availableLocales = $userContext->getUserLocaleCodes();
 
         $channels = $request->get('channels', $request->get('channel', null));
         if ($channels !== null) {

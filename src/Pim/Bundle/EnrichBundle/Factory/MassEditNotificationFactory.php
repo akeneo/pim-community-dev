@@ -47,8 +47,8 @@ class MassEditNotificationFactory extends AbstractNotificationFactory implements
         }
 
         $notification = new $this->notificationClass();
-        $type         = $jobExecution->getJobInstance()->getType();
-        $status       = $this->getJobStatus($jobExecution);
+        $type = $jobExecution->getJobInstance()->getType();
+        $status = $this->getJobStatus($jobExecution);
 
         $notification
             ->setType($status)

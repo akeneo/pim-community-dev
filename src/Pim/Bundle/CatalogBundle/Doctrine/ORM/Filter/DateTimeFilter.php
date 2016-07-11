@@ -23,8 +23,8 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
      */
     public function __construct(array $supportedFields = [], array $supportedOperators = [])
     {
-        $this->supportedFields     = $supportedFields;
-        $this->supportedOperators  = $supportedOperators;
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**

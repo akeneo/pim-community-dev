@@ -28,7 +28,7 @@ class LocaleController
     public function __construct(LocaleProviderInterface $localeProvider, NormalizerInterface $normalizer)
     {
         $this->localeProvider = $localeProvider;
-        $this->normalizer     = $normalizer;
+        $this->normalizer = $normalizer;
     }
 
     /**

@@ -42,7 +42,7 @@ class MetricBaseValuesSubscriber implements EventSubscriber
     public function __construct(MeasureConverter $converter, MeasureManager $manager)
     {
         $this->converter = $converter;
-        $this->manager   = $manager;
+        $this->manager = $manager;
     }
 
     /**

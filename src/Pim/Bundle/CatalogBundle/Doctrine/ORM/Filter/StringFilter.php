@@ -31,9 +31,9 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedOperators      = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
 
         $this->resolver = new OptionsResolver();
         $this->configureOptions($this->resolver);
@@ -67,7 +67,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $this->checkValue($options['field'], $value);
         }
 
-        $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
         if (Operators::IS_EMPTY === $operator) {
             $this->qb->leftJoin(
@@ -118,19 +118,19 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
         switch ($operator) {
             case Operators::STARTS_WITH:
                 $operator = Operators::IS_LIKE;
-                $value    = $value . '%';
+                $value = $value . '%';
                 break;
             case Operators::ENDS_WITH:
                 $operator = Operators::IS_LIKE;
-                $value    = '%' . $value;
+                $value = '%' . $value;
                 break;
             case Operators::CONTAINS:
                 $operator = Operators::IS_LIKE;
-                $value    = '%' . $value . '%';
+                $value = '%' . $value . '%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
                 $operator = Operators::NOT_LIKE;
-                $value    = '%' . $value . '%';
+                $value = '%' . $value . '%';
                 break;
             case Operators::EQUALS:
                 $operator = Operators::IS_LIKE;

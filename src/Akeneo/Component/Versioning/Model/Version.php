@@ -72,11 +72,11 @@ class Version implements VersionInterface
     public function __construct($resourceName, $resourceId, $author, $context = null)
     {
         $this->resourceName = $resourceName;
-        $this->resourceId   = $resourceId;
-        $this->author       = $author;
-        $this->context      = $context;
-        $this->loggedAt     = new \DateTime('now');
-        $this->pending      = true;
+        $this->resourceId = $resourceId;
+        $this->author = $author;
+        $this->context = $context;
+        $this->loggedAt = new \DateTime('now');
+        $this->pending = true;
     }
 
     /**

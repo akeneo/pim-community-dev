@@ -59,11 +59,11 @@ class GroupTypeController
         Form $groupTypeForm,
         RemoverInterface $groupTypeRemover
     ) {
-        $this->request          = $request;
-        $this->router           = $router;
-        $this->translator       = $translator;
+        $this->request = $request;
+        $this->router = $router;
+        $this->translator = $translator;
         $this->groupTypeHandler = $groupTypeHandler;
-        $this->groupTypeForm    = $groupTypeForm;
+        $this->groupTypeForm = $groupTypeForm;
         $this->groupTypeRemover = $groupTypeRemover;
     }
 

@@ -16,7 +16,7 @@ class RenderLayoutExtensionTest extends AbstractExtensionTestCase
     /**#@+
      * Test parameters
      */
-    const TEST_FIRST_EXISTING_TYPE  = 'test_first_existing_type';
+    const TEST_FIRST_EXISTING_TYPE = 'test_first_existing_type';
     const TEST_SECOND_EXISTING_TYPE = 'test_second_existing_type';
     /**#@-*/
 
