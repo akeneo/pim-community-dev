@@ -77,12 +77,12 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
         }
 
         $readJobParameters = $jobExecution->getJobParameters();
-        $currentLineNumber = $readJobParameters->get('withHeader') ? 1 : 0;
+        $currentLineNumber = 0;
         $itemsToWrite = [];
 
         $this->setupWriter($jobExecution);
 
-        foreach ($this->readInputFile($readJobParameters) as $readItem) {
+        foreach ($this->getInputFileIterator($readJobParameters) as $readItem) {
             $currentLineNumber++;
 
             if ($invalidLineNumbers->contains($currentLineNumber)) {
@@ -124,14 +124,13 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
     }
 
     /**
-     * Read the input file for the given $jobParameters and return the current read element.
-     * Return null if the used fileIterator has no more item to read.
+     * Get the input file iterator to iterate on all the lines of the file.
      *
      * @param JobParameters $jobParameters
      *
-     * @return array|mixed|null
+     * @return \Iterator
      */
-    protected function readInputFile(JobParameters $jobParameters)
+    protected function getInputFileIterator(JobParameters $jobParameters)
     {
         if (null === $this->fileIterator) {
             $filePath = $jobParameters->get('filePath');
@@ -139,9 +138,7 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
             $this->fileIterator->rewind();
         }
 
-        $this->fileIterator->next();
-
-        return $this->fileIterator->current();
+        return $this->fileIterator;
     }
 
     /**
