@@ -1,6 +1,0 @@
-parameters:
-    pim_import_export.model_transformer.json.class: Pim\Bundle\ImportExportBundle\JobParameters\FormModelTransformer\JsonModelTransformer
-
-services:
-    pim_import_export.model_transformer.json:
-        class: '%pim_import_export.model_transformer.json.class%'
