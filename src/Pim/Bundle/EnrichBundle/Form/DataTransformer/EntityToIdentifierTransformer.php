@@ -33,6 +33,9 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
     /** @var PropertyAccessorInterface */
     protected $propertyAccessor;
 
+    /** @var string */
+    protected $identifierProperty;
+
     /**
      * Constructor
      *
@@ -40,17 +43,20 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
      * @param bool                      $multiple
      * @param PropertyAccessorInterface $propertyAccessor
      * @param string                    $delimiter
+     * @param string                    $identifierProperty
      */
     public function __construct(
         ObjectRepository $repository,
         $multiple,
         PropertyAccessorInterface $propertyAccessor = null,
-        $delimiter = ','
+        $delimiter = ',',
+        $identifierProperty = 'id'
     ) {
-        $this->repository       = $repository;
-        $this->multiple         = $multiple;
+        $this->repository = $repository;
+        $this->multiple = $multiple;
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
-        $this->delimiter        = $delimiter;
+        $this->delimiter = $delimiter;
+        $this->identifierProperty = $identifierProperty;
     }
 
     /**
@@ -67,25 +73,22 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
                 throw new UnexpectedTypeException($value, 'array');
             }
 
-            $ids = array_map(
-                function ($val) {
-                    return $this->propertyAccessor->getValue($val, 'id');
-                },
-                $value
-            );
+            $identifiers = array_map(function ($value) {
+                return $this->propertyAccessor->getValue($value, $this->identifierProperty);
+            }, $value);
 
             if (null !== $this->delimiter) {
-                return implode($this->delimiter, $ids);
+                $identifiers = implode($this->delimiter, $identifiers);
             }
 
-            return $ids;
+            return $identifiers;
         }
 
         if (!is_object($value)) {
             throw new UnexpectedTypeException($value, 'object');
         }
 
-        return $this->propertyAccessor->getValue($value, 'id');
+        return $this->propertyAccessor->getValue($value, $this->identifierProperty);
     }
 
     /**
@@ -94,7 +97,7 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
     public function reverseTransform($value)
     {
         if (null === $value) {
-            return;
+            return null;
         }
 
         if ($this->multiple) {
@@ -104,13 +107,10 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
             if (!is_array($value)) {
                 throw new UnexpectedTypeException($value, 'array');
             }
-            if (method_exists($this->repository, 'findByIds')) {
-                return $this->repository->findByIds($value);
-            } else {
-                return $this->repository->findBy(['id' => $value]);
-            }
+
+            return $this->repository->findBy([$this->identifierProperty => $value]);
         }
 
-        return $this->repository->find($value);
+        return $this->repository->findOneBy([$this->identifierProperty => $value]);
     }
 }

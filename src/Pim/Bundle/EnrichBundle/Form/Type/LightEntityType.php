@@ -43,7 +43,13 @@ class LightEntityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addViewTransformer(
-            new EntityToIdentifierTransformer($options['repository'], $options['multiple'], null, null),
+            new EntityToIdentifierTransformer(
+                $options['repository'],
+                $options['multiple'],
+                null,
+                null,
+                $options['identifier']
+            ),
             true
         );
     }
@@ -54,26 +60,22 @@ class LightEntityType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(['repository_options' => []])
+            ->setDefined([
+                'repository_options',
+                'identifier',
+            ])
             ->setRequired(['repository'])
+            ->setDefaults([
+                'repository_options' => [],
+                'identifier'         => 'code',
+            ])
             ->setNormalizer('choices', function (Options $options, $value) {
                 return $options['repository']->findTranslatedLabels($options['repository_options']);
             })
-            ->setNormalizer('repository', function (Options $options, $value) {
-                if (!$value instanceof ObjectRepository) {
-                    throw new UnexpectedTypeException(
-                        '\Doctrine\Common\Persistence\ObjectRepository',
-                        $value
-                    );
+            ->setAllowedValues([
+                'repository' => function ($repository) {
+                    return $repository instanceof TranslatedLabelsProviderInterface;
                 }
-                if (!$value instanceof TranslatedLabelsProviderInterface) {
-                    throw new UnexpectedTypeException(
-                        'Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface',
-                        $value
-                    );
-                }
-
-                return $value;
-            });
+            ]);
     }
 }

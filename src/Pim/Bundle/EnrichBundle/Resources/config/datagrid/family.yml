@@ -62,7 +62,7 @@ datagrid:
                 attributeAsLabel:
                     type:      choice
                     label:     Attribute as label
-                    data_name: f.attributeAsLabel
+                    data_name: a.code
                     options:
                         field_options:
                             multiple: true

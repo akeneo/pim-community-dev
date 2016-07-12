@@ -63,7 +63,7 @@ datagrid:
                 category:
                     type:      choice
                     label:     Category tree
-                    data_name: category.id
+                    data_name: category.code
                     options:
                         field_options:
                             multiple: true

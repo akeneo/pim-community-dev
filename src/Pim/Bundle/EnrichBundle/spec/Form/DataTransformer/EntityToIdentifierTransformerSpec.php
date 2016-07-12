@@ -19,21 +19,21 @@ class EntityToIdentifierTransformerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Form\DataTransformerInterface');
     }
 
-    function it_transforms_value_into_its_id(\StdClass $entity, $propertyAccessor)
+    function it_transforms_value_into_its_identifier(\StdClass $entity, $propertyAccessor)
     {
         $propertyAccessor->getValue($entity, 'id')->willReturn(30);
 
         $this->transform($entity)->shouldReturn(30);
     }
 
-    function it_reverse_transforms_id_into_an_entity(\StdClass $entity, $repository)
+    function it_reverse_transforms_identifier_into_an_entity(\StdClass $entity, $repository)
     {
-        $repository->find(30)->willReturn($entity);
+        $repository->findOneBy(['id' => 30])->willReturn($entity);
 
         $this->reverseTransform(30)->shouldReturn($entity);
     }
 
-    function it_transforms_values_into_ids_string(\StdClass $foo, \StdClass $bar, $repository, $propertyAccessor)
+    function it_transforms_values_into_identifiers_string(\StdClass $foo, \StdClass $bar, $repository, $propertyAccessor)
     {
         $this->beConstructedWith($repository, true, $propertyAccessor);
         $propertyAccessor->getValue($foo, 'id')->willReturn(4);
@@ -42,7 +42,7 @@ class EntityToIdentifierTransformerSpec extends ObjectBehavior
         $this->transform([$foo, $bar])->shouldReturn('4,8');
     }
 
-    function it_transforms_values_into_ids_array(\StdClass $foo, \StdClass $bar, $repository, $propertyAccessor)
+    function it_transforms_values_into_identifiers_array(\StdClass $foo, \StdClass $bar, $repository, $propertyAccessor)
     {
         $this->beConstructedWith($repository, true, $propertyAccessor, null);
         $propertyAccessor->getValue($foo, 'id')->willReturn(4);
@@ -51,7 +51,7 @@ class EntityToIdentifierTransformerSpec extends ObjectBehavior
         $this->transform([$foo, $bar])->shouldReturn([4, 8]);
     }
 
-    function it_reverse_transforms_ids_into_entities(\StdClass $foo, \StdClass $bar, $repository, $propertyAccessor)
+    function it_reverse_transforms_identifiers_into_entities(\StdClass $foo, \StdClass $bar, $repository, $propertyAccessor)
     {
         $this->beConstructedWith($repository, true, $propertyAccessor);
         $repository->findBy(['id' => [4, 8]])->willReturn([$foo, $bar]);
@@ -59,7 +59,7 @@ class EntityToIdentifierTransformerSpec extends ObjectBehavior
         $this->reverseTransform([4, 8])->shouldReturn([$foo, $bar]);
     }
 
-    function it_reverse_transforms_ids_into_entities_from_string_with_delimiter(
+    function it_reverse_transforms_identifiers_into_entities_from_string_with_delimiter(
         \StdClass $foo,
         \StdClass $bar,
         $repository,

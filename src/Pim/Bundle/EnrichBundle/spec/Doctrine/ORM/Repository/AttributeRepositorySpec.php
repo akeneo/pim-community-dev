@@ -45,7 +45,7 @@ class AttributeRepositorySpec extends ObjectBehavior
 
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('a')->willReturn($queryBuilder);
-        $queryBuilder->select('a.id')->willReturn($queryBuilder);
+        $queryBuilder->select('a.code')->willReturn($queryBuilder);
         $queryBuilder->addSelect('COALESCE(NULLIF(at.label, \'\'), CONCAT(\'[\', a.code, \']\')) as attribute_label')->willReturn($queryBuilder);
         $queryBuilder->addSelect('COALESCE(NULLIF(gt.label, \'\'), CONCAT(\'[\', g.code, \']\')) as group_label')->willReturn($queryBuilder);
         $queryBuilder->from('attribute', 'a')->willReturn($queryBuilder);
@@ -57,8 +57,8 @@ class AttributeRepositorySpec extends ObjectBehavior
         $queryBuilder->setParameter('locale_code', 'en_US')->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
         $query->getArrayResult()->willReturn([
-            ['id' => 10, 'group_label' => 'group fr', 'attribute_label' => 'attribute fr'],
-            ['id' => 11, 'group_label' => '[group_other_code]', 'attribute_label' => '[group_attribute_code]'],
+            ['code' => 10, 'group_label' => 'group fr', 'attribute_label' => 'attribute fr'],
+            ['code' => 11, 'group_label' => '[group_other_code]', 'attribute_label' => '[group_attribute_code]'],
         ]);
 
         $this->findTranslatedLabels([
