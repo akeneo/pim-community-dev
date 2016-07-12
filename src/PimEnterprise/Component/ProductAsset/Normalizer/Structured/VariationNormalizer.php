@@ -29,20 +29,28 @@ class VariationNormalizer implements NormalizerInterface
      */
     public function normalize($variation, $format = null, array $context = [])
     {
-        $normalizedVariation['asset']   = $variation->getAsset()->getCode();
-        $normalizedVariation['locale']  = null !== $variation->getLocale() ? $variation->getLocale()->getCode() : '';
-        $normalizedVariation['channel'] = null !== $variation->getChannel() ? $variation->getChannel()->getCode() : '';
+        $normalizedVariation = [
+            'asset'          => $variation->getAsset()->getCode(),
+            'locale'         => null,
+            'channel'        => null,
+            'reference_file' => null,
+            'variation_file' => null,
+        ];
+
+        if (null !== $variation->getLocale()) {
+            $normalizedVariation['locale'] = $variation->getLocale()->getCode();
+        }
+
+        if (null !== $variation->getChannel()) {
+            $normalizedVariation['channel'] = $variation->getChannel()->getCode();
+        }
 
         if (null !== $variation->getReference() && null !== $variation->getReference()->getFileInfo()) {
             $normalizedVariation['reference_file'] = $variation->getReference()->getFileInfo()->getKey();
-        } else {
-            $normalizedVariation['reference_file'] = '';
         }
 
         if (null !== $variation->getFileInfo()) {
             $normalizedVariation['variation_file'] = $variation->getFileInfo()->getKey();
-        } else {
-            $normalizedVariation['variation_file'] = '';
         }
 
         return $normalizedVariation;
