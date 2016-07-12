@@ -139,7 +139,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/attribute.csv
-    csv_option_import:
+    csv_attribute_option_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_import
         label:     Demo CSV option import
@@ -161,7 +161,7 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
-    csv_option_export:
+    csv_attribute_option_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_export
         label:     Demo CSV option export
@@ -321,7 +321,7 @@ jobs:
         configuration:
             filePath:      /tmp/attribute.xlsx
             uploadAllowed: true
-    xlsx_option_import:
+    xlsx_attribute_option_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_attribute_option_import
         label:     Demo XLSX option import
@@ -380,7 +380,7 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/attribute.xlsx
-    xlsx_option_export:
+    xlsx_attribute_option_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_attribute_option_export
         label:     Demo XLSX attribute option export
