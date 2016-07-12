@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Connector\Processor;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Item\ObjectInvalidItem;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -60,7 +61,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
                 $violation->getMessage(),
                 $invalidValue
             );
-            $this->stepExecution->addWarning($errors, [], $item);
+            $this->stepExecution->addWarning($errors, [], new ObjectInvalidItem($item));
         }
     }
 

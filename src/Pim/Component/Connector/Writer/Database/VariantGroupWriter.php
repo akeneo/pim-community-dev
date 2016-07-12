@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\Writer\Database;
 
+use Akeneo\Component\Batch\Item\ObjectInvalidItem;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
@@ -90,7 +91,7 @@ class VariantGroupWriter extends BaseWriter
             $this->stepExecution->addWarning(
                 sprintf('Copy of values to product "%s" skipped.', $productIdentifier),
                 [],
-                $messages
+                new ObjectInvalidItem($messages)
             );
         }
     }
