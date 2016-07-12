@@ -68,7 +68,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             if (null === $lastCompletedJobExecution) {
                 return $this;
             }
-            $lastJobStartTime = $lastCompletedJobExecution->getStartTime();
+            $lastJobStartTime = $lastCompletedJobExecution->getStartTime()->setTimezone(new \DateTimeZone('UTC'));
             $value            = $lastJobStartTime->format(static::DATETIME_FORMAT);
             $operator         = Operators::GREATER_THAN;
         }

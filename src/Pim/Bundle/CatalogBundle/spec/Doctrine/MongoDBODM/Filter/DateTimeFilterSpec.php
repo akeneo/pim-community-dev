@@ -138,6 +138,7 @@ class DateTimeFilterSpec extends ObjectBehavior
         $jobRepository->getLastJobExecution($jobInstance, 1)->shouldBeCalled()->willReturn($jobExecution);
 
         $jobExecution->getStartTime()->willReturn($startTime);
+        $startTime->setTimezone(Argument::type('\DateTimeZone'))->willReturn($startTime);
         $startTime->format('Y-m-d H:i:s')->willReturn('2016-08-13 14:00:00');
 
         $queryBuilder->field('normalizedData.updated')->shouldBeCalled()->willReturn($queryBuilder);

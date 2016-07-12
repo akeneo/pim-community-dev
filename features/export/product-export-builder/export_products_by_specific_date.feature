@@ -7,12 +7,12 @@ Feature: Export products according to a date
   Scenario: Export only the products updated since the last export
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_product_export" configuration:
-      | filePath               | %tmp%/product_export/product_export.csv |
-      | filters                | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": "SINCE LAST JOB", "value": "csv_footwear_product_export"}]} |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                                                     |
+      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": "SINCE LAST EXPORT", "value": "csv_footwear_product_export"}]} |
     And the following products:
-      | sku      | family   | categories        | price          | size | color    | name-en_US |
-      | SNKRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    |
-      | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    |
+      | sku      | family   | categories        | price          | size | color | name-en_US |
+      | SNKRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black | Model 1    |
+      | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red   | Model 1    |
     And I am logged in as "Julia"
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
