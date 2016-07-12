@@ -5,9 +5,21 @@ define([
     'underscore',
     'oro/translator',
     'pim/filter/filter',
+    'pim/fetcher-registry',
+    'pim/user-context',
+    'pim/i18n',
     'text!pim/template/filter/product/identifier',
     'jquery.select2'
-], function (_, __, BaseFilter, template, initSelect2) {
+], function (
+    _,
+    __,
+    BaseFilter,
+    FetcherRegistry,
+    UserContext,
+    i18n,
+    template,
+    initSelect2
+) {
     return BaseFilter.extend({
         template: _.template(template),
         events: {
@@ -43,19 +55,22 @@ define([
         },
 
         /**
-         * Gets the template context.
-         *
-         * @returns {Promise}
+         * {@inherit}
          */
         getTemplateContext: function () {
-            var deferred = $.Deferred();
-
-            deferred.resolve({
-                label: __('pim_enrich.export.product.filter.' + this.getField() + '.title'),
-                removable: this.removable
-            });
-
-            return deferred.promise();
+            return FetcherRegistry
+                .getFetcher('attribute')
+                .getIdentifierAttribute()
+                .then(function (identifier) {
+                    return {
+                        label: i18n.getLabel(
+                            identifier.labels,
+                            UserContext.get('catalogLocale'),
+                            identifier.code
+                        ),
+                        removable: false
+                    };
+                }.bind(this));
         },
 
         /**

@@ -56,7 +56,7 @@ define(
                     return this;
                 }
 
-                var defaultLocalesPromise = (new $.Deferred()).resolve();
+                var defaultLocalesPromise = $.Deferred().resolve().promise();
                 if (_.isEmpty(this.getLocales())) {
                     defaultLocalesPromise = this.setDefaultLocales();
                 }

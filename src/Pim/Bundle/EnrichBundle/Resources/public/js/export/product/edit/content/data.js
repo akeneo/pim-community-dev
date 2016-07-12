@@ -176,7 +176,7 @@ define(
              * Updates the form model.
              */
             updateModel: function () {
-                dataFilterCollection = [];
+                var dataFilterCollection = [];
 
                 _.each(this.filterViews, function (filterView) {
                     if (!filterView.isEmpty()) {

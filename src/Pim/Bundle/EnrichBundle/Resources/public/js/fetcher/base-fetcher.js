@@ -111,7 +111,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                     this.getIdentifierField()
                 ).then(function (entities, identifierCode) {
                     _.each(entities, function (entity) {
-                        this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity);
+                        this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity).promise();
                     }.bind(this));
 
                     return this.getObjects(_.pick(this.entityPromises, identifiers));
