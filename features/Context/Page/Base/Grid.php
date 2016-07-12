@@ -345,7 +345,7 @@ class Grid extends Index
          * If there is no toolbar count, this method
          * should even not be called or should raise a not found exception.
          */
-        if (!$pagination || !$pagination->getText()) {
+        if (!$pagination || false !== strstr($pagination->getText(), 'null')) {
             return $this->countRows();
         }
 
