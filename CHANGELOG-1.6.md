@@ -1,5 +1,9 @@
 # 1.6.x
 
+## Bug fixes
+
+- PIM-5434: When no access to any category, I can't edit my profile
+
 ## Functional improvements
 
 - PIM-5096: Adds XLSX quick export to the product grid and published product grid
