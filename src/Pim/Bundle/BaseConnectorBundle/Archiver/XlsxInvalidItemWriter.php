@@ -112,7 +112,11 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
      */
     public function supports(JobExecution $jobExecution)
     {
-        return 'xlsx' === $jobExecution->getJobParameters()->get('invalid_items_file_format');
+        if ($jobExecution->getJobParameters()->has('invalid_items_file_format')) {
+            return 'xlsx' === $jobExecution->getJobParameters()->get('invalid_items_file_format');
+        }
+
+        return false;
     }
 
     /**

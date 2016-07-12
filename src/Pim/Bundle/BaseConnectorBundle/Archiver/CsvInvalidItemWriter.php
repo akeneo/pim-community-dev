@@ -112,7 +112,11 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
      */
     public function supports(JobExecution $jobExecution)
     {
-        return 'csv' === $jobExecution->getJobParameters()->get('invalid_items_file_format');
+        if ($jobExecution->getJobParameters()->has('invalid_items_file_format')) {
+            return 'csv' === $jobExecution->getJobParameters()->get('invalid_items_file_format');
+        }
+
+        return false;
     }
 
     /**
