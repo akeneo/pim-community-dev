@@ -12,7 +12,7 @@ use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductXlsxE
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport;
 use Pim\Component\Connector\Reader\File\FileIterator;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
-use Pim\Component\Connector\Writer\File\XlsxSimpleWriter;
+use Pim\Component\Connector\Writer\File\Xlsx\Writer;
 
 /**
  * Writer for invalid items coming from a XLSX import.
@@ -36,7 +36,7 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
     /** @var InvalidItemsCollector */
     protected $collector;
 
-    /** @var XlsxSimpleWriter */
+    /** @var Writer */
     protected $writer;
 
     /** @var int */
@@ -44,13 +44,13 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
 
     /**
      * @param InvalidItemsCollector $collector
-     * @param XlsxSimpleWriter      $writer
+     * @param Writer      $writer
      * @param FileIteratorFactory   $fileIteratorFactory
      * @param Filesystem            $filesystem
      */
     public function __construct(
         InvalidItemsCollector $collector,
-        XlsxSimpleWriter $writer,
+        Writer $writer,
         FileIteratorFactory $fileIteratorFactory,
         Filesystem $filesystem
     ) {

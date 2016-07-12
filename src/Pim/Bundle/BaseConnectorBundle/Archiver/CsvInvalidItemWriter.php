@@ -12,7 +12,7 @@ use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvEx
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\Connector\Reader\File\FileIterator;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
-use Pim\Component\Connector\Writer\File\CsvWriter;
+use Pim\Component\Connector\Writer\File\Csv\Writer;
 
 /**
  * Writer for invalid items coming from a CSV import.
@@ -36,7 +36,7 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
     /** @var InvalidItemsCollector */
     protected $collector;
 
-    /** @var CsvWriter */
+    /** @var Writer */
     protected $writer;
 
     /** @var int */
@@ -44,13 +44,13 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
 
     /**
      * @param InvalidItemsCollector $collector
-     * @param CsvWriter             $writer
+     * @param Writer             $writer
      * @param FileIteratorFactory   $fileIteratorFactory
      * @param Filesystem            $filesystem
      */
     public function __construct(
         InvalidItemsCollector $collector,
-        CsvWriter $writer,
+        Writer $writer,
         FileIteratorFactory $fileIteratorFactory,
         Filesystem $filesystem
     ) {
