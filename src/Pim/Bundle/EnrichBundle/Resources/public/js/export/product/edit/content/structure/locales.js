@@ -31,6 +31,8 @@ define(
              */
             initialize: function (config) {
                 this.config = config.config;
+
+                return BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**
@@ -127,7 +129,7 @@ define(
                 var structure = this.getFormData().structure;
 
                 if (_.isUndefined(structure)) {
-                    return {};
+                    return [];
                 }
 
                 return _.isUndefined(structure.locales) ? [] : structure.locales;

@@ -18,9 +18,6 @@ extensions:
 
     pim-filter-product-category:
         module: pim/filter/product/category
-        config:
-            operators:
-                - IN
 
     pim-filter-product-enabled:
         module: pim/filter/product/enabled

@@ -24,9 +24,10 @@ define([
          /**
          * {@inherit}
          */
-        initialize: function (config) {
-            this.config = config.config;
-            this.on('channel:update:after', this.channelUpdated);
+        configure: function () {
+            this.on('channel:update:after', this.channelUpdated.bind(this));
+
+            return BaseFilter.prototype.configure.apply(this, arguments);
         },
 
         /**
@@ -35,9 +36,6 @@ define([
          * @return {String}
          */
         renderInput: function () {
-            if (undefined === this.getOperator()) {
-                this.setOperator(_.first(this.config.operators));
-            }
             if (undefined === this.getValue()) {
                 this.setValue([]);
             }
