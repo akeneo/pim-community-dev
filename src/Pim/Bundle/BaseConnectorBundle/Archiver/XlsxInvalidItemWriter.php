@@ -147,7 +147,7 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
 
     /**
      * Setup the writer with a new JobExecution to write the invalid_items file.
-     * We need to setup the writer manually because it's usally set up by the ItemStep.
+     * We need to setup the writer manually because it's usually set up by the ItemStep.
      *
      * @param JobExecution $jobExecution
      */

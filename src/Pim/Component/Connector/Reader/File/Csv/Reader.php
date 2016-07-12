@@ -40,6 +40,9 @@ class Reader extends AbstractConfigurableStepElement implements
     /** @var StepExecution */
     protected $stepExecution;
 
+    /** @var string */
+    protected $filePath;
+
     /**
      * @param FileIteratorFactory     $fileIteratorFactory
      * @param ArrayConverterInterface $converter
@@ -57,10 +60,10 @@ class Reader extends AbstractConfigurableStepElement implements
     {
         if (null === $this->fileIterator) {
             $jobParameters = $this->stepExecution->getJobParameters();
-            $filePath = $jobParameters->get('filePath');
+            $this->filePath = $jobParameters->get('filePath');
             $delimiter = $jobParameters->get('delimiter');
             $enclosure = $jobParameters->get('enclosure');
-            $this->fileIterator = $this->fileIteratorFactory->create($filePath, [
+            $this->fileIterator = $this->fileIteratorFactory->create($this->filePath, [
                 'fieldDelimiter' => $delimiter,
                 'fieldEnclosure' => $enclosure
             ]);
@@ -73,11 +76,26 @@ class Reader extends AbstractConfigurableStepElement implements
             $this->stepExecution->incrementSummaryInfo('read_lines');
         }
 
-        $item = $this->fileIterator->current();
+        $data = $this->fileIterator->current();
 
-        if (null === $item) {
+        if (null === $data) {
             return null;
         }
+
+        $headers = $this->fileIterator->getHeaders();
+
+        $countHeaders = count($headers);
+        $countData    = count($data);
+
+        $this->checkColumnNumber($countHeaders, $countData, $data);
+
+        if ($countHeaders > $countData) {
+            $missingValuesCount = $countHeaders - $countData;
+            $missingValues = array_fill(0, $missingValuesCount, '');
+            $data = array_merge($data, $missingValues);
+        }
+
+        $item = array_combine($this->fileIterator->getHeaders(), $data);
 
         try {
             $item = $this->converter->convert($item, $this->getArrayConverterOptions());
@@ -143,5 +161,28 @@ class Reader extends AbstractConfigurableStepElement implements
         );
 
         throw new InvalidItemException($exception->getMessage(), $invalidItem, [], 0, $exception);
+    }
+
+    /**
+     * @param int    $countHeaders
+     * @param int    $countData
+     * @param string $data
+     *
+     * @throws InvalidItemException
+     */
+    protected function checkColumnNumber($countHeaders, $countData, $data)
+    {
+        if ($countHeaders < $countData) {
+            throw new InvalidItemException(
+                'pim_connector.steps.file_reader.invalid_item_columns_count',
+                new FileInvalidItem($data, ($this->stepExecution->getSummaryInfo('read_lines') + 1)),
+                [
+                    '%totalColumnsCount%' => $countHeaders,
+                    '%itemColumnsCount%'  => $countData,
+                    '%filePath%'          => $this->filePath,
+                    '%lineno%'            => $this->fileIterator->key()
+                ]
+            );
+        }
     }
 }
