@@ -67,7 +67,7 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
      */
     public function archive(JobExecution $jobExecution)
     {
-        if (!$this->collector->getInvalidItems()) {
+        if (empty($this->collector->getInvalidItems())) {
             return;
         }
 
