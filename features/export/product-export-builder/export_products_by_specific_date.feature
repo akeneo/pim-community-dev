@@ -49,7 +49,7 @@ Feature: Export products according to a date
     And I press "Save"
     And I should not see the text "There are unsaved changes"
 
-  @javascript @skip # No validation for now
+  @javascript @skip
   Scenario: Error management when the updated time condition field is updated
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
