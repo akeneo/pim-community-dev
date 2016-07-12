@@ -16,6 +16,9 @@ extensions:
                 - GREATER OR EQUALS THAN ON ALL LOCALES
                 - LOWER THAN ON ALL LOCALES
 
+    pim-filter-product-category:
+        module: pim/filter/product/category
+
     pim-filter-product-enabled:
         module: pim/filter/product/enabled
 

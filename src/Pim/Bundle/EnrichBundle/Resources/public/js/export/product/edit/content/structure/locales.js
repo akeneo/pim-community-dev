@@ -31,6 +31,8 @@ define(
              */
             initialize: function (config) {
                 this.config = config.config;
+
+                return BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**
@@ -137,7 +139,7 @@ define(
              * Resets locales after channel has been modified then re-renders the view.
              */
             channelUpdated: function () {
-                this.setLocales([])
+                this.setDefaultLocales()
                     .then(function () {
                         this.render();
                     }.bind(this));

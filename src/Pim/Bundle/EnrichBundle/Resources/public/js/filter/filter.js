@@ -24,6 +24,24 @@ define([
         },
 
         /**
+         * Sets the parentForm code on which this filter operates.
+         *
+         * @param {string} parentForm
+         */
+        setParentForm: function (parentForm) {
+            this.parentForm = parentForm;
+        },
+
+        /**
+         * Gets the parentForm code on which this filter operates.
+         *
+         * @return {string}
+         */
+        getParentForm: function () {
+            return this.parentForm;
+        },
+
+        /**
          * Sets the field code on which this filter operates.
          *
          * @param {string} field
@@ -120,6 +138,15 @@ define([
          */
         isEditable: function () {
             return this.editable;
+        },
+
+        /**
+         * Returns whether this filter is empty.
+         *
+         * @returns {boolean}
+         */
+        isEmpty: function () {
+            return false;
         },
 
         /**

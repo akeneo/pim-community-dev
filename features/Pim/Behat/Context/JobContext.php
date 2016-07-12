@@ -208,14 +208,4 @@ class JobContext extends PimContext
 
         return $archives;
     }
-
-    /**
-     * @param string $property
-     *
-     * @return bool
-     */
-    protected function isJobParameterArray($property)
-    {
-        return in_array($property, ['locales', 'categories']);
-    }
 }
