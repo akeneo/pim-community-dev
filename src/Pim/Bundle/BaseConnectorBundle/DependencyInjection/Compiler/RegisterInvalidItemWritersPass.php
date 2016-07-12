@@ -18,11 +18,11 @@ class RegisterInvalidItemWritersPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pim_base_connector.event_listener.invalid_items_writer_register')) {
+        if (!$container->hasDefinition('pim_base_connector.event_listener.invalid_items_writer_registry')) {
             return;
         }
 
-        $service = $container->getDefinition('pim_base_connector.event_listener.invalid_items_writer_register');
+        $service = $container->getDefinition('pim_base_connector.event_listener.invalid_items_writer_registry');
 
         $taggedServices = $container->findTaggedServiceIds('pim_base_connector.invalid_items_writer');
 

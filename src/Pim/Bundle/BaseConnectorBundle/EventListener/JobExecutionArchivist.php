@@ -17,18 +17,18 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class JobExecutionArchivist implements EventSubscriberInterface
 {
-    /** @var array */
+    /** @var ArchiverInterface[] */
     protected $archivers = [];
 
-    /** @var InvalidItemWriterResolver */
-    protected $invalidItemWriterResolver;
+    /** @var InvalidItemWriterRegistry */
+    protected $invalidItemWriterRegistry;
 
     /**
-     * @param InvalidItemWriterResolver $invalidItemWriterResolver
+     * @param InvalidItemWriterRegistry $invalidItemWriterRegistry
      */
-    public function __construct(InvalidItemWriterResolver $invalidItemWriterResolver)
+    public function __construct(InvalidItemWriterRegistry $invalidItemWriterRegistry)
     {
-        $this->invalidItemWriterResolver = $invalidItemWriterResolver;
+        $this->invalidItemWriterRegistry = $invalidItemWriterRegistry;
     }
 
     /**
@@ -71,14 +71,13 @@ class JobExecutionArchivist implements EventSubscriberInterface
     public function beforeStatusUpgrade(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
+        $archivers = $this->archivers + $this->invalidItemWriterRegistry->getWriters();
 
-        foreach ($this->archivers as $archiver) {
+        foreach ($archivers as $archiver) {
             if ($archiver->supports($jobExecution)) {
                 $archiver->archive($jobExecution);
             }
         }
-        
-        $this->invalidItemWriterResolver->beforeStatusUpgrade($event);
     }
 
     /**
@@ -93,14 +92,14 @@ class JobExecutionArchivist implements EventSubscriberInterface
         $result = [];
 
         if (!$jobExecution->isRunning()) {
-            foreach ($this->archivers as $archiver) {
+            $archivers = $this->archivers + $this->invalidItemWriterRegistry->getWriters();
+
+            foreach ($archivers as $archiver) {
                 if (count($archives = $archiver->getArchives($jobExecution)) > 0) {
                     $result[$archiver->getName()] = $archives;
                 }
             }
-            $result = $result + $this->invalidItemWriterResolver->getArchives($jobExecution);
         }
-
 
         return $result;
     }
@@ -119,7 +118,9 @@ class JobExecutionArchivist implements EventSubscriberInterface
     public function getArchive(JobExecution $jobExecution, $archiver, $key)
     {
         if (!isset($this->archivers[$archiver])) {
-            return $this->invalidItemWriterResolver->getArchive($jobExecution, $archiver, $key);
+            return $this->invalidItemWriterRegistry
+                ->getWriter($archiver)
+                ->getArchive($jobExecution, $key);
         }
 
         return $this->archivers[$archiver]->getArchive($jobExecution, $key);
