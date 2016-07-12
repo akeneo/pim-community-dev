@@ -66,8 +66,8 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     public function process($product)
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $channelCode = $parameters->get('filters')['structure']['scope'];
-        $contextChannel = $this->channelRepository->findOneByIdentifier($channelCode);
+        $scopeCode  = $parameters->get('filters')['structure']['scope'];
+        $contextChannel = $this->channelRepository->findOneByIdentifier($scopeCode);
         $this->productBuilder->addMissingProductValues(
             $product,
             [$contextChannel],

@@ -33,7 +33,7 @@ class DateTimeFilterSpec extends ObjectBehavior
                 'EMPTY',
                 'NOT EMPTY',
                 '!=',
-                'SINCE LAST EXPORT',
+                'SINCE LAST JOB',
                 'SINCE LAST N DAYS'
             ]
         );
@@ -68,7 +68,7 @@ class DateTimeFilterSpec extends ObjectBehavior
             'EMPTY',
             'NOT EMPTY',
             '!=',
-            'SINCE LAST EXPORT',
+            'SINCE LAST JOB',
             'SINCE LAST N DAYS'
         ]);
 
@@ -243,7 +243,7 @@ class DateTimeFilterSpec extends ObjectBehavior
 
         $this->addFieldFilter(
             'updated',
-            'SINCE LAST EXPORT',
+            'SINCE LAST JOB',
             'csv_product_export',
             null,
             null
@@ -263,7 +263,7 @@ class DateTimeFilterSpec extends ObjectBehavior
 
         $this->addFieldFilter(
             'updated',
-            'SINCE LAST EXPORT',
+            'SINCE LAST JOB',
             'csv_product_export',
             null,
             null
@@ -279,7 +279,7 @@ class DateTimeFilterSpec extends ObjectBehavior
                 'addFieldFilter',
                 [
                     'updated',
-                    'SINCE LAST EXPORT',
+                    'SINCE LAST JOB',
                     42,
                     null,
                     null,

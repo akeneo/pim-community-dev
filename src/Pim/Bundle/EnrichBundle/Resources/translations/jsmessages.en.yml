@@ -361,7 +361,7 @@ pim_enrich:
                         ALL: No date condition
                         "SINCE LAST N DAYS": Updated products since the last n days
                         ">=": Updated products since the defined date
-                        "SINCE LAST EXPORT": Updated products since last export
+                        "SINCE LAST JOB": Updated products since last export
                 enabled:
                     title: Status
                     help: The status of the products you want to export

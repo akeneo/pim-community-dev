@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Data section
+ *This extension manage the data filter collection and it's generation
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -24,7 +24,6 @@ define(
         formBuilder
     ) {
         return BaseForm.extend({
-            dataFilterCollection: [],
             filterViews: {},
             template: _.template(template),
 
@@ -156,7 +155,7 @@ define(
 
                     return view;
                 }).then(function (filterView) {
-                    var filterData = _.findWhere(this.dataFilterCollection, {field: filterView.getField()});
+                    var filterData = _.findWhere(this.getFormData().data, {field: filterView.getField()});
                     if (undefined !== filterData) {
                         filterView.setData(filterData);
                     }
@@ -177,15 +176,15 @@ define(
              * Updates the form model.
              */
             updateModel: function () {
-                this.dataFilterCollection = [];
+                dataFilterCollection = [];
 
                 _.each(this.filterViews, function (filterView) {
                     if (!filterView.isEmpty()) {
-                        this.dataFilterCollection.push(filterView.getFormData());
+                        dataFilterCollection.push(filterView.getFormData());
                     }
                 }.bind(this));
 
-                this.setData({data: this.dataFilterCollection});
+                this.setData({data: dataFilterCollection});
             },
 
             /**

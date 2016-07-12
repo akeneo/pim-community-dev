@@ -136,7 +136,7 @@ services:
                 - 'NOT EMPTY'
                 - '!='
                 - 'SINCE LAST N DAYS'
-                - 'SINCE LAST EXPORT'
+                - 'SINCE LAST JOB'
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 

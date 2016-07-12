@@ -52,13 +52,13 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
     {
         if (Operators::IS_EMPTY !== $operator &&
             Operators::IS_NOT_EMPTY !== $operator &&
-            Operators::SINCE_LAST_EXPORT !== $operator &&
+            Operators::SINCE_LAST_JOB !== $operator &&
             Operators::SINCE_LAST_N_DAYS !== $operator
         ) {
             $value = $this->formatValues($field, $value);
         }
 
-        if (Operators::SINCE_LAST_EXPORT === $operator) {
+        if (Operators::SINCE_LAST_JOB === $operator) {
             if (!is_string($value)) {
                 throw InvalidArgumentException::stringExpected($field, 'filter', 'updated', gettype($value));
             }

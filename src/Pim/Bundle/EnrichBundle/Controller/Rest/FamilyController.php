@@ -54,7 +54,6 @@ class FamilyController
         $options = $request->query->get('options', ['limit' => 20]);
 
         if ($request->request->has('identifiers')) {
-            $this->familySearchableRepo->findBySearch();
             $options['identifiers'] = explode(',', $request->request->get('identifiers'));
         }
 
