@@ -449,12 +449,12 @@ class StepExecution
      */
     public function addWarning($reason, array $reasonParameters, $item)
     {
-        $item = $item->getData();
-        if (is_object($item)) {
-            $item = [
-                'class'  => ClassUtils::getClass($item),
-                'id'     => method_exists($item, 'getId') ? $item->getId() : '[unknown]',
-                'string' => method_exists($item, '__toString') ? (string) $item : '[unknown]',
+        $data = $item->getData();
+        if (is_object($data)) {
+            $data = [
+                'class'  => ClassUtils::getClass($data),
+                'id'     => method_exists($data, 'getId') ? $data->getId() : '[unknown]',
+                'string' => method_exists($data, '__toString') ? (string) $data : '[unknown]',
             ];
         }
 
@@ -463,7 +463,7 @@ class StepExecution
                 $this,
                 $reason,
                 $reasonParameters,
-                $item
+                $data
             )
         );
     }
