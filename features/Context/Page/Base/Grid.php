@@ -810,7 +810,9 @@ class Grid extends Index
      */
     protected function getRows()
     {
-        return $this->getGridContent()->findAll('xpath', '/tr');
+        return $this->spin(function () {
+            return $this->getGridContent()->findAll('xpath', '/tr');
+        }, 'Cannot get the grid rows.');
     }
 
     /**
