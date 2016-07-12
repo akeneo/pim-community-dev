@@ -64,7 +64,7 @@ class AttributeRepositorySpec extends ObjectBehavior
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('a')->willReturn($queryBuilder);
         $queryBuilder->select('a.id')->willReturn($queryBuilder);
-        $queryBuilder->addSelect('COALESCE(t.label, CONCAT(\'[\', a.code, \']\')) as label')->willReturn($queryBuilder);
+        $queryBuilder->addSelect('COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', a.code, \']\')) as label')->willReturn($queryBuilder);
         $queryBuilder->from('attribute', 'a')->willReturn($queryBuilder);
         $queryBuilder->leftJoin('a.translations', 't')->willReturn($queryBuilder);
         $queryBuilder->andWhere($in)->willReturn($queryBuilder);

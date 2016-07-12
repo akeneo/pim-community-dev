@@ -1,6 +1,10 @@
 
 # 1.6.x
 
+## Bug fixes
+
+- PIM-5854: The family code is not displayed at all in the product grid when no family labels
+
 ## Functional improvements
 
 - PIM-5664: It is now possible to purge jobs executions history
