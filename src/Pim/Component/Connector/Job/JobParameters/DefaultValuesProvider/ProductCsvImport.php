@@ -23,7 +23,7 @@ class ProductCsvImport implements DefaultValuesProviderInterface
 
     /**
      * @param DefaultValuesProviderInterface $simpleProvider
-     * @param array                      $supportedJobNames
+     * @param array                          $supportedJobNames
      */
     public function __construct(DefaultValuesProviderInterface $simpleProvider, array $supportedJobNames)
     {
@@ -45,7 +45,6 @@ class ProductCsvImport implements DefaultValuesProviderInterface
         $parameters['groupsColumn'] = 'groups';
         $parameters['enabledComparison'] = true;
         $parameters['realTimeVersioning'] = true;
-        $parameters['invalid_items_file_format'] = 'csv';
 
         return $parameters;
     }
