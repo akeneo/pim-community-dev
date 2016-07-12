@@ -9,7 +9,7 @@ class InvalidItemExceptionSpec extends ObjectBehavior
 {
     function let(InvalidItemInterface $invalidItem)
     {
-        $invalidItem->getData()->willReturn(['foo' => 'fighter']);
+        $invalidItem->getInvalidData()->willReturn(['foo' => 'fighter']);
 
         $this->beConstructedWith(
             'Tango is down, I repeat...',

@@ -16,7 +16,7 @@ class InvalidItemsCollectorSpec extends ObjectBehavior
             'name_fr-fr' => 'Chaussures noires'
         ];
 
-        $invalidItem->getData()->willReturn($item);
+        $invalidItem->getInvalidData()->willReturn($item);
 
         $hashKey = md5(serialize($item));
 
@@ -50,9 +50,9 @@ class InvalidItemsCollectorSpec extends ObjectBehavior
             'name_fr-fr' => 'Chaussures jaunes'
         ];
 
-        $invalidItem1->getData()->willReturn($item1);
-        $invalidItem2->getData()->willReturn($item2);
-        $invalidItem3->getData()->willReturn($item3);
+        $invalidItem1->getInvalidData()->willReturn($item1);
+        $invalidItem2->getInvalidData()->willReturn($item2);
+        $invalidItem3->getInvalidData()->willReturn($item3);
 
         $hashKeyItem1 = md5(serialize($item1));
         $hashKeyItem2 = md5(serialize($item2));
@@ -82,7 +82,7 @@ class InvalidItemsCollectorSpec extends ObjectBehavior
             'name_fr-fr' => 'Chaussures noires'
         ];
 
-        $invalidItem->getData()->willReturn($item);
+        $invalidItem->getInvalidData()->willReturn($item);
 
         $hashKeyItem = md5(serialize($item));
 

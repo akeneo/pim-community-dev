@@ -449,7 +449,7 @@ class StepExecution
      */
     public function addWarning($reason, array $reasonParameters, $item)
     {
-        $data = $item->getData();
+        $data = $item->getInvalidData();
         if (is_object($data)) {
             $data = [
                 'class'  => ClassUtils::getClass($data),

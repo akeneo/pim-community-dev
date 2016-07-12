@@ -265,7 +265,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             new FileNotFoundException('upload/path/img.jpg')
         );
 
-        $invalidItem->getData()->willReturn(['item' => 23, 'uploadDirectory' => 'upload/path/']);
+        $invalidItem->getInvalidData()->willReturn(['item' => 23, 'uploadDirectory' => 'upload/path/']);
         $stepExecution->getSummaryInfo("read_lines")->shouldBeCalled();
 
         $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')->duringProcess($product);

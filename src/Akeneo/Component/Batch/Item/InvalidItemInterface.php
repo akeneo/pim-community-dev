@@ -14,5 +14,5 @@ interface InvalidItemInterface
      * 
      * @return mixed
      */
-    public function getData();
+    public function getInvalidData();
 }
