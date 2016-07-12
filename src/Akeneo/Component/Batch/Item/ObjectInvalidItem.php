@@ -12,11 +12,11 @@ namespace Akeneo\Component\Batch\Item;
  */
 class ObjectInvalidItem implements InvalidItemInterface
 {
-    /** @var Object */
+    /** @var mixed */
     protected $invalidData;
 
     /**
-     * @param Object $invalidData
+     * @param mixed $invalidData
      */
     public function __construct($invalidData)
     {

@@ -40,9 +40,6 @@ class Reader extends AbstractConfigurableStepElement implements
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var string */
-    protected $filePath;
-
     /**
      * @param FileIteratorFactory     $fileIteratorFactory
      * @param ArrayConverterInterface $converter
@@ -58,10 +55,11 @@ class Reader extends AbstractConfigurableStepElement implements
      */
     public function read()
     {
+        $filePath = null;
         if (null === $this->fileIterator) {
             $jobParameters = $this->stepExecution->getJobParameters();
-            $this->filePath = $jobParameters->get('filePath');
-            $this->fileIterator = $this->fileIteratorFactory->create($this->filePath);
+            $filePath = $jobParameters->get('filePath');
+            $this->fileIterator = $this->fileIteratorFactory->create($filePath);
             $this->fileIterator->rewind();
         }
 
@@ -82,7 +80,7 @@ class Reader extends AbstractConfigurableStepElement implements
         $countHeaders = count($headers);
         $countData    = count($data);
 
-        $this->checkColumnNumber($countHeaders, $countData, $data);
+        $this->checkColumnNumber($countHeaders, $countData, $data, $filePath);
 
         if ($countHeaders > $countData) {
             $missingValuesCount = $countHeaders - $countData;
@@ -163,10 +161,11 @@ class Reader extends AbstractConfigurableStepElement implements
      * @param int    $countHeaders
      * @param int    $countData
      * @param string $data
+     * @param string $filePath
      *
      * @throws InvalidItemException
      */
-    protected function checkColumnNumber($countHeaders, $countData, $data)
+    protected function checkColumnNumber($countHeaders, $countData, $data, $filePath)
     {
         if ($countHeaders < $countData) {
             throw new InvalidItemException(
@@ -175,7 +174,7 @@ class Reader extends AbstractConfigurableStepElement implements
                 [
                     '%totalColumnsCount%' => $countHeaders,
                     '%itemColumnsCount%'  => $countData,
-                    '%filePath%'          => $this->filePath,
+                    '%filePath%'          => $filePath,
                     '%lineno%'            => $this->fileIterator->key()
                 ]
             );

@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\Reader\File;
 
-use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
 use Box\Spout\Common\Type;

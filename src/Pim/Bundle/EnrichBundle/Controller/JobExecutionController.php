@@ -62,16 +62,16 @@ class JobExecutionController
     protected $jobExecutionRepo;
 
     /**
-     * @param Request                   $request
-     * @param EngineInterface           $templating
-     * @param TranslatorInterface       $translator
-     * @param EventDispatcherInterface  $eventDispatcher
-     * @param BatchLogHandler           $batchLogHandler
-     * @param JobExecutionArchivist     $archivist
-     * @param SerializerInterface       $serializer
-     * @param JobExecutionManager       $jobExecutionManager
-     * @param JobExecutionRepository    $jobExecutionRepo
-     * @param string                    $jobType
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param BatchLogHandler          $batchLogHandler
+     * @param JobExecutionArchivist    $archivist
+     * @param SerializerInterface      $serializer
+     * @param JobExecutionManager      $jobExecutionManager
+     * @param JobExecutionRepository   $jobExecutionRepo
+     * @param string                   $jobType
      */
     public function __construct(
         Request $request,

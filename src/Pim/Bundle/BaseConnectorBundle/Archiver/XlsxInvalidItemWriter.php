@@ -44,7 +44,7 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
 
     /**
      * @param InvalidItemsCollector $collector
-     * @param Writer      $writer
+     * @param Writer                $writer
      * @param FileIteratorFactory   $fileIteratorFactory
      * @param Filesystem            $filesystem
      */

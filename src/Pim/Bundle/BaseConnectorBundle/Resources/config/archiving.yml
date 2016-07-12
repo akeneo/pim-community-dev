@@ -2,19 +2,15 @@ parameters:
     pim_base_connector.event_listener.archivist.class:                 Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist
     pim_base_connector.event_listener.invalid_items_collector.class:   Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector
     pim_base_connector.factory.zip_filesystem.class:                   Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory
-    pim_base_connector.archiver.invalid_item_csv_archiver.class:       Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver
     pim_base_connector.archiver.file_reader_archiver.class:            Pim\Bundle\BaseConnectorBundle\Archiver\FileReaderArchiver
     pim_base_connector.archiver.file_writer_archiver.class:            Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver
     pim_base_connector.archiver.archivable_file_writer_archiver.class: Pim\Bundle\BaseConnectorBundle\Archiver\ArchivableFileWriterArchiver
     pim_base_connector.archiver.invalid_item_csv_writer.class: Pim\Bundle\BaseConnectorBundle\Archiver\CsvInvalidItemWriter
     pim_base_connector.archiver.invalid_item_xlsx_writer.class: Pim\Bundle\BaseConnectorBundle\Archiver\XlsxInvalidItemWriter
-    pim_base_connector.event_listener.invalid_items_writer_registry.class: Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemWriterRegistry
 
 services:
     pim_base_connector.event_listener.archivist:
         class: '%pim_base_connector.event_listener.archivist.class%'
-        arguments:
-              - '@pim_base_connector.event_listener.invalid_items_writer_registry'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -33,15 +29,6 @@ services:
             - '@akeneo_batch.job.job_registry'
         tags:
             - { name: pim_base_connector.archiver }
-
-#    pim_base_connector.archiver.invalid_item_csv_archiver:
-#        class: '%pim_base_connector.archiver.invalid_item_csv_archiver.class%'
-#        arguments:
-#            - '@pim_base_connector.event_listener.invalid_items_collector'
-#            - '@pim_base_connector.archiver.invalid_item_csv_writer'
-#            - '@oneup_flysystem.archivist_filesystem'
-#        tags:
-#            - { name: pim_base_connector.archiver }
 
     pim_base_connector.archiver.file_writer_archiver:
         class: '%pim_base_connector.archiver.file_writer_archiver.class%'
@@ -68,7 +55,7 @@ services:
             - '@pim_connector.reader.file.csv_iterator_factory'
             - '@oneup_flysystem.archivist_filesystem'
         tags:
-            - { name: pim_base_connector.invalid_items_writer }
+            - { name: pim_base_connector.archiver }
 
     pim_base_connector.archiver.invalid_item_xlsx_writer:
         class: '%pim_base_connector.archiver.invalid_item_xlsx_writer.class%'
@@ -78,7 +65,4 @@ services:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@oneup_flysystem.archivist_filesystem'
         tags:
-            - { name: pim_base_connector.invalid_items_writer }
-
-    pim_base_connector.event_listener.invalid_items_writer_registry:
-        class: '%pim_base_connector.event_listener.invalid_items_writer_registry.class%'
+            - { name: pim_base_connector.archiver }

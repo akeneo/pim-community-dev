@@ -40,9 +40,6 @@ class Reader extends AbstractConfigurableStepElement implements
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var string */
-    protected $filePath;
-
     /**
      * @param FileIteratorFactory     $fileIteratorFactory
      * @param ArrayConverterInterface $converter
@@ -58,12 +55,13 @@ class Reader extends AbstractConfigurableStepElement implements
      */
     public function read()
     {
+        $filePath = null;
         if (null === $this->fileIterator) {
             $jobParameters = $this->stepExecution->getJobParameters();
-            $this->filePath = $jobParameters->get('filePath');
+            $filePath = $jobParameters->get('filePath');
             $delimiter = $jobParameters->get('delimiter');
             $enclosure = $jobParameters->get('enclosure');
-            $this->fileIterator = $this->fileIteratorFactory->create($this->filePath, [
+            $this->fileIterator = $this->fileIteratorFactory->create($filePath, [
                 'fieldDelimiter' => $delimiter,
                 'fieldEnclosure' => $enclosure
             ]);
@@ -76,26 +74,18 @@ class Reader extends AbstractConfigurableStepElement implements
             $this->stepExecution->incrementSummaryInfo('read_lines');
         }
 
-        $data = $this->fileIterator->current();
+        $item = $this->fileIterator->current();
 
-        if (null === $data) {
+        if (null === $item) {
             return null;
         }
 
         $headers = $this->fileIterator->getHeaders();
 
         $countHeaders = count($headers);
-        $countData    = count($data);
+        $countData    = count($item);
 
-        $this->checkColumnNumber($countHeaders, $countData, $data);
-
-        if ($countHeaders > $countData) {
-            $missingValuesCount = $countHeaders - $countData;
-            $missingValues = array_fill(0, $missingValuesCount, '');
-            $data = array_merge($data, $missingValues);
-        }
-
-        $item = array_combine($this->fileIterator->getHeaders(), $data);
+        $this->checkColumnNumber($countHeaders, $countData, $item, $filePath);
 
         try {
             $item = $this->converter->convert($item, $this->getArrayConverterOptions());
@@ -167,10 +157,11 @@ class Reader extends AbstractConfigurableStepElement implements
      * @param int    $countHeaders
      * @param int    $countData
      * @param string $data
+     * @param string $filePath
      *
      * @throws InvalidItemException
      */
-    protected function checkColumnNumber($countHeaders, $countData, $data)
+    protected function checkColumnNumber($countHeaders, $countData, $data, $filePath)
     {
         if ($countHeaders < $countData) {
             throw new InvalidItemException(
@@ -179,7 +170,7 @@ class Reader extends AbstractConfigurableStepElement implements
                 [
                     '%totalColumnsCount%' => $countHeaders,
                     '%itemColumnsCount%'  => $countData,
-                    '%filePath%'          => $this->filePath,
+                    '%filePath%'          => $filePath,
                     '%lineno%'            => $this->fileIterator->key()
                 ]
             );

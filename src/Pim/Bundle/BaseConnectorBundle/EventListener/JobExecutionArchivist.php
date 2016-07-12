@@ -20,17 +20,6 @@ class JobExecutionArchivist implements EventSubscriberInterface
     /** @var ArchiverInterface[] */
     protected $archivers = [];
 
-    /** @var InvalidItemWriterRegistry */
-    protected $invalidItemWriterRegistry;
-
-    /**
-     * @param InvalidItemWriterRegistry $invalidItemWriterRegistry
-     */
-    public function __construct(InvalidItemWriterRegistry $invalidItemWriterRegistry)
-    {
-        $this->invalidItemWriterRegistry = $invalidItemWriterRegistry;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -71,9 +60,8 @@ class JobExecutionArchivist implements EventSubscriberInterface
     public function beforeStatusUpgrade(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
-        $archivers = $this->archivers + $this->invalidItemWriterRegistry->getWriters();
 
-        foreach ($archivers as $archiver) {
+        foreach ($this->archivers as $archiver) {
             if ($archiver->supports($jobExecution)) {
                 $archiver->archive($jobExecution);
             }
@@ -92,9 +80,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
         $result = [];
 
         if (!$jobExecution->isRunning()) {
-            $archivers = $this->archivers + $this->invalidItemWriterRegistry->getWriters();
-
-            foreach ($archivers as $archiver) {
+            foreach ($this->archivers as $archiver) {
                 if (count($archives = $archiver->getArchives($jobExecution)) > 0) {
                     $result[$archiver->getName()] = $archives;
                 }
@@ -118,9 +104,9 @@ class JobExecutionArchivist implements EventSubscriberInterface
     public function getArchive(JobExecution $jobExecution, $archiver, $key)
     {
         if (!isset($this->archivers[$archiver])) {
-            return $this->invalidItemWriterRegistry
-                ->getWriter($archiver)
-                ->getArchive($jobExecution, $key);
+            throw new \InvalidArgumentException(
+                sprintf('Archiver "%s" is not registered', $archiver)
+            );
         }
 
         return $this->archivers[$archiver]->getArchive($jobExecution, $key);
