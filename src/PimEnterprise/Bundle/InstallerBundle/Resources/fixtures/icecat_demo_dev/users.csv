@@ -4,4 +4,5 @@ julia;Julia;Stark;Julia@example.com;julia;en_US;en_US;ecommerce;master;ROLE_CATA
 peter;Peter;Williams;Peter@example.com;peter;en_US;en_US;ecommerce;master;ROLE_ADMINISTRATOR;IT support;1
 mary;Mary;Smith;Mary@example.com;mary;en_US;en_US;ecommerce;master;ROLE_USER;Redactor;1
 sandra;Sandra;Harvey;Sandra@example.com;sandra;en_US;en_US;ecommerce;master;ROLE_USER;Redactor;1
+pamela;Pamela;Rose;Pamela@example.com;pamela;en_US;en_US;ecommerce;master;ROLE_ASSET_MANAGER;Manager;1
 julien;Julien;Février;Julien@example.com;julien;fr_FR;fr_FR;mobile;master;ROLE_USER;Redactor;1
