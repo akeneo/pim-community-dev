@@ -82,8 +82,12 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
         foreach ($this->getInputFileIterator($readJobParameters) as $readItem) {
             $currentLineNumber++;
 
+            if (1 === $currentLineNumber) {
+                $headers = $readItem;
+            }
+
             if ($invalidLineNumbers->contains($currentLineNumber)) {
-                $itemsToWrite[] = $readItem;
+                $itemsToWrite[] = array_combine($headers, $readItem);
                 $invalidLineNumbers->removeElement($currentLineNumber);
             }
 
@@ -154,6 +158,7 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
         $provider = new ProductXlsxExport(new SimpleXlsxExport([]), []);
         $writeParams = $provider->getDefaultValues();
         $writeParams['filePath'] = $this->filesystem->getAdapter()->getPathPrefix() . $fileKey;
+        $writeParams['withHeader'] = true;
 
         $writeJobParameters = new JobParameters($writeParams);
         $writeJobExecution  = new JobExecution();
