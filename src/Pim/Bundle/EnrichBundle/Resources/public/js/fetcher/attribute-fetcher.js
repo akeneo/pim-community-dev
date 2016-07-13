@@ -3,6 +3,7 @@
 define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function ($, _, BaseFetcher, Routing) {
     return BaseFetcher.extend({
         identifierPromise: null,
+        fetchByTypesPromises: [],
 
         /**
          * Return the identifier attribute
@@ -11,15 +12,17 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function ($, _, 
          */
         getIdentifierAttribute: function () {
             if (null === this.identifierPromise) {
+                this.identifierPromise = $.Deferred();
+
                 return this.fetchByTypes([this.options.identifier_type])
                     .then(function (attributes) {
                         if (attributes.length > 0) {
-                            this.identifierPromise = $.Deferred().resolve(attributes[0]);
+                            this.identifierPromise.resolve(attributes[0]).promise();
 
                             return this.identifierPromise;
                         }
 
-                        return $.Deferred()
+                        return this.identifierPromise
                             .reject()
                             .promise();
                     }.bind(this));
@@ -36,9 +39,18 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function ($, _, 
          * @return {Promise}
          */
         fetchByTypes: function (attributeTypes) {
-            return this.getJSON(this.options.urls.list, { types: attributeTypes.join(',') })
+            var cacheKey = attributeTypes.sort().join('');
+
+            if (!_.has(this.fetchByTypesPromises, cacheKey)) {
+                this.fetchByTypesPromises[cacheKey] = this.getJSON(
+                    this.options.urls.list,
+                    {types: attributeTypes.join(',')}
+                )
                 .then(_.identity)
                 .promise();
+            }
+
+            return this.fetchByTypesPromises[cacheKey];
         },
 
         /**

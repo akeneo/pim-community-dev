@@ -46,7 +46,7 @@ define(
                     this.addFilters(event.codes);
                 }.bind(this));
 
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.updateFiltersData.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -61,8 +61,13 @@ define(
 
                 this.$el.html(this.template({__: __}));
 
-                _.each(this.filterViews, function (filterView) {
-                    this.$('.filters').append(filterView.render().$el);
+                this.updateFiltersData().then(function () {
+                    var filtersContainer = this.$('.filters');
+                    filtersContainer.empty();
+
+                    _.each(this.filterViews, function (filterView) {
+                        filtersContainer.append(filterView.render().$el);
+                    }.bind(this));
                 }.bind(this));
 
                 this.renderExtensions();
@@ -191,12 +196,14 @@ define(
 
             /**
              * Sets back the data to the filters view.
+             *
+             * @return {Promise}
              */
             updateFiltersData: function () {
                 var promises = [];
                 this.getRoot().trigger('pim_enrich:form:filter:set-default', promises);
 
-                $.when.apply($, promises).then(function () {
+                return $.when.apply($, promises).then(function () {
                     var defaultFields = 0 !== arguments.length ?
                         _.union(_.flatten(_.toArray(arguments))) :
                         [];
@@ -206,19 +213,19 @@ define(
                 }.bind(this)).then(function (defaultFields) {
                     var modelFields = _.pluck(this.getFormData()['data'], 'field');
 
-                    this.addFilters(_.union(defaultFields, modelFields)).then(function () {
-                        _.each(this.getFormData().data, function (filterData) {
-                            if (!_.has(this.filterViews, filterData.field)) {
-                                return;
-                            }
-                            var filterView = this.filterViews[filterData.field];
+                    return this.addFilters(_.union(defaultFields, modelFields))
+                }.bind(this)).then(function () {
+                    _.each(this.getFormData().data, function (filterData) {
+                        if (!_.has(this.filterViews, filterData.field)) {
+                            return;
+                        }
 
-                            filterView.setData(filterData, {silent: true});
-                        }.bind(this));
-
-                        this.render();
+                        this.filterViews[filterData.field].setData(
+                            filterData,
+                            {silent: true}
+                        );
                     }.bind(this));
-                }.bind(this))
+                }.bind(this));
             },
 
             /**
