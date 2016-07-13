@@ -338,6 +338,12 @@ pim_enrich:
                         no_available_attributes: There are no more attributes to add
     export:
         product:
+            data:
+                title: Data filters
+            structure:
+                title: Structure filters
+                attributes:
+                    title: Attributes
             filter:
                 channel:
                     title: Channel

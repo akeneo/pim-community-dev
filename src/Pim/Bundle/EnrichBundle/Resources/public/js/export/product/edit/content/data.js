@@ -9,6 +9,7 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'text!pim/template/export/product/edit/content/data',
         'pim/form',
         'pim/fetcher-registry',
@@ -17,6 +18,7 @@ define(
     ],
     function (
         _,
+        __,
         template,
         BaseForm,
         fetcherRegistry,
@@ -57,7 +59,7 @@ define(
                     return this;
                 }
 
-                this.$el.html(this.template());
+                this.$el.html(this.template({__: __}));
 
                 _.each(this.filterViews, function (filterView) {
                     filterView.setParentForm(this);

@@ -8,10 +8,14 @@
  */
 define(
     [
+        'underscore',
+        'oro/translator',
         'text!pim/template/export/product/edit/content/structure/attributes',
         'pim/form'
     ],
     function (
+        _,
+        __,
         template,
         BaseForm
     ) {
@@ -30,6 +34,7 @@ define(
                 }
                 this.$el.html(
                     this.template({
+                        __: __,
                         attributes: this.getFormData().structure.attributes || []
                     })
                 );

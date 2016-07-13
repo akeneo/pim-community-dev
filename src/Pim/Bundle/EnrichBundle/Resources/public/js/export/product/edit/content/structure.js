@@ -8,10 +8,14 @@
  */
 define(
     [
+        'underscore',
+        'oro/translator',
         'text!pim/template/export/product/edit/content/structure',
         'pim/form'
     ],
     function (
+        _,
+        __,
         template,
         BaseForm
     ) {
@@ -27,7 +31,7 @@ define(
                 if (!this.configured) {
                     return this;
                 }
-                this.$el.html(this.template());
+                this.$el.html(this.template({__: __}));
 
                 this.renderExtensions();
 
