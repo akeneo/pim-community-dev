@@ -68,8 +68,8 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             if (null === $lastCompletedJobExecution) {
                 return $this;
             }
-            $lastJobStartTime = $lastCompletedJobExecution->getStartTime();
-            $value            = $lastJobStartTime->format(static::DATETIME_FORMAT);
+            $lastJobStartTime = $lastCompletedJobExecution->getStartTime()->setTimezone(new \DateTimeZone('UTC'));
+            $value            = $lastJobStartTime->getTimestamp();
             $operator         = Operators::GREATER_THAN;
         }
 
@@ -79,7 +79,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             }
 
             $fromDate = new \DateTime(sprintf('%s days ago', $value), new \DateTimeZone('UTC'));
-            $value    = $fromDate->format(static::DATETIME_FORMAT);
+            $value    = $fromDate->getTimestamp();
             $operator = Operators::GREATER_THAN;
         }
 

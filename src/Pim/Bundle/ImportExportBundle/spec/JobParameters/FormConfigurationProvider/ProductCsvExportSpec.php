@@ -2,17 +2,9 @@
 
 namespace spec\Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider;
 
-use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class ProductCsvExportSpec extends ObjectBehavior
@@ -42,10 +34,8 @@ class ProductCsvExportSpec extends ObjectBehavior
         $this->supports($job)->shouldReturn(true);
     }
 
-    function it_gets_form_configuration(
-        $simpleCsvExport,
-        JobInstance $jobInstance
-    ) {
+    function it_gets_form_configuration($simpleCsvExport)
+    {
         $formOptions = [
             'filters' => [
                 'type' => 'hidden',
@@ -100,8 +90,8 @@ class ProductCsvExportSpec extends ObjectBehavior
             ],
         ];
 
-        $simpleCsvExport->getFormConfiguration($jobInstance)->willReturn($exportConfig);
+        $simpleCsvExport->getFormConfiguration()->willReturn($exportConfig);
 
-        $this->getFormConfiguration($jobInstance)->shouldReturn($formOptions + $exportConfig);
+        $this->getFormConfiguration()->shouldReturn($formOptions + $exportConfig);
     }
 }

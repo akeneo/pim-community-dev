@@ -126,6 +126,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
         }
 
         $lastJobStartTime = $lastCompletedJobExecution->getStartTime();
+        $lastJobStartTime->setTimezone(new \DateTimeZone('UTC'));
         $updatedField = current($this->qb->getRootAliases()) . '.' . $field;
 
         $this->applyGreaterThanFilter($updatedField, $lastJobStartTime->format(static::DATETIME_FORMAT));

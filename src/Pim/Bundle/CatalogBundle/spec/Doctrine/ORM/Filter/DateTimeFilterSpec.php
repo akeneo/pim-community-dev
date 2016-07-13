@@ -232,6 +232,7 @@ class DateTimeFilterSpec extends ObjectBehavior
         $jobRepository->getLastJobExecution($jobInstance, 1)->shouldBeCalled()->willReturn($jobExecution);
 
         $jobExecution->getStartTime()->willReturn($startTime);
+        $startTime->setTimezone(Argument::type('\DateTimeZone'))->willReturn($startTime);
         $startTime->format('Y-m-d H:i:s')->willReturn('2016-06-20 16:42:42');
 
         $qb->getRootAliases()->willReturn(['alias']);
