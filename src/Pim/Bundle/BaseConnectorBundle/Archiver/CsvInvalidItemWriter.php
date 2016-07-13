@@ -11,8 +11,8 @@ use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvExport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
-use Pim\Component\Connector\Reader\File\FileIterator;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
+use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Pim\Component\Connector\Writer\File\Csv\Writer;
 
 /**
@@ -27,9 +27,6 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
 {
     /** @var JobExecution */
     protected $jobExecution;
-
-    /** @var FileIterator */
-    protected $fileIterator;
 
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
@@ -140,22 +137,20 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
      *
      * @param JobParameters $jobParameters
      *
-     * @return \Iterator
+     * @return FileIteratorInterface
      */
     protected function getInputFileIterator(JobParameters $jobParameters)
     {
-        if (null === $this->fileIterator) {
             $filePath = $jobParameters->get('filePath');
             $delimiter = $jobParameters->get('delimiter');
             $enclosure = $jobParameters->get('enclosure');
-            $this->fileIterator = $this->fileIteratorFactory->create($filePath, [
+            $fileIterator = $this->fileIteratorFactory->create($filePath, [
                 'fieldDelimiter' => $delimiter,
                 'fieldEnclosure' => $enclosure
             ]);
-            $this->fileIterator->rewind();
-        }
+            $fileIterator->rewind();
 
-        return $this->fileIterator;
+        return $fileIterator;
     }
 
     /**

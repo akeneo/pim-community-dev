@@ -10,8 +10,8 @@ use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductXlsxExport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport;
-use Pim\Component\Connector\Reader\File\FileIterator;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
+use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Pim\Component\Connector\Writer\File\Xlsx\Writer;
 
 /**
@@ -26,9 +26,6 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
 {
     /** @var JobExecution */
     protected $jobExecution;
-
-    /** @var FileIterator */
-    protected $fileIterator;
 
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
@@ -132,17 +129,15 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
      *
      * @param JobParameters $jobParameters
      *
-     * @return \Iterator
+     * @return FileIteratorInterface
      */
     protected function getInputFileIterator(JobParameters $jobParameters)
     {
-        if (null === $this->fileIterator) {
-            $filePath = $jobParameters->get('filePath');
-            $this->fileIterator = $this->fileIteratorFactory->create($filePath);
-            $this->fileIterator->rewind();
-        }
+        $filePath = $jobParameters->get('filePath');
+        $fileIterator = $this->fileIteratorFactory->create($filePath);
+        $fileIterator->rewind();
 
-        return $this->fileIterator;
+        return $fileIterator;
     }
 
     /**
