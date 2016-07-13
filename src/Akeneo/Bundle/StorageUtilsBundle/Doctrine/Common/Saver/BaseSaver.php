@@ -87,7 +87,7 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
         }
 
         $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($objects, $allOptions));
+        $this->dispatchPreSaveEvent($objects, $allOptions);
 
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
@@ -99,7 +99,29 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
         if (true === $allOptions['flush']) {
             $this->objectManager->flush();
         }
+        $this->dispatchPostSaveEvent($objects, $allOptions);
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $allOptions));
+    }
+
+    /**
+     * @param object $objects
+     * @param array  $allOptions
+     */
+    protected function dispatchPreSaveEvent($objects, array $allOptions)
+    {
+        if (true === $allOptions['flush']) {
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($objects, $allOptions));
+        }
+    }
+
+    /**
+     * @param object $objects
+     * @param array  $allOptions
+     */
+    protected function dispatchPostSaveEvent($objects, array $allOptions)
+    {
+        if (true === $allOptions['flush']) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $allOptions));
+        }
     }
 }

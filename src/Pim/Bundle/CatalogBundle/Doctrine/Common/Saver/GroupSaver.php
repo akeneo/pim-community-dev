@@ -93,7 +93,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group));
+        $this->dispatchPreSaveEvent($group, $options);
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
 
@@ -126,7 +126,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             $this->removeProducts($options['remove_products']);
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
+        $this->dispatchPostSaveEvent($group, $options);
     }
 
     /**
@@ -181,5 +181,27 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         $template = $group->getProductTemplate();
         $products = $group->getProducts()->toArray();
         $this->productTplApplier->apply($template, $products);
+    }
+
+    /**
+     * @param object $group
+     * @param array  $options
+     */
+    protected function dispatchPreSaveEvent($group, array $options)
+    {
+        if (true === $options['flush']) {
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group));
+        }
+    }
+
+    /**
+     * @param object $group
+     * @param array  $options
+     */
+    protected function dispatchPostSaveEvent($group, array $options)
+    {
+        if (true === $options['flush']) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
+        }
     }
 }
