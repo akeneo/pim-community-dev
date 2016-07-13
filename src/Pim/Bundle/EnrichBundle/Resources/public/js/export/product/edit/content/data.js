@@ -60,7 +60,7 @@ define(
                 }
 
                 this.$el.html(this.template({__: __}));
-
+                this.filterViews = {};
                 this.updateFiltersData().then(function () {
                     var filtersContainer = this.$('.filters');
                     filtersContainer.empty();

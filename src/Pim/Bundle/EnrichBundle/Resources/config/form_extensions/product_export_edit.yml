@@ -105,5 +105,3 @@ filters:
         pim_reference_data_multiselect:
             view: pim-filter-text
             # view: pim-filter-multiselect
-
-#Lorsqu'on ajoute un attribute il regarde son type normalizé. il fait appel au configProvider->getFilters() à partir de là il récupère son module et le load avec le form registry
