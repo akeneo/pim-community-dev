@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
+use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -73,7 +74,9 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
 
         $invalidLineNumbers = new ArrayCollection();
         foreach ($this->collector->getInvalidItems() as $invalidItem) {
-            $invalidLineNumbers->add($invalidItem->getLineNumber());
+            if ($invalidItem instanceof InvalidItemInterface) {
+                $invalidLineNumbers->add($invalidItem->getLineNumber());
+            }
         }
 
         $readJobParameters = $jobExecution->getJobParameters();
