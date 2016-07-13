@@ -37,17 +37,17 @@ Feature: Handle import of invalid data
   Scenario: From a CSV product import, create an invalid data file and be able to download it
     Given the following CSV file to import:
       """
-      sku;family;groups;categories;name-en_US;description-en_US-tablet
-      SKU-001;NO_FAMILY;CROSS;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      SKU-002;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-      SKU-003;sneakers;;sandals;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
-      SKU-004;sneakers;;sandals;nec;justo sit amet nulla. Donec non justo. Proin non massa
-      SKU-005;boots;CROSS;winter_boots,sandals;non;tincidunt dui augue eu tellus. Phasellus elit pede, malesuada vel
-      SKU-006;boots;CROSS;winter_boots;ipsum;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam auctor,
-      SKU-007;sneakers;;;rutrum.;quis, pede. Praesent eu dui. Cum sociis natoque penatibus et
-      SKU-008;OTHER_FAMILY;CROSS;winter_boots;ligula;urna et arcu imperdiet ullamcorper. Duis at lacus. Quisque purus
-      SKU-009;sneakers;;;porttitor;sagittis. Duis gravida. Praesent eu nulla at sem molestie sodales.
-      SKU-010;boots;CROSS;sandals;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
+      sku;family
+      SKU-001;NO_FAMILY
+      SKU-002;sneakers
+      SKU-003;sneakers
+      SKU-004;sneakers
+      SKU-005;boots
+      SKU-006;boots
+      SKU-007;sneakers
+      SKU-008;OTHER_FAMILY
+      SKU-009;sneakers
+      SKU-010;boots
       """
     And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -57,9 +57,9 @@ Feature: Handle import of invalid data
     Then I should see the text "Download invalid data"
     And the invalid data file of "csv_footwear_product_import" should contain:
       """
-      code;attributes
-      SKU-001;NO_FAMILY;CROSS;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      SKU-008;OTHER_FAMILY;CROSS;winter_boots;ligula;urna et arcu imperdiet ullamcorper. Duis at lacus. Quisque purus
+      sku;family
+      SKU-001;NO_FAMILY
+      SKU-008;OTHER_FAMILY
       """
 
   Scenario: From a XLSX product import, create an invalid data file and be able to download it
