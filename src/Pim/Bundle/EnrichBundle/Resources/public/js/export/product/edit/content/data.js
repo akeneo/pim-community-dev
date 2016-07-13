@@ -9,6 +9,7 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'text!pim/template/export/product/edit/content/data',
         'pim/form',
         'pim/fetcher-registry',
@@ -17,6 +18,7 @@ define(
     ],
     function (
         _,
+        __,
         template,
         BaseForm,
         fetcherRegistry,
@@ -57,10 +59,9 @@ define(
                     return this;
                 }
 
-                this.$el.html(this.template());
+                this.$el.html(this.template({__: __}));
 
                 _.each(this.filterViews, function (filterView) {
-                    filterView.setParentForm(this);
                     this.$('.filters').append(filterView.render().$el);
                 }.bind(this));
 
@@ -165,6 +166,7 @@ define(
                     this.listenTo(this.getRoot(), 'channel:update:after', function (scope) {
                         filterView.trigger('channel:update:after', scope)
                     }.bind(this));
+                    filterView.setParentForm(this);
 
                     this.filterViews[filterView.getField()] = filterView;
 
@@ -198,14 +200,14 @@ define(
                     var defaultFields = 0 !== arguments.length ?
                         _.union(_.flatten(_.toArray(arguments))) :
                         [];
-                    var configFields  = _.pluck(this.config.filters, 'field');
+                    var configFields = _.pluck(this.config.filters, 'field');
 
                     return _.union(configFields, defaultFields);
                 }.bind(this)).then(function (defaultFields) {
-                    var modelFields   = _.pluck(this.getFormData()['data'], 'field');
+                    var modelFields = _.pluck(this.getFormData()['data'], 'field');
 
                     this.addFilters(_.union(defaultFields, modelFields)).then(function () {
-                        _.each(this.getFormData()['data'], function (filterData) {
+                        _.each(this.getFormData().data, function (filterData) {
                             if (!_.has(this.filterViews, filterData.field)) {
                                 return;
                             }

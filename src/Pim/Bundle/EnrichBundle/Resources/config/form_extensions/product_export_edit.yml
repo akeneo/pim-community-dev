@@ -2,6 +2,11 @@ extensions:
     pim-product-export-edit-content:
         module: pim/export/product/edit/content
 
+    pim-product-export-edit-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-product-export-edit-content
+        position: 1000
+
     pim-product-export-edit-content-structure:
         module: pim/export/product/edit/content/structure
         parent: pim-product-export-edit-content
@@ -57,11 +62,11 @@ extensions:
     pim-product-export-edit-content-data-help:
         module: pim/export/product/edit/content/data/help
         parent: pim-product-export-edit-content-data
-#
-#    pim-product-export-edit-content-data-add-filter:
-#        module: pim/product-edit-form/attributes/add-attribute #to change
-#        parent: pim-product-export-edit-content-data
-#        targetZone: headings
+
+   # pim-product-export-edit-content-data-add-filter:
+   #     module: pim/product-edit-form/attributes/add-attribute #to change
+   #     parent: pim-product-export-edit-content-data
+   #     targetZone: headings
 
 filters:
     pim-product-export-edit-content:

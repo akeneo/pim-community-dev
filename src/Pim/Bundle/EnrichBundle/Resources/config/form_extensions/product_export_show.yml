@@ -2,6 +2,11 @@ extensions:
     pim-product-export-show-content:
         module: pim/export/product/edit/content
 
+    pim-product-export-edit-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-product-export-edit-content
+        position: 1000
+
     pim-product-export-show-content-readonly:
         module: pim/export/product/edit/content/readonly
         parent: pim-product-export-show-content

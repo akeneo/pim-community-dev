@@ -114,6 +114,9 @@ class JobParametersType extends AbstractType implements DataMapperInterface
                 if (null === $jobInstance->getId()) {
                     return;
                 }
+                $job            = $this->jobRegistry->get($jobInstance->getJobName());
+                $configProvider = $this->configProviderRegistry->get($job);
+                $configs        = $configProvider->getFormConfiguration();
 
                 $data = $event->getData();
 

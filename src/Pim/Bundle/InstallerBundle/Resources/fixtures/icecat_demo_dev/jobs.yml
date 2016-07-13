@@ -28,6 +28,14 @@ jobs:
             withHeader: true
             filePath:   /tmp/product.csv
             decimalSeparator: .
+            filters:
+                data: []
+                structure:
+                    channel: mobile
+                    locales:
+                        - fr_FR
+                        - en_US
+                        - de_DE
     csv_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
@@ -235,6 +243,14 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/product.xlsx
+            filters:
+                data: []
+                structure:
+                    channel: mobile
+                    locales:
+                        - fr_FR
+                        - en_US
+                        - de_DE
     xlsx_group_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_group_export
