@@ -23,7 +23,7 @@ use Pim\Component\Connector\Writer\File\Csv\Writer;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class CsvInvalidItemWriter extends AbstractFilesystemArchiver
+class CsvInvalidItemWriter extends AbstractInvalidItemWriter
 {
     /** @var JobExecution */
     protected $jobExecution;
@@ -45,83 +45,20 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
      * @param Writer                $writer
      * @param FileIteratorFactory   $fileIteratorFactory
      * @param Filesystem            $filesystem
+     * @param string                $invalidItemFileFormat
      */
     public function __construct(
         InvalidItemsCollector $collector,
         Writer $writer,
         FileIteratorFactory $fileIteratorFactory,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        $invalidItemFileFormat
     ) {
         $this->collector = $collector;
         $this->writer = $writer;
         $this->fileIteratorFactory = $fileIteratorFactory;
         $this->filesystem = $filesystem;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Re-parse the imported file and write into a new one the invalid lines.
-     */
-    public function archive(JobExecution $jobExecution)
-    {
-        if (empty($this->collector->getInvalidItems())) {
-            return;
-        }
-
-        $invalidLineNumbers = new ArrayCollection();
-        foreach ($this->collector->getInvalidItems() as $invalidItem) {
-            if ($invalidItem instanceof InvalidItemInterface) {
-                $invalidLineNumbers->add($invalidItem->getLineNumber());
-            }
-        }
-
-        $readJobParameters = $jobExecution->getJobParameters();
-        $currentLineNumber = 0;
-        $itemsToWrite = [];
-        $headers = [];
-
-        $this->setupWriter($jobExecution);
-
-        foreach ($this->getInputFileIterator($readJobParameters) as $readItem) {
-            $currentLineNumber++;
-
-            if (1 === $currentLineNumber) {
-                $headers = $readItem;
-            }
-
-            if ($invalidLineNumbers->contains($currentLineNumber)) {
-                $itemsToWrite[] = array_combine($headers, $readItem);
-                $invalidLineNumbers->removeElement($currentLineNumber);
-            }
-
-            if (count($itemsToWrite) > 0 && 0 === count($itemsToWrite) % $this->batchSize) {
-                $this->writer->write($itemsToWrite);
-                $itemsToWrite = [];
-            }
-
-            if ($invalidLineNumbers->isEmpty()) {
-                break;
-            }
-        }
-
-        if (count($itemsToWrite) > 0) {
-            $this->writer->write($itemsToWrite);
-        }
-
-        $this->writer->flush();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(JobExecution $jobExecution)
-    {
-        if ($jobExecution->getJobParameters()->has('invalid_items_file_format')) {
-            return 'csv' === $jobExecution->getJobParameters()->get('invalid_items_file_format');
-        }
-
-        return false;
+        $this->invalidItemfileFormat = $invalidItemFileFormat;
     }
 
     /**
