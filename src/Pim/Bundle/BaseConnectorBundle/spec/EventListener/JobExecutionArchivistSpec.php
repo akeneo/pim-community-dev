@@ -11,11 +11,6 @@ use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemWriterRegistry;
 
 class JobExecutionArchivistSpec extends ObjectBehavior
 {
-    function let(InvalidItemWriterRegistry $invalidItemWriterRegistry)
-    {
-        $this->beConstructedWith($invalidItemWriterRegistry);
-    }
-
     function it_is_initializable()
     {
         $this->shouldHaveType('Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist');
@@ -28,7 +23,7 @@ class JobExecutionArchivistSpec extends ObjectBehavior
 
     function it_returns_subscribed_events()
     {
-        $this::getSubscribedEvents()->shouldReturn(
+        $this->getSubscribedEvents()->shouldReturn(
             [
                 EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeStatusUpgrade'
             ]
@@ -44,12 +39,10 @@ class JobExecutionArchivistSpec extends ObjectBehavior
     }
 
     function it_returns_generated_archives(
-        $invalidItemWriterRegistry,
         JobExecution $jobExecution,
         ArchiverInterface $archiver,
         ArchiverInterface $archiver2
     ) {
-        $invalidItemWriterRegistry->getWriters()->willReturn([]);
         $jobExecution->isRunning()->willReturn(false);
 
         $archiver->getName()->willReturn('output');
@@ -63,15 +56,17 @@ class JobExecutionArchivistSpec extends ObjectBehavior
         $this->getArchives($jobExecution)->shouldReturn(['output' => ['a', 'b'], 'input' => ['a', 'b']]);
     }
 
-    function it_get_archive_from_invalid_items_if_no_archiver_is_defined(
-        $invalidItemWriterRegistry,
+    function it_throws_an_exception_if_no_archiver_is_defined(
         JobExecution $jobExecution,
         ArchiverInterface $archiver
     ) {
-        $invalidItemWriterRegistry->getWriter('archiver_name')->willReturn($archiver);
-        $archiver->getArchive($jobExecution, 'key')->willReturn('expected_archive');
+        $archiver->getName()->willReturn('archiver');
 
-        $this->getArchive($jobExecution, 'archiver_name', 'key')->shouldReturn('expected_archive');
+        $this->registerArchiver($archiver);
+
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->during('getArchive', [$jobExecution, 'archiver_name', 'key']);
     }
 
     function it_returns_the_corresponding_archiver(JobExecution $jobExecution, ArchiverInterface $archiver)
@@ -84,16 +79,11 @@ class JobExecutionArchivistSpec extends ObjectBehavior
     }
 
     function it_register_an_event_and_verify_if_job_is_supported(
-        $invalidItemWriterRegistry,
         JobExecutionEvent $event,
         JobExecution $jobExecution,
-        ArchiverInterface $writerArchiver1,
-        ArchiverInterface $writerArchiver2,
         ArchiverInterface $archiver1,
         ArchiverInterface $archiver2
     ) {
-        $invalidItemWriterRegistry->getWriters()->willReturn([$writerArchiver1, $writerArchiver2]);
-
         $archiver1->getName()->willReturn('archiver_1');
         $archiver2->getName()->willReturn('archiver_2');
 
@@ -102,13 +92,9 @@ class JobExecutionArchivistSpec extends ObjectBehavior
 
         $event->getJobExecution()->willReturn($jobExecution);
 
-        $writerArchiver1->supports($jobExecution)->willReturn(true);
-        $writerArchiver2->supports($jobExecution)->willReturn(false);
         $archiver1->supports($jobExecution)->willReturn(true);
         $archiver2->supports($jobExecution)->willReturn(false);
 
-        $writerArchiver1->archive($jobExecution)->shouldBeCalled();
-        $writerArchiver2->archive($jobExecution)->shouldNotBeCalled();
         $archiver1->archive($jobExecution)->shouldBeCalled();
         $archiver2->archive($jobExecution)->shouldNotBeCalled();
 

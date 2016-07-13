@@ -266,7 +266,6 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         );
 
         $invalidItem->getInvalidData()->willReturn(['item' => 23, 'uploadDirectory' => 'upload/path/']);
-        $stepExecution->getSummaryInfo("read_lines")->shouldBeCalled();
 
         $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')->duringProcess($product);
     }

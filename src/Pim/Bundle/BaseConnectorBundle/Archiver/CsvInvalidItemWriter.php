@@ -2,11 +2,9 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
-use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvExport;
@@ -36,6 +34,9 @@ class CsvInvalidItemWriter extends AbstractInvalidItemWriter
 
     /** @var Writer */
     protected $writer;
+
+    /** @var string */
+    protected $invalidItemfileFormat;
 
     /** @var int */
     protected $batchSize = 100;
@@ -78,14 +79,14 @@ class CsvInvalidItemWriter extends AbstractInvalidItemWriter
      */
     protected function getInputFileIterator(JobParameters $jobParameters)
     {
-            $filePath = $jobParameters->get('filePath');
-            $delimiter = $jobParameters->get('delimiter');
-            $enclosure = $jobParameters->get('enclosure');
-            $fileIterator = $this->fileIteratorFactory->create($filePath, [
-                'fieldDelimiter' => $delimiter,
-                'fieldEnclosure' => $enclosure
-            ]);
-            $fileIterator->rewind();
+        $filePath = $jobParameters->get('filePath');
+        $delimiter = $jobParameters->get('delimiter');
+        $enclosure = $jobParameters->get('enclosure');
+        $fileIterator = $this->fileIteratorFactory->create($filePath, [
+            'fieldDelimiter' => $delimiter,
+            'fieldEnclosure' => $enclosure
+        ]);
+        $fileIterator->rewind();
 
         return $fileIterator;
     }

@@ -13,7 +13,7 @@ interface InvalidItemInterface
 {
     /**
      * Get the invalid data
-     * 
+     *
      * @return mixed
      */
     public function getInvalidData();

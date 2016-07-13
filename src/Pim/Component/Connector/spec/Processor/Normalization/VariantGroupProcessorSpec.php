@@ -208,8 +208,6 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ]
         )->willThrow(new FileNotFoundException('upload/path/img.jpg'));
 
-        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
-
         $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')->duringProcess($variantGroup);
     }
 }

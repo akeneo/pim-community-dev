@@ -38,17 +38,23 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var string */
-    protected $uploadDirectory;
-
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var  ObjectDetacherInterface */
     protected $objectDetacher;
 
+    /** @var UserProviderInterface */
+    protected $userProvider;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     /** @var FieldSplitter */
     protected $fieldSplitter;
+
+    /** @var string */
+    protected $uploadDirectory;
 
     /**
      * @param SerializerInterface        $serializer

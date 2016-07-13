@@ -33,7 +33,6 @@ class ProductCsvImportSpec extends ObjectBehavior
                 'groupsColumn'              => "groups",
                 'enabledComparison'         => true,
                 'realTimeVersioning'        => true,
-                'invalid_items_file_format' => 'csv',
             ]
         );
     }

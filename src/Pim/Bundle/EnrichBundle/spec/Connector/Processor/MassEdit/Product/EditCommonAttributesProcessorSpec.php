@@ -77,7 +77,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $stepExecution->addWarning(
             'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
             [],
-            Argument::type('array')
+            Argument::any()
         )->shouldBeCalled();
 
         $productDetacher->detach($product)->shouldBeCalled();
