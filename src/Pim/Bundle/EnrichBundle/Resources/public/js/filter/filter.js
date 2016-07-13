@@ -213,7 +213,7 @@ define([
             var deferred = $.Deferred();
 
             deferred.resolve({
-                label: __('pim_enrich.export.product.filter.' + this.getField() + '.title'),
+                label: __('pim_enrich.export.product.filter.' + this.shortname + '.title'),
                 removable: this.removable
             });
 

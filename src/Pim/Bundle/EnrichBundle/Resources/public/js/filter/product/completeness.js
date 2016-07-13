@@ -10,6 +10,7 @@ define([
     'jquery.select2'
 ], function (_, __, BaseFilter, Routing, template) {
     return BaseFilter.extend({
+        shortname: 'completeness',
         template: _.template(template),
         events: {
             'change [name="filter-operator"]': 'updateState'

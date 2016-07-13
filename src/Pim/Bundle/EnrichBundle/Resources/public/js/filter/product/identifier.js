@@ -21,6 +21,7 @@ define([
     initSelect2
 ) {
     return BaseFilter.extend({
+        shortname: 'identifier',
         template: _.template(template),
         events: {
             'change [name="filter-value"]': 'updateState'

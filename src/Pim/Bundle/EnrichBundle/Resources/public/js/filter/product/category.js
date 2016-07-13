@@ -15,6 +15,7 @@ define([
     });
 
     return BaseFilter.extend({
+        shortname: 'category',
         template: _.template(template),
         className: 'category-filter',
         events: {

@@ -13,6 +13,7 @@ define([
         'jquery.select2'
     ], function (_, __, BaseFilter, Routing, template, fetcherRegistry, userContext, i18n, initSelect2) {
     return BaseFilter.extend({
+        shortname: 'family',
         config: {},
         template: _.template(template),
         events: {

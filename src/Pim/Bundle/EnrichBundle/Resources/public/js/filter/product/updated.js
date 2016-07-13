@@ -14,6 +14,7 @@ define([
         'datepicker'
     ], function (_, __, BaseFilter, Routing, template, fetcherRegistry, userContext, i18n, initSelect2, Datepicker) {
     return BaseFilter.extend({
+        shortname: 'updated',
         template: _.template(template),
         events: {
             'change [name="filter-operator"], [name="filter-value"]': 'updateState'

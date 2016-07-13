@@ -15,6 +15,7 @@ define([
         'jquery.select2'
     ], function (_, __, BaseFilter, Routing, template) {
     return BaseFilter.extend({
+        shortname: 'enabled',
         template: _.template(template),
         removable: false,
         events: {
