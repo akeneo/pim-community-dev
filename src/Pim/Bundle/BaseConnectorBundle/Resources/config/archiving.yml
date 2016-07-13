@@ -5,8 +5,7 @@ parameters:
     pim_base_connector.archiver.file_reader_archiver.class:            Pim\Bundle\BaseConnectorBundle\Archiver\FileReaderArchiver
     pim_base_connector.archiver.file_writer_archiver.class:            Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver
     pim_base_connector.archiver.archivable_file_writer_archiver.class: Pim\Bundle\BaseConnectorBundle\Archiver\ArchivableFileWriterArchiver
-    pim_base_connector.archiver.invalid_item_csv_writer.class: Pim\Bundle\BaseConnectorBundle\Archiver\CsvInvalidItemWriter
-    pim_base_connector.archiver.invalid_item_xlsx_writer.class: Pim\Bundle\BaseConnectorBundle\Archiver\XlsxInvalidItemWriter
+    pim_base_connector.archiver.invalid_item_writer.class: Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemWriter
 
 services:
     pim_base_connector.event_listener.archivist:
@@ -48,21 +47,27 @@ services:
             - { name: pim_base_connector.archiver }
 
     pim_base_connector.archiver.invalid_item_csv_writer:
-        class: '%pim_base_connector.archiver.invalid_item_csv_writer.class%'
+        class: '%pim_base_connector.archiver.invalid_item_writer.class%'
         arguments:
             - '@pim_base_connector.event_listener.invalid_items_collector'
             - '@pim_connector.writer.file.csv'
             - '@pim_connector.reader.file.csv_iterator_factory'
             - '@oneup_flysystem.archivist_filesystem'
+            - '@pim_connector.job.job_parameters.default_values_provider.product_csv_import'
+            - 'invalid_csv'
+            - 'csv'
         tags:
             - { name: pim_base_connector.archiver }
 
     pim_base_connector.archiver.invalid_item_xlsx_writer:
-        class: '%pim_base_connector.archiver.invalid_item_xlsx_writer.class%'
+        class: '%pim_base_connector.archiver.invalid_item_writer.class%'
         arguments:
             - '@pim_base_connector.event_listener.invalid_items_collector'
             - '@pim_connector.writer.file.xlsx'
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@oneup_flysystem.archivist_filesystem'
+            - '@pim_connector.job.job_parameters.default_values_provider.product_xlsx_import'
+            - 'invalid_xlsx'
+            - 'xlsx'
         tags:
             - { name: pim_base_connector.archiver }

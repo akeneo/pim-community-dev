@@ -2,27 +2,27 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
+use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
-use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductXlsxExport;
-use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport;
 use Pim\Component\Connector\Reader\File\FileIterator;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
-use Pim\Component\Connector\Writer\File\Xlsx\Writer;
+use Pim\Component\Connector\Writer\File\Csv\Writer;
 
 /**
- * Writer for invalid items coming from a XLSX import.
- * It writes invalid items (ie. invalid products, families, etc...) into a new XLSX file, available for download.
+ * Writer for invalid items coming from import.
+ * It writes invalid items (ie. invalid products, families, etc...) into a new file, available for download.
  *
- * @author    Soulet Olivier <olivier.soulet@akeneo.com>
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
+class InvalidItemWriter extends AbstractFilesystemArchiver
 {
     /** @var JobExecution */
     protected $jobExecution;
@@ -42,6 +42,15 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
     /** @var int */
     protected $batchSize = 100;
 
+    /** @var DefaultValuesProviderInterface */
+    protected $defaultValueProvider;
+
+    /** @var string */
+    protected $name;
+
+    /** @var string */
+    protected $supportedFormat;
+
     /**
      * @param InvalidItemsCollector $collector
      * @param Writer                $writer
@@ -52,12 +61,18 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
         InvalidItemsCollector $collector,
         Writer $writer,
         FileIteratorFactory $fileIteratorFactory,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        DefaultValuesProviderInterface $defaultValueProvider,
+        $name,
+        $supportedFormat
     ) {
         $this->collector = $collector;
         $this->writer = $writer;
         $this->fileIteratorFactory = $fileIteratorFactory;
         $this->filesystem = $filesystem;
+        $this->defaultValueProvider = $defaultValueProvider;
+        $this->name = $name;
+        $this->supportedFormat = $supportedFormat;
     }
 
     /**
@@ -73,7 +88,9 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
 
         $invalidLineNumbers = new ArrayCollection();
         foreach ($this->collector->getInvalidItems() as $invalidItem) {
-            $invalidLineNumbers->add($invalidItem->getLineNumber());
+            if ($invalidItem instanceof InvalidItemInterface) {
+                $invalidLineNumbers->add($invalidItem->getLineNumber());
+            }
         }
 
         $readJobParameters = $jobExecution->getJobParameters();
@@ -82,7 +99,13 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
 
         $this->setupWriter($jobExecution);
 
-        foreach ($this->getInputFileIterator($readJobParameters) as $readItem) {
+        $iterator = $this->fileIteratorFactory->create(
+            $readJobParameters->get('filePath'),
+            $readJobParameters->all()
+        );
+        $iterator->rewind();
+
+        foreach ($iterator as $readItem) {
             $currentLineNumber++;
 
             if ($invalidLineNumbers->contains($currentLineNumber)) {
@@ -113,7 +136,7 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
     public function supports(JobExecution $jobExecution)
     {
         if ($jobExecution->getJobParameters()->has('invalid_items_file_format')) {
-            return 'xlsx' === $jobExecution->getJobParameters()->get('invalid_items_file_format');
+            return $this->supportedFormat === $jobExecution->getJobParameters()->get('invalid_items_file_format');
         }
 
         return false;
@@ -124,25 +147,7 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
      */
     public function getName()
     {
-        return 'invalid_xlsx';
-    }
-
-    /**
-     * Get the input file iterator to iterate on all the lines of the file.
-     *
-     * @param JobParameters $jobParameters
-     *
-     * @return \Iterator
-     */
-    protected function getInputFileIterator(JobParameters $jobParameters)
-    {
-        if (null === $this->fileIterator) {
-            $filePath = $jobParameters->get('filePath');
-            $this->fileIterator = $this->fileIteratorFactory->create($filePath);
-            $this->fileIterator->rewind();
-        }
-
-        return $this->fileIterator;
+        return $this->name;
     }
 
     /**
@@ -153,11 +158,10 @@ class XlsxInvalidItemWriter extends AbstractFilesystemArchiver
      */
     protected function setupWriter(JobExecution $jobExecution)
     {
-        $fileKey = strtr($this->getRelativeArchivePath($jobExecution), ['%filename%' => 'invalid_items.xlsx']);
+        $fileKey = strtr($this->getRelativeArchivePath($jobExecution), ['%filename%' => 'invalid_items.csv']);
         $this->filesystem->put($fileKey, '');
 
-        $provider = new ProductXlsxExport(new SimpleXlsxExport([]), []);
-        $writeParams = $provider->getDefaultValues();
+        $writeParams = $this->defaultValueProvider->getDefaultValues();
         $writeParams['filePath'] = $this->filesystem->getAdapter()->getPathPrefix() . $fileKey;
 
         $writeJobParameters = new JobParameters($writeParams);
