@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Connector\Writer\File\Csv;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Buffer\BufferInterface;
+use Akeneo\Component\Buffer\BufferFactory;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
@@ -20,10 +20,10 @@ class WriterSpec extends ObjectBehavior
 
     function let(
         FilePathResolverInterface $filePathResolver,
-        FlatItemBuffer $flatRowBuffer,
+        BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $flusher);
+        $this->beConstructedWith($filePathResolver, $bufferFactory, $flusher);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.csv');
@@ -40,7 +40,8 @@ class WriterSpec extends ObjectBehavior
     }
 
     function it_prepares_the_export(
-        $flatRowBuffer,
+        $bufferFactory,
+        FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
@@ -61,14 +62,17 @@ class WriterSpec extends ObjectBehavior
             ],
         ];
 
-        $flatRowBuffer->write($items, true)->shouldBeCalled();
+        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $flatRowBuffer->write($items, ['withHeader' => true])->shouldBeCalled();
 
+        $this->initialize();
         $this->write($items);
     }
 
     function it_writes_the_csv_file(
+        $bufferFactory,
         $flusher,
-        $flatRowBuffer,
+        FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
@@ -83,6 +87,17 @@ class WriterSpec extends ObjectBehavior
         $jobParameters->get('filePath')->willReturn('my/file/path/foo');
         $jobParameters->has('mainContext')->willReturn(false);
 
+        $bufferFactory->create()->willReturn($flatRowBuffer);
+
+        $flatRowBuffer->rewind()->willReturn();
+        $flatRowBuffer->valid()->willReturn(true, false);
+        $flatRowBuffer->next()->willReturn();
+        $flatRowBuffer->current()->willReturn([
+            'id' => 0,
+            'family' => 45
+        ]);
+        
+        $this->initialize();
         $flusher->flush(
             $flatRowBuffer,
             Argument::type('array'),

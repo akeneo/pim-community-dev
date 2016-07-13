@@ -8,6 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Akeneo\Component\Buffer\BufferFactory;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Prophecy\Argument;
 
@@ -15,11 +16,11 @@ class VariantGroupWriterSpec extends ObjectBehavior
 {
     function let(
         FilePathResolverInterface $filePathResolver,
-        FlatItemBuffer $flatRowBuffer,
+        BufferFactory $bufferFactory,
         BulkFileExporter $fileExporter,
         FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $fileExporter, $flusher);
+        $this->beConstructedWith($filePathResolver, $bufferFactory, $fileExporter, $flusher);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.csv');
@@ -31,8 +32,9 @@ class VariantGroupWriterSpec extends ObjectBehavior
     }
 
     function it_prepares_the_export(
-        $flatRowBuffer,
         $fileExporter,
+        $bufferFactory,
+        FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
@@ -78,7 +80,8 @@ class VariantGroupWriterSpec extends ObjectBehavior
             ]
         ];
 
-        $flatRowBuffer->write([$variant1, $variant2], true)->shouldBeCalled();
+        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $flatRowBuffer->write([$variant1, $variant2], ['withHeader' => true])->shouldBeCalled();
         $fileExporter->exportAll([$variant1Media, $variant2Media], '/tmp/export')->shouldBeCalled();
 
         $fileExporter->getErrors()->willReturn([
@@ -96,6 +99,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
 
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
 
+        $this->initialize();
         $this->write($items);
 
         $this->getWrittenFiles()->shouldBeEqualTo([
@@ -104,8 +108,9 @@ class VariantGroupWriterSpec extends ObjectBehavior
     }
 
     function it_writes_the_csv_file(
+        $bufferFactory,
         $flusher,
-        $flatRowBuffer,
+        FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
@@ -120,6 +125,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $jobParameters->get('filePath')->willReturn('my/file/path/foo');
         $jobParameters->has('mainContext')->willReturn(false);
 
+        $bufferFactory->create()->willReturn($flatRowBuffer);
         $flusher->flush(
             $flatRowBuffer,
             Argument::type('array'),
@@ -128,6 +134,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
             Argument::type('array')
         )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
 
+        $this->initialize();
         $this->flush();
     }
 }

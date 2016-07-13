@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Connector\Writer\File\Xlsx;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Buffer\BufferFactory;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
@@ -15,11 +16,11 @@ class VariantGroupWriterSpec extends ObjectBehavior
 {
     function let(
         FilePathResolverInterface $filePathResolver,
-        FlatItemBuffer $flatRowBuffer,
+        BufferFactory $bufferFactory,
         BulkFileExporter $mediaCopier,
         FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier, $flusher);
+        $this->beConstructedWith($filePathResolver, $bufferFactory, $mediaCopier, $flusher);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.xlsx');
@@ -41,8 +42,9 @@ class VariantGroupWriterSpec extends ObjectBehavior
     }
 
     function it_prepares_the_export(
-        $flatRowBuffer,
+        $bufferFactory,
         $mediaCopier,
+        FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
@@ -82,6 +84,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
             ]
         ];
 
+        $bufferFactory->create()->willReturn($flatRowBuffer);
         $flatRowBuffer->write([
             [
                 'code'        => 'jackets',
@@ -96,7 +99,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
                 'label-en_US' => 'Sweaters',
                 'label-en_GB' => 'Chandails'
             ],
-        ], true)->shouldBeCalled();
+        ], ['withHeader' => true])->shouldBeCalled();
 
         $mediaCopier->exportAll([
             [
@@ -134,6 +137,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
 
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
 
+        $this->initialize();
         $this->write($items);
 
         $this->getWrittenFiles()->shouldBeEqualTo([
@@ -142,8 +146,9 @@ class VariantGroupWriterSpec extends ObjectBehavior
     }
 
     function it_writes_the_xlsx_file(
+        $bufferFactory,
         $flusher,
-        $flatRowBuffer,
+        FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
@@ -156,6 +161,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $jobParameters->get('filePath')->willReturn('my/file/path/foo');
         $jobParameters->has('mainContext')->willReturn(false);
 
+        $bufferFactory->create()->willReturn($flatRowBuffer);
         $flusher->flush(
             $flatRowBuffer,
             Argument::type('array'),
@@ -164,6 +170,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
             Argument::type('array')
         )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
 
+        $this->initialize();
         $this->flush();
     }
 }

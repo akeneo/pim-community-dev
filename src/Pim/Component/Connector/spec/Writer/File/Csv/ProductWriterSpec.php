@@ -9,19 +9,18 @@ use Pim\Component\Connector\Writer\File\BulkFileExporter;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
-use Pim\Component\Connector\Writer\File\FlatItemBufferInterface;
-use Pim\Component\Connector\Writer\File\BulkFileExporterInterface;
+use Akeneo\Component\Buffer\BufferFactory;
 use Prophecy\Argument;
 
 class ProductWriterSpec extends ObjectBehavior
 {
     function let(
         FilePathResolverInterface $filePathResolver,
-        FlatItemBuffer $flatRowBuffer,
+        BufferFactory $bufferFactory,
         BulkFileExporter $mediaCopier,
         FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier, $flusher);
+        $this->beConstructedWith($filePathResolver, $bufferFactory, $mediaCopier, $flusher);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.csv');
@@ -33,8 +32,9 @@ class ProductWriterSpec extends ObjectBehavior
     }
 
     function it_prepares_the_export(
-        $flatRowBuffer,
         $mediaCopier,
+        $bufferFactory,
+        FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
@@ -46,6 +46,8 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(true);
 
+        $bufferFactory->create()->willReturn($flatRowBuffer);
+
         $flatRowBuffer->write([
             [
                 'id' => 123,
@@ -55,7 +57,7 @@ class ProductWriterSpec extends ObjectBehavior
                 'id' => 165,
                 'family' => 45,
             ],
-        ], true)->shouldBeCalled();
+        ], ['withHeader' => true])->shouldBeCalled();
 
         $mediaCopier->exportAll([
             [
@@ -82,6 +84,7 @@ class ProductWriterSpec extends ObjectBehavior
             ]
         ]);
 
+        $this->initialize();
         $this->write([
             [
                 'product' => [
@@ -113,8 +116,9 @@ class ProductWriterSpec extends ObjectBehavior
     }
 
     function it_does_not_copy_media_if_parameters_with_media_is_false(
-        $flatRowBuffer,
+        $bufferFactory,
         $mediaCopier,
+        FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
@@ -126,9 +130,12 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(false);
 
-        $flatRowBuffer->write([['id' => 123, 'family' => 12]], true)->shouldBeCalled();
+        $bufferFactory->create()->willReturn($flatRowBuffer);
+
+        $flatRowBuffer->write([['id' => 123, 'family' => 12]], ['withHeader' => true])->shouldBeCalled();
         $mediaCopier->exportAll(Argument::cetera())->shouldNotBeCalled();
 
+        $this->initialize();
         $this->write([
             [
                 'product' => [
@@ -147,8 +154,9 @@ class ProductWriterSpec extends ObjectBehavior
     }
 
     function it_writes_the_csv_file(
+        $bufferFactory,
         $flusher,
-        $flatRowBuffer,
+        FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
@@ -163,6 +171,8 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->get('filePath')->willReturn('my/file/path/foo');
         $jobParameters->has('mainContext')->willReturn(false);
 
+        $bufferFactory->create()->willReturn($flatRowBuffer);
+
         $flusher->flush(
             $flatRowBuffer,
             Argument::type('array'),
@@ -171,6 +181,7 @@ class ProductWriterSpec extends ObjectBehavior
             Argument::type('array')
         )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
 
+        $this->initialize();
         $this->flush();
     }
 }

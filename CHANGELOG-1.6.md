@@ -61,6 +61,7 @@
 
 ## BC breaks
 
+- Change constructor of `Akeneo\Component\Buffer\BufferInterface`. Add `$options` array as the second argument.
 - Move `Pim\Component\Connector\Writer\File\CsvWriter` to `Pim\Component\Connector\Writer\File\Csv\Writer`
 - Move `Pim\Component\Connector\Writer\File\CsvProductWriter` to `Pim\Component\Connector\Writer\File\Csv\ProductWriter`
 - Move `Pim\Component\Connector\Writer\File\CsvVariantGroupWriter` to `Pim\Component\Connector\Writer\File\Csv\VariantGroupWriter`
