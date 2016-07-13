@@ -82,14 +82,19 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
         $readJobParameters = $jobExecution->getJobParameters();
         $currentLineNumber = 0;
         $itemsToWrite = [];
+        $headers = [];
 
         $this->setupWriter($jobExecution);
 
         foreach ($this->getInputFileIterator($readJobParameters) as $readItem) {
             $currentLineNumber++;
 
+            if (1 === $currentLineNumber) {
+                $headers = $readItem;
+            }
+
             if ($invalidLineNumbers->contains($currentLineNumber)) {
-                $itemsToWrite[] = $readItem;
+                $itemsToWrite[] = array_combine($headers, $readItem);
                 $invalidLineNumbers->removeElement($currentLineNumber);
             }
 
@@ -167,6 +172,7 @@ class CsvInvalidItemWriter extends AbstractFilesystemArchiver
         $provider = new ProductCsvExport(new SimpleCsvExport([]), []);
         $writeParams = $provider->getDefaultValues();
         $writeParams['filePath'] = $this->filesystem->getAdapter()->getPathPrefix() . $fileKey;
+        $writeParams['withHeader'] = true;
 
         $writeJobParameters = new JobParameters($writeParams);
         $writeJobExecution  = new JobExecution();
