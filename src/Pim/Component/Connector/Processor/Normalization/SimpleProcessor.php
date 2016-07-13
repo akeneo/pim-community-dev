@@ -4,6 +4,7 @@ namespace Pim\Component\Connector\Processor\Normalization;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -18,12 +19,17 @@ class SimpleProcessor extends AbstractConfigurableStepElement implements ItemPro
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var ObjectDetacherInterface */
+    protected $objectDetacher;
+
     /**
-     * @param NormalizerInterface $normalizer
+     * @param NormalizerInterface     $normalizer
+     * @param ObjectDetacherInterface $objectDetacher
      */
-    public function __construct(NormalizerInterface $normalizer)
+    public function __construct(NormalizerInterface $normalizer, ObjectDetacherInterface $objectDetacher)
     {
         $this->normalizer = $normalizer;
+        $this->objectDetacher = $objectDetacher;
     }
 
     /**
@@ -31,6 +37,9 @@ class SimpleProcessor extends AbstractConfigurableStepElement implements ItemPro
      */
     public function process($item)
     {
-        return $this->normalizer->normalize($item);
+        $normalizedItem = $this->normalizer->normalize($item);
+        $this->objectDetacher->detach($item);
+
+        return $normalizedItem;
     }
 }
