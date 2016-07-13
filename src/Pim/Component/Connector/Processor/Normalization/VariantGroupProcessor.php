@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Processor\Normalization;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
-use Akeneo\Component\Batch\Item\ObjectInvalidItem;
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -111,12 +111,7 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
         } catch (FileNotFoundException $e) {
             throw new InvalidItemException(
                 $e->getMessage(),
-                new ObjectInvalidItem(
-                    [
-                        'item'            => $group->getCode(),
-                        'uploadDirectory' => $this->uploadDirectory,
-                    ]
-                )
+                new DataInvalidItem($group, ['uploadDirectory' => $this->uploadDirectory])
             );
         }
     }

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
-use Akeneo\Component\Batch\Item\ObjectInvalidItem;
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -195,7 +195,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         $this->stepExecution->addWarning(
             'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
             [],
-            new ObjectInvalidItem(
+            new DataInvalidItem(
                 [
                     'class'  => ClassUtils::getClass($product),
                     'id'     => $product->getId(),

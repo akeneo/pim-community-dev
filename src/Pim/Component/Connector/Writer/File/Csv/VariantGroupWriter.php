@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Writer\File\Csv;
 
-use Akeneo\Component\Batch\Item\ObjectInvalidItem;
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
@@ -79,7 +79,7 @@ class VariantGroupWriter extends AbstractFileWriter implements ArchivableWriterI
             $this->stepExecution->addWarning(
                 $error['message'],
                 [],
-                new ObjectInvalidItem($error['medium'])
+                new DataInvalidItem($error['medium'])
             );
         }
     }

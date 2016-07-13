@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Writer\File\Xlsx;
 
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Component\Batch\Item\ObjectInvalidItem;
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
@@ -81,7 +81,7 @@ class VariantGroupWriter extends AbstractFileWriter implements ItemWriterInterfa
             $this->stepExecution->addWarning(
                 $error['message'],
                 [],
-                new ObjectInvalidItem($error['medium'])
+                new DataInvalidItem($error['medium'])
             );
         }
     }
