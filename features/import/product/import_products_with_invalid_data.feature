@@ -42,6 +42,22 @@ Feature: Execute a job
     And I should see "This value should be a valid number.: gruik EUR"
     And I should see "Please specify a valid currency: 90 gruik"
 
+  Scenario: Skip new products with invalid prices during an import
+    Given the following CSV file to import:
+      """
+      sku;price-EUR
+      SKU-001;"the mouette"
+      SKU-002; EUR
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then I should see "skipped 2"
+    And I should see "This value should be a valid number.: the mouette"
+    And I should see "Please specify a valid currency: the mouette"
+
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing products with invalid prices during an import
     Given the following products:
