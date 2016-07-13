@@ -37,7 +37,7 @@ class Operators
     const EQUALS                                = '=';
     const NOT_EQUAL                             = '!=';
     const SINCE_LAST_N_DAYS                     = 'SINCE LAST N DAYS';
-    const SINCE_LAST_EXPORT                     = 'SINCE LAST EXPORT';
+    const SINCE_LAST_JOB                        = 'SINCE LAST JOB';
     const GREATER_THAN_ON_ALL_LOCALES           = 'GREATER THAN ON ALL LOCALES';
     const GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES = 'GREATER OR EQUALS THAN ON ALL LOCALES';
     const LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES   = 'LOWER OR EQUALS THAN ON ALL LOCALES';

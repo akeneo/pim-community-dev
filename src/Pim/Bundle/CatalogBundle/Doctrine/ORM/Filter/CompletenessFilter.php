@@ -60,10 +60,10 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
     }
 
     /**
-     * @param string $operator
-     * @param string $value
-     * @param null   $locale
-     * @param null   $scope
+     * @param string      $operator
+     * @param string      $value
+     * @param string|null $locale
+     * @param string|null $scope
      */
     protected function applyFilter($operator, $value, $locale = null, $scope = null)
     {

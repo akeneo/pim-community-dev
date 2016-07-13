@@ -34,7 +34,6 @@ class PimImportExportExtension extends Extension
         $loader->load('job_labels.yml');
         $loader->load('job_parameters.yml');
         $loader->load('managers.yml');
-        $loader->load('model_transformers.yml');
         $loader->load('normalizers.yml');
         $loader->load('repositories.yml');
         $loader->load('services.yml');

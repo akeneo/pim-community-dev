@@ -29,7 +29,10 @@ extensions:
                 - ALL
                 - SINCE LAST N DAYS
                 - ">="
-                - SINCE LAST EXPORT
+                - SINCE LAST JOB
+
+    pim-filter-product-identifier:
+        module: pim/filter/product/identifier
 
     pim-filter-simpleselect:
         module: pim/filter/simpleselect

@@ -50,12 +50,12 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         switch ($operator) {
-            case Operators::SINCE_LAST_EXPORT:
+            case Operators::SINCE_LAST_JOB:
                 if (!is_string($value)) {
                     throw InvalidArgumentException::stringExpected($field, 'filter', 'updated', gettype($value));
                 }
 
-                $this->addUpdatedSinceLastExport($field, $value);
+                $this->addUpdatedSinceLastJob($field, $value);
                 break;
 
             case Operators::SINCE_LAST_N_DAYS:
@@ -117,7 +117,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
      * @param string $field
      * @param string $value
      */
-    protected function addUpdatedSinceLastExport($field, $value)
+    protected function addUpdatedSinceLastJob($field, $value)
     {
         $jobInstance = $this->jobInstanceRepository->findOneBy(['code' => $value]);
         $lastCompletedJobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);

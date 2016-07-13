@@ -1,5 +1,5 @@
 /**
- * Extension to add a "remove" button on an optional filter.
+ * Extension to add a help tooltip on filters.
  *
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -32,7 +32,7 @@ define([
          */
         addFilterExtension: function (event) {
             var $content = $(this.template({
-                text: __('pim_enrich.export.product.filter.' + event.filter.getField() + '.help')
+                text: __('pim_enrich.export.product.filter.' + event.filter.shortname + '.help')
             }));
 
             $content.find('[data-toggle="tooltip"]').tooltip();

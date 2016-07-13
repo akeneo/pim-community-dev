@@ -345,7 +345,7 @@ pim_enrich:
                 locales:
                     title: Locales
                     help: The locales you want to export
-                family.code:
+                family:
                     title: Family
                     help: The families you want to export
                     operators:
@@ -361,7 +361,7 @@ pim_enrich:
                         ALL: No date condition
                         "SINCE LAST N DAYS": Updated products since the last n days
                         ">=": Updated products since the defined date
-                        "SINCE LAST EXPORT": Updated products since last export
+                        "SINCE LAST JOB": Updated products since last export
                 enabled:
                     title: Status
                     help: The status of the products you want to export
@@ -378,9 +378,11 @@ pim_enrich:
                         "GREATER OR EQUALS THAN ON ALL LOCALES": Complete on all selected locales
                         LOWER THAN ON ALL LOCALES: Not complete on all selected locales
                     empty_selection: Select a family
-                categories.code:
+                category:
                     title: Category
                     help: The categories of the products you want to export
+                identifier:
+                    help: Identifiers of products you want to export separated by commas, spaces or line breaks
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
