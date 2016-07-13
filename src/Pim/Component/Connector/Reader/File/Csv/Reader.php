@@ -74,18 +74,26 @@ class Reader extends AbstractConfigurableStepElement implements
             $this->stepExecution->incrementSummaryInfo('read_lines');
         }
 
-        $item = $this->fileIterator->current();
+        $data = $this->fileIterator->current();
 
-        if (null === $item) {
+        if (null === $data) {
             return null;
         }
 
         $headers = $this->fileIterator->getHeaders();
 
         $countHeaders = count($headers);
-        $countData    = count($item);
+        $countData    = count($data);
 
-        $this->checkColumnNumber($countHeaders, $countData, $item, $filePath);
+        $this->checkColumnNumber($countHeaders, $countData, $data, $filePath);
+
+        if ($countHeaders > $countData) {
+            $missingValuesCount = $countHeaders - $countData;
+            $missingValues = array_fill(0, $missingValuesCount, '');
+            $data = array_merge($data, $missingValues);
+        }
+
+        $item = array_combine($this->fileIterator->getHeaders(), $data);
 
         try {
             $item = $this->converter->convert($item, $this->getArrayConverterOptions());
