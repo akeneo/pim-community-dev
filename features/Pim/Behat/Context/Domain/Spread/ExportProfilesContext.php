@@ -6,12 +6,10 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
-use Box\Spout\Common\Type;
-use Box\Spout\Reader\ReaderFactory;
-use Pim\Behat\Context\PimContext;
+use Pim\Behat\Context\Domain\ImportExportContext;
 use Symfony\Component\Yaml\Yaml;
 
-class ExportProfilesContext extends PimContext
+class ExportProfilesContext extends ImportExportContext
 {
     /**
      * @param string       $code
@@ -28,7 +26,7 @@ class ExportProfilesContext extends PimContext
         $config =  $this->getCsvJobConfiguration($code);
 
         $expectedLines = $this->getExpectedLines($csv, $config);
-        $actualLines = $this->getActualLines($path, $config);
+        $actualLines = $this->getActualLines($path, 'csv', $config);
 
         $this->compareFile($expectedLines, $actualLines, $path);
     }
@@ -63,7 +61,7 @@ class ExportProfilesContext extends PimContext
         $config = $this->getCsvJobConfiguration($code);
 
         $expectedLines = $this->getExpectedLines($csv, $config);
-        $actualLines = $this->getActualLines($path, $config);
+        $actualLines = $this->getActualLines($path, 'csv', $config);
 
         $this->compareFileHeadersOrder(current($expectedLines), current($actualLines));
     }
@@ -113,6 +111,9 @@ class ExportProfilesContext extends PimContext
     }
 
     /**
+     * @param string $code
+     * @param string $path
+     *
      * @Then /^the name of the exported file of "([^"]+)" should be "([^"]+)"$/
      */
     public function theNameOfTheExportedFileOfShouldBe($code, $path)
@@ -186,121 +187,6 @@ class ExportProfilesContext extends PimContext
                 );
             }
         }
-    }
-
-    /**
-     * @param array  $expectedLines
-     * @param array  $actualLines
-     * @param string $path
-     *
-     * @throws \Exception
-     */
-    protected function compareFile(array $expectedLines, array $actualLines, $path)
-    {
-        $expectedCount = count($expectedLines);
-        $actualCount = count($actualLines);
-        assertSame(
-            $expectedCount,
-            $actualCount,
-            sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
-        );
-
-        $currentActualLines = current($actualLines);
-        $currentExpectedLines = current($expectedLines);
-
-        $headerDiff = array_diff($currentActualLines, $currentExpectedLines);
-        if (0 !== count(array_diff($currentActualLines, $currentExpectedLines))) {
-            throw new \Exception(
-                sprintf(
-                    "Header in the file %s does not match \n expected one: %s \n missing headers : %s",
-                    $path,
-                    implode(' | ', current($actualLines)),
-                    implode(' | ', $headerDiff)
-                )
-            );
-        }
-
-        array_shift($actualLines);
-        array_shift($expectedLines);
-
-        foreach ($expectedLines as $expectedLine) {
-            $rows = array_filter($actualLines, function ($actualLine) use ($expectedLine) {
-                return 0 === count(array_diff($expectedLine, $actualLine));
-            });
-
-            if (1 !== count($rows)) {
-                throw new \Exception(
-                    sprintf('Could not find a line containing "%s" in %s', implode(' | ', $expectedLine), $path)
-                );
-            }
-        }
-    }
-
-    /**
-     * @param PyStringNode $csv
-     * @param array $config
-     *
-     * @return array
-     */
-    protected function getExpectedLines(PyStringNode $csv, $config)
-    {
-        $expectedLines = [];
-        foreach ($csv->getLines() as $line) {
-            if (!empty($line)) {
-                $expectedLines[] = explode($config['delimiter'], str_replace($config['enclosure'], '', $line));
-            }
-        }
-
-        return $expectedLines;
-    }
-
-    /**
-     * @param string $path
-     * @param array  $config
-     *
-     * @return array
-     */
-    protected function getActualLines($path, array $config)
-    {
-        $reader = ReaderFactory::create(Type::CSV);
-        $reader->setFieldDelimiter($config['delimiter'])
-            ->setFieldEnclosure($config['enclosure'])
-            ->open($path);
-        $sheet = current(iterator_to_array($reader->getSheetIterator()));
-
-        $lines = iterator_to_array($sheet->getRowIterator());
-
-        $reader->close();
-
-        return $lines;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return array
-     */
-    protected function getCsvJobConfiguration($code)
-    {
-        $config = $this->getFixturesContext()->getJobInstance($code)->getRawConfiguration();
-        $config['delimiter'] = isset($config['delimiter']) ? $config['delimiter'] : ';';
-        $config['enclosure'] = isset($config['enclosure']) ? $config['enclosure'] : '"';
-        $config['escape'] = isset($config['escape']) ? $config['escape'] : '\\';
-
-        return $config;
-    }
-
-    /**
-     * @param array $expectedHeaders
-     * @param array $actualHeaders
-     */
-    protected function compareFileHeadersOrder(array $expectedHeaders, array $actualHeaders)
-    {
-        assertEquals(
-            $expectedHeaders[0],
-            $actualHeaders[0],
-            sprintf('Expecting to see headers order like %d , found %d', $expectedHeaders[0], $actualHeaders[0])
-        );
     }
 
     /**
