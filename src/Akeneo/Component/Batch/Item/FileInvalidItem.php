@@ -31,7 +31,7 @@ class FileInvalidItem implements InvalidItemInterface
     /**
      * {@inheritdoc}
      */
-    public function getData()
+    public function getInvalidData()
     {
         return $this->invalidData;
     }
