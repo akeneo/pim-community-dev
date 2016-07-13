@@ -7,10 +7,12 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Box\Spout\Common\Type;
+use Box\Spout\Reader\ReaderFactory;
 use Box\Spout\Writer\WriterFactory;
+use Pim\Behat\Context\Domain\ImportExportContext;
 use Pim\Behat\Context\PimContext;
 
-class ImportProfilesContext extends PimContext
+class ImportProfilesContext extends ImportExportContext
 {
     /**
      * @param string       $extension
@@ -56,7 +58,6 @@ class ImportProfilesContext extends PimContext
     /**
      * @param TableNode $table
      *
-     *
      * @Given /^the following CSV configuration to import:$/
      */
     public function theFollowingCSVToImport(TableNode $table)
@@ -82,7 +83,7 @@ class ImportProfilesContext extends PimContext
 
         array_unshift($rows, $columns);
 
-        return $this->theFollowingFileToImport('csv', new PyStringNode(implode("\n", $rows)));
+        $this->theFollowingFileToImport('csv', new PyStringNode(implode("\n", $rows)));
     }
 
     /**
@@ -139,32 +140,39 @@ class ImportProfilesContext extends PimContext
 
     /**
      * @param string       $code
-     * @param PyStringNode $data
+     * @param PyStringNode $behatData
+     *
+     * @internal param PyStringNode $data
      *
      * @Given /^the invalid data file of "([^"]*)" should contain:$/
-     *
-     * @throws ExpectationException
      */
-    public function theInvalidDataFileOfShouldContain($code, PyStringNode $data)
+    public function theInvalidDataFileOfShouldContain($code, PyStringNode $behatData)
     {
-        // TODO: Do this method body once invalid data writers are done.
+        $jobInstance = $this->getMainContext()->getSubcontext('fixtures')->getJobInstance($code);
+        $jobExecution = $jobInstance->getJobExecutions()->first();
+        $fileType = $jobInstance->getRawConfiguration()['invalid_items_file_format'];
 
-//        $jobInstance = $this->getMainContext()->getSubcontext('fixtures')->getJobInstance($code);
-//
-//        $jobExecution = $jobInstance->getJobExecutions()->first();
-//        $archivist = $this->getMainContext()->getContainer()->get('pim_base_connector.event_listener.archivist');
-//        $file = $archivist->getArchive($jobExecution, 'invalid', 'invalid_items.csv');
-//
-//        $file->open(new \Gaufrette\StreamMode('r'));
-//        $content = $file->read(1024);
-//        while (!$file->eof()) {
-//            $content .= $file->read(1024);
-//        }
-//
-//        if ($content !== (string) $data) {
-//            throw $this->createExpectationException(
-//                sprintf("Invalid data file contains:\n\"\"\"\n%s\n\"\"\"", $content)
-//            );
-//        }
+        $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+        $filePath = sprintf(
+            '%simport/%s/%s/invalid_%s/invalid_items.%s',
+            $filePath,
+            $jobInstance->getJobName(),
+            $jobExecution->getId(),
+            $fileType,
+            $fileType
+        );
+
+        $config = [];
+
+        if (Type::CSV === $fileType) {
+            $config = $this->getCsvJobConfiguration($code);
+        } elseif (Type::XLSX === $fileType) {
+            $config = $this->getXlsxJobConfiguration($code);
+        }
+
+        $expectedLines = $this->getExpectedLines($behatData, $config);
+        $actualLines = $this->getActualLines($filePath, $fileType, $config);
+
+        $this->compareFile($expectedLines, $actualLines, $filePath);
     }
 }
