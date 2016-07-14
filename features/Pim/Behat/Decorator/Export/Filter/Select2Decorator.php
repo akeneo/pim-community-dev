@@ -17,7 +17,7 @@ class Select2Decorator extends ElementDecorator
      */
     public function filter($operator, $value)
     {
-        if ('' !== $operator && null !== $operator) {
+        if (null !== $operator && '' !== $operator) {
             $operatorField = $this->decorate(
                 $this->find('css', '.operator.select2-container'),
                 ['Pim\Behat\Decorator\Field\Select2Decorator']
@@ -25,7 +25,7 @@ class Select2Decorator extends ElementDecorator
             $operatorField->setValue($operator);
         }
 
-        if ('' !== $value && null !== $value) {
+        if (null !== $value && '' !== $value) {
             $valueField = $this->decorate(
                 $this->find('css', '.value.select2-container'),
                 ['Pim\Behat\Decorator\Field\Select2Decorator']
