@@ -884,7 +884,7 @@ class FixturesContext extends BaseFixturesContext
     {
         $configuration = $this
             ->getJobInstance($code)
-            ->getRawConfiguration();
+            ->getRawParameters();
 
         $path = dirname($configuration['filePath']);
 

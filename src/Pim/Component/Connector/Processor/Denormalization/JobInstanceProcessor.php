@@ -93,10 +93,10 @@ class JobInstanceProcessor extends AbstractProcessor
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
-        $rawConfiguration = $entity->getRawConfiguration();
-        if (!empty($rawConfiguration)) {
+        $rawParameters = $entity->getRawParameters();
+        if (!empty($rawParameters)) {
             $job = $this->jobRegistry->get($entity->getJobName());
-            $parameters = $this->jobParamsFactory->create($job, $rawConfiguration);
+            $parameters = $this->jobParamsFactory->create($job, $rawParameters);
             $violations = $this->jobParamsValidator->validate($job, $parameters);
             if ($violations->count() > 0) {
                 $this->objectDetacher->detach($entity);

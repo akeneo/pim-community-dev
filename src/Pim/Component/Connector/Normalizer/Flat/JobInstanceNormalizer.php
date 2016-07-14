@@ -22,7 +22,7 @@ class JobInstanceNormalizer extends BaseNormalizer
      */
     protected function normalizeConfiguration(JobInstance $job)
     {
-        $configuration = json_encode($job->getRawConfiguration());
+        $configuration = json_encode($job->getRawParameters());
 
         return $configuration;
     }

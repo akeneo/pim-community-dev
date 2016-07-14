@@ -171,7 +171,7 @@ class JobProfileController
             if ($form->isValid()) {
                 $job = $this->jobRegistry->get($jobInstance->getJobName());
                 $jobParameters = $this->jobParametersFactory->create($job);
-                $jobInstance->setRawConfiguration($jobParameters->all());
+                $jobInstance->setRawParameters($jobParameters->all());
 
                 $this->entityManager->persist($jobInstance);
                 $this->entityManager->flush();
@@ -220,8 +220,8 @@ class JobProfileController
         $uploadAllowed = false;
         $uploadForm = null;
 
-        $rawConfiguration = $jobInstance->getRawConfiguration();
-        if (isset($rawConfiguration['uploadAllowed']) && true === $rawConfiguration['uploadAllowed']) {
+        $rawParameters = $jobInstance->getRawParameters();
+        if (isset($rawParameters['uploadAllowed']) && true === $rawParameters['uploadAllowed']) {
             $uploadAllowed = true;
             $uploadForm = $this->createUploadForm()->createView();
         }
@@ -399,9 +399,9 @@ class JobProfileController
      */
     protected function validateJobInstance(JobInstance $jobInstance, array $validationGroups)
     {
-        $rawConfiguration = $jobInstance->getRawConfiguration();
+        $rawParameters = $jobInstance->getRawParameters();
         $job = $this->jobRegistry->get($jobInstance->getJobName());
-        $jobParameters = $this->jobParametersFactory->create($job, $rawConfiguration);
+        $jobParameters = $this->jobParametersFactory->create($job, $rawParameters);
 
         /** @var ConstraintViolationListInterface $jobParamsViolations */
         $jobParamsViolations = $this->jobParametersValidator->validate(
@@ -430,7 +430,7 @@ class JobProfileController
     {
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EXECUTE, new GenericEvent($jobInstance));
 
-        $configuration = $jobInstance->getRawConfiguration();
+        $configuration = $jobInstance->getRawParameters();
         $configuration['send_email'] = true;
         $jobExecution = $this->simpleJobLauncher
             ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
@@ -483,9 +483,9 @@ class JobProfileController
 
         $uploadedFile = $fileInfo->getUploadedFile();
         $file = $uploadedFile->move(sys_get_temp_dir(), $uploadedFile->getClientOriginalName());
-        $rawConfiguration = $jobInstance->getRawConfiguration();
-        $rawConfiguration['filePath'] = $file->getRealPath();
-        $jobInstance->setRawConfiguration($rawConfiguration);
+        $rawParameters = $jobInstance->getRawParameters();
+        $rawParameters['filePath'] = $file->getRealPath();
+        $jobInstance->setRawParameters($rawParameters);
 
         return true;
     }

@@ -81,7 +81,7 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
                 $job = $this->jobRegistry->get($jobInstance->getJobName());
                 /** @var JobParameters $jobParameters */
                 $jobParameters = $this->jobParametersFactory->create($job, $data);
-                $jobInstance->setRawConfiguration($jobParameters->all());
+                $jobInstance->setRawParameters($jobParameters->all());
                 break;
             case 'code':
                 $jobInstance->setCode($data);

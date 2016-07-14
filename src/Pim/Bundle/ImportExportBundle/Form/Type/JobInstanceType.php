@@ -205,22 +205,21 @@ class JobInstanceType extends AbstractType
      */
     protected function addJobConfigurationField(FormBuilderInterface $builder)
     {
-        // TODO: TIP-426: rename this field to parameters
         $jobName = $builder->getData()->getJobName();
 
         if (null !== $jobName) {
             $job = $this->jobRegistry->get($jobName);
             $builder
                 ->add(
-                    'configuration',
+                    'parameters',
                     'pim_import_export_job_parameters',
                     [
                         'required'      => true,
                         'by_reference'  => false,
-                        'property_path' => 'rawConfiguration',
+                        'property_path' => 'rawParameters',
                     ]
                 )
-                ->get('configuration')
+                ->get('parameters')
                 ->addModelTransformer(new ConfigurationToJobParametersTransformer(
                     $this->jobParametersFactory,
                     $job
