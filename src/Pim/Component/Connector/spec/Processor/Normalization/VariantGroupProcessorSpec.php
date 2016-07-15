@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Processor\Normalization;
 
+use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -223,16 +224,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ]
         )->willThrow(new FileNotFoundException('upload/path/img.jpg'));
 
-        $this->shouldThrow(
-            new InvalidItemException(
-                'The file "upload/path/img.jpg" does not exist',
-                [
-                    'item'            => 'my_variant_group',
-                    'uploadDirectory' => 'upload/path/'
-                ]
-            )
-        )->duringProcess($variantGroup);
-
         $objectDetacher->detach($variantGroup)->shouldBeCalled();
+
+        $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')->duringProcess($variantGroup);
     }
 }
