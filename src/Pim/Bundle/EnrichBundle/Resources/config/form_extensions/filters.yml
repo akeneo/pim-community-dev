@@ -28,7 +28,7 @@ extensions:
             operators:
                 - ALL
                 - SINCE LAST N DAYS
-                - ">="
+                - ">"
                 - SINCE LAST JOB
 
     pim-filter-product-identifier:

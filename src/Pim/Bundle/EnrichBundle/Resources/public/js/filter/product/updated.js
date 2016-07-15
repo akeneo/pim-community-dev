@@ -11,13 +11,26 @@ define([
         'pim/user-context',
         'pim/i18n',
         'jquery.select2',
-        'datepicker'
-    ], function (_, __, BaseFilter, Routing, template, fetcherRegistry, userContext, i18n, initSelect2, Datepicker) {
+        'datepicker',
+        'pim/date-context',
+    ], function (
+        _,
+        __,
+        BaseFilter,
+        Routing,
+        template,
+        fetcherRegistry,
+        userContext,
+        i18n,
+        initSelect2,
+        Datepicker,
+        DateContext
+    ) {
     return BaseFilter.extend({
         shortname: 'updated',
         template: _.template(template),
         events: {
-            'change [name="filter-operator"], [name="filter-value"]': 'updateState'
+            'change [name="filter-operator"]': 'updateState'
         },
 
         /**
@@ -57,9 +70,16 @@ define([
         postRender: function () {
             this.$('[name="filter-operator"]').select2();
 
-            if ('>=' === this.getOperator()) {
+            if ('>' === this.getOperator()) {
                 Datepicker
-                    .init(this.$('[name="filter-value"]').parent())
+                    .init(
+                        this.$('[name="filter-value"]').parent(),
+                        {
+                            format: 'yyyy-MM-dd',
+                            defaultFormat: 'yyyy-MM-dd',
+                            language: DateContext.get('language')
+                        }
+                    )
                     .on('changeDate', this.updateState.bind(this));
             }
         },
@@ -81,8 +101,12 @@ define([
             var value    = this.$('[name="filter-value"]').val();
             var operator = this.$('[name="filter-operator"]').val();
 
+            if ('>' === operator) {
+                value = value + ' 00:00:00';
+            }
+
             if (operator !== oldOperator) {
-                value = null;
+                value = '';
             }
 
             this.setData({

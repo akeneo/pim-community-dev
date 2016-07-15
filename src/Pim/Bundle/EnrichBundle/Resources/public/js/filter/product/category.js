@@ -102,6 +102,13 @@ define([
                 modal.remove();
                 tree.remove();
             }.bind(this));
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        isEmpty: function () {
+            return _.isEmpty(this.getValue()) || '' === this.getOperator();
         }
     });
 });

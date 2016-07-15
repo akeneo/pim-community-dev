@@ -366,7 +366,7 @@ pim_enrich:
                     operators:
                         ALL: No date condition
                         "SINCE LAST N DAYS": Updated products since the last n days
-                        ">=": Updated products since the defined date
+                        ">": Updated products since the defined date
                         "SINCE LAST JOB": Updated products since last export
                 enabled:
                     title: Status

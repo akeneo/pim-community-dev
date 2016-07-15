@@ -11,14 +11,12 @@
                     FetcherRegistry.initialize().done(function () {
                         FormBuilder.build('{{ form.vars.disabled ? 'pim-product-export-show-content' : 'pim-product-export-edit-content' }}')
                             .then(function (form) {
-                                form
-                                    .setElement('#pim-product-export-edit-content')
+                                form.setElement('#pim-product-export-edit-content')
+                                    .on('pim_enrich:form:entity:post_update', function () {
+                                        document.getElementById('{{ form.configuration.filters.vars.id }}').value = JSON.stringify(form.getFormData());
+                                    })
                                     .setData(JSON.parse($('#{{ form.configuration.filters.vars.id }}').val()))
                                     .render();
-
-                                form.on('pim_enrich:form:entity:post_update', function () {
-                                    document.getElementById('{{ form.configuration.filters.vars.id }}').value = JSON.stringify(form.getFormData());
-                                });
 
                                 loadingMask.remove();
                             });

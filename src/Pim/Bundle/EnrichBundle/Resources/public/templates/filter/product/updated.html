@@ -5,7 +5,7 @@
         </option>
     <% }); %>
 </select>
-<% if ('>=' === operator) { %>
+<% if ('>' === operator) { %>
     <span class="date-wrapper">
         <input name="filter-value" class="datepicker add-on input-large value" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- value ? value : '' %>">
     </span>
