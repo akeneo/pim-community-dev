@@ -1993,35 +1993,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string       $code
-     * @param PyStringNode $data
-     *
-     * @Given /^the invalid data file of "([^"]*)" should contain:$/
-     *
-     * @throws ExpectationException
-     */
-    public function theInvalidDataFileOfShouldContain($code, PyStringNode $data)
-    {
-        $jobInstance = $this->getMainContext()->getSubcontext('fixtures')->getJobInstance($code);
-
-        $jobExecution = $jobInstance->getJobExecutions()->first();
-        $archivist    = $this->getMainContext()->getContainer()->get('pim_base_connector.event_listener.archivist');
-        $file         = $archivist->getArchive($jobExecution, 'invalid', 'invalid_items.csv');
-
-        $file->open(new \Gaufrette\StreamMode('r'));
-        $content = $file->read(1024);
-        while (!$file->eof()) {
-            $content .= $file->read(1024);
-        }
-
-        if ($content !== (string) $data) {
-            throw $this->createExpectationException(
-                sprintf("Invalid data file contains:\n\"\"\"\n%s\n\"\"\"", $content)
-            );
-        }
-    }
-
-    /**
      * @param PyStringNode $string
      *
      * @Given /^I execute javascript:$/

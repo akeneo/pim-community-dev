@@ -165,6 +165,11 @@ services:
              - '@pim_connector.writer.file.file_path_resolver'
              - '@pim_connector.writer.file.default.column_sorter'
 
+    pim_connector.writer.file.flat_invalid_item_buffer_flusher:
+        class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
+        arguments:
+             - '@pim_connector.writer.file.file_path_resolver'
+
     pim_connector.writer.file.product.flat_item_buffer_flusher:
         class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
         arguments:
@@ -179,6 +184,14 @@ services:
             - '@pim_connector.writer.file.file_path_resolver'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+
+    pim_connector.writer.file.invalid_items_csv:
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pim_connector.array_converter.dummy'
+            - '@pim_connector.writer.file.file_path_resolver'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_invalid_item_buffer_flusher'
 
     pim_connector.writer.file.csv_product:
         class: '%pim_connector.writer.file.csv_product.class%'
@@ -245,6 +258,14 @@ services:
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     # XLSX
+    pim_connector.writer.file.invalid_items_xlsx:
+        class: '%pim_connector.writer.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.array_converter.dummy'
+            - '@pim_connector.writer.file.file_path_resolver'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_invalid_item_buffer_flusher'
+
     pim_connector.writer.file.xlsx_product:
         class: '%pim_connector.writer.file.xlsx_product.class%'
         arguments:

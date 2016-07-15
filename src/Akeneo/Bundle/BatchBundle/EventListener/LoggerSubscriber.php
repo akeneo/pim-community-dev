@@ -239,7 +239,7 @@ class LoggerSubscriber implements EventSubscriberInterface
             sprintf(
                 'The %s was unable to handle the following item: %s (REASON: %s)',
                 $event->getClass(),
-                $this->formatAsString($event->getItem()),
+                $this->formatAsString($event->getItem()->getInvalidData()),
                 $this->translator->trans(
                     $event->getReason(),
                     $event->getReasonParameters(),

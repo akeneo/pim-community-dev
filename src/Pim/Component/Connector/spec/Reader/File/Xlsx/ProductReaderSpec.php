@@ -92,6 +92,7 @@ class ProductReaderSpec extends ObjectBehavior
             'date_format'       => 'YYYY-mm-dd',
         ];
 
+        $fileIterator->getHeaders()->willReturn(['sku', 'name', 'view', 'manual-fr_FR']);
         $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->current()->willReturn($item);
@@ -99,6 +100,7 @@ class ProductReaderSpec extends ObjectBehavior
         $fileIterator->getDirectoryPath()->willReturn($filePath);
 
         $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
+
         $arrayConverter->convert($item, $converterOptions)->willReturn($convertedItem);
         $mediaPathTransformer->transform($convertedItem, $filePath)->shouldBeCalled();
 

@@ -24,10 +24,11 @@ class VariantGroupCsvImportSpec extends ObjectBehavior
         $decoratedProvider->getDefaultValues()->willReturn(['decoratedParam' => true]);
         $this->getDefaultValues()->shouldReturn(
             [
-                'decoratedParam'   => true,
-                'decimalSeparator' => ".",
-                'dateFormat'       => "yyyy-MM-dd",
-                'copyValues'       => true,
+                'decoratedParam'            => true,
+                'decimalSeparator'          => ".",
+                'dateFormat'                => "yyyy-MM-dd",
+                'copyValues'                => true,
+                'invalid_items_file_format' => 'csv',
             ]
         );
     }

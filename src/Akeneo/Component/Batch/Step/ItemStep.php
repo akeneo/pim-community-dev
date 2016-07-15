@@ -98,7 +98,7 @@ class ItemStep extends AbstractStep
      */
     public function doExecute(StepExecution $stepExecution)
     {
-        $itemsToWrite  = array();
+        $itemsToWrite  = [];
         $writeCount    = 0;
 
         $this->initializeStepElements($stepExecution);
@@ -123,7 +123,7 @@ class ItemStep extends AbstractStep
                 $writeCount++;
                 if (0 === $writeCount % $this->batchSize) {
                     $this->write($itemsToWrite);
-                    $itemsToWrite = array();
+                    $itemsToWrite = [];
                     $this->getJobRepository()->updateStepExecution($stepExecution);
                 }
             }
@@ -231,10 +231,10 @@ class ItemStep extends AbstractStep
      */
     protected function getStepElements()
     {
-        return array(
+        return [
             'reader'    => $this->reader,
             'processor' => $this->processor,
             'writer'    => $this->writer
-        );
+        ];
     }
 }

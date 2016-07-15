@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\Reader\File\Yaml;
 
+use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
@@ -176,9 +177,21 @@ class Reader implements
         }
 
         if (null !== $exception->getViolations()) {
-            throw new InvalidItemFromViolationsException($exception->getViolations(), $item, [], 0, $exception);
+            throw new InvalidItemFromViolationsException(
+                $exception->getViolations(),
+                new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('read_lines') + 1)),
+                [],
+                0,
+                $exception
+            );
         }
 
-        throw new InvalidItemException($exception->getMessage(), $item, [], 0, $exception);
+        throw new InvalidItemException(
+            $exception->getMessage(),
+            new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('read_lines') + 1)),
+            [],
+            0,
+            $exception
+        );
     }
 }

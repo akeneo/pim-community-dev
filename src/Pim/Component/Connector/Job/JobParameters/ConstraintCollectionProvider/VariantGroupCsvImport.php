@@ -44,6 +44,7 @@ class VariantGroupCsvImport implements ConstraintCollectionProviderInterface
         $constraintFields['decimalSeparator'] = new NotBlank();
         $constraintFields['dateFormat'] = new NotBlank();
         $constraintFields['copyValues'] = new Type('bool');
+        $constraintFields['invalid_items_file_format'] = new NotBlank();
 
         return new Collection(['fields' => $constraintFields]);
     }

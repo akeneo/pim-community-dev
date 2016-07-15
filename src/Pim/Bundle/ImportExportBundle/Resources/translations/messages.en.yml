@@ -21,7 +21,8 @@ pim_import_export:
         archive: download generated archive|download generated archives
         output:  download generated file|download generated files
         input:   download read file|download read files
-        invalid: download invalid data
+        invalid_xlsx: download invalid data
+        invalid_csv: download invalid data
 
     notification:
         export:

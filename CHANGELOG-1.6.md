@@ -29,6 +29,7 @@
 - PIM-5681: Introduce a new command to purge entity versions stored in the PIM (see pim:versioning:purge command)
 - PIM-5781: Add new data on the "system information" screen (data volumetry, information about the operating system)
 - PIM-5110: Add product export configuration to customize product media export policy
+- PIM-5494: Add export invalid item in xslx
 
 ## Scalability improvements
 
@@ -387,3 +388,7 @@
 - Change constructor of `Pim\Component\Connector\Step\ValidatorStep` add `Pim\Component\Connector\Item\CharsetValidator` as last parameter
 - Change constructor of `Pim\Component\Connector\Step\TaskletStep` add `Pim\Component\Connector\Step\TaskletInterface` as last parameter
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Step\MassEditStep` add `Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner` as last parameter
+- Remove the class `Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver` and replaced by `Pim\Bundle\BaseConnectorBundle\Archiver\CsvInvalidItemWriter` and `im\Bundle\BaseConnectorBundle\Archiver\XlsxInvalidItemWriter`
+- Change constructor of `Akeneo\Component\Batch\Event\InvalidItemEvent`.
+- Change constructor of `Akeneo\Component\Batch\Item\InvalidItemException`.
+- Change method `addWarning()` signature of `Akeneo\Component\Batch\Item\InvalidItemException`.

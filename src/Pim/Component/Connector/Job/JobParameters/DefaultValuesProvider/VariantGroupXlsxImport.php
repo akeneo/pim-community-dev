@@ -7,13 +7,13 @@ use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 
 /**
- * DefaultParameters for product CSV import
+ * DefaultParameters for variant group XLSX import
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ProductCsvImport implements DefaultValuesProviderInterface
+class VariantGroupXlsxImport implements DefaultValuesProviderInterface
 {
     /** @var DefaultValuesProviderInterface */
     protected $simpleProvider;
@@ -39,12 +39,8 @@ class ProductCsvImport implements DefaultValuesProviderInterface
         $parameters = $this->simpleProvider->getDefaultValues();
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
-        $parameters['enabled'] = true;
-        $parameters['categoriesColumn'] = 'categories';
-        $parameters['familyColumn'] = 'family';
-        $parameters['groupsColumn'] = 'groups';
-        $parameters['enabledComparison'] = true;
-        $parameters['realTimeVersioning'] = true;
+        $parameters['copyValues'] = true;
+        $parameters['invalid_items_file_format'] = 'xlsx';
 
         return $parameters;
     }

@@ -1,0 +1,145 @@
+<?php
+
+namespace Pim\Behat\Context\Domain;
+
+use Behat\Gherkin\Node\PyStringNode;
+use Box\Spout\Common\Type;
+use Box\Spout\Reader\CSV\Reader as CsvReader;
+use Box\Spout\Reader\ReaderFactory;
+use Pim\Behat\Context\PimContext;
+
+class ImportExportContext extends PimContext
+{
+    /**
+     * @param array  $expectedLines
+     * @param array  $actualLines
+     * @param string $path
+     *
+     * @throws \Exception
+     */
+    protected function compareFile(array $expectedLines, array $actualLines, $path)
+    {
+        $expectedCount = count($expectedLines);
+        $actualCount = count($actualLines);
+        assertSame(
+            $expectedCount,
+            $actualCount,
+            sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
+        );
+
+        $currentActualLines = current($actualLines);
+        $currentExpectedLines = current($expectedLines);
+
+        $headerDiff = array_diff($currentActualLines, $currentExpectedLines);
+        if (0 !== count(array_diff($currentActualLines, $currentExpectedLines))) {
+            throw new \Exception(
+                sprintf(
+                    "Header in the file %s does not match \n expected one: %s \n missing headers : %s",
+                    $path,
+                    implode(' | ', current($actualLines)),
+                    implode(' | ', $headerDiff)
+                )
+            );
+        }
+
+        array_shift($actualLines);
+        array_shift($expectedLines);
+
+        foreach ($expectedLines as $expectedLine) {
+            $rows = array_filter($actualLines, function ($actualLine) use ($expectedLine) {
+                return 0 === count(array_diff($expectedLine, $actualLine));
+            });
+
+            if (1 !== count($rows)) {
+                throw new \Exception(
+                    sprintf('Could not find a line containing "%s" in %s', implode(' | ', $expectedLine), $path)
+                );
+            }
+        }
+    }
+
+    /**
+     * @param PyStringNode $behatData
+     * @param array        $config
+     *
+     * @return array
+     */
+    protected function getExpectedLines(PyStringNode $behatData, $config)
+    {
+        $delimiter = isset($config['delimiter']) ? $config['delimiter'] : ';';
+        $enclosure = isset($config['enclosure']) ? $config['enclosure'] : '';
+
+        $expectedLines = [];
+        foreach ($behatData->getLines() as $line) {
+            if (!empty($line)) {
+                $expectedLines[] = explode($delimiter, str_replace($enclosure, '', $line));
+            }
+        }
+
+        return $expectedLines;
+    }
+
+    /**
+     * @param string $path
+     * @param string $fileType
+     * @param array  $config
+     *
+     * @return array
+     */
+    protected function getActualLines($path, $fileType, array $config)
+    {
+        $reader = ReaderFactory::create($fileType);
+
+        if (Type::CSV === $fileType && $reader instanceof CsvReader) {
+            $reader
+                ->setFieldDelimiter($config['delimiter'])
+                ->setFieldEnclosure($config['enclosure'])
+            ;
+        }
+
+        $reader->open($path);
+        $sheet = current(iterator_to_array($reader->getSheetIterator()));
+        $lines = iterator_to_array($sheet->getRowIterator());
+        $reader->close();
+
+        return $lines;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return array
+     */
+    protected function getCsvJobConfiguration($code)
+    {
+        $config = $this->getFixturesContext()->getJobInstance($code)->getRawConfiguration();
+        $config['delimiter'] = isset($config['delimiter']) ? $config['delimiter'] : ';';
+        $config['enclosure'] = isset($config['enclosure']) ? $config['enclosure'] : '"';
+        $config['escape'] = isset($config['escape']) ? $config['escape'] : '\\';
+
+        return $config;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return array
+     */
+    protected function getXlsxJobConfiguration($code)
+    {
+        return $this->getFixturesContext()->getJobInstance($code)->getRawConfiguration();
+    }
+
+    /**
+     * @param array $expectedHeaders
+     * @param array $actualHeaders
+     */
+    protected function compareFileHeadersOrder(array $expectedHeaders, array $actualHeaders)
+    {
+        assertEquals(
+            $expectedHeaders[0],
+            $actualHeaders[0],
+            sprintf('Expecting to see headers order like %d , found %d', $expectedHeaders[0], $actualHeaders[0])
+        );
+    }
+}

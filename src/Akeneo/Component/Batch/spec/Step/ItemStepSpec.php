@@ -3,6 +3,7 @@
 namespace spec\Akeneo\Component\Batch\Step;
 
 use Akeneo\Component\Batch\Event\EventInterface;
+use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
@@ -106,7 +107,9 @@ class ItemStepSpec extends ObjectBehavior
         $writer->write(['p1', 'p2', 'p3'])->shouldBeCalled();
 
         // second batch
-        $processor->process('r4')->shouldBeCalled()->willThrow(new InvalidItemException('my msg', ['r4']));
+        $processor->process('r4')->shouldBeCalled()->willThrow(
+            new InvalidItemException('my msg', new FileInvalidItem(['r4'], 7))
+        );
         $execution->addWarning(Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
         $dispatcher->dispatch(Argument::any(), Argument::any())->shouldBeCalled();
 
