@@ -436,9 +436,8 @@ jobs:
         label:     Demo asset channel configuration export
         type:      export
         configuration:
-            filePath:      /tmp/asset_channel_configurations.yml
-            uploadAllowed: true
-            header:        asset_channel_configurations
+            filePath: /tmp/asset_channel_configurations.yml
+            header:   asset_channel_configurations
     csv_family_import:
         connector: Akeneo CSV Connector
         alias:     csv_family_import

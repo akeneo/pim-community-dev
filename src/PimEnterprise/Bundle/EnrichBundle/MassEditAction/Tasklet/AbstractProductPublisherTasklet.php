@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -163,7 +164,7 @@ abstract class AbstractProductPublisherTasklet extends AbstractConfigurableStepE
                 $violation->getMessage(),
                 $invalidValue
             );
-            $this->stepExecution->addWarning($errors, [], $product);
+            $this->stepExecution->addWarning($errors, [], new DataInvalidItem($product));
         }
     }
 }

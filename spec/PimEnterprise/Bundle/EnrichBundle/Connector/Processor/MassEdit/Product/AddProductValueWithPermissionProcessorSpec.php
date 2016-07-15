@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -89,7 +90,8 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         JobExecution $jobExecution,
         UserInterface $userJulia,
         ProductInterface $product,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        InvalidItemInterface $invalidItem
     ) {
         $configuration  = [
             'filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]
@@ -104,7 +106,7 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $stepExecution->addWarning(
             'pim_enrich.mass_edit_action.edit_common_attributes.message.error',
             [],
-            $product
+            Argument::type('Akeneo\Component\Batch\Item\InvalidItemInterface')
         )->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
 

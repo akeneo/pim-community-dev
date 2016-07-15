@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\Flat;
+namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\Structured;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;

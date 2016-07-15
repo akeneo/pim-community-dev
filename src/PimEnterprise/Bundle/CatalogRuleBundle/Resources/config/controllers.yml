@@ -12,3 +12,4 @@ services:
             - '@akeneo_batch.launcher.simple_job_launcher'
             - '@pim_import_export.repository.job_instance'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_catalog.command_launcher'

@@ -57,17 +57,6 @@ pim_enrich:
         warning: 'Sinä et ole kaikkien valittujen tuotteiden omistaja. Et voi julkaista tuotteita "%notGranted%".'
         info: '%nbProducts% valitut tuotteet julkaistaan.'
       not_editable: 'Sinulla ei ole käyttöoikeuksia muokata tuotteita %identifiers%.'
-    published_product:
-      page_title: Julkaistut tuotteet
-      page_subtitle: 'Massamuokkaa (1 julkaistu tuote) | Massamuokkaa (%count% julkaistua tuotetta)'
-      title: Valitse toimenpide
-      subtitle: 'Valitse toimenpide, jonka haluat suorittaa valitulle julkaistulle tuotteelle | Valitse toimenpide jonka haluat suorittaa valituille %count% julkaistulle tuotteelle'
-      confirm: 'Olet päivittämässä julkaistua tuotetta seuraavilla tiedoila, ole hyvä ja vahvista. | Olet päivittämässä %count% julkaistua tuotetta seuraavilla tiedoila, ole hyvä ja vahvista.'
-      steps:
-        first: Valitse julkaistut tuotteet
-        second: Valitse toimenpide
-        third: Konfiguroi
-        fourth: Vahvista
     unpublish:
       label: 'Muuta tuote tilaan "Julkaisematon"'
       description: 'Muuta valittujen tuotteiden tila tilaan "Julkaisematon", tällä hetkellä julkaistu data poistetaan.'

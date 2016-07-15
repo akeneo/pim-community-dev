@@ -47,6 +47,7 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('datagrid/hydrators.yml');
         $loader->load('datagrid/listeners.yml');
         $loader->load('datagrid/selectors.yml');
+        $loader->load('datagrid_handlers.yml');
         $loader->load('denormalizers.yml');
         $loader->load('events.yml');
         $loader->load('factories.yml');
@@ -79,7 +80,6 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('view_elements/category.yml');
         $loader->load('voters.yml');
         $loader->load('workflow/presenters.yml');
-        $loader->load('writers.yml');
         $loader->load('jobs.yml');
         $loader->load('steps.yml');
 

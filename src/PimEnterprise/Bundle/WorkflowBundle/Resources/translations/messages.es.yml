@@ -68,6 +68,14 @@ pimee_workflow:
     product_draft_processor.title: Procesador de propuesta
     approve.title: Aprobar la proposición
     refuse.title: Rechazar la proposición
+  mass_edit_action:
+    published:
+      page_title: Productos publicados
+      title: Elegir operación
+      steps:
+        second: Elegir operación
+        third: Configurar
+        fourth: Confirmar
 pimee_workflow_product_draft_notification_new_proposal: Nueva propuesta
 pimee_workflow_import_notification_new_proposals: Nuevas propuestas provenientes de una importación
 btn.publish: Publicar

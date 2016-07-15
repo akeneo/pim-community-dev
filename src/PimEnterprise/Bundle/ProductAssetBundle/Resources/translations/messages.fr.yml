@@ -137,6 +137,34 @@ pimee_product_asset:
       no_access_to_products: "Vous n'avez accès à aucune ressource dans aucune arborescence, contactez votre administrateur pour résoudre le problème"
       apply_on_children.label: Appliquer les changements aux sous-catégories
       apply_on_children.help: Appliquer les changements de permissions à toutes les sous-catégories, les permissions existantes sur les sous-catégories sont conservées
+  mass_edit_action:
+    asset:
+      page_title: Ressources
+      page_subtitle: 'Edition de masse (1 ressource)|Edition de masse (%count% ressources)'
+      confirm: 'Vous êtes sur le point de mettre à jour une ressource avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour %count% ressources avec les renseignements suivants, merci de confirmer.'
+      steps:
+        first: Choisir les ressources
+        second: Configurer
+        third: Confirmer
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: Déplacer des ressources vers des catégories
+      description: "Les ressources seront positionnées dans les catégories suivantes, le placement existant avant l'opération sera perdu"
+      success_flash: La (les) ressource(s) ont été déplacées dans les catégories sélectionnées
+      launched_flash: |-
+        L'action de masse "déplacement dans les catégories" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+    add-tags-to-assets:
+      label: Ajouter des mots clés aux ressources
+      description: Les mots clés seront ajoutés aux ressources. Les mots clés inconnus seront créés.
+      success_flash: Le(s) mot(s) clé(s) ont été ajoutés aux ressources
+      launched_flash: |-
+        L'action de masse "Ajouter des mots clés aux ressources" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Classer
+      add_tags_to_assets: Ajouter des mots-clés
 btn.create.asset: Créer une ressource
 btn.drag_or_upload: Glisser-déposer un fichier ou cliquer ici
 job_execution.summary:
@@ -144,6 +172,7 @@ job_execution.summary:
   pimee_product_asset.mass_upload.new: Ressource créée depuis le fichier
   pimee_product_asset.mass_upload.updated: Ressource mise à jour
   error: Erreur sur le processus de fichiers actifs
+  skipped_assets: Ressources ignorées
 assets_mass_upload.steps:
   asset_mass_upload.title: Téléchargement massif de ressources
 import_asset.steps.channel_configuration_processor.title: Traiter les configurations des canaux
@@ -207,3 +236,7 @@ batch_jobs:
   xlsx_asset_variation_export:
     label: Export des catégories de ressources en XLSX
     export.label: Export des catégories de ressources en XLSX
+  classify_assets:
+    perform.label: Déplacer des ressources vers des catégories
+  add_tags_to_assets:
+    perform.label: Ajouter des mots clés aux ressources

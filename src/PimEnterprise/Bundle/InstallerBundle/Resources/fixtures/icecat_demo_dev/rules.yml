@@ -70,7 +70,7 @@ rules:
             -
                 field: name
                 operator: CONTAINS
-                value: Canon`
+                value: Canon
             -
                 field: auto_focus_lock
                 operator: !=

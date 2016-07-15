@@ -260,43 +260,6 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function applyMassActionParameters($qb, $inset, array $values)
-    {
-        if (!empty($values)) {
-            $rootAlias = $qb->getRootAlias();
-            $valueWhereCondition =
-                $inset
-                    ? $qb->expr()->in($rootAlias, $values)
-                    : $qb->expr()->notIn($rootAlias, $values);
-            $qb->andWhere($valueWhereCondition);
-        }
-
-        if (null !== $qb->getDQLPart('where')) {
-            $whereParts = $qb->getDQLPart('where')->getParts();
-            $qb->resetDQLPart('where');
-
-            foreach ($whereParts as $part) {
-                if (!is_string($part) || !strpos($part, 'entityIds')) {
-                    $qb->andWhere($part);
-                }
-            }
-        }
-
-        $qb->setParameters(
-            $qb->getParameters()->filter(
-                function ($parameter) {
-                    return $parameter->getName() !== 'entityIds';
-                }
-            )
-        );
-
-        $qb->resetDQLPart('orderBy');
-        $qb->setMaxResults(null);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findByIds(array $assetIds)
     {
         if (empty($assetIds)) {

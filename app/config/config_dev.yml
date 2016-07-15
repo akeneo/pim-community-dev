@@ -18,6 +18,8 @@ monolog:
         firephp:
             type:  firephp
             level: info
+        console:
+            type:  console
 
 oro_assetic:
     css_debug:      ~

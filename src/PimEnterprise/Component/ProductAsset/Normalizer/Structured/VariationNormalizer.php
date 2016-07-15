@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Normalizer\Flat;
+namespace PimEnterprise\Component\ProductAsset\Normalizer\Structured;
 
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,27 +22,35 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class VariationNormalizer implements NormalizerInterface
 {
     /** @var array */
-    protected $supportedFormats = ['csv', 'flat'];
+    protected $supportedFormats = ['structured'];
 
     /**
      * {@inheritdoc}
      */
     public function normalize($variation, $format = null, array $context = [])
     {
-        $normalizedVariation['asset']   = $variation->getAsset()->getCode();
-        $normalizedVariation['locale']  = null !== $variation->getLocale() ? $variation->getLocale()->getCode() : '';
-        $normalizedVariation['channel'] = null !== $variation->getChannel() ? $variation->getChannel()->getCode() : '';
+        $normalizedVariation = [
+            'asset'          => $variation->getAsset()->getCode(),
+            'locale'         => null,
+            'channel'        => null,
+            'reference_file' => null,
+            'variation_file' => null,
+        ];
+
+        if (null !== $variation->getLocale()) {
+            $normalizedVariation['locale'] = $variation->getLocale()->getCode();
+        }
+
+        if (null !== $variation->getChannel()) {
+            $normalizedVariation['channel'] = $variation->getChannel()->getCode();
+        }
 
         if (null !== $variation->getReference() && null !== $variation->getReference()->getFileInfo()) {
             $normalizedVariation['reference_file'] = $variation->getReference()->getFileInfo()->getKey();
-        } else {
-            $normalizedVariation['reference_file'] = '';
         }
 
         if (null !== $variation->getFileInfo()) {
             $normalizedVariation['variation_file'] = $variation->getFileInfo()->getKey();
-        } else {
-            $normalizedVariation['variation_file'] = '';
         }
 
         return $normalizedVariation;

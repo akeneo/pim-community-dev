@@ -161,7 +161,7 @@ pim_enrich:
             description:    Tags will be added to the assets. If some tags does not exist, they will be created.
             success_flash:  Tag(s) have been added to asset(s)
             launched_flash: The bulk action "Add tags to assets" has been launched. You will be notified when it is done.
-            message.error:  There provided tag does not exists
+            message.error:  The provided tag does not exists
 
 pim:
     grid:

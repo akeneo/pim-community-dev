@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\MassUpload;
 
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Connector\Step\TaskletInterface;
@@ -92,7 +93,7 @@ class MassUploadTasklet implements TaskletInterface
                     $this->stepExecution->addWarning(
                         $item->getReason(),
                         [],
-                        ['filename' => $file->getFilename()]
+                        new DataInvalidItem(['filename' => $file->getFilename()])
                     );
                     break;
                 default:

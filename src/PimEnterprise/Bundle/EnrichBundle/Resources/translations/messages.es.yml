@@ -57,17 +57,6 @@ pim_enrich:
         warning: 'Usted no es el dueño de los productos seleccionados. No puede publicar los productos "%notGranted%".'
         info: 'Los productos %nbProducts% seleccionados serán publicados.'
       not_editable: 'Usted no tiene el permiso de editar los productos "%identifiers%".'
-    published_product:
-      page_title: Productos publicados
-      page_subtitle: 'Edición en masa (1 producto publicado)|Edición en masa (%count% producost publicados)'
-      title: Selecciones una operación
-      subtitle: 'Selecciones la operación que desea realizar en el producto seleccionado|Seleccione la operación que desea realizar en los %count% productos seleccionados'
-      confirm: 'Está a punto de actualizar un producto Publicado con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos Publicados con la siguiente información, por favor confirme.'
-      steps:
-        first: Seleccione los productos publicados
-        second: Seleccione la operación
-        third: Configuración
-        fourth: Confirmación
     unpublish:
       label: Quitar publicación de productos
       description: Quitar publicación de los productos seleccionados, la información publicada será eliminada.

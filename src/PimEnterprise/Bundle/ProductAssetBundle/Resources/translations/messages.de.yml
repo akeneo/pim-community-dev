@@ -137,6 +137,12 @@ pimee_product_asset:
       no_access_to_products: SIe haben keinen Zugriff auf Assets eines beliebigen Baumes. Bitte wenden Sie sich an Ihren Administrator
       apply_on_children.label: Übernehme Änderungen auf Kindelemente
       apply_on_children.help: Übertragen der Berechtigungen auf alle Kindelemente, bereits bestehende Berechtigungen werden beibehalten
+  mass_edit_action:
+    asset:
+      page_title: Assets
+      steps:
+        second: Konfigurieren
+        third: Bestätigen
 btn.create.asset: Asset erstellen
 btn.drag_or_upload: 'Drag & Drop einer Datei oder hier klicken'
 job_execution.summary:

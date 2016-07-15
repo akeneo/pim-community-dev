@@ -137,6 +137,12 @@ pimee_product_asset:
       no_access_to_products: Sinulla ei ole käyttöoikeuksia minkään puun resursseihin, ole hyvä ja ota yhteyttä järjestelmänvalvojaasi
       apply_on_children.label: Tee muutokset myös alatasolle
       apply_on_children.help: Kopioi käyttöoikeusmuutokset kaikkiin alatason objekteihin, olemassaolevat käyttöoikeudet alatason objekteihin pysyvät muuttumattomina
+  mass_edit_action:
+    asset:
+      page_title: Resurssit
+      steps:
+        second: Konfiguroi
+        third: Vahvista
 btn.create.asset: Luo resurssi
 btn.drag_or_upload: Vedä ja tiputa tiedosto tai klikkaa tästä
 job_execution.summary:

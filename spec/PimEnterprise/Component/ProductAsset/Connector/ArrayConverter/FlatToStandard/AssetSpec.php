@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Exception\ArrayConversionException;
+use Pim\Component\Connector\Exception\DataArrayConversionException;
 
 class AssetSpec extends ObjectBehavior
 {
@@ -61,7 +61,7 @@ class AssetSpec extends ObjectBehavior
         ];
 
         $this->shouldThrow(
-            new ArrayConversionException('Localized field contains invalid data only "0" or "1" is accepted')
+            new DataArrayConversionException('Localized field contains invalid data only "0" or "1" is accepted')
         )->during('convert',[$fields]);
     }
 }

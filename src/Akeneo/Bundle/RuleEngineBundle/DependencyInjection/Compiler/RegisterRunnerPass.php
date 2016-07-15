@@ -20,10 +20,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class RegisterRunnerPass extends AbstractOrderedPass
 {
-    /** @staticvar */
     const CHAINED_RUNNER_DEF = 'akeneo_rule_engine.runner.chained';
-
-    /** @staticvar */
+    const STRICT_CHAINED_RUNNER_DEF = 'akeneo_rule_engine.runner.strict_chained';
     const RUNNER_TAG = 'akeneo_rule_engine.runner';
 
     /**
@@ -36,10 +34,12 @@ class RegisterRunnerPass extends AbstractOrderedPass
         }
 
         $chainedLoader = $container->getDefinition(self::CHAINED_RUNNER_DEF);
+        $strictChainedLoader = $container->getDefinition(self::STRICT_CHAINED_RUNNER_DEF);
         $loaders = $this->collectTaggedServices($container, self::RUNNER_TAG);
 
         foreach ($loaders as $loader) {
             $chainedLoader->addMethodCall('addRunner', [$loader]);
+            $strictChainedLoader->addMethodCall('addRunner', [$loader]);
         }
     }
 }

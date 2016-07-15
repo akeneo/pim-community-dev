@@ -17,6 +17,15 @@ pimee_product_asset:
     categories.title: Categorias
   mass_upload:
     import: Importação
+  mass_edit_action:
+    asset:
+      steps:
+        second: Configurar
+        third: Confirmar
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      launched_flash: 'A ação em massa "mover para categorias" foi despoletada. Irá receber notificação quando estiver concluída.'
 batch_jobs:
   yml_asset_channel_configuration_import:
     validation.label: Validação do ficheiro

@@ -124,7 +124,8 @@ Feature: Revert a product to a previous version
       | sku     |
       | sandals |
     And I am on the "Catalog manager" role page
-    And I remove rights to Restore a product
+    And I visit the "Permissions" tab
+    And I revoke rights to resources Restore a product
     And I save the role
     When I edit the "sandals" product
     And I add available attributes Name
@@ -134,4 +135,3 @@ Feature: Revert a product to a previous version
     Then I open the history
     And I should see 2 versions in the history
     But I should not see the text "Restore"
-    And I reset the "Administrator" rights

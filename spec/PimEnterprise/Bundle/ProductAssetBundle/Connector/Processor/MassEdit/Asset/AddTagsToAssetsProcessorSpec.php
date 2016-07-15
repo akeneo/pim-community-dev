@@ -86,7 +86,7 @@ class AddTagsToAssetsProcessorSpec extends ObjectBehavior
         $stepExecution->addWarning(
             'pim_enrich.mass_edit_action.add-tags-to-assets.message.error',
             [],
-            ['foo']
+            Argument::type('Akeneo\Component\Batch\Item\InvalidItemInterface')
         )->shouldBeCalled();
         $validator->validate($asset)->willReturn(new ConstraintViolationList([]));
 

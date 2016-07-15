@@ -27,7 +27,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.channel_configuration'
-            - '@pimee_product_asset.processor.normalization.channel_configuration.flat'
+            - '@pimee_product_asset.processor.normalization.channel_configuration'
             - '@pimee_product_asset.writer.file.yaml_asset_channel_configuration'
 
     # CSV Import steps ------------------------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.asset'
-            - '@pimee_product_asset.processor.normalization.asset.flat'
+            - '@pimee_product_asset.processor.normalization.asset'
             - '@pimee_product_asset.writer.file.csv_asset'
 
     pimee_product_asset.step.csv_asset_category.export:
@@ -81,7 +81,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.category'
-            - '@pimee_product_asset.processor.normalization.category.flat'
+            - '@pimee_product_asset.processor.normalization.category'
             - '@pimee_product_asset.writer.file.csv_asset_category'
 
     pimee_product_asset.step.csv_asset_variation.export:
@@ -91,7 +91,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.variation'
-            - '@pimee_product_asset.processor.normalization.variation.flat'
+            - '@pimee_product_asset.processor.normalization.variation'
             - '@pimee_product_asset.writer.file.csv_asset_variation'
 
     # XLSX Import steps -----------------------------------------------------------------------------------------------
@@ -135,7 +135,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.asset'
-            - '@pimee_product_asset.processor.normalization.asset.flat'
+            - '@pimee_product_asset.processor.normalization.asset'
             - '@pimee_product_asset.writer.file.xlsx_asset'
 
     pimee_product_asset.step.xlsx_asset_category.export:
@@ -145,7 +145,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.category'
-            - '@pimee_product_asset.processor.normalization.category.flat'
+            - '@pimee_product_asset.processor.normalization.category'
             - '@pimee_product_asset.writer.file.xlsx_asset_category'
 
     pimee_product_asset.step.xlsx_asset_variation.export:
@@ -155,7 +155,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.variation'
-            - '@pimee_product_asset.processor.normalization.variation.flat'
+            - '@pimee_product_asset.processor.normalization.variation'
             - '@pimee_product_asset.writer.file.xlsx_asset_variation'
 
     # Mass Edit steps -------------------------------------------------------------------------------------------------

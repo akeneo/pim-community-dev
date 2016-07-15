@@ -46,6 +46,14 @@ pimee_workflow:
   steps:
     product_draft_processor.title: Ehdotuksen prosessori
     approve.title: Hyväksy ehdotus
+  mass_edit_action:
+    published:
+      page_title: Julkaistut tuotteet
+      title: Valitse toiminto
+      steps:
+        second: Valitse toiminto
+        third: Konfiguroi
+        fourth: Vahvista
 pimee_workflow_product_draft_notification_new_proposal: Uusi ehdotus
 pimee_workflow_import_notification_new_proposals: Uusia ehdotuksia tuontiin
 btn.publish: Julkaise

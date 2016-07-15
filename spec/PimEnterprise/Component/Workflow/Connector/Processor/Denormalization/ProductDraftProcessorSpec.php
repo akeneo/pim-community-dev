@@ -113,11 +113,14 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $values = $this->getValues();
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
-        $this
-            ->shouldThrow(new InvalidItemException(
-                'Product "my-sku" does not exist',
-                $values['converted_values']
-            ))
+
+
+
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getSummaryInfo('read_lines')->willReturn(1);
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+
+        $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$values['converted_values']]

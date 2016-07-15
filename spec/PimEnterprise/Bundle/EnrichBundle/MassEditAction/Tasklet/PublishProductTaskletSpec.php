@@ -180,8 +180,11 @@ class PublishProductTaskletSpec extends ObjectBehavior
 
         $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(2);
 
-        $stepExecution->addWarning(Argument::any(), [], $product1)->shouldBeCalledTimes(2);
-        $stepExecution->addWarning(Argument::any(), [], $product2)->shouldBeCalledTimes(2);
+        $stepExecution->addWarning(
+            Argument::any(),
+            [],
+            Argument::type('Akeneo\Component\Batch\Item\InvalidItemInterface')
+        )->shouldBeCalledTimes(4);
 
         $manager->publishAll([])->shouldBeCalled();
 
@@ -238,7 +241,11 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('mass_published')->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
 
-        $stepExecution->addWarning(Argument::any(), [], $product2)->shouldBeCalled();
+        $stepExecution->addWarning(
+            Argument::any(),
+            [],
+            Argument::type('Akeneo\Component\Batch\Item\InvalidItemInterface')
+        )->shouldBeCalled();
 
         $violations->count()->willReturn(0);
 
