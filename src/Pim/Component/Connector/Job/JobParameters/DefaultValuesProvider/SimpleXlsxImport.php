@@ -31,9 +31,10 @@ class SimpleXlsxImport implements DefaultValuesProviderInterface
     public function getDefaultValues()
     {
         return [
-            'filePath'      => null,
-            'withHeader'    => true,
-            'uploadAllowed' => true
+            'filePath'                  => null,
+            'withHeader'                => true,
+            'uploadAllowed'             => true,
+            'invalid_items_file_format' => 'xlsx',
         ];
     }
 
