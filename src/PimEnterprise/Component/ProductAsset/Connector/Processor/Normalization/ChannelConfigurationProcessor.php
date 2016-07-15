@@ -45,7 +45,7 @@ class ChannelConfigurationProcessor extends AbstractConfigurableStepElement impl
      */
     public function process($channelConf)
     {
-        return $normalizedChannels = $this->channelNormalizer->normalize($channelConf);
+        return $this->channelNormalizer->normalize($channelConf);
     }
 
     /**
