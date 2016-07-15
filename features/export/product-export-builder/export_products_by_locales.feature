@@ -74,10 +74,10 @@ Feature: Export products according to a locale policy
   @ce
   Scenario: Selecting a channel from the export profile updates the locale choices
     Given the following job "csv_product_export" configuration:
-      | filters | {"structure": {"locales": ["fr_FR"], "scope": "ecommerce"},"data":[{"field":"completeness","operator":"=","value":"100"}]} |
+      | filters | {"structure": {"locales": ["fr_FR"], "scope": "mobile"},"data":[{"field":"completeness","operator":"=","value":"100"}]} |
     And I am on the "csv_product_export" export job edit page
     When I visit the "Content" tab
     Then I should see the text "fr_FR"
     When I fill in the following information:
-      | Channel | Mobile |
+      | Channel | E-Commerce |
     Then I should see the text "fr_FR en_US"

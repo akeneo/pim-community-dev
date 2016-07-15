@@ -43,6 +43,7 @@ Feature: Export products from any given categories
     And I am logged in as "Julia"
 
   # We should handle this case with validation
+  @skip
   Scenario: Export the products from a tree
     Given the following job "csv_product_export" configuration:
       | filters    | {"structure": {"locales": ["en_US"], "scope": "ecommerce"}, "data": [{"field": "categories.code", "value": ["toys_games", "dolls", "women"], "operator": "IN"}, {"field": "completeness", "value": 100, "operator": ">="}]} |

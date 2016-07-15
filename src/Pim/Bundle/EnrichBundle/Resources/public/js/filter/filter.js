@@ -46,7 +46,7 @@ define([
          *
          * @param {string} field
          */
-        setField: function (field) {
+        setField: function (field, options) {
             this.setData(
                 {field: field},
                 {silent: true}
@@ -104,12 +104,15 @@ define([
         /**
          * Sets the current value.
          *
-         * @return {string}
+         * @param {string} value
+         * @param {object} options
          */
-        setValue: function (value) {
+        setValue: function (value, options) {
+            options = options || {silent: true};
+
             this.setData(
                 {value: value},
-                {silent: true}
+                options
             );
         },
 

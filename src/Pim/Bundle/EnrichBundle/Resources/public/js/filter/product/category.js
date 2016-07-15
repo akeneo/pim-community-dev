@@ -58,7 +58,7 @@ define([
          * Resets selection after channel has been modified then re-renders the view.
          */
         channelUpdated: function () {
-            this.setValue([]);
+            this.setValue([], {silent: false});
             this.render();
         },
 
