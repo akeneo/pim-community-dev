@@ -64,6 +64,7 @@ class  ProductReaderSpec extends ObjectBehavior
             'fieldEnclosure' => '"',
         ])->willReturn($fileIterator);
 
+        $fileIterator->getHeaders()->willReturn(['sku', 'name', 'view', 'manual-fr_FR']);
         $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->current()->willReturn($data);

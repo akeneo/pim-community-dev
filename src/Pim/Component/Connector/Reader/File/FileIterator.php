@@ -100,30 +100,6 @@ class FileIterator implements FileIteratorInterface
             return null;
         }
 
-        $countHeaders = count($this->headers);
-        $countData    = count($data);
-
-        if ($countHeaders < $countData) {
-            throw new InvalidItemException(
-                'pim_connector.steps.file_reader.invalid_item_columns_count',
-                $data,
-                [
-                    '%totalColumnsCount%' => $countHeaders,
-                    '%itemColumnsCount%'  => $countData,
-                    '%filePath%'          => $this->filePath,
-                    '%lineno%'            => $this->rows->key()
-                ]
-            );
-        }
-
-        if ($countHeaders > $countData) {
-            $missingValuesCount = $countHeaders - $countData;
-            $missingValues = array_fill(0, $missingValuesCount, '');
-            $data = array_merge($data, $missingValues);
-        }
-
-        $data = array_combine($this->headers, $data);
-
         return $data;
     }
 
@@ -175,6 +151,14 @@ class FileIterator implements FileIteratorInterface
             $fileSystem->remove($this->archivePath);
             $this->archivePath = null;
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
     }
 
     /**

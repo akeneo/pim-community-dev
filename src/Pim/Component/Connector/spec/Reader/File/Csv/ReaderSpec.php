@@ -47,6 +47,7 @@ class ReaderSpec extends ObjectBehavior
             'fieldEnclosure' => '"',
         ])->willReturn($fileIterator);
 
+        $fileIterator->getHeaders()->willReturn(['sku', 'name']);
         $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->valid()->willReturn(true);
@@ -77,12 +78,14 @@ class ReaderSpec extends ObjectBehavior
             'sku'  => 'SKU-001',
             'name' => 'door',
         ];
+        $stepExecution->getSummaryInfo('read_lines')->shouldBeCalled();
 
         $fileIteratorFactory->create($filePath, [
             'fieldDelimiter' => ';',
             'fieldEnclosure' => '"',
         ])->willReturn($fileIterator);
 
+        $fileIterator->getHeaders()->willReturn(['sku', 'name']);
         $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->valid()->willReturn(true);

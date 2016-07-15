@@ -17,4 +17,11 @@ interface FileIteratorInterface extends \Iterator
      * @return string
      */
     public function getDirectoryPath();
+
+    /**
+     * Returns file headers
+     * 
+     * @return array
+     */
+    public function getHeaders();
 }

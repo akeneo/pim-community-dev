@@ -20,10 +20,10 @@ class FileIteratorSpec extends ObjectBehavior
         $this->next();
         $this->current()->shouldReturn(
             [
-                'sku'          => 'SKU-001',
-                'name'         => 'door',
-                'view'         => 'sku-001.jpg',
-                'manual-fr_FR' => 'sku-001.txt'
+                'SKU-001',
+                'door',
+                'sku-001.jpg',
+                'sku-001.txt'
             ]
         );
     }
@@ -36,12 +36,12 @@ class FileIteratorSpec extends ObjectBehavior
         $this->next();
         $this->current()->shouldReturn(
             [
-                'sku' => 'SKU-001',
-                'family' => 'boots',
-                'groups' => 'CROSS',
-                'categories' => 'winter_boots',
-                'name-en_US' => 'Donec',
-                'description-en_US-tablet' => 'dictum magna.
+                'SKU-001',
+                'boots',
+                'CROSS',
+                'winter_boots',
+                'Donec',
+                'dictum magna.
 
 Lorem ispum
 Est'
@@ -58,15 +58,15 @@ Est'
         $this->next();
         $this->current()->shouldReturn(
             [
-                'sku' => 'CAT-001',
-                'family' => 'boots',
-                'groups' => 'caterpillar_boots',
-                'categories' => 'winter_collection',
-                'name-en_US' => 'Caterpillar 1',
-                'description-en_US-mobile' => 'Model 1 boots',
-                'side_view' => 'cat_001.png',
-                'color' => 'black',
-                'size' => '37',
+                'CAT-001',
+                'boots',
+                'caterpillar_boots',
+                'winter_collection',
+                'Caterpillar 1',
+                'Model 1 boots',
+                'cat_001.png',
+                'black',
+                '37',
             ]
         );
     }
