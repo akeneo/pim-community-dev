@@ -23,6 +23,15 @@ define([
             this.config = config.config;
         },
 
+         /**
+         * {@inherit}
+         */
+        configure: function () {
+            this.on('locales:update:after', this.updateState.bind(this));
+
+            return BaseFilter.prototype.configure.apply(this, arguments);
+        },
+
         /**
          * Returns rendered input.
          *
@@ -62,7 +71,8 @@ define([
         updateState: function () {
             this.setData({
                 operator: this.$('[name="filter-operator"]').val(),
-                value: 100
+                value: 100,
+                context: {'locales': this.getParentForm().getFormData().structure.locales}
             });
         }
     });
