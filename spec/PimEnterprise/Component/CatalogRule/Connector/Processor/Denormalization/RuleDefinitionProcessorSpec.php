@@ -5,6 +5,8 @@ namespace spec\PimEnterprise\Component\CatalogRule\Connector\Processor\Denormali
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Component\Batch\Item\InvalidItemInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -271,7 +273,8 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $repository,
         $denormalizer,
         $validator,
-        RuleInterface $rule
+        RuleInterface $rule,
+        StepExecution $stepExecution
     ) {
         $item = [
             'code'       => 'discharge_fr_description',
@@ -312,9 +315,11 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         )->shouldBeCalled()->willReturn($rule);
         $validator->validate($rule)->shouldBeCalled()->willReturn($violations);
 
-        $this->shouldThrow(
-            new InvalidItemException(": error: invalid value 1, invalid value 2\n", $item, [], 0, null)
-        )->during('process', [$item]);
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getSummaryInfo('read_lines')->willReturn(1);
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+
+        $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')->during('process', [$item]);
     }
 
     function getMatchers()

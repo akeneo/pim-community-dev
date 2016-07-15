@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Exception\ArrayConversionException;
+use Pim\Component\Connector\Exception\DataArrayConversionException;
 
 /**
  * Product Asset Flat Converter
@@ -111,13 +111,13 @@ class Asset implements ArrayConverterInterface
      * @param array $item
      * @param array $requiredFields
      *
-     * @throws ArrayConversionException
+     * @throws DataArrayConversionException
      */
     protected function validateRequiredFields(array $item, array $requiredFields)
     {
         foreach ($requiredFields as $requiredField) {
             if (!in_array($requiredField, array_keys($item))) {
-                throw new ArrayConversionException(
+                throw new DataArrayConversionException(
                     sprintf(
                         'Field "%s" is expected, provided fields are "%s"',
                         $requiredField,
@@ -127,7 +127,7 @@ class Asset implements ArrayConverterInterface
             }
 
             if ('' === $item[$requiredField]) {
-                throw new ArrayConversionException(
+                throw new DataArrayConversionException(
                     sprintf(
                         'Field "%s" must be filled',
                         $requiredField,
@@ -138,7 +138,7 @@ class Asset implements ArrayConverterInterface
         }
 
         if (!in_array($item['localized'], ['0', '1'])) {
-            throw new ArrayConversionException(
+            throw new DataArrayConversionException(
                 'Localized field contains invalid data only "0" or "1" is accepted'
             );
         }

@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\FlatToStandard;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Exception\ArrayConversionException;
+use Pim\Component\Connector\Exception\DataArrayConversionException;
 
 /**
  * Tag collection converter
@@ -61,11 +61,13 @@ class Tags implements ArrayConverterInterface
      * Validate the item to be parsed.
      *
      * @param array $item
+     *
+     * @throws DataArrayConversionException
      */
     protected function validate(array $item)
     {
         if (!isset($item['tags'])) {
-            throw new ArrayConversionException(
+            throw new DataArrayConversionException(
                 sprintf(
                     'Field "tags" is expected, provided fields are "%s"',
                     implode(', ', array_keys($item))

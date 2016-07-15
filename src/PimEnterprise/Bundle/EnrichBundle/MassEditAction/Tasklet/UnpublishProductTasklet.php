@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet;
 
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
@@ -82,7 +83,7 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet
                     $this->stepExecution->addWarning(
                         'pim_enrich.mass_edit_action.unpublish.message.error',
                         [],
-                        $product
+                        new DataInvalidItem($product)
                     );
                 }
             }

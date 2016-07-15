@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\RemoveProductValueProcessor as BaseProcessor;
@@ -77,7 +78,7 @@ class RemoveProductValueWithPermissionProcessor extends BaseProcessor
         $this->stepExecution->addWarning(
             'pim_enrich.mass_edit_action.edit_common_attributes.message.error',
             [],
-            $product
+            new DataInvalidItem($product)
         );
         $this->stepExecution->incrementSummaryInfo('skipped_products');
 
