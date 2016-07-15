@@ -45,13 +45,6 @@ class ProductCsvExportSpec extends ObjectBehavior
                     ]
                 ]
             ],
-            'with_media' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.export.with_media.label',
-                    'help'  => 'pim_connector.export.with_media.help'
-                ]
-            ],
             'decimalSeparator' => [
                 'type'    => 'choice',
                 'options' => [
@@ -71,7 +64,7 @@ class ProductCsvExportSpec extends ObjectBehavior
                     'label'    => 'pim_base_connector.export.dateFormat.label',
                     'help'     => 'pim_base_connector.export.dateFormat.help',
                 ]
-            ],
+            ]
         ];
 
         $exportConfig = [
@@ -93,6 +86,13 @@ class ProductCsvExportSpec extends ObjectBehavior
                 'options' => [
                     'label' => 'pim_connector.export.withHeader.label',
                     'help'  => 'pim_connector.export.withHeader.help'
+                ]
+            ],
+            'with_media' => [
+                'type'    => 'switch',
+                'options' => [
+                    'label' => 'pim_connector.export.with_media.label',
+                    'help'  => 'pim_connector.export.with_media.help'
                 ]
             ],
         ];

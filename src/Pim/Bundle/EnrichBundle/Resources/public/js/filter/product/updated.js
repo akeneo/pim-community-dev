@@ -30,7 +30,7 @@ define([
         shortname: 'updated',
         template: _.template(template),
         events: {
-            'change [name="filter-operator"]': 'updateState'
+            'change [name="filter-operator"], [name="filter-value"]': 'updateState'
         },
 
         /**
@@ -107,6 +107,10 @@ define([
 
             if (operator !== oldOperator) {
                 value = '';
+            }
+
+            if ('SINCE LAST JOB' === operator) {
+                value = this.getParentForm().getFormData().jobCode;
             }
 
             this.setData({

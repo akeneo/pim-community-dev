@@ -56,9 +56,9 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormConfiguration(JobInstance $jobInstance)
+    public function getFormConfiguration()
     {
-        $xlsxFormOptions = array_merge($this->simpleXlsxExport->getFormConfiguration($jobInstance), [
+        $xlsxFormOptions = array_merge($this->simpleXlsxExport->getFormConfiguration(), [
             'with_media' => [
                 'type'    => 'switch',
                 'options' => [

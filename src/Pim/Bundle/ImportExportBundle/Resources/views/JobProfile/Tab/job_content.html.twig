@@ -15,6 +15,7 @@
                                     .on('pim_enrich:form:entity:post_update', function () {
                                         document.getElementById('{{ form.configuration.filters.vars.id }}').value = JSON.stringify(form.getFormData());
                                     })
+                                    .trigger('pim_enrich:form:export:set_code', '{{ form.code.vars.value }}')
                                     .setData(JSON.parse($('#{{ form.configuration.filters.vars.id }}').val()))
                                     .render();
 

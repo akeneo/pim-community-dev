@@ -40,6 +40,8 @@ define(
                     this.forwardMediatorEvents(module.config()['forwarded-events']);
                 }
 
+                this.listenTo(this.getRoot(), 'pim_enrich:form:export:set_code', this.setJobCode.bind(this));
+
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
@@ -57,6 +59,13 @@ define(
                 );
 
                 this.renderExtensions();
+            },
+
+            setJobCode: function (jobCode) {
+                this.setData(
+                    {jobCode: jobCode},
+                    {silent: true}
+                );
             },
 
             /**

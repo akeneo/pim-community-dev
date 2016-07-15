@@ -58,9 +58,9 @@ class ProductCsvExport implements FormConfigurationProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormConfiguration(JobInstance $jobInstance)
+    public function getFormConfiguration()
     {
-        $csvFormOptions = array_merge($this->simpleCsvExport->getFormConfiguration($jobInstance), [
+        $csvFormOptions = array_merge($this->simpleCsvExport->getFormConfiguration(), [
             'with_media' => [
                 'type'    => 'switch',
                 'options' => [

@@ -14,7 +14,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
         $this->beConstructedWith(
             $simpleCsvExport,
             ['product_xlsx_export'],
-            [','],
+            [',', ';'],
             ['yyyy-MM-dd', 'dd/MM/yyyy']
         );
     }
@@ -36,10 +36,37 @@ class ProductXlsxExportSpec extends ObjectBehavior
     function it_gets_form_configuration(
         $simpleCsvExport,
         $channelRepository,
-        $familyRepository,
-        JobInstance $jobInstance
+        $familyRepository
     ) {
-
+        $baseExport = [
+            'linesPerFile' => [
+                'type'    => 'integer',
+                'options' => [
+                    'label' => 'pim_connector.export.lines_per_files.label',
+                    'help'  => 'pim_connector.export.lines_per_files.help',
+                ]
+            ],
+            'filePath' => [
+                'options' => [
+                    'label' => 'pim_connector.export.filePath.label',
+                    'help'  => 'pim_connector.export.filePath.help'
+                ]
+            ],
+            'withHeader' => [
+                'type'    => 'switch',
+                'options' => [
+                    'label' => 'pim_connector.export.withHeader.label',
+                    'help'  => 'pim_connector.export.withHeader.help'
+                ]
+            ],
+            'with_media' => [
+                'type'    => 'switch',
+                'options' => [
+                    'label' => 'pim_connector.export.with_media.label',
+                    'help'  => 'pim_connector.export.with_media.help'
+                ]
+            ],
+        ];
 
         $exportConfig = [
             'filters' => [
@@ -53,7 +80,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
             'decimalSeparator' => [
                 'type'    => 'choice',
                 'options' => [
-                    'choices'  => [','],
+                    'choices'  => [',', ';'],
                     'required' => true,
                     'select2'  => true,
                     'label'    => 'pim_base_connector.export.decimalSeparator.label',
@@ -79,8 +106,8 @@ class ProductXlsxExportSpec extends ObjectBehavior
             ],
         ];
 
-        $simpleCsvExport->getFormConfiguration()->willReturn($exportConfig);
+        $simpleCsvExport->getFormConfiguration()->willReturn($baseExport);
 
-        $this->getFormConfiguration()->shouldReturn($formOptions + $exportConfig);
+        $this->getFormConfiguration()->shouldReturn($exportConfig + $baseExport);
     }
 }
