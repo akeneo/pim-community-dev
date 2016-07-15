@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class AttributeGroupVoterSpec extends ObjectBehavior
 {
-    protected $attributes = array(Attributes::VIEW_ATTRIBUTES, Attributes::EDIT_ATTRIBUTES);
+    protected $attributes = [Attributes::VIEW_ATTRIBUTES, Attributes::EDIT_ATTRIBUTES];
 
     function let(AttributeGroupAccessManager $accessManager, TokenInterface $token)
     {
@@ -23,7 +23,7 @@ class AttributeGroupVoterSpec extends ObjectBehavior
     function it_returns_abstain_access_if_non_attribute_group_entity($token)
     {
         $this
-            ->vote($token, 'foo', array('bar', 'baz'))
+            ->vote($token, 'foo', ['bar', 'baz'])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
