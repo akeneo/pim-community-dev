@@ -220,13 +220,13 @@ class JobInstance
     /**
      * This parameters can be used to create a JobParameters, stored like this in a legacy way
      *
-     * @param array $parameters
+     * @param array $rawParameters
      *
      * @return JobInstance
      */
-    public function setRawParameters($parameters)
+    public function setRawParameters($rawParameters)
     {
-        $this->rawParameters = $parameters;
+        $this->rawParameters = $rawParameters;
 
         return $this;
     }

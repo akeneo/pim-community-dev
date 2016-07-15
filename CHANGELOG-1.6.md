@@ -62,7 +62,7 @@
 
 ## BC breaks
 
-- Move namespace `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType` to `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`
+- Rename `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType` to `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`
 - Rename method `getRawConfiguration` to `getRawParameters` in `Akeneo\Component\Batch\Model\JobInstance`
 - Rename method `setRawConfiguration` to `setRawParameters` in `Akeneo\Component\Batch\Model\JobInstance`
 - Change constructor of `Akeneo\Component\Buffer\BufferInterface`. Add `$options` array as the second argument.
