@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\Exception;
 
 use Akeneo\Component\Batch\Item\InvalidItemException as BaseInvalidItemException;
+use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -29,7 +30,7 @@ class InvalidItemFromViolationsException extends BaseInvalidItemException
      */
     public function __construct(
         ConstraintViolationListInterface $violations,
-        array $item,
+        InvalidItemInterface $item,
         array $messageParameters = [],
         $code = 0,
         \Exception $previous = null

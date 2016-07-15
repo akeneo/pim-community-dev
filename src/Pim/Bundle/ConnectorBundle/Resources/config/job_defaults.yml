@@ -13,7 +13,7 @@ parameters:
     pim_connector.job.job_parameters.default_values_provider.product_csv_import.class:        Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport
     pim_connector.job.job_parameters.default_values_provider.product_xlsx_import.class:       Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport
     pim_connector.job.job_parameters.default_values_provider.variant_group_csv_import.class:  Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\VariantGroupCsvImport
-    pim_connector.job.job_parameters.default_values_provider.variant_group_xlsx_import.class: Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\VariantGroupCsvImport
+    pim_connector.job.job_parameters.default_values_provider.variant_group_xlsx_import.class: Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\VariantGroupXlsxImport
 
 services:
     # Default Parameters for Exports ----------------------------------------------------------------------------------

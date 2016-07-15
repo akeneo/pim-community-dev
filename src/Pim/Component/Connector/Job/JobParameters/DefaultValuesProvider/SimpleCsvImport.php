@@ -31,12 +31,13 @@ class SimpleCsvImport implements DefaultValuesProviderInterface
     public function getDefaultValues()
     {
         return [
-            'filePath'      => null,
-            'delimiter'     => ';',
-            'enclosure'     => '"',
-            'escape'        => '\\',
-            'withHeader'    => true,
-            'uploadAllowed' => true
+            'filePath'                  => null,
+            'delimiter'                 => ';',
+            'enclosure'                 => '"',
+            'escape'                    => '\\',
+            'withHeader'                => true,
+            'uploadAllowed'             => true,
+            'invalid_items_file_format' => 'csv',
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Item\MassEdit;
 
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
@@ -259,7 +260,7 @@ class VariantGroupCleaner
                         ->addWarning(
                             $this->translator->trans('add_to_variant_group.steps.cleaner.warning.description'),
                             [],
-                            $product
+                            new DataInvalidItem($product)
                         );
                 }
 
@@ -307,7 +308,7 @@ class VariantGroupCleaner
                                 'pim_enrich.mass_edit_action.add-to-variant-group.already_in_variant_group_or_not_valid'
                             ),
                             [],
-                            $product
+                            new DataInvalidItem($product)
                         );
                 }
             }

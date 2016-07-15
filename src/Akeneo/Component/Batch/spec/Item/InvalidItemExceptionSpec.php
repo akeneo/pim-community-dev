@@ -2,15 +2,18 @@
 
 namespace spec\Akeneo\Component\Batch\Item;
 
+use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use PhpSpec\ObjectBehavior;
 
 class InvalidItemExceptionSpec extends ObjectBehavior
 {
-    function let()
+    function let(InvalidItemInterface $invalidItem)
     {
+        $invalidItem->getInvalidData()->willReturn(['foo' => 'fighter']);
+
         $this->beConstructedWith(
             'Tango is down, I repeat...',
-            ['foo' => 'fighter']
+            $invalidItem
         );
     }
 
@@ -19,8 +22,8 @@ class InvalidItemExceptionSpec extends ObjectBehavior
         $this->getMessage()->shouldReturn('Tango is down, I repeat...');
     }
 
-    function it_provides_the_invalid_item()
+    function it_provides_the_invalid_item($invalidItem)
     {
-        $this->getItem()->shouldReturn(['foo' => 'fighter']);
+        $this->getItem()->shouldReturn($invalidItem);
     }
 }

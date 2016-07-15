@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\Reader\File\Csv;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
@@ -54,6 +55,7 @@ class Reader extends AbstractConfigurableStepElement implements
      */
     public function read()
     {
+        $filePath = null;
         if (null === $this->fileIterator) {
             $jobParameters = $this->stepExecution->getJobParameters();
             $filePath = $jobParameters->get('filePath');
@@ -72,11 +74,26 @@ class Reader extends AbstractConfigurableStepElement implements
             $this->stepExecution->incrementSummaryInfo('read_lines');
         }
 
-        $item = $this->fileIterator->current();
+        $data = $this->fileIterator->current();
 
-        if (null === $item) {
+        if (null === $data) {
             return null;
         }
+
+        $headers = $this->fileIterator->getHeaders();
+
+        $countHeaders = count($headers);
+        $countData    = count($data);
+
+        $this->checkColumnNumber($countHeaders, $countData, $data, $filePath);
+
+        if ($countHeaders > $countData) {
+            $missingValuesCount = $countHeaders - $countData;
+            $missingValues = array_fill(0, $missingValuesCount, '');
+            $data = array_merge($data, $missingValues);
+        }
+
+        $item = array_combine($this->fileIterator->getHeaders(), $data);
 
         try {
             $item = $this->converter->convert($item, $this->getArrayConverterOptions());
@@ -127,9 +144,44 @@ class Reader extends AbstractConfigurableStepElement implements
         }
 
         if (null !== $exception->getViolations()) {
-            throw new InvalidItemFromViolationsException($exception->getViolations(), $item, [], 0, $exception);
+            throw new InvalidItemFromViolationsException(
+                $exception->getViolations(),
+                new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('read_lines') + 1)),
+                [],
+                0,
+                $exception
+            );
         }
 
-        throw new InvalidItemException($exception->getMessage(), $item, [], 0, $exception);
+        $invalidItem = new FileInvalidItem(
+            $item,
+            ($this->stepExecution->getSummaryInfo('read_lines') + 1)
+        );
+
+        throw new InvalidItemException($exception->getMessage(), $invalidItem, [], 0, $exception);
+    }
+
+    /**
+     * @param int    $countHeaders
+     * @param int    $countData
+     * @param string $data
+     * @param string $filePath
+     *
+     * @throws InvalidItemException
+     */
+    protected function checkColumnNumber($countHeaders, $countData, $data, $filePath)
+    {
+        if ($countHeaders < $countData) {
+            throw new InvalidItemException(
+                'pim_connector.steps.file_reader.invalid_item_columns_count',
+                new FileInvalidItem($data, ($this->stepExecution->getSummaryInfo('read_lines') + 1)),
+                [
+                    '%totalColumnsCount%' => $countHeaders,
+                    '%itemColumnsCount%'  => $countData,
+                    '%filePath%'          => $filePath,
+                    '%lineno%'            => $this->fileIterator->key()
+                ]
+            );
+        }
     }
 }

@@ -23,14 +23,13 @@ class VariantGroupCsvImport implements DefaultValuesProviderInterface
 
     /**
      * @param DefaultValuesProviderInterface $simpleProvider
-     * @param array                      $supportedJobNames
+     * @param array                          $supportedJobNames
      */
     public function __construct(DefaultValuesProviderInterface $simpleProvider, array $supportedJobNames)
     {
         $this->simpleProvider = $simpleProvider;
         $this->supportedJobNames = $supportedJobNames;
     }
-
 
     /**
      * {@inheritdoc}
@@ -41,6 +40,7 @@ class VariantGroupCsvImport implements DefaultValuesProviderInterface
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $parameters['copyValues'] = true;
+        $parameters['invalid_items_file_format'] = 'csv';
 
         return $parameters;
     }

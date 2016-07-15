@@ -7,30 +7,30 @@ use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface;
-use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
-use Pim\Component\Connector\Writer\File\Csv\Writer;
+use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemWriterRegistry;
 
 class JobExecutionArchivistSpec extends ObjectBehavior
 {
-    function let(InvalidItemsCollector $collector, Writer $writer)
-    {
-    }
-
     function it_is_initializable()
     {
         $this->shouldHaveType('Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist');
     }
 
+    function it_is_an_event_subscriber()
+    {
+        $this->shouldHaveType('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+    }
+
     function it_returns_subscribed_events()
     {
-        $this::getSubscribedEvents()->shouldReturn(
+        $this->getSubscribedEvents()->shouldReturn(
             [
                 EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeStatusUpgrade'
             ]
         );
     }
 
-    function it_throws_an_exception_if_there_is_already__a_registered_archier(ArchiverInterface $archiver)
+    function it_throws_an_exception_if_there_is_already_a_registered_archier(ArchiverInterface $archiver)
     {
         $archiver->getName()->willReturn('output');
 
@@ -56,9 +56,17 @@ class JobExecutionArchivistSpec extends ObjectBehavior
         $this->getArchives($jobExecution)->shouldReturn(['output' => ['a', 'b'], 'input' => ['a', 'b']]);
     }
 
-    function it_throws_an_exception_if_there_is_no_registered_archivers(JobExecution $jobExecution)
-    {
-        $this->shouldThrow('\InvalidArgumentException')->during('getArchive', [$jobExecution, 'archiver_name', 'key']);
+    function it_throws_an_exception_if_no_archiver_is_defined(
+        JobExecution $jobExecution,
+        ArchiverInterface $archiver
+    ) {
+        $archiver->getName()->willReturn('archiver');
+
+        $this->registerArchiver($archiver);
+
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->during('getArchive', [$jobExecution, 'archiver_name', 'key']);
     }
 
     function it_returns_the_corresponding_archiver(JobExecution $jobExecution, ArchiverInterface $archiver)
@@ -73,15 +81,22 @@ class JobExecutionArchivistSpec extends ObjectBehavior
     function it_register_an_event_and_verify_if_job_is_supported(
         JobExecutionEvent $event,
         JobExecution $jobExecution,
-        ArchiverInterface $archiver
+        ArchiverInterface $archiver1,
+        ArchiverInterface $archiver2
     ) {
-        $archiver->getName()->willReturn('output');
-        $this->registerArchiver($archiver);
+        $archiver1->getName()->willReturn('archiver_1');
+        $archiver2->getName()->willReturn('archiver_2');
+
+        $this->registerArchiver($archiver1);
+        $this->registerArchiver($archiver2);
 
         $event->getJobExecution()->willReturn($jobExecution);
 
-        $archiver->supports($jobExecution)->willReturn(true)->shouldBeCalled();
-        $archiver->archive($jobExecution)->shouldBeCalled();
+        $archiver1->supports($jobExecution)->willReturn(true);
+        $archiver2->supports($jobExecution)->willReturn(false);
+
+        $archiver1->archive($jobExecution)->shouldBeCalled();
+        $archiver2->archive($jobExecution)->shouldNotBeCalled();
 
         $this->beforeStatusUpgrade($event);
     }

@@ -2,10 +2,12 @@
 
 namespace spec\Akeneo\Component\Batch\Model;
 
+use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Model\JobExecution;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class StepExecutionSpec extends ObjectBehavior
 {
@@ -55,12 +57,12 @@ class StepExecutionSpec extends ObjectBehavior
         $this->getFailureExceptions()->shouldHaveCount(1);
     }
 
-    function it_adds_warning()
+    function it_adds_warning(InvalidItemInterface $invalidItem)
     {
         $this->addWarning(
             'my reason',
             [],
-            ['myitem']
+            $invalidItem
         );
         $this->getWarnings()->shouldHaveCount(1);
     }
