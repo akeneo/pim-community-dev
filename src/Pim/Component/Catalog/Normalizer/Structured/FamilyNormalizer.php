@@ -129,7 +129,7 @@ class FamilyNormalizer implements NormalizerInterface
         });
 
         foreach ($requirements as $requirement) {
-            $required[sprintf('requirements-%s', $requirement['channel'])][] = $requirement['attribute'];
+            $required['requirements'][$requirement['channel']][] = $requirement['attribute'];
         }
 
         return $required;

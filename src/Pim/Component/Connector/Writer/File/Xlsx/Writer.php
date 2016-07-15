@@ -4,6 +4,7 @@ namespace Pim\Component\Connector\Writer\File\Xlsx;
 
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Buffer\BufferFactory;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
@@ -19,6 +20,9 @@ use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
  */
 class Writer extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
 {
+    /** @var ArrayConverterInterface */
+    protected $arrayConverter;
+
     /** @var FlatItemBuffer */
     protected $flatRowBuffer = null;
 
@@ -32,17 +36,20 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Archivab
     protected $bufferFactory;
 
     /**
+     * @param ArrayConverterInterface   $arrayConverter
      * @param FilePathResolverInterface $filePathResolver
      * @param BufferFactory             $bufferFactory
      * @param FlatItemBufferFlusher     $flusher
      */
     public function __construct(
+        ArrayConverterInterface $arrayConverter,
         FilePathResolverInterface $filePathResolver,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher
     ) {
         parent::__construct($filePathResolver);
 
+        $this->arrayConverter = $arrayConverter;
         $this->bufferFactory = $bufferFactory;
         $this->flusher       = $flusher;
     }
@@ -56,7 +63,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Archivab
             $this->flatRowBuffer = $this->bufferFactory->create();
         }
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -67,10 +74,15 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Archivab
             $this->localFs->mkdir($exportFolder);
         }
 
+        $flatItems = [];
+        foreach ($items as $item) {
+            $flatItems[] = $this->arrayConverter->convert($item);
+        }
+
         $parameters = $this->stepExecution->getJobParameters();
         $options = [];
         $options['withHeader'] = $parameters->get('withHeader');
-        $this->flatRowBuffer->write($items, $options);
+        $this->flatRowBuffer->write($flatItems, $options);
     }
 
     /**

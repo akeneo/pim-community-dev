@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
@@ -35,6 +36,9 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
     /** @var DenormalizerInterface */
     protected $denormalizer;
 
+    /** @var ObjectDetacherInterface */
+    protected $objectDetacher;
+
     /** @var string */
     protected $uploadDirectory;
 
@@ -42,19 +46,22 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
     protected $format;
 
     /**
-     * @param NormalizerInterface   $normalizer
-     * @param DenormalizerInterface $denormalizer
-     * @param string                $uploadDirectory
-     * @param string                $format
+     * @param NormalizerInterface     $normalizer
+     * @param DenormalizerInterface   $denormalizer
+     * @param ObjectDetacherInterface $objectDetacher
+     * @param string                  $uploadDirectory
+     * @param string                  $format
      */
     public function __construct(
         NormalizerInterface $normalizer,
         DenormalizerInterface $denormalizer,
+        ObjectDetacherInterface $objectDetacher,
         $uploadDirectory,
         $format
     ) {
         $this->normalizer        = $normalizer;
         $this->denormalizer      = $denormalizer;
+        $this->objectDetacher    = $objectDetacher;
         $this->uploadDirectory   = $uploadDirectory;
         $this->format            = $format;
     }
@@ -79,6 +86,8 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
                 'date_format'               => $dateFormat,
             ]
         );
+
+        $this->objectDetacher->detach($item);
 
         return $data;
     }
@@ -108,6 +117,8 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
                 ['field_name' => 'media', 'prepare_copy' => true, 'identifier' => $group->getCode()]
             );
         } catch (FileNotFoundException $e) {
+            $this->objectDetacher->detach($group);
+            
             throw new InvalidItemException(
                 $e->getMessage(),
                 [
