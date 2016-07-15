@@ -14,7 +14,7 @@ use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
-use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
+use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType;
 use Pim\Bundle\ImportExportBundle\JobTemplate\JobTemplateProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -45,8 +45,8 @@ class JobProfileController
     /** @var string */
     protected $jobType;
 
-    /** @var JobInstanceType */
-    protected $jobInstanceType;
+    /** @var JobInstanceFormType */
+    protected $jobInstanceFormType;
 
     /** @var JobInstanceFactory */
     protected $jobInstanceFactory;
@@ -101,7 +101,7 @@ class JobProfileController
      * @param ValidatorInterface           $validator
      * @param EventDispatcherInterface     $eventDispatcher
      * @param JobRegistry                  $jobRegistry
-     * @param JobInstanceType              $jobInstanceType
+     * @param JobInstanceFormType          $jobInstanceFormType
      * @param JobInstanceFactory           $jobInstanceFactory
      * @param JobLauncherInterface         $simpleJobLauncher
      * @param EntityManagerInterface       $entityManager
@@ -120,7 +120,7 @@ class JobProfileController
         ValidatorInterface $validator,
         EventDispatcherInterface $eventDispatcher,
         JobRegistry $jobRegistry,
-        JobInstanceType $jobInstanceType,
+        JobInstanceFormType $jobInstanceFormType,
         JobInstanceFactory $jobInstanceFactory,
         JobLauncherInterface $simpleJobLauncher,
         EntityManagerInterface $entityManager,
@@ -134,8 +134,8 @@ class JobProfileController
         $this->jobRegistry           = $jobRegistry;
         $this->jobType               = $jobType;
 
-        $this->jobInstanceType       = $jobInstanceType;
-        $this->jobInstanceType->setJobType($this->jobType);
+        $this->jobInstanceFormType       = $jobInstanceFormType;
+        $this->jobInstanceFormType->setJobType($this->jobType);
 
         $this->jobInstanceFactory    = $jobInstanceFactory;
         $this->simpleJobLauncher     = $simpleJobLauncher;
@@ -163,7 +163,7 @@ class JobProfileController
     public function createAction(Request $request)
     {
         $jobInstance = $this->jobInstanceFactory->createJobInstance($this->getJobType());
-        $form = $this->formFactory->create($this->jobInstanceType, $jobInstance);
+        $form = $this->formFactory->create($this->jobInstanceFormType, $jobInstance);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
@@ -216,7 +216,7 @@ class JobProfileController
 
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_SHOW, new GenericEvent($jobInstance));
 
-        $form = $this->formFactory->create($this->jobInstanceType, $jobInstance, ['disabled' => true]);
+        $form = $this->formFactory->create($this->jobInstanceFormType, $jobInstance, ['disabled' => true]);
         $uploadAllowed = false;
         $uploadForm = null;
 
@@ -261,7 +261,7 @@ class JobProfileController
 
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EDIT, new GenericEvent($jobInstance));
 
-        $form = $this->formFactory->create($this->jobInstanceType, $jobInstance);
+        $form = $this->formFactory->create($this->jobInstanceFormType, $jobInstance);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
