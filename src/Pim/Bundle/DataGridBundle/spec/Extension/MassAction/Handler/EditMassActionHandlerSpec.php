@@ -25,7 +25,7 @@ class EditMassActionHandlerSpec extends ObjectBehavior
         DatasourceInterface $datasource,
         EditMassAction $massAction
     ) {
-        $objectIds = array('foo', 'bar', 'baz');
+        $objectIds = ['foo', 'bar', 'baz'];
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_EDIT_PRE_HANDLER,

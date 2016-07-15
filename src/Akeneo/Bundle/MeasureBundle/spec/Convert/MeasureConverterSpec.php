@@ -33,7 +33,7 @@ class MeasureConverterSpec extends ObjectBehavior
             ->shouldThrow(
                 new UnknownFamilyMeasureException()
             )
-            ->during('setFamily', array('foo'));
+            ->during('setFamily', ['foo']);
     }
 
     public function it_converts_a_value_from_a_base_unit_to_a_final_unit()
@@ -73,7 +73,7 @@ class MeasureConverterSpec extends ObjectBehavior
                     'Could not find metric unit "foo" in family "Weight"'
                 )
             )
-            ->during('convertBaseToStandard', array('foo', Argument::any()));
+            ->during('convertBaseToStandard', ['foo', Argument::any()]);
 
         $this
             ->shouldThrow(
@@ -81,6 +81,6 @@ class MeasureConverterSpec extends ObjectBehavior
                     'Could not find metric unit "foo" in family "Weight"'
                 )
             )
-            ->during('convertStandardToResult', array('foo', Argument::any()));
+            ->during('convertStandardToResult', ['foo', Argument::any()]);
     }
 }

@@ -89,10 +89,10 @@ class MailNotifier implements Notifier
             return;
         }
 
-        $parameters = array(
+        $parameters = [
             'jobExecution' => $jobExecution,
             'log'          => $this->logger->getFilename(),
-        );
+        ];
 
         $txtBody  = $this->twig->render('AkeneoBatchBundle:Mails:notification.txt.twig', $parameters);
         $htmlBody = $this->twig->render('AkeneoBatchBundle:Mails:notification.html.twig', $parameters);

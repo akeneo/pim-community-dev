@@ -46,7 +46,7 @@ class BatchStatus
     const ABANDONED = 7;
     const UNKNOWN   = 8;
 
-    protected static $statusLabels = array(
+    protected static $statusLabels = [
         self::COMPLETED => 'COMPLETED',
         self::STARTING  => 'STARTING',
         self::STARTED   => 'STARTED',
@@ -55,7 +55,7 @@ class BatchStatus
         self::FAILED    => 'FAILED',
         self::ABANDONED => 'ABANDONED',
         self::UNKNOWN   => 'UNKNOWN'
-    );
+    ];
 
     /**
      * Get all labels associative array

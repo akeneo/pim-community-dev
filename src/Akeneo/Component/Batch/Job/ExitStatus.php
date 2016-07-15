@@ -53,14 +53,14 @@ class ExitStatus
      */
     const STOPPED = "STOPPED";
 
-    protected static $statusSeverity = array(
+    protected static $statusSeverity = [
         self::EXECUTING => 1,
         self::COMPLETED => 2,
         self::NOOP      => 3,
         self::STOPPED   => 4,
         self::FAILED    => 5,
         self::UNKNOWN   => 6
-    );
+    ];
 
     private $exitCode;
     private $exitDescription;

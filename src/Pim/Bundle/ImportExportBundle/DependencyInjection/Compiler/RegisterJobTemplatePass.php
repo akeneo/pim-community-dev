@@ -38,7 +38,7 @@ class RegisterJobTemplatePass implements CompilerPassInterface
         $jobTemplatesFilePath = sprintf('%s%sjob_templates.yml', $configRootPath, DIRECTORY_SEPARATOR);
 
         // retrieve each job config from bundles
-        $jobTemplatesConfig = array();
+        $jobTemplatesConfig = [];
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);

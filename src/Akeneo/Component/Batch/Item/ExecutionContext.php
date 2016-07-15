@@ -16,7 +16,7 @@ class ExecutionContext
     protected $dirty = false;
 
     /* @var array */
-    protected $context = array();
+    protected $context = [];
 
     /**
      * Get the dirty state

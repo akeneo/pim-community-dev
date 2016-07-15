@@ -26,6 +26,6 @@ class PushBatchLogHandlerPass implements CompilerPassInterface
 
         $container
             ->getDefinition('monolog.logger.batch')
-            ->addMethodCall('pushHandler', array(new Reference('akeneo_batch.logger.batch_log_handler')));
+            ->addMethodCall('pushHandler', [new Reference('akeneo_batch.logger.batch_log_handler')]);
     }
 }

@@ -16,16 +16,16 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class NotificationSubscriber implements EventSubscriberInterface
 {
-    protected $notifiers = array();
+    protected $notifiers = [];
 
     /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             EventInterface::AFTER_JOB_EXECUTION => 'afterJobExecution',
-        );
+        ];
     }
 
     /**

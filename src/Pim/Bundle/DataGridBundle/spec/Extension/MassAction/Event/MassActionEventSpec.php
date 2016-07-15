@@ -10,7 +10,7 @@ class MassActionEventSpec extends ObjectBehavior
 {
     function let(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
-        $this->beConstructedWith($datagrid, $massAction, array('foo'));
+        $this->beConstructedWith($datagrid, $massAction, ['foo']);
     }
 
     function it_is_an_event()

@@ -45,7 +45,7 @@ class DefaultColumnSorter implements ColumnSorterInterface
             }
         }
 
-        usort($mainColumns, array($this, 'compare'));
+        usort($mainColumns, [$this, 'compare']);
         natcasesort($additionalColumns);
 
         return array_merge($mainColumns, $additionalColumns);
