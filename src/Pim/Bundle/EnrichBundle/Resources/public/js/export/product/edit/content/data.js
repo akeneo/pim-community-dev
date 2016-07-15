@@ -8,6 +8,7 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'text!pim/template/export/product/edit/content/data',
@@ -17,6 +18,7 @@ define(
         'pim/form-builder'
     ],
     function (
+        $,
         _,
         __,
         template,
@@ -154,7 +156,7 @@ define(
              * @return {Promise}
              */
             addFilterView: function (viewCode, fieldCode, isRemovable) {
-                return formBuilder.build(viewCode).then(function(view) {
+                return formBuilder.build(viewCode).then(function (view) {
                     view.setField(fieldCode);
                     view.setRemovable(isRemovable);
                     view.setType(viewCode);
@@ -169,7 +171,7 @@ define(
                     this.listenTo(filterView, 'pim_enrich:form:entity:post_update', this.updateModel.bind(this));
                     this.listenTo(filterView, 'filter:remove', this.removeFilter.bind(this));
                     this.listenTo(this.getRoot(), 'channel:update:after', function (scope) {
-                        filterView.trigger('channel:update:after', scope)
+                        filterView.trigger('channel:update:after', scope);
                     }.bind(this));
                     filterView.setParentForm(this);
 
@@ -211,9 +213,9 @@ define(
 
                     return _.union(configFields, defaultFields);
                 }.bind(this)).then(function (defaultFields) {
-                    var modelFields = _.pluck(this.getFormData()['data'], 'field');
+                    var modelFields = _.pluck(this.getFormData().data, 'field');
 
-                    return this.addFilters(_.union(defaultFields, modelFields))
+                    return this.addFilters(_.union(defaultFields, modelFields));
                 }.bind(this)).then(function () {
                     _.each(this.getFormData().data, function (filterData) {
                         if (!_.has(this.filterViews, filterData.field)) {

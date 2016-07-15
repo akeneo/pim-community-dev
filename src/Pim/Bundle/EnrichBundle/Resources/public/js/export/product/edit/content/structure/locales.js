@@ -8,6 +8,8 @@
  */
 define(
     [
+        'jquery',
+        'underscore',
         'oro/translator',
         'text!pim/template/export/product/edit/content/structure/locales',
         'pim/form',
@@ -15,6 +17,8 @@ define(
         'jquery.select2'
     ],
     function (
+        $,
+        _,
         __,
         template,
         BaseForm,

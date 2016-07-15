@@ -8,11 +8,12 @@
 'use strict';
 
 define([
+    'underscore',
     'oro/translator',
     'pim/form',
     'pim/fetcher-registry'
 
-], function (__, BaseForm, fetcherRegistry) {
+], function (_, __, BaseForm, fetcherRegistry) {
     return BaseForm.extend({
         /**
          * {@inherit}
@@ -45,7 +46,7 @@ define([
                     .then(function (attributes) {
                         return _.pluck(attributes, 'code');
                     })
-            )
+            );
         }
     });
 });

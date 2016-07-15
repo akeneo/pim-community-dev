@@ -9,7 +9,7 @@ define(
                 var deferred = new $.Deferred();
 
                 if (undefined === form) {
-                    throw new Error('The form ' + formName + ' was not found. Are you sure you registred it properly?')
+                    throw new Error('The form ' + formName + ' was not found. Are you sure you registred it properly?');
                 }
 
                 require([form.module], function (Form) {

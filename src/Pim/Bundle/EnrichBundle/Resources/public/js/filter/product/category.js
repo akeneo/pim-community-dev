@@ -1,15 +1,15 @@
-/* global console */
 'use strict';
 
 define([
     'underscore',
     'oro/translator',
+    'backbone',
     'pim/filter/filter',
     'routing',
     'pim/filter/product/category/selector',
     'text!pim/template/filter/product/category',
     'jquery.select2'
-], function (_, __, BaseFilter, Routing, CategoryTree, template) {
+], function (_, __, Backbone, BaseFilter, Routing, CategoryTree, template) {
     var TreeModal = Backbone.BootstrapModal.extend({
         className: 'modal jstree-modal'
     });
@@ -22,7 +22,7 @@ define([
             'click button': 'openSelector'
         },
 
-         /**
+        /**
          * {@inherit}
          */
         configure: function () {

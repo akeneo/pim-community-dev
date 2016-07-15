@@ -1,4 +1,3 @@
-/* global console */
 'use strict';
 
 define([
@@ -12,7 +11,7 @@ define([
         'pim/i18n',
         'jquery.select2',
         'datepicker',
-        'pim/date-context',
+        'pim/date-context'
     ], function (
         _,
         __,
@@ -26,97 +25,97 @@ define([
         Datepicker,
         DateContext
     ) {
-    return BaseFilter.extend({
-        shortname: 'updated',
-        template: _.template(template),
-        events: {
-            'change [name="filter-operator"], [name="filter-value"]': 'updateState'
-        },
+        return BaseFilter.extend({
+            shortname: 'updated',
+            template: _.template(template),
+            events: {
+                'change [name="filter-operator"], [name="filter-value"]': 'updateState'
+            },
 
-        /**
-         * Initializes configuration.
-         *
-         * @param config
-         */
-        initialize: function (config) {
-            this.config = config.config;
+            /**
+             * Initializes configuration.
+             *
+             * @param config
+             */
+            initialize: function (config) {
+                this.config = config.config;
 
-            return BaseFilter.prototype.initialize.apply(this, arguments);
-        },
+                return BaseFilter.prototype.initialize.apply(this, arguments);
+            },
 
-        /**
-         * Returns rendered input.
-         *
-         * @return {String}
-         */
-        renderInput: function () {
-            if (undefined === this.getOperator()) {
-                this.setOperator(_.first(_.values(this.config.operators)));
+            /**
+             * Returns rendered input.
+             *
+             * @return {String}
+             */
+            renderInput: function () {
+                if (undefined === this.getOperator()) {
+                    this.setOperator(_.first(_.values(this.config.operators)));
+                }
+
+                return this.template({
+                    isEditable: this.isEditable(),
+                    __: __,
+                    field: this.getField(),
+                    operator: this.getOperator(),
+                    value: this.getValue(),
+                    operatorChoices: this.config.operators
+                });
+            },
+
+            /**
+             * Initializes select2 and datepicker after rendering.
+             */
+            postRender: function () {
+                this.$('[name="filter-operator"]').select2();
+
+                if ('>' === this.getOperator()) {
+                    Datepicker
+                        .init(
+                            this.$('[name="filter-value"]').parent(),
+                            {
+                                format: 'yyyy-MM-dd',
+                                defaultFormat: 'yyyy-MM-dd',
+                                language: DateContext.get('language')
+                            }
+                        )
+                        .on('changeDate', this.updateState.bind(this));
+                }
+            },
+
+            /**
+             * {@inherit}
+             */
+            isEmpty: function () {
+                return 'ALL' === this.getOperator();
+            },
+
+            /**
+             * Updates operator and value on fields change.
+             * Value is reset after operator has changed.
+             */
+            updateState: function () {
+                var oldOperator = this.getFormData().operator;
+
+                var value    = this.$('[name="filter-value"]').val();
+                var operator = this.$('[name="filter-operator"]').val();
+
+                if ('>' === operator) {
+                    value = value + ' 00:00:00';
+                }
+
+                if (operator !== oldOperator) {
+                    value = '';
+                }
+
+                if ('SINCE LAST JOB' === operator) {
+                    value = this.getParentForm().getFormData().jobCode;
+                }
+
+                this.setData({
+                    operator: operator,
+                    value: value
+                });
             }
-
-            return this.template({
-                isEditable: this.isEditable(),
-                __: __,
-                field: this.getField(),
-                operator: this.getOperator(),
-                value: this.getValue(),
-                operatorChoices: this.config.operators
-            });
-        },
-
-        /**
-         * Initializes select2 and datepicker after rendering.
-         */
-        postRender: function () {
-            this.$('[name="filter-operator"]').select2();
-
-            if ('>' === this.getOperator()) {
-                Datepicker
-                    .init(
-                        this.$('[name="filter-value"]').parent(),
-                        {
-                            format: 'yyyy-MM-dd',
-                            defaultFormat: 'yyyy-MM-dd',
-                            language: DateContext.get('language')
-                        }
-                    )
-                    .on('changeDate', this.updateState.bind(this));
-            }
-        },
-
-        /**
-         * {@inherit}
-         */
-        isEmpty: function () {
-            return 'ALL' === this.getOperator();
-        },
-
-        /**
-         * Updates operator and value on fields change.
-         * Value is reset after operator has changed.
-         */
-        updateState: function () {
-            var oldOperator = this.getFormData().operator;
-
-            var value    = this.$('[name="filter-value"]').val();
-            var operator = this.$('[name="filter-operator"]').val();
-
-            if ('>' === operator) {
-                value = value + ' 00:00:00';
-            }
-
-            if (operator !== oldOperator) {
-                value = '';
-            }
-
-            if ('SINCE LAST JOB' === operator) {
-                value = this.getParentForm().getFormData().jobCode;
-            }
-
-            this.setData({
-                operator: operator,
-                value: value
-            });
-        }
+        });
     });
-});

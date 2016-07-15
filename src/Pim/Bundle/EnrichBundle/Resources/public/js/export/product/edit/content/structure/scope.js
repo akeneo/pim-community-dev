@@ -8,6 +8,8 @@
  */
 define(
     [
+        'jquery',
+        'underscore',
         'oro/translator',
         'text!pim/template/export/product/edit/content/structure/scope',
         'pim/form',
@@ -16,6 +18,8 @@ define(
         'jquery.select2'
     ],
     function (
+        $,
+        _,
         __,
         template,
         BaseForm,
@@ -86,7 +90,7 @@ define(
              *
              * @param {Object} event
              */
-            updateState: function(event) {
+            updateState: function (event) {
                 this.setScope(event.target.value);
             },
 

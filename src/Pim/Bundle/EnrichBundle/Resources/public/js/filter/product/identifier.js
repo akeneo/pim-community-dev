@@ -1,4 +1,3 @@
-/* global console */
 'use strict';
 
 define([
@@ -17,8 +16,7 @@ define([
     FetcherRegistry,
     UserContext,
     i18n,
-    template,
-    initSelect2
+    template
 ) {
     return BaseFilter.extend({
         shortname: 'identifier',

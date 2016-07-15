@@ -1,12 +1,14 @@
 'use strict';
 
 define([
+    'jquery',
     'underscore',
     'oro/translator',
     'oro/mediator',
     'pim/form',
     'text!pim/template/filter/filter'
 ], function (
+    $,
     _,
     __,
     mediator,
@@ -46,7 +48,7 @@ define([
          *
          * @param {string} field
          */
-        setField: function (field, options) {
+        setField: function (field) {
             this.setData(
                 {field: field},
                 {silent: true}

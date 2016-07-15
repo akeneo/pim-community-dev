@@ -1,4 +1,3 @@
-/* global console */
 'use strict';
 
 define([
@@ -16,14 +15,14 @@ define([
             'change [name="filter-operator"]': 'updateState'
         },
 
-         /**
+        /**
          * {@inherit}
          */
         initialize: function (config) {
             this.config = config.config;
         },
 
-         /**
+        /**
          * {@inherit}
          */
         configure: function () {

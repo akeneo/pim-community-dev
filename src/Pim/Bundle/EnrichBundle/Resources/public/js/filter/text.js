@@ -1,10 +1,10 @@
-/* global console */
 'use strict';
 
 define([
+        'underscore',
         'pim/filter/filter',
         'text!pim/template/filter/text'
-    ], function (BaseFilter, template) {
+    ], function (_, BaseFilter, template) {
     return BaseFilter.extend({
         template: _.template(template),
         events: {

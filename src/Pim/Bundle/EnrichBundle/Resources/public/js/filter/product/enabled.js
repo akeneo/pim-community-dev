@@ -1,4 +1,3 @@
-/* global console */
 'use strict';
 
 //Should be reworked to be a boolean filter

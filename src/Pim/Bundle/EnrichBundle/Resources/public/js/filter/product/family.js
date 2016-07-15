@@ -1,4 +1,3 @@
-/* global console */
 'use strict';
 
 define([
@@ -11,7 +10,7 @@ define([
         'pim/user-context',
         'pim/i18n',
         'jquery.select2'
-    ], function (_, __, BaseFilter, Routing, template, fetcherRegistry, userContext, i18n, initSelect2) {
+    ], function (_, __, BaseFilter, Routing, template, fetcherRegistry, userContext, i18n) {
     return BaseFilter.extend({
         shortname: 'family',
         config: {},

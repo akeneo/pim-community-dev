@@ -8,11 +8,13 @@
 'use strict';
 
 define([
+    'jquery',
+    'underscore',
     'oro/translator',
     'pim/form',
     'text!pim/template/export/product/edit/content/data/help'
 
-], function (__, BaseForm, template) {
+], function ($, _, __, BaseForm, template) {
     return BaseForm.extend({
         template: _.template(template),
 

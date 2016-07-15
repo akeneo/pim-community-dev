@@ -1,7 +1,7 @@
-/* global console */
 'use strict';
 
 define([
+        'jquery',
         'underscore',
         'oro/translator',
         'pim/filter/filter',
@@ -11,7 +11,7 @@ define([
         'pim/initselect2',
         'pim/fetcher-registry',
         'jquery.select2'
-    ], function (_, __, BaseFilter, template, Routing, UserContext, initSelect2, fetcherRegistry) {
+    ], function ($, _, __, BaseFilter, template, Routing, UserContext, initSelect2, fetcherRegistry) {
     return BaseFilter.extend({
         template: _.template(template),
         events: {
@@ -95,7 +95,7 @@ define([
                         collectionId: attribute.id,
                         options: {type: 'code'}
                     }
-                )
+                );
             });
         },
         updateState: function () {

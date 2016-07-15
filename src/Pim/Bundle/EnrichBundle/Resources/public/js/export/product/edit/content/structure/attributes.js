@@ -47,7 +47,7 @@ define(
             /**
              * Update the form model on field update
              */
-            updateModel: function() {
+            updateModel: function () {
                 var data = this.getFormData();
                 data.structure.attributes = JSON.parse(event.target.value);
                 this.setData(data);
