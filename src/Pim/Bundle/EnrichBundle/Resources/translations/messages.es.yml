@@ -642,7 +642,10 @@ pim_title.association_type:
 pim_title.group_type:
   index: Tipos de grupo
   edit: 'Tipos de Grupo %group type.label% | Editar'
-pim_title.mass_edit_action:
+pim_title.mass_edit_product_action:
+  choose: Edición masiva | Elija
+  configure: Edición masiva | Configurar
+pim_title.mass_edit_family_action:
   choose: Edición masiva | Elija
   configure: Edición masiva | Configurar
 pim_title.job_tracker:
@@ -871,11 +874,11 @@ batch_jobs:
     perform:
       label: Configurar requerimientos del atributo
   csv_product_quick_export:
-    export.label: Exportación rápida de producto en CSV
+    quick_export.label: Exportación rápida de producto en CSV
     perform:
       label: Exportación rápida de producto en CSV
   xlsx_product_quick_export:
-    export.label: Exportación rápida de producto en XLSX
+    quick_export.label: Exportación rápida de producto en XLSX
     perform:
       label: Exportación rápida de producto en XLSX
   add_to_variant_group:

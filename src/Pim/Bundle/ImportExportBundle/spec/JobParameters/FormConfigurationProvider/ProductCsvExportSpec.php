@@ -45,6 +45,13 @@ class ProductCsvExportSpec extends ObjectBehavior
                     ]
                 ]
             ],
+            'with_media' => [
+                'type'    => 'switch',
+                'options' => [
+                    'label' => 'pim_connector.export.with_media.label',
+                    'help'  => 'pim_connector.export.with_media.help'
+                ]
+            ],
             'decimalSeparator' => [
                 'type'    => 'choice',
                 'options' => [

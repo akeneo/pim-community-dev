@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupInterface;
@@ -18,11 +19,16 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class VariantGroupProcessorSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer, DenormalizerInterface $denormalizer, StepExecution $stepExecution)
-    {
+    function let(
+        NormalizerInterface $normalizer,
+        DenormalizerInterface $denormalizer,
+        StepExecution $stepExecution,
+        ObjectDetacherInterface $objectDetacher
+    ) {
         $this->beConstructedWith(
             $normalizer,
             $denormalizer,
+            $objectDetacher,
             'upload/path/',
             'csv'
         );
@@ -40,6 +46,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
     }
 
     function it_processes_variant_group_without_product_template(
+        $objectDetacher,
         $normalizer,
         $stepExecution,
         GroupInterface $variantGroup,
@@ -67,9 +74,12 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             'media' => [],
             'variant_group' => 'my;variant;group;to;csv;'
         ]);
+
+        $objectDetacher->detach($variantGroup)->shouldBeCalled();
     }
 
     function it_processes_variant_group_without_media(
+        $objectDetacher,
         $normalizer,
         $denormalizer,
         $stepExecution,
@@ -109,9 +119,12 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             'media' => [],
             'variant_group' => 'my;variant;group;to;csv;'
         ]);
+
+        $objectDetacher->detach($variantGroup)->shouldBeCalled();
     }
 
     function it_processes_a_variant_group_with_several_media(
+        $objectDetacher,
         $normalizer,
         $denormalizer,
         $stepExecution,
@@ -169,9 +182,12 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ],
             'variant_group' => 'my;variant;group;to;csv;'
         ]);
+
+        $objectDetacher->detach($variantGroup)->shouldBeCalled();
     }
 
     function it_throws_an_exception_if_media_of_variant_group_is_not_found(
+        $objectDetacher,
         $normalizer,
         $denormalizer,
         $stepExecution,
@@ -216,5 +232,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
                 ]
             )
         )->duringProcess($variantGroup);
+
+        $objectDetacher->detach($variantGroup)->shouldBeCalled();
     }
 }

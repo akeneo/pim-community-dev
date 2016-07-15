@@ -26,10 +26,9 @@ class ExportProfilesContext extends PimContext
     {
         $path = $this->getExportedFile($code);
         $config =  $this->getCsvJobConfiguration($code);
-        $csvFile = $this->getCsvFile($path, $config);
 
         $expectedLines = $this->getExpectedLines($csv, $config);
-        $actualLines = $this->getActualLines($csvFile, $config);
+        $actualLines = $this->getActualLines($path, $config);
 
         $this->compareFile($expectedLines, $actualLines, $path);
     }
@@ -62,12 +61,11 @@ class ExportProfilesContext extends PimContext
     {
         $path = $this->getExportedFile($code);
         $config = $this->getCsvJobConfiguration($code);
-        $csvFile = $this->getCsvFile($path, $config);
 
         $expectedLines = $this->getExpectedLines($csv, $config);
-        $actualLines = $this->getActualLines($csvFile, $config);
+        $actualLines = $this->getActualLines($path, $config);
 
-        $this->compareFileHeadersOrder($expectedLines[0], $actualLines[0]);
+        $this->compareFileHeadersOrder(current($expectedLines), current($actualLines));
     }
 
     /**
@@ -138,6 +136,31 @@ class ExportProfilesContext extends PimContext
      */
     public function exportDirectoryOfShouldContainTheFollowingMedia($code, TableNode $table)
     {
+        $this->checkExportDirectoryFiles($code, true, $table);
+    }
+
+    /**
+     * @param string    $code
+     * @param TableNode $table
+     *
+     * @Then /^export directory of "([^"]*)" should not contain the following media:$/
+     *
+     * @throws ExpectationException
+     */
+    public function exportDirectoryOfShouldNotContainTheFollowingMedia($code, TableNode $table)
+    {
+        $this->checkExportDirectoryFiles($code, false, $table);
+    }
+
+    /**
+     * Check if files should be in the export directory of the job with the given $code
+     *
+     * @param string    $code                Code of the job instance
+     * @param bool      $shouldBeInDirectory true if the files should be in the directory, false otherwise
+     * @param TableNode $table               Files to check
+     */
+    protected function checkExportDirectoryFiles($code, $shouldBeInDirectory, TableNode $table)
+    {
         $config = $this->getFixturesContext()->getJobInstance($code)->getRawConfiguration();
 
         $path = dirname($config['filePath']);
@@ -151,9 +174,15 @@ class ExportProfilesContext extends PimContext
         foreach ($table->getRows() as $data) {
             $file = rtrim($path, '/') . '/' .$data[0];
 
-            if (!is_file($file)) {
+            if (!is_file($file) && $shouldBeInDirectory) {
                 throw $this->getMainContext()->createExpectationException(
                     sprintf('File \"%s\" doesn\'t exist', $file)
+                );
+            }
+
+            if (is_file($file) && !$shouldBeInDirectory) {
+                throw $this->getMainContext()->createExpectationException(
+                    sprintf('File \"%s\" exists, but it should not', $file)
                 );
             }
         }
@@ -176,20 +205,23 @@ class ExportProfilesContext extends PimContext
             sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
         );
 
-        $headerDiff = array_diff($actualLines[0], $expectedLines[0]);
-        if (0 !== count(array_diff($actualLines[0], $expectedLines[0]))) {
+        $currentActualLines = current($actualLines);
+        $currentExpectedLines = current($expectedLines);
+
+        $headerDiff = array_diff($currentActualLines, $currentExpectedLines);
+        if (0 !== count(array_diff($currentActualLines, $currentExpectedLines))) {
             throw new \Exception(
                 sprintf(
                     "Header in the file %s does not match \n expected one: %s \n missing headers : %s",
                     $path,
-                    implode(' | ', $actualLines[0]),
+                    implode(' | ', current($actualLines)),
                     implode(' | ', $headerDiff)
                 )
             );
         }
 
-        unset($actualLines[0]);
-        unset($expectedLines[0]);
+        array_shift($actualLines);
+        array_shift($expectedLines);
 
         foreach ($expectedLines as $expectedLine) {
             $rows = array_filter($actualLines, function ($actualLine) use ($expectedLine) {
@@ -223,26 +255,24 @@ class ExportProfilesContext extends PimContext
     }
 
     /**
-     * @param \SplFileObject $csvFile
-     * @param array $config
+     * @param string $path
+     * @param array  $config
      *
      * @return array
      */
-    protected function getActualLines(\SplFileObject $csvFile, array $config)
+    protected function getActualLines($path, array $config)
     {
-        $actualLines = [];
-        while ($data = $csvFile->fgetcsv()) {
-            if (!empty($data)) {
-                $actualLines[] = array_map(
-                    function ($item) use ($config) {
-                        return str_replace($config['enclosure'], '', $item);
-                    },
-                    $data
-                );
-            }
-        }
+        $reader = ReaderFactory::create(Type::CSV);
+        $reader->setFieldDelimiter($config['delimiter'])
+            ->setFieldEnclosure($config['enclosure'])
+            ->open($path);
+        $sheet = current(iterator_to_array($reader->getSheetIterator()));
 
-        return $actualLines;
+        $lines = iterator_to_array($sheet->getRowIterator());
+
+        $reader->close();
+
+        return $lines;
     }
 
     /**
@@ -258,26 +288,6 @@ class ExportProfilesContext extends PimContext
         $config['escape'] = isset($config['escape']) ? $config['escape'] : '\\';
 
         return $config;
-    }
-
-    /**
-     * @param string $path
-     * @param array $config
-     *
-     * @return \SplFileObject
-     */
-    protected function getCsvFile($path, array $config)
-    {
-        $csvFile = new \SplFileObject($path);
-        $csvFile->setFlags(
-            \SplFileObject::READ_CSV |
-            \SplFileObject::READ_AHEAD |
-            \SplFileObject::SKIP_EMPTY |
-            \SplFileObject::DROP_NEW_LINE
-        );
-        $csvFile->setCsvControl($config['delimiter'], $config['enclosure'], $config['escape']);
-
-        return $csvFile;
     }
 
     /**

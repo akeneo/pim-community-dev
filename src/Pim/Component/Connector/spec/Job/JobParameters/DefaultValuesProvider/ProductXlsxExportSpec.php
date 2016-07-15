@@ -38,6 +38,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
                 return true === $parameters['decoratedParam'] &&
                     '.' === $parameters['decimalSeparator'] &&
                     'yyyy-MM-dd' === $parameters['dateFormat'] &&
+                    true === $parameters['with_media'] &&
                     10000 === $parameters['linesPerFile'] &&
                     is_array($parameters['filters']) &&
                     is_array($parameters['filters']['data']) &&

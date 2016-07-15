@@ -24,9 +24,7 @@ class FamilySelector implements SelectorInterface
 
         $datasource->getQueryBuilder()
             ->leftJoin($rootAlias.'.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
-
-        $datasource->getQueryBuilder()
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel');
+            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
+            ->addSelect('COALESCE(NULLIF(ft.label, \'\'), CONCAT(\'[\', family.code, \']\')) as familyLabel');
     }
 }

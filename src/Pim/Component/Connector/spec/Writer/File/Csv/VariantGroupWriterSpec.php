@@ -1,25 +1,26 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Writer\File;
+namespace spec\Pim\Component\Connector\Writer\File\Csv;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
-use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Akeneo\Component\Buffer\BufferFactory;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Prophecy\Argument;
 
-class CsvVariantGroupWriterSpec extends ObjectBehavior
+class VariantGroupWriterSpec extends ObjectBehavior
 {
     function let(
         FilePathResolverInterface $filePathResolver,
-        FlatItemBuffer $flatRowBuffer,
+        BufferFactory $bufferFactory,
         BulkFileExporter $fileExporter,
-        ColumnSorterInterface $columnSorter
+        FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $fileExporter, $columnSorter);
+        $this->beConstructedWith($filePathResolver, $bufferFactory, $fileExporter, $flusher);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.csv');
@@ -27,12 +28,13 @@ class CsvVariantGroupWriterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Writer\File\CsvVariantGroupWriter');
+        $this->shouldHaveType('Pim\Component\Connector\Writer\File\Csv\VariantGroupWriter');
     }
 
     function it_prepares_the_export(
-        $flatRowBuffer,
         $fileExporter,
+        $bufferFactory,
+        FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
@@ -78,7 +80,8 @@ class CsvVariantGroupWriterSpec extends ObjectBehavior
             ]
         ];
 
-        $flatRowBuffer->write([$variant1, $variant2], true)->shouldBeCalled();
+        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $flatRowBuffer->write([$variant1, $variant2], ['withHeader' => true])->shouldBeCalled();
         $fileExporter->exportAll([$variant1Media, $variant2Media], '/tmp/export')->shouldBeCalled();
 
         $fileExporter->getErrors()->willReturn([
@@ -96,10 +99,42 @@ class CsvVariantGroupWriterSpec extends ObjectBehavior
 
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
 
+        $this->initialize();
         $this->write($items);
 
         $this->getWrittenFiles()->shouldBeEqualTo([
             '/tmp/export' => 'export'
         ]);
+    }
+
+    function it_writes_the_csv_file(
+        $bufferFactory,
+        $flusher,
+        FlatItemBuffer $flatRowBuffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+
+        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('linesPerFile')->willReturn(false);
+        $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('enclosure')->willReturn('"');
+        $jobParameters->get('filePath')->willReturn('my/file/path/foo');
+        $jobParameters->has('mainContext')->willReturn(false);
+
+        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $flusher->flush(
+            $flatRowBuffer,
+            Argument::type('array'),
+            Argument::type('string'),
+            -1,
+            Argument::type('array')
+        )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
+
+        $this->initialize();
+        $this->flush();
     }
 }

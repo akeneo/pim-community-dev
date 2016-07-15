@@ -17,7 +17,7 @@ class ArrayBuffer implements BufferInterface
     /**
      * {@inheritdoc}
      */
-    public function write($item)
+    public function write($item, array $options = [])
     {
         array_push($this->items, $item);
     }

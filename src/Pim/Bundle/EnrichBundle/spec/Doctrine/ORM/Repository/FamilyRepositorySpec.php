@@ -42,7 +42,7 @@ class FamilyRepositorySpec extends ObjectBehavior
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('f')->willReturn($queryBuilder);
         $queryBuilder->select('f.id')->willReturn($queryBuilder);
-        $queryBuilder->addSelect('COALESCE(ft.label, CONCAT(\'[\', f.code, \']\')) as label')->willReturn($queryBuilder);
+        $queryBuilder->addSelect('COALESCE(NULLIF(ft.label, \'\'), CONCAT(\'[\', f.code, \']\')) as label')->willReturn($queryBuilder);
         $queryBuilder->from('family', 'f')->willReturn($queryBuilder);
         $queryBuilder->leftJoin('f.translations', 'ft', 'WITH', 'ft.locale = :locale_code')->willReturn($queryBuilder);
         $queryBuilder->orderBy('label')->willReturn($queryBuilder);

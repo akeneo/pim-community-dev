@@ -1,51 +1,67 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\File;
+namespace Pim\Component\Connector\Writer\File\Xlsx;
 
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
-use Box\Spout\Common\Type;
-use Box\Spout\Writer\WriterFactory;
-use Box\Spout\Writer\WriterInterface;
+use Akeneo\Component\Buffer\BufferFactory;
+use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Pim\Component\Connector\Writer\File\BulkFileExporter;
+use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
+use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 
 /**
- * Write product data into a XLSX file on the local filesystem
+ * XLSX VariantGroup writer
  *
- * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
+ * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
+class VariantGroupWriter extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
 {
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;
 
-    /** @var array */
-    protected $writtenFiles;
+    /** @var BulkFileExporter */
+    protected $fileExporter;
 
     /** @var FlatItemBufferFlusher */
     protected $flusher;
 
-    /** @var BulkFileExporter */
-    protected $fileExporter;
+    /** @var array */
+    protected $writtenFiles = [];
+
+    /** @var BufferFactory */
+    protected $bufferFactory;
 
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param FlatItemBuffer            $flatRowBuffer
+     * @param BufferFactory             $bufferFactory
      * @param BulkFileExporter          $fileExporter
      * @param FlatItemBufferFlusher     $flusher
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
-        FlatItemBuffer $flatRowBuffer,
+        BufferFactory $bufferFactory,
         BulkFileExporter $fileExporter,
         FlatItemBufferFlusher $flusher
     ) {
         parent::__construct($filePathResolver);
 
-        $this->flatRowBuffer = $flatRowBuffer;
+        $this->bufferFactory = $bufferFactory;
         $this->fileExporter  = $fileExporter;
         $this->flusher       = $flusher;
-        $this->writtenFiles  = [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        if (null === $this->flatRowBuffer) {
+            $this->flatRowBuffer = $this->bufferFactory->create();
+        }
     }
 
     /**
@@ -58,15 +74,15 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
             $this->localFs->mkdir($exportDirectory);
         }
 
-        $products = $media = [];
+        $variantGroups = $media = $options = [];
         foreach ($items as $item) {
-            $products[] = $item['product'];
-            $media[]    = $item['media'];
+            $variantGroups[] = $item['variant_group'];
+            $media[]         = $item['media'];
         }
 
         $parameters = $this->stepExecution->getJobParameters();
-        $withHeader = $parameters->get('withHeader');
-        $this->flatRowBuffer->write($products, $withHeader);
+        $options['withHeader'] = $parameters->get('withHeader');
+        $this->flatRowBuffer->write($variantGroups, $options);
         $this->fileExporter->exportAll($media, $exportDirectory);
 
         foreach ($this->fileExporter->getCopiedMedia() as $copy) {
@@ -89,8 +105,11 @@ class XlsxProductWriter extends AbstractFileWriter implements ItemWriterInterfac
     {
         $this->flusher->setStepExecution($this->stepExecution);
 
+        $writerOptions = ['type' => 'xlsx'];
+
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,
+            $writerOptions,
             $this->getPath(),
             $this->stepExecution->getJobParameters()->get('linesPerFile'),
             $this->filePathResolverOptions

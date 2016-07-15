@@ -1,6 +1,10 @@
 
 # 1.6.x
 
+## Bug fixes
+
+- PIM-5854: The family code is not displayed at all in the product grid when no family labels
+
 ## Functional improvements
 
 - PIM-5664: It is now possible to purge jobs executions history
@@ -24,6 +28,7 @@
 - PIM-5604: Introduce "remove from categories" action in products mass edit
 - PIM-5681: Introduce a new command to purge entity versions stored in the PIM (see pim:versioning:purge command)
 - PIM-5781: Add new data on the "system information" screen (data volumetry, information about the operating system)
+- PIM-5110: Add product export configuration to customize product media export policy
 
 ## Scalability improvements
 
@@ -50,8 +55,16 @@
 - TIP-255: Allow to select PQB filter on supported operator, to add new operators easily on existing fields/attribute types
 - PIM-5781: Introduce a new command to get system information from the command line
 
+## Bug fixes
+
+- PIM-5888: Fix an outline glitch on some buttons
+
 ## BC breaks
 
+- Change constructor of `Akeneo\Component\Buffer\BufferInterface`. Add `$options` array as the second argument.
+- Move `Pim\Component\Connector\Writer\File\CsvWriter` to `Pim\Component\Connector\Writer\File\Csv\Writer`
+- Move `Pim\Component\Connector\Writer\File\CsvProductWriter` to `Pim\Component\Connector\Writer\File\Csv\ProductWriter`
+- Move `Pim\Component\Connector\Writer\File\CsvVariantGroupWriter` to `Pim\Component\Connector\Writer\File\Csv\VariantGroupWriter`
 - Change constructor of `Pim\Component\Connector\Processor\Denormalization\ProductProcessor`. Remove argument `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`.
 - Add method `findPotentiallyPurgeableBy` to interface `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface`
 - Add method `getNewestVersionIdForResource` to interface `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface`
@@ -68,12 +81,9 @@
 - Remove properties editTemplate, showTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Remove methods setShowTemplate, setEditTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Change constructor of `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`. Add `Akeneo\Bundle\BatchBundle\Connector\JobTemplateProviderInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\CsvWriter` . Add parameter `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\CsvProductWriter` . Add parameter `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\CsvVariantGroupWriter` . Add parameter `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\XlsxSimpleWriter` . Add `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\XlsxProductWriter` . Add `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\XlsxVariantGroupWriter` . Add `Pim\Component\Connector\Writer\File\ColumnSorterInterface`
+- Change constructor of `Pim\Component\Connector\Writer\File\Csv\Writer` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher`
+- Change constructor of `Pim\Component\Connector\Writer\File\Csv\ProductWriter` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher`
+- Change constructor of `Pim\Component\Connector\Writer\File\Csv\VariantGroupWriter` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher`
 - Remove method `setAvailableLocales` in `Pim\Component\Catalog\Model\AttributeInterface` and `Pim\Component\Catalog\Model\AbstractAttribute`
 - `Pim\Component\Connector\Writer\File\FlatItemBuffer` implements `\Countable`
 - `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`
@@ -373,7 +383,7 @@
 - Remove the class `Akeneo\Component\Batch\Connector\ConnectorRegistry`, please use `Akeneo\Component\Batch\Job\JobRegistry`
 - Remove the class `Akeneo\Component\Batch\Step\StepFactory` and related service '@akeneo_batch.step_factory'
 - Remove the class `Akeneo\Component\Batch\Job\JobFactory` and related service '@akeneo_batch.job_factory'
-- Remove method `setCharsetValidator()` from `Pim\Component\Connector\Step\ValidatorStep` 
+- Remove method `setCharsetValidator()` from `Pim\Component\Connector\Step\ValidatorStep`
 - Change constructor of `Pim\Component\Connector\Step\ValidatorStep` add `Pim\Component\Connector\Item\CharsetValidator` as last parameter
 - Change constructor of `Pim\Component\Connector\Step\TaskletStep` add `Pim\Component\Connector\Step\TaskletInterface` as last parameter
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Step\MassEditStep` add `Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner` as last parameter

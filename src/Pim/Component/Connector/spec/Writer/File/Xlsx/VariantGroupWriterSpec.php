@@ -1,9 +1,10 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Writer\File;
+namespace spec\Pim\Component\Connector\Writer\File\Xlsx;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Buffer\BufferFactory;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
@@ -11,15 +12,15 @@ use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
 use Prophecy\Argument;
 
-class XlsxProductWriterSpec extends ObjectBehavior
+class VariantGroupWriterSpec extends ObjectBehavior
 {
     function let(
         FilePathResolverInterface $filePathResolver,
-        FlatItemBuffer $flatRowBuffer,
+        BufferFactory $bufferFactory,
         BulkFileExporter $mediaCopier,
         FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $flatRowBuffer, $mediaCopier, $flusher);
+        $this->beConstructedWith($filePathResolver, $bufferFactory, $mediaCopier, $flusher);
 
         $filePathResolver->resolve(Argument::any(), Argument::type('array'))
             ->willReturn('/tmp/export/export.xlsx');
@@ -27,7 +28,7 @@ class XlsxProductWriterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Writer\File\XlsxProductWriter');
+        $this->shouldHaveType('Pim\Component\Connector\Writer\File\Xlsx\VariantGroupWriter');
     }
 
     function it_is_a_configurable_step()
@@ -41,39 +42,74 @@ class XlsxProductWriterSpec extends ObjectBehavior
     }
 
     function it_prepares_the_export(
-        $flatRowBuffer,
+        $bufferFactory,
         $mediaCopier,
+        FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn('my/file/path');
+        $jobParameters->get('filePath')->willReturn(true);
         $jobParameters->has('mainContext')->willReturn(false);
 
-        $items = $this->getItemToExport();
+        $items = [
+            [
+                'variant_group' => [
+                    'code'        => 'jackets',
+                    'axis'        => 'size,color',
+                    'type'        => 'variant',
+                    'label-en_US' => 'Jacket',
+                    'label-en_GB' => 'Jacket'
+                ],
+                'media' => [
+                    'filePath'     => 'wrong/path',
+                    'exportPath'   => 'export',
+                    'storageAlias' => 'storageAlias',
+                ],
+            ],
+            [
+                'variant_group' => [
+                    'code'        => 'sweaters',
+                    'type'        => 'variant',
+                    'label-en_US' => 'Sweaters',
+                    'label-en_GB' => 'Chandails'
+                ],
+                'media' => [
+                    'filePath'     => 'img/variant_group1.jpg',
+                    'exportPath'   => 'export',
+                    'storageAlias' => 'storageAlias',
+                ],
+            ]
+        ];
 
+        $bufferFactory->create()->willReturn($flatRowBuffer);
         $flatRowBuffer->write([
             [
-                'id' => 123,
-                'family' => 12,
+                'code'        => 'jackets',
+                'axis'        => 'size,color',
+                'type'        => 'variant',
+                'label-en_US' => 'Jacket',
+                'label-en_GB' => 'Jacket'
             ],
             [
-                'id' => 165,
-                'family' => 45,
+                'code'        => 'sweaters',
+                'type'        => 'variant',
+                'label-en_US' => 'Sweaters',
+                'label-en_GB' => 'Chandails'
             ],
-        ], true)->shouldBeCalled();
+        ], ['withHeader' => true])->shouldBeCalled();
 
         $mediaCopier->exportAll([
             [
-                'filePath' => 'wrong/path',
-                'exportPath' => 'export',
+                'filePath'     => 'wrong/path',
+                'exportPath'   => 'export',
                 'storageAlias' => 'storageAlias',
             ],
             [
-                'filePath' => 'img/product1.jpg',
-                'exportPath' => 'export',
+                'filePath'     => 'img/variant_group1.jpg',
+                'exportPath'   => 'export',
                 'storageAlias' => 'storageAlias',
             ],
         ], '/tmp/export')->shouldBeCalled();
@@ -81,11 +117,9 @@ class XlsxProductWriterSpec extends ObjectBehavior
         $mediaCopier->getErrors()->willReturn([
             [
                 'medium' => [
-                    [
-                        'filePath' => 'wrong/path',
-                        'exportPath' => 'export',
-                        'storageAlias' => 'storageAlias',
-                    ]
+                    'filePath'     => 'wrong/path',
+                    'exportPath'   => 'export',
+                    'storageAlias' => 'storageAlias',
                 ],
                 'message' => 'Error message',
             ]
@@ -94,7 +128,7 @@ class XlsxProductWriterSpec extends ObjectBehavior
             [
                 'copyPath'       => '/tmp/export',
                 'originalMedium' => [
-                    'filePath'     => 'img/product1.jpg',
+                    'filePath'     => 'img/variant_group1.jpg',
                     'exportPath'   => 'export',
                     'storageAlias' => 'storageAlias',
                 ]
@@ -103,6 +137,7 @@ class XlsxProductWriterSpec extends ObjectBehavior
 
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
 
+        $this->initialize();
         $this->write($items);
 
         $this->getWrittenFiles()->shouldBeEqualTo([
@@ -111,8 +146,9 @@ class XlsxProductWriterSpec extends ObjectBehavior
     }
 
     function it_writes_the_xlsx_file(
+        $bufferFactory,
         $flusher,
-        $flatRowBuffer,
+        FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
@@ -125,41 +161,16 @@ class XlsxProductWriterSpec extends ObjectBehavior
         $jobParameters->get('filePath')->willReturn('my/file/path/foo');
         $jobParameters->has('mainContext')->willReturn(false);
 
+        $bufferFactory->create()->willReturn($flatRowBuffer);
         $flusher->flush(
             $flatRowBuffer,
+            Argument::type('array'),
             Argument::type('string'),
             2,
             Argument::type('array')
         )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
 
+        $this->initialize();
         $this->flush();
-    }
-
-    private function getItemToExport()
-    {
-        return [
-            [
-                'product' => [
-                    'id' => 123,
-                    'family' => 12,
-                ],
-                'media' => [
-                    'filePath' => 'wrong/path',
-                    'exportPath' => 'export',
-                    'storageAlias' => 'storageAlias',
-                ],
-            ],
-            [
-                'product' => [
-                    'id' => 165,
-                    'family' => 45,
-                ],
-                'media' => [
-                    'filePath' => 'img/product1.jpg',
-                    'exportPath' => 'export',
-                    'storageAlias' => 'storageAlias',
-                ],
-            ]
-        ];
     }
 }

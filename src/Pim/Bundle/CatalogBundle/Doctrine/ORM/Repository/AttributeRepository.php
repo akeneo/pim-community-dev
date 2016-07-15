@@ -155,7 +155,7 @@ class AttributeRepository extends EntityRepository implements
     {
         $query = $this->findAllAxesQB()
             ->select('a.id')
-            ->addSelect('COALESCE(t.label, CONCAT(\'[\', a.code, \']\')) as label')
+            ->addSelect('COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', a.code, \']\')) as label')
             ->leftJoin('a.translations', 't')
             ->andWhere('t.locale = :locale')
             ->setParameter('locale', $locale)
@@ -216,8 +216,8 @@ class AttributeRepository extends EntityRepository implements
         $results = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
 
         if ($withLabel) {
-            $labelExpr = 'COALESCE(trans.label, CONCAT(CONCAT(\'[\', att.code), \']\'))';
-            $groupLabelExpr = 'COALESCE(gtrans.label, CONCAT(CONCAT(\'[\', g.code), \']\'))';
+            $labelExpr = 'COALESCE(NULLIF(trans.label, \'\'), CONCAT(CONCAT(\'[\', att.code), \']\'))';
+            $groupLabelExpr = 'COALESCE(NULLIF(gtrans.label, \'\'), CONCAT(CONCAT(\'[\', g.code), \']\'))';
 
             $qb = $this->_em->createQueryBuilder()
                 ->select('att.code', sprintf('%s as label', $labelExpr))

@@ -8,11 +8,11 @@ use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
-use Pim\Component\Connector\Writer\File\CsvWriter;
+use Pim\Component\Connector\Writer\File\Csv\Writer;
 
 class JobExecutionArchivistSpec extends ObjectBehavior
 {
-    function let(InvalidItemsCollector $collector, CsvWriter $writer)
+    function let(InvalidItemsCollector $collector, Writer $writer)
     {
     }
 

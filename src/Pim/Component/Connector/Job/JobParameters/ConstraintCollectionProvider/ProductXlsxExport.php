@@ -49,6 +49,7 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
         $constraintFields['decimalSeparator'] = new NotBlank();
         $constraintFields['dateFormat'] = new NotBlank();
         $constraintFields['filters'] = [];
+        $constraintFields['with_media'] = new Type('bool');
 
         return new Collection(['fields' => $constraintFields]);
     }

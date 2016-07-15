@@ -1,6 +1,15 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\File;
+namespace Pim\Component\Connector\Writer\File\Xlsx;
+
+use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Buffer\BufferFactory;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
+use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 
 /**
  * Write simple data into a XLSX file on the local filesystem
@@ -9,32 +18,50 @@ namespace Pim\Component\Connector\Writer\File;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInterface
+class Writer extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
 {
+    /** @var ArrayConverterInterface */
+    protected $arrayConverter;
+
     /** @var FlatItemBuffer */
-    protected $flatRowBuffer;
+    protected $flatRowBuffer = null;
 
     /** @var FlatItemBufferFlusher */
     protected $flusher;
 
     /** @var array */
-    protected $writtenFiles;
+    protected $writtenFiles = [];
+
+    /** @var BufferFactory */
+    protected $bufferFactory;
 
     /**
+     * @param ArrayConverterInterface   $arrayConverter
      * @param FilePathResolverInterface $filePathResolver
-     * @param FlatItemBuffer            $flatRowBuffer
+     * @param BufferFactory             $bufferFactory
      * @param FlatItemBufferFlusher     $flusher
      */
     public function __construct(
+        ArrayConverterInterface $arrayConverter,
         FilePathResolverInterface $filePathResolver,
-        FlatItemBuffer $flatRowBuffer,
+        BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher
     ) {
         parent::__construct($filePathResolver);
 
-        $this->flatRowBuffer = $flatRowBuffer;
+        $this->arrayConverter = $arrayConverter;
+        $this->bufferFactory = $bufferFactory;
         $this->flusher       = $flusher;
-        $this->writtenFiles  = [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        if (null === $this->flatRowBuffer) {
+            $this->flatRowBuffer = $this->bufferFactory->create();
+        }
     }
 
     /**
@@ -47,9 +74,15 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
             $this->localFs->mkdir($exportFolder);
         }
 
+        $flatItems = [];
+        foreach ($items as $item) {
+            $flatItems[] = $this->arrayConverter->convert($item);
+        }
+
         $parameters = $this->stepExecution->getJobParameters();
-        $withHeader = $parameters->get('withHeader');
-        $this->flatRowBuffer->write($items, $withHeader);
+        $options = [];
+        $options['withHeader'] = $parameters->get('withHeader');
+        $this->flatRowBuffer->write($flatItems, $options);
     }
 
     /**
@@ -59,8 +92,11 @@ class XlsxSimpleWriter extends AbstractFileWriter implements ArchivableWriterInt
     {
         $this->flusher->setStepExecution($this->stepExecution);
 
+        $writerOptions = ['type' => 'xlsx'];
+
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,
+            $writerOptions,
             $this->getPath(),
             $this->stepExecution->getJobParameters()->get('linesPerFile'),
             $this->filePathResolverOptions

@@ -1,20 +1,24 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\File;
+namespace Pim\Component\Connector\Writer\File\Csv;
 
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
-use Box\Spout\Common\Type;
-use Box\Spout\Writer\WriterFactory;
-use Box\Spout\Writer\WriterInterface;
+use Akeneo\Component\Buffer\BufferFactory;
+use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Pim\Component\Connector\Writer\File\BulkFileExporter;
+use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
+use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 
 /**
- * XLSX VariantGroup writer
+ * CSV variant group writer
  *
- * @author    Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
+class VariantGroupWriter extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
 {
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;
@@ -26,26 +30,38 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
     protected $flusher;
 
     /** @var array */
-    protected $writtenFiles;
+    protected $writtenFiles = [];
+
+    /** @var BufferFactory */
+    protected $bufferFactory;
 
     /**
      * @param FilePathResolverInterface $filePathResolver
-     * @param FlatItemBuffer            $flatRowBuffer
+     * @param BufferFactory             $bufferFactory
      * @param BulkFileExporter          $fileExporter
      * @param FlatItemBufferFlusher     $flusher
      */
     public function __construct(
         FilePathResolverInterface $filePathResolver,
-        FlatItemBuffer $flatRowBuffer,
+        BufferFactory $bufferFactory,
         BulkFileExporter $fileExporter,
         FlatItemBufferFlusher $flusher
     ) {
         parent::__construct($filePathResolver);
 
-        $this->flatRowBuffer = $flatRowBuffer;
-        $this->fileExporter  = $fileExporter;
-        $this->flusher       = $flusher;
-        $this->writtenFiles  = [];
+        $this->bufferFactory = $bufferFactory;
+        $this->fileExporter = $fileExporter;
+        $this->flusher = $flusher;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        if (null === $this->flatRowBuffer) {
+            $this->flatRowBuffer = $this->bufferFactory->create();
+        }
     }
 
     /**
@@ -58,15 +74,15 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
             $this->localFs->mkdir($exportDirectory);
         }
 
-        $variantGroups = $media = [];
+        $variantGroups = $media = $options = [];
         foreach ($items as $item) {
             $variantGroups[] = $item['variant_group'];
             $media[]         = $item['media'];
         }
 
         $parameters = $this->stepExecution->getJobParameters();
-        $withHeader = $parameters->get('withHeader');
-        $this->flatRowBuffer->write($variantGroups, $withHeader);
+        $options['withHeader'] = $parameters->get('withHeader');
+        $this->flatRowBuffer->write($variantGroups, $options);
         $this->fileExporter->exportAll($media, $exportDirectory);
 
         foreach ($this->fileExporter->getCopiedMedia() as $copy) {
@@ -83,16 +99,25 @@ class XlsxVariantGroupWriter extends AbstractFileWriter implements ItemWriterInt
     }
 
     /**
-     * {@inheritdoc}
+     * Flush items into a csv file
      */
     public function flush()
     {
         $this->flusher->setStepExecution($this->stepExecution);
 
+        $parameters = $this->stepExecution->getJobParameters();
+        $writerOptions = [
+            'type'           => 'csv',
+            'fieldDelimiter' => $parameters->get('delimiter'),
+            'fieldEnclosure' => $parameters->get('enclosure'),
+            'shouldAddBOM'   => false,
+        ];
+
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,
+            $writerOptions,
             $this->getPath(),
-            $this->stepExecution->getJobParameters()->get('linesPerFile'),
+            ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1),
             $this->filePathResolverOptions
         );
 

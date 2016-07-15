@@ -34,8 +34,10 @@ class FamilyNormalizer extends BaseNormalizer
     {
         $requirements = parent::normalizeRequirements($family);
         $flat = [];
-        foreach ($requirements as $key => $attributes) {
-            $flat[$key] = implode(',', $attributes);
+        foreach ($requirements as $channel) {
+            foreach ($channel as $key => $attributes) {
+                $flat['requirements-' . $key] = implode(',', $attributes);
+            }
         }
 
         return $flat;

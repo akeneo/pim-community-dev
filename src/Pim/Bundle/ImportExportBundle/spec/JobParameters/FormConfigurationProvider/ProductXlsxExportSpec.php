@@ -33,9 +33,15 @@ class ProductXlsxExportSpec extends ObjectBehavior
         $this->supports($job)->shouldReturn(false);
     }
 
-    function it_gets_form_configuration($simpleCsvExport)
-    {
-        $formOptions = [
+    function it_gets_form_configuration(
+        $simpleCsvExport,
+        $channelRepository,
+        $familyRepository,
+        JobInstance $jobInstance
+    ) {
+
+
+        $exportConfig = [
             'filters' => [
                 'type' => 'hidden',
                 'options' => [
@@ -69,29 +75,6 @@ class ProductXlsxExportSpec extends ObjectBehavior
                 'options' => [
                     'label' => 'pim_connector.export.lines_per_files.label',
                     'help'  => 'pim_connector.export.lines_per_files.help',
-                ]
-            ],
-        ];
-
-        $exportConfig = [
-            'filePath' => [
-                'options' => [
-                    'label' => 'pim_connector.export.filePath.label',
-                    'help'  => 'pim_connector.export.filePath.help'
-                ]
-            ],
-            'linesPerFile' => [
-                'type'    => 'integer',
-                'options' => [
-                    'label' => 'pim_connector.export.lines_per_files.label',
-                    'help'  => 'pim_connector.export.lines_per_files.help',
-                ]
-            ],
-            'withHeader' => [
-                'type'    => 'switch',
-                'options' => [
-                    'label' => 'pim_connector.export.withHeader.label',
-                    'help'  => 'pim_connector.export.withHeader.help'
                 ]
             ],
         ];

@@ -67,11 +67,10 @@ class FamilyNormalizerSpec extends ObjectBehavior
 
         $this->normalize($family)->shouldReturn(
             [
-                'code'                   => 'mugs',
-                'attributes'             => ['name', 'price'],
-                'attribute_as_label'     => 'name',
-                'requirements-ecommerce' => ['name', 'price'],
-                'requirements-mobile'    => ['name'],
+                'code'               => 'mugs',
+                'attributes'         => ['name', 'price'],
+                'attribute_as_label' => 'name',
+                'requirements'       => ['ecommerce' => ['name', 'price'], 'mobile' => ['name']],
             ]
         );
     }

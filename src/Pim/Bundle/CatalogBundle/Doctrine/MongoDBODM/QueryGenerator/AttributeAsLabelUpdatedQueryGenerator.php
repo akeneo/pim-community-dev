@@ -18,7 +18,7 @@ class AttributeAsLabelUpdatedQueryGenerator extends AbstractQueryGenerator
     {
         return [[
             ['family'   => $entity->getId()],
-            ['$set'     => ['normalizedData.family.attributeAsLabel' => (string) $newValue]],
+            ['$set'     => ['normalizedData.family.attributeAsLabel' => $newValue->getCode()]],
             ['multiple' => true]
         ]];
     }

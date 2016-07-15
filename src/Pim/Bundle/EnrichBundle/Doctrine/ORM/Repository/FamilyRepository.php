@@ -36,7 +36,7 @@ class FamilyRepository extends EntityRepository implements TranslatedLabelsProvi
     {
         $query = $this->createQueryBuilder('f')
             ->select('f.id')
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', f.code, \']\')) as label')
+            ->addSelect('COALESCE(NULLIF(ft.label, \'\'), CONCAT(\'[\', f.code, \']\')) as label')
             ->leftJoin('f.translations', 'ft', 'WITH', 'ft.locale = :locale_code')
             ->orderBy('label')
             ->setParameter('locale_code', $this->userContext->getCurrentLocaleCode())

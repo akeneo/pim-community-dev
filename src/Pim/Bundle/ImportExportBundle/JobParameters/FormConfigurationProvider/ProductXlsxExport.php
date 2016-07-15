@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider;
 
 use Akeneo\Component\Batch\Job\JobInterface;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -55,9 +56,19 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormConfiguration()
+    public function getFormConfiguration(JobInstance $jobInstance)
     {
-        $formOptions = [
+        $xlsxFormOptions = array_merge($this->simpleXlsxExport->getFormConfiguration($jobInstance), [
+            'with_media' => [
+                'type'    => 'switch',
+                'options' => [
+                    'label' => 'pim_connector.export.with_media.label',
+                    'help'  => 'pim_connector.export.with_media.help'
+                ]
+            ],
+        ]);
+
+        $productFormOptions = [
             'filters' => [
                 'type'    => 'hidden',
                 'options' => [
@@ -95,9 +106,7 @@ class ProductXlsxExport implements FormConfigurationProviderInterface
             ],
         ];
 
-        $formOptions = array_merge($formOptions, $this->simpleXlsxExport->getFormConfiguration());
-
-        return $formOptions;
+        return array_merge($productFormOptions, $xlsxFormOptions);
     }
 
     /**
