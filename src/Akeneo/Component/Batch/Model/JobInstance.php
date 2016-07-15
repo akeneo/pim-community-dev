@@ -59,7 +59,7 @@ class JobInstance
     protected $type;
 
     /** @var array */
-    protected $rawConfiguration = array();
+    protected $rawConfiguration = [];
 
     /** @var Collection|JobExecution[] */
     protected $jobExecutions;

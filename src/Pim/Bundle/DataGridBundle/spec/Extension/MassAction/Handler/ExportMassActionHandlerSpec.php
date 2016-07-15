@@ -25,7 +25,7 @@ class ExportMassActionHandlerSpec extends ObjectBehavior
         DatasourceInterface $datasource,
         EditMassAction $massAction
     ) {
-        $objectIds = array('foo', 'bar', 'baz');
+        $objectIds = ['foo', 'bar', 'baz'];
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_EXPORT_PRE_HANDLER,

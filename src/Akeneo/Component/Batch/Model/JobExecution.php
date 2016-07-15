@@ -81,7 +81,7 @@ class JobExecution
         $this->executionContext = new ExecutionContext();
         $this->stepExecutions = new ArrayCollection();
         $this->createTime = new \DateTime();
-        $this->failureExceptions = array();
+        $this->failureExceptions = [];
     }
 
     /**
@@ -438,13 +438,13 @@ class JobExecution
      */
     public function addFailureException(\Exception $e)
     {
-        $this->failureExceptions[] = array(
+        $this->failureExceptions[] = [
             'class'             => get_class($e),
             'message'           => $e->getMessage(),
-            'messageParameters' => $e instanceof RuntimeErrorException ? $e->getMessageParameters() : array(),
+            'messageParameters' => $e instanceof RuntimeErrorException ? $e->getMessageParameters() : [],
             'code'              => $e->getCode(),
             'trace'             => $e->getTraceAsString()
-        );
+        ];
 
         return $this;
     }

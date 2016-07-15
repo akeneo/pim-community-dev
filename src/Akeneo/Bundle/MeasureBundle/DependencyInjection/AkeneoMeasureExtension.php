@@ -23,7 +23,7 @@ class AkeneoMeasureExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         // retrieve each measure config from bundles
-        $measuresConfig = array();
+        $measuresConfig = [];
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()).'/Resources/config/measure.yml')) {

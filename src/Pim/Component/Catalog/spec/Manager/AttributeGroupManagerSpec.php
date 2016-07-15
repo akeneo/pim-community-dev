@@ -32,7 +32,7 @@ class AttributeGroupManagerSpec extends ObjectBehavior
         $repository->findDefaultAttributeGroup()->willReturn(null);
 
         $this->shouldThrow(new \LogicException('The default attribute group should exist.'))
-            ->during('removeAttribute', array($group, $attribute));
+            ->during('removeAttribute', [$group, $attribute]);
     }
 
     function it_add_attributes_to_attribute_group(

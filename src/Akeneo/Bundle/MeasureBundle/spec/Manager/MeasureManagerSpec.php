@@ -32,7 +32,7 @@ class MeasureManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException('Undefined measure family "foo"')
             )
-            ->during('getUnitSymbolsForFamily', array('foo'));
+            ->during('getUnitSymbolsForFamily', ['foo']);
     }
 
     public function it_returns_unit_symbols_list_from_a_family()
@@ -40,11 +40,11 @@ class MeasureManagerSpec extends ObjectBehavior
         $this
             ->getUnitSymbolsForFamily(WeightFamilyInterface::FAMILY)
             ->shouldReturn(
-                array(
+                [
                     'MILLIGRAM' => 'mg',
                     'GRAM'      => 'g',
                     'KILOGRAM'  => 'kg'
-                )
+                ]
             );
     }
 
