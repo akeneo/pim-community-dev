@@ -4,9 +4,9 @@ namespace Pim\Behat\Context\Domain;
 
 use Behat\Gherkin\Node\PyStringNode;
 use Box\Spout\Common\Type;
+use Box\Spout\Reader\CSV\Reader as CsvReader;
 use Box\Spout\Reader\ReaderFactory;
 use Pim\Behat\Context\PimContext;
-use Box\Spout\Reader\CSV\Reader as CsvReader;
 
 class ImportExportContext extends PimContext
 {

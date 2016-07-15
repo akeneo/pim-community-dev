@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Writer\File\Csv;
 
-use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Buffer\BufferFactory;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
