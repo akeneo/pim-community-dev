@@ -70,6 +70,15 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/product.csv
+            filters:
+                data: {}
+                structure:
+                    scope: mobile
+                    locales:
+                        - de_DE
+                        - en_US
+                        - fr_FR
+
     csv_clothing_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import

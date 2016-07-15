@@ -61,7 +61,7 @@ Feature: Export published products
   Scenario: Export only the published products updated since the last export
     Given the following job "csv_clothing_mobile_published_product_export" configuration:
       | filePath               | %tmp%/ecommerce_product_export/csv_clothing_mobile_published_product_export.csv        |
-      | filters                | {"structure":{"locales":["fr_FR","en_US","de_DE"],"scope":"mobile"},"data":[{"field": "updated", "operator": "SINCE LAST EXPORT", "value": "csv_clothing_mobile_published_product_export"}]} |
+      | filters                | {"structure":{"locales":["fr_FR","en_US","de_DE"],"scope":"mobile"},"data":[{"field": "updated", "operator": "SINCE LAST JOB", "value": "csv_clothing_mobile_published_product_export"}]} |
     And the following products:
       | sku       | family | categories        | price          | size | main_color |
       | tee-white | tees   | winter_collection | 10 EUR, 15 USD | XL   | White      |
