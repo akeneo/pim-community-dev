@@ -33,13 +33,13 @@ class SimpleProcessorSpec extends ObjectBehavior
             ->willReturn([
                 'code'   => 'promotion',
                 'type'   => 'RELATED',
-                'labels' => [ 'en_US' => 'Promotion', 'de_DE' => 'Förderung']
+                'labels' => ['en_US' => 'Promotion', 'de_DE' => 'Förderung']
             ]);
 
         $this->process($group)->shouldReturn([
             'code'   => 'promotion',
             'type'   => 'RELATED',
-            'labels' => [ 'en_US' => 'Promotion', 'de_DE' => 'Förderung']
+            'labels' => ['en_US' => 'Promotion', 'de_DE' => 'Förderung']
         ]);
 
         $objectDetacher->detach($group)->shouldBeCalled();

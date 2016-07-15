@@ -44,7 +44,6 @@ class WriterSpec extends ObjectBehavior
 
     function it_prepares_items_to_write(
         $arrayConverter,
-        $flatRowBuffer,
         $bufferFactory,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,

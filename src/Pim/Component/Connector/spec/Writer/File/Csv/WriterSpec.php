@@ -43,7 +43,6 @@ class WriterSpec extends ObjectBehavior
 
     function it_prepares_the_export(
         $arrayConverter,
-        $flatRowBuffer,
         $bufferFactory,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,

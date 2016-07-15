@@ -54,8 +54,8 @@ class AttributeNormalizer implements NormalizerInterface
             $results,
             [
                 'group'                  => ($object->getGroup()) ? $object->getGroup()->getCode() : null,
-                'unique'                 => boolval($object->isUnique()),
-                'useable_as_grid_filter' => boolval($object->isUseableAsGridFilter()),
+                'unique'                 => (bool) $object->isUnique(),
+                'useable_as_grid_filter' => (bool) $object->isUseableAsGridFilter(),
                 'allowed_extensions'     => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
                 'metric_family'          => $object->getMetricFamily(),
                 'default_metric_unit'    => $object->getDefaultMetricUnit(),
@@ -65,11 +65,11 @@ class AttributeNormalizer implements NormalizerInterface
                     null === $object->getMaxCharacters() ? '' : (int) $object->getMaxCharacters(),
                 'validation_rule'        => (string) $object->getValidationRule(),
                 'validation_regexp'      => (string) $object->getValidationRegexp(),
-                'wysiwyg_enabled'        => boolval($object->isWysiwygEnabled()),
+                'wysiwyg_enabled'        => (bool) $object->isWysiwygEnabled(),
                 'number_min'             => (string) $object->getNumberMin(),
                 'number_max'             => (string) $object->getNumberMax(),
-                'decimals_allowed'       => boolval($object->isDecimalsAllowed()),
-                'negative_allowed'       => boolval($object->isNegativeAllowed()),
+                'decimals_allowed'       => (bool) $object->isDecimalsAllowed(),
+                'negative_allowed'       => (bool) $object->isNegativeAllowed(),
                 'date_min'               => $this->normalizeDate($object->getDateMin()),
                 'date_max'               => $this->normalizeDate($object->getDateMax()),
                 'max_file_size'          => (string) $object->getMaxFileSize(),
@@ -84,8 +84,8 @@ class AttributeNormalizer implements NormalizerInterface
             $results = array_merge(
                 $results,
                 [
-                    'localizable' => boolval($object->isLocalizable()),
-                    'scopable'    => boolval($object->isScopable()),
+                    'localizable' => (bool) $object->isLocalizable(),
+                    'scopable'    => (bool) $object->isScopable(),
                 ]
             );
         }
@@ -112,19 +112,19 @@ class AttributeNormalizer implements NormalizerInterface
     {
         return [
             'available_locales'    => $this->normalizeAvailableLocales($attribute),
-            'localizable'          => boolval($attribute->isLocalizable()),
+            'localizable'          => (bool) $attribute->isLocalizable(),
             'scope'                => $attribute->isScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
             'options'              => $this->normalizeOptions($attribute),
             'sort_order'           => (int) $attribute->getSortOrder(),
-            'required'             => boolval($attribute->isRequired()),
+            'required'             => (bool) $attribute->isRequired(),
             'max_characters'       => null === $attribute->getMaxCharacters() ? '' : (int) $attribute->getMaxCharacters(),
             'validation_rule'      => (string) $attribute->getValidationRule(),
             'validation_regexp'    => (string) $attribute->getValidationRegexp(),
-            'wysiwyg_enabled'      => boolval($attribute->isWysiwygEnabled()),
+            'wysiwyg_enabled'      => (bool) $attribute->isWysiwygEnabled(),
             'number_min'           => (string) $attribute->getNumberMin(),
             'number_max'           => (string) $attribute->getNumberMax(),
-            'decimals_allowed'     => boolval($attribute->isDecimalsAllowed()),
-            'negative_allowed'     => boolval($attribute->isNegativeAllowed()),
+            'decimals_allowed'     => (bool) $attribute->isDecimalsAllowed(),
+            'negative_allowed'     => (bool) $attribute->isNegativeAllowed(),
             'date_min'             => $this->normalizeDate($attribute->getDateMin()),
             'date_max'             => $this->normalizeDate($attribute->getDateMax()),
             'metric_family'        => (string) $attribute->getMetricFamily(),

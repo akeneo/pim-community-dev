@@ -70,7 +70,7 @@ class FamilyNormalizerSpec extends ObjectBehavior
                 'code'               => 'mugs',
                 'attributes'         => ['name', 'price'],
                 'attribute_as_label' => 'name',
-                'requirements'       => ['ecommerce' => ['name','price'], 'mobile' => ['name']],
+                'requirements'       => ['ecommerce' => ['name', 'price'], 'mobile' => ['name']],
             ]
         );
     }

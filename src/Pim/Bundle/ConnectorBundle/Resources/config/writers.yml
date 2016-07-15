@@ -201,7 +201,7 @@ services:
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.category'
             - '@pim_connector.writer.file.file_path_resolver'
-            - '@pim_connector.writer.file.flat_item_buffer'
+            - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.csv_attribute:
@@ -209,7 +209,7 @@ services:
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.attribute'
             - '@pim_connector.writer.file.file_path_resolver'
-            - '@pim_connector.writer.file.flat_item_buffer'
+            - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.csv_attribute_option:
@@ -217,7 +217,7 @@ services:
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.attribute_option'
             - '@pim_connector.writer.file.file_path_resolver'
-            - '@pim_connector.writer.file.flat_item_buffer'
+            - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.csv_association_type:
@@ -225,7 +225,7 @@ services:
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.association_type'
             - '@pim_connector.writer.file.file_path_resolver'
-            - '@pim_connector.writer.file.flat_item_buffer'
+            - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.csv_group:
@@ -233,7 +233,7 @@ services:
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.group'
             - '@pim_connector.writer.file.file_path_resolver'
-            - '@pim_connector.writer.file.flat_item_buffer'
+            - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.csv_family:
@@ -266,7 +266,7 @@ services:
         arguments:
              - '@pim_connector.array_converter.standard_to_flat.group'
              - '@pim_connector.writer.file.file_path_resolver'
-             - '@pim_connector.writer.file.flat_item_buffer'
+             - '@pim_connector.factory.flat_item_buffer'
              - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.xlsx_family:
@@ -274,7 +274,7 @@ services:
         arguments:
              - '@pim_connector.array_converter.standard_to_flat.family'
              - '@pim_connector.writer.file.file_path_resolver'
-             - '@pim_connector.writer.file.flat_item_buffer'
+             - '@pim_connector.factory.flat_item_buffer'
              - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.xlsx_category:
@@ -282,7 +282,7 @@ services:
         arguments:
              - '@pim_connector.array_converter.standard_to_flat.category'
              - '@pim_connector.writer.file.file_path_resolver'
-             - '@pim_connector.writer.file.flat_item_buffer'
+             - '@pim_connector.factory.flat_item_buffer'
              - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.xlsx_attribute:
@@ -290,7 +290,7 @@ services:
         arguments:
              - '@pim_connector.array_converter.standard_to_flat.attribute'
              - '@pim_connector.writer.file.file_path_resolver'
-             - '@pim_connector.writer.file.flat_item_buffer'
+             - '@pim_connector.factory.flat_item_buffer'
              - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.xlsx_attribute_option:
@@ -298,7 +298,7 @@ services:
         arguments:
              - '@pim_connector.array_converter.standard_to_flat.attribute_option'
              - '@pim_connector.writer.file.file_path_resolver'
-             - '@pim_connector.writer.file.flat_item_buffer'
+             - '@pim_connector.factory.flat_item_buffer'
              - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pim_connector.writer.file.xlsx_association_type:
@@ -306,7 +306,7 @@ services:
         arguments:
              - '@pim_connector.array_converter.standard_to_flat.association_type'
              - '@pim_connector.writer.file.file_path_resolver'
-             - '@pim_connector.writer.file.flat_item_buffer'
+             - '@pim_connector.factory.flat_item_buffer'
              - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     # Column sorter
