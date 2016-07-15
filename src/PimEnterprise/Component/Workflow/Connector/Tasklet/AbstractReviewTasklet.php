@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Connector\Tasklet;
 
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
@@ -124,7 +125,7 @@ abstract class AbstractReviewTasklet implements TaskletInterface
         $stepExecution->addWarning(
             'pimee_workflow.product_draft.mass_review_action.error.' . $reason,
             $reasonParameters,
-            $item
+            new DataInvalidItem($item)
         );
     }
 }

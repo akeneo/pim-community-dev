@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassEdit\Asset;
 
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -92,7 +93,7 @@ class AddTagsToAssetsProcessor extends AbstractProcessor
             $this->stepExecution->addWarning(
                 'pim_enrich.mass_edit_action.add-tags-to-assets.message.error',
                 [],
-                [$code]
+                new DataInvalidItem([$code])
             );
         }
 

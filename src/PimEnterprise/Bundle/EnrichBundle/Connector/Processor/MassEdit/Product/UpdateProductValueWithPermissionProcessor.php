@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
@@ -77,7 +78,7 @@ class UpdateProductValueWithPermissionProcessor extends BaseProcessor
             $this->stepExecution->addWarning(
                 'pim_enrich.mass_edit_action.edit_common_attributes.message.error',
                 [],
-                $product
+                new DataInvalidItem($product)
             );
             $this->stepExecution->incrementSummaryInfo('skipped_products');
 
