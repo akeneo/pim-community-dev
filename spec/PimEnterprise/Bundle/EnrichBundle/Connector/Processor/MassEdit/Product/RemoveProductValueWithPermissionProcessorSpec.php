@@ -104,7 +104,7 @@ class RemoveProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $stepExecution->addWarning(
             'pim_enrich.mass_edit_action.edit_common_attributes.message.error',
             [],
-            $product
+            Argument::type('Akeneo\Component\Batch\Item\InvalidItemInterface')
         )->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
 
