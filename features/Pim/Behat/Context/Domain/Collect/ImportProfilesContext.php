@@ -5,11 +5,14 @@ namespace Pim\Behat\Context\Domain\Collect;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ExpectationException;
 use Box\Spout\Common\Type;
+use Box\Spout\Reader\ReaderFactory;
 use Box\Spout\Writer\WriterFactory;
+use Pim\Behat\Context\Domain\ImportExportContext;
 use Pim\Behat\Context\PimContext;
 
-class ImportProfilesContext extends PimContext
+class ImportProfilesContext extends ImportExportContext
 {
     /**
      * @param string       $extension
@@ -55,7 +58,6 @@ class ImportProfilesContext extends PimContext
     /**
      * @param TableNode $table
      *
-     *
      * @Given /^the following CSV configuration to import:$/
      */
     public function theFollowingCSVToImport(TableNode $table)
@@ -81,7 +83,7 @@ class ImportProfilesContext extends PimContext
 
         array_unshift($rows, $columns);
 
-        return $this->theFollowingFileToImport('csv', new PyStringNode(implode("\n", $rows)));
+        $this->theFollowingFileToImport('csv', new PyStringNode(implode("\n", $rows)));
     }
 
     /**
@@ -134,5 +136,43 @@ class ImportProfilesContext extends PimContext
     public function iAmOnTheImportJobEditPage(JobInstance $job)
     {
         $this->getNavigationContext()->openPage('Import edit', ['id' => $job->getId()]);
+    }
+
+    /**
+     * @param string       $code
+     * @param PyStringNode $behatData
+     *
+     * @internal param PyStringNode $data
+     *
+     * @Given /^the invalid data file of "([^"]*)" should contain:$/
+     */
+    public function theInvalidDataFileOfShouldContain($code, PyStringNode $behatData)
+    {
+        $jobInstance = $this->getMainContext()->getSubcontext('fixtures')->getJobInstance($code);
+        $jobExecution = $jobInstance->getJobExecutions()->first();
+        $fileType = $jobInstance->getRawConfiguration()['invalid_items_file_format'];
+
+        $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+        $filePath = sprintf(
+            '%simport/%s/%s/invalid_%s/invalid_items.%s',
+            $filePath,
+            $jobInstance->getJobName(),
+            $jobExecution->getId(),
+            $fileType,
+            $fileType
+        );
+
+        $config = [];
+
+        if (Type::CSV === $fileType) {
+            $config = $this->getCsvJobConfiguration($code);
+        } elseif (Type::XLSX === $fileType) {
+            $config = $this->getXlsxJobConfiguration($code);
+        }
+
+        $expectedLines = $this->getExpectedLines($behatData, $config);
+        $actualLines = $this->getActualLines($filePath, $fileType, $config);
+
+        $this->compareFile($expectedLines, $actualLines, $filePath);
     }
 }
