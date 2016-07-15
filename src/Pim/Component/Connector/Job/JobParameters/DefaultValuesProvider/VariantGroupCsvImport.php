@@ -23,14 +23,13 @@ class VariantGroupCsvImport implements DefaultValuesProviderInterface
 
     /**
      * @param DefaultValuesProviderInterface $simpleProvider
-     * @param array                      $supportedJobNames
+     * @param array                          $supportedJobNames
      */
     public function __construct(DefaultValuesProviderInterface $simpleProvider, array $supportedJobNames)
     {
         $this->simpleProvider = $simpleProvider;
         $this->supportedJobNames = $supportedJobNames;
     }
-
 
     /**
      * {@inheritdoc}
