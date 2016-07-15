@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class JobExecutionArchivist implements EventSubscriberInterface
 {
-    /** @var array */
+    /** @var ArchiverInterface[] */
     protected $archivers = [];
 
     /**
