@@ -2,17 +2,18 @@
 
 namespace spec\Akeneo\Component\Batch\Event;
 
+use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use PhpSpec\ObjectBehavior;
 
 class InvalidItemEventSpec extends ObjectBehavior
 {
-    function let()
+    function let(InvalidItemInterface $invalidItem)
     {
         $this->beConstructedWith(
+            $invalidItem,
             'Foo\\Bar\\Baz',
             'No special reason %param%.',
-            ['%param%' => 'Item1'],
-            ['foo'     => 'baz']
+            ['%param%' => 'Item1']
         );
     }
 
@@ -31,8 +32,8 @@ class InvalidItemEventSpec extends ObjectBehavior
         $this->getReasonParameters()->shouldReturn(['%param%' => 'Item1']);
     }
 
-    function it_provides_invalid_item()
+    function it_provides_invalid_item($invalidItem)
     {
-        $this->getItem()->shouldReturn(['foo' => 'baz']);
+        $this->getItem()->shouldReturn($invalidItem);
     }
 }

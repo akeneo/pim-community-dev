@@ -3,6 +3,7 @@
 namespace Akeneo\Component\Batch\Model;
 
 use Akeneo\Component\Batch\Item\ExecutionContext;
+use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\JobParameters;
@@ -130,7 +131,7 @@ class StepExecution
      *
      * @param ExecutionContext $executionContext the attributes
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setExecutionContext(ExecutionContext $executionContext)
     {
@@ -154,7 +155,7 @@ class StepExecution
      *
      * @param \DateTime $endTime the time that this execution ended
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setEndTime(\DateTime $endTime)
     {
@@ -178,7 +179,7 @@ class StepExecution
      *
      * @param integer $readCount the current number of read items for this execution
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setReadCount($readCount)
     {
@@ -210,7 +211,7 @@ class StepExecution
      *
      * @param integer $writeCount the current number of written items for this execution
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setWriteCount($writeCount)
     {
@@ -249,7 +250,7 @@ class StepExecution
      * Set a flag that will signal to an execution environment that this
      * execution (and its surrounding job) wishes to exit.
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setTerminateOnly()
     {
@@ -261,7 +262,7 @@ class StepExecution
     /**
      * Gets the time this execution started
      *
-     * @return the time this execution started
+     * @return \DateTime The time this execution started
      */
     public function getStartTime()
     {
@@ -273,7 +274,7 @@ class StepExecution
      *
      * @param \DateTime $startTime the time this execution started
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setStartTime(\DateTime $startTime)
     {
@@ -297,7 +298,7 @@ class StepExecution
      *
      * @param BatchStatus $status the current status of this step
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setStatus(BatchStatus $status)
     {
@@ -313,7 +314,7 @@ class StepExecution
      *
      * @param mixed $status the new status value
      *
-     * @return $this
+     * @return StepExecution
      */
     public function upgradeStatus($status)
     {
@@ -335,7 +336,7 @@ class StepExecution
     /**
      * @param ExitStatus $exitStatus
      *
-     * @return $this
+     * @return StepExecution
      */
     public function setExitStatus(ExitStatus $exitStatus)
     {
@@ -389,7 +390,7 @@ class StepExecution
      * Add a failure exception
      * @param \Exception $e
      *
-     * @return $this
+     * @return StepExecution
      */
     public function addFailureException(\Exception $e)
     {
@@ -443,17 +444,23 @@ class StepExecution
     /**
      * Add a warning
      *
-     * @param string $reason
-     * @param array  $reasonParameters
-     * @param mixed  $item
+     * @param string               $reason
+     * @param array                $reasonParameters
+     * @param InvalidItemInterface $item
      */
-    public function addWarning($reason, array $reasonParameters, $item)
+    public function addWarning($reason, array $reasonParameters, InvalidItemInterface $item)
     {
-        if (is_object($item)) {
-            $item = [
-                'class'  => ClassUtils::getClass($item),
-                'id'     => method_exists($item, 'getId') ? $item->getId() : '[unknown]',
-                'string' => method_exists($item, '__toString') ? (string) $item : '[unknown]',
+        $data = $item->getInvalidData();
+
+        if (null === $data) {
+            $data = [];
+        }
+
+        if (is_object($data)) {
+            $data = [
+                'class'  => ClassUtils::getClass($data),
+                'id'     => method_exists($data, 'getId') ? $data->getId() : '[unknown]',
+                'string' => method_exists($data, '__toString') ? (string) $data : '[unknown]',
             ];
         }
 
@@ -462,7 +469,7 @@ class StepExecution
                 $this,
                 $reason,
                 $reasonParameters,
-                $item
+                $data
             )
         );
     }
