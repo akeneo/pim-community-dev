@@ -63,6 +63,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
 
             foreach ($options['locales'] as $localeCode) {
                 $field = $this->getNormalizedField($scope, $localeCode);
+                $value = (int) $value;
                 $expr->addAnd($this->getExpr($value, $field, $this->operatorsMapping[$operator]));
             }
         } else {
