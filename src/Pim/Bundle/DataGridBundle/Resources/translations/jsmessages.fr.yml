@@ -59,9 +59,9 @@ pim_datagrid:
     remove_column: Supprimer
   mass_action:
     delete:
-      confirm_title: Confirmation de la suppression.
+      confirm_title: Confirmation de la suppression
       confirm_ok: OK
-      empty_selection: Aucun produit sélectionné.
+      empty_selection: Aucun produit sélectionné
 pim.grid.mass_action.quick_export.title: Export rapide
 pim.grid.mass_action.quick_export.launched: Export rapide a été lancé
 pim.grid.action.launch.title: Démarrer
