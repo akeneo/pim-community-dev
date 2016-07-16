@@ -93,9 +93,9 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $this->dispatchPreSaveEvent($group, $options);
-
         $options = $this->optionsResolver->resolveSaveOptions($options);
+
+        $this->dispatchPreSaveEvent($group, $options);
 
         $this->versionContext->addContextInfo(
             sprintf('Comes from variant group %s', $group->getCode()),
@@ -138,9 +138,10 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
+        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($groups));
 
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
 
@@ -184,6 +185,8 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
+     * Dispatch pre save event if flush is true
+     *
      * @param object $group
      * @param array  $options
      */
@@ -195,6 +198,8 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
+     * Dispatch post save event if flush is true
+     *
      * @param object $group
      * @param array  $options
      */

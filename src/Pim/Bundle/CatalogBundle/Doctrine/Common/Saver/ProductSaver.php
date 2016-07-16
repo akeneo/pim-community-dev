@@ -97,6 +97,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         }
 
         $options = $this->optionsResolver->resolveSaveAllOptions($options);
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
         $itemOptions = $options;
@@ -114,6 +115,8 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
+     * Dispatch pre save event if flush is true
+     *
      * @param object $product
      * @param array  $options
      */
@@ -125,6 +128,8 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
+     * Dispatch post save event if flush is true
+     *
      * @param object $product
      * @param array  $options
      */

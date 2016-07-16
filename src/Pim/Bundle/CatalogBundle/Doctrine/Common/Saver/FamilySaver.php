@@ -66,14 +66,16 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
             );
         }
 
+        $options = $this->optionsResolver->resolveSaveOptions($options);
+
         $this->dispatchPreSaveEvent($family, $options);
 
-        $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($family);
 
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
+
         if (true === $options['schedule']) {
             $this->completenessManager->scheduleForFamily($family);
         }
@@ -90,9 +92,10 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
+        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($families));
 
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
 
@@ -108,6 +111,8 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
+     * Dispatch pre save event if flush is true
+     *
      * @param object $family
      * @param array  $options
      */
@@ -119,6 +124,8 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
+     * Dispatch post save event if flush is true
+     *
      * @param object $family
      * @param array  $options
      */

@@ -59,9 +59,10 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
+        $options = $this->optionsResolver->resolveSaveOptions($options);
+
         $this->dispatchPreSaveEvent($attribute, $options);
 
-        $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($attribute);
 
         if (true === $options['flush']) {
@@ -97,6 +98,8 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
+     * Dispatch pre save event if flush is true
+     *
      * @param object $attribute
      * @param array  $options
      */
@@ -108,6 +111,8 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
+     * Dispatch post save event if flush is true
+     *
      * @param object $attribute
      * @param array  $options
      */

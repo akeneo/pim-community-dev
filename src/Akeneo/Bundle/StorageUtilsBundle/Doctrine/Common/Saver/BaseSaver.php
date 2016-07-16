@@ -66,7 +66,8 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
         }
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($object, $options));
+
+        $this->dispatchPreSaveEvent($object, $options);
 
         $this->objectManager->persist($object);
 
@@ -74,7 +75,7 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
             $this->objectManager->flush();
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $options));
+        $this->dispatchPostSaveEvent($object, $options);
     }
 
     /**
@@ -87,7 +88,8 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
         }
 
         $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
-        $this->dispatchPreSaveEvent($objects, $allOptions);
+
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($objects, $allOptions));
 
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
@@ -99,29 +101,33 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
         if (true === $allOptions['flush']) {
             $this->objectManager->flush();
         }
-        $this->dispatchPostSaveEvent($objects, $allOptions);
 
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $allOptions));
     }
 
     /**
-     * @param object $objects
-     * @param array  $allOptions
+     * Dispatch pre save event if flush is true
+     *
+     * @param object $object
+     * @param array  $options
      */
-    protected function dispatchPreSaveEvent($objects, array $allOptions)
+    protected function dispatchPreSaveEvent($object, array $options)
     {
-        if (true === $allOptions['flush']) {
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($objects, $allOptions));
+        if (true === $options['flush']) {
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($object, $options));
         }
     }
 
     /**
-     * @param object $objects
-     * @param array  $allOptions
+     * Dispatch post save event if flush is true
+     *
+     * @param object $object
+     * @param array  $options
      */
-    protected function dispatchPostSaveEvent($objects, array $allOptions)
+    protected function dispatchPostSaveEvent($object, array $options)
     {
-        if (true === $allOptions['flush']) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $allOptions));
+        if (true === $options['flush']) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $options));
         }
     }
 }
