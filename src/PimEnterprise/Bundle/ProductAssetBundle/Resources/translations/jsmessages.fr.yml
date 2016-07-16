@@ -62,6 +62,13 @@ pimee_product_asset:
       uploading: Transfert en cours
       error: Erreur
       success: Succès
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Êtes-vous sûr de vouloir supprimer les ressources sélectionnées ?
+        success: Les ressources sélectionnées ont été supprimées.
+        error: "Une erreur s'est produite lors de la suppression des ressources sélectionnées, merci d'essayer à nouveau."
+        empty_selection: Aucune ressource choisie
 pim_dashboard:
   widget:
     last_operations:

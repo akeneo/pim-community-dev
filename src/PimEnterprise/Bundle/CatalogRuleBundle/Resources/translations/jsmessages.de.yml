@@ -17,11 +17,16 @@ pimee_catalog_rule:
       add.label: wird hinzugefügt zu
   datagrid:
     rule-grid:
+      actions:
+        execute:
+          confirm_ok: OK
       mass_edit_action:
         confirm_title: Berechnungs-Bestätigung
         confirm_content: Sind Sie sicher, dass Sie die übereinstimmenden Produkte für die Regeln berechnen möchten?
         confirm_ok: OK
       mass_action:
+        execute:
+          confirm_ok: OK
         delete:
           confirm_ok: OK
           confirm_title: Löschbestätigung

@@ -160,6 +160,7 @@ pim_enrich:
       success_flash: Le(s) mot(s) clé(s) ont été ajoutés aux ressources
       launched_flash: |-
         L'action de masse "Ajouter des mots clés aux ressources" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+      message.error: "Le mot clé fourni n'existe pas"
 pim:
   grid:
     mass_action:

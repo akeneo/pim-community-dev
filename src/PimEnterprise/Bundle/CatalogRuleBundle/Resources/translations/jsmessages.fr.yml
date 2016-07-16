@@ -18,11 +18,24 @@ pimee_catalog_rule:
       remove.label: est retirée de
   datagrid:
     rule-grid:
+      actions:
+        execute:
+          confirm_title: "Confirmation de l'exécution"
+          confirm_content: Êtes-vous sûr de vouloir exécuter la règle ?
+          confirm_ok: OK
       mass_edit_action:
         confirm_title: Confirmation de calcul
         confirm_content: Êtes-vous sûr de vouloir calculer les produits impactés par les règles ?
         confirm_ok: OK
       mass_action:
+        execute:
+          confirm_ok: OK
+          confirm_title: "Confirmation de l'exécution"
+          confirm_content: Êtes-vous sûr de vouloir exécuter les règles sélectionnées ?
+          success: |-
+            L'action de masse "exécution des règles" a été lancée. Vous serez notifié lorsque la modification sera terminée.
+          error: "Une erreur s'est produite lors de l'exécution des règles."
+          empty_selection: "Aucune règle n'a été sélectionnée."
         delete:
           confirm_ok: OK
           confirm_title: Confirmation de la suppression
@@ -37,4 +50,5 @@ flash:
   rule:
     removed: Règle supprimée avec succès
     impacted_product_count: "Le calcul des produits impactés par les règles à été lancé. Vous serez notifié lorsqu'il sera terminé."
+    executed: "L'exécution des règles a été lancée. Vous serez notifié lorsque la modification sera terminée."
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Paramètres des règles
