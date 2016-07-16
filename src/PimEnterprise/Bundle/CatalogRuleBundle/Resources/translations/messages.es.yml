@@ -10,7 +10,6 @@ pimee_catalog_rule:
         actions: Acción
         impacted_product_count:
           label: Productos correspondientes
-          count: '{0,1}%count% producto correspondiente|]1,Inf[%count% productos correspondientes'
           no_yet_calculated: Aún no calculados
   actions:
     type:
@@ -72,6 +71,7 @@ pimee_catalog_rule:
   notification:
     mass_edit_rule:
       success: Cálculo de productos correspondientes por las reglas finalizado
+rule: Configuración de reglas
 mass_edit_rule: Configuración de reglas
 job_execution.summary.rule_calculated: Número de reglas
 batch_jobs:
