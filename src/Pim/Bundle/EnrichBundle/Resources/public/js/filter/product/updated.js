@@ -72,7 +72,7 @@ define([
                 if ('>' === this.getOperator()) {
                     Datepicker
                         .init(
-                            this.$('[name="filter-value"]').parent(),
+                            this.$('.date-wrapper:first'),
                             {
                                 format: 'yyyy-MM-dd',
                                 defaultFormat: 'yyyy-MM-dd',
@@ -95,6 +95,8 @@ define([
              * Value is reset after operator has changed.
              */
             updateState: function () {
+                this.$('.date-wrapper:first').datetimepicker('hide');
+
                 var oldOperator = this.getFormData().operator;
 
                 var value    = this.$('[name="filter-value"]').val();

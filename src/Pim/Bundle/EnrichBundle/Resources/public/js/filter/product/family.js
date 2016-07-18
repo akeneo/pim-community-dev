@@ -85,7 +85,8 @@ define([
                 isEditable: this.isEditable(),
                 __: __,
                 field: this.getField(),
-                value: this.getValue()
+                value: this.getValue(),
+                shortname: this.shortname
             });
         },
 
