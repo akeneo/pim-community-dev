@@ -20,8 +20,8 @@ class JobInstancesConfiguratorSpec extends ObjectBehavior
         $myInstallerPath = dirname($myFilePath);
         $myFileName = str_replace($myInstallerPath, '', $myFilePath);
         $pathProvider->getFixturesPath()->willReturn($myInstallerPath);
-        $instance->getRawConfiguration()->willReturn(['filePath' => $myFileName]);
-        $instance->setRawConfiguration(['filePath' => $myInstallerPath.$myFileName])->shouldBeCalled();
+        $instance->getRawParameters()->willReturn(['filePath' => $myFileName]);
+        $instance->setRawParameters(['filePath' => $myInstallerPath.$myFileName])->shouldBeCalled();
 
         $this->configureJobInstancesWithInstallerData([$instance]);
     }
@@ -38,8 +38,8 @@ class JobInstancesConfiguratorSpec extends ObjectBehavior
             ]
         ];
         $instance->getCode()->willReturn('my_original_code');
-        $instance->getRawConfiguration()->willReturn(['filePath' => $myFileName]);
-        $instance->setRawConfiguration(['filePath' => $myReplacementFilePath])->shouldBeCalled();
+        $instance->getRawParameters()->willReturn(['filePath' => $myFileName]);
+        $instance->setRawParameters(['filePath' => $myReplacementFilePath])->shouldBeCalled();
         $instance->setCode('my_original_code0')->shouldBeCalled();
 
         $configuredInstances = $this->configureJobInstancesWithReplacementPaths([$instance], $replacementPaths);
@@ -57,12 +57,12 @@ class JobInstancesConfiguratorSpec extends ObjectBehavior
             $myFileName  => [$myReplacementFileCommunity, $myReplacementFileEnterprise]
         ];
         $instance->getCode()->willReturn('my_original_code');
-        $instance->getRawConfiguration()->willReturn(['filePath' => $myFileName]);
-        $instance->setRawConfiguration(['filePath' => $myReplacementFileCommunity])->shouldBeCalled();
+        $instance->getRawParameters()->willReturn(['filePath' => $myFileName]);
+        $instance->setRawParameters(['filePath' => $myReplacementFileCommunity])->shouldBeCalled();
         $instance->setCode('my_original_code0')->shouldBeCalled();
 
-        $instance->getRawConfiguration()->willReturn(['filePath' => $myFileName]);
-        $instance->setRawConfiguration(['filePath' => $myReplacementFileEnterprise])->shouldBeCalled();
+        $instance->getRawParameters()->willReturn(['filePath' => $myFileName]);
+        $instance->setRawParameters(['filePath' => $myReplacementFileEnterprise])->shouldBeCalled();
         $instance->setCode('my_original_code1')->shouldBeCalled();
 
         $configuredInstances = $this->configureJobInstancesWithReplacementPaths([$instance], $replacementPaths);

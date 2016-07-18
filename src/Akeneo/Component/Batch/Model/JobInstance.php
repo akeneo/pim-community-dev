@@ -59,7 +59,7 @@ class JobInstance
     protected $type;
 
     /** @var array */
-    protected $rawConfiguration = array();
+    protected $rawParameters = [];
 
     /** @var Collection|JobExecution[] */
     protected $jobExecutions;
@@ -218,29 +218,55 @@ class JobInstance
     }
 
     /**
-     * This configuration can be used to create a JobParameters, stored like this in a legacy way
-     * TODO TIP-426: we should rename this configuration to rawParameters
+     * This parameters can be used to create a JobParameters, stored like this in a legacy way
      *
-     * @param array $configuration
+     * @param array $rawParameters
      *
      * @return JobInstance
      */
-    public function setRawConfiguration($configuration)
+    public function setRawParameters($rawParameters)
     {
-        $this->rawConfiguration = $configuration;
+        $this->rawParameters = $rawParameters;
 
         return $this;
     }
 
     /**
-     * This configuration can be used to create a JobParameters, stored like this in a legacy way
-     * TODO TIP-426: we should rename this configuration to rawParameters
+     * This parameters can be used to create a JobParameters, stored like this in a legacy way
      *
      * @return array
      */
+    public function getRawParameters()
+    {
+        return $this->rawParameters;
+    }
+
+    /**
+     * This configuration can be used to create a JobParameters, stored like this in a legacy way
+     *
+     * @param array $configuration
+     *
+     * @return JobInstance
+     *
+     * @deprecated will be removed in 1.7, this has been used to set the job instance parameters (configuration), we
+     *             must use $jobInstance->setRawParameters()
+     */
+    public function setRawConfiguration($configuration)
+    {
+        trigger_error('please use $jobInstance->setRawParameters() instead', E_USER_NOTICE);
+    }
+
+    /**
+     * This parameters can be used to create a JobParameters, stored like this in a legacy way
+     *
+     * @return array
+     *
+     * @deprecated will be removed in 1.7, this has been used to get the job instance parameters (configuration), we
+     *             must use $jobInstance->getRawParameters()
+     */
     public function getRawConfiguration()
     {
-        return $this->rawConfiguration;
+        trigger_error('please use $jobInstance->getRawParameters() instead', E_USER_NOTICE);
     }
 
     /**

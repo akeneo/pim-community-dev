@@ -10,7 +10,7 @@ class EditMassActionSpec extends ObjectBehavior
 {
     function it_requires_the_route()
     {
-        $params = array();
+        $params = [];
         $options = ActionConfiguration::createNamed('edit', $params);
 
         $this->shouldThrow(
@@ -20,25 +20,25 @@ class EditMassActionSpec extends ObjectBehavior
 
     function it_defines_default_values()
     {
-        $params = array('route' => 'foo');
+        $params = ['route' => 'foo'];
         $options = ActionConfiguration::createNamed('edit', $params);
 
         $this->setOptions($options)->shouldNotThrow(Argument::any());
 
         $this->getOptions()->getName()->shouldReturn('edit');
         $this->getOptions()->offsetGet('frontend_type')->shouldReturn('redirect');
-        $this->getOptions()->offsetGet('route_parameters')->shouldReturn(array());
+        $this->getOptions()->offsetGet('route_parameters')->shouldReturn([]);
         $this->getOptions()->offsetGet('handler')->shouldReturn('mass_edit');
     }
 
     function it_overwrites_default_values()
     {
-        $routeParams = array('foo' => 'bar');
-        $params = array(
+        $routeParams = ['foo' => 'bar'];
+        $params = [
             'route'            => 'baz',
             'route_parameters' => $routeParams,
             'handler'          => 'my_handler'
-        );
+        ];
         $options = ActionConfiguration::createNamed('edit', $params);
 
         $this->setOptions($options)->shouldNotThrow(Argument::any());
@@ -51,7 +51,7 @@ class EditMassActionSpec extends ObjectBehavior
 
     function it_doesnt_allow_overriding_frontend_type()
     {
-        $params = array('route' => 'foo', 'frontend_type' => 'bar');
+        $params = ['route' => 'foo', 'frontend_type' => 'bar'];
         $options = ActionConfiguration::createNamed('edit', $params);
 
         $this->setOptions($options)->shouldNotThrow(Argument::any());

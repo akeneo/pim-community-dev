@@ -1,10 +1,10 @@
 <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane buffer-top active">
-    {% block configuration %}
+    {% block parameters %}
         {% set globalSettings %}
             <table class="configuration">
                 <thead></thead>
                 <tbody>
-                {% for element in form.configuration %}
+                {% for element in form.parameters %}
                     {% if element.vars.attr['data-tab'] is not defined %}
                     <tr>
                         <td><b>{{ element.vars.label|trans }}</b></td>
@@ -16,5 +16,5 @@
             </table>
         {% endset %}
         {{ elements.accordion({ 'pane.accordion.global_settings': globalSettings }, 1, true) }}
-    {% endblock configuration %}
+    {% endblock parameters %}
 </div>

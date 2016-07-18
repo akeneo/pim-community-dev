@@ -26,9 +26,9 @@ class ExportMassActionSpec extends ObjectBehavior
 
     function it_requires_the_content_type_route_parameter()
     {
-        $params = array(
-            'route_parameters' => array('_format' => 'foo')
-        );
+        $params = [
+            'route_parameters' => ['_format' => 'foo']
+        ];
         $options = ActionConfiguration::createNamed('export', $params);
 
         $this->shouldThrow(
@@ -38,8 +38,8 @@ class ExportMassActionSpec extends ObjectBehavior
 
     function it_defines_default_values()
     {
-        $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
-        $params = array('route_parameters' => $routeParams);
+        $routeParams = ['_format' => 'foo', '_contentType' => 'bar'];
+        $params = ['route_parameters' => $routeParams];
         $options = ActionConfiguration::createNamed('export', $params);
 
         $this->setOptions($options)->shouldNotThrow(Argument::any());
@@ -54,14 +54,14 @@ class ExportMassActionSpec extends ObjectBehavior
 
     function it_overwrites_default_values()
     {
-        $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
-        $context     = array('baz' => 'qux');
-        $params = array(
+        $routeParams = ['_format' => 'foo', '_contentType' => 'bar'];
+        $context     = ['baz' => 'qux'];
+        $params = [
             'route_parameters' => $routeParams,
             'context'          => $context,
             'route'            => 'my_route',
             'handler'          => 'my_handler'
-        );
+        ];
         $options = ActionConfiguration::createNamed('export', $params);
 
         $this->setOptions($options)->shouldNotThrow(Argument::any());
@@ -75,12 +75,12 @@ class ExportMassActionSpec extends ObjectBehavior
 
     function it_gets_export_context()
     {
-        $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
-        $context     = array('baz' => 'qux');
-        $params = array(
+        $routeParams = ['_format' => 'foo', '_contentType' => 'bar'];
+        $context     = ['baz' => 'qux'];
+        $params = [
             'route_parameters' => $routeParams,
             'context'          => $context
-        );
+        ];
         $options = ActionConfiguration::createNamed('export', $params);
 
         $this->setOptions($options)->shouldNotThrow(Argument::any());
@@ -90,8 +90,8 @@ class ExportMassActionSpec extends ObjectBehavior
 
     function it_doesnt_allow_overriding_frontend_type()
     {
-        $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
-        $params = array('route_parameters' => $routeParams, 'frontend_type' => 'bar');
+        $routeParams = ['_format' => 'foo', '_contentType' => 'bar'];
+        $params = ['route_parameters' => $routeParams, 'frontend_type' => 'bar'];
         $options = ActionConfiguration::createNamed('edit', $params);
 
         $this->setOptions($options)->shouldNotThrow(Argument::any());

@@ -43,7 +43,7 @@ class JobInstanceUpdaterSpec extends ObjectBehavior
         $jobInstance->setCode('fixtures_currency_csv')->shouldBeCalled();
         $jobInstance->setConnector('Data fixtures')->shouldBeCalled();
         $jobInstance->setLabel('Currencies data fixtures')->shouldBeCalled();
-        $jobInstance->setRawConfiguration([
+        $jobInstance->setRawParameters([
             'filePath' => 'currencies.csv',
         ])->shouldBeCalled();
         $jobInstance->setType('type')->shouldBeCalled();

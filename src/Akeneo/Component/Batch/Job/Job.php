@@ -97,7 +97,7 @@ class Job implements JobInterface
      */
     public function getStepNames()
     {
-        $names = array();
+        $names = [];
         foreach ($this->steps as $step) {
             $names[] = $step->getName();
         }

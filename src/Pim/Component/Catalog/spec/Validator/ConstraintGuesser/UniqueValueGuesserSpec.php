@@ -56,20 +56,20 @@ class UniqueValueGuesserSpec extends ObjectBehavior
     private function dataProviderForSupportedAttributes()
     {
         return [
-            'boolean' => array(AttributeTypes::BACKEND_TYPE_BOOLEAN, false),
-            'collection' => array(AttributeTypes::BACKEND_TYPE_COLLECTION, false),
-            'date' => array(AttributeTypes::BACKEND_TYPE_DATE, true),
-            'datetime' => array(AttributeTypes::BACKEND_TYPE_DATETIME, true),
-            'decimal' => array(AttributeTypes::BACKEND_TYPE_DECIMAL, true),
-            'entity' => array(AttributeTypes::BACKEND_TYPE_ENTITY, false),
-            'integer' => array(AttributeTypes::BACKEND_TYPE_INTEGER, true),
-            'media' => array(AttributeTypes::BACKEND_TYPE_MEDIA, false),
-            'metric' => array(AttributeTypes::BACKEND_TYPE_METRIC, false),
-            'option' => array(AttributeTypes::BACKEND_TYPE_OPTION, false),
-            'options' => array(AttributeTypes::BACKEND_TYPE_OPTIONS, false),
-            'price' => array(AttributeTypes::BACKEND_TYPE_PRICE, false),
-            'text' => array(AttributeTypes::BACKEND_TYPE_TEXT, false),
-            'varchar' => array(AttributeTypes::BACKEND_TYPE_VARCHAR, true),
+            'boolean' => [AttributeTypes::BACKEND_TYPE_BOOLEAN, false],
+            'collection' => [AttributeTypes::BACKEND_TYPE_COLLECTION, false],
+            'date' => [AttributeTypes::BACKEND_TYPE_DATE, true],
+            'datetime' => [AttributeTypes::BACKEND_TYPE_DATETIME, true],
+            'decimal' => [AttributeTypes::BACKEND_TYPE_DECIMAL, true],
+            'entity' => [AttributeTypes::BACKEND_TYPE_ENTITY, false],
+            'integer' => [AttributeTypes::BACKEND_TYPE_INTEGER, true],
+            'media' => [AttributeTypes::BACKEND_TYPE_MEDIA, false],
+            'metric' => [AttributeTypes::BACKEND_TYPE_METRIC, false],
+            'option' => [AttributeTypes::BACKEND_TYPE_OPTION, false],
+            'options' => [AttributeTypes::BACKEND_TYPE_OPTIONS, false],
+            'price' => [AttributeTypes::BACKEND_TYPE_PRICE, false],
+            'text' => [AttributeTypes::BACKEND_TYPE_TEXT, false],
+            'varchar' => [AttributeTypes::BACKEND_TYPE_VARCHAR, true],
         ];
     }
 }

@@ -21,7 +21,7 @@ class JobContext extends PimContext
     public function theFollowingJobConfiguration($code, TableNode $table)
     {
         $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
-        $configuration = $jobInstance->getRawConfiguration();
+        $configuration = $jobInstance->getRawParameters();
 
         foreach ($table->getRowsHash() as $property => $value) {
             $value = $this->replacePlaceholders($value);
@@ -63,7 +63,7 @@ class JobContext extends PimContext
                 )
             );
         }
-        $jobInstance->setRawConfiguration($jobParams->all());
+        $jobInstance->setRawParameters($jobParams->all());
 
         $saver = $this->getMainContext()->getContainer()->get('akeneo_batch.saver.job_instance');
         $saver->save($jobInstance);

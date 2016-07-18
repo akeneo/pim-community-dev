@@ -6,7 +6,7 @@
     {{ elements.accordion({ 'pane.accordion.properties': properties }, 1) }}
 
     {% set globalSettings %}
-        {% for field in form.configuration %}
+        {% for field in form.parameters %}
             {% if field.vars.attr['data-tab'] is not defined %}
                 {{ form_row(field) }}
             {% endif %}

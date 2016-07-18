@@ -35,9 +35,9 @@ Akeneo\Component\Batch\Model\JobInstance:
             type: string
             length: 255
             column: connector
-        rawConfiguration:
+        rawParameters:
             type: array
-            column: rawConfiguration
+            column: raw_parameters
         type:
             type: string
             length: 255

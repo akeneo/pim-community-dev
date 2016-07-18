@@ -14,7 +14,7 @@ use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
-use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
+use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType;
 use Pim\Bundle\ImportExportBundle\JobTemplate\JobTemplateProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -45,8 +45,8 @@ class JobProfileController
     /** @var string */
     protected $jobType;
 
-    /** @var JobInstanceType */
-    protected $jobInstanceType;
+    /** @var JobInstanceFormType */
+    protected $jobInstanceFormType;
 
     /** @var JobInstanceFactory */
     protected $jobInstanceFactory;
@@ -101,7 +101,7 @@ class JobProfileController
      * @param ValidatorInterface           $validator
      * @param EventDispatcherInterface     $eventDispatcher
      * @param JobRegistry                  $jobRegistry
-     * @param JobInstanceType              $jobInstanceType
+     * @param JobInstanceFormType          $jobInstanceFormType
      * @param JobInstanceFactory           $jobInstanceFactory
      * @param JobLauncherInterface         $simpleJobLauncher
      * @param EntityManagerInterface       $entityManager
@@ -120,7 +120,7 @@ class JobProfileController
         ValidatorInterface $validator,
         EventDispatcherInterface $eventDispatcher,
         JobRegistry $jobRegistry,
-        JobInstanceType $jobInstanceType,
+        JobInstanceFormType $jobInstanceFormType,
         JobInstanceFactory $jobInstanceFactory,
         JobLauncherInterface $simpleJobLauncher,
         EntityManagerInterface $entityManager,
@@ -131,26 +131,26 @@ class JobProfileController
         JobParametersValidator $jobParametersValidator,
         $jobType
     ) {
-        $this->jobRegistry           = $jobRegistry;
-        $this->jobType               = $jobType;
+        $this->jobRegistry            = $jobRegistry;
+        $this->jobType                = $jobType;
 
-        $this->jobInstanceType       = $jobInstanceType;
-        $this->jobInstanceType->setJobType($this->jobType);
+        $this->jobInstanceFormType    = $jobInstanceFormType;
+        $this->jobInstanceFormType->setJobType($this->jobType);
 
-        $this->jobInstanceFactory    = $jobInstanceFactory;
-        $this->simpleJobLauncher     = $simpleJobLauncher;
-        $this->formFactory           = $formFactory;
-        $this->request               = $request;
-        $this->router                = $router;
-        $this->templating            = $templating;
-        $this->eventDispatcher       = $eventDispatcher;
-        $this->validator             = $validator;
-        $this->entityManager         = $entityManager;
-        $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->jobTemplateProvider   = $jobTemplateProvider;
-        $this->jobParametersFactory  = $jobParametersFactory;
+        $this->jobInstanceFactory     = $jobInstanceFactory;
+        $this->simpleJobLauncher      = $simpleJobLauncher;
+        $this->formFactory            = $formFactory;
+        $this->request                = $request;
+        $this->router                 = $router;
+        $this->templating             = $templating;
+        $this->eventDispatcher        = $eventDispatcher;
+        $this->validator              = $validator;
+        $this->entityManager          = $entityManager;
+        $this->jobInstanceRepository  = $jobInstanceRepository;
+        $this->jobTemplateProvider    = $jobTemplateProvider;
+        $this->jobParametersFactory   = $jobParametersFactory;
         $this->jobParametersValidator = $jobParametersValidator;
-        $this->tokenStorage          = $tokenStorage;
+        $this->tokenStorage           = $tokenStorage;
     }
 
     /**
@@ -163,7 +163,7 @@ class JobProfileController
     public function createAction(Request $request)
     {
         $jobInstance = $this->jobInstanceFactory->createJobInstance($this->getJobType());
-        $form = $this->formFactory->create($this->jobInstanceType, $jobInstance);
+        $form = $this->formFactory->create($this->jobInstanceFormType, $jobInstance);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
@@ -171,7 +171,7 @@ class JobProfileController
             if ($form->isValid()) {
                 $job = $this->jobRegistry->get($jobInstance->getJobName());
                 $jobParameters = $this->jobParametersFactory->create($job);
-                $jobInstance->setRawConfiguration($jobParameters->all());
+                $jobInstance->setRawParameters($jobParameters->all());
 
                 $this->entityManager->persist($jobInstance);
                 $this->entityManager->flush();
@@ -216,12 +216,12 @@ class JobProfileController
 
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_SHOW, new GenericEvent($jobInstance));
 
-        $form = $this->formFactory->create($this->jobInstanceType, $jobInstance, ['disabled' => true]);
+        $form = $this->formFactory->create($this->jobInstanceFormType, $jobInstance, ['disabled' => true]);
         $uploadAllowed = false;
         $uploadForm = null;
 
-        $rawConfiguration = $jobInstance->getRawConfiguration();
-        if (isset($rawConfiguration['uploadAllowed']) && true === $rawConfiguration['uploadAllowed']) {
+        $rawParameters = $jobInstance->getRawParameters();
+        if (isset($rawParameters['uploadAllowed']) && true === $rawParameters['uploadAllowed']) {
             $uploadAllowed = true;
             $uploadForm = $this->createUploadForm()->createView();
         }
@@ -261,7 +261,7 @@ class JobProfileController
 
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EDIT, new GenericEvent($jobInstance));
 
-        $form = $this->formFactory->create($this->jobInstanceType, $jobInstance);
+        $form = $this->formFactory->create($this->jobInstanceFormType, $jobInstance);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
@@ -399,9 +399,9 @@ class JobProfileController
      */
     protected function validateJobInstance(JobInstance $jobInstance, array $validationGroups)
     {
-        $rawConfiguration = $jobInstance->getRawConfiguration();
+        $rawParameters = $jobInstance->getRawParameters();
         $job = $this->jobRegistry->get($jobInstance->getJobName());
-        $jobParameters = $this->jobParametersFactory->create($job, $rawConfiguration);
+        $jobParameters = $this->jobParametersFactory->create($job, $rawParameters);
 
         /** @var ConstraintViolationListInterface $jobParamsViolations */
         $jobParamsViolations = $this->jobParametersValidator->validate(
@@ -430,7 +430,7 @@ class JobProfileController
     {
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EXECUTE, new GenericEvent($jobInstance));
 
-        $configuration = $jobInstance->getRawConfiguration();
+        $configuration = $jobInstance->getRawParameters();
         $configuration['send_email'] = true;
         $jobExecution = $this->simpleJobLauncher
             ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
@@ -483,9 +483,9 @@ class JobProfileController
 
         $uploadedFile = $fileInfo->getUploadedFile();
         $file = $uploadedFile->move(sys_get_temp_dir(), $uploadedFile->getClientOriginalName());
-        $rawConfiguration = $jobInstance->getRawConfiguration();
-        $rawConfiguration['filePath'] = $file->getRealPath();
-        $jobInstance->setRawConfiguration($rawConfiguration);
+        $rawParameters = $jobInstance->getRawParameters();
+        $rawParameters['filePath'] = $file->getRealPath();
+        $jobInstance->setRawParameters($rawParameters);
 
         return true;
     }

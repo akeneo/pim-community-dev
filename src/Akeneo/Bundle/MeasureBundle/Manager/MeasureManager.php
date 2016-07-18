@@ -14,7 +14,7 @@ class MeasureManager
     /**
      * @var array $config
      */
-    protected $config = array();
+    protected $config = [];
 
     /**
      * Set measure config

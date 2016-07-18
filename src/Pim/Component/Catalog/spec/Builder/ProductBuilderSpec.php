@@ -32,12 +32,12 @@ class ProductBuilderSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         AttributeValuesResolver $valuesResolver
     ) {
-        $entityConfig = array(
+        $entityConfig = [
             'product' => self::PRODUCT_CLASS,
             'product_value' => self::VALUE_CLASS,
             'product_price' => self::PRICE_CLASS,
             'association' => self::ASSOCIATION_CLASS
-        );
+        ];
 
         $this->beConstructedWith(
             $attributeRepository,

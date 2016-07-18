@@ -54,6 +54,6 @@ class JobInstanceNormalizer implements NormalizerInterface
      */
     protected function normalizeConfiguration(JobInstance $job)
     {
-        return $job->getRawConfiguration();
+        return $job->getRawParameters();
     }
 }

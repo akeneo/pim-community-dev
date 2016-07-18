@@ -62,6 +62,9 @@
 
 ## BC breaks
 
+- Rename `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType` to `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`
+- Rename method `getRawConfiguration` to `getRawParameters` in `Akeneo\Component\Batch\Model\JobInstance`
+- Rename method `setRawConfiguration` to `setRawParameters` in `Akeneo\Component\Batch\Model\JobInstance`
 - Change constructor of `Akeneo\Component\Buffer\BufferInterface`. Add `$options` array as the second argument.
 - Move `Pim\Component\Connector\Writer\File\CsvWriter` to `Pim\Component\Connector\Writer\File\Csv\Writer`
 - Move `Pim\Component\Connector\Writer\File\CsvProductWriter` to `Pim\Component\Connector\Writer\File\Csv\ProductWriter`

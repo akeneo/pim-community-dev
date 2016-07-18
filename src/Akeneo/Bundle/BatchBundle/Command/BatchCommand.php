@@ -92,10 +92,10 @@ class BatchCommand extends ContainerAwareCommand
         $job = $this->getJobRegistry()->get($jobInstance->getJobName());
         $jobParamsFactory = $this->getJobParametersFactory();
         if ($config = $input->getOption('config')) {
-            $rawConfiguration = $this->decodeConfiguration($config);
-            $jobParameters = $jobParamsFactory->create($job, $rawConfiguration);
+            $rawParameters = $this->decodeConfiguration($config);
+            $jobParameters = $jobParamsFactory->create($job, $rawParameters);
         } else {
-            $jobParameters = $jobParamsFactory->create($job, $jobInstance->getRawConfiguration());
+            $jobParameters = $jobParamsFactory->create($job, $jobInstance->getRawParameters());
         }
         $validator = $this->getValidator();
 

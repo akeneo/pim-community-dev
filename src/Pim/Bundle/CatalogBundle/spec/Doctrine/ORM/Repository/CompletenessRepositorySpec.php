@@ -36,31 +36,39 @@ class CompletenessRepositorySpec extends ObjectBehavior
     {
         $statement->execute()->willReturn(null);
 
-        $statement->fetchAll()->willReturn(array(
-            array('label' => 'ECommerce', 'total' => 3),
-            array('label' => 'Mobile', 'total' => 2)
-        ));
+        $statement->fetchAll()->willReturn(
+            [
+                ['label' => 'ECommerce', 'total' => 3],
+                ['label' => 'Mobile', 'total' => 2]
+            ]
+        );
 
-        $this->getProductsCountPerChannels()->shouldReturn(array(
-            array('label' => 'ECommerce', 'total' => 3),
-            array('label' => 'Mobile', 'total' => 2)
-        ));
+        $this->getProductsCountPerChannels()->shouldReturn(
+            [
+                ['label' => 'ECommerce', 'total' => 3],
+                ['label' => 'Mobile', 'total' => 2]
+            ]
+        );
     }
 
     function it_counts_complete_products_per_channels(Statement $statement)
     {
         $statement->execute()->willReturn(null);
 
-        $statement->fetchAll()->willReturn(array(
-            array('locale' => 'en_US', 'label' => 'ECommerce', 'total' => 0),
-            array('locale' => 'fr_FR', 'label' => 'ECommerce', 'total' => 1),
-            array('locale' => 'en_US', 'label' => 'Mobile', 'total' => 2),
-        ));
+        $statement->fetchAll()->willReturn(
+            [
+                ['locale' => 'en_US', 'label' => 'ECommerce', 'total' => 0],
+                ['locale' => 'fr_FR', 'label' => 'ECommerce', 'total' => 1],
+                ['locale' => 'en_US', 'label' => 'Mobile', 'total' => 2],
+            ]
+        );
 
-        $this->getCompleteProductsCountPerChannels()->shouldReturn(array(
-            array('locale' => 'en_US', 'label' => 'ECommerce', 'total' => 0),
-            array('locale' => 'fr_FR', 'label' => 'ECommerce', 'total' => 1),
-            array('locale' => 'en_US', 'label' => 'Mobile', 'total' => 2),
-        ));
+        $this->getCompleteProductsCountPerChannels()->shouldReturn(
+            [
+                ['locale' => 'en_US', 'label' => 'ECommerce', 'total' => 0],
+                ['locale' => 'fr_FR', 'label' => 'ECommerce', 'total' => 1],
+                ['locale' => 'en_US', 'label' => 'Mobile', 'total' => 2],
+            ]
+        );
     }
 }

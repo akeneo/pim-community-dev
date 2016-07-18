@@ -30,7 +30,7 @@ class MeasureConverter
      *
      * @param array $config Configuration parameters
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         $this->config = $config['measures_config'];
     }
