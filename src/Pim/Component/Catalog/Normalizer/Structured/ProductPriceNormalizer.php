@@ -14,6 +14,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductPriceNormalizer implements NormalizerInterface
 {
+    const DECIMAL_PRECISION = 2;
+
     /** @var string[] */
     protected $supportedFormats = ['json', 'xml'];
 
@@ -22,8 +24,14 @@ class ProductPriceNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
+        $data = $object->getData();
+        if (null !== $data && is_numeric($data) && isset($context['decimals_allowed'])) {
+            $precision = true === $context['decimals_allowed'] ? static::DECIMAL_PRECISION : 0;
+            $data = number_format($data, $precision, '.', '');
+        }
+
         return [
-            'data'     => $object->getData(),
+            'data'     => $data,
             'currency' => $object->getCurrency(),
         ];
     }

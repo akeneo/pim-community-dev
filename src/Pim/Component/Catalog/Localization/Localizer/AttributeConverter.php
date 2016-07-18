@@ -74,6 +74,77 @@ class AttributeConverter implements AttributeConverterInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * Before:
+     * [
+     *     "name": [{
+     *         "locale": "fr_FR",
+     *         "scope":  null,
+     *         "data":  "T-shirt super beau",
+     *     }],
+     *     "price": [
+     *          {
+     *              "locale": null,
+     *              "scope":  ecommerce,
+     *              "data":   [
+     *                  {"data": 10.78, "currency": "EUR"},
+     *                  {"data": 24, "currency": "USD"},
+     *                  {"data": 20.75, "currency": "CHF"}
+     *              ]
+     *          }
+     *     ],
+     *     "length": [{
+     *         "locale": "en_US",
+     *         "scope":  "mobile",
+     *         "data":   {"data": 10.45, "unit": "CENTIMETER"}
+     *     }]
+     *     [...]
+     *
+     * After:
+     * [
+     *     "name": [{
+     *         "locale": "fr_FR",
+     *         "scope":  null,
+     *         "data":  "T-shirt super beau",
+     *     }],
+     *     "price": [
+     *          {
+     *              "locale": null,
+     *              "scope":  ecommerce,
+     *              "data":   [
+     *                  {"data": "10,78", "currency": "EUR"},
+     *                  {"data": "24", "currency": "USD"},
+     *                  {"data": "20,75", "currency": "CHF"}
+     *              ]
+     *          }
+     *     ],
+     *     "length": [{
+     *         "locale": "en_US",
+     *         "scope":  "mobile",
+     *         "data":   {"data": "10,45", "unit": "CENTIMETER"}
+     *     }]
+     *     [...]
+     */
+    public function convertToLocalizedFormats(array $items, array $options = [])
+    {
+        foreach ($items as $code => $item) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($code);
+            if (null !== $attribute) {
+                $localizer = $this->localizerRegistry->getLocalizer($attribute->getAttributeType());
+
+                if (null !== $localizer) {
+                    foreach ($item as $index => $data) {
+                        $items[$code][$index]['data'] = $localizer->localize($data['data'], $options);
+                    }
+                }
+            }
+        }
+
+        return $items;
+    }
+
+    /**
      * Convert a localized attribute
      *
      * @param LocalizerInterface $localizer

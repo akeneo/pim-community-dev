@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Normalizer\Structured;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -18,22 +18,13 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    const NUMBER_DECIMAL_PRECISION = 4;
+
     /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var LocalizerRegistryInterface */
-    protected $localizerRegistry;
-
     /** @var string[] */
     protected $supportedFormats = ['json', 'xml'];
-
-    /**
-     * @param LocalizerRegistryInterface $localizerRegistry
-     */
-    public function __construct(LocalizerRegistryInterface $localizerRegistry)
-    {
-        $this->localizerRegistry = $localizerRegistry;
-    }
 
     /**
      * {@inheritdoc}
@@ -48,6 +39,9 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function normalize($entity, $format = null, array $context = [])
     {
+        $attribute = $entity->getAttribute();
+        $context['decimals_allowed'] = $attribute->isDecimalsAllowed();
+
         if ($entity->getData() instanceof Collection) {
             $data = [];
             foreach ($entity->getData() as $item) {
@@ -58,11 +52,9 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             $data = $this->serializer->normalize($entity->getData(), $format, $context);
         }
 
-        $type = $entity->getAttribute()->getAttributeType();
-
-        $localizer = $this->localizerRegistry->getLocalizer($type);
-        if (null !== $localizer) {
-            $data = $localizer->localize($data, $context);
+        if (AttributeTypes::NUMBER === $attribute->getAttributeType() && null !== $data && is_numeric($data)) {
+            $precision = true === $context['decimals_allowed'] ? static::NUMBER_DECIMAL_PRECISION : 0;
+            $data = number_format($data, $precision, '.', '');
         }
 
         return [
