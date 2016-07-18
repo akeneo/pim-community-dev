@@ -158,11 +158,10 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
     /**
      * Check if scope and value are valid
      *
-     * @throws InvalidArgumentException
-     *
      * @param string $field
      * @param mixed  $scope
      * @param mixed  $value
+     * @throws InvalidArgumentException
      */
     protected function checkScopeAndValue($field, $scope, $value)
     {
@@ -182,10 +181,9 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      *      LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES
      *      LOWER_THAN_ON_ALL_LOCALES
      *
-     * @throws InvalidArgumentException
-     *
      * @param string $field
      * @param array  $options
+     * @throws InvalidArgumentException
      */
     protected function checkOptions($field, array $options)
     {

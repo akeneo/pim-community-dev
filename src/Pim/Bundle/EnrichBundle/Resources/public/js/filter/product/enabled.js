@@ -28,7 +28,7 @@ define([
          */
         renderInput: function () {
             if (undefined === this.getValue()) {
-                this.setValue(null);
+                this.setValue(true);
             }
 
             return this.template({
