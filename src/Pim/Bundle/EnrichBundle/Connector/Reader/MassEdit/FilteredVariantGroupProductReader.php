@@ -2,8 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\VariantGroupCleaner;
+use Pim\Component\Catalog\Converter\MetricConverter;
+use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Connector\Reader\Database\ProductReader;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -13,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilteredVariantGroupProductReader extends FilteredProductReader
+class FilteredVariantGroupProductReader extends ProductReader
 {
     /** @var VariantGroupCleaner */
     protected $cleaner;
@@ -25,9 +30,24 @@ class FilteredVariantGroupProductReader extends FilteredProductReader
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param VariantGroupCleaner                 $cleaner
      */
-    public function __construct(ProductQueryBuilderFactoryInterface $pqbFactory, VariantGroupCleaner $cleaner)
-    {
-        parent::__construct($pqbFactory);
+    public function __construct(
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        ChannelRepositoryInterface $channelRepository,
+        CompletenessManager $completenessManager,
+        MetricConverter $metricConverter,
+        ObjectDetacherInterface $objectDetacher,
+        $generateCompleteness,
+        VariantGroupCleaner $cleaner
+    ) {
+        parent::__construct(
+            $pqbFactory,
+            $channelRepository,
+            $completenessManager,
+            $metricConverter,
+            $objectDetacher,
+            $generateCompleteness
+        );
+
         $this->cleaner = $cleaner;
     }
 
@@ -39,21 +59,14 @@ class FilteredVariantGroupProductReader extends FilteredProductReader
     protected function getConfiguredFilters()
     {
         if (null === $this->cleanedFilters) {
+            $filters = parent::getConfiguredFilters();
+
             $jobParameters = $this->stepExecution->getJobParameters();
-            $filters = $jobParameters->get('filters');
             $actions = $jobParameters->get('actions');
+
             $this->cleanedFilters = $this->cleaner->clean($this->stepExecution, $filters, $actions);
         }
 
         return $this->cleanedFilters;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function initialize()
-    {
-        $this->isExecuted = false;
-        $this->cleanedFilters = null;
     }
 }

@@ -225,7 +225,6 @@
     `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor`
     `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`
     `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredFamilyReader`
-    `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader`
 - Remove class `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface`
 - Remove class `Pim\Component\Connector\Factory\JobConfigurationFactory`
 - Remove class `Pim\Component\Connector\Model\JobConfiguration`
@@ -392,3 +391,4 @@
 - Change constructor of `Akeneo\Component\Batch\Event\InvalidItemEvent`.
 - Change constructor of `Akeneo\Component\Batch\Item\InvalidItemException`.
 - Change method `addWarning()` signature of `Akeneo\Component\Batch\Item\InvalidItemException`.
+- Removed `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader`, use `Pim\Component\Connector\Reader\Database\ProductReader` instead
