@@ -85,9 +85,9 @@ class ProductExportController
             throw new \RuntimeException(sprintf('Jobinstance "%s" is not well configured', $jobCode));
         }
 
-        $filters          = $this->gridFilterAdapter->adapt($this->request);
-        $rawConfiguration = $jobInstance->getRawConfiguration();
-        $mainContext      = $this->getContextParameters();
+        $filters       = $this->gridFilterAdapter->adapt($this->request);
+        $rawParameters = $jobInstance->getRawParameters();
+        $mainContext   = $this->getContextParameters();
 
         $dynamicConfiguration = [
             'filters'     => $filters,
@@ -110,7 +110,7 @@ class ProductExportController
             );
         }
 
-        $configuration = array_merge($rawConfiguration, $dynamicConfiguration);
+        $configuration = array_merge($rawParameters, $dynamicConfiguration);
 
         $this->jobLauncher->launch($jobInstance, $this->getUser(), $configuration);
 

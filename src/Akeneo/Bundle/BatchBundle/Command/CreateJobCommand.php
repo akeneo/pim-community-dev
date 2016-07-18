@@ -63,7 +63,7 @@ class CreateJobCommand extends ContainerAwareCommand
         $jobInstance->setJobName($jobName);
         $jobInstance->setCode($code);
         $jobInstance->setLabel($label);
-        $jobInstance->setRawConfiguration($rawConfig);
+        $jobInstance->setRawParameters($rawConfig);
 
         /** @var JobInterface */
         $job = $this->getJobRegistry()->get($jobInstance->getJobName());
@@ -80,7 +80,7 @@ class CreateJobCommand extends ContainerAwareCommand
 
         /** @var JobParameters $jobParameters */
         $jobParameters = $this->getJobParametersFactory()->create($job, $rawConfig);
-        $jobInstance->setRawConfiguration($jobParameters->all());
+        $jobInstance->setRawParameters($jobParameters->all());
 
         $violations = $this->getJobParametersValidator()->validate($job, $jobParameters);
         if (count($violations) > 0) {

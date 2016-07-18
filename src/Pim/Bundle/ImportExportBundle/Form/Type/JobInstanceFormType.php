@@ -20,7 +20,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobInstanceType extends AbstractType
+class JobInstanceFormType extends AbstractType
 {
     /** @var JobRegistry $jobRegistry */
     protected $jobRegistry;
@@ -90,7 +90,7 @@ class JobInstanceType extends AbstractType
      *
      * @param string $jobType
      *
-     * @return JobInstanceType
+     * @return JobInstanceFormType
      */
     public function setJobType($jobType)
     {
@@ -114,7 +114,7 @@ class JobInstanceType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      *
-     * @return JobInstanceType
+     * @return JobInstanceFormType
      */
     protected function addCodeField(FormBuilderInterface $builder)
     {
@@ -130,7 +130,7 @@ class JobInstanceType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      *
-     * @return JobInstanceType
+     * @return JobInstanceFormType
      */
     protected function addLabelField(FormBuilderInterface $builder)
     {
@@ -144,7 +144,7 @@ class JobInstanceType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      *
-     * @return JobInstanceType
+     * @return JobInstanceFormType
      */
     protected function addConnectorField(FormBuilderInterface $builder)
     {
@@ -167,7 +167,7 @@ class JobInstanceType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      *
-     * @return JobInstanceType
+     * @return JobInstanceFormType
      */
     protected function addJobNameField(FormBuilderInterface $builder)
     {
@@ -201,26 +201,25 @@ class JobInstanceType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      *
-     * @return JobInstanceType
+     * @return JobInstanceFormType
      */
     protected function addJobConfigurationField(FormBuilderInterface $builder)
     {
-        // TODO: TIP-426: rename this field to parameters
         $jobName = $builder->getData()->getJobName();
 
         if (null !== $jobName) {
             $job = $this->jobRegistry->get($jobName);
             $builder
                 ->add(
-                    'configuration',
+                    'parameters',
                     'pim_import_export_job_parameters',
                     [
                         'required'      => true,
                         'by_reference'  => false,
-                        'property_path' => 'rawConfiguration',
+                        'property_path' => 'rawParameters',
                     ]
                 )
-                ->get('configuration')
+                ->get('parameters')
                 ->addModelTransformer(new ConfigurationToJobParametersTransformer(
                     $this->jobParametersFactory,
                     $job

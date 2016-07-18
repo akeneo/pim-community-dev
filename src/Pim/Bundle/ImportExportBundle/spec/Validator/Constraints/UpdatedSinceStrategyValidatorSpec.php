@@ -34,7 +34,7 @@ class UpdatedSinceStrategyValidatorSpec extends ObjectBehavior
         JobInstance $jobInstance,
         \Pim\Bundle\ImportExportBundle\Validator\Constraints\UpdatedSinceDate $constraint
     ) {
-        $jobInstance->getRawConfiguration()->willReturn([
+        $jobInstance->getRawParameters()->willReturn([
             'updated_since_strategy' => 'since_date',
         ]);
         $constraint->jobInstance = $jobInstance;
@@ -50,7 +50,7 @@ class UpdatedSinceStrategyValidatorSpec extends ObjectBehavior
         UpdatedSinceDate $constraint,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {
-        $jobInstance->getRawConfiguration()->willReturn([
+        $jobInstance->getRawParameters()->willReturn([
             'updated_since_strategy' => 'since_date',
         ]);
 
@@ -69,7 +69,7 @@ class UpdatedSinceStrategyValidatorSpec extends ObjectBehavior
         UpdatedSinceNDays $constraint,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {
-        $jobInstance->getRawConfiguration()->willReturn([
+        $jobInstance->getRawParameters()->willReturn([
             'updated_since_strategy' => 'since_n_days',
         ]);
 

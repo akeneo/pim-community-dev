@@ -162,7 +162,7 @@ class ExportProfilesContext extends ImportExportContext
      */
     protected function checkExportDirectoryFiles($code, $shouldBeInDirectory, TableNode $table)
     {
-        $config = $this->getFixturesContext()->getJobInstance($code)->getRawConfiguration();
+        $config = $this->getFixturesContext()->getJobInstance($code)->getRawParameters();
 
         $path = dirname($config['filePath']);
 

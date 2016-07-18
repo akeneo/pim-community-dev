@@ -30,7 +30,7 @@ class JobInstanceNormalizerSpec extends ObjectBehavior
         $jobinstance->getLabel()->willReturn('Product export');
         $jobinstance->getConnector()->willReturn('myconnector');
         $jobinstance->getType()->willReturn('EXPORT');
-        $jobinstance->getRawConfiguration()->willReturn(
+        $jobinstance->getRawParameters()->willReturn(
             [
                 'delimiter' => ';'
             ]
