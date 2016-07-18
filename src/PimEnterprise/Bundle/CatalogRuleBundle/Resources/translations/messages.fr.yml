@@ -3,6 +3,7 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         delete: Supprimer
+        execute: Exécuter
       title: Règles
       column:
         code: Code
@@ -14,6 +15,7 @@ pimee_catalog_rule:
           no_yet_calculated: Pas encore calculé
       mass_edit_action:
         impacted_product_count: Calculer les produits correspondants
+        execute: Exécuter les règles sélectionnées
         delete: Supprimer les règles sélectionnées
   actions:
     type:
@@ -53,6 +55,7 @@ pimee_catalog_rule:
       view_permissions: Voir les règles
       delete_permissions: Supprimer les règles
       impacted_product_count_permissions: Calculer les produits impactés par les règles
+      execute_permissions: Exécuter les règles
   attribute:
     tab:
       rule.title: Règles
@@ -75,9 +78,19 @@ pimee_catalog_rule:
     product_rule_definition_writer.title: "Ecriture des règles d'import produits"
     rules_execution.title: Exécution des règles
   notification:
+    rule:
+      executed: Exécution des règles terminée
+      launched: "L'exécution des règles a été lancée. Vous serez notifié lorsque la modification sera terminée."
     mass_edit_rule:
       success: Calcul des produits impactés par les règles terminé
       error: Une erreur que s’est produite lors du calcul des produits correspondants aux règles
+  popin:
+    execute_rules:
+      confirm_title: "Confirmation de l'exécution"
+      confirm_content: Êtes-vous certain de vouloir exécuter toutes les règles ? (cela peut prendre du temps)
+btn:
+  Execute rules: Exécuter les règles
+rule: Paramètres des règles
 mass_edit_rule: Paramètres des règles
 job_execution.summary.rule_calculated: Nombre de règles
 batch_jobs:

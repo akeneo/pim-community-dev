@@ -17,9 +17,14 @@ pimee_catalog_rule:
       add.label: on lisätty
   datagrid:
     rule-grid:
+      actions:
+        execute:
+          confirm_ok: OK
       mass_edit_action:
         confirm_ok: OK
       mass_action:
+        execute:
+          confirm_ok: OK
         delete:
           confirm_ok: OK
           confirm_title: Poista vahvistus

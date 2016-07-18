@@ -10,7 +10,6 @@ pimee_catalog_rule:
         actions: Aktion
         impacted_product_count:
           label: Übereinstimmende Produkte
-          count: '{0,1}%count% übereinstimmende Produkte|] 1, Inf [%count% übereinstimmende Produkte'
           no_yet_calculated: Noch nicht berechnet
   actions:
     type:
@@ -71,6 +70,7 @@ pimee_catalog_rule:
   notification:
     mass_edit_rule:
       success: Berechnung der übereinstimmenden Produkte für die Regeln abgeschlossen
+rule: Regeleinstellungen
 mass_edit_rule: Regeleinstellungen
 job_execution.summary.rule_calculated: Anzahl der Regeln
 batch_jobs:

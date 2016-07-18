@@ -17,11 +17,16 @@ pimee_catalog_rule:
       add.label: es agregado en
   datagrid:
     rule-grid:
+      actions:
+        execute:
+          confirm_ok: OK
       mass_edit_action:
         confirm_title: Confirmación de cálculo
         confirm_content: ¿Desea calcular los productos correspondientes a las reglas?
         confirm_ok: OK
       mass_action:
+        execute:
+          confirm_ok: OK
         delete:
           confirm_ok: OK
           confirm_title: Confirmación de borrado

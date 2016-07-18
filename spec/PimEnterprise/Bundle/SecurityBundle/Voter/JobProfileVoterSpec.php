@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class JobProfileVoterSpec extends ObjectBehavior
 {
-    protected $attributes = array(Attributes::EDIT, Attributes::EXECUTE);
+    protected $attributes = [Attributes::EDIT, Attributes::EXECUTE];
 
     function let(JobProfileAccessManager $accessManager, TokenInterface $token)
     {
@@ -23,7 +23,7 @@ class JobProfileVoterSpec extends ObjectBehavior
     function it_returns_abstain_access_if_non_job_profile_entity($token)
     {
         $this
-            ->vote($token, 'foo', array('bar', 'baz'))
+            ->vote($token, 'foo', ['bar', 'baz'])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
@@ -39,8 +39,8 @@ class JobProfileVoterSpec extends ObjectBehavior
         $token,
         JobInstance $jobProfile
     ) {
-        $accessManager->getEditUserGroups($jobProfile)->willReturn(array());
-        $accessManager->getExecuteUserGroups($jobProfile)->willReturn(array());
+        $accessManager->getEditUserGroups($jobProfile)->willReturn([]);
+        $accessManager->getExecuteUserGroups($jobProfile)->willReturn([]);
 
         $this
             ->vote($token, $jobProfile, $this->attributes)
@@ -55,10 +55,10 @@ class JobProfileVoterSpec extends ObjectBehavior
     ) {
         $token->getUser()->willReturn($user);
         $user->hasGroup('foo')->willReturn(false);
-        $accessManager->getEditUserGroups($jobProfile)->willReturn(array('foo'));
+        $accessManager->getEditUserGroups($jobProfile)->willReturn(['foo']);
 
         $this
-            ->vote($token, $jobProfile, array(Attributes::EDIT))
+            ->vote($token, $jobProfile, [Attributes::EDIT])
             ->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
 
@@ -70,10 +70,10 @@ class JobProfileVoterSpec extends ObjectBehavior
     ) {
         $token->getUser()->willReturn($user);
         $user->hasGroup('foo')->willReturn(true);
-        $accessManager->getExecuteUserGroups($jobProfile)->willReturn(array('foo'));
+        $accessManager->getExecuteUserGroups($jobProfile)->willReturn(['foo']);
 
         $this
-            ->vote($token, $jobProfile, array(Attributes::EXECUTE))
+            ->vote($token, $jobProfile, [Attributes::EXECUTE])
             ->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 }
