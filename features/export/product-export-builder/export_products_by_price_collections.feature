@@ -1,8 +1,8 @@
 @javascript
-Feature: Export products according to metric attribute filter
+Feature: Export products according to price attribute filter
   In order to export specific products
   As a product manager
-  I need to be able to export the products according to metric attribute values
+  I need to be able to export the products according to price attribute values
 
   Background:
     Given a "footwear" catalog configuration
@@ -10,32 +10,32 @@ Feature: Export products according to metric attribute filter
       | code    | requirements-mobile |
       | rangers | sku, name           |
     And the following products:
-      | sku      | enabled | family  | categories        | length        |
-      | SNKRS-1B | 1       | rangers | summer_collection | 10 CENTIMETER |
-      | SNKRS-1R | 1       | rangers | summer_collection | 20 CENTIMETER |
-      | SNKRS-1N | 1       | rangers | summer_collection |               |
+      | sku      | enabled | family  | categories        | price          |
+      | SNKRS-1B | 1       | rangers | summer_collection | 20 EUR, 30 USD |
+      | SNKRS-1R | 1       | rangers | summer_collection | 25 EUR, 40 USD |
+      | SNKRS-1N | 1       | rangers | summer_collection |                |
     And I am logged in as "Julia"
 
-  Scenario: Export products by their metric values without using the UI
+  Scenario: Successfully export products by their price values without using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
-      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "length", "operator": "<", "value": {"data": 15, "unit": "CENTIMETER"}}]} |
+      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "price", "operator": ">", "value": {"data": 20, "currency": "EUR"}}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;length;length-unit
-    SNKRS-1B;summer_collection;1;rangers;;10;CENTIMETER
+    sku;categories;enabled;family;groups;price-EUR;price-USD
+    SNKRS-1R;summer_collection;1;rangers;;25.00;40.00
     """
 
-  Scenario: Export products by their metric values using the UI
+  Scenario: Successfully export products by their price values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
-    When I am on the "csv_footwear_product_export" export job edit page
+    And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
-    And I add available attributes Length
-    And I filter by "length" with operator "=" and value "20 cm"
+    When I add available attributes Price
+    And I filter by "price" with operator "=" and value "30 USD"
     And I press "Save"
     Then I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -43,24 +43,24 @@ Feature: Export products according to metric attribute filter
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;length;length-unit
-    SNKRS-1R;summer_collection;1;rangers;;20;CENTIMETER
+    sku;categories;enabled;family;groups;price-EUR;price-USD
+    SNKRS-1B;summer_collection;1;rangers;;20.00;30.00
     """
 
-  Scenario: Export products with empty metric values using the UI
+  Scenario: Successfully export products with empty price values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
-    When I am on the "csv_footwear_product_export" export job edit page
+    And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
-    And I add available attributes Length
-    Then I filter by "length" with operator "Empty" and value ""
+    When I add available attributes Price
+    And I filter by "price" with operator "Empty" and value ""
     And I press "Save"
-    And I should not see the text "There are unsaved changes"
+    Then I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;length;length-unit
+    sku;categories;enabled;family;groups;price-EUR;price-USD
     SNKRS-1N;summer_collection;1;rangers;;;
     """

@@ -8,7 +8,7 @@ define([
     'pim/fetcher-registry',
     'pim/user-context',
     'pim/i18n',
-    'text!pim/template/filter/attribute/metric',
+    'text!pim/template/filter/attribute/price-collection',
     'jquery.select2'
 ], function (
     $,
@@ -21,10 +21,10 @@ define([
     template
 ) {
     return BaseFilter.extend({
-        shortname: 'metric',
+        shortname: 'price-collection',
         template: _.template(template),
         events: {
-            'change [name="filter-data"], [name="filter-operator"], select.unit': 'updateState'
+            'change [name="filter-data"], [name="filter-operator"], select.currency': 'updateState'
         },
 
         /**
@@ -53,7 +53,7 @@ define([
             if (undefined === value || undefined === value.data) {
                 value = {
                     data: '',
-                    unit: templateContext.defaultMetricUnit
+                    currency: ''
                 };
             }
 
@@ -74,7 +74,7 @@ define([
          * {@inheritdoc}
          */
         postRender: function () {
-            this.$('.operator, .unit').select2({minimumResultsForSearch: -1});
+            this.$('.operator, .currency').select2({minimumResultsForSearch: -1});
         },
 
         /**
@@ -84,12 +84,11 @@ define([
             return $.when(
                 BaseFilter.prototype.getTemplateContext.apply(this, arguments),
                 FetcherRegistry.getFetcher('attribute').fetch(this.getField()),
-                FetcherRegistry.getFetcher('measure').fetchAll()
-            ).then(function (templateContext, attribute, measures) {
+                FetcherRegistry.getFetcher('currency').fetchAll()
+            ).then(function (templateContext, attribute, currencies) {
                 return _.extend({}, templateContext, {
                     label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
-                    units: measures[attribute.metric_family],
-                    defaultMetricUnit: attribute.default_metric_unit
+                    currencies: currencies
                 });
             }.bind(this));
         },
@@ -100,8 +99,9 @@ define([
         updateState: function () {
             var value = {
                 data: this.$('[name="filter-data"]').val(),
-                unit: this.$('select[name="filter-unit"]').val()
+                currency: this.$('select[name="filter-currency"]').val()
             };
+
             var operator = this.$('[name="filter-operator"]').val();
 
             this.setData({

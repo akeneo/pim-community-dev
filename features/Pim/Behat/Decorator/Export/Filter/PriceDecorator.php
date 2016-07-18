@@ -6,9 +6,9 @@ use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 
 /**
- * Decorator dedicated to metric attribute type.
+ * Decorator dedicated to price collection attribute type.
  */
-class MetricDecorator extends ElementDecorator
+class PriceDecorator extends ElementDecorator
 {
     use SpinCapableTrait;
 
@@ -22,7 +22,7 @@ class MetricDecorator extends ElementDecorator
     {
         $operatorField = $this->spin(function () {
             return $this->find('css', '.select2-container.operator');
-        }, 'Cannot find the metric operator field');
+        }, 'Cannot find the price operator field');
 
         $operatorField = $this->decorate(
             $operatorField,
@@ -31,11 +31,11 @@ class MetricDecorator extends ElementDecorator
         $operatorField->setValue($operator);
 
         if ('' !== $value) {
-            list($data, $unit) = explode(' ', $value);
+            list($data, $currency) = explode(' ', $value);
 
             $field = $this->spin(function () {
                 return $this->find('css', '[name="filter-data"]');
-            }, 'Cannot find the metric data field');
+            }, 'Cannot find the price data field');
 
             $field->setValue($data);
             $this->getSession()->executeScript(
@@ -46,20 +46,20 @@ class MetricDecorator extends ElementDecorator
                 )
             );
 
-            $unitField = $this->spin(function () {
-                return $this->find('css', '.select2-container.unit');
-            }, 'Cannot find the metric unit field');
+            $currencyField = $this->spin(function () {
+                return $this->find('css', '.select2-container.currency');
+            }, 'Cannot find the price currency field');
 
-            $unitField = $this->decorate(
-                $unitField,
+            $currencyField = $this->decorate(
+                $currencyField,
                 ['Pim\Behat\Decorator\Field\Select2Decorator']
             );
 
-            $unitField->setValue($unit);
+            $currencyField->setValue($currency);
             $this->getSession()->executeScript(
                 sprintf(
                     '$(\'.filter-item[data-name="%s"][data-type="%s"] '.
-                    'select[name="filter-unit"]\').trigger(\'change\')',
+                    'select[name="filter-currency"]\').trigger(\'change\')',
                     $this->getAttribute('data-name'),
                     $this->getAttribute('data-type')
                 )

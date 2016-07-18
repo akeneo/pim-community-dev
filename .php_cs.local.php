@@ -5,7 +5,8 @@ $fixers = require __DIR__ . '/.php_cs-fixers.php';
 
 $finder->name('*.php')
     ->in(__DIR__ . '/features')
-    ->in(__DIR__ . '/src');
+    ->in(__DIR__ . '/src')
+    ->notName('*Spec.php');
 
 return \Symfony\CS\Config\Config::create()
     ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
