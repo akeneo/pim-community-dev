@@ -149,6 +149,8 @@ services:
         class: '%pim_connector.writer.file.product.bulk_file_exporter.class%'
         arguments:
             - '@pim_connector.writer.file.file_exporter'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - ['pim_catalog_file', 'pim_catalog_image']
 
     pim_connector.writer.file.yaml:
         class: '%pim_connector.writer.file.yaml.class%'
@@ -186,15 +188,20 @@ services:
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.product_localized'
             - '@pim_connector.factory.flat_item_buffer'
-            - '@pim_connector.writer.file.product.bulk_file_exporter'
             - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - ['pim_catalog_file', 'pim_catalog_image']
 
     pim_connector.writer.file.csv_variant_group:
         class: '%pim_connector.writer.file.csv_variant_group.class%'
         arguments:
+            - '@pim_connector.array_converter.standard_to_flat.variant_group'
             - '@pim_connector.factory.flat_item_buffer'
-            - '@pim_connector.writer.file.product.bulk_file_exporter'
-            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - ['pim_catalog_file', 'pim_catalog_image']
 
     pim_connector.writer.file.csv_category:
         class: '%pim_connector.writer.file.csv.class%'

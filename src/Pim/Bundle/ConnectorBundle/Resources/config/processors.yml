@@ -194,8 +194,10 @@ services:
         arguments:
             - '@pim_serializer.normalizer.product'
             - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.attribute'
             - '@pim_catalog.builder.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_connector.writer.file.product.bulk_file_exporter'
 
     pim_connector.processor.normalization.variant_group:
         class: '%pim_connector.processor.normalization.variant_group.class%'
