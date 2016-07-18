@@ -40,7 +40,7 @@ class NumberConverter extends AbstractValueConverter implements ValueConverterIn
                 $value['scope']
             );
 
-            $convertedItem[$flatName] = floatval($value['data']);
+            $convertedItem[$flatName] = $value['data'];
         }
 
         return $convertedItem;

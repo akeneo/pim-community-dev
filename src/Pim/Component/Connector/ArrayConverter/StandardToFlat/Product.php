@@ -38,6 +38,8 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 $convertedItem[$property] = implode(',', $data);
                 break;
             case 'enabled':
+                $convertedItem[$property] = false === $data || null === $data ? '0' : '1';
+                break;
             case 'family':
                 $convertedItem[$property] = (string) $data;
                 break;
@@ -45,12 +47,13 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
             case 'variant_group':
                 $convertedItem = $this->convertGroups($data, $convertedItem);
                 break;
-            default:
-                $convertedItem = array_merge(
-                    $convertedItem,
-                    $this->valueConverter->convertAttribute($property, $data)
-                );
+            case 'values':
+                foreach ($data as $code => $attribute) {
+                    $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($code, $attribute);
+                }
                 break;
+            default:
+                $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($property, $data);
         }
 
         return $convertedItem;
@@ -68,7 +71,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
     {
         $groups = is_array($data) ? implode(',', $data) : (string) $data;
 
-        if (isset($convertedItem['groups'])) {
+        if (isset($convertedItem['groups']) && '' !== $convertedItem['groups']) {
             $convertedItem['groups'] .= sprintf(',%s', $groups);
         } else {
             $convertedItem['groups'] = $groups;
