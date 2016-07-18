@@ -7,6 +7,7 @@ parameters:
     pim_connector.processor.denormalization.job_instance.class:        Pim\Component\Connector\Processor\Denormalization\JobInstanceProcessor
 
     pim_connector.processor.normalization.simple.class:        Pim\Component\Connector\Processor\Normalization\SimpleProcessor
+    pim_connector.processor.normalization.product.class:       Pim\Component\Connector\Processor\Normalization\ProductProcessor
     pim_connector.processor.normalization.variant_group.class: Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor
 
 services:
@@ -186,6 +187,14 @@ services:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
             - '@pim_serializer.normalizer.group'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.product:
+        class: '%pim_connector.processor.normalization.product.class%'
+        arguments:
+            - '@pim_serializer.normalizer.product'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.builder.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.normalization.variant_group:
