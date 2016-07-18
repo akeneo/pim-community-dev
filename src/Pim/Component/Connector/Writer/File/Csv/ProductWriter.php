@@ -2,14 +2,17 @@
 
 namespace Pim\Component\Connector\Writer\File\Csv;
 
-use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Buffer\BufferFactory;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
-use Pim\Component\Connector\Writer\File\BulkFileExporter;
+use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Write product data into a csv file on the local filesystem
@@ -20,11 +23,8 @@ use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
  */
 class ProductWriter extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
 {
-    /** @var FlatItemBuffer */
-    protected $flatRowBuffer = null;
-
-    /** @var BulkFileExporter */
-    protected $mediaCopier;
+    /** @var ArrayConverterInterface */
+    protected $arrayConverter;
 
     /** @var FlatItemBufferFlusher */
     protected $flusher;
@@ -32,24 +32,45 @@ class ProductWriter extends AbstractFileWriter implements ItemWriterInterface, A
     /** @var BufferFactory */
     protected $bufferFactory;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var FileExporterPathGeneratorInterface */
+    protected $fileExporterPath;
+
+    /** @var array */
+    protected $mediaAttributeTypes;
+
     /** @var array */
     protected $writtenFiles = [];
 
+    /** @var FlatItemBuffer */
+    protected $flatRowBuffer = null;
+
     /**
-     * @param BufferFactory             $bufferFactory
-     * @param BulkFileExporter          $mediaCopier
-     * @param FlatItemBufferFlusher     $flusher
+     * @param ArrayConverterInterface            $arrayConverter
+     * @param BufferFactory                      $bufferFactory
+     * @param FlatItemBufferFlusher              $flusher
+     * @param AttributeRepositoryInterface       $attributeRepository
+     * @param FileExporterPathGeneratorInterface $fileExporterPath
+     * @param array                              $mediaAttributeTypes
      */
     public function __construct(
+        ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
-        BulkFileExporter $mediaCopier,
-        FlatItemBufferFlusher $flusher
+        FlatItemBufferFlusher $flusher,
+        AttributeRepositoryInterface $attributeRepository,
+        FileExporterPathGeneratorInterface $fileExporterPath,
+        array $mediaAttributeTypes
     ) {
         parent::__construct();
 
+        $this->arrayConverter = $arrayConverter;
         $this->bufferFactory = $bufferFactory;
-        $this->mediaCopier = $mediaCopier;
         $this->flusher = $flusher;
+        $this->attributeRepository = $attributeRepository;
+        $this->mediaAttributeTypes = $mediaAttributeTypes;
+        $this->fileExporterPath = $fileExporterPath;
     }
 
     /**
@@ -60,45 +81,78 @@ class ProductWriter extends AbstractFileWriter implements ItemWriterInterface, A
         if (null === $this->flatRowBuffer) {
             $this->flatRowBuffer = $this->bufferFactory->create();
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function write(array $items)
-    {
-        $products = $media = $options = [];
-        foreach ($items as $item) {
-            $products[] = $item['product'];
-            $media[] = $item['media'];
-        }
-
-        $parameters = $this->stepExecution->getJobParameters();
-        $options['withHeader'] = $parameters->get('withHeader');
-        $this->flatRowBuffer->write($products, $options);
 
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
             $this->localFs->mkdir($exportDirectory);
         }
+    }
 
-        if ($parameters->has('with_media') && !$parameters->get('with_media')) {
-            return;
+    /**
+     * {@inheritdoc}
+     */
+    public function write(array $products)
+    {
+        $parameters = $this->stepExecution->getJobParameters();
+
+        $flatItems = [];
+        foreach ($products as $product) {
+            if ($parameters->has('with_media') && $parameters->get('with_media')) {
+                $product = $this->archiveMedia($product, $parameters);
+            }
+
+            $flatItems[] = $this->arrayConverter->convert($product, [
+                'decimal_separator' => $parameters->get('decimalSeparator'),
+                'date_format'       => $parameters->get('dateFormat'),
+            ]);
         }
 
-        $this->mediaCopier->exportAll($media, $exportDirectory);
+        $options = [];
+        $options['withHeader'] = $parameters->get('withHeader');
+        $this->flatRowBuffer->write($flatItems, $options);
+    }
 
-        foreach ($this->mediaCopier->getCopiedMedia() as $copy) {
-            $this->writtenFiles[$copy['copyPath']] = $copy['originalMedium']['exportPath'];
+    /**
+     * Stock media for archiver and change media path
+     *
+     * @param array         $product
+     * @param JobParameters $parameters
+     *
+     * @return array
+     */
+    protected function archiveMedia(array $product, JobParameters $parameters)
+    {
+        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($product['values']));
+        $mediaAttributeTypes = array_filter($attributeTypes, function ($attributeCode) {
+            return in_array($attributeCode, $this->mediaAttributeTypes);
+        });
+
+        $tmpDirectory = dirname($this->getPath()) . DIRECTORY_SEPARATOR;
+
+        $identifierCode = $this->attributeRepository->getIdentifierCode();
+        $identifier = current($product['values'][$identifierCode])['data'];
+        $finder = new Finder();
+
+        foreach ($mediaAttributeTypes as $attributeCode => $attributeType) {
+            foreach ($product['values'][$attributeCode] as $index => $item) {
+                if (null !== $item['data']) {
+                    // TODO: change this
+                    $exportDirectory = str_replace($item['data']['filePath'], '', $this->fileExporterPath->generate($item, [
+                        'identifier' => $identifier,
+                        'code'       => $attributeCode,
+                    ]));
+
+                    $files = iterator_to_array($finder->files()->in($tmpDirectory . $exportDirectory));
+                    if (!empty($files)) {
+                        $path = $exportDirectory . current($files)->getFilename();
+                        $this->writtenFiles[$tmpDirectory . $path] = $path;
+                        $product['values'][$attributeCode][$index]['data']['filePath'] = $path;
+                    }
+                }
+            }
         }
 
-        foreach ($this->mediaCopier->getErrors() as $error) {
-            $this->stepExecution->addWarning(
-                $error['message'],
-                [],
-                new DataInvalidItem($error['medium'])
-            );
-        }
+        return $product;
     }
 
     /**

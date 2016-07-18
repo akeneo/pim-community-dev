@@ -40,24 +40,6 @@ class FileNormalizer extends AbstractProductValueDataNormalizer
     protected function doNormalize($file, $format = null, array $context = [])
     {
         /**
-         * "prepare_copy" is used for medias export
-         *      [
-         *          'storageAlias' => 'my_file_storage',
-         *          'filePath' => '9/4/0/c/940cce20eaaef7fb622f1f9f4f8a0e3e11271d86_SNKRS_1R.png'
-         *          'exportPath' => 'files/SNKRS-1B/side_view/akene-mobile.jpg'
-         *      ]
-         */
-        if (isset($context['prepare_copy']) && true === $context['prepare_copy'] && isset($context['value'])) {
-            $identifier = isset($context['identifier']) ? $context['identifier'] : null;
-
-            return [
-                'storageAlias' => $file->getStorage(),
-                'filePath'     => $file->getKey(),
-                'exportPath'   => $this->pathGenerator->generate($context['value'], ['identifier' => $identifier])
-            ];
-        }
-
-        /**
          * "versioning" is used for versioning
          *      [
          *          'media' => '9/4/0/c/940cce20eaaef7fb622f1f9f4f8a0e3e11271d86_SNKRS_1R.png'
@@ -66,22 +48,6 @@ class FileNormalizer extends AbstractProductValueDataNormalizer
         if (isset($context['versioning']) && true === $context['versioning']) {
             return [
                 $this->getFieldName($file, $context) => $file->getKey(),
-            ];
-        }
-
-        /**
-         * other case is used by products exports (to retrieve the path of the media for the export)
-         *      [
-         *          'media' => 'files/SNKRS-1B/side_view/akene-mobile.jpg'
-         *      ]
-         */
-        $identifier = isset($context['identifier']) ? $context['identifier'] : null;
-
-        if (isset($context['value'])) {
-            $exportPath = $this->pathGenerator->generate($context['value'], ['identifier' => $identifier]);
-
-            return [
-                $this->getFieldName($file, $context) => $exportPath,
             ];
         }
 
