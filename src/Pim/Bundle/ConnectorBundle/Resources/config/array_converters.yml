@@ -361,7 +361,7 @@ services:
         class: %pim_connector.array_converter.standard_to_flat.product.value_converter.text.class%
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
-            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea']
+            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_number']
         tags:
             - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
 
@@ -394,14 +394,6 @@ services:
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
             - ['pim_catalog_boolean']
-        tags:
-            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
-
-    pim_connector.array_converter.standard_to_flat.product.value_converter.number:
-        class: %pim_connector.array_converter.standard_to_flat.product.value_converter.number.class%
-        arguments:
-            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
-            - ['pim_catalog_number']
         tags:
             - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
 
