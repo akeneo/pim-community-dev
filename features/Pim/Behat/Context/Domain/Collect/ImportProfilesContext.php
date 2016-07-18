@@ -150,7 +150,7 @@ class ImportProfilesContext extends ImportExportContext
     {
         $jobInstance = $this->getMainContext()->getSubcontext('fixtures')->getJobInstance($code);
         $jobExecution = $jobInstance->getJobExecutions()->first();
-        $fileType = $jobInstance->getRawConfiguration()['invalid_items_file_format'];
+        $fileType = $jobInstance->getRawParameters()['invalid_items_file_format'];
 
         $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
         $filePath = sprintf(

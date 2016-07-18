@@ -112,7 +112,7 @@ class ImportExportContext extends PimContext
      */
     protected function getCsvJobConfiguration($code)
     {
-        $config = $this->getFixturesContext()->getJobInstance($code)->getRawConfiguration();
+        $config = $this->getFixturesContext()->getJobInstance($code)->getRawParameters();
         $config['delimiter'] = isset($config['delimiter']) ? $config['delimiter'] : ';';
         $config['enclosure'] = isset($config['enclosure']) ? $config['enclosure'] : '"';
         $config['escape'] = isset($config['escape']) ? $config['escape'] : '\\';
@@ -127,7 +127,7 @@ class ImportExportContext extends PimContext
      */
     protected function getXlsxJobConfiguration($code)
     {
-        return $this->getFixturesContext()->getJobInstance($code)->getRawConfiguration();
+        return $this->getFixturesContext()->getJobInstance($code)->getRawParameters();
     }
 
     /**
