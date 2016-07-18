@@ -5,7 +5,6 @@ namespace Pim\Component\Connector\Reader\Database;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
@@ -14,8 +13,12 @@ use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Acl\Exception\Exception;
 
 /**
  * Storage-agnostic product reader using the Product Query Builder
@@ -79,26 +82,10 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     public function initialize()
     {
-        $channel    = $this->getConfiguredChannel();
-        $parameters = $this->stepExecution->getJobParameters();
+        $pqb = $this->getProductQueryBuilder();
+        $filters = $this->getConfiguredFilters();
 
-        $pqb = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
-
-        $filters = $parameters->get('filters');
-        foreach ($filters['data'] as $filter) {
-            $pqb->addFilter(
-                $filter['field'],
-                $filter['operator'],
-                $filter['value'],
-                isset($filter['context']) ? $filter['context'] : []
-            );
-        }
-
-        if ($this->generateCompleteness) {
-            $this->completenessManager->generateMissingForChannel($channel);
-        }
-
-        $this->products = $pqb->execute();
+        $this->products = $this->getProductsCursor($filters);
     }
 
     /**
@@ -117,7 +104,9 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         if (null !== $product) {
             $this->objectDetacher->detach($product);
             $channel = $this->getConfiguredChannel();
-            $this->metricConverter->convert($product, $channel);
+            if (null !== $channel) {
+                $this->metricConverter->convert($product, $channel);
+            }
         }
 
         return $product;
@@ -132,20 +121,97 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     }
 
     /**
+     * Returns the configured channel from the parameters.
+     * If no channel is specified, returns null.
+     *
      * @throws ObjectNotFoundException
      *
-     * @return ChannelInterface
+     * @return ChannelInterface|null
      */
     protected function getConfiguredChannel()
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $channelCode = $parameters->get('filters')['structure']['scope'];
+        if (!isset($parameters->get('filters')['structure']['scope'])) {
+            return null;
+        }
 
+        $channelCode = $parameters->get('filters')['structure']['scope'];
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
             throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $channelCode));
         }
 
         return $channel;
+    }
+
+    /**
+     * @return ProductQueryBuilderInterface
+     */
+    protected function getProductQueryBuilder()
+    {
+        $channel = $this->getConfiguredChannel();
+        $options = [];
+        if (null !== $channel) {
+            $options['default_scope'] = $channel->getCode();
+        }
+
+        return $this->pqbFactory->create($options);
+    }
+
+    /**
+     * Returns the filters from the configuration.
+     * The parameters can be in the 'filters' root node, or in filters data node (e.g. for export).
+     *
+     * TODO This is crappy to use array_key_exists here, we have to find a better solution.
+     *
+     * @return array
+     */
+    protected function getConfiguredFilters()
+    {
+        $filters = $this->stepExecution->getJobParameters()->get('filters');
+
+        if (array_key_exists('data', $filters)) {
+            $filters = $filters['data'];
+        }
+
+        return array_filter($filters, function ($filter) {
+            return count($filter) > 0;
+        });
+    }
+
+    /**
+     * @param array $filters
+     *
+     * @return CursorInterface
+     */
+    protected function getProductsCursor(array $filters)
+    {
+        $productQueryBuilder = $this->getProductQueryBuilder();
+
+        $resolver = new OptionsResolver();
+        $resolver
+            ->setRequired(['field', 'operator', 'value'])
+            ->setDefined(['context'])
+            ->setDefaults([
+                'context'  => [],
+                'operator' => Operators::EQUALS
+            ]);
+
+        foreach ($filters as $filter) {
+            $filter = $resolver->resolve($filter);
+            $productQueryBuilder->addFilter(
+                $filter['field'],
+                $filter['operator'],
+                $filter['value'],
+                $filter['context']
+            );
+        }
+
+        $channel = $this->getConfiguredChannel();
+        if (null !== $channel && $this->generateCompleteness) {
+            $this->completenessManager->generateMissingForChannel($channel);
+        }
+
+        return $productQueryBuilder->execute();
     }
 }

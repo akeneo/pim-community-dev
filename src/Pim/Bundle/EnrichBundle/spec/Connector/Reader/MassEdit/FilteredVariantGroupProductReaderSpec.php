@@ -7,18 +7,31 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\VariantGroupCleaner;
+use Pim\Component\Catalog\Converter\MetricConverter;
+use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilder;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 class FilteredVariantGroupProductReaderSpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
+        ChannelRepositoryInterface $channelRepository,
+        CompletenessManager $completenessManager,
+        MetricConverter $metricConverter,
         VariantGroupCleaner $cleaner,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($pqbFactory, $cleaner);
+        $this->beConstructedWith(
+            $pqbFactory,
+            $channelRepository,
+            $completenessManager,
+            $metricConverter,
+            true,
+            $cleaner
+        );
         $this->setStepExecution($stepExecution);
     }
 
@@ -56,13 +69,15 @@ class FilteredVariantGroupProductReaderSpec extends ObjectBehavior
                 ]
             );
 
-        $pqbFactory->create()->willReturn($pqb);
-        $pqb->addFilter('id', 'IN', [12, 13], ['locale' => null, 'scope' => null])->shouldBeCalled();
+        $pqbFactory->create([])->willReturn($pqb);
+        $pqb->addFilter('id', 'IN', [12, 13], [])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
+        $cursor->valid()->willReturn(true);
         $cursor->next()->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(1);
         $cursor->current()->willReturn($product);
 
+        $this->initialize();
         $this->read()->shouldReturn($product);
     }
 }
