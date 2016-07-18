@@ -2,8 +2,6 @@
 
 namespace Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
-
 /**
  * Boolean array converter.
  * Convert a standard boolean array format to a flat one.
