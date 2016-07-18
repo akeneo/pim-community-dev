@@ -44,6 +44,7 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_enrich.provider.structure_version.product'
             - '@pim_enrich.provider.form.chained'
+            - '@pim_catalog.localization.localizer.converter'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -114,6 +115,7 @@ services:
             - '@pim_enrich.provider.structure_version.variant_group'
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
+            - '@pim_catalog.localization.localizer.converter'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
