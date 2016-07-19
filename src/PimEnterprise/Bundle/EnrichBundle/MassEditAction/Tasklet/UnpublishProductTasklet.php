@@ -98,8 +98,8 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet
     /**
      * {@inheritdoc}
      */
-    protected function getProductQueryBuilder()
+    protected function getProductQueryBuilder(array $filters)
     {
-        return $this->publishedPqbFactory->create();
+        return $this->publishedPqbFactory->create(['filters' => $filters]);
     }
 }
