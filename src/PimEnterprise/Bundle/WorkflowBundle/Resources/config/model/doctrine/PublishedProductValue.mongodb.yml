@@ -24,7 +24,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
             type: string
         attribute:
             type: entity
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Attribute
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
         entity:
             reference: true
             type: one
