@@ -13,6 +13,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
@@ -53,18 +54,22 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var FieldSplitter */
     protected $fieldSplitter;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /** @var string */
     protected $uploadDirectory;
 
     /**
-     * @param SerializerInterface        $serializer
-     * @param ChannelRepositoryInterface $channelRepository
-     * @param ProductBuilderInterface    $productBuilder
-     * @param ObjectDetacherInterface    $objectDetacher
-     * @param UserProviderInterface      $userProvider
-     * @param TokenStorageInterface      $tokenStorage
-     * @param FieldSplitter              $fieldSplitter
-     * @param string                     $uploadDirectory
+     * @param SerializerInterface          $serializer
+     * @param ChannelRepositoryInterface   $channelRepository
+     * @param ProductBuilderInterface      $productBuilder
+     * @param ObjectDetacherInterface      $objectDetacher
+     * @param UserProviderInterface        $userProvider
+     * @param TokenStorageInterface        $tokenStorage
+     * @param FieldSplitter                $fieldSplitter
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param string                       $uploadDirectory
      */
     public function __construct(
         SerializerInterface $serializer,
@@ -74,16 +79,18 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         UserProviderInterface $userProvider,
         TokenStorageInterface $tokenStorage,
         FieldSplitter $fieldSplitter,
+        AttributeRepositoryInterface $attributeRepository,
         $uploadDirectory
     ) {
-        $this->serializer        = $serializer;
-        $this->channelRepository = $channelRepository;
-        $this->productBuilder    = $productBuilder;
-        $this->objectDetacher    = $objectDetacher;
-        $this->userProvider      = $userProvider;
-        $this->tokenStorage      = $tokenStorage;
-        $this->fieldSplitter     = $fieldSplitter;
-        $this->uploadDirectory   = $uploadDirectory;
+        $this->serializer          = $serializer;
+        $this->channelRepository   = $channelRepository;
+        $this->productBuilder      = $productBuilder;
+        $this->objectDetacher      = $objectDetacher;
+        $this->userProvider        = $userProvider;
+        $this->tokenStorage        = $tokenStorage;
+        $this->fieldSplitter       = $fieldSplitter;
+        $this->attributeRepository = $attributeRepository;
+        $this->uploadDirectory     = $uploadDirectory;
     }
 
     /**
@@ -202,11 +209,13 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     }
 
     /**
+     * @param ProductInterface $product
+     *
      * @throws \InvalidArgumentException
      *
      * @return array
      */
-    protected function getNormalizerContext()
+    protected function getNormalizerContext(ProductInterface $product)
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $mainContext = $jobParameters->get('mainContext');
@@ -221,7 +230,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         }
 
         if (isset($columns) && 0 !== count($columns)) {
-            $columns[] = 'sku';
+            $columns[] = $this->attributeRepository->getIdentifier();
         }
 
         $normalizerContext = [

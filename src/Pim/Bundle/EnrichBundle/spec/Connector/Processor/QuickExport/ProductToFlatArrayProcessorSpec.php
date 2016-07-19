@@ -19,6 +19,7 @@ use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 use Prophecy\Argument;
@@ -37,7 +38,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ObjectDetacherInterface $objectDetacher,
         UserProviderInterface $userProvider,
         TokenStorageInterface $tokenStorage,
-        FieldSplitter $fieldSplitter
+        FieldSplitter $fieldSplitter,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->beConstructedWith(
             $serializer,
@@ -47,6 +49,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             $userProvider,
             $tokenStorage,
             $fieldSplitter,
+            $attributeRepository,
             'upload/path/'
         );
         $this->setStepExecution($stepExecution);
@@ -92,6 +95,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $objectDetacher,
         $userProvider,
         $stepExecution,
+        $attributeRepository,
         JobExecution $jobExecution,
         UserInterface $user,
         ChannelInterface $channel,
@@ -130,6 +134,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $attribute->getAttributeType()->willReturn('pim_catalog_image');
         $product->getValues()->willReturn([$value1, $value2]);
 
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+
         $serializer
             ->normalize([$media1, $media2], 'flat', ['field_name' => 'media', 'prepare_copy' => true])
             ->willReturn(['normalized_media1', 'normalized_media2']);
@@ -167,6 +173,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $objectDetacher,
         $userProvider,
         $stepExecution,
+        $attributeRepository,
         JobExecution $jobExecution,
         UserInterface $user,
         ChannelInterface $channel,
@@ -197,6 +204,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
         $product->getValues()->willReturn([]);
 
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+
         $serializer
             ->normalize(
                 $product,
@@ -224,6 +233,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $serializer,
         $userProvider,
         $stepExecution,
+        $attributeRepository,
         JobExecution $jobExecution,
         UserInterface $user,
         ProductInterface $product,
@@ -260,6 +270,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $value2->getData()->willReturn(23);
 
         $attribute->getAttributeType()->willReturn('pim_catalog_image');
+
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
 
         $serializer->normalize([$media], Argument::cetera())->willThrow(
             new FileNotFoundException('upload/path/img.jpg')
