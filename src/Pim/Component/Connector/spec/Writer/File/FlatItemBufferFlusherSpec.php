@@ -4,9 +4,7 @@ namespace spec\Pim\Component\Connector\Writer\File;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
-use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
-use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Prophecy\Argument;
 use Prophecy\Exception\Prediction\FailedPredictionException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -24,14 +22,14 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Connector\Writer\File\FlatItemBufferFlusher');
     }
 
-    function let(FilePathResolverInterface $filePathResolver, ColumnSorterInterface $columnSorter)
+    function let(ColumnSorterInterface $columnSorter)
     {
         $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spec' . DIRECTORY_SEPARATOR;
 
         $this->filesystem = new Filesystem();
         $this->filesystem->mkdir($this->directory);
 
-        $this->beConstructedWith($filePathResolver, $columnSorter);
+        $this->beConstructedWith($columnSorter);
     }
 
     function letGo()
@@ -60,7 +58,7 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         }
     }
 
-    function it_flushes_a_buffer_into_multiple_files_without_extension($columnSorter, $filePathResolver, FlatItemBuffer $buffer, $filesystem)
+    function it_flushes_a_buffer_into_multiple_files_without_extension($columnSorter, FlatItemBuffer $buffer, $filesystem)
     {
         $columnSorter->sort(Argument::any())->willReturn(['colA', 'colB']);
 
@@ -75,11 +73,6 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $buffer->key()->willReturn(0);
 
         $buffer->getHeaders()->willReturn(['colA', 'colB']);
-
-        $filePathResolver->resolve($this->directory . 'output%fileNb%', ['parameters' => ['%fileNb%' => '_1']])
-            ->willReturn($this->directory . 'output_1');
-        $filePathResolver->resolve($this->directory . 'output%fileNb%', ['parameters' => ['%fileNb%' => '_2']])
-            ->willReturn($this->directory . 'output_2');
 
         $this->flush($buffer, ['type' => 'csv'], $this->directory . 'output', 2);
 
@@ -96,7 +89,7 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         }
     }
 
-    function it_flushes_a_buffer_into_multiple_files_with_extension($columnSorter, $filePathResolver, FlatItemBuffer $buffer)
+    function it_flushes_a_buffer_into_multiple_files_with_extension($columnSorter, FlatItemBuffer $buffer)
     {
         $columnSorter->sort(Argument::any())->willReturn(['colA', 'colB']);
 
@@ -111,11 +104,6 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $buffer->key()->willReturn(0);
 
         $buffer->getHeaders()->willReturn(['colA', 'colB']);
-
-        $filePathResolver->resolve($this->directory . 'output%fileNb%.txt', ['parameters' => ['%fileNb%' => '_1']])
-            ->willReturn($this->directory . 'output_1.txt');
-        $filePathResolver->resolve($this->directory . 'output%fileNb%.txt', ['parameters' => ['%fileNb%' => '_2']])
-            ->willReturn($this->directory . 'output_2.txt');
 
         $this->flush($buffer, ['type' => 'csv'], $this->directory . 'output.txt', 2);
 

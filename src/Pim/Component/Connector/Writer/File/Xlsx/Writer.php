@@ -95,8 +95,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Archivab
             $this->flatRowBuffer,
             $writerOptions,
             $this->getPath(),
-            $this->stepExecution->getJobParameters()->get('linesPerFile'),
-            $this->filePathResolverOptions
+            $this->stepExecution->getJobParameters()->get('linesPerFile')
         );
 
         foreach ($writtenFiles as $writtenFile) {

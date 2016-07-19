@@ -115,8 +115,7 @@ class VariantGroupWriter extends AbstractFileWriter implements ItemWriterInterfa
             $this->flatRowBuffer,
             $writerOptions,
             $this->getPath(),
-            ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1),
-            $this->filePathResolverOptions
+            ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1)
         );
 
         foreach ($writtenFiles as $writtenFile) {

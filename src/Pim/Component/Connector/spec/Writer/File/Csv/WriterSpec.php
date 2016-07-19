@@ -142,8 +142,7 @@ class WriterSpec extends ObjectBehavior
             $flatRowBuffer,
             Argument::type('array'),
             Argument::type('string'),
-            -1,
-            Argument::type('array')
+            -1
         )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
 
         $this->flush();

@@ -130,8 +130,7 @@ class WriterSpec extends ObjectBehavior
             $flatRowBuffer,
             Argument::type('array'),
             Argument::type('string'),
-            2,
-            Argument::type('array')
+            2
         )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
 
         $this->initialize();

@@ -20,9 +20,6 @@ use Box\Spout\Writer\WriterInterface;
  */
 class FlatItemBufferFlusher implements StepExecutionAwareInterface
 {
-    /** @var FilePathResolverInterface */
-    protected $filePathResolver;
-
     /** @var StepExecution */
     protected $stepExecution;
 
@@ -30,14 +27,10 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
     protected $columnSorter;
 
     /**
-     * @param FilePathResolverInterface $filePathResolver
-     * @param ColumnSorterInterface     $columnSorter
+     * @param ColumnSorterInterface $columnSorter
      */
-    public function __construct(
-        FilePathResolverInterface $filePathResolver,
-        ColumnSorterInterface $columnSorter = null
-    ) {
-        $this->filePathResolver = $filePathResolver;
+    public function __construct(ColumnSorterInterface $columnSorter = null)
+    {
         $this->columnSorter = $columnSorter;
     }
 
@@ -49,7 +42,6 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      * @param array          $writerOptions
      * @param string         $basePathname
      * @param int            $maxLinesPerFile by default -1, which means there is no limit of lines
-     * @param array          $filePathResolverOptions
      *
      * @return array the list of file paths that have been written
      */
@@ -57,14 +49,12 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         FlatItemBuffer $buffer,
         array $writerOptions = [],
         $basePathname,
-        $maxLinesPerFile = -1,
-        array $filePathResolverOptions = []
+        $maxLinesPerFile = -1
     ) {
         if ($this->areSeveralFilesNeeded($buffer, $maxLinesPerFile)) {
             $writtenFiles = $this->writeIntoSeveralFiles(
                 $buffer,
                 $writerOptions,
-                $filePathResolverOptions,
                 $maxLinesPerFile,
                 $basePathname
             );
@@ -110,7 +100,6 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
     /**
      * @param FlatItemBuffer $buffer
      * @param array          $writerOptions
-     * @param array          $filePathResolverOptions
      * @param int            $maxLinesPerFile
      * @param string         $basePathname
      *
@@ -119,7 +108,6 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
     protected function writeIntoSeveralFiles(
         FlatItemBuffer $buffer,
         array $writerOptions,
-        array $filePathResolverOptions = [],
         $maxLinesPerFile,
         $basePathname
     ) {
@@ -137,8 +125,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
                     $buffer,
                     $maxLinesPerFile,
                     $basePathPattern,
-                    $fileCount,
-                    $filePathResolverOptions
+                    $fileCount
                 );
                 $writtenLinesCount = 0;
                 $writer = $this->getWriter($filePath, $writerOptions);
@@ -207,7 +194,6 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      * @param int            $linesPerFile
      * @param string         $pathPattern
      * @param int            $currentFileCount
-     * @param array          $filePathResolverOptions
      *
      * @return string
      */
@@ -215,18 +201,11 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         FlatItemBuffer $buffer,
         $linesPerFile,
         $pathPattern,
-        $currentFileCount,
-        $filePathResolverOptions
+        $currentFileCount
     ) {
         $resolvedFilePath = $pathPattern;
         if ($this->areSeveralFilesNeeded($buffer, $linesPerFile)) {
-            $resolvedFilePath = $this->filePathResolver->resolve(
-                $pathPattern,
-                array_merge_recursive(
-                    $filePathResolverOptions,
-                    ['parameters' => ['%fileNb%' => '_' . $currentFileCount]]
-                )
-            );
+            return strtr($pathPattern, ['%fileNb%' => '_' . $currentFileCount]);
         }
 
         return $resolvedFilePath;
