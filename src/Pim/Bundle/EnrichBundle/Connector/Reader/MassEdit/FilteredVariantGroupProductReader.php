@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\VariantGroupCleaner;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Manager\CompletenessManager;
@@ -37,7 +36,6 @@ class FilteredVariantGroupProductReader extends ProductReader
         ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
-        ObjectDetacherInterface $objectDetacher,
         $generateCompleteness,
         VariantGroupCleaner $cleaner
     ) {
@@ -46,7 +44,6 @@ class FilteredVariantGroupProductReader extends ProductReader
             $channelRepository,
             $completenessManager,
             $metricConverter,
-            $objectDetacher,
             $generateCompleteness
         );
 
