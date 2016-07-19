@@ -219,7 +219,8 @@ define([
 
             deferred.resolve({
                 label: __('pim_enrich.export.product.filter.' + this.shortname + '.title'),
-                removable: this.removable
+                removable: this.isRemovable(),
+                editable: this.isEditable()
             });
 
             return deferred.promise();

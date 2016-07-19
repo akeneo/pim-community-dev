@@ -34,5 +34,16 @@ extensions:
     pim-filter-product-identifier:
         module: pim/filter/product/identifier
 
+    pim-filter-attribute-metric:
+        module: pim/filter/attribute/metric
+        config:
+            operators:
+                - "="
+                - ">="
+                - ">"
+                - "<="
+                - "<"
+                - EMPTY
+
     pim-filter-simpleselect:
         module: pim/filter/simpleselect
