@@ -1,0 +1,38 @@
+extensions:
+    pim-filter-text:
+        module: pim/filter/text
+
+    pim-filter-product-family:
+        module: pim/filter/product/family
+        config:
+            url: pim_enrich_family_rest_index
+
+    pim-filter-product-completeness:
+        module: pim/filter/product/completeness
+        config:
+            operators:
+                - ALL
+                - ">="
+                - GREATER OR EQUALS THAN ON ALL LOCALES
+                - LOWER THAN ON ALL LOCALES
+
+    pim-filter-product-category:
+        module: pim/filter/product/category
+
+    pim-filter-product-enabled:
+        module: pim/filter/product/enabled
+
+    pim-filter-product-updated:
+        module: pim/filter/product/updated
+        config:
+            operators:
+                - ALL
+                - SINCE LAST N DAYS
+                - ">"
+                - SINCE LAST JOB
+
+    pim-filter-product-identifier:
+        module: pim/filter/product/identifier
+
+    pim-filter-simpleselect:
+        module: pim/filter/simpleselect

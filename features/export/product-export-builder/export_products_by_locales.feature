@@ -23,14 +23,13 @@ Feature: Export products according to a locale policy
       | connector            | type   | alias              | code               | label              |
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
     And the following job "csv_product_export" configuration:
-      | channel  | ecommerce                               |
       | filePath | %tmp%/product_export/product_export.csv |
     And I am logged in as "Julia"
 
   @ce
   Scenario: Export only the product values from the selected locale
     Given the following job "csv_product_export" configuration:
-      | locales  | fr_FR  |
+      | filters | {"structure": {"locales": ["fr_FR"], "scope": "ecommerce"},"data":[{"field":"completeness","operator":"=","value":"100"}]} |
     When I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish
@@ -45,7 +44,7 @@ Feature: Export products according to a locale policy
   @ce
   Scenario: Export only the product values from locale specific attributes
     Given the following job "csv_product_export" configuration:
-      | locales | en_US |
+      | filters | {"structure": {"locales": ["en_US"], "scope": "ecommerce"},"data":[{"field":"completeness","operator":"=","value":"100"}]} |
     When I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish
@@ -60,7 +59,7 @@ Feature: Export products according to a locale policy
   @ce
   Scenario: Remove the locales from the channel after we set the export configuration
     Given the following job "csv_product_export" configuration:
-      | locales | fr_FR, en_US |
+      | filters | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"},"data":[{"field":"completeness","operator":"=","value":"100"}]} |
     When I set the "English (United States)" locale to the "ecommerce" channel
     And I am on the "csv_product_export" export job page
     And I launch the export job
@@ -75,10 +74,10 @@ Feature: Export products according to a locale policy
   @ce
   Scenario: Selecting a channel from the export profile updates the locale choices
     Given the following job "csv_product_export" configuration:
-      | locales | fr_FR |
+      | filters | {"structure": {"locales": ["fr_FR"], "scope": "mobile"},"data":[{"field":"completeness","operator":"=","value":"100"}]} |
     And I am on the "csv_product_export" export job edit page
     When I visit the "Content" tab
-    Then I should see the text "Locales fr_FR"
+    Then I should see the text "fr_FR"
     When I fill in the following information:
-      | Channel | Mobile |
-    Then I should see the text "Locales fr_FR en_US"
+      | Channel | E-Commerce |
+    Then I should see the text "fr_FR en_US"

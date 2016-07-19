@@ -1,27 +1,28 @@
 <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="job-profile-content-tab tab-pane buffer-top">
-    {% set filtersSettings %}
-        {% for field in form.parameters %}
-            {% if field.vars.attr['data-tab'] is defined and 'content' == field.vars.attr['data-tab'] %}
-                {{ form_row(field) }}
-            {% endif %}
-        {% endfor %}
-    {% endset %}
-
-    <script type="text/javascript">
+    <div id="pim-product-export-edit-content" class="form-horizontal"></div>
+    <input id="{{ form.parameters.filters.vars.id }}" name="{{ form.parameters.filters.vars.full_name }}" value="{{ form.parameters.filters.vars.value|json_encode }}" type="hidden"/>
+    <script>
         require(
-            ['jquery', 'pim/product-export/locales-selector'],
-            function($, LocaleSelector){
-                'use strict';
+            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'oro/loading-mask'],
+            function($, FetcherRegistry, FormBuilder, LoadingMask) {
+                $(function() {
+                    var loadingMask = new LoadingMask();
+                    loadingMask.render().$el.appendTo($('#container')).show();
+                    FetcherRegistry.initialize().done(function () {
+                        FormBuilder.build('{{ form.vars.disabled ? 'pim-product-export-show-content' : 'pim-product-export-edit-content' }}')
+                            .then(function (form) {
+                                form.setElement('#pim-product-export-edit-content')
+                                    .on('pim_enrich:form:entity:post_update', function () {
+                                        document.getElementById('{{ form.parameters.filters.vars.id }}').value = JSON.stringify(form.getFormData());
+                                    })
+                                    .trigger('pim_enrich:form:export:set_code', '{{ form.code.vars.value }}')
+                                    .setData(JSON.parse($('#{{ form.parameters.filters.vars.id }}').val()))
+                                    .render();
 
-                $(function () {
-                    LocaleSelector.init(
-                        '#{{ form.parameters.channel.vars.id }}',
-                        '#{{ form.parameters.locales.vars.id }}'
-                    );
+                                loadingMask.remove();
+                            });
+                    })
                 });
-            }
-        );
+            });
     </script>
-
-    {{ elements.accordion({ 'pane.accordion.filters': filtersSettings }, 3) }}
 </div>

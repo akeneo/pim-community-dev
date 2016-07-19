@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderRegistry;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderRegistry;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -47,10 +48,10 @@ class JobParametersType extends AbstractType implements DataMapperInterface
         JobRegistry $jobRegistry,
         $jobParamsClass
     ) {
-        $this->configProviderRegistry = $configProviderRegistry;
+        $this->configProviderRegistry     = $configProviderRegistry;
         $this->constraintProviderRegistry = $constraintProviderRegistry;
-        $this->jobRegistry = $jobRegistry;
-        $this->jobParamsClass = $jobParamsClass;
+        $this->jobRegistry                = $jobRegistry;
+        $this->jobParamsClass             = $jobParamsClass;
     }
 
     /**
@@ -60,22 +61,21 @@ class JobParametersType extends AbstractType implements DataMapperInterface
     {
         $builder->setDataMapper($this);
         $factory = $builder->getFormFactory();
-        $configProviderRegistry = $this->configProviderRegistry;
-        $constraintProviderRegistry = $this->constraintProviderRegistry;
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($factory, $configProviderRegistry, $constraintProviderRegistry) {
+            function (FormEvent $event) use ($factory) {
                 $form   = $event->getForm();
                 $jobInstance = $form->getRoot()->getData();
-                if (null == $jobInstance->getId()) {
+                if (null === $jobInstance->getId()) {
                     return;
                 }
-                $job = $this->jobRegistry->get($jobInstance->getJobName());
-                $configProvider = $configProviderRegistry->get($job);
-                $configs = $configProvider->getFormConfiguration($jobInstance);
-                $constraintProvider = $constraintProviderRegistry->get($job);
-                $collection = $constraintProvider->getConstraintCollection();
-                $fieldConstraints = $collection->fields;
+
+                $job                   = $this->jobRegistry->get($jobInstance->getJobName());
+                $configProvider        = $this->configProviderRegistry->get($job);
+                $configs               = $configProvider->getFormConfiguration();
+                $constraintProvider    = $this->constraintProviderRegistry->get($job);
+                $constraintsCollection = $constraintProvider->getConstraintCollection();
+                $fieldConstraints      = $constraintsCollection->fields;
 
                 foreach ($configs as $parameter => $config) {
                     if (isset($config['system']) && true === $config['system']) {
@@ -103,6 +103,30 @@ class JobParametersType extends AbstractType implements DataMapperInterface
 
                     $form->add($factory->createNamed($parameter, $config['type'], null, $options));
                 }
+            }
+        );
+
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            function (FormEvent $event) {
+                $form = $event->getForm();
+                $jobInstance = $form->getRoot()->getData();
+                if (null === $jobInstance->getId()) {
+                    return;
+                }
+                $job            = $this->jobRegistry->get($jobInstance->getJobName());
+                $configProvider = $this->configProviderRegistry->get($job);
+                $configs        = $configProvider->getFormConfiguration();
+
+                $data = $event->getData();
+
+                foreach (array_keys($configs) as $parameter) {
+                    if ('filters' === $parameter) {
+                        $data[$parameter] = json_decode($data[$parameter], true);
+                    }
+                }
+
+                $event->setData($data);
             }
         );
     }

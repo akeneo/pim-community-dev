@@ -73,7 +73,7 @@
 - Add method `findPotentiallyPurgeableBy` to interface `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface`
 - Add method `getNewestVersionIdForResource` to interface `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface`
 - Move `Pim\Component\Connector\Writer\Doctrine` to `Pim\Component\Connector\Writer\Database`
-- Move `Pim\Component\Connector\Reader\ProductReader` to `Pim\Component\Connector\Reader\Database\ProductReader`
+- Move `Pim\Component\Connector\Reader\ProductReader` to `Pim\Component\Connector\Reader\Database\ProductReader` and remove `Akeneo\Component\Batch\Job\JobRepositoryInterface` and `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` from constructor.
 - Move `Pim\Component\Connector\Reader\Doctrine\BaseReader` to `Pim\Component\Connector\Reader\Database\BaseReader`
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor`. Add `Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface` as the fourth argument.
 - Change constructor of `Pim\Component\Catalog\Factory\GroupFactory`. Add `Pim\Component\Catalog\Factory\ProductTemplateFactory` as the second argument.

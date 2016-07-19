@@ -81,6 +81,26 @@ class Grid extends Index
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Grid\Filter\StringDecorator',
         ],
+        'pim-filter-product-enabled' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
+        ],
+        'pim-filter-product-family' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
+        ],
+        'pim-filter-product-completeness' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
+        ],
+        'pim-filter-product-updated' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\UpdatedDecorator',
+        ],
+        'pim-filter-product-identifier' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\IdentifierDecorator',
+        ]
     ];
 
     /**
@@ -95,7 +115,7 @@ class Grid extends Index
                 'Grid container'        => ['css' => '.grid-container'],
                 'Grid'                  => ['css' => 'table.grid'],
                 'Grid content'          => ['css' => 'table.grid tbody'],
-                'Filters'               => ['css' => 'div.filter-box'],
+                'Filters'               => ['css' => '.filter-box, .filter-wrapper'],
                 'Grid toolbar'          => ['css' => 'div.grid-toolbar'],
                 'Manage filters'        => ['css' => 'div.filter-list'],
                 'Configure columns'     => ['css' => 'a:contains("Columns")'],
@@ -325,7 +345,7 @@ class Grid extends Index
          * If there is no toolbar count, this method
          * should even not be called or should raise a not found exception.
          */
-        if (!$pagination || !$pagination->getText()) {
+        if (!$pagination || !$pagination->getText() || false !== strstr($pagination->getText(), 'null')) {
             return $this->countRows();
         }
 
@@ -529,7 +549,7 @@ class Grid extends Index
     public function showFilter($filterName)
     {
         $this->spin(function () {
-            return $this->getElement('Body')->find('css', '.filter-box');
+            return $this->getElement('Body')->find('css', '.filter-box, .filter-wrapper');
         }, 'The filter box is not loaded');
 
         $filter = $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
@@ -790,7 +810,9 @@ class Grid extends Index
      */
     protected function getRows()
     {
-        return $this->getGridContent()->findAll('xpath', '/tr');
+        return $this->spin(function () {
+            return $this->getGridContent()->findAll('xpath', '/tr');
+        }, 'Cannot get the grid rows.');
     }
 
     /**

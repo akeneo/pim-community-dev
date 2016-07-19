@@ -1,0 +1,5 @@
+<select class="select2 value" name="filter-value" <%- isEditable ? '' : 'disabled' %>>
+    <option value="all"<%- value === null ? ' selected' : '' %>><%- labels.valueChoices.all %></option>
+    <option value="enabled"<%- value === true ? ' selected' : '' %>><%- labels.valueChoices.enabled %></option>
+    <option value="disabled"<%- value === false ? ' selected' : '' %>><%- labels.valueChoices.disabled %></option>
+</select>

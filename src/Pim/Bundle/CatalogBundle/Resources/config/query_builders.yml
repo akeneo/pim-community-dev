@@ -123,8 +123,20 @@ services:
     pim_catalog.doctrine.query.filter.datetime:
         class: '%pim_catalog.doctrine.query.filter.datetime.class%'
         arguments:
+            - '@pim_import_export.repository.job_instance'
+            - '@akeneo_batch.job_repository'
             - ['created', 'updated']
-            - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']
+            -
+                - '='
+                - '<'
+                - '>'
+                - 'BETWEEN'
+                - 'NOT BETWEEN'
+                - 'EMPTY'
+                - 'NOT EMPTY'
+                - '!='
+                - 'SINCE LAST N DAYS'
+                - 'SINCE LAST JOB'
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 

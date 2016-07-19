@@ -22,15 +22,13 @@ Feature: Export products according to a completeness policy
       | connector            | type   | alias              | code               | label              |
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
     Given the following job "csv_product_export" configuration:
-      | channel  | ecommerce                               |
-      | filePath | %tmp%/product_export/product_export.csv |
-      | locales  | fr_FR, en_US                            |
+      | filePath | %tmp%/product_export/product_export.csv                                          |
     And I am logged in as "Julia"
 
   @ce
   Scenario: Export the products complete from at least one selected locale (default)
     Given the following job "csv_product_export" configuration:
-      | completeness | at_least_one_complete |
+      | filters  | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"},"data":[{"field":"completeness","operator":"=","value":"100"}]} |
     When I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish
@@ -45,7 +43,7 @@ Feature: Export products according to a completeness policy
   @ce
   Scenario: Export the complete products of all selected locales
     Given the following job "csv_product_export" configuration:
-      | completeness | all_complete |
+      | filters  | {"structure":{"locales":["fr_FR","en_US"],"scope":"ecommerce"},"data":[{"field":"completeness","operator":"GREATER OR EQUALS THAN ON ALL LOCALES","value":"100","context":{"locales":["fr_FR","en_US"]}}]} |
     When I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish
@@ -58,7 +56,7 @@ Feature: Export products according to a completeness policy
   @ce
   Scenario: Export the incomplete products of all selected locales
     Given the following job "csv_product_export" configuration:
-      | completeness | all_incomplete |
+      | filters  | {"structure":{"locales":["fr_FR","en_US"],"scope":"ecommerce"},"data":[{"field":"completeness","operator":"LOWER THAN ON ALL LOCALES","value":100,"context":{"locales":["fr_FR","en_US"]}}]} |
     When I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish
@@ -71,7 +69,7 @@ Feature: Export products according to a completeness policy
   @ce
   Scenario: Export all products
     Given the following job "csv_product_export" configuration:
-      | completeness | all |
+      | filters  | {"structure":{"locales":["fr_FR","en_US"],"scope":"ecommerce"},"data":[]} |
     When I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish

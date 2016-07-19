@@ -53,8 +53,7 @@ Feature: Configure export of products media
     Given the following job "xlsx_product_export" configuration:
       | filePath   | %tmp%/product_export/product_export.xlsx |
       | with_media | yes                                      |
-      | locales    | en_US                                    |
-      | channel    | mobile                                   |
+      | filters    | {"structure":{"locales":["en_US"],"scope":"mobile"}, "data": []} |
     And I am logged in as "Julia"
     And I am on the "xlsx_product_export" export job page
     And I launch the export job
@@ -71,8 +70,7 @@ Feature: Configure export of products media
     Given the following job "xlsx_product_export" configuration:
       | filePath   | %tmp%/product_export/product_export.xlsx |
       | with_media | no                                       |
-      | locales    | en_US                                    |
-      | channel    | mobile                                   |
+      | filters    | {"structure":{"locales":["en_US"],"scope":"mobile"}, "data": []} |
     And I am logged in as "Julia"
     And I am on the "xlsx_product_export" export job page
     And I launch the export job

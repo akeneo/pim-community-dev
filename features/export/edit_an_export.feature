@@ -28,12 +28,14 @@ Feature: Edit an export
       | Date format       | yyyy-MM-dd |
     And I uncheck the "With header" switch
     When I visit the "Content" tab
-    Then I should see the Channel, Status, Completeness, Family, Locales fields
+    Then I should see the Channel, Locales fields
+    Then I should see the filters enabled, completeness, updated, sku and family.code
     And I fill in the following information:
       | Channel      | Tablet                               |
-      | Status       | Disabled                             |
-      | Family       | Boots                                |
-      | Completeness | Not complete on all selected locales |
+    Then I filter by "enabled" with operator "" and value "Disabled"
+    And I filter by "family.code" with operator "" and value "Boots"
+    And I filter by "completeness" with operator "Not complete on all selected locales" and value ""
+    And I filter by "sku" with operator "" and value "identifier1 identifier2,identifier3, identifier4"
     When I press the "Save" button
     Then I should see the text "File path file.csv"
     And I should see the text "Delimiter |"
@@ -47,6 +49,7 @@ Feature: Edit an export
     And I should see the text "en_US"
     And I should see the text "Boots"
     And I should see the text "Not complete on all selected locales"
+    And I should see the text "identifier1, identifier2, identifier3, identifier4"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "csv_footwear_product_export" export job edit page

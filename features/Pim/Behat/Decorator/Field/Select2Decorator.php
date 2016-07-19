@@ -51,7 +51,11 @@ class Select2Decorator extends ElementDecorator
             }, sprintf('A result has been found for "%s", but it seems we can not click on it.', $value));
         }
 
-        $this->close();
+        $this->spin(function () {
+            $this->close();
+
+            return true;
+        }, 'Cannot close the select2 field');
     }
 
     /**

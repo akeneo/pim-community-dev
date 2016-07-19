@@ -66,8 +66,8 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     public function process($product)
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $channelCode = $parameters->get('channel');
-        $contextChannel = $this->channelRepository->findOneByIdentifier($channelCode);
+        $scopeCode  = $parameters->get('filters')['structure']['scope'];
+        $contextChannel = $this->channelRepository->findOneByIdentifier($scopeCode);
         $this->productBuilder->addMissingProductValues(
             $product,
             [$contextChannel],
@@ -114,7 +114,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
 
         $normalizerContext = [
             'scopeCode'         => $channel->getCode(),
-            'localeCodes'       => array_intersect($channel->getLocaleCodes(), $parameters->get('locales')),
+            'localeCodes'       => array_intersect($channel->getLocaleCodes(), $parameters->get('filters')['structure']['locales']),
             'decimal_separator' => $decimalSeparator,
             'date_format'       => $dateFormat,
         ];

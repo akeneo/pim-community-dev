@@ -22,13 +22,16 @@ jobs:
         label:     CSV footwear product export
         type:      export
         configuration:
-            channel:    mobile
-            locales:
-                - en_US
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/products.csv
+            filters:
+                data: {}
+                structure:
+                    scope: mobile
+                    locales:
+                        - en_US
     csv_footwear_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import

@@ -22,27 +22,27 @@ class ProductCsvExportSpec extends ObjectBehavior
     function it_provides_default_values($decoratedProvider)
     {
         $decoratedProvider->getDefaultValues()->willReturn(['decoratedParam' => true]);
-        $this->getDefaultValues()->shouldReturn([
-            'decoratedParam'         => true,
-            'decimalSeparator'       => '.',
-            'dateFormat'             => 'yyyy-MM-dd',
-            'channel'                => null,
-            'locales'                => [],
-            'enabled'                => 'enabled',
-            'updated_since_strategy' => 'all',
-            'updated_since_date'     => null,
-            'updated_since_n_days'   => null,
-            'families'               => null,
-            'categories'             => [],
-            'completeness'           => 'at_least_one_complete',
-            'product_identifier'     => null,
-            'with_media'             => true,
-        ]);
+        $this->getDefaultValues()->shouldReturnWellFormedDefaultValues();
     }
 
     function it_supports_a_job(JobInterface $job)
     {
         $job->getName()->willReturn('my_supported_job_name');
         $this->supports($job)->shouldReturn(true);
+    }
+
+    public function getMatchers()
+    {
+        return [
+            'returnWellFormedDefaultValues' => function ($parameters) {
+                return true === $parameters['decoratedParam'] &&
+                    '.' === $parameters['decimalSeparator'] &&
+                    'yyyy-MM-dd' === $parameters['dateFormat'] &&
+                    true === $parameters['with_media'] &&
+                    is_array($parameters['filters']) &&
+                    is_array($parameters['filters']['data']) &&
+                    is_object($parameters['filters']['structure']);
+            }
+        ];
     }
 }

@@ -4,21 +4,17 @@ namespace Pim\Component\Connector\Reader\Database;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
@@ -45,9 +41,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
 
-    /** @var JobRepositoryInterface */
-    protected $jobRepository;
-
     /** @var bool */
     protected $generateCompleteness;
 
@@ -57,17 +50,12 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /** @var CursorInterface */
     protected $products;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
      * @param CompletenessManager                 $completenessManager
      * @param MetricConverter                     $metricConverter
      * @param ObjectDetacherInterface             $objectDetacher
-     * @param JobRepositoryInterface              $jobRepository
-     * @param AttributeRepositoryInterface        $attributeRepository
      * @param bool                                $generateCompleteness
      */
     public function __construct(
@@ -76,8 +64,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         ObjectDetacherInterface $objectDetacher,
-        JobRepositoryInterface $jobRepository,
-        AttributeRepositoryInterface $attributeRepository,
         $generateCompleteness
     ) {
         $this->pqbFactory           = $pqbFactory;
@@ -85,8 +71,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         $this->completenessManager  = $completenessManager;
         $this->metricConverter      = $metricConverter;
         $this->objectDetacher       = $objectDetacher;
-        $this->jobRepository        = $jobRepository;
-        $this->attributeRepository  = $attributeRepository;
         $this->generateCompleteness = (bool) $generateCompleteness;
     }
 
@@ -95,28 +79,18 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     public function initialize()
     {
-        $channel = $this->getConfiguredChannel();
+        $channel    = $this->getConfiguredChannel();
         $parameters = $this->stepExecution->getJobParameters();
 
-        $pqb     = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
-        $filters = array_merge(
-            $this->getFilters(
-                $channel,
-                $this->rawToStandardProductStatus($parameters->get('enabled')),
-                $this->rawToStandardProductUpdated($parameters),
-                array_filter(explode(',', $parameters->get('families')))
-            ),
-            $this->getCompletenessFilters($parameters),
-            $this->getProductIdentifiersFilter($parameters),
-            $this->getCategoryFilters($parameters)
-        );
+        $pqb = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
 
-        foreach ($filters as $filter) {
+        $filters = $parameters->get('filters');
+        foreach ($filters['data'] as $filter) {
             $pqb->addFilter(
                 $filter['field'],
                 $filter['operator'],
                 $filter['value'],
-                $filter['context']
+                isset($filter['context']) ? $filter['context'] : []
             );
         }
 
@@ -165,213 +139,13 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     protected function getConfiguredChannel()
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $channelCode = $parameters->get('channel');
+        $channelCode = $parameters->get('filters')['structure']['scope'];
+
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
             throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $channelCode));
         }
 
         return $channel;
-    }
-
-    /**
-     * Return the filters to be applied on the PQB instance.
-     *
-     * @param ChannelInterface $channel
-     * @param bool             $status
-     * @param string           $updated
-     * @param array            $families
-     *
-     * @return array
-     */
-    protected function getFilters(ChannelInterface $channel, $status, $updated, $families)
-    {
-        $filters = [
-            [
-                'field'    => 'categories.id',
-                'operator' => Operators::IN_CHILDREN_LIST,
-                'value'    => [$channel->getCategory()->getId()],
-                'context'  => []
-            ]
-        ];
-
-        if (null !== $status) {
-            $filters[] = [
-                'field'    => 'enabled',
-                'operator' => Operators::EQUALS,
-                'value'    => $status,
-                'context'  => []
-            ];
-        }
-
-        if (!empty($families)) {
-            $filters[] = [
-                'field'    => 'family.code',
-                'operator' => Operators::IN_LIST,
-                'value'    => $families,
-                'context'  => []
-            ];
-        }
-
-        if (null !== $updated) {
-            $filters[] = [
-                'field'    => 'updated',
-                'operator' => Operators::GREATER_THAN,
-                'value'    => $updated,
-                'context'  => []
-            ];
-        }
-
-        return $filters;
-    }
-
-    /**
-     * Convert the UI product status to the standard product status
-     *
-     * @param string $rawStatus
-     * @return bool|null
-     */
-    protected function rawToStandardProductStatus($rawStatus)
-    {
-        switch ($rawStatus) {
-            case 'enabled':
-                $status = true;
-                break;
-            case 'disabled':
-                $status = false;
-                break;
-            default:
-                $status = null;
-        }
-
-        return $status;
-    }
-
-    /**
-     * Convert the UI product updated to the standard product updated
-     *
-     * @param JobParameters $parameters
-     *
-     * @return \DateTime|null
-     */
-    protected function rawToStandardProductUpdated(JobParameters $parameters)
-    {
-        $updatedTimeCondition = $parameters->get('updated_since_strategy');
-        if ('last_export' === $updatedTimeCondition) {
-            $jobInstance = $this->stepExecution->getJobExecution()->getJobInstance();
-            $jobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
-
-            return null === $jobExecution ? null : $jobExecution->getStartTime();
-        }
-
-        if ('since_n_days' === $updatedTimeCondition) {
-            $period = $parameters->get('updated_since_n_days');
-            
-            return (new \DateTime(sprintf('%d days ago', $period), new \DateTimeZone('UTC')))
-                ->setTime(0, 0)
-                ->format('Y-m-d H:i:s')
-            ;
-        }
-
-        if ('since_date' === $updatedTimeCondition) {
-            return $parameters->get('updated_since_date');
-        }
-    }
-
-    /**
-     * Transform completeness choice into PQB filter
-     *
-     * @param JobParameters $parameters
-     *
-     * @return array
-     */
-    protected function getCompletenessFilters(JobParameters $parameters)
-    {
-        if ('at_least_one_complete' === $parameters->get('completeness')) {
-            return [[
-                'field'    => 'completeness',
-                'operator' => Operators::EQUALS,
-                'value'    => 100,
-                'context'  => []
-            ]];
-        }
-
-        if ('all_complete' === $parameters->get('completeness')) {
-            $filters = [];
-            foreach ($parameters->get('locales') as $locale) {
-                $filters[] = [
-                    'field'    => 'completeness',
-                    'operator' => Operators::EQUALS,
-                    'value'    => 100,
-                    'context'  => ['locale' => $locale]
-                ];
-            }
-
-            return $filters;
-        }
-
-        if ('all_incomplete' === $parameters->get('completeness')) {
-            $filters = [];
-            foreach ($parameters->get('locales') as $locale) {
-                $filters[] = [
-                    'field'    => 'completeness',
-                    'operator' => Operators::LOWER_THAN,
-                    'value'    => 100,
-                    'context'  => ['locale' => $locale]
-                ];
-            }
-
-            return $filters;
-        }
-
-        return [];
-    }
-
-    /**
-     * @param JobParameters $parameters
-     *
-     * @return array
-     */
-    protected function getProductIdentifiersFilter(JobParameters $parameters)
-    {
-        $filter = [];
-        $productIdentifiers = $parameters->get('product_identifier');
-        if (null !== $productIdentifiers) {
-            $productIdentifiers = explode(',', $productIdentifiers);
-            $attribute = $this->attributeRepository->findOneBy(['attributeType' => AttributeTypes::IDENTIFIER]);
-
-            $filter[] = [
-                'field'    => $attribute->getCode(),
-                'operator' => Operators::IN_LIST,
-                'value'    => $productIdentifiers,
-                'context'  => []
-            ];
-        }
-
-        return $filter;
-    }
-
-    /**
-     * Transform category fields into PQB filters
-     *
-     * @param JobParameters $parameters
-     *
-     * @return array
-     */
-    protected function getCategoryFilters(JobParameters $parameters)
-    {
-        $categories = $parameters->get('categories');
-        $filters  = [];
-
-        if (!empty($categories)) {
-            $filters[] = [
-                'field'    => 'categories.code',
-                'operator' => Operators::IN_LIST,
-                'value'    => $categories,
-                'context'  => []
-            ];
-        }
-
-        return $filters;
     }
 }

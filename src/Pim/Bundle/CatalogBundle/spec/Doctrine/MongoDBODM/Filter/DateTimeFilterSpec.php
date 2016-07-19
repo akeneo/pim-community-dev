@@ -2,8 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Prophecy\Argument;
 
@@ -12,11 +16,27 @@ use Prophecy\Argument;
  */
 class DateTimeFilterSpec extends ObjectBehavior
 {
-    function let(Builder $queryBuilder)
-    {
+    function let(
+        Builder $queryBuilder,
+        JobInstanceRepository $jobInstanceRepository,
+        JobRepositoryInterface $jobRepository
+    ) {
         $this->beConstructedWith(
+            $jobInstanceRepository,
+            $jobRepository,
             ['created', 'updated'],
-            ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']
+            [
+                '=',
+                '<',
+                '>',
+                'BETWEEN',
+                'NOT BETWEEN',
+                'EMPTY',
+                'NOT EMPTY',
+                '!=',
+                'SINCE LAST JOB',
+                'SINCE LAST N DAYS'
+            ]
         );
         $this->setQueryBuilder($queryBuilder);
 
@@ -30,7 +50,18 @@ class DateTimeFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']);
+        $this->getOperators()->shouldReturn([
+            '=',
+            '<',
+            '>',
+            'BETWEEN',
+            'NOT BETWEEN',
+            'EMPTY',
+            'NOT EMPTY',
+            '!=',
+            'SINCE LAST JOB',
+            'SINCE LAST N DAYS'
+        ]);
 
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
@@ -95,6 +126,68 @@ class DateTimeFilterSpec extends ObjectBehavior
         $this->addFieldFilter('updated', 'NOT BETWEEN', [new \DateTime('2014-03-15 12:03:00'), new \DateTime('2014-03-20 12:03:00')]);
     }
 
+    function it_adds_a_filter_on_products_updated_since_last_export(
+        $queryBuilder,
+        $jobInstanceRepository,
+        $jobRepository,
+        JobInstance $jobInstance,
+        JobExecution $jobExecution,
+        \DateTime $startTime
+    ) {
+        $jobInstanceRepository->findOneBy(['code' => 'csv_product_export'])->willReturn($jobInstance);
+        $jobRepository->getLastJobExecution($jobInstance, 1)->shouldBeCalled()->willReturn($jobExecution);
+
+        $jobExecution->getStartTime()->willReturn($startTime);
+        $startTime->setTimezone(Argument::type('\DateTimeZone'))->willReturn($startTime);
+        $startTime->getTimestamp()->willReturn('1468421569');
+
+        $queryBuilder->field('normalizedData.updated')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->gt('1468421569')->shouldBeCalled();
+
+        $this->addFieldFilter(
+            'updated',
+            'SINCE LAST JOB',
+            'csv_product_export',
+            null,
+            null
+        );
+    }
+
+    function it_does_not_add_an_updated_since_last_export_filter_if_no_option_given(
+        $queryBuilder,
+        $jobInstanceRepository,
+        $jobRepository,
+        JobInstance $jobInstance
+    ) {
+        $jobInstanceRepository->findOneBy(['code' => 'csv_product_export'])->willReturn($jobInstance);
+        $jobRepository->getLastJobExecution($jobInstance, 1)->shouldBeCalled()->willReturn(null);
+
+        $queryBuilder->field(Argument::any())->shouldNotBeCalled();
+        $queryBuilder->gt(Argument::any())->shouldNotBeCalled();
+
+        $this->addFieldFilter(
+            'updated',
+            'SINCE LAST JOB',
+            'csv_product_export',
+            null,
+            null
+        );
+    }
+
+    function it_adds_a_filter_on_products_updated_since_last_n_days($queryBuilder)
+    {
+        $queryBuilder->field('normalizedData.updated')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->gt(Argument::any())->shouldBeCalled();
+
+        $this->addFieldFilter(
+            'updated',
+            'SINCE LAST N DAYS',
+            30,
+            null,
+            null
+        );
+    }
+
     function it_throws_an_exception_if_value_is_not_a_string_an_array_or_datetime()
     {
         $this->shouldThrow(
@@ -106,6 +199,40 @@ class DateTimeFilterSpec extends ObjectBehavior
                 print_r(123, true)
             )
         )->during('addFieldFilter', ['updated', '>', 123]);
+    }
+
+    function it_throws_an_exception_if_value_is_not_a_string_for_since_last_export()
+    {
+        $this
+            ->shouldThrow(
+                InvalidArgumentException::stringExpected('updated', 'filter', 'updated', 'integer')
+            )->during(
+                'addFieldFilter',
+                [
+                    'updated',
+                    'SINCE LAST JOB',
+                    42,
+                    null,
+                    null,
+                ]
+            );
+    }
+
+    function it_throws_an_exception_if_value_is_not_a_numeric_for_since_last_n_days()
+    {
+        $this
+            ->shouldThrow(
+                InvalidArgumentException::numericExpected('updated', 'filter', 'updated', 'string')
+            )->during(
+                'addFieldFilter',
+                [
+                    'updated',
+                    'SINCE LAST N DAYS',
+                    'csv_product_export',
+                    null,
+                    null
+                ]
+            );
     }
 
     function it_throws_an_error_if_data_is_not_a_valid_date_format()

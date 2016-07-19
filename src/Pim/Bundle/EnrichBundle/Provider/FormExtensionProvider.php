@@ -19,6 +19,9 @@ class FormExtensionProvider
     /** @var array */
     protected $attributeFields = [];
 
+    /** @var array */
+    protected $filters = [];
+
     /** @var SecurityFacade */
     protected $securityFacade;
 
@@ -91,5 +94,22 @@ class FormExtensionProvider
     public function getAttributeFields()
     {
         return $this->attributeFields;
+    }
+
+    /**
+     * @param string $filter
+     * @param string $config
+     */
+    public function addFilter($filter, $config)
+    {
+        $this->filters[$filter] = $config;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilters()
+    {
+        return $this->filters;
     }
 }

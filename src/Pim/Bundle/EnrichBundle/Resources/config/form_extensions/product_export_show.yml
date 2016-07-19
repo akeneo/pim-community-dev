@@ -1,0 +1,104 @@
+extensions:
+    pim-product-export-show-content:
+        module: pim/export/product/edit/content
+
+    pim-product-export-edit-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-product-export-edit-content
+        position: 1000
+
+    pim-product-export-show-content-readonly:
+        module: pim/export/product/edit/content/readonly
+        parent: pim-product-export-show-content
+
+    pim-product-export-show-content-structure:
+        module: pim/export/product/edit/content/structure
+        parent: pim-product-export-show-content
+        targetZone: structure-filters
+        position: 100
+
+    pim-product-export-show-content-structure-scope:
+        module: pim/export/product/edit/content/structure/scope
+        parent: pim-product-export-show-content-structure
+        targetZone: filters
+        position: 90
+        config:
+            isEditable: false
+
+    pim-product-export-show-content-structure-locales:
+        module: pim/export/product/edit/content/structure/locales
+        parent: pim-product-export-show-content-structure
+        targetZone: filters
+        position: 100
+        config:
+            isEditable: false
+
+    pim-product-export-show-content-data:
+        module: pim/export/product/edit/content/data
+        parent: pim-product-export-show-content
+        targetZone: data-filters
+        config:
+            filters:
+                -
+                    field: enabled
+                    view: pim-filter-product-enabled
+                -
+                    field: completeness
+                    view: pim-filter-product-completeness
+                -
+                    field: family.code
+                    view: pim-filter-product-family
+                -
+                    field: updated
+                    view: pim-filter-product-updated
+                -
+                    field: categories.code
+                    view: pim-filter-product-category
+
+    pim-product-export-show-content-default-attribute-filters:
+        module: pim/export/product/edit/content/data/default-attribute-filters
+        parent: pim-product-export-show-content-data
+        config:
+            types: ['pim_catalog_identifier']
+
+    pim-product-export-show-content-data-help:
+        module: pim/export/product/edit/content/data/help
+        parent: pim-product-export-show-content-data
+
+filters:
+    pim-product-export-show-content:
+        pim_catalog_text:
+            view: pim-filter-text
+        pim_catalog_number:
+            view: pim-filter-text
+            # view: pim-filter-number
+        pim_catalog_textarea:
+            view: pim-filter-text
+        pim_catalog_identifier:
+            view: pim-filter-product-identifier
+        pim_catalog_metric:
+            view: pim-filter-text
+            # view: pim-filter-metric
+        pim_catalog_price_collection:
+            view: pim-filter-text
+            # view: pim-filter-price
+        pim_catalog_image:
+            view: pim-filter-text
+        pim_catalog_file:
+            view: pim-filter-text
+        pim_catalog_multiselect:
+            view: pim-filter-text
+            # view: pim-filter-multiselect
+        pim_catalog_simpleselect:
+            view: pim-filter-simpleselect
+        pim_catalog_date:
+            view: pim-filter-text
+            # view: pim-filter-date
+        pim_catalog_boolean:
+            view: pim-filter-text
+            # view: pim-filter-boolean
+        pim_reference_data_simpleselect:
+            view: pim-filter-simpleselect
+        pim_reference_data_multiselect:
+            view: pim-filter-text
+            # view: pim-filter-multiselect

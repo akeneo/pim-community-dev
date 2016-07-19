@@ -23,11 +23,11 @@ class ProductCsvExport implements DefaultValuesProviderInterface
 
     /**
      * @param DefaultValuesProviderInterface $simpleProvider
-     * @param array                      $supportedJobNames
+     * @param array                          $supportedJobNames
      */
     public function __construct(DefaultValuesProviderInterface $simpleProvider, array $supportedJobNames)
     {
-        $this->simpleProvider = $simpleProvider;
+        $this->simpleProvider    = $simpleProvider;
         $this->supportedJobNames = $supportedJobNames;
     }
 
@@ -39,16 +39,7 @@ class ProductCsvExport implements DefaultValuesProviderInterface
         $parameters = $this->simpleProvider->getDefaultValues();
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
-        $parameters['channel'] = null;
-        $parameters['locales'] = [];
-        $parameters['enabled'] = 'enabled';
-        $parameters['updated_since_strategy'] = 'all';
-        $parameters['updated_since_date'] = null;
-        $parameters['updated_since_n_days'] = null;
-        $parameters['families'] = null;
-        $parameters['categories'] = [];
-        $parameters['completeness'] = 'at_least_one_complete';
-        $parameters['product_identifier'] = null;
+        $parameters['filters'] = ['data' => [], 'structure' => (object) []];
         $parameters['with_media'] = true;
 
         return $parameters;

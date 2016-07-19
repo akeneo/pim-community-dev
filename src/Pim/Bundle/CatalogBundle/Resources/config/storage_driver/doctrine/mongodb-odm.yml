@@ -467,6 +467,16 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
             - ['completeness']
-            - ['<', '<=', '=', '>=', '>', '!=']
+            -
+                - '<'
+                - '<='
+                - '='
+                - '>='
+                - '>'
+                - '!='
+                - 'GREATER THAN ON ALL LOCALES'
+                - 'GREATER OR EQUALS THAN ON ALL LOCALES'
+                - 'LOWER OR EQUALS THAN ON ALL LOCALES'
+                - 'LOWER THAN ON ALL LOCALES'
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }

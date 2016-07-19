@@ -1,8 +1,8 @@
-<div class="flex-space-between input-like<% if (disabled) { %> disabled<% } %>">
+<div class="flex-space-between input-like <%- !isEditable ? 'disabled' : '' %>">
     <span class="form-control">
         <%- labelInfo %>
     </span>
-    <% if (!disabled) { %>
+    <% if (isEditable) { %>
     <div class="input-group-btn">
         <button type="button" class="btn btn-small edit icons-holder-text" title="<%- titleEdit %>">
             <i class="icon-pencil"></i><%- labelEdit %>

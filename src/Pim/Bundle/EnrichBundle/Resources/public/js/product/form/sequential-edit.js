@@ -18,7 +18,6 @@ define(
         'routing',
         'oro/navigation',
         'pim/fetcher-registry',
-        'pim/product-manager',
         'pim/user-context',
         'bootstrap'
     ],
@@ -32,7 +31,6 @@ define(
         Routing,
         Navigation,
         FetcherRegistry,
-        ProductManager,
         UserContext
     ) {
         return BaseForm.extend({
@@ -140,7 +138,7 @@ define(
                 var pending = objectSet[currentIndex + 2];
                 if (pending) {
                     setTimeout(function () {
-                        ProductManager.get(pending);
+                        FetcherRegistry.getFetcher('product').fetch(pending);
                     }, 2000);
                 }
             },

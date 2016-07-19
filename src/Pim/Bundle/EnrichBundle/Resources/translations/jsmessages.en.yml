@@ -336,6 +336,59 @@ pim_enrich:
                     info:
                         search_attributes: Search...
                         no_available_attributes: There are no more attributes to add
+    export:
+        product:
+            data:
+                title: Data filters
+            structure:
+                title: Structure filters
+                attributes:
+                    title: Attributes
+            filter:
+                channel:
+                    title: Channel
+                    help: The channel you want to export
+                locales:
+                    title: Locales
+                    help: The locales you want to export
+                family:
+                    title: Family
+                    help: The families you want to export
+                    operators:
+                        IN: In list
+                        "NOT IN": Not in list
+                        EMPTY: Products that don't have a family
+                        "NOT EMPTY": Products that have a family
+                    empty_selection: Select a family
+                updated:
+                    title: Updated
+                    help: The updated time condition of the products you want to export
+                    operators:
+                        ALL: No date condition
+                        "SINCE LAST N DAYS": Updated products since the last n days
+                        ">": Updated products since the defined date
+                        "SINCE LAST JOB": Updated products since last export
+                enabled:
+                    title: Status
+                    help: The status of the products you want to export
+                    value:
+                        all: All
+                        enabled: Enabled
+                        disabled: Disabled
+                completeness:
+                    title: Completeness
+                    help: The completeness of the products you want to export
+                    operators:
+                        ALL: No condition on completeness
+                        ">=": Complete on at least one selected locale
+                        "GREATER OR EQUALS THAN ON ALL LOCALES": Complete on all selected locales
+                        LOWER THAN ON ALL LOCALES: Not complete on all selected locales
+                    empty_selection: Select a family
+                category:
+                    title: Category
+                    help: The categories of the products you want to export
+                identifier:
+                    help: Identifiers of products you want to export separated by commas, spaces or line breaks
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
