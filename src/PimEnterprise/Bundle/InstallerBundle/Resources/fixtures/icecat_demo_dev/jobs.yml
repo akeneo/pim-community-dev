@@ -56,26 +56,24 @@ jobs:
         label:     Demo CSV product export
         type:      export
         configuration:
-            channel: mobile
-            locales:
-                - en_US
-                - fr_FR
-                - de_DE
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/product.csv
+            filters:
+                data: {}
+                structure:
+                    scope: ecommerce
+                    locales:
+                        - fr_FR
+                        - en_US
+                        - de_DE
     csv_published_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_published_product_export
         label:     Demo published CSV product export
         type:      export
         configuration:
-            channel: mobile
-            locales:
-                - en_US
-                - fr_FR
-                - de_DE
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
@@ -467,25 +465,23 @@ jobs:
         label:     Demo XLSX product export
         type:      export
         configuration:
-            channel:    mobile
-            locales:
-                - en_US
-                - fr_FR
-                - de_DE
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/product.xlsx
+            filters:
+                data: {}
+                structure:
+                    scope: ecommerce
+                    locales:
+                        - fr_FR
+                        - en_US
+                        - de_DE
     xlsx_published_product_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_published_product_export
         label:     Demo XLSX published product export
         type:      export
         configuration:
-            channel:    mobile
-            locales:
-                - en_US
-                - fr_FR
-                - de_DE
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/published-product.xlsx

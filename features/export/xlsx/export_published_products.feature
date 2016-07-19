@@ -12,6 +12,7 @@ Feature: Export published products in XLSX
     Given the following job "xlsx_clothing_mobile_published_product_export" configuration:
       | filePath     | %tmp%/ecommerce_product_export/xlsx_clothing_mobile_published_product_export.xlsx |
       | linesPerFile | 2                                                                                 |
+      | filters      | {"structure":{"locales":["en_US", "fr_FR", "de_DE"],"scope":"mobile"},"data":[]} |
     And the following products:
       | sku          | family  | categories                 | price          | size | main_color | manufacturer |
       | jacket-white | jackets | jackets, winter_collection | 10 EUR, 15 USD | XL   | white      | Volcom       |

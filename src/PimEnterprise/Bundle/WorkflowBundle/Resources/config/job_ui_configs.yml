@@ -6,8 +6,6 @@ services:
         class: '%pim_import_export.job_parameters.form_configuration_provider.product_csv_export.class%'
         arguments:
             - '@pim_import_export.job_parameters.form_configuration_provider.simple_csv_export'
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.family'
             -
                 - 'csv_published_product_export'
             - '%pim_catalog.localization.decimal_separators%'
@@ -19,8 +17,6 @@ services:
         class: '%pim_import_export.job_parameters.form_configuration_provider.product_xlsx_export.class%'
         arguments:
             - '@pim_import_export.job_parameters.form_configuration_provider.simple_xlsx_export'
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.family'
             -
                 - 'xlsx_published_product_export'
             - '%pim_catalog.localization.decimal_separators%'

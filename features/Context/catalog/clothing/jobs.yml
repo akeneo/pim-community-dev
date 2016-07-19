@@ -66,15 +66,19 @@ jobs:
         label:     Clothing product export
         type:      export
         configuration:
-            channel:    mobile
-            locales:
-                - en_US
-                - fr_FR
-                - de_DE
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/product.csv
+            filters:
+                data: {}
+                structure:
+                    scope: mobile
+                    locales:
+                        - de_DE
+                        - en_US
+                        - fr_FR
+
     csv_clothing_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
@@ -181,11 +185,6 @@ jobs:
         label:     Published product export for mobile
         type:      export
         configuration:
-            channel:    mobile
-            locales:
-                - en_US
-                - fr_FR
-                - de_DE
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
@@ -196,11 +195,6 @@ jobs:
         label:     Published product export for mobile in XLSX
         type:      export
         configuration:
-            channel: mobile
-            locales:
-                - en_US
-                - fr_FR
-                - de_DE
             withHeader: true
             linesPerFile: 10000
             filePath: /tmp/published-product.csv
