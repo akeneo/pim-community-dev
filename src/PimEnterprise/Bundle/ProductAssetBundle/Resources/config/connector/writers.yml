@@ -27,7 +27,6 @@ services:
         class: '%pim_connector.writer.file.csv.class%'
         arguments:
             - '@pimee_product_asset.array_converter.standard_to_flat.asset'
-            - '@pim_connector.writer.file.file_path_resolver'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
@@ -35,7 +34,6 @@ services:
         class: '%pim_connector.writer.file.csv.class%'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.category'
-            - '@pim_connector.writer.file.file_path_resolver'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
@@ -43,7 +41,6 @@ services:
         class: '%pim_connector.writer.file.csv.class%'
         arguments:
             - '@pimee_product_asset.array_converter.standard_to_flat.asset_variation'
-            - '@pim_connector.writer.file.file_path_resolver'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
@@ -51,7 +48,6 @@ services:
         class: '%pim_connector.writer.file.xlsx.class%'
         arguments:
             - '@pimee_product_asset.array_converter.standard_to_flat.asset'
-            - '@pim_connector.writer.file.file_path_resolver'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
@@ -59,7 +55,6 @@ services:
         class: '%pim_connector.writer.file.xlsx.class%'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.category'
-            - '@pim_connector.writer.file.file_path_resolver'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
@@ -67,12 +62,10 @@ services:
         class: '%pim_connector.writer.file.xlsx.class%'
         arguments:
             - '@pimee_product_asset.array_converter.standard_to_flat.asset_variation'
-            - '@pim_connector.writer.file.file_path_resolver'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
     pimee_product_asset.writer.file.yaml_asset_channel_configuration:
         class: '%pim_connector.writer.file.yaml.class%'
         arguments:
-            - '@pim_connector.writer.file.file_path_resolver'
             - 'asset_channel_configurations'
