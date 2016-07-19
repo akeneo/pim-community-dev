@@ -82,10 +82,13 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     public function initialize()
     {
-        $pqb = $this->getProductQueryBuilder();
-        $filters = $this->getConfiguredFilters();
+        $channel = $this->getConfiguredChannel();
+        if (null !== $channel && $this->generateCompleteness) {
+            $this->completenessManager->generateMissingForChannel($channel);
+        }
 
-        $this->products = $this->getProductsCursor($filters);
+        $filters = $this->getConfiguredFilters();
+        $this->products = (null === $filters) ? null : $this->getProductsCursor($filters);
     }
 
     /**
@@ -95,7 +98,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     {
         $product = null;
 
-        if ($this->products->valid()) {
+        if (null !== $this->products && $this->products->valid()) {
             $product = $this->products->current();
             $this->stepExecution->incrementSummaryInfo('read');
             $this->products->next();
@@ -162,8 +165,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * Returns the filters from the configuration.
      * The parameters can be in the 'filters' root node, or in filters data node (e.g. for export).
      *
-     * TODO This is crappy to use array_key_exists here, we have to find a better solution.
-     *
      * @return array
      */
     protected function getConfiguredFilters()
@@ -205,11 +206,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
                 $filter['value'],
                 $filter['context']
             );
-        }
-
-        $channel = $this->getConfiguredChannel();
-        if (null !== $channel && $this->generateCompleteness) {
-            $this->completenessManager->generateMissingForChannel($channel);
         }
 
         return $productQueryBuilder->execute();
