@@ -15,7 +15,7 @@ define([
              *
              * @param {Object} entity
              *
-             * @return {Array}
+             * @return {Promise}
              */
             getAttributes: function (entity) {
                 if (!entity.family) {

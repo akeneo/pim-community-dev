@@ -1,8 +1,9 @@
 'use strict';
 /**
- *This extension manage the data filter collection and it's generation
+ * This extension manages the data filter collection and its generation.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
+ * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -45,7 +46,9 @@ define(
              */
             configure: function () {
                 this.onExtensions('add-attribute:add', function (event) {
-                    this.addFilters(event.codes);
+                    this.addFilters(event.codes).then(function () {
+                        this.render();
+                    }.bind(this));
                 }.bind(this));
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render.bind(this));
@@ -61,18 +64,74 @@ define(
                     return this;
                 }
 
-                this.$el.html(this.template({__: __}));
-                this.filterViews = {};
-                this.updateFiltersData().then(function () {
+                this.initializeFilterViews().then(function () {
+                    _.each(this.getFormData().data, function (filterData) {
+                        if (!_.has(this.filterViews, filterData.field)) {
+                            return;
+                        }
+
+                        this.filterViews[filterData.field].setData(
+                            filterData,
+                            {silent: true}
+                        );
+                    }.bind(this));
+
+                    this.$el.html(this.template({__: __}));
+
                     var filtersContainer = this.$('.filters');
                     filtersContainer.empty();
 
                     _.each(this.filterViews, function (filterView) {
                         filtersContainer.append(filterView.render().$el);
                     }.bind(this));
-                }.bind(this));
 
-                this.renderExtensions();
+                    this.renderExtensions();
+                }.bind(this));
+            },
+
+            /**
+             * Returns the current filters as an array of fields.
+             *
+             * @return {array}
+             */
+            getCurrentFilters: function () {
+                return _.keys(this.filterViews);
+            },
+
+            /**
+             * Initialize default and model filter views and add them to the form.
+             *
+             * @return {Promise}
+             */
+            initializeFilterViews: function () {
+                if (!_.isEmpty(this.filterViews)) {
+                    return $.Deferred().resolve();
+                }
+
+                return this.getDefaultFilterFields().then(function (defaultFields) {
+                    var modelFields = _.pluck(this.getFormData().data, 'field');
+
+                    return this.addFilters(_.union(defaultFields, modelFields));
+                }.bind(this));
+            },
+
+            /**
+             * Returns default filter fields. They can be set by config or other extensions.
+             *
+             * @returns {Promise}
+             */
+            getDefaultFilterFields: function () {
+                var promises = [];
+                this.getRoot().trigger('pim_enrich:form:filter:set-default', promises);
+
+                return $.when.apply($, promises).then(function () {
+                    var defaultFields = 0 !== arguments.length ?
+                        _.union(_.flatten(_.toArray(arguments))) :
+                        [];
+                    var configFields = _.pluck(this.config.filters, 'field');
+
+                    return _.union(configFields, defaultFields);
+                }.bind(this));
             },
 
             /**
@@ -83,12 +142,7 @@ define(
              * @return {Promise}
              */
             addFilters: function (fields) {
-                var filterFields = _.difference(fields, _.keys(this.filterViews));
-                if (_.isEmpty(filterFields)) {
-                    return $.Deferred().resolve();
-                }
-
-                return this.getFiltersConfig(filterFields)
+                return this.getFiltersConfig(fields)
                     .then(function (filtersConfig) {
                         var promises = [];
                         _.each(filtersConfig, function (filterConfig) {
@@ -109,7 +163,7 @@ define(
              * Returns the filters configuration corresponding to the specified fields.
              * The config can come from an attribute or from this extension's config (e.g. family, completeness, etc.).
              *
-             * @param {Array} filterFields
+             * @param {array} filterFields
              *
              * @return {Promise}
              */
@@ -150,18 +204,18 @@ define(
              * Creates and add the filter view to the form.
              *
              * @param {string}  viewCode
-             * @param {string}  fieldCode
+             * @param {string}  field
              * @param {boolean} isRemovable
              *
              * @return {Promise}
              */
-            addFilterView: function (viewCode, fieldCode, isRemovable) {
-                return formBuilder.build(viewCode).then(function (view) {
-                    view.setField(fieldCode);
-                    view.setRemovable(isRemovable);
-                    view.setType(viewCode);
+            addFilterView: function (viewCode, field, isRemovable) {
+                return formBuilder.build(viewCode).then(function (filterView) {
+                    filterView.setField(field);
+                    filterView.setRemovable(isRemovable);
+                    filterView.setType(viewCode);
 
-                    return view;
+                    return filterView;
                 }).then(function (filterView) {
                     var filterData = _.findWhere(this.getFormData().data, {field: filterView.getField()});
                     if (undefined !== filterData) {
@@ -194,40 +248,6 @@ define(
                 }.bind(this));
 
                 this.setData({data: dataFilterCollection});
-            },
-
-            /**
-             * Sets back the data to the filters view.
-             *
-             * @return {Promise}
-             */
-            updateFiltersData: function () {
-                var promises = [];
-                this.getRoot().trigger('pim_enrich:form:filter:set-default', promises);
-
-                return $.when.apply($, promises).then(function () {
-                    var defaultFields = 0 !== arguments.length ?
-                        _.union(_.flatten(_.toArray(arguments))) :
-                        [];
-                    var configFields = _.pluck(this.config.filters, 'field');
-
-                    return _.union(configFields, defaultFields);
-                }.bind(this)).then(function (defaultFields) {
-                    var modelFields = _.pluck(this.getFormData().data, 'field');
-
-                    return this.addFilters(_.union(defaultFields, modelFields));
-                }.bind(this)).then(function () {
-                    _.each(this.getFormData().data, function (filterData) {
-                        if (!_.has(this.filterViews, filterData.field)) {
-                            return;
-                        }
-
-                        this.filterViews[filterData.field].setData(
-                            filterData,
-                            {silent: true}
-                        );
-                    }.bind(this));
-                }.bind(this));
             },
 
             /**
