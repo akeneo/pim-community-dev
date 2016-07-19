@@ -30,6 +30,9 @@ define([
             if (undefined === this.getValue()) {
                 this.setValue(true);
             }
+            if (undefined === this.getOperator()) {
+                this.setOperator('=');
+            }
 
             return this.template({
                 isEditable: this.isEditable(),
