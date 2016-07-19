@@ -69,8 +69,7 @@ class FilteredVariantGroupProductReaderSpec extends ObjectBehavior
                 ]
             );
 
-        $pqbFactory->create([])->willReturn($pqb);
-        $pqb->addFilter('id', 'IN', [12, 13], [])->shouldBeCalled();
+        $pqbFactory->create(['filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [12, 13]]]])->willReturn($pqb);
         $pqb->execute()->willReturn($cursor);
         $cursor->valid()->willReturn(true);
         $cursor->next()->shouldBeCalled();
