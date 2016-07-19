@@ -245,7 +245,7 @@ define(
             },
 
             /**
-             * Get all attribute to exlude
+             * Get all attribute to exclude
              *
              * @return {Promise}
              */
