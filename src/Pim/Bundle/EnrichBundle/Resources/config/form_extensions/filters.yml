@@ -115,3 +115,16 @@ extensions:
                 - STARTS WITH
                 - ENDS WITH
                 - EMPTY
+
+    pim-filter-attribute-date:
+        module: pim/filter/attribute/date
+        config:
+            operators:
+                - ">"
+                - "<"
+                - "="
+                - "!="
+                - BETWEEN
+                - NOT BETWEEN
+                - EMPTY
+                - NOT EMPTY

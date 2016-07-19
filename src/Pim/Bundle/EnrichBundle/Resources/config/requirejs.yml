@@ -247,7 +247,7 @@ config:
         pim/filter/attribute/number:           pimenrich/js/filter/attribute/number
         pim/filter/attribute/select:           pimenrich/js/filter/attribute/select
         pim/filter/attribute/media:            pimenrich/js/filter/attribute/media
-
+        pim/filter/attribute/date:             pimenrich/js/filter/attribute/date
 
         # Product edit form
         pim/field-manager: pimenrich/js/product/field-manager
@@ -409,4 +409,4 @@ config:
         pim/template/filter/attribute/number:           pimenrich/templates/filter/attribute/number.html
         pim/template/filter/attribute/select:           pimenrich/templates/filter/attribute/select.html
         pim/template/filter/attribute/media:            pimenrich/templates/filter/attribute/media.html
-
+        pim/template/filter/attribute/date:             pimenrich/templates/filter/attribute/date.html

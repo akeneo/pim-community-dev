@@ -1,0 +1,20 @@
+<select class="select2 operator" <%- isEditable ? '' : 'disabled' %> name="filter-operator">
+    <% _.each(operatorChoices, function (operatorChoice) { %>
+        <option value="<%- operatorChoice %>"<%- operator === operatorChoice ? ' selected' : '' %>>
+            <%- __('pim_enrich.export.product.filter.' + shortName + '.operators.' + operatorChoice) %>
+        </option>
+    <% }); %>
+</select>
+
+<% if ('EMPTY' !== operator && 'NOT EMPTY' !== operator && 'BETWEEN' !== operator && 'NOT BETWEEN' !== operator) { %>
+    <span class="start-date-wrapper">
+        <input name="filter-value-start" class="datepicker add-on value input-large" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- startValue ? startValue : '' %>">
+    </span>
+<% } else if ('BETWEEN' === operator || 'NOT BETWEEN' === operator) { %>
+    <span class="start-date-wrapper">
+        <input name="filter-value-start" class="datepicker add-on value input-small" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- startValue ? startValue : '' %>">
+    </span>
+    <span class="end-date-wrapper">
+        <input name="filter-value-end" class="datepicker add-on input-small" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- endValue ? endValue : '' %>">
+    </span>
+<% } %>
