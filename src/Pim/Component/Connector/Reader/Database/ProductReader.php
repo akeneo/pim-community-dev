@@ -8,7 +8,6 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
@@ -41,9 +40,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /** @var MetricConverter */
     protected $metricConverter;
 
-    /** @var ObjectDetacherInterface */
-    protected $objectDetacher;
-
     /** @var bool */
     protected $generateCompleteness;
 
@@ -58,7 +54,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * @param ChannelRepositoryInterface          $channelRepository
      * @param CompletenessManager                 $completenessManager
      * @param MetricConverter                     $metricConverter
-     * @param ObjectDetacherInterface             $objectDetacher
      * @param bool                                $generateCompleteness
      */
     public function __construct(
@@ -66,14 +61,12 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
-        ObjectDetacherInterface $objectDetacher,
         $generateCompleteness
     ) {
         $this->pqbFactory           = $pqbFactory;
         $this->channelRepository    = $channelRepository;
         $this->completenessManager  = $completenessManager;
         $this->metricConverter      = $metricConverter;
-        $this->objectDetacher       = $objectDetacher;
         $this->generateCompleteness = (bool) $generateCompleteness;
     }
 
@@ -105,7 +98,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         }
 
         if (null !== $product) {
-            $this->objectDetacher->detach($product);
             $channel = $this->getConfiguredChannel();
             if (null !== $channel) {
                 $this->metricConverter->convert($product, $channel);
