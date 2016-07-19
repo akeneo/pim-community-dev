@@ -125,38 +125,13 @@ class VariantGroupCleaner
     }
 
     /**
-     * @return ProductQueryBuilderInterface
-     */
-    protected function getProductQueryBuilder()
-    {
-        return $this->pqbFactory->create();
-    }
-
-    /**
      * @param array $filters
      *
      * @return CursorInterface
      */
     protected function getProductsCursor(array $filters)
     {
-        $productQueryBuilder = $this->getProductQueryBuilder();
-
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(['field', 'operator', 'value'])
-            ->setDefined(['context'])
-            ->setDefaults([
-                'context' => ['locale' => null, 'scope' => null]
-            ]);
-
-        foreach ($filters as $filter) {
-            $filter = $resolver->resolve($filter);
-            $productQueryBuilder->addFilter(
-                $filter['field'],
-                $filter['operator'],
-                $filter['value'],
-                $filter['context']
-            );
-        }
+        $productQueryBuilder = $this->pqbFactory->create(['filters' => $filters]);
 
         return $productQueryBuilder->execute();
     }

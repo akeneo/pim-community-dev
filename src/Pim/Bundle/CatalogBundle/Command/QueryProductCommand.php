@@ -73,7 +73,7 @@ class QueryProductCommand extends ContainerAwareCommand
     {
         $filters = json_decode($input->getArgument('json_filters'), true);
         $pageSize = $input->getOption('page-size');
-        $products = $this->getProducts($filters, $pageSize);
+        $products = $this->getProducts($filters);
         if (!$input->getOption('json-output')) {
             $table = $this->buildTable($products, $pageSize);
             $table->render($output);
@@ -138,29 +138,20 @@ class QueryProductCommand extends ContainerAwareCommand
      */
     protected function getProducts(array $filters)
     {
-        $productQueryBuilder = $this->getProductQueryBuilder();
-
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(['field', 'operator', 'value'])
-            ->setDefined(['locale', 'scope'])
-            ->setDefaults(['locale' => null, 'scope' => null]);
-
-        foreach ($filters as $filter) {
-            $filter = $resolver->resolve($filter);
-            $context = ['locale' => $filter['locale'], 'scope' => $filter['scope']];
-            $productQueryBuilder->addFilter($filter['field'], $filter['operator'], $filter['value'], $context);
-        }
+        $productQueryBuilder = $this->getProductQueryBuilder($filters);
 
         return $productQueryBuilder->execute();
     }
 
     /**
+     * @param array $filters
+     *
      * @return ProductQueryBuilderInterface
      */
-    protected function getProductQueryBuilder()
+    protected function getProductQueryBuilder(array $filters)
     {
-        $factory = $this->getContainer()->get('pim_catalog.query.product_query_builder_factory');
+        $factory = $this->getContainer()->get('pim_catalog.query.filtered_product_query_builder_factory');
 
-        return $factory->create();
+        return $factory->create(['filters' => $filters]);
     }
 }

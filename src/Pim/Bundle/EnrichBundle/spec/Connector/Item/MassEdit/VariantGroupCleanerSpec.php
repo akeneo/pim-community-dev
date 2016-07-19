@@ -76,9 +76,7 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         $productRepository->getEligibleProductIdsForVariantGroup(42)->willReturn([5, 6, 7]);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $pqbFactory->create()->willReturn($productQueryBuilder);
-
-        $productQueryBuilder->addFilter('id', 'IN', [1, 2], [])->shouldBeCalled();
+        $pqbFactory->create(['filters' => $configuration['filters']])->willReturn($productQueryBuilder);
         $productQueryBuilder->execute()->willReturn($cursor);
 
         $translator->trans('pim_enrich.mass_edit_action.add-to-variant-group.already_in_variant_group_or_not_valid')
@@ -169,9 +167,8 @@ class VariantGroupCleanerSpec extends ObjectBehavior
 
         $productRepository->getEligibleProductIdsForVariantGroup(42)->willReturn([1, 2, 3, 4]);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $pqbFactory->create()->willReturn($productQueryBuilder);
 
-        $productQueryBuilder->addFilter('id', 'IN', [1, 2, 3, 4], [])->shouldBeCalled();
+        $pqbFactory->create(['filters' => $configuration['filters']])->willReturn($productQueryBuilder);
         $productQueryBuilder->execute()->willReturn($cursor);
 
         $productPage = [$product1, $product2, $product3, $product4];
@@ -252,7 +249,9 @@ class VariantGroupCleanerSpec extends ObjectBehavior
         $productRepository->getEligibleProductIdsForVariantGroup(42)->willReturn([1, 2, 3, 4]);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $pqbFactory->create()->willReturn($productQueryBuilder);
+        $pqbFactory->create(['filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [1, 2, 3, 4], 'context' => []]]])->willReturn($productQueryBuilder);
+        $pqbFactory->create(['filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [1, 2]]]])->willReturn($productQueryBuilder);
+        $productQueryBuilder->execute()->willReturn($cursor);
 
         $translator->trans('add_to_variant_group.steps.cleaner.warning.description')
             ->willReturn('Product can\'t be set in the selected variant group: duplicate variation axis values with'.
@@ -281,10 +280,6 @@ class VariantGroupCleanerSpec extends ObjectBehavior
             [],
             Argument::any()
         )->shouldBeCalledTimes(2);
-
-        $productQueryBuilder->addFilter('id', 'IN', [1, 2, 3, 4], [])->shouldBeCalledTimes(1);
-        $productQueryBuilder->addFilter('id', 'IN', [1, 2], ['locale' => null, 'scope' => null])->shouldBeCalledTimes(1);
-        $productQueryBuilder->execute()->willReturn($cursor);
 
         $this->clean($stepExecution, $configuration['filters'], $configuration['actions'])->shouldReturn(
             [['field' => 'id', 'operator' => 'IN', 'value' => [2 => 3, 3 => 4]]]
