@@ -140,20 +140,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     }
 
     /**
-     * @return ProductQueryBuilderInterface
-     */
-    protected function getProductQueryBuilder()
-    {
-        $channel = $this->getConfiguredChannel();
-        $options = [];
-        if (null !== $channel) {
-            $options['default_scope'] = $channel->getCode();
-        }
-
-        return $this->pqbFactory->create($options);
-    }
-
-    /**
      * Returns the filters from the configuration.
      * The parameters can be in the 'filters' root node, or in filters data node (e.g. for export).
      *
@@ -179,26 +165,13 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     protected function getProductsCursor(array $filters)
     {
-        $productQueryBuilder = $this->getProductQueryBuilder();
-
-        $resolver = new OptionsResolver();
-        $resolver
-            ->setRequired(['field', 'operator', 'value'])
-            ->setDefined(['context'])
-            ->setDefaults([
-                'context'  => [],
-                'operator' => Operators::EQUALS
-            ]);
-
-        foreach ($filters as $filter) {
-            $filter = $resolver->resolve($filter);
-            $productQueryBuilder->addFilter(
-                $filter['field'],
-                $filter['operator'],
-                $filter['value'],
-                $filter['context']
-            );
+        $channel = $this->getConfiguredChannel();
+        $options = ['filters' => $filters];
+        if (null !== $channel) {
+            $options['default_scope'] = $channel->getCode();
         }
+
+        $productQueryBuilder = $this->pqbFactory->create($options);
 
         return $productQueryBuilder->execute();
     }
