@@ -4,7 +4,6 @@ namespace Pim\Component\Connector\Writer\File\Yaml;
 
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
-use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -22,12 +21,12 @@ class Writer extends AbstractFileWriter
     protected $header;
 
     /**
-     * @param FilePathResolverInterface $filePathResolver
-     * @param string                    $header
+     * @param string $header
      */
-    public function __construct(FilePathResolverInterface $filePathResolver, $header = null)
+    public function __construct($header = null)
     {
-        parent::__construct($filePathResolver);
+        parent::__construct();
+
         $this->header = $header;
     }
 

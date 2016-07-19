@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Abstract file writer to handle file naming and configuration-related logic.
@@ -20,7 +21,7 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
-    /** @var FilePathResolverInterface */
+    /** @var OptionsResolver */
     protected $filePathResolver;
 
     /** @var StepExecution */
@@ -32,12 +33,12 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
     /** @var Filesystem */
     protected $localFs;
 
-    /**
-     * @param FilePathResolverInterface $filePathResolver
-     */
-    public function __construct(FilePathResolverInterface $filePathResolver)
+    public function __construct()
     {
-        $this->filePathResolver = $filePathResolver;
+        $this->filePathResolver = new OptionsResolver();
+        $this->filePathResolver->setRequired('parameters');
+        $this->filePathResolver->setAllowedTypes('parameters', 'array');
+
         $this->filePathResolverOptions = [
             'parameters' => ['%datetime%' => date('Y-m-d_H:i:s')]
         ];
@@ -61,7 +62,9 @@ abstract class AbstractFileWriter extends AbstractConfigurableStepElement implem
             }
         }
 
-        return $this->filePathResolver->resolve($filePath, $this->filePathResolverOptions);
+        $options = $this->filePathResolver->resolve($this->filePathResolverOptions);
+
+        return strtr($filePath, $options['parameters']);
     }
 
     /**

@@ -7,7 +7,6 @@ use Akeneo\Component\Buffer\BufferFactory;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
-use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 
@@ -37,17 +36,15 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Archivab
 
     /**
      * @param ArrayConverterInterface   $arrayConverter
-     * @param FilePathResolverInterface $filePathResolver
      * @param BufferFactory             $bufferFactory
      * @param FlatItemBufferFlusher     $flusher
      */
     public function __construct(
         ArrayConverterInterface $arrayConverter,
-        FilePathResolverInterface $filePathResolver,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher
     ) {
-        parent::__construct($filePathResolver);
+        parent::__construct();
 
         $this->arrayConverter = $arrayConverter;
         $this->bufferFactory = $bufferFactory;

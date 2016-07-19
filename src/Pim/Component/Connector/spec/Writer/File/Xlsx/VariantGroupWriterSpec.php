@@ -15,15 +15,11 @@ use Prophecy\Argument;
 class VariantGroupWriterSpec extends ObjectBehavior
 {
     function let(
-        FilePathResolverInterface $filePathResolver,
         BufferFactory $bufferFactory,
         BulkFileExporter $mediaCopier,
         FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $bufferFactory, $mediaCopier, $flusher);
-
-        $filePathResolver->resolve(Argument::any(), Argument::type('array'))
-            ->willReturn('/tmp/export/export.xlsx');
+        $this->beConstructedWith($bufferFactory, $mediaCopier, $flusher);
     }
 
     function it_is_initializable()
@@ -53,6 +49,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn(true);
         $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->get('filePath')->willReturn('my/file/path');
 
         $items = [
             [
@@ -112,7 +109,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
                 'exportPath'   => 'export',
                 'storageAlias' => 'storageAlias',
             ],
-        ], '/tmp/export')->shouldBeCalled();
+        ], 'my/file')->shouldBeCalled();
 
         $mediaCopier->getErrors()->willReturn([
             [

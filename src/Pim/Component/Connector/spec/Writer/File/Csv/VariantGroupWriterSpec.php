@@ -15,15 +15,11 @@ use Prophecy\Argument;
 class VariantGroupWriterSpec extends ObjectBehavior
 {
     function let(
-        FilePathResolverInterface $filePathResolver,
         BufferFactory $bufferFactory,
         BulkFileExporter $fileExporter,
         FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $bufferFactory, $fileExporter, $flusher);
-
-        $filePathResolver->resolve(Argument::any(), Argument::type('array'))
-            ->willReturn('/tmp/export/export.csv');
+        $this->beConstructedWith($bufferFactory, $fileExporter, $flusher);
     }
 
     function it_is_initializable()
@@ -82,7 +78,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
         $flatRowBuffer->write([$variant1, $variant2], ['withHeader' => true])->shouldBeCalled();
-        $fileExporter->exportAll([$variant1Media, $variant2Media], '/tmp/export')->shouldBeCalled();
+        $fileExporter->exportAll([$variant1Media, $variant2Media], 'my/file')->shouldBeCalled();
 
         $fileExporter->getErrors()->willReturn([
             [

@@ -15,15 +15,11 @@ use Prophecy\Argument;
 class ProductWriterSpec extends ObjectBehavior
 {
     function let(
-        FilePathResolverInterface $filePathResolver,
         BufferFactory $bufferFactory,
         BulkFileExporter $mediaCopier,
         FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($filePathResolver, $bufferFactory, $mediaCopier, $flusher);
-
-        $filePathResolver->resolve(Argument::any(), Argument::type('array'))
-            ->willReturn('/tmp/export/export.csv');
+        $this->beConstructedWith($bufferFactory, $mediaCopier, $flusher);
     }
 
     function it_is_initializable()
@@ -70,7 +66,7 @@ class ProductWriterSpec extends ObjectBehavior
                 'exportPath' => 'export',
                 'storageAlias' => 'storageAlias',
             ],
-        ], '/tmp/export')->shouldBeCalled();
+        ], 'my/file')->shouldBeCalled();
 
         $mediaCopier->getErrors()->willReturn([]);
         $mediaCopier->getCopiedMedia()->willReturn([
