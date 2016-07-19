@@ -4,12 +4,14 @@ namespace Pim\Bundle\EnrichBundle\Connector\Item\MassEdit;
 
 use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
@@ -60,15 +62,20 @@ class VariantGroupCleaner
         ProductRepositoryInterface $productRepository,
         TranslatorInterface $translator
     ) {
-        $this->pqbFactory           = $pqbFactory;
-        $this->paginatorFactory     = $paginatorFactory;
-        $this->objectDetacher       = $objectDetacher;
-        $this->groupRepository      = $groupRepository;
-        $this->productRepository    = $productRepository;
-        $this->translator           = $translator;
+        $this->pqbFactory        = $pqbFactory;
+        $this->paginatorFactory  = $paginatorFactory;
+        $this->objectDetacher    = $objectDetacher;
+        $this->groupRepository   = $groupRepository;
+        $this->productRepository = $productRepository;
+        $this->translator        = $translator;
     }
 
     /**
+     * Clean the filters to keep only non duplicated.
+     * This method send "skipped" message for every duplicated product for a variant group.
+     *
+     * If there is no acceptable products, this method returns null, meaning no product is matching.
+     *
      * @param StepExecution $stepExecution
      * @param array         $filters
      * @param array         $actions
@@ -96,13 +103,15 @@ class VariantGroupCleaner
         $excludedIds = $this->addSkippedMessageForDuplicatedProducts($stepExecution, $productAttributeAxis);
         $acceptedIds = array_diff($acceptedIds, $excludedIds);
 
-        $filters = [['field' => 'id', 'operator' => 'IN', 'value' => $acceptedIds]];
-
         if (0 === count($acceptedIds)) {
             return null;
         }
 
-        return $filters;
+        return [[
+            'field'    => 'id',
+            'operator' => Operators::IN_LIST,
+            'value'    => $acceptedIds
+        ]];;
     }
 
     /**
@@ -126,7 +135,7 @@ class VariantGroupCleaner
     /**
      * @param array $filters
      *
-     * @return \Akeneo\Component\StorageUtils\Cursor\CursorInterface
+     * @return CursorInterface
      */
     protected function getProductsCursor(array $filters)
     {
@@ -250,7 +259,11 @@ class VariantGroupCleaner
     {
         $excludedIds = $this->getExcludedProductIds($productAttributeAxis);
         if (!empty($excludedIds)) {
-            $cursor = $this->getProductsCursor([['field' => 'id', 'operator' => 'IN', 'value' => $excludedIds]]);
+            $cursor = $this->getProductsCursor([[
+                'field'    => 'id',
+                'operator' => Operators::IN_LIST,
+                'value'    => $excludedIds
+            ]]);
             $paginator = $this->paginatorFactory->createPaginator($cursor);
 
             foreach ($paginator as $productsPage) {

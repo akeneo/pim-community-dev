@@ -12,7 +12,9 @@ use Pim\Component\Connector\Reader\Database\ProductReader;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Product reader for mass edit, skipping products not usable in variant group
+ * Product reader for mass edit, skipping products not usable in variant group.
+ *
+ * This class is used to only skip duplicated elements and not throw exception during step execution.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -52,7 +54,12 @@ class FilteredVariantGroupProductReader extends ProductReader
     }
 
     /**
-     * Build filters to exclude products
+     * {@inheritdoc}
+     *
+     * Get the configured filters, but remove duplicated products of variant groups before.
+     *
+     * This function is different from parent getConfiguredFilters, because it returns null when there is no matching
+     * products after cleaning.
      *
      * @return array|null
      */
