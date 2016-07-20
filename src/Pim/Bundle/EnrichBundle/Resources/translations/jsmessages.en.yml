@@ -405,8 +405,8 @@ pim_enrich:
                         CONTAINS: Contains
                         DOES NOT CONTAIN: Does not contain
                         "=": Is equal to
-                        STARTS WITH: Start with
-                        ENDS WITH: Ends Wwith
+                        STARTS WITH: Starts with
+                        ENDS WITH: Ends with
                         EMPTY: Empty
                 price-collection:
                     operators:

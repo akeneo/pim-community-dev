@@ -51,6 +51,8 @@ extensions:
     pim-filter-simpleselect:
         module: pim/filter/simpleselect
 
+    pim-filter-attribute-string:
+        module: pim/filter/attribute/string
     pim-filter-attribute-price-collection:
         module: pim/filter/attribute/price-collection
         config:
