@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Component\Catalog\AttributeTypes;
@@ -314,7 +315,14 @@ class AttributeRepository extends EntityRepository implements
     public function getIdentifierCode()
     {
         if (null === $this->identifierCode) {
-            $this->identifierCode = $this->getIdentifier()->getCode();
+            $code = $this->createQueryBuilder('a')
+                ->select('a.code')
+                ->andWhere('a.attributeType = :attributeType')
+                ->setParameter('attributeType', AttributeTypes::IDENTIFIER)
+                ->setMaxResults(1)
+                ->getQuery()->getSingleResult(Query::HYDRATE_SINGLE_SCALAR);
+
+            $this->identifierCode = $code;
         }
 
         return $this->identifierCode;
