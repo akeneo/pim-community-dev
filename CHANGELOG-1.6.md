@@ -4,6 +4,7 @@
 ## Bug fixes
 
 - PIM-5854: The family code is not displayed at all in the product grid when no family labels
+- PIM-5888: Fix an outline glitch on some buttons
 
 ## Functional improvements
 
@@ -55,10 +56,6 @@
 - TIP-459: Standardize the denormalization Processors, to use SimpleProcessor in most of the cases.
 - TIP-255: Allow to select PQB filter on supported operator, to add new operators easily on existing fields/attribute types
 - PIM-5781: Introduce a new command to get system information from the command line
-
-## Bug fixes
-
-- PIM-5888: Fix an outline glitch on some buttons
 
 ## BC breaks
 
