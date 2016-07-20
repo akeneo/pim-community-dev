@@ -22,8 +22,8 @@ class Select2Decorator extends ElementDecorator
         $values = '' !== $value ? explode(',', $value) : [];
         $this->prune();
 
-        $widget = $this->getWidget();
         foreach ($values as $value) {
+            $widget = $this->getWidget();
             $value = trim($value);
 
             $this->getSession()->executeScript(
@@ -86,7 +86,7 @@ class Select2Decorator extends ElementDecorator
     {
         $openerElement = $this->find('css', '.select2-arrow');
         if (null === $openerElement) {
-            $openerElement = $this->find('css', '.select2-choices');
+            $openerElement = $this->find('css', '.select2-search-field');
         }
 
         $openerElement->click();
