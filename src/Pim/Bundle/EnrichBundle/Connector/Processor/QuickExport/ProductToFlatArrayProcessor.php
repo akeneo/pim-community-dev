@@ -209,13 +209,11 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     }
 
     /**
-     * @param ProductInterface $product
-     *
      * @throws \InvalidArgumentException
      *
      * @return array
      */
-    protected function getNormalizerContext(ProductInterface $product)
+    protected function getNormalizerContext()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $mainContext = $jobParameters->get('mainContext');
@@ -230,7 +228,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         }
 
         if (isset($columns) && 0 !== count($columns)) {
-            $columns[] = $this->attributeRepository->getIdentifier();
+            $columns[] = $this->attributeRepository->getIdentifierCode();
         }
 
         $normalizerContext = [

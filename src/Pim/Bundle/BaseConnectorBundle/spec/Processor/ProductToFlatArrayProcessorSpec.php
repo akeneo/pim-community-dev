@@ -15,9 +15,11 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Serializer;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
@@ -26,13 +28,17 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         ProductBuilderInterface $productBuilder,
         StepExecution $stepExecution,
-        ObjectDetacherInterface $detacher
+        ObjectDetacherInterface $detacher,
+        FieldSplitter $fieldSplitter,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->beConstructedWith(
             $serializer,
             $channelRepository,
             $productBuilder,
             $detacher,
+            $fieldSplitter,
+            $attributeRepository,
             ['pim_catalog_file', 'pim_catalog_image']
         );
         $this->setStepExecution($stepExecution);
@@ -54,6 +60,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $productBuilder,
         $stepExecution,
         $detacher,
+        $attributeRepository,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
@@ -104,6 +111,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $attribute->getAttributeType()->willReturn('pim_catalog_image');
         $identifierAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
 
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+
         $serializer
             ->normalize($media1, 'flat', ['field_name' => 'media', 'prepare_copy' => true, 'value' => $value1])
             ->willReturn(['normalized_media1']);
@@ -116,10 +125,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                 $product,
                 'flat',
                 [
-                    'scopeCode'         => 'foobar',
-                    'localeCodes'       => ['en_US'],
-                    'decimal_separator' => '.',
-                    'date_format'       => 'yyyy-MM-dd',
+                    'scopeCode'          => 'foobar',
+                    'localeCodes'        => ['en_US'],
+                    'decimal_separator'  => '.',
+                    'date_format'        => 'yyyy-MM-dd',
                 ]
             )
             ->willReturn(['normalized_product']);
@@ -138,6 +147,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $productBuilder,
         $stepExecution,
         $detacher,
+        $attributeRepository,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ChannelRepositoryInterface $channelRepository,
@@ -170,15 +180,17 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
         $product->getValues()->willReturn([]);
 
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+
         $serializer
             ->normalize(
                 $product,
                 'flat',
                 [
-                    'scopeCode'         => 'mobile',
-                    'localeCodes'       => ['en_US'],
-                    'decimal_separator' => ',',
-                    'date_format'       => 'yyyy-MM-dd',
+                    'scopeCode'          => 'mobile',
+                    'localeCodes'        => ['en_US'],
+                    'decimal_separator'  => ',',
+                    'date_format'        => 'yyyy-MM-dd',
                 ]
             )
             ->willReturn(['normalized_product']);
