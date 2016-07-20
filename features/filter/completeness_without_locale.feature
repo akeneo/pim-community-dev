@@ -12,6 +12,6 @@ Feature: Filter on completeness
       | TSHIRTL | tshirts | T-shirt L Black |                 | 10 USD, 9 GBP | size_L |       |                  |
     Then I should get the following results for the given filters:
       | filter                                                                       | result                 |
-      | [{"field":"completeness", "operator":"=",  "value": 100, "scope": "tablet"}] | ["TSHIRTS", "TSHIRTM"] |
-      | [{"field":"completeness", "operator":"<",  "value": 100, "scope": "tablet"}] | ["TSHIRTM", "TSHIRTL"] |
-      | [{"field":"completeness", "operator":"!=", "value": 100, "scope": "tablet"}] | ["TSHIRTM", "TSHIRTL"] |
+      | [{"field":"completeness", "operator":"=",  "value": 100, "context": {"scope": "tablet"}}] | ["TSHIRTS", "TSHIRTM"] |
+      | [{"field":"completeness", "operator":"<",  "value": 100, "context": {"scope": "tablet"}}] | ["TSHIRTM", "TSHIRTL"] |
+      | [{"field":"completeness", "operator":"!=", "value": 100, "context": {"scope": "tablet"}}] | ["TSHIRTM", "TSHIRTL"] |
