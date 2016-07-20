@@ -8,7 +8,6 @@ use Akeneo\Component\Buffer\BufferFactory;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Pim\Component\Connector\Writer\File\BulkFileExporter;
-use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 
@@ -37,18 +36,16 @@ class ProductWriter extends AbstractFileWriter implements ItemWriterInterface, A
     protected $bufferFactory;
 
     /**
-     * @param FilePathResolverInterface $filePathResolver
      * @param BufferFactory             $bufferFactory
      * @param BulkFileExporter          $fileExporter
      * @param FlatItemBufferFlusher     $flusher
      */
     public function __construct(
-        FilePathResolverInterface $filePathResolver,
         BufferFactory $bufferFactory,
         BulkFileExporter $fileExporter,
         FlatItemBufferFlusher $flusher
     ) {
-        parent::__construct($filePathResolver);
+        parent::__construct();
 
         $this->bufferFactory = $bufferFactory;
         $this->fileExporter  = $fileExporter;
@@ -117,8 +114,7 @@ class ProductWriter extends AbstractFileWriter implements ItemWriterInterface, A
             $this->flatRowBuffer,
             $writerOptions,
             $this->getPath(),
-            $this->stepExecution->getJobParameters()->get('linesPerFile'),
-            $this->filePathResolverOptions
+            $this->stepExecution->getJobParameters()->get('linesPerFile')
         );
 
         foreach ($writtenFiles as $writtenFile) {

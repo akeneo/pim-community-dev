@@ -21,14 +21,10 @@ class WriterSpec extends ObjectBehavior
 
     function let(
         ArrayConverterInterface $arrayConverter,
-        FilePathResolverInterface $filePathResolver,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($arrayConverter, $filePathResolver, $bufferFactory, $flusher);
-
-        $filePathResolver->resolve(Argument::any(), Argument::type('array'))
-            ->willReturn('/tmp/export/export.csv');
+        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher);
     }
 
     function it_is_a_configurable_step()
@@ -146,8 +142,7 @@ class WriterSpec extends ObjectBehavior
             $flatRowBuffer,
             Argument::type('array'),
             Argument::type('string'),
-            -1,
-            Argument::type('array')
+            -1
         )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
 
         $this->flush();

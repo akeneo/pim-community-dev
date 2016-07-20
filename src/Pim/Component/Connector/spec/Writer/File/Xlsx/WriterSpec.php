@@ -16,15 +16,10 @@ class WriterSpec extends ObjectBehavior
 {
     function let(
         ArrayConverterInterface $arrayConverter,
-        FilePathResolverInterface $filePathResolver,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher
     ) {
-        $this->beConstructedWith($arrayConverter, $filePathResolver, $bufferFactory, $flusher);
-
-        $filePathResolver
-            ->resolve(Argument::any(), Argument::type('array'))
-            ->willReturn('/tmp/export/export.xlsx');
+        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher);
     }
 
     function it_is_initializable()
@@ -135,8 +130,7 @@ class WriterSpec extends ObjectBehavior
             $flatRowBuffer,
             Argument::type('array'),
             Argument::type('string'),
-            2,
-            Argument::type('array')
+            2
         )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
 
         $this->initialize();
