@@ -32,9 +32,12 @@ class ProductEditForm extends Form
                 // Note: It erases parent add-attributes selector values because of the new JS module,
                 // once refactoring done everywhere, it should be set in parent like before
                 'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
+                'Available attributes'            => [
+                    'css'        => '.add-attribute',
+                    'decorators' => ['Pim\Behat\Decorator\Common\AddAttributeDecorator']
+                ],
                 'Available attributes list'       => ['css' => '.add-attribute .select2-results'],
                 'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
-                'Available attributes add button' => ['css' => '.add-attribute .ui-multiselect-footer button'],
                 'Select2 dropmask'                => ['css' => '.select2-drop-mask'],
             ]
         );
@@ -97,39 +100,10 @@ class ProductEditForm extends Form
      */
     public function addAvailableAttributes(array $attributes = [])
     {
-        $searchSelector = $this->elements['Available attributes search']['css'];
-
-        $selector = $this->spin(function () {
-            return $this->find('css', $this->elements['Available attributes button']['css']);
-        }, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
-
-        // Open select2
-        $selector->click();
-
-        $list = $this->spin(function () {
-            return $this->getElement('Available attributes list');
-        }, 'Cannot find the attribute list element');
-
-        foreach ($attributes as $attributeLabel) {
-            // We NEED to fill the search field with jQuery to avoid the TAB key press (because of mink),
-            // because select2 selects the first element on TAB key press.
-            $this->getSession()->evaluateScript(
-                sprintf("jQuery('%s').val('%s').trigger('input');", $searchSelector, $attributeLabel)
-            );
-            $label = $this->spin(
-                function () use ($list, $attributeLabel) {
-                    return $list->find('css', sprintf('li .attribute-label:contains("%s")', $attributeLabel));
-                },
-                sprintf('Could not find available attribute "%s".', $attributeLabel)
-            );
-
-            $label->click();
-        }
-
-        $this->getElement('Available attributes add button')->press();
-
-        // Clean extra select2-drop in the DOM
-        $this->getSession()->evaluateScript("jQuery('.select2-drop:hidden').remove();");
+        $availableAttribute = $this->spin(function () {
+            return $this->getElement('Available attributes');
+        }, 'Cannot find the add attribute element');
+        $availableAttribute->addAttributes($attributes);
     }
 
     /**

@@ -389,6 +389,14 @@ pim_enrich:
                     help: The categories of the products you want to export
                 identifier:
                     help: Identifiers of products you want to export separated by commas, spaces or line breaks
+                metric:
+                    operators:
+                        "=": "="
+                        ">=": ">="
+                        ">": ">"
+                        "<=": "<="
+                        "<": "<"
+                        EMPTY: "Empty"
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
