@@ -12,8 +12,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilteredProductQueryBuilderFactory extends ProductQueryBuilderFactory
+class FilteredProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
 {
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $factory;
+
+    /**
+     * @param ProductQueryBuilderFactoryInterface $factory
+     */
+    public function __construct(ProductQueryBuilderFactoryInterface $factory)
+    {
+        $this->factory = $factory;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -25,7 +36,11 @@ class FilteredProductQueryBuilderFactory extends ProductQueryBuilderFactory
             unset($options['filters']);
         }
 
-        $productQueryBuilder = parent::create($options);
+        $productQueryBuilder = $this->factory->create($options);
+
+        if (0 === count($filters)) {
+            return $productQueryBuilder;
+        }
 
         $resolver = new OptionsResolver();
         $resolver

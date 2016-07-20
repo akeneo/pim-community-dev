@@ -74,8 +74,6 @@ class VariantGroupCleaner
      * Clean the filters to keep only non duplicated.
      * This method send "skipped" message for every duplicated product for a variant group.
      *
-     * If there is no acceptable products, this method returns null, meaning no product is matching.
-     *
      * @param StepExecution $stepExecution
      * @param array         $filters
      * @param array         $actions
@@ -102,10 +100,6 @@ class VariantGroupCleaner
 
         $excludedIds = $this->addSkippedMessageForDuplicatedProducts($stepExecution, $productAttributeAxis);
         $acceptedIds = array_diff($acceptedIds, $excludedIds);
-
-        if (0 === count($acceptedIds)) {
-            return null;
-        }
 
         return [[
             'field'    => 'id',

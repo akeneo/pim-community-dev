@@ -77,7 +77,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         }
 
         $filters = $this->getConfiguredFilters();
-        $this->products = (null === $filters) ? null : $this->getProductsCursor($filters);
+        $this->products = $this->getProductsCursor($filters, $channel);
     }
 
     /**
@@ -87,7 +87,7 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     {
         $product = null;
 
-        if (null !== $this->products && $this->products->valid()) {
+        if ($this->products->valid()) {
             $product = $this->products->current();
             $this->stepExecution->incrementSummaryInfo('read');
             $this->products->next();
@@ -155,13 +155,13 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     }
 
     /**
-     * @param array $filters
+     * @param array            $filters
+     * @param ChannelInterface $channel
      *
      * @return CursorInterface
      */
-    protected function getProductsCursor(array $filters)
+    protected function getProductsCursor(array $filters, ChannelInterface $channel = null)
     {
-        $channel = $this->getConfiguredChannel();
         $options = ['filters' => $filters];
         if (null !== $channel) {
             $options['default_scope'] = $channel->getCode();
