@@ -75,7 +75,9 @@ class QueryProductCommand extends ContainerAwareCommand
     {
         $filters = json_decode($input->getArgument('json_filters'), true);
         $pageSize = $input->getOption('page-size');
-        $products = $this->getProducts($filters);
+        $productQueryBuilder = $this->getProductQueryBuilder($filters);
+        $products = $productQueryBuilder->execute();
+
         if (!$input->getOption('json-output')) {
             $table = $this->buildTable($products, $pageSize);
             $table->render($output);
@@ -131,18 +133,6 @@ class QueryProductCommand extends ContainerAwareCommand
         $table->setHeaders($headers)->setRows($rows);
 
         return $table;
-    }
-
-    /**
-     * @param array $filters
-     *
-     * @return CursorInterface
-     */
-    protected function getProducts(array $filters)
-    {
-        $productQueryBuilder = $this->getProductQueryBuilder($filters);
-
-        return $productQueryBuilder->execute();
     }
 
     /**

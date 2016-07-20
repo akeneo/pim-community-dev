@@ -54,14 +54,9 @@ class FilteredVariantGroupProductReader extends ProductReader
     }
 
     /**
-     * {@inheritdoc}
-     *
      * Get the configured filters, but remove duplicated products of variant groups before.
      *
-     * This function is different from parent getConfiguredFilters, because it returns null when there is no matching
-     * products after cleaning.
-     *
-     * @return array|null
+     * {@inheritdoc}
      */
     protected function getConfiguredFilters()
     {
