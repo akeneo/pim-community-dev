@@ -31,7 +31,7 @@ Feature: Edit an export
     Then I should see the Channel, Locales fields
     Then I should see the filters enabled, completeness, updated, sku and family.code
     And I fill in the following information:
-      | Channel      | Tablet                               |
+      | Channel | Tablet |
     Then I filter by "enabled" with operator "" and value "Disabled"
     And I filter by "family.code" with operator "" and value "Boots"
     And I filter by "completeness" with operator "Not complete on all selected locales" and value ""
@@ -44,7 +44,7 @@ Feature: Edit an export
     And I should see the text "Decimal Separator comma (,)"
     And I should see the text "Date format yyyy-MM-dd"
     When I visit the "Content" tab
-    Then I should see the text "Channel tablet"
+    Then I should see the text "Channel (required) Tablet"
     And I should see the text "Status disabled"
     And I should see the text "en_US"
     And I should see the text "Boots"

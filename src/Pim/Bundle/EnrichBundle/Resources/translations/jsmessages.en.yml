@@ -347,10 +347,10 @@ pim_enrich:
                     title: Attributes
             filter:
                 channel:
-                    title: Channel
+                    title: Channel (required)
                     help: The channel you want to export
                 locales:
-                    title: Locales
+                    title: Locales (required)
                     help: The locales you want to export
                 family:
                     title: Family
