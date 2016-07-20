@@ -32,14 +32,16 @@ class QueryProductCommand extends ContainerAwareCommand
             [
                 'field'    => 'sku',
                 'operator' => 'STARTS WITH',
-                'value'    => 'Ak'
+                'value'    => 'Ak',
             ],
             [
                 'field'    => 'completeness',
                 'operator' => '=',
                 'value'    => '100',
-                'locale'   => 'en_US',
-                'scope'    => 'print'
+                'context'  => [
+                    'locale' => 'en_US',
+                    'scope'  => 'print',
+                ],
             ]
         ];
 
