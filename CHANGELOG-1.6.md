@@ -59,6 +59,8 @@
 
 ## BC breaks
 
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor`. Add `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter` and `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` as last arguments.
+- Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`. Add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` as last arguments.
 - Rename `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType` to `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`
 - Rename method `getRawConfiguration` to `getRawParameters` in `Akeneo\Component\Batch\Model\JobInstance`
 - Rename method `setRawConfiguration` to `setRawParameters` in `Akeneo\Component\Batch\Model\JobInstance`
