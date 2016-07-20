@@ -68,7 +68,7 @@ extensions:
 filters:
     pim-product-export-show-content:
         pim_catalog_text:
-            view: pim-filter-text
+            view: pim-filter-attribute-text
         pim_catalog_number:
             view: pim-filter-text
             # view: pim-filter-number
