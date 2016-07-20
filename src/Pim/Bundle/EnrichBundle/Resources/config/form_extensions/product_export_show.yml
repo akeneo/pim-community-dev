@@ -96,6 +96,6 @@ filters:
             view: pim-filter-text
             # view: pim-filter-boolean
         pim_reference_data_simpleselect:
-            view: pim-filter-simpleselect
+            view: pim-filter-attribute-simpleselect-reference-data
         pim_reference_data_multiselect:
             view: pim-filter-attribute-multiselect-reference-data
