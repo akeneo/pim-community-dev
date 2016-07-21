@@ -68,7 +68,7 @@ Feature: Export products according to text attribute filter
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Comment
-    And I filter by "comment" with operator "Contains" and value "product"
+    And I filter by "comment" with operator "Contains" and value "Awesome"
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -77,16 +77,15 @@ Feature: Export products according to text attribute filter
     Then exported file of "csv_footwear_product_export" should contain:
     """
     sku;categories;enabled;family;groups;comment
+    SNKRS-1B;summer_collection;1;rangers;;Awesome
     SNKRS-1R;summer_collection;1;rangers;;Awesome product
     """
 
   Scenario: Export products by text values using the UI
-    Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Comment
-    And I filter by "comment" with operator "Does not contain" and value "Awesome"
+    And I filter by "comment" with operator "Does not contain" and value "product"
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -95,7 +94,7 @@ Feature: Export products according to text attribute filter
     Then exported file of "csv_footwear_product_export" should contain:
     """
     sku;categories;enabled;family;groups;comment
-    SNKRS-1N;summer_collection;1;rangers;;
+    SNKRS-1B;summer_collection;1;rangers;;Awesome
     """
 
   Scenario: Export products by text values using the UI
@@ -123,7 +122,7 @@ Feature: Export products according to text attribute filter
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Comment
-    Then I filter by "comment" with operator "Empty" and value ""
+    Then I filter by "comment" with operator "Is empty" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page

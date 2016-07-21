@@ -399,7 +399,6 @@ pim_enrich:
                         "<": "<"
                         EMPTY: "Empty"
                 text:
-                    help: Filter by text attribute on products you want to export.
                     operators:
                         ALL: All
                         CONTAINS: Contains
@@ -407,7 +406,7 @@ pim_enrich:
                         "=": Is equal to
                         STARTS WITH: Starts with
                         ENDS WITH: Ends with
-                        EMPTY: Empty
+                        EMPTY: Is empty
                 price-collection:
                     operators:
                         "=": "="

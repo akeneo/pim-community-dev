@@ -30,11 +30,11 @@ class StringDecorator extends ElementDecorator
         if ('' !== $value) {
             list($data) = explode(' ', $value);
 
-            $field = $this->find('css', '[name="filter-data"]');
+            $field = $this->find('css', '[name="filter-value"]');
             $field->setValue($data);
             $this->getSession()->executeScript(
                 sprintf(
-                    '$(\'.filter-item[data-name="%s"][data-type="%s"] [name="filter-data"]\').trigger(\'change\')',
+                    '$(\'.filter-item[data-name="%s"][data-type="%s"] [name="filter-value"]\').trigger(\'change\')',
                     $this->getAttribute('data-name'),
                     $this->getAttribute('data-type')
                 )

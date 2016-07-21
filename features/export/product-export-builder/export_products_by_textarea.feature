@@ -109,7 +109,7 @@ Feature: Export products according to textarea attribute filter
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Description
-    And I filter by "description" with operator "Does not contain" and value "Awesome"
+    And I filter by "description" with operator "Does not contain" and value "description"
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -118,7 +118,7 @@ Feature: Export products according to textarea attribute filter
     Then exported file of "csv_footwear_product_export" should contain:
     """
     sku;categories;enabled;family;groups;description
-    SNKRS-1N;summer_collection;1;rangers;;
+    SNKRS-1B;summer_collection;1;rangers;;Awesome
     """
 
   Scenario: Export products by textarea values using the UI
@@ -127,7 +127,7 @@ Feature: Export products according to textarea attribute filter
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Description
-    Then I filter by "description" with operator "Empty" and value ""
+    Then I filter by "description" with operator "Is empty" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page

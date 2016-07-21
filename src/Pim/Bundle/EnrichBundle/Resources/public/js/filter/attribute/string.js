@@ -21,10 +21,10 @@ define([
     template
 ) {
     return BaseFilter.extend({
-        shortname: 'text',
+        shortname: 'string',
         template: _.template(template),
         events: {
-            'change [name="filter-operator"], [name="filter-data"]': 'updateState'
+            'change [name="filter-operator"], [name="filter-value"]': 'updateState'
         },
 
         /**
@@ -50,7 +50,7 @@ define([
          */
         renderInput: function (templateContext) {
             if (undefined === this.getValue()) {
-                this.setValue('')
+                this.setValue('');
             }
 
             return this.template(_.extend({}, templateContext, {
@@ -66,7 +66,7 @@ define([
          * {@inheritdoc}
          */
         postRender: function () {
-            this.$('select.select2').select2({minimumResultsForSearch: -1});
+            this.$('.operator').select2({minimumResultsForSearch: -1});
         },
 
         /**
@@ -87,7 +87,7 @@ define([
          * {@inherit}
          */
         updateState: function () {
-            var value = this.$('[name="filter-data"]').val();
+            var value = this.$('[name="filter-value"]').val();
             var operator = this.$('[name="filter-operator"]').val();
 
             this.setData({
