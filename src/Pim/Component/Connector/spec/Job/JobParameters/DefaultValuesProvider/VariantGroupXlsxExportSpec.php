@@ -27,7 +27,8 @@ class VariantGroupXlsxExportSpec extends ObjectBehavior
                 'decoratedParam'   => true,
                 'decimalSeparator' => ".",
                 'dateFormat'       => "yyyy-MM-dd",
-                'linesPerFile'     => 10000
+                'linesPerFile'     => 10000,
+                'with_media'       => true
             ]
         );
     }

@@ -4,9 +4,9 @@ namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Constraints for variant group CSV export
@@ -25,7 +25,7 @@ class VariantGroupCsvExport implements ConstraintCollectionProviderInterface
 
     /**
      * @param ConstraintCollectionProviderInterface $simpleProvider
-     * @param array                $supportedJobNames
+     * @param array                                 $supportedJobNames
      */
     public function __construct(ConstraintCollectionProviderInterface $simpleProvider, array $supportedJobNames)
     {
@@ -42,6 +42,7 @@ class VariantGroupCsvExport implements ConstraintCollectionProviderInterface
         $constraintFields = $baseConstraint->fields;
         $constraintFields['decimalSeparator'] = new NotBlank();
         $constraintFields['dateFormat'] = new NotBlank();
+        $constraintFields['with_media'] = new Type('bool');
 
         return new Collection(['fields' => $constraintFields]);
     }
