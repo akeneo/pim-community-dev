@@ -251,6 +251,12 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product'
             - '@pim_catalog.localization.localizer.converter'
 
+    pim_connector.array_converter.standard_to_flat.variant_group_localized:
+        class: '%pim_connector.array_converter.standard_to_flat.product_localized.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.variant_group'
+            - '@pim_catalog.localization.localizer.converter'
+
     pim_connector.array_converter.standard_to_flat.user:
         class: '%pim_connector.array_converter.standard_to_flat.user.class%'
 
