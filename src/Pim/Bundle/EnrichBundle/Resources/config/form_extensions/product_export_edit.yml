@@ -82,8 +82,7 @@ filters:
         pim_catalog_metric:
             view: pim-filter-attribute-metric
         pim_catalog_price_collection:
-            view: pim-filter-text
-            # view: pim-filter-price
+            view: pim-filter-attribute-price-collection
         pim_catalog_image:
             view: pim-filter-text
         pim_catalog_file:

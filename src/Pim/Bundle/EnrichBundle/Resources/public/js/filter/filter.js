@@ -21,9 +21,6 @@ define([
         editable: true,
         removable: false,
         filterTemplate: _.template(filterTemplate),
-        events: {
-            'click .remove': 'removeFilter'
-        },
 
         /**
          * Sets the parentForm code on which this filter operates.
@@ -198,7 +195,7 @@ define([
                     this.el.dataset.type = this.getType();
 
                     this.$el.html(this.filterTemplate(templateContext));
-
+                    this.$('.remove').on('click', this.removeFilter.bind(this));
                     this.$('.filter-input').append(this.renderInput(templateContext));
 
                     this.renderElements();

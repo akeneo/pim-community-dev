@@ -1803,7 +1803,8 @@ h3.tab-header {
   }
 }
 
-[data-type="pim-filter-attribute-metric"] .filter-input {
+[data-type="pim-filter-attribute-metric"] .filter-input,
+[data-type="pim-filter-attribute-price-collection"] .filter-input {
   .operator {
     width: 100px;
   }
@@ -1812,7 +1813,11 @@ h3.tab-header {
     width: 95px;
   }
 
-  .unit {
+  .unit, .currency {
     width: 100px;
   }
+}
+
+.remove.icon-trash {
+  cursor: pointer;
 }

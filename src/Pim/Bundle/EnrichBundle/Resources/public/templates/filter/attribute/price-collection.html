@@ -1,7 +1,7 @@
 <select class="select2 operator" <%- editable ? '' : 'disabled' %> name="filter-operator">
     <% _.each(operators, function (operatorChoice) { %>
         <option value="<%- operatorChoice %>"<%- operator === operatorChoice ? ' selected' : '' %>>
-            <%- __('pim_enrich.export.product.filter.metric.operators.' + operatorChoice) %>
+            <%- __('pim_enrich.export.product.filter.price-collection.operators.' + operatorChoice) %>
         </option>
     <% }); %>
 </select>
@@ -9,10 +9,10 @@
 <% if ('EMPTY' !== operator) { %>
     <input type="text" name="filter-data" class="value" value="<%- value.data %>" <%- editable ? '' : 'disabled' %>>
 
-    <select class="select2 unit" name="filter-unit" <%- editable ? '' : 'disabled' %>>
-        <% _.each(units.units, function (unitChoice, key) { %>
-            <option value="<%- key %>"<%- value.unit === key ? ' selected' : '' %>>
-                <%- unitChoice.symbol %>
+    <select class="select2 currency" name="filter-currency" <%- editable ? '' : 'disabled' %>>
+        <% _.each(currencies, function (currencyChoice) { %>
+            <option value="<%- currencyChoice.code %>"<%- value.currency === currencyChoice.code ? ' selected' : '' %>>
+                <%- currencyChoice.code %>
             </option>
         <% }); %>
     </select>

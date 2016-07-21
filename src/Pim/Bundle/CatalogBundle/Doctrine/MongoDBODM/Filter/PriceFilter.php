@@ -52,9 +52,9 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $options = []
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'price');
-        $this->checkValue($attribute, $value);
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
+            $this->checkValue($attribute, $value);
             $value['data'] = (float) $value['data'];
         }
 
