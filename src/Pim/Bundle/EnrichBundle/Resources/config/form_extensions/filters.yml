@@ -48,6 +48,22 @@ extensions:
                 - "<"
                 - EMPTY
 
+    pim-filter-attribute-number:
+        module: pim/filter/attribute/number
+        config:
+            operators:
+                - "="
+                - "!="
+                - ">="
+                - ">"
+                - "<="
+                - "<"
+                - EMPTY
+                - NOT EMPTY
+
+    pim-filter-simpleselect:
+        module: pim/filter/simpleselect
+
     pim-filter-attribute-price-collection:
         module: pim/filter/attribute/price-collection
         config:
