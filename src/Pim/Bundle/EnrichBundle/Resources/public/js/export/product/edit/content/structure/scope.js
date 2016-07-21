@@ -65,7 +65,10 @@ define(
                         })
                     );
 
-                    this.$('.select2').select2().on('change', this.updateState.bind(this));
+                    this.$('.select2')
+                        .select2({minimumResultsForSearch: -1})
+                        .on('change', this.updateState.bind(this));
+
                     this.$('[data-toggle="tooltip"]').tooltip();
 
                     this.renderExtensions();

@@ -67,7 +67,7 @@ define([
              * Initializes select2 and datepicker after rendering.
              */
             postRender: function () {
-                this.$('[name="filter-operator"]').select2();
+                this.$('[name="filter-operator"]').select2({minimumResultsForSearch: -1});
 
                 if ('>' === this.getOperator()) {
                     Datepicker

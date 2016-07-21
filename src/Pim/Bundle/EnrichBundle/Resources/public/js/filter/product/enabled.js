@@ -52,7 +52,7 @@ define([
          * Initializes select2 after rendering.
          */
         postRender: function () {
-            this.$('[name="filter-value"]').select2();
+            this.$('[name="filter-value"]').select2({minimumResultsForSearch: -1});
         },
 
         /**

@@ -212,15 +212,11 @@ define([
          * @returns {Promise}
          */
         getTemplateContext: function () {
-            var deferred = $.Deferred();
-
-            deferred.resolve({
+            return $.Deferred().resolve({
                 label: __('pim_enrich.export.product.filter.' + this.shortname + '.title'),
                 removable: this.isRemovable(),
                 editable: this.isEditable()
-            });
-
-            return deferred.promise();
+            }).promise();
         },
 
         /**
