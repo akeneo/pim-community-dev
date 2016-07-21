@@ -8,8 +8,8 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Pim\Component\Connector\Writer\File\AbstractItemMediaWriter;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Archive files written by job execution to provide them through a download button
@@ -89,7 +89,10 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      */
     protected function isUsableWriter(ItemWriterInterface $writer)
     {
-        if (!($writer instanceof AbstractFileWriter)) {
+        $isNewWriter = ($writer instanceof AbstractItemMediaWriter);
+        $isNewItemMediaWriter = ($writer instanceof AbstractFileWriter);
+
+        if (!($isNewItemMediaWriter || $isNewWriter)) {
             return false;
         }
 
