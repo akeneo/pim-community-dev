@@ -143,6 +143,24 @@ class CriteriaCondition
                 );
             }
 
+            if (0 === count($value)) {
+                /**
+                 * SQL can not manage operator IN and NOT IN if the list inside parenthesis is empty. For example,
+                 * `my_field IN ()` or `my_field NOT IN ()` will raise a parsing exception during query execution.
+                 *
+                 * Thanks to this method, we prevent the SQL to contains these failing strings. DQL can not parse
+                 * single `FALSE` nor `TRUE` string as a condition, we need to get around. We manage 2 cases:
+                 * - Instead of `IN ()`, it returns `1 <> 1`, which is equivalent to `FALSE`,
+                 * - Instead of `NOT IN ()`, it returns `1 = 1`, which is equivalent to `TRUE`.
+                 */
+                if (Operators::IN_LIST === $operator) {
+                    return $this->qb->expr()->neq(1, 1)->__toString();
+                }
+                if (Operators::NOT_IN_LIST === $operator) {
+                    return $this->qb->expr()->eq(1, 1)->__toString();
+                }
+            }
+
             $method = $operators[$operator];
 
             return $this->qb->expr()->$method($field, $value)->__toString();
