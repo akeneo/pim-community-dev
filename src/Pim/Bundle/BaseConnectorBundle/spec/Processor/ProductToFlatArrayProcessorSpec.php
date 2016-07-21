@@ -125,10 +125,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                 $product,
                 'flat',
                 [
-                    'scopeCode'          => 'foobar',
-                    'localeCodes'        => ['en_US'],
-                    'decimal_separator'  => '.',
-                    'date_format'        => 'yyyy-MM-dd',
+                    'scopeCode'         => 'foobar',
+                    'localeCodes'       => ['en_US'],
+                    'decimal_separator' => '.',
+                    'date_format'       => 'yyyy-MM-dd',
                 ]
             )
             ->willReturn(['normalized_product']);
@@ -164,8 +164,9 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                 ]
             ],
             'structure' => [
-                'scope'   => 'mobile',
-                'locales' => ['fr_FR', 'en_US'],
+                'scope'      => 'mobile',
+                'locales'    => ['fr_FR', 'en_US'],
+                'attributes' => []
             ]
         ];
 
@@ -187,10 +188,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                 $product,
                 'flat',
                 [
-                    'scopeCode'          => 'mobile',
-                    'localeCodes'        => ['en_US'],
-                    'decimal_separator'  => ',',
-                    'date_format'        => 'yyyy-MM-dd',
+                    'scopeCode'         => 'mobile',
+                    'localeCodes'       => ['en_US'],
+                    'decimal_separator' => ',',
+                    'date_format'       => 'yyyy-MM-dd',
                 ]
             )
             ->willReturn(['normalized_product']);

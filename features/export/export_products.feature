@@ -245,7 +245,7 @@ Feature: Export products
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
     And the following job "tablet_product_export" configuration:
-      | filters  | {"structure":{"locales":["en_US","fr_FR"],"scope":"tablet","attributes":["price","size","color","cost","description","name","image","release_date","weight"]}, "data": []} |
+      | filters | {"structure":{"locales":["en_US","fr_FR"],"scope":"tablet","attributes":["price","size","color","cost","description","name","image","release_date","weight"]}, "data": []} |
     And the following products:
       | sku           | family  | categories                   | price                 | size   | color  | manufacturer     | material | country_of_manufacture |
       | tshirt-yellow | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | yellow | american_apparel | cotton   | usa                    |
@@ -274,7 +274,6 @@ Feature: Export products
       | tshirt-green  | description     | Ein elegantes schwarzes T-Shirt      | de_DE  | ecommerce |
       | tshirt-green  | description     | A really stylish green t-shirt       | en_US  | print     |
       | tshirt-green  | description     | Ein sehr elegantes schwarzes T-Shirt | de_DE  | print     |
-    And I launched the completeness calculator
     When I am on the "tablet_product_export" export job page
     And I launch the export job
     And I wait for the "tablet_product_export" job to finish
@@ -285,16 +284,15 @@ Feature: Export products
     tshirt-green;men_2013,men_2014,men_2015;green;;;;;;1;tshirts;;;Green t-shirt;Green t-shirt;10.00;9.00;15.00;;size_L;;
     """
 
-  Scenario: Successfully export products with an empty selection of attributes
+  Scenario: Successfully export products with an empty array of attributes
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
     And the following job "tablet_product_export" configuration:
-      | filters  | {"structure":{"locales":["en_US","fr_FR"],"scope":"tablet","attributes":[]}, "data": []} |
+      | filters | {"structure":{"locales":["en_US","fr_FR"],"scope":"tablet","attributes":["sku"]}, "data": []} |
     And the following products:
       | sku           | family  | categories                   | price                 | size   | color  | manufacturer     | material | country_of_manufacture |
       | tshirt-yellow | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | yellow | american_apparel | cotton   | usa                    |
       | tshirt-green  | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_L | green  | american_apparel | cotton   | usa                    |
-    And I launched the completeness calculator
     When I am on the "tablet_product_export" export job page
     And I launch the export job
     And I wait for the "tablet_product_export" job to finish
@@ -303,30 +301,4 @@ Feature: Export products
     sku;categories;enabled;family;groups
     tshirt-yellow;men_2013,men_2014,men_2015;1;tshirts;
     tshirt-green;men_2013,men_2014,men_2015;1;tshirts;
-    """
-
-  Scenario: Successfully export products with associations and an empty selection of attributes
-    Given an "apparel" catalog configuration
-    And I am logged in as "Julia"
-    And the following job "tablet_product_export" configuration:
-      | filters  | {"structure":{"locales":["en_US","fr_FR"],"scope":"tablet","attributes":[]}, "data": []} |
-    And the following products:
-      | sku           | family  | categories                   | price                 | size   | color  | manufacturer     | material | country_of_manufacture |
-      | tshirt-yellow | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | yellow | american_apparel | cotton   | usa                    |
-      | tshirt-green  | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_L | green  | american_apparel | cotton   | usa                    |
-      | tshirt-white  | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white  | american_apparel | cotton   | usa                    |
-    And the following associations for the product "tshirt-yellow":
-      | type   | product      |
-      | upsell | tshirt-green |
-      | upsell | tshirt-white |
-    And I launched the completeness calculator
-    When I am on the "tablet_product_export" export job page
-    And I launch the export job
-    And I wait for the "tablet_product_export" job to finish
-    Then exported file of "tablet_product_export" should contain:
-    """
-    sku;categories;enabled;family;groups;upsell-groups;upsell-products
-    tshirt-yellow;men_2013,men_2014,men_2015;1;tshirts;;;tshirt-green,tshirt-white
-    tshirt-green;men_2013,men_2014,men_2015;1;tshirts;;;
-    tshirt-white;men_2013,men_2014,men_2015;1;tshirts;;;
     """

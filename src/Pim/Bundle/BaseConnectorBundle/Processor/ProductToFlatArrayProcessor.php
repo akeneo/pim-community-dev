@@ -102,7 +102,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
 
         $data['product'] = $this->serializer->normalize($product, 'flat', $this->getNormalizerContext($contextChannel));
 
-        $attributes = $this->getFilterableAttributes();
+        $attributes = $this->getAttributesToFilter();
         if (null !== $attributes) {
             $data['product'] = $this->filterAttributes(
                 $product,
@@ -117,18 +117,20 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     }
 
     /**
+     * Return a list of attributes to export
+     *
      * @return array|null
      */
-    protected function getFilterableAttributes()
+    protected function getAttributesToFilter()
     {
         $attributes = null;
         $parameters = $this->stepExecution->getJobParameters();
 
         if (isset($parameters->get('filters')['structure']['attributes'])) {
             $attributes = $parameters->get('filters')['structure']['attributes'];
-            $attributeCode = $this->attributeRepository->getIdentifierCode();
-            if (!in_array($attributeCode, $attributes)) {
-                $attributes[] = $attributeCode;
+            $identifierCode = $this->attributeRepository->getIdentifierCode();
+            if (!in_array($identifierCode, $attributes)) {
+                $attributes[] = $identifierCode;
             }
         }
 
@@ -136,7 +138,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     }
 
     /**
-     * filters the attributes that have to be exported based on a product and a list of attributes
+     * Filters the attributes that have to be exported based on a product and a list of attributes
      *
      * @param ProductInterface $product
      * @param array            $normalizedProduct
@@ -151,12 +153,12 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     ) {
         $filteredColumnList = [];
 
-        foreach ($normalizedProduct as $key => $value) {
-            $field = $this->fieldSplitter->splitFieldName($key);
-            $attribute = $this->getAttributeByCode($product, $field[0]);
+        foreach (array_keys($normalizedProduct) as $flatField) {
+            $fieldParts = $this->fieldSplitter->splitFieldName($flatField);
+            $attribute = $this->getAttributeByCode($product, $fieldParts[0]);
 
             if (null === $attribute || in_array($attribute->getCode(), $attributes)) {
-                $filteredColumnList[] = $key;
+                $filteredColumnList[] = $flatField;
             }
         }
 
@@ -165,7 +167,6 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
 
     /**
      * @param ProductInterface $product
-     * @param string           $attributeCode
      *
      * @return AttributeInterface|null
      */
@@ -202,13 +203,13 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
         $dateFormat = $parameters->get('dateFormat');
 
         $normalizerContext = [
-            'scopeCode'           => $channel->getCode(),
-            'localeCodes'         => array_intersect(
+            'scopeCode'         => $channel->getCode(),
+            'localeCodes'       => array_intersect(
                 $channel->getLocaleCodes(),
                 $parameters->get('filters')['structure']['locales']
             ),
-            'decimal_separator'   => $decimalSeparator,
-            'date_format'         => $dateFormat,
+            'decimal_separator' => $decimalSeparator,
+            'date_format'       => $dateFormat,
         ];
 
         return $normalizerContext;
