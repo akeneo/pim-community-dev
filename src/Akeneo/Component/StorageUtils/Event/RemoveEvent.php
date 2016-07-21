@@ -10,6 +10,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @api
  */
 class RemoveEvent extends GenericEvent
 {
@@ -32,6 +34,8 @@ class RemoveEvent extends GenericEvent
      * Get subject id
      *
      * @return int
+     *
+     * @api
      */
     public function getSubjectId()
     {

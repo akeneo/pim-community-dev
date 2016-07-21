@@ -8,6 +8,8 @@ namespace Akeneo\Component\StorageUtils\Updater;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @internal
  */
 interface PropertyRemoverInterface
 {
@@ -22,6 +24,8 @@ interface PropertyRemoverInterface
      * @throws \InvalidArgumentException
      *
      * @return PropertyRemoverInterface
+     *
+     * @internal
      */
     public function removeData($object, $property, $data, array $options = []);
 }
