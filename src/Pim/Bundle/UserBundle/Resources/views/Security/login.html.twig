@@ -13,43 +13,40 @@
 
 {% block content %}
 <div class="container">
-    {% if error %}
-    <div class="alert alert-error">
-        <button data-dismiss="alert" class="close" type="button">&times;</button>
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    <div class="title-box">
+        {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
     </div>
+
+    {% if error %}
+        <div class="alert alert-error">
+            <button data-dismiss="alert" class="close" type="button">&times;</button>
+            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        </div>
     {% endif %}
 
-    <form action="{{ path('oro_user_security_check') }}" method="post" class="form-signin">
-        <div class="title-box">
-            <h1>
-                <img src="{{ asset('/bundles/pimui/images/logo.png') }}" alt="Akeneo">
-            </h1>
-        </div>
+    <form action="{{ path('oro_user_security_check') }}" method="post" class="form-signin form-inline">
         <fieldset>
-            <div class="input-prepend">
-                <label for="prependedInput" class="add-on" title="{{ 'Username or Email'|trans }}"><i class="icon-user"></i></label>
-                <input type="text" id="prependedInput" autofocus="autofocus" class="span2" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" />
-            </div>
-            <div class="input-prepend">
-                <label for="prependedInput2" class="add-on" title="{{ 'Password'|trans }}"><i class="icon-lock"></i></label>
-                <input type="password" id="prependedInput2" class="span2" name="_password" required="required" placeholder="{{ 'Password'|trans }}" autocomplete="off" />
-            </div>
             <div class="form-row">
-                <label class="checkbox">
-                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'Remember me on this computer'|trans }}
-                </label>
-            </div>
-            <div class="form-row">
+                <input type="text" id="prependedInput" autofocus="autofocus" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" />
+                <input type="password" id="prependedInput2" name="_password" required="required" placeholder="{{ 'Password'|trans }}" autocomplete="off" />
                 <button type="submit" class="btn btn-large btn-primary" id="_submit" name="_submit">{{ 'Log in'|trans }}</button>
             </div>
-            <div class="signin-help">
-                <a href="{{ path('oro_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
+            <div class="form-row">
+                <label class="checkbox remember-me">
+                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'Remember me on this computer'|trans }}
+                </label>
+                <div class="signin-help">
+                    <a href="{{ path('oro_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
+                </div>
             </div>
         </fieldset>
         <input type="hidden" name="_target_path" value="" />
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
     </form>
+</div>
+
+<div class="version-container muted">
+    {% embed 'PimDashboardBundle:Dashboard:version.html.twig' %}{% endembed %}
 </div>
 
 <script type="text/javascript">
