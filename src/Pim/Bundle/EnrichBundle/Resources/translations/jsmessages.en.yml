@@ -336,7 +336,6 @@ pim_enrich:
                     info:
                         search_attributes: Search...
                         no_available_attributes: There are no more attributes to add
-
     export:
         product:
             data:
@@ -433,6 +432,16 @@ pim_enrich:
                         STARTS WITH: Starts with
                         ENDS WITH: Ends with
                         EMPTY: Is empty
+                number:
+                    operators:
+                        "=": Is equals to
+                        "!=": Is not equals to
+                        ">=": Greater or equals than
+                        ">": Greater than
+                        "<=": Lower or equals than
+                        "<": Lower than
+                        EMPTY: Is empty
+                        NOT EMPTY: Is not empty
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
