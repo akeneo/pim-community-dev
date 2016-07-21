@@ -202,11 +202,10 @@ services:
     pim_connector.processor.normalization.variant_group:
         class: '%pim_connector.processor.normalization.variant_group.class%'
         arguments:
-            - '@pim_serializer'
-            - '@pim_serializer'
+            - '@pim_serializer.normalizer.group'
             - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '%upload_dir%'
-            - 'flat'
+            - '@pim_connector.writer.file.product.bulk_file_exporter'
+            - '@pim_catalog.updater.variant_group'
 
     pim_connector.processor.normalization.family:
         class: '%pim_connector.processor.normalization.simple.class%'

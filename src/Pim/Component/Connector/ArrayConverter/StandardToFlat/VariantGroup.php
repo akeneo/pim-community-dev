@@ -42,10 +42,7 @@ class VariantGroup extends AbstractSimpleArrayConverter implements ArrayConverte
                 break;
             case 'values':
                 foreach ($data as $valueField => $valueData) {
-                    $convertedItem = array_merge(
-                        $convertedItem,
-                        $this->valueConverter->convertAttribute($valueField, $valueData)
-                    );
+                    $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($valueField, $valueData);
                 }
                 break;
             case 'code':

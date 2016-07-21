@@ -196,7 +196,7 @@ services:
     pim_connector.writer.file.csv_variant_group:
         class: '%pim_connector.writer.file.csv_variant_group.class%'
         arguments:
-            - '@pim_connector.array_converter.standard_to_flat.variant_group'
+            - '@pim_connector.array_converter.standard_to_flat.variant_group_localized'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
             - '@pim_catalog.repository.attribute'
@@ -266,7 +266,7 @@ services:
     pim_connector.writer.file.xlsx_variant_group:
         class: '%pim_connector.writer.file.xlsx_variant_group.class%'
         arguments:
-             - '@pim_connector.array_converter.standard_to_flat.product_localized'
+             - '@pim_connector.array_converter.standard_to_flat.variant_group_localized'
              - '@pim_connector.factory.flat_item_buffer'
              - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
              - '@pim_catalog.repository.attribute'
