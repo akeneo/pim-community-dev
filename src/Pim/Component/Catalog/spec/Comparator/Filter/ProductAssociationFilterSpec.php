@@ -36,7 +36,7 @@ class ProductAssociationFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'json', ['only_associations' => true])
+        $normalizer->normalize($product, 'json')
             ->willReturn($originalValues);
 
         $comparatorRegistry->getFieldComparator('associations')->willReturn($arrayComparator);
@@ -54,12 +54,12 @@ class ProductAssociationFilterSpec extends ObjectBehavior
         ProductInterface $product,
         ComparatorInterface $arrayComparator
     ) {
-        $originalValues = ['associations' => [
+        $originalValues = [
             'PACK' => [
                 'groups'   => ['oro_tshirt'],
                 'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
             ]
-        ]];
+        ];
         $newValues = [
             'associations' => [
                 'PACK' => [
@@ -69,17 +69,17 @@ class ProductAssociationFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'json', ['only_associations' => true])
+        $normalizer->normalize($product, 'json')
             ->willReturn($originalValues);
 
         $comparatorRegistry->getFieldComparator('associations')->willReturn($arrayComparator);
         $arrayComparator->compare(
             $newValues['associations']['PACK']['groups'],
-            $originalValues['associations']['PACK']['groups']
+            $originalValues['PACK']['groups']
         )->willReturn($newValues['associations']['PACK']['groups']);
         $arrayComparator->compare(
             $newValues['associations']['PACK']['products'],
-            $originalValues['associations']['PACK']['products']
+            $originalValues['PACK']['products']
         )->willReturn(null);
 
         $this->filter($product, $newValues)->shouldReturn([
@@ -97,7 +97,14 @@ class ProductAssociationFilterSpec extends ObjectBehavior
         ProductInterface $product,
         ComparatorInterface $arrayComparator
     ) {
-        $originalValues = $newValues = [
+        $originalValues = [
+            'PACK' => [
+                'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
+                'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
+            ]
+        ];
+
+        $newValues = [
             'associations' => [
                 'PACK' => [
                     'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
@@ -106,17 +113,17 @@ class ProductAssociationFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'json', ['only_associations' => true])
+        $normalizer->normalize($product, 'json')
             ->willReturn($originalValues);
 
         $comparatorRegistry->getFieldComparator('associations')->willReturn($arrayComparator);
         $arrayComparator->compare(
             $newValues['associations']['PACK']['groups'],
-            $originalValues['associations']['PACK']['groups']
+            $originalValues['PACK']['groups']
         )->willReturn(null);
         $arrayComparator->compare(
             $newValues['associations']['PACK']['products'],
-            $originalValues['associations']['PACK']['products']
+            $originalValues['PACK']['products']
         )->willReturn(null);
 
         $this->filter($product, $newValues)->shouldReturn([]);

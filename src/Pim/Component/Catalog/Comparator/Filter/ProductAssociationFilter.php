@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Comparator\Filter;
 
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Normalizer\Structured\ProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -15,9 +16,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductAssociationFilter implements ProductFilterInterface
 {
-    /** @staticvar string */
-    const ASSOCIATIONS_FIELD = 'associations';
-
     /** @var NormalizerInterface */
     protected $normalizer;
 
@@ -39,7 +37,7 @@ class ProductAssociationFilter implements ProductFilterInterface
      */
     public function filter(ProductInterface $product, array $newValues)
     {
-        $originalAssociations = $this->getOriginalAssociations($product);
+        $originalAssociations = $this->normalizer->normalize($product, 'json');
         $hasAssociation       = $this->hasNewAssociations($newValues);
 
         if (!$hasAssociation && empty($originalAssociations)) {
@@ -47,12 +45,12 @@ class ProductAssociationFilter implements ProductFilterInterface
         }
 
         $result = [];
-        foreach ($newValues[self::ASSOCIATIONS_FIELD] as $type => $field) {
+        foreach ($newValues[ProductNormalizer::FIELD_ASSOCIATIONS] as $type => $field) {
             foreach ($field as $key => $association) {
                 $data = $this->compareAssociation($originalAssociations, $association, $type, $key);
 
                 if (null !== $data) {
-                    $result[self::ASSOCIATIONS_FIELD][$type][$key] = $data;
+                    $result[ProductNormalizer::FIELD_ASSOCIATIONS][$type][$key] = $data;
                 }
             }
         }
@@ -96,7 +94,7 @@ class ProductAssociationFilter implements ProductFilterInterface
      */
     protected function compareAssociation(array $originalAssociations, array $associations, $type, $key)
     {
-        $comparator = $this->comparatorRegistry->getFieldComparator(self::ASSOCIATIONS_FIELD);
+        $comparator = $this->comparatorRegistry->getFieldComparator(ProductNormalizer::FIELD_ASSOCIATIONS);
         $diff = $comparator->compare($associations, $this->getOriginalAssociation($originalAssociations, $type, $key));
 
         if (null !== $diff) {
@@ -116,19 +114,5 @@ class ProductAssociationFilter implements ProductFilterInterface
     protected function getOriginalAssociation(array $originalAssociations, $type, $key)
     {
         return !isset($originalAssociations[$type][$key]) ? [] : $originalAssociations[$type][$key];
-    }
-
-    /**
-     * Normalize original associations
-     *
-     * @param ProductInterface $product
-     *
-     * @return array
-     */
-    protected function getOriginalAssociations(ProductInterface $product)
-    {
-        $originalProduct = $this->normalizer->normalize($product, 'json', ['only_associations' => true]);
-
-        return isset($originalProduct[self::ASSOCIATIONS_FIELD]) ? $originalProduct[self::ASSOCIATIONS_FIELD] : [];
     }
 }
