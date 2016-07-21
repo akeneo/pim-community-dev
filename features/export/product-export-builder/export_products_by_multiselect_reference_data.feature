@@ -50,7 +50,7 @@ Feature: Export products according to multi select reference data values
     And I am on the "csv_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Sole fabric
-    And I filter by "sole_fabric.code" with operator "Empty" and value ""
+    And I filter by "sole_fabric.code" with operator "Is empty" and value ""
     And I press the "Save" button
     When I launch the export job
     And I wait for the "csv_product_export" job to finish

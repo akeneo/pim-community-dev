@@ -121,6 +121,10 @@ class Grid extends Index
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\Select2Decorator',
         ],
+        'pim-filter-attribute-media' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\MediaDecorator',
+        ],
     ];
 
     /**

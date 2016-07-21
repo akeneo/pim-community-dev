@@ -81,9 +81,9 @@ filters:
         pim_catalog_price_collection:
             view: pim-filter-attribute-price-collection
         pim_catalog_image:
-            view: pim-filter-text
+            view: pim-filter-attribute-media
         pim_catalog_file:
-            view: pim-filter-text
+            view: pim-filter-attribute-media
         pim_catalog_multiselect:
             view: pim-filter-text
             # view: pim-filter-multiselect

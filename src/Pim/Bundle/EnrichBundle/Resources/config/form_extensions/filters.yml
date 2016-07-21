@@ -80,3 +80,14 @@ extensions:
             operators:
                 - IN
                 - EMPTY
+
+    pim-filter-attribute-media:
+        module:  pim/filter/attribute/media
+        config:
+            operators:
+                - CONTAINS
+                - DOES NOT CONTAIN
+                - "="
+                - STARTS WITH
+                - ENDS WITH
+                - EMPTY
