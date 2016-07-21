@@ -70,8 +70,7 @@ filters:
         pim_catalog_text:
             view: pim-filter-attribute-string
         pim_catalog_number:
-            view: pim-filter-text
-            # view: pim-filter-number
+            view: pim-filter-attribute-number
         pim_catalog_textarea:
             view: pim-filter-attribute-string
         pim_catalog_identifier:

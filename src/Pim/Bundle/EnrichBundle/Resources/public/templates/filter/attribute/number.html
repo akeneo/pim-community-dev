@@ -1,0 +1,11 @@
+<select class="select2 operator" <%- editable ? '' : 'disabled' %> name="filter-operator">
+    <% _.each(operatorChoices, function (operatorChoice) { %>
+        <option value="<%- operatorChoice %>"<%- operator === operatorChoice ? ' selected' : '' %>>
+            <%- __('pim_enrich.export.product.filter.number.operators.' + operatorChoice) %>
+        </option>
+    <% }); %>
+</select>
+
+<% if ('EMPTY' !== operator && 'NOT EMPTY' !== operator) { %>
+    <input type="text" name="filter-value" class="value" value="<%- value %>" <%- editable ? '' : 'disabled' %>/>
+<% } %>
