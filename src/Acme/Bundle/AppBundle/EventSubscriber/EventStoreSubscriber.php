@@ -23,15 +23,28 @@ class EventStoreSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_SAVE => 'synchroEventStore',
+            StorageEvents::PRE_SAVE => 'preSave',
+            StorageEvents::POST_SAVE => 'postSave',
         ];
     }
 
-    public function synchroEventStore(GenericEvent $event)
+    public function preSave(GenericEvent $event)
     {
         $object = $event->getSubject();
         if ($object instanceof ProductInterface) {
-            $this->logger->info(sprintf('Product %s has been saved ', $object->getIdentifier()));
+            $this->logger->info(
+                sprintf('Product %s will be saved, product name is now %s ', $object->getIdentifier(), $object->getValue('name'))
+            );
+        }
+    }
+
+    public function postSave(GenericEvent $event)
+    {
+        $object = $event->getSubject();
+        if ($object instanceof ProductInterface) {
+            $this->logger->info(
+                sprintf('Product %s has been saved, product name is now %s ', $object->getIdentifier(), $object->getValue('name'))
+            );
         }
     }
 }
