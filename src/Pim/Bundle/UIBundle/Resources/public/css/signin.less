@@ -4,85 +4,121 @@
 /* Login Form *******************************************************************************************************/
 
 .login-page {
-  background: #f7f7f7;
+  background: #112539; /* Old browsers */
+  background: -moz-linear-gradient(top,  #112539 0%, #76324d 72%, #d1706a 83%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  #112539 0%,#76324d 72%,#d1706a 83%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  #112539 0%,#76324d 72%,#d1706a 83%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#112539', endColorstr='#d1706a',GradientType=0 ); /* IE6-9 */
+  background-image: url("/bundles/pimui/images/background_login.png");
+  background-position: bottom center;
+  background-size: cover;
+
   height: 100%;
   min-height: 280px;
+  color: #a1a9b7;
+  a {
+    color: #a1a9b7;
+  }
   #page {
     position: relative;
-    top: 50%;
+    top: 25%;
     #top-page {
-      margin: -135px 0 0;
+      margin: -90px 0 0;
     }
+  }
+
+  h1 {
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    img {
+      max-width: 240px;
+    }
+  }
+
+  .title-box {
+    margin-bottom: 80px;
+  }
+
+  .version-container {
+    position: fixed;
+    bottom: 45px;
+    text-align: center;
+    width: 100%;
+    font-size: @font-size-12;
+  }
+
+  .form-signin, .form-reset, .alert {
+    margin: 0 auto;
+    max-width: 520px;
+    margin-bottom: 10px;
+  }
+}
+
+.form-signin, .form-reset {
+  button.btn {
+    text-transform: uppercase;
+    font-size: @font-size-13;
+    height: 38px;
+    border-radius: 2px;
+    margin-right: 0;
+    margin-top: 0;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    padding: 18px;
+    height: 38px;
+    border-radius: 2px;
+    background: #a1a9b7;
+    border: none;
+    color: #042b48;
+    font-size: @font-size-14;
+    &:-webkit-autofill {
+      background-color: #a1a9b7!important;
+      color: #555 !important;
+      -webkit-box-shadow: 0 0 0 1000px #a1a9b7 inset !important;
+      -webkit-text-fill-color: #042b48 !important;
+    }
+    &::-webkit-input-placeholder {
+      color: #67768a;
+    }
+  }
+
+  h2 {
+    text-transform: uppercase;
+    font-size: @font-size-15;
+    line-height: 15px;
+    margin: 0 0 6px;
   }
 }
 
 .form-signin {
-  margin: 0 auto;
-  max-width: 400px;
-  .border-radius(5px);
-  .title-box {
-    overflow: hidden;
-    color: #fff;
-    #gradient .vertical(@color-header_top, @color-header_bottom);
-    border: 1px solid #d4d4d4;
-    .border-radius(6px 6px 0 0);
+  .remember-me, .signin-help {
+    float:left;
+    width: 50%;
+    input[type="checkbox"] {
+      width: auto;
+    }
   }
-  .title {
-    font-size: @font-size-20;
-    text-align: center;
-    margin: 0;
+
+  .signin-help {
+    text-align: right;
+    font-size: @font-size-13;
   }
-  h1 {
-    padding: 0;
-    float: left;
-    margin: 0;
-  }
-  .add-on {
-    width: 36px;
-    height: 36px;
-    line-height: 36px;
-    #gradient .vertical(#f4f4f4, #dcdcdc);
-    padding: 0 10px;
-  }
+
   input[type="text"],
   input[type="password"] {
-    width: 265px;
-    height: 36px;
-    font-size: @font-size-14;
-    padding: 7px 10px;
-    border-left-color:#ccc;
-    background-color: #fbfbfb;
-  }
-  fieldset {
-    border: solid @navbarBorder;
-    border-width: 0 1px 1px 1px;
-    padding: 30px 38px;
-    background: #fff;
-    .border-radius(0 0 5px 5px);
-  }
-  .input-prepend {
-    margin-bottom: 3px;
-  }
-  .form-row {
-    padding: 0;
-  }
-  .signin-help {
-    margin-top: 15px;
-    a {
-      font-size: @font-size-13;
-    }
+    width: 211px;
   }
 }
 
 .form-reset {
-  max-width: 550px;
-  fieldset {
-    padding: 30px 33px;
-    button {
-      margin-right: 3px;
-    }
-  }
   input[type="text"] {
-    width: 458px;
+    width: 418px;
+  }
+
+  .cancel {
+    float: right;
   }
 }
