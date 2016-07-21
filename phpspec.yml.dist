@@ -186,4 +186,4 @@ suites:
         src_path: src/Oro/Bundle/FilterBundle
 
 extensions:
-    - Akeneo\SkipExampleExtension
+    Akeneo\SkipExampleExtension: ~
