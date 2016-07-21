@@ -14,6 +14,8 @@ namespace Akeneo\Component\Batch\Job;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @api
  */
 class JobParameters implements \IteratorAggregate, \Countable
 {
@@ -34,6 +36,8 @@ class JobParameters implements \IteratorAggregate, \Countable
      * @param string $key
      *
      * @return bool
+     *
+     * @api
      */
     public function has($key)
     {
@@ -48,6 +52,8 @@ class JobParameters implements \IteratorAggregate, \Countable
      * @throws UndefinedJobParameterException
      *
      * @return mixed
+     *
+     * @api
      */
     public function get($key)
     {
@@ -62,6 +68,8 @@ class JobParameters implements \IteratorAggregate, \Countable
      * Returns the parameters array
      *
      * @return array
+     *
+     * @api
      */
     public function all()
     {
@@ -70,6 +78,8 @@ class JobParameters implements \IteratorAggregate, \Countable
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function getIterator()
     {
@@ -78,6 +88,8 @@ class JobParameters implements \IteratorAggregate, \Countable
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function count()
     {

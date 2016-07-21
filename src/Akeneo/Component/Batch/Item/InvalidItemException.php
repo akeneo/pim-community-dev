@@ -8,6 +8,8 @@ namespace Akeneo\Component\Batch\Item;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @api
  */
 class InvalidItemException extends \Exception
 {
@@ -43,6 +45,8 @@ class InvalidItemException extends \Exception
      * Get message parameters
      *
      * @return array
+     *
+     * @api
      */
     public function getMessageParameters()
     {
@@ -53,6 +57,8 @@ class InvalidItemException extends \Exception
      * Get the invalid item
      *
      * @return InvalidItemInterface
+     *
+     * @api
      */
     public function getItem()
     {

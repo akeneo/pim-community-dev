@@ -5,12 +5,16 @@ namespace Akeneo\Component\Batch\Step;
 use Akeneo\Component\Batch\Model\StepExecution;
 
 /**
- * Interface is used to receive StepExecution instance inside reader, processor or writer
+ * Classes that implement this interface have to receive the StepExecution.
+ *
+ * @api
  */
 interface StepExecutionAwareInterface
 {
     /**
      * @param StepExecution $stepExecution
+     *
+     * @api
      */
     public function setStepExecution(StepExecution $stepExecution);
 }

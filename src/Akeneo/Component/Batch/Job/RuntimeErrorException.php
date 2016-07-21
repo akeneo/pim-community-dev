@@ -9,6 +9,8 @@ namespace Akeneo\Component\Batch\Job;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @internal
  */
 class RuntimeErrorException extends \RuntimeException
 {

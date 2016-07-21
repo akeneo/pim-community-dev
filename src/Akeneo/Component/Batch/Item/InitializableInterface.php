@@ -13,6 +13,8 @@ namespace Akeneo\Component\Batch\Item;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @api
  */
 interface InitializableInterface
 {

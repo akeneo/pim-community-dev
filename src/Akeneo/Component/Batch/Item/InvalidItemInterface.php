@@ -8,6 +8,8 @@ namespace Akeneo\Component\Batch\Item;
  * @author    Soulet Olivier <olivier.soulet@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @api
  */
 interface InvalidItemInterface
 {
@@ -15,6 +17,8 @@ interface InvalidItemInterface
      * Get the invalid data
      *
      * @return mixed
+     *
+     * @api
      */
     public function getInvalidData();
 }
