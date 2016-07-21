@@ -79,8 +79,8 @@
         "behat/transliterator":"1.0.1",
         "doctrine/mongodb-odm-bundle": "3.0.1",
         "sensiolabs/behat-page-object-extension": "1.0.1",
-        "phpspec/phpspec": "2.4.*",
-        "akeneo/phpspec-skip-example-extension": "1.2.*",
+        "phpspec/phpspec": "3.0.0",
+        "akeneo/phpspec-skip-example-extension": "2.0.0",
         "akeneo/php-coupling-detector": "dev-master"
     },
     "suggest": {
