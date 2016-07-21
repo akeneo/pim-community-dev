@@ -352,6 +352,12 @@ pim_enrich:
                 locales:
                     title: Locales (required)
                     help: The locales you want to export
+                attributes:
+                    title: Attributes
+                    edit: Edit
+                    label: "{0} All attributes|{1} One attribute selected|]1,Inf[ {{ count }} attributes selected"
+                    help: The categories of the products you want to export
+                    empty: All attributes will be exported
                 family:
                     title: Family
                     help: The families you want to export

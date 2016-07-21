@@ -2,162 +2,35 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'backbone',
         'routing',
         'oro/loading-mask',
         'pim/datagrid/state',
-        'text!pim/template/datagrid/configure-columns-action',
+        'pim/common/column-list-view',
         'backbone/bootstrap-modal',
         'jquery-ui'
     ],
     function(
         $,
         _,
+        __,
         Backbone,
         Routing,
         LoadingMask,
         DatagridState,
-        template
+        ColumnListView
     ) {
-        'use strict';
-
         var Column = Backbone.Model.extend({
             defaults: {
+                removable: true,
                 label: '',
                 displayed: false,
-                group: _.__('system_filter_group')
+                group: __('system_filter_group')
             }
         });
 
         var ColumnList = Backbone.Collection.extend({ model: Column });
-
-        var ColumnListView = Backbone.View.extend({
-            collection: ColumnList,
-
-            template: _.template(template),
-
-            events: {
-                'input input[type="search"]':      'search',
-                'click .nav-list li':              'filter',
-                'click button.reset':              'reset',
-                'click #column-selection .action': 'remove'
-            },
-
-            search: function(e) {
-                var search = $(e.currentTarget).val();
-
-                var matchesSearch = function(text) {
-                    return (''+text).toUpperCase().indexOf((''+search).toUpperCase()) >= 0;
-                };
-
-                this.$('#column-list').find('li').each(function() {
-                    if (matchesSearch($(this).data('value')) || matchesSearch($(this).text())) {
-                        $(this).removeClass('hide');
-                    } else {
-                        $(this).addClass('hide');
-                    }
-                });
-            },
-
-            filter: function(e) {
-                var filter = $(e.currentTarget).data('value');
-
-                $(e.currentTarget).addClass('active').siblings('.active').removeClass('active');
-
-                if (_.isUndefined(filter)) {
-                    this.$('#column-list li').removeClass('filtered');
-                } else {
-                    this.$('#column-list').find('li').each(function() {
-                        if (filter === $(this).data('group')) {
-                            $(this).removeClass('filtered');
-                        } else {
-                            $(this).addClass('filtered');
-                        }
-                    });
-                }
-            },
-
-            remove: function(e) {
-                var $item = $(e.currentTarget).parent();
-                $item.appendTo(this.$('#column-list'));
-
-                var model = _.first(this.collection.where({code: $item.data('value')}));
-                model.set('displayed', false);
-
-                this.validateSubmission();
-            },
-
-            reset: function() {
-                this.$('#column-selection li').appendTo(this.$('#column-list'));
-                _.each(this.collection.where({displayed: true}), function(model) {
-                    model.set('displayed', false);
-                });
-                this.validateSubmission();
-            },
-
-            render: function() {
-                var groups = [{ position: 0, name: _.__('system_filter_group'), itemCount: 0 }];
-
-                _.each(this.collection.toJSON(), function(column) {
-                    if (_.isEmpty(_.where(groups, {name: column.group}))) {
-                        var position = parseInt(column.groupOrder, 10);
-                        if (!_.isNumber(position) || !_.isEmpty(_.where(groups, {position: position}))) {
-                            position = _.max(groups, function(group) { return group.position; }) + 1;
-                        }
-
-                        groups.push({
-                            position:  position,
-                            name:      column.group,
-                            itemCount: 1
-                        });
-                    } else {
-                        _.first(_.where(groups, {name: column.group})).itemCount += 1;
-                    }
-                });
-
-                groups = _.sortBy(groups, function(group) { return group.position; });
-
-                this.$el.html(
-                    this.template({
-                        groups:  groups,
-                        columns: this.collection.toJSON()
-                    })
-                );
-
-                this.$('#column-list, #column-selection').sortable({
-                    connectWith: '.connected-sortable',
-                    containment: this.$el,
-                    tolerance: 'pointer',
-                    cursor: 'move',
-                    cancel: 'div.alert',
-                    receive: _.bind(function(event, ui) {
-                        var model = _.first(this.collection.where({code: ui.item.data('value')}));
-                        model.set('displayed', ui.sender.is('#column-list'));
-                        this.validateSubmission();
-                    }, this)
-                }).disableSelection();
-
-                this.$('ul').css('height', $(window).height() * 0.7);
-
-                return this;
-            },
-
-            validateSubmission: function() {
-                if (this.collection.where({displayed: true}).length) {
-                    this.$('.alert').hide();
-                    this.$el.closest('.modal').find('.btn.ok:not(.btn-primary)').addClass('btn-primary').attr('disabled', false);
-                } else {
-                    this.$('.alert').show();
-                    this.$el.closest('.modal').find('.btn.ok.btn-primary').removeClass('btn-primary').attr('disabled', true);
-                }
-            },
-
-            getDisplayed: function() {
-                return _.map(this.$('#column-selection li'), function (el) {
-                    return $(el).data('value');
-                });
-            }
-        });
 
         /**
          * Configure columns action

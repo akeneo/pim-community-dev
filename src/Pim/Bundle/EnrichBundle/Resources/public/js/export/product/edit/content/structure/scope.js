@@ -38,6 +38,8 @@ define(
              */
             initialize: function (config) {
                 this.config = config.config;
+
+                return BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**
