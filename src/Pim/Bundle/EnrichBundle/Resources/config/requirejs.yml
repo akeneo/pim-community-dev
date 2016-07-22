@@ -229,18 +229,19 @@ config:
         pim/export/product/edit/content/data/add-filter:                pimenrich/js/export/product/edit/content/data/add-filter
 
         # Filters
-        pim/filter/filter:                     pimenrich/js/filter/filter
-        pim/filter/text:                       pimenrich/js/filter/text
-        pim/filter/simpleselect:               pimenrich/js/filter/simpleselect
-        pim/filter/product/family:             pimenrich/js/filter/product/family
-        pim/filter/product/enabled:            pimenrich/js/filter/product/enabled
-        pim/filter/product/updated:            pimenrich/js/filter/product/updated
-        pim/filter/product/completeness:       pimenrich/js/filter/product/completeness
-        pim/filter/product/category:           pimenrich/js/filter/product/category
-        pim/filter/product/category/selector:  pimenrich/js/filter/product/category/selector
-        pim/filter/product/identifier:         pimenrich/js/filter/product/identifier
-        pim/filter/attribute/metric:           pimenrich/js/filter/attribute/metric
+        pim/filter/filter: pimenrich/js/filter/filter
+        pim/filter/text: pimenrich/js/filter/text
+        pim/filter/simpleselect: pimenrich/js/filter/simpleselect
+        pim/filter/product/family: pimenrich/js/filter/product/family
+        pim/filter/product/enabled: pimenrich/js/filter/product/enabled
+        pim/filter/product/updated: pimenrich/js/filter/product/updated
+        pim/filter/product/completeness: pimenrich/js/filter/product/completeness
+        pim/filter/product/category: pimenrich/js/filter/product/category
+        pim/filter/product/category/selector: pimenrich/js/filter/product/category/selector
+        pim/filter/product/identifier: pimenrich/js/filter/product/identifier
+        pim/filter/attribute/metric: pimenrich/js/filter/attribute/metric
         pim/filter/attribute/price-collection: pimenrich/js/filter/attribute/price-collection
+        pim/filter/attribute/multiselect-reference-data: pimenrich/js/filter/attribute/multiselect-reference-data
 
         # Product edit form
         pim/field-manager:                  pimenrich/js/product/field-manager
@@ -384,15 +385,16 @@ config:
         pim/template/export/product/edit/content/structure/attributes: pimenrich/templates/export/product/edit/content/structure/attributes.html
 
         # Filters
-        pim/template/filter/filter:                     pimenrich/templates/filter/filter.html
-        pim/template/filter/text:                       pimenrich/templates/filter/text.html
-        pim/template/filter/simpleselect:               pimenrich/templates/filter/simpleselect.html
-        pim/template/filter/product/family:             pimenrich/templates/filter/product/family.html
-        pim/template/filter/product/enabled:            pimenrich/templates/filter/product/enabled.html
-        pim/template/filter/product/updated:            pimenrich/templates/filter/product/updated.html
-        pim/template/filter/product/completeness:       pimenrich/templates/filter/product/completeness.html
-        pim/template/filter/product/category:           pimenrich/templates/filter/product/category.html
-        pim/template/filter/product/category/selector:  pimenrich/templates/filter/product/category/selector.html
-        pim/template/filter/product/identifier:         pimenrich/templates/filter/product/identifier.html
-        pim/template/filter/attribute/metric:           pimenrich/templates/filter/attribute/metric.html
+        pim/template/filter/filter: pimenrich/templates/filter/filter.html
+        pim/template/filter/text: pimenrich/templates/filter/text.html
+        pim/template/filter/simpleselect: pimenrich/templates/filter/simpleselect.html
+        pim/template/filter/product/family: pimenrich/templates/filter/product/family.html
+        pim/template/filter/product/enabled: pimenrich/templates/filter/product/enabled.html
+        pim/template/filter/product/updated: pimenrich/templates/filter/product/updated.html
+        pim/template/filter/product/completeness: pimenrich/templates/filter/product/completeness.html
+        pim/template/filter/product/category: pimenrich/templates/filter/product/category.html
+        pim/template/filter/product/category/selector: pimenrich/templates/filter/product/category/selector.html
+        pim/template/filter/product/identifier: pimenrich/templates/filter/product/identifier.html
+        pim/template/filter/attribute/metric: pimenrich/templates/filter/attribute/metric.html
         pim/template/filter/attribute/price-collection: pimenrich/templates/filter/attribute/price-collection.html
+        pim/template/filter/attribute/multiselect-reference-data: pimenrich/templates/filter/attribute/multiselect-reference-data.html

@@ -179,7 +179,7 @@ define([
         /**
          * Renders the filter.
          *
-         * @return {Promise}
+         * @return {Object}
          */
         render: function () {
             var promises  = [];
@@ -199,7 +199,7 @@ define([
                     this.$('.filter-input').append(this.renderInput(templateContext));
 
                     this.renderElements();
-                    this.postRender();
+                    this.postRender(templateContext);
                     this.delegateEvents();
                 }.bind(this));
 
@@ -246,7 +246,7 @@ define([
                     } else {
                         $container.append(element);
                     }
-                }.bind(this));
+                });
             }.bind(this));
         },
 

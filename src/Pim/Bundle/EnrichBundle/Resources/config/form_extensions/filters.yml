@@ -58,3 +58,11 @@ extensions:
                 - ">"
                 - "<"
                 - EMPTY
+
+    pim-filter-attribute-multiselect-reference-data:
+        module: pim/filter/attribute/multiselect-reference-data
+        config:
+            url: pim_ui_ajaxentity_list
+            operators:
+                - IN
+                - EMPTY

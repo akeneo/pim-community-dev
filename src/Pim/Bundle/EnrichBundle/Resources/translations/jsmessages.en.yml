@@ -406,6 +406,10 @@ pim_enrich:
                         ">": ">"
                         "<": "<"
                         EMPTY: "Empty"
+                multi_select:
+                    operators:
+                        IN: In list
+                        EMPTY: Empty
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
