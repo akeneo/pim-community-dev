@@ -2,6 +2,8 @@ services:
     acme.event_subscriber.event_store:
         class: Acme\Bundle\AppBundle\EventSubscriber\EventStoreSubscriber
         arguments:
+            - '@pim_serializer.normalizer.product'
+            - '@pim_versioning.repository.version'
             - '@logger'
         tags:
             - { name: kernel.event_subscriber }
