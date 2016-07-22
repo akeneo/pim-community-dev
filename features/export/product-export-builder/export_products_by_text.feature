@@ -15,7 +15,7 @@ Feature: Export products according to text attribute filter
       | SNKRS-1R | 1       | rangers | summer_collection | Awesome product |
       | SNKRS-1N | 1       | rangers | summer_collection |                 |
     And I am logged in as "Julia"
-
+  @skip
   Scenario: Export products by filtering on text values without using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "comment", "operator": "=", "value": "Awesome"}]} |
@@ -27,7 +27,7 @@ Feature: Export products according to text attribute filter
     sku;categories;enabled;family;groups;comment
     SNKRS-1B;summer_collection;1;rangers;;Awesome
     """
-
+  @skip
   Scenario: Export products by text values using the UI
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
@@ -43,7 +43,7 @@ Feature: Export products according to text attribute filter
     sku;categories;enabled;family;groups;comment
     SNKRS-1B;summer_collection;1;rangers;;Awesome
     """
-
+  @skip
   Scenario: Export products by text values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -61,7 +61,7 @@ Feature: Export products according to text attribute filter
     sku;categories;enabled;family;groups;comment
     SNKRS-1R;summer_collection;1;rangers;;Awesome product
     """
-
+  @skip
   Scenario: Export products by text values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -80,7 +80,7 @@ Feature: Export products according to text attribute filter
     SNKRS-1B;summer_collection;1;rangers;;Awesome
     SNKRS-1R;summer_collection;1;rangers;;Awesome product
     """
-
+  @skip
   Scenario: Export products by text values using the UI
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
@@ -96,7 +96,7 @@ Feature: Export products according to text attribute filter
     sku;categories;enabled;family;groups;comment
     SNKRS-1B;summer_collection;1;rangers;;Awesome
     """
-
+  @skip
   Scenario: Export products by text values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -115,7 +115,7 @@ Feature: Export products according to text attribute filter
     SNKRS-1B;summer_collection;1;rangers;;Awesome
     SNKRS-1R;summer_collection;1;rangers;;Awesome product
     """
-
+  @skip
   Scenario: Export products by text values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
