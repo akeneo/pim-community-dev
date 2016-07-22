@@ -4,7 +4,7 @@
 /* Login Form *******************************************************************************************************/
 
 .login-page {
-  background: #f7f7f7;
+  background: @color-f7f7f7;
   height: 100%;
   min-height: 280px;
   #page {
@@ -22,9 +22,9 @@
   .border-radius(5px);
   .title-box {
     overflow: hidden;
-    color: #fff;
+    color: @color-fff;
     #gradient .vertical(@color-header_top, @color-header_bottom);
-    border: 1px solid #d4d4d4;
+    border: 1px solid @color-d4d4d4;
     .border-radius(6px 6px 0 0);
   }
   .title {
@@ -41,7 +41,7 @@
     width: 36px;
     height: 36px;
     line-height: 36px;
-    #gradient .vertical(#f4f4f4, #dcdcdc);
+    #gradient .vertical(@color-f4f4f4, @color-dcdcdc);
     padding: 0 10px;
   }
   input[type="text"],
@@ -50,14 +50,14 @@
     height: 36px;
     font-size: @font-size-14;
     padding: 7px 10px;
-    border-left-color:#ccc;
-    background-color: #fbfbfb;
+    border-left-color:@color-ccc;
+    background-color: @color-fbfbfb;
   }
   fieldset {
     border: solid @navbarBorder;
     border-width: 0 1px 1px 1px;
     padding: 30px 38px;
-    background: #fff;
+    background: @color-fff;
     .border-radius(0 0 5px 5px);
   }
   .input-prepend {

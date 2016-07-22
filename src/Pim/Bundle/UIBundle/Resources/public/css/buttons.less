@@ -80,7 +80,7 @@
     height: 100px;
     width: 25%;
     padding-top: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid @color-ccc;
     background-color: white;
 
     &:hover {
@@ -216,7 +216,7 @@
 
 .btn.btn-delete, .btn.trash, .btn.remove-button, .btn.delete {
   background-color: @color-new-red;
-  color: #fff;
+  color: @color-fff;
   padding: 0 10px 0 44px;
   overflow: hidden;
 
@@ -280,15 +280,15 @@
 
 .btn.pencil, .btn.edit, .btn.edit-user, .btn.btn-show {
   background-color: @color-new-blue;
-  color: #fff;
+  color: @color-fff;
   padding: 0 10px 0 44px;
 
   i {
     .icon-button();
-    color: #fff;
+    color: @color-fff;
     background-color: darken(@color-new-blue, 10%);
     &:before {
-      color: #fff;
+      color: @color-fff;
     }
   }
 
@@ -298,15 +298,15 @@
 }
 
 .btn-status {
-  background-color: #a1a9b7;
+  background-color: @color-a1a9b7;
   padding: 0;
 }
 
 .filter-box {
   .btn {
     border-radius: 2px;
-    background-color: #fff;
-    border: solid 1px #cbcbd2;
+    background-color: @color-fff;
+    border: solid 1px @color-cbcbd2;
     font-size: @font-size-12;
 
     &.filter-update {
@@ -319,18 +319,18 @@
 .select-all-header-cell {
   .btn-group {
     .btn {
-      background-color: #a1a9b7;
-      color: #fff;
+      background-color: @color-a1a9b7;
+      color: @color-fff;
       height: 28px;
       line-height: 28px;
 
       &.dropdown-toggle {
         width: 28px;
-        background-color: darken(#a1a9b7, 5%);
-        color: #fff;
+        background-color: darken(@color-a1a9b7, 5%);
+        color: @color-fff;
         box-shadow: none;
         i {
-          border-top: 4px solid #FFF;
+          border-top: 4px solid @color-fff;
         }
       }
     }
@@ -346,7 +346,7 @@
 .toolbar {
   .btn {
     background-image: none;
-    background-color: #fff;
+    background-color: @color-fff;
     position: relative;
     border: solid 1px @color-new-grey;
     text-shadow: none;
@@ -361,7 +361,7 @@
       background-image: none;
       border: solid 1px @color-new-grey;
       box-shadow: none;
-      background-color: darken(#fff, 10%);
+      background-color: darken(@color-fff, 10%);
     }
   }
 }
@@ -373,7 +373,7 @@
     margin: 8px 5px;
     border-radius: 2px;
     border: none;
-    background-color: #fff;
+    background-color: @color-fff;
 
     .caret {
       margin-top: 12px;
@@ -382,11 +382,11 @@
 
   .attribute-copy-actions {
     .btn {
-      background-color: #a1a9b7;
-      color: #fff;
+      background-color: @color-a1a9b7;
+      color: @color-fff;
 
       .caret {
-        border-top: 4px solid #fff;
+        border-top: 4px solid @color-fff;
       }
     }
   }
@@ -396,20 +396,20 @@
   }
 
   .pimmultiselect {
-    background-color: #fff;
+    background-color: @color-fff;
   }
 
   .selection-dropdown {
     .btn {
 
-      background-color: #a1a9b7;
-      color: #fff;
+      background-color: @color-a1a9b7;
+      color: @color-fff;
     }
   }
 
   .btn.copy {
     background-color: @color-new-green;
-    color: #fff;
+    color: @color-fff;
 
     &:hover {
       background-color: darken(@color-new-green, 10%);

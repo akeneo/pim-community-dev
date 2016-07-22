@@ -1,3 +1,5 @@
+@import '../../pimui/css/less/variables';
+
 .justify-content(@position) {
   -webkit-box-justify-content: @position;
      -moz-box-justify-content: @position;
@@ -24,7 +26,7 @@
 
 .comment-threads {
   a {
-    color: #444;
+    color: @color-444;
   }
 
   textarea {
@@ -63,7 +65,7 @@
 
     textarea {
       height: 60px;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid @color-ddd;
     }
   }
 
@@ -77,12 +79,12 @@
 
     .date {
       margin-right: 3px;
-      color: #808080;
+      color: @color-808080;
     }
   }
 
   .remove-comment {
-    border: 1px solid #ddd;
+    border: 1px solid @color-ddd;
     margin: 2px 0;
     padding: 0 1px;
     border-radius: 2px;
@@ -100,17 +102,17 @@
 }
 
 li.comment-create {
-  border: 1px solid #ddd;
+  border: 1px solid @color-ddd;
 }
 
 ol.comment-thread li {
-  border: 1px solid #ddd;
+  border: 1px solid @color-ddd;
   border-top: none;
 }
 
 ol.comment-thread > :first-child {
   margin-top: 15px;
-  border: 1px solid #ddd;
+  border: 1px solid @color-ddd;
 }
 
 ol.comment-thread > :last-child {
@@ -118,12 +120,12 @@ ol.comment-thread > :last-child {
 }
 
 li.comment-reply:last-child {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid @color-ddd;
 }
 
 li.comment-topic {
-  background-color: #f6f6f6;
-  border-bottom: 1px solid #ddd;
+  background-color: @color-f6f6f6;
+  border-bottom: 1px solid @color-ddd;
   padding: 3px;
 }
 
@@ -134,7 +136,7 @@ li.comment-topic, li.comment-reply {
 }
 
 .comment-reply {
-  border: 1px solid #ddd;
+  border: 1px solid @color-ddd;
   padding: 5px;
 }
 
