@@ -84,14 +84,12 @@ filters:
         pim_catalog_file:
             view: pim-filter-attribute-media
         pim_catalog_multiselect:
-            view: pim-filter-text
-            # view: pim-filter-multiselect
+            view: pim-filter-attribute-select
         pim_catalog_simpleselect:
-            view: pim-filter-simpleselect
+            view: pim-filter-attribute-select
         pim_catalog_date:
             view: pim-filter-text
-            # view: pim-filter-date
-        pim_reference_data_simpleselect: #to move in reference data bundle
-            view: pim-filter-simpleselect
+        pim_reference_data_simpleselect:
+            view: pim-filter-attribute-select-reference-data
         pim_reference_data_multiselect:
-            view: pim-filter-attribute-multiselect-reference-data
+            view: pim-filter-attribute-select-reference-data

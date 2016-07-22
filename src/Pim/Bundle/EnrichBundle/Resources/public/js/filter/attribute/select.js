@@ -9,7 +9,7 @@ define([
     'pim/fetcher-registry',
     'pim/user-context',
     'pim/i18n',
-    'text!pim/template/filter/attribute/multiselect-reference-data',
+    'text!pim/template/filter/attribute/select',
     'jquery.select2'
 ], function (
     $,
@@ -23,7 +23,7 @@ define([
     template
 ) {
     return BaseFilter.extend({
-        shortname: 'multi-ref-data',
+        shortname: 'select',
         template: _.template(template),
         choicePromise: null,
         events: {
@@ -123,12 +123,20 @@ define([
          * @returns {Promise}
          */
         getSelect2Options: function (attribute) {
-            return FetcherRegistry.getFetcher('reference-data-configuration').fetchAll()
+            return FetcherRegistry.getFetcher(this.config.fetcherCode).fetchAll()
                 .then(function (config) {
+                    var entityClass = null;
+
+                    if (!_.isUndefined(this.config.entityClass)) {
+                        entityClass = this.config.entityClass;
+                    } else {
+                        entityClass = config[attribute.reference_data_name].class;
+                    }
+
                     return Routing.generate(
                         'pim_ui_ajaxentity_list',
                         {
-                            'class': config[attribute.reference_data_name].class,
+                            'class': entityClass,
                             'dataLocale': UserContext.get('uiLocale'),
                             'collectionId': attribute.id,
                             'options': {'type': 'code'}
