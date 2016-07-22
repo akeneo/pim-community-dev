@@ -11,7 +11,7 @@
   text-align: center;
   width: 300px;
   .progress-striped .bar {
-    #gradient > .striped(#149bdf, -45deg);
+    #gradient > .striped(@color-149bdf, -45deg);
   }
   .progress.active .bar {
     -webkit-animation: progress-bar-stripes 1s linear infinite;
@@ -37,11 +37,11 @@
 
 .progress-disabled .bar,
 .progress .bar-disabled {
-  background-color: #cccccc;
-  background-image: -moz-linear-gradient(top, #bbbbbb, #cccccc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#bbbbbb), to(#cccccc));
-  background-image: -webkit-linear-gradient(top, #bbbbbb, #cccccc);
-  background-image: -o-linear-gradient(top, #bbbbbb, #cccccc);
-  background-image: linear-gradient(to bottom, #bbbbbb, #cccccc);
+  background-color: @color-cccccc;
+  background-image: -moz-linear-gradient(top, @color-bbbbbb, @color-cccccc);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@color-bbbbbb), to(@color-cccccc));
+  background-image: -webkit-linear-gradient(top, @color-bbbbbb, @color-cccccc);
+  background-image: -o-linear-gradient(top, @color-bbbbbb, @color-cccccc);
+  background-image: linear-gradient(to bottom, @color-bbbbbb, @color-cccccc);
   background-repeat: repeat-x;
 }
