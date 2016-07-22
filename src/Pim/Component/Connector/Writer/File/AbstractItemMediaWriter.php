@@ -99,6 +99,7 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
     public function write(array $items)
     {
         $parameters = $this->stepExecution->getJobParameters();
+        $converterOptions = $this->getConverterOptions($parameters);
 
         $flatItems = [];
         foreach ($items as $item) {
@@ -106,10 +107,7 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
                 $item = $this->archiveMedia($item);
             }
 
-            $flatItems[] = $this->arrayConverter->convert($item, [
-                'decimal_separator' => $parameters->get('decimalSeparator'),
-                'date_format'       => $parameters->get('dateFormat'),
-            ]);
+            $flatItems[] = $this->arrayConverter->convert($item, $converterOptions);
         }
 
         $options = [];
@@ -118,7 +116,7 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
     }
 
     /**
-     * Flush items into a csv file
+     * Flush items into a file
      */
     public function flush()
     {
@@ -183,7 +181,7 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
     abstract protected function getIdentifier(array $item);
 
     /**
-     * Stock media for archiver and change media path into
+     * Stock media for archiver and change media path
      *
      * @param array $item
      *
@@ -219,5 +217,29 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
         }
 
         return $item;
+    }
+
+    /**
+     * @param JobParameters $parameters
+     *
+     * @return array
+     */
+    protected function getConverterOptions(JobParameters $parameters)
+    {
+        $options = [];
+
+        if ($parameters->has('decimalSeparator')) {
+            $options['decimal_separator'] = $parameters->get('decimalSeparator');
+        }
+
+        if ($parameters->has('dateFormat')) {
+            $options['date_format'] = $parameters->get('dateFormat');
+        }
+
+        if ($parameters->has('mainContext') && isset($parameters->get('mainContext')['ui_locale'])) {
+            $options['locale'] = $parameters->get('mainContext')['ui_locale'];
+        }
+
+        return $options;
     }
 }
