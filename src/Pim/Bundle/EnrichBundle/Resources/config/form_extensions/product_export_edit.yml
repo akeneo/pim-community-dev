@@ -98,7 +98,7 @@ filters:
         pim_catalog_boolean:
             view: pim-filter-text
             # view: pim-filter-boolean
-        pim_reference_data_simpleselect: #to move in reference data bundle
-            view: pim-filter-simpleselect
+        pim_reference_data_simpleselect:
+            view: pim-filter-attribute-multiselect-reference-data
         pim_reference_data_multiselect:
             view: pim-filter-attribute-multiselect-reference-data
