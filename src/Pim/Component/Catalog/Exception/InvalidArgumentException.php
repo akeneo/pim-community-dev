@@ -310,6 +310,16 @@ class InvalidArgumentException extends \InvalidArgumentException
 
     /**
      * @param string $name
+     *
+     * @return InvalidArgumentException
+     */
+    public static function emptyArray($name)
+    {
+        return new self(sprintf('Attribute or field "%s" expects a non empty array.', $name));
+    }
+
+    /**
+     * @param string $name
      * @param string $action
      * @param string $type
      *
