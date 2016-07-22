@@ -19,19 +19,19 @@
       top: 5px;
       right: -13px;
       font-size: @font-size-12;
-      color: #cad2da;
+      color: @color-cad2da;
     }
   }
 }
 .pin-bar-empty {
   display: inline-block;
   padding: 1px 0 0 10px;
-  color: #b2bac2;
+  color: @color-b2bac2;
   font-size: @font-size-12;
   line-height: 22px;
   &:hover,
   &:focus {
-    color: #b2bac2;
+    color: @color-b2bac2;
   }
 }
 .list-bar {
@@ -46,19 +46,19 @@
     .box-shadow(inset 0 -1px 2px 0 rgba(0,0,0,.1));
     display: table-cell;
     text-align: left;
-    text-shadow: 0 -1px 2px #37485f;
+    text-shadow: 0 -1px 2px @color-37485f;
     line-height: 24px;
     font-size: @font-size-11;
     padding: 0 25px 0 11px;
-    border-right: 1px solid #2a2f36;
+    border-right: 1px solid @color-2a2f36;
     margin: 0 -1px 0 0;
     position: relative;
     &.active{
-      background-color: #6800A9;
+      background-color: @color-6800A9;
     }
   }
   .pin-holder a {
-    color: #cad2da;
+    color: @color-cad2da;
   }
 }
 .pin-holder {
@@ -79,7 +79,7 @@
 .pin-menus .extra-list {
   padding: 5px 0;
   li {
-    border-bottom: 1px solid #f2f2f2;
+    border-bottom: 1px solid @color-f2f2f2;
     padding: 3px 12px;
     font-size: @font-size-12;
     a {
@@ -92,7 +92,7 @@
     }
   }
   > li:hover {
-    background-color: #f4f4f4;
+    background-color: @color-f4f4f4;
   }
 }
 
@@ -102,11 +102,11 @@
   width: 30px;
   height: 24px;
   margin: 0 -29px 0 0;
-  border-left: 1px solid #000004;
+  border-left: 1px solid @color-000004;
   cursor: pointer;
   &.open {
     .icon-ellipsis-horizontal {
-      .box-shadow(inset 0 2px 4px 0 darken(#354150,20%));
+      .box-shadow(inset 0 2px 4px 0 darken(@color-354150,20%));
     }
   }
   .oro-dropdown-toggle {
@@ -117,14 +117,14 @@
       width: 30px;
       height: 24px;
       margin: 0;
-      color: #fff;
+      color: @color-fff;
       font-size: @font-size-18;
       text-align: center;
       line-height: 26px;
     }
     &:active,
     &:focus {
-      .box-shadow(inset 0 2px 4px 0 darken(#354150,20%));
+      .box-shadow(inset 0 2px 4px 0 darken(@color-354150,20%));
     }
   }
   .dropdown-menu {
@@ -143,22 +143,22 @@
           float: none;
           > a {
             border: none;
-            border-bottom: 1px solid darken(#dbe2ea,2%);
+            border-bottom: 1px solid darken(@color-dbe2ea,2%);
             border-radius: 0;
             padding: 7px 8px;
             line-height: 14px;
             margin-right: 0;
             margin-bottom: 0;
-            color: #2f2f2f;
-            text-shadow: 0 1px 0 #f7fafc;
+            color: @color-2f2f2f;
+            text-shadow: 0 1px 0 @color-f7fafc;
             background: transparent;
             &:hover {
-              border-bottom: 1px solid darken(#dbe2ea,2%);
-              color: #2f2f2f;
+              border-bottom: 1px solid darken(@color-dbe2ea,2%);
+              color: @color-2f2f2f;
               cursor: pointer;
             }
             i {
-              color:#8ba1b6;
+              color:@color-8ba1b6;
             }
           }
           &:hover,
@@ -175,7 +175,7 @@
               height: 0;
               border-style: solid;
               border-width: 7.5px 8px 7.5px 0;
-              border-color: transparent darken(#ecf1f9,8%) transparent transparent;
+              border-color: transparent darken(@color-ecf1f9,8%) transparent transparent;
               content: "";
               display: inline-block;
               position: absolute;
@@ -188,7 +188,7 @@
               height: 0;
               border-style: solid;
               border-width: 7.5px 8px 7.5px 0;
-              border-color: transparent #fff transparent transparent;
+              border-color: transparent @color-fff transparent transparent;
               content: "";
               display: inline-block;
               position: absolute;
@@ -201,7 +201,7 @@
           a:hover,
           a:active,
           a:focus {
-            text-shadow:0 1px 0 #e6eff8;
+            text-shadow:0 1px 0 @color-e6eff8;
           }
           &:last-child > a {
             border-bottom:none;
@@ -209,8 +209,8 @@
         }
       }
       > .tab-content {
-        border-left: 1px solid darken(#ecf1f9,8%);
-        background-color: #fff;
+        border-left: 1px solid darken(@color-ecf1f9,8%);
+        background-color: @color-fff;
         min-height: 167px;
         max-height: 330px;
         overflow: auto;

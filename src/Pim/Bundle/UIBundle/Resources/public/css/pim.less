@@ -72,7 +72,7 @@ table.grid {
 .grid-toolbar {
   .pagination > ul > li .icon-chevron-left:before,
   .pagination > ul > li .icon-chevron-right:before {
-    color: #666;
+    color: @color-666;
   }
   @media all and (max-width: 1600px) {
     .pagination-centered, .page-size label {
@@ -95,7 +95,7 @@ table.grid {
       height: 20px;
       line-height: 20px;
       text-align: center;
-      border: 1px solid #ccc;
+      border: 1px solid @color-ccc;
       .border-radius(2px);
     }
   }
@@ -140,7 +140,7 @@ tr:hover>.action-cell a.action>i {
 
 .btn-group>.dropdown-menu li {
   a:hover {
-    background: #f3f3f3;
+    background: @color-f3f3f3;
     color: @textColor;
   }
   &.disabled a {
@@ -181,7 +181,7 @@ a.back-link i {
     margin-bottom: 20px;
     &>div.clearfix {
       overflow: hidden;
-      border: 1px solid #cbcbd2;
+      border: 1px solid @color-cbcbd2;
       background-color: white;
     }
   }
@@ -201,7 +201,7 @@ a.back-link i {
     font-weight: normal;
   }
   &.header {
-    background-color: #f7f7f9;
+    background-color: @color-f7f7f9;
     padding: 15px;
   }
   .version-container {
@@ -230,10 +230,10 @@ hr.small {
 .widget-header {
   padding: 0 10px;
   font-weight: bold;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid @color-ccc;
   line-height: 44px;
   color: @color-new-purple-medium;
-  background-color: #f7f7f9;
+  background-color: @color-f7f7f9;
 
   .btn-refresh {
     margin-right: 3px;
@@ -276,7 +276,7 @@ a[data-toggle-channel] {
     }
     span.progress-info {
       padding: 5px;
-      color: #5e8dcb;
+      color: @color-5e8dcb;
       cursor: default;
     }
     small {
@@ -285,13 +285,13 @@ a[data-toggle-channel] {
     }
   }
   tr.channel {
-    background-color: #ececf0;
+    background-color: @color-ececf0;
     line-height: 34px;
 
     &:first-of-type {
       border-top: none;
     }
-    border-top: 1px solid #c2c2c2;
+    border-top: 1px solid @color-c2c2c2;
 
     td {
       padding: 0;
@@ -299,7 +299,7 @@ a[data-toggle-channel] {
   }
 
   tr:not(.channel) {
-      border-top: 1px solid #c2c2c2;
+      border-top: 1px solid @color-c2c2c2;
   }
 
   td {
@@ -432,9 +432,9 @@ span.link-label {
       font-size: @font-size-11;
       font-weight: initial;
       padding: 0 3px;
-      background: linear-gradient(#f93a43, darken(#f93a43, 20%));
+      background: linear-gradient(@color-f93a43, darken(@color-f93a43, 20%));
       box-shadow: 0 0.7px 0 RGBa(0, 0, 0, 0.3), 0 0 3px rGBa(0, 0, 0, 0.35);
-      text-shadow: 0 1px 0 darken(#f93a43, 20%);
+      text-shadow: 0 1px 0 darken(@color-f93a43, 20%);
     }
   }
 
@@ -452,7 +452,7 @@ span.link-label {
 .attribute-option-view {
   width: 100%;
   position: relative;
-  border: 1px solid #ddd;
+  border: 1px solid @color-ddd;
   border-collapse: collapse;
   border-radius: 2px;
   table-layout: fixed;
@@ -500,11 +500,11 @@ span.link-label {
   th {
     text-align: center;
     padding: 5px 0 !important;
-    background: #f3f3f3;
+    background: @color-f3f3f3;
   }
 
   td {
-    border: 1px solid #ddd;
+    border: 1px solid @color-ddd;
     line-height: 12px;
     vertical-align: middle;
     padding: 3px;
@@ -563,11 +563,11 @@ span.link-label {
 
   li {
     a {
-      background: #F6F6F6;
+      background: @color-F6F6F6;
       border-top-left-radius: 2px;
       border-top-right-radius: 2px;
       margin-right: 4px;
-      border: solid 1px #DFDFDF;
+      border: solid 1px @color-DFDFDF;
       border-bottom: none;
       box-shadow: none;
       text-shadow: none;
@@ -607,10 +607,10 @@ span.link-label {
   }
 
   a {
-    background-color: #FAFAFA;
-    color: #9B9B9B;
+    background-color: @color-FAFAFA;
+    color: @color-9B9B9B;
     .border-radius (0);
-    border-color: #ddd;
+    border-color: @color-ddd;
     margin-bottom: 0;
     margin-right: 0;
     line-height: 28px;
@@ -622,7 +622,7 @@ span.link-label {
 
     &:hover {
       background-color: @color-new-purple-light;
-      border: solid 1px #ddd;
+      border: solid 1px @color-ddd;
       border-right: none;
       cursor: pointer;
     }
@@ -631,7 +631,7 @@ span.link-label {
   &.active {
     a {
       background-color: @color-new-purple-light;
-      color: #4A4A4A;
+      color: @color-4A4A4A;
       font-weight: bold;
     }
   }
@@ -647,7 +647,7 @@ body {
 header.tab-header {
   min-height: 44px;
   border-left: none;
-  border-bottom: solid 1px #ccc;
+  border-bottom: solid 1px @color-ccc;
   background: @color-new-grey;
   padding: 0;
   .display-flex();
@@ -663,8 +663,8 @@ header.tab-header {
 h3.tab-header {
   height: 44px;
   border-left: none;
-  border-bottom: solid 1px #e5e5e5;
-  background: #f9f9f9;
+  border-bottom: solid 1px @color-e5e5e5;
+  background: @color-f9f9f9;
   padding: 0 20px;
 }
 
@@ -726,7 +726,7 @@ h3.tab-header {
   .attribute-copy-actions {
     .flex(1);
     margin-left: 10px;
-    border-left: 1px solid #ccc;
+    border-left: 1px solid @color-ccc;
   }
 }
 
@@ -774,7 +774,7 @@ h3.tab-header {
       border-top: 3px solid @color-new-purple-medium;
 
       & > .tabs-left > .sidebar {
-        border-right: 1px solid #e5e5e5;
+        border-right: 1px solid @color-e5e5e5;
       }
     }
   }
@@ -787,7 +787,7 @@ h3.tab-header {
 
       li.header {
         height: 44px;
-        border-left: 1px solid #ddd;
+        border-left: 1px solid @color-ddd;
         border-right: none;
         background: @color-new-grey;
       }
@@ -820,7 +820,7 @@ h3.tab-header {
   & > header {
     margin: 0 0 7px 0;
     padding: 15px 10px 15px 20px;
-    background: #f7f7f9;
+    background: @color-f7f7f9;
 
     & > div {
       .display-flex();
@@ -887,7 +887,7 @@ h3.tab-header {
     background: @color-new-grey;
     font-weight: bold;
     font-size: 12px;
-    border-color: #e5e5e5;
+    border-color: @color-e5e5e5;
     height: 30px;
     line-height: 12px;
     padding: 8px 18px;
@@ -896,17 +896,17 @@ h3.tab-header {
     &.active {
       background: darken(@color-new-grey, 10%);
       text-shadow: none;
-      border-color: #555;
+      border-color: @color-555;
       box-shadow: none;
     }
   }
 }
 
 .panel-container {
-  border-top: 3px solid #333;
+  border-top: 3px solid @color-333;
   width: 400px;
-  background: #f9f9f9;
-  border-left: 1px solid #e5e5e5;
+  background: @color-f9f9f9;
+  border-left: 1px solid @color-e5e5e5;
   padding: 0 15px;
 
   &.closed {
@@ -914,14 +914,14 @@ h3.tab-header {
   }
 
   & > header {
-    border-bottom: 3px solid #ddd;
+    border-bottom: 3px solid @color-ddd;
     margin-bottom: 15px;
 
     .close {
       width: 22px;
       height: 22px;
       margin-top: 10px;
-      background: #333;
+      background: @color-333;
       color: white;
       line-height: 22px;
       border-radius: 2px;
@@ -933,7 +933,7 @@ h3.tab-header {
     h1 {
       margin: 0;
       line-height: 42px;
-      color: #333;
+      color: @color-333;
       font-weight: bold;
       text-transform: capitalize;
     }
@@ -959,7 +959,7 @@ h3.tab-header {
 }
 
 .completeness-block {
-  border: 1px solid #e5e5e5;
+  border: 1px solid @color-e5e5e5;
   margin-bottom: 10px;
 
   &[data-closed="true"] {
@@ -979,7 +979,7 @@ h3.tab-header {
   }
 
   header {
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid @color-e5e5e5;
     .display-flex();
     .align-items(center);
 
@@ -988,7 +988,7 @@ h3.tab-header {
       margin: 0;
       margin-left: 10px;
       font-size: @font-size-14;
-      color: #333;
+      color: @color-333;
       font-weight: 200;
       line-height: 35px;
       text-transform: capitalize;
@@ -1014,13 +1014,13 @@ h3.tab-header {
 
     .btn {
       border: none;
-      border-left: 1px solid #e5e5e5;
+      border-left: 1px solid @color-e5e5e5;
       border-radius: 0;
       opacity: 1;
       background: none;
       box-shadow: none;
       padding: 4px 12px;
-      color: #333;
+      color: @color-333;
       font-size: @font-size-20;
       height: 100%;
     }
@@ -1053,7 +1053,7 @@ h3.tab-header {
 
     .literal-progress {
       float: right;
-      color: #777;
+      color: @color-777;
     }
 
     .missing {
@@ -1103,7 +1103,7 @@ h3.tab-header {
 
 .field-context {
   display: inline-block;
-  border: 1px solid #e5e5e5;
+  border: 1px solid @color-e5e5e5;
   border-radius: 2px;
   .display-flex();
 
@@ -1112,7 +1112,7 @@ h3.tab-header {
   }
 
   span:first-child:not(:last-child) {
-    border-right: 1px solid #e5e5e5;
+    border-right: 1px solid @color-e5e5e5;
   }
 
   .flag-language {
@@ -1166,10 +1166,10 @@ h3.tab-header {
     }
 
     .remove-attribute {
-      color: #888;
+      color: @color-888;
 
       &:hover {
-        color: #555;
+        color: @color-555;
       }
     }
   }
@@ -1233,7 +1233,7 @@ h3.tab-header {
 
   &.akeneo-boolean-field {
     .switch {
-      border-color: #ccc;
+      border-color: @color-ccc;
       .border-radius(0);
       .box-sizing();
 
@@ -1245,11 +1245,11 @@ h3.tab-header {
       }
 
       .switch-left {
-        background-color: #7ec500;
+        background-color: @color-7ec500;
       }
 
       .switch-right {
-        background-color: #f0f0f0;
+        background-color: @color-f0f0f0;
       }
     }
   }
@@ -1274,7 +1274,7 @@ h3.tab-header {
       border-radius: 2px;
       height: 30px;
       line-height: 30px;
-      border-color: #ddd;
+      border-color: @color-ddd;
       border-left: none;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
@@ -1293,11 +1293,11 @@ h3.tab-header {
 }
 
 .field-input .note-editable {
-  background: #fff;
+  background: @color-fff;
 }
 
 .media-uploader {
-  background: #eee;
+  background: @color-eee;
   width: 100%;
   height: 100px;
   border-radius: 2px;
@@ -1356,7 +1356,7 @@ h3.tab-header {
     .file i {
       font-size: @font-size-90;
       margin-left: 10px;
-      color: #999;
+      color: @color-999;
     }
 
     .info {
@@ -1386,7 +1386,7 @@ h3.tab-header {
 
         i {
           font-size: @font-size-20;
-          color: #444;
+          color: @color-444;
         }
       }
     }
@@ -1403,7 +1403,7 @@ h3.tab-header {
   margin-bottom: 3px;
   margin-right: 0;
   padding: 5px 5px 3px 5px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid @color-e5e5e5;
   border-radius: 2px;
 }
 
@@ -1418,7 +1418,7 @@ h3.tab-header {
   }
 
   .invalid-badge {
-    background-color: #d0021b;
+    background-color: @color-d0021b;
     margin-left: 2px;
   }
 }
@@ -1437,7 +1437,7 @@ h3.tab-header {
     }
 
     & > i, & > .error-message {
-      color: #d0021b;
+      color: @color-d0021b;
       font-weight: 400;
     }
   }
@@ -1471,7 +1471,7 @@ h3.tab-header {
       background-image:none;
       background-color: @akeneo-light;
       line-height: 22px;
-      border: 1px solid #ccc;
+      border: 1px solid @color-ccc;
       padding: 0;
       margin: 2px 0 2px 2px;
       .display-flex();
@@ -1492,7 +1492,7 @@ h3.tab-header {
       right: auto;
 
       &:hover {
-        background: #f0f0f0 !important;
+        background: @color-f0f0f0 !important;
       }
     }
   }
@@ -1534,7 +1534,7 @@ h3.tab-header {
     margin-bottom: 10px;
 
     table {
-      border-left: 1px solid #ddd;
+      border-left: 1px solid @color-ddd;
       text-align: left;
       margin-bottom: 0;
     }
@@ -1581,9 +1581,9 @@ h3.tab-header {
   }
 
   .btn-success {
-    background: #67b373;
+    background: @color-67b373;
     color: white;
-    border: 1px solid #4c9858;
+    border: 1px solid @color-4c9858;
   }
 
   .dropdown-menu {
@@ -1602,7 +1602,7 @@ h3.tab-header {
 
     .flag-language .language {
       font-family: @sansFontFamily;
-      color: #555;
+      color: @color-555;
       padding-top: 1px;
     }
   }
@@ -1681,10 +1681,10 @@ h3.tab-header {
   transition: opacity .4s ease-in-out;
 
   .label-warning {
-    color: #777;
+    color: @color-777;
     font-weight: 400;
     text-shadow: none;
-    background-color: #fdd9b6;
+    background-color: @color-fdd9b6;
     border-radius: 10px;
     padding-right: 7px;
   }
@@ -1692,7 +1692,7 @@ h3.tab-header {
   .icon {
     position: relative;
     left: -2px;
-    color: #fa9f47;
+    color: @color-fa9f47;
   }
 }
 
@@ -1700,7 +1700,7 @@ h3.tab-header {
   display: inline-block;
   min-width: 120px;
   padding-left: 10px;
-  color: #777;
+  color: @color-777;
   > span {
     padding-left: 3px;
   }
@@ -1721,7 +1721,7 @@ h3.tab-header {
     }
   }
   .modal-footer .btn-primary {
-    background-color: #7dbf16;
+    background-color: @color-7dbf16;
   }
 }
 
@@ -1748,7 +1748,7 @@ h3.tab-header {
 .page-error-block {
   width: 600px;
   border-radius: 5px;
-  background: #efefef;
+  background: @color-efefef;
   margin: auto;
   margin-top: 100px;
   padding: 10px;
