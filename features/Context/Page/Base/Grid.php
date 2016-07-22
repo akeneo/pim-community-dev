@@ -101,6 +101,10 @@ class Grid extends Index
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\IdentifierDecorator',
         ],
+        'pim-filter-attribute-boolean' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\BooleanDecorator',
+        ],
         'pim-filter-attribute-metric' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\MetricDecorator',

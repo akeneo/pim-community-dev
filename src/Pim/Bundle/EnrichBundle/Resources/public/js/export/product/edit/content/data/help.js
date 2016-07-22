@@ -29,13 +29,19 @@ define([
 
         /**
          * Adds the extension to filters.
+         * If the translation is not here the tooltip won't be displayed at all.
          *
          * @param {Object} event
          */
         addFilterExtension: function (event) {
-            var $content = $(this.template({
-                text: __('pim_enrich.export.product.filter.' + event.filter.shortname + '.help')
-            }));
+            var key  = 'pim_enrich.export.product.filter.' + event.filter.shortname + '.help';
+            var text = __(key);
+
+            if (key === text) {
+                return;
+            }
+
+            var $content = $(this.template({text: text}));
 
             $content.find('[data-toggle="tooltip"]').tooltip();
 

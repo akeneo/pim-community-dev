@@ -34,6 +34,9 @@ extensions:
     pim-filter-product-identifier:
         module: pim/filter/product/identifier
 
+    pim-filter-attribute-boolean:
+        module: pim/filter/attribute/boolean
+
     pim-filter-attribute-metric:
         module: pim/filter/attribute/metric
         config:
