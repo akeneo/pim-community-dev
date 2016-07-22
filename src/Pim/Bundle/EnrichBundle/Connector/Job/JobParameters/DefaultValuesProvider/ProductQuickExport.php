@@ -39,6 +39,7 @@ class ProductQuickExport implements DefaultValuesProviderInterface
         $parameters['filters'] = null;
         $parameters['mainContext'] = null;
         $parameters['selected_properties'] = null;
+        $parameters['with_media'] = true;
 
         return $parameters;
     }
