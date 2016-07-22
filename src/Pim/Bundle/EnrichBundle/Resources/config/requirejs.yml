@@ -239,10 +239,11 @@ config:
         pim/filter/product/category: pimenrich/js/filter/product/category
         pim/filter/product/category/selector: pimenrich/js/filter/product/category/selector
         pim/filter/product/identifier: pimenrich/js/filter/product/identifier
-        pim/filter/attribute/boolean: pimenrich/js/filter/attribute/boolean
         pim/filter/attribute/metric: pimenrich/js/filter/attribute/metric
+        pim/filter/attribute/string: pimenrich/js/filter/attribute/string
         pim/filter/attribute/price-collection: pimenrich/js/filter/attribute/price-collection
         pim/filter/attribute/multiselect-reference-data: pimenrich/js/filter/attribute/multiselect-reference-data
+        pim/filter/attribute/boolean: pimenrich/js/filter/attribute/boolean
 
         # Product edit form
         pim/field-manager:                  pimenrich/js/product/field-manager
@@ -398,5 +399,6 @@ config:
         pim/template/filter/product/identifier: pimenrich/templates/filter/product/identifier.html
         pim/template/filter/attribute/boolean: pimenrich/templates/filter/attribute/boolean.html
         pim/template/filter/attribute/metric: pimenrich/templates/filter/attribute/metric.html
+        pim/template/filter/attribute/string: pimenrich/templates/filter/attribute/string.html
         pim/template/filter/attribute/price-collection: pimenrich/templates/filter/attribute/price-collection.html
         pim/template/filter/attribute/multiselect-reference-data: pimenrich/templates/filter/attribute/multiselect-reference-data.html

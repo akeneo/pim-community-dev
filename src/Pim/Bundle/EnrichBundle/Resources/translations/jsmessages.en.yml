@@ -398,6 +398,15 @@ pim_enrich:
                         "<=": "<="
                         "<": "<"
                         EMPTY: "Empty"
+                string:
+                    operators:
+                        ALL: All
+                        CONTAINS: Contains
+                        DOES NOT CONTAIN: Does not contain
+                        "=": Is equal to
+                        STARTS WITH: Starts with
+                        ENDS WITH: Ends with
+                        EMPTY: Is empty
                 price-collection:
                     operators:
                         "=": "="

@@ -62,6 +62,17 @@ extensions:
                 - "<"
                 - EMPTY
 
+    pim-filter-attribute-string:
+        module: pim/filter/attribute/string
+        config:
+            operators:
+                - CONTAINS
+                - DOES NOT CONTAIN
+                - "="
+                - STARTS WITH
+                - ENDS WITH
+                - EMPTY
+
     pim-filter-attribute-multiselect-reference-data:
         module: pim/filter/attribute/multiselect-reference-data
         config:
