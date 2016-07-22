@@ -48,9 +48,6 @@ extensions:
                 - "<"
                 - EMPTY
 
-    pim-filter-simpleselect:
-        module: pim/filter/simpleselect
-
     pim-filter-attribute-price-collection:
         module: pim/filter/attribute/price-collection
         config:
@@ -73,10 +70,21 @@ extensions:
                 - ENDS WITH
                 - EMPTY
 
-    pim-filter-attribute-multiselect-reference-data:
-        module: pim/filter/attribute/multiselect-reference-data
+    pim-filter-attribute-select:
+        module: pim/filter/attribute/select
         config:
             url: pim_ui_ajaxentity_list
+            fetcherCode: attribute
+            entityClass: PimCatalogBundle:AttributeOption
+            operators:
+                - IN
+                - EMPTY
+
+    pim-filter-attribute-select-reference-data:
+        module: pim/filter/attribute/select
+        config:
+            url: pim_ui_ajaxentity_list
+            fetcherCode: reference-data-configuration
             operators:
                 - IN
                 - EMPTY
