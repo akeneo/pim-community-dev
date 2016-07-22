@@ -18,7 +18,7 @@
     border-bottom: 3px solid @textColor + #111;
   }
   &:not(.active) a.error {
-    border-bottom: 3px solid #da0000;
+    border-bottom: 3px solid @color-da0000;
   }
 }
 
@@ -58,16 +58,16 @@
   border-color: darken(@btnPrimaryBackgroundLight, 7%) darken(@btnPrimaryBackgroundLight, 10%) darken(@btnPrimaryBackgroundLight, 10%) darken(@btnPrimaryBackgroundLight, 10%);
   .box-shadow(inset 0 1px 0 0 lighten(@btnPrimaryBackgroundLight, 7%));
   .border-radius(4px);
-  color: #fff;
+  color: @color-fff;
   font-weight: bold;
   &:hover {
-    color: #fff;
+    color: @color-fff;
     #gradient > .vertical(lighten(@btnPrimaryBackgroundLight, 5%), darken(@btnPrimaryBackgroundLight, 4%));
     .box-shadow(inset 0 1px 0 0 @btnPrimaryBackgroundLight);
   }
   &:active,
   &:focus {
-    color: #fff;
+    color: @color-fff;
     #gradient > .vertical(lighten(@btnPrimaryBackgroundLight, 5%), darken(@btnPrimaryBackgroundLight, 10%));
     .box-shadow(inset 0 1px 4px 0 darken(@btnPrimaryBackgroundLight, 10%));
   }
@@ -82,13 +82,13 @@
   &:hover {
     #gradient > .vertical(lighten(@btnInfoBackgroundLight, 5%), darken(@btnInfoBackgroundLight, 4%));
     .box-shadow(inset 0 1px 0 0 @btnInfoBackgroundLight);
-    color: #fff;
+    color: @color-fff;
   }
   &:active,
   &:focus {
     #gradient > .vertical(lighten(@btnInfoBackgroundLight, 5%), darken(@btnInfoBackgroundLight, 10%));
     .box-shadow(inset 0 1px 4px 0 darken(@btnInfoBackgroundLight, 10%));
-    color: #fff;
+    color: @color-fff;
   }
   &.disabled {
     background-color: lighten(@btnInfoBackgroundLight, 10%);
@@ -151,9 +151,9 @@ a.accordion-toggle {
   margin: 10px 0;
   thead {
     tr {
-      background-color: #f3f3f3;
-      border-top: 1px solid #dfdfdf;
-      border-bottom: 1px solid #dfdfdf;
+      background-color: @color-f3f3f3;
+      border-top: 1px solid @color-dfdfdf;
+      border-bottom: 1px solid @color-dfdfdf;
       th {
         font-size: @font-size-12;
         line-height: 20px;
@@ -169,11 +169,11 @@ a.accordion-toggle {
       font-weight: bold;
       cursor: pointer;
       background-color: @backgroundColor-white;
-      border-bottom: 1px solid #d8d8d8;
+      border-bottom: 1px solid @color-d8d8d8;
     }
     tr {
-      background-color: #f8f8f8;
-      border-bottom: 1px solid #ebebeb;
+      background-color: @color-f8f8f8;
+      border-bottom: 1px solid @color-ebebeb;
     }
   }
 }
@@ -266,7 +266,7 @@ div.btn-group > .has-switch {
   text-align: right;
   &.compare{
     width: 50%;
-    border-left: 1px solid #ddd;
+    border-left: 1px solid @color-ddd;
   }
 }
 
@@ -397,7 +397,7 @@ div.btn-group > .has-switch {
 }
 .accordion-inner-unbuffered {
   padding: 0;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid @color-e5e5e5;
 }
 
 .form-inline {
@@ -465,7 +465,7 @@ table i {
     padding-left: 0;
     > .active > a {
       font-weight: bold;
-      color: #000000;
+      color: @color-000000;
       text-shadow: none;
       background-color: @color-purple_hover;
     }
@@ -473,21 +473,21 @@ table i {
       padding-right: 15px;
       padding-left: 15px;
       line-height: 25px;
-      border-bottom: 1px solid #e5e5e5;
+      border-bottom: 1px solid @color-e5e5e5;
       > a {
-        color: #000000;
+        color: @color-000000;
         background-color: @color-grey_tab;
       }
     }
   }
   .tab-content {
-    border-left: 1px solid #BBBBBB;
+    border-left: 1px solid @color-BBBBBB;
   }
   .tab-pane h3 {
     padding-left: 20px;
     margin-top: 0;
     background-color: @color-grey_tab;
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid @color-e5e5e5;
   }
 }
 
@@ -624,7 +624,7 @@ table.comparison .no-label .attribute-field.scopable {
     margin-bottom: 0;
     font-weight: bold;
     text-align: center;
-    background-color: #fbfbfb;
+    background-color: @color-fbfbfb;
     border-right-width: 0;
     border-radius: 0;
     .user-select(none);
@@ -710,7 +710,7 @@ h1 {
     float: left;
     padding: 0 3px;
     font-size: @font-size-18;
-    color: #999;
+    color: @color-999;
   }
   ul.inline {
     color: @textColor + #333;
@@ -718,7 +718,7 @@ h1 {
         padding: 0 10px;
         font-size: @font-size-11;
         line-height: 14px;
-        border-left: 1px solid #e6e6e6;
+        border-left: 1px solid @color-e6e6e6;
       }
       li:first-of-type {
         padding-left:0;
@@ -817,9 +817,7 @@ div.dropdown-menu.channel {
       height: 34px;
       line-height: 34px;
       margin: 0;
-      background-color: #CCC;
       text-align: center;
-      line-height: 34px;
       background-color: darken(@color-new-grey, 10%);
     }
 
@@ -834,7 +832,7 @@ div.dropdown-menu.channel {
       padding: 5px;
       color: @textColor;
       &:hover, &:active, &:focus {
-        background: #f1f1f1;
+        background: @color-f1f1f1;
       }
       span.indicator {
         display: inline-block;
@@ -898,13 +896,13 @@ div.dropdown-menu.channel {
   .label-warning {
     color: @color-form-info;
     text-shadow: none;
-    background-color: #fdd9b6;
+    background-color: @color-fdd9b6;
     border-radius: 10px;
     font-weight: 400;
     padding: 2px 10px 2px 2px;
 
     .icon {
-      color: #fa9f47;
+      color: @color-fa9f47;
     }
   }
 }
@@ -917,10 +915,10 @@ div.dropdown-menu.channel {
   padding-right: 5px;
   font-size: @font-size-16;
   &.gray {
-    color: #ddd;
+    color: @color-ddd;
   }
   &.green {
-    color: #58BB00;
+    color: @color-58BB00;
   }
 }
 .mass-edit-form {
@@ -971,11 +969,11 @@ button.pimmultiselect {
 }
 .pimmultiselect.ui-multiselect-menu {
   padding: 0;
-  border: 1px solid #ccc;
+  border: 1px solid @color-ccc;
   .ui-multiselect-hasfilter {
-    background-color: #f6f6f6;
+    background-color: @color-f6f6f6;
     border: none;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid @color-ccc;
     .ui-multiselect-filter {
       width: auto;
       input {
@@ -983,7 +981,7 @@ button.pimmultiselect {
         margin: 3px;
         font-size: @font-size-12;
         color: @textColor + #555;
-        border-color: #d6d6d6;
+        border-color: @color-d6d6d6;
       }
     }
   }
@@ -1008,7 +1006,7 @@ button.pimmultiselect {
     }
   }
   .ui-multiselect-footer {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid @color-ccc;
     a {
       float: right;
       margin: 5px;
@@ -1030,12 +1028,12 @@ button.pimmultiselect {
     padding: 3px;
     margin: 0;
     font-size: @font-size-15em;
-    color: #33be00;
+    color: @color-33be00;
   }
   .non-required {
     padding: 7px;
     margin: 0;
-    color: #b9b9b9;
+    color: @color-b9b9b9;
   }
 }
 
@@ -1121,7 +1119,7 @@ table#progress-table {
   .progress {
     height: 10px;
     margin-bottom: 5px;
-    background-image: linear-gradient(to bottom,#e4e4e4,#eee);
+    background-image: linear-gradient(to bottom,@color-e4e4e4,@color-eee);
     border-radius: 6px;
   }
   .progress-cell {
@@ -1132,14 +1130,14 @@ table#progress-table {
     }
     span.progress-info {
       padding: 5px;
-      color: #5e8dcb;
+      color: @color-5e8dcb;
       cursor: default;
     }
   }
 }
 
 .table-bordered.groups {
-  border-left: 1px solid #ddd;
+  border-left: 1px solid @color-ddd;
   td, th {
     border-left: 0;
   }
@@ -1163,7 +1161,7 @@ table#progress-table {
   }
   .tab-content {
     padding: 0;
-    border-left: solid 1px #ccc;
+    border-left: solid 1px @color-ccc;
   }
   header {
     display: none;
@@ -1173,7 +1171,7 @@ table#progress-table {
 /** datagrid columns configuration ***********************************************************************************/
 .column-configurator-modal .modal-body {
   padding: 0;
-  background-color: #edf1f2;
+  background-color: @color-edf1f2;
 }
 #column-configurator {
   h4 {
@@ -1181,9 +1179,9 @@ table#progress-table {
     line-height: 30px;
     margin: 0;
     padding: 10px;
-    color: #999;
-    border-left: 1px solid #e0e7e9;
-    border-bottom: 1px solid #e0e7e9;
+    color: @color-999;
+    border-left: 1px solid @color-e0e7e9;
+    border-bottom: 1px solid @color-e0e7e9;
   }
   i.icon-search {
     font-size: @font-size-18;
@@ -1206,7 +1204,7 @@ table#progress-table {
     margin-left: 0;
     width: 100% / 3;
     &:not(:first-of-type) {
-      background-color: #f6f8f8;
+      background-color: @color-f6f8f8;
     }
     &:last-of-type {
       background-color: @backgroundColor-white;
@@ -1218,11 +1216,11 @@ table#progress-table {
     overflow-y: auto;
     list-style-type: none;
     font-size: @font-size-13;
-    border-left: 1px solid #e0e7e9;
+    border-left: 1px solid @color-e0e7e9;
     li {
       cursor: pointer;
       padding: 15px 10px;
-      border: 1px solid #e3eaeb;
+      border: 1px solid @color-e3eaeb;
       &:not(:first-of-type) {
         border-top: none;
       }
@@ -1235,17 +1233,17 @@ table#progress-table {
       }
       i {
         font-size: @font-size-15;
-        color: #ccc;
+        color: @color-ccc;
         padding-right: 8px;
       }
     }
     &.connected-sortable li {
-      background-color: #f6f8f8;
+      background-color: @color-f6f8f8;
       .action i {
         margin: 0 2px;
         padding: 3px 8px;
-        color: #666;
-        border: 1px solid #ccc;
+        color: @color-666;
+        border: 1px solid @color-ccc;
         .border-radius(3px);
       }
       &:hover .action i {
@@ -1262,15 +1260,15 @@ table#progress-table {
   .nav-list {
     .badge-transparent {
       border-radius: 5px;
-      border: 1px solid #ddd;
+      border: 1px solid @color-ddd;
       background: transparent;
-      color: #999;
+      color: @color-999;
       font-size: @font-size-14;
       text-shadow: initial;
     }
     li {
       &.active {
-        background-color: #e4eaec;
+        background-color: @color-e4eaec;
       }
     }
   }

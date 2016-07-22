@@ -9,7 +9,7 @@
       display: none !important;
       ul {
         top: 5px;
-        border: 1px solid #bbb !important;
+        border: 1px solid @color-bbb !important;
         margin: 0;
         border-radius:3px !important;
       }
@@ -53,7 +53,7 @@
         &:hover,
         &:focus,
         &:active {
-          color: #fff;
+          color: @color-fff;
           outline: 0;
         }
       }
@@ -65,7 +65,7 @@
       margin: 0;
       > li {
         > a {
-          color: #fff;
+          color: @color-fff;
           font-weight: normal;
           text-shadow: none;
         }
@@ -73,14 +73,14 @@
       a.help {
         margin: 0 10px 0 0;
         padding: 9px 4px;
-        color: #fff;
+        color: @color-fff;
         font-size: @font-size-16;
       }
     }
     .dark {
-      border: 1px solid #eaeaea;
+      border: 1px solid @color-eaeaea;
       border-width: 1px 0;
-      background-color: #fbfbfb;
+      background-color: @color-fbfbfb;
       padding: 15px 15px 7px;
     }
   }
@@ -114,7 +114,7 @@ header {
     li.dropdown {
       > a {
         padding: 10px;
-        color: #fff;
+        color: @color-fff;
         text-shadow: none;
         [class^='icon-'] {
           vertical-align: top;
@@ -146,7 +146,7 @@ header {
         margin: 6px 0 6px;
         padding: 4px 10px;
         font-size: @font-size-14;
-        color: #fff;
+        color: @color-fff;
         text-shadow:none;
       }
       &.active {
@@ -161,12 +161,12 @@ header {
         > a {
           margin: 6px 0 0;
           padding-bottom: 10px;
-          background: #fff;
+          background: @color-fff;
           .border-radius(4px 4px 0 0);
-          color: #444;
+          color: @color-444;
           &:hover {
-            background: #fff;
-            color: #444;
+            background: @color-fff;
+            color: @color-444;
           }
         }
       }
@@ -187,7 +187,7 @@ header {
           }
           &.active a { background:none; }
           a:hover,
-          &.active a:hover { background: #f3f3f3 }
+          &.active a:hover { background: @color-f3f3f3 }
           &:first-child a { .border-radius(0 3px 0 0)}
           &:last-child a { .border-radius(0 0 3px 3px)}
         }
@@ -257,7 +257,7 @@ header {
   background-image: none;
   .list-bar {
     li.active{
-      background-color: #6800A9;
+      background-color: @color-6800A9;
     }
   }
   .pin-menus {
