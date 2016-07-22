@@ -29,6 +29,7 @@ Feature: Export products according to textarea attribute filter
     sku;categories;enabled;family;groups;description-en_US-mobile
     SNKRS-1B;summer_collection;1;rangers;;Awesome
     """
+
   @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:
@@ -47,6 +48,7 @@ Feature: Export products according to textarea attribute filter
     sku;categories;enabled;family;groups;description-en_US-mobile
     SNKRS-1B;summer_collection;1;rangers;;Awesome
     """
+
   @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:
@@ -65,6 +67,7 @@ Feature: Export products according to textarea attribute filter
     sku;categories;enabled;family;groups;description-en_US-mobile
     SNKRS-1R;summer_collection;1;rangers;;Awesome description
     """
+
   @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:
@@ -84,6 +87,7 @@ Feature: Export products according to textarea attribute filter
     SNKRS-1B;summer_collection;1;rangers;;Awesome
     SNKRS-1R;summer_collection;1;rangers;;Awesome description
     """
+
   @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:
@@ -103,6 +107,7 @@ Feature: Export products according to textarea attribute filter
     SNKRS-1B;summer_collection;1;rangers;;Awesome
     SNKRS-1R;summer_collection;1;rangers;;Awesome description
     """
+
   @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:
@@ -121,6 +126,7 @@ Feature: Export products according to textarea attribute filter
     sku;categories;enabled;family;groups;description-en_US-mobile
     SNKRS-1B;summer_collection;1;rangers;;Awesome
     """
+
   @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:

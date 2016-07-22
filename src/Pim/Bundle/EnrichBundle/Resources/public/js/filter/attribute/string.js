@@ -41,8 +41,7 @@ define([
          */
         isEmpty: function () {
             return 'EMPTY' !== this.getOperator() &&
-                (undefined === this.getValue() || '' === this.getValue())
-                ;
+                (undefined === this.getValue() || '' === this.getValue());
         },
 
         /**

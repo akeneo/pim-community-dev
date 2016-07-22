@@ -398,7 +398,7 @@ pim_enrich:
                         "<=": "<="
                         "<": "<"
                         EMPTY: "Empty"
-                text:
+                string:
                     operators:
                         ALL: All
                         CONTAINS: Contains
