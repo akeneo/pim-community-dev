@@ -2,3 +2,6 @@ pimee_dashboard:
   widget:
     product_drafts:
       product: Produto
+      review: Rever
+      empty: Não há propostas de revisão
+      view_all: Ver tudo

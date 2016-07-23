@@ -1,5 +1,12 @@
 pimee_enrich:
   entity:
+    product:
+      btn:
+        save_draft: Guardar rascunho
     product_draft:
+      btn:
+        send_for_approval: Enviar para aprovação
+        sent_for_approval: Enviado para aprovação
       modal:
+        send_for_approval: Enviar para aprovação
         cancel: Cancelar
