@@ -3,22 +3,59 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         delete: Eliminar
+      title: Regras
       column:
         code: Código
         conditions: Condição
         actions: Ação
+  actions:
+    type:
+      copy: 'Então %from_field% é copiado para %to_field%'
+      copy_value: 'Então %from_field% é copiado para %to_field%'
+      set: 'Então %value% é colocado em %field%'
+      set_value: 'Então %value% é colocado em %field%'
+      add: 'Então %value% é adicionado a %field%'
   condition:
+    label: 'Se %field% %operator% %value%'
     operators:
       STARTS WITH: começa com
       ENDS WITH: termina com
       CONTAINS: contém
       DOES NOT CONTAIN: não contém
+      IN: em
+      NOT IN: não está em
+      IN CHILDREN: em descendentes
+      NOT IN CHILDREN: não está em descendentes
+      UNCLASSIFIED: não classificado
+      IN OR UNCLASSIFIED: não classificado ou em
       BETWEEN: entre
       NOT BETWEEN: não está entre
+      =: igual
+      >: maior que
+      >=: igual ou maior que
       <: menor que
+      <=: igual ou menor que
+  acl_group:
+    rule: Regras
+  acl:
+    rule:
+      view_permissions: Ver regras
+      delete_permissions: Eliminar regras
   attribute:
+    tab:
+      rule.title: Regras
     grid:
       is_smart.label: Inteligente
+    acl:
+      rule.view_permissions: Ver regras
   product:
     tooltip:
       loading.title: A carregar...
+    history: 'Regra "%rule%" aplicada'
+  product_value:
+    tooltip:
+      affected_by.title: 'Afetados pela regra(s):'
+  steps:
+    product_rule_definition_reader.title: Leitor da importação das regras de produto
+    rule_definition_processor.title: Processador de importação de regras de produto
+    product_rule_definition_writer.title: Escritor de importação de regras de produto
