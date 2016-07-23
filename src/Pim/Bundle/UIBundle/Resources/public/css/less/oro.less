@@ -13,7 +13,7 @@ body {
   margin: 0;
   padding: 0 ;
   min-width: 980px;
-  background:@color-fff;
+  background:@white;
 }
 h2 {
   font-size: @font-size-27;
@@ -45,7 +45,7 @@ a:focus {
   text-decoration: none;
 }
 #main {
-  background-color: @color-fff;
+  background-color: @white;
 }
 .dropdown-menu {
   margin-top:-1px;
@@ -117,7 +117,7 @@ a:focus {
   color:@bodyColor;
   text-shadow:none !important;
   &:hover {
-    color: @color-fff;
+    color: @white;
   }
 }
 
@@ -242,7 +242,7 @@ select {
 }
 
 .open-filter .filter-criteria-selector {
-  #gradient > .vertical(#e6e6e6, @color-fff);
+  #gradient > .vertical(@grayLighter, @white);
 }
 
 .label-important,
@@ -285,7 +285,7 @@ select {
 .navbar .nav > .active > a:hover,
 .navbar .nav > .active > a:focus {
   box-shadow: none;
-  color: @color-fff;
+  color: @white;
 }
 .filter-box {
   .box-shadow(inset 0 2px 1px rgba(0, 0, 0, 0.02));
@@ -499,7 +499,7 @@ select {
   line-height: 34px;
   a {
     color:lighten(@bodyColor,10%);
-    text-shadow:0 1px 0 darken(@color-fff,5%);
+    text-shadow:0 1px 0 darken(@white,5%);
   }
 }
 .grid {
@@ -529,7 +529,7 @@ select {
   width: 180px;
   z-index: 9999;
   .box {
-    background: @color-fff;
+    background: @white;
     font-size: @font-size-14;
     font-weight: bold;
     line-height:  24px;
@@ -551,7 +551,7 @@ select {
   position: relative;
   .top-action-box {
     padding: 4px 0 0;
-    background-color: @color-fff;
+    background-color: @white;
     float:right;
   }
   .icons-holder-text.btn {
@@ -574,7 +574,7 @@ select {
     &.btn-danger {
       [class^='icon-'].hide-text {
         &:before {
-          color:@color-fff;
+          color:@white;
         }
       }
     }
@@ -597,7 +597,7 @@ select {
   height: 28px;
   padding: 4px 2px 0;
   line-height: 28px;
-  #gradient > .vertical(@color-fff, #e6e6e6);
+  #gradient > .vertical(@white, @grayLighter);
 }
 .grid .dropdown-menu {
   padding: 5px 0 0;
@@ -662,7 +662,7 @@ select {
     color: #777;
     li {
       padding: 0 10px;
-      border-left: 1px solid #e6e6e6;
+      border-left: 1px solid @grayLighter;
       font-size: @font-size-11;
       line-height: 14px;
       &:first-child {
@@ -753,7 +753,7 @@ textarea {
   color:lighten(@bodyColor,20%);
   font-size: @font-size-13;
   font-weight:normal;
-  text-shadow:0 1px 0 @color-fff;
+  text-shadow:0 1px 0 @white;
   line-height:18px;
   padding: 10px;
 }
