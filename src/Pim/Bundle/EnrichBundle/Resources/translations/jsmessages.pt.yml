@@ -307,6 +307,56 @@ pim_enrich:
           info:
             search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para adicionar
+  export:
+    product:
+      structure:
+        attributes:
+          title: Atributos
+      filter:
+        channel:
+          title: Canal
+          help: O canal que deseja exportar
+        locales:
+          title: Linguagens
+          help: As linguagens que deseja exportar
+        family:
+          title: Família
+          help: As famílias que deseja exportar
+        updated:
+          title: Atualizado
+          operators:
+            ALL: Sem restrição de data
+            >: Produtos atualizados desde a data definida
+            SINCE LAST JOB: Produtos atualizados desde a última exportação
+        enabled:
+          title: Estado
+          help: O estado dos produtos que deseja exportar
+          value:
+            all: Tudo
+            enabled: Ativo
+            disabled: Inativo
+        completeness:
+          title: '% de Dados Completos'
+          help: O nível de informação preenchida dos produtos que deseja exportar
+          operators:
+            ALL: Sem restrições em relação ao nível de preenchimento da informação
+            >=: Completo em pelo menos uma das linguagens selecionadas
+            GREATER OR EQUALS THAN ON ALL LOCALES: Completo em todas as linguagens escolhidas
+            LOWER THAN ON ALL LOCALES: Não completo em todas as linguagens escolhidas
+        metric:
+          operators:
+            =: '='
+            >=: '>='
+            >: '>'
+            <=: '<='
+            <: '<'
+        price-collection:
+          operators:
+            =: '='
+            >=: '>='
+            <=: '<='
+            >: '>'
+            <: '<'
   mass_edit_action:
     edit_common_attributes:
       description: 'Os atributos dos produtos selecionados serão editados com os seguintes dados para a linguagem <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>, escolhidos na grelha de produtos.'

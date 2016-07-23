@@ -310,6 +310,31 @@ pim_enrich:
           info:
             search_attributes: Поиск...
             no_available_attributes: Нет больше атрибутов для добавления
+  export:
+    product:
+      structure:
+        attributes:
+          title: Атрибуты
+      filter:
+        channel:
+          title: Канал
+          help: Канал, который вы хотите экспортировать
+        locales:
+          title: Локали
+        family:
+          title: Семейство
+          operators:
+            IN: В списке
+        updated:
+          title: Обновлено
+        enabled:
+          title: Статус
+          value:
+            all: Все
+            enabled: Включено
+            disabled: Отключено
+        completeness:
+          title: Завершенность
   mass_edit_action:
     edit_common_attributes:
       description: 'Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.'

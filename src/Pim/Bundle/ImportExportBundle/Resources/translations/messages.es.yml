@@ -16,7 +16,8 @@ pim_import_export:
     archive: descargar fichero generado|descargar ficheros generados
     output: descargar ficher generado |descargar ficheros generados
     input: descargar fichero de lectura |descargar ficheros de lectura
-    invalid: descargar datos no válidos
+    invalid_xlsx: descargar datos no válidos
+    invalid_csv: descargar datos no válidos
   notification:
     export:
       error: 'Exportación <strong>%label%</strong> fallida'

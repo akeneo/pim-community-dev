@@ -16,7 +16,8 @@ pim_import_export:
     archive: Télécharger le fichier généré|Télécharger les fichiers générés
     output: Télécharger le fichier généré|Télécharger les fichiers générés
     input: Télécharger le fichier lu|Télécharger les fichiers lus
-    invalid: Télécharger données invalides
+    invalid_xlsx: Télécharger données invalides
+    invalid_csv: Télécharger données invalides
   notification:
     export:
       error: "L'export de <strong>%label%</strong> a échoué"
