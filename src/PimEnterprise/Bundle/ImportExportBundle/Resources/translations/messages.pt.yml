@@ -1,3 +1,6 @@
+job_profile.permissions:
+  execute.label: Permissão para executar a tarefa
+  edit.label: Permissão para editar a tarefa
 pimee_import_export:
   job_profile:
     tab:
