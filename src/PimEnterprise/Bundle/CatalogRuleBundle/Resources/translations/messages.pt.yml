@@ -1,7 +1,19 @@
 pimee_catalog_rule:
   attribute:
+    tab:
+      rule.title: Regras
     grid:
       is_smart.label: Inteligente
+    acl:
+      rule.view_permissions: Ver regras
   product:
     tooltip:
       loading.title: A carregar...
+    history: 'Regra "%rule%" aplicada'
+  product_value:
+    tooltip:
+      affected_by.title: 'Afetados pela regra(s):'
+  steps:
+    product_rule_definition_reader.title: Leitor da importação das regras de produto
+    rule_definition_processor.title: Processador de importação de regras de produto
+    product_rule_definition_writer.title: Escritor de importação de regras de produto
