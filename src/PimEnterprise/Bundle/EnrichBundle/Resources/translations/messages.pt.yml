@@ -1,7 +1,27 @@
 Permissions: Permissões
 pane.accordion.permissions: Permissões
+attribute group.permissions:
+  view.label: Permissão para ver os atributos
+  edit.label: Permissão para editar os atributos
+category.permissions:
+  view.label: Permissão para ver os produtos
+  view.help: Permite visualizar os produtos nesta categoria
+  edit.label: Permissão para editar os produtos
+locale.permissions:
+  view.label: Permitido para visualizar informações sobre o produto
+btn:
+  save working copy: Guardar cópia de trabalho
+  save draft: Guardar rascunho
+  save working copy and next: Guardar a cópia de trabalho e avançar
+  save draft and next: Guardar rascunho e avançar
+  save working copy and finish: Guardar cópia de trabalho e terminar
+  save draft and finish: Guardar rascunho e terminar
+  send for approval: Enviar para aprovação
+  sent for approval: Enviado para aprovação
 pim_enrich:
   mass_edit_action:
+    publish:
+      label: Publicar produtos
     published_product:
       title: Escolher operação
       steps:
@@ -28,6 +48,7 @@ pimee_enrich:
   category:
     tab:
       permission.title: Permissões
+  acl.product_ownership.title: Propriedade
   asset_transformation:
     title:
       transformation: Transformação
