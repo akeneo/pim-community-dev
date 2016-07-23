@@ -15,7 +15,8 @@ pim_import_export:
   download_archive:
     output: lataus loi tiedoston|latauksien luomat tiedostot
     input: lataus lukema tiedosto|latauksien lukemat tiedostot
-    invalid: lataa virheellisiä tietoja
+    invalid_xlsx: lataa virheellisiä tietoja
+    invalid_csv: lataa virheellisiä tietoja
   notification:
     export:
       error: 'Vienti <strong>%label%</strong> epäonnistui'

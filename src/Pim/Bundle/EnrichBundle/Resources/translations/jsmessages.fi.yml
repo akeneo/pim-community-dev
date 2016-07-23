@@ -314,5 +314,44 @@ pim_enrich:
           info:
             search_attributes: Hae...
             no_available_attributes: Ei ole enää attribuutteja lisättäväksi
+  export:
+    product:
+      structure:
+        attributes:
+          title: Attribuutit
+      filter:
+        channel:
+          title: Kanava
+          help: Kanava, jonka haluat viedä
+        locales:
+          title: Alueet
+        family:
+          title: Perhe
+          operators:
+            IN: Luettelossa
+        updated:
+          title: Päivitetty
+        enabled:
+          title: Status
+          value:
+            all: Kaikki
+            enabled: Käytössä
+            disabled: Poistettu käytöstä
+        completeness:
+          title: Valmistumisaste
+        metric:
+          operators:
+            =: '='
+            >=: '>='
+            >: '>'
+            <=: '<='
+            <: '<'
+        price-collection:
+          operators:
+            =: '='
+            >=: '>='
+            <=: '<='
+            >: '>'
+            <: '<'
 pim_enrich.error:
   exception.title: 'Voi ei! {{ status_code }} virhe tapahtui...'

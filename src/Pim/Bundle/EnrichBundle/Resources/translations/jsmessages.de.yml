@@ -314,6 +314,45 @@ pim_enrich:
           info:
             search_attributes: Suche...
             no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
+  export:
+    product:
+      structure:
+        attributes:
+          title: Attribute
+      filter:
+        channel:
+          title: Ausgabekanal
+          help: Der Ausgabekanal, den Sie exportieren möchten
+        locales:
+          title: Gebietsschemata
+        family:
+          title: Produktfamilie
+          operators:
+            IN: In Liste
+        updated:
+          title: Aktualisiert
+        enabled:
+          title: Status
+          value:
+            all: Alle
+            enabled: Aktiviert
+            disabled: Deaktiviert
+        completeness:
+          title: Vollständigkeit
+        metric:
+          operators:
+            =: '='
+            >=: '>='
+            >: '>'
+            <=: '<='
+            <: '<'
+        price-collection:
+          operators:
+            =: '='
+            >=: '>='
+            <=: '<='
+            >: '>'
+            <: '<'
   mass_edit_action:
     edit_common_attributes:
       description: 'Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.'

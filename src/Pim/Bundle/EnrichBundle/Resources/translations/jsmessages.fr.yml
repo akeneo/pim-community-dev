@@ -327,6 +327,61 @@ pim_enrich:
           info:
             search_attributes: Rechercher...
             no_available_attributes: "Il n'y a plus d'attributs disponibles"
+  export:
+    product:
+      structure:
+        attributes:
+          title: Attributs
+      filter:
+        channel:
+          title: Canal
+          help: Le canal que vous souhaitez exporter
+        locales:
+          title: Locales
+          help: La locale que vous souhaitez exporter
+        family:
+          title: Famille
+          help: Les familles que vous souhaitez exporter
+          operators:
+            IN: Dans la liste
+        updated:
+          title: Mis à jour
+          operators:
+            ALL: Pas de condition de date
+            SINCE LAST N DAYS: Produits mis à jours depuis les derniers n jours
+            >: Produits mis à jours depuis une date définie
+            SINCE LAST JOB: Produits mis à jour depuis le dernier export
+        enabled:
+          title: Statut
+          help: Le statut des produits que vous souhaitez exporter
+          value:
+            all: Tous
+            enabled: Activé
+            disabled: Désactivé
+        completeness:
+          title: Complétude
+          help: La complétude des produits que vous souhaitez exporter
+          operators:
+            ALL: Pas de condition de complétude
+            >=: Complet sur au moins une locale sélectionnée
+            GREATER OR EQUALS THAN ON ALL LOCALES: Complet sur toutes les locales sélectionnées
+            LOWER THAN ON ALL LOCALES: Non complet sur toutes les locales sélectionnées
+        category:
+          help: Les catégories des produits que vous souhaitez exporter
+        metric:
+          operators:
+            =: '='
+            >=: '>='
+            >: '>'
+            <=: '<='
+            <: '<'
+        price-collection:
+          operators:
+            =: '='
+            >=: '>='
+            <=: '<='
+            >: '>'
+            <: '<'
   mass_edit_action:
     edit_common_attributes:
       description: 'Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal <span class="highlight">{{ channel }}</span>, choisis dans la grille des produits.'

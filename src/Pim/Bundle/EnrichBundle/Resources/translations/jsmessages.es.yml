@@ -314,6 +314,48 @@ pim_enrich:
           info:
             search_attributes: Buscar...
             no_available_attributes: No hay más atributos para agregar
+  export:
+    product:
+      structure:
+        attributes:
+          title: Atributos
+      filter:
+        channel:
+          title: Canal
+          help: Canal que desea exportar
+        locales:
+          title: Idiomas
+          help: Los locales que desea exportar
+        family:
+          title: Familia
+          help: Las familias que desea importar
+          operators:
+            IN: En la lista
+        updated:
+          title: Actualizado
+        enabled:
+          title: Estado
+          help: El estado de los productos que desea exportar
+          value:
+            all: Todos
+            enabled: Habilitado
+            disabled: Inhabilitado
+        completeness:
+          title: Completitud
+        metric:
+          operators:
+            =: '='
+            >=: '>='
+            >: '>'
+            <=: '<='
+            <: '<'
+        price-collection:
+          operators:
+            =: '='
+            >=: '>='
+            <=: '<='
+            >: '>'
+            <: '<'
   mass_edit_action:
     edit_common_attributes:
       description: 'Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.'
