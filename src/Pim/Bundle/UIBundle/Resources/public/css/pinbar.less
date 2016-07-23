@@ -79,7 +79,7 @@
 .pin-menus .extra-list {
   padding: 5px 0;
   li {
-    border-bottom: 1px solid @color-f2f2f2;
+    border-bottom: 1px solid @whiteDarker;
     padding: 3px 12px;
     font-size: @font-size-12;
     a {
@@ -92,7 +92,7 @@
     }
   }
   > li:hover {
-    background-color: @color-f4f4f4;
+    background-color: @whiteDarker;
   }
 }
 
@@ -102,7 +102,7 @@
   width: 30px;
   height: 24px;
   margin: 0 -29px 0 0;
-  border-left: 1px solid @color-000004;
+  border-left: 1px solid @black;
   cursor: pointer;
   &.open {
     .icon-ellipsis-horizontal {
@@ -117,7 +117,7 @@
       width: 30px;
       height: 24px;
       margin: 0;
-      color: @color-fff;
+      color: @white;
       font-size: @font-size-18;
       text-align: center;
       line-height: 26px;
@@ -149,12 +149,12 @@
             line-height: 14px;
             margin-right: 0;
             margin-bottom: 0;
-            color: @color-2f2f2f;
+            color: @bodyColor;
             text-shadow: 0 1px 0 @color-f7fafc;
             background: transparent;
             &:hover {
               border-bottom: 1px solid darken(@color-dbe2ea,2%);
-              color: @color-2f2f2f;
+              color: @bodyColor;
               cursor: pointer;
             }
             i {
@@ -188,7 +188,7 @@
               height: 0;
               border-style: solid;
               border-width: 7.5px 8px 7.5px 0;
-              border-color: transparent @color-fff transparent transparent;
+              border-color: transparent @white transparent transparent;
               content: "";
               display: inline-block;
               position: absolute;
@@ -210,7 +210,7 @@
       }
       > .tab-content {
         border-left: 1px solid darken(@color-ecf1f9,8%);
-        background-color: @color-fff;
+        background-color: @white;
         min-height: 167px;
         max-height: 330px;
         overflow: auto;
