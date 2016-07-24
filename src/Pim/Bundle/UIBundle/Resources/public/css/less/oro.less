@@ -31,8 +31,8 @@ h6 {
   font-size: @font-size-12;
 }
 .btn {
-  border: 1px solid #ccc;
-  border-bottom-color: #b3b3b3;
+  border: 1px solid @color-ccc;
+  border-bottom-color: @color-bbb;
 }
 html {
   margin: 0;
@@ -68,8 +68,8 @@ a:focus {
   font-weight:bold;
   background-repeat: none;
   display: inline-block;
-  #gradient > .vertical(#fdfdfd, #efefef);
-  color: #666;
+  #gradient > .vertical(@whiteDark, @grayLighter);
+  color: @gray;
 }
 .btn:hover,
 .btn:focus {
@@ -79,11 +79,11 @@ a:focus {
   -moz-transition: none;
   -o-transition: none;
   transition: none;
-  color: #666;
-  #gradient > .vertical(#fdfdfd, #f5f5f5);
+  color: @gray;
+  #gradient > .vertical(@whiteDark, @whiteDarker);
 }
 .btn:active {
-  #gradient > .vertical(#e7e7e7, #f2f2f2);
+  #gradient > .vertical(@grayLighter, @whiteDarker);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 .btn-small {
@@ -137,7 +137,7 @@ label, input, button, select, textarea { font-size: @font-size-13;}
       float:left;
       width:160px;
       padding-top:5px;
-      color: #777;
+      color: @color-777;
       font-weight: normal;
       font-size: @font-size-13;
       text-align:right;
@@ -164,7 +164,7 @@ input[type="url"],
 input[type="search"],
 select {
   border-color:@color-ddd;
-  color:#333;
+  color:@grayDark;
   font-size: @font-size-13;
 }
 .btn-group > .btn:last-child,
@@ -193,7 +193,7 @@ select {
 .dropdown-menu > .active > a,
 .dropdown-menu > .active > a:hover,
 .dropdown-menu > .active > a:focus {
-  background:#f3f3f3;
+  background:@whiteDarker;
 }
 
 // Bootstrap - Table
@@ -209,7 +209,7 @@ select {
   padding:0;
   text-indent:0;
   font-size: @font-size-14;
-  color: #666;
+  color: @gray;
 
 }
 
@@ -227,7 +227,7 @@ select {
 
 .dropdown-menu {
   .divider {
-    border-bottom-color:#eee;
+    border-bottom-color:@grayLighter;
     margin:4px 0;
   }
 }
@@ -289,11 +289,11 @@ select {
 }
 .filter-box {
   .box-shadow(inset 0 2px 1px rgba(0, 0, 0, 0.02));
-  background:#efefef;
-  border:1px solid #e2e2e2;
+  background:@grayLighter;
+  border:1px solid @color-ddd;
   border-width: 1px 0;
   padding: 15px 20px 8px 150px;
-  .icon-remove:before { color:#aaa; font-size: @font-size-14; }
+  .icon-remove:before { color:@color-aaa; font-size: @font-size-14; }
   .filter-list {
     float: left;
     margin: 0 0 0 -120px;
@@ -306,7 +306,7 @@ select {
       font-weight:normal;
       padding-top:1px;
       button {
-        color:#666;
+        color:@gray;
         font-size: @font-size-12;
       }
       .caret { margin-top:11px; }
@@ -345,22 +345,23 @@ select {
   font-weight: normal;
 }
 .badge-enabled {
-  background-color: #dff2d4;
-  color: #4c7940;
+  background-color: @color-dff2d4;
+  color: @color-4c7940;
 }
 .badge-disabled {
-  color: #aaa;
-  background-color: #f2f2f2;
+  color: @color-aaa;
+  background-color: @whiteDark;
+  background-color: @whiteDark;
 }
 .status-disabled {
   margin-top:-4px;
-  color: #aaa;
+  color: @color-aaa;
   text-shadow:none;
   padding:3px 10px 3px 5px;
 }
 .status-enabled {
   margin-top:-4px;
-  color: #2f8206;
+  color: @color-2f8206;
   text-shadow:none;
   padding:3px 10px 3px 5px;
 }
@@ -370,8 +371,8 @@ select {
     font-size: @font-size-12;
   }
 }
-.status-enabled [class^='icon-']:before { color:#4a9938; }
-.status-disabled [class^='icon-']:before { color:#e37878; }
+.status-enabled [class^='icon-']:before { color:@color-4a9938; }
+.status-disabled [class^='icon-']:before { color:@color-e37878; }
 
 .dib {
   display: inline-block;
@@ -400,7 +401,7 @@ select {
         .icon-chevron-right:before {
           margin:7px 5px;
           font-size: @font-size-12;
-          color:#eee;
+          color:@grayLighter;
         }
       }
     }
@@ -413,7 +414,7 @@ select {
   }
   .btn-group {
     .btn {
-      border-color:#ccc;
+      border-color:@color-ccc;
       height:27px;
       padding-left:7px;
       padding-right:9px;
@@ -423,7 +424,7 @@ select {
         &:before {
           display:inline-block;
           margin:4px 1px 0 0;
-          color:#666;
+          color:@gray;
           font-size: @font-size-13;
           line-height:1.3em;
           margin-left:1px;
@@ -459,7 +460,7 @@ select {
   margin-top: 10px;
   overflow: visible;
   .table-bordered {
-    border-left:1px solid #dfdfdf;
+    border-left:1px solid @color-ddd;
     -webkit-border-radius: 0;
        -moz-border-radius: 0;
             border-radius: 0;
@@ -513,7 +514,7 @@ select {
   }
 }
 #loading-wrapper {
-  background: #000;
+  background: @black;
   opacity: 0.6;
   position: absolute;
   top: 0;
@@ -589,7 +590,7 @@ select {
   border-bottom-right-radius: 4px;
   border-top-right-radius: 4px;
   border-style: solid;
-  border-color: #cccccc #cccccc #b3b3b3;
+  border-color: @color-ccc @color-ccc @color-bbb;
   border-width: 1px 1px 1px 0;
   font-size: @font-size-18;
   display: inline-block;
@@ -612,20 +613,20 @@ select {
   display: block;
 }
 
-.sub-title a { color:#888; }
+.sub-title a { color:@color-888; }
 .customer-info {
   padding-left: 76px;
   padding-bottom: 0;
   line-height: 18px;
   .sub-title {
     font-size: @font-size-17;
-    color: #999;
+    color: @grayLight;
     float: left;
   }
   .separator {
     float: left;
     padding: 0 3px;
-    color: #999;
+    color: @grayLight;
     font-size: @font-size-18;
   }
   .user-name {
@@ -659,7 +660,7 @@ select {
   }
   ul.inline {
     margin-bottom:0;
-    color: #777;
+    color: @color-777;
     li {
       padding: 0 10px;
       border-left: 1px solid @grayLighter;
@@ -673,8 +674,8 @@ select {
   }
 }
 .scrollspy-nav {
-  background-color: #f6f6f6;
-  border-bottom: 1px solid #c4c4c4;
+  background-color: @whiteDarker;
+  border-bottom: 1px solid @color-ccc;
   margin-bottom: 0;
   .box-shadow(0 2px 0 rgba(0, 0, 0, .03));
   .navbar-inner {
@@ -686,7 +687,7 @@ select {
       .nav {
         > li a {
           padding:5px 15px;
-          color:#666;
+          color:@gray;
           font-size: @font-size-13;
         }
         > li a:hover {
@@ -697,10 +698,10 @@ select {
         }
         .active a,
         .active a:hover {
-          border-bottom:3px solid #555;
+          border-bottom:3px solid @gray;
           background:none;
           padding-bottom:2px;
-          color:#111;
+          color:@grayDarker;
           font-weight:bold;
         }
       }
@@ -708,8 +709,8 @@ select {
   }
 }
 .customer-info-actions {
-  background-color: #f6f6f6;
-  border-bottom: 1px solid #ebebeb;
+  background-color: @whiteDarker;
+  border-bottom: 1px solid @grayLighter;
   .alert {
     margin-bottom: 0;
   }
@@ -735,7 +736,7 @@ select {
 label.required em,
 .form-horizontal label.required em {
   padding: 0 3px;
-  color: #c30b25;
+  color: @color-c30b25;
   font-size: @font-size-15;
 }
 
@@ -750,7 +751,7 @@ textarea {
   display: none;
 }
 .scrollspy-title {
-  border:1px solid #e5e5e5;
+  border:1px solid @grayLighter;
   border-width:1px 0;
   margin: 0 0 0 -20px;
   color:lighten(@bodyColor,20%);
@@ -930,7 +931,7 @@ select:focus:invalid:focus {
   outline: 0;
   outline: thin dotted \9;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-  color: #555;
+  color: @gray;
 }
 .pagination-centered > label {
   margin-right: -4px;
@@ -1008,11 +1009,11 @@ select:focus:invalid:focus {
 
 /* validation-error */
 .validation-error .error {
-  border:1px solid #e9322d;
+  border:1px solid @color-e9322d;
   outline: 0;
   outline: thin dotted \9;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(211, 33, 33, 0.6);
-  color: #555;
+  color: @gray;
 }
 
 .validation-tooltip {
@@ -1026,7 +1027,7 @@ select:focus:invalid:focus {
     text-decoration: inherit;
     -webkit-font-smoothing: antialiased;
     content: "\f06a";
-    color:#c81717;
+    color:@errorText;
     text-decoration: inherit;
     text-indent:0;
     speak: none;
@@ -1112,11 +1113,11 @@ button.filter-update {
 }
 .breadcrumb > li.active,
 .breadcrumb > li {
-  color: #777;
+  color: @color-777;
   font: 11px/14px @baseFontFamily;
 }
 .breadcrumb > li > .divider {
-  color: #777;
+  color: @color-777;
   padding: 0 1px 0 4px;
 }
 .btn.favorite-button,
@@ -1130,13 +1131,13 @@ button.filter-update {
 .btn.minimize-button { margin-right:12px; }
 .btn.favorite-button .icon-star:before,
 .btn.minimize-button .icon-pushpin:before {
-  color:#e7e7e7;
+  color:@grayLighter;
   font-size: @font-size-19;
 }
 .btn.favorite-button .icon-gold:before,
 .btn.minimize-button .icon-gold:before,
 .btn.minimize-button .icon-minimize-active:before {
-  color:#ffd631;
+  color:@color-ffd631;
 }
 #pin-button-div {
   .container-fluid {
@@ -1144,7 +1145,7 @@ button.filter-update {
   }
 }
 .breadcrumb-pin {
-  border-bottom: 1px solid #f2f2f2;
+  border-bottom: 1px solid @whiteDarker;
   padding:0;
   #pin-button-div{
     float: right;
