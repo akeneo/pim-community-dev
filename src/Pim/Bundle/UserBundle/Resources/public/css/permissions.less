@@ -15,11 +15,11 @@
   cursor: pointer;
   font-size: @font-size-15em;
   &.granted {
-    color: #33be00;
+    color: @color-33be00;
   }
   &.non-granted {
     padding: 5px 7px;
-    color: red;
+    color: @errorText;
   }
 }
 .acl-group-permission-toggle {
@@ -29,14 +29,14 @@
   &.icon-circle {
     padding: 1px 7px 0 6px;
     font-size: @font-size-10em;
-    color: #b9b9b9;
+    color: @color-bbb;
   }
   &.icon-ok {
     padding: 0 5px 0 4px;
-    color: #33be00;
+    color: @color-33be00;
   }
   &.icon-remove {
     padding: 0 6px;
-    color: red;
+    color: @errorText;
   }
 }
