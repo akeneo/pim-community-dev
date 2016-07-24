@@ -832,7 +832,7 @@ div.dropdown-menu.channel {
       padding: 5px;
       color: @textColor;
       &:hover, &:active, &:focus {
-        background: @color-f1f1f1;
+        background: @grayLighter;
       }
       span.indicator {
         display: inline-block;
@@ -1119,7 +1119,7 @@ table#progress-table {
   .progress {
     height: 10px;
     margin-bottom: 5px;
-    background-image: linear-gradient(to bottom,@color-e4e4e4,@grayLighter);
+    background-image: linear-gradient(to bottom,@color-ddd,@grayLighter);
     border-radius: 6px;
   }
   .progress-cell {
@@ -1204,7 +1204,7 @@ table#progress-table {
     margin-left: 0;
     width: 100% / 3;
     &:not(:first-of-type) {
-      background-color: @color-f6f8f8;
+      background-color: @whiteDark;
     }
     &:last-of-type {
       background-color: @backgroundColor-white;
@@ -1238,11 +1238,11 @@ table#progress-table {
       }
     }
     &.connected-sortable li {
-      background-color: @color-f6f8f8;
+      background-color: @whiteDark;
       .action i {
         margin: 0 2px;
         padding: 3px 8px;
-        color: @color-555;
+        color: @gray;
         border: 1px solid @color-ccc;
         .border-radius(3px);
       }
