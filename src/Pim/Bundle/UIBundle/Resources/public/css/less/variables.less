@@ -1,27 +1,14 @@
 @import 'bootstrap_variables';
 
-//Oro variables
-@horizontalPadding:               20px;
-@verticalPadding:                 20px;
-@marginBottomBox:                 20px;
-@baseBtnBorderRadius:             3px;
-
-@baseFontSize:                    12px;
-@baseLineHeight:                  20px;
-
-@inputBorderRadius:               3px;
-
-// Screen sizes
-@smallScreen:                     1024px;
-@mediumScreen:                    1340px;
-@largeScreen:                     1920px;
-
-// Pim variables
-@imageWidth: 64px;
-@imageHeight: 64px;
-@buttonHeight: 28px;
-@uploadZoneHeight: 80px;
-@border-purple: 1px solid #3a1657;
+@horizontalPadding:   20px;
+@verticalPadding:     20px;
+@marginBottomBox:     20px;
+@baseBtnBorderRadius: 3px;
+@baseLineHeight:      20px;
+@inputBorderRadius:   3px;
+@mediumScreen:        1340px;
+@buttonHeight:        28px;
+@uploadZoneHeight:    80px;
 
 // Font sizes
 @lato-coeff: 1.011; // Lato font is smaller than previous one (Helvetica)
@@ -57,97 +44,105 @@
 
 @baseFontSize: @font-size-12;
 
-// Colors
-@successBackground:               #e3f3c3;
-@successBorder:                   #89a86d;
-@successText:                     #3d7c04;
-@successClose:                    #bfd78f;
-@errorBackground:                 #fdcece;
-@errorBorder:                     #b48d8d;
-@errorText:                       #c81717;
-@errorClose:                      #e5acac;
-@warningBackground:               #fff8d7;
-@warningBorder:                   #b4a68d;
-@warningClose:                    #e2d59a;
-@color-purple_dark: #66279c;
-@color-purple_light: #8e3bc4;
-@color-header_top: #a44dd7;
-@color-header_bottom: #7225ad;
-@color-dialogHeader_top: #8c62b6;
-@color-dialogHeader_bottom: #673f8f;
-@color-purple_hover: #f2ebf8;
-@textColor: @bodyColor;
+/* Colors */
+// Greens
+@color-changed_diff:        #ddfade;
+@successBackground:         #e3f3c3;
+@successClose:              #bfd78f;
+@successBorder:             #89a86d;
+@color-58BB00:              #58BB00;
+@color-33be00:              #33be00;
+@color-7dbf16:              #7dbf16;
+@color-7ec500:              #7ec500;
 @btnPrimaryBackgroundLight: #83c817;
-@btnPrimaryBackground: #519d0b;
-@btnInfoBackgroundLight: #739cdc;
+@fern-green:                #67b373;
+@color-67b373:              #67b373;
+@color-4c9858:              #4c9858;
+@color-4d9a59:              #4d9a59;
+@btnPrimaryBackground:      #519d0b;
+@successText:               #3d7c04;
+
+// Reds
 @color-base_diff: #ffe7e7;
-@color-changed_diff: #ddfade;
-@akeneo-purple: #9452BA;
-@akeneo-dark: #11324d;
-@akeneo-grey: #a1a9b7;
-@fern-green: #67b373;
-@blue-danube: #5992c7;
-@slate-grey: #67768a;
+@errorBackground: #fdcece;
+@errorClose:      #e5acac;
+@errorBorder:     #b48d8d;
+@chesnut-red:     #d36050;
+@errorText:       #c81717;
+@color-da0000:    #da0000;
+@color-d0021b:    #d0021b;
+@color-f93a43:    #f93a43;
+
+// Yellows-orange
+@warningBorder:     #b4a68d;
+@warningBackground: #fff8d7;
+@warningClose:      #e2d59a;
+@color-fdd9b6:      #fdd9b6;
+@color-fa9f47:      #fa9f47;
 @casablanca-yellow: #f8b43f;
-@chesnut-red: #d36050;
+
+// Purple
+@color-purple_hover:    #f2ebf8;
+@color-header_top:      #a44dd7;
+@akeneo-purple:         #9452BA;
+@color-purple_light:    #8e3bc4;
+@color-header_bottom:   #7225ad;
+@color-6800A9:          #6800A9;
+@color-purple_dark:     #66279c;
 @color-new-purple-dark: #5f2385;
 
-@black:       #000;
-@grayDarker:  #222;
-@grayDark:    #333;
-@color-444:   #444;
-@gray:        #555;
-@color-777:   #777;
-@color-888:   #888;
-@grayLight:   #999;
-@color-aaa:   #aaa;
-@color-bbb:   #bbb;
-@color-ccc:   #ccc;
-@color-ddd:   #ddd;
-@grayLighter: #eee;
-@color-grey_tab: #fafafa;
-@whiteDarker: #f4f4f4;
-@whiteDark:   #f9f9f9;
-@white:       #fff;
+// Blues
+@color-149bdf:           #149bdf;
+@blue-danube:            #5992c7;
+@btnInfoBackgroundLight: #739cdc;
+@color-5e8dcb:           #5e8dcb;
+@color-37485f:           #37485f;
+@color-2a2f36:           #2a2f36;
+@color-354150:           #354150;
+@akeneo-dark:            #11324d;
 
-@color-58BB00: #58BB00;
-@color-33be00: #33be00;
-@color-67b373: #67b373;
-@color-4c9858: #4c9858;
-@color-4d9a59: #4d9a59;
-@color-7dbf16: #7dbf16;
-@color-7ec500: #7ec500;
-@color-6800A9: #6800A9;
-@color-da0000: #da0000;
-@color-fdd9b6: #fdd9b6;
-@color-fa9f47: #fa9f47;
-@color-e4e4e4: #e4e4e4;
-@color-5e8dcb: #5e8dcb;
-@color-edf1f2: #edf1f2;
-@color-e0e7e9: #e0e7e9;
-@color-f6f8f8: #f6f8f8;
-@color-e3eaeb: #e3eaeb;
-@color-e4eaec: #e4eaec;
-@color-cbcbd2: #cbcbd2;
-@color-ececf0: #ececf0;
-@color-a1a9b7: #a1a9b7;
-@color-67768A: #67768A;
-@color-cad2da: #cad2da;
-@color-b2bac2: #b2bac2;
-@color-37485f: #37485f;
-@color-2a2f36: #2a2f36;
-@color-354150: #354150;
-@color-dbe2ea: #dbe2ea;
+// Blue-frays
 @color-f7fafc: #f7fafc;
-@color-8ba1b6: #8ba1b6;
+@color-ececf0: #ececf0;
 @color-ecf1f9: #ecf1f9;
 @color-e6eff8: #e6eff8;
+@color-e0e7e9: #e0e7e9;
+@color-cad2da: #cad2da;
+@color-cbcbd2: #cbcbd2;
+@color-a1a9b7: #a1a9b7;
+@akeneo-grey:  #a1a9b7;
+@color-b2bac2: #b2bac2;
+@color-8ba1b6: #8ba1b6;
+@color-67768A: #67768A;
+@slate-grey:   #67768a;
 @color-67768a: #67768a;
-@color-f1f1f1: #f1f1f1;
-@color-149bdf: #149bdf;
-@color-f93a43: #f93a43;
-@color-d0021b: #d0021b;
 
+// White-blue-grays
+@color-dbe2ea: #dbe2ea;
+@color-e3eaeb: #e3eaeb;
+@color-edf1f2: #edf1f2;
+@color-e4eaec: #e4eaec;
+
+// Grays
+@black:          #000;
+@grayDarker:     #222;
+@grayDark:       #333;
+@color-444:      #444;
+@gray:           #555;
+@color-777:      #777;
+@color-888:      #888;
+@grayLight:      #999;
+@color-aaa:      #aaa;
+@color-bbb:      #bbb;
+@color-ccc:      #ccc;
+@color-ddd:      #ddd;
+@grayLighter:    #eee;
+@color-grey_tab: #fafafa;
+@whiteDarker:    #f4f4f4;
+@whiteDark:      #f9f9f9;
+@white:          #fff;
+
+// Named colors
 @bodyColor: @color-444;
 @color-disabled: @whiteDarker;
 @color-new-purple-medium: @akeneo-purple;
@@ -165,3 +160,4 @@
 @color-light_grey: @grayLighter;
 @color-new-grey: @grayLighter;
 @akeneo-light: @grayLighter;
+@textColor: @bodyColor;
