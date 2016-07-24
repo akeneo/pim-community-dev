@@ -718,6 +718,9 @@ select {
   position: relative;
   overflow: auto;
 }
+.clearfix {
+  .clearfix();
+}
 .clearfix-oro {
   width: 100%;
 }
@@ -828,7 +831,7 @@ textarea {
     top: -9px;
   }
   &:after {
-    border-bottom: 10px solid @color-fff;
+    border-bottom: 10px solid @white;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     content: "";
