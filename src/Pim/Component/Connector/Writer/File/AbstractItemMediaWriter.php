@@ -12,6 +12,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -40,8 +41,14 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
     /** @var array */
     protected $mediaAttributeTypes;
 
+    /** @var OptionsResolver */
+    protected $filePathResolver;
+
     /** @var StepExecution */
     protected $stepExecution;
+
+    /** @var array */
+    protected $filePathResolverOptions;
 
     /** @var Filesystem */
     protected $localFs;
@@ -74,6 +81,14 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
         $this->attributeRepository = $attributeRepository;
         $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->fileExporterPath = $fileExporterPath;
+
+        $this->filePathResolver = new OptionsResolver();
+        $this->filePathResolver->setRequired('parameters');
+        $this->filePathResolver->setAllowedTypes('parameters', 'array');
+
+        $this->filePathResolverOptions = [
+            'parameters' => ['%datetime%' => date('Y-m-d_H:i:s')]
+        ];
 
         $this->localFs = new Filesystem();
     }
@@ -144,8 +159,18 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
     public function getPath()
     {
         $parameters = $this->stepExecution->getJobParameters();
+        $filePath = $parameters->get('filePath');
 
-        return $parameters->get('filePath');
+        if ($parameters->has('mainContext')) {
+            $mainContext = $parameters->get('mainContext');
+            foreach ($mainContext as $key => $value) {
+                $this->filePathResolverOptions['parameters']['%' . $key . '%'] = $value;
+            }
+        }
+
+        $options = $this->filePathResolver->resolve($this->filePathResolverOptions);
+
+        return strtr($filePath, $options['parameters']);
     }
 
     /**
