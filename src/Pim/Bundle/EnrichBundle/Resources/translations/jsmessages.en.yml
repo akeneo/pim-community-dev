@@ -358,6 +358,17 @@ pim_enrich:
                     label: "{0} All attributes|{1} One attribute selected|]1,Inf[ {{ count }} attributes selected"
                     help: The categories of the products you want to export
                     empty: All attributes will be exported
+                    modal:
+                        apply: Apply
+                        cancel: Cancel
+                        title: Attribute selection
+                attributes_selector:
+                    attribute_group: Attribute groups
+                    attributes: "Search in {{ attributeCount }} attributes"
+                    selected: "Selected attributes"
+                    clear: Clear
+                    all_group: All groups
+                    empty_selection: All attributes will be exported
                 family:
                     title: Family
                     help: The families you want to export

@@ -17,8 +17,7 @@ define(
         'oro/loading-mask',
         'pim/fetcher-registry',
         'pim/user-context',
-        'pim/export/product/edit/content/structure/attributes-selector',
-        'pim/i18n'
+        'pim/export/product/edit/content/structure/attributes-selector'
     ],
     function (
         $,
@@ -30,21 +29,10 @@ define(
         LoadingMask,
         fetcherRegistry,
         UserContext,
-        ColumnListView,
-        i18n
+        AttributeSelector
     ) {
-        var Column = Backbone.Model.extend({
-            defaults: {
-                label: '',
-                displayed: false,
-                group: __('system_filter_group')
-            }
-        });
-
-        var ColumnList = Backbone.Collection.extend({ model: Column });
-
         return BaseForm.extend({
-            className: 'control-group attribute-selector',
+            className: 'control-group attributes',
             template: _.template(template),
             events: {
                 'click button': 'openSelector'
@@ -106,62 +94,39 @@ define(
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo($('#container'));
                 loadingMask.show();
+                var selectedAttributes = this.getFormData().structure.attributes || [];
+                var attributeSelector = new AttributeSelector();
+                attributeSelector.setSelected(selectedAttributes);
 
-                // Not scallable at all, we should not release that without proper warning at least
-                fetcherRegistry.getFetcher('attribute').fetchAll().then(function (attributes) {
-                    var selectedAttributes = this.getFormData().structure.attributes || [];
+                var modal = new Backbone.BootstrapModal({
+                    className: 'modal modal-large column-configurator-modal',
+                    modalOptions: {
+                        backdrop: 'static',
+                        keyboard: false
+                    },
+                    allowCancel: true,
+                    okCloses: false,
+                    cancelText: _.__('pim_enrich.export.product.filter.attributes.modal.cancel'),
+                    title: _.__('pim_enrich.export.product.filter.attributes.modal.title'),
+                    content: '<div class="attribute-selector"></div>',
+                    okText: _.__('pim_enrich.export.product.filter.attributes.modal.apply')
+                });
 
-                    attributes = _.filter(attributes, function (attribute) {
-                        return 'pim_catalog_identifier' !== attribute.type;
-                    });
-                    var columns = _.map(attributes, function (attribute) {
-                        return {
-                            label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
-                            code: attribute.code,
-                            displayed: _.contains(selectedAttributes, attribute.code) ||
-                                'pim_catalog_identifier' === attribute.type,
-                            group: i18n.getLabel(
-                                attribute.group.labels,
-                                UserContext.get('uiLocale'),
-                                attribute.group.code
-                            ),
-                            removable: 'pim_catalog_identifier' !== attribute.type
-                        };
-                    });
+                loadingMask.hide();
+                loadingMask.$el.remove();
 
-                    var columnList     = new ColumnList(columns);
-                    var columnListView = new ColumnListView({collection: columnList});
+                modal.open();
+                attributeSelector.setElement('.attribute-selector').render();
 
-                    var modal = new Backbone.BootstrapModal({
-                        className: 'modal modal-large column-configurator-modal',
-                        modalOptions: {
-                            backdrop: 'static',
-                            keyboard: false
-                        },
-                        allowCancel: true,
-                        okCloses: false,
-                        cancelText: _.__('pim_datagrid.column_configurator.cancel'),
-                        title: _.__('pim_datagrid.column_configurator.title'),
-                        content: '<div id="column-configurator" class="row-fluid"></div>',
-                        okText: _.__('pim_datagrid.column_configurator.apply')
-                    });
+                modal.on('ok', function () {
+                    var values = attributeSelector.getSelected();
+                    var data = this.getFormData();
 
-                    loadingMask.hide();
-                    loadingMask.$el.remove();
+                    data.structure.attributes = values;
 
-                    modal.open();
-                    columnListView.setElement('#column-configurator').render();
-
-                    modal.on('ok', function () {
-                        var values = columnListView.getDisplayed();
-                        var data = this.getFormData();
-
-                        data.structure.attributes = values;
-
-                        this.setData(data);
-                        modal.close();
-                        this.render();
-                    }.bind(this));
+                    this.setData(data);
+                    modal.close();
+                    this.render();
                 }.bind(this));
             }
         });
