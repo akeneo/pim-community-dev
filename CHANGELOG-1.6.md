@@ -4,6 +4,7 @@
 
 - PIM-5854: The family code is not displayed at all in the product grid when no family labels
 - PIM-5888: Fix an outline glitch on some buttons
+- PIM-5869: Allow any codes to be used for attributes
 
 ## Functional improvements
 
