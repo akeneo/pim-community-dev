@@ -30,7 +30,7 @@ class CategoryRepository extends NestedTreeRepository implements TranslatedLabel
     public function findTranslatedLabels(array $options = [])
     {
         $query = $this->childrenQueryBuilder(null, true, 'created', 'DESC')
-            ->select('node.id')
+            ->select('node.code')
             ->addSelect('COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', node.code, \']\')) as label')
             ->leftJoin('node.translations', 't', 'WITH', 't.locale = :locale')
             ->setParameter('locale', $this->userContext->getCurrentLocaleCode())
@@ -40,7 +40,7 @@ class CategoryRepository extends NestedTreeRepository implements TranslatedLabel
 
         $choices = [];
         foreach ($query->getArrayResult() as $code) {
-            $choices[$code['id']] = $code['label'];
+            $choices[$code['code']] = $code['label'];
         }
 
         return $choices;

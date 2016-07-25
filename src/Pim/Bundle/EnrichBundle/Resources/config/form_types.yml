@@ -11,6 +11,8 @@ parameters:
     pim_enrich.form.type.association_type.class: Pim\Bundle\EnrichBundle\Form\Type\AssociationTypeType
     pim_enrich.form.type.media.class:            Pim\Bundle\EnrichBundle\Form\Type\MediaType
 
+    pim_enrich.form.type.product_grid_filter_choice.class: Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType
+
     pim_enrich.form.type.image.class:                               Pim\Bundle\EnrichBundle\Form\Type\ImageType
     pim_enrich.form.type.conversion_units.class:                    Pim\Bundle\EnrichBundle\Form\Type\ConversionUnitsType
     pim_enrich.form.type.attribute_option.class:                    Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType
@@ -48,6 +50,16 @@ services:
             - '%pim_catalog.entity.attribute_translation.class%'
             - '%pim_catalog.entity.attribute.class%'
             - '%pim_catalog.entity.attribute_group.class%'
+
+    pim_enrich.form.type.product_grid_filter_choice:
+        class: '%pim_enrich.form.type.product_grid_filter_choice.class%'
+        arguments:
+            - '@pim_enrich.repository.attribute'
+            - '@oro_datagrid.datagrid.manager'
+            - 'product-grid'
+            - ['scope', 'locale']
+        tags:
+            - { name: form.type, alias: pim_enrich_product_grid_filter_choice }
 
     pim_enrich.form.type.attribute_option:
         class: '%pim_enrich.form.type.attribute_option.class%'

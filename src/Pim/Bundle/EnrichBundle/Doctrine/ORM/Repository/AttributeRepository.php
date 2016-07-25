@@ -35,7 +35,7 @@ class AttributeRepository extends EntityRepository implements TranslatedLabelsPr
     public function findTranslatedLabels(array $options = [])
     {
         $queryBuilder = $this->createQueryBuilder('a')
-            ->select('a.id')
+            ->select('a.code')
             ->addSelect('COALESCE(NULLIF(at.label, \'\'), CONCAT(\'[\', a.code, \']\')) as attribute_label')
             ->addSelect('COALESCE(NULLIF(gt.label, \'\'), CONCAT(\'[\', g.code, \']\')) as group_label')
             ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :locale_code')
@@ -50,9 +50,15 @@ class AttributeRepository extends EntityRepository implements TranslatedLabelsPr
             );
         }
 
+        if (isset($options['useable_as_grid_filter'])) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('a.useableAsGridFilter', $options['useable_as_grid_filter'])
+            );
+        }
+
         $choices = [];
         foreach ($queryBuilder->getQuery()->getArrayResult() as $attribute) {
-            $choices[$attribute['group_label']][$attribute['id']] = $attribute['attribute_label'];
+            $choices[$attribute['group_label']][$attribute['code']] = $attribute['attribute_label'];
         }
 
         return $choices;
