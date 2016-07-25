@@ -27,3 +27,15 @@ Feature: Update user preferences
     And I fill in "Asset delay reminder (in days)" with "12"
     And I save the user
     Then the user "Julia" should have an asset delay notification set to 12
+
+  @jira https://akeneo.atlassian.net/browse/PIM-5434
+  Scenario: Editing user profile without access to any category
+    Given the following product category accesses:
+      | product category | user group | access |
+      | 2014_collection  | IT support | none   |
+      | 2015_collection  | IT support | none   |
+      | 2013_collection  | IT support | none   |
+    When I am logged in as "Peter"
+    And I edit the "Peter" user
+    Then I should see "Users"
+    And I should see "Login count"
