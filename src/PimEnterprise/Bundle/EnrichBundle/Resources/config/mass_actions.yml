@@ -43,7 +43,7 @@ services:
             - '@oro_user.manager'
             - '@security.token_storage'
             - '@security.authorization_checker'
-            - '@pim_catalog.query.filtered_product_query_builder_factory'
+            - '@pim_catalog.query.product_query_builder_factory'
 
     pim_enrich.mass_edit_tasklet.unpublish_product:
         class: '%pimee_enrich.mass_edit_tasklet.unpublish_product.class%'
@@ -55,7 +55,7 @@ services:
             - '@oro_user.manager'
             - '@security.token_storage'
             - '@security.authorization_checker'
-            - '@pimee_workflow.doctrine.query.filtered_published_product_query_factory'
+            - '@pimee_workflow.doctrine.query.published_product_query_factory'
 
     # We override mass edit operations services to inject a different background job which
     # take permissions in account & apply rules

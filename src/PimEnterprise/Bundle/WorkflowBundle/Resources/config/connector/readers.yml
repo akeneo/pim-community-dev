@@ -18,7 +18,7 @@ services:
     pimee_workflow.connector.reader.mass_edit.published_product:
         class: '%pim_connector.reader.database.product.class%'
         arguments:
-            - '@pimee_workflow.doctrine.query.filtered_published_product_query_factory'
+            - '@pimee_workflow.doctrine.query.published_product_query_factory'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'

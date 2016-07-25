@@ -71,7 +71,7 @@ class QueryPublishedProductCommand extends QueryProductCommand
      */
     protected function getProductQueryBuilder(array $filters)
     {
-        $factory = $this->getContainer()->get('pimee_workflow.doctrine.query.filtered_published_product_query_factory');
+        $factory = $this->getContainer()->get('pimee_workflow.doctrine.query.published_product_query_factory');
 
         return $factory->create(['filters' => $filters]);
     }

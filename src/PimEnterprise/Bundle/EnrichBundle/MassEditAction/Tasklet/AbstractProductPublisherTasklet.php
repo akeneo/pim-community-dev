@@ -91,7 +91,7 @@ abstract class AbstractProductPublisherTasklet extends AbstractConfigurableStepE
      *
      * @return ProductQueryBuilderInterface
      */
-    abstract protected function getProductQueryBuilder(array $filters);
+    abstract protected function getProductQueryBuilder(array $filters = []);
 
     /**
      * Initialize the SecurityContext from the given $stepExecution
