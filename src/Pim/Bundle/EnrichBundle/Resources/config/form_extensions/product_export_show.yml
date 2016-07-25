@@ -33,6 +33,14 @@ extensions:
         config:
             isEditable: false
 
+    pim-product-export-show-content-structure-attributes:
+        module: pim/export/product/edit/content/structure/attributes
+        parent: pim-product-export-show-content-structure
+        targetZone: filters
+        position: 110
+        config:
+            isEditable: false
+
     pim-product-export-show-content-data:
         module: pim/export/product/edit/content/data
         parent: pim-product-export-show-content

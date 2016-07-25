@@ -223,6 +223,7 @@ config:
         pim/export/product/edit/content/structure/scope:                pimenrich/js/export/product/edit/content/structure/scope
         pim/export/product/edit/content/structure/locales:              pimenrich/js/export/product/edit/content/structure/locales
         pim/export/product/edit/content/structure/attributes:           pimenrich/js/export/product/edit/content/structure/attributes
+        pim/export/product/edit/content/structure/attributes-selector:  pimenrich/js/export/product/edit/content/structure/attributes-selector
         pim/export/product/edit/content/data:                           pimenrich/js/export/product/edit/content/data
         pim/export/product/edit/content/data/default-attribute-filters: pimenrich/js/export/product/edit/content/data/default-attribute-filters
         pim/export/product/edit/content/data/help:                      pimenrich/js/export/product/edit/content/data/help
@@ -295,7 +296,8 @@ config:
         pim/form/common/attributes/copy:                     pimenrich/js/form/common/attributes/copy
         pim/form/common/attributes/copy-field:               pimenrich/js/form/common/attributes/copy-field
 
-        # Add attribute component
+        # Common components
+        pim/common/column-list-view:     pimenrich/js/common/column-list-view
         pim/common/add-attribute-line:   pimenrich/js/form/common/attributes/add-attribute-line
         pim/common/add-attribute-footer: pimenrich/js/form/common/attributes/add-attribute-footer
 
