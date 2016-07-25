@@ -56,7 +56,7 @@ define([
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         isEmpty: function () {
             return null === this.getValue();
