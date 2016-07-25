@@ -28,7 +28,7 @@ services:
     pim_connector.reader.database.product:
         class: '%pim_connector.reader.database.product.class%'
         arguments:
-            - '@pim_catalog.query.filtered_product_query_builder_factory'
+            - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
