@@ -394,4 +394,5 @@
 - Change constructor of `Akeneo\Component\Batch\Event\InvalidItemEvent`.
 - Change constructor of `Akeneo\Component\Batch\Item\InvalidItemException`.
 - Change method `addWarning()` signature of `Akeneo\Component\Batch\Item\InvalidItemException`.
-- Removed `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader`, use `Pim\Component\Connector\Reader\Database\ProductReader` instead
+- Remove the class `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader`, use `Pim\Component\Connector\Reader\Database\ProductReader` instead.
+- Remove the class `Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\VariantGroupCleaner`, logic moved in `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredVariantGroupProductReader`.

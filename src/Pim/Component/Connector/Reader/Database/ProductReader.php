@@ -9,7 +9,6 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Component\Catalog\Converter\MetricConverter;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -168,14 +167,8 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
             $options['default_scope'] = $channel->getCode();
         }
 
-        $productsCursor = null;
-        try {
-            $productQueryBuilder = $this->pqbFactory->create($options);
-            $productsCursor = $productQueryBuilder->execute();
-        } catch (InvalidArgumentException $e) {
-            $productsCursor = new \ArrayIterator();
-        }
+        $productQueryBuilder = $this->pqbFactory->create($options);
 
-        return $productsCursor;
+        return $productQueryBuilder->execute();
     }
 }
