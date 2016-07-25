@@ -26,14 +26,14 @@ class AttributeController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var SearchableRepositoryInterface */
-    protected $attributeSearchRepository;
-
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
     /** @var ObjectFilterInterface */
     protected $attributeFilter;
+
+    /** @var SearchableRepositoryInterface */
+    protected $attributeSearchRepository;
 
     /**
      * @param AttributeRepositoryInterface  $attributeRepository
@@ -47,7 +47,7 @@ class AttributeController
         NormalizerInterface $normalizer,
         TokenStorageInterface $tokenStorage,
         ObjectFilterInterface $attributeFilter,
-        SearchableRepositoryInterface $attributeSearchRepository = null
+        SearchableRepositoryInterface $attributeSearchRepository
     ) {
         $this->attributeRepository       = $attributeRepository;
         $this->normalizer                = $normalizer;
@@ -79,6 +79,11 @@ class AttributeController
         if ($request->request->has('types')) {
             $options['types'] = explode(',', $request->request->get('types'));
         }
+
+        if ($request->request->has('attribute_groups')) {
+            $options['attribute_groups'] = explode(',', $request->request->get('attribute_groups'));
+        }
+
         if (empty($options)) {
             $options = $request->request->get(
                 'options',
@@ -89,17 +94,10 @@ class AttributeController
         $token = $this->tokenStorage->getToken();
         $options['user_groups_ids'] = $token->getUser()->getGroupsIds();
 
-        if (null !== $this->attributeSearchRepository) {
-            $attributes = $this->attributeSearchRepository->findBySearch(
-                $request->request->get('search'),
-                $options
-            );
-        } else {
-            if (isset($options['identifiers'])) {
-                $options['code'] = $options['identifiers'];
-            }
-            $attributes = $this->attributeRepository->findBy($options);
-        }
+        $attributes = $this->attributeSearchRepository->findBySearch(
+            $request->request->get('search'),
+            $options
+        );
 
         $normalizedAttributes = $this->normalizer->normalize($attributes, 'internal_api', $context);
 
