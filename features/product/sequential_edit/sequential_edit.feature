@@ -42,24 +42,18 @@ Feature: Edit sequentially some products
       Given I sort by "SKU" value ascending
       And I select rows white_sandal, boot and sneaker
       When I press sequential-edit button
-      And I should see the sequential edit progression:
-        """
-        1 / 3 products
-        """
+      Then I should be on the product "boot" edit page
+      And I should see the text "1 / 3 products"
       When I am on the products page
       And I select rows white_sandal, blue_sandal, boot and sneaker
       And I press sequential-edit button
-      And I should see the sequential edit progression:
-        """
-        1 / 4 products
-        """
+      Then I should be on the product "blue_sandal" edit page
+      And I should see the text "1 / 4 products"
       When I fill in the following information:
         | Name | A new name |
       And I press the "Save and next" button
-      And I should see the sequential edit progression:
-        """
-        2 / 4 products
-        """
+      Then I should be on the product "boot" edit page
+      And I should see the text "2 / 4 products"
 
     @jira https://akeneo.atlassian.net/browse/PIM-4672
     Scenario: Keep product grid sorting order in sequential edit

@@ -626,18 +626,6 @@ class Edit extends ProductEditForm
     }
 
     /**
-     * @throws \Exception
-     *
-     * @return string
-     */
-    public function waitForProgressionBar()
-    {
-        $this->spin(function () {
-            return $this->getElement('Progress bar');
-        }, 'Cannot find Progress bar element');
-    }
-
-    /**
      * Find an attribute group in the nav
      *
      * @param string $group

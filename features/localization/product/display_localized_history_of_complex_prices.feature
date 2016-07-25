@@ -11,10 +11,12 @@ Feature: Display the localized product history for complex prices
       | localized_price | localized_price | localized_price | prices | yes              | no               | other | fr_FR, en_US | yes         | no       |
       | scoped_price    | scoped_price    | scoped_price    | prices | yes              | no               | other |              | no          | yes      |
       | complex_price   | complex_price   | complex_price   | prices | yes              | no               | other | fr_FR, en_US | yes         | yes      |
-    And the following products:
-      | sku      |
-      | sandal   |
     And I am logged in as "admin"
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU | sandal |
+    And I press the "Save" button in the popin
     And I edit the "sandal" product
     And I add available attributes localized_price, scoped_price and complex_price
     And I change the "localized_price" to "0.12 EUR"
