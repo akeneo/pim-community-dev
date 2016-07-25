@@ -53,7 +53,7 @@ class ProductFilterSpec extends ObjectBehavior
             'description' => 'pim_catalog_textarea'
         ]);
 
-        $normalizer->normalize($product, 'json', ['exclude_associations' => true])
+        $normalizer->normalize($product, 'json')
             ->willReturn($originalValues);
 
         $comparatorRegistry->getFieldComparator('family')->willReturn($familyComparator);
@@ -111,7 +111,7 @@ class ProductFilterSpec extends ObjectBehavior
             'description' => 'pim_catalog_textarea'
         ]);
 
-        $normalizer->normalize($product, 'json', ['exclude_associations' => true])
+        $normalizer->normalize($product, 'json')
             ->willReturn($originalValues);
 
         $comparatorRegistry->getFieldComparator('family')->willReturn($familyComparator);
@@ -179,7 +179,7 @@ class ProductFilterSpec extends ObjectBehavior
             'description' => 'pim_catalog_textarea'
         ]);
 
-        $normalizer->normalize($product, 'json', ['exclude_associations' => true])
+        $normalizer->normalize($product, 'json')
             ->willReturn($originalValues);
 
         $comparatorRegistry->getFieldComparator('family')->willReturn($familyComparator);
@@ -202,7 +202,7 @@ class ProductFilterSpec extends ObjectBehavior
             'categories' => []
         ];
 
-        $normalizer->normalize($product, 'json', ['exclude_associations' => true])
+        $normalizer->normalize($product, 'json')
             ->willReturn($originalValues);
 
         $this

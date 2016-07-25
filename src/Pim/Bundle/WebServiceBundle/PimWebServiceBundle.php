@@ -20,6 +20,5 @@ class PimWebServiceBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new RegisterSerializerPass('pim_webservice.serializer'));
     }
 }
