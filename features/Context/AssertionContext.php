@@ -711,25 +711,6 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
-     * @param PyStringNode $text
-     *
-     * @throws ResponseTextException
-     * @throws \Exception
-     *
-     * @Then /^I should see the sequential edit progression:$/
-     */
-    public function iShouldSeeTheSequentialEditProgression(PyStringNode $text)
-    {
-        $this->getCurrentPage()->waitForProgressionBar();
-
-        $this->spin(function () use ($text) {
-            $this->assertSession()->pageTextContains((string) $text);
-
-            return true;
-        }, sprintf('Cannot find text "%s" in Sequential edit progression', (string) $text));
-    }
-
-    /**
      * Checks that avatar was not the default one
      *
      * @Then /^I should not see the default avatar$/
