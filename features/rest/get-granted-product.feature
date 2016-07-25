@@ -10,7 +10,6 @@ Feature: Expose product data via a REST API
       | sandals    | My sandals | My great sandals         | My great new sandals     | 20        | 30        | sandals     | old value        |
       | oldsandals | My sandals | My great sandals         | My great new sandals     | 20        | 30        | old_sandals | old value        |
 
-  @skip
   Scenario: Successfully retrieve a product by applying permissions on attribute groups
     Given I am authenticating as "admin" with "admin_api_key" api key
     And I request information for product "sandals"
@@ -21,28 +20,23 @@ Feature: Expose product data via a REST API
     {
       "family":null,
       "groups":[],
+      "variant_group":null,
       "categories":["sandals"],
       "enabled":true,
       "associations":[],
       "values": {
         "sku":[
-          {"locale":null,"scope":null,"value":"sandals"}
+          {"locale":null,"scope":null,"data":"sandals"}
         ],
         "name":[
-          {"locale":"en_US","scope":null,"value":"My sandals"},
-          {"locale":"de_DE","scope":null,"value":null},
-          {"locale":"fr_FR","scope":null,"value":null}
+          {"locale":"en_US","scope":null,"data":"My sandals"}
         ],
         "description":[
-          {"locale":"en_US","scope":"mobile","value":"My great sandals"},
-          {"locale":"en_US","scope":"tablet","value":"My great new sandals"},
-          {"locale":"de_DE","scope":"mobile","value":null},
-          {"locale":"fr_FR","scope":"mobile","value":null},
-          {"locale":"de_DE","scope":"tablet","value":null},
-          {"locale":"fr_FR","scope":"tablet","value":null}
+          {"locale":"en_US","scope":"mobile","data":"My great sandals"},
+          {"locale":"en_US","scope":"tablet","data":"My great new sandals"}
         ],
         "price":[
-          {"locale":null,"scope":null,"value":[
+          {"locale":null,"scope":null,"data":[
             {"data":"20.00","currency":"EUR"},
             {"data":"30.00","currency":"USD"}
           ]}
@@ -52,7 +46,6 @@ Feature: Expose product data via a REST API
     }
     """
 
-  @skip
   Scenario: Fail to fetch a not granted product by applying permissions on categories
     Given I am authenticating as "admin" with "admin_api_key" api key
     And I request information for product "oldsandals"

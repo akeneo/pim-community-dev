@@ -5,5 +5,5 @@ services:
     pim_webservice.handler.rest.product:
         class: '%pimee_webservice.handler.rest.product.class%'
         arguments:
-            - '@pim_webservice.serializer'
+            - '@pim_serializer'
             - '@security.authorization_checker'
