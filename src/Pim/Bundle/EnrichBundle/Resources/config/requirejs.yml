@@ -383,13 +383,15 @@ config:
         pim/template/variant-group/form/no-attribute:          pimenrich/templates/variant-group/form/no-attribute.html
 
         # Exports
-        pim/template/export/product/edit/content:                      pimenrich/templates/export/product/edit/content.html
-        pim/template/export/product/edit/content/data:                 pimenrich/templates/export/product/edit/content/data.html
-        pim/template/export/product/edit/content/data/help:            pimenrich/templates/export/product/edit/content/data/help.html
-        pim/template/export/product/edit/content/structure:            pimenrich/templates/export/product/edit/content/structure.html
-        pim/template/export/product/edit/content/structure/scope:      pimenrich/templates/export/product/edit/content/structure/scope.html
-        pim/template/export/product/edit/content/structure/locales:    pimenrich/templates/export/product/edit/content/structure/locales.html
-        pim/template/export/product/edit/content/structure/attributes: pimenrich/templates/export/product/edit/content/structure/attributes.html
+        pim/template/export/product/edit/content:                               pimenrich/templates/export/product/edit/content.html
+        pim/template/export/product/edit/content/data:                          pimenrich/templates/export/product/edit/content/data.html
+        pim/template/export/product/edit/content/data/help:                     pimenrich/templates/export/product/edit/content/data/help.html
+        pim/template/export/product/edit/content/structure:                     pimenrich/templates/export/product/edit/content/structure.html
+        pim/template/export/product/edit/content/structure/scope:               pimenrich/templates/export/product/edit/content/structure/scope.html
+        pim/template/export/product/edit/content/structure/locales:             pimenrich/templates/export/product/edit/content/structure/locales.html
+        pim/template/export/product/edit/content/structure/attributes:          pimenrich/templates/export/product/edit/content/structure/attributes.html
+        pim/template/export/product/edit/content/structure/attributes-selector: pimenrich/templates/export/product/edit/content/structure/attributes-selector.html
+        pim/template/export/product/edit/content/structure/attribute-list:      pimenrich/templates/export/product/edit/content/structure/attribute-list.html
 
         # Filters
         pim/template/filter/filter:                     pimenrich/templates/filter/filter.html
