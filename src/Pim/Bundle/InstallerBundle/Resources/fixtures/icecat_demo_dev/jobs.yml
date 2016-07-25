@@ -31,7 +31,7 @@ jobs:
             filters:
                 data: []
                 structure:
-                    channel: mobile
+                    scope: mobile
                     locales:
                         - fr_FR
                         - en_US
@@ -246,7 +246,7 @@ jobs:
             filters:
                 data: []
                 structure:
-                    channel: mobile
+                    scope: mobile
                     locales:
                         - fr_FR
                         - en_US

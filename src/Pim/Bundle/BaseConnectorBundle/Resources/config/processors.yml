@@ -15,4 +15,6 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.builder.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
+            - '@pim_catalog.repository.attribute'
             - ['pim_catalog_file', 'pim_catalog_image']
