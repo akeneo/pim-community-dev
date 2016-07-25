@@ -37,19 +37,12 @@ class ProductQueryUtility
         $locale = null,
         $scope = null
     ) {
-        if ($attribute->isLocalizable() && null === $locale) {
-            throw new \LogicException('Locale is not configured');
-        }
-        if ($attribute->isScopable() && null === $scope) {
-            throw new \LogicException('Scope is not configured');
-        }
-
         return self::getNormalizedValueField(
             $attribute->getCode(),
             $attribute->isLocalizable(),
             $attribute->isScopable(),
-            ($attribute->isLocalizable() ? $locale : null),
-            ($attribute->isScopable() ? $scope : null)
+            $locale,
+            $scope
         );
     }
 
@@ -88,16 +81,14 @@ class ProductQueryUtility
         $suffix = '';
 
         if ($localizable) {
-            if (null === $locale) {
-                throw new \LogicException('Locale is not configured');
+            if (null !== $locale) {
+                $suffix = sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $locale);
             }
-            $suffix = sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $locale);
         }
         if ($scopable) {
-            if (null === $scope) {
-                throw new \LogicException('Scope is not configured');
+            if (null !== $scope) {
+                $suffix .= sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $scope);
             }
-            $suffix .= sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $scope);
         }
 
         return $attributeCode.$suffix;

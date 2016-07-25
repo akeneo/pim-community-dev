@@ -50,8 +50,6 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'boolean');
-
         if (!is_bool($value)) {
             throw InvalidArgumentException::booleanExpected(
                 $attribute->getCode(),

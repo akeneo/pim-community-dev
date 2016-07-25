@@ -61,8 +61,6 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             );
         }
 
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'string');
-
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
         }

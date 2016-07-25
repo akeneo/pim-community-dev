@@ -57,8 +57,6 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
-
         if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
             $this->addEmptyTypeFilter($attribute, $operator, $locale, $scope);
         } else {

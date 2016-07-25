@@ -69,7 +69,6 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
             );
         }
 
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'option');
         $field = $options['field'];
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {

@@ -37,29 +37,4 @@ abstract class AbstractAttributeFilter extends AbstractFilter implements Attribu
     {
         return in_array($attribute->getAttributeType(), $this->supportedAttributeTypes);
     }
-
-    /**
-     * Check locale and scope are valid
-     *
-     * @param AttributeInterface $attribute
-     * @param string             $locale
-     * @param string             $scope
-     * @param string             $type
-     *
-     * @throws InvalidArgumentException
-     */
-    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
-    {
-        try {
-            $this->attrValidatorHelper->validateLocale($attribute, $locale);
-            $this->attrValidatorHelper->validateScope($attribute, $scope);
-        } catch (\LogicException $e) {
-            throw InvalidArgumentException::expectedFromPreviousException(
-                $e,
-                $attribute->getCode(),
-                'filter',
-                $type
-            );
-        }
-    }
 }

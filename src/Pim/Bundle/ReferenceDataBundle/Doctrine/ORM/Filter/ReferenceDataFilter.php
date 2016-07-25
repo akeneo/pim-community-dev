@@ -78,8 +78,6 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
             );
         }
 
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'reference_data');
-
         if (Operators::IS_EMPTY !== $operator) {
             $field = $options['field'];
             $this->checkValue($field, $value);

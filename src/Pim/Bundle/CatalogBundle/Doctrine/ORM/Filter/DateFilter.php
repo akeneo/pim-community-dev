@@ -45,8 +45,6 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'date');
-
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $value = $this->formatValues($attribute->getCode(), $value);
         }
