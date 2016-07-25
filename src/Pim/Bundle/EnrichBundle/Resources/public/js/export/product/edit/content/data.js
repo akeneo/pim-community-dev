@@ -33,7 +33,7 @@ define(
             template: _.template(template),
 
             /**
-             * {@inherit}
+             * {@inheritdoc}
              */
             initialize: function (config) {
                 this.config = config.config;
@@ -42,7 +42,7 @@ define(
             },
 
             /**
-             * {@inherit}
+             * {@inheritdoc}
              */
             configure: function () {
                 this.onExtensions('add-attribute:add', function (event) {
@@ -53,11 +53,13 @@ define(
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render.bind(this));
 
+                this.filterViews = {};
+
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
-             * {@inherit}
+             * {@inheritdoc}
              */
             render: function () {
                 if (!this.configured) {

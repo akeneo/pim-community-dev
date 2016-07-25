@@ -30,7 +30,7 @@ define(
         FetcherRegistry,
         FieldManager
     ) {
-        var FormView = BaseForm.extend({
+        return BaseForm.extend({
             template: _.template(template),
 
             /**
@@ -83,7 +83,5 @@ define(
                 this.render();
             }
         });
-
-        return FormView;
     }
 );

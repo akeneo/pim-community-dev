@@ -66,9 +66,9 @@ define(
             addExtension: function (code, extension, zone, position) {
                 extension.setParent(this);
 
-                extension.code         = code;
-                extension.targetZone   = zone;
-                extension.position     = position;
+                extension.code       = code;
+                extension.targetZone = zone;
+                extension.position   = position;
 
                 this.extensions[code] = extension;
             },
