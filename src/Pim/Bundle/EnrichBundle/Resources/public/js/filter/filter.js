@@ -134,7 +134,7 @@ define([
         },
 
         /**
-         * Returns whether this filter is editable.
+         * Is this filter editable?
          *
          * @returns {boolean}
          */
@@ -161,7 +161,7 @@ define([
         },
 
         /**
-         * Is the filter removable?
+         * Is this filter removable?
          *
          * @return {boolean}
          */
