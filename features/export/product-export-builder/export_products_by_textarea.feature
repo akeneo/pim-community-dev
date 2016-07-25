@@ -16,7 +16,6 @@ Feature: Export products according to textarea attribute filter
       | SNKRS-1N | 1       | rangers | summer_collection |                          |
     And I am logged in as "Julia"
 
-  @skip
   Scenario: Export products by filtering on textarea values without using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -30,7 +29,6 @@ Feature: Export products according to textarea attribute filter
     SNKRS-1B;summer_collection;1;rangers;;Awesome
     """
 
-  @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -49,7 +47,6 @@ Feature: Export products according to textarea attribute filter
     SNKRS-1B;summer_collection;1;rangers;;Awesome
     """
 
-  @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -68,7 +65,6 @@ Feature: Export products according to textarea attribute filter
     SNKRS-1R;summer_collection;1;rangers;;Awesome description
     """
 
-  @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -88,7 +84,6 @@ Feature: Export products according to textarea attribute filter
     SNKRS-1R;summer_collection;1;rangers;;Awesome description
     """
 
-  @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -108,7 +103,6 @@ Feature: Export products according to textarea attribute filter
     SNKRS-1R;summer_collection;1;rangers;;Awesome description
     """
 
-  @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -127,7 +121,6 @@ Feature: Export products according to textarea attribute filter
     SNKRS-1B;summer_collection;1;rangers;;Awesome
     """
 
-  @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
