@@ -9,19 +9,16 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class MetricFilterSpec extends ObjectBehavior
 {
     function let(
         QueryBuilder $qb,
-        AttributeValidatorHelper $attrValidatorHelper,
         MeasureManager $measureManager,
         MeasureConverter $measureConverter
     ) {
         $this->beConstructedWith(
-            $attrValidatorHelper,
             $measureManager,
             $measureConverter,
             ['pim_catalog_metric'],
@@ -55,12 +52,8 @@ class MetricFilterSpec extends ObjectBehavior
         $qb,
         $measureManager,
         $measureConverter,
-        $attrValidatorHelper,
         AttributeInterface $attribute
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -89,11 +82,8 @@ class MetricFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, '=', $value);
     }
 
-    function it_adds_an_empty_filter_to_the_query($qb, $attrValidatorHelper, AttributeInterface $attribute)
+    function it_adds_an_empty_filter_to_the_query($qb, AttributeInterface $attribute)
     {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -110,11 +100,8 @@ class MetricFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'EMPTY', null);
     }
 
-    function it_adds_a_not_empty_filter_to_the_query($qb, $attrValidatorHelper, AttributeInterface $attribute, Expr $expr)
+    function it_adds_a_not_empty_filter_to_the_query($qb, AttributeInterface $attribute, Expr $expr)
     {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);

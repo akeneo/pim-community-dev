@@ -2,10 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Abstract ORM attribute filter
@@ -16,9 +14,6 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 abstract class AbstractAttributeFilter extends AbstractFilter implements AttributeFilterInterface
 {
-    /** @var AttributeValidatorHelper */
-    protected $attrValidatorHelper;
-
     /** @var string[] */
     protected $supportedAttributeTypes;
 

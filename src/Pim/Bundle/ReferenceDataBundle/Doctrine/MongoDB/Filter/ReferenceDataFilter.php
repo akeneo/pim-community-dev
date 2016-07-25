@@ -10,7 +10,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 
 /**
@@ -22,9 +21,6 @@ use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
  */
 class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var AttributeValidatorHelper */
-    protected $attrValidatorHelper;
-
     /** @var ConfigurationRegistryInterface */
     protected $registry;
 
@@ -32,18 +28,15 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     protected $idsResolver;
 
     /**
-     * @param AttributeValidatorHelper       $attrValidatorHelper
      * @param ConfigurationRegistryInterface $registry
      * @param ReferenceDataIdResolver        $idsResolver
      * @param array                          $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
         ConfigurationRegistryInterface $registry,
         ReferenceDataIdResolver $idsResolver,
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->registry = $registry;
         $this->idsResolver = $idsResolver;
         $this->supportedOperators  = $supportedOperators;
@@ -60,8 +53,6 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
-
         if (Operators::IS_EMPTY !== $operator) {
             $field = $options['field'];
             $this->checkValue($field, $value);

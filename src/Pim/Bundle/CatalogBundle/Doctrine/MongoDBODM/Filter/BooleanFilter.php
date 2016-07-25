@@ -8,7 +8,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Boolean filter
@@ -23,18 +22,15 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
     protected $supportedFields;
 
     /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributeTypes
-     * @param array                    $supportedFields
-     * @param array                    $supportedOperators
+     * @param array $supportedAttributeTypes
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
         array $supportedAttributeTypes = [],
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedFields     = $supportedFields;
         $this->supportedOperators  = $supportedOperators;

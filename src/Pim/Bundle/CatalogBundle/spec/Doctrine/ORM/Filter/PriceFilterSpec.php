@@ -9,18 +9,15 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class PriceFilterSpec extends ObjectBehavior
 {
     function let(
         QueryBuilder $queryBuilder,
-        CurrencyRepositoryInterface $currencyRepository,
-        AttributeValidatorHelper $attrValidatorHelper
+        CurrencyRepositoryInterface $currencyRepository
     ) {
         $this->beConstructedWith(
-            $attrValidatorHelper,
             $currencyRepository,
             ['pim_catalog_price_collection'],
             ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
@@ -41,14 +38,10 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_equals_filter_in_the_query(
-        $attrValidatorHelper,
         $currencyRepository,
         QueryBuilder $queryBuilder,
         AttributeInterface $price
     ) {
-        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
-
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
@@ -70,13 +63,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_greater_than_filter_in_the_query(
         $currencyRepository,
-        $attrValidatorHelper,
         QueryBuilder $queryBuilder,
         AttributeInterface $price
     ) {
-        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
-
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
@@ -98,13 +87,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_greater_than_or_equals_filter_in_the_query(
         $currencyRepository,
-        $attrValidatorHelper,
         QueryBuilder $queryBuilder,
         AttributeInterface $price
     ) {
-        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
-
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
@@ -126,13 +111,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_less_than_filter_in_the_query(
         $currencyRepository,
-        $attrValidatorHelper,
         QueryBuilder $queryBuilder,
         AttributeInterface $price
     ) {
-        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
-
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
@@ -154,13 +135,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_less_than_or_equals_filter_in_the_query(
         $currencyRepository,
-        $attrValidatorHelper,
         QueryBuilder $queryBuilder,
         AttributeInterface $price
     ) {
-        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
-
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
@@ -254,7 +231,6 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_not_equal_filter_in_the_query(
-        $attrValidatorHelper,
         $currencyRepository,
         QueryBuilder $queryBuilder,
         AttributeInterface $price,
@@ -263,9 +239,6 @@ class PriceFilterSpec extends ObjectBehavior
         Expr\Literal $currencyLiteral,
         Expr\Literal $dataLiteral
     ) {
-        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
-
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
@@ -332,8 +305,10 @@ class PriceFilterSpec extends ObjectBehavior
             ->during('addAttributeFilter', [$attribute, '=', $value]);
     }
 
-    function it_throws_an_exception_if_value_had_not_a_valid_currency($currencyRepository, AttributeInterface $attribute)
-    {
+    function it_throws_an_exception_if_value_had_not_a_valid_currency(
+        $currencyRepository,
+        AttributeInterface $attribute
+    ) {
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $attribute->getCode()->willReturn('price_code');

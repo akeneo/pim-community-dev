@@ -8,7 +8,6 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Metric filter
@@ -26,20 +25,17 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected $measureConverter;
 
     /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param MeasureManager           $measureManager
-     * @param MeasureConverter         $measureConverter
-     * @param array                    $supportedAttributeTypes
-     * @param array                    $supportedOperators
+     * @param MeasureManager   $measureManager
+     * @param MeasureConverter $measureConverter
+     * @param array            $supportedAttributeTypes
+     * @param array            $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
         MeasureManager $measureManager,
         MeasureConverter $measureConverter,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
         $this->measureManager          = $measureManager;
         $this->measureConverter        = $measureConverter;
         $this->supportedAttributeTypes = $supportedAttributeTypes;

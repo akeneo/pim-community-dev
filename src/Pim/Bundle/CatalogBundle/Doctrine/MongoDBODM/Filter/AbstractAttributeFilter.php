@@ -16,9 +16,6 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 abstract class AbstractAttributeFilter extends AbstractFilter implements AttributeFilterInterface
 {
-    /** @var AttributeValidatorHelper */
-    protected $attrValidatorHelper;
-
     /** @var string[] */
     protected $supportedAttributeTypes;
 

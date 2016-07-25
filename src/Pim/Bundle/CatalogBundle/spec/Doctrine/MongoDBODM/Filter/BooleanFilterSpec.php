@@ -6,7 +6,6 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 /**
@@ -14,9 +13,9 @@ use Prophecy\Argument;
  */
 class BooleanFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb, AttributeValidatorHelper $attrValidatorHelper)
+    function let(Builder $qb)
     {
-        $this->beConstructedWith($attrValidatorHelper, ['pim_catalog_boolean'], ['enabled'], ['=', '!=']);
+        $this->beConstructedWith(['pim_catalog_boolean'], ['enabled'], ['=', '!=']);
         $this->setQueryBuilder($qb);
     }
 
@@ -62,12 +61,8 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_adds_an_equal_filter_on_an_attribute_in_the_query(
         $qb,
-        $attrValidatorHelper,
         AttributeInterface $attribute
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getBackendType()->willReturn('backend_type');
         $attribute->getCode()->willReturn('handmade');
         $attribute->getId()->willReturn(42);
@@ -82,12 +77,8 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_adds_a_not_equal_filter_on_an_attribute_in_the_query(
         $qb,
-        $attrValidatorHelper,
         AttributeInterface $attribute
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getBackendType()->willReturn('backend_type');
         $attribute->getCode()->willReturn('enabled');
         $attribute->getId()->willReturn(42);
@@ -103,7 +94,9 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_a_boolean()
     {
-        $this->shouldThrow(InvalidArgumentException::booleanExpected('enabled', 'filter', 'boolean', gettype('not a boolean')))
+        $this->shouldThrow(
+            InvalidArgumentException::booleanExpected('enabled', 'filter', 'boolean', gettype('not a boolean'))
+        )
             ->during('addFieldFilter', ['enabled', '=', 'not a boolean']);
     }
 

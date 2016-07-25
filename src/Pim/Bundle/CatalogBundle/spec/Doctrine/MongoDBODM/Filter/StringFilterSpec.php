@@ -6,7 +6,6 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 /**
@@ -14,10 +13,9 @@ use Prophecy\Argument;
  */
 class StringFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb, AttributeValidatorHelper $attrValidatorHelper)
+    function let(Builder $qb)
     {
         $this->beConstructedWith(
-            $attrValidatorHelper,
             ['pim_catalog_identifier'],
             ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
         );
@@ -50,11 +48,8 @@ class StringFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_starts_with_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
+    function it_adds_a_starts_with_attribute_filter_in_the_query($qb, AttributeInterface $sku)
     {
-        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
-
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
@@ -65,11 +60,8 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'STARTS WITH', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_ends_with_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
+    function it_adds_a_ends_with_attribute_filter_in_the_query($qb, AttributeInterface $sku)
     {
-        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
-
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
@@ -80,11 +72,8 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'ENDS WITH', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_contains_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
+    function it_adds_a_contains_attribute_filter_in_the_query($qb, AttributeInterface $sku)
     {
-        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
-
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
@@ -95,11 +84,8 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'CONTAINS', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_does_not_contain_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
+    function it_adds_a_does_not_contain_attribute_filter_in_the_query($qb, AttributeInterface $sku)
     {
-        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
-
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
@@ -110,11 +96,8 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'DOES NOT CONTAIN', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_an_equals_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
+    function it_adds_an_equals_attribute_filter_in_the_query($qb, AttributeInterface $sku)
     {
-        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
-
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
@@ -125,11 +108,8 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, '=', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_not_equal_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
+    function it_adds_a_not_equal_attribute_filter_in_the_query($qb, AttributeInterface $sku)
     {
-        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
-
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
@@ -141,11 +121,8 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, '!=', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_an_empty_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
+    function it_adds_an_empty_attribute_filter_in_the_query($qb, AttributeInterface $sku)
     {
-        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
-
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
@@ -156,11 +133,8 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'EMPTY', null, null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_not_empty_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
+    function it_adds_a_not_empty_attribute_filter_in_the_query($qb, AttributeInterface $sku)
     {
-        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
-
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
@@ -178,89 +152,5 @@ class StringFilterSpec extends ObjectBehavior
 
         $this->shouldThrow(InvalidArgumentException::stringExpected('attributeCode', 'filter', 'string', gettype(123)))
             ->during('addAttributeFilter', [$attribute, '=', 123, null, null, ['field' => 'attributeCode']]);
-    }
-
-    function it_throws_an_exception_when_locale_is_expected(
-        $attrValidatorHelper,
-        AttributeInterface $attribute
-    ) {
-        $e = new \LogicException('Attribute "attributeCode" expects a locale, none given.');
-        $attribute->getCode()->willReturn('attributeCode');
-        $attribute->isLocalizable()->willReturn(true);
-        $attrValidatorHelper->validateLocale($attribute, null)->willThrow($e);
-        $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'filter', 'string')
-        )->during('addAttributeFilter', [$attribute, '=', 123, null, null, ['field' => 'attributeCode']]);
-    }
-
-    function it_throws_an_exception_when_locale_is_not_expected(
-        $attrValidatorHelper,
-        AttributeInterface $attribute
-    ) {
-        $e = new \LogicException('Attribute "attributeCode" does not expect a locale, "en_US" given.');
-        $attribute->getCode()->willReturn('attributeCode');
-        $attribute->isLocalizable()->willReturn(false);
-        $attrValidatorHelper->validateLocale($attribute, 'en_US')->willThrow($e);
-        $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'filter', 'string')
-        )->during('addAttributeFilter', [$attribute, '=', 123, 'en_US', 'ecommerce', ['field' => 'attributeCode']]);
-    }
-
-    function it_throws_an_exception_when_locale_is_expected_but_not_activated(
-        $attrValidatorHelper,
-        AttributeInterface $attribute
-    ) {
-        $e = new \LogicException('Attribute "attributeCode" expects an existing and activated locale, "uz-UZ" given.');
-        $attribute->getCode()->willReturn('attributeCode');
-        $attribute->isLocalizable()->willReturn(true);
-        $attrValidatorHelper->validateLocale($attribute, 'uz-UZ')->willThrow($e);
-        $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'filter', 'string')
-        )->during('addAttributeFilter', [$attribute, '=', 123, 'uz-UZ', 'ecommerce', ['field' => 'attributeCode']]);
-    }
-
-    function it_throws_an_exception_when_scope_is_expected(
-        $attrValidatorHelper,
-        AttributeInterface $attribute
-    ) {
-        $e = new \LogicException('Attribute "attributeCode" expects a scope, none given.');
-        $attribute->getCode()->willReturn('attributeCode');
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(true);
-        $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, null)->willThrow($e);
-        $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'filter', 'string')
-        )->during('addAttributeFilter', [$attribute, '=', 123, null, null, ['field' => 'attributeCode']]);
-    }
-
-    function it_throws_an_exception_when_scope_is_not_expected(
-        $attrValidatorHelper,
-        AttributeInterface $attribute
-    ) {
-        $e = new \LogicException('Attribute "attributeCode" does not expect a scope, "ecommerce" given.');
-        $attribute->getCode()->willReturn('attributeCode');
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(false);
-        $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, 'ecommerce')->willThrow($e);
-        $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'filter', 'string')
-        )->during('addAttributeFilter', [$attribute, '=', 123, null, 'ecommerce', ['field' => 'attributeCode']]);
-    }
-
-    function it_throws_an_exception_when_scope_is_expected_but_not_existing(
-        $attrValidatorHelper,
-        AttributeInterface $attribute
-    ) {
-        $e = new \LogicException('Attribute "attributeCode" expects an existing scope, "ecommerce" given.');
-        $attribute->getCode()->willReturn('attributeCode');
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(true);
-        $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, 'ecommerce')->willThrow($e);
-        $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'filter', 'string')
-        )->during('addAttributeFilter', [$attribute, '=', 123, null, 'ecommerce', ['field' => 'attributeCode']]);
     }
 }

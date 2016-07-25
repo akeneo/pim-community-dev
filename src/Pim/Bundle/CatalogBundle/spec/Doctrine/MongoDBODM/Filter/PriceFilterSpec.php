@@ -7,7 +7,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 /**
@@ -15,10 +14,9 @@ use Prophecy\Argument;
  */
 class PriceFilterSpec extends ObjectBehavior
 {
-    function let(Builder $queryBuilder, CurrencyRepositoryInterface $currencyRepository, AttributeValidatorHelper $attrValidatorHelper)
+    function let(Builder $queryBuilder, CurrencyRepositoryInterface $currencyRepository)
     {
         $this->beConstructedWith(
-            $attrValidatorHelper,
             $currencyRepository,
             ['pim_catalog_price_collection'],
             ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY']
@@ -39,14 +37,10 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_an_equals_filter_in_the_query(
-        $attrValidatorHelper,
         $currencyRepository,
         Builder $queryBuilder,
         AttributeInterface $price
     ) {
-        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
-
         $value = ['data' => 22.5, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
@@ -61,14 +55,10 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_not_equal_filter_in_the_query(
-        $attrValidatorHelper,
         $currencyRepository,
         Builder $queryBuilder,
         AttributeInterface $price
     ) {
-        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
-
         $value = ['data' => 22.5, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
@@ -84,14 +74,10 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_greater_than_filter_in_the_query(
-        $attrValidatorHelper,
         $currencyRepository,
         Builder $queryBuilder,
         AttributeInterface $price
     ) {
-        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
-
         $value = ['data' => 22.5, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
@@ -107,13 +93,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_greater_than_or_equals_filter_in_the_query(
         $currencyRepository,
-        $attrValidatorHelper,
         Builder $queryBuilder,
         AttributeInterface $price
     ) {
-        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
-
         $value = ['data' => 22.5, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
@@ -128,14 +110,10 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_less_than_filter_in_the_query(
-        $attrValidatorHelper,
         $currencyRepository,
         Builder $queryBuilder,
         AttributeInterface $price
     ) {
-        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
-
         $value = ['data' => 22.5, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
@@ -150,14 +128,10 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_less_than_or_equals_filter_in_the_query(
-        $attrValidatorHelper,
         $currencyRepository,
         Builder $queryBuilder,
         AttributeInterface $price
     ) {
-        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
-
         $value = ['data' => 22.5, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
@@ -172,14 +146,10 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_an_empty_filter_in_the_query(
-        $attrValidatorHelper,
         $currencyRepository,
         Builder $queryBuilder,
         AttributeInterface $price
     ) {
-        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
-
         $value = ['data' => null, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
@@ -194,14 +164,10 @@ class PriceFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_not_empty_filter_in_the_query(
-        $attrValidatorHelper,
         $currencyRepository,
         Builder $queryBuilder,
         AttributeInterface $price
     ) {
-        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
-
         $value = ['data' => null, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
@@ -254,8 +220,10 @@ class PriceFilterSpec extends ObjectBehavior
         )->during('addAttributeFilter', [$attribute, '=', $value]);
     }
 
-    function it_throws_an_exception_if_value_had_not_a_valid_currency($currencyRepository, AttributeInterface $attribute)
-    {
+    function it_throws_an_exception_if_value_had_not_a_valid_currency(
+        $currencyRepository,
+        AttributeInterface $attribute
+    ) {
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $attribute->getCode()->willReturn('price_code');

@@ -9,7 +9,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -28,18 +27,15 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected $resolver;
 
     /**
-     * @param AttributeValidatorHelper  $attrValidatorHelper
      * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                     $supportedAttributeTypes
      * @param array                     $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
         ObjectIdResolverInterface $objectIdResolver,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
         $this->objectIdResolver        = $objectIdResolver;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators      = $supportedOperators;

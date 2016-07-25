@@ -7,14 +7,13 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class BooleanFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, AttributeValidatorHelper $attrValidatorHelper)
+    function let(QueryBuilder $qb)
     {
-        $this->beConstructedWith($attrValidatorHelper, ['pim_catalog_boolean'], ['enabled'], ['=']);
+        $this->beConstructedWith(['pim_catalog_boolean'], ['enabled'], ['=']);
         $this->setQueryBuilder($qb);
 
         $qb->getRootAliases()->willReturn(['p']);
@@ -73,7 +72,6 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_adds_an_equal_filter_on_an_attribute_in_the_query(
         $qb,
-        $attrValidatorHelper,
         AttributeInterface $attribute,
         Expr $expr,
         Expr\Comparison $comp,
@@ -84,9 +82,6 @@ class BooleanFilterSpec extends ObjectBehavior
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
-
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
 
         $qb->expr()->willReturn($expr);
         $qb->getRootAlias()->willReturn('p');
@@ -124,7 +119,6 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_adds_a_not_equal_filter_on_an_attribute_in_the_query(
         $qb,
-        $attrValidatorHelper,
         AttributeInterface $attribute,
         Expr $expr,
         Expr\Comparison $comp,
@@ -135,9 +129,6 @@ class BooleanFilterSpec extends ObjectBehavior
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
-
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
 
         $qb->expr()->willReturn($expr);
         $qb->getRootAlias()->willReturn('p');

@@ -7,7 +7,6 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Number filter
@@ -19,16 +18,13 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
     /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributeTypes
-     * @param array                    $supportedOperators
+     * @param array $supportedAttributeTypes
+     * @param array $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators      = $supportedOperators;
     }

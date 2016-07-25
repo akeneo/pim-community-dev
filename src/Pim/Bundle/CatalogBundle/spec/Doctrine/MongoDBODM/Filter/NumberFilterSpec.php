@@ -6,7 +6,6 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 /**
@@ -14,10 +13,9 @@ use Prophecy\Argument;
  */
 class NumberFilterSpec extends ObjectBehavior
 {
-    function let(Builder $queryBuilder, AttributeValidatorHelper $attrValidatorHelper)
+    function let(Builder $queryBuilder)
     {
         $this->beConstructedWith(
-            $attrValidatorHelper,
             ['pim_catalog_metric'],
             ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         );
@@ -36,11 +34,8 @@ class NumberFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_an_equals_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
+    function it_adds_an_equals_filter_in_the_query($queryBuilder, AttributeInterface $attribute)
     {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
@@ -50,11 +45,8 @@ class NumberFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, '=', 22.5, 'en_US', 'mobile');
     }
 
-    function it_adds_a_not_equal_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
+    function it_adds_a_not_equal_filter_in_the_query($queryBuilder, AttributeInterface $attribute)
     {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
@@ -65,11 +57,8 @@ class NumberFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, '!=', 22.5, 'en_US', 'mobile');
     }
 
-    function it_adds_an_empty_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
+    function it_adds_an_empty_filter_in_the_query($queryBuilder, AttributeInterface $attribute)
     {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
@@ -79,11 +68,8 @@ class NumberFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'EMPTY', null, 'en_US', 'mobile');
     }
 
-    function it_adds_a_not_empty_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
+    function it_adds_a_not_empty_filter_in_the_query($queryBuilder, AttributeInterface $attribute)
     {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
@@ -93,11 +79,8 @@ class NumberFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'NOT EMPTY', null, 'en_US', 'mobile');
     }
 
-    function it_adds_a_lower_than_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
+    function it_adds_a_lower_than_filter_in_the_query($queryBuilder, AttributeInterface $attribute)
     {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
@@ -107,11 +90,8 @@ class NumberFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, '<', 42, 'en_US', 'mobile');
     }
 
-    function it_adds_a_greater_than_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
+    function it_adds_a_greater_than_filter_in_the_query($queryBuilder, AttributeInterface $attribute)
     {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
@@ -121,11 +101,8 @@ class NumberFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, '>', 42, 'en_US', 'mobile');
     }
 
-    function it_adds_a_lower_than_or_equals_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
+    function it_adds_a_lower_than_or_equals_filter_in_the_query($queryBuilder, AttributeInterface $attribute)
     {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
@@ -135,11 +112,8 @@ class NumberFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, '<=', 42, 'en_US', 'mobile');
     }
 
-    function it_adds_a_greater_than_or_equals_filter_in_the_query($attrValidatorHelper, $queryBuilder, AttributeInterface $attribute)
+    function it_adds_a_greater_than_or_equals_filter_in_the_query($queryBuilder, AttributeInterface $attribute)
     {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('price');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
@@ -153,7 +127,9 @@ class NumberFilterSpec extends ObjectBehavior
     {
         $attribute->getCode()->willReturn('number_code');
 
-        $this->shouldThrow(InvalidArgumentException::numericExpected('number_code', 'filter', 'number', gettype('WRONG')))
+        $this->shouldThrow(
+            InvalidArgumentException::numericExpected('number_code', 'filter', 'number', gettype('WRONG'))
+        )
             ->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
     }
 }

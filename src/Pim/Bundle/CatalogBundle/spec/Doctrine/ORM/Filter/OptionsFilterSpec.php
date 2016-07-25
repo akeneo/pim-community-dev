@@ -9,14 +9,17 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class OptionsFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, AttributeValidatorHelper $attrValidatorHelper, ObjectIdResolverInterface $objectIdResolver)
+    function let(QueryBuilder $qb, ObjectIdResolverInterface $objectIdResolver)
     {
-        $this->beConstructedWith($attrValidatorHelper, $objectIdResolver, ['pim_catalog_multiselect'], ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']);
+        $this->beConstructedWith(
+            $objectIdResolver,
+            ['pim_catalog_multiselect'],
+            ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
+        );
         $this->setQueryBuilder($qb);
     }
 
@@ -42,11 +45,8 @@ class OptionsFilterSpec extends ObjectBehavior
         $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 
-    function it_adds_a_filter_to_the_query($qb, $attrValidatorHelper, AttributeInterface $attribute)
+    function it_adds_a_filter_to_the_query($qb, AttributeInterface $attribute)
     {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -74,13 +74,9 @@ class OptionsFilterSpec extends ObjectBehavior
 
     function it_adds_an_empty_filter_to_the_query(
         $qb,
-        $attrValidatorHelper,
         AttributeInterface $attribute,
         Expr $expr
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -111,13 +107,9 @@ class OptionsFilterSpec extends ObjectBehavior
 
     function it_adds_a_not_empty_filter_to_the_query(
         $qb,
-        $attrValidatorHelper,
         AttributeInterface $attribute,
         Expr $expr
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -143,7 +135,6 @@ class OptionsFilterSpec extends ObjectBehavior
 
     function it_adds_a_not_in_filter_to_the_query(
         $qb,
-        $attrValidatorHelper,
         AttributeInterface $attribute,
         EntityManager $em,
         QueryBuilder $notInQb,
@@ -152,9 +143,6 @@ class OptionsFilterSpec extends ObjectBehavior
         Expr\Func $inFunc,
         Expr\Func $whereFunc
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -206,14 +194,20 @@ class OptionsFilterSpec extends ObjectBehavior
     function it_throws_an_exception_if_value_is_not_an_array(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('options_code');
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('options_code', 'filter', 'options', gettype('WRONG')))
+        $this->shouldThrow(
+            InvalidArgumentException::arrayExpected('options_code', 'filter', 'options', gettype('WRONG'))
+        )
             ->during('addAttributeFilter', [$attribute, 'IN', 'WRONG', null, null, ['field' => 'options_code.id']]);
     }
 
     function it_throws_an_exception_if_the_content_of_value_are_not_numeric(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('options_code');
-        $this->shouldThrow(InvalidArgumentException::numericExpected('options_code', 'filter', 'options', gettype('WRONG')))
-            ->during('addAttributeFilter', [$attribute, 'IN', [123, 'not numeric'], null, null, ['field' => 'options_code.id']]);
+        $this->shouldThrow(
+            InvalidArgumentException::numericExpected('options_code', 'filter', 'options', gettype('WRONG'))
+        )->during(
+            'addAttributeFilter',
+            [$attribute, 'IN', [123, 'not numeric'], null, null, ['field' => 'options_code.id']]
+        );
     }
 }

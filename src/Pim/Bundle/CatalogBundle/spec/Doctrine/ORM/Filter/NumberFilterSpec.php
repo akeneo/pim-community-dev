@@ -7,15 +7,13 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class NumberFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $queryBuilder, AttributeValidatorHelper $attrValidatorHelper)
+    function let(QueryBuilder $queryBuilder)
     {
         $this->beConstructedWith(
-            $attrValidatorHelper,
             ['pim_catalog_number'],
             ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         );
@@ -34,11 +32,8 @@ class NumberFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_binary_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $number)
+    function it_adds_binary_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $number)
     {
-        $attrValidatorHelper->validateLocale($number, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($number, Argument::any())->shouldBeCalled();
-
         $number->getId()->willReturn(42);
         $number->getCode()->willReturn('number');
         $number->getBackendType()->willReturn('varchar');
@@ -53,11 +48,8 @@ class NumberFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($number, '=', 12);
     }
 
-    function it_adds_empty_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $number)
+    function it_adds_empty_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $number)
     {
-        $attrValidatorHelper->validateLocale($number, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($number, Argument::any())->shouldBeCalled();
-
         $number->getId()->willReturn(42);
         $number->getCode()->willReturn('number');
         $number->getBackendType()->willReturn('varchar');
@@ -74,14 +66,10 @@ class NumberFilterSpec extends ObjectBehavior
     }
 
     function it_adds_not_empty_filter_in_the_query(
-        $attrValidatorHelper,
         QueryBuilder $queryBuilder,
         AttributeInterface $number,
         Expr $expr
     ) {
-        $attrValidatorHelper->validateLocale($number, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($number, Argument::any())->shouldBeCalled();
-
         $number->getId()->willReturn(42);
         $number->getCode()->willReturn('number');
         $number->getBackendType()->willReturn('varchar');
@@ -100,16 +88,12 @@ class NumberFilterSpec extends ObjectBehavior
     }
 
     function it_adds_not_equal_filter_in_the_query(
-        $attrValidatorHelper,
         QueryBuilder $queryBuilder,
         AttributeInterface $number,
         Expr $expr,
         Expr\Comparison $comp,
         Expr\Literal $literal
     ) {
-        $attrValidatorHelper->validateLocale($number, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($number, Argument::any())->shouldBeCalled();
-
         $number->getId()->willReturn(42);
         $number->getCode()->willReturn('number');
         $number->getBackendType()->willReturn('varchar');
@@ -136,7 +120,9 @@ class NumberFilterSpec extends ObjectBehavior
     function it_throws_an_exception_if_value_is_not_a_numeric(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('number_code');
-        $this->shouldThrow(InvalidArgumentException::numericExpected('number_code', 'filter', 'number', gettype('WRONG')))
+        $this->shouldThrow(
+            InvalidArgumentException::numericExpected('number_code', 'filter', 'number', gettype('WRONG'))
+        )
             ->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
     }
 }

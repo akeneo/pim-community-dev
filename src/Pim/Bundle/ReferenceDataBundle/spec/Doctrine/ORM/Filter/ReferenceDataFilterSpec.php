@@ -16,12 +16,10 @@ class ReferenceDataFilterSpec extends ObjectBehavior
 {
     function let(
         QueryBuilder $qb,
-        AttributeValidatorHelper $attrValidatorHelper,
         ConfigurationRegistryInterface $registry,
         ReferenceDataIdResolver $idResolver
     ) {
         $this->beConstructedWith(
-            $attrValidatorHelper,
             $registry,
             $idResolver,
             ['IN', 'EMPTY']
@@ -43,12 +41,8 @@ class ReferenceDataFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_ids_to_the_query(
         $qb,
-        $attrValidatorHelper,
         AttributeInterface $attribute
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -75,12 +69,8 @@ class ReferenceDataFilterSpec extends ObjectBehavior
     function it_adds_a_filter_with_codes_to_the_query(
         $qb,
         $idResolver,
-        $attrValidatorHelper,
         AttributeInterface $attribute
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -106,11 +96,8 @@ class ReferenceDataFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'IN', ['red', 'blue'], null, null, ['field' => 'color.code']);
     }
 
-    function it_adds_an_empty_filter_to_the_query($qb, $attrValidatorHelper, AttributeInterface $attribute)
+    function it_adds_an_empty_filter_to_the_query($qb, AttributeInterface $attribute)
     {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);

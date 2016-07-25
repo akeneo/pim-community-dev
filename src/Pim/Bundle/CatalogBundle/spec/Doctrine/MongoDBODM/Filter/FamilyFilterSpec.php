@@ -125,7 +125,9 @@ class FamilyFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'family', gettype('not an array')))
+        $this->shouldThrow(
+            InvalidArgumentException::arrayExpected('family', 'filter', 'family', gettype('not an array'))
+        )
             ->during('addFieldFilter', ['family', 'IN', 'not an array']);
     }
 
