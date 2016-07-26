@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class JobExecutionArchivist implements EventSubscriberInterface
 {
-    /** @var \Pim\Component\Connector\Archiver\ArchiverInterface[] */
+    /** @var ArchiverInterface[] */
     protected $archivers = [];
 
     /**
@@ -33,7 +33,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
     /**
      * Register an archiver
      *
-     * @param \Pim\Component\Connector\Archiver\ArchiverInterface $archiver
+     * @param ArchiverInterface $archiver
      *
      * @throws \InvalidArgumentException
      */

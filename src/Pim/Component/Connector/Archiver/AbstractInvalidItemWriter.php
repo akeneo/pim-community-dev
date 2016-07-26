@@ -8,8 +8,7 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
-use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
-use Pim\Component\Connector\Archiver\AbstractFilesystemArchiver;
+use Pim\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 
