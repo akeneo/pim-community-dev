@@ -51,8 +51,8 @@ class ProductCsvExportSpec extends ObjectBehavior
                     'choices'  => [','],
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_base_connector.export.decimalSeparator.label',
-                    'help'     => 'pim_base_connector.export.decimalSeparator.help'
+                    'label'    => 'pim_connector.export.decimalSeparator.label',
+                    'help'     => 'pim_connector.export.decimalSeparator.help'
                 ]
             ],
             'dateFormat' => [
@@ -61,8 +61,8 @@ class ProductCsvExportSpec extends ObjectBehavior
                     'choices'  => ['yyyy-MM-dd', 'dd/MM/yyyy'],
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_base_connector.export.dateFormat.label',
-                    'help'     => 'pim_base_connector.export.dateFormat.help',
+                    'label'    => 'pim_connector.export.dateFormat.label',
+                    'help'     => 'pim_connector.export.dateFormat.help',
                 ]
             ]
         ];

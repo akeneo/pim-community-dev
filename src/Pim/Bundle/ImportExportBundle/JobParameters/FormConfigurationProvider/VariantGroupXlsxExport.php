@@ -63,8 +63,8 @@ class VariantGroupXlsxExport implements FormConfigurationProviderInterface
                     'choices'  => $this->decimalSeparators,
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_base_connector.export.decimalSeparator.label',
-                    'help'     => 'pim_base_connector.export.decimalSeparator.help'
+                    'label'    => 'pim_connector.export.decimalSeparator.label',
+                    'help'     => 'pim_connector.export.decimalSeparator.help'
                 ]
             ],
             'dateFormat' => [
@@ -73,8 +73,8 @@ class VariantGroupXlsxExport implements FormConfigurationProviderInterface
                     'choices'  => $this->dateFormats,
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_base_connector.export.dateFormat.label',
-                    'help'     => 'pim_base_connector.export.dateFormat.help',
+                    'label'    => 'pim_connector.export.dateFormat.label',
+                    'help'     => 'pim_connector.export.dateFormat.help',
                 ]
             ],
             'linesPerFile' => [

@@ -16,18 +16,18 @@ class RegisterArchiversPassSpec extends ObjectBehavior
 
     function it_does_not_process_anything_else_than_an_archivist_event_listener(ContainerBuilder $container)
     {
-        $container->hasDefinition('pim_base_connector.event_listener.archivist')->willReturn(false);
+        $container->hasDefinition('pim_connector.event_listener.archivist')->willReturn(false);
 
         $this->process($container)->shouldReturn(null);
     }
 
     function it_processes_an_archivist_event_listener_container(ContainerBuilder $container, Definition $service)
     {
-        $container->hasDefinition('pim_base_connector.event_listener.archivist')->willReturn(true);
-        $container->getDefinition('pim_base_connector.event_listener.archivist')->willReturn($service);
-        $container->findTaggedServiceIds('pim_base_connector.archiver')->willReturn([
-            'pim_base_connector.archiver.invalid_item_csv_archiver' => [[]],
-            'pim_base_connector.archiver.file_reader_archiver' => [[]]
+        $container->hasDefinition('pim_connector.event_listener.archivist')->willReturn(true);
+        $container->getDefinition('pim_connector.event_listener.archivist')->willReturn($service);
+        $container->findTaggedServiceIds('pim_connector.archiver')->willReturn([
+            'pim_connector.archiver.invalid_item_csv_archiver' => [[]],
+            'pim_connector.archiver.file_reader_archiver' => [[]]
         ]);
 
         $service
