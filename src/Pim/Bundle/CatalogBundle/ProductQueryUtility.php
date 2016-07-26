@@ -80,15 +80,11 @@ class ProductQueryUtility
     ) {
         $suffix = '';
 
-        if ($localizable) {
-            if (null !== $locale) {
-                $suffix = sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $locale);
-            }
+        if ($localizable && null !== $locale) {
+            $suffix = sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $locale);
         }
-        if ($scopable) {
-            if (null !== $scope) {
-                $suffix .= sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $scope);
-            }
+        if ($scopable && null !== $scope) {
+            $suffix .= sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $scope);
         }
 
         return $attributeCode.$suffix;

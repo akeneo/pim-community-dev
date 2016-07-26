@@ -71,96 +71,96 @@ Feature: Filter on scopable and localizable product values
 
   Scenario: Successfully filter on localizable and scopable boolean values
     Then I should get the following results for the given filters:
-      | filter                                                                                                                 | result                                                  |
-      | [{"field":"boolean", "operator":"=", "value": true, "scope": "ecommerce", "locale": "en_US"}]                          | ["english_product"]                                     |
-      | [{"field":"boolean", "operator":"=", "value": true, "locale": "en_US"}]                                                | ["english_product"]                                     |
-      | [{"field":"boolean", "operator":"=", "value": true, "scope": "ecommerce"}]                                             | ["english_product", "french_product"]                   |
-      | [{"field":"boolean", "operator":"=", "value": true}]                                                                   | ["english_product", "french_product", "mobile_product"] |
+      | filter                                                                                                     | result                                                  |
+      | [{"field":"boolean", "operator":"=", "value": true, "context": {"scope": "ecommerce", "locale": "en_US"}}] | ["english_product"]                                     |
+      | [{"field":"boolean", "operator":"=", "value": true, "context": {"locale": "en_US"}}]                       | ["english_product"]                                     |
+      | [{"field":"boolean", "operator":"=", "value": true, "context": {"scope": "ecommerce"}}]                    | ["english_product", "french_product"]                   |
+      | [{"field":"boolean", "operator":"=", "value": true}]                                                       | ["english_product", "french_product", "mobile_product"] |
 
   Scenario: Successfully filter on localizable and scopable date values
     Then I should get the following results for the given filters:
-      | filter                                                                                                                 | result                                                  |
-      | [{"field":"date", "operator":"=", "value": "1970-01-01", "scope": "ecommerce", "locale": "en_US"}]                     | ["english_product"]                                     |
-      | [{"field":"date", "operator":"=", "value": "1970-01-01", "locale": "en_US"}]                                           | ["english_product"]                                     |
-      | [{"field":"date", "operator":"=", "value": "1970-01-01", "scope": "ecommerce"}]                                        | ["english_product", "french_product"]                   |
-      | [{"field":"date", "operator":"=", "value": "1970-01-01"}]                                                              | ["english_product", "french_product", "mobile_product"] |
+      | filter                                                                                                          | result                                                  |
+      | [{"field":"date", "operator":"=", "value": "1970-01-01", "context": {"scope": "ecommerce", "locale": "en_US"}}] | ["english_product"]                                     |
+      | [{"field":"date", "operator":"=", "value": "1970-01-01", "context": {"locale": "en_US"}}]                       | ["english_product"]                                     |
+      | [{"field":"date", "operator":"=", "value": "1970-01-01", "context": {"scope": "ecommerce"}}]                    | ["english_product", "french_product"]                   |
+      | [{"field":"date", "operator":"=", "value": "1970-01-01"}]                                                       | ["english_product", "french_product", "mobile_product"] |
 
   Scenario: Successfully filter on localizable and scopable media values
     Then I should get the following results for the given filters:
-      | filter                                                                                                                 | result                                                  |
-      | [{"field":"media", "operator":"=", "value": "akeneo.jpg", "scope": "ecommerce", "locale": "en_US"}]                    | ["english_product"]                                     |
-      | [{"field":"media", "operator":"=", "value": "akeneo.jpg", "locale": "en_US"}]                                          | ["english_product"]                                     |
-      | [{"field":"media", "operator":"=", "value": "akeneo.jpg", "scope": "ecommerce"}]                                       | ["english_product", "french_product"]                   |
-      | [{"field":"media", "operator":"=", "value": "akeneo.jpg"}]                                                             | ["english_product", "french_product", "mobile_product"] |
+      | filter                                                                                                           | result                                                  |
+      | [{"field":"media", "operator":"=", "value": "akeneo.jpg", "context": {"scope": "ecommerce", "locale": "en_US"}}] | ["english_product"]                                     |
+      | [{"field":"media", "operator":"=", "value": "akeneo.jpg", "context": {"locale": "en_US"}}]                       | ["english_product"]                                     |
+      | [{"field":"media", "operator":"=", "value": "akeneo.jpg", "context": {"scope": "ecommerce"}}]                    | ["english_product", "french_product"]                   |
+      | [{"field":"media", "operator":"=", "value": "akeneo.jpg"}]                                                       | ["english_product", "french_product", "mobile_product"] |
 
   Scenario: Successfully filter on localizable and scopable metric values
     Then I should get the following results for the given filters:
-      | filter                                                                                                                 | result                                                  |
-      | [{"field":"metric", "operator":"=", "value": {"data":1, "unit":"METER"}, "scope": "ecommerce", "locale": "en_US"}]     | ["english_product"]                                     |
-      | [{"field":"metric", "operator":"=", "value": {"data":1, "unit":"METER"}, "locale": "en_US"}]                           | ["english_product"]                                     |
-      | [{"field":"metric", "operator":"=", "value": {"data":1, "unit":"METER"}, "scope": "ecommerce"}]                        | ["english_product", "french_product"]                   |
-      | [{"field":"metric", "operator":"=", "value": {"data":1, "unit":"METER"}}]                                              | ["english_product", "french_product", "mobile_product"] |
+      | filter                                                                                                                          | result                                                  |
+      | [{"field":"metric", "operator":"=", "value": {"data":1, "unit":"METER"}, "context": {"scope": "ecommerce", "locale": "en_US"}}] | ["english_product"]                                     |
+      | [{"field":"metric", "operator":"=", "value": {"data":1, "unit":"METER"}, "context": {"locale": "en_US"}}]                       | ["english_product"]                                     |
+      | [{"field":"metric", "operator":"=", "value": {"data":1, "unit":"METER"}, "context": {"scope": "ecommerce"}}]                    | ["english_product", "french_product"]                   |
+      | [{"field":"metric", "operator":"=", "value": {"data":1, "unit":"METER"}}]                                                       | ["english_product", "french_product", "mobile_product"] |
 
   Scenario: Successfully filter on localizable and scopable multi select values
     Then I should get the following results for the given filters:
-      | filter                                                                                                                 | result                                                  |
-      | [{"field":"multi_select.code", "operator":"IN", "value": ["option_multi"], "scope": "ecommerce", "locale": "en_US"}]   | ["english_product"]                                     |
-      | [{"field":"multi_select.code", "operator":"IN", "value": ["option_multi"], "locale": "en_US"}]                         | ["english_product"]                                     |
-      | [{"field":"multi_select.code", "operator":"IN", "value": ["option_multi"], "scope": "ecommerce"}]                      | ["english_product", "french_product"]                   |
-      | [{"field":"multi_select.code", "operator":"IN", "value": ["option_multi"]}]                                            | ["english_product", "french_product", "mobile_product"] |
+      | filter                                                                                                                            | result                                                  |
+      | [{"field":"multi_select.code", "operator":"IN", "value": ["option_multi"], "context": {"scope": "ecommerce", "locale": "en_US"}}] | ["english_product"]                                     |
+      | [{"field":"multi_select.code", "operator":"IN", "value": ["option_multi"], "context": {"locale": "en_US"}}]                       | ["english_product"]                                     |
+      | [{"field":"multi_select.code", "operator":"IN", "value": ["option_multi"], "context": {"scope": "ecommerce"}}]                    | ["english_product", "french_product"]                   |
+      | [{"field":"multi_select.code", "operator":"IN", "value": ["option_multi"]}]                                                       | ["english_product", "french_product", "mobile_product"] |
 
   Scenario: Successfully filter on localizable and scopable number values
     Then I should get the following results for the given filters:
-      | filter                                                                                                                 | result                                                  |
-      | [{"field":"number", "operator":"=", "value": 42, "scope": "ecommerce", "locale": "en_US"}]                             | ["english_product"]                                     |
-      | [{"field":"number", "operator":"=", "value": 42, "locale": "en_US"}]                                                   | ["english_product"]                                     |
-      | [{"field":"number", "operator":"=", "value": 42, "scope": "ecommerce"}]                                                | ["english_product", "french_product"]                   |
-      | [{"field":"number", "operator":"=", "value": 42}]                                                                      | ["english_product", "french_product", "mobile_product"] |
+      | filter                                                                                                  | result                                                  |
+      | [{"field":"number", "operator":"=", "value": 42, "context": {"scope": "ecommerce", "locale": "en_US"}}] | ["english_product"]                                     |
+      | [{"field":"number", "operator":"=", "value": 42, "context": {"locale": "en_US"}}]                       | ["english_product"]                                     |
+      | [{"field":"number", "operator":"=", "value": 42, "context": {"scope": "ecommerce"}}]                    | ["english_product", "french_product"]                   |
+      | [{"field":"number", "operator":"=", "value": 42}]                                                       | ["english_product", "french_product", "mobile_product"] |
 
   Scenario: Successfully filter on localizable and scopable price values
     Then I should get the following results for the given filters:
-      | filter                                                                                                                 | result                                                  |
-      | [{"field":"price", "operator":"=", "value": {"data": 2, "currency": "EUR"}, "scope": "ecommerce", "locale": "en_US"}]  | ["english_product"]                                     |
-      | [{"field":"price", "operator":"=", "value": {"data": 2, "currency": "EUR"}, "locale": "en_US"}]                        | ["english_product"]                                     |
-      | [{"field":"price", "operator":"=", "value": {"data": 2, "currency": "EUR"}, "scope": "ecommerce"}]                     | ["english_product", "french_product"]                   |
-      | [{"field":"price", "operator":"=", "value": {"data": 2, "currency": "EUR"}}]                                           | ["english_product", "french_product", "mobile_product"] |
+      | filter                                                                                                                             | result                                                  |
+      | [{"field":"price", "operator":"=", "value": {"data": 2, "currency": "EUR"}, "context": {"scope": "ecommerce", "locale": "en_US"}}] | ["english_product"]                                     |
+      | [{"field":"price", "operator":"=", "value": {"data": 2, "currency": "EUR"}, "context": {"locale": "en_US"}}]                       | ["english_product"]                                     |
+      | [{"field":"price", "operator":"=", "value": {"data": 2, "currency": "EUR"}, "context": {"scope": "ecommerce"}}]                    | ["english_product", "french_product"]                   |
+      | [{"field":"price", "operator":"=", "value": {"data": 2, "currency": "EUR"}}]                                                       | ["english_product", "french_product", "mobile_product"] |
 
   Scenario: Successfully filter on localizable and scopable multi reference data values
     Then I should get the following results for the given filters:
-      | filter                                                                                                                 | result                                                  |
-      | [{"field":"reference_multi.code", "operator":"IN", "value": ["fabric"], "scope": "ecommerce", "locale": "en_US"}]      | ["english_product"]                                     |
-      | [{"field":"reference_multi.code", "operator":"IN", "value": ["fabric"], "locale": "en_US"}]                            | ["english_product"]                                     |
-      | [{"field":"reference_multi.code", "operator":"IN", "value": ["fabric"], "scope": "ecommerce"}]                         | ["english_product", "french_product"]                   |
-      | [{"field":"reference_multi.code", "operator":"IN", "value": ["fabric"]}]                                               | ["english_product", "french_product", "mobile_product"] |
+      | filter                                                                                                                         | result                                                  |
+      | [{"field":"reference_multi.code", "operator":"IN", "value": ["fabric"], "context": {"scope": "ecommerce", "locale": "en_US"}}] | ["english_product"]                                     |
+      | [{"field":"reference_multi.code", "operator":"IN", "value": ["fabric"], "context": {"locale": "en_US"}}]                       | ["english_product"]                                     |
+      | [{"field":"reference_multi.code", "operator":"IN", "value": ["fabric"], "context": {"scope": "ecommerce"}}]                    | ["english_product", "french_product"]                   |
+      | [{"field":"reference_multi.code", "operator":"IN", "value": ["fabric"]}]                                                       | ["english_product", "french_product", "mobile_product"] |
 
   Scenario: Successfully filter on localizable and scopable simple reference data values
     Then I should get the following results for the given filters:
-      | filter                                                                                                                 | result                                                  |
-      | [{"field":"reference_simple.code", "operator":"IN", "value": ["color"], "scope": "ecommerce", "locale": "en_US"}]      | ["english_product"]                                     |
-      | [{"field":"reference_simple.code", "operator":"IN", "value": ["color"], "locale": "en_US"}]                            | ["english_product"]                                     |
-      | [{"field":"reference_simple.code", "operator":"IN", "value": ["color"], "scope": "ecommerce"}]                         | ["english_product", "french_product"]                   |
-      | [{"field":"reference_simple.code", "operator":"IN", "value": ["color"]}]                                               | ["english_product", "french_product", "mobile_product"] |
+      | filter                                                                                                                         | result                                                  |
+      | [{"field":"reference_simple.code", "operator":"IN", "value": ["color"], "context": {"scope": "ecommerce", "locale": "en_US"}}] | ["english_product"]                                     |
+      | [{"field":"reference_simple.code", "operator":"IN", "value": ["color"], "context": {"locale": "en_US"}}]                       | ["english_product"]                                     |
+      | [{"field":"reference_simple.code", "operator":"IN", "value": ["color"], "context": {"scope": "ecommerce"}}]                    | ["english_product", "french_product"]                   |
+      | [{"field":"reference_simple.code", "operator":"IN", "value": ["color"]}]                                                       | ["english_product", "french_product", "mobile_product"] |
 
   Scenario: Successfully filter on localizable and scopable simple select values
     Then I should get the following results for the given filters:
-      | filter                                                                                                                 | result                                                  |
-      | [{"field":"simple_select.code", "operator":"IN", "value": ["option_simple"], "scope": "ecommerce", "locale": "en_US"}] | ["english_product"]                                     |
-      | [{"field":"simple_select.code", "operator":"IN", "value": ["option_simple"], "locale": "en_US"}]                       | ["english_product"]                                     |
-      | [{"field":"simple_select.code", "operator":"IN", "value": ["option_simple"], "scope": "ecommerce"}]                    | ["english_product", "french_product"]                   |
-      | [{"field":"simple_select.code", "operator":"IN", "value": ["option_simple"]}]                                          | ["english_product", "french_product", "mobile_product"] |
+      | filter                                                                                                                              | result                                                  |
+      | [{"field":"simple_select.code", "operator":"IN", "value": ["option_simple"], "context": {"scope": "ecommerce", "locale": "en_US"}}] | ["english_product"]                                     |
+      | [{"field":"simple_select.code", "operator":"IN", "value": ["option_simple"], "context": {"locale": "en_US"}}]                       | ["english_product"]                                     |
+      | [{"field":"simple_select.code", "operator":"IN", "value": ["option_simple"], "context": {"scope": "ecommerce"}}]                    | ["english_product", "french_product"]                   |
+      | [{"field":"simple_select.code", "operator":"IN", "value": ["option_simple"]}]                                                       | ["english_product", "french_product", "mobile_product"] |
 
   Scenario: Successfully filter on localizable and scopable text values
     Then I should get the following results for the given filters:
-      | filter                                                                                                                 | result                                                  |
-      | [{"field":"text", "operator":"=", "value": "Lorem", "scope": "ecommerce", "locale": "en_US"}]                          | ["english_product"]                                     |
-      | [{"field":"text", "operator":"=", "value": "Lorem", "locale": "en_US"}]                                                | ["english_product"]                                     |
-      | [{"field":"text", "operator":"=", "value": "Lorem", "scope": "ecommerce"}]                                             | ["english_product", "french_product"]                   |
-      | [{"field":"text", "operator":"=", "value": "Lorem"}]                                                                   | ["english_product", "french_product", "mobile_product"] |
+      | filter                                                                                                     | result                                                  |
+      | [{"field":"text", "operator":"=", "value": "Lorem", "context": {"scope": "ecommerce", "locale": "en_US"}}] | ["english_product"]                                     |
+      | [{"field":"text", "operator":"=", "value": "Lorem", "context": {"locale": "en_US"}}]                       | ["english_product"]                                     |
+      | [{"field":"text", "operator":"=", "value": "Lorem", "context": {"scope": "ecommerce"}}]                    | ["english_product", "french_product"]                   |
+      | [{"field":"text", "operator":"=", "value": "Lorem"}]                                                       | ["english_product", "french_product", "mobile_product"] |
 
   Scenario: Successfully filter on localizable and scopable textarea values
     Then I should get the following results for the given filters:
-      | filter                                                                                                                 | result                                                  |
-      | [{"field":"textarea", "operator":"=", "value": "Lorem ipsum", "scope": "ecommerce", "locale": "en_US"}]                | ["english_product"]                                     |
-      | [{"field":"textarea", "operator":"=", "value": "Lorem ipsum", "locale": "en_US"}]                                      | ["english_product"]                                     |
-      | [{"field":"textarea", "operator":"=", "value": "Lorem ipsum", "scope": "ecommerce"}]                                   | ["english_product", "french_product"]                   |
-      | [{"field":"textarea", "operator":"=", "value": "Lorem ipsum"}]                                                         | ["english_product", "french_product", "mobile_product"] |
+      | filter                                                                                                               | result                                                  |
+      | [{"field":"textarea", "operator":"=", "value": "Lorem ipsum", "context": {"scope": "ecommerce", "locale": "en_US"}}] | ["english_product"]                                     |
+      | [{"field":"textarea", "operator":"=", "value": "Lorem ipsum", "context": {"locale": "en_US"}}]                       | ["english_product"]                                     |
+      | [{"field":"textarea", "operator":"=", "value": "Lorem ipsum", "context": {"scope": "ecommerce"}}]                    | ["english_product", "french_product"]                   |
+      | [{"field":"textarea", "operator":"=", "value": "Lorem ipsum"}]                                                       | ["english_product", "french_product", "mobile_product"] |

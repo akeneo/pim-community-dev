@@ -32,7 +32,7 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
         array $supportedOperators = []
     ) {
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedFields     = $supportedFields;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators  = $supportedOperators;
     }
 
