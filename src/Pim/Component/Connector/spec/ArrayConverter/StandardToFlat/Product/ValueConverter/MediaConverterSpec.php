@@ -23,7 +23,7 @@ class MediaConverterSpec extends ObjectBehavior
             [
                 'locale' => 'fr_FR',
                 'scope'  => null,
-                'data'   => 'x5/78/87/sdqdsqf654qsd6f5465sdqfsqdf65_toto.jpg',
+                'data'   => ['filePath' => 'x5/78/87/sdqdsqf654qsd6f5465sdqfsqdf65_toto.jpg'],
             ]
         ];
 

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
@@ -19,13 +20,15 @@ class GroupNormalizerSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
-        NormalizerInterface $versionNormalizer
+        NormalizerInterface $versionNormalizer,
+        AttributeConverterInterface $localizedConverter
     ) {
         $this->beConstructedWith(
             $normalizer,
             $structureVersionProvider,
             $versionManager,
-            $versionNormalizer
+            $versionNormalizer,
+            $localizedConverter
         );
     }
 
@@ -39,6 +42,7 @@ class GroupNormalizerSpec extends ObjectBehavior
         $structureVersionProvider,
         $versionManager,
         $versionNormalizer,
+        $localizedConverter,
         GroupInterface $tshirt,
         Version $oldestLog,
         Version $newestLog,
@@ -46,10 +50,33 @@ class GroupNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         \ArrayIterator $productsIterator
     ) {
-        $normalizer->normalize($tshirt, 'json', [])->willReturn([
-            'normalized_property'          => 'the_first_one',
-            'an_other_normalized_property' => 'the_second_one',
-        ]);
+        $options = [
+            'decimal_separator' => ',',
+            'date_format'       => 'dd/MM/yyyy',
+        ];
+
+        $variantNormalized = [
+            'code' => 'my_variant',
+            'axis' => ['color', 'size'],
+            'type' => 'variant',
+            'values' => [
+                'number' => ['data' => 12.5000, 'locale' => null, 'scope' => null],
+                'metric' => ['data' => 12.5000, 'locale' => null, 'scope' => null],
+                'prices' => ['data' => 12.5, 'locale' => null, 'scope' => null],
+                'date'   => ['data' => '2015-01-31', 'locale' => null, 'scope' => null],
+            ]
+        ];
+
+        $valuesLocalized = [
+            'number' => ['data' => '12,5000', 'locale' => null, 'scope' => null],
+            'metric' => ['data' => '12,5000', 'locale' => null, 'scope' => null],
+            'prices' => ['data' => '12,50', 'locale' => null, 'scope' => null],
+            'date'   => ['data' => '31/01/2015', 'locale' => null, 'scope' => null],
+        ];
+
+        $normalizer->normalize($tshirt, 'json', $options)->willReturn($variantNormalized);
+        $localizedConverter->convertToLocalizedFormats($variantNormalized['values'], $options)
+            ->willReturn($valuesLocalized);
 
         $structureVersionProvider->getStructureVersion()->willReturn(1);
         $versionManager->getOldestLogEntry($tshirt)->willReturn($oldestLog);
@@ -68,25 +95,26 @@ class GroupNormalizerSpec extends ObjectBehavior
         $productsIterator->next()->shouldBeCalled();
         $productsIterator->current()->will(new ReturnPromise([$product]));
 
-
-
         $product->getId()->willReturn(42);
-
         $tshirt->getId()->willReturn(12);
         $tshirt->getProducts()->willReturn($products);
 
-        $this->normalize($tshirt, 'internal_api')->shouldReturn([
-            'normalized_property'          => 'the_first_one',
-            'an_other_normalized_property' => 'the_second_one',
-            'products' => [42],
-            'meta'                         => [
-                'id'                => 12,
-                'form'              => 'pim-variant-group-edit-form',
-                'structure_version' => 1,
-                'model_type'        => 'variant_group',
-                'created'           => 'normalized_oldest_log',
-                'updated'           => 'normalized_newest_log',
+        $this->normalize($tshirt, 'internal_api', $options)->shouldReturn(
+            [
+                'code'     => 'my_variant',
+                'axis'     => ['color', 'size'],
+                'type'     => 'variant',
+                'values'   => $valuesLocalized,
+                'products' => [42],
+                'meta'     => [
+                    'id'                => 12,
+                    'form'              => 'pim-variant-group-edit-form',
+                    'structure_version' => 1,
+                    'model_type'        => 'variant_group',
+                    'created'           => 'normalized_oldest_log',
+                    'updated'           => 'normalized_newest_log',
+                ]
             ]
-        ]);
+        );
     }
 }

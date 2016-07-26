@@ -3,23 +3,46 @@
 namespace spec\Pim\Component\Connector\Writer\File\Xlsx;
 
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Buffer\BufferFactory;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
-use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
-use Pim\Component\Connector\Writer\File\BulkFileExporter;
+use Akeneo\Component\Buffer\BufferFactory;
+use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Prophecy\Argument;
+use Symfony\Component\Filesystem\Filesystem;
 
 class VariantGroupWriterSpec extends ObjectBehavior
 {
+    /** @var Filesystem */
+    private $filesystem;
+
+    /** @var string */
+    private $directory;
+
     function let(
+        ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
-        BulkFileExporter $mediaCopier,
-        FlatItemBufferFlusher $flusher
+        FlatItemBufferFlusher $flusher,
+        AttributeRepositoryInterface $attributeRepository,
+        FileExporterPathGeneratorInterface $fileExporterPath
     ) {
-        $this->beConstructedWith($bufferFactory, $mediaCopier, $flusher);
+        $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spec' . DIRECTORY_SEPARATOR;
+        $this->filesystem = new Filesystem();
+        $this->filesystem->mkdir($this->directory);
+
+        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $attributeRepository, $fileExporterPath, [
+            'pim_catalog_file', 'pim_catalog_image'
+        ]);
+    }
+
+    function letGo()
+    {
+        $this->filesystem->remove($this->directory);
     }
 
     function it_is_initializable()
@@ -27,19 +50,129 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Connector\Writer\File\Xlsx\VariantGroupWriter');
     }
 
-    function it_is_a_configurable_step()
-    {
-        $this->shouldHaveType('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
-    }
-
-    function it_is_a_writer()
-    {
-        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemWriterInterface');
-    }
-
     function it_prepares_the_export(
+        $arrayConverter,
+        $attributeRepository,
+        $fileExporterPath,
         $bufferFactory,
-        $mediaCopier,
+        FlatItemBuffer $flatRowBuffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance
+    ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn($this->directory . 'variant_group.xlsx');
+        $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('decimalSeparator')->willReturn(false);
+        $jobParameters->has('dateFormat')->willReturn(false);
+        $jobParameters->has('with_media')->willReturn(true);
+        $jobParameters->get('with_media')->willReturn(true);
+
+        $variantStandard1 = [
+            'code'   => 'jackets',
+            'type'   => 'variant',
+            'axis'   => ['size', 'color'],
+            'labels' => [
+                'en_US' => 'Jacket',
+                'en_GB' => 'Jacket',
+            ],
+            'values' => [
+                'media' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data' => [
+                            'filePath' => 'a/b/c/d/it_s_the_filename.jpg',
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $variantFlat1 = [
+            'code'        => 'jackets',
+            'axis'        => 'size,color',
+            'type'        => 'variant',
+            'label-en_US' => 'Jacket',
+            'label-en_GB' => 'Jacket',
+            'media'       => 'files/jackets/media/it\'s the filaname.jpg'
+        ];
+
+        $variantStandard2 = [
+            'code'   => 'sweaters',
+            'type'   => 'variant',
+            'labels' => [
+                'en_US' => 'Sweaters',
+                'en_GB' => 'Chandails',
+            ],
+            'values' => [
+                'media' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => [
+                            'filePath' => 'wrong/path'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $variantFlat2 = [
+            'code'        => 'sweaters',
+            'type'        => 'variant',
+            'label-en_US' => 'Sweaters',
+            'label-en_GB' => 'Chandails',
+            'media'       => 'wrong/path',
+        ];
+
+        $items = [$variantStandard1, $variantStandard2];
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobExecution->getId()->willReturn(100);
+        $jobInstance->getCode()->willReturn('csv_variant_group_export');
+        $variantPathMedia1 = $this->directory . 'csv_variant_group_export/100/files/jackets/media/';
+        $originalFilename = "it's the filename.jpg";
+
+        $this->filesystem->mkdir($variantPathMedia1);
+        $this->filesystem->touch($variantPathMedia1 . $originalFilename);
+
+        $bufferFactory->create()->willReturn($flatRowBuffer);
+
+        $attributeRepository->getAttributeTypeByCodes(['media'])->willReturn(['media' => 'pim_catalog_image']);
+        $fileExporterPath->generate($variantStandard1['values']['media'][0], [
+            'identifier' => 'jackets', 'code' => 'media'
+        ])->willReturn('files/jackets/media/');
+
+        $fileExporterPath->generate($variantStandard2['values']['media'][0], [
+            'identifier' => 'sweaters', 'code' => 'media'
+        ])->willReturn('files/sweaters/media/');
+
+        $variantStandard1['values']['media'][0]['data']['filePath'] = 'files/jackets/media/' . $originalFilename;
+        $arrayConverter->convert($variantStandard1, [])->willReturn($variantFlat1);
+        $arrayConverter->convert($variantStandard2, [])->willReturn($variantFlat2);
+
+        $flatRowBuffer->write([$variantFlat1, $variantFlat2], ['withHeader' => true])->shouldBeCalled();
+
+        $this->initialize();
+        $this->write($items);
+
+        $this->getWrittenFiles()->shouldBeEqualTo(
+            [
+              $variantPathMedia1 . 'it\'s the filename.jpg' => 'files/jackets/media/it\'s the filename.jpg'
+            ]
+        );
+    }
+
+    function it_does_not_export_media_if_option_is_false(
+        $arrayConverter,
+        $attributeRepository,
+        $fileExporterPath,
+        $bufferFactory,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
@@ -47,99 +180,58 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn($this->directory . 'variant_group.xlsx');
         $jobParameters->has('mainContext')->willReturn(false);
-        $jobParameters->get('filePath')->willReturn('my/file/path');
+        $jobParameters->has('decimalSeparator')->willReturn(false);
+        $jobParameters->has('dateFormat')->willReturn(false);
+        $jobParameters->has('with_media')->willReturn(true);
+        $jobParameters->get('with_media')->willReturn(false);
 
-        $items = [
-            [
-                'variant_group' => [
-                    'code'        => 'jackets',
-                    'axis'        => 'size,color',
-                    'type'        => 'variant',
-                    'label-en_US' => 'Jacket',
-                    'label-en_GB' => 'Jacket'
-                ],
-                'media' => [
-                    'filePath'     => 'wrong/path',
-                    'exportPath'   => 'export',
-                    'storageAlias' => 'storageAlias',
-                ],
+        $variantStandard1 = [
+            'code'   => 'jackets',
+            'type'   => 'variant',
+            'axis'   => ['size', 'color'],
+            'labels' => [
+                'en_US' => 'Jacket',
+                'en_GB' => 'Jacket',
             ],
-            [
-                'variant_group' => [
-                    'code'        => 'sweaters',
-                    'type'        => 'variant',
-                    'label-en_US' => 'Sweaters',
-                    'label-en_GB' => 'Chandails'
-                ],
+            'values' => [
                 'media' => [
-                    'filePath'     => 'img/variant_group1.jpg',
-                    'exportPath'   => 'export',
-                    'storageAlias' => 'storageAlias',
-                ],
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data' => [
+                            'filePath' => 'a/b/c/d/it_s_the_filename.jpg',
+                        ]
+                    ]
+                ]
             ]
         ];
 
+        $variantFlat1 = [
+            'code'        => 'jackets',
+            'axis'        => 'size,color',
+            'type'        => 'variant',
+            'label-en_US' => 'Jacket',
+            'label-en_GB' => 'Jacket',
+            'media'       => 'files/jackets/media/it\'s the filaname.jpg'
+        ];
+
+        $items = [$variantStandard1];
+
         $bufferFactory->create()->willReturn($flatRowBuffer);
-        $flatRowBuffer->write([
-            [
-                'code'        => 'jackets',
-                'axis'        => 'size,color',
-                'type'        => 'variant',
-                'label-en_US' => 'Jacket',
-                'label-en_GB' => 'Jacket'
-            ],
-            [
-                'code'        => 'sweaters',
-                'type'        => 'variant',
-                'label-en_US' => 'Sweaters',
-                'label-en_GB' => 'Chandails'
-            ],
-        ], ['withHeader' => true])->shouldBeCalled();
 
-        $mediaCopier->exportAll([
-            [
-                'filePath'     => 'wrong/path',
-                'exportPath'   => 'export',
-                'storageAlias' => 'storageAlias',
-            ],
-            [
-                'filePath'     => 'img/variant_group1.jpg',
-                'exportPath'   => 'export',
-                'storageAlias' => 'storageAlias',
-            ],
-        ], 'my/file')->shouldBeCalled();
+        $attributeRepository->getAttributeTypeByCodes(['media'])->shouldNotBeCalled();
+        $fileExporterPath->generate(Argument::cetera())->shouldNotBeCalled();
 
-        $mediaCopier->getErrors()->willReturn([
-            [
-                'medium' => [
-                    'filePath'     => 'wrong/path',
-                    'exportPath'   => 'export',
-                    'storageAlias' => 'storageAlias',
-                ],
-                'message' => 'Error message',
-            ]
-        ]);
-        $mediaCopier->getCopiedMedia()->willReturn([
-            [
-                'copyPath'       => '/tmp/export',
-                'originalMedium' => [
-                    'filePath'     => 'img/variant_group1.jpg',
-                    'exportPath'   => 'export',
-                    'storageAlias' => 'storageAlias',
-                ]
-            ]
-        ]);
+        $arrayConverter->convert($variantStandard1, [])->willReturn($variantFlat1);
 
-        $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
+        $flatRowBuffer->write([$variantFlat1], ['withHeader' => true])->shouldBeCalled();
 
         $this->initialize();
         $this->write($items);
 
-        $this->getWrittenFiles()->shouldBeEqualTo([
-            '/tmp/export' => 'export'
-        ]);
+        $this->getWrittenFiles()->shouldBeEqualTo([]);
     }
 
     function it_writes_the_xlsx_file(
@@ -154,7 +246,9 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('linesPerFile')->willReturn(2);
+        $jobParameters->has('linesPerFile')->willReturn(false);
+        $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('filePath')->willReturn('my/file/path/foo');
         $jobParameters->has('mainContext')->willReturn(false);
 
@@ -163,10 +257,22 @@ class VariantGroupWriterSpec extends ObjectBehavior
             $flatRowBuffer,
             Argument::type('array'),
             Argument::type('string'),
-            2
+            -1
         )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
 
         $this->initialize();
         $this->flush();
+    }
+
+    function it_builds_the_path(StepExecution $stepExecution, JobParameters $jobParameters)
+    {
+        $options = ['date' => '2015-01-01'];
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('mainContext')->willReturn(true);
+        $jobParameters->get('mainContext')->willReturn($options);
+        $jobParameters->get('filePath')->willReturn($this->directory . 'variant_group_%date%.xlsx');
+
+        $this->getPath()->shouldReturn($this->directory . 'variant_group_2015-01-01.xlsx');
     }
 }

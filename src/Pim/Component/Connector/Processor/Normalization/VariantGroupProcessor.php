@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\Processor\Normalization;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -70,7 +71,10 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
         ]);
 
         $parameters = $this->stepExecution->getJobParameters();
-        $this->importMedia($variantGroup, $parameters);
+
+        if ($parameters->has('with_media') && $parameters->get('with_media')) {
+            $this->importMedia($variantGroup, $parameters);
+        }
 
         $this->objectDetacher->detach($variantGroup);
 
@@ -104,7 +108,7 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
         $this->mediaExporter->exportAll($productTemplate->getValues(), $directory, $identifier);
 
         foreach ($this->mediaExporter->getErrors() as $error) {
-            $this->stepExecution->addWarning($error['message'], [], $error['media']);
+            $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
         }
     }
 }

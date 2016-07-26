@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
@@ -23,7 +24,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         VersionManager $versionManager,
         LocaleRepositoryInterface $localeRepository,
         StructureVersionProviderInterface $structureVersionProvider,
-        FormProviderInterface $formProvider
+        FormProviderInterface $formProvider,
+        AttributeConverterInterface $localizedConverter
     ) {
         $this->beConstructedWith(
             $productNormalizer,
@@ -31,7 +33,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             $versionManager,
             $localeRepository,
             $structureVersionProvider,
-            $formProvider
+            $formProvider,
+            $localizedConverter
         );
     }
 
@@ -47,15 +50,41 @@ class ProductNormalizerSpec extends ObjectBehavior
         $localeRepository,
         $structureVersionProvider,
         $formProvider,
+        $localizedConverter,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
         GroupInterface $group,
         ArrayCollection $groups
     ) {
-        $productNormalizer->normalize($mug, 'json', [])->willReturn(
-            ['normalized_property' => 'a nice normalized property']
-        );
+        $options = [
+            'decimal_separator' => ',',
+            'date_format'       => 'dd/MM/yyyy',
+        ];
+
+        $productNormalized = [
+            'enabled'    => true,
+            'categories' => ['kitchen'],
+            'family'     => '',
+            'values' => [
+                'normalized_property' => ['data' => 'a nice normalized property', 'locale' => null, 'scope' => null],
+                'number' => ['data' => 12.5000, 'locale' => null, 'scope' => null],
+                'metric' => ['data' => 12.5000, 'locale' => null, 'scope' => null],
+                'prices' => ['data' => 12.5, 'locale' => null, 'scope' => null],
+                'date'   => ['data' => '2015-01-31', 'locale' => null, 'scope' => null],
+            ]
+        ];
+
+        $valuesLocalized = [
+            'normalized_property' => ['data' => 'a nice normalized property', 'locale' => null, 'scope' => null],
+            'number' => ['data' => '12,5000', 'locale' => null, 'scope' => null],
+            'metric' => ['data' => '12,5000', 'locale' => null, 'scope' => null],
+            'prices' => ['data' => '12,5', 'locale' => null, 'scope' => null],
+            'date'   => ['data' => '31/01/2015', 'locale' => null, 'scope' => null],
+        ];
+
+        $productNormalizer->normalize($mug, 'json', $options)->willReturn($productNormalized);
+        $localizedConverter->convertToLocalizedFormats($productNormalized['values'], $options)->willReturn($valuesLocalized);
 
         $mug->getId()->willReturn(12);
         $versionManager->getOldestLogEntry($mug)->willReturn('create_version');
@@ -77,23 +106,28 @@ class ProductNormalizerSpec extends ObjectBehavior
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');
 
-        $this->normalize($mug, 'internal_api', [])->shouldReturn([
-            'normalized_property' => 'a nice normalized property',
-            'meta' => [
-                'form'    => 'product-edit-form',
-                'id'      => 12,
-                'created' => 'normalized_create_version',
-                'updated' => 'normalized_update_version',
-                'model_type'        => 'product',
-                'structure_version' => 12,
-                'label'   => [
-                    'en_US' => 'A nice Mug!',
-                    'fr_FR' => 'Un très beau Mug !'
-                ],
-                'associations' => [
-                    'group' => ['groupIds' => [12]]
-                ],
+        $this->normalize($mug, 'internal_api', $options)->shouldReturn(
+            [
+                'enabled'    => true,
+                'categories' => ['kitchen'],
+                'family'     => '',
+                'values'     => $valuesLocalized,
+                'meta'       => [
+                    'form'              => 'product-edit-form',
+                    'id'                => 12,
+                    'created'           => 'normalized_create_version',
+                    'updated'           => 'normalized_update_version',
+                    'model_type'        => 'product',
+                    'structure_version' => 12,
+                    'label'             => [
+                        'en_US' => 'A nice Mug!',
+                        'fr_FR' => 'Un très beau Mug !'
+                    ],
+                    'associations'      => [
+                        'group' => ['groupIds' => [12]]
+                    ],
+                ]
             ]
-        ]);
+        );
     }
 }

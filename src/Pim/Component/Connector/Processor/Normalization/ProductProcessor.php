@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\Processor\Normalization;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -120,7 +121,7 @@ class ProductProcessor extends AbstractConfigurableStepElement implements
         $this->mediaExporter->exportAll($product->getValues(), $directory, $identifier);
 
         foreach ($this->mediaExporter->getErrors() as $error) {
-            $this->stepExecution->addWarning($error['message'], [], $error['media']);
+            $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
         }
     }
 

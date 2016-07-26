@@ -2,11 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
 
 class MediaExporterPathGeneratorSpec extends ObjectBehavior
@@ -16,113 +12,63 @@ class MediaExporterPathGeneratorSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Connector\Writer\File\MediaExporterPathGenerator');
     }
 
-    function it_throws_an_exception_when_the_provided_object_is_not_product_value()
+    function it_generates_the_path()
     {
-        $this->shouldThrow('\InvalidArgumentException')->during('generate', [new \StdClass()]);
+        $value = [
+            'locale' => null,
+            'scope'  => null
+        ];
+
+        $options = ['identifier' => 'sku001', 'code' => 'picture'];
+
+        $this->generate($value, $options)->shouldReturn('files/sku001/picture/');
     }
 
-    function it_generates_the_path_when_there_is_no_media(ProductValueInterface $value)
+    function it_generates_the_path_when_the_value_is_localisable()
     {
-        $value->getMedia()->willReturn(null);
+        $value = [
+            'locale' => 'fr_FR',
+            'scope'  => null
+        ];
 
-        $this->generate($value)->shouldReturn('');
+        $options = ['identifier' => 'sku001', 'code' => 'picture'];
+
+        $this->generate($value, $options)->shouldReturn('files/sku001/picture/fr_FR/');
     }
 
-    function it_generates_the_path(
-        ProductValueInterface $value,
-        FileInfoInterface $fileInfo,
-        AttributeInterface $attribute
-    ) {
-        $value->getMedia()->willReturn($fileInfo);
-        $value->getAttribute()->willReturn($attribute);
-        $fileInfo->getOriginalFilename()->willReturn('file.jpg');
-        $attribute->getCode()->willReturn('picture');
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(false);
+    function it_generates_the_path_when_the_value_is_scopable()
+    {
+        $value = [
+            'locale' => null,
+            'scope'  => 'ecommerce'
+        ];
 
-        $this->generate($value, ['identifier' => 'sku001'])->shouldReturn('files/sku001/picture/file.jpg');
+        $options = ['identifier' => 'sku001', 'code' => 'picture'];
+
+        $this->generate($value, $options)->shouldReturn('files/sku001/picture/ecommerce/');
     }
 
-    function it_generates_the_path_when_no_identifier_is_provided(
-        ProductValueInterface $value,
-        ProductInterface $product,
-        FileInfoInterface $fileInfo,
-        AttributeInterface $attribute
-    ) {
-        $value->getMedia()->willReturn($fileInfo);
-        $value->getAttribute()->willReturn($attribute);
-        $value->getEntity()->willReturn($product);
-        $product->getIdentifier()->willReturn('sku-product');
-        $fileInfo->getOriginalFilename()->willReturn('file.jpg');
-        $attribute->getCode()->willReturn('picture');
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(false);
+    function it_generates_the_path_when_the_value_is_localisable_and_scopable()
+    {
+        $value = [
+            'locale' => 'fr_FR',
+            'scope'  => 'ecommerce'
+        ];
 
-        $this->generate($value, ['identifier' =>null])->shouldReturn('files/sku-product/picture/file.jpg');
+        $options = ['identifier' => 'sku001', 'code' => 'picture'];
+
+        $this->generate($value, $options)->shouldReturn('files/sku001/picture/fr_FR/ecommerce/');
     }
 
-    function it_generates_the_path_when_the_value_is_localisable(
-        ProductValueInterface $value,
-        FileInfoInterface $fileInfo,
-        AttributeInterface $attribute
-    ) {
-        $value->getMedia()->willReturn($fileInfo);
-        $value->getLocale()->willReturn('fr_FR');
-        $value->getAttribute()->willReturn($attribute);
-        $fileInfo->getOriginalFilename()->willReturn('file.jpg');
-        $attribute->getCode()->willReturn('picture');
-        $attribute->isLocalizable()->willReturn(true);
-        $attribute->isScopable()->willReturn(false);
+    function it_generates_the_path_when_the_sku_contains_slash()
+    {
+        $value = [
+            'locale' => null,
+            'scope'  => null
+        ];
 
-        $this->generate($value, ['identifier' => 'sku001'])->shouldReturn('files/sku001/picture/fr_FR/file.jpg');
-    }
+        $options = ['identifier' => 'sku/001', 'code' => 'picture'];
 
-    function it_generates_the_path_when_the_value_is_scopable(
-        ProductValueInterface $value,
-        FileInfoInterface $fileInfo,
-        AttributeInterface $attribute
-    ) {
-        $value->getMedia()->willReturn($fileInfo);
-        $value->getScope()->willReturn('ecommerce');
-        $value->getAttribute()->willReturn($attribute);
-        $fileInfo->getOriginalFilename()->willReturn('file.jpg');
-        $attribute->getCode()->willReturn('picture');
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(true);
-
-        $this->generate($value, ['identifier' => 'sku001'])->shouldReturn('files/sku001/picture/ecommerce/file.jpg');
-    }
-
-    function it_generates_the_path_when_the_value_is_localisable_and_scopable(
-        ProductValueInterface $value,
-        FileInfoInterface $fileInfo,
-        AttributeInterface $attribute
-    ) {
-        $value->getMedia()->willReturn($fileInfo);
-        $value->getLocale()->willReturn('fr_FR');
-        $value->getScope()->willReturn('ecommerce');
-        $value->getAttribute()->willReturn($attribute);
-        $fileInfo->getOriginalFilename()->willReturn('file.jpg');
-        $attribute->getCode()->willReturn('picture');
-        $attribute->isLocalizable()->willReturn(true);
-        $attribute->isScopable()->willReturn(true);
-
-        $this->generate($value, ['identifier' => 'sku001'])->shouldReturn('files/sku001/picture/fr_FR/ecommerce/file.jpg');
-    }
-
-    function it_generates_the_path_when_the_sku_contains_slash(
-        ProductValueInterface $value,
-        FileInfoInterface $fileInfo,
-        AttributeInterface $attribute
-    ) {
-        $value->getMedia()->willReturn($fileInfo);
-        $value->getLocale()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
-        $fileInfo->getOriginalFilename()->willReturn('file.jpg');
-        $attribute->getCode()->willReturn('picture');
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(false);
-
-        $this->generate($value, ['identifier' => 'sku/001'])->shouldReturn('files/sku_001/picture/file.jpg');
+        $this->generate($value, $options)->shouldReturn('files/sku_001/picture/');
     }
 }
