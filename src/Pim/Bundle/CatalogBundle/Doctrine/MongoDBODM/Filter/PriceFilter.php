@@ -7,7 +7,9 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Price filter
@@ -22,15 +24,21 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected $currencyRepository;
 
     /**
+     * @param ChannelRepositoryInterface  $channelRepository
+     * @param LocaleRepositoryInterface   $localeRepository
      * @param CurrencyRepositoryInterface $currencyRepository
      * @param array                       $supportedAttributeTypes
      * @param array                       $supportedOperators
      */
     public function __construct(
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         CurrencyRepositoryInterface $currencyRepository,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
+        parent::__construct($channelRepository, $localeRepository);
+
         $this->currencyRepository      = $currencyRepository;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators      = $supportedOperators;

@@ -7,6 +7,8 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Number filter
@@ -18,13 +20,19 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
     /**
-     * @param array $supportedAttributeTypes
-     * @param array $supportedOperators
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param array                      $supportedAttributeTypes
+     * @param array                      $supportedOperators
      */
     public function __construct(
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
+        parent::__construct($channelRepository, $localeRepository);
+
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators      = $supportedOperators;
     }

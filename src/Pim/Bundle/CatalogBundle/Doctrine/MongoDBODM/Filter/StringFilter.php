@@ -7,6 +7,8 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -22,15 +24,21 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected $resolver;
 
     /**
-     * @param array $supportedAttributeTypes
-     * @param array $supportedOperators
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param array                      $supportedAttributeTypes
+     * @param array                      $supportedOperators
      */
     public function __construct(
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
+        parent::__construct($channelRepository, $localeRepository);
+
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedOperators      = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
 
         $this->resolver = new OptionsResolver();
         $this->configureOptions($this->resolver);

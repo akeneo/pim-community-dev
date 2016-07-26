@@ -9,6 +9,8 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -27,15 +29,21 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
     protected $resolver;
 
     /**
-     * @param ObjectIdResolverInterface $objectIdResolver
-     * @param array                     $supportedAttributeTypes
-     * @param array                     $supportedOperators
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param ObjectIdResolverInterface  $objectIdResolver
+     * @param array                      $supportedAttributeTypes
+     * @param array                      $supportedOperators
      */
     public function __construct(
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         ObjectIdResolverInterface $objectIdResolver,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
+        parent::__construct($channelRepository, $localeRepository);
+
         $this->objectIdResolver        = $objectIdResolver;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators      = $supportedOperators;

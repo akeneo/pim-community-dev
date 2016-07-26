@@ -62,16 +62,6 @@ services:
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
-    # PQB common filter definitions (implement either in ORM or MongoDB ODM)
-    pim_catalog.doctrine.query.filter.boolean:
-        class: '%pim_catalog.doctrine.query.filter.boolean.class%'
-        arguments:
-            - ['pim_catalog_boolean']
-            - ['enabled']
-            - ['=', '!=']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
     pim_catalog.doctrine.query.filter.family:
         class: '%pim_catalog.doctrine.query.filter.family.class%'
         arguments:
@@ -87,32 +77,6 @@ services:
             - '@pim_catalog.doctrine.query.filter.object_id_resolver'
             - ['groups.id', 'groups.code']
             - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.option:
-        class: '%pim_catalog.doctrine.query.filter.option.class%'
-        arguments:
-            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
-            - ['pim_catalog_simpleselect']
-            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.options:
-        class: '%pim_catalog.doctrine.query.filter.options.class%'
-        arguments:
-            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
-            - ['pim_catalog_multiselect']
-            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.date:
-        class: '%pim_catalog.doctrine.query.filter.date.class%'
-        arguments:
-            - ['pim_catalog_date']
-            - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
@@ -136,62 +100,11 @@ services:
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
-    pim_catalog.doctrine.query.filter.metric:
-        class: '%pim_catalog.doctrine.query.filter.metric.class%'
-        arguments:
-            - '@akeneo_measure.manager'
-            - '@akeneo_measure.measure_converter'
-            - ['pim_catalog_metric']
-            - ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.number:
-        class: '%pim_catalog.doctrine.query.filter.number.class%'
-        arguments:
-            - ['pim_catalog_number']
-            - ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.price:
-        class: '%pim_catalog.doctrine.query.filter.price.class%'
-        arguments:
-            - '@pim_catalog.repository.currency'
-            - ['pim_catalog_price_collection']
-            - ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
     pim_catalog.doctrine.query.filter.product_id:
         class: '%pim_catalog.doctrine.query.filter.product_id.class%'
         arguments:
             - ['id']
             - ['=', 'IN', 'NOT IN', '!=']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.string:
-        class: '%pim_catalog.doctrine.query.filter.string.class%'
-        arguments:
-            - ['pim_catalog_text', 'pim_catalog_textarea']
-            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.identifier:
-        class: '%pim_catalog.doctrine.query.filter.string.class%'
-        arguments:
-            - ['pim_catalog_identifier']
-            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN', '!=']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.media:
-        class: '%pim_catalog.doctrine.query.filter.media.class%'
-        arguments:
-            - ['pim_catalog_image', 'pim_catalog_file']
-            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 

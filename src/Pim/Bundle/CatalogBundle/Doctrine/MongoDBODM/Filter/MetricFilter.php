@@ -9,6 +9,8 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Metric filter
@@ -26,17 +28,23 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected $measureConverter;
 
     /**
-     * @param MeasureManager   $measureManager
-     * @param MeasureConverter $measureConverter
-     * @param array            $supportedAttributeTypes
-     * @param array            $supportedOperators
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param MeasureManager             $measureManager
+     * @param MeasureConverter           $measureConverter
+     * @param array                      $supportedAttributeTypes
+     * @param array                      $supportedOperators
      */
     public function __construct(
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         MeasureManager $measureManager,
         MeasureConverter $measureConverter,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
+        parent::__construct($channelRepository, $localeRepository);
+
         $this->measureManager          = $measureManager;
         $this->measureConverter        = $measureConverter;
         $this->supportedAttributeTypes = $supportedAttributeTypes;

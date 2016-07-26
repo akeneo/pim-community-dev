@@ -8,6 +8,8 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Boolean filter
@@ -22,15 +24,21 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
     protected $supportedFields;
 
     /**
-     * @param array $supportedAttributeTypes
-     * @param array $supportedFields
-     * @param array $supportedOperators
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param array                      $supportedAttributeTypes
+     * @param array                      $supportedFields
+     * @param array                      $supportedOperators
      */
     public function __construct(
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         array $supportedAttributeTypes = [],
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
+        parent::__construct($channelRepository, $localeRepository);
+
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedFields = $supportedFields;
         $this->supportedOperators  = $supportedOperators;
