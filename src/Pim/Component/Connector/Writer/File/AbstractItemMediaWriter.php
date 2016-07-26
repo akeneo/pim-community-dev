@@ -231,11 +231,13 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
                     ]);
 
                     $finder = new Finder();
-                    $files = iterator_to_array($finder->files()->in($tmpDirectory . $exportDirectory));
-                    if (!empty($files)) {
-                        $path = $exportDirectory . current($files)->getFilename();
-                        $this->writtenFiles[$tmpDirectory . $path] = $path;
-                        $item['values'][$attributeCode][$index]['data']['filePath'] = $path;
+                    if (is_dir($tmpDirectory . $exportDirectory)) {
+                        $files = iterator_to_array($finder->files()->in($tmpDirectory . $exportDirectory));
+                        if (!empty($files)) {
+                            $path = $exportDirectory . current($files)->getFilename();
+                            $this->writtenFiles[$tmpDirectory . $path] = $path;
+                            $item['values'][$attributeCode][$index]['data']['filePath'] = $path;
+                        }
                     }
                 }
             }
