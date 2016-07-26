@@ -80,36 +80,36 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
             switch ($operator) {
                 case Operators::IS_EMPTY:
                     $expr = $this->qb->expr()->field($field)->exists(false);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::IS_NOT_EMPTY:
                     $expr = $this->qb->expr()->field($field)->exists(true);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::EQUALS:
                     $expr = $this->qb->expr()->field($field)->equals($value);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::NOT_EQUAL:
                     $exprExists = $this->qb->expr()->field($field)->exists(true);
                     $exprNotEqual = $this->qb->expr()->field($field)->notEqual($value);
-                    $this->qb->addOr($exprExists)->addOr($exprNotEqual); // TODO check with PO
+                    $this->qb->addOr($exprExists)->addOr($exprNotEqual);
                     break;
                 case Operators::LOWER_THAN:
                     $expr = $this->qb->expr()->field($field)->lt($value);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::GREATER_THAN:
                     $expr = $this->qb->expr()->field($field)->gt($value);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::LOWER_OR_EQUAL_THAN:
                     $expr = $this->qb->expr()->field($field)->lte($value);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::GREATER_OR_EQUAL_THAN:
                     $expr = $this->qb->expr()->field($field)->gte($value);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
             }
         }

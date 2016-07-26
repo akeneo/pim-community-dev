@@ -116,7 +116,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
     /**
      * Apply the filter to the query with the given operator
      *
-     * @param string $fields
+     * @param array  $fields
      * @param string $operator
      * @param mixed  $value
      */
@@ -126,20 +126,20 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
             switch ($operator) {
                 case Operators::IN_LIST:
                     $expr = $this->qb->expr()->field($field)->in($value);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::NOT_IN_LIST:
                     $this->qb
                         ->addOr($this->qb->expr()->field($field)->exists(true))
-                        ->addOr($this->qb->expr()->field($field)->notIn($value)); // TODO check with PO
+                        ->addOr($this->qb->expr()->field($field)->notIn($value));
                     break;
                 case Operators::IS_EMPTY:
                     $expr = $this->qb->expr()->field($field)->exists(false);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::IS_NOT_EMPTY:
                     $expr = $this->qb->expr()->field($field)->exists(true);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
             }
         }

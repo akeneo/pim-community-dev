@@ -89,7 +89,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             switch ($operator) {
                 case Operators::EQUALS:
                     $expr = $this->qb->expr()->field($field)->equals($data);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::NOT_EQUAL:
                     $this->qb
@@ -98,27 +98,27 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
                     break;
                 case Operators::LOWER_THAN:
                     $expr = $this->qb->expr()->field($field)->lt($data);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::LOWER_OR_EQUAL_THAN:
                     $expr = $this->qb->expr()->field($field)->lte($data);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::GREATER_THAN:
                     $expr = $this->qb->expr()->field($field)->gt($data);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::GREATER_OR_EQUAL_THAN:
                     $expr = $this->qb->expr()->field($field)->gte($data);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::IS_EMPTY:
                     $expr = $this->qb->expr()->field($field)->exists(false);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::IS_NOT_EMPTY:
                     $expr = $this->qb->expr()->field($field)->exists(true);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
             }
         }

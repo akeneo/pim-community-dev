@@ -94,36 +94,36 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             switch ($operator) {
                 case Operators::EQUALS:
                     $expr = $this->qb->expr()->field($field)->equals($data);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::NOT_EQUAL:
                     $this->qb
                         ->addOr($this->qb->expr()->field($field)->exists(true))
-                        ->addOr($this->qb->expr()->field($field)->notEqual($data)); // TODO check with PO
+                        ->addOr($this->qb->expr()->field($field)->notEqual($data));
                     break;
                 case Operators::LOWER_THAN:
                     $expr = $this->qb->expr()->field($field)->lt($data);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::LOWER_OR_EQUAL_THAN:
                     $expr = $this->qb->expr()->field($field)->lte($data);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::GREATER_THAN:
                     $expr = $this->qb->expr()->field($field)->gt($data);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::GREATER_OR_EQUAL_THAN:
                     $expr = $this->qb->expr()->field($field)->gte($data);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::IS_EMPTY:
                     $expr = $this->qb->expr()->field($field)->exists(false);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
                 case Operators::IS_NOT_EMPTY:
                     $expr = $this->qb->expr()->field($field)->exists(true);
-                    $this->qb->addOr($expr); // TODO check with PO
+                    $this->qb->addOr($expr);
                     break;
             }
         }
