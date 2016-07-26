@@ -149,7 +149,6 @@ services:
     pim_catalog.doctrine.query.filter.number:
         class: '%pim_catalog.doctrine.query.filter.number.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
             - ['pim_catalog_number']
             - ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         tags:
