@@ -6,6 +6,6 @@
     <% }); %>
 </select>
 
-<% if ('EMPTY' !== operator && 'NOT EMPTY' !== operator) { %>
+<% if (!_.contains(['EMPTY', 'NOT EMPTY'], operator)) { %>
     <input type="text" name="filter-value" class="value" value="<%- value %>" <%- editable ? '' : 'disabled' %>/>
 <% } %>

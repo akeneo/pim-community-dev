@@ -15,7 +15,7 @@ Feature: Export product by attribute date
       | CD-AEROSMITH     | 1       | CD     | 2014_collection | 2015-01-09      |
       | CD-BLACK-SABBATH | 1       | CD     | 2014_collection |                 |
 
-  Scenario: Successfully export products filtered with an empty pim_catalog_date attribute using the UI
+  Scenario: Successfully export products filtered with an empty date attribute using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
     And I am logged in as "Julia"
@@ -35,7 +35,7 @@ Feature: Export product by attribute date
     CD-BLACK-SABBATH;2014_collection;1;CD;;
     """
 
-  Scenario: Successfully export products filtered with a greater than a value of a pim_catalog_date attribute using the UI
+  Scenario: Successfully export products filtered with a value greater than a date attribute using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
     And I am logged in as "Julia"
@@ -56,7 +56,7 @@ Feature: Export product by attribute date
     CD-RATM;2014_collection;1;CD;;2016-08-13
     """
 
-  Scenario: Successfully export products filtered with a between two values of a pim_catalog_date attribute using the UI
+  Scenario: Successfully export products filtered by date attribute between two values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
     And I am logged in as "Julia"
@@ -79,7 +79,7 @@ Feature: Export product by attribute date
     CD-AEROSMITH;2014_collection;1;CD;;2015-01-09
     """
 
-  Scenario: Successfully export products filtered with a lower to a value of a pim_catalog_date attribute without using the UI
+  Scenario: Successfully export products filtered with a value lower than a date attribute without using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv                                                                                            |
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "destocking_date", "operator": "<", "value": "2016-08-13"}]} |
