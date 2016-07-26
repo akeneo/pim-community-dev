@@ -4,11 +4,9 @@ namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Symfony\Component\Validator\Constraints\Choice;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterData;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -45,7 +43,7 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
         $constraintFields = $baseConstraint->fields;
         $constraintFields['decimalSeparator'] = new NotBlank();
         $constraintFields['dateFormat'] = new NotBlank();
-        $constraintFields['filters'] = [];
+        $constraintFields['filters'] = [new FilterData()];
         $constraintFields['with_media'] = new Type('bool');
 
         return new Collection(['fields' => $constraintFields]);
