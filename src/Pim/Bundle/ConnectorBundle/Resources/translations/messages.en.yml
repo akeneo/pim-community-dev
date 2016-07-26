@@ -106,6 +106,10 @@ pim_connector:
             help: Determine the format of date fields
         header:
             label: Header
+        families:
+            label: Family
+            help: The families you want to export
+            placeholder: Choose a family
     import:
         enabled:
             label: Enable the product

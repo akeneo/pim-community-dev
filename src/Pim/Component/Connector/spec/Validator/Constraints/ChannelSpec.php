@@ -13,7 +13,7 @@ class ChannelSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel');
+        $this->shouldHaveType('\Pim\Component\Connector\Validator\Constraints\Channel');
     }
 
     function it_is_a_choice()

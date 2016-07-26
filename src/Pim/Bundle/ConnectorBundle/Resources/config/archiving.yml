@@ -1,12 +1,12 @@
 parameters:
-    pim_base_connector.event_listener.archivist.class:                 Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist
-    pim_base_connector.event_listener.invalid_items_collector.class:   Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector
+    pim_base_connector.event_listener.archivist.class:                 Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist
+    pim_base_connector.event_listener.invalid_items_collector.class:   Pim\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector
     pim_base_connector.factory.zip_filesystem.class:                   Pim\Component\Connector\Filesystem\ZipFilesystemFactory
     pim_base_connector.archiver.file_reader_archiver.class:            Pim\Component\Connector\Archiver\FileReaderArchiver
     pim_base_connector.archiver.file_writer_archiver.class:            Pim\Component\Connector\Archiver\FileWriterArchiver
     pim_base_connector.archiver.archivable_file_writer_archiver.class: Pim\Component\Connector\Archiver\ArchivableFileWriterArchiver
-    pim_base_connector.archiver.invalid_item_csv_writer.class: Pim\Component\Connector\Archiver\CsvInvalidItemWriter
-    pim_base_connector.archiver.invalid_item_xlsx_writer.class: Pim\Component\Connector\Archiver\XlsxInvalidItemWriter
+    pim_base_connector.archiver.invalid_item_csv_writer.class:         Pim\Component\Connector\Archiver\CsvInvalidItemWriter
+    pim_base_connector.archiver.invalid_item_xlsx_writer.class:        Pim\Component\Connector\Archiver\XlsxInvalidItemWriter
 
 services:
     pim_base_connector.event_listener.archivist:

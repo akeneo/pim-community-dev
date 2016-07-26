@@ -8,7 +8,6 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use Pim\Component\Connector\Filesystem\ZipFilesystemFactory;
-use Pim\Component\Connector\Archiver\AbstractFilesystemArchiver;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 
 /**

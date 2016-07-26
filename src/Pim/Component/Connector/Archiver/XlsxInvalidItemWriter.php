@@ -5,7 +5,6 @@ namespace Pim\Component\Connector\Archiver;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Pim\Component\Connector\Archiver\AbstractInvalidItemWriter;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductXlsxExport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport;
 

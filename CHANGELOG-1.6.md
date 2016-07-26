@@ -60,6 +60,16 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\BaseConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass` to `Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass`
+- Move `Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector` to `Pim\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector`
+- Move `Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist` to `Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist`
+- Move `Pim\Bundle\BaseConnectorBundle\Archiver\AbstractFilesystemArchiver` to `Pim\Component\Connector\Archiver\AbstractFilesystemArchiver`
+- Move `Pim\Bundle\BaseConnectorBundle\Archiver\ArchivableFileWriterArchiver` to `Pim\Component\Connector\Archiver\ArchivableFileWriterArchiver`
+- Move `Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface` to `Pim\Component\Connector\Archiver\ArchiverInterface`
+- Move `Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver` to `Pim\Component\Connector\Archiver\FileWriterArchiver`
+- Move `Pim\Bundle\BaseConnectorBundle\Archiver\ZipFilesystemFactory` to `Pim\Component\Connector\Archiver\ZipFilesystemFactory`
+- Move `Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel` to `Pim\Component\Connector\Validator\Constraints\Channel`
+- Move `Pim\Bundle\BaseConnectorBundle\Validator\Constraints\ChannelValidator` to `Pim\Component\Connector\Validator\Constraints\ChannelValidator`
 - Change constructor of `Pim\Component\Catalog\Normalizer\Structured\ProductNormalizer`. It now takes two `Symfony\Component\Serializer\Normalizer\NormalizerInterface` as arguments (one for the properties and one for the associations).
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor`. Add `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter` and `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` as last arguments.
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`. Add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` as last arguments.
@@ -191,7 +201,7 @@
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ODMProductReader` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ORMProductReader` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
-- Change constructor of `Pim\Bundle\BaseConnectorBundle\Validator\Constraints\ChannelValidator` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
+- Change constructor of `Pim\Component\Connector\Validator\Constraints\ChannelValidator` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\CompletenessRepository` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\CatalogBundle\Factory\FamilyFactory` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
@@ -296,9 +306,9 @@
 - Remove methods `getConfiguration()`, `setConfiguration()`, `setReader()`, `setProcessor()`, `setWriter()`, `setBatchSize()` from `Akeneo\Component\Batch\Step\ItemStep`
 - Change constructor of `Pim\Component\Connector\Processor\Denormalization\JobInstanceProcessor` to add argument `Akeneo\Component\Job\JobRegistry`
 - Change constructor of `Akeneo\Component\Batch\Updater\JobInstanceUpdater` to add argument `Akeneo\Component\Job\JobRegistry`
-- Change constructor of `Pim\Bundle\BaseConnectorBundle\Archiver\ArchivableFileWriterArchiver` to add argument `Akeneo\Component\Job\JobRegistry`
-- Change constructor of `Pim\Bundle\BaseConnectorBundle\Archiver\FileReaderArchiver` to add argument `Akeneo\Component\Job\JobRegistry`
-- Change constructor of `Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver` to add argument `Akeneo\Component\Job\JobRegistry`
+- Change constructor of `Pim\Component\Connector\Archiver\ArchivableFileWriterArchiver` to add argument `Akeneo\Component\Job\JobRegistry`
+- Change constructor of `Pim\Component\Connector\Archiver\FileReaderArchiver` to add argument `Akeneo\Component\Job\JobRegistry`
+- Change constructor of `Pim\Component\Connector\Archiver\FileWriterArchiver` to add argument `Akeneo\Component\Job\JobRegistry`
 - Change constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add argument `Akeneo\Component\Job\JobRegistry`
 - Change constructor of `Akeneo\Bundle\BatchBundle\Validator\Constraints\JobInstanceValidator` to replace argument `Akeneo\Component\Connector\ConnectorRegistry` by `Akeneo\Component\Job\JobRegistry`
 - Remove argument array $configuration from `Pim\Component\Connector\Step\TaskletInterface::execute()`, we can access to the JobParameters from the StepExecution $stepExecution
@@ -391,7 +401,7 @@
 - Change constructor of `Pim\Component\Connector\Step\ValidatorStep` add `Pim\Component\Connector\Item\CharsetValidator` as last parameter
 - Change constructor of `Pim\Component\Connector\Step\TaskletStep` add `Pim\Component\Connector\Step\TaskletInterface` as last parameter
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Step\MassEditStep` add `Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner` as last parameter
-- Remove the class `Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver` and replaced by `Pim\Bundle\BaseConnectorBundle\Archiver\CsvInvalidItemWriter` and `im\Bundle\BaseConnectorBundle\Archiver\XlsxInvalidItemWriter`
+- Remove the class `Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver` and replaced by `Pim\Component\Connector\Archiver\CsvInvalidItemWriter` and `im\Bundle\BaseConnectorBundle\Archiver\XlsxInvalidItemWriter`
 - Change constructor of `Akeneo\Component\Batch\Event\InvalidItemEvent`.
 - Change constructor of `Akeneo\Component\Batch\Item\InvalidItemException`.
 - Change method `addWarning()` signature of `Akeneo\Component\Batch\Item\InvalidItemException`.

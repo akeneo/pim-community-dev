@@ -14,12 +14,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimBaseConnectorBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
-    {
-        $container
-            ->addCompilerPass(new DependencyInjection\Compiler\RegisterArchiversPass());
-    }
 }
