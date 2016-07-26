@@ -88,11 +88,9 @@ class ProductReaderSpec extends ObjectBehavior
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCode()->willReturn('mobile');
 
-        $pqbFactory->create(['default_scope' => 'mobile'])
+        $pqbFactory->create(['filters' => $filters['data'], 'default_scope' => 'mobile'])
             ->shouldBeCalled()
             ->willReturn($pqb);
-        $pqb->addFilter('enabled', '=', true, [])->shouldBeCalled();
-        $pqb->addFilter('family.code', 'IN', ['camcorder'], [])->shouldBeCalled();
         $pqb->execute()
             ->shouldBeCalled()
             ->willReturn($cursor);
@@ -109,7 +107,6 @@ class ProductReaderSpec extends ObjectBehavior
         $cursor->next()->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
-        $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
 
         $this->initialize();

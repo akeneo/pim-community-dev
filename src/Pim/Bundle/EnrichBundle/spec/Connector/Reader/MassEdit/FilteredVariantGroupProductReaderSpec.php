@@ -5,64 +5,99 @@ namespace spec\Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor;
+use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\VariantGroupCleaner;
+use Pim\Component\Catalog\Converter\MetricConverter;
+use Pim\Component\Catalog\Manager\CompletenessManager;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilder;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class FilteredVariantGroupProductReaderSpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        VariantGroupCleaner $cleaner,
+        ChannelRepositoryInterface $channelRepository,
+        CompletenessManager $completenessManager,
+        MetricConverter $metricConverter,
+        PaginatorFactoryInterface $paginatorFactory,
+        ObjectDetacherInterface $objectDetacher,
+        IdentifiableObjectRepositoryInterface $groupRepository,
+        ProductRepositoryInterface $productRepository,
+        TranslatorInterface $translator,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($pqbFactory, $cleaner);
+        $this->beConstructedWith(
+            $pqbFactory,
+            $channelRepository,
+            $completenessManager,
+            $metricConverter,
+            true,
+            $paginatorFactory,
+            $objectDetacher,
+            $groupRepository,
+            $productRepository,
+            $translator
+        );
         $this->setStepExecution($stepExecution);
     }
 
-    function it_reads_products(
-        $cleaner,
-        StepExecution $stepExecution,
+    function it_returns_no_products_when_they_all_are_duplicated(
+        $productRepository,
+        $paginatorFactory,
+        $stepExecution,
         ProductInterface $product,
         $pqbFactory,
         ProductQueryBuilder $pqb,
+        ProductQueryBuilder $pqb2,
         Cursor $cursor,
-        JobParameters $jobParameters
+        Cursor $cursor2,
+        JobParameters $jobParameters,
+        IdentifiableObjectRepositoryInterface $groupRepository,
+        GroupInterface $variantGroup,
+        AttributeInterface $axe,
+        PaginatorInterface $paginator
     ) {
         $configuration = [
             'filters' => [
                 [
                     'field'    => 'id',
                     'operator' => 'IN',
-                    'value'    => [12, 13, 14]
+                    'value'    => [12, 13]
                 ],
             ],
-            'actions' => []
+            'actions' => [
+                'value' => 'variantGroupCode',
+            ]
         ];
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($configuration['filters']);
         $jobParameters->get('actions')->willReturn($configuration['actions']);
 
-        $cleaner->clean($stepExecution, $configuration['filters'], $configuration['actions'])
-            ->willReturn(
-                [
-                    [
-                        'field'    => 'id',
-                        'operator' => 'IN',
-                        'value'    => [12, 13]
-                    ]
-                ]
-            );
+        $groupRepository->findOneByIdentifier('variantGroupCode')->willReturn($variantGroup);
+        $variantGroup->getAxisAttributes()->willReturn([$axe]);
+        $variantGroup->getId()->willReturn(42);
+        $axe->getCode()->willReturn('axe');
 
-        $pqbFactory->create()->willReturn($pqb);
-        $pqb->addFilter('id', 'IN', [12, 13], ['locale' => null, 'scope' => null])->shouldBeCalled();
+        $productRepository->getEligibleProductIdsForVariantGroup(42)->willReturn([]);
+
+        $pqbFactory->create(['filters' => $configuration['filters']])->willReturn($pqb);
         $pqb->execute()->willReturn($cursor);
-        $cursor->next()->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(1);
-        $cursor->current()->willReturn($product);
+        $paginatorFactory->createPaginator($cursor)->willReturn($paginator);
 
-        $this->read()->shouldReturn($product);
+        $pqbFactory->create(['filters' => [['field' => 'id', 'operator' => 'IN', 'value' => ['']]]])->willReturn($pqb2);
+        $pqb2->execute()->willReturn($cursor2);
+
+        $this->initialize();
+        $this->read()->shouldReturn(null);
     }
 }

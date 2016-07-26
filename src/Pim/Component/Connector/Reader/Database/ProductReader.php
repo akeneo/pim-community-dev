@@ -5,11 +5,9 @@ namespace Pim\Component\Connector\Reader\Database;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
@@ -38,9 +36,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     /** @var MetricConverter */
     protected $metricConverter;
 
-    /** @var ObjectDetacherInterface */
-    protected $objectDetacher;
-
     /** @var bool */
     protected $generateCompleteness;
 
@@ -55,7 +50,6 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      * @param ChannelRepositoryInterface          $channelRepository
      * @param CompletenessManager                 $completenessManager
      * @param MetricConverter                     $metricConverter
-     * @param ObjectDetacherInterface             $objectDetacher
      * @param bool                                $generateCompleteness
      */
     public function __construct(
@@ -63,14 +57,12 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
-        ObjectDetacherInterface $objectDetacher,
         $generateCompleteness
     ) {
         $this->pqbFactory           = $pqbFactory;
         $this->channelRepository    = $channelRepository;
         $this->completenessManager  = $completenessManager;
         $this->metricConverter      = $metricConverter;
-        $this->objectDetacher       = $objectDetacher;
         $this->generateCompleteness = (bool) $generateCompleteness;
     }
 
@@ -79,26 +71,13 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
      */
     public function initialize()
     {
-        $channel    = $this->getConfiguredChannel();
-        $parameters = $this->stepExecution->getJobParameters();
-
-        $pqb = $this->pqbFactory->create(['default_scope' => $channel->getCode()]);
-
-        $filters = $parameters->get('filters');
-        foreach ($filters['data'] as $filter) {
-            $pqb->addFilter(
-                $filter['field'],
-                $filter['operator'],
-                $filter['value'],
-                isset($filter['context']) ? $filter['context'] : []
-            );
-        }
-
-        if ($this->generateCompleteness) {
+        $channel = $this->getConfiguredChannel();
+        if (null !== $channel && $this->generateCompleteness) {
             $this->completenessManager->generateMissingForChannel($channel);
         }
 
-        $this->products = $pqb->execute();
+        $filters = $this->getConfiguredFilters();
+        $this->products = $this->getProductsCursor($filters, $channel);
     }
 
     /**
@@ -115,9 +94,10 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
         }
 
         if (null !== $product) {
-            $this->objectDetacher->detach($product);
             $channel = $this->getConfiguredChannel();
-            $this->metricConverter->convert($product, $channel);
+            if (null !== $channel) {
+                $this->metricConverter->convert($product, $channel);
+            }
         }
 
         return $product;
@@ -132,20 +112,63 @@ class ProductReader extends AbstractConfigurableStepElement implements ItemReade
     }
 
     /**
+     * Returns the configured channel from the parameters.
+     * If no channel is specified, returns null.
+     *
      * @throws ObjectNotFoundException
      *
-     * @return ChannelInterface
+     * @return ChannelInterface|null
      */
     protected function getConfiguredChannel()
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $channelCode = $parameters->get('filters')['structure']['scope'];
+        if (!isset($parameters->get('filters')['structure']['scope'])) {
+            return null;
+        }
 
+        $channelCode = $parameters->get('filters')['structure']['scope'];
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
             throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $channelCode));
         }
 
         return $channel;
+    }
+
+    /**
+     * Returns the filters from the configuration.
+     * The parameters can be in the 'filters' root node, or in filters data node (e.g. for export).
+     *
+     * @return array
+     */
+    protected function getConfiguredFilters()
+    {
+        $filters = $this->stepExecution->getJobParameters()->get('filters');
+
+        if (array_key_exists('data', $filters)) {
+            $filters = $filters['data'];
+        }
+
+        return array_filter($filters, function ($filter) {
+            return count($filter) > 0;
+        });
+    }
+
+    /**
+     * @param array            $filters
+     * @param ChannelInterface $channel
+     *
+     * @return CursorInterface
+     */
+    protected function getProductsCursor(array $filters, ChannelInterface $channel = null)
+    {
+        $options = ['filters' => $filters];
+        if (null !== $channel) {
+            $options['default_scope'] = $channel->getCode();
+        }
+
+        $productQueryBuilder = $this->pqbFactory->create($options);
+
+        return $productQueryBuilder->execute();
     }
 }

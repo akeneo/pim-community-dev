@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Query;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -71,19 +72,19 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
      */
     public function create(array $options = [])
     {
-        $resolver = new OptionsResolver();
-        $this->configureOptions($resolver);
-        $options = $resolver->resolve($options);
+        $options = $this->resolveOptions($options);
 
-        $pqb = $this->createProductQueryBuilder(
-            [
-                'locale' => $options['default_locale'],
-                'scope'  => $options['default_scope']
-            ]
-        );
+        $pqb = $this->createProductQueryBuilder([
+            'locale' => $options['default_locale'],
+            'scope'  => $options['default_scope']
+        ]);
 
         $qb = $this->createQueryBuilder($options);
         $pqb->setQueryBuilder($qb);
+
+        foreach ($options['filters'] as $filter) {
+            $pqb->addFilter($filter['field'], $filter['operator'], $filter['value'], $filter['context']);
+        }
 
         return $pqb;
     }
@@ -122,27 +123,63 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
     }
 
     /**
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function resolveOptions(array $options)
+    {
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+        $options = $resolver->resolve($options);
+
+        $filterResolver = new OptionsResolver();
+        $this->configureFilterOptions($filterResolver);
+
+        $filters = $options['filters'];
+        $options['filters'] = [];
+        foreach ($filters as $filter) {
+            $options['filters'][] = $filterResolver->resolve($filter);
+        }
+
+        return $options;
+    }
+
+    /**
      * @param OptionsResolver $resolver
      */
     protected function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefined(
-            [
-                'repository_method',
-                'repository_parameters',
-                'currentGroup',
-                'product',
-                'default_locale',
-                'default_scope'
-            ]
-        );
-        $resolver->setDefaults(
-            [
-                'repository_method'     => 'createQueryBuilder',
-                'repository_parameters' => 'o',
-                'default_locale'        => null,
-                'default_scope'         => null
-            ]
-        );
+        $resolver->setDefined([
+            'repository_method',
+            'repository_parameters',
+            'currentGroup',
+            'product',
+            'default_locale',
+            'default_scope',
+            'filters',
+        ]);
+        $resolver->setDefaults([
+            'repository_method'     => 'createQueryBuilder',
+            'repository_parameters' => 'o',
+            'default_locale'        => null,
+            'default_scope'         => null,
+            'filters'               => [],
+        ]);
+        $resolver->setAllowedTypes('filters', 'array');
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    protected function configureFilterOptions(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setRequired(['field', 'operator', 'value'])
+            ->setDefined(['context'])
+            ->setDefaults([
+                'context'  => [],
+//                'operator' => Operators::EQUALS
+            ]);
     }
 }

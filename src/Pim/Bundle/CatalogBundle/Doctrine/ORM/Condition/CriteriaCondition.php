@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition;
 
 use Doctrine\ORM\QueryBuilder;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Exception\ProductQueryException;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -141,6 +142,10 @@ class CriteriaCondition
                 throw new \InvalidArgumentException(
                     sprintf('Only array values are allowed for operators %s.', implode(', ', $operators))
                 );
+            }
+
+            if (0 === count($value)) {
+                throw InvalidArgumentException::emptyArray($field);
             }
 
             $method = $operators[$operator];

@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Command;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -32,14 +33,16 @@ class QueryProductCommand extends ContainerAwareCommand
             [
                 'field'    => 'sku',
                 'operator' => 'STARTS WITH',
-                'value'    => 'Ak'
+                'value'    => 'Ak',
             ],
             [
                 'field'    => 'completeness',
                 'operator' => '=',
                 'value'    => '100',
-                'locale'   => 'en_US',
-                'scope'    => 'print'
+                'context'  => [
+                    'locale' => 'en_US',
+                    'scope'  => 'print',
+                ],
             ]
         ];
 
@@ -72,8 +75,12 @@ class QueryProductCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $filters = json_decode($input->getArgument('json_filters'), true);
+        $this->warnDeprecatedMethod($filters);
+
         $pageSize = $input->getOption('page-size');
-        $products = $this->getProducts($filters, $pageSize);
+        $productQueryBuilder = $this->getProductQueryBuilder($filters);
+        $products = $productQueryBuilder->execute();
+
         if (!$input->getOption('json-output')) {
             $table = $this->buildTable($products, $pageSize);
             $table->render($output);
@@ -109,7 +116,7 @@ class QueryProductCommand extends ContainerAwareCommand
      * @param CursorInterface $products
      * @param int             $maxRows
      *
-     * @return \Symfony\Component\Console\Helper\HelperInterface
+     * @return HelperInterface
      */
     protected function buildTable(CursorInterface $products, $maxRows)
     {
@@ -134,33 +141,31 @@ class QueryProductCommand extends ContainerAwareCommand
     /**
      * @param array $filters
      *
-     * @return CursorInterface
-     */
-    protected function getProducts(array $filters)
-    {
-        $productQueryBuilder = $this->getProductQueryBuilder();
-
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(['field', 'operator', 'value'])
-            ->setDefined(['locale', 'scope'])
-            ->setDefaults(['locale' => null, 'scope' => null]);
-
-        foreach ($filters as $filter) {
-            $filter = $resolver->resolve($filter);
-            $context = ['locale' => $filter['locale'], 'scope' => $filter['scope']];
-            $productQueryBuilder->addFilter($filter['field'], $filter['operator'], $filter['value'], $context);
-        }
-
-        return $productQueryBuilder->execute();
-    }
-
-    /**
      * @return ProductQueryBuilderInterface
      */
-    protected function getProductQueryBuilder()
+    protected function getProductQueryBuilder(array $filters)
     {
         $factory = $this->getContainer()->get('pim_catalog.query.product_query_builder_factory');
 
-        return $factory->create();
+        return $factory->create(['filters' => $filters]);
+    }
+
+    /**
+     * This temporary method warn the user for using deprecated argument format.
+     *
+     * @deprecated Will be removed in 1.7
+     *
+     * @param array $filters
+     */
+    protected function warnDeprecatedMethod(array $filters)
+    {
+        foreach ($filters as $filter) {
+            if (array_key_exists('locale', $filter) || array_key_exists('scope', $filter)) {
+                throw new \InvalidArgumentException(
+                    'The used filter format is deprecated. From version 1.6, the options "scope" and "locale" '.
+                    'must be declared in the "context" option.'
+                );
+            }
+        }
     }
 }
