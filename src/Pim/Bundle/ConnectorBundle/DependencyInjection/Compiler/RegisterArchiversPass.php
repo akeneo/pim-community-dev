@@ -20,13 +20,13 @@ class RegisterArchiversPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pim_base_connector.event_listener.archivist')) {
+        if (!$container->hasDefinition('pim_connector.event_listener.archivist')) {
             return;
         }
 
-        $service = $container->getDefinition('pim_base_connector.event_listener.archivist');
+        $service = $container->getDefinition('pim_connector.event_listener.archivist');
 
-        $taggedServices = $container->findTaggedServiceIds('pim_base_connector.archiver');
+        $taggedServices = $container->findTaggedServiceIds('pim_connector.archiver');
 
         foreach (array_keys($taggedServices) as $id) {
             $service->addMethodCall('registerArchiver', [new Reference($id)]);

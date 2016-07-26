@@ -286,7 +286,7 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_base_connector.processor.csv_serializer:
+    pim_connector.processor.csv_serializer:
         abstract: true
         arguments:
             - '@pim_serializer'

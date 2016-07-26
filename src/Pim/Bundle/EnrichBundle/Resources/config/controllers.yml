@@ -294,7 +294,7 @@ services:
             - '@translator'
             - '@event_dispatcher'
             - '@pim_import_export.repository.job_execution'
-            - '@pim_base_connector.event_listener.archivist'
+            - '@pim_connector.event_listener.archivist'
             - '@pim_serializer'
             - '@akeneo_batch.manager.job_execution'
 
