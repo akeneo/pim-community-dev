@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
 use Pim\Bundle\CatalogBundle\ProductQueryUtility;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
@@ -23,6 +24,12 @@ class IndexCreator
 {
     /** @staticvar int 64 is the MongoDB limit for indexes (not configurable) */
     const MONGODB_INDEXES_LIMIT = 64;
+
+    /** @staticvar int the default MongoDB index type */
+    const ASCENDANT_INDEX_TYPE = 1;
+
+    /** @staticvar string the hash MongoDB index type */
+    const HASHED_INDEX_TYPE = 'hashed';
 
     /** @var ManagerRegistry */
     protected $managerRegistry;
@@ -70,17 +77,18 @@ class IndexCreator
     public function ensureIndexesFromAttribute(AttributeInterface $attribute)
     {
         $attributeFields = $this->namingUtility->getAttributeNormFields($attribute);
-
         switch ($attribute->getBackendType()) {
-            case "prices":
+            case AttributeTypes::BACKEND_TYPE_PRICE:
                 $attributeFields = $this->addFieldsFromPrices($attributeFields);
                 break;
-            case "option":
-            case "options":
+            case AttributeTypes::BACKEND_TYPE_OPTION:
+            case AttributeTypes::BACKEND_TYPE_OPTIONS:
                 $attributeFields = $this->addFieldsFromOption($attributeFields);
                 break;
         }
-        $this->ensureIndexes($attributeFields);
+
+        $indexType = $this->getIndexTypeFromAttribute($attribute);
+        $this->ensureIndexes($attributeFields, $indexType);
     }
 
     /**
@@ -99,7 +107,8 @@ class IndexCreator
 
         $scopables = $this->namingUtility->getScopableAttributes();
         foreach ($scopables as $scopable) {
-            $this->ensureIndexesFromAttribute($scopable);
+            $indexType = $this->getIndexTypeFromAttribute($scopable);
+            $this->ensureIndexesFromAttribute($scopable, $indexType);
         }
     }
 
@@ -119,7 +128,8 @@ class IndexCreator
 
         $localizables = $this->namingUtility->getLocalizableAttributes();
         foreach ($localizables as $localizable) {
-            $this->ensureIndexesFromAttribute($localizable);
+            $indexType = $this->getIndexTypeFromAttribute($localizable);
+            $this->ensureIndexesFromAttribute($localizable, $indexType);
         }
     }
 
@@ -135,7 +145,8 @@ class IndexCreator
     {
         $pricesAttributes = $this->namingUtility->getPricesAttributes();
         foreach ($pricesAttributes as $pricesAttribute) {
-            $this->ensureIndexesFromAttribute($pricesAttribute);
+            $indexType = $this->getIndexTypeFromAttribute($pricesAttribute);
+            $this->ensureIndexesFromAttribute($pricesAttribute, $indexType);
         }
     }
 
@@ -160,7 +171,8 @@ class IndexCreator
         );
 
         foreach ($attributes as $attribute) {
-            $this->ensureIndexesFromAttribute($attribute);
+            $indexType = $this->getIndexTypeFromAttribute($attribute);
+            $this->ensureIndexesFromAttribute($attribute, $indexType);
         }
     }
 
@@ -176,7 +188,8 @@ class IndexCreator
         );
 
         foreach ($attributes as $attribute) {
-            $this->ensureIndexesFromAttribute($attribute);
+            $indexType = $this->getIndexTypeFromAttribute($attribute);
+            $this->ensureIndexesFromAttribute($attribute, $indexType);
         }
     }
 
@@ -252,12 +265,17 @@ class IndexCreator
 
     /**
      * Ensure indexes on the provided field names.
-     * Indexed are created in background and the PHP process does not
-     * wait for the completion of the index creation (w at 0)
      *
-     * @param array $fields
+     * Indexes are created in background and the PHP process does not wait for the completion of the index creation
+     * (w at 0)
+     *
+     * Index can be ascendant (1 by default) or "hashed" in case of long text to avoid the index key limit issue
+     * enforced in Mongo 2.6 (cf https://docs.mongodb.com/manual/reference/limits/#Index-Key-Limit)
+     *
+     * @param array      $fields
+     * @param int|string $indexType
      */
-    protected function ensureIndexes(array $fields)
+    protected function ensureIndexes(array $fields, $indexType = self::ASCENDANT_INDEX_TYPE)
     {
         $collection = $this->getCollection();
         $preNbIndexes = count($collection->getIndexInfo());
@@ -276,7 +294,7 @@ class IndexCreator
 
         foreach ($fields as $field) {
             $collection->ensureIndex(
-                [$field => 1],
+                [$field => $indexType],
                 $indexOptions
             );
         }
@@ -292,5 +310,16 @@ class IndexCreator
         $documentManager = $this->managerRegistry->getManagerForClass($this->productClass);
 
         return $documentManager->getDocumentCollection($this->productClass);
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return int|string
+     */
+    protected function getIndexTypeFromAttribute(AttributeInterface $attribute)
+    {
+        return (AttributeTypes::BACKEND_TYPE_TEXT === $attribute->getBackendType()) ?
+            self::HASHED_INDEX_TYPE : self::ASCENDANT_INDEX_TYPE;
     }
 }
