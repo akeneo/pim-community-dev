@@ -6,5 +6,4 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
             - false

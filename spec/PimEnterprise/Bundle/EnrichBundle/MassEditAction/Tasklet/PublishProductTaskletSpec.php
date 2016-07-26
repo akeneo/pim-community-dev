@@ -42,8 +42,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
         StepExecution $stepExecution
     ) {
         $pqb->execute()->willReturn($cursor);
-        $pqb->addFilter(Argument::any(), Argument::any(), Argument::any(), Argument::any())->willReturn($pqb);
-        $pqbFactory->create()->willReturn($pqb);
+        $pqbFactory->create(Argument::any())->willReturn($pqb);
 
         $userJulia->getRoles()->willReturn(['ProductOwner']);
         $userMary->getRoles()->willReturn(['NotProductOwner']);

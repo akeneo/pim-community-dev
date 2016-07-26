@@ -120,7 +120,6 @@
     `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor`
     `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`
     `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredFamilyReader`
-    `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader`
     `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueWithPermissionProcessor`
     `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor`
     `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueWithPermissionProcessor`
@@ -191,3 +190,4 @@
 - Remove `PimEnterprise\Component\ProductAsset\Remover\AssetRemover`
 - Removed event `pimee_product_asset.pre_remove.asset`, use `akeneo.storage.pre_remove` instead
 - Removed event `pimee_product_asset.post_remove.asset`, use `akeneo.storage.post_remove` instead
+- Removed `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader`, use `Pim\Component\Connector\Reader\Database\ProductReader` instead

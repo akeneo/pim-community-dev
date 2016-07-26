@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet;
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
@@ -86,9 +87,11 @@ abstract class AbstractProductPublisherTasklet extends AbstractConfigurableStepE
     }
 
     /**
+     * @param array $filters
+     *
      * @return ProductQueryBuilderInterface
      */
-    abstract protected function getProductQueryBuilder();
+    abstract protected function getProductQueryBuilder(array $filters = []);
 
     /**
      * Initialize the SecurityContext from the given $stepExecution
@@ -117,28 +120,11 @@ abstract class AbstractProductPublisherTasklet extends AbstractConfigurableStepE
     /**
      * @param array $filters
      *
-     * @return \Akeneo\Component\StorageUtils\Cursor\CursorInterface
+     * @return CursorInterface
      */
     protected function getProductsCursor(array $filters)
     {
-        $productQueryBuilder = $this->getProductQueryBuilder();
-
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(['field', 'operator', 'value']);
-        $resolver->setOptional(['context']);
-        $resolver->setDefaults([
-            'context' => ['locale' => null, 'scope' => null]
-        ]);
-
-        foreach ($filters as $filter) {
-            $filter = $resolver->resolve($filter);
-            $productQueryBuilder->addFilter(
-                $filter['field'],
-                $filter['operator'],
-                $filter['value'],
-                $filter['context']
-            );
-        }
+        $productQueryBuilder = $this->getProductQueryBuilder($filters);
 
         return $productQueryBuilder->execute();
     }
