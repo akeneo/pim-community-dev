@@ -6,11 +6,11 @@
     <% }); %>
 </select>
 
-<% if ('EMPTY' !== operator && 'NOT EMPTY' !== operator && 'BETWEEN' !== operator && 'NOT BETWEEN' !== operator) { %>
+<% if (!_.contains(['EMPTY', 'NOT EMPTY', 'BETWEEN', 'NOT BETWEEN'], operator)) { %>
     <span class="start-date-wrapper">
         <input name="filter-value-start" class="datepicker add-on value input-large" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- startValue ? startValue : '' %>">
     </span>
-<% } else if ('BETWEEN' === operator || 'NOT BETWEEN' === operator) { %>
+<% } else if (_.contains(['BETWEEN', 'NOT BETWEEN'], operator)) { %>
     <span class="start-date-wrapper">
         <input name="filter-value-start" class="datepicker add-on value input-small" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- startValue ? startValue : '' %>">
     </span>
