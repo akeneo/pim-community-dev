@@ -39,6 +39,15 @@ class IndexPurger
     }
 
     /**
+     * Remove all indexes
+     */
+    public function purgeIndexes()
+    {
+        $collection = $this->getCollection();
+        $collection->deleteIndexes();
+    }
+
+    /**
      * Remove indexes associated with the provided locale
      *
      * @param LocaleInterface $locale
