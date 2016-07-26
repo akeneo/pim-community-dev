@@ -11,6 +11,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class FilterData extends Constraint
 {
+    /** @var string */
+    public $message = 'invalid_filter_data';
+
     /**
      * {@inheritdoc}
      */

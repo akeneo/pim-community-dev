@@ -4,7 +4,7 @@ parameters:
 services:
     pim_import_export.validator.constraints.filter_data_validator:
         class: '%pim_import_export.validator.constraints.filter_data_validator.class%'
-#        arguments:
-#            - '@pim_catalog.repository.channel'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
         tags:
             - { name: validator.constraint_validator, alias: filter_data_validator }

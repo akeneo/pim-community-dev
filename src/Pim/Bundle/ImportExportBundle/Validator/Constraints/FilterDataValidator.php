@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -12,11 +13,28 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class FilterDataValidator extends ConstraintValidator
 {
+    /** @var ProductQueryBuilderFactory */
+    protected $pqbFactory;
+
+    /**
+     * @param ProductQueryBuilderFactory $pqbFactory
+     */
+    public function __construct(ProductQueryBuilderFactory $pqbFactory)
+    {
+        $this->pqbFactory = $pqbFactory;
+    }
 
     public function validate($value, Constraint $constraint)
     {
-        $toto = $value;
+        if (!isset($value['data'])) {
+            $this->context->buildViolation($constraint->message)->addViolation();
+        }
 
-        return true;
+        try {
+            $pqb = $this->pqbFactory->create($value['data']);
+            $pqb->execute();
+        } catch (\Exception $e) {
+            $this->context->buildViolation($constraint->message)->addViolation();
+        }
     }
 }
