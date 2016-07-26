@@ -56,53 +56,78 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
             $value = $this->formatValues($attribute->getCode(), $value);
         }
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $normalizedFields = $this->getNormalizedValueFieldsFromAttribute($attribute, $locale, $scope);
+        $fields = [];
 
-        $this->applyFilter($field, $operator, $value);
+        foreach ($normalizedFields as $normalizedField) {
+            $fields[] = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $normalizedField);
+        }
+
+        $this->applyFilters($fields, $operator, $value);
 
         return $this;
     }
 
     /**
-     * Apply the filter to the query with the given operator
+     * Apply the filters to the query with the given operator
      *
-     * @param string $field
+     * @param array  $fields
      * @param string $operator
      * @param mixed  $value
      */
-    protected function applyFilter($field, $operator, $value)
+    protected function applyFilters(array $fields, $operator, $value)
     {
         switch ($operator) {
             case Operators::BETWEEN:
-                $this->qb->field($field)->gte($value[0]);
-                $this->qb->field($field)->lte($value[1]);
+                foreach ($fields as $field) {
+                    $this->qb->field($field)->gte($value[0]);
+                    $this->qb->field($field)->lte($value[1]);
+                }
                 break;
             case Operators::NOT_BETWEEN:
-                $this->qb->addAnd(
-                    $this->qb->expr()
-                        ->addOr($this->qb->expr()->field($field)->lt($value[0]))
-                        ->addOr($this->qb->expr()->field($field)->gt($value[1]))
-                );
+                foreach ($fields as $field) {
+                    $this->qb->addAnd(
+                        $this->qb->expr()
+                            ->addOr($this->qb->expr()->field($field)->lt($value[0]))
+                            ->addOr($this->qb->expr()->field($field)->gt($value[1]))
+                    );
+                }
                 break;
             case Operators::GREATER_THAN:
-                $this->qb->field($field)->gt($value);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->gt($value);
+                    $this->qb->addOr($expr);
+                }
                 break;
             case Operators::LOWER_THAN:
-                $this->qb->field($field)->lt($value);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->lt($value);
+                    $this->qb->addOr($expr);
+                }
                 break;
             case Operators::EQUALS:
-                $this->qb->field($field)->equals($value);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->equals($value);
+                    $this->qb->addOr($expr);
+                }
                 break;
             case Operators::NOT_EQUAL:
-                $this->qb->field($field)->exists(true);
-                $this->qb->field($field)->notEqual($value);
+                foreach ($fields as $field) {
+                    $this->qb->field($field)->exists(true);
+                    $this->qb->field($field)->notEqual($value);
+                }
                 break;
             case Operators::IS_EMPTY:
-                $this->qb->field($field)->exists(false);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->exists(false);
+                    $this->qb->addAnd($expr);
+                }
                 break;
             case Operators::IS_NOT_EMPTY:
-                $this->qb->field($field)->exists(true);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->exists(true);
+                    $this->qb->addOr($expr);
+                }
                 break;
         }
     }
