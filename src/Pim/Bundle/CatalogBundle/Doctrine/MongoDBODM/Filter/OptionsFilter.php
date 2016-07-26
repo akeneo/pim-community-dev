@@ -84,13 +84,16 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
             }
         }
 
-        $field = sprintf(
-            '%s.%s.id',
-            ProductQueryUtility::NORMALIZED_FIELD,
-            ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope)
-        );
-
-        $this->applyFilter($field, $operator, $value);
+        $normalizedFields = $this->getNormalizedValueFieldsFromAttribute($attribute, $locale, $scope);
+        $fields = [];
+        foreach ($normalizedFields as $normalizedField) {
+            $fields[] = sprintf(
+                '%s.%s.id',
+                ProductQueryUtility::NORMALIZED_FIELD,
+                $normalizedField
+            );
+        }
+        $this->applyFilters($fields, $operator, $value);
 
         return $this;
     }
@@ -113,26 +116,32 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
     /**
      * Apply the filter to the query with the given operator
      *
-     * @param string $field
+     * @param string $fields
      * @param string $operator
      * @param mixed  $value
      */
-    protected function applyFilter($field, $operator, $value)
+    protected function applyFilters(array $fields, $operator, $value)
     {
-        switch ($operator) {
-            case Operators::IN_LIST:
-                $this->qb->field($field)->in($value);
-                break;
-            case Operators::NOT_IN_LIST:
-                $this->qb->field($field)->exists(true);
-                $this->qb->field($field)->notIn($value);
-                break;
-            case Operators::IS_EMPTY:
-                $this->qb->field($field)->exists(false);
-                break;
-            case Operators::IS_NOT_EMPTY:
-                $this->qb->field($field)->exists(true);
-                break;
+        foreach ($fields as $field) {
+            switch ($operator) {
+                case Operators::IN_LIST:
+                    $expr = $this->qb->expr()->field($field)->in($value);
+                    $this->qb->addOr($expr); // TODO check with PO
+                    break;
+                case Operators::NOT_IN_LIST:
+                    $this->qb
+                        ->addOr($this->qb->expr()->field($field)->exists(true))
+                        ->addOr($this->qb->expr()->field($field)->notIn($value)); // TODO check with PO
+                    break;
+                case Operators::IS_EMPTY:
+                    $expr = $this->qb->expr()->field($field)->exists(false);
+                    $this->qb->addOr($expr); // TODO check with PO
+                    break;
+                case Operators::IS_NOT_EMPTY:
+                    $expr = $this->qb->expr()->field($field)->exists(true);
+                    $this->qb->addOr($expr); // TODO check with PO
+                    break;
+            }
         }
     }
 
