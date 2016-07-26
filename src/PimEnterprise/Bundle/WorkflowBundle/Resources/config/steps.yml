@@ -19,7 +19,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_workflow.reader.published_product'
-            - '@pim_base_connector.processor.product_to_flat_array'
+            - '@pim_connector.processor.normalization.product'
             - '@pim_connector.writer.file.csv_product'
             - 10
 
@@ -43,7 +43,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_workflow.reader.published_product'
-            - '@pim_base_connector.processor.product_to_flat_array'
+            - '@pim_connector.processor.normalization.product'
             - '@pim_connector.writer.file.xlsx_product'
             - 10
 
