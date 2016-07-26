@@ -1,3 +1,6 @@
+# 1.4.*
+-PIM-5901: Error message when deleting a localisable asset on MongoDB
+
 # 1.4.26 (2016-07-05)
 
 ## Bug fix

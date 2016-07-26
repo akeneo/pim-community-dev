@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\MongoDBODM;
 
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
@@ -49,7 +50,7 @@ class AssetEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AssetEvent::POST_REMOVE => 'cascadeAssetRemove'
+            AssetEvent::PRE_REMOVE => 'cascadeAssetRemove'
         ];
     }
 
@@ -59,7 +60,7 @@ class AssetEventSubscriber implements EventSubscriberInterface
      *
      * @param GenericEvent $event
      *
-     * @return AssetEvent
+     * @return GenericEvent
      */
     public function cascadeAssetRemove(GenericEvent $event)
     {
