@@ -433,6 +433,26 @@ pim_enrich:
                         STARTS WITH: Starts with
                         ENDS WITH: Ends with
                         EMPTY: Is empty
+                date:
+                    operators:
+                        ">": Greater than
+                        "<": Lower than
+                        "=": Is equal to
+                        "!=": Is not equal to
+                        BETWEEN: Between
+                        NOT BETWEEN: Not between
+                        EMPTY: Is empty
+                        NOT EMPTY: Is not empty
+                number:
+                    operators:
+                        "=": Is equals to
+                        "!=": Is not equals to
+                        ">=": Greater or equals than
+                        ">": Greater than
+                        "<=": Lower or equals than
+                        "<": Lower than
+                        EMPTY: Is empty
+                        NOT EMPTY: Is not empty
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.

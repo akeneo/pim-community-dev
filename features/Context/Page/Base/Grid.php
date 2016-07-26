@@ -109,9 +109,17 @@ class Grid extends Index
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\MetricDecorator',
         ],
+        'pim-filter-attribute-number' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\NumberDecorator',
+        ],
         'pim-filter-attribute-string' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\StringDecorator',
+        ],
+        'pim-filter-attribute-date' => [
+            'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Export\Filter\DateDecorator'
         ],
         'pim-filter-attribute-price-collection' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',

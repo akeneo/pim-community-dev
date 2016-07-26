@@ -48,6 +48,22 @@ extensions:
                 - "<"
                 - EMPTY
 
+    pim-filter-attribute-number:
+        module: pim/filter/attribute/number
+        config:
+            operators:
+                - "="
+                - "!="
+                - ">="
+                - ">"
+                - "<="
+                - "<"
+                - EMPTY
+                - NOT EMPTY
+
+    pim-filter-simpleselect:
+        module: pim/filter/simpleselect
+
     pim-filter-attribute-price-collection:
         module: pim/filter/attribute/price-collection
         config:
@@ -99,3 +115,16 @@ extensions:
                 - STARTS WITH
                 - ENDS WITH
                 - EMPTY
+
+    pim-filter-attribute-date:
+        module: pim/filter/attribute/date
+        config:
+            operators:
+                - ">"
+                - "<"
+                - "="
+                - "!="
+                - BETWEEN
+                - NOT BETWEEN
+                - EMPTY
+                - NOT EMPTY
