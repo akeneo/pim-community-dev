@@ -326,6 +326,22 @@ We provide doctrine migration to handle this change in your existing data.
 
 TODO: Add links to the docs.akeneo.com regarding this format update.
 
+##  PHP7
+
+We continued our effort regarding Akeneo PIM PHP7 support.
+We're happy to announce that PHP7 is now usable in experimental mode for both CLI and Web.
+Experimental means that we manage to install and use the PIM but due to missing tests in our functional matrix we can't commit to support it.
+
+MongoDB 2.6 enforce several limitations, for instance, the Index Key Limit, https://docs.mongodb.com/v2.6/reference/limits/#Index-Key-Limit.
+
+This limitation impacts indexes, when you use PHP7, please dump your database and run the command app/console 'pim:product:ensure-mongodb-indexes'.
+
+This command will remove existing indexes from product collection and will add new indexes with relevant types.
+
+Your attributes using `text` backend type will now use `hashed` index type supporting more than 1024 chars.
+
+Before the 1.6, the command creates only ascendant indexes, even for `text` backend type causing the non indexing of the too long value without any notice.
+
 ## Partially fix BC breaks
 
 If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
