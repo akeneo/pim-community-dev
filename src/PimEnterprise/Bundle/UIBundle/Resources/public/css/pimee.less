@@ -2,15 +2,15 @@
 @import '../../pimui/css/less/variables';
 
 .permission-changes {
-  color: #777;
+  color: @color-777;
 }
 
 .product-view {
   .tab-pane h3 {
-    border-top: 1px solid #e5e5e5;
+    border-top: 1px solid @grayLighter;
   }
   .value-field {
-    border: 1px solid #ddd;
+    border: 1px solid @color-ddd;
     border-radius: 3px;
     padding: 3px 5px;
     min-height: 26px;
@@ -22,7 +22,7 @@
 .proposal-changes {
   thead {
     tr:hover > th {
-      background-color: @color-new-grey;
+      background-color: @akeneoGreyLight;
     }
   }
 
@@ -44,22 +44,22 @@
       line-height: 22px;
 
       [class^='icon-']:before {
-        color: @akeneo-light;
+        color: @akeneoLight;
       }
 
       &.partial-reject-link {
-        background-color: @chesnut-red;
+        background-color: @red;
 
         &:hover {
-          background-color: darken(@chesnut-red, 20%);
+          background-color: @redDarker;
         }
       }
 
       &.partial-approve-link {
-        background-color: @fern-green;
+        background-color: @green;
 
         &:hover {
-          background-color: darken(@fern-green, 20%);
+          background-color: @greenDarker;
         }
       }
     }
@@ -78,7 +78,7 @@
 
 .modified-by-draft {
   font-size: 14px;
-  color: #a6a6a6;
+  color: @color-aaa;
 }
 
 .icon-code-fork.from-smart {
@@ -89,14 +89,14 @@
 .label-published {
   margin-left: 5px;
   text-transform: uppercase;
-  background: #4a90e2;
+  background: @blue;
   box-shadow: none;
   text-shadow: none;
 }
 
 .btn-publish, .btn-unpublish {
   padding: 0 10px 0 44px;
-  background-color: #5992c7;
+  background-color: @blue;
   position: relative;
   background-image: none;
   line-height: 34px;
@@ -112,26 +112,26 @@
     height: 34px;
     line-height: 34px;
     margin: 0;
-    background-color: darken(#5992c7, 10%);
+    background-color: @blueDark;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
   }
 
   &:hover {
-    background-color: darken(#5992c7, 10%);
+    background-color: @blueDark;
     color: white;
   }
 
   &.disabled {
-    background-color: lighten(#5992c7, 20%);
+    background-color: @blueLighten;
     color: white;
 
     i {
-      background-color: lighten(#5992c7, 20%);
+      background-color: @blueLighten;
     }
 
     &:hover {
-      background-color: lighten(#5992c7, 20%);
+      background-color: @blueLighten;
     }
 
   }
@@ -139,7 +139,7 @@
 
 .btn-group.btn-dropdown {
   .btn.dropdown-publish {
-    background-color: #5992c7;
+    background-color: @blue;
     color: white;
 
     .caret {
@@ -149,7 +149,7 @@
 
   &.open {
     .btn.dropdown-publish {
-      background-color: darken(#5992c7, 10%);
+      background-color: @blueDark;
     }
   }
 }
@@ -158,7 +158,7 @@
   &:not(.disabled) {
     position: relative;
     background-image: none;
-    background-color: #5992c7;
+    background-color: @blue;
     line-height: 34px;
     height: 34px;
     color: white;
@@ -174,13 +174,13 @@
     height: 34px;
     line-height: 34px;
     margin: 0;
-    background-color: darken(#5992c7, 10%);
+    background-color: @blueDark;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
   }
 
   &:hover {
-    background-color: darken(#5992c7, 10%);
+    background-color: @blueDark;
   }
 }
 
@@ -191,10 +191,10 @@
 }
 
 .asset-gallery {
-  border: 1px solid #ccc;
+  border: 1px solid @color-ccc;
 
   header {
-    background-color: #f3f3f3;
+    background-color: @whiteDarker;
     padding: 5px;
     .display-flex();
     .justify-content(flex-end);
@@ -221,7 +221,7 @@
       padding: 9px;
       width: 180px;
       height: 160px;
-      border: 1px solid #ddd;
+      border: 1px solid @color-ddd;
       border-radius: 1px;
 
       footer {
@@ -244,7 +244,7 @@
 
 .akeneo-asset-collection-field.view, .disabled-fields {
   .asset-gallery {
-    background-color: #eee;
+    background-color: @grayLighter;
 
     header {
       display: none;
@@ -283,7 +283,7 @@
       .flex-direction(column);
       position: relative;
       padding: 0 !important; // needed to override padding-bottom added by jquery.jstree.nested_switch.js
-      border: solid 1px #ccc;
+      border: solid 1px @color-ccc;
       border-right: none;
       border-bottom: none;
 
@@ -303,7 +303,7 @@
 
     .separator {
       width: 8px;
-      border: solid 1px #ddd;
+      border: solid 1px @color-ddd;
     }
 
     .asset-grid {
@@ -338,7 +338,7 @@
               .display-flex();
               .flex-direction(row);
               padding: 10px;
-              border: 1px solid #ccc;
+              border: 1px solid @color-ccc;
 
               &:not(:nth-last-child(2)) {
                 border-bottom: none;
@@ -357,12 +357,12 @@
               }
 
               &.empty-basket {
-                border: 1px dashed #ccc;
+                border: 1px dashed @color-ccc;
                 height: 100px;
                 line-height: 80px;
                 text-align: center;
                 display: block;
-                color: #ccc;
+                color: @color-ccc;
                 font-size: 16;
               }
             }
