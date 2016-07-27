@@ -247,7 +247,7 @@ select {
 
 .label-important,
 .badge-important {
-  background-color: @color-new-red;
+  background-color: @red;
 }
 /* general style classes */
 .input-large {
@@ -345,12 +345,11 @@ select {
   font-weight: normal;
 }
 .badge-enabled {
-  background-color: @color-dff2d4;
-  color: @color-4c7940;
+  background-color: @greenLighter;
+  color: @greenDarker;
 }
 .badge-disabled {
   color: @color-aaa;
-  background-color: @whiteDark;
   background-color: @whiteDark;
 }
 .status-disabled {
@@ -361,7 +360,7 @@ select {
 }
 .status-enabled {
   margin-top:-4px;
-  color: @color-2f8206;
+  color: @greenDarker;
   text-shadow:none;
   padding:3px 10px 3px 5px;
 }
@@ -371,8 +370,8 @@ select {
     font-size: @font-size-12;
   }
 }
-.status-enabled [class^='icon-']:before { color:@color-4a9938; }
-.status-disabled [class^='icon-']:before { color:@color-e37878; }
+.status-enabled [class^='icon-']:before { color:@greenDark; }
+.status-disabled [class^='icon-']:before { color:@redDark; }
 
 .dib {
   display: inline-block;
@@ -483,7 +482,7 @@ select {
     width: 60px;
   }
   thead th {
-    background-color: @color-new-grey;
+    background-color: @akeneoGreyLight;
     padding: 5px 10px;
     white-space: nowrap;
   }
@@ -736,7 +735,7 @@ select {
 label.required em,
 .form-horizontal label.required em {
   padding: 0 3px;
-  color: @color-c30b25;
+  color: @redDarker;
   font-size: @font-size-15;
 }
 
@@ -1009,7 +1008,7 @@ select:focus:invalid:focus {
 
 /* validation-error */
 .validation-error .error {
-  border:1px solid @color-e9322d;
+  border:1px solid @redDark;
   outline: 0;
   outline: thin dotted \9;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(211, 33, 33, 0.6);
@@ -1137,7 +1136,7 @@ button.filter-update {
 .btn.favorite-button .icon-gold:before,
 .btn.minimize-button .icon-gold:before,
 .btn.minimize-button .icon-minimize-active:before {
-  color:@color-ffd631;
+  color:@yellow;
 }
 #pin-button-div {
   .container-fluid {

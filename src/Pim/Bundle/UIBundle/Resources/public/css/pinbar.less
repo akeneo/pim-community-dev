@@ -7,7 +7,7 @@
   padding: 0 30px 0 0;
   position: relative;
   z-index: 998;
-  background-color: @color-purple_dark;
+  background-color: @akeneoPurpleDarker;
   background-image: none;
   .icon-remove {
     position: absolute;
@@ -19,19 +19,19 @@
       top: 5px;
       right: -13px;
       font-size: @font-size-12;
-      color: @color-cad2da;
+      color: @akeneoLightDark;
     }
   }
 }
 .pin-bar-empty {
   display: inline-block;
   padding: 1px 0 0 10px;
-  color: @color-b2bac2;
+  color: @akeneoGrey;
   font-size: @font-size-12;
   line-height: 22px;
   &:hover,
   &:focus {
-    color: @color-b2bac2;
+    color: @akeneoGrey;
   }
 }
 .list-bar {
@@ -46,19 +46,19 @@
     .box-shadow(inset 0 -1px 2px 0 rgba(0,0,0,.1));
     display: table-cell;
     text-align: left;
-    text-shadow: 0 -1px 2px @color-37485f;
+    text-shadow: 0 -1px 2px @akeneoDarkBlue;
     line-height: 24px;
     font-size: @font-size-11;
     padding: 0 25px 0 11px;
-    border-right: 1px solid @color-2a2f36;
+    border-right: 1px solid @akeneoDarkBlue;
     margin: 0 -1px 0 0;
     position: relative;
     &.active{
-      background-color: @color-6800A9;
+      background-color: @akeneoPurpleDarker;
     }
   }
   .pin-holder a {
-    color: @color-cad2da;
+    color: @akeneoLightDark;
   }
 }
 .pin-holder {
@@ -106,12 +106,12 @@
   cursor: pointer;
   &.open {
     .icon-ellipsis-horizontal {
-      .box-shadow(inset 0 2px 4px 0 darken(@color-354150,20%));
+      .box-shadow(inset 0 2px 4px 0 @akeneoDarkBlue);
     }
   }
   .oro-dropdown-toggle {
     &:hover {
-      #gradient > .vertical(@color-purple_dark, darken(@color-purple_dark, 10%));
+      #gradient > .vertical(@akeneoPurpleDark, @akeneoPurpleDarker);
     }
     &.icon-ellipsis-horizontal {
       width: 30px;
@@ -124,7 +124,7 @@
     }
     &:active,
     &:focus {
-      .box-shadow(inset 0 2px 4px 0 darken(@color-354150,20%));
+      .box-shadow(inset 0 2px 4px 0 @akeneoDarkBlue);
     }
   }
   .dropdown-menu {
@@ -143,39 +143,39 @@
           float: none;
           > a {
             border: none;
-            border-bottom: 1px solid darken(@color-dbe2ea,2%);
+            border-bottom: 1px solid @akeneoLightDark;
             border-radius: 0;
             padding: 7px 8px;
             line-height: 14px;
             margin-right: 0;
             margin-bottom: 0;
             color: @bodyColor;
-            text-shadow: 0 1px 0 @color-f7fafc;
+            text-shadow: 0 1px 0 @akeneoLight;
             background: transparent;
             &:hover {
-              border-bottom: 1px solid darken(@color-dbe2ea,2%);
+              border-bottom: 1px solid @akeneoLightDark;
               color: @bodyColor;
               cursor: pointer;
             }
             i {
-              color:@color-8ba1b6;
+              color: @akeneoGreyDark;
             }
           }
           &:hover,
           &:active,
           &:focus {
-            background-color: @color-purple_hover;
+            background-color: @akeneoPurpleLighter;
           }
           &.active {
             position: relative;
-            background-color: @color-purple_hover;
+            background-color: @akeneoPurpleLighter;
             font-weight: bold;
             &:before {
               width: 0;
               height: 0;
               border-style: solid;
               border-width: 7.5px 8px 7.5px 0;
-              border-color: transparent darken(@color-ecf1f9,8%) transparent transparent;
+              border-color: transparent @akeneoLightDark transparent transparent;
               content: "";
               display: inline-block;
               position: absolute;
@@ -201,7 +201,7 @@
           a:hover,
           a:active,
           a:focus {
-            text-shadow:0 1px 0 @color-e6eff8;
+            text-shadow:0 1px 0 @akeneoLight;
           }
           &:last-child > a {
             border-bottom:none;
@@ -209,7 +209,7 @@
         }
       }
       > .tab-content {
-        border-left: 1px solid darken(@color-ecf1f9,8%);
+        border-left: 1px solid @akeneoLightDark;
         background-color: @white;
         min-height: 167px;
         max-height: 330px;

@@ -207,7 +207,7 @@ header {
 }
 #oroplatform-header {
   div.navbar-inner {
-    background: @color-new-purple-medium;
+    background: @akeneoPurpleDark;
     .logo {
       &:before, &:after {
         border: none;
@@ -242,7 +242,7 @@ header {
     }
   }
   .oroplatform-menu>li.dropdown:not(:hover).active>a {
-    background: @color-new-purple-dark;
+    background: @akeneoPurpleDarker;
   }
 }
 
@@ -253,17 +253,15 @@ header {
 /* Pin bar and menus ************************************************************************************************/
 
 .pin-bar {
-  background-color: @color-new-purple-dark;
-  background-image: none;
   .list-bar {
     li.active{
-      background-color: @color-6800A9;
+      background-color: @akeneoPurpleDark;
     }
   }
   .pin-menus {
     .oro-dropdown-toggle {
       &:hover {
-        #gradient > .vertical(@color-purple_dark, darken(@color-purple_dark, 10%));
+        #gradient > .vertical(@akeneoPurpleDark, @akeneoPurpleDarker);
       }
     }
     .dropdown-menu .tabs-left.tabbable {
@@ -272,11 +270,11 @@ header {
         li a {
           background-color: @color-grey_tab;
           &:hover {
-            background-color: @color-purple_hover;
+            background-color: @akeneoPurpleLighter;
           }
         }
         li.active a {
-          background-color: @color-purple_hover;
+          background-color: @akeneoPurpleLighter;
         }
       }
     }

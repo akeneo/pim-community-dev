@@ -27,11 +27,11 @@ body {
 }
 
 a {
-  color: @color-purple_dark;
+  color: @akeneoPurpleDark;
 }
 a:hover,
 a:focus {
-  color: darken(@color-purple_dark, 5%);
+  color: @akeneoPurpleDarker;
 }
 
 .badge-square {
@@ -42,7 +42,7 @@ a:focus {
 
 .highlight {
   font-weight: bold;
-  color: @akeneo-purple;
+  color: @akeneoPurple;
 }
 
 .no-margin {
@@ -51,7 +51,7 @@ a:focus {
 
 /* Grids */
 .table-hover tbody tr:hover > td {
-  background-color: @color-purple_hover;
+  background-color: @akeneoPurpleLighter;
 }
 table.grid {
   margin-bottom: 20px;
@@ -110,7 +110,7 @@ tr:hover>.action-cell a.action>i {
 
 .ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label {
   &.ui-state-hover, &.ui-state-active {
-    background-color: @color-purple_light;
+    background-color: @akeneoPurpleLight;
   }
 }
 
@@ -122,7 +122,7 @@ tr:hover>.action-cell a.action>i {
   > a,
   &.active > a {
     &:hover, &:focus, &:active {
-      background: @color-purple_light;
+      background: @akeneoPurpleLight;
     }
   }
   &.active > a {
@@ -131,9 +131,9 @@ tr:hover>.action-cell a.action>i {
 }
 
 .dropdown-menu>li>a, .dropdown-menu>li.active>a {
-  color: @color-purple_light;
+  color: @akeneoPurpleLight;
   &:hover, &:active {
-    color: darken(@color-purple_light, 5%);
+    color: @akeneoPurpleDark;
     cursor: pointer;
   }
 }
@@ -181,7 +181,7 @@ a.back-link i {
     margin-bottom: 20px;
     &>div.clearfix {
       overflow: hidden;
-      border: 1px solid @color-cbcbd2;
+      border: 1px solid @color-ccc;
       background-color: white;
     }
   }
@@ -276,7 +276,7 @@ a[data-toggle-channel] {
     }
     span.progress-info {
       padding: 5px;
-      color: @color-5e8dcb;
+      color: @blue;
       cursor: default;
     }
     small {
@@ -285,7 +285,7 @@ a[data-toggle-channel] {
     }
   }
   tr.channel {
-    background-color: @color-ececf0;
+    background-color: @akeneoLight;
     line-height: 34px;
 
     &:first-of-type {
@@ -334,7 +334,7 @@ a[data-toggle-channel] {
     padding: 10px;
     font-size: @font-size-11em;
     font-weight: bold;
-    background: @color-purple_hover;
+    background: @akeneoPurpleLighter;
   }
   tbody {
     td {
@@ -404,7 +404,7 @@ span.link-label {
   .progress {
     margin-bottom: 0;
     .bar {
-        #gradient .horizontal(@color-purple_light, @color-purple_dark);
+        #gradient .horizontal(@akeneoPurpleLight, @akeneoPurpleDark);
     }
   }
 
@@ -432,9 +432,9 @@ span.link-label {
       font-size: @font-size-11;
       font-weight: initial;
       padding: 0 3px;
-      background: linear-gradient(@color-f93a43, darken(@color-f93a43, 20%));
+      background: linear-gradient(@redNotifications, darken(@redNotifications, 20%));
       box-shadow: 0 0.7px 0 RGBa(0, 0, 0, 0.3), 0 0 3px rGBa(0, 0, 0, 0.35);
-      text-shadow: 0 1px 0 darken(@color-f93a43, 20%);
+      text-shadow: 0 1px 0 darken(@redNotifications, 20%);
     }
   }
 
@@ -648,7 +648,7 @@ header.tab-header {
   min-height: 44px;
   border-left: none;
   border-bottom: solid 1px @color-ccc;
-  background: @color-new-grey;
+  background: @akeneoGreyLight;
   padding: 0;
   .display-flex();
   justify-content: flex-start;
@@ -738,7 +738,7 @@ h3.tab-header {
     padding: 8px 15px 8px 15px;
 
     .green {
-      color: @fern-green;
+      color: @green;
     }
   }
 }
@@ -761,7 +761,7 @@ h3.tab-header {
     padding: 8px 15px 8px 15px;
 
     .green {
-      color: @fern-green;
+      color: @green;
     }
   }
 
@@ -789,7 +789,7 @@ h3.tab-header {
         height: 44px;
         border-left: 1px solid @color-ddd;
         border-right: none;
-        background: @color-new-grey;
+        background: @akeneoGreyLight;
       }
     }
 
@@ -884,7 +884,7 @@ h3.tab-header {
   margin-top: 5px;
 
   .btn {
-    background: @color-new-grey;
+    background: @akeneoGreyLight;
     font-weight: bold;
     font-size: 12px;
     border-color: @grayLighter;
@@ -894,7 +894,7 @@ h3.tab-header {
     border-radius: 1px;
 
     &.active {
-      background: darken(@color-new-grey, 10%);
+      background: @akeneoGrey;
       text-shadow: none;
       border-color: @gray;
       box-shadow: none;
@@ -1245,7 +1245,7 @@ h3.tab-header {
       }
 
       .switch-left {
-        background-color: @color-7ec500;
+        background-color: @green;
       }
 
       .switch-right {
@@ -1418,7 +1418,7 @@ h3.tab-header {
   }
 
   .invalid-badge {
-    background-color: @color-d0021b;
+    background-color: @red;
     margin-left: 2px;
   }
 }
@@ -1437,7 +1437,7 @@ h3.tab-header {
     }
 
     & > i, & > .error-message {
-      color: @color-d0021b;
+      color: @red;
       font-weight: 400;
     }
   }
@@ -1469,7 +1469,7 @@ h3.tab-header {
     .select2-search-choice {
       .border-radius(0);
       background-image:none;
-      background-color: @akeneo-light;
+      background-color: @akeneoLight;
       line-height: 22px;
       border: 1px solid @color-ccc;
       padding: 0;
@@ -1581,9 +1581,9 @@ h3.tab-header {
   }
 
   .btn-success {
-    background: @color-67b373;
+    background: @green;
     color: white;
-    border: 1px solid @color-4c9858;
+    border: 1px solid @greenDark;
   }
 
   .dropdown-menu {
@@ -1639,34 +1639,34 @@ h3.tab-header {
 .status-switcher.btn-dropdown {
   &.enabled > a, & > .enabled {
     opacity: 1;
-    background-color: lighten(@color-new-green, 30%) !important;
-    color: darken(@color-new-green, 20%);
-    border: solid 1px @color-new-green;
+    background-color: @greenLighter !important;
+    color: @greenDarker;
+    border: solid 1px @green;
 
     .icon-caret-down {
       width: 34px;
       height: 34px;
       line-height: 34px;
-      background-color: lighten(@color-new-green, 30%);
-      border-left: solid 1px @color-new-green;
-      color: darken(@color-new-green, 20%);
+      background-color: @greenLighter;
+      border-left: solid 1px @green;
+      color: @greenDarker;
       margin: 0;
     }
   }
 
   &.disabled > a, & > .disabled {
     opacity: 1;
-    background-color: lighten(@color-new-red, 30%) !important;
-    color: darken(@color-new-red, 20%);
-    border: solid 1px @color-new-red;
+    background-color: @redLighter !important;
+    color: @redDarker;
+    border: solid 1px @red;
 
     .icon-caret-down {
       width: 34px;
       height: 34px;
       line-height: 34px;
-      background-color: lighten(@color-new-red, 30%);
-      border-left: solid 1px @color-new-red;
-      color: darken(@color-new-red, 20%);
+      background-color: @redLighter;
+      border-left: solid 1px @red;
+      color: @redDarker;
       margin: 0;
     }
   }
@@ -1684,7 +1684,7 @@ h3.tab-header {
     color: @color-777;
     font-weight: 400;
     text-shadow: none;
-    background-color: @color-fdd9b6;
+    background-color: @yellowLighter;
     border-radius: 10px;
     padding-right: 7px;
   }
@@ -1692,7 +1692,7 @@ h3.tab-header {
   .icon {
     position: relative;
     left: -2px;
-    color: @color-fa9f47;
+    color: @yellow;
   }
 }
 
@@ -1721,7 +1721,7 @@ h3.tab-header {
     }
   }
   .modal-footer .btn-primary {
-    background-color: @color-7dbf16;
+    background-color: @green;
   }
 }
 

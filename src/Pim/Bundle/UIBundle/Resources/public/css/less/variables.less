@@ -46,93 +46,69 @@
 
 /* Colors */
 // Greens
-@color-changed_diff:        #ddfade;
-@successBackground:         #e3f3c3;
-@color-dff2d4:              #dff2d4;
-@successClose:              #bfd78f;
-@successBorder:             #89a86d;
-@color-58BB00:              #58BB00;
-@color-33be00:              #33be00;
-@color-7dbf16:              #7dbf16;
-@color-7ec500:              #7ec500;
-@btnPrimaryBackgroundLight: #83c817;
-@fern-green:                #67b373;
-@color-67b373:              #67b373;
-@color-4c9858:              #4c9858;
-@color-4d9a59:              #4d9a59;
-@color-4a9938:              #4a9938;
-@btnPrimaryBackground:      #519d0b;
-@color-2f8206:              #2f8206;
-@successText:               #3d7c04;
-@color-4c7940:              #4c7940;
+@green:        #67b373;
+@greenLighter: lighten(@green, 30%); // #cde6d1
+@greenDark:    darken(@green, 10%);  // #4d9a59
+@greenDarker:  darken(@green, 20%);  // #3c7845
+@color-changed_diff:        @greenLighter;
+@successBackground:         @greenLighter;
+@successClose:              @greenDark;
+@successBorder:             @greenDark;
+@btnPrimaryBackground:      @green;
+@successText:               @greenDarker;
+@btnPrimaryBackgroundLight: @greenLighter;
 
 // Reds
-@color-base_diff: #ffe7e7;
-@errorBackground: #fdcece;
-@errorClose:      #e5acac;
-@errorBorder:     #b48d8d;
-@color-e37878:    #e37878;
-@chesnut-red:     #d36050;
-@errorText:       #c81717;
-@color-da0000:    #da0000;
-@color-d0021b:    #d0021b;
-@color-c30b25:    #c30b25;
-@color-e9322d:    #e9322d;
-@color-f93a43:    #f93a43;
-
-// Yellows-orange
-@warningBorder:     #b4a68d;
-@warningBackground: #fff8d7;
-@warningClose:      #e2d59a;
-@color-fdd9b6:      #fdd9b6;
-@color-fa9f47:      #fa9f47;
-@casablanca-yellow: #f8b43f;
-@color-ffd631:      #ffd631;
-
-// Purple
-@color-purple_hover:    #f2ebf8;
-@color-header_top:      #a44dd7;
-@akeneo-purple:         #9452BA;
-@color-purple_light:    #8e3bc4;
-@color-header_bottom:   #7225ad;
-@color-6800A9:          #6800A9;
-@color-purple_dark:     #66279c;
-@color-new-purple-dark: #5f2385;
+@redNotifications: #f93a43;
+@red:        #d36050;
+@redLighter: lighten(@red, 30%); // #f2cfca
+@redDark:    darken(@red, 10%);  // #c04230
+@redDarker:  darken(@red, 20%);  // #973426
+@errorBackground: @redLighter;
+@color-base_diff: @redLighter;
+@errorClose:      @redDark;
+@errorText:       @redDarker;
+@errorBorder:     @redDark;
 
 // Blues
-@color-149bdf:           #149bdf;
-@blue-danube:            #5992c7;
-@btnInfoBackgroundLight: #739cdc;
-@color-5e8dcb:           #5e8dcb;
-@color-37485f:           #37485f;
-@color-2a2f36:           #2a2f36;
-@color-354150:           #354150;
-@akeneo-dark:            #11324d;
-@color-042b48:           #042b48;
+@blue:        #5992c7;
+@blueLighter: lighten(@blue, 20%); // #a5c4e1
+@blueDark:    darken(@blue, 10); // #3c79b1
+@btnInfoBackgroundLight: @blue;
 
-// Blue-frays
-@color-f7fafc: #f7fafc;
-@color-ececf0: #ececf0;
-@color-ecf1f9: #ecf1f9;
-@color-e6eff8: #e6eff8;
-@color-e0e7e9: #e0e7e9;
-@color-cad2da: #cad2da;
-@color-cbcbd2: #cbcbd2;
-@color-a1a9b7: #a1a9b7;
-@akeneo-grey:  #a1a9b7;
-@color-b2bac2: #b2bac2;
-@color-8ba1b6: #8ba1b6;
-@color-67768A: #67768A;
-@slate-grey:   #67768a;
-@color-67768a: #67768a;
+// Yellows
+@yellow:        #f8b43f;
+@yellowLighter: lighten(@yellow, 30%); // #fdeed3
+@yellowDark:    darken(@yellow, 10%);  // #f6a10e
+@yellowDarker:  darken(@yellow, 20%);  // #ca8207
+@warningBackground: @yellowLighter;
+@warningBorder:     @yellowDark;
+@warningClose:      @yellowDark;
+@warningText:       @yellowDarker;
 
-// White-blue-grays
-@color-dbe2ea: #dbe2ea;
-@color-e3eaeb: #e3eaeb;
-@color-edf1f2: #edf1f2;
-@color-e4eaec: #e4eaec;
+// Purples
+@akeneoPurple:        #9452ba;
+@akeneoPurpleDark:    darken(@akeneoPurple, 10%);  // #793e9b
+@akeneoPurpleDarker:  darken(@akeneoPurple, 20%);  // #5d2f77
+@akeneoPurpleLight:   lighten(@akeneoPurple, 10%); // #ab76c9
+@akeneoPurpleLighter: lighten(@akeneoPurple, 44%); // #f7f2fa
+@color-header_top:        @akeneoPurpleLight;
+@color-header_bottom:     @akeneoPurple;
+@color-new-purple-light:  @akeneoPurpleLighter;
+@color-new-purple-medium: @akeneoPurple;
 
-// Grays
+// Akeneo greys
+@akeneoLight:       #F1F4F9;
+@akeneoGrey:        #A1A9B7;
+@akeneoSlateGrey:   #67768a;
+@akeneoDarkBlue:    #11324d;
+@akeneoGreyMilight: lighten(@akeneoGrey, 15%); // #ccd1d8
+@akeneoGreyLight:   lighten(@akeneoGrey, 24%); // #e6e8ec
+@akeneoGreyLighter: lighten(@akeneoGrey, 30%); // #f8f8f9
+@akeneoGreyDark:    darken(@akeneoGrey, 10%);  // #848fa1
+@akeneoLightDark:   darken(@akeneoLight, 10%); // #cdd8ea
+
+// Greys
 @black:          #000;
 @grayDarker:     #222;
 @grayDark:       #333;
@@ -150,29 +126,16 @@
 @whiteDarker:    #f4f4f4;
 @whiteDark:      #f9f9f9;
 @white:          #fff;
+@textColor:             @bodyColor;
+@color-disabled:        @whiteDarker;
+@bodyColor:             @color-444;
+@backgroundColor-white: @white;
+@color-form-input:      @bodyColor;
+@color-form-label:      @bodyColor;
+@color-form-info:       @color-777;
+@color-light_grey:      @grayLighter;
 
 // Signin
 @signin-bg-color1: #112539;
 @signin-bg-color2: #76324d;
 @signin-bg-color3: #d1706a;
-
-
-// Named colors
-@bodyColor: @color-444;
-@color-disabled: @whiteDarker;
-@color-new-purple-medium: @akeneo-purple;
-@color-new-purple-light: @color-purple_hover;
-@color-new-green: @fern-green;
-@color-new-red: @chesnut-red;
-@color-new-blue: @blue-danube;
-@color-new-blue-light: @akeneo-light;
-@color-new-yellow: @casablanca-yellow;
-@color-new-red: @chesnut-red;
-@backgroundColor-white: @white;
-@color-form-input: @bodyColor;
-@color-form-info: @color-777;
-@color-form-label: @bodyColor;
-@color-light_grey: @grayLighter;
-@color-new-grey: @grayLighter;
-@akeneo-light: @grayLighter;
-@textColor: @bodyColor;

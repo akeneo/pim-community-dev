@@ -18,7 +18,7 @@
     border-bottom: 3px solid @textColor + #111;
   }
   &:not(.active) a.error {
-    border-bottom: 3px solid @color-da0000;
+    border-bottom: 3px solid @redDark;
   }
 }
 
@@ -103,7 +103,7 @@
 }
 
 .btn-group.open .btn-primary.dropdown-toggle {
-  background-color: darken(@color-new-green, 10%)
+  background-color: @greenDark
 }
 
 .scrollspy-title {
@@ -226,7 +226,7 @@ a.add-attribute-option {
     font-size: @font-size-12;
     font-weight: bold;
     &.switch-primary, &.switch-left {
-      background-color: @color-new-green;
+      background-color: @green;
       background-image: none;
       border-radius: 0;
       text-shadow: none;
@@ -330,7 +330,7 @@ div.btn-group > .has-switch {
     background-color: @color-light_grey;
   }
   &:not(.disabled):hover {
-    background-color: @color-purple_hover;
+    background-color: @akeneoPurpleLighter;
   }
   div.upload-info {
     display: inline-block;
@@ -419,7 +419,7 @@ div.btn-group > .has-switch {
   padding-left: 10px;
   &:hover {
     background-image: none;
-    background-color: @color-purple_hover;
+    background-color: @akeneoPurpleLighter;
     -webkit-transition: background-color 0.5s;
     -moz-transition: background-color 0.5s;
     -o-transition: background-color 0.5s;
@@ -467,7 +467,7 @@ table i {
       font-weight: bold;
       color: @black;
       text-shadow: none;
-      background-color: @color-purple_hover;
+      background-color: @akeneoPurpleLighter;
     }
     > li {
       padding-right: 15px;
@@ -806,8 +806,12 @@ div.dropdown-menu.channel {
     border-radius: 2px;
     box-shadow: none;
     position: relative;
-    background-color: @color-new-grey;
+    background-color: @akeneoGreyLight;
     overflow: hidden;
+
+    &:hover {
+      background-color: @akeneoGreyMilight;
+    }
 
     & > i {
       position: absolute;
@@ -818,7 +822,7 @@ div.dropdown-menu.channel {
       line-height: 34px;
       margin: 0;
       text-align: center;
-      background-color: darken(@color-new-grey, 10%);
+      background-color: @akeneoGreyMilight;
     }
 
     .flag-language .language {
@@ -852,7 +856,7 @@ div.dropdown-menu.channel {
 }
 
 .no-attribute {
-  color: @slate-grey;
+  color: @akeneoSlateGrey;
   font-size: 13px;
   padding-top: 13px;
   margin-right: 10px;
@@ -896,13 +900,13 @@ div.dropdown-menu.channel {
   .label-warning {
     color: @color-form-info;
     text-shadow: none;
-    background-color: @color-fdd9b6;
+    background-color: @yellowLighter;
     border-radius: 10px;
     font-weight: 400;
     padding: 2px 10px 2px 2px;
 
     .icon {
-      color: @color-fa9f47;
+      color: @yellow;
     }
   }
 }
@@ -918,7 +922,7 @@ div.dropdown-menu.channel {
     color: @color-ddd;
   }
   &.green {
-    color: @color-58BB00;
+    color: @green;
   }
 }
 .mass-edit-form {
@@ -964,7 +968,7 @@ button.pimmultiselect {
   color: @textColor + #222;
   font-size: @font-size-13;
   &:hover {
-    color: @textColor + #222;
+    color: @bodyColor;
   }
 }
 .pimmultiselect.ui-multiselect-menu {
@@ -1028,7 +1032,7 @@ button.pimmultiselect {
     padding: 3px;
     margin: 0;
     font-size: @font-size-15em;
-    color: @color-33be00;
+    color: @green;
   }
   .non-required {
     padding: 7px;
@@ -1130,7 +1134,7 @@ table#progress-table {
     }
     span.progress-info {
       padding: 5px;
-      color: @color-5e8dcb;
+      color: @blue;
       cursor: default;
     }
   }
@@ -1171,7 +1175,7 @@ table#progress-table {
 /** datagrid columns configuration ***********************************************************************************/
 .column-configurator-modal .modal-body {
   padding: 0;
-  background-color: @color-edf1f2;
+  background-color: @akeneoLight;
 }
 #column-configurator {
   h4 {
@@ -1180,8 +1184,8 @@ table#progress-table {
     margin: 0;
     padding: 10px;
     color: @grayLight;
-    border-left: 1px solid @color-e0e7e9;
-    border-bottom: 1px solid @color-e0e7e9;
+    border-left: 1px solid @grayLighter;
+    border-bottom: 1px solid@grayLighter;
   }
   i.icon-search {
     font-size: @font-size-18;
@@ -1216,11 +1220,11 @@ table#progress-table {
     overflow-y: auto;
     list-style-type: none;
     font-size: @font-size-13;
-    border-left: 1px solid @color-e0e7e9;
+    border-left: 1px solid @grayLighter;
     li {
       cursor: pointer;
       padding: 15px 10px;
-      border: 1px solid @color-e3eaeb;
+      border: 1px solid @grayLighter;
       &:not(:first-of-type) {
         border-top: none;
       }
@@ -1268,7 +1272,7 @@ table#progress-table {
     }
     li {
       &.active {
-        background-color: @color-e4eaec;
+        background-color: @grayLighter;
       }
     }
   }
@@ -1277,7 +1281,7 @@ table#progress-table {
 /** datagrid views ***************************************************************************************************/
 .highlight-hover li {
   &:hover {
-    background-color: @color-purple_light;
+    background-color: @akeneoPurpleLight;
     color: @backgroundColor-white;
   }
   label {
