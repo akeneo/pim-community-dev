@@ -1,0 +1,70 @@
+parameters:
+    pim_connector.event_listener.archivist.class:                 Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist
+    pim_connector.event_listener.invalid_items_collector.class:   Pim\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector
+    pim_connector.factory.zip_filesystem.class:                   Pim\Component\Connector\Filesystem\ZipFilesystemFactory
+    pim_connector.archiver.file_reader_archiver.class:            Pim\Component\Connector\Archiver\FileReaderArchiver
+    pim_connector.archiver.file_writer_archiver.class:            Pim\Component\Connector\Archiver\FileWriterArchiver
+    pim_connector.archiver.archivable_file_writer_archiver.class: Pim\Component\Connector\Archiver\ArchivableFileWriterArchiver
+    pim_connector.archiver.invalid_item_csv_writer.class:         Pim\Component\Connector\Archiver\CsvInvalidItemWriter
+    pim_connector.archiver.invalid_item_xlsx_writer.class:        Pim\Component\Connector\Archiver\XlsxInvalidItemWriter
+
+services:
+    pim_connector.event_listener.archivist:
+        class: '%pim_connector.event_listener.archivist.class%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_connector.event_listener.invalid_items_collector:
+        class: '%pim_connector.event_listener.invalid_items_collector.class%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_connector.factory.zip_filesystem:
+        class: '%pim_connector.factory.zip_filesystem.class%'
+
+    pim_connector.archiver.file_reader_archiver:
+        class: '%pim_connector.archiver.file_reader_archiver.class%'
+        arguments:
+            - '@oneup_flysystem.archivist_filesystem'
+            - '@akeneo_batch.job.job_registry'
+        tags:
+            - { name: pim_connector.archiver }
+
+    pim_connector.archiver.file_writer_archiver:
+        class: '%pim_connector.archiver.file_writer_archiver.class%'
+        arguments:
+            - '@oneup_flysystem.archivist_filesystem'
+            - '@akeneo_batch.job.job_registry'
+        tags:
+            - { name: pim_connector.archiver }
+
+    pim_connector.archiver.archivable_file_writer_archiver:
+        class: '%pim_connector.archiver.archivable_file_writer_archiver.class%'
+        arguments:
+            - '@pim_connector.factory.zip_filesystem'
+            - '@oneup_flysystem.archivist_filesystem'
+            - '@akeneo_batch.job.job_registry'
+        tags:
+            - { name: pim_connector.archiver }
+
+    pim_connector.archiver.invalid_item_csv_writer:
+        class: '%pim_connector.archiver.invalid_item_csv_writer.class%'
+        arguments:
+            - '@pim_connector.event_listener.invalid_items_collector'
+            - '@pim_connector.writer.file.invalid_items_csv'
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@oneup_flysystem.archivist_filesystem'
+            - 'csv'
+        tags:
+            - { name: pim_connector.archiver }
+
+    pim_connector.archiver.invalid_item_xlsx_writer:
+        class: '%pim_connector.archiver.invalid_item_xlsx_writer.class%'
+        arguments:
+            - '@pim_connector.event_listener.invalid_items_collector'
+            - '@pim_connector.writer.file.invalid_items_xlsx'
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@oneup_flysystem.archivist_filesystem'
+            - 'xlsx'
+        tags:
+            - { name: pim_connector.archiver }

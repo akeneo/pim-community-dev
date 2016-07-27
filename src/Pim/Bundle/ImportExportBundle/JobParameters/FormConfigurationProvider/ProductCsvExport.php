@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProvider;
 
 use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Bundle\ImportExportBundle\JobParameters\FormConfigurationProviderInterface;
 
@@ -85,8 +84,8 @@ class ProductCsvExport implements FormConfigurationProviderInterface
                     'choices'  => $this->decimalSeparators,
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_base_connector.export.decimalSeparator.label',
-                    'help'     => 'pim_base_connector.export.decimalSeparator.help'
+                    'label'    => 'pim_connector.export.decimalSeparator.label',
+                    'help'     => 'pim_connector.export.decimalSeparator.help'
                 ]
             ],
             'dateFormat' => [
@@ -95,8 +94,8 @@ class ProductCsvExport implements FormConfigurationProviderInterface
                     'choices'  => $this->dateFormats,
                     'required' => true,
                     'select2'  => true,
-                    'label'    => 'pim_base_connector.export.dateFormat.label',
-                    'help'     => 'pim_base_connector.export.dateFormat.help',
+                    'label'    => 'pim_connector.export.dateFormat.label',
+                    'help'     => 'pim_connector.export.dateFormat.help',
                 ]
             ],
         ];
