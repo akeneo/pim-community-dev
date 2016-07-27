@@ -6,7 +6,7 @@
     <% }); %>
 </select>
 
-<% if ('EMPTY' !== operator) { %>
+<% if (!_.contains(['EMPTY', 'NOT EMPTY'], operator)) { %>
     <input type="text" name="filter-data" class="value" value="<%- value.data %>" <%- editable ? '' : 'disabled' %>>
 
     <select class="select2 currency" name="filter-currency" <%- editable ? '' : 'disabled' %>>

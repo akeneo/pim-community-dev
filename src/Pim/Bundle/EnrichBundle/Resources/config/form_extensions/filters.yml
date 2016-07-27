@@ -61,9 +61,6 @@ extensions:
                 - EMPTY
                 - NOT EMPTY
 
-    pim-filter-simpleselect:
-        module: pim/filter/simpleselect
-
     pim-filter-attribute-price-collection:
         module: pim/filter/attribute/price-collection
         config:
@@ -74,6 +71,7 @@ extensions:
                 - ">"
                 - "<"
                 - EMPTY
+                - NOT EMPTY
 
     pim-filter-attribute-string:
         module: pim/filter/attribute/string
@@ -85,6 +83,7 @@ extensions:
                 - STARTS WITH
                 - ENDS WITH
                 - EMPTY
+                - NOT EMPTY
 
     pim-filter-attribute-select:
         module: pim/filter/attribute/select
@@ -95,6 +94,7 @@ extensions:
             operators:
                 - IN
                 - EMPTY
+                - NOT EMPTY
 
     pim-filter-attribute-select-reference-data:
         module: pim/filter/attribute/select
@@ -104,6 +104,7 @@ extensions:
             operators:
                 - IN
                 - EMPTY
+                - NOT EMPTY
 
     pim-filter-attribute-media:
         module:  pim/filter/attribute/media

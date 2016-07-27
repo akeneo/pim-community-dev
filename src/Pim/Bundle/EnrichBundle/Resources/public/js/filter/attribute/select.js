@@ -43,7 +43,7 @@ define([
          * {@inheritdoc}
          */
         isEmpty: function () {
-            return 'EMPTY' !== this.getOperator() &&
+            return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
                 (undefined === this.getValue() || '' === this.getValue());
         },
 
@@ -69,7 +69,7 @@ define([
                 minimumResultsForSearch: -1
             });
 
-            if ('EMPTY' !== this.getOperator()) {
+            if (!_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator())) {
                 this.$('.value').select2(templateContext.select2Options);
             }
         },
@@ -102,7 +102,7 @@ define([
             var cleanedValues = [];
             var operator = this.$('[name="filter-operator"]').val();
 
-            if ('EMPTY' !== operator) {
+            if (!_.contains(['EMPTY', 'NOT EMPTY'], operator)) {
                 var value = this.$('[name="filter-value"]').val().split(/[\s,]+/);
                 cleanedValues = _.reject(value, function (val) {
                     return '' === val;

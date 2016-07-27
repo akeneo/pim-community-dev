@@ -40,7 +40,7 @@ define([
          * {@inherit}
          */
         isEmpty: function () {
-            return 'EMPTY' !== this.getOperator() &&
+            return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
                 (undefined === this.getValue() || '' === this.getValue());
         },
 
