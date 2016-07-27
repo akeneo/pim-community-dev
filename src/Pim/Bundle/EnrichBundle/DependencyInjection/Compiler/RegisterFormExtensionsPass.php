@@ -45,7 +45,7 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
                 $attributeFields = array_merge($attributeFields, $config['attribute_fields']);
             }
             if (isset($config['filters']) && is_array($config['filters'])) {
-                $filters = array_merge($filters, $config['filters']);
+                $filters = array_merge_recursive($filters, $config['filters']);
             }
             $container->addResource(new FileResource($file->getPathName()));
         }
