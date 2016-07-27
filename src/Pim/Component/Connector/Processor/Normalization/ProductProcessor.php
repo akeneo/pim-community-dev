@@ -92,7 +92,8 @@ class ProductProcessor extends AbstractConfigurableStepElement implements
         );
 
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
-            $this->importMedia($product, $parameters);
+            $directory = $this->getWorkingDirectory($parameters->get('filePath'));
+            $this->importMedia($product, $directory);
         }
 
         $this->detacher->detach($product);
@@ -112,11 +113,10 @@ class ProductProcessor extends AbstractConfigurableStepElement implements
      * Import media on the local filesystem
      *
      * @param ProductInterface $product
-     * @param JobParameters    $parameters
+     * @param string           $directory
      */
-    protected function importMedia(ProductInterface $product, JobParameters $parameters)
+    protected function importMedia(ProductInterface $product, $directory)
     {
-        $directory = dirname($parameters->get('filePath'));
         $identifier = $product->getIdentifier()->getData();
         $this->mediaExporter->exportAll($product->getValues(), $directory, $identifier);
 
@@ -174,5 +174,25 @@ class ProductProcessor extends AbstractConfigurableStepElement implements
         }
 
         return $attributes;
+    }
+
+    /**
+     * Build path of the working directory to import media in a specific directory.
+     * Will be extracted with TIP-539
+     *
+     * @param string $filePath
+     *
+     * @return string
+     */
+    protected function getWorkingDirectory($filePath)
+    {
+        $jobExecution = $this->stepExecution->getJobExecution();
+
+        return dirname($filePath)
+            . DIRECTORY_SEPARATOR
+            . $jobExecution->getJobInstance()->getCode()
+            . DIRECTORY_SEPARATOR
+            . $jobExecution->getId()
+            . DIRECTORY_SEPARATOR;
     }
 }
