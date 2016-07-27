@@ -26,7 +26,7 @@ define([
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         initialize: function (config) {
             this.config = config.config;
@@ -35,14 +35,14 @@ define([
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         isEmpty: function () {
             return _.isEmpty(this.getValue());
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         renderInput: function () {
             return this.template({
@@ -54,7 +54,7 @@ define([
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         getTemplateContext: function () {
             return FetcherRegistry
@@ -73,7 +73,7 @@ define([
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         updateState: function () {
             var value = this.$('[name="filter-value"]').val().split(/[\s,]+/);

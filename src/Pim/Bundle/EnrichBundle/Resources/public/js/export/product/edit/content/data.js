@@ -170,6 +170,10 @@ define(
              * @return {Promise}
              */
             getFiltersConfig: function (filterFields) {
+                filterFields = _.map(filterFields, function (filterField) {
+                    return filterField.replace(/\.code$/, '');
+                });
+
                 return $.when(
                     fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(filterFields),
                     configProvider.getFilters(this.getRoot().code)

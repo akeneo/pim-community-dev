@@ -44,13 +44,13 @@ extensions:
                     field: completeness
                     view: pim-filter-product-completeness
                 -
-                    field: family.code
+                    field: family
                     view: pim-filter-product-family
                 -
                     field: updated
                     view: pim-filter-product-updated
                 -
-                    field: categories.code
+                    field: categories
                     view: pim-filter-product-category
 
     pim-product-export-edit-content-default-attribute-filters:

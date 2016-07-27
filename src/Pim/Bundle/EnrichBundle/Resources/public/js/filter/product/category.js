@@ -109,6 +109,19 @@ define([
          */
         isEmpty: function () {
             return _.isEmpty(this.getValue()) || '' === this.getOperator();
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        getField: function () {
+            var fieldName = BaseFilter.prototype.getField.apply(this, arguments);
+
+            if (-1 === fieldName.indexOf('.code')) {
+                fieldName += '.code';
+            }
+
+            return fieldName;
         }
     });
 });

@@ -134,7 +134,7 @@ define([
                     }
 
                     return Routing.generate(
-                        'pim_ui_ajaxentity_list',
+                        this.config.url,
                         {
                             'class': entityClass,
                             'dataLocale': UserContext.get('uiLocale'),
@@ -152,7 +152,7 @@ define([
                                 return {
                                     search: term,
                                     options: {
-                                        locale: UserContext.get('catalogLocale')
+                                        locale: UserContext.get('uiLocale')
                                     }
                                 };
                             },
@@ -180,8 +180,6 @@ define([
 
         /**
          * {@inheritdoc}
-         *
-         * We override the getField method to add the trailing '.code' needed for the backend filter
          */
         getField: function () {
             var fieldName = BaseFilter.prototype.getField.apply(this, arguments);

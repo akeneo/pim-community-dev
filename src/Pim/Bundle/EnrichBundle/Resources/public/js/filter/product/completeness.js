@@ -16,14 +16,14 @@ define([
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         initialize: function (config) {
             this.config = config.config;
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         configure: function () {
             this.on('locales:update:after', this.updateState.bind(this));
@@ -58,7 +58,7 @@ define([
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         isEmpty: function () {
             return 'ALL' === this.getOperator();

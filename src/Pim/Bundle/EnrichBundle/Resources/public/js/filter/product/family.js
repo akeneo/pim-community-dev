@@ -20,7 +20,7 @@ define([
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         initialize: function (config) {
             this.config = config.config;
@@ -78,7 +78,7 @@ define([
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         renderInput: function () {
             return this.template({
@@ -91,31 +91,45 @@ define([
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         postRender: function () {
             this.$('[name="filter-value"]').select2(this.selectOptions);
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         isEmpty: function () {
             return _.isEmpty(this.getValue());
         },
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         updateState: function () {
             var value = this.$('[name="filter-value"]').val();
 
             this.setData({
+                field: this.getField(),
                 operator: 'IN',
                 value: '' === value ?
                     [] :
                     value.split(',')
             });
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        getField: function () {
+            var fieldName = BaseFilter.prototype.getField.apply(this, arguments);
+
+            if (-1 === fieldName.indexOf('.code')) {
+                fieldName += '.code';
+            }
+
+            return fieldName;
         }
     });
 });

@@ -84,7 +84,7 @@ define([
             },
 
             /**
-             * {@inherit}
+             * {@inheritdoc}
              */
             isEmpty: function () {
                 return 'ALL' === this.getOperator();
