@@ -50,15 +50,21 @@ class ProductAssetController
      */
     public function indexAction(Request $request)
     {
-        $identifiers = $request->get('identifiers');
-        $identifiers = ('' !== $identifiers) ? explode(',', $identifiers) : [];
+        $options = $request->query->get('options', ['limit' => 20]);
 
-        if (0 === count($identifiers)) {
-            $assets = $this->assetRepository->findAll();
-        } else {
-            $assets = $this->assetRepository->findByIdentifiers($identifiers);
+        if ($request->request->has('identifiers')) {
+            $options['identifiers'] = explode(',', $request->request->get('identifiers'));
         }
 
-        return new JsonResponse($this->assetNormalizer->normalize($assets, 'internal_api'));
+        $assets = $this->assetRepository->findEntitiesBySearch(
+            $request->query->get('search'),
+            $options
+        );
+
+        $normalizedAssets = array_map(function ($asset) {
+            return $this->assetNormalizer->normalize($asset, 'internal_api');
+        }, $assets);
+
+        return new JsonResponse($normalizedAssets);
     }
 }

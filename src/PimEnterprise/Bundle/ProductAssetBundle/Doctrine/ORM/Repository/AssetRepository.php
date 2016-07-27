@@ -78,14 +78,44 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
      */
     public function findBySearch($search = null, array $options = [])
     {
+        $qb = $this->findBySearchQb($search, $options);
+
         $selectDql = sprintf(
             '%s.id as id, CONCAT(\'[\', %s.code, \']\') as text',
             $this->getAlias(),
             $this->getAlias()
         );
-
-        $qb = $this->createQueryBuilder($this->getAlias());
         $qb->select($selectDql);
+
+        return $qb->getQuery()->getArrayResult();
+    }
+
+    /**
+     * Find entities with search and search options
+     *
+     * @param string|null  $search
+     * @param array $options
+     *
+     * @return array
+     */
+    public function findEntitiesBySearch($search = null, array $options = [])
+    {
+        $qb = $this->findBySearchQb($search, $options);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Configures the search query
+     *
+     * @param null|string $search
+     * @param array       $options
+     *
+     * @return QueryBuilder
+     */
+    protected function findBySearchQb($search = null, array $options = [])
+    {
+        $qb = $this->createQueryBuilder($this->getAlias());
 
         if ($this->getClassMetadata()->hasField('sortOrder')) {
             $qb->orderBy(sprintf('%s.sortOrder', $this->getAlias()), 'DESC');
@@ -106,6 +136,11 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
                 ->setParameter('categories', $options['categories']);
         }
 
+        if (isset($options['identifiers']) && is_array($options['identifiers']) && !empty($options['identifiers'])) {
+            $qb->andWhere('f.code in (:codes)');
+            $qb->setParameter('codes', $options['identifiers']);
+        }
+
         if (isset($options['limit'])) {
             $qb->setMaxResults((int) $options['limit']);
             if (isset($options['page'])) {
@@ -115,7 +150,7 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
 
         $qb->groupBy(sprintf('%s.id', $this->getAlias()));
 
-        return $qb->getQuery()->getArrayResult();
+        return $qb;
     }
 
     /**
