@@ -73,7 +73,8 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
         $parameters = $this->stepExecution->getJobParameters();
 
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
-            $this->importMedia($variantGroup, $parameters);
+            $directory = $this->getWorkingDirectory($parameters->get('filePath'));
+            $this->importMedia($variantGroup, $directory);
         }
 
         $this->objectDetacher->detach($variantGroup);
@@ -93,15 +94,14 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
      * Import media in local filesystem
      *
      * @param GroupInterface $variantGroup
-     * @param JobParameters  $parameters
+     * @param string         $directory
      */
-    protected function importMedia(GroupInterface $variantGroup, JobParameters $parameters)
+    protected function importMedia(GroupInterface $variantGroup, $directory)
     {
         if (null === $productTemplate = $variantGroup->getProductTemplate()) {
             return;
         }
 
-        $directory = dirname($parameters->get('filePath'));
         $identifier = $variantGroup->getCode();
         $this->variantGroupUpdater->update($variantGroup, ['values' => $productTemplate->getValuesData()]);
 
@@ -110,5 +110,25 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
         foreach ($this->mediaExporter->getErrors() as $error) {
             $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
         }
+    }
+
+    /**
+     * Build path of the working directory to import media in a specific directory.
+     * Will be extracted with TIP-539
+     *
+     * @param string $filePath
+     *
+     * @return string
+     */
+    protected function getWorkingDirectory($filePath)
+    {
+        $jobExecution = $this->stepExecution->getJobExecution();
+
+        return dirname($filePath)
+            . DIRECTORY_SEPARATOR
+            . $jobExecution->getJobInstance()->getCode()
+            . DIRECTORY_SEPARATOR
+            . $jobExecution->getId()
+            . DIRECTORY_SEPARATOR;
     }
 }

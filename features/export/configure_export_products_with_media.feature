@@ -25,8 +25,9 @@ Feature: Configure export of products media
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then I should see the text "Download generated archive"
+    And export directory of "csv_footwear_product_export" should contain the following file:
+      | product_export.csv |
     And export directory of "csv_footwear_product_export" should contain the following media:
-      | product_export.csv                       |
       | files/gothic_boot_1/side_view/akeneo.jpg |
       | files/gothic_boot_2/side_view/akeneo.jpg |
       | files/gothic_boot_3/side_view/akeneo.jpg |
@@ -41,7 +42,7 @@ Feature: Configure export of products media
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then I should not see the text "Download generated archive"
-    And export directory of "csv_footwear_product_export" should contain the following media:
+    And export directory of "csv_footwear_product_export" should contain the following file:
       | product_export.csv                       |
     But export directory of "csv_footwear_product_export" should not contain the following media:
       | files/gothic_boot_1/side_view/akeneo.jpg |
@@ -59,8 +60,9 @@ Feature: Configure export of products media
     And I launch the export job
     And I wait for the "xlsx_product_export" job to finish
     Then I should see the text "Download generated archive"
+    And export directory of "xlsx_product_export" should contain the following file:
+      | product_export.xlsx |
     And export directory of "xlsx_product_export" should contain the following media:
-      | product_export.xlsx                      |
       | files/gothic_boot_1/side_view/akeneo.jpg |
       | files/gothic_boot_2/side_view/akeneo.jpg |
       | files/gothic_boot_3/side_view/akeneo.jpg |
@@ -76,8 +78,8 @@ Feature: Configure export of products media
     And I launch the export job
     And I wait for the "xlsx_product_export" job to finish
     Then I should not see the text "Download generated archive"
-    And export directory of "xlsx_product_export" should contain the following media:
-      | product_export.xlsx                      |
+    And export directory of "xlsx_product_export" should contain the following file:
+      | product_export.xlsx |
     But export directory of "xlsx_product_export" should not contain the following media:
       | files/gothic_boot_1/side_view/akeneo.jpg |
       | files/gothic_boot_2/side_view/akeneo.jpg |

@@ -131,13 +131,32 @@ class ExportProfilesContext extends ImportExportContext
      * @param string    $code
      * @param TableNode $table
      *
+     * @Then /^export directory of "([^"]*)" should contain the following file:$/
+     *
+     * @throws ExpectationException
+     */
+    public function exportDirectoryOfShouldContainTheFollowingFile($code, TableNode $table)
+    {
+        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+        $path = dirname($jobInstance->getRawParameters()['filePath']);
+
+        $this->checkExportDirectoryFiles(true, $table, $path);
+    }
+
+    /**
+     * @param string    $code
+     * @param TableNode $table
+     *
      * @Then /^export directory of "([^"]*)" should contain the following media:$/
      *
      * @throws ExpectationException
      */
     public function exportDirectoryOfShouldContainTheFollowingMedia($code, TableNode $table)
     {
-        $this->checkExportDirectoryFiles($code, true, $table);
+        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+        $path = $this->getMediaWorkingDirectory($jobInstance, $code, $jobInstance->getRawParameters()['filePath']);
+
+        $this->checkExportDirectoryFiles(true, $table, $path);
     }
 
     /**
@@ -150,25 +169,30 @@ class ExportProfilesContext extends ImportExportContext
      */
     public function exportDirectoryOfShouldNotContainTheFollowingMedia($code, TableNode $table)
     {
-        $this->checkExportDirectoryFiles($code, false, $table);
+        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+        $path = $this->getMediaWorkingDirectory($jobInstance, $code, $jobInstance->getRawParameters()['filePath']);
+
+        $this->checkExportDirectoryFiles(false, $table, $path);
     }
 
     /**
      * Check if files should be in the export directory of the job with the given $code
      *
-     * @param string    $code                Code of the job instance
      * @param bool      $shouldBeInDirectory true if the files should be in the directory, false otherwise
      * @param TableNode $table               Files to check
+     * @param string    $path                Path of item on filesystem
      */
-    protected function checkExportDirectoryFiles($code, $shouldBeInDirectory, TableNode $table)
+    protected function checkExportDirectoryFiles($shouldBeInDirectory, TableNode $table, $path)
     {
-        $config = $this->getFixturesContext()->getJobInstance($code)->getRawParameters();
-
-        $path = dirname($config['filePath']);
-
-        if (!is_dir($path)) {
+        if ($shouldBeInDirectory && !is_dir($path)) {
             throw $this->getMainContext()->createExpectationException(
                 sprintf('Directory "%s" doesn\'t exist', $path)
+            );
+        }
+
+        if (!$shouldBeInDirectory && is_dir($path)) {
+            throw $this->getMainContext()->createExpectationException(
+                sprintf('Directory "%s" exists, but it should not', $path)
             );
         }
 
@@ -206,5 +230,25 @@ class ExportProfilesContext extends ImportExportContext
         }
 
         return $filePath;
+    }
+
+    /**
+     * Build path of the working directory to import media in a specific directory.
+     * Will be extracted with TIP-539
+     *
+     * @param JobInstance $jobInstance
+     * @param string      $code
+     * @param string      $filePath
+     *
+     * @return string
+     */
+    protected function getMediaWorkingDirectory(JobInstance $jobInstance, $code, $filePath)
+    {
+        return dirname($filePath)
+               . DIRECTORY_SEPARATOR
+               . $code
+               . DIRECTORY_SEPARATOR
+               . $jobInstance->getJobExecutions()->first()->getId()
+               . DIRECTORY_SEPARATOR;
     }
 }

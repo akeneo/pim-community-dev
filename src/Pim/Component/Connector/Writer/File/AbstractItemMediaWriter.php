@@ -119,7 +119,8 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
         $flatItems = [];
         foreach ($items as $item) {
             if ($parameters->has('with_media') && $parameters->get('with_media')) {
-                $item = $this->archiveMedia($item);
+                $directory = $this->getWorkingDirectory($parameters->get('filePath'));
+                $item = $this->archiveMedia($item, $directory);
             }
 
             $flatItems[] = $this->arrayConverter->convert($item, $converterOptions);
@@ -208,18 +209,18 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
     /**
      * Stock media for archiver and change media path
      *
-     * @param array $item
+     * @param array  $item
+     * @param string $tmpDirectory
      *
      * @return array
      */
-    protected function archiveMedia(array $item)
+    protected function archiveMedia(array $item, $tmpDirectory)
     {
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($item['values']));
         $mediaAttributeTypes = array_filter($attributeTypes, function ($attributeCode) {
             return in_array($attributeCode, $this->mediaAttributeTypes);
         });
 
-        $tmpDirectory = dirname($this->getPath()) . DIRECTORY_SEPARATOR;
         $identifier = $this->getIdentifier($item);
 
         foreach ($mediaAttributeTypes as $attributeCode => $attributeType) {
@@ -268,5 +269,25 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
         }
 
         return $options;
+    }
+
+    /**
+     * Build path of the working directory to import media in a specific directory.
+     * Will be extracted with TIP-539
+     *
+     * @param string $filePath
+     *
+     * @return string
+     */
+    protected function getWorkingDirectory($filePath)
+    {
+        $jobExecution = $this->stepExecution->getJobExecution();
+
+        return dirname($filePath)
+               . DIRECTORY_SEPARATOR
+               . $jobExecution->getJobInstance()->getCode()
+               . DIRECTORY_SEPARATOR
+               . $jobExecution->getId()
+               . DIRECTORY_SEPARATOR;
     }
 }
