@@ -23,7 +23,7 @@
 
 .btn {
   background-image: none;
-  background-color: @color-new-grey;
+  background-color: @akeneoGreyLight;
   position: relative;
   border: none;
   text-shadow: none;
@@ -60,7 +60,7 @@
 
     i {
       .icon-button();
-      background-color: darken(@akeneo-grey, 10%);
+      background-color: @akeneoGreyMilight;
       border-top-left-radius: 2px;
       border-bottom-left-radius: 2px;
     }
@@ -71,7 +71,7 @@
     background-image: none;
     border: none;
     box-shadow: none;
-    background-color: darken(@akeneo-grey, 10%);
+    background-color: @akeneoGreyMilight;
   }
 }
 
@@ -101,7 +101,7 @@
 }
 
 .btn.btn-primary {
-  background-color: @color-new-green;
+  background-color: @green;
 
   &.icons-holder-text {
     padding: 0 10px 0 44px;
@@ -109,17 +109,17 @@
     i {
       .icon-button();
       color: white;
-      background-color: darken(@color-new-green, 10%);
+      background-color: @greenDark;
     }
   }
 
   &:hover {
-    background-color: darken(@color-new-green, 10%);
+    background-color: @greenDark;
   }
 }
 
 .btn.attribute-choice {
-  background-color: @akeneo-light;
+  background-color: @akeneoLight;
   border-radius: 2px;
   overflow: hidden;
   text-align: left;
@@ -133,19 +133,19 @@
       height: 50px;
       width: 50px;
       line-height: 50px;
-      background-color: darken(@akeneo-light, 10%);
+      background-color: @akeneoLightDark;
   }
 
   &:hover, &:active, &:focus{
     background-image: none;
     border: none;
     box-shadow: none;
-    background-color: darken(@akeneo-light, 10%);
+    background-color: @akeneoLightDark;
   }
 }
 
 .btn.btn-submit, .btn.btn-next, .btn.send-comment {
-  background-color: @color-new-green;
+  background-color: @green;
   border: none;
 
   &.send-comment {
@@ -158,7 +158,7 @@
 
   i {
     .icon-button();
-    background-color: darken(@color-new-green, 10%);
+    background-color: @greenDark;
   }
 
   &[title~="Next"] {
@@ -175,13 +175,13 @@
   }
 
   &:hover {
-    background-color: darken(@color-new-green, 10%);
+    background-color: @greenDark;
   }
 }
 
 .submit-form {
   .btn.btn-primary.dropdown-toggle {
-    background-color: darken(@color-new-green, 10%);
+    background-color: @greenDark;
     width: 34px;
 
     .caret {
@@ -191,15 +191,15 @@
 }
 
 .btn-publish {
-  background-color: @color-new-blue;
+  background-color: @blue;
 
   i {
     .icon-button();
-    background-color: darken(@color-new-blue, 10%);
+    background-color: @blueDark;
   }
 
   &:hover {
-    background-color: darken(@color-new-blue, 10%);
+    background-color: @blueDark;
   }
 
   &.icons-holder-text {
@@ -207,7 +207,7 @@
 
     i {
       .icon-button();
-      background-color: darken(@color-new-blue, 10%);
+      background-color: @blueDark;
       border-top-left-radius: 2px;
       border-bottom-left-radius: 2px;
     }
@@ -215,7 +215,7 @@
 }
 
 .btn.btn-delete, .btn.trash, .btn.remove-button, .btn.delete {
-  background-color: @color-new-red;
+  background-color: @red;
   color: @white;
   padding: 0 10px 0 44px;
   overflow: hidden;
@@ -223,20 +223,20 @@
   i {
     .icon-button();
     color: white;
-    background-color: darken(@color-new-red, 10%);
+    background-color: @redDark;
   }
 
   &:hover {
-    background-color: darken(@color-new-red, 10%);
+    background-color: @redDark;
   }
 }
 
 .btn-group.open .btn.btn-download.dropdown-toggle {
-  background-color: darken(@akeneo-grey, 10%);
+  background-color: @akeneoGreyDark;
 }
 
 .btn.btn-download {
-  background-color: @akeneo-grey;
+  background-color: @akeneoGrey;
   color: @backgroundColor-white;
   padding: 0 10px 0 44px;
   overflow: hidden;
@@ -244,7 +244,7 @@
 
   i {
     .icon-button();
-    background-color: darken(@akeneo-grey, 10%);
+    background-color: @akeneoGreyDark;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
   }
@@ -255,50 +255,50 @@
   }
 
   &:hover {
-    background-color: darken(@akeneo-grey, 10%);
+    background-color: @akeneoGreyDark;
   }
 
 }
 
 .btn.cancel {
-  background-color: @color-new-grey;
+  background-color: @akeneoGreyLight;
 
   &:hover {
-    background-color: darken(@color-new-grey, 10%);
+    background-color: @akeneoGreyMilight;
   }
 
 }
 
 .btn.back-link {
-  background-color: @color-new-grey;
+  background-color: @akeneoGreyLight;
   width: 34px;
 
   &:hover {
-    background-color: darken(@color-new-grey, 10%);
+    background-color: @akeneoGreyMilight;
   }
 }
 
 .btn.pencil, .btn.edit, .btn.edit-user, .btn.btn-show {
-  background-color: @color-new-blue;
+  background-color: @blue;
   color: @white;
   padding: 0 10px 0 44px;
 
   i {
     .icon-button();
     color: @white;
-    background-color: darken(@color-new-blue, 10%);
+    background-color: @blueDark;
     &:before {
       color: @white;
     }
   }
 
   &:hover {
-    background-color: darken(@color-new-blue, 10%);
+    background-color: @blueDark;
   }
 }
 
 .btn-status {
-  background-color: @color-a1a9b7;
+  background-color: @akeneoGrey;
   padding: 0;
 }
 
@@ -306,11 +306,11 @@
   .btn {
     border-radius: 2px;
     background-color: @white;
-    border: solid 1px @color-cbcbd2;
+    border: solid 1px @color-ccc;
     font-size: @font-size-12;
 
     &.filter-update {
-      background-color: @color-new-green;
+      background-color: @green;
       border: none;
     }
   }
@@ -319,14 +319,14 @@
 .select-all-header-cell {
   .btn-group {
     .btn {
-      background-color: @color-a1a9b7;
+      background-color: @akeneoGrey;
       color: @white;
       height: 28px;
       line-height: 28px;
 
       &.dropdown-toggle {
         width: 28px;
-        background-color: darken(@color-a1a9b7, 5%);
+        background-color: @akeneoGreyDark;
         color: @white;
         box-shadow: none;
         i {
@@ -348,7 +348,7 @@
     background-image: none;
     background-color: @white;
     position: relative;
-    border: solid 1px @color-new-grey;
+    border: solid 1px @akeneoGreyLight;
     text-shadow: none;
     box-shadow: none;
     line-height: 28px;
@@ -359,7 +359,7 @@
 
     &:hover, &:active, &:focus {
       background-image: none;
-      border: solid 1px @color-new-grey;
+      border: solid 1px @akeneoGreyLight;
       box-shadow: none;
       background-color: darken(@white, 10%);
     }
@@ -382,7 +382,7 @@
 
   .attribute-copy-actions {
     .btn {
-      background-color: @color-a1a9b7;
+      background-color: @akeneoGrey;
       color: @white;
 
       .caret {
@@ -402,17 +402,17 @@
   .selection-dropdown {
     .btn {
 
-      background-color: @color-a1a9b7;
+      background-color: @akeneoGrey;
       color: @white;
     }
   }
 
   .btn.copy {
-    background-color: @color-new-green;
+    background-color: @green;
     color: @white;
 
     &:hover {
-      background-color: darken(@color-new-green, 10%);
+      background-color: @greenDark;
     }
   }
 }
@@ -437,32 +437,32 @@
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
     text-align: center;
-    background-color: darken(@color-new-grey, 10%);
+    background-color: @akeneoGreyMilight;
   }
 }
 
 .badge-enabled {
-  background-color: lighten(@color-new-green, 30%);
+  background-color: @greenLighter;
 
   .status-enabled {
     margin-top: -4px;
-    color: darken(@color-new-green, 20%);
+    color: @greenDarker;
     text-shadow: none;
     padding: 3px 10px 3px 5px;
   }
 }
 
 .label-warning, .badge-warning {
-  background-color: @color-new-yellow;
+  background-color: @yellow;
 }
 
 .badge-info-large {
   display: inline-block;
   padding: 5px 10px;
   border-radius: 2px;
-  background-color: @akeneo-light;
-  border: solid 1px @akeneo-grey;
-  color: @slate-grey;
+  background-color: @akeneoLightDark;
+  border: solid 1px @akeneoGrey;
+  color: @akeneoSlateGrey;
   white-space: nowrap;
 }
 
@@ -485,14 +485,14 @@ tr:hover>.action-cell a.action.btn {
   opacity: 1;
 
   &.btn-primary i {
-    background-color: darken(@color-new-green, 10%);
+    background-color: @greenDark;
   }
 
   &.btn-delete i {
-    background-color: darken(@color-new-red, 10%);
+    background-color: @redDark;
   }
 
   i {
-    background-color: darken(@color-new-grey, 10%);
+    background-color: @akeneoGrey;
   }
 }
