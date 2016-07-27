@@ -308,4 +308,11 @@ class IndexPurgerSpec extends ObjectBehavior
 
         $this->purgeIndexesFromCurrency($usd);
     }
+
+    function it_removes_all_existing_indexes($collection)
+    {
+        $collection->deleteIndexes()->shouldBeCalled();
+
+        $this->purgeIndexes();
+    }
 }
