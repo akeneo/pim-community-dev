@@ -4,10 +4,10 @@
 /* Login Form *******************************************************************************************************/
 
 .login-page {
-  background: #112539; /* Old browsers */
-  background: -moz-linear-gradient(top,  #112539 0, #76324d 86%, #d1706a 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top,  #112539 0,#76324d 86%,#d1706a 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom,  #112539 0,#76324d 86%,#d1706a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  background: @signin-bg-color1; /* Old browsers */
+  background: -moz-linear-gradient(top,  @signin-bg-color1 0, @signin-bg-color2 86%, @signin-bg-color3 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  @signin-bg-color1 0,@signin-bg-color2 86%,@signin-bg-color3 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  @signin-bg-color1 0,@signin-bg-color2 86%,@signin-bg-color3 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#112539', endColorstr='#d1706a',GradientType=0 ); /* IE6-9 */
   background-image: url("/bundles/pimui/images/background_login.png");
   background-position: bottom center;
@@ -15,9 +15,9 @@
 
   height: 100%;
   min-height: 280px;
-  color: #a1a9b7;
+  color: @akeneo-grey;
   a {
-    color: #a1a9b7;
+    color: @akeneo-grey;
   }
   #page {
     position: relative;
@@ -70,18 +70,18 @@
     padding: 0 18px;
     height: 38px;
     border-radius: 2px;
-    background: #a1a9b7;
+    background: @akeneo-grey;
     border: none;
-    color: #042b48;
+    color: @color-042b48;
     font-size: @font-size-14;
     &:-webkit-autofill {
-      background-color: #a1a9b7!important;
-      color: #555 !important;
-      -webkit-box-shadow: 0 0 0 1000px #a1a9b7 inset !important;
-      -webkit-text-fill-color: #042b48 !important;
+      background-color: @akeneo-grey !important;
+      color: @gray !important;
+      -webkit-box-shadow: 0 0 0 1000px @akeneo-grey inset !important;
+      -webkit-text-fill-color: @color-042b48 !important;
     }
     &::-webkit-input-placeholder {
-      color: #67768a;
+      color: @slate-grey;
     }
   }
 
