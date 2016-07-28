@@ -1,89 +1,14 @@
 @import 'bootstrap_variables';
 
-//Oro variables
-@horizontalPadding:               20px;
-@verticalPadding:                 20px;
-@marginBottomBox:                 20px;
-@baseBtnBorderRadius:             3px;
-@bodyColor:                       #444;
-@wellBackground:                  #f8f8f8;
-
-@baseFontSize:                    12px;
-@baseLineHeight:                  20px;
-
-@inputBorderRadius:               3px;
-@infoText:                        #447fe9;
-
-@successBackground:               #e3f3c3;
-@successBorder:                   #89a86d;
-@successText:                     #3d7c04;
-@successClose:                    #bfd78f;
-
-@errorBackground:                 #fdcece;
-@errorBorder:                     #b48d8d;
-@errorText:                       #c81717;
-@errorClose:                      #e5acac;
-
-@warningBackground:               #fff8d7;
-@warningBorder:                   #b4a68d;
-@warningText:                     #444;
-@warningClose:                    #e2d59a;
-
-// Screen sizes
-@smallScreen:                     1024px;
-@mediumScreen:                    1340px;
-@largeScreen:                     1920px;
-
-// Pim variables
-@color-purple_dark: #66279c;
-@color-purple_light: #8e3bc4;
-@color-light_grey: #eee;
-@color-header_top: #a44dd7;
-@color-header_bottom: #7225ad;
-@color-dialogHeader_top: #8c62b6;
-@color-dialogHeader_bottom: #673f8f;
-@color-grey_tab: #fafafa;
-@color-purple_hover: #f2ebf8;
-@color-disabled: #f4f4f4;
-@backgroundColor-white: #fff;
-@textColor: @bodyColor;
-@btnPrimaryBackgroundLight: #83c817;
-@btnPrimaryBackground: #519d0b;
-@btnInfoBackgroundLight: #739cdc;
-@imageWidth: 64px;
-@imageHeight: 64px;
-@buttonHeight: 28px;
-@uploadZoneHeight: 80px;
-@color-base_diff: #ffe7e7;
-@color-changed_diff: #ddfade;
-@border-purple: 1px solid #3a1657;
-
-// New variables version14test
-@akeneo-purple: #9452BA;
-@akeneo-dark: #11324d;
-@akeneo-grey: #a1a9b7;
-@akeneo-light: #f1f4f9;
-@fern-green: #67b373;
-@blue-danube: #5992c7;
-@slate-grey: #67768a;
-@casablanca-yellow: #f8b43f;
-@chesnut-red: #d36050;
-
-@color-new-purple-dark: #5f2385;
-@color-new-purple-medium: @akeneo-purple;
-@color-new-purple-light: @color-purple_hover;
-@color-new-green: @fern-green;
-@color-new-red: @chesnut-red;
-@color-new-blue: @blue-danube;
-@color-new-grey: #e7e7eC;
-@color-new-blue-light: @akeneo-light;
-@color-new-yellow: @casablanca-yellow;
-@color-new-red: @chesnut-red;
-
-// Product edit form
-@color-form-label: #4a4a4a;
-@color-form-info: #777;
-@color-form-input: #4a4a4a;
+@horizontalPadding:   20px;
+@verticalPadding:     20px;
+@marginBottomBox:     20px;
+@baseBtnBorderRadius: 3px;
+@baseLineHeight:      20px;
+@inputBorderRadius:   3px;
+@mediumScreen:        1340px;
+@buttonHeight:        28px;
+@uploadZoneHeight:    80px;
 
 // Font sizes
 @lato-coeff: 1.011; // Lato font is smaller than previous one (Helvetica)
@@ -118,3 +43,99 @@
 @font-size-07em: 0.7em * @lato-coeff;
 
 @baseFontSize: @font-size-12;
+
+/* Colors */
+// Greens
+@green:        #67b373;
+@greenLighter: lighten(@green, 30%); // #cde6d1
+@greenDark:    darken(@green, 10%);  // #4d9a59
+@greenDarker:  darken(@green, 20%);  // #3c7845
+@color-changed_diff:        @greenLighter;
+@successBackground:         @greenLighter;
+@successClose:              @greenDark;
+@successBorder:             @greenDark;
+@btnPrimaryBackground:      @green;
+@successText:               @greenDarker;
+@btnPrimaryBackgroundLight: @greenLighter;
+
+// Reds
+@redNotifications: #f93a43;
+@red:        #d36050;
+@redLighter: lighten(@red, 30%); // #f2cfca
+@redDark:    darken(@red, 10%);  // #c04230
+@redDarker:  darken(@red, 20%);  // #973426
+@errorBackground: @redLighter;
+@color-base_diff: @redLighter;
+@errorClose:      @redDark;
+@errorText:       @redDarker;
+@errorBorder:     @redDark;
+
+// Blues
+@blue:        #5992c7;
+@blueLighter: lighten(@blue, 20%); // #a5c4e1
+@blueDark:    darken(@blue, 10); // #3c79b1
+@btnInfoBackgroundLight: @blue;
+
+// Yellows
+@yellow:        #f8b43f;
+@yellowLighter: lighten(@yellow, 30%); // #fdeed3
+@yellowDark:    darken(@yellow, 10%);  // #f6a10e
+@yellowDarker:  darken(@yellow, 20%);  // #ca8207
+@warningBackground: @yellowLighter;
+@warningBorder:     @yellowDark;
+@warningClose:      @yellowDark;
+@warningText:       @yellowDarker;
+
+// Purples
+@akeneoPurple:        #9452ba;
+@akeneoPurpleDark:    darken(@akeneoPurple, 10%);  // #793e9b
+@akeneoPurpleDarker:  darken(@akeneoPurple, 20%);  // #5d2f77
+@akeneoPurpleLight:   lighten(@akeneoPurple, 10%); // #ab76c9
+@akeneoPurpleLighter: lighten(@akeneoPurple, 44%); // #f7f2fa
+@color-header_top:        @akeneoPurpleLight;
+@color-header_bottom:     @akeneoPurple;
+@color-new-purple-light:  @akeneoPurpleLighter;
+@color-new-purple-medium: @akeneoPurple;
+
+// Akeneo greys
+@akeneoLight:          #F1F4F9;
+@akeneoGrey:           #A1A9B7;
+@akeneoSlateGrey:      #67768a;
+@akeneoDarkBlue:       #11324d;
+@akeneoGreyLight:      lighten(@akeneoGrey, 15%); // #ccd1d8
+@akeneoGreyLighter:    lighten(@akeneoGrey, 24%); // #e6e8ec
+@akeneoGreySuperLight: lighten(@akeneoGrey, 30%); // #f8f8f9
+@akeneoGreyDark:       darken(@akeneoGrey, 10%);  // #848fa1
+@akeneoLightDark:      darken(@akeneoLight, 10%); // #cdd8ea
+
+// Greys
+@black:          #000;
+@grayDarker:     #222;
+@grayDark:       #333;
+@color-444:      #444;
+@gray:           #555;
+@color-777:      #777;
+@color-888:      #888;
+@grayLight:      #999;
+@color-aaa:      #aaa;
+@color-bbb:      #bbb;
+@color-ccc:      #ccc;
+@color-ddd:      #ddd;
+@grayLighter:    #eee;
+@color-grey_tab: #fafafa;
+@whiteDarker:    #f4f4f4;
+@whiteDark:      #f9f9f9;
+@white:          #fff;
+@textColor:             @bodyColor;
+@color-disabled:        @whiteDarker;
+@bodyColor:             @color-444;
+@backgroundColor-white: @white;
+@color-form-input:      @bodyColor;
+@color-form-label:      @bodyColor;
+@color-form-info:       @color-777;
+@color-light_grey:      @grayLighter;
+
+// Signin
+@signin-bg-color1: #112539;
+@signin-bg-color2: #76324d;
+@signin-bg-color3: #d1706a;
