@@ -83,8 +83,18 @@ define(
                     var filtersContainer = this.$('.filters');
                     filtersContainer.empty();
 
-                    _.each(this.filterViews, function (filterView) {
-                        filtersContainer.append(filterView.render().$el);
+                    var keys = _.keys(this.filterViews).sort();
+                    var fieldViews = _.pluck(this.config.filters, 'view');
+
+                    _.each(fieldViews, function (view) {
+                        var key = _.findKey(this.filterViews, {type: view});
+                        filtersContainer.append(this.filterViews[key].render().$el);
+                    }.bind(this));
+
+                    _.each(keys, function (key) {
+                        if (!_.contains(fieldViews, this.filterViews[key].type)) {
+                            filtersContainer.append(this.filterViews[key].render().$el);
+                        }
                     }.bind(this));
 
                     this.renderExtensions();

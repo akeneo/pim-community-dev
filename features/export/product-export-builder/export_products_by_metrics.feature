@@ -35,7 +35,7 @@ Feature: Export products according to metric attribute filter
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Length
-    And I filter by "length" with operator "=" and value "20 cm"
+    And I filter by "length" with operator "Is equal to" and value "20 cm"
     And I press "Save"
     Then I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
