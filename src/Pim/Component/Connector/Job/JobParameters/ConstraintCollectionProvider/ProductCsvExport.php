@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterData;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterStructure;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterStructureAttribute;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterStructureLocale;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterStructureScope;
 use Pim\Component\Connector\Validator\Constraints\Channel;
@@ -56,8 +57,9 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
                         new Collection(
                             [
                                 'fields' => [
+                                    'locales'    => new NotBlank(),
                                     'scope'      => new Channel(),
-                                    'attributes' => [],
+                                    'attributes' => new FilterStructureAttribute(),
                                 ],
                                 'allowExtraFields' => true,
                             ]
