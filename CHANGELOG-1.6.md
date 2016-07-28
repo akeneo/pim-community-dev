@@ -67,8 +67,8 @@
 - Move `Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface` to `Pim\Component\Connector\Archiver\ArchiverInterface`
 - Move `Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver` to `Pim\Component\Connector\Archiver\FileWriterArchiver`
 - Move `Pim\Bundle\BaseConnectorBundle\Archiver\ZipFilesystemFactory` to `Pim\Component\Connector\Archiver\ZipFilesystemFactory`
-- Move `Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel` to `Pim\Component\Connector\Validator\Constraints\Channel`
-- Move `Pim\Bundle\BaseConnectorBundle\Validator\Constraints\ChannelValidator` to `Pim\Component\Connector\Validator\Constraints\ChannelValidator`
+- Remove `Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel`
+- Remove `Pim\Bundle\BaseConnectorBundle\Validator\Constraints\ChannelValidator`
 - Change constructor of `Pim\Component\Catalog\Normalizer\Structured\ProductNormalizer`. It now takes two `Symfony\Component\Serializer\Normalizer\NormalizerInterface` as arguments (one for the properties and one for the associations).
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor`. Add `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter` and `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` as last arguments.
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`. Add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` as last arguments.
