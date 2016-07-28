@@ -1,0 +1,82 @@
+@import '../../pimui/css/less/variables';
+
+.dashboard {
+  .shortcuts {
+    display: flex;
+    justify-content:space-between;
+    text-transform: uppercase;
+
+    img {
+      display:block;
+      margin: 0 auto;
+      padding-bottom: 10px;
+    }
+    .btn.shortcut {
+      display: inline-block;
+      *display: inline;
+      width: 220px;
+      zoom: 1;
+      vertical-align: top;
+      height: 180px;
+      padding: 20px;
+      font-weight: bold;
+      font-size: @font-size-12;
+      color: @akeneoSlateGrey;
+      background-color: @akeneoGreySuperLight;
+
+      &:hover {
+        background-color: @akeneoGreyLighter;
+      }
+    }
+
+    .btn-mini {
+      height: 22px;
+      line-height: 22px;
+    }
+
+    .label {
+      min-height: 22px;
+      line-height: 22px;
+      padding: 0 4px;
+    }
+  }
+
+  background-color: white;
+  &.quick-launchpad > .container {
+    padding-top: 30px;
+  }
+  .quick-launchpad-widget {
+    margin-bottom: 20px;
+    &>div.clearfix {
+      overflow: hidden;
+      border: 1px solid @color-ccc;
+      background-color: white;
+    }
+  }
+  h3 {
+    margin: 0;
+    font-size: @font-size-18;
+    color: @color-new-purple-medium;
+    font-weight: normal;
+  }
+  &.header {
+    background-color: @whiteDark;
+    padding: 15px;
+  }
+  .version-container {
+    .current-version {
+      display:inline-block;
+      margin-left: 10px;
+      :first-child {
+        margin-right: 3px;
+      }
+    }
+    .last-version {
+      display: inline-block;
+      margin-left: 10px;
+      :first-child {
+        margin-right: 3px;
+      }
+    }
+  }
+}
