@@ -27,7 +27,7 @@ class FilterStructureAttributeValidator extends ConstraintValidator
 
     public function validate($attributes, Constraint $constraint)
     {
-        if (null === $attributes) {
+        if (null === $attributes || !count($attributes)) {
             return;
         }
 

@@ -27,7 +27,7 @@ class FilterStructureLocaleValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if (null === $value) {
+        if (null === $value['scope'] || null === $value['locales']) {
             return;
         }
 
@@ -40,7 +40,9 @@ class FilterStructureLocaleValidator extends ConstraintValidator
 
         foreach ($filterStructureLocales as $localeCode) {
             if (!in_array($localeCode, $localesCodes)) {
-                $this->context->buildViolation($constraint->message)->setParameter('%locale%', $localeCode)->addViolation();
+                $this->context->buildViolation($constraint->message)
+                    ->setParameter('%localeCode%', $localeCode)
+                    ->addViolation();
             }
         }
     }
