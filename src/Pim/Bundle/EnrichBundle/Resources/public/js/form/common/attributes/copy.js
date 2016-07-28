@@ -64,6 +64,15 @@ define(
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
+                this.onExtensions('pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
+                this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
+                this.onExtensions('pim_enrich:form:scope_switcher:change', function (event) {
+                    this.setScope(event.scopeCode);
+                }.bind(this));
+                this.onExtensions('pim_enrich:form:locale_switcher:change', function (event) {
+                    this.setLocale(event.localeCode);
+                }.bind(this));
+
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
@@ -183,6 +192,19 @@ define(
             },
 
             /**
+             * Initialize  the locale if there is none, or modify it by reference if there is already one
+             *
+             * @param {Object} event
+             */
+            initLocale: function (event) {
+                if (undefined === this.getLocale()) {
+                    this.setLocale(event.localeCode);
+                } else {
+                    event.localeCode = this.getLocale();
+                }
+            },
+
+            /**
              * Change the locale for copy context
              *
              * @param {string} locale
@@ -199,6 +221,19 @@ define(
              */
             getLocale: function () {
                 return this.locale;
+            },
+
+            /**
+             * Initialize  the scope if there is none, or modify it by reference if there is already one
+             *
+             * @param {Object} event
+             */
+            initScope: function (event) {
+                if (undefined === this.getScope()) {
+                    this.setScope(event.scopeCode);
+                } else {
+                    event.scopeCode = this.getScope();
+                }
             },
 
             /**
