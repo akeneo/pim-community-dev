@@ -19,7 +19,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
     /**
      * {@inheritdoc}
      */
-    protected function getConfigurationWriter()
+    protected function getWriterConfiguration()
     {
         $parameters = $this->stepExecution->getJobParameters();
 
@@ -34,7 +34,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
     /**
      * {@inheritdoc}
      */
-    protected function getIdentifier(array $product)
+    protected function getItemIdentifier(array $product)
     {
         $attributeCode = $this->attributeRepository->getIdentifierCode();
 

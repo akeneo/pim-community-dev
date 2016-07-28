@@ -38,7 +38,7 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
     /** @var FileExporterPathGeneratorInterface */
     protected $fileExporterPath;
 
-    /** @var array */
+    /** @var string[] */
     protected $mediaAttributeTypes;
 
     /** @var OptionsResolver */
@@ -57,7 +57,7 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
     protected $writtenFiles = [];
 
     /** @var FlatItemBuffer */
-    protected $flatRowBuffer = null;
+    protected $flatRowBuffer;
 
     /**
      * @param ArrayConverterInterface            $arrayConverter
@@ -120,7 +120,7 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
         foreach ($items as $item) {
             if ($parameters->has('with_media') && $parameters->get('with_media')) {
                 $directory = $this->getWorkingDirectory($parameters->get('filePath'));
-                $item = $this->archiveMedia($item, $directory);
+                $item = $this->resolveMediaPaths($item, $directory);
             }
 
             $flatItems[] = $this->arrayConverter->convert($item, $converterOptions);
@@ -142,7 +142,7 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
 
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,
-            $this->getConfigurationWriter(),
+            $this->getWriterConfiguration(),
             $this->getPath(),
             ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1)
         );
@@ -195,7 +195,7 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
      *
      * @return array
      */
-    abstract protected function getConfigurationWriter();
+    abstract protected function getWriterConfiguration();
 
     /**
      * Return the identifier of the item (e.q sku or variant group code)
@@ -204,24 +204,58 @@ abstract class AbstractItemMediaWriter extends AbstractConfigurableStepElement i
      *
      * @return string
      */
-    abstract protected function getIdentifier(array $item);
+    abstract protected function getItemIdentifier(array $item);
 
     /**
-     * Stock media for archiver and change media path
+     * - Add the media to the $this->writtenFiles to be archive later
+     * - Update the value of each media in the standard format to add the final path of media in archive.
      *
-     * @param array  $item
-     * @param string $tmpDirectory
+     * The standard format for a media contains only the filePath (which is the unique key of the media):
+     * {
+     *     "values": {
+     *         "picture": [
+     *              {
+     *                  "locale": "en_US",
+     *                  "scope": "ecommerce",
+     *                  "data": [
+     *                      "filePath": "a/b/c/d/e/it_s_my_filename.jpg"
+     *                  ]
+     *              }
+     *          ]
+     *     }
+     * }
+     *
+     * In exported files, we don't want to see the key, but the original filename. As the standard format does not
+     * contain this information, we use the Finder() to find the media in the temporary directory created in processor.
+     *
+     * After:
+     * {
+     *     "values": {
+     *         "picture": [
+     *              {
+     *                  "locale": "en_US",
+     *                  "scope": "ecommerce",
+     *                  "data": [
+     *                      "filePath": "files/item_identifier/picture/en_US/ecommerce/it's my filename.jpg"
+     *                  ]
+     *              }
+     *          ]
+     *     }
+     * }
+     *
+     * @param array  $item          standard format of an item
+     * @param string $tmpDirectory  directory where media have been copied before to be exported
      *
      * @return array
      */
-    protected function archiveMedia(array $item, $tmpDirectory)
+    protected function resolveMediaPaths(array $item, $tmpDirectory)
     {
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($item['values']));
         $mediaAttributeTypes = array_filter($attributeTypes, function ($attributeCode) {
             return in_array($attributeCode, $this->mediaAttributeTypes);
         });
 
-        $identifier = $this->getIdentifier($item);
+        $identifier = $this->getItemIdentifier($item);
 
         foreach ($mediaAttributeTypes as $attributeCode => $attributeType) {
             foreach ($item['values'][$attributeCode] as $index => $value) {

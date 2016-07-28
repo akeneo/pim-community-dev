@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
@@ -38,7 +39,7 @@ class ProductProcessor extends AbstractProcessor
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
-    /** @var  ObjectDetacherInterface */
+    /** @var ObjectDetacherInterface */
     protected $detacher;
 
     /** @var UserProviderInterface */
@@ -88,19 +89,17 @@ class ProductProcessor extends AbstractProcessor
 
         $this->productBuilder->addMissingProductValues($product);
 
-        $normalizerContext = $this->getNormalizerContext();
-        $productStandard = $this->normalizer->normalize($product, 'json', $normalizerContext);
-        $productStandard = $this->filterProperties(
-            $productStandard,
-            $normalizerContext['localeCodes'],
-            $normalizerContext['scopeCode'],
-            $normalizerContext['selected_properties']
-        );
-
         $parameters = $this->stepExecution->getJobParameters();
+        $normalizerContext = $this->getNormalizerContext($parameters);
+        $productStandard = $this->normalizer->normalize($product, 'json', $normalizerContext);
+
+        if ($this->areAttributesToFilter($parameters)) {
+            $productStandard = $this->filterProperties($productStandard, $parameters->get('selected_properties'));
+        }
+
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
             $directory = $this->getWorkingDirectory($parameters->get('filePath'));
-            $this->importMedia($product, $directory);
+            $this->fetchMedias($product, $directory);
         }
 
         $this->detacher->detach($product);
@@ -109,31 +108,25 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
-     * Filter values to keep only selected values with scope & locales defined by context
+     * Filter properties to keep only properties defined by context
      *
-     * @param array      $product
-     * @param array      $localeCodes
-     * @param string     $channelCode
-     * @param array|null $selectedProperties
+     * @param array $product
+     * @param array $selectedProperties
      *
      * @return array
      */
-    protected function filterProperties(
-        array $product,
-        array $localeCodes,
-        $channelCode,
-        array $selectedProperties = null
-    ) {
+    protected function filterProperties(array $product, array $selectedProperties)
+    {
         $propertiesToExport = [];
         foreach ($product as $codeProperty => $property) {
             if ('values' === $codeProperty) {
-                $propertiesToExport['values'] = $this->filterValues(
+                $propertiesToExport['values'] = array_filter(
                     $property,
-                    $localeCodes,
-                    $channelCode,
-                    $selectedProperties
+                    function ($attributeCode) use ($selectedProperties) {
+                        return in_array($attributeCode, $selectedProperties);
+                    }, ARRAY_FILTER_USE_KEY
                 );
-            } elseif (null === $selectedProperties || in_array($codeProperty, $selectedProperties)) {
+            } elseif (in_array($codeProperty, $selectedProperties)) {
                 $propertiesToExport[$codeProperty] = $property;
             }
         }
@@ -142,44 +135,24 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
-     * @param array      $values
-     * @param array      $localeCodes
-     * @param string     $channelCode
-     * @param array|null $selectedProperties
+     * Are there properties to filters ?
      *
-     * @return array
+     * @param JobParameters $parameters
+     *
+     * @return bool
      */
-    protected function filterValues(
-        array $values,
-        array $localeCodes,
-        $channelCode,
-        array $selectedProperties = null
-    ) {
-        $valuesToExport = [];
-        foreach ($values as $code => $value) {
-            if (null === $selectedProperties || in_array($code, $selectedProperties)) {
-                $valuesToExport[$code] = array_filter(
-                    $value,
-                    function ($data) use ($channelCode, $localeCodes) {
-                        $keepScope  = null === $data['scope'] || $data['scope'] === $channelCode;
-                        $keepLocale = null === $data['locale'] || in_array($data['locale'], $localeCodes);
-
-                        return $keepScope && $keepLocale;
-                    }
-                );
-            }
-        }
-
-        return $valuesToExport;
+    protected function areAttributesToFilter(JobParameters $parameters)
+    {
+        return null !== $parameters->get('selected_properties');
     }
 
     /**
-     * Import media on the local filesystem
+     * Fetch medias on the local filesystem
      *
      * @param ProductInterface $product
      * @param string           $directory
      */
-    protected function importMedia(ProductInterface $product, $directory)
+    protected function fetchMedias(ProductInterface $product, $directory)
     {
         $identifier = $product->getIdentifier()->getData();
         $this->mediaExporter->exportAll($product->getValues(), $directory, $identifier);
@@ -190,29 +163,25 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
+     * @param JobParameters $parameters
+     *
      * @throws \InvalidArgumentException
      *
      * @return array
      */
-    protected function getNormalizerContext()
+    protected function getNormalizerContext(JobParameters $parameters)
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $mainContext = $jobParameters->get('mainContext');
-        $columns = $jobParameters->get('selected_properties');
+        $mainContext = $parameters->get('mainContext');
 
         if (!isset($mainContext['scope'])) {
             throw new \InvalidArgumentException('No channel found');
         }
 
-        if (isset($columns) && 0 !== count($columns)) {
-            $columns[] = $this->attributeRepository->getIdentifierCode();
-        }
-
         $normalizerContext = [
-            'scopeCode'           => $mainContext['scope'],
-            'localeCodes'         => $this->getLocaleCodes($mainContext['scope']),
-            'selected_properties' => $columns,
-            'filter_types'        => [
+            'channels'     => [$mainContext['scope']],
+            'locales'      => $this->getLocaleCodes($mainContext['scope']),
+            'filter_types' => [
+                'pim.transform.product_value.structured',
                 'pim.transform.product_value.structured.quick_export'
             ]
         ];

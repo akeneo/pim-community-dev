@@ -56,7 +56,7 @@ class BulkFileExporter
         foreach ($items as $value) {
             if (!$value instanceof ProductValueInterface) {
                 throw new \InvalidArgumentException(
-                    'Value is not an instance of Pim\Component\Catalog\Model\ProductValueInterface.'
+                    sprintf('Value is not an instance of %s.', ProductValueInterface::class)
                 );
             }
 
@@ -116,7 +116,10 @@ class BulkFileExporter
         try {
             $this->fileExporter->export($media['from'], $target, $media['storage']);
         } catch (FileTransferException $e) {
-            $this->addError($media, 'The media has not been found or is not currently available');
+            $this->addError(
+                $media,
+                sprintf('The media has not been found or is not currently available', $e->getMessage())
+            );
         } catch (\LogicException $e) {
             $this->addError($media, sprintf('The media has not been copied. %s', $e->getMessage()));
         }

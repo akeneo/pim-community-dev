@@ -18,7 +18,7 @@ class VariantGroupWriter extends AbstractItemMediaWriter implements ItemWriterIn
     /**
      * {@inheritdoc}
      */
-    protected function getConfigurationWriter()
+    protected function getWriterConfiguration()
     {
         $parameters = $this->stepExecution->getJobParameters();
 
@@ -33,7 +33,7 @@ class VariantGroupWriter extends AbstractItemMediaWriter implements ItemWriterIn
     /**
      * {@inheritdoc}
      */
-    protected function getIdentifier(array $variantGroup)
+    protected function getItemIdentifier(array $variantGroup)
     {
         return $variantGroup['code'];
     }
