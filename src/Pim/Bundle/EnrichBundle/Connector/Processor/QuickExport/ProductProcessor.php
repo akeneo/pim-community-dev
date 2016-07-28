@@ -6,8 +6,10 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Connector\Writer\File\BulkFileExporter;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -45,6 +47,9 @@ class ProductProcessor extends AbstractProcessor
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
+    /** @var BulkFileExporter */
+    protected $mediaExporter;
+
     /**
      * @param NormalizerInterface          $normalizer
      * @param ChannelRepositoryInterface   $channelRepository
@@ -61,7 +66,8 @@ class ProductProcessor extends AbstractProcessor
         ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $detacher,
         UserProviderInterface $userProvider,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        BulkFileExporter $mediaExporter
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -70,6 +76,7 @@ class ProductProcessor extends AbstractProcessor
         $this->detacher = $detacher;
         $this->userProvider = $userProvider;
         $this->tokenStorage = $tokenStorage;
+        $this->mediaExporter = $mediaExporter;
     }
 
     /**
@@ -89,6 +96,12 @@ class ProductProcessor extends AbstractProcessor
             $normalizerContext['scopeCode'],
             $normalizerContext['selected_properties']
         );
+
+        $parameters = $this->stepExecution->getJobParameters();
+        if ($parameters->has('with_media') && $parameters->get('with_media')) {
+            $directory = $this->getWorkingDirectory($parameters->get('filePath'));
+            $this->importMedia($product, $directory);
+        }
 
         $this->detacher->detach($product);
 
@@ -161,6 +174,22 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
+     * Import media on the local filesystem
+     *
+     * @param ProductInterface $product
+     * @param string           $directory
+     */
+    protected function importMedia(ProductInterface $product, $directory)
+    {
+        $identifier = $product->getIdentifier()->getData();
+        $this->mediaExporter->exportAll($product->getValues(), $directory, $identifier);
+
+        foreach ($this->mediaExporter->getErrors() as $error) {
+            $this->stepExecution->addWarning($error['message'], [], $error['media']);
+        }
+    }
+
+    /**
      * @throws \InvalidArgumentException
      *
      * @return array
@@ -217,5 +246,25 @@ class ProductProcessor extends AbstractProcessor
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
+    }
+
+    /**
+     * Build path of the working directory to import media in a specific directory.
+     * Will be extracted with TIP-539
+     *
+     * @param string $filePath
+     *
+     * @return string
+     */
+    protected function getWorkingDirectory($filePath)
+    {
+        $jobExecution = $this->stepExecution->getJobExecution();
+
+        return dirname($filePath)
+               . DIRECTORY_SEPARATOR
+               . $jobExecution->getJobInstance()->getCode()
+               . DIRECTORY_SEPARATOR
+               . $jobExecution->getId()
+               . DIRECTORY_SEPARATOR;
     }
 }
