@@ -227,6 +227,7 @@ config:
         pim/export/product/edit/content/data:                           pimenrich/js/export/product/edit/content/data
         pim/export/product/edit/content/data/default-attribute-filters: pimenrich/js/export/product/edit/content/data/default-attribute-filters
         pim/export/product/edit/content/data/help:                      pimenrich/js/export/product/edit/content/data/help
+        pim/export/product/edit/content/data/validation:                pimenrich/js/export/product/edit/content/data/validation
         pim/export/product/edit/content/data/add-filter:                pimenrich/js/export/product/edit/content/data/add-filter
 
         # Filters
@@ -386,6 +387,7 @@ config:
         pim/template/export/product/edit/content:                               pimenrich/templates/export/product/edit/content.html
         pim/template/export/product/edit/content/data:                          pimenrich/templates/export/product/edit/content/data.html
         pim/template/export/product/edit/content/data/help:                     pimenrich/templates/export/product/edit/content/data/help.html
+        pim/template/export/product/edit/content/data/validation:               pimenrich/templates/export/product/edit/content/data/validation.html
         pim/template/export/product/edit/content/structure:                     pimenrich/templates/export/product/edit/content/structure.html
         pim/template/export/product/edit/content/structure/scope:               pimenrich/templates/export/product/edit/content/structure/scope.html
         pim/template/export/product/edit/content/structure/locales:             pimenrich/templates/export/product/edit/content/structure/locales.html

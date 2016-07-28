@@ -1,0 +1,9 @@
+<span class="validation-container">
+    <span class="validation-errors">
+        <span>
+            <% errors.forEach(function (error) { %>
+                <i class="icon-warning-sign"></i> <span class="error-message"><%- error.message %></span>
+            <% }); %>
+        </span>
+    </span>
+</span>

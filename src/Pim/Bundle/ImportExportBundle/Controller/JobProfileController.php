@@ -282,7 +282,13 @@ class JobProfileController
 
         $errors = [];
         foreach ($form->getErrors() as $error) {
-            $errors[] = $error->getMessage();
+            if (false !== strstr($error->getMessage(), ':')) {
+                list($field, $error) = explode(':', $error->getMessage());
+                $errors[] = [
+                    'field'   => $field,
+                    'message' => $error
+                ];
+            }
         }
 
         return $this->templating->renderResponse(

@@ -91,9 +91,11 @@ define([
             var value = null;
 
             if (!_.contains(['EMPTY', 'NOT EMPTY'], operator)) {
-                value = this.$('[name="filter-value"]').val();
+                value = this.$('[name="filter-value"]').val().trim();
+
                 if ('' !== value) {
-                    value = Number(value);
+                    var numberValue = Number(value);
+                    value = _.isNaN(numberValue) ? value : numberValue;
                 }
             }
 

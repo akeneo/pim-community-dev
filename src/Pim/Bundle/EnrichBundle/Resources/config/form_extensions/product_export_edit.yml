@@ -66,6 +66,10 @@ extensions:
         module: pim/export/product/edit/content/data/help
         parent: pim-product-export-edit-content-data
 
+    pim-product-export-edit-content-data-validation:
+        module: pim/export/product/edit/content/data/validation
+        parent: pim-product-export-edit-content-data
+
     pim-product-export-edit-content-data-add-filter:
         module: pim/export/product/edit/content/data/add-filter
         parent: pim-product-export-edit-content-data

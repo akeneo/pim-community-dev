@@ -17,6 +17,7 @@ define([
 ) {
     return BaseForm.extend({
         className: 'control-group filter-item',
+        validationErrors: [],
         elements: {},
         editable: true,
         removable: false,
@@ -184,6 +185,9 @@ define([
         render: function () {
             var promises  = [];
             this.elements = {};
+            this.validationErrors = _.where(this.parentForm.errors, {
+                field: this.model.get('field')
+            });
             this.setEditable(true);
 
             mediator.trigger('pim_enrich:form:filter:extension:add', {filter: this, promises: promises});
@@ -254,7 +258,7 @@ define([
         /**
          * Adds an extension element to this filter.
          *
-         * @param {string} position 'label' or 'after-input'
+         * @param {string} position 'label', 'after-input' or 'below-input'
          * @param {string} code
          * @param {Object} element
          */
