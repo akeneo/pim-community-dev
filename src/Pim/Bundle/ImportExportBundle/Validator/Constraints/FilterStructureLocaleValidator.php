@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -12,9 +14,34 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class FilterStructureLocaleValidator extends ConstraintValidator
 {
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
+    /**
+     * @param ChannelRepositoryInterface $channelRepository
+     */
+    public function __construct(ChannelRepositoryInterface $channelRepository)
+    {
+        $this->channelRepository = $channelRepository;
+    }
+
     public function validate($value, Constraint $constraint)
     {
-        $structure = $value;
-        $this->context->buildViolation($constraint->message)->addViolation();
+        if (null === $value) {
+            return;
+        }
+
+        $filterStructureScope = $value['scope'];
+        $filterStructureLocales = $value['locales'];
+
+        /** @var ChannelInterface $scope */
+        $scope = $this->channelRepository->findOneByIdentifier($filterStructureScope);
+        $localesCodes = $scope->getLocaleCodes();
+
+        foreach ($filterStructureLocales as $localeCode) {
+            if (!in_array($localeCode, $localesCodes)) {
+                $this->context->buildViolation($constraint->message)->setParameter('%locale%', $localeCode)->addViolation();
+            }
+        }
     }
 }

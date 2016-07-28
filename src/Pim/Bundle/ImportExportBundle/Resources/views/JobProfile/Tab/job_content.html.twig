@@ -1,7 +1,7 @@
 <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="job-profile-content-tab tab-pane buffer-top">
     <div id="pim-product-export-edit-content" class="form-horizontal"></div>
     <input id="{{ form.parameters.filters.vars.id }}" name="{{ form.parameters.filters.vars.full_name }}" value="{{ form.parameters.filters.vars.value|json_encode }}" type="hidden"/>
-    <input id="{{ form.parameters.filters.vars.id }}_errors" type="hidden" value="{{ errors }}">
+    <input id="{{ form.parameters.filters.vars.id }}_errors" type="hidden" value="{{ errors|default('[]') }}">
     <script>
         require(
             ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'oro/loading-mask'],

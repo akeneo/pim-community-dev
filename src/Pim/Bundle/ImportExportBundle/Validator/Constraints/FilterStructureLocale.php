@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
 class FilterStructureLocale extends Constraint
 {
     /** @var string */
-    public $message = "Oups, I did it again, It's a a little bit embarrassing...";
+    public $message = "The locale %locale% is not valid.";
 
     /**
      * {@inheritdoc}

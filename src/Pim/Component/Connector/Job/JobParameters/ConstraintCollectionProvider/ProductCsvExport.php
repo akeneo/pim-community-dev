@@ -47,20 +47,26 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
         $constraintFields = $baseConstraint->fields;
         $constraintFields['decimalSeparator'] = new NotBlank();
         $constraintFields['dateFormat'] = new NotBlank();
-        $constraintFields['filters'] = new Collection([
-            'fields' => [
+        $constraintFields['filters'] = new Collection(
+            [
+                'fields' => [
                     'data'      => new FilterData(),
-                    'structure' => new Collection([
-                        'fields' => [
-                            'scope'      => new Channel(),
-                            'locales'    => new FilterStructureLocale(),
-//                            'attributes' => new FilterStructure(),
-                            'attributes' => [],
-                        ],
-                    ]),
-            ],
-            'allowExtraFields' => true,
-        ]);
+                    'structure' => [
+                        new FilterStructureLocale(),
+                        new Collection(
+                            [
+                                'fields' => [
+                                    'scope'      => new Channel(),
+                                    'attributes' => [],
+                                ],
+                                'allowExtraFields' => true,
+                            ]
+                        ),
+                    ],
+                ],
+                'allowExtraFields' => true,
+            ]
+        );
 
         $constraintFields['with_media'] = new Type('bool');
 
