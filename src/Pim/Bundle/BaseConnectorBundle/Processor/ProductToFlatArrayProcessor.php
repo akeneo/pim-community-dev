@@ -126,7 +126,9 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
         $attributes = null;
         $parameters = $this->stepExecution->getJobParameters();
 
-        if (isset($parameters->get('filters')['structure']['attributes'])) {
+        if (isset($parameters->get('filters')['structure']['attributes']) &&
+            !empty($parameters->get('filters')['structure']['attributes'])
+        ) {
             $attributes = $parameters->get('filters')['structure']['attributes'];
             $identifierCode = $this->attributeRepository->getIdentifierCode();
             if (!in_array($identifierCode, $attributes)) {

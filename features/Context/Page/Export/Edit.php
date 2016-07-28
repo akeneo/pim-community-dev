@@ -35,9 +35,13 @@ class Edit extends Form
                     'css'        => '.jstree',
                     'decorators' => ['Pim\Behat\Decorator\Tree\JsTreeDecorator']
                 ],
-                'Available attributes'            => [
+                'Available attributes' => [
                     'css'        => '.add-attribute',
                     'decorators' => ['Pim\Behat\Decorator\Common\AddAttributeDecorator']
+                ],
+                'Attribute selector' => [
+                    'css'        => '.control-group.attributes',
+                    'decorators' => ['Pim\Behat\Decorator\Export\Structure\AttributesDecorator']
                 ],
             ],
             $this->elements

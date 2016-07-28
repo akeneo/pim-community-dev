@@ -1,0 +1,6 @@
+<% _.each(attributes, function (attribute) { %>
+<li data-attribute-code="<%- attribute.code %>">
+    <i class="icon-reorder"></i>
+    <%- i18n.getLabel(attribute.labels, userContext.get('uiLocale'), attribute.code) %>
+</li>
+<% }); %>

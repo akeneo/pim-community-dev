@@ -20,6 +20,8 @@ define(
         BaseForm
     ) {
         return BaseForm.extend({
+            className: 'structure-filters',
+
             template: _.template(template),
 
             /**

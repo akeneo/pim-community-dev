@@ -63,6 +63,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
                 'exclude_unique'       => false,
                 'user_groups_ids'      => null,
                 'types'                => null,
+                'attribute_groups'     => [],
             ]
         );
         $resolver->setAllowedTypes('identifiers', 'array');
@@ -73,6 +74,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $resolver->setAllowedTypes('exclude_unique', ['string', 'bool']);
         $resolver->setAllowedTypes('user_groups_ids', ['array', 'null']);
         $resolver->setAllowedTypes('types', ['array', 'null']);
+        $resolver->setAllowedTypes('attribute_groups', ['array']);
 
         $options = $resolver->resolve($options);
 
@@ -102,16 +104,20 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
     {
         //TODO: refactor on master because this is exactly the same that FamilySearchableRepository
         //TODO: and should be put in Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\SearchableRepository
-        $qb = $this->entityManager->createQueryBuilder()->select('a')->from($this->entityName, 'a');
+        $qb = $this->entityManager
+            ->createQueryBuilder()
+            ->select('a')
+            ->from($this->entityName, 'a');
+
         $options = $this->resolveOptions($options);
 
         if (null !== $search) {
             $qb->leftJoin('a.translations', 'at');
-            $qb->where('a.code like :search')->setParameter('search', "%$search%");
+            $qb->where('a.code like :search')->setParameter('search', '%'.$search.'%');
             if (null !== $localeCode = $options['locale']) {
                 $qb->orWhere('at.label like :search AND at.locale like :locale');
-                $qb->setParameter('search', "%$search%");
-                $qb->setParameter('locale', "$localeCode");
+                $qb->setParameter('search', '%'.$search.'%');
+                $qb->setParameter('locale', $localeCode);
             }
         }
 
@@ -143,6 +149,11 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         }
 
         $qb->leftJoin('a.group', 'ag');
+        if (!empty($options['attribute_groups'])) {
+            $qb->andWhere('ag.code in (:groups)');
+            $qb->setParameter('groups', $options['attribute_groups']);
+        }
+
         $qb->orderBy('ag.code');
         $qb->orderBy('ag.sortOrder');
 
