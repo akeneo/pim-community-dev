@@ -26,7 +26,7 @@ class AssetEventSubscriberSpec extends ObjectBehavior
     function it_returns_the_events_it_subscribed_to()
     {
         $this::getSubscribedEvents()->shouldReturn([
-            AssetEvent::POST_REMOVE => 'cascadeAssetRemove',
+            AssetEvent::PRE_REMOVE => 'cascadeAssetRemove',
         ]);
     }
 
