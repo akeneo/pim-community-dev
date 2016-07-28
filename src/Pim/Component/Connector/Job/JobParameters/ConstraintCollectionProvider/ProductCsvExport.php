@@ -5,6 +5,10 @@ namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterData;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterStructure;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterStructureLocale;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterStructureScope;
+use Pim\Component\Connector\Validator\Constraints\Channel;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
@@ -43,7 +47,21 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
         $constraintFields = $baseConstraint->fields;
         $constraintFields['decimalSeparator'] = new NotBlank();
         $constraintFields['dateFormat'] = new NotBlank();
-        $constraintFields['filters'] = [new FilterData()];
+        $constraintFields['filters'] = new Collection([
+            'fields' => [
+                    'data'      => new FilterData(),
+                    'structure' => new Collection([
+                        'fields' => [
+                            'scope'      => new Channel(),
+                            'locales'    => new FilterStructureLocale(),
+//                            'attributes' => new FilterStructure(),
+                            'attributes' => [],
+                        ],
+                    ]),
+            ],
+            'allowExtraFields' => true,
+        ]);
+
         $constraintFields['with_media'] = new Type('bool');
 
         return new Collection(['fields' => $constraintFields]);
