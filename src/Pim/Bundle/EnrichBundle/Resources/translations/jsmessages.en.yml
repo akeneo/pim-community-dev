@@ -409,12 +409,14 @@ pim_enrich:
                     help: Identifiers of products you want to export separated by commas, spaces or line breaks
                 metric:
                     operators:
-                        "=": "="
-                        ">=": ">="
-                        ">": ">"
-                        "<=": "<="
-                        "<": "<"
+                        "=": Is equal to
+                        "!=": Is not equal to
+                        ">=": Greater than or equals
+                        ">": Greater than
+                        "<=": Lower than or equals
+                        "<": Lower than
                         EMPTY: Is empty
+                        NOT EMPTY: Is not empty
                 string:
                     operators:
                         ALL: All
@@ -424,18 +426,22 @@ pim_enrich:
                         STARTS WITH: Starts with
                         ENDS WITH: Ends with
                         EMPTY: Is empty
+                        NOT EMPTY: Is not empty
                 price-collection:
                     operators:
-                        "=": "="
-                        ">=": ">="
-                        "<=": "<="
-                        ">": ">"
-                        "<": "<"
+                        "=": Is equal to
+                        "!=": Is not equal to
+                        ">=": Greater than or equals
+                        ">": Greater than
+                        "<=": Lower than or equals
+                        "<": Lower than
                         EMPTY: Is empty
+                        NOT EMPTY: Is not empty
                 multi_select:
                     operators:
                         IN: In list
                         EMPTY: Is empty
+                        NOT EMPTY: Is not empty
                 media:
                     operators:
                         CONTAINS: Contains
@@ -444,6 +450,7 @@ pim_enrich:
                         STARTS WITH: Starts with
                         ENDS WITH: Ends with
                         EMPTY: Is empty
+                        NOT EMPTY: Is not empty
                 date:
                     operators:
                         ">": Greater than
@@ -456,11 +463,11 @@ pim_enrich:
                         NOT EMPTY: Is not empty
                 number:
                     operators:
-                        "=": Is equals to
-                        "!=": Is not equals to
-                        ">=": Greater or equals than
+                        "=": Is equal to
+                        "!=": Is not equal to
+                        ">=": Greater than or equals
                         ">": Greater than
-                        "<=": Lower or equals than
+                        "<=": Lower than or equals
                         "<": Lower than
                         EMPTY: Is empty
                         NOT EMPTY: Is not empty

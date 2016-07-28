@@ -48,20 +48,23 @@ extensions:
         config:
             filters:
                 -
+                    field: family
+                    view: pim-filter-product-family
+                -
                     field: enabled
                     view: pim-filter-product-enabled
                 -
                     field: completeness
                     view: pim-filter-product-completeness
                 -
-                    field: family
-                    view: pim-filter-product-family
-                -
                     field: updated
                     view: pim-filter-product-updated
                 -
                     field: categories
                     view: pim-filter-product-category
+                -
+                    field: identifier
+                    view: pim-filter-product-identifier
 
     pim-product-export-show-content-default-attribute-filters:
         module: pim/export/product/edit/content/data/default-attribute-filters
