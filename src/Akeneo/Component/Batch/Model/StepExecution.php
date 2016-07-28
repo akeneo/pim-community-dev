@@ -41,9 +41,6 @@ class StepExecution
     /** @var integer */
     private $writeCount = 0;
 
-    /** @var integer */
-    private $filterCount = 0;
-
     /** @var \DateTime */
     private $startTime;
 
