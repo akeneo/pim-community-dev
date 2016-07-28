@@ -82,18 +82,22 @@ class ProductProcessor extends AbstractConfigurableStepElement implements
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
         $this->productBuilder->addMissingProductValues($product, [$channel], $channel->getLocales()->toArray());
 
-        $attributesToFilter = $this->getAttributesToFilter($parameters);
-        $productStandard = $this->normalizer->normalize($product, 'json');
-        $productStandard['values'] = $this->filterValues(
-            $productStandard['values'],
-            array_intersect($channel->getLocaleCodes(), $structure['locales']),
-            $channel->getCode(),
-            $attributesToFilter
-        );
+        $productStandard = $this->normalizer->normalize($product, 'json', [
+            'channels' => [$channel->getCode()],
+            'locales'  => array_intersect(
+                $channel->getLocaleCodes(),
+                $parameters->get('filters')['structure']['locales']
+            ),
+        ]);
+
+        if ($this->areAttributesToFilter($parameters)) {
+            $attributesToFilter = $this->getAttributesToFilter($parameters);
+            $productStandard['values'] = $this->filterValues($productStandard['values'], $attributesToFilter);
+        }
 
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
             $directory = $this->getWorkingDirectory($parameters->get('filePath'));
-            $this->importMedia($product, $directory);
+            $this->fetchMedias($product, $directory);
         }
 
         $this->detacher->detach($product);
@@ -110,12 +114,12 @@ class ProductProcessor extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * Import media on the local filesystem
+     * Fetch medias on the local filesystem
      *
      * @param ProductInterface $product
      * @param string           $directory
      */
-    protected function importMedia(ProductInterface $product, $directory)
+    protected function fetchMedias(ProductInterface $product, $directory)
     {
         $identifier = $product->getIdentifier()->getData();
         $this->mediaExporter->exportAll($product->getValues(), $directory, $identifier);
@@ -128,27 +132,17 @@ class ProductProcessor extends AbstractConfigurableStepElement implements
     /**
      * Filters the attributes that have to be exported based on a product and a list of attributes
      *
-     * @param array      $values
-     * @param array      $localeCodes
-     * @param string     $channelCode
-     * @param array|null $attributesToFilter
+     * @param array $values
+     * @param array $attributesToFilter
      *
      * @return array
      */
-    protected function filterValues(array $values, array $localeCodes, $channelCode, array $attributesToFilter = null)
+    protected function filterValues(array $values, array $attributesToFilter)
     {
         $valuesToExport = [];
         foreach ($values as $code => $value) {
-            if (null === $attributesToFilter || in_array($code, $attributesToFilter)) {
-                $valuesToExport[$code] = array_filter(
-                    $value,
-                    function ($data) use ($channelCode, $localeCodes) {
-                        $keepScope  = null === $data['scope'] || $data['scope'] === $channelCode;
-                        $keepLocale = null === $data['locale'] || in_array($data['locale'], $localeCodes);
-
-                        return $keepScope && $keepLocale;
-                    }
-                );
+            if (in_array($code, $attributesToFilter)) {
+                $valuesToExport[$code] = $value;
             }
         }
 
@@ -160,20 +154,30 @@ class ProductProcessor extends AbstractConfigurableStepElement implements
      *
      * @param JobParameters $parameters
      *
-     * @return array|null
+     * @return array
      */
     protected function getAttributesToFilter(JobParameters $parameters)
     {
-        $attributes = null;
-        if (isset($parameters->get('filters')['structure']['attributes'])) {
-            $attributes = $parameters->get('filters')['structure']['attributes'];
-            $identifierCode = $this->attributeRepository->getIdentifierCode();
-            if (!in_array($identifierCode, $attributes)) {
-                $attributes[] = $identifierCode;
-            }
+        $attributes = $parameters->get('filters')['structure']['attributes'];
+        $identifierCode = $this->attributeRepository->getIdentifierCode();
+        if (!in_array($identifierCode, $attributes)) {
+            $attributes[] = $identifierCode;
         }
 
         return $attributes;
+    }
+
+    /**
+     * Are there attributes to filters ?
+     *
+     * @param JobParameters $parameters
+     *
+     * @return bool
+     */
+    protected function areAttributesToFilter(JobParameters $parameters)
+    {
+        return isset($parameters->get('filters')['structure']['attributes'])
+            && !empty($parameters->get('filters')['structure']['attributes']);
     }
 
     /**

@@ -52,6 +52,8 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             $data = $this->serializer->normalize($entity->getData(), $format, $context);
         }
 
+        // fix the number of decimals to be ISO ORM/mongo
+        // we decided to do it in the standard format right now but that it could/should be changed
         if (AttributeTypes::NUMBER === $attribute->getAttributeType() && null !== $data && is_numeric($data)) {
             $precision = true === $context['decimals_allowed'] ? static::NUMBER_DECIMAL_PRECISION : 0;
             $data = number_format($data, $precision, '.', '');

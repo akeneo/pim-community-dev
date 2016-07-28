@@ -43,7 +43,7 @@ Feature: Configure export of products media
     And I wait for the "csv_footwear_product_export" job to finish
     Then I should not see the text "Download generated archive"
     And export directory of "csv_footwear_product_export" should contain the following file:
-      | product_export.csv                       |
+      | product_export.csv |
     But export directory of "csv_footwear_product_export" should not contain the following media:
       | files/gothic_boot_1/side_view/akeneo.jpg |
       | files/gothic_boot_2/side_view/akeneo.jpg |

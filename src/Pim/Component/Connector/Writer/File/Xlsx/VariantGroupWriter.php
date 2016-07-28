@@ -18,7 +18,7 @@ class VariantGroupWriter extends AbstractItemMediaWriter implements ItemWriterIn
     /**
      * {@inheritdoc}
      */
-    protected function getConfigurationWriter()
+    protected function getWriterConfiguration()
     {
         return ['type' => 'xlsx'];
     }
@@ -26,7 +26,7 @@ class VariantGroupWriter extends AbstractItemMediaWriter implements ItemWriterIn
     /**
      * {@inheritdoc}
      */
-    protected function getIdentifier(array $variantGroup)
+    protected function getItemIdentifier(array $variantGroup)
     {
         return $variantGroup['code'];
     }

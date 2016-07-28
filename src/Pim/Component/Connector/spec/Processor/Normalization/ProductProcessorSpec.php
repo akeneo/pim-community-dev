@@ -7,7 +7,6 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
@@ -15,7 +14,6 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -99,7 +97,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'json', ['channels' => 'foobar', 'locales' => ['en_US']])
+        $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn($productStandard);
 
         $mediaExporter->exportAll(Argument::cetera())->shouldNotBeCalled();
@@ -167,7 +165,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'json', ['channels' => 'foobar', 'locales' => ['en_US']])
+        $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn($productStandard);
 
         $mediaExporter->exportAll($valuesCollection, $directory, 'AKIS_XS')->shouldBeCalled();
@@ -230,7 +228,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'json', ['channels' => 'foobar', 'locales' => ['en_US']])
+        $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn($productStandard);
 
         $mediaExporter->exportAll($valuesCollection, $directory, 'AKIS_XS')->shouldBeCalled();
