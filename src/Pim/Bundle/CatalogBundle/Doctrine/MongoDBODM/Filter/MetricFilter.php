@@ -9,7 +9,8 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Metric filter
@@ -27,20 +28,23 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected $measureConverter;
 
     /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param MeasureManager           $measureManager
-     * @param MeasureConverter         $measureConverter
-     * @param array                    $supportedAttributeTypes
-     * @param array                    $supportedOperators
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param MeasureManager             $measureManager
+     * @param MeasureConverter           $measureConverter
+     * @param array                      $supportedAttributeTypes
+     * @param array                      $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         MeasureManager $measureManager,
         MeasureConverter $measureConverter,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
+        parent::__construct($channelRepository, $localeRepository);
+
         $this->measureManager          = $measureManager;
         $this->measureConverter        = $measureConverter;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
@@ -58,17 +62,21 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
-
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
             $value = $this->convertValue($attribute, $value);
         }
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $field = sprintf('%s.%s.baseData', ProductQueryUtility::NORMALIZED_FIELD, $field);
-
-        $this->applyFilter($operator, $field, $value);
+        $normalizedFields = $this->getNormalizedValueFieldsFromAttribute($attribute, $locale, $scope);
+        $fields = [];
+        foreach ($normalizedFields as $normalizedField) {
+            $fields[] = sprintf(
+                '%s.%s.id',
+                ProductQueryUtility::NORMALIZED_FIELD,
+                $normalizedField
+            );
+        }
+        $this->applyFilters($fields, $operator, $value);
 
         return $this;
     }
@@ -76,38 +84,48 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     /**
      * Apply the filter to the query with the given operator
      *
+     * @param array  $fields
      * @param string $operator
-     * @param string $fieldData
      * @param float  $data
      */
-    protected function applyFilter($operator, $fieldData, $data)
+    protected function applyFilters(array $fields, $operator, $data)
     {
-        switch ($operator) {
-            case Operators::EQUALS:
-                $this->qb->field($fieldData)->equals($data);
-                break;
-            case Operators::NOT_EQUAL:
-                $this->qb->field($fieldData)->exists(true);
-                $this->qb->field($fieldData)->notEqual($data);
-                break;
-            case Operators::LOWER_THAN:
-                $this->qb->field($fieldData)->lt($data);
-                break;
-            case Operators::LOWER_OR_EQUAL_THAN:
-                $this->qb->field($fieldData)->lte($data);
-                break;
-            case Operators::GREATER_THAN:
-                $this->qb->field($fieldData)->gt($data);
-                break;
-            case Operators::GREATER_OR_EQUAL_THAN:
-                $this->qb->field($fieldData)->gte($data);
-                break;
-            case Operators::IS_EMPTY:
-                $this->qb->field($fieldData)->exists(false);
-                break;
-            case Operators::IS_NOT_EMPTY:
-                $this->qb->field($fieldData)->exists(true);
-                break;
+        foreach ($fields as $field) {
+            switch ($operator) {
+                case Operators::EQUALS:
+                    $expr = $this->qb->expr()->field($field)->equals($data);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::NOT_EQUAL:
+                    $this->qb
+                        ->addOr($this->qb->expr()->field($field)->exists(true))
+                        ->addOr($this->qb->expr()->field($field)->notEqual($data));
+                    break;
+                case Operators::LOWER_THAN:
+                    $expr = $this->qb->expr()->field($field)->lt($data);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::LOWER_OR_EQUAL_THAN:
+                    $expr = $this->qb->expr()->field($field)->lte($data);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::GREATER_THAN:
+                    $expr = $this->qb->expr()->field($field)->gt($data);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::GREATER_OR_EQUAL_THAN:
+                    $expr = $this->qb->expr()->field($field)->gte($data);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::IS_EMPTY:
+                    $expr = $this->qb->expr()->field($field)->exists(false);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::IS_NOT_EMPTY:
+                    $expr = $this->qb->expr()->field($field)->exists(true);
+                    $this->qb->addOr($expr);
+                    break;
+            }
         }
     }
 

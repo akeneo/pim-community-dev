@@ -7,7 +7,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Price filter
@@ -22,18 +21,15 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected $currencyRepository;
 
     /**
-     * @param AttributeValidatorHelper    $attrValidatorHelper
      * @param CurrencyRepositoryInterface $currencyRepository
      * @param array                       $supportedAttributeTypes
      * @param array                       $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
         CurrencyRepositoryInterface $currencyRepository,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->currencyRepository  = $currencyRepository;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators  = $supportedOperators;
@@ -50,7 +46,6 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'price');
 
         if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
             $this->addEmptyTypeFilter($attribute, $value, $operator, $locale, $scope);

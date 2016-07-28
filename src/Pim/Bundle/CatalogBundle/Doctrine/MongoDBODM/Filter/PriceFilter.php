@@ -7,8 +7,9 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Price filter
@@ -23,18 +24,21 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected $currencyRepository;
 
     /**
-     * @param AttributeValidatorHelper    $attrValidatorHelper
+     * @param ChannelRepositoryInterface  $channelRepository
+     * @param LocaleRepositoryInterface   $localeRepository
      * @param CurrencyRepositoryInterface $currencyRepository
      * @param array                       $supportedAttributeTypes
      * @param array                       $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         CurrencyRepositoryInterface $currencyRepository,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
+        parent::__construct($channelRepository, $localeRepository);
+
         $this->currencyRepository      = $currencyRepository;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators      = $supportedOperators;
@@ -51,22 +55,23 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'price');
-
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
             $value['data'] = (float) $value['data'];
         }
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $field = sprintf(
-            '%s.%s.%s.data',
-            ProductQueryUtility::NORMALIZED_FIELD,
-            $field,
-            $value['currency']
-        );
+        $normalizedFields = $this->getNormalizedValueFieldsFromAttribute($attribute, $locale, $scope);
+        $fields = [];
+        foreach ($normalizedFields as $normalizedField) {
+            $fields[] = sprintf(
+                '%s.%s.%s.data',
+                ProductQueryUtility::NORMALIZED_FIELD,
+                $normalizedField,
+                $value['currency']
+            );
+        }
 
-        $this->applyFilter($field, $operator, $value['data']);
+        $this->applyFilters($fields, $operator, $value['data']);
 
         return $this;
     }
@@ -74,38 +79,48 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     /**
      * Apply the filter to the query with the given operator
      *
-     * @param string $field
+     * @param array  $fields
      * @param string $operator
      * @param float  $data
      */
-    protected function applyFilter($field, $operator, $data)
+    protected function applyFilters(array $fields, $operator, $data)
     {
-        switch ($operator) {
-            case Operators::EQUALS:
-                $this->qb->field($field)->equals($data);
-                break;
-            case Operators::NOT_EQUAL:
-                $this->qb->field($field)->exists(true);
-                $this->qb->field($field)->notEqual($data);
-                break;
-            case Operators::LOWER_THAN:
-                $this->qb->field($field)->lt($data);
-                break;
-            case Operators::LOWER_OR_EQUAL_THAN:
-                $this->qb->field($field)->lte($data);
-                break;
-            case Operators::GREATER_THAN:
-                $this->qb->field($field)->gt($data);
-                break;
-            case Operators::GREATER_OR_EQUAL_THAN:
-                $this->qb->field($field)->gte($data);
-                break;
-            case Operators::IS_EMPTY:
-                $this->qb->field($field)->exists(false);
-                break;
-            case Operators::IS_NOT_EMPTY:
-                $this->qb->field($field)->exists(true);
-                break;
+        foreach ($fields as $field) {
+            switch ($operator) {
+                case Operators::EQUALS:
+                    $expr = $this->qb->expr()->field($field)->equals($data);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::NOT_EQUAL:
+                    $this->qb
+                        ->addOr($this->qb->expr()->field($field)->exists(true))
+                        ->addOr($this->qb->expr()->field($field)->notEqual($data));
+                    break;
+                case Operators::LOWER_THAN:
+                    $expr = $this->qb->expr()->field($field)->lt($data);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::LOWER_OR_EQUAL_THAN:
+                    $expr = $this->qb->expr()->field($field)->lte($data);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::GREATER_THAN:
+                    $expr = $this->qb->expr()->field($field)->gt($data);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::GREATER_OR_EQUAL_THAN:
+                    $expr = $this->qb->expr()->field($field)->gte($data);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::IS_EMPTY:
+                    $expr = $this->qb->expr()->field($field)->exists(false);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::IS_NOT_EMPTY:
+                    $expr = $this->qb->expr()->field($field)->exists(true);
+                    $this->qb->addOr($expr);
+                    break;
+            }
         }
     }
 

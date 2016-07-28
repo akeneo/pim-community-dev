@@ -10,7 +10,8 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 
 /**
@@ -22,9 +23,6 @@ use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
  */
 class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var AttributeValidatorHelper */
-    protected $attrValidatorHelper;
-
     /** @var ConfigurationRegistryInterface */
     protected $registry;
 
@@ -32,21 +30,34 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     protected $idsResolver;
 
     /**
-     * @param AttributeValidatorHelper       $attrValidatorHelper
+     * @param ChannelRepositoryInterface     $channelRepository
+     * @param LocaleRepositoryInterface      $localeRepository
      * @param ConfigurationRegistryInterface $registry
      * @param ReferenceDataIdResolver        $idsResolver
      * @param array                          $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         ConfigurationRegistryInterface $registry,
         ReferenceDataIdResolver $idsResolver,
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
+        parent::__construct($channelRepository, $localeRepository);
+
         $this->registry = $registry;
         $this->idsResolver = $idsResolver;
         $this->supportedOperators  = $supportedOperators;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AttributeInterface $attribute)
+    {
+        $referenceDataName = $attribute->getReferenceDataName();
+
+        return null !== $referenceDataName && null !== $this->registry->get($referenceDataName) ? true : false;
     }
 
     /**
@@ -60,8 +71,6 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
-
         if (Operators::IS_EMPTY !== $operator) {
             $field = $options['field'];
             $this->checkValue($field, $value);
@@ -71,44 +80,43 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
             }
         }
 
-        $field = sprintf(
-            '%s.%s.id',
-            ProductQueryUtility::NORMALIZED_FIELD,
-            ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope)
-        );
+        $normalizedFields = $this->getNormalizedValueFieldsFromAttribute($attribute, $locale, $scope);
+        $fields = [];
 
-        $this->applyFilter($operator, $value, $field);
+        foreach ($normalizedFields as $normalizedField) {
+            $fields[] = sprintf(
+                '%s.%s.id',
+                ProductQueryUtility::NORMALIZED_FIELD,
+                $normalizedField
+            );
+        }
+
+        $this->applyFilters($fields, $operator, $value);
 
         return $this;
     }
 
     /**
-     * Apply the filter to the query with the given operator
+     * Apply the filters to the query with the given operator
      *
-     * @param string   $operator
-     * @param null|int $value
-     * @param string   $field
+     * @param array  $fields
+     * @param string $operator
+     * @param mixed  $value
      */
-    protected function applyFilter($operator, $value, $field)
+    protected function applyFilters(array $fields, $operator, $value)
     {
         if (Operators::IS_EMPTY === $operator) {
-            $expr = $this->qb->expr()->field($field)->exists(false);
-            $this->qb->addAnd($expr);
+            foreach ($fields as $field) {
+                $expr = $this->qb->expr()->field($field)->exists(false);
+                $this->qb->addAnd($expr);
+            }
         } else {
-            $value = array_map('intval', $value);
-            $expr = $this->qb->expr()->field($field)->in($value);
-            $this->qb->addAnd($expr);
+            foreach ($fields as $field) {
+                $value = array_map('intval', $value);
+                $expr = $this->qb->expr()->field($field)->in($value);
+                $this->qb->addOr($expr);
+            }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsAttribute(AttributeInterface $attribute)
-    {
-        $referenceDataName = $attribute->getReferenceDataName();
-
-        return null !== $referenceDataName && null !== $this->registry->get($referenceDataName) ? true : false;
     }
 
     /**

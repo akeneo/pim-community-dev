@@ -8,7 +8,8 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Boolean filter
@@ -23,20 +24,23 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
     protected $supportedFields;
 
     /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributeTypes
-     * @param array                    $supportedFields
-     * @param array                    $supportedOperators
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param array                      $supportedAttributeTypes
+     * @param array                      $supportedFields
+     * @param array                      $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         array $supportedAttributeTypes = [],
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper = $attrValidatorHelper;
+        parent::__construct($channelRepository, $localeRepository);
+
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedFields     = $supportedFields;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators  = $supportedOperators;
     }
 
@@ -67,8 +71,6 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'boolean');
-
         if (!is_bool($value)) {
             throw InvalidArgumentException::booleanExpected(
                 $attribute->getCode(),
@@ -78,9 +80,14 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
             );
         }
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
-        $this->applyFilter($field, $operator, $value);
+        $normalizedFields = $this->getNormalizedValueFieldsFromAttribute($attribute, $locale, $scope);
+        $fields = [];
+
+        foreach ($normalizedFields as $normalizedField) {
+            $fields[] = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $normalizedField);
+        }
+
+        $this->applyFilters($fields, $operator, $value);
 
         return $this;
     }
@@ -98,6 +105,31 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
         $this->applyFilter($field, $operator, $value);
 
         return $this;
+    }
+
+    /**
+     * Apply the filters to the query with the given operator
+     *
+     * @param array  $fields
+     * @param string $operator
+     * @param mixed  $value
+     */
+    protected function applyFilters(array $fields, $operator, $value)
+    {
+        switch ($operator) {
+            case Operators::EQUALS:
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->equals($value);
+                    $this->qb->addOr($expr);
+                }
+                break;
+            case Operators::NOT_EQUAL:
+                foreach ($fields as $field) {
+                    $this->qb->field($field)->exists(true);
+                    $this->qb->field($field)->notEqual($value);
+                }
+                break;
+        }
     }
 
     /**

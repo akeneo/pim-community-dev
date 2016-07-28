@@ -7,15 +7,13 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class DateFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, AttributeValidatorHelper $attrValidatorHelper)
+    function let(QueryBuilder $qb)
     {
         $this->beConstructedWith(
-            $attrValidatorHelper,
             ['pim_catalog_date'],
             ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']
         );
@@ -52,15 +50,11 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_an_equal_filter_on_an_attribute_in_the_query(
-        $attrValidatorHelper,
         $qb,
         AttributeInterface $attribute,
         Expr $expr,
         Expr\Comparison $comp
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('release_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->getId()->willReturn(42);
@@ -87,15 +81,11 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_not_equal_filter_on_an_attribute_in_the_query(
-        $attrValidatorHelper,
         $qb,
         AttributeInterface $attribute,
         Expr $expr,
         Expr\Comparison $comp
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('release_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->getId()->willReturn(42);
@@ -122,15 +112,11 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_less_than_filter_on_an_attribute_in_the_query(
-        $attrValidatorHelper,
         $qb,
         AttributeInterface $attribute,
         Expr $expr,
         Expr\Comparison $comp
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('release_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->getId()->willReturn(42);
@@ -157,15 +143,11 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_greater_than_filter_on_an_attribute_to_the_query(
-        $attrValidatorHelper,
         $qb,
         AttributeInterface $attribute,
         Expr $expr,
         Expr\Comparison $comp
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('release_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->getId()->willReturn(42);
@@ -192,14 +174,10 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_an_empty_filter_on_an_attribute_to_the_query(
-        $attrValidatorHelper,
         $qb,
         AttributeInterface $attribute,
         Expr $expr
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('release_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->getId()->willReturn(42);
@@ -225,14 +203,10 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_not_empty_filter_on_an_attribute_in_the_query(
-        $attrValidatorHelper,
         $qb,
         AttributeInterface $attribute,
         Expr $expr
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('release_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->getId()->willReturn(42);
@@ -258,14 +232,10 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_between_filter_on_an_attribute_in_the_query(
-        $attrValidatorHelper,
         $qb,
         AttributeInterface $attribute,
         Expr $expr
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('release_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->getId()->willReturn(42);
@@ -291,7 +261,6 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_not_between_filter_on_an_attribute_in_the_query(
-        $attrValidatorHelper,
         $qb,
         AttributeInterface $attribute,
         Expr $expr,
@@ -299,9 +268,6 @@ class DateFilterSpec extends ObjectBehavior
         Expr\Comparison $gtComp,
         Expr\Orx $or
     ) {
-        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
-
         $attribute->getCode()->willReturn('release_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->getId()->willReturn(42);
@@ -334,7 +300,13 @@ class DateFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('release_date');
 
         $this->shouldThrow(
-            InvalidArgumentException::expected('release_date', 'array with 2 elements, string or \DateTime', 'filter', 'date', print_r(123, true))
+            InvalidArgumentException::expected(
+                'release_date',
+                'array with 2 elements, string or \DateTime',
+                'filter',
+                'date',
+                print_r(123, true)
+            )
         )->during('addAttributeFilter', [$attribute, '>', 123]);
     }
 
@@ -343,12 +315,19 @@ class DateFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('release_date');
 
         $this->shouldThrow(
-            InvalidArgumentException::expected('release_date', 'a string with the format yyyy-mm-dd', 'filter', 'date', 'not a valid date format')
+            InvalidArgumentException::expected(
+                'release_date',
+                'a string with the format yyyy-mm-dd',
+                'filter',
+                'date',
+                'not a valid date format'
+            )
         )->during('addAttributeFilter', [$attribute, '>', ['not a valid date format', 'WRONG']]);
     }
 
-    function it_throws_an_exception_if_value_is_an_array_but_does_not_contain_strings_or_dates(AttributeInterface $attribute)
-    {
+    function it_throws_an_exception_if_value_is_an_array_but_does_not_contain_strings_or_dates(
+        AttributeInterface $attribute
+    ) {
         $attribute->getCode()->willReturn('release_date');
 
         $this->shouldThrow(

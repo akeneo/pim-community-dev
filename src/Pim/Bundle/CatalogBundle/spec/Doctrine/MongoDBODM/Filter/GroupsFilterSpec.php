@@ -111,7 +111,9 @@ class GroupsFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('groups', 'filter', 'groups', gettype('not an array')))
+        $this->shouldThrow(
+            InvalidArgumentException::arrayExpected('groups', 'filter', 'groups', gettype('not an array'))
+        )
             ->during('addFieldFilter', ['groups.id', 'IN', 'not an array']);
     }
 

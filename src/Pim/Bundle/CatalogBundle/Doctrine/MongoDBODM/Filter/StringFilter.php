@@ -7,7 +7,8 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -23,18 +24,21 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected $resolver;
 
     /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributeTypes
-     * @param array                    $supportedOperators
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param array                      $supportedAttributeTypes
+     * @param array                      $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
+        parent::__construct($channelRepository, $localeRepository);
+
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->supportedOperators      = $supportedOperators;
+        $this->supportedOperators = $supportedOperators;
 
         $this->resolver = new OptionsResolver();
         $this->configureOptions($this->resolver);
@@ -62,46 +66,60 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             );
         }
 
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'string');
-
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
         }
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $normalizedFields = $this->getNormalizedValueFieldsFromAttribute($attribute, $locale, $scope);
+        $fields = [];
 
-        $this->applyFilter($field, $operator, $value);
+        foreach ($normalizedFields as $normalizedField) {
+            $fields[] = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $normalizedField);
+        }
+
+        $this->applyFilters($fields, $operator, $value);
 
         return $this;
     }
 
     /**
-     * Apply the filter to the query with the given operator
+     * Apply the filters to the query with the given operator
      *
-     * @param string       $field
+     * @param array        $fields
      * @param string       $operator
      * @param string|array $value
      */
-    protected function applyFilter($field, $operator, $value)
+    protected function applyFilters(array $fields, $operator, $value)
     {
         switch ($operator) {
             case Operators::IS_EMPTY:
-                $this->qb->field($field)->exists(false);
+                foreach ($fields as $field) {
+                    $this->qb->field($field)->exists(false);
+                }
                 break;
             case Operators::IS_NOT_EMPTY:
-                $this->qb->field($field)->exists(true);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->exists(true);
+                    $this->qb->addOr($expr);
+                }
                 break;
             case Operators::IN_LIST:
-                $this->qb->field($field)->in($value);
+                foreach ($fields as $field) {
+                    $this->qb->field($field)->in($value);
+                }
                 break;
             case Operators::NOT_EQUAL:
-                $this->qb->field($field)->exists(true);
-                $this->qb->field($field)->notEqual($value);
+                foreach ($fields as $field) {
+                    $this->qb->field($field)->exists(true);
+                    $this->qb->field($field)->notEqual($value);
+                }
                 break;
             default:
                 $value = $this->prepareValue($operator, $value);
-                $this->qb->field($field)->equals($value);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->equals($value);
+                    $this->qb->addOr($expr);
+                }
         }
     }
 

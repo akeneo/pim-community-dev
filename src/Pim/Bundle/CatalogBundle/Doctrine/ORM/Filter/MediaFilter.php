@@ -6,7 +6,6 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Media filter
@@ -18,16 +17,13 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
     /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributeTypes
-     * @param array                    $supportedOperators
+     * @param array $supportedAttributeTypes
+     * @param array $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators      = $supportedOperators;
     }
@@ -43,8 +39,6 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'media');
-
         if ($operator === Operators::IS_EMPTY || $operator === Operators::IS_NOT_EMPTY) {
             $this->addEmptyTypeFilter($attribute, $operator, $locale, $scope);
         } else {

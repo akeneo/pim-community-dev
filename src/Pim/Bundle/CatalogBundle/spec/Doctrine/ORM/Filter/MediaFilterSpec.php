@@ -7,15 +7,13 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class MediaFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, AttributeValidatorHelper $attrValidatorHelper, Expr $expr, AttributeInterface $image)
+    function let(QueryBuilder $qb, Expr $expr, AttributeInterface $image)
     {
         $this->beConstructedWith(
-            $attrValidatorHelper,
             ['pim_catalog_image', 'pim_catalog_file'],
             ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
         );
@@ -67,9 +65,6 @@ class MediaFilterSpec extends ObjectBehavior
 
     function it_adds_a_starts_with_filter_on_an_attribute_in_the_query($qb, $attrValidatorHelper, $expr, $image)
     {
-        $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
-
         $qb->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())
             ->shouldBeCalled()
             ->willReturn($qb);
@@ -80,21 +75,18 @@ class MediaFilterSpec extends ObjectBehavior
             ->willReturn('filterMediapicture.originalFilename LIKE foo%');
 
         $qb->innerJoin(
-                Argument::any(),
-                Argument::any(),
-                'WITH',
-                'filterMediapicture.originalFilename LIKE foo%'
-            )
+            Argument::any(),
+            Argument::any(),
+            'WITH',
+            'filterMediapicture.originalFilename LIKE foo%'
+        )
             ->shouldBeCalled();
 
         $this->addAttributeFilter($image, 'STARTS WITH', 'foo');
     }
 
-    function it_adds_a_ends_with_filter_on_an_attribute_in_the_query($qb, $attrValidatorHelper, $expr, $image)
+    function it_adds_a_ends_with_filter_on_an_attribute_in_the_query($qb, $expr, $image)
     {
-        $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
-
         $qb->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())
             ->shouldBeCalled()
             ->willReturn($qb);
@@ -105,11 +97,11 @@ class MediaFilterSpec extends ObjectBehavior
             ->willReturn('filterMediapicture.originalFilename LIKE %foo');
 
         $qb->innerJoin(
-                Argument::any(),
-                Argument::any(),
-                'WITH',
-                'filterMediapicture.originalFilename LIKE %foo'
-            )
+            Argument::any(),
+            Argument::any(),
+            'WITH',
+            'filterMediapicture.originalFilename LIKE %foo'
+        )
             ->shouldBeCalled();
 
         $this->addAttributeFilter($image, 'ENDS WITH', 'foo');
@@ -127,11 +119,11 @@ class MediaFilterSpec extends ObjectBehavior
             ->willReturn('filterMediapicture.originalFilename LIKE %foo%');
 
         $qb->innerJoin(
-                Argument::any(),
-                Argument::any(),
-                'WITH',
-                'filterMediapicture.originalFilename LIKE %foo%'
-            )
+            Argument::any(),
+            Argument::any(),
+            'WITH',
+            'filterMediapicture.originalFilename LIKE %foo%'
+        )
             ->shouldBeCalled();
 
         $this->addAttributeFilter($image, 'CONTAINS', 'foo');
@@ -147,11 +139,11 @@ class MediaFilterSpec extends ObjectBehavior
         $expr->notLike(Argument::any(), '%foo%')->shouldBeCalled();
 
         $qb->innerJoin(
-                Argument::any(),
-                Argument::any(),
-                'WITH',
-                Argument::any()
-            )
+            Argument::any(),
+            Argument::any(),
+            'WITH',
+            Argument::any()
+        )
             ->shouldBeCalled();
 
         $this->addAttributeFilter($image, 'DOES NOT CONTAIN', 'foo');
@@ -168,11 +160,11 @@ class MediaFilterSpec extends ObjectBehavior
             ->willReturn('filterMediapicture.originalFilename LIKE "foo"');
 
         $qb->innerJoin(
-                Argument::any(),
-                Argument::any(),
-                'WITH',
-                'filterMediapicture.originalFilename LIKE "foo"'
-            )
+            Argument::any(),
+            Argument::any(),
+            'WITH',
+            'filterMediapicture.originalFilename LIKE "foo"'
+        )
             ->shouldBeCalled();
 
         $this->addAttributeFilter($image, '=', 'foo');

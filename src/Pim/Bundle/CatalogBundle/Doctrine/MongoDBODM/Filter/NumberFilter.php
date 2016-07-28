@@ -7,7 +7,8 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Number filter
@@ -19,16 +20,19 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
     /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributeTypes
-     * @param array                    $supportedOperators
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param array                      $supportedAttributeTypes
+     * @param array                      $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
+        parent::__construct($channelRepository, $localeRepository);
+
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators      = $supportedOperators;
     }
@@ -44,16 +48,21 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
-
         if (null !== $value && !is_numeric($value)) {
             throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'number', gettype($value));
         }
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $normalizedFields = $this->getNormalizedValueFieldsFromAttribute($attribute, $locale, $scope);
+        $fields = [];
+        foreach ($normalizedFields as $normalizedField) {
+            $fields[] = sprintf(
+                 '%s.%s.id',
+                 ProductQueryUtility::NORMALIZED_FIELD,
+                $normalizedField
+            );
+        }
 
-        $this->applyFilter($operator, $value, $field);
+        $this->applyFilters($fields, $operator, $value);
 
         return $this;
     }
@@ -61,38 +70,48 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
     /**
      * Apply the filter to the query with the given operator
      *
+     * @param array    $fields
      * @param string   $operator
      * @param null|int $value
-     * @param string   $field
      */
-    protected function applyFilter($operator, $value, $field)
+    protected function applyFilters(array $fields, $operator, $value)
     {
-        switch ($operator) {
-            case Operators::IS_EMPTY:
-                $this->qb->field($field)->exists(false);
-                break;
-            case Operators::IS_NOT_EMPTY:
-                $this->qb->field($field)->exists(true);
-                break;
-            case Operators::EQUALS:
-                $this->qb->field($field)->equals($value);
-                break;
-            case Operators::NOT_EQUAL:
-                $this->qb->field($field)->exists(true);
-                $this->qb->field($field)->notEqual($value);
-                break;
-            case Operators::LOWER_THAN:
-                $this->qb->field($field)->lt($value);
-                break;
-            case Operators::GREATER_THAN:
-                $this->qb->field($field)->gt($value);
-                break;
-            case Operators::LOWER_OR_EQUAL_THAN:
-                $this->qb->field($field)->lte($value);
-                break;
-            case Operators::GREATER_OR_EQUAL_THAN:
-                $this->qb->field($field)->gte($value);
-                break;
+        foreach ($fields as $field) {
+            switch ($operator) {
+                case Operators::IS_EMPTY:
+                    $expr = $this->qb->expr()->field($field)->exists(false);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::IS_NOT_EMPTY:
+                    $expr = $this->qb->expr()->field($field)->exists(true);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::EQUALS:
+                    $expr = $this->qb->expr()->field($field)->equals($value);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::NOT_EQUAL:
+                    $exprExists = $this->qb->expr()->field($field)->exists(true);
+                    $exprNotEqual = $this->qb->expr()->field($field)->notEqual($value);
+                    $this->qb->addOr($exprExists)->addOr($exprNotEqual);
+                    break;
+                case Operators::LOWER_THAN:
+                    $expr = $this->qb->expr()->field($field)->lt($value);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::GREATER_THAN:
+                    $expr = $this->qb->expr()->field($field)->gt($value);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::LOWER_OR_EQUAL_THAN:
+                    $expr = $this->qb->expr()->field($field)->lte($value);
+                    $this->qb->addOr($expr);
+                    break;
+                case Operators::GREATER_OR_EQUAL_THAN:
+                    $expr = $this->qb->expr()->field($field)->gte($value);
+                    $this->qb->addOr($expr);
+                    break;
+            }
         }
     }
 }

@@ -18,3 +18,15 @@ services:
         public: false
         tags:
             - { name: pim_serializer.normalizer }
+
+    pim_reference_data.doctrine.query.filter.reference_data:
+        class: '%pim_reference_data.doctrine.query.filter.reference_data.class%'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_reference_data.registry'
+            - '@pim_reference_data.id_resolver'
+            - ['IN', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+

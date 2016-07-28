@@ -7,7 +7,8 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Date filter
@@ -21,16 +22,19 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
     const DATETIME_FORMAT = 'Y-m-d';
 
     /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributeTypes
-     * @param array                    $supportedOperators
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param array                      $supportedAttributeTypes
+     * @param array                      $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
+        parent::__construct($channelRepository, $localeRepository);
+
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators      = $supportedOperators;
     }
@@ -46,61 +50,84 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'date');
-
         if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
             $value = null;
         } else {
             $value = $this->formatValues($attribute->getCode(), $value);
         }
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $normalizedFields = $this->getNormalizedValueFieldsFromAttribute($attribute, $locale, $scope);
+        $fields = [];
 
-        $this->applyFilter($field, $operator, $value);
+        foreach ($normalizedFields as $normalizedField) {
+            $fields[] = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $normalizedField);
+        }
+
+        $this->applyFilters($fields, $operator, $value);
 
         return $this;
     }
 
     /**
-     * Apply the filter to the query with the given operator
+     * Apply the filters to the query with the given operator
      *
-     * @param string $field
+     * @param array  $fields
      * @param string $operator
      * @param mixed  $value
      */
-    protected function applyFilter($field, $operator, $value)
+    protected function applyFilters(array $fields, $operator, $value)
     {
         switch ($operator) {
             case Operators::BETWEEN:
-                $this->qb->field($field)->gte($value[0]);
-                $this->qb->field($field)->lte($value[1]);
+                foreach ($fields as $field) {
+                    $this->qb->field($field)->gte($value[0]);
+                    $this->qb->field($field)->lte($value[1]);
+                }
                 break;
             case Operators::NOT_BETWEEN:
-                $this->qb->addAnd(
-                    $this->qb->expr()
-                        ->addOr($this->qb->expr()->field($field)->lt($value[0]))
-                        ->addOr($this->qb->expr()->field($field)->gt($value[1]))
-                );
+                foreach ($fields as $field) {
+                    $this->qb->addAnd(
+                        $this->qb->expr()
+                            ->addOr($this->qb->expr()->field($field)->lt($value[0]))
+                            ->addOr($this->qb->expr()->field($field)->gt($value[1]))
+                    );
+                }
                 break;
             case Operators::GREATER_THAN:
-                $this->qb->field($field)->gt($value);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->gt($value);
+                    $this->qb->addOr($expr);
+                }
                 break;
             case Operators::LOWER_THAN:
-                $this->qb->field($field)->lt($value);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->lt($value);
+                    $this->qb->addOr($expr);
+                }
                 break;
             case Operators::EQUALS:
-                $this->qb->field($field)->equals($value);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->equals($value);
+                    $this->qb->addOr($expr);
+                }
                 break;
             case Operators::NOT_EQUAL:
-                $this->qb->field($field)->exists(true);
-                $this->qb->field($field)->notEqual($value);
+                foreach ($fields as $field) {
+                    $this->qb->field($field)->exists(true);
+                    $this->qb->field($field)->notEqual($value);
+                }
                 break;
             case Operators::IS_EMPTY:
-                $this->qb->field($field)->exists(false);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->exists(false);
+                    $this->qb->addAnd($expr);
+                }
                 break;
             case Operators::IS_NOT_EMPTY:
-                $this->qb->field($field)->exists(true);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->exists(true);
+                    $this->qb->addOr($expr);
+                }
                 break;
         }
     }

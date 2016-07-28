@@ -7,7 +7,8 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Media filter
@@ -19,16 +20,19 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
     /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedAttributeTypes
-     * @param array                    $supportedOperators
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param array                      $supportedAttributeTypes
+     * @param array                      $supportedOperators
      */
     public function __construct(
-        AttributeValidatorHelper $attrValidatorHelper,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->attrValidatorHelper     = $attrValidatorHelper;
+        parent::__construct($channelRepository, $localeRepository);
+
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators      = $supportedOperators;
     }
@@ -44,31 +48,57 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'media');
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
         }
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $field = sprintf('%s.%s.originalFilename', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $normalizedFields = $this->getNormalizedValueFieldsFromAttribute($attribute, $locale, $scope);
+        $fields = [];
 
+        foreach ($normalizedFields as $normalizedField) {
+            $fields[] = sprintf('%s.%s.originalFilename', ProductQueryUtility::NORMALIZED_FIELD, $normalizedField);
+        }
+
+        $this->applyFilters($fields, $operator, $value);
+
+        return $this;
+    }
+
+    /**
+     * Apply the filters to the query with the given operator
+     *
+     * @param array  $fields
+     * @param string $operator
+     * @param mixed  $value
+     */
+    protected function applyFilters(array $fields, $operator, $value)
+    {
         switch ($operator) {
             case Operators::NOT_EQUAL:
-                $this->qb->field($field)->exists(true);
-                $this->qb->field($field)->notEqual($value);
+                foreach ($fields as $field) {
+                    $this->qb->field($field)->exists(true);
+                    $this->qb->field($field)->notEqual($value);
+                }
                 break;
             case Operators::IS_NOT_EMPTY:
-                $this->qb->field($field)->exists(true);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->exists(true);
+                    $this->qb->addOr($expr);
+                }
                 break;
             case Operators::IS_EMPTY:
-                $this->qb->field($field)->exists(false);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->exists(false);
+                    $this->qb->addAnd($expr);
+                }
                 break;
             default:
                 $value = $this->prepareValue($operator, $value);
-                $this->qb->field($field)->equals($value);
+                foreach ($fields as $field) {
+                    $expr = $this->qb->expr()->field($field)->equals($value);
+                    $this->qb->addOr($expr);
+                }
         }
-
-        return $this;
     }
 
     /**

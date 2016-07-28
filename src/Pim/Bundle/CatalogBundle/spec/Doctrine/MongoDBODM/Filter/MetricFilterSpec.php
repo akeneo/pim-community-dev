@@ -8,7 +8,6 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 /**
@@ -18,12 +17,10 @@ class MetricFilterSpec extends ObjectBehavior
 {
     function let(
         Builder $queryBuilder,
-        AttributeValidatorHelper $attrValidatorHelper,
         MeasureManager $measureManager,
         MeasureConverter $measureConverter
     ) {
         $this->beConstructedWith(
-            $attrValidatorHelper,
             $measureManager,
             $measureConverter,
             ['pim_catalog_metric'],
@@ -54,50 +51,46 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_adds_an_equals_filter_in_the_query(
-        $attrValidatorHelper,
         $measureManager,
         $measureConverter,
         Builder $queryBuilder,
         AttributeInterface $metric
     ) {
-        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
-
         $value = ['data' => 22.5, 'unit' => 'CENTIMETER'];
         $metric->getMetricFamily()->willReturn('length');
-        $measureManager->getUnitSymbolsForFamily('length')->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
+        $measureManager->getUnitSymbolsForFamily('length')
+            ->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
         $measureConverter->setFamily('length')->shouldBeCalled();
         $measureConverter->convertBaseToStandard('CENTIMETER', 22.5)->willReturn(0.225);
 
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
         $metric->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')
+            ->shouldBeCalled()->willReturn($queryBuilder);
         $queryBuilder->equals(0.225)->shouldBeCalled();
 
         $this->addAttributeFilter($metric, '=', $value, 'en_US', 'mobile');
     }
 
     function it_adds_a_not_equal_filter_in_the_query(
-        $attrValidatorHelper,
         $measureManager,
         $measureConverter,
         Builder $queryBuilder,
         AttributeInterface $metric
     ) {
-        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
-
         $value = ['data' => 22.5, 'unit' => 'CENTIMETER'];
         $metric->getMetricFamily()->willReturn('length');
-        $measureManager->getUnitSymbolsForFamily('length')->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
+        $measureManager->getUnitSymbolsForFamily('length')
+            ->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
         $measureConverter->setFamily('length')->shouldBeCalled();
         $measureConverter->convertBaseToStandard('CENTIMETER', 22.5)->willReturn(0.225);
 
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
         $metric->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')
+            ->shouldBeCalled()->willReturn($queryBuilder);
         $queryBuilder->exists(true)->shouldBeCalled($queryBuilder);
         $queryBuilder->notEqual(0.225)->shouldBeCalled();
 
@@ -105,140 +98,126 @@ class MetricFilterSpec extends ObjectBehavior
     }
 
     function it_adds_an_empty_filter_in_the_query(
-        $attrValidatorHelper,
         Builder $queryBuilder,
         AttributeInterface $metric
     ) {
-        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
-
         $value = ['data' => null, 'unit' => 'CENTIMETER'];
 
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
         $metric->isScopable()->willReturn(true);
 
-        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->shouldBeCalled()
+            ->willReturn($queryBuilder);
         $queryBuilder->exists(false)->shouldBeCalled();
 
         $this->addAttributeFilter($metric, 'EMPTY', $value, 'en_US', 'mobile');
     }
 
     function it_adds_a_not_empty_filter_in_the_query(
-        $attrValidatorHelper,
         Builder $queryBuilder,
         AttributeInterface $metric
     ) {
-        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
-
         $value = ['data' => null, 'unit' => 'CENTIMETER'];
 
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
         $metric->isScopable()->willReturn(true);
 
-        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->shouldBeCalled()
+            ->willReturn($queryBuilder);
         $queryBuilder->exists(true)->shouldBeCalled();
 
         $this->addAttributeFilter($metric, 'NOT EMPTY', $value, 'en_US', 'mobile');
     }
 
     function it_adds_a_greater_than_filter_in_the_query(
-        $attrValidatorHelper,
         $measureManager,
         $measureConverter,
         Builder $queryBuilder,
         AttributeInterface $metric
     ) {
-        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
-
         $value = ['data' => 22.5, 'unit' => 'CENTIMETER'];
         $metric->getMetricFamily()->willReturn('length');
-        $measureManager->getUnitSymbolsForFamily('length')->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
+        $measureManager->getUnitSymbolsForFamily('length')
+            ->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
         $measureConverter->setFamily('length')->shouldBeCalled();
         $measureConverter->convertBaseToStandard('CENTIMETER', 22.5)->willReturn(0.225);
 
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
         $metric->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')
+            ->shouldBeCalled()->willReturn($queryBuilder);
         $queryBuilder->gt(0.225)->shouldBeCalled();
 
         $this->addAttributeFilter($metric, '>', $value, 'en_US', 'mobile');
     }
 
     function it_adds_a_greater_than_or_equals_filter_in_the_query(
-        $attrValidatorHelper,
         $measureManager,
         $measureConverter,
         Builder $queryBuilder,
         AttributeInterface $metric
     ) {
-        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
-
         $value = ['data' => 22.5, 'unit' => 'CENTIMETER'];
         $metric->getMetricFamily()->willReturn('length');
-        $measureManager->getUnitSymbolsForFamily('length')->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
+        $measureManager->getUnitSymbolsForFamily('length')
+            ->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
         $measureConverter->setFamily('length')->shouldBeCalled();
         $measureConverter->convertBaseToStandard('CENTIMETER', 22.5)->willReturn(0.225);
 
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
         $metric->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')
+            ->shouldBeCalled()->willReturn($queryBuilder);
         $queryBuilder->gte(0.225)->shouldBeCalled();
 
         $this->addAttributeFilter($metric, '>=', $value, 'en_US', 'mobile');
     }
 
     function it_adds_a_less_than_filter_in_the_query(
-        $attrValidatorHelper,
         $measureManager,
         $measureConverter,
         Builder $queryBuilder,
         AttributeInterface $metric
     ) {
-        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
-
         $value = ['data' => 22.5, 'unit' => 'CENTIMETER'];
         $metric->getMetricFamily()->willReturn('length');
-        $measureManager->getUnitSymbolsForFamily('length')->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
+        $measureManager->getUnitSymbolsForFamily('length')
+            ->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
         $measureConverter->setFamily('length')->shouldBeCalled();
         $measureConverter->convertBaseToStandard('CENTIMETER', 22.5)->willReturn(0.225);
 
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
         $metric->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')
+            ->shouldBeCalled()->willReturn($queryBuilder);
         $queryBuilder->lt(0.225)->shouldBeCalled();
 
         $this->addAttributeFilter($metric, '<', $value, 'en_US', 'mobile');
     }
 
     function it_adds_a_less_than_or_equals_filter_in_the_query(
-        $attrValidatorHelper,
         $measureManager,
         $measureConverter,
         Builder $queryBuilder,
         AttributeInterface $metric
     ) {
-        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
-        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
-
         $value = ['data' => 22.5, 'unit' => 'CENTIMETER'];
         $metric->getMetricFamily()->willReturn('length');
-        $measureManager->getUnitSymbolsForFamily('length')->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
+        $measureManager->getUnitSymbolsForFamily('length')
+            ->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
         $measureConverter->setFamily('length')->shouldBeCalled();
         $measureConverter->convertBaseToStandard('CENTIMETER', 22.5)->willReturn(0.225);
 
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
         $metric->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')
+            ->shouldBeCalled()->willReturn($queryBuilder);
         $queryBuilder->lte(0.225)->shouldBeCalled();
 
         $this->addAttributeFilter($metric, '<=', $value, 'en_US', 'mobile');
