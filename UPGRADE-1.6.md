@@ -2,14 +2,14 @@
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents
+**Table of Contents:**
 
 - [Disclaimer](#disclaimer)
 - [Migrate your system requirements](#migrate-your-system-requirements)
   - [PHP 5.6 as minimum version and PHP 7 in experimental mode](#php-56-as-minimum-version-and-php-7-in-experimental-mode)
 - [Migrate your standard project](#migrate-your-standard-project)
 - [Migrate your custom code](#migrate-your-custom-code)
-  - [Global updates for any projects](#global-updates-for-any-projects)
+  - [Global updates for any project](#global-updates-for-any-project)
     - [Update references to moved `Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType` constants](#update-references-to-moved-pim%5Cbundle%5Ccatalogbundle%5Cattributetype%5Cabstractattributetype-constants)
     - [Update references to moved `Pim\Component\Catalog` business classes](#update-references-to-moved-pim%5Ccomponent%5Ccatalog-business-classes)
     - [Update references to moved `PimEnterprise\Component\Catalog` business classes](#update-references-to-moved-pimenterprise%5Ccomponent%5Ccatalog-business-classes)
@@ -988,6 +988,19 @@ You can now notice a `filters` key containing `data` and `structure`.
 We provide doctrine migrations to handle this change in your existing data.
 
 In case you have custom products export using the native processor, you may need to update this migration script to update your job instances.
+
+#### Updates to access the "Content" and "General Property" tab in the export job profiles
+
+In order to access the "Content" and "General Property" tabs for already existing user roles. An admin has to set access to those roles.
+
+Go to the role profile and activate the following permissions situated in the "Permission" tab and the "Export Profile" section:
+
+- "Show an export profile general properties"
+- "Edit an export profile general properties"
+- "Show an export profile content"
+- "Edit an export profile content"
+
+If you want to display the "Content" tab for you custom product export job profiles, you can follow the cookbook "Configure the job profile" in the documentation (https://docs.akeneo.com/master/cookbook/import_export/create-custom-step.html#configure-the-job-profile).
 
 ### Updates for projects adding custom Mass Edit Action
 

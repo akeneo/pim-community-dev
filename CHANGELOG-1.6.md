@@ -60,6 +60,7 @@
 - PIM-5109: As Peter, I would like to choose the products attributes to export
 - PIM-5634: As Peter, I would like to filter on a list attribute to export products
 - PIM-5635: As Peter, I would like to filter on all attributes types to export products
+- PIM-5798: As Peter, I would like to manage permission on "Content" tab
 
 ### User Productivity
 
@@ -481,3 +482,4 @@
 - Remove argument `Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface` from `CatalogBundle\Doctrine\Common\Saver\ProductSaver`
 - Remove argument `Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface` from `CatalogBundle\Doctrine\MongoDBODM\Saver\ProductSaver`
 - Remove class `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver`
+- Change constructor of `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`, add `Oro\Bundle\SecurityBundle\SecurityFacade` as last parameter

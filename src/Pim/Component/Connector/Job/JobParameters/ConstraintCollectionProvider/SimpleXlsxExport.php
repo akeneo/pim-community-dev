@@ -40,15 +40,25 @@ class SimpleXlsxExport implements ConstraintCollectionProviderInterface
             [
                 'fields' => [
                     'filePath'     => [
-                        new NotBlank(['groups' => 'Execution']),
-                        new WritableDirectory(['groups' => 'Execution'])
+                        new NotBlank(['groups' => ['Execution', 'FileConfiguration']]),
+                        new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
                     ],
-                    'withHeader'   => new Type('bool'),
+                    'withHeader'   => new Type(
+                        [
+                            'type'   => 'bool',
+                            'groups' => ['Default', 'FileConfiguration'],
+                        ]
+                    ),
                     'linesPerFile' => [
-                        new NotBlank(),
-                        new GreaterThan(1)
-                    ]
-                ]
+                        new NotBlank(['groups' => ['Default', 'FileConfiguration']]),
+                        new GreaterThan(
+                            [
+                                'value'  => 1,
+                                'groups' => ['Default', 'FileConfiguration'],
+                            ]
+                        ),
+                    ],
+                ],
             ]
         );
     }

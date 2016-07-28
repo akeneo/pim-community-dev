@@ -54,6 +54,7 @@ services:
             - '@pim_connector.writer.file.invalid_items_csv'
             - '@pim_connector.reader.file.csv_iterator_factory'
             - '@oneup_flysystem.archivist_filesystem'
+            - '@pim_connector.job.job_parameters.default_values_provider.product_csv_export'
             - 'csv'
         tags:
             - { name: pim_connector.archiver }
@@ -65,6 +66,7 @@ services:
             - '@pim_connector.writer.file.invalid_items_xlsx'
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@oneup_flysystem.archivist_filesystem'
+            - '@pim_connector.job.job_parameters.default_values_provider.product_xslx_export'
             - 'xlsx'
         tags:
             - { name: pim_connector.archiver }

@@ -263,9 +263,9 @@ class JobProfileController
 
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EDIT, new GenericEvent($jobInstance));
 
-        $form = $this->formFactory->create($this->jobInstanceFormType, $jobInstance);
+        $form = $this->formFactory->create($this->jobInstanceFormType, $jobInstance, ['method' => 'PATCH']);
 
-        if ($request->isMethod('POST')) {
+        if ($request->isMethod('PATCH')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $this->entityManager->persist($jobInstance);

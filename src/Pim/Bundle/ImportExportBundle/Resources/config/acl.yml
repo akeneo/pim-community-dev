@@ -23,9 +23,25 @@ pim_importexport_export_profile_launch:
     type: action
     label: pim_importexport.acl.export_profile.launch
     group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_property_show:
+    type: action
+    label: pim_importexport.acl.export_profile.property_show
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_property_edit:
+    type: action
+    label: pim_importexport.acl.export_profile.property_edit
+    group_name: pim_importexport.acl_group.export
 pim_importexport_export_profile_history:
     type: action
     label: pim_importexport.acl.export_profile.history
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_content_show:
+    type: action
+    label: pim_importexport.acl.export_profile.content_show
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_content_edit:
+    type: action
+    label: pim_importexport.acl.export_profile.content_edit
     group_name: pim_importexport.acl_group.export
 
 # Import

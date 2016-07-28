@@ -11,6 +11,7 @@ services:
             - '@translator'
             - '@pim_import_export.job_label.translated_label_provider'
             - '@akeneo_batch.job_parameters_factory'
+            - '@oro_security.security_facade'
         tags:
             - { name: form.type, alias: pim_import_export_job_instance }
 
