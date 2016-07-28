@@ -25,10 +25,13 @@ define(
             render: function () {
                 this.getDisplayedLocales()
                     .done(function (locales) {
+                        var params = { localeCode: locales[0].code };
+                        this.trigger('pim_enrich:form:locale_switcher:pre_render', params);
+
                         this.$el.html(
                             this.template({
                                 locales: locales,
-                                currentLocale: _.findWhere(locales, {code: this.getParent().getLocale()}),
+                                currentLocale: _.findWhere(locales, {code: params.localeCode}),
                                 i18n: i18n
                             })
                         );
@@ -53,7 +56,10 @@ define(
              * @param {Object} event
              */
             changeLocale: function (event) {
-                this.getParent().setLocale(event.currentTarget.dataset.locale);
+                this.trigger('pim_enrich:form:locale_switcher:change', {
+                    localeCode: event.currentTarget.dataset.locale
+                });
+
                 this.render();
             }
         });
