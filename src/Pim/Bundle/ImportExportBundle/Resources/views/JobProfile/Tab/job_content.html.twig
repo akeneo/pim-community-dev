@@ -1,22 +1,27 @@
 <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="job-profile-content-tab tab-pane buffer-top">
     <div id="pim-product-export-edit-content" class="form-horizontal"></div>
     <input id="{{ form.parameters.filters.vars.id }}" name="{{ form.parameters.filters.vars.full_name }}" value="{{ form.parameters.filters.vars.value|json_encode }}" type="hidden"/>
+    <input id="{{ form.parameters.filters.vars.id }}_errors" type="hidden" value="{{ errors }}">
     <script>
         require(
             ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'oro/loading-mask'],
             function($, FetcherRegistry, FormBuilder, LoadingMask) {
                 $(function() {
+                    var formId = '{{ form.parameters.filters.vars.id }}';
                     var loadingMask = new LoadingMask();
+                    var errors = JSON.parse($('#' + formId + '_errors').val());
+
                     loadingMask.render().$el.appendTo($('#container')).show();
                     FetcherRegistry.initialize().done(function () {
                         FormBuilder.build('{{ form.vars.disabled ? 'pim-product-export-show-content' : 'pim-product-export-edit-content' }}')
                             .then(function (form) {
                                 form.setElement('#pim-product-export-edit-content')
                                     .on('pim_enrich:form:entity:post_update', function () {
-                                        document.getElementById('{{ form.parameters.filters.vars.id }}').value = JSON.stringify(form.getFormData());
+                                        document.getElementById(formId).value = JSON.stringify(form.getFormData());
                                     })
                                     .trigger('pim_enrich:form:export:set_code', '{{ form.code.vars.value }}')
-                                    .setData(JSON.parse($('#{{ form.parameters.filters.vars.id }}').val()))
+                                    .trigger('pim_enrich:form:export:validation_error', errors)
+                                    .setData(JSON.parse($('#' + formId).val()))
                                     .render();
 
                                 loadingMask.remove();

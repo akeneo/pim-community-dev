@@ -20,6 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -279,12 +280,18 @@ class JobProfileController
         $this->eventDispatcher->dispatch(JobProfileEvents::POST_EDIT, new GenericEvent($jobInstance));
         $job = $this->jobRegistry->get($jobInstance->getJobName());
 
+        $errors = [];
+        foreach ($form->getErrors() as $error) {
+            $errors[] = $error->getMessage();
+        }
+
         return $this->templating->renderResponse(
             $this->jobTemplateProvider->getEditTemplate($jobInstance),
             [
                 'jobInstance' => $jobInstance,
                 'job'         => $job,
                 'form'        => $form->createView(),
+                'errors'      => json_encode($errors),
             ]
         );
     }
