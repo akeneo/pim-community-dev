@@ -1,7 +1,7 @@
 parameters:
     pim_import_export.validator.constraints.filter_data_validator.class: Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterDataValidator
     pim_import_export.validator.constraints.filter_strucutre_locale_validator.class: Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterStructureLocaleValidator
-#    pim_import_export.validator.constraints.filter_strucutre_attribute_validator.class: Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterStructureAttributeValidator
+    pim_import_export.validator.constraints.filter_strucutre_attribute_validator.class: Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterStructureAttributeValidator
 
 services:
     pim_import_export.validator.constraints.filter_data_validator:
@@ -18,7 +18,9 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: filter_structure_locale_validator }
 
-#    pim_import_export.validator.constraints.filter_strucutre_attribute_validator:
-#        class: '%pim_import_export.validator.constraints.filter_strucutre_scope_validator.class%'
-#        tags:
-#            - { name: validator.constraint_validator, alias: filter_strucutre_scope_validator }
+    pim_import_export.validator.constraints.filter_strucutre_attribute_validator:
+        class: '%pim_import_export.validator.constraints.filter_strucutre_attribute_validator.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: validator.constraint_validator, alias: filter_structure_attribute_validator }
