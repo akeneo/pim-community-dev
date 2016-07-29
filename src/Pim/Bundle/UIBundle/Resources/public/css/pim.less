@@ -1804,11 +1804,11 @@ h3.tab-header {
   }
 
   .value {
-    width: 94px;
+    width: 80px;
   }
 
   .unit, .currency {
-    width: 100px;
+    width: 114px;
   }
 }
 
@@ -1872,6 +1872,10 @@ h3.tab-header {
           width: 100%;
         }
       }
+
+      li .remove {
+        display: none;
+      }
     }
 
     &.selected-attributes {
@@ -1926,6 +1930,8 @@ h3.tab-header {
           border: 1px solid #95989e;
           border-bottom: none;
           padding: 15px;
+          display: flex;
+          align-items: center;
 
           &:hover {
             cursor: pointer;
@@ -1946,6 +1952,11 @@ h3.tab-header {
 
           &:last-child {
             border-bottom: 1px solid #95989e;
+          }
+
+          .attribute-label {
+            flex: 1;
+            padding-left: 10px;
           }
         }
       }
