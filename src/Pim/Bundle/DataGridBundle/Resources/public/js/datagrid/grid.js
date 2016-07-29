@@ -35,7 +35,7 @@ define(['jquery', 'underscore', 'backgrid', 'translator', 'oro/translator', 'oro
                 '<div class="toolbar"></div>' +
                     '<div class="container-fluid">' +
                     '<div class="grid-container">' +
-                    '<table class="grid table-hover table table-bordered table-condensed"></table>' +
+                    '<table class="grid table-hover table"></table>' +
                     '<div class="no-data"></div>' +
                     '<div class="loading-mask"></div>' +
                     '</div>' +
