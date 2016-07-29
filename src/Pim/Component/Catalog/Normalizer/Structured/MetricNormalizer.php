@@ -14,6 +14,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class MetricNormalizer implements NormalizerInterface
 {
+    const DECIMAL_PRECISION = 4;
+
     /**  @var string[] */
     protected $supportedFormats = ['json', 'xml'];
 
@@ -22,8 +24,16 @@ class MetricNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
+        $data = $object->getData();
+        // fix the number of decimals to be ISO ORM/mongo
+        // we decided to do it in the standard format right now but that it could/should be changed
+        if (null !== $data && is_numeric($data) && isset($context['decimals_allowed'])) {
+            $precision = true === $context['decimals_allowed'] ? static::DECIMAL_PRECISION : 0;
+            $data = number_format($data, $precision, '.', '');
+        }
+
         return [
-            'data' => $object->getData(),
+            'data' => $data,
             'unit' => $object->getUnit() ?
                 $object->getUnit() :
                 $object->getValue()->getAttribute()->getDefaultMetricUnit(),

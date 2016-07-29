@@ -10,7 +10,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.database.product'
-            - '@pim_enrich.connector.processor.quick_export.product_to_flat_array'
+            - '@pim_enrich.connector.processor.quick_export.product'
             - '@pim_connector.writer.file.csv_product'
             - 1000
 
@@ -22,7 +22,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.database.product'
-            - '@pim_enrich.connector.processor.quick_export.product_to_flat_array'
+            - '@pim_enrich.connector.processor.quick_export.product'
             - '@pim_connector.writer.file.xlsx_product'
             - 1000
 

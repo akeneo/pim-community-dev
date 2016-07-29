@@ -2,8 +2,6 @@
 
 namespace Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
-
 /**
  * Media array converter.
  * Convert a standard media array format to a flat one.
@@ -44,7 +42,7 @@ class MediaConverter extends AbstractValueConverter implements ValueConverterInt
                 $value['scope']
             );
 
-            $convertedItem[$flatName] = (string) $value['data'];
+            $convertedItem[$flatName] = (string) $value['data']['filePath'];
         }
 
         return $convertedItem;

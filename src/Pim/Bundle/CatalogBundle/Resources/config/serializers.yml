@@ -87,8 +87,6 @@ services:
 
     pim_serializer.normalizer.product_value:
         class: '%pim_serializer.normalizer.product_value.class%'
-        arguments:
-            - '@pim_catalog.localization.localizer.registry'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

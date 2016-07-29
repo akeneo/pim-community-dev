@@ -3,23 +3,46 @@
 namespace spec\Pim\Component\Connector\Writer\File\Xlsx;
 
 use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Buffer\BufferFactory;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Writer\File\BulkFileExporter;
-use Pim\Component\Connector\Writer\File\FilePathResolverInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Akeneo\Component\Buffer\BufferFactory;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Prophecy\Argument;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ProductWriterSpec extends ObjectBehavior
 {
+    /** @var Filesystem */
+    private $filesystem;
+
+    /** @var string */
+    private $directory;
+
     function let(
+        ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
-        BulkFileExporter $mediaCopier,
-        FlatItemBufferFlusher $flusher
+        FlatItemBufferFlusher $flusher,
+        AttributeRepositoryInterface $attributeRepository,
+        FileExporterPathGeneratorInterface $fileExporterPath
     ) {
-        $this->beConstructedWith($bufferFactory, $mediaCopier, $flusher);
+        $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spec' . DIRECTORY_SEPARATOR;
+        $this->filesystem = new Filesystem();
+        $this->filesystem->mkdir($this->directory);
+
+        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $attributeRepository, $fileExporterPath, [
+            'pim_catalog_file', 'pim_catalog_image'
+        ]);
+    }
+
+    function letGo()
+    {
+        $this->filesystem->remove($this->directory);
     }
 
     function it_is_initializable()
@@ -27,19 +50,178 @@ class ProductWriterSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Connector\Writer\File\Xlsx\ProductWriter');
     }
 
-    function it_is_a_configurable_step()
-    {
-        $this->shouldHaveType('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
-    }
-
-    function it_is_a_writer()
-    {
-        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemWriterInterface');
-    }
-
     function it_prepares_the_export(
+        $arrayConverter,
+        $attributeRepository,
+        $fileExporterPath,
         $bufferFactory,
-        $mediaCopier,
+        FlatItemBuffer $flatRowBuffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance
+    ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filePath')->willReturn($this->directory . 'product.xlsx');
+        $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('decimalSeparator')->willReturn(false);
+        $jobParameters->has('dateFormat')->willReturn(false);
+        $jobParameters->has('with_media')->willReturn(true);
+        $jobParameters->get('with_media')->willReturn(true);
+
+        $productStandard1 = [
+            'enabled'    => true,
+            'categories' => ['2015_clothes', '2016_clothes'],
+            'groups'     => [],
+            'family'     => 'clothes',
+            'values'     => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'jackets'
+                    ]
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'ecommerce',
+                        'data'   => [
+                            'filePath' => 'A wonderful description...',
+                        ]
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'mobile',
+                        'data'   => [
+                            'filePath' => 'Simple description',
+                        ]
+                    ],
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => 'ecommerce',
+                        'data'   => [
+                            'filePath' => 'Une description merveilleuse...',
+                        ]
+                    ],
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => 'mobile',
+                        'data'   => [
+                            'filePath' => 'Une simple description',
+                        ]
+                    ],
+                ],
+                'media' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => [
+                            'filePath' => 'a/b/c/d/it_s_the_filename.jpg',
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $productFlat1 = [
+            'enabled'                     => '1',
+            'categories'                  => '2015_clothes, 2016_clothes',
+            'groups'                      => '',
+            'family'                      => 'clothes',
+            'sku'                         => 'jackets',
+            'description-en_US-ecommerce' => 'A wonderful description...',
+            'description-en_US-mobile'    => 'Simple description',
+            'description-fr_FR-ecommerce' => 'Une description merveilleuse...',
+            'description-fr_FR-mobile'    => 'Une simple description',
+            'media'                       => 'a/b/c/d/it_s_the_filename.jpg',
+        ];
+
+        $productStandard2 = [
+            'type'   => 'product',
+            'labels' => [
+                'en_US' => 'Sweaters',
+                'en_GB' => 'Chandails',
+            ],
+            'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'sweaters'
+                    ]
+                ],
+                'media' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => [
+                            'filePath' => 'wrong/path'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $productFlat2 = [
+            'type'        => 'product',
+            'label-en_US' => 'Sweaters',
+            'label-en_GB' => 'Chandails',
+            'sku'         => 'sweaters',
+            'media'       => 'wrong/path',
+        ];
+
+        $items = [$productStandard1, $productStandard2];
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobExecution->getId()->willReturn(100);
+        $jobInstance->getCode()->willReturn('xlsx_product_export');
+        $productPathMedia1 = $this->directory . 'xlsx_product_export/100/files/jackets/media/';
+        $originalFilename = "it's the filename.jpg";
+
+        $this->filesystem->mkdir($productPathMedia1);
+        $this->filesystem->touch($productPathMedia1 . $originalFilename);
+
+        $bufferFactory->create()->willReturn($flatRowBuffer);
+
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+        $attributeRepository->getAttributeTypeByCodes(['sku', 'description', 'media'])
+            ->willReturn(['media' => 'pim_catalog_image']);
+        $attributeRepository->getAttributeTypeByCodes(['sku', 'media'])
+            ->willReturn(['media' => 'pim_catalog_image']);
+
+        $fileExporterPath->generate($productStandard1['values']['media'][0], [
+            'identifier' => 'jackets', 'code' => 'media'
+        ])->willReturn('files/jackets/media/');
+
+        $fileExporterPath->generate($productStandard2['values']['media'][0], [
+            'identifier' => 'sweaters', 'code' => 'media'
+        ])->willReturn('files/sweaters/media/');
+
+        $productStandard1['values']['media'][0]['data']['filePath'] = 'files/jackets/media/' . $originalFilename;
+        $arrayConverter->convert($productStandard1, [])->willReturn($productFlat1);
+        $arrayConverter->convert($productStandard2, [])->willReturn($productFlat2);
+
+        $flatRowBuffer->write([$productFlat1, $productFlat2], ['withHeader' => true])->shouldBeCalled();
+
+        $this->initialize();
+        $this->write($items);
+
+        $this->getWrittenFiles()->shouldBeEqualTo(
+            [
+                $productPathMedia1 . 'it\'s the filename.jpg' => 'files/jackets/media/it\'s the filename.jpg'
+            ]
+        );
+    }
+
+    function it_does_not_export_media_if_option_is_false(
+        $arrayConverter,
+        $attributeRepository,
+        $fileExporterPath,
+        $bufferFactory,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
@@ -47,68 +229,64 @@ class ProductWriterSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn('my/file/path');
+        $jobParameters->get('filePath')->willReturn($this->directory . 'product.xlsx');
         $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('decimalSeparator')->willReturn(false);
+        $jobParameters->has('dateFormat')->willReturn(false);
         $jobParameters->has('with_media')->willReturn(true);
-        $jobParameters->get('with_media')->willReturn(true);
+        $jobParameters->get('with_media')->willReturn(false);
 
-        $items = $this->getItemToExport();
-
-        $bufferFactory->create()->willReturn($flatRowBuffer);
-        $flatRowBuffer->write([
-            [
-                'id' => 123,
-                'family' => 12,
-            ],
-            [
-                'id' => 165,
-                'family' => 45,
-            ],
-        ], ['withHeader' => true])->shouldBeCalled();
-
-        $mediaCopier->exportAll([
-            [
-                'filePath' => 'wrong/path',
-                'exportPath' => 'export',
-                'storageAlias' => 'storageAlias',
-            ],
-            [
-                'filePath' => 'img/product1.jpg',
-                'exportPath' => 'export',
-                'storageAlias' => 'storageAlias',
-            ],
-        ], 'my/file')->shouldBeCalled();
-
-        $mediaCopier->getErrors()->willReturn([
-            [
-                'medium' => [
+        $productStandard = [
+            'code'       => 'jackets',
+            'enabled'    => true,
+            'categories' => ['2015_clothes', '2016_clothes'],
+            'groups'     => [],
+            'family'     => 'clothes',
+            'values'     => [
+                'sku' => [
                     [
-                        'filePath' => 'wrong/path',
-                        'exportPath' => 'export',
-                        'storageAlias' => 'storageAlias',
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'jackets'
                     ]
                 ],
-                'message' => 'Error message',
-            ]
-        ]);
-        $mediaCopier->getCopiedMedia()->willReturn([
-            [
-                'copyPath'       => '/tmp/export',
-                'originalMedium' => [
-                    'filePath'     => 'img/product1.jpg',
-                    'exportPath'   => 'export',
-                    'storageAlias' => 'storageAlias',
+                'media' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => [
+                            'filePath' => 'a/b/c/d/it_s_the_filename.jpg',
+                        ]
+                    ]
                 ]
             ]
-        ]);
+        ];
 
-        $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
+        $productFlat1 = [
+            'code'       => 'jackets',
+            'enabled'    => '1',
+            'categories' => '2015_clothes, 2016_clothes',
+            'groups'     => '',
+            'family'     => 'clothes',
+            'sku--'      => 'jackets',
+            'media--'    => 'a/b/c/d/it_s_the_filename.jpg',
+        ];
+
+        $items = [$productStandard];
+
+        $bufferFactory->create()->willReturn($flatRowBuffer);
+
+        $attributeRepository->getAttributeTypeByCodes(['media'])->shouldNotBeCalled();
+        $fileExporterPath->generate(Argument::cetera())->shouldNotBeCalled();
+
+        $arrayConverter->convert($productStandard, [])->willReturn($productFlat1);
+
+        $flatRowBuffer->write([$productFlat1], ['withHeader' => true])->shouldBeCalled();
+
         $this->initialize();
         $this->write($items);
 
-        $this->getWrittenFiles()->shouldBeEqualTo([
-            '/tmp/export' => 'export'
-        ]);
+        $this->getWrittenFiles()->shouldBeEqualTo([]);
     }
 
     function it_writes_the_xlsx_file(
@@ -123,86 +301,34 @@ class ProductWriterSpec extends ObjectBehavior
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('linesPerFile')->willReturn(2);
+        $jobParameters->has('linesPerFile')->willReturn(false);
+        $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('filePath')->willReturn('my/file/path/foo');
         $jobParameters->has('mainContext')->willReturn(false);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
-
         $flusher->flush(
             $flatRowBuffer,
             Argument::type('array'),
             Argument::type('string'),
-            2
+            -1
         )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
 
         $this->initialize();
         $this->flush();
     }
 
-    function it_does_not_copy_media_if_parameters_with_media_is_false(
-        $bufferFactory,
-        $mediaCopier,
-        FlatItemBuffer $flatRowBuffer,
-        StepExecution $stepExecution,
-        JobParameters $jobParameters
-    ) {
+    function it_builds_the_path(StepExecution $stepExecution, JobParameters $jobParameters)
+    {
+        $options = ['date' => '2015-01-01'];
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn('my/file/path');
-        $jobParameters->has('mainContext')->willReturn(false);
-        $jobParameters->has('with_media')->willReturn(true);
-        $jobParameters->get('with_media')->willReturn(false);
+        $jobParameters->has('mainContext')->willReturn(true);
+        $jobParameters->get('mainContext')->willReturn($options);
+        $jobParameters->get('filePath')->willReturn($this->directory . 'product_%date%.xlsx');
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
 
-        $flatRowBuffer->write([['id' => 123, 'family' => 12]], ['withHeader' => true])->shouldBeCalled();
-        $mediaCopier->exportAll(Argument::cetera())->shouldNotBeCalled();
-
-        $this->initialize();
-        $this->write([
-            [
-                'product' => [
-                    'id' => 123,
-                    'family' => 12,
-                ],
-                'media' => [
-                    'filePath' => null,
-                    'exportPath' => 'export',
-                    'storageAlias' => 'storageAlias',
-                ],
-            ]
-        ]);
-
-        $this->getWrittenFiles()->shouldBeEqualTo([]);
-    }
-
-    private function getItemToExport()
-    {
-        return [
-            [
-                'product' => [
-                    'id' => 123,
-                    'family' => 12,
-                ],
-                'media' => [
-                    'filePath' => 'wrong/path',
-                    'exportPath' => 'export',
-                    'storageAlias' => 'storageAlias',
-                ],
-            ],
-            [
-                'product' => [
-                    'id' => 165,
-                    'family' => 45,
-                ],
-                'media' => [
-                    'filePath' => 'img/product1.jpg',
-                    'exportPath' => 'export',
-                    'storageAlias' => 'storageAlias',
-                ],
-            ]
-        ];
+        $this->getPath()->shouldReturn($this->directory . 'product_2015-01-01.xlsx');
     }
 }

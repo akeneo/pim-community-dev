@@ -4,16 +4,14 @@ namespace Pim\Component\Connector\Processor\Normalization;
 
 use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Pim\Component\Connector\Writer\File\BulkFileExporter;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -35,127 +33,53 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var DenormalizerInterface */
-    protected $denormalizer;
-
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
 
-    /** @var string */
-    protected $uploadDirectory;
+    /** @var BulkFileExporter */
+    protected $mediaExporter;
 
-    /** @var string */
-    protected $format;
+    /** @var ObjectUpdaterInterface */
+    protected $variantGroupUpdater;
 
     /**
      * @param NormalizerInterface     $normalizer
-     * @param DenormalizerInterface   $denormalizer
      * @param ObjectDetacherInterface $objectDetacher
-     * @param string                  $uploadDirectory
-     * @param string                  $format
+     * @param BulkFileExporter        $mediaExporter
+     * @param ObjectUpdaterInterface  $variantGroupUpdater
      */
     public function __construct(
         NormalizerInterface $normalizer,
-        DenormalizerInterface $denormalizer,
         ObjectDetacherInterface $objectDetacher,
-        $uploadDirectory,
-        $format
+        BulkFileExporter $mediaExporter,
+        ObjectUpdaterInterface $variantGroupUpdater
     ) {
-        $this->normalizer        = $normalizer;
-        $this->denormalizer      = $denormalizer;
-        $this->objectDetacher    = $objectDetacher;
-        $this->uploadDirectory   = $uploadDirectory;
-        $this->format            = $format;
+        $this->normalizer = $normalizer;
+        $this->objectDetacher = $objectDetacher;
+        $this->mediaExporter = $mediaExporter;
+        $this->variantGroupUpdater = $variantGroupUpdater;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function process($item)
+    public function process($variantGroup)
     {
-        $data['media'] = $this->prepareVariantGroupMedia($item);
+        $variantGroupStandard = $this->normalizer->normalize($variantGroup, null, [
+            'with_variant_group_values' => true,
+            'identifier'                => $variantGroup->getCode(),
+        ]);
 
         $parameters = $this->stepExecution->getJobParameters();
-        $decimalSeparator = $parameters->get('decimalSeparator');
-        $dateFormat = $parameters->get('dateFormat');
-        $data['variant_group'] = $this->normalizer->normalize(
-            $item,
-            $this->format,
-            [
-                'with_variant_group_values' => true,
-                'identifier'                => $item->getCode(),
-                'decimal_separator'         => $decimalSeparator,
-                'date_format'               => $dateFormat,
-            ]
-        );
 
-        $this->objectDetacher->detach($item);
-
-        return $data;
-    }
-
-    /**
-     * Prepares media files present in the product template of the variant group for export.
-     * Returns an array of files to be copied from 'filePath' to 'exportPath'.
-     *
-     * @param GroupInterface $group
-     *
-     * @throws InvalidItemException If a media file is not found
-     *
-     * @return array
-     */
-    protected function prepareVariantGroupMedia(GroupInterface $group)
-    {
-        $mediaValues = $this->getProductTemplateMediaValues($group->getProductTemplate());
-
-        if (count($mediaValues) < 1) {
-            return [];
+        if ($parameters->has('with_media') && $parameters->get('with_media')) {
+            $directory = $this->getWorkingDirectory($parameters->get('filePath'));
+            $this->importMedia($variantGroup, $directory);
         }
 
-        try {
-            return $this->normalizer->normalize(
-                $mediaValues,
-                $this->format,
-                ['field_name' => 'media', 'prepare_copy' => true, 'identifier' => $group->getCode()]
-            );
-        } catch (FileNotFoundException $e) {
-            $this->objectDetacher->detach($group);
-            
-            throw new InvalidItemException(
-                $e->getMessage(),
-                new DataInvalidItem(
-                    [
-                        'item'            => $group->getCode(),
-                        'uploadDirectory' => $this->uploadDirectory,
-                    ]
-                )
-            );
-        }
-    }
+        $this->objectDetacher->detach($variantGroup);
 
-    /**
-     * Normalizes and returns the media values of a product template
-     *
-     * @param ProductTemplateInterface|null $template
-     *
-     * @return \Pim\Component\Catalog\Model\ProductValueInterface[]
-     */
-    protected function getProductTemplateMediaValues(ProductTemplateInterface $template = null)
-    {
-        if (null === $template) {
-            return [];
-        }
-
-        $values = $this->denormalizer->denormalize($template->getValuesData(), 'ProductValue[]', 'json');
-
-        return $values->filter(
-            function ($value) {
-                return in_array(
-                    $value->getAttribute()->getAttributeType(),
-                    [AttributeTypes::IMAGE, AttributeTypes::FILE]
-                );
-            }
-        )->toArray();
+        return $variantGroupStandard;
     }
 
     /**
@@ -164,5 +88,47 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * Import media in local filesystem
+     *
+     * @param GroupInterface $variantGroup
+     * @param string         $directory
+     */
+    protected function importMedia(GroupInterface $variantGroup, $directory)
+    {
+        if (null === $productTemplate = $variantGroup->getProductTemplate()) {
+            return;
+        }
+
+        $identifier = $variantGroup->getCode();
+        $this->variantGroupUpdater->update($variantGroup, ['values' => $productTemplate->getValuesData()]);
+
+        $this->mediaExporter->exportAll($productTemplate->getValues(), $directory, $identifier);
+
+        foreach ($this->mediaExporter->getErrors() as $error) {
+            $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
+        }
+    }
+
+    /**
+     * Build path of the working directory to import media in a specific directory.
+     * Will be extracted with TIP-539
+     *
+     * @param string $filePath
+     *
+     * @return string
+     */
+    protected function getWorkingDirectory($filePath)
+    {
+        $jobExecution = $this->stepExecution->getJobExecution();
+
+        return dirname($filePath)
+            . DIRECTORY_SEPARATOR
+            . $jobExecution->getJobInstance()->getCode()
+            . DIRECTORY_SEPARATOR
+            . $jobExecution->getId()
+            . DIRECTORY_SEPARATOR;
     }
 }

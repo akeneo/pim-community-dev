@@ -27,6 +27,7 @@ class VariantGroupCsvExportSpec extends ObjectBehavior
                 'decoratedParam'   => true,
                 'decimalSeparator' => ".",
                 'dateFormat'       => "yyyy-MM-dd",
+                'with_media'       => true,
             ]
         );
     }

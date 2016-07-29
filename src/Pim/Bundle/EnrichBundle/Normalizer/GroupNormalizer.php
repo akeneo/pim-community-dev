@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -31,22 +32,28 @@ class GroupNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $versionNormalizer;
 
+    /** @var AttributeConverterInterface */
+    protected $localizedConverter;
+
     /**
      * @param NormalizerInterface               $groupNormalizer
      * @param StructureVersionProviderInterface $structureVersionProvider
      * @param VersionManager                    $versionManager
      * @param NormalizerInterface               $versionNormalizer
+     * @param AttributeConverterInterface       $localizedConverter
      */
     public function __construct(
         NormalizerInterface $groupNormalizer,
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
-        NormalizerInterface $versionNormalizer
+        NormalizerInterface $versionNormalizer,
+        AttributeConverterInterface $localizedConverter
     ) {
-        $this->groupNormalizer          = $groupNormalizer;
+        $this->groupNormalizer = $groupNormalizer;
         $this->structureVersionProvider = $structureVersionProvider;
-        $this->versionManager           = $versionManager;
-        $this->versionNormalizer        = $versionNormalizer;
+        $this->versionManager = $versionManager;
+        $this->versionNormalizer = $versionNormalizer;
+        $this->localizedConverter = $localizedConverter;
     }
 
     /**
@@ -55,6 +62,12 @@ class GroupNormalizer implements NormalizerInterface
     public function normalize($group, $format = null, array $context = [])
     {
         $normalizedGroup = $this->groupNormalizer->normalize($group, 'json', $context);
+        if (isset($normalizedGroup['values'])) {
+            $normalizedGroup['values'] = $this->localizedConverter->convertToLocalizedFormats(
+                $normalizedGroup['values'],
+                $context
+            );
+        }
 
         $normalizedGroup['products'] = [];
         foreach ($group->getProducts() as $product) {

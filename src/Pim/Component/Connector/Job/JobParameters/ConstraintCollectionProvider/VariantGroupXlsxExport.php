@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterfa
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Constraints for variant group XLSX export
@@ -42,6 +43,7 @@ class VariantGroupXlsxExport implements ConstraintCollectionProviderInterface
         $constraintFields = $baseConstraint->fields;
         $constraintFields['decimalSeparator'] = new NotBlank();
         $constraintFields['dateFormat'] = new NotBlank();
+        $constraintFields['with_media'] = new Type('bool');
         $constraintFields['linesPerFile'] = [
             new NotBlank(),
             new GreaterThan(1)

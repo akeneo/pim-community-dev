@@ -2,14 +2,10 @@
 
 namespace Pim\Component\Connector\Writer\File\Xlsx;
 
-use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Component\Buffer\BufferFactory;
-use Pim\Component\Connector\Writer\File\AbstractFileWriter;
+use Akeneo\Component\Batch\Job\JobParameters;
+use Pim\Component\Connector\Writer\File\AbstractItemMediaWriter;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
-use Pim\Component\Connector\Writer\File\BulkFileExporter;
-use Pim\Component\Connector\Writer\File\FlatItemBuffer;
-use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
 
 /**
  * Write product data into a XLSX file on the local filesystem
@@ -18,115 +14,23 @@ use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductWriter extends AbstractFileWriter implements ItemWriterInterface, ArchivableWriterInterface
+class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterface, ArchivableWriterInterface
 {
-    /** @var FlatItemBuffer */
-    protected $flatRowBuffer = null;
-
-    /** @var array */
-    protected $writtenFiles = [];
-
-    /** @var FlatItemBufferFlusher */
-    protected $flusher;
-
-    /** @var BulkFileExporter */
-    protected $fileExporter;
-
-    /** @var BufferFactory */
-    protected $bufferFactory;
-
     /**
-     * @param BufferFactory             $bufferFactory
-     * @param BulkFileExporter          $fileExporter
-     * @param FlatItemBufferFlusher     $flusher
+     * {@inheritdoc}
      */
-    public function __construct(
-        BufferFactory $bufferFactory,
-        BulkFileExporter $fileExporter,
-        FlatItemBufferFlusher $flusher
-    ) {
-        parent::__construct();
-
-        $this->bufferFactory = $bufferFactory;
-        $this->fileExporter  = $fileExporter;
-        $this->flusher       = $flusher;
+    protected function getWriterConfiguration()
+    {
+        return ['type' => 'xlsx'];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    protected function getItemIdentifier(array $product)
     {
-        if (null === $this->flatRowBuffer) {
-            $this->flatRowBuffer = $this->bufferFactory->create();
-        }
-    }
+        $attributeCode = $this->attributeRepository->getIdentifierCode();
 
-    /**
-     * {@inheritdoc}
-     */
-    public function write(array $items)
-    {
-        $products = $media = $options = [];
-        foreach ($items as $item) {
-            $products[] = $item['product'];
-            $media[]    = $item['media'];
-        }
-
-        $parameters = $this->stepExecution->getJobParameters();
-        $options['withHeader'] = $parameters->get('withHeader');
-        $this->flatRowBuffer->write($products, $options);
-
-        $exportDirectory = dirname($this->getPath());
-        if (!is_dir($exportDirectory)) {
-            $this->localFs->mkdir($exportDirectory);
-        }
-
-        if ($parameters->has('with_media') && !$parameters->get('with_media')) {
-            return;
-        }
-
-        $this->fileExporter->exportAll($media, $exportDirectory);
-
-        foreach ($this->fileExporter->getCopiedMedia() as $copy) {
-            $this->writtenFiles[$copy['copyPath']] = $copy['originalMedium']['exportPath'];
-        }
-
-        foreach ($this->fileExporter->getErrors() as $error) {
-            $this->stepExecution->addWarning(
-                $error['message'],
-                [],
-                new DataInvalidItem($error['medium'])
-            );
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function flush()
-    {
-        $this->flusher->setStepExecution($this->stepExecution);
-
-        $writerOptions = ['type' => 'xlsx'];
-
-        $writtenFiles = $this->flusher->flush(
-            $this->flatRowBuffer,
-            $writerOptions,
-            $this->getPath(),
-            $this->stepExecution->getJobParameters()->get('linesPerFile')
-        );
-
-        foreach ($writtenFiles as $writtenFile) {
-            $this->writtenFiles[$writtenFile] = basename($writtenFile);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getWrittenFiles()
-    {
-        return $this->writtenFiles;
+        return current($product['values'][$attributeCode])['data'];
     }
 }

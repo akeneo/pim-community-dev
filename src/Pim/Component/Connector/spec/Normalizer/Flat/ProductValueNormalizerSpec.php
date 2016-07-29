@@ -73,6 +73,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
+        $simpleAttribute->isDecimalsAllowed()->willReturn(false);
         $localizerRegistry->getLocalizer(AttributeTypes::NUMBER)->willReturn($numberLocalizer);
         $context = ['decimal_separator' => '.'];
         $numberLocalizer->localize('12', $context)->willReturn(12);
@@ -91,6 +92,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
+        $simpleAttribute->isDecimalsAllowed()->willReturn(true);
         $localizerRegistry->getLocalizer(AttributeTypes::NUMBER)->willReturn($numberLocalizer);
         $context = ['decimal_separator' => ','];
         $numberLocalizer->localize('12.2500', $context)->willReturn('12,25');
@@ -110,6 +112,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
+        $simpleAttribute->isDecimalsAllowed()->willReturn(false);
         $localizerRegistry->getLocalizer(AttributeTypes::NUMBER)->willReturn($numberLocalizer);
         $context = ['decimal_separator' => ','];
         $numberLocalizer->localize('12', $context)->willReturn(12);
@@ -242,6 +245,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::DATE);
+        $simpleAttribute->isDecimalsAllowed()->willReturn(false);
         $localizerRegistry->getLocalizer(AttributeTypes::DATE)->willReturn($dateLocalizer);
         $context = ['date_format' => 'd/m/Y'];
         $dateLocalizer->localize('2000-10-28', $context)->willReturn('28/10/2000');

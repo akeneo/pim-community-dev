@@ -40,7 +40,11 @@ class AttributeSelectorDecorator extends ElementDecorator
      */
     public function close()
     {
-        $this->find('css', '.btn.ok')->click();
+        $button = $this->spin(function () {
+            return $this->find('css', '.btn.ok');
+        }, 'Cannot find the button ".btn.ok"');
+
+        $button->click();
     }
 
     /**
@@ -48,7 +52,11 @@ class AttributeSelectorDecorator extends ElementDecorator
      */
     public function clear()
     {
-        $this->find('css', '.btn.clear')->click();
+        $button = $this->spin(function () {
+            return $this->find('css', '.btn.clear');
+        }, 'Cannot find the button ".btn.clear"');
+
+        $button->click();
     }
 
     /**

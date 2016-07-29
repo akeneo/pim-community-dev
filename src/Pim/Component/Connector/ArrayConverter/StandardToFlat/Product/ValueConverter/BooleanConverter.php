@@ -2,8 +2,6 @@
 
 namespace Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
-
 /**
  * Boolean array converter.
  * Convert a standard boolean array format to a flat one.
@@ -44,7 +42,7 @@ class BooleanConverter extends AbstractValueConverter implements ValueConverterI
                 $value['scope']
             );
 
-            $convertedItem[$flatName] = (true === $value['data']) ? '1' : '0';
+            $convertedItem[$flatName] = false === $value['data'] || null === $value['data'] ? '0' : '1';
         }
 
         return $convertedItem;

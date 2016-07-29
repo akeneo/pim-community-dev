@@ -21,23 +21,6 @@ class FileNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Connector\Normalizer\Flat\FileNormalizer');
     }
 
-    function it_normalizes_a_file_for_media_export($pathGenerator, FileInfoInterface $fileInfo, ProductValueInterface $value)
-    {
-        $pathGenerator->generate($value, Argument::any())->willReturn('path/to/export/file.txt');
-        $fileInfo->getKey()->willReturn('key/of/file.txt');
-        $fileInfo->getStorage()->willReturn(FileStorage::CATALOG_STORAGE_ALIAS);
-
-        $this->normalize(
-            $fileInfo,
-            null,
-            ['identifier' => null, 'value' => $value, 'prepare_copy' => true]
-        )->shouldReturn([
-            'storageAlias' => FileStorage::CATALOG_STORAGE_ALIAS,
-            'filePath' => 'key/of/file.txt',
-            'exportPath' => 'path/to/export/file.txt',
-        ]);
-    }
-
     function it_normalizes_a_file_for_versioning(FileInfoInterface $fileInfo)
     {
         $fileInfo->getKey()->willReturn('key/of/file.txt');
@@ -47,22 +30,6 @@ class FileNormalizerSpec extends ObjectBehavior
             null,
             ['versioning' => true, 'field_name' => 'picture']
         )->shouldReturn(['picture' => 'key/of/file.txt']);
-    }
-
-    function it_normalizes_a_file_for_product_export(
-        $pathGenerator,
-        ProductValueInterface $value,
-        FileInfoInterface $fileInfo
-    ) {
-        $pathGenerator->generate($value, Argument::any())->willReturn('path/to/export/file.txt');
-        $fileInfo->getKey()->willReturn('key/of/file.txt');
-        $fileInfo->getStorage()->willReturn(FileStorage::CATALOG_STORAGE_ALIAS);
-
-        $this->normalize(
-            $fileInfo,
-            null,
-            ['identifier' => null, 'value' => $value, 'field_name' => 'picture']
-        )->shouldReturn(['picture' => 'path/to/export/file.txt']);
     }
 
     function it_supports_files_and_internal_api(FileInfoInterface $fileInfo)

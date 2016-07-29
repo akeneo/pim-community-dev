@@ -2,8 +2,6 @@
 
 namespace Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
-
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

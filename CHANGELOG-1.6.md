@@ -59,6 +59,12 @@
 
 ## BC breaks
 
+- Change constructor of `Pim\Component\Catalog\Normalizer\Structured\ProductValueNormalizer`. Remove argument `Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface`
+- Add method `convertToLocalizedFormats` to `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
+- Remove `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`. Please use `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductProcessor`
+- Change constructor or `Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer`. Add `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
+- Change constructor or `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer`. Add `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
+- Change constructor of `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor`. Remove second argument `Symfony\Component\Serializer\Normalizer\DenormalizerInterface` and replace fourth and fifth argument by `Pim\Component\Connector\Writer\File\BulkFileExporter` and `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
 - Move `Pim\Bundle\BaseConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass` to `Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass`
 - Move `Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector` to `Pim\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector`
 - Move `Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist` to `Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist`
@@ -95,9 +101,9 @@
 - Remove properties editTemplate, showTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Remove methods setShowTemplate, setEditTemplate from `src\Akeneo\Component\Batch\Job\Job`.
 - Change constructor of `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`. Add `Akeneo\Bundle\BatchBundle\Connector\JobTemplateProviderInterface`
-- Change constructor of `Pim\Component\Connector\Writer\File\Csv\Writer` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher`
-- Change constructor of `Pim\Component\Connector\Writer\File\Csv\ProductWriter` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher`
-- Change constructor of `Pim\Component\Connector\Writer\File\Csv\VariantGroupWriter` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher`
+- Change constructor of `Pim\Component\Connector\Writer\File\Csv\Writer` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher` 
+- Change constructor of `Pim\Component\Connector\Writer\File\Csv\ProductWriter` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher`, `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface`, `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, `Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface` and array `$mediaAttributeTypes`
+- Change constructor of `Pim\Component\Connector\Writer\File\Csv\VariantGroupWriter` . Add parameter `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher`, `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface`, `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, `Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface` and array `$mediaAttributeTypes`
 - Remove method `setAvailableLocales` in `Pim\Component\Catalog\Model\AttributeInterface` and `Pim\Component\Catalog\Model\AbstractAttribute`
 - `Pim\Component\Connector\Writer\File\FlatItemBuffer` implements `\Countable`
 - `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter` does not implement `Pim\Component\Catalog\Query\Filter\FieldFilterInterface`

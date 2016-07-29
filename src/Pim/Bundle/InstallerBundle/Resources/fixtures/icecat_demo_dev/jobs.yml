@@ -214,6 +214,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.csv
+            with_media: true
     csv_product_grid_context_quick_export:
         connector: Akeneo CSV Connector
         alias: csv_product_grid_context_quick_export
@@ -224,6 +225,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.csv
+            with_media: true
     csv_family_export:
         connector: Akeneo CSV Connector
         alias:     csv_family_export
@@ -278,6 +280,7 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.xlsx
+            with_media: true
     xlsx_product_grid_context_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_grid_context_quick_export
@@ -287,6 +290,7 @@ jobs:
             withHeader:   true
             filePath:     /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.xlsx
             linesPerFile: 10000
+            with_media:   true
     xlsx_product_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_import

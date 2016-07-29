@@ -2,8 +2,6 @@
 
 namespace Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
-
 /**
  * Metric array converter.
  * Convert a standard metric array format to a flat one.
@@ -49,7 +47,7 @@ class MetricConverter extends AbstractValueConverter implements ValueConverterIn
             );
             $flatUnitName = sprintf('%s-unit', $flatName);
 
-            $convertedItem[$flatName]     = $value['data']['data'];
+            $convertedItem[$flatName] = (string) $value['data']['data'];
             $convertedItem[$flatUnitName] = $value['data']['unit'];
         }
 

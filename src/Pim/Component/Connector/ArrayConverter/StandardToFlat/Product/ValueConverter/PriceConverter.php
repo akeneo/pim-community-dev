@@ -2,8 +2,6 @@
 
 namespace Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
-
 /**
  * Price array converter.
  * Convert a standard price array format to a flat one.
@@ -72,7 +70,7 @@ class PriceConverter extends AbstractValueConverter implements ValueConverterInt
 
             foreach ($value['data'] as $currency) {
                 $flatCurrencyName = sprintf('%s-%s', $flatName, $currency['currency']);
-                $convertedItem[$flatCurrencyName] = $currency['data'];
+                $convertedItem[$flatCurrencyName] = (string) $currency['data'];
             }
         }
 

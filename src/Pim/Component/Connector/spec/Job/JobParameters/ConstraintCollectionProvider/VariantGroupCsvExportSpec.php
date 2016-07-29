@@ -28,9 +28,10 @@ class VariantGroupCsvExportSpec extends ObjectBehavior
         $collection =  $this->getConstraintCollection();
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
-        $fields->shouldHaveCount(2);
+        $fields->shouldHaveCount(3);
         $fields->shouldHaveKey('decimalSeparator');
         $fields->shouldHaveKey('dateFormat');
+        $fields->shouldHaveKey('with_media');
     }
 
     function it_supports_a_job(JobInterface $job)
