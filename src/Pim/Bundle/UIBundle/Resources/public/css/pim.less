@@ -1782,9 +1782,49 @@ h3.tab-header {
   justify-content: space-between;
 }
 
+/** PEB*** ************************************************************************************************************/
+
+.job-profile-content-tab {
+  .control-group {
+    max-width: 900px;
+
+    .control-label.required {
+      font-weight: bold;
+    }
+
+    .filter-input {
+      display: inline-block;
+    }
+
+    .filter-context {
+      display: inline-block;
+      vertical-align: middle;
+
+      .btn-group + .btn-group {
+        margin-left: 3px;
+      }
+
+      .btn {
+        height: 32px;
+      }
+
+      > span {
+        padding: 0 4px;
+        vertical-align: middle;
+
+        .language {
+          padding: 0;
+          color: inherit;
+        }
+      }
+    }
+  }
+}
+
 .input-like {
-  padding: 0 3px 10px 3px;
+  padding: 2px 3px;
   width: 300px;
+  border: 1px solid @color-ddd;
   box-sizing: content-box;
 
   &.disabled {
@@ -1793,6 +1833,7 @@ h3.tab-header {
 
   .form-control {
     line-height: 28px;
+    font-size: @font-size-11em;
     padding-left: 7px;
   }
 }
@@ -1825,7 +1866,7 @@ h3.tab-header {
 
 .attributes .input-like, [data-type="pim-filter-product-category"] .filter-input .input-like {
     padding: 2px 2px 2px 0;
-    margin: 0 0 10px 5px;
+    margin: 0 0 10px 0;
     border: 1px solid #ddd;
     box-sizing: border-box;
 }
