@@ -325,6 +325,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            with_media: true
             filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.csv
     csv_product_grid_context_quick_export:
         connector: Akeneo CSV Connector
@@ -335,6 +336,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            with_media: true
             filePath:   /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.csv
     csv_published_product_quick_export:
         connector: Akeneo CSV Connector
@@ -345,6 +347,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            with_media: true
             filePath:   /tmp/published_products_export_%locale%_%scope%_%datetime%.csv
     csv_published_product_grid_context_quick_export:
         connector: Akeneo Mass Edit Connector
@@ -355,6 +358,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            with_media: true
             filePath:   /tmp/published_products_export_grid_context_%locale%_%scope%_%datetime%.csv
     approve_product_draft:
         connector: Akeneo Mass Edit Connector
@@ -493,6 +497,7 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
+            with_media: true
             filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.xlsx
     xlsx_product_grid_context_quick_export:
         connector: Akeneo XLSX Connector
@@ -502,6 +507,7 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
+            with_media: true
             filePath:   /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.xlsx
     xlsx_published_product_quick_export:
         connector: Akeneo XLSX Connector
@@ -511,6 +517,7 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
+            with_media: true
             filePath:   /tmp/published_products_export_%locale%_%scope%_%datetime%.xlsx
     xlsx_published_product_grid_context_quick_export:
         connector: Akeneo Mass Edit Connector
@@ -520,6 +527,7 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
+            with_media: true
             filePath:   /tmp/published_products_export_grid_context_%locale%_%scope%_%datetime%.xlsx
     rule_impacted_product_count:
         connector: Akeneo Rule Engine Connector
