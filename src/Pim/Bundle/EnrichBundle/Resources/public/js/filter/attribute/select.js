@@ -5,7 +5,7 @@ define([
     'underscore',
     'oro/translator',
     'routing',
-    'pim/filter/filter',
+    'pim/filter/attribute/attribute',
     'pim/fetcher-registry',
     'pim/user-context',
     'pim/i18n',

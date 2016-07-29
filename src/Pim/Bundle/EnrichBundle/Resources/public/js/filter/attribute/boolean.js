@@ -11,7 +11,7 @@ define([
     'jquery',
     'underscore',
     'oro/translator',
-    'pim/filter/filter',
+    'pim/filter/attribute/attribute',
     'pim/fetcher-registry',
     'pim/user-context',
     'pim/i18n',
