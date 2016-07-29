@@ -61,7 +61,7 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
                                     'scope'      => new Channel(),
                                     'attributes' => new FilterStructureAttribute(),
                                 ],
-                                'allowExtraFields' => true,
+                                'allowMissingFields' => true,
                             ]
                         ),
                     ],
