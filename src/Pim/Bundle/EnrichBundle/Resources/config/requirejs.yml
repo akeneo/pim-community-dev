@@ -225,9 +225,9 @@ config:
         pim/export/product/edit/content/structure/attributes:           pimenrich/js/export/product/edit/content/structure/attributes
         pim/export/product/edit/content/structure/attributes-selector:  pimenrich/js/export/product/edit/content/structure/attributes-selector
         pim/export/product/edit/content/data:                           pimenrich/js/export/product/edit/content/data
+        pim/export/product/edit/content/data/add-filter:                pimenrich/js/export/product/edit/content/data/add-filter
         pim/export/product/edit/content/data/default-attribute-filters: pimenrich/js/export/product/edit/content/data/default-attribute-filters
         pim/export/product/edit/content/data/help:                      pimenrich/js/export/product/edit/content/data/help
-        pim/export/product/edit/content/data/add-filter:                pimenrich/js/export/product/edit/content/data/add-filter
 
         # Filters
         pim/filter/filter:                     pimenrich/js/filter/filter
@@ -240,6 +240,7 @@ config:
         pim/filter/product/category:           pimenrich/js/filter/product/category
         pim/filter/product/category/selector:  pimenrich/js/filter/product/category/selector
         pim/filter/product/identifier:         pimenrich/js/filter/product/identifier
+        pim/filter/attribute/attribute:        pimenrich/js/filter/attribute/attribute
         pim/filter/attribute/boolean:          pimenrich/js/filter/attribute/boolean
         pim/filter/attribute/string:           pimenrich/js/filter/attribute/string
         pim/filter/attribute/metric:           pimenrich/js/filter/attribute/metric
