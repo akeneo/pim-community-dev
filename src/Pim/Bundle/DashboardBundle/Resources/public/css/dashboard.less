@@ -98,3 +98,65 @@
     }
   }
 }
+
+#completeness-widget {
+  width: 100%;
+
+  .progress {
+    height: 10px;
+    margin-bottom: 0;
+    margin-top: 18px;
+    border-radius: 6px;
+  }
+  .progress-cell {
+    padding: 0 10px 0 10px;
+    margin-right: 15px;
+    margin-left: 15px;
+    div.center {
+      text-align: center;
+    }
+    span.progress-info {
+      padding: 5px;
+      color: @blue;
+      cursor: default;
+    }
+    small {
+      display: block;
+      text-align: right;
+    }
+  }
+  tr.channel {
+    background-color: @akeneoLight;
+    line-height: 34px;
+
+    &:first-of-type {
+      border-top: none;
+    }
+    border-top: 1px solid @color-ccc;
+
+    td {
+      padding: 0;
+    }
+  }
+
+  tr:not(.channel) {
+    border-top: 1px solid @color-ccc;
+  }
+
+  td {
+    padding: 15px 0;
+    font-size: @font-size-12;
+  }
+  td:nth-child(1) {
+    width: 5%;
+  }
+  td:nth-child(2) {
+    width: 30%;
+  }
+  td:nth-child(3) {
+    width: 5%;
+  }
+  td:nth-child(4) {
+    width: 60%;
+  }
+}

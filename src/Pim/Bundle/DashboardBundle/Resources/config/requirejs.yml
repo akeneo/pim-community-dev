@@ -4,3 +4,5 @@ config:
         pim/dashboard/completeness-widget:    pimdashboard/js/completeness-widget
         pim/dashboard/last-operations-widget: pimdashboard/js/last-operations-widget
         pim/dashboard/widget-container:       pimdashboard/js/widget-container
+
+        pim/dashboard/template/completeness-widget: pimdashboard/templates/completeness-widget.html
