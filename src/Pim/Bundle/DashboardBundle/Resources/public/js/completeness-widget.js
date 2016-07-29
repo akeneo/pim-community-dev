@@ -15,19 +15,6 @@ define(
 
             template: _.template(template),
 
-            events: {
-                'click a[data-toggle-channel]': 'toggleChannel'
-            },
-
-            toggleChannel: function (e) {
-                e.preventDefault();
-
-                var channel = $(e.currentTarget).data('toggle-channel');
-                this.$('tr[data-channel="' + channel + '"]').toggle();
-                this.$('a[data-toggle-channel="' + channel + '"] i')
-                    .toggleClass('icon-caret-right icon-caret-down');
-            },
-
             _processResponse: function (data) {
                 _.each(data, function (channelResult) {
                     channelResult.locales = channelResult.locales || {};

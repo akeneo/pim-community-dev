@@ -1,31 +1,19 @@
 <% _.each(data, function (channelResult, channel) { %>
-    <tr class="channel">
-        <td>
-            <a href="#" data-toggle-channel="<%= channel %>">
-                <i class="icon-caret-down"></i>
-                </a>
-            </td>
-        <td>
-            <a href="#" data-toggle-channel="<%= channel %>">
-                <b><%= channel %></b>
-                </a>
-            </td>
-        <td>
-            <b><%= channelResult.percentage %>%</b>
-            </td>
-        <td>&nbsp;</td>
-    </tr>
-    <% _.each(channelResult.locales, function (localeResult, locale) { %>
-        <tr data-channel="<%= channel %>">
-            <td>&nbsp;</td>
-            <td><%= locale %></td>
-            <td><%= localeResult.ratio %>%</td>
-            <td class="progress-cell">
-                <div class="progress">
-                    <div class="bar <%= localeResult.ratio === 100 ? options.completeBar : options.inCompleteBar %>" style="width: <%= localeResult.ratio %>%"></div>
+    <div class="channel">
+        <div class="header">
+            <%= channel %>
+            <div class="pull-right"><%= channelResult.percentage %>%</div>
+        </div>
+        <% _.each(channelResult.locales, function (localeResult, locale) { %>
+            <div class="locale-result">
+                <div class="locale"><%= locale %></div>
+                <div class="progress-cell">
+                    <div class="progress">
+                        <div class="bar <%= localeResult.ratio === 100 ? options.completeBar : options.inCompleteBar %>" style="width: <%= localeResult.ratio %>%"></div>
+                    </div>
                 </div>
-                <small><%= localeResult.complete %>/<%= channelResult.total %></small>
-            </td>
-        </tr>
-    <% }); %>
+                <div class="total"><%= localeResult.complete %>/<%= channelResult.total %></div>
+            </div>
+        <% }); %>
+    </div>
 <% }); %>

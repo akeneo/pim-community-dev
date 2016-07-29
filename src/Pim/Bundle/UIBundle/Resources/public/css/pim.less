@@ -186,11 +186,6 @@ hr.small {
   }
 }
 
-a[data-toggle-channel] {
-  padding: 5px;
-  color: @textColor;
-}
-
 #last-operations-widget {
   .label {
     border-radius: 0;
@@ -379,9 +374,7 @@ span.link-label {
     line-height: 12px;
     vertical-align: middle;
     padding: 3px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    .text-overflow();
 
     .tooltip {
       white-space: normal;
@@ -486,9 +479,7 @@ span.link-label {
     margin-right: 0;
     line-height: 28px;
     word-wrap: break-word;
-    overflow: hidden;
-    white-space: normal;
-    text-overflow: ellipsis;
+    .text-overflow();
     border-right: none;
 
     &:hover {
@@ -726,8 +717,7 @@ h3.tab-header {
       > span {
         font-size: @font-size-11;
         color: @color-form-info;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        .text-overflow();
 
         &:not(:first-child) {
           > *:first-child {
