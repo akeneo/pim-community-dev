@@ -33,7 +33,8 @@ define(
             events: {
                 'click .attribute-groups li': 'changeAttributeGroup',
                 'keyup .search-field': 'updateSearch',
-                'click .clear': 'clear'
+                'click .clear': 'clear',
+                'click .remove': 'removeAttribute'
             },
             search: '',
             curentFetchId: 0,
@@ -224,18 +225,34 @@ define(
                     cursor: 'move',
                     receive: function (event, ui) {
                         var attributeCode = ui.item.data('attributeCode');
-                        var selected = this.getSelected();
+                        var selectedAttributes = this.getSelected();
 
                         if (ui.sender.parents('div').hasClass('attributes')) {
-                            selected = _.union(selected, [attributeCode]);
+                            selectedAttributes = _.union(selectedAttributes, [attributeCode]);
                         }
                         if (ui.sender.parents('div').hasClass('selected-attributes')) {
-                            selected = _.without(selected, attributeCode);
+                            selectedAttributes = _.without(selectedAttributes, attributeCode);
                         }
 
-                        this.setSelected(selected);
+                        this.setSelected(selectedAttributes);
                     }.bind(this)
                 }).disableSelection();
+            },
+
+            /**
+             * Remove the clicked row from the selected attributes
+             *
+             * @param {event} event
+             */
+            removeAttribute: function (event) {
+                var element = $(event.currentTarget).parents('li');
+                var selectedAttributes = this.getSelected();
+
+                selectedAttributes = _.without(selectedAttributes, element.data('attributeCode'));
+
+                this.setSelected(selectedAttributes);
+
+                this.$('.attributes > div ul').append(element);
             }
         });
     }
