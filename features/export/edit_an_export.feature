@@ -29,13 +29,13 @@ Feature: Edit an export
     And I uncheck the "With header" switch
     When I visit the "Content" tab
     Then I should see the Channel, Locales fields
-    Then I should see the filters enabled, completeness, updated, sku and family.code
+    Then I should see the filters enabled, completeness, updated, identifier and family.code
     And I fill in the following information:
       | Channel | Tablet |
     Then I filter by "enabled" with operator "" and value "Disabled"
     And I filter by "family.code" with operator "" and value "Boots"
     And I filter by "completeness" with operator "Not complete on all selected locales" and value ""
-    And I filter by "sku" with operator "" and value "identifier1 identifier2,identifier3, identifier4"
+    And I filter by "identifier" with operator "" and value "identifier1 identifier2,identifier3, identifier4"
     When I press the "Save" button
     Then I should see the text "File path file.csv"
     And I should see the text "Delimiter |"
