@@ -42,7 +42,7 @@ class ProductWriter extends BaseProductWriter
         BulkObjectDetacherInterface $detacher,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        BaseProductWriter::__construct($versionManager, $productSaver, $detacher);
+        parent::__construct($versionManager, $productSaver, $detacher);
 
         $this->authorizationChecker = $authorizationChecker;
     }
