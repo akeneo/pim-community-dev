@@ -1797,6 +1797,17 @@ h3.tab-header {
   }
 }
 
+.filter-input {
+  .select2-container-multi {
+    height: 32px;
+
+    .select2-search-choice {
+      margin: 2px 0 2px 2px;
+      padding: 3px 5px 2px 20px;
+    }
+  }
+}
+
 [data-type="pim-filter-attribute-metric"] .filter-input,
 [data-type="pim-filter-attribute-price-collection"] .filter-input {
   .operator {
@@ -1810,6 +1821,17 @@ h3.tab-header {
   .unit, .currency {
     width: 114px;
   }
+}
+
+.attributes .input-like, [data-type="pim-filter-product-category"] .filter-input .input-like {
+    padding: 2px 2px 2px 0;
+    margin: 0 0 10px 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.attributes .input-like {
+  margin-left: 0;
 }
 
 [data-type="pim-filter-attribute-select-reference-data"] .filter-input,
