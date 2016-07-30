@@ -101,6 +101,10 @@ pim_connector:
       help: Déterminer le format des champs de type date
     header:
       label: Entête
+    families:
+      label: Famille
+      help: Les familles que vous souhaitez exporter
+      placeholder: Choisissez une famille
   import:
     enabled:
       label: Activer le produit

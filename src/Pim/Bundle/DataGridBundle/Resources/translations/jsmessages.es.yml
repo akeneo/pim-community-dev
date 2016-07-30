@@ -44,7 +44,6 @@ pim.grid.choice_filter:
   label_empty: está vacía
   label_in_list: en la lista
 Available Columns: Columnas disponibles
-Displayed Columns: Columnas mostradas
 datagrid_view.columns.min_message: Debe seleccionar al menos una columna de datagrid para mostrar
 pim_datagrid:
   column_configurator:
@@ -53,7 +52,6 @@ pim_datagrid:
     all_groups: Todos los grupos
     search: Buscar
     clear: Restablecer
-    displayed_columns: Columnas mostradas
     apply: Aplicar
     cancel: Cancelar
     remove_column: Eliminar
@@ -61,6 +59,7 @@ pim_datagrid:
     delete:
       confirm_title: Confirmación de borrado
       confirm_ok: OK
+      empty_selection: Ningún producto seleccionado
 pim.grid.mass_action.quick_export.title: Exportación rápida
 pim.grid.mass_action.quick_export.launched: Se ha ejecutado la exportación rápida
 pim.grid.action.launch.title: Ejecutar

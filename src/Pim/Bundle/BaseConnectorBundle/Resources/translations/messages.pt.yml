@@ -1,4 +1,4 @@
-pim_connector:
+pim_base_connector:
   steps:
     dummy_reader.title: Leitor dummy
     product_reader.title: Extração do produto
@@ -35,9 +35,6 @@ pim_connector:
     enclosure:
       label: Invólucro
       help: Caractere usado para definir o invólucro do campo
-    lines_per_files:
-      label: Número de linhas por ficheiro
-      help: Definir o número limite de linhas por ficheiro
     withHeader:
       label: Com o cabeçalho
       help: Imprimir ou não o nome da coluna
@@ -47,49 +44,12 @@ pim_connector:
     channel:
       label: Canal
       help: O canal que deseja exportar
-    locales:
-      label: Linguagens
-      help: As linguagens que deseja exportar
-      validation:
-        not_blank: Uma linguagem deve ser selecionada, por favor, escolha uma para exportar.
-    status:
-      label: Estado
-      help: O estado dos produtos que deseja exportar
-      choice:
-        enabled: Ativo
-        disabled: Inativo
-        all: Tudo
-    completeness:
-      label: '% de Dados Completos'
-      help: O nível de informação preenchida dos produtos que deseja exportar
-      choice:
-        at_least_one_complete: Completo em pelo menos uma das linguagens selecionadas
-        all_complete: Completo em todas as linguagens escolhidas
-        all_incomplete: Não completo em todas as linguagens escolhidas
-        all: Sem restrições em relação ao nível de preenchimento da informação
-    categories:
-      label: Categorias
-    updated:
-      updated_since_strategy:
-        label: Condição para a data de atualização
-        help: A condição para a data de atualização dos produtos que pretende exportar
-        choice:
-          since_date: Produtos atualizados desde a data definida
-          last_export: Produtos atualizados desde a última exportação
-          all: Sem restrição de data
-      updated_since_date:
-        placeholder: Escolha a data
-      last_execution:
-        none: Esta tarefa nunca foi exportada
-        last: 'Última exportação: %date%'
     decimalSeparator:
       label: Separador decimal
       help: Determinar o separador decimal
     dateFormat:
-      label: Formato de data
+      label: Formato da Data
       help: Determinar o formato dos campos de data
-    header:
-      label: Cabeçalho
     families:
       label: Família
       help: As famílias que deseja exportar
@@ -118,10 +78,10 @@ pim_connector:
       help: Deve ou não permitir o upload to ficheiro diretamente
     delimiter:
       label: Delimitador
-      help: Caractere usado para definir o delimitador de campo no ficheiro CSV
+      help: Um carácter usado para definir o delimitador de campo
     enclosure:
       label: Invólucro
-      help: Caractere usado para definir o invólucro do campo
+      help: Um caractere usado para definir o invólucro do campo
     escape:
       label: Escape
       help: Um caractere usado para definir o campo de escape
@@ -134,28 +94,6 @@ pim_connector:
     copyValuesToProducts:
       label: Copiar valores da variante de grupo para os produtos
       help: Significa que os produtos são automaticamente atualizados com valores do grupo variante, pode ser desligado apenas para atualizar o grupo variante
-    enabledComparison:
-      label: Comparar valores
-      help: Permitir a comparação entre os valores originais e importados. Pode acelerar a importação se os valores importados forem muito semelhantes aos valores originais
-    decimalSeparator:
-      label: Separador decimal
-      help: Caractere usado para definir o separador de campo para decimal
-    dateFormat:
-      label: Formato de data
-job_execution.summary:
-  read: ler
-  read_lines: linhas lidas
-  write: escrito
-  skip: ignorado
-  create: criado
-  process: processado
-  update_products: produtos atualizados
-  process_products: produtos processados
-  skip_products: produtos ignorados
-  displayed: primeiros avisos exibidos
-  charset_validator:
-    title: 'codificação do ficheiro:'
-  product_skipped_no_diff: produtos ignorados (sem diferenças)
 batch_jobs:
   csv_product_export:
     label: Exportar produto para o CSV
@@ -202,10 +140,6 @@ batch_jobs:
     label: Importar tipo de associação para o CSV
     validation.label: Validação do ficheiro
     import.label: Importar tipo de associação
-  csv_family_import:
-    label: Importação de famílias por CSV
-    validation.label: Validação do ficheiro
-    import.label: Importação de famílias
   csv_group_import:
     label: Importar grupo para o CSV
     validation.label: Validação do ficheiro
@@ -214,60 +148,3 @@ batch_jobs:
     label: Importar variante do grupo para o CSV
     validation.label: Validação do ficheiro
     import.label: Importar variante do grupo
-  xlsx_category_import:
-    label: Importação de categorias por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importar categoria
-  xlsx_association_type_import:
-    label: Importação de tipos de associação por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importar tipo de associação
-  xlsx_attribute_import:
-    label: Importação de atributos por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importar atributo
-  xlsx_attribute_option_import:
-    label: Importação de opções de atributos por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importar opção de atributo
-  xlsx_family_import:
-    label: Importação de famílias por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importação de famílias
-  xlsx_product_export:
-    label: Exportação de produtos em XLSX
-    export.label: Exportar produto
-  xlsx_product_import:
-    label: Importação de produtos por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importar produto
-    import_associations.label: Importar associação
-  xlsx_group_export:
-    label: Exportação de grupos em XLSX
-    export.label: Exportar grupo
-  xlsx_variant_group_export:
-    label: Exportação de grupos variantes em XLSX
-    export.label: Exportar variante do grupo
-  xlsx_group_import:
-    label: Importação de grupos por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importar grupo
-  xlsx_variant_group_import:
-    label: Importação de grupos variantes por XLSX
-    validation.label: Validação do ficheiro
-    import.label: Importação de grupos variantes
-  xlsx_family_export:
-    label: Exportação de famílias em XLSX
-    export.label: Exportação de famílias
-  xlsx_category_export:
-    label: Exportação de categorias em XLSX
-    export.label: Exportar categoria
-  xlsx_attribute_export:
-    label: Exportação de atributos em XLSX
-    export.label: Exportação de atributos em XLSX
-  xlsx_attribute_option_export:
-    label: Exportação de opções de atributos em XLSX
-    export.label: Exportação de opções de atributos em XLSX
-  xlsx_association_type_export:
-    label: Exportação de tipos de associação em XLSX
-    export.label: Exportação de tipos de associação em XLSX

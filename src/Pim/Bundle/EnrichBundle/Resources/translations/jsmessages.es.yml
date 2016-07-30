@@ -15,6 +15,8 @@ confirmation:
     role: ¿Está seguro que desea eliminar este rol?
 pim_datagrid:
   mass_action_group:
+    bulk_actions:
+      label: Acciones en Masa
     quick_export:
       label: Exportación rápida
   mass_action:
@@ -93,8 +95,12 @@ pim:
     mass_action:
       quick_export:
         csv_all: CSV (todos los atributos)
+        csv_grid_context: CSV (contexto de la grilla)
+        xlsx_all: XLSX (todos los atributos)
+        xlsx_grid_context: XLSX (contexto de la grilla)
       delete: Eliminar
       mass_edit: Edición en masa
+      category_edit: Editar categorías
       sequential_edit: Edición secuencial
 jstree.create: Crear
 switch_on: Sí
@@ -196,7 +202,12 @@ pim_enrich:
       code: Código
       label: Etiqueta
     variant_group:
+      title: Grupo de variantes
       info:
+        deletion_successful: Grupo Variante eliminado correctamente.
+        deletion_failed: No se ha podido eliminar el grupo de variantes.
+        update_successful: Grupo variantes actualizado correctamente.
+        update_failed: No se ha podido actualizar el grupo de variantes.
         field_not_ready:
           The variant group cannot be saved right now. The following fields are not ready:
             - campos
@@ -207,7 +218,9 @@ pim_enrich:
       meta:
         product_count: Productos
         created: Creado
+        created_by: Creado por
         updated: Actualizado
+        updated_by: Actualizado por
   confirmation:
     leave: ¿Está usted seguro que desea abandonar esta página?
     discard_changes: 'Perderá los cambios realizados sobre {{ entity }} si abandona esta página.'
@@ -316,23 +329,45 @@ pim_enrich:
             no_available_attributes: No hay más atributos para agregar
   export:
     product:
+      data:
+        title: Filtros de datos
       structure:
+        title: Filtros de estructura
         attributes:
           title: Atributos
       filter:
         channel:
-          title: Canal
           help: Canal que desea exportar
         locales:
-          title: Idiomas
           help: Los locales que desea exportar
+        attributes:
+          title: Atributos
+          edit: Editar
+          help: Categorías de productos que desea exportar
+          modal:
+            apply: Aplicar
+            cancel: Cancelar
+        attributes_selector:
+          attribute_group: Grupos de atributos
+          clear: Restablecer
+          all_group: Todos los grupos
         family:
           title: Familia
           help: Las familias que desea importar
           operators:
             IN: En la lista
+            NOT IN: No figura en la lista
+            EMPTY: Productos que no tienen una familia
+            NOT EMPTY: Productos que tienen una familia
+          empty_selection: Seleccionar una familia
         updated:
           title: Actualizado
+          help: La condición de tiempo actualizada de los productos que desea exportar
+          operators:
+            ALL: Ninguna condición de fecha
+            SINCE LAST N DAYS: Productos actualizados desde los últimos N días
+            >: Productos actualizados desde la fecha definida
+            SINCE LAST JOB: Productos actualizados desde la última exportación
         enabled:
           title: Estado
           help: El estado de los productos que desea exportar
@@ -342,6 +377,18 @@ pim_enrich:
             disabled: Inhabilitado
         completeness:
           title: Completitud
+          help: La completitud de los productos que desea exportar
+          operators:
+            ALL: Ninguna condición en la completitud
+            >=: Completo en al menos un local seleccionado
+            GREATER OR EQUALS THAN ON ALL LOCALES: Completo en todos los locales seleccionados
+            LOWER THAN ON ALL LOCALES: Incompleto en todos los locales seleccionados
+          empty_selection: Seleccionar una familia
+        category:
+          title: Categoría
+          help: Categorías de productos que desea exportar
+        identifier:
+          help: Los identificadores de productos que desea exportar separados por comas, espacios o saltos de línea
         metric:
           operators:
             =: '='
@@ -349,6 +396,11 @@ pim_enrich:
             >: '>'
             <=: '<='
             <: '<'
+            EMPTY: Está vacía
+        string:
+          operators:
+            ALL: Todos
+            EMPTY: Está vacía
         price-collection:
           operators:
             =: '='
@@ -356,6 +408,20 @@ pim_enrich:
             <=: '<='
             >: '>'
             <: '<'
+            EMPTY: Está vacía
+        multi_select:
+          operators:
+            IN: En la lista
+            EMPTY: Está vacía
+        media:
+          operators:
+            EMPTY: Está vacía
+        date:
+          operators:
+            EMPTY: Está vacía
+        number:
+          operators:
+            EMPTY: Está vacía
   mass_edit_action:
     edit_common_attributes:
       description: 'Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.'

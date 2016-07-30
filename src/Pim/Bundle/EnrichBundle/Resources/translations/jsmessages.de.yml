@@ -321,10 +321,17 @@ pim_enrich:
           title: Attribute
       filter:
         channel:
-          title: Ausgabekanal
           help: Der Ausgabekanal, den Sie exportieren möchten
-        locales:
-          title: Gebietsschemata
+        attributes:
+          title: Attribute
+          edit: Bearbeiten
+          modal:
+            apply: Anwenden
+            cancel: Abbrechen
+        attributes_selector:
+          attribute_group: Attributgruppen
+          clear: Zurücksetzen
+          all_group: Alle Gruppen
         family:
           title: Produktfamilie
           operators:
@@ -346,6 +353,11 @@ pim_enrich:
             >: '>'
             <=: '<='
             <: '<'
+            EMPTY: Ist leer
+        string:
+          operators:
+            ALL: Alle
+            EMPTY: Ist leer
         price-collection:
           operators:
             =: '='
@@ -353,6 +365,20 @@ pim_enrich:
             <=: '<='
             >: '>'
             <: '<'
+            EMPTY: Ist leer
+        multi_select:
+          operators:
+            IN: In Liste
+            EMPTY: Ist leer
+        media:
+          operators:
+            EMPTY: Ist leer
+        date:
+          operators:
+            EMPTY: Ist leer
+        number:
+          operators:
+            EMPTY: Ist leer
   mass_edit_action:
     edit_common_attributes:
       description: 'Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.'
