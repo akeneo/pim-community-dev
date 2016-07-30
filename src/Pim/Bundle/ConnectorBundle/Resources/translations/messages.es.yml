@@ -41,6 +41,9 @@ pim_connector:
     withHeader:
       label: Con encabezado
       help: Imprimir o no el nombre de columnas
+    with_media:
+      label: Exportar archivos e imágenes
+      help: Exportar o no archivos de productos e imágenes
     filePath:
       label: Camino del fichero
       help: Ubicación del archivo generado dentro del servidor
@@ -61,11 +64,36 @@ pim_connector:
         all: Todos
     completeness:
       label: Completitud
+      help: La completitud de los productos que desea exportar
+      choice:
+        at_least_one_complete: Completo en al menos un local seleccionado
+        all_complete: Completo en todos los locales seleccionados
+        all_incomplete: Incompleto en todos los locales seleccionados
+        all: Ninguna condición en la completitud
+    product_identifier:
+      label: Identificadores del producto
+      help: Productos que desea exportar
+      placeholder: Añadir sus identificadores de producto
     categories:
       label: Categorías
+      help: Categorías de productos que desea exportar
     updated:
+      updated_since_strategy:
+        label: Condición de tiempo actualizada
+        help: La condición de tiempo de los productos que desea exportar
+        choice:
+          since_n_days: Productos actualizados desde los últimos N días
+          since_date: Productos actualizados desde la fecha definida
+          last_export: Productos actualizados desde la última exportación
+          all: Ninguna condición de fecha
+      updated_since_date:
+        placeholder: Elija su fecha
+        error: La fecha no debe estar vacía.
+      updated_since_n_days:
+        error: Este valor no debe estar vacío.
       last_execution:
         none: Este trabajo nunca se ha exportado
+        last: 'Última exportación: %date%'
     decimalSeparator:
       label: Separador de decimales
       help: Determinar el separador de decimales
@@ -74,6 +102,10 @@ pim_connector:
       help: Determinar el formato de los campos de fecha
     header:
       label: Encabezado
+    families:
+      label: Familia
+      help: Las familias que desea importar
+      placeholder: Elija una familia
   import:
     enabled:
       label: Habilitar el producto
@@ -107,7 +139,7 @@ pim_connector:
       help: Único carácter utilizado para fijar el escape del campo
     circularRefsChecked:
       label: Verificar referencias circulares
-      help: De ser afirmativo, los datos serán procesados para asegurar que no hay referencias circulares entre las categorías
+      help: De ser afirmativo, los datos serán procesados para asegurar que no haya referencias circulares entre las categorías
     realTimeVersioning:
       label: Actualización del historial en tiempo real
       help: Significa que el historial del producto es actualizada automáticamente, puede ser desactivada para mejorar el desempeño
@@ -122,6 +154,7 @@ pim_connector:
       help: Único carácter utilizado para fijar el separador de campo por decimal
     dateFormat:
       label: Formato de fecha
+      help: Especifique el formato de cada columna tipo fecha en el archivo, por ejemplo DD/MM/YYYY para el formato 30/04/2014.
 job_execution.summary:
   read: leer
   read_lines: leer líneas

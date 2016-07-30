@@ -62,6 +62,9 @@ pim_connector:
     dateFormat:
       label: Формат даты
       help: Введите формат даты
+    families:
+      label: Семейство
+      placeholder: Выберите семейство
   import:
     enabled:
       label: Активировать продукт
