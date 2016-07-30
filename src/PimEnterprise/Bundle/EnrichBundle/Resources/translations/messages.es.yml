@@ -49,8 +49,12 @@ pim_enrich:
       not_editable: 'Usted no tiene el permiso para editar los productos "%identifiers%".'
     published_product:
       page_title: Productos publicados
+      page_subtitle: 'Edición en masa (1 producto publicado)|Edición en masa (%count% producos publicados)'
       title: Elegir operación
+      subtitle: 'Selecciones la operación que desea realizar en el producto seleccionado|Seleccione la operación que desea realizar en los %count% productos seleccionados'
+      confirm: 'Está a punto de actualizar un producto Publicado con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos Publicados con la siguiente información, por favor confirme.'
       steps:
+        first: Seleccione los productos publicados
         second: Elegir operación
         third: Configurar
         fourth: Confirmar
