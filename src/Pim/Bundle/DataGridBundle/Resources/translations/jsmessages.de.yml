@@ -44,7 +44,6 @@ pim.grid.choice_filter:
   label_empty: Ist leer
   label_in_list: In Liste
 Available Columns: Verfügbare Spalten
-Displayed Columns: Angezeigte Spalten
 datagrid_view.columns.min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
 pim_datagrid:
   column_configurator:
@@ -53,7 +52,6 @@ pim_datagrid:
     all_groups: Alle Gruppen
     search: Suche
     clear: Zurücksetzen
-    displayed_columns: Angezeigte Spalten
     apply: Anwenden
     cancel: Abbrechen
     remove_column: Entfernen
