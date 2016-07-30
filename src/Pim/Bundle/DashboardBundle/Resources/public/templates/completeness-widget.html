@@ -1,19 +1,30 @@
-<% _.each(data, function (channelResult, channel) { %>
-    <div class="channel">
-        <div class="header">
-            <%= channel %>
-            <div class="pull-right"><%= channelResult.percentage %>%</div>
-        </div>
-        <% _.each(channelResult.locales, function (localeResult, locale) { %>
-            <div class="locale-result">
-                <div class="locale"><%= locale %></div>
-                <div class="progress-cell">
-                    <div class="progress">
-                        <div class="bar <%= localeResult.ratio === 100 ? options.completeBar : options.inCompleteBar %>" style="width: <%= localeResult.ratio %>%"></div>
-                    </div>
-                </div>
-                <div class="total"><%= localeResult.complete %>/<%= channelResult.total %></div>
+<% var chunkedChannels = _.toArray(_.groupBy(data, function(element, index) { return Math.floor(index / options.channelsPerRow); })); %>
+<% _.each(chunkedChannels, function (channels) { %>
+    <div class="channels" style="display:none">
+    <% _.each(channels, function (channelResult, channel) { %>
+        <div class="channel">
+            <div class="header">
+                <%= channelResult.name %>
+                <div class="pull-right"><%= channelResult.percentage %>%</div>
             </div>
-        <% }); %>
+            <% _.each(channelResult.locales, function (localeResult, locale) { %>
+                <div class="locale-result">
+                    <div class="locale"><%= locale %></div>
+                    <div class="progress-cell">
+                        <div class="progress">
+                            <div class="bar <%= localeResult.ratio === 100 ? options.completeBar : options.inCompleteBar %>" style="width: <%= localeResult.ratio %>%"></div>
+                        </div>
+                    </div>
+                    <div class="total"><%= localeResult.complete %>/<%= channelResult.total %></div>
+                </div>
+            <% }); %>
+        </div>
+    <% }); %>
     </div>
 <% }); %>
+
+<% if (chunkedChannels.length > 1) { %>
+    <div class="text-center">
+        <div id="completeness-load-more" class="btn"><%- _.__('pim_dashboard.widget.completeness.load_more') %></div>
+    </div>
+<% } %>

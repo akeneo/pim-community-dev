@@ -10,13 +10,40 @@ define(
 
             options: {
                 completeBar: 'bar-success',
-                inCompleteBar: 'bar-warning'
+                inCompleteBar: 'bar-warning',
+                channelsPerRow: 3
             },
 
             template: _.template(template),
 
+            _afterLoad: function() {
+                AbstractWidget.prototype._afterLoad.apply(this, arguments)
+                this.loadMore();
+            },
+
+            events: {
+                'click #completeness-load-more': 'loadMore'
+            },
+
+            loadMore: function (e) {
+                if (undefined !== e) {
+                    e.preventDefault();
+                }
+
+                var $nextChannels = $('#' + this.id).find('.channels:not(:visible)');
+                if ($nextChannels.length) {
+                    $nextChannels.first().show();
+                }
+
+                if ($nextChannels.length <= 1) {
+                    $('#completeness-load-more').hide();
+                }
+            },
+
             _processResponse: function (data) {
-                _.each(data, function (channelResult) {
+                var channelArray = [];
+                _.each(data, function (channelResult, channel) {
+                    channelResult.name = channel;
                     channelResult.locales = channelResult.locales || {};
                     var divider = channelResult.total * _.keys(channelResult.locales).length;
 
@@ -35,9 +62,11 @@ define(
                             ratio: ratio
                         };
                     });
+
+                    channelArray.push(channelResult);
                 });
 
-                return data;
+                return channelArray;
             }
         });
     }

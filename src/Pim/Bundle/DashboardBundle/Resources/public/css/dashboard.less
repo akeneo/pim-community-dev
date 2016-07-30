@@ -101,61 +101,77 @@
 }
 
 .completeness-widget {
-  display: flex;
-  justify-content:space-between;
   color: @akeneoSlateGrey;
-  padding-top: 15px;
 
-  .channel {
-    width: 300px;
-    display: inline-block;
-    *display: inline;
-    border: 12px solid @akeneoGreySuperLight;
+  & > div {
+    padding-top:15px;
+  }
 
-    .header {
-      border-bottom: 2px solid @akeneoSlateGrey;
-      padding: 10px;
-      font-size: @font-size-13;
-      font-weight: bold;
+  .channels {
+    display: flex;
+    justify-content: space-between;
+
+    .channel {
+      width: 300px;
+      display: inline-block;
+      *display: inline;
+      border: 12px solid @akeneoGreySuperLight;
+      transition:opacity 0.2s linear;
+
+      .header {
+        border-bottom: 2px solid @akeneoSlateGrey;
+        padding: 10px;
+        font-size: @font-size-13;
+        font-weight: bold;
+      }
+
+      .locale-result {
+        font-size: @font-size-10;
+        border-bottom: 2px solid @akeneoGreySuperLight;
+        .clearfix();
+
+        & > div {
+          display: inline-block;
+          float: left;
+          line-height: 46px;
+        }
+        & > .locale {
+          width: 37%;
+          margin: 0 10px;
+          .text-overflow();
+        }
+        & > .progress-cell {
+          width: 29%;
+          div.center {
+            text-align: center;
+          }
+          span.progress-info {
+            padding: 5px;
+            color: @blue;
+            cursor: default;
+          }
+          .progress {
+            height: 18px;
+            margin-bottom: 0;
+            margin-top: 15px;
+            .border-radius(2px);
+          }
+        }
+        & > .total {
+          width: 19%;
+          text-align: right;
+          margin: 0 10px;
+        }
+      }
     }
+  }
 
-    .locale-result {
-      font-size: @font-size-10;
-      border-bottom: 2px solid @akeneoGreySuperLight;
-      .clearfix();
-
-      & > div {
-        display:inline-block;
-        float: left;
-        line-height: 46px;
-      }
-      & > .locale {
-        width: 37%;
-        margin: 0 10px;
-        .text-overflow();
-      }
-      & > .progress-cell {
-        width: 29%;
-        div.center {
-          text-align: center;
-        }
-        span.progress-info {
-          padding: 5px;
-          color: @blue;
-          cursor: default;
-        }
-        .progress {
-          height: 18px;
-          margin-bottom: 0;
-          margin-top: 15px;
-          .border-radius(2px);
-        }
-      }
-      & > .total {
-        width: 19%;
-        text-align: right;
-        margin: 0 10px;
-      }
+  .btn {
+    background-color: @akeneoSlateGrey;
+    color: @akeneoLight;
+    &:hover, &:focus {
+      background-color: @akeneoSlateGreyDark;
+      color: @akeneoLight;
     }
   }
 }
