@@ -90,6 +90,10 @@ pim_connector:
       help: Determinar o formato dos campos de data
     header:
       label: Cabeçalho
+    families:
+      label: Família
+      help: As famílias que deseja exportar
+      placeholder: Escolha uma família
   import:
     enabled:
       label: Ativar o produto

@@ -317,10 +317,17 @@ pim_enrich:
           title: Атрибуты
       filter:
         channel:
-          title: Канал
           help: Канал, который вы хотите экспортировать
-        locales:
-          title: Локали
+        attributes:
+          title: Атрибуты
+          edit: Редактировать
+          modal:
+            apply: Применить
+            cancel: Отмена
+        attributes_selector:
+          attribute_group: Группы атрибутов
+          clear: Очистить
+          all_group: Все группы
         family:
           title: Семейство
           operators:
@@ -335,6 +342,29 @@ pim_enrich:
             disabled: Отключено
         completeness:
           title: Завершенность
+        metric:
+          operators:
+            EMPTY: Пусто
+        string:
+          operators:
+            ALL: Все
+            EMPTY: Пусто
+        price-collection:
+          operators:
+            EMPTY: Пусто
+        multi_select:
+          operators:
+            IN: В списке
+            EMPTY: Пусто
+        media:
+          operators:
+            EMPTY: Пусто
+        date:
+          operators:
+            EMPTY: Пусто
+        number:
+          operators:
+            EMPTY: Пусто
   mass_edit_action:
     edit_common_attributes:
       description: 'Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.'

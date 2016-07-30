@@ -64,6 +64,9 @@ pim_connector:
       help: Bestimmen Sie das Format der Datumsfelder
     header:
       label: Header
+    families:
+      label: Produktfamilie
+      placeholder: Wählen Sie eine Produktfamilie
   import:
     enabled:
       label: Produkt aktivieren
