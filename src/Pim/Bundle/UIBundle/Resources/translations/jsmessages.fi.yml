@@ -2,15 +2,15 @@ Close: Sulje
 Update: Päivitä
 Selected Rows: Valitut rivit
 "Yes": Kyllä
-Yes, Delete: Kyllä, poista
-Yes, I Agree: Kyllä, hyväksyn
-Yes, do it: Kyllä, tee se
+"Yes, Delete": Kyllä, poista
+"Yes, I Agree": Kyllä, hyväksyn
+"Yes, do it": Kyllä, tee se
 "No": Ei
-Ok, got it.: OK.
-Cancel: Peruuta
-Delete Confirmation: Poiston vahvistus
-Edit: Muokkaa
-Unexpected error occured. Please contact system administrator.: Odottamaton virhe. Ota yhteyttä järjestelmänvalvojaan.
+"Ok, got it.": OK.
+"Cancel": Peruuta
+"Delete Confirmation": Poiston vahvistus
+"Edit": Muokkaa
+"Unexpected error occured. Please contact system administrator.": Odottamaton virhe. Ota yhteyttä järjestelmänvalvojaan.
 Now: Nyt
 Prev: Edellinen
 Next: Seuraava
@@ -21,14 +21,14 @@ AM: AM
 A: A
 PM: PM
 P: P
-Choose Time: Valitse aika
+"Choose Time": Valitse aika
 Time: Aika
 Hour: Tunti
 Minute: Minuutti
 Second: Sekunti
 Millisecond: Millisekunti
 Microsecond: Mikrosekunti
-Time Zone: Aikavyöhyke
+"Time Zone": Aikavyöhyke
 Localized value: Paikallinen arvo
 Columns: Sarakkeet
 Datagrid Configuration: Datagrid-kokoonpano
