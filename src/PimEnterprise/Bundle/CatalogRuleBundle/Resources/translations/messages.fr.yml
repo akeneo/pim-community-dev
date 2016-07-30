@@ -87,6 +87,7 @@ pimee_catalog_rule:
   popin:
     execute_rules:
       confirm_title: "Confirmation de l'exécution"
+      confirm_content: Êtes-vous certain de vouloir exécuter toutes les règles ? (cela peut prendre du temps)
 btn:
   Execute rules: Exécuter les règles
 rule: Paramètres des règles

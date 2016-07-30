@@ -15,10 +15,13 @@ pimee_catalog_rule:
       set.label: es modificado en
       copy.label: es copiado en
       add.label: es agregado en
+      remove.label: es eliminada de
   datagrid:
     rule-grid:
       actions:
         execute:
+          confirm_title: Confirmación de ejecución
+          confirm_content: ¿Está seguro que desea ejecutar esta regla?
           confirm_ok: OK
       mass_edit_action:
         confirm_title: Confirmación de cálculo
@@ -27,9 +30,18 @@ pimee_catalog_rule:
       mass_action:
         execute:
           confirm_ok: OK
+          confirm_title: Confirmación de ejecución
+          confirm_content: ¿Está seguro que desea ejecutar las reglas seleccionadas?
+          success: La acción en masa para ejecutar las reglas seleccionadas ha sido lanzada. Será notificado una vez finalizada
+          error: Ha ocurrido un error durante la ejecución de las reglas.
+          empty_selection: Ninguna regla seleccionada.
         delete:
           confirm_ok: OK
           confirm_title: Confirmación de borrado
+          confirm_content: ¿Está seguro que desea eliminar las reglas seleccionadas?
+          success: Ha eliminado las reglas.
+          error: Ha ocurrido un error durante la eliminación de las reglas.
+          empty_selection: Ninguna regla seleccionada.
 confirmation:
   remove:
     rule: ¿Está seguro que desea eliminar esta regla? No es posible deshacer esta acción
@@ -37,4 +49,5 @@ flash:
   rule:
     removed: Regla eliminada con éxito
     impacted_product_count: La acción en masa para calcular los productos correspondientes para las reglas ha sido lanzada. Será notificado cuando ésta finalice.
+    executed: La ejecución de la regla ha sido lanzada. Será notificado una vez finalizada.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configuración de reglas

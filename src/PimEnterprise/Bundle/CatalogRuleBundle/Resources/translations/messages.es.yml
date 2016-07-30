@@ -71,6 +71,9 @@ pimee_catalog_rule:
   notification:
     mass_edit_rule:
       success: Cálculo de productos correspondientes por las reglas finalizado
+  popin:
+    execute_rules:
+      confirm_title: Confirmación de ejecución
 rule: Configuración de reglas
 mass_edit_rule: Configuración de reglas
 job_execution.summary.rule_calculated: Número de reglas
