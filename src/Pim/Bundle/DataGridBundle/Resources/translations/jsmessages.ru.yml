@@ -40,7 +40,6 @@ oro_datagrid.select.visible: Все видимые
 oro_datagrid.select.none: Нет
 pim.grid.ajax_choice_filter.label_empty: пусто
 Available Columns: Доступные столбцы
-Displayed Columns: Отображаемые столбцы
 datagrid_view.columns.min_message: Вы должны выбрать по крайней мере один столбец для отображения
 pim.grid.mass_action.quick_export.title: Быстрый экспорт
 pim.grid.action.launch.title: Запуск
