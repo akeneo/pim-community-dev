@@ -41,7 +41,6 @@ oro_datagrid.select.visible: Alle sichtbaren
 oro_datagrid.select.none: Keine
 pim.grid.ajax_choice_filter.label_empty: ist leer
 Available Columns: Verfügbare Spalten
-Displayed Columns: Angezeigte Spalten
 datagrid_view.columns.min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
 pim.grid.mass_action.quick_export.title: Schnell-Export
 pim.grid.action.launch.title: Starten
