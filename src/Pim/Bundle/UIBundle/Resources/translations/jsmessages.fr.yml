@@ -2,15 +2,15 @@ Close: Fermer
 Update: Mettre à jour
 Selected Rows: Lignes sélectionnées
 "Yes": Oui
-Yes, Delete: Oui, supprimer
-Yes, I Agree: "Oui, je suis d'accord"
-Yes, do it: Oui, le faire
+"Yes, Delete": Oui, supprimer
+"Yes, I Agree": "Oui, je suis d'accord"
+"Yes, do it": Oui, le faire
 "No": Non
-Ok, got it.: OK, compris.
-Cancel: Annuler
-Delete Confirmation: Confirmation de la suppression
-Edit: Modifier
-Unexpected error occured. Please contact system administrator.: "Une erreur s'est produite. Contactez l'administrateur système."
+"Ok, got it.": OK, compris.
+"Cancel": Annuler
+"Delete Confirmation": Confirmation de la suppression
+"Edit": Modifier
+"Unexpected error occured. Please contact system administrator.": "Une erreur s'est produite. Contactez l'administrateur système."
 Now: Maintenant
 Prev: Préc
 Next: Suivant
@@ -21,14 +21,14 @@ AM: AM
 A: A
 PM: PM
 P: P
-Choose Time: "Choisir l'heure"
+"Choose Time": "Choisir l'heure"
 Time: Temps
 Hour: Heure
 Minute: Minute
 Second: Seconde
 Millisecond: Milliseconde
 Microsecond: Microseconde
-Time Zone: Fuseau horaire
+"Time Zone": Fuseau horaire
 Localized value: Valeur localisée
 Columns: Colonnes
 Datagrid Configuration: Configuration du tableau
