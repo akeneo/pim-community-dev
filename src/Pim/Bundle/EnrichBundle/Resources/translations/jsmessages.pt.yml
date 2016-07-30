@@ -314,11 +314,19 @@ pim_enrich:
           title: Atributos
       filter:
         channel:
-          title: Canal
           help: O canal que deseja exportar
         locales:
-          title: Linguagens
           help: As linguagens que deseja exportar
+        attributes:
+          title: Atributos
+          edit: Editar
+          modal:
+            apply: Aplicar
+            cancel: Cancelar
+        attributes_selector:
+          attribute_group: Grupos de atributos
+          clear: Limpar
+          all_group: Todos os grupos
         family:
           title: Família
           help: As famílias que deseja exportar
@@ -350,6 +358,9 @@ pim_enrich:
             >: '>'
             <=: '<='
             <: '<'
+        string:
+          operators:
+            ALL: Tudo
         price-collection:
           operators:
             =: '='

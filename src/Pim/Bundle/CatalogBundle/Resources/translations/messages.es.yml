@@ -1,3 +1,6 @@
 No products to remove: No hay productos para eliminar
-dot (.): punto (.)
-comma (,): coma (,)
+"dot (.)": punto (.)
+"comma (,)": coma (,)
+pim_catalog:
+  constraint:
+    product_identifier: 'Estos identificadores "%s" no existen.'

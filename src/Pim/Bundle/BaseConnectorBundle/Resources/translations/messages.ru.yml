@@ -1,21 +1,21 @@
-pim_connector:
+pim_base_connector:
   steps:
     dummy_reader.title: Заглушка
-    product_reader.title: Извелечение продуктов
+    product_reader.title: Извелечение продукта
     entity_reader.title: Извлечение объектов
     csv_reader:
-      title: Считыватель из CSV
+      title: CSV
       invalid_item_columns_count: 'Ожидается получить %totalColumnsCount% колонок, но было передано %itemColumnsCount% в %csvPath%:%lineno%'
-    csv_product_reader.title: Считыватель продуктов из CSV
-    csv_category_reader.title: Считыватель категорий из CSV
+    csv_product_reader.title: Разбор продуктов CSV
+    csv_category_reader.title: Разбор категорий CSV
     csv_variant_group .title: Считыватель групп вариантов из CSV
     dummy_processor.title: Заглушка
     product_processor.title: Создание продукта
     variant_group_processor.title: Создание / обновление группы вариантов
-    category_processor.title: Создание категорий
-    association_processor.title: Создание ассоциаций
-    product_association_processor.title: Создание ассоциаций
-    group_processor.title: Создание групп
+    category_processor.title: Создание категории
+    association_processor.title: Создание ассоциации
+    product_association_processor.title: Создание ассоциации
+    group_processor.title: Создание группы
     attribute_processor.title: Создание атрибутов
     attribute_option_processor.title: Создание выборов атрибутов
     heterogeneous_processor.title: Сериализатор продукта в CSV
@@ -23,18 +23,18 @@ pim_connector:
     transformer_processor.title: Преобразование
     dummy_writer.title: Заглушка
     file_writer.title: Вывод в файл
-    product_writer.title: Хранилище продуктов
-    category_writer.title: Хранилище категорий
-    variant_group_writer.title: Хранилище групп вариантов
+    product_writer.title: Хранилище продукта
+    category_writer.title: Хранилище категории
+    variant_group_writer.title: Хранилище группы вариантов
     writer.title: Хранилище объектов
-    csv_writer.title: Записыватель CSV
+    csv_writer.title: Записыватель Csv
   export:
     delimiter:
       label: Разделитель
       help: Символ, используемый как разделитель полей
     enclosure:
       label: Символ обрамления
-      help: Символ, используемый для обрамления полей
+      help: Символ, используемый для обрамления поля
     withHeader:
       label: Включая заголовки
       help: Добавлять строку с заголовками
@@ -44,18 +44,6 @@ pim_connector:
     channel:
       label: Канал
       help: Канал, который вы хотите экспортировать
-    locales:
-      label: Локали
-    status:
-      label: Статус
-      choice:
-        enabled: Включено
-        disabled: Отключено
-        all: Все
-    completeness:
-      label: Завершенность
-    categories:
-      label: Категории
     decimalSeparator:
       label: Десятичный разделитель
       help: Введите десятичный разделитель
@@ -89,7 +77,7 @@ pim_connector:
       help: Разрешить загрузку файлов
     delimiter:
       label: Разделитель
-      help: Символ, используемый как разделитель полей для CSV-файла
+      help: Символ, используемый как разделитель полей
     enclosure:
       label: Символ обрамления
       help: Символ, используемый для обрамления полей
@@ -105,29 +93,6 @@ pim_connector:
     copyValuesToProducts:
       label: Копировать значения из группы вариантов в продукты
       help: Это означает, что продукты будут автоматически обновлены значениями группы вариантов, можно отключить для обновления только группы вариантов
-    enabledComparison:
-      label: Сравнить значения
-      help: Включить сравнение исходных значений и импортированных значений. Может ускорить импорт, если импортированные значения очень похожи на исходные значения
-    decimalSeparator:
-      label: Десятичный разделитель
-      help: Символ, используемый для установки разделителя полей для десятичной
-    dateFormat:
-      label: Формат даты
-job_execution.summary:
-  read: прочитано
-  read_lines: прочитанных строк
-  write: записано
-  skip: пропущено
-  create: создано
-  process: обработано
-  update_products: обновленных продуктов
-  process_products: обработанных продуктов
-  skip_products: пропущенных продуктов
-  displayed: первые предупреждения отображены
-  charset_validator:
-    title: 'Кодировка файла:'
-    skipped: пропущено, расширение из белого списка
-  product_skipped_no_diff: пропущен продукт (без разницы)
 batch_jobs:
   csv_product_export:
     label: Экспорт продуктов в CSV
@@ -174,10 +139,6 @@ batch_jobs:
     label: Импорт типов ассоциаций из CSV
     validation.label: Подтверждение файла
     import.label: Импорт типов ассоциаций
-  csv_family_import:
-    label: Импорт семейств из CSV
-    validation.label: Подтверждение файла
-    import.label: Импорт семейств
   csv_group_import:
     label: Импорт группы из CSV
     validation.label: Подтверждение файла
@@ -186,37 +147,3 @@ batch_jobs:
     label: Импорт группы вариантов в CSV
     validation.label: Подтверждение файла
     import.label: Импорт групп вариантов
-  xlsx_category_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт категории
-  xlsx_association_type_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт типов ассоциаций
-  xlsx_attribute_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт атрибутов
-  xlsx_attribute_option_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт выборов атрибутов
-  xlsx_family_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт семейств
-  xlsx_product_export:
-    export.label: Экспорт продуктов
-  xlsx_product_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт продуктов
-    import_associations.label: Импорт ассоциаций
-  xlsx_group_export:
-    export.label: Экспорт групп
-  xlsx_variant_group_export:
-    export.label: Экспорт групп вариантов
-  xlsx_group_import:
-    validation.label: Подтверждение файла
-    import.label: Импорт группы
-  xlsx_variant_group_import:
-    validation.label: Подтверждение файла
-  xlsx_family_export:
-    export.label: Экспорт семейств
-  xlsx_category_export:
-    export.label: Экспорт категорий
