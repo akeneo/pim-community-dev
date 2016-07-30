@@ -6,11 +6,11 @@ Yes, Delete: Oui, supprimer
 Yes, I Agree: "Oui, je suis d'accord"
 Yes, do it: "Oui, j'en suis sûr(e)"
 "No": Non
-Ok, got it.: OK, compris.
-Cancel: Annuler
-Delete Confirmation: Confirmation de la suppression
-Edit: Modifier
-Unexpected error occured. Please contact system administrator.: "Une erreur s'est produite. Contactez l'administrateur système."
+"Ok, got it.": OK, compris.
+"Cancel": Annuler
+"Delete Confirmation": Confirmation de la suppression
+"Edit": Modifier
+"Unexpected error occured. Please contact system administrator.": "Une erreur s'est produite. Contactez l'administrateur système."
 Now: Maintenant
 Prev: Préc
 Next: Suivant
@@ -21,7 +21,7 @@ AM: AM
 A: A
 PM: PM
 P: P
-Choose Time: "Choisir l'heure"
+"Choose Time": "Choisir l'heure"
 Time: Temps
 Hour: Heure
 Minute: Minute
