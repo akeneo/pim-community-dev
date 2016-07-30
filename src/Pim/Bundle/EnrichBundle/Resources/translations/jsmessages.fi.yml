@@ -321,10 +321,17 @@ pim_enrich:
           title: Attribuutit
       filter:
         channel:
-          title: Kanava
           help: Kanava, jonka haluat viedä
-        locales:
-          title: Alueet
+        attributes:
+          title: Attribuutit
+          edit: Muokkaa
+          modal:
+            apply: Valitse
+            cancel: Peruuta
+        attributes_selector:
+          attribute_group: Attribuuttiryhmät
+          clear: Tyhjennä
+          all_group: Kaikki ryhmät
         family:
           title: Perhe
           operators:
@@ -346,6 +353,11 @@ pim_enrich:
             >: '>'
             <=: '<='
             <: '<'
+            EMPTY: Tyhjä
+        string:
+          operators:
+            ALL: Kaikki
+            EMPTY: Tyhjä
         price-collection:
           operators:
             =: '='
@@ -353,5 +365,19 @@ pim_enrich:
             <=: '<='
             >: '>'
             <: '<'
+            EMPTY: Tyhjä
+        multi_select:
+          operators:
+            IN: Luettelossa
+            EMPTY: Tyhjä
+        media:
+          operators:
+            EMPTY: Tyhjä
+        date:
+          operators:
+            EMPTY: Tyhjä
+        number:
+          operators:
+            EMPTY: Tyhjä
 pim_enrich.error:
   exception.title: 'Voi ei! {{ status_code }} virhe tapahtui...'

@@ -334,16 +334,26 @@ pim_enrich:
           title: Attributs
       filter:
         channel:
-          title: Canal
           help: Le canal que vous souhaitez exporter
         locales:
-          title: Locales
           help: La locale que vous souhaitez exporter
+        attributes:
+          title: Attributs
+          edit: Modifier
+          help: Les catégories des produits que vous souhaitez exporter
+          modal:
+            apply: Appliquer
+            cancel: Annuler
+        attributes_selector:
+          attribute_group: "Groupes d'attributs"
+          clear: Réinitialiser
+          all_group: Tous les groupes
         family:
           title: Famille
           help: Les familles que vous souhaitez exporter
           operators:
             IN: Dans la liste
+          empty_selection: Sélectionnez une famille
         updated:
           title: Mis à jour
           operators:
@@ -366,6 +376,7 @@ pim_enrich:
             >=: Complet sur au moins une locale sélectionnée
             GREATER OR EQUALS THAN ON ALL LOCALES: Complet sur toutes les locales sélectionnées
             LOWER THAN ON ALL LOCALES: Non complet sur toutes les locales sélectionnées
+          empty_selection: Sélectionnez une famille
         category:
           help: Les catégories des produits que vous souhaitez exporter
         metric:
@@ -375,6 +386,16 @@ pim_enrich:
             >: '>'
             <=: '<='
             <: '<'
+            EMPTY: Est vide
+        string:
+          operators:
+            ALL: Tous
+            CONTAINS: Contient
+            DOES NOT CONTAIN: Ne contient pas
+            =: Est égal à
+            STARTS WITH: Commence par
+            ENDS WITH: Finit par
+            EMPTY: Est vide
         price-collection:
           operators:
             =: '='
@@ -382,6 +403,32 @@ pim_enrich:
             <=: '<='
             >: '>'
             <: '<'
+            EMPTY: Est vide
+        multi_select:
+          operators:
+            IN: Dans la liste
+            EMPTY: Est vide
+        media:
+          operators:
+            CONTAINS: Contient
+            DOES NOT CONTAIN: Ne contient pas
+            =: Est égal à
+            STARTS WITH: Commence par
+            ENDS WITH: Finit par
+            EMPTY: Est vide
+        date:
+          operators:
+            >: Supérieur à
+            <: Inférieur à
+            =: Est égal à
+            EMPTY: Est vide
+            NOT EMPTY: "N'est pas vide"
+        number:
+          operators:
+            >: Supérieur à
+            <: Inférieur à
+            EMPTY: Est vide
+            NOT EMPTY: "N'est pas vide"
   mass_edit_action:
     edit_common_attributes:
       description: 'Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal <span class="highlight">{{ channel }}</span>, choisis dans la grille des produits.'
