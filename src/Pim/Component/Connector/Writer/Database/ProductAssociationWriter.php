@@ -2,6 +2,13 @@
 
 namespace Pim\Component\Connector\Writer\Database;
 
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+
 /**
  * Custom writer for product associations to indicate the number of created/updated association targets
  *
@@ -9,10 +16,51 @@ namespace Pim\Component\Connector\Writer\Database;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAssociationWriter extends BaseWriter
+class ProductAssociationWriter extends AbstractConfigurableStepElement implements
+    ItemWriterInterface,
+    StepExecutionAwareInterface
 {
+    /** @var StepExecution */
+    protected $stepExecution;
+
+    /** @var BulkSaverInterface */
+    protected $bulkSaver;
+
+    /** @var BulkObjectDetacherInterface */
+    protected $bulkDetacher;
+
+    /**
+     * @param BulkSaverInterface          $bulkSaver
+     * @param BulkObjectDetacherInterface $bulkDetacher
+     */
+    public function __construct(
+        BulkSaverInterface $bulkSaver,
+        BulkObjectDetacherInterface $bulkDetacher
+    ) {
+        $this->bulkSaver    = $bulkSaver;
+        $this->bulkDetacher = $bulkDetacher;
+    }
+
     /**
      * {@inheritdoc}
+     */
+    public function write(array $objects)
+    {
+        $this->incrementCount($objects);
+        $this->bulkSaver->saveAll($objects);
+        $this->bulkDetacher->detachAll($objects);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * @param array $products
      */
     protected function incrementCount(array $products)
     {
