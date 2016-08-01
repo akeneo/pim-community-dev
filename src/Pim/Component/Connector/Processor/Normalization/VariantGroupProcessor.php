@@ -74,7 +74,7 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
 
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
             $directory = $this->getWorkingDirectory($parameters->get('filePath'));
-            $this->importMedia($variantGroup, $directory);
+            $this->fetchMedia($variantGroup, $directory);
         }
 
         $this->objectDetacher->detach($variantGroup);
@@ -91,12 +91,12 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * Import media in local filesystem
+     * Fetch medias in local filesystem
      *
      * @param GroupInterface $variantGroup
      * @param string         $directory
      */
-    protected function importMedia(GroupInterface $variantGroup, $directory)
+    protected function fetchMedia(GroupInterface $variantGroup, $directory)
     {
         if (null === $productTemplate = $variantGroup->getProductTemplate()) {
             return;

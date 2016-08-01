@@ -100,7 +100,7 @@ class ProductProcessor extends AbstractProcessor
 
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
             $directory = $this->getWorkingDirectory($parameters->get('filePath'));
-            $this->fetchMedias($product, $directory);
+            $this->fetchMedia($product, $directory);
         }
 
         $this->detacher->detach($product);
@@ -153,7 +153,7 @@ class ProductProcessor extends AbstractProcessor
      * @param ProductInterface $product
      * @param string           $directory
      */
-    protected function fetchMedias(ProductInterface $product, $directory)
+    protected function fetchMedia(ProductInterface $product, $directory)
     {
         $identifier = $product->getIdentifier()->getData();
         $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
