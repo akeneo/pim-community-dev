@@ -13,7 +13,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseReader extends AbstractReader implements ItemReaderInterface, StepExecutionAwareInterface
+class Reader extends AbstractReader implements ItemReaderInterface, StepExecutionAwareInterface
 {
     /** @var ObjectRepository */
     protected $repository;
