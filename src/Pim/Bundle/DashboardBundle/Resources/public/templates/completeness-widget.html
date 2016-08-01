@@ -4,19 +4,19 @@
     <% _.each(channels, function (channelResult, channel) { %>
         <div class="channel">
             <div class="header">
-                <%= channelResult.name %>
-                <div class="pull-right"><%= channelResult.percentage %>%</div>
+                <%- channelResult.name %>
+                <div class="pull-right"><%- channelResult.percentage %>%</div>
             </div>
             <table class="locale-result">
             <% _.each(channelResult.locales, function (localeResult, locale) { %>
                 <tr>
-                    <td class="locale"><%= locale %></td>
+                    <td class="locale"><%- locale %></td>
                     <td class="progress-cell">
                         <div class="progress">
-                            <div class="bar <%= localeResult.ratio === 100 ? options.completeBar : options.inCompleteBar %>" style="width: <%= localeResult.ratio %>%"></div>
+                            <div class="bar <%- localeResult.ratio === 100 ? options.completeBar : options.inCompleteBar %>" style="width: <%= localeResult.ratio %>%"></div>
                         </div>
                     </td>
-                    <td class="total"><%= localeResult.complete %>/<%= channelResult.total %></td>
+                    <td class="total"><%- localeResult.complete %>/<%- channelResult.total %></td>
                 </tr>
             <% }); %>
             </table>
@@ -27,6 +27,6 @@
 
 <% if (chunkedChannels.length > 1) { %>
     <div class="text-center">
-        <div id="completeness-load-more" class="btn"><%- _.__('pim_dashboard.widget.completeness.load_more') %></div>
+        <div class="btn load-more"><%- __('pim_dashboard.widget.completeness.load_more') %></div>
     </div>
 <% } %>

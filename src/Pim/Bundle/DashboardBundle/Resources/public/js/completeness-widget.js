@@ -16,13 +16,13 @@ define(
 
             template: _.template(template),
 
-            _afterLoad: function() {
-                AbstractWidget.prototype._afterLoad.apply(this, arguments)
+            _afterLoad: function () {
+                AbstractWidget.prototype._afterLoad.apply(this, arguments);
                 this.loadMore();
             },
 
             events: {
-                'click #completeness-load-more': 'loadMore'
+                'click .load-more': 'loadMore'
             },
 
             loadMore: function (e) {
@@ -30,13 +30,13 @@ define(
                     e.preventDefault();
                 }
 
-                var $nextChannels = $('#' + this.id).find('.channels:not(:visible)');
+                var $nextChannels = $('.completeness-widget .channels:not(:visible)');
                 if ($nextChannels.length) {
                     $nextChannels.first().show();
                 }
 
                 if ($nextChannels.length <= 1) {
-                    $('#completeness-load-more').hide();
+                    $('.completeness-widget .load-more').hide();
                 }
             },
 

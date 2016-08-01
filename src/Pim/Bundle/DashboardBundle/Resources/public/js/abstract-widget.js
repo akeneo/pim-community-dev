@@ -1,6 +1,15 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'routing', 'oro/loading-mask', 'oro/mediator', 'oro/navigation'],
-    function ($, _, Backbone, Routing, LoadingMask, mediator, Navigation) {
+    [
+        'jquery',
+        'underscore',
+        'oro/translator',
+        'backbone',
+        'routing',
+        'oro/loading-mask',
+        'oro/mediator',
+        'oro/navigation'
+    ],
+    function ($, _, __, Backbone, Routing, LoadingMask, mediator, Navigation) {
         'use strict';
 
         return Backbone.View.extend({
@@ -37,7 +46,7 @@ define(
             },
 
             render: function () {
-                this.$el.html(this.template({ data: this.data, options: this.options }));
+                this.$el.html(this.template({ data: this.data, options: this.options, __: __ }));
 
                 return this;
             },
