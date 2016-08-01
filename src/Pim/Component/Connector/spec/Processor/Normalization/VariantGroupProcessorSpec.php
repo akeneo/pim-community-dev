@@ -84,7 +84,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         )->willReturn($variantStandard);
 
         $variantGroupUpdater->update($variantGroup, Argument::any())->shouldNotBeCalled();
-        $mediaFetcher->exportAll(Argument::any())->shouldNotBeCalled();
+        $mediaFetcher->fetchAll(Argument::any())->shouldNotBeCalled();
 
         $this->process($variantGroup)->shouldReturn($variantStandard);
 
@@ -145,7 +145,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $productTemplate->getValuesData()->willReturn($variantStandard['values']);
         $productTemplate->getValues()->willReturn($emptyCollection);
-        $mediaFetcher->exportAll($emptyCollection, $directory, 'my_variant_group')->shouldBeCalled();
+        $mediaFetcher->fetchAll($emptyCollection, $directory, 'my_variant_group')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn([]);
 
         $variantGroupUpdater->update($variantGroup, ['values' => $variantStandard['values']])->shouldBeCalled();
@@ -220,7 +220,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroupUpdater->update($variantGroup, ['values' => $variantStandard['values']])->shouldBeCalled();
         $productTemplate->getValuesData()->willReturn($variantStandard['values']);
         $productTemplate->getValues()->willReturn($productValueCollection);
-        $mediaFetcher->exportAll($productValueCollection, $directory, 'my_variant_group')->shouldBeCalled();
+        $mediaFetcher->fetchAll($productValueCollection, $directory, 'my_variant_group')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn([]);
 
         $this->process($variantGroup)->shouldReturn($variantStandard);
@@ -288,7 +288,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroupUpdater->update($variantGroup, ['values' => $variantStandard['values']])->shouldBeCalled();
         $productTemplate->getValuesData()->willReturn($variantStandard['values']);
         $productTemplate->getValues()->willReturn($productValueCollection);
-        $mediaFetcher->exportAll($productValueCollection, $directory, 'my_variant_group')->shouldBeCalled();
+        $mediaFetcher->fetchAll($productValueCollection, $directory, 'my_variant_group')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn(
             [
                 [

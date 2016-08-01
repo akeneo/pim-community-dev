@@ -156,7 +156,7 @@ class ProductProcessor extends AbstractProcessor
     protected function fetchMedias(ProductInterface $product, $directory)
     {
         $identifier = $product->getIdentifier()->getData();
-        $this->mediaFetcher->exportAll($product->getValues(), $directory, $identifier);
+        $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
 
         foreach ($this->mediaFetcher->getErrors() as $error) {
             $this->stepExecution->addWarning($error['message'], [], $error['media']);

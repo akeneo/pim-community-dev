@@ -100,7 +100,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn($productStandard);
 
-        $mediaFetcher->exportAll(Argument::cetera())->shouldNotBeCalled();
+        $mediaFetcher->fetchAll(Argument::cetera())->shouldNotBeCalled();
         $mediaFetcher->getErrors()->shouldNotBeCalled();
 
         $this->process($product)->shouldReturn($productStandard);
@@ -168,7 +168,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn($productStandard);
 
-        $mediaFetcher->exportAll($valuesCollection, $directory, 'AKIS_XS')->shouldBeCalled();
+        $mediaFetcher->fetchAll($valuesCollection, $directory, 'AKIS_XS')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn([]);
 
         $this->process($product)->shouldReturn($productStandard);
@@ -231,7 +231,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn($productStandard);
 
-        $mediaFetcher->exportAll($valuesCollection, $directory, 'AKIS_XS')->shouldBeCalled();
+        $mediaFetcher->fetchAll($valuesCollection, $directory, 'AKIS_XS')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn(
             [
                 [

@@ -105,7 +105,7 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
         $identifier = $variantGroup->getCode();
         $this->variantGroupUpdater->update($variantGroup, ['values' => $productTemplate->getValuesData()]);
 
-        $this->mediaFetcher->exportAll($productTemplate->getValues(), $directory, $identifier);
+        $this->mediaFetcher->fetchAll($productTemplate->getValues(), $directory, $identifier);
 
         foreach ($this->mediaFetcher->getErrors() as $error) {
             $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));

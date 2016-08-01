@@ -47,13 +47,13 @@ class BulkMediaFetcher
     }
 
     /**
-     * Export the media of the items to the target
+     * Fetch the media of the items to the target
      *
      * @param ArrayCollection $items
      * @param string          $target
      * @param string          $identifier
      */
-    public function exportAll(ArrayCollection $items, $target, $identifier)
+    public function fetchAll(ArrayCollection $items, $target, $identifier)
     {
         foreach ($items as $value) {
             if (!$value instanceof ProductValueInterface) {
@@ -75,7 +75,7 @@ class BulkMediaFetcher
                     ]
                 );
 
-                $this->doCopy([
+                $this->fetch([
                     'from'    => $media->getKey(),
                     'to'      => $exportPath . $media->getOriginalFilename(),
                     'storage' => $media->getStorage()
@@ -104,12 +104,12 @@ class BulkMediaFetcher
     }
 
     /**
-     * Copy a media to the target
+     * Fetch a media to the target
      *
      * @param array  $media
      * @param string $target
      */
-    protected function doCopy(array $media, $target)
+    protected function fetch(array $media, $target)
     {
         $target = $target . DIRECTORY_SEPARATOR . $media['to'];
         $fileSystem = new Filesystem();
