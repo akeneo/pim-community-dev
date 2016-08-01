@@ -127,40 +127,33 @@
 
       .locale-result {
         font-size: @font-size-10;
-        border-bottom: 2px solid @akeneoGreySuperLight;
+        width: 100%;
         .clearfix();
 
-        & > div {
-          display: inline-block;
-          float: left;
+        tr {
           line-height: 46px;
+          td {
+            border-bottom: 2px solid @akeneoGreySuperLight;
+          }
         }
-        & > .locale {
-          width: 37%;
-          margin: 0 10px;
+        .locale {
+          padding: 0 10px;
           .text-overflow();
         }
-        & > .progress-cell {
-          width: 29%;
-          div.center {
-            text-align: center;
-          }
+        .progress-cell {
           span.progress-info {
             padding: 5px;
-            color: @blue;
             cursor: default;
           }
           .progress {
             height: 18px;
             margin-bottom: 0;
-            margin-top: 15px;
             .border-radius(2px);
           }
         }
-        & > .total {
-          width: 19%;
+        .total {
           text-align: right;
-          margin: 0 10px;
+          padding: 0 10px;
         }
       }
     }
