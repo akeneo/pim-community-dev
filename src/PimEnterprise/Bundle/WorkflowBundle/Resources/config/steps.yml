@@ -8,7 +8,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_workflow.reader.file.csv_product_draft'
             - '@pimee_workflow.processor.denormalization.product_draft'
-            - '@pim_base_connector.writer.doctrine.product_draft'
+            - '@pim_base_connector.writer.database.product_draft'
             - 10
 
     # CSV Export steps ------------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_workflow.reader.file.xlsx_product_draft'
             - '@pimee_workflow.processor.denormalization.product_draft'
-            - '@pim_base_connector.writer.doctrine.product_draft'
+            - '@pim_base_connector.writer.database.product_draft'
             - 10
 
     # XLSX Export steps -----------------------------------------------------------------------------------------------
