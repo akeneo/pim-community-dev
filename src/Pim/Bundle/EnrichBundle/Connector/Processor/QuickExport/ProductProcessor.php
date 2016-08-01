@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Connector\Writer\File\BulkFileExporter;
+use Pim\Component\Connector\Processor\BulkFileExporter;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -59,6 +59,7 @@ class ProductProcessor extends AbstractProcessor
      * @param ObjectDetacherInterface      $detacher
      * @param UserProviderInterface        $userProvider
      * @param TokenStorageInterface        $tokenStorage
+     * @param BulkFileExporter             $mediaExporter
      */
     public function __construct(
         NormalizerInterface $normalizer,

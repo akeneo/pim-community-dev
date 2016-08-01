@@ -1,10 +1,12 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\File;
+namespace Pim\Component\Connector\Processor;
 
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Connector\Writer\File\FileExporterInterface;
+use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**

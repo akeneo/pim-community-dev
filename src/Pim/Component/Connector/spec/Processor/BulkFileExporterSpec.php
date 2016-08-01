@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Writer\File;
+namespace spec\Pim\Component\Connector\Processor;
 
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
@@ -29,7 +29,7 @@ class BulkFileExporterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Writer\File\BulkFileExporter');
+        $this->shouldHaveType('Pim\Component\Connector\Processor\BulkFileExporter');
     }
 
     function it_copies_media_to_the_export_dir(

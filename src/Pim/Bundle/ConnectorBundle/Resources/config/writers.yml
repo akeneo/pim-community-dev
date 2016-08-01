@@ -14,7 +14,6 @@ parameters:
     pim_connector.writer.file.xlsx_product.class:                  Pim\Component\Connector\Writer\File\Xlsx\ProductWriter
     pim_connector.writer.file.xlsx.class:                          Pim\Component\Connector\Writer\File\Xlsx\Writer
     pim_connector.writer.file.xlsx_variant_group.class:            Pim\Component\Connector\Writer\File\Xlsx\VariantGroupWriter
-    pim_connector.writer.file.product.bulk_file_exporter.class:    Pim\Component\Connector\Writer\File\BulkFileExporter
     pim_connector.writer.file.default.column_sorter.class:         Pim\Component\Connector\Writer\File\DefaultColumnSorter
     pim_connector.writer.file.product.column_sorter.class:         Pim\Component\Connector\Writer\File\ProductColumnSorter
     pim_connector.writer.file.flat_item_buffer_flusher.class:      Pim\Component\Connector\Writer\File\FlatItemBufferFlusher
@@ -144,13 +143,6 @@ services:
 
     pim_connector.writer.file.media_exporter_path_generator:
         class: '%pim_connector.writer.file.media_exporter_path_generator.class%'
-
-    pim_connector.writer.file.product.bulk_file_exporter:
-        class: '%pim_connector.writer.file.product.bulk_file_exporter.class%'
-        arguments:
-            - '@pim_connector.writer.file.file_exporter'
-            - '@pim_connector.writer.file.media_exporter_path_generator'
-            - ['pim_catalog_file', 'pim_catalog_image']
 
     pim_connector.writer.file.yaml:
         class: '%pim_connector.writer.file.yaml.class%'
