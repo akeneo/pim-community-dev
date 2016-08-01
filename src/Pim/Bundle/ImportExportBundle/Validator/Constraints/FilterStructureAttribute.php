@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
 class FilterStructureAttribute extends Constraint
 {
     /** @var string */
-    public $message = "The attribute %attributeCode% is not valid.";
+    public $message = 'The attribute %attributeCode% is not valid.';
 
     /**
      * {@inheritdoc}

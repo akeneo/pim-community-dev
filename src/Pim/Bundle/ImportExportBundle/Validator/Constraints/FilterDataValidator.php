@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
+use Pim\Bundle\CatalogBundle\ExceptionTranslationProvider;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -16,14 +18,24 @@ class FilterDataValidator extends ConstraintValidator
     /** @var ProductQueryBuilderFactory */
     protected $pqbFactory;
 
+    /** @var ExceptionTranslationProvider */
+    protected $translationProvider;
+
     /**
-     * @param ProductQueryBuilderFactory $pqbFactory
+     * @param ProductQueryBuilderFactory   $pqbFactory
+     * @param ExceptionTranslationProvider $translationProvider
      */
-    public function __construct(ProductQueryBuilderFactory $pqbFactory)
-    {
+    public function __construct(
+        ProductQueryBuilderFactory $pqbFactory,
+        ExceptionTranslationProvider $translationProvider
+    ) {
         $this->pqbFactory = $pqbFactory;
+        $this->translationProvider = $translationProvider;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function validate($value, Constraint $constraint)
     {
         $pqb = $this->pqbFactory->create();
@@ -31,8 +43,10 @@ class FilterDataValidator extends ConstraintValidator
         foreach ($value as $data) {
             try {
                 $pqb->addFilter($data['field'], $data['operator'], $data['value']);
-            } catch (\Exception $e) {
-                $this->context->buildViolation($data['field'] . ':' . $e->getMessage())->addViolation();
+            } catch (InvalidArgumentException $e) {
+                $this->context->buildViolation($this->translationProvider->getTranslation($e))
+                    ->atPath($data['field'])
+                    ->addViolation();
             }
         }
     }

@@ -282,13 +282,11 @@ class JobProfileController
 
         $errors = [];
         foreach ($form->getErrors() as $error) {
-            if (false !== strstr($error->getMessage(), ':')) {
-                list($field, $error) = explode(':', $error->getMessage());
-                $errors[] = [
-                    'field'   => $field,
-                    'message' => $error
-                ];
-            }
+            $propertyPath = explode('.', $error->getCause()->getPropertyPath());
+            $errors[] = [
+                'field'   => end($propertyPath),
+                'message' => $error->getMessage()
+            ];
         }
 
         return $this->templating->renderResponse(

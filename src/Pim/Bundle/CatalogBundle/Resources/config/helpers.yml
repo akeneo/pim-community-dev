@@ -1,5 +1,6 @@
 parameters:
     pim_catalog.helper.locale.class: Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+    pim_catalog.helper.exception_translation_provider.class: Pim\Bundle\CatalogBundle\ExceptionTranslationProvider
 
 services:
     # Locale helper
@@ -8,3 +9,8 @@ services:
         arguments:
             - '@pim_user.context.user'
             - '@pim_catalog.repository.locale'
+
+    pim_catalog.helper.exception_translation_provider:
+        class: '%pim_catalog.helper.exception_translation_provider.class%'
+        arguments:
+            - '@translator'

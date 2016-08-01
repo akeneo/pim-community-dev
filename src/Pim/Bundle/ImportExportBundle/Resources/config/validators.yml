@@ -8,6 +8,7 @@ services:
         class: '%pim_import_export.validator.constraints.filter_data_validator.class%'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.helper.exception_translation_provider'
         tags:
             - { name: validator.constraint_validator, alias: filter_data_validator }
 

@@ -5,3 +5,21 @@ No products to remove: No products to remove
 pim_catalog:
     constraint:
         product_identifier: These identifiers "%s" don't exist.
+        expected: Wrong value expected.
+        boolean_expected: This field expects a boolean value.
+        float_expected: This field expects a float value.
+        integer_expected: This field expects an integer value.
+        numeric_expected: This field expects a numeric value.
+        string_expected: This field expects a string value.
+        array_expected: This field expects an array value.
+        array_of_arrays_expected: This field expects an array of arrays as value.
+        array_key_expected: INTERNAL
+        array_invalid_key: INTERNAL
+        array_numeric_key_expected: This field expects a numeric value.
+        array_string_key_expected: This field expects a string value.
+        array_string_value_expected: This field expects a string value.
+        empty_array: INTERNAL
+        valid_entity_expected: This field expects a valid entity code.
+        locale_and_scope_expected: This field expects a valid scope and locale.
+        scope_expected: This field expects a valid scope.
+        association_format_expected: This field expects a valid association format.
