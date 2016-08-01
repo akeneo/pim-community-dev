@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * We test with a channel but it could be anything
  */
-class SimpleProcessorSpec extends ObjectBehavior
+class ProcessorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $repository,

@@ -2,10 +2,6 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
-use Pim\Component\Catalog\Model\GroupInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-
 /**
  * Variant group import processor, allows to,
  *  - create / update variant groups
@@ -16,7 +12,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupProcessor extends SimpleProcessor
+class VariantGroupProcessor extends Processor
 {
     /**
      * {@inheritdoc}
