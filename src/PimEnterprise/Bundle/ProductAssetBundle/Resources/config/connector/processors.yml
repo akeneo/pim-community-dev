@@ -1,13 +1,10 @@
 parameters:
     pimee_product_asset.processor.denormalization.channel_configuration.class: PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\ChannelConfigurationProcessor
-    pimee_product_asset.processor.normalization.channel_configuration.class:   PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\ChannelConfigurationProcessor
-    pimee_product_asset.processor.normalization.asset.class:                   PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\AssetProcessor
-    pimee_product_asset.processor.normalization.variation.class:               PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\VariationProcessor
     pimee_product_asset.processor.classify_assets.class:                       PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassEdit\Asset\ClassifyAssetsProcessor
     pimee_product_asset.processor.add_tags_to_assets.class:                    PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassEdit\Asset\AddTagsToAssetsProcessor
 
 services:
-    # Denormalizers
+    # Denormalization
     pimee_product_asset.processor.denormalization.tag:
         class: '%pim_connector.processor.denormalization.class%'
         arguments:
@@ -43,7 +40,7 @@ services:
             - '@pim_catalog.validator.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
-    # Normalizers
+    # Normalization
     pimee_product_asset.processor.normalization.asset:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
@@ -63,9 +60,10 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_product_asset.processor.normalization.channel_configuration:
-        class: '%pimee_product_asset.processor.normalization.channel_configuration.class%'
+        class: '%pim_connector.processor.normalization.class%'
         arguments:
             - '@pim_product_asset.normalizer.structured.channel_configuration'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     # Mass Edit
     pimee_product_asset.processor.classify_assets:
