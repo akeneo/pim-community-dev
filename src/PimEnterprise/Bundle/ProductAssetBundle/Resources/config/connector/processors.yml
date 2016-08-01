@@ -9,7 +9,7 @@ parameters:
 services:
     # Denormalizers
     pimee_product_asset.processor.denormalization.tag:
-        class: '%pim_connector.processor.denormalization.simple.class%'
+        class: '%pim_connector.processor.denormalization.class%'
         arguments:
             - '@pimee_product_asset.repository.tag'
             - '@pimee_product_asset.factory.tag'
@@ -18,7 +18,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_product_asset.processor.denormalization.asset:
-        class: '%pim_connector.processor.denormalization.simple.class%'
+        class: '%pim_connector.processor.denormalization.class%'
         arguments:
             - '@pimee_product_asset.repository.asset'
             - '@pimee_product_asset.factory.asset'
@@ -35,7 +35,7 @@ services:
             - '@validator'
 
     pimee_product_asset.processor.denormalization.category:
-        class: '%pim_connector.processor.denormalization.simple.class%'
+        class: '%pim_connector.processor.denormalization.class%'
         arguments:
             - '@pimee_product_asset.repository.category'
             - '@pimee_product_asset.factory.category'
@@ -45,19 +45,19 @@ services:
 
     # Normalizers
     pimee_product_asset.processor.normalization.asset:
-        class: '%pim_connector.processor.normalization.simple.class%'
+        class: '%pim_connector.processor.normalization.class%'
         arguments:
             - '@pim_product_asset.normalizer.structured.asset'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_product_asset.processor.normalization.category:
-        class: '%pim_connector.processor.normalization.simple.class%'
+        class: '%pim_connector.processor.normalization.class%'
         arguments:
             - '@pim_serializer.normalizer.flat.category'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_product_asset.processor.normalization.variation:
-        class: '%pim_connector.processor.normalization.simple.class%'
+        class: '%pim_connector.processor.normalization.class%'
         arguments:
             - '@pim_product_asset.normalizer.structured.variation'
             - '@akeneo_storage_utils.doctrine.object_detacher'

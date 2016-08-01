@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  *
- * @deprecated will be removed in 1.7 use @pim_connector.processor.normalization.simple.class
+ * @deprecated will be removed in 1.7 use @pim_connector.processor.normalization.class
  */
 class AssetProcessor extends AbstractConfigurableStepElement implements
     ItemProcessorInterface,
