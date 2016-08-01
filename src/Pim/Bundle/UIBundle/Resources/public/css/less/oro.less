@@ -49,7 +49,7 @@ a:focus {
 }
 .dropdown-menu {
   margin-top:-1px;
-  .border-radius(3px);
+  .border-radius(0);
   z-index: 900;
 }
 
@@ -181,11 +181,6 @@ select {
   border-bottom-left-radius: 2px;
 }
 
-// Bootstrap - Nav
-.dropdown-menu > li > a {
-  padding-left:13px;
-  padding-right:13px;
-}
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus,
 .dropdown-submenu:hover > a,
@@ -482,21 +477,23 @@ select {
     width: 60px;
   }
   thead th {
-    background-color: @akeneoGreyLighter;
     padding: 5px 10px;
     white-space: nowrap;
+    border-bottom: solid 2px @akeneoDarkBlue;
+    line-height: 44px;
+    color: @akeneoDarkBlue;
   }
   tbody td {
+    line-height: 44px;
     padding: 5px 10px;
   }
 }
 .grid thead .caret {
-  margin: 14px 0 0;
+  margin: 20px 0 0 5px;
 }
 .table thead th {
   padding:0 10px;
   font-size: @font-size-11;
-  line-height: 34px;
   a {
     color:lighten(@bodyColor,10%);
     text-shadow:0 1px 0 darken(@white,5%);

@@ -11,7 +11,6 @@
         top: 5px;
         border: 1px solid @color-bbb !important;
         margin: 0;
-        border-radius:3px !important;
       }
     }
     &:hover > .menu-level-1 {
@@ -44,7 +43,7 @@
     }
     .logo {
       position: relative;
-      height: 40px;
+      height: 50px;
       padding: 0 14px 0 0;
       margin: 0 5px 0 0;
       line-height: 36px;
@@ -126,7 +125,6 @@ header {
         margin: -4px -4px 0 0;
         li {
           a {
-            padding: 2px 12px;
             color: @bodyColor;
             &:hover { color: @bodyColor; }
           }
@@ -140,29 +138,19 @@ header {
 #oroplatform-header {
   .oroplatform-menu {
     > li.dropdown {
-      margin: 0 3px;
-      z-index: 900;
+      margin: 0;
       > a {
-        margin: 6px 0 6px;
-        padding: 4px 10px;
+        padding: 0 15px;
+        margin: 0;
+        line-height: 50px;
         font-size: @font-size-14;
         color: @white;
         text-shadow:none;
       }
-      &.active {
-        > a {
-          margin: 6px 0 6px;
-          padding: 4px 10px;
-          .border-radius(4px);
-        }
-      }
       &:hover,
       &:focus {
         > a {
-          margin: 6px 0 0;
-          padding-bottom: 10px;
           background: @white;
-          .border-radius(4px 4px 0 0);
           color: @color-444;
           &:hover {
             background: @white;
@@ -172,7 +160,6 @@ header {
       }
       .dropdown-menu { /* All 2+ level */
         border: none;
-        .border-radius(0 3px 3px 3px);
         width: auto;
         padding: 0;
         font-size: @font-size-14;
@@ -180,16 +167,14 @@ header {
         &:after,
         &:before { border:none; }
         li {
-          line-height: 1.3em;
+          line-height: 44px;
+          border-top: 1px solid @akeneoGreySuperLight;
           a {
-            padding: 5px 10px;
             color: @bodyColor;
           }
           &.active a { background:none; }
           a:hover,
           &.active a:hover { background: @whiteDarker }
-          &:first-child a { .border-radius(0 3px 0 0)}
-          &:last-child a { .border-radius(0 0 3px 3px)}
         }
       }
     }
@@ -201,23 +186,19 @@ header {
     }
     > li.dropdown > .dropdown-menu {
       left: auto;
-      top: 39px;
+      top: 45px;
     }
   }
 }
 #oroplatform-header {
   div.navbar-inner {
-    background: @akeneoPurpleDark;
+    background: @akeneoPurple;
     .logo {
       &:before, &:after {
         border: none;
       }
       a {
         padding: 0;
-        background-color: transparent;
-        img {
-          height: 40px;
-        }
       }
     }
     .nav.top-search {
