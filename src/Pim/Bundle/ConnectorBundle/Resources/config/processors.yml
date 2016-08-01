@@ -243,6 +243,7 @@ services:
     pim_connector.processor.bulk_media_fetcher:
         class: '%pim_connector.processor.bulk_media_fetcher.class%'
         arguments:
-            - '@pim_connector.writer.file.file_exporter'
+            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']

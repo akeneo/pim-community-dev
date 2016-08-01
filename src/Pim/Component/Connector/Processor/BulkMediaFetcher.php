@@ -3,11 +3,11 @@
 namespace Pim\Component\Connector\Processor;
 
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Component\FileStorage\File\FileFetcherInterface;
+use Akeneo\Component\FileStorage\FilesystemProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Connector\Writer\File\FileExporterInterface;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Fetch every media to the specific target during an export
@@ -18,11 +18,14 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class BulkMediaFetcher
 {
-    /** @var FileExporterInterface */
-    protected $fileExporter;
+    /** @var FileFetcherInterface */
+    protected $mediaFetcher;
 
     /** @var FileExporterPathGeneratorInterface */
     protected $fileExporterPath;
+
+    /** @var FilesystemProvider */
+    protected $filesystemProvider;
 
     /** @var array */
     protected $mediaAttributeTypes;
@@ -31,19 +34,22 @@ class BulkMediaFetcher
     protected $errors;
 
     /**
-     * @param FileExporterInterface              $fileExporter
+     * @param FileFetcherInterface               $mediaFetcher
+     * @param FilesystemProvider                 $filesystemProvider
      * @param FileExporterPathGeneratorInterface $fileExporterPath
      * @param array                              $mediaAttributeTypes
      */
     public function __construct(
-        FileExporterInterface $fileExporter,
+        FileFetcherInterface $mediaFetcher,
+        FilesystemProvider $filesystemProvider,
         FileExporterPathGeneratorInterface $fileExporterPath,
         array $mediaAttributeTypes
     ) {
         $this->errors = [];
-        $this->fileExporter = $fileExporter;
+        $this->mediaFetcher = $mediaFetcher;
         $this->fileExporterPath = $fileExporterPath;
         $this->mediaAttributeTypes = $mediaAttributeTypes;
+        $this->filesystemProvider = $filesystemProvider;
     }
 
     /**
@@ -55,6 +61,8 @@ class BulkMediaFetcher
      */
     public function fetchAll(ArrayCollection $items, $target, $identifier)
     {
+        $target = DIRECTORY_SEPARATOR !== substr($target, -1) ? $target . DIRECTORY_SEPARATOR : $target;
+
         foreach ($items as $value) {
             if (!$value instanceof ProductValueInterface) {
                 throw new \InvalidArgumentException(
@@ -77,9 +85,12 @@ class BulkMediaFetcher
 
                 $this->fetch([
                     'from'    => $media->getKey(),
-                    'to'      => $exportPath . $media->getOriginalFilename(),
+                    'to'      => [
+                        'filePath' => $target . $exportPath,
+                        'filename' => $media->getOriginalFilename()
+                    ],
                     'storage' => $media->getStorage()
-                ], $target);
+                ]);
             }
         }
     }
@@ -90,9 +101,14 @@ class BulkMediaFetcher
      * @return array
      *  [
      *      [
-     *          'message' => (string),
+     *          'message' => (string) 'The media has not been copied',
      *          'media'  => [
-     *              'filePath' => (string),
+     *              'from'    => (string) 'a/b/c/d/my_picture.jpg',
+     *              'to'      => [
+     *                  'filePath' => (string) '/tmp/files/identifier/code/',
+     *                  'filename' => (string) 'my picture.jpg'
+     *              ],
+     *              'storage' => (string) 'catalogStorage',
      *          ]
      *      ],
      *      [...]
@@ -106,17 +122,13 @@ class BulkMediaFetcher
     /**
      * Fetch a media to the target
      *
-     * @param array  $media
-     * @param string $target
+     * @param array $media
      */
-    protected function fetch(array $media, $target)
+    protected function fetch(array $media)
     {
-        $target = $target . DIRECTORY_SEPARATOR . $media['to'];
-        $fileSystem = new Filesystem();
-        $fileSystem->mkdir(dirname($target));
-
         try {
-            $this->fileExporter->export($media['from'], $target, $media['storage']);
+            $filesystem = $this->filesystemProvider->getFilesystem($media['storage']);
+            $this->mediaFetcher->fetch($filesystem, $media['from'], $media['to']);
         } catch (FileTransferException $e) {
             $this->addError(
                 $media,

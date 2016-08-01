@@ -7,7 +7,7 @@ use League\Flysystem\FilesystemInterface;
 
 /**
  * Fetch the raw file of a file stored in a virtual filesystem
- * into the temporary directory of the local filesystem.
+ * into the local filesystem.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -18,11 +18,12 @@ interface FileFetcherInterface
     /**
      * @param FilesystemInterface $filesystem
      * @param string              $fileKey
+     * @param array               $options
      *
      * @throws FileTransferException
      * @throws \LogicException
      *
      * @return \SplFileInfo
      */
-    public function fetch(FilesystemInterface $filesystem, $fileKey);
+    public function fetch(FilesystemInterface $filesystem, $fileKey, array $options = []);
 }
