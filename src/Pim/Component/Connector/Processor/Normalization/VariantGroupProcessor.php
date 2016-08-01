@@ -11,7 +11,7 @@ use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Connector\Processor\BulkFileExporter;
+use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -36,8 +36,8 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
 
-    /** @var BulkFileExporter */
-    protected $mediaExporter;
+    /** @var BulkMediaFetcher */
+    protected $mediaFetcher;
 
     /** @var ObjectUpdaterInterface */
     protected $variantGroupUpdater;
@@ -45,18 +45,18 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
     /**
      * @param NormalizerInterface     $normalizer
      * @param ObjectDetacherInterface $objectDetacher
-     * @param BulkFileExporter        $mediaExporter
+     * @param BulkMediaFetcher        $mediaFetcher
      * @param ObjectUpdaterInterface  $variantGroupUpdater
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ObjectDetacherInterface $objectDetacher,
-        BulkFileExporter $mediaExporter,
+        BulkMediaFetcher $mediaFetcher,
         ObjectUpdaterInterface $variantGroupUpdater
     ) {
         $this->normalizer = $normalizer;
         $this->objectDetacher = $objectDetacher;
-        $this->mediaExporter = $mediaExporter;
+        $this->mediaFetcher = $mediaFetcher;
         $this->variantGroupUpdater = $variantGroupUpdater;
     }
 
@@ -105,9 +105,9 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
         $identifier = $variantGroup->getCode();
         $this->variantGroupUpdater->update($variantGroup, ['values' => $productTemplate->getValuesData()]);
 
-        $this->mediaExporter->exportAll($productTemplate->getValues(), $directory, $identifier);
+        $this->mediaFetcher->exportAll($productTemplate->getValues(), $directory, $identifier);
 
-        foreach ($this->mediaExporter->getErrors() as $error) {
+        foreach ($this->mediaFetcher->getErrors() as $error) {
             $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
         }
     }

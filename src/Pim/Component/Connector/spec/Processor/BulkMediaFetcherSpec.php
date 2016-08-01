@@ -13,7 +13,7 @@ use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
 
-class BulkFileExporterSpec extends ObjectBehavior
+class BulkMediaFetcherSpec extends ObjectBehavior
 {
     /** @var string */
     private $directory;
@@ -29,7 +29,7 @@ class BulkFileExporterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Processor\BulkFileExporter');
+        $this->shouldHaveType('Pim\Component\Connector\Processor\BulkMediaFetcher');
     }
 
     function it_copies_media_to_the_export_dir(
@@ -65,7 +65,7 @@ class BulkFileExporterSpec extends ObjectBehavior
         $target = $this->directory . DIRECTORY_SEPARATOR . 'my product.jpg';
         $fileExporter->export('a/b/c/d/product.jpg', $target, 'storageAlias')->shouldBeCalled();
 
-        $this->exportAll($productValuesCollection, $this->directory, 'the_sku');
+        $this->fetchAll($productValuesCollection, $this->directory, 'the_sku');
         $this->getErrors()->shouldHaveCount(0);
     }
 
@@ -128,7 +128,7 @@ class BulkFileExporterSpec extends ObjectBehavior
             ['identifier' => 'the_sku', 'code' => 'my_picture']
         )->willReturn('files/the_sku/my_picture/fr_FR/ecommerce/');
 
-        $this->exportAll($productValuesCollection, $this->directory, 'the_sku');
+        $this->fetchAll($productValuesCollection, $this->directory, 'the_sku');
 
         $this->getErrors()->shouldBeEqualTo([
             [
