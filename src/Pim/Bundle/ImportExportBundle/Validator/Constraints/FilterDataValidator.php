@@ -28,7 +28,7 @@ class FilterDataValidator extends ConstraintValidator
     {
         $pqb = $this->pqbFactory->create();
 
-        foreach ($value['data'] as $data) {
+        foreach ($value as $data) {
             try {
                 $pqb->addFilter($data['field'], $data['operator'], $data['value']);
             } catch (\Exception $e) {
