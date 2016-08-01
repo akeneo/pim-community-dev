@@ -45,7 +45,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_catalog_rule.reader.file.yaml_rule'
             - '@pimee_catalog_rule.processor.denormalization.rule_definition'
-            - '@pimee_catalog_rule.writer.doctrine.rule_definition'
+            - '@pimee_catalog_rule.writer.database.rule_definition'
 
     # Export Rules steps ----------------------------------------------------------------------------------------------
     pimee_catalog_rule.step.yml_rule.export:

@@ -4,7 +4,7 @@ parameters:
 
 services:
     # import rules
-    pimee_catalog_rule.writer.doctrine.rule_definition:
+    pimee_catalog_rule.writer.database.rule_definition:
         class: '%pim_connector.writer.database.class%'
         arguments:
             - '@akeneo_rule_engine.saver.rule_definition'
