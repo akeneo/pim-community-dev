@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
@@ -95,7 +96,18 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
             if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-                $value = $this->objectIdResolver->getIdsFromCodes('option', $value, $attribute);
+                try {
+                    $value = $this->objectIdResolver->getIdsFromCodes('option', $value, $attribute);
+                } catch (ObjectNotFoundException $e) {
+                    throw InvalidArgumentException::validEntityCodeExpected(
+                        $field,
+                        'code',
+                        $e->getMessage(),
+                        'filter',
+                        'option',
+                        implode(', ', $value)
+                    );
+                }
             }
 
             $condition .= ' AND ' . $this->prepareCriteriaCondition($optionAlias, $operator, $value);

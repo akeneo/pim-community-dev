@@ -19,7 +19,7 @@ pim_catalog:
         array_string_key_expected: This field expects a string value.
         array_string_value_expected: This field expects a string value.
         empty_array: INTERNAL
-        valid_entity_expected: This field expects a valid entity code.
+        valid_entity_code_expected: This field expects a valid entity code.
         locale_and_scope_expected: This field expects a valid scope and locale.
         scope_expected: This field expects a valid scope.
         association_format_expected: This field expects a valid association format.

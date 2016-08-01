@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -43,7 +45,18 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
             $this->checkValue($field, $value);
 
             if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-                $value = $this->objectIdResolver->getIdsFromCodes('family', $value);
+                try {
+                    $value = $this->objectIdResolver->getIdsFromCodes('family', $value);
+                } catch (ObjectNotFoundException $e) {
+                    throw InvalidArgumentException::validEntityCodeExpected(
+                        $field,
+                        'code',
+                        $e->getMessage(),
+                        'filter',
+                        'family',
+                        implode(', ', $value)
+                    );
+                }
             }
         }
 
