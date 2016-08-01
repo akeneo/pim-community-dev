@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
 
-class BaseWriterSpec extends ObjectBehavior
+class WriterSpec extends ObjectBehavior
 {
     function let(
         BulkSaverInterface $bulkSaver,
