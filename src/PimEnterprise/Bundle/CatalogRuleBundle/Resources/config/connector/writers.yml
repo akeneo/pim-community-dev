@@ -1,15 +1,14 @@
 parameters:
-    # import rules
-    pimee_catalog_rule.writer.doctrine.rule_definition.class: PimEnterprise\Component\CatalogRule\Connector\Writer\Doctrine\RuleDefinitionWriter
     # execute rules
     pimee_catalog_rule.executor.rules.class: PimEnterprise\Component\CatalogRule\Connector\Executor\RulesExecutor
 
 services:
     # import rules
     pimee_catalog_rule.writer.doctrine.rule_definition:
-        class: '%pimee_catalog_rule.writer.doctrine.rule_definition.class%'
+        class: '%pim_connector.writer.database.base.class%'
         arguments:
             - '@akeneo_rule_engine.saver.rule_definition'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     # execute rules
     pimee_catalog_rule.executor.rules:
