@@ -31,12 +31,6 @@ define(
                 contentLoaded: false
             },
 
-            showListBtnTemplate: _.template(
-                '<a class="pull-right" id ="btn-show-list" href="javascript:void(0);" style="color: #444">' +
-                    '<i class="icon-tasks"></i>' +
-                '</a>'
-            ),
-
             template: _.template(template),
 
             events: {
@@ -66,15 +60,6 @@ define(
                 }
 
                 Navigation.getInstance().setLocation(route);
-            },
-
-            setShowListBtn: function () {
-                this.$showListBtn = $(this.showListBtnTemplate());
-
-                this.$el.parent().siblings('.widget-header').append(this.$showListBtn);
-                this.$showListBtn.on('click', _.bind(this.showList, this));
-
-                return this;
             },
 
             showList: function (e) {

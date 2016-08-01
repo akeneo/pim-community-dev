@@ -2,6 +2,8 @@
 @import '../../pimui/css/less/bootstrap_mixins';
 
 .dashboard {
+  color: @akeneoSlateGrey;
+
   .shortcuts {
     display: flex;
     justify-content:space-between;
@@ -22,7 +24,6 @@
       padding: 20px;
       font-weight: bold;
       font-size: @font-size-12;
-      color: @akeneoSlateGrey;
       background-color: @akeneoGreySuperLight;
 
       &:hover {
@@ -50,7 +51,6 @@
     margin-bottom: 20px;
     &>div.clearfix {
       overflow: hidden;
-      border: 1px solid @color-ccc;
       background-color: white;
     }
   }
@@ -86,13 +86,12 @@
   font-weight: bold;
   border-bottom: 3px solid @akeneoPurpleDark;
   line-height: 44px;
-  color: @akeneoPurpleDark;
   font-size: @font-size-15;
+  color: @akeneoPurpleDark;
+  text-transform: uppercase;
 
   .btn-refresh {
     margin-right: 3px;
-    margin-top: 1px;
-
     i {
       color: @akeneoSlateGrey;
       cursor: pointer;
@@ -141,6 +140,7 @@
           .text-overflow();
         }
         .progress-cell {
+          width: 50%;
           span.progress-info {
             padding: 5px;
             cursor: default;
@@ -148,7 +148,7 @@
           .progress {
             height: 18px;
             margin-bottom: 0;
-            .border-radius(2px);
+            .border-radius(6px);
           }
         }
         .total {
@@ -166,5 +166,35 @@
       background-color: @akeneoSlateGreyDark;
       color: @akeneoLight;
     }
+  }
+}
+
+table.last-operations, table.proposal-widget {
+  width: 100%;
+  tr {
+    td, th {
+      padding: 0 10px;
+      line-height: 48px;
+      border-bottom: 2px solid @akeneoGreySuperLight;
+      &.text-right {
+        text-align: right;
+      }
+    }
+    th {
+      background: @akeneoGreySuperLight;
+      font-size: @font-size-13;
+      border-bottom: 2px solid @akeneoSlateGrey;
+      text-align: left;
+    }
+  }
+  .label, .btn {
+    font-size: @font-size-12;
+    .border-radius(6px);
+    text-shadow: none;
+    line-height: 34px;
+    height: 34px;
+    padding: 0 20px;
+    font-weight:normal;
+    vertical-align: middle;
   }
 }

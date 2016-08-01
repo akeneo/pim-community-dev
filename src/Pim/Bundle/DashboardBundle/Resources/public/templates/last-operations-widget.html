@@ -1,16 +1,16 @@
 <% if (!_.isEmpty(data)) { %>
     <thead>
         <tr>
-            <th class="center">
+            <th>
                 <%= _.__("pim_dashboard.widget.last_operations.date") %>
             </th>
-            <th class="center">
+            <th>
                 <%= _.__("pim_dashboard.widget.last_operations.type") %>
             </th>
-            <th class="center">
+            <th>
                 <%= _.__("pim_dashboard.widget.last_operations.profile name") %>
             </th>
-            <th class="center">
+            <th>
                 <%= _.__("pim_dashboard.widget.last_operations.status") %>
             </th>
             <th></th>
@@ -23,12 +23,12 @@
             <td> <%= _.__("pim_dashboard.widget.last_operations.job_type."+operation.type) %></td>
             <td><%= operation.label %></td>
             <td>
-                <span class="label <%= operation.labelClass %> fullwidth">
+                <span class="label <%= operation.labelClass %>">
                     <%= operation.statusLabel %>
                 </span>
             </td>
-            <td>
-                <a class="btn btn-mini" href="javascript:void(0);"
+            <td class="text-right">
+                <a class="btn btn-large btn-download" href="javascript:void(0);"
                 data-id="<%= operation.id %>"
                 data-operation-type="<%= operation.type %>">
                     <%= _.__("pim_dashboard.widget.last_operations.details") %>
