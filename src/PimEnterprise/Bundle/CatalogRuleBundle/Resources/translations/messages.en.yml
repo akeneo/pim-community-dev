@@ -10,11 +10,11 @@ pimee_catalog_rule:
                 conditions: Condition
                 actions: Action
                 impacted_product_count:
-                    label: Matching products
-                    count: '{0,1}%count% matching product|]1,Inf[%count% matching products'
+                    label: Affected products
+                    count: '{0,1}%count% affected product|]1,Inf[%count% affected products'
                     no_yet_calculated: Not yet calculated
             mass_edit_action:
-                impacted_product_count: Calculate the matching products
+                impacted_product_count: Calculate the affected products
                 execute: Execute the selected rules
                 delete: Delete the selected rules
     actions:
@@ -54,7 +54,7 @@ pimee_catalog_rule:
         rule:
             view_permissions: View rules
             delete_permissions: Delete rules
-            impacted_product_count_permissions: Calculate the matching products for the rules
+            impacted_product_count_permissions: Calculate the affected products for the rules
             execute_permissions: Execute rules
     attribute:
         tab:
@@ -83,8 +83,8 @@ pimee_catalog_rule:
             executed: Execution of the rule(s) finished
             launched: The rules execution has been launched. You will be notified when it is done.
         mass_edit_rule:
-            success: Calculation of the matching products for the rules finished
-            error: An error as occurred during the calculation of the matching products for the rules
+            success: Calculation of the affected products for the rules finished
+            error: An error as occurred during the calculation of the affected products for the rules
 
     popin:
         execute_rules:
@@ -106,7 +106,7 @@ batch_jobs:
         label:        Rule export in YAML
         export.label: Rule export
     rule_impacted_product_count:
-        label:         Matching products for the rules
+        label:         Affected products for the rules
         perform.label: Count impacted products
     csv_product_import_with_rules:
         label:                     Product import in CSV with rules

@@ -532,7 +532,7 @@ jobs:
     rule_impacted_product_count:
         connector: Akeneo Rule Engine Connector
         alias:     rule_impacted_product_count
-        label:     Calculation of the matching products for the rules
+        label:     Calculation of the affected products for the rules
         type:      mass_edit_rule
     xlsx_product_import:
         connector: Akeneo XLSX Connector
