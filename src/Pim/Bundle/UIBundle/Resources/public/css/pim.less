@@ -91,21 +91,25 @@ table.grid {
   a.action {
     display: table-cell;
     i {
+      background: @akeneoGrey;
       opacity: 0;
       width: 26px;
-      height: 20px;
-      line-height: 20px;
+      height: 26px;
+      line-height: 26px;
       text-align: center;
-      border: 1px solid @color-ccc;
       .border-radius(2px);
     }
   }
+
+  [class^='icon-'].hide-text:before {
+    color: @akeneoSlateGreyDark;
+
+  }
 }
 tr:hover>.action-cell a.action>i {
-  opacity: 1;
-  background-color: @backgroundColor-white;
+  opacity: 0.7;
   &:hover {
-    background-color: @color-light_grey;
+    opacity: 1;
   }
 }
 
@@ -178,14 +182,6 @@ hr.small {
 }
 
 /** widgets **********************************************************************************************************/
-.widget-content {
-  position: relative;
-  transition: 0.7s ease-out;
-  &.loading {
-    min-height: 100px;
-  }
-}
-
 .configuration {
   width: 100%;
   margin-bottom: 20px;
@@ -193,7 +189,7 @@ hr.small {
     padding: 10px;
     font-size: @font-size-11em;
     font-weight: bold;
-    background: @akeneoPurpleLighter;
+    background: @akeneoPurpleSuperLight;
   }
   tbody {
     td {
@@ -274,7 +270,6 @@ span.link-label {
 
 /** Notifications *****************************************************************************************************/
 #header-notification-widget {
-
   i.icon-bell {
     font-size: @font-size-18 !important;
     line-height: 20px;
@@ -284,16 +279,16 @@ span.link-label {
   .indicator {
     position: absolute;
     text-align: center;
-    right: 3px;
-    top: 2px;
+    right: 1px;
+    top: -7px;
 
     .badge-square {
       font-size: @font-size-11;
       font-weight: initial;
       padding: 0 3px;
-      background: linear-gradient(@redNotifications, darken(@redNotifications, 20%));
+      background: @redDark;
       box-shadow: 0 0.7px 0 RGBa(0, 0, 0, 0.3), 0 0 3px rGBa(0, 0, 0, 0.35);
-      text-shadow: 0 1px 0 darken(@redNotifications, 20%);
+      text-shadow: 0 1px 0 darken(@red, 20%);
     }
   }
 
@@ -1636,49 +1631,9 @@ h3.tab-header {
   justify-content: space-between;
 }
 
-/** PEB*** ************************************************************************************************************/
-
-.job-profile-content-tab {
-  .control-group {
-    max-width: 900px;
-
-    .control-label.required {
-      font-weight: bold;
-    }
-
-    .filter-input {
-      display: inline-block;
-    }
-
-    .filter-context {
-      display: inline-block;
-      vertical-align: middle;
-
-      .btn-group + .btn-group {
-        margin-left: 3px;
-      }
-
-      .btn {
-        height: 32px;
-      }
-
-      > span {
-        padding: 0 4px;
-        vertical-align: middle;
-
-        .language {
-          padding: 0;
-          color: inherit;
-        }
-      }
-    }
-  }
-}
-
 .input-like {
-  padding: 2px 3px;
+  padding: 0 3px 10px 3px;
   width: 300px;
-  border: 1px solid @color-ddd;
   box-sizing: content-box;
 
   &.disabled {
@@ -1687,7 +1642,6 @@ h3.tab-header {
 
   .form-control {
     line-height: 28px;
-    font-size: @font-size-11em;
     padding-left: 7px;
   }
 }
@@ -1720,7 +1674,7 @@ h3.tab-header {
 
 .attributes .input-like, [data-type="pim-filter-product-category"] .filter-input .input-like {
     padding: 2px 2px 2px 0;
-    margin: 0 0 10px 0;
+    margin: 0 0 10px 5px;
     border: 1px solid #ddd;
     box-sizing: border-box;
 }

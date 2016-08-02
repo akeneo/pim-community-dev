@@ -65,7 +65,7 @@ define(
             },
 
             loadData: function () {
-                if (!this.needsData || !this.isDashboardPage()) {
+                if (!this.isDashboardPage()) {
                     this.loadTimeout = null;
 
                     return;

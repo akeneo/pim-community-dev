@@ -134,6 +134,7 @@
         .locale {
           padding: 0 10px;
           .text-overflow();
+          max-width: 155px
         }
 
         .progress-cell {
@@ -182,6 +183,9 @@ table.last-operations, table.proposal-widget {
       &.text-right {
         text-align: right;
       }
+      &.text-center {
+        text-align: center;
+      }
     }
 
     th {
@@ -201,5 +205,17 @@ table.last-operations, table.proposal-widget {
     padding: 0 20px;
     font-weight: normal;
     vertical-align: middle;
+  }
+}
+
+.widget-content {
+  position: relative;
+  transition: 0.7s ease-out;
+  max-height: 700px;
+  overflow-y: auto;
+
+  &.loading {
+    min-height: 100px;
+    overflow-y: hidden;
   }
 }

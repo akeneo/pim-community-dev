@@ -5,7 +5,7 @@ define(
         'routing',
         'oro/navigation',
         'pim/dashboard/abstract-widget',
-        'text!pimdashboard/templates/last-operations-widget'
+        'text!pim/dashboard/template/last-operations-widget'
     ],
     function ($, _, Routing, Navigation, AbstractWidget, template) {
         'use strict';

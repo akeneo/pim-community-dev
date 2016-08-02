@@ -38,7 +38,9 @@
     <% }); %>
     </tbody>
 <% } else if (options.contentLoaded) {%>
-    <span class="label text-center buffer-small-top buffer-small-bottom fullwidth">
-        <%= __('pim_dashboard.widget.last_operations.empty') %>
-    </span>
+    <tr>
+        <th class="text-center">
+            <%= __('pim_dashboard.widget.last_operations.empty') %>
+        </th>
+    </tr>
 <% } %>

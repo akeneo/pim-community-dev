@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'underscore', 'pim/dashboard/abstract-widget', 'text!pimdashboard/templates/completeness-widget'],
+    ['jquery', 'underscore', 'pim/dashboard/abstract-widget', 'text!pim/dashboard/template/completeness-widget'],
     function ($, _, AbstractWidget, template) {
         'use strict';
 
