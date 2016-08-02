@@ -16,7 +16,7 @@ Feature: Export products according to multi select reference data values
       | BOOT-6 | boots  | The boot 6 | cold               |
       | BOOT-7 | boots  | The boot 7 |                    |
     And the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/footwear_product_export.csv |
 
   Scenario: Export only the product values with selected reference data value
     Given I am logged in as "Julia"
