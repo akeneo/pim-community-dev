@@ -73,7 +73,7 @@
 .pin-frame {
   white-space: nowrap;
   width: 48px;
-  text-overflow: ellipsis;
+  .text-overflow();
 }
 
 .pin-menus .extra-list {
@@ -164,11 +164,11 @@
           &:hover,
           &:active,
           &:focus {
-            background-color: @akeneoPurpleLighter;
+            background-color: @akeneoPurpleSuperLight;
           }
           &.active {
             position: relative;
-            background-color: @akeneoPurpleLighter;
+            background-color: @akeneoPurpleSuperLight;
             font-weight: bold;
             &:before {
               width: 0;

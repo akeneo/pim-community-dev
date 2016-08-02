@@ -1,6 +1,13 @@
 define(
-    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pim/dashboard/abstract-widget'],
-    function ($, _, Routing, Navigation, AbstractWidget) {
+    [
+        'jquery',
+        'underscore',
+        'routing',
+        'oro/navigation',
+        'pim/dashboard/abstract-widget',
+        'text!pim/dashboard/template/last-operations-widget'
+    ],
+    function ($, _, Routing, Navigation, AbstractWidget, template) {
         'use strict';
 
         return AbstractWidget.extend({
@@ -24,64 +31,7 @@ define(
                 contentLoaded: false
             },
 
-            showListBtnTemplate: _.template(
-                '<a class="pull-right" id ="btn-show-list" href="javascript:void(0);" style="color: #444">' +
-                    '<i class="icon-tasks"></i>' +
-                '</a>'
-            ),
-
-            template: _.template(
-                [
-                    '<% if (!_.isEmpty(data)) { %>',
-                        '<thead>',
-                            '<tr>',
-                                '<th class="center">',
-                                    '<%= _.__("pim_dashboard.widget.last_operations.date") %>',
-                                '</th>',
-                                '<th class="center">',
-                                    '<%= _.__("pim_dashboard.widget.last_operations.type") %>',
-                                '</th>',
-                                '<th class="center">',
-                                    '<%= _.__("pim_dashboard.widget.last_operations.profile name") %>',
-                                '</th>',
-                                '<th class="center">',
-                                    '<%= _.__("pim_dashboard.widget.last_operations.status") %>',
-                                '</th>',
-                                '<th></th>',
-                            '</tr>',
-                        '</thead>',
-                        '<tbody>',
-                            '<% _.each(data, function (operation) { %>',
-                                '<tr>',
-                                    '<td>',
-                                        '<%= operation.date %>',
-                                    '</td>',
-                                    '<td>',
-                                        '<%= _.__("pim_dashboard.widget.last_operations.job_type."+operation.type) %>',
-                                    '</td>',
-                                    '<td><%= operation.label %></td>',
-                                    '<td>',
-                                        '<span class="label <%= operation.labelClass %> fullwidth">',
-                                            '<%= operation.statusLabel %>',
-                                        '</span>',
-                                    '</td>',
-                                    '<td>',
-                                        '<a class="btn btn-mini" href="javascript:void(0);" ',
-                                            'data-id="<%= operation.id %>" ',
-                                            'data-operation-type="<%= operation.type %>">',
-                                            '<%= _.__("pim_dashboard.widget.last_operations.details") %>',
-                                        '</a>',
-                                    '</td>',
-                                '</tr>',
-                            '<% }); %>',
-                        '</tbody>',
-                    '<% } else if (options.contentLoaded) {%>',
-                        '<span class="label text-center buffer-small-top buffer-small-bottom fullwidth">',
-                            '<%= _.__("pim_dashboard.widget.last_operations.empty") %>',
-                        '</span>',
-                    '<% } %>'
-                ].join('')
-            ),
+            template: _.template(template),
 
             events: {
                 'click a.btn': 'followLink',
@@ -110,15 +60,6 @@ define(
                 }
 
                 Navigation.getInstance().setLocation(route);
-            },
-
-            setShowListBtn: function () {
-                this.$showListBtn = $(this.showListBtnTemplate());
-
-                this.$el.parent().siblings('.widget-header').append(this.$showListBtn);
-                this.$showListBtn.on('click', _.bind(this.showList, this));
-
-                return this;
             },
 
             showList: function (e) {

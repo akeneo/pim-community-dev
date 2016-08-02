@@ -897,6 +897,8 @@ div.dropdown-menu.channel {
   clear: right;
   cursor: default;
   opacity: 0;
+  display: none;
+
   .label-warning {
     color: @color-form-info;
     text-shadow: none;
@@ -1321,4 +1323,16 @@ button.view-button {
 
 .tabbable.properties .accordion, .tabbable.history .grid-drop {
   width: 100%;
+}
+
+.job-profile-content-tab {
+  .control-group {
+    max-width: 900px;
+    .control-label.required {
+      font-weight: bold;
+    }
+    .filter-input {
+      display: inline-block;
+    }
+  }
 }

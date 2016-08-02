@@ -1,0 +1,221 @@
+@import '../../pimui/css/less/variables';
+@import '../../pimui/css/less/bootstrap_mixins';
+
+.dashboard {
+  color: @akeneoSlateGrey;
+  background-color: white;
+
+  .shortcuts {
+    display: flex;
+    justify-content: space-between;
+    text-transform: uppercase;
+
+    img {
+      display: block;
+      margin: 0 auto;
+      padding-bottom: 10px;
+    }
+
+    .btn.shortcut {
+      display: inline-block;
+      width: 220px;
+      zoom: 1;
+      vertical-align: top;
+      height: 180px;
+      padding: 20px;
+      font-weight: bold;
+      font-size: @font-size-12;
+      background-color: @akeneoGreySuperLight;
+
+      &:hover {
+        background-color: @akeneoGreyLighter;
+      }
+    }
+
+    .btn-mini {
+      height: 22px;
+      line-height: 22px;
+    }
+
+    .label {
+      min-height: 22px;
+      line-height: 22px;
+      padding: 0 4px;
+    }
+  }
+
+  &.quick-launchpad > .container {
+    padding-top: 30px;
+  }
+
+  .quick-launchpad-widget {
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: @font-size-18;
+    color: @color-new-purple-medium;
+    font-weight: normal;
+  }
+
+  &.header {
+    background-color: @whiteDark;
+    padding: 15px;
+  }
+
+  .version-container {
+    .current-version, .last-version {
+      display: inline-block;
+      margin-left: 10px;
+
+      &:first-child {
+        margin-right: 3px;
+      }
+    }
+  }
+}
+
+.widget-header {
+  font-weight: bold;
+  border-bottom: 3px solid @akeneoPurpleDark;
+  line-height: 44px;
+  font-size: @font-size-15;
+  color: @akeneoPurpleDark;
+  text-transform: uppercase;
+
+  .btn-refresh {
+    margin-right: 3px;
+
+    i {
+      color: @akeneoSlateGrey;
+      cursor: pointer;
+    }
+  }
+}
+
+.completeness-widget {
+  color: @akeneoSlateGrey;
+
+  & > div {
+    padding-top: 15px;
+  }
+
+  .channels {
+    display: flex;
+    justify-content: space-between;
+
+    .channel {
+      width: 300px;
+      display: inline-block;
+      border: 12px solid @akeneoGreySuperLight;
+      transition: opacity 0.2s linear;
+
+      .header {
+        border-bottom: 2px solid @akeneoSlateGrey;
+        padding: 10px;
+        font-size: @font-size-13;
+        font-weight: bold;
+      }
+
+      .locale-result {
+        font-size: @font-size-10;
+        width: 100%;
+        .clearfix();
+
+        tr {
+          line-height: 46px;
+
+          td {
+            border-bottom: 2px solid @akeneoGreySuperLight;
+          }
+        }
+
+        .locale {
+          padding: 0 10px;
+          .text-overflow();
+          max-width: 155px
+        }
+
+        .progress-cell {
+          width: 50%;
+
+          span.progress-info {
+            padding: 5px;
+            cursor: default;
+          }
+
+          .progress {
+            height: 18px;
+            margin-bottom: 0;
+            .border-radius(6px);
+          }
+        }
+
+        .total {
+          text-align: right;
+          padding: 0 10px;
+        }
+      }
+    }
+  }
+
+  .btn {
+    background-color: @akeneoSlateGrey;
+    color: @akeneoLight;
+
+    &:hover, &:focus {
+      background-color: @akeneoSlateGreyDark;
+      color: @akeneoLight;
+    }
+  }
+}
+
+table.last-operations, table.proposal-widget {
+  width: 100%;
+
+  tr {
+    td, th {
+      padding: 0 10px;
+      line-height: 48px;
+      border-bottom: 2px solid @akeneoGreySuperLight;
+
+      &.text-right {
+        text-align: right;
+      }
+      &.text-center {
+        text-align: center;
+      }
+    }
+
+    th {
+      background: @akeneoGreySuperLight;
+      font-size: @font-size-13;
+      border-bottom: 2px solid @akeneoSlateGrey;
+      text-align: left;
+    }
+  }
+
+  .label, .btn {
+    font-size: @font-size-12;
+    .border-radius(6px);
+    text-shadow: none;
+    line-height: 34px;
+    height: 34px;
+    padding: 0 20px;
+    font-weight: normal;
+    vertical-align: middle;
+  }
+}
+
+.widget-content {
+  position: relative;
+  transition: 0.7s ease-out;
+  max-height: 700px;
+  overflow-y: auto;
+
+  &.loading {
+    min-height: 100px;
+    overflow-y: hidden;
+  }
+}

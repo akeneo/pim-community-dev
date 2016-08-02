@@ -29,22 +29,22 @@ class LinksWidgetSpec extends ObjectBehavior
                     [
                         'route' => 'pim_enrich_product_index',
                         'label' => 'pim_dashboard.link.label.product',
-                        'icon' => 'barcode',
+                        'image' => 'widget_links_products.png',
                     ],
                     [
                         'route' => 'pim_enrich_family_index',
                         'label' => 'pim_dashboard.link.label.family',
-                        'icon' => 'folder-open-alt',
+                        'image' => 'widget_links_families.png',
                     ],
                     [
                         'route' => 'pim_enrich_attribute_index',
                         'label' => 'pim_dashboard.link.label.attribute',
-                        'icon' => 'list-ul',
+                        'image' => 'widget_links_attributes.png',
                     ],
                     [
                         'route' => 'pim_enrich_categorytree_index',
                         'label' => 'pim_dashboard.link.label.category',
-                        'icon' => 'sitemap',
+                        'image' => 'widget_links_categories.png',
                     ],
                 ],
             ]

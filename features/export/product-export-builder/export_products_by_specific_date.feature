@@ -43,8 +43,8 @@ Feature: Export products according to a date
     When I am on the "csv_footwear_product_export" export job edit page
     And I follow "Content"
     Then I filter by "updated" with operator "No date condition" and value ""
-    And I filter by "updated" with operator "Updated products since the last n days" and value ""
-    And I filter by "updated" with operator "Updated products since the defined date" and value ""
+    And I filter by "updated" with operator "Updated products over the last n days (e.g. 6)" and value "12"
+    And I filter by "updated" with operator "Updated products since this date" and value ""
     And I filter by "updated" with operator "Updated products since last export" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
@@ -55,19 +55,19 @@ Feature: Export products according to a date
     And I am logged in as "Julia"
     When I am on the "csv_footwear_product_export" export job edit page
     And I follow "Content"
-    When I filter exported products by operator "Updated products since the defined date" and value ""
+    When I filter exported products by operator "Updated products since this date" and value ""
     And I press "Save"
     Then I should be on the "csv_footwear_product_export" export job edit page
     And I should see a validation error "The date should not be blank."
-    When I filter exported products by operator "Updated products since the last n days" and value ""
+    When I filter exported products by operator "Updated products over the last n days (e.g. 6)" and value ""
     And I press "Save"
     Then I should be on the "csv_footwear_product_export" export job edit page
     And I should see a validation error "The date should not be blank."
-    When I filter exported products by operator "Updated products since the last n days" and value "ten days"
+    When I filter exported products by operator "Updated products over the last n days (e.g. 6)" and value "ten days"
     And I press "Save"
     Then I should be on the "csv_footwear_product_export" export job edit page
     And I should see a validation error "This value is not valid."
-    When I filter exported products by operator "Updated products since the last n days" and value "-12"
+    When I filter exported products by operator "Updated products over the last n days (e.g. 6)" and value "-12"
     And I press "Save"
     Then I should be on the "csv_footwear_product_export" export job edit page
     And I should see a validation error "This value should be 0 or more."

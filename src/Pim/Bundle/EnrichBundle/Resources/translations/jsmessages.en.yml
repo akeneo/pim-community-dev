@@ -379,12 +379,11 @@ pim_enrich:
                         "NOT EMPTY": Products that have a family
                     empty_selection: Select a family
                 updated:
-                    title: Updated
-                    help: The updated time condition of the products you want to export
+                    title: Time condition
                     operators:
                         ALL: No date condition
-                        "SINCE LAST N DAYS": Updated products since the last n days
-                        ">": Updated products since the defined date
+                        "SINCE LAST N DAYS": Updated products over the last n days (e.g. 6)
+                        ">": Updated products since this date
                         "SINCE LAST JOB": Updated products since last export
                 enabled:
                     title: Status

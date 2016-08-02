@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'pim/dashboard/abstract-widget'],
-    function ($, _, AbstractWidget) {
+    ['jquery', 'underscore', 'pim/dashboard/abstract-widget', 'text!pim/dashboard/template/completeness-widget'],
+    function ($, _, AbstractWidget, template) {
         'use strict';
 
         return AbstractWidget.extend({
@@ -10,62 +10,40 @@ define(
 
             options: {
                 completeBar: 'bar-success',
-                inCompleteBar: 'bar-warning'
+                inCompleteBar: 'bar-warning',
+                channelsPerRow: 3
             },
 
-            template: _.template(
-                [
-                    '<% _.each(data, function (channelResult, channel) { %>',
-                        '<tr class="channel">',
-                            '<td>',
-                                '<a href="#" data-toggle-channel="<%= channel %>">',
-                                    '<i class="icon-caret-down"></i>',
-                                '</a>',
-                            '</td>',
-                            '<td>',
-                                '<a href="#" data-toggle-channel="<%= channel %>">',
-                                    '<b><%= channel %></b>',
-                                '</a>',
-                            '</td>',
-                            '<td>',
-                                '<b><%= channelResult.percentage %>%</b>',
-                            '</td>',
-                            '<td>&nbsp;</td>',
-                        '</tr>',
-                        '<% _.each(channelResult.locales, function (localeResult, locale) { %>',
-                            '<tr data-channel="<%= channel %>">',
-                                '<td>&nbsp;</td>',
-                                '<td><%= locale %></td>',
-                                '<td><%= localeResult.ratio %>%</td>',
-                                '<td class="progress-cell">',
-                                    '<div class="progress">',
-                                        '<div class="bar ' + '<%= localeResult.ratio === 100 ? ' +
-                                            'options.completeBar : options.inCompleteBar %>" ' +
-                                            'style="width: <%= localeResult.ratio %>%;"></div>',
-                                    '</div>',
-                                    '<small><%= localeResult.complete %>/<%= channelResult.total %></small>',
-                                '</td>',
-                            '</tr>',
-                        '<% }); %>',
-                    '<% }); %>'
-                ].join('')
-            ),
+            template: _.template(template),
+
+            _afterLoad: function () {
+                AbstractWidget.prototype._afterLoad.apply(this, arguments);
+                this.loadMore();
+            },
 
             events: {
-                'click a[data-toggle-channel]': 'toggleChannel'
+                'click .load-more': 'loadMore'
             },
 
-            toggleChannel: function (e) {
-                e.preventDefault();
+            loadMore: function (e) {
+                if (undefined !== e) {
+                    e.preventDefault();
+                }
 
-                var channel = $(e.currentTarget).data('toggle-channel');
-                this.$('tr[data-channel="' + channel + '"]').toggle();
-                this.$('a[data-toggle-channel="' + channel + '"] i')
-                    .toggleClass('icon-caret-right icon-caret-down');
+                var $nextChannels = $('.completeness-widget .channels:not(:visible)');
+                if ($nextChannels.length) {
+                    $nextChannels.first().show();
+                }
+
+                if ($nextChannels.length <= 1) {
+                    $('.completeness-widget .load-more').hide();
+                }
             },
 
             _processResponse: function (data) {
-                _.each(data, function (channelResult) {
+                var channelArray = [];
+                _.each(data, function (channelResult, channel) {
+                    channelResult.name = channel;
                     channelResult.locales = channelResult.locales || {};
                     var divider = channelResult.total * _.keys(channelResult.locales).length;
 
@@ -84,9 +62,11 @@ define(
                             ratio: ratio
                         };
                     });
+
+                    channelArray.push(channelResult);
                 });
 
-                return data;
+                return channelArray;
             }
         });
     }

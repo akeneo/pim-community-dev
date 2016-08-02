@@ -29,7 +29,7 @@ class CompletenessWidget extends Element
     public function getChannelCompleteness($channel)
     {
         $cell = $this->spin(function () use ($channel) {
-            return $this->find('css', sprintf('tr:contains("%s") td>b', $channel));
+            return $this->find('css', sprintf('.header:contains("%s") .pull-right', $channel));
         }, sprintf('Could not find channel "%s"', $channel));
 
         return $cell->getText();
@@ -45,10 +45,13 @@ class CompletenessWidget extends Element
      */
     public function getLocalizedChannelCompleteness($channel, $locale)
     {
-        $cells = $this->findAll('css', sprintf('tr:contains("%s")[data-channel="%s"] td', $locale, $channel));
-        foreach ($cells as $cell) {
-            if (false !== strpos($cell->getText(), '%')) {
-                return $cell->getText();
+        $localeLines = $this->findAll('css', sprintf('.channel:contains("%s") tr', $channel));
+        foreach ($localeLines as $localeLine) {
+            $localeCell = $localeLine->find('css', 'td.locale');
+            if (null !== $localeCell) {
+                if ($localeCell->getText() === $locale) {
+                    return $localeLine->find('css', 'td.total')->getText();
+                }
             }
         }
 
