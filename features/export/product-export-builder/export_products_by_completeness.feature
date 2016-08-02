@@ -22,13 +22,14 @@ Feature: Export products according to a completeness policy
       | connector            | type   | alias              | code               | label              |
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
     Given the following job "csv_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv                                          |
+      | filePath | %tmp%/product_export/product_export.csv                                        |
+      | filters  | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"},"data":[]} |
     And I am logged in as "Julia"
 
   @ce
   Scenario: Export the products complete from at least one selected locale (default)
     Given the following job "csv_product_export" configuration:
-      | filters  | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"},"data":[{"field":"completeness","operator":"=","value":"100"}]} |
+      | filters  | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"},"data":[{"field":"completeness","operator":"=","value":"100","context":{"locales":["fr_FR","en_US"]}}]} |
     When I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish
