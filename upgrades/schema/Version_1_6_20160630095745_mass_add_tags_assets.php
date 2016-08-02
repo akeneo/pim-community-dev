@@ -19,7 +19,7 @@ class Version_1_6_20160630095745_mass_add_tags_assets extends AbstractMigration
     {
         $this->addSql(<<<SQL
             INSERT INTO akeneo_batch_job_instance
-                (`code`, `label`, `alias`, `status`, `connector`, `rawConfiguration`, `type`)
+                (`code`, `label`, `job_name`, `status`, `connector`, `rawConfiguration`, `type`)
             VALUES
                 ('add_tags_to_assets', 'Add tags to assets', 'add_tags_to_assets', 0, 'Akeneo Product Asset Connector', 'a:0:{}', 'mass_edit')
             ;
@@ -33,7 +33,7 @@ SQL
                     FROM akeneo_batch_job_instance as j
                     JOIN oro_access_group AS g ON g.name = "All"
                     WHERE j.code IN (
-                        'classify_assets'
+                        'add_tags_to_assets'
                     )
             ;
 SQL
