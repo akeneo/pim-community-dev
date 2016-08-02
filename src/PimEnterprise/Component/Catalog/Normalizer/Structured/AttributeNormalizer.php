@@ -38,7 +38,7 @@ class AttributeNormalizer implements NormalizerInterface
     {
         return
             $this->attributeNormalizer->normalize($object, $format, $context) +
-            ['is_read_only' => (int) $object->getProperty('is_read_only')];
+            ['is_read_only' => (bool) $object->getProperty('is_read_only')];
     }
 
     /**

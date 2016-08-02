@@ -29,6 +29,6 @@ class AttributeNormalizerSpec extends ObjectBehavior
 
         $attributeNormalizer->normalize($attribute, 'json', [])->willReturn([]);
 
-        $this->normalize($attribute, 'json', [])->shouldReturn(['is_read_only' => 0]);
+        $this->normalize($attribute, 'json', [])->shouldReturn(['is_read_only' => false]);
     }
 }
