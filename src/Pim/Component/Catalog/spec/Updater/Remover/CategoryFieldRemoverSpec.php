@@ -49,7 +49,8 @@ class CategoryFieldRemoverSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new InvalidArgumentException(
-                'Attribute or field "categories" expects existing category code as data, "unknown_category" given (for remover category).'
+                'Attribute or field "categories" expects existing category code as data, "unknown_category" given (for remover category).',
+                InvalidArgumentException::EXPECTED_CODE
             )
         )->duringRemoveFieldData($bookProduct, 'categories', ['unknown_category']);
     }
@@ -58,13 +59,15 @@ class CategoryFieldRemoverSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new InvalidArgumentException(
-                'Attribute or field "categories" expects an array as data, "string" given (for remover category).'
+                'Attribute or field "categories" expects an array as data, "string" given (for remover category).',
+                InvalidArgumentException::ARRAY_EXPECTED_CODE
             )
         )->duringRemoveFieldData($bookProduct, 'categories', 'category_code');
 
         $this->shouldThrow(
             new InvalidArgumentException(
-                'Attribute or field "categories" expects an array with a string value for the key "0", "integer" given (for remover category).'
+                'Attribute or field "categories" expects an array with a string value for the key "0", "integer" given (for remover category).',
+                InvalidArgumentException::ARRAY_STRING_VALUE_EXPECTED_CODE
             )
         )->duringRemoveFieldData($bookProduct, 'categories', [42]);
     }
