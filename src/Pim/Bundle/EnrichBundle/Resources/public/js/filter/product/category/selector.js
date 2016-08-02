@@ -21,9 +21,7 @@ define(
         'jquery.jstree'
     ],
     function ($, _, Backbone, Routing, __, LoadingMask, i18n, FetcherRegistry, UserContext, template) {
-
         return Backbone.View.extend({
-
             template: _.template(template),
 
             config: {
