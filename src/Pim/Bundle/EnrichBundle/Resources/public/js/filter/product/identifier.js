@@ -37,6 +37,18 @@ define([
         /**
          * {@inheritdoc}
          */
+        configure: function () {
+            return $.when(
+                FetcherRegistry.getFetcher('attribute').getIdentifierAttribute(),
+                BaseFilter.prototype.configure.apply(this, arguments)
+            ).then(function (identifier) {
+                this.identifier = identifier;
+            }.bind(this));
+        },
+
+        /**
+         * {@inheritdoc}
+         */
         isEmpty: function () {
             return _.isEmpty(this.getValue());
         },
@@ -57,19 +69,16 @@ define([
          * {@inheritdoc}
          */
         getTemplateContext: function () {
-            return FetcherRegistry
-                .getFetcher('attribute')
-                .getIdentifierAttribute()
-                .then(function (identifier) {
-                    return {
-                        label: i18n.getLabel(
-                            identifier.labels,
-                            UserContext.get('catalogLocale'),
-                            identifier.code
-                        ),
-                        removable: false
-                    };
-                }.bind(this));
+            this.field = this.identifier.code;
+
+            return $.Deferred().resolve({
+                label: i18n.getLabel(
+                    this.identifier.labels,
+                    UserContext.get('catalogLocale'),
+                    this.identifier.code
+                ),
+                removable: false
+            }).promise();
         },
 
         /**
