@@ -32,8 +32,7 @@ Feature: Display last operations widget
     And I wait for the "csv_footwear_category_export" job to finish
     When I am on the dashboard page
     Then I should see "Last operations"
-    When I click on the job tracker button on the job widget
-    Then I should be redirected on the job tracker page
-    And I should see the "Refresh" button
+    When I am on the job tracker page
+    Then I should see the "Refresh" button
     And I should see the "Reset" button
     And I should see the columns Type, Job, User, Status and Started at
