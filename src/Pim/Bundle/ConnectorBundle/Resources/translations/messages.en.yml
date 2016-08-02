@@ -59,45 +59,6 @@ pim_connector:
             help: The locales you want to export
             validation:
                 not_blank: One locale must be selected, please choose a locale to export.
-        status:
-            label: Status
-            help: The status of the products you want to export
-            choice:
-                enabled: Enabled
-                disabled: Disabled
-                all: All
-        completeness:
-            label: Completeness
-            help: The completeness of the products you want to export
-            choice:
-                at_least_one_complete: Complete on at least one selected locale
-                all_complete: Complete on all selected locales
-                all_incomplete: Not complete on all selected locales
-                all: No condition on completeness
-        product_identifier:
-            label: Product identifiers
-            help: The products you want to export
-            placeholder: Add your product identifiers
-        categories:
-            label: Categories
-            help: The categories of the products you want to export
-        updated:
-            updated_since_strategy:
-                label: Updated time condition
-                help: The time condition of the products you want to export
-                choice:
-                    since_n_days: Updated products since the last n days
-                    since_date: Updated products since the defined date
-                    last_export: Updated products since last export
-                    all: No date condition
-            updated_since_date:
-                placeholder: Choose your date
-                error: The date should not be blank.
-            updated_since_n_days:
-                error: This value should not be blank.
-            last_execution:
-                none: This job has never been exported
-                last: "Last export: %date%"
         decimalSeparator:
             label: Decimal separator
             help: Determine the decimal separator
