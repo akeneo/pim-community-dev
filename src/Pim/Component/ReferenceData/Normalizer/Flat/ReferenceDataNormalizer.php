@@ -2,8 +2,8 @@
 
 namespace Pim\Component\ReferenceData\Normalizer\Flat;
 
-use Pim\Bundle\VersioningBundle\Normalizer\Flat\AbstractProductValueDataNormalizer;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Normalize a reference data into a string
@@ -12,7 +12,7 @@ use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceDataNormalizer extends AbstractProductValueDataNormalizer
+class ReferenceDataNormalizer implements NormalizerInterface
 {
     /** @var string[] */
     protected $supportedFormats = ['csv', 'flat'];
@@ -20,9 +20,11 @@ class ReferenceDataNormalizer extends AbstractProductValueDataNormalizer
     /**
      * {@inheritdoc}
      */
-    public function doNormalize($referenceData, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = [])
     {
-        return $referenceData->getCode();
+        return [
+            $this->getFieldName($context) => $object->getCode(),
+        ];
     }
 
     /**
@@ -31,5 +33,28 @@ class ReferenceDataNormalizer extends AbstractProductValueDataNormalizer
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ReferenceDataInterface && in_array($format, $this->supportedFormats);
+    }
+
+    /**
+     * Get the field name
+     *
+     * @param array $context Context options for the normalizer
+     *
+     * @throws \InvalidArgumentException when the context does not contain a "field_name" key
+     *
+     * @return string
+     */
+    protected function getFieldName(array $context = [])
+    {
+        if (!array_key_exists('field_name', $context)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Missing required "field_name" context value, got "%s"',
+                    implode(', ', array_keys($context))
+                )
+            );
+        }
+
+        return $context['field_name'];
     }
 }

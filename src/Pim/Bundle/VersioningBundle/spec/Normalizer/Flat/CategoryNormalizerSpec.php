@@ -10,7 +10,7 @@ use Prophecy\Argument;
 class CategoryNormalizerSpec extends ObjectBehavior
 {
     function let(
-        \Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer $transnormalizer,
+        TranslationNormalizer $transnormalizer,
         CategoryInterface $clothes
     ) {
         $this->beConstructedWith($transnormalizer);

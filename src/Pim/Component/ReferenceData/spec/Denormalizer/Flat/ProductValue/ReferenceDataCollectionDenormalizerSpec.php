@@ -17,11 +17,6 @@ class ReferenceDataCollectionDenormalizerSpec extends ObjectBehavior
         $this->beConstructedWith(['pim_reference_data_multiselect'], $refDataDenormalizer);
     }
 
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AbstractValueDenormalizer');
-    }
-
     function it_is_a_denormalizer()
     {
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');

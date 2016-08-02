@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class GroupNormalizerSpec extends ObjectBehavior
 {
     function let(
-        \Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer $transNormalizer,
+        TranslationNormalizer $transNormalizer,
         DenormalizerInterface $valuesDenormalizer,
         NormalizerInterface $valuesNormalizer
     ) {
