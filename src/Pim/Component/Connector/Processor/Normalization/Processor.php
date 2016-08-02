@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\Processor\Normalization;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -14,7 +13,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Processor extends AbstractConfigurableStepElement implements ItemProcessorInterface
+class Processor implements ItemProcessorInterface
 {
     /** @var NormalizerInterface */
     protected $normalizer;

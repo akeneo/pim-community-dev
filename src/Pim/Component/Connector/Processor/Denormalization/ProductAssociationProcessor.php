@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -17,7 +19,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAssociationProcessor extends AbstractProcessor
+class ProductAssociationProcessor extends AbstractProcessor implements
+    ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $repository;

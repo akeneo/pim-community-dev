@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\Writer;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 
 /**

@@ -2,6 +2,9 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+
 /**
  * Variant group import processor, allows to,
  *  - create / update variant groups
@@ -12,7 +15,7 @@ namespace Pim\Component\Connector\Processor\Denormalization;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupProcessor extends Processor
+class VariantGroupProcessor extends Processor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     /**
      * {@inheritdoc}

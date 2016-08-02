@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\Reader\File\Xlsx;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\InvalidItemException;
@@ -23,10 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader extends AbstractConfigurableStepElement implements
-    ItemReaderInterface,
-    StepExecutionAwareInterface,
-    FlushableInterface
+class Reader implements ItemReaderInterface, StepExecutionAwareInterface, FlushableInterface
 {
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;

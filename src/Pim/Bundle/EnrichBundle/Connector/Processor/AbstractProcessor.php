@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -17,9 +16,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractProcessor extends AbstractConfigurableStepElement implements
-    StepExecutionAwareInterface,
-    ItemProcessorInterface
+abstract class AbstractProcessor implements StepExecutionAwareInterface, ItemProcessorInterface
 {
     /** @var StepExecution */
     protected $stepExecution;

@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\Writer\Database;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
@@ -16,9 +15,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer extends AbstractConfigurableStepElement implements
-    ItemWriterInterface,
-    StepExecutionAwareInterface
+class Writer implements ItemWriterInterface, StepExecutionAwareInterface
 {
     /** @var StepExecution */
     protected $stepExecution;

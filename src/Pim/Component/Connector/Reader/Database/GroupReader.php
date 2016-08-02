@@ -2,6 +2,9 @@
 
 namespace Pim\Component\Connector\Reader\Database;
 
+use Akeneo\Component\Batch\Item\InitializableInterface;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
 /**
@@ -11,7 +14,10 @@ use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupReader extends AbstractReader
+class GroupReader extends AbstractReader implements
+    ItemReaderInterface,
+    InitializableInterface,
+    StepExecutionAwareInterface
 {
     /** @var GroupRepositoryInterface */
     protected $repository;
