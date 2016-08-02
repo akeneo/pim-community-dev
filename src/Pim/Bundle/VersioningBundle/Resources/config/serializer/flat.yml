@@ -1,3 +1,24 @@
+parameters:
+    pim_serializer.normalizer.flat.association_type.class:  Pim\Bundle\VersioningBundle\Normalizer\Flat\AssociationTypeNormalizer
+    pim_serializer.normalizer.flat.attribute.class:         Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeNormalizer
+    pim_serializer.normalizer.flat.attribute_group.class:   Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeGroupNormalizer
+    pim_serializer.normalizer.flat.category.class:          Pim\Bundle\VersioningBundle\Normalizer\Flat\CategoryNormalizer
+    pim_serializer.normalizer.flat.channel.class:           Pim\Bundle\VersioningBundle\Normalizer\Flat\ChannelNormalizer
+    pim_serializer.normalizer.flat.family.class:            Pim\Bundle\VersioningBundle\Normalizer\Flat\FamilyNormalizer
+    pim_serializer.normalizer.flat.group.class:             Pim\Bundle\VersioningBundle\Normalizer\Flat\GroupNormalizer
+    pim_serializer.normalizer.flat.job_instance.class:      Pim\Bundle\VersioningBundle\Normalizer\Flat\JobInstanceNormalizer
+    pim_serializer.normalizer.flat.label_translation.class: Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer
+    pim_serializer.normalizer.flat.product.class:           Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductNormalizer
+    pim_serializer.normalizer.flat.product_value.class:     Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductValueNormalizer
+    pim_serializer.normalizer.flat.locale.class:            Pim\Bundle\VersioningBundle\Normalizer\Flat\LocaleNormalizer
+
+    pim_serializer.normalizer.flat.collection.class:        Pim\Bundle\VersioningBundle\Normalizer\Flat\CollectionNormalizer
+    pim_serializer.normalizer.flat.datetime.class:          Pim\Bundle\VersioningBundle\Normalizer\Flat\DateTimeNormalizer
+    pim_serializer.normalizer.flat.metric.class:            Pim\Bundle\VersioningBundle\Normalizer\Flat\MetricNormalizer
+    pim_serializer.normalizer.flat.option.class:            Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeOptionNormalizer
+    pim_serializer.normalizer.flat.price.class:             Pim\Bundle\VersioningBundle\Normalizer\Flat\PriceNormalizer
+    pim_serializer.normalizer.flat.file.class:              Pim\Bundle\VersioningBundle\Normalizer\Flat\FileNormalizer
+
 services:
     pim_versioning.serializer.normalizer.flat.product:
         public: false

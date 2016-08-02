@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer\Structured;
+namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
@@ -14,7 +14,7 @@ use Prophecy\Argument;
 class FamilyNormalizerSpec extends ObjectBehavior
 {
     function let(
-        TranslationNormalizer $normalizer,
+        \Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer $normalizer,
         CollectionFilterInterface $filter,
         AttributeRepositoryInterface $attributeRepository,
         AttributeRequirementRepositoryInterface $requirementsRepository
@@ -24,7 +24,7 @@ class FamilyNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Normalizer\Structured\FamilyNormalizer');
+        $this->shouldHaveType('Pim\Bundle\VersioningBundle\Normalizer\Flat\FamilyNormalizer');
     }
 
     function it_is_a_normalizer()
@@ -32,11 +32,11 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_family_normalization_into_json_and_xml(FamilyInterface $family)
+    function it_supports_family_normalization_into_csv(FamilyInterface $family)
     {
-        $this->supportsNormalization($family, 'csv')->shouldBe(false);
-        $this->supportsNormalization($family, 'json')->shouldBe(true);
-        $this->supportsNormalization($family, 'xml')->shouldBe(true);
+        $this->supportsNormalization($family, 'csv')->shouldBe(true);
+        $this->supportsNormalization($family, 'json')->shouldBe(false);
+        $this->supportsNormalization($family, 'xml')->shouldBe(false);
     }
 
     function it_normalizes_family(
@@ -67,10 +67,11 @@ class FamilyNormalizerSpec extends ObjectBehavior
 
         $this->normalize($family)->shouldReturn(
             [
-                'code'               => 'mugs',
-                'attributes'         => ['name', 'price'],
-                'attribute_as_label' => 'name',
-                'requirements'       => ['ecommerce' => ['name', 'price'], 'mobile' => ['name']],
+                'code'                   => 'mugs',
+                'attributes'             => 'name,price',
+                'attribute_as_label'     => 'name',
+                'requirements-ecommerce' => 'name,price',
+                'requirements-mobile'    => 'name',
             ]
         );
     }

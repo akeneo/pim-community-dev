@@ -300,7 +300,7 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes`, add batch job code (string)
 - Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements`, add batch job code (string)
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`, add `Symfony\Component\Security\Core\User\UserProviderInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
-- Context option `filter_type` of `Pim\Component\Connector\Normalizer\Flat\ProductNormalizer` changed to `filter_types` and now accepts an array of filter names instead of just one filter name
+- Context option `filter_type` of `Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductNormalizer` changed to `filter_types` and now accepts an array of filter names instead of just one filter name
 - Context option `filter_type` of `Pim\Component\Catalog\Normalizer\Structured\ProductNormalizer` changed to `filter_types` and  now accepts an array of filter names instead of just one filter name
 - Remove methods `getConfigurationFields()`, `getConfiguration()` and `setConfiguration()` from `Akeneo\Component\Batch\Item\AbstractConfigurableStepElement`
 - Remove methods `getConfiguration()` and `setConfiguration()` from `Akeneo\Component\Batch\Job\Job`
@@ -324,7 +324,7 @@
 - Move class `Pim\Component\Connector\Denormalizer\Flat\ProductValue\ReferenceDataDenormalizer` to `Pim\Component\ReferenceData\Denormalizer\Flat\ProductValue\ReferenceDataDenormalizer`
 - Move class `Pim\Component\Connector\Denormalizer\Flat\ProductValue\ReferenceDataCollectionDenormalizer` to `Pim\Component\ReferenceData\Denormalizer\Flat\ProductValue\ReferenceDataCollectionDenormalizer`
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`, add `Symfony\Component\Security\Core\User\UserProviderInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
-- Context option `filter_type` of `Pim\Component\Connector\Normalizer\Flat\ProductNormalizer` changed to `filter_types` and now accepts an array of filter names instead of just one filter name
+- Context option `filter_type` of `Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductNormalizer` changed to `filter_types` and now accepts an array of filter names instead of just one filter name
 - Context option `filter_type` of `Pim\Component\Catalog\Normalizer\Structured\ProductNormalizer` changed to `filter_types` and  now accepts an array of filter names instead of just one filter name
 - Move class `Pim\Component\Catalog\Normalizer\Structured\JobInstanceNormalizer` to `Akeneo\Component\Batch\Normalizer\Structured\JobInstanceNormalizer`
 - Change constructor of `Pim\Component\Catalog\Factory\AttributeRequirementFactory` to inject `%pim_catalog.entity.attribute_requirement.class%`

@@ -2,7 +2,7 @@
 
 namespace Pim\Component\ReferenceData\Normalizer\Flat;
 
-use Pim\Component\Connector\Normalizer\Flat\AbstractProductValueDataNormalizer;
+use Pim\Bundle\VersioningBundle\Normalizer\Flat\AbstractProductValueDataNormalizer;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**

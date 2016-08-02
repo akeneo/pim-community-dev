@@ -2,27 +2,6 @@ parameters:
     # Encoder
     pim_serializer.encoder.csv.class: Pim\Component\Connector\Encoder\CsvEncoder
 
-    # Normalizers
-    pim_serializer.normalizer.flat.association_type.class:  Pim\Component\Connector\Normalizer\Flat\AssociationTypeNormalizer
-    pim_serializer.normalizer.flat.attribute.class:         Pim\Component\Connector\Normalizer\Flat\AttributeNormalizer
-    pim_serializer.normalizer.flat.attribute_group.class:   Pim\Component\Connector\Normalizer\Flat\AttributeGroupNormalizer
-    pim_serializer.normalizer.flat.category.class:          Pim\Component\Connector\Normalizer\Flat\CategoryNormalizer
-    pim_serializer.normalizer.flat.channel.class:           Pim\Component\Connector\Normalizer\Flat\ChannelNormalizer
-    pim_serializer.normalizer.flat.family.class:            Pim\Component\Connector\Normalizer\Flat\FamilyNormalizer
-    pim_serializer.normalizer.flat.group.class:             Pim\Component\Connector\Normalizer\Flat\GroupNormalizer
-    pim_serializer.normalizer.flat.job_instance.class:      Pim\Component\Connector\Normalizer\Flat\JobInstanceNormalizer
-    pim_serializer.normalizer.flat.label_translation.class: Pim\Component\Connector\Normalizer\Flat\TranslationNormalizer
-    pim_serializer.normalizer.flat.product.class:           Pim\Component\Connector\Normalizer\Flat\ProductNormalizer
-    pim_serializer.normalizer.flat.product_value.class:     Pim\Component\Connector\Normalizer\Flat\ProductValueNormalizer
-    pim_serializer.normalizer.flat.locale.class:            Pim\Component\Connector\Normalizer\Flat\LocaleNormalizer
-
-    pim_serializer.normalizer.flat.collection.class:        Pim\Component\Connector\Normalizer\Flat\CollectionNormalizer
-    pim_serializer.normalizer.flat.datetime.class:          Pim\Component\Connector\Normalizer\Flat\DateTimeNormalizer
-    pim_serializer.normalizer.flat.metric.class:            Pim\Component\Connector\Normalizer\Flat\MetricNormalizer
-    pim_serializer.normalizer.flat.option.class:            Pim\Component\Connector\Normalizer\Flat\AttributeOptionNormalizer
-    pim_serializer.normalizer.flat.price.class:             Pim\Component\Connector\Normalizer\Flat\PriceNormalizer
-    pim_serializer.normalizer.flat.file.class:              Pim\Component\Connector\Normalizer\Flat\FileNormalizer
-
      # Denormalizers
     pim_serializer.denormalizer.flat.product.class:                   Pim\Component\Connector\Denormalizer\Flat\ProductDenormalizer
     pim_serializer.denormalizer.flat.family.class:                    Pim\Component\Connector\Denormalizer\Flat\FamilyDenormalizer
