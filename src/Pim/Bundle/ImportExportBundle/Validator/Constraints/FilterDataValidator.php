@@ -38,11 +38,12 @@ class FilterDataValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        $pqb = $this->pqbFactory->create();
+        $pqb = $this->pqbFactory->create(['default_scope' => $value['structure']['scope']]);
 
-        foreach ($value as $data) {
+        foreach ($value['data'] as $data) {
             try {
-                $pqb->addFilter($data['field'], $data['operator'], $data['value']);
+                $context = isset($data['context']) ? $data['context'] : [];
+                $pqb->addFilter($data['field'], $data['operator'], $data['value'], $context);
             } catch (InvalidArgumentException $e) {
                 $this->context->buildViolation($this->translationProvider->getTranslation($e))
                     ->atPath('#' . $data['field'])
