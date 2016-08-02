@@ -100,7 +100,7 @@ Feature: Export products in XLSX
   @javascript
   Scenario: Successfully export products in xlsx with a selection of attributes
     Given the following job "xlsx_tablet_product_export" configuration:
-      | filters | {"structure":{"locales":["en_US","fr_FR"],"scope":"tablet","attributes":["price","size","color","cost","description","name","image","release_date","weight"]}, "data": []} |
+      | filters | {"structure":{"locales":["en_US"],"scope":"tablet","attributes":["price","size","color","cost","description","name","image","release_date","weight"]}, "data": []} |
     And the following products:
       | sku           | family  | categories                   | price                 | size   | color  | manufacturer     | material | country_of_manufacture |
       | tshirt-yellow | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | yellow | american_apparel | cotton   | usa                    |
@@ -142,7 +142,7 @@ Feature: Export products in XLSX
   @javascript
   Scenario: Successfully export products in xlsx with an empty selection of attributes
     Given the following job "xlsx_tablet_product_export" configuration:
-      | filters | {"structure":{"locales":["en_US","fr_FR"],"scope":"tablet","attributes":["sku"]}, "data": []} |
+      | filters | {"structure":{"locales":["en_US"],"scope":"tablet","attributes":["sku"]}, "data": []} |
     And the following products:
       | sku           | family  | categories                   | price                 | size   | color  | manufacturer     | material | country_of_manufacture |
       | tshirt-yellow | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | yellow | american_apparel | cotton   | usa                    |
