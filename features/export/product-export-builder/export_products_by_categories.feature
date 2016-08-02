@@ -40,13 +40,14 @@ Feature: Export products from any given categories
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
     And the following job "csv_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
+      | filters  | {"structure":{"locales":["en_US"],"scope":"ecommerce"},"data":[]} |
     And I am logged in as "Julia"
 
   # We should handle this case with validation
   @skip
   Scenario: Export the products from a tree
     Given the following job "csv_product_export" configuration:
-      | filters | {"structure": {"locales": ["en_US"], "scope": "ecommerce"}, "data": [{"field": "categories.code", "operator": "IN", "value": ["toys_games", "dolls", "women"]}, {"field": "completeness", "operator": ">=", "value": 100}]} |
+      | filters | {"structure": {"locales": ["en_US"], "scope": "ecommerce"}, "data": [{"field": "categories.code", "operator": "IN", "value": ["toys_games", "dolls", "women"]}, {"field": "completeness", "operator": ">=", "value": 100,"context":{"locales":["en_US"]}}]} |
     When I am on the "csv_product_export" export job page
     And I launch the export job
     And I wait for the "csv_product_export" job to finish
@@ -55,6 +56,7 @@ Feature: Export products from any given categories
       sku;categories;enabled;family;groups
       toys_games;toys_games;1;default;
       dolls;dolls;1;default;
+      women;women;1;default;
       """
 
   Scenario: Export the products from a tree using the UI

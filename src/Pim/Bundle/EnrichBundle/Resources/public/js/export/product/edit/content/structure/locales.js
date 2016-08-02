@@ -27,6 +27,7 @@ define(
         return BaseForm.extend({
             className: 'control-group',
             template: _.template(template),
+            validationErrors: [],
 
             /**
              * Initializes configuration.
@@ -60,6 +61,10 @@ define(
                     return this;
                 }
 
+                this.validationErrors = _.where(this.parent.errors, {
+                    field: 'locales'
+                });
+
                 var defaultLocalesPromise = $.Deferred().resolve().promise();
                 if (_.isEmpty(this.getLocales())) {
                     defaultLocalesPromise = this.setDefaultLocales();
@@ -74,7 +79,8 @@ define(
                             isEditable: this.isEditable(),
                             __: __,
                             locales: this.getLocales(),
-                            availableLocales: scope.locales
+                            availableLocales: scope.locales,
+                            errors: this.validationErrors
                         })
                     );
 

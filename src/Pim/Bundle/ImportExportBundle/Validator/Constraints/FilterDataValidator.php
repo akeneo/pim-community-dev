@@ -46,7 +46,7 @@ class FilterDataValidator extends ConstraintValidator
                 $pqb->addFilter($data['field'], $data['operator'], $data['value'], $context);
             } catch (InvalidArgumentException $e) {
                 $this->context->buildViolation($this->translationProvider->getTranslation($e))
-                    ->atPath('#' . $data['field'])
+                    ->atPath(sprintf('[%s]', $data['field']))
                     ->addViolation();
             }
         }

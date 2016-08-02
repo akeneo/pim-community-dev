@@ -21,8 +21,25 @@ define(
     ) {
         return BaseForm.extend({
             className: 'structure-filters',
-
+            errors: [],
             template: _.template(template),
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:export:validation_error',
+                    this.setValidationErrors.bind(this)
+                );
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            setValidationErrors: function (errors) {
+                this.errors = errors;
+            },
 
             /**
              * Renders this view.

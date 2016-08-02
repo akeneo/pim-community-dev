@@ -30,6 +30,7 @@ define(
             config: {},
             className: 'control-group',
             template: _.template(template),
+            validationErrors: [],
 
             /**
              * Initializes configuration.
@@ -52,6 +53,10 @@ define(
                     return this;
                 }
 
+                this.validationErrors = _.where(this.parent.errors, {
+                    field: 'scope'
+                });
+
                 fetcherRegistry.getFetcher('channel').fetchAll().then(function (channels) {
                     if (!this.getScope()) {
                         this.setScope(_.first(channels).code);
@@ -63,7 +68,8 @@ define(
                             __: __,
                             locale: UserContext.get('uiLocale'),
                             channels: channels,
-                            scope: this.getScope()
+                            scope: this.getScope(),
+                            errors: this.validationErrors
                         })
                     );
 

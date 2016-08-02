@@ -282,11 +282,14 @@ class JobProfileController
 
         $errors = [];
         foreach ($form->getErrors() as $error) {
-            $propertyPath = explode('#', $error->getCause()->getPropertyPath());
-            $errors[] = [
-                'field'   => end($propertyPath),
-                'message' => $error->getMessage()
-            ];
+            preg_match('#\[(\w+)\]$#', $error->getCause()->getPropertyPath(), $match);
+
+            if (isset($match[1])) {
+                $errors[] = [
+                    'field'   => $match[1],
+                    'message' => $error->getMessage()
+                ];
+            }
         }
 
         return $this->templating->renderResponse(

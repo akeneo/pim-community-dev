@@ -24,6 +24,7 @@ Feature: Export products according to a locale policy
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
     And the following job "csv_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
+      | filters  | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"},"data":[]} |
     And I am logged in as "Julia"
 
   @ce
@@ -59,7 +60,7 @@ Feature: Export products according to a locale policy
   @ce
   Scenario: Remove the locales from the channel after we set the export configuration
     Given the following job "csv_product_export" configuration:
-      | filters | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"},"data":[{"field":"completeness","operator":"=","value":"100"}]} |
+      | filters | {"structure": {"locales": ["en_US"], "scope": "ecommerce"},"data":[{"field":"completeness","operator":"=","value":"100"}]} |
     When I set the "English (United States)" locale to the "ecommerce" channel
     And I am on the "csv_product_export" export job page
     And I launch the export job

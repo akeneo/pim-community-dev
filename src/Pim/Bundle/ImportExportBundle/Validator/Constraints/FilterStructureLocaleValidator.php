@@ -34,14 +34,18 @@ class FilterStructureLocaleValidator extends ConstraintValidator
         $filterStructureScope = $value['scope'];
         $filterStructureLocales = $value['locales'];
 
-        /** @var ChannelInterface $scope */
         $scope = $this->channelRepository->findOneByIdentifier($filterStructureScope);
-        $localesCodes = $scope->getLocaleCodes();
+        $localesCodes = [];
+
+        if (null !== $scope) {
+            $localesCodes = $scope->getLocaleCodes();
+        }
 
         foreach ($filterStructureLocales as $localeCode) {
             if (!in_array($localeCode, $localesCodes)) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('%localeCode%', $localeCode)
+                    ->atPath('[locales]')
                     ->addViolation();
             }
         }
