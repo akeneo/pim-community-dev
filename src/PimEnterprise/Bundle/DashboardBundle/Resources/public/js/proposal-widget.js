@@ -21,18 +21,7 @@ define(
                 contentLoaded: false
             },
 
-            $viewAllLink: null,
-
             template: _.template(widgetTemplate),
-
-            viewAllLinkTemplate: _.template(
-                [
-                    '<a href="javascript:void(0);" class="btn btn-mini btn-transparent pull-right" ',
-                        'style="margin-right:5px;">',
-                        '<%= _.__("pimee_dashboard.widget.product_drafts.view_all") %>',
-                    '</a>'
-                ].join('')
-            ),
 
             events: {
                 'click .product-label': 'followLink',
@@ -57,41 +46,6 @@ define(
             productReview: function (e) {
                 e.preventDefault();
                 Navigation.getInstance().setLocation($(e.currentTarget).data('product-review-url'));
-            },
-
-            setElement: function () {
-                AbstractWidget.prototype.setElement.apply(this, arguments);
-
-                this._createViewAllLink();
-
-                return this;
-            },
-
-            _createViewAllLink: function () {
-                if (this.$viewAllLink) {
-                    this.$viewAllLink.remove();
-                }
-
-                this.$viewAllLink = $(this.viewAllLinkTemplate());
-                this.$viewAllLink.on('click', _.bind(this.viewAll, this));
-
-                this.$el.parent().siblings('.widget-header').append(this.$viewAllLink.hide());
-            },
-
-            _afterLoad: function () {
-                AbstractWidget.prototype._afterLoad.apply(this, arguments);
-
-                if (_.isEmpty(this.data)) {
-                    this.$viewAllLink.hide();
-                } else {
-                    this.$viewAllLink.show();
-                }
-
-                return this;
-            },
-
-            viewAll: function () {
-                Navigation.getInstance().setLocation(Routing.generate('pimee_workflow_proposal_index'));
             },
 
             _processResponse: function (data) {

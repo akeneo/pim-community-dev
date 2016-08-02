@@ -3,7 +3,7 @@
 {% set widgetTitle = 'pim_dashboard.widget.last_operations.title'|trans %}
 
 {% set widgetContent %}
-    <table id="last-operations-widget" class="table table-condensed table-light groups unspaced"></table>
+    <table id="last-operations-widget" class="table last-operations"></table>
 
     <script type="text/javascript">
         require(
@@ -13,7 +13,6 @@
                     $(function () {
                         var options = {el: '#last-operations-widget', alias: 'last_operations'};
                         var widget = widgetContainer.getWidget(options, LastOperationsWidget);
-                        widget.setShowListBtn(options.el);
                         widget.render().delayedLoad();
                     });
                 }
