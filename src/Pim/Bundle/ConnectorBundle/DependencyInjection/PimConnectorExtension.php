@@ -32,7 +32,6 @@ class PimConnectorExtension extends Extension
         $loader->load('job_defaults.yml');
         $loader->load('processors.yml');
         $loader->load('readers.yml');
-        $loader->load('serializer.yml');
         $loader->load('steps.yml');
         $loader->load('writers.yml');
     }
