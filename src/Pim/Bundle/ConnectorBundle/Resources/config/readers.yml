@@ -91,12 +91,6 @@ services:
         class: '%pim_connector.reader.dummy_item.class%'
 
     # CSV File Readers
-    pim_connector.reader.file.csv:
-        class: '%pim_connector.reader.file.csv.class%'
-        arguments:
-            - '@pim_connector.reader.file.csv_iterator_factory'
-            - '@pim_connector.array_converter.dummy'
-
     pim_connector.reader.file.csv_association_type:
         class: '%pim_connector.reader.file.csv.class%'
         arguments:
