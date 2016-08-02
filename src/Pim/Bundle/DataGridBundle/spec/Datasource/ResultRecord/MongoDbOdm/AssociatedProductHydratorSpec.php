@@ -124,7 +124,7 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
             'skip'   => 0,
             'query'  => [
                 '_id' => [
-                    '$ne' => \MongoId::__set_state(['$id' => '110ae6b98ead0ee8778b46bb']),
+                    '$ne' => new \MongoId('110ae6b98ead0ee8778b46bb'),
                 ],
             ],
             'newObj' => [],
@@ -133,7 +133,7 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
         $query->getQuery()->willReturn($queryDefinition);
 
         $fixture = [
-            '_id'            => \MongoId::__set_state(['$id' => '550ae6b98ead0ee8778b46bb']),
+            '_id'            => new \MongoId('550ae6b98ead0ee8778b46bb'),
             'normalizedData' => [],
             'sku'            => [
                 'attribute' => ['code' => 'sku', 'attributeType' => 'text', 'backendType' => 'text'],
