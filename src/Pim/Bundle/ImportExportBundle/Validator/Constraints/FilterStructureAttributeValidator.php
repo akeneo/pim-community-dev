@@ -37,6 +37,7 @@ class FilterStructureAttributeValidator extends ConstraintValidator
             if (null === $attribute) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('%attributeCode%', $attributeCode)
+                    ->atPath('[attributes]')
                     ->addViolation();
             }
         }

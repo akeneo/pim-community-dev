@@ -15,4 +15,13 @@
     <div class="icons-container">
         <i class="icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="<%- __('pim_enrich.export.product.filter.attributes.help') %>"></i>
     </div>
+    <span class="below-input">
+        <span class="validation-errors">
+            <% errors.forEach(function (error) { %>
+                <span>
+                    <i class="icon-warning-sign"></i> <span class="error-message"><%- error.message %></span>
+                </span>
+            <% }); %>
+        </span>
+    </span>
 </div>
