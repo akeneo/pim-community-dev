@@ -4,8 +4,8 @@
     <input id="{{ form.parameters.filters.vars.id }}_errors" type="hidden" value="{{ errors|default('[]') }}">
     <script>
         require(
-            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'oro/loading-mask'],
-            function($, FetcherRegistry, FormBuilder, LoadingMask) {
+            ['jquery', 'underscore', 'pim/fetcher-registry', 'pim/form-builder', 'oro/loading-mask'],
+            function($, _, FetcherRegistry, FormBuilder, LoadingMask) {
                 $(function() {
                     var formId = '{{ form.parameters.filters.vars.id }}';
                     var loadingMask = new LoadingMask();
@@ -15,13 +15,18 @@
                     FetcherRegistry.initialize().done(function () {
                         FormBuilder.build('{{ form.vars.disabled ? 'pim-product-export-show-content' : 'pim-product-export-edit-content' }}')
                             .then(function (form) {
+                                var formData = JSON.parse($('#' + formId).val());
+                                if (_.isArray(formData.structure) && 0 === formData.structure.length) {
+                                    formData.structure = {};
+                                }
+
                                 form.setElement('#pim-product-export-edit-content')
                                     .on('pim_enrich:form:entity:post_update', function () {
                                         document.getElementById(formId).value = JSON.stringify(form.getFormData());
                                     })
                                     .trigger('pim_enrich:form:export:set_code', '{{ form.code.vars.value }}')
                                     .trigger('pim_enrich:form:export:validation_error', errors)
-                                    .setData(JSON.parse($('#' + formId).val()))
+                                    .setData(formData)
                                     .render();
 
                                 loadingMask.remove();
