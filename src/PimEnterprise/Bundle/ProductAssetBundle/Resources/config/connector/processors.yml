@@ -53,7 +53,7 @@ services:
     pimee_product_asset.processor.normalization.category:
         class: '%pim_connector.processor.normalization.simple.class%'
         arguments:
-            - '@pim_serializer.normalizer.flat.category'
+            - '@pim_serializer.normalizer.category'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_product_asset.processor.normalization.variation:
