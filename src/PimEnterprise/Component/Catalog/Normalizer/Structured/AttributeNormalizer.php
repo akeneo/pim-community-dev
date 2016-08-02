@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Connector\Normalizer\Flat;
+namespace PimEnterprise\Component\Catalog\Normalizer\Structured;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -46,6 +46,6 @@ class AttributeNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        $this->attributeNormalizer->supportsNormalization($data, $format);
+        return $this->attributeNormalizer->supportsNormalization($data, $format);
     }
 }
