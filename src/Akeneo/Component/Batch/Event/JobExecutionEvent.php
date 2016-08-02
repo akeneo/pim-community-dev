@@ -11,6 +11,8 @@ use Symfony\Component\EventDispatcher\Event;
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @api
  */
 class JobExecutionEvent extends Event implements EventInterface
 {
@@ -27,6 +29,8 @@ class JobExecutionEvent extends Event implements EventInterface
 
     /**
      * @return JobExecution
+     *
+     * @api
      */
     public function getJobExecution()
     {

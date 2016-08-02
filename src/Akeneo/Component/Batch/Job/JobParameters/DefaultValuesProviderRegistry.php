@@ -10,6 +10,8 @@ use Akeneo\Component\Batch\Job\JobInterface;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @internal
  */
 class DefaultValuesProviderRegistry
 {
@@ -18,6 +20,8 @@ class DefaultValuesProviderRegistry
 
     /**
      * @param DefaultValuesProviderInterface $provider
+     *
+     * @internal
      */
     public function register(DefaultValuesProviderInterface $provider)
     {
@@ -30,6 +34,8 @@ class DefaultValuesProviderRegistry
      * @throws NonExistingServiceException
      *
      * @return DefaultValuesProviderInterface
+     *
+     * @internal
      */
     public function get(JobInterface $job)
     {

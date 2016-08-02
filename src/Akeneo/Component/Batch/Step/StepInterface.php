@@ -15,11 +15,15 @@ use Akeneo\Component\Batch\Model\StepExecution;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @api
  */
 interface StepInterface
 {
     /**
      * @return string The name of this step
+     *
+     * @api
      */
     public function getName();
 
@@ -31,6 +35,8 @@ interface StepInterface
      * @param StepExecution $stepExecution an entity representing the step to be executed
      *
      * @throws JobInterruptedException if the step is interrupted externally
+     *
+     * @api
      */
     public function execute(StepExecution $stepExecution);
 }

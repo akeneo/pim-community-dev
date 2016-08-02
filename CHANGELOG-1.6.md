@@ -308,6 +308,7 @@
 - Remove methods `getConfiguration()`, `setConfiguration()` and `getConfigurableStepElements()` from `Akeneo\Component\Batch\Step\StepInterface`
 - Remove methods `getConfiguration()`, `setConfiguration()` and `getConfigurableStepElements()` from `Akeneo\Component\Batch\Step\AbstractStep`
 - Remove methods `getConfiguration()`, `setConfiguration()`, `setReader()`, `setProcessor()`, `setWriter()`, `setBatchSize()` from `Akeneo\Component\Batch\Step\ItemStep`
+- Change visibility of method `flushStepElements` from public to protected in `Akeneo\Component\Batch\Step\ItemStep`
 - Change constructor of `Pim\Component\Connector\Processor\Denormalization\JobInstanceProcessor` to add argument `Akeneo\Component\Job\JobRegistry`
 - Change constructor of `Akeneo\Component\Batch\Updater\JobInstanceUpdater` to add argument `Akeneo\Component\Job\JobRegistry`
 - Change constructor of `Pim\Component\Connector\Archiver\ArchivableFileWriterArchiver` to add argument `Akeneo\Component\Job\JobRegistry`
@@ -392,6 +393,7 @@
 - Add `getAttributeFilters()` and `getFieldFilters()` to `Pim\Component\Catalog\Query\Filter\FilterRegistryInterface`
 - Rename method `getAlias` to `getJobName` in `Akeneo\Component\Batch\Model\JobInstance`
 - Rename method `setAlias` to `setJobName` in `Akeneo\Component\Batch\Model\JobInstance`
+- Remove methods `setRawConfiguration`, `getRawConfiguration`, `setJob` and `getJob` from `Akeneo\Component\Batch\Model\JobInstance`
 - Remove `Pim\Bundle\EnrichBundle\Controller\MassEditActionController` and replaced it by `Pim\Bundle\EnrichBundle\Controller\MassEdit\ProductController`, `Pim\Bundle\EnrichBundle\Controller\MassEdit\FamilyController`
 - Add string parameter `$formName` to `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType`
 - Remove method `getItemsName()` from `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface` and deleted from all classes implementing the interface

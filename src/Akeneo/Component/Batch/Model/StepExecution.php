@@ -20,6 +20,8 @@ use Doctrine\Common\Util\ClassUtils;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @internal
  */
 class StepExecution
 {

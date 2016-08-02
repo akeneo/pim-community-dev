@@ -10,6 +10,8 @@ use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderRegistry;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @api
  */
 class JobParametersFactory
 {
@@ -34,6 +36,8 @@ class JobParametersFactory
      * @param array        $parameters the parameters to use in addition of the default values
      *
      * @return JobParameters
+     *
+     * @api
      */
     public function create(JobInterface $job, array $parameters = [])
     {

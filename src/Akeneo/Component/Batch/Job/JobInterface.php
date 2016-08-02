@@ -13,11 +13,15 @@ use Akeneo\Component\Batch\Model\JobExecution;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @api
  */
 interface JobInterface
 {
     /**
      * @return string the name of this job
+     *
+     * @api
      */
     public function getName();
 
@@ -28,6 +32,8 @@ interface JobInterface
      * {@link JobExecution} status to determine success or failure.
      *
      * @param JobExecution $execution a {@link JobExecution}
+     *
+     * @api
      */
     public function execute(JobExecution $execution);
 }

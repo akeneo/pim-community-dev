@@ -14,6 +14,8 @@ namespace Akeneo\Component\Batch\Item;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @api
  */
 interface ItemReaderInterface
 {
@@ -28,6 +30,8 @@ interface ItemReaderInterface
      *                              be stopped in that case)
      *
      * @return null|mixed
+     *
+     * @api
      */
     public function read();
 }

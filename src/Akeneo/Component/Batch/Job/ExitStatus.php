@@ -11,6 +11,8 @@ namespace Akeneo\Component\Batch\Job;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @api
  */
 class ExitStatus
 {

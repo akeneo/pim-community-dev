@@ -28,17 +28,6 @@ class ItemStepSpec extends ObjectBehavior
         $this->beConstructedWith('myname', $dispatcher, $repository, $reader, $processor, $writer, 3);
     }
 
-    function it_provides_configurable_step_elements($reader, $processor, $writer)
-    {
-        $this->getConfigurableStepElements()->shouldReturn(
-            [
-                'reader' => $reader,
-                'processor' => $processor,
-                'writer' => $writer
-            ]
-        );
-    }
-
     function it_executes_with_success(
         $reader,
         $processor,

@@ -11,6 +11,8 @@ use Symfony\Component\EventDispatcher\Event;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @api
  */
 class InvalidItemEvent extends Event implements EventInterface
 {
@@ -44,6 +46,8 @@ class InvalidItemEvent extends Event implements EventInterface
      * Get the class which encountered the invalid item
      *
      * @return string
+     *
+     * @api
      */
     public function getClass()
     {
@@ -54,6 +58,8 @@ class InvalidItemEvent extends Event implements EventInterface
      * Get the reason why the item is invalid
      *
      * @return string
+     *
+     * @api
      */
     public function getReason()
     {
@@ -64,6 +70,8 @@ class InvalidItemEvent extends Event implements EventInterface
      * Get the reason parameters
      *
      * @return array
+     *
+     * @api
      */
     public function getReasonParameters()
     {
@@ -74,6 +82,8 @@ class InvalidItemEvent extends Event implements EventInterface
      * Get the invalid item
      *
      * @return InvalidItemInterface
+     *
+     * @api
      */
     public function getItem()
     {

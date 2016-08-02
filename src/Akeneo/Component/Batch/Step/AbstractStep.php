@@ -23,6 +23,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @api
  */
 abstract class AbstractStep implements StepInterface
 {
@@ -52,6 +54,8 @@ abstract class AbstractStep implements StepInterface
 
     /**
      * @return JobRepositoryInterface
+     *
+     * @internal, this method should be protected, cf TIP-542
      */
     public function getJobRepository()
     {
@@ -84,6 +88,8 @@ abstract class AbstractStep implements StepInterface
      * @param StepExecution $stepExecution
      *
      * @throws JobInterruptedException
+     *
+     * @api
      */
     final public function execute(StepExecution $stepExecution)
     {

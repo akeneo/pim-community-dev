@@ -18,6 +18,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @api
  */
 class ItemStep extends AbstractStep
 {
@@ -67,6 +69,8 @@ class ItemStep extends AbstractStep
      * Get reader
      *
      * @return ItemReaderInterface
+     *
+     * @api
      */
     public function getReader()
     {
@@ -77,6 +81,8 @@ class ItemStep extends AbstractStep
      * Get processor
      *
      * @return ItemProcessorInterface
+     *
+     * @api
      */
     public function getProcessor()
     {
@@ -87,6 +93,8 @@ class ItemStep extends AbstractStep
      * Get writer
      *
      * @return ItemWriterInterface
+     *
+     * @api
      */
     public function getWriter()
     {
@@ -154,23 +162,13 @@ class ItemStep extends AbstractStep
     /**
      * Flushes step elements
      */
-    public function flushStepElements()
+    protected function flushStepElements()
     {
         foreach ($this->getStepElements() as $element) {
             if ($element instanceof FlushableInterface) {
                 $element->flush();
             }
         }
-    }
-
-    /**
-     * @deprecated will be removed in 1.7
-     *
-     * @return array
-     */
-    public function getConfigurableStepElements()
-    {
-        return $this->getStepElements();
     }
 
     /**

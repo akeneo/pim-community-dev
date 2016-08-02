@@ -14,6 +14,8 @@ namespace Akeneo\Component\Batch\Item;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @api
  */
 interface ItemProcessorInterface
 {
@@ -29,6 +31,7 @@ interface ItemProcessorInterface
      * @throws \Exception
      * @return mixed Potentially modified or new item for continued processing
      *
+     * @api
      */
     public function process($item);
 }

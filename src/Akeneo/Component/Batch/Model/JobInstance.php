@@ -23,6 +23,10 @@ use Doctrine\Common\Collections\Collection;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
+ *
+ * @internal TODO: I'd love to tag this class as API but it means no change in this class in any upcoming minor versions,
+ * an altenative solution could be to introduce interface an typehint against interface and keep concret classes as
+ * internal PIM typehint?
  */
 class JobInstance
 {
@@ -239,64 +243,6 @@ class JobInstance
     public function getRawParameters()
     {
         return $this->rawParameters;
-    }
-
-    /**
-     * This configuration can be used to create a JobParameters, stored like this in a legacy way
-     *
-     * @param array $configuration
-     *
-     * @return JobInstance
-     *
-     * @deprecated will be removed in 1.7, this has been used to set the job instance parameters (configuration), we
-     *             must use $jobInstance->setRawParameters()
-     */
-    public function setRawConfiguration($configuration)
-    {
-        trigger_error('please use $jobInstance->setRawParameters() instead', E_USER_NOTICE);
-    }
-
-    /**
-     * This parameters can be used to create a JobParameters, stored like this in a legacy way
-     *
-     * @return array
-     *
-     * @deprecated will be removed in 1.7, this has been used to get the job instance parameters (configuration), we
-     *             must use $jobInstance->getRawParameters()
-     */
-    public function getRawConfiguration()
-    {
-        trigger_error('please use $jobInstance->getRawParameters() instead', E_USER_NOTICE);
-    }
-
-    /**
-     * Set job
-     *
-     * @param Job $job
-     *
-     * @return JobInstance
-     *
-     * @deprecated will be removed in 1.7, this has been used to configure the job instance in a weird way to be able
-     *             to access to the Job from the JobInstance in an execution context only, to access to the Job, we
-     *             must use JobRegistry->get($jobInstance->getAlias())
-     */
-    public function setJob($job)
-    {
-        trigger_error('please use JobRegistry->get($jobInstance->getAlias()) instead', E_USER_NOTICE);
-    }
-
-    /**
-     * Get job
-     *
-     * @return Job
-     *
-     * @deprecated will be removed in 1.7, this has been used to configure the job instance in a weird way to be able
-     *             to access to the Job from the JobInstance in an execution context only, to access to the Job, we
-     *             must use JobRegistry->getJob($jobInstance)
-     */
-    public function getJob()
-    {
-        trigger_error('please use JobRegistry->get($jobInstance->getAlias()) instead', E_USER_NOTICE);
     }
 
     /**
