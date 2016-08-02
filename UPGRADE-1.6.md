@@ -1,5 +1,114 @@
 # UPGRADE FROM 1.5 to 1.6
 
+> Please perform a backup of your database before proceeding to the migration. You can use tools like  [mysqldump](http://dev.mysql.com/doc/refman/5.1/en/mysqldump.html) and [mongodump](http://docs.mongodb.org/manual/reference/program/mongodump/).
+
+> Please perform a backup of your codebase if you don't use any VCS.
+
+
+## Update dependencies and configuration
+
+1. Extract the latest **PIM enterprise standard** you have received by mail:
+
+    ```
+     tar -zxf pim-enterprise-standard.tar.gz
+     cd pim-enterprise-standard/
+    ```
+
+2. Copy the following files to your PIM installation:
+
+    ```
+     export PIM_DIR=/path/to/your/pim/installation
+     cp app/PimRequirements.php $PIM_DIR/app
+     cp app/SymfonyRequirements.php $PIM_DIR/app
+     cp app/config/pim_parameters.yml $PIM_DIR/app/config
+     cp composer.json $PIM_DIR
+    ```
+
+3. Update your **config.yml**
+
+    * The ProductValue model has been moved into the catalog component.
+    
+        v1.5
+        ```
+        akeneo_storage_utils:
+            mapping_overrides:
+                -
+                    original: Pim\Component\Catalog\Model\ProductValue
+                    override: PimEnterprise\Bundle\CatalogBundle\Model\ProductValue
+        
+        ```
+        
+        v1.6
+        ```
+        akeneo_storage_utils:
+            mapping_overrides:
+                -
+                    original: Pim\Component\Catalog\Model\ProductValue
+                    override: PimEnterprise\Component\Catalog\Model\ProductValue
+        
+        ```
+
+    * Remove the configuration of the `pim_catalog` from this file.
+
+4. Update your **app/AppKernel.php**:
+    * Remove the following bundles: `PimEnterpriseBaseConnectorBundle`, `PimBaseConnectorBundle`, `PimTransformBundle`, `NelmioApiDocBundle`
+    * Add the following bundles: `PimEnterprise\Bundle\ConnectorBundle\PimEnterpriseConnectorBundle` 
+
+5. Update your **app/config/routing.yml**: 
+    * Route removed: `nelmio_api_doc`
+
+6. Then remove your old upgrades folder: 
+    ```
+     rm upgrades/ -rf
+    ```
+
+7. Now you're ready to update your dependencies
+
+    * **Caution**, don't forget to re-add your own dependencies to your *composer.json* in case you have some:
+        
+        ```
+        "require": {
+            "your/dependencies": "version",
+            "your/other-dependencies": "version",
+        }
+        ```
+        
+        Especially you store your product in Mongo, don't forget to add `doctrine/mongodb-odm-bundle`:
+        
+        ```
+        "require": {
+            "doctrine/mongodb-odm-bundle": "3.2.0"
+        }
+        ```
+    
+    * Then run the command:
+    
+        ```
+         cd $PIM_DIR
+         composer update
+        ```
+
+8. Then you can migrate your database using
+    
+    * Add a the parameter `doctrine_migrations_dir` to `parameter.yml`:
+    
+        ```
+         doctrine_migrations_dir: %kernel.root_dir%/../upgrades/1.5-1.6
+        ```
+
+    * Then run the command:
+        ```
+         php app/console doctrine:migration:migrate
+        ```
+
+## Partially fix BC breaks
+
+If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
+
+**It does not cover all possible BC breaks, as the changes of arguments of a service, consider using this script on versioned files to be able to check the changes with a `git diff` for instance.**
+
+Based on a PIM standard installation, execute the following command in your project folder:
+
 ```
     find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\SecurityBundle\\Model/PimEnterprise\\Component\\Security\\Model/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\SecurityBundle\\Entity\\Repository\\AccessRepositoryInterface/PimEnterprise\\Component\\Security\\Repository\\AccessRepositoryInterface/g'
