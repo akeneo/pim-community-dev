@@ -14,7 +14,7 @@ use Prophecy\Argument;
 class FamilyNormalizerSpec extends ObjectBehavior
 {
     function let(
-        \Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer $normalizer,
+        TranslationNormalizer $normalizer,
         CollectionFilterInterface $filter,
         AttributeRepositoryInterface $attributeRepository,
         AttributeRequirementRepositoryInterface $requirementsRepository

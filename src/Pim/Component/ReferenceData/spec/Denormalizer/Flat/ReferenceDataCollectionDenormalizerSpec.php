@@ -19,7 +19,7 @@ class ReferenceDataCollectionDenormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Denormalizer\Flat\ProductValue\AbstractValueDenormalizer');
+        $this->shouldHaveType('Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AbstractValueDenormalizer');
     }
 
     function it_is_a_denormalizer()

@@ -2,21 +2,6 @@ parameters:
     # Encoder
     pim_serializer.encoder.csv.class: Pim\Component\Connector\Encoder\CsvEncoder
 
-     # Denormalizers
-    pim_serializer.denormalizer.flat.product.class:                   Pim\Component\Connector\Denormalizer\Flat\ProductDenormalizer
-    pim_serializer.denormalizer.flat.family.class:                    Pim\Component\Connector\Denormalizer\Flat\FamilyDenormalizer
-    pim_serializer.denormalizer.flat.category.class:                  Pim\Component\Connector\Denormalizer\Flat\CategoryDenormalizer
-    pim_serializer.denormalizer.flat.group.class:                     Pim\Component\Connector\Denormalizer\Flat\GroupDenormalizer
-    pim_serializer.denormalizer.flat.association.class:               Pim\Component\Connector\Denormalizer\Flat\AssociationDenormalizer
-    pim_serializer.denormalizer.flat.product_value.class:             Pim\Component\Connector\Denormalizer\Flat\ProductValueDenormalizer
-    pim_serializer.denormalizer.flat.product_values.class:            Pim\Component\Connector\Denormalizer\Flat\ProductValuesDenormalizer
-    pim_serializer.denormalizer.flat.base_value.class:                Pim\Component\Connector\Denormalizer\Flat\ProductValue\BaseValueDenormalizer
-    pim_serializer.denormalizer.flat.attribute_option.class:          Pim\Component\Connector\Denormalizer\Flat\ProductValue\AttributeOptionDenormalizer
-    pim_serializer.denormalizer.flat.attribute_options.class:         Pim\Component\Connector\Denormalizer\Flat\ProductValue\AttributeOptionsDenormalizer
-    pim_serializer.denormalizer.flat.prices.class:                    Pim\Component\Connector\Denormalizer\Flat\ProductValue\PricesDenormalizer
-    pim_serializer.denormalizer.flat.metric.class:                    Pim\Component\Connector\Denormalizer\Flat\ProductValue\MetricDenormalizer
-    pim_serializer.denormalizer.flat.datetime.class:                  Pim\Component\Connector\Denormalizer\Flat\ProductValue\DateTimeDenormalizer
-    pim_serializer.denormalizer.flat.file.class:                      Pim\Component\Connector\Denormalizer\Flat\ProductValue\FileDenormalizer
 
 services:
     # Encoder

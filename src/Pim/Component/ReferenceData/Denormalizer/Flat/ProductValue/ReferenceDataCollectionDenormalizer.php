@@ -4,7 +4,7 @@ namespace Pim\Component\ReferenceData\Denormalizer\Flat\ProductValue;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Connector\Denormalizer\Flat\ProductValue\AbstractValueDenormalizer;
+use Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AbstractValueDenormalizer;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 
 /**
@@ -12,7 +12,7 @@ use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterf
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceDataCollectionDenormalizer extends AbstractValueDenormalizer
+class ReferenceDataCollectionDenormalizer extends \Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AbstractValueDenormalizer
 {
     /** @var ReferenceDataRepositoryResolverInterface */
     protected $repositoryResolver;

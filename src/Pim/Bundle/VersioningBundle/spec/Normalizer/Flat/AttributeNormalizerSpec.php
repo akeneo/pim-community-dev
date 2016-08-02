@@ -14,7 +14,7 @@ use Prophecy\Argument;
 class AttributeNormalizerSpec extends ObjectBehavior
 {
     function let(
-        \Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer $transnormalizer,
+        TranslationNormalizer $transnormalizer,
         AttributeInterface $attribute,
         AttributeGroupInterface $attributeGroup
     ) {
