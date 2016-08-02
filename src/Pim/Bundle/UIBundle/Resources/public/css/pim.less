@@ -51,7 +51,8 @@ a:focus {
 
 /* Grids */
 .table-hover tbody tr:hover > td {
-  background-color: @akeneoPurpleLighter;
+  background-color: @akeneoLight;
+  color: @akeneoDarkBlue;
 }
 table.grid {
   margin-bottom: 20px;
@@ -1782,9 +1783,49 @@ h3.tab-header {
   justify-content: space-between;
 }
 
+/** PEB*** ************************************************************************************************************/
+
+.job-profile-content-tab {
+  .control-group {
+    max-width: 900px;
+
+    .control-label.required {
+      font-weight: bold;
+    }
+
+    .filter-input {
+      display: inline-block;
+    }
+
+    .filter-context {
+      display: inline-block;
+      vertical-align: middle;
+
+      .btn-group + .btn-group {
+        margin-left: 3px;
+      }
+
+      .btn {
+        height: 32px;
+      }
+
+      > span {
+        padding: 0 4px;
+        vertical-align: middle;
+
+        .language {
+          padding: 0;
+          color: inherit;
+        }
+      }
+    }
+  }
+}
+
 .input-like {
-  padding: 0 3px 10px 3px;
+  padding: 2px 3px;
   width: 300px;
+  border: 1px solid @color-ddd;
   box-sizing: content-box;
 
   &.disabled {
@@ -1793,7 +1834,19 @@ h3.tab-header {
 
   .form-control {
     line-height: 28px;
+    font-size: @font-size-11em;
     padding-left: 7px;
+  }
+}
+
+.filter-input {
+  .select2-container-multi {
+    height: 32px;
+
+    .select2-search-choice {
+      margin: 2px 0 2px 2px;
+      padding: 3px 5px 2px 20px;
+    }
   }
 }
 
@@ -1804,12 +1857,23 @@ h3.tab-header {
   }
 
   .value {
-    width: 94px;
+    width: 80px;
   }
 
   .unit, .currency {
-    width: 100px;
+    width: 114px;
   }
+}
+
+.attributes .input-like, [data-type="pim-filter-product-category"] .filter-input .input-like {
+    padding: 2px 2px 2px 0;
+    margin: 0 0 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.attributes .input-like {
+  margin-left: 0;
 }
 
 [data-type="pim-filter-attribute-select-reference-data"] .filter-input,
@@ -1872,6 +1936,10 @@ h3.tab-header {
           width: 100%;
         }
       }
+
+      li .remove {
+        display: none;
+      }
     }
 
     &.selected-attributes {
@@ -1926,6 +1994,8 @@ h3.tab-header {
           border: 1px solid #95989e;
           border-bottom: none;
           padding: 15px;
+          display: flex;
+          align-items: center;
 
           &:hover {
             cursor: pointer;
@@ -1946,6 +2016,11 @@ h3.tab-header {
 
           &:last-child {
             border-bottom: 1px solid #95989e;
+          }
+
+          .attribute-label {
+            flex: 1;
+            padding-left: 10px;
           }
         }
       }

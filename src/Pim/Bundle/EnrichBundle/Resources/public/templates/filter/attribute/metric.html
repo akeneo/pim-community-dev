@@ -10,9 +10,9 @@
     <input type="text" name="filter-data" class="value" value="<%- value.data %>" <%- editable ? '' : 'disabled' %>>
 
     <select class="select2 unit" name="filter-unit" <%- editable ? '' : 'disabled' %>>
-        <% _.each(units.units, function (unitChoice, key) { %>
+        <% _.each(_.keys(units.units), function (key) { %>
             <option value="<%- key %>"<%- value.unit === key ? ' selected' : '' %>>
-                <%- unitChoice.symbol %>
+                <%- __(key) %>
             </option>
         <% }); %>
     </select>

@@ -17,7 +17,7 @@ define([
     return BaseFilter.extend({
         shortname: 'category',
         template: _.template(template),
-        className: 'category-filter',
+        className: 'control-group filter-item category-filter',
         events: {
             'click button': 'openSelector'
         },

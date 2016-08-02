@@ -19,7 +19,7 @@ define([
         template: _.template(template),
 
         /**
-         * {@inherit}
+         * {@inheritdoc}
          */
         configure: function () {
             this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this));
