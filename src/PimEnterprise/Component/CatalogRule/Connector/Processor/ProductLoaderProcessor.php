@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Component\CatalogRule\Connector\Processor;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
@@ -20,7 +19,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class ProductLoaderProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
+class ProductLoaderProcessor implements ItemProcessorInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $productRepository;

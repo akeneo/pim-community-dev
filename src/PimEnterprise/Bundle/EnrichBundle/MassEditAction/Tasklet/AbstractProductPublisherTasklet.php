@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
@@ -13,7 +12,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -24,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-abstract class AbstractProductPublisherTasklet extends AbstractConfigurableStepElement implements TaskletInterface
+abstract class AbstractProductPublisherTasklet implements TaskletInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
@@ -70,11 +68,6 @@ abstract class AbstractProductPublisherTasklet extends AbstractConfigurableStepE
         $this->userManager      = $userManager;
         $this->tokenStorage     = $tokenStorage;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function execute();
 
     /**
      * {@inheritdoc}

@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Component\CatalogRule\Connector\Processor\Normalization;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
@@ -22,9 +21,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleDefinitionProcessor extends AbstractConfigurableStepElement implements
-    ItemProcessorInterface,
-    StepExecutionAwareInterface
+class RuleDefinitionProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     /** @var StepExecution */
     protected $stepExecution;

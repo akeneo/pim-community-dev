@@ -47,11 +47,6 @@ class ProductWriterSpec extends ObjectBehavior
         $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
-    function it_is_a_configurable_step_element()
-    {
-        $this->shouldHaveType('\Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
-    }
-
     function it_saves_items(
         $productSaver,
         $stepExecution,

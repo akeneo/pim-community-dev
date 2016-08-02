@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -18,7 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class PublishProductTasklet extends AbstractProductPublisherTasklet
+class PublishProductTasklet extends AbstractProductPublisherTasklet implements TaskletInterface
 {
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;

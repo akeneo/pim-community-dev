@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Component\Workflow\Connector\Writer\Database;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
@@ -24,9 +23,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ProductDraftWriter extends AbstractConfigurableStepElement implements
-    ItemWriterInterface,
-    StepExecutionAwareInterface
+class ProductDraftWriter implements ItemWriterInterface, StepExecutionAwareInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
