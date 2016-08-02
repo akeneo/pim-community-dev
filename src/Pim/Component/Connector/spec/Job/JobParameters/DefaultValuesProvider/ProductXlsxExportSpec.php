@@ -42,7 +42,7 @@ class ProductXlsxExportSpec extends ObjectBehavior
                     10000 === $parameters['linesPerFile'] &&
                     is_array($parameters['filters']) &&
                     is_array($parameters['filters']['data']) &&
-                    is_object($parameters['filters']['structure']);
+                    is_array($parameters['filters']['structure']);
             }
         ];
     }
