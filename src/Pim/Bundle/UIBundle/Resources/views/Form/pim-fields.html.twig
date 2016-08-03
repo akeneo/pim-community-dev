@@ -132,7 +132,7 @@
             {% if form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode %}
                 <input type="checkbox" class="comparisonSelection exclude" />
             {% else %}
-                {% if required and not isRadioLabel %}<em>*</em>{% endif %}{{ label }}
+                {{ label }}{% if required and not isRadioLabel %} <em>{{ 'required'|trans }}</em>{% endif %}
             {% endif %}
         </label>
     {% endif %}

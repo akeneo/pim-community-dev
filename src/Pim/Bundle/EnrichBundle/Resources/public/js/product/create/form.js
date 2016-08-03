@@ -101,7 +101,8 @@ define(
                                     ),
                                     family: __('pim_enrich.entity.product.create_popin.labels.family')
                                 },
-                                errors: this.validationErrors
+                                errors: this.validationErrors,
+                                __: __
                             })
                         );
                         this.initSelect2();

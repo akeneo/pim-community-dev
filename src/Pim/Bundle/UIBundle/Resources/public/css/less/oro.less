@@ -608,10 +608,14 @@ select {
   clear: both;
   display: block;
 }
-
-.sub-title a { color:@akeneoPurple; }
+.sub-title a {
+  color: @akeneoPurple;
+}
+.navbar-content .customer-info {
+  padding-top: 10px;
+}
 .customer-info {
-  padding-left: 76px;
+  padding-left: 60px;
   padding-bottom: 0;
   line-height: 18px;
   .sub-title {
@@ -729,9 +733,7 @@ select {
 
 label.required em,
 .form-horizontal label.required em {
-  padding: 0 3px;
-  color: @redDarker;
-  font-size: @font-size-15;
+  font-style: normal;
 }
 
 input, textarea { width:280px; }
