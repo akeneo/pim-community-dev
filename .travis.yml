@@ -2,7 +2,6 @@ language: php
 php:
     - "5.6"
     - "7.0"
-    - "hhvm"
 
 # Allow to use container infrastructure
 sudo: false
@@ -12,19 +11,20 @@ cache:
     - $HOME/.composer/cache/files
 
 before_install:
-    - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then
-        phpenv config-rm xdebug.ini;
-      fi
+    - phpenv config-rm xdebug.ini
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - composer self-update --no-interaction
-
-install:
-    - if [ "$TRAVIS_PHP_VERSION" = "hhvm" ] || [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then
-        composer remove --dev --no-update doctrine/mongodb-odm-bundle;
-      else
+    - if [ "$TRAVIS_PHP_VERSION" = "5.6" ]; then
         echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini;
       fi;
-    - composer update --prefer-dist --no-interaction
+    - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then
+        pecl install mongodb;
+      fi;
+install:
+    - composer update --prefer-dist --no-interaction --ignore-platform-reqs
+    - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then
+        composer require alcaeus/mongo-php-adapter --ignore-platform-reqs;
+      fi;
     - ./app/console oro:requirejs:generate-config
     - ./app/console assets:install
     - npm install -g grunt-cli
@@ -33,7 +33,7 @@ install:
 
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
-    - ./phpspec-fix
+    - ./bin/phpspec run
     - php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php
     - grunt travis
 
