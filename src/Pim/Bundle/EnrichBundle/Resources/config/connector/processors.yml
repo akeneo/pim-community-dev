@@ -58,4 +58,4 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_user.provider.user'
             - '@security.token_storage'
-            - '@pim_connector.writer.file.product.bulk_file_exporter'
+            - '@pim_connector.processor.bulk_media_fetcher'

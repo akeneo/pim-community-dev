@@ -24,7 +24,7 @@ class UpdatedDecorator extends ElementDecorator
         $operatorField->setValue($operator);
 
         if ('' !== $value) {
-            $field = $this->find('css', '.value');
+            $field = $this->find('css', 'input[name="filter-value"]');
             $field->setValue($value);
         }
     }

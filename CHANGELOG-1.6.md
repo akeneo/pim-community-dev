@@ -63,7 +63,7 @@
 - Remove `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor`. Please use `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductProcessor`
 - Change constructor or `Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer`. Add `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
 - Change constructor or `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer`. Add `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
-- Change constructor of `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor`. Remove second argument `Symfony\Component\Serializer\Normalizer\DenormalizerInterface` and replace fourth and fifth argument by `Pim\Component\Connector\Writer\File\BulkFileExporter` and `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
+- Change constructor of `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor`. Remove second argument `Symfony\Component\Serializer\Normalizer\DenormalizerInterface` and replace fourth and fifth argument by `Pim\Component\Connector\Processor\BulkMediaFetcher` and `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
 - Move `Pim\Bundle\BaseConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass` to `Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass`
 - Move `Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector` to `Pim\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector`
 - Move `Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist` to `Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist`

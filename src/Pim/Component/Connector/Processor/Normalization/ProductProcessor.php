@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Connector\Writer\File\BulkFileExporter;
+use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -45,8 +45,8 @@ class ProductProcessor extends AbstractConfigurableStepElement implements
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var BulkFileExporter */
-    protected $mediaExporter;
+    /** @var BulkMediaFetcher */
+    protected $mediaFetcher;
 
     /**
      * @param NormalizerInterface          $normalizer
@@ -54,7 +54,7 @@ class ProductProcessor extends AbstractConfigurableStepElement implements
      * @param AttributeRepositoryInterface $attributeRepository
      * @param ProductBuilderInterface      $productBuilder
      * @param ObjectDetacherInterface      $detacher
-     * @param BulkFileExporter             $mediaExporter
+     * @param BulkMediaFetcher             $mediaFetcher
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -62,14 +62,14 @@ class ProductProcessor extends AbstractConfigurableStepElement implements
         AttributeRepositoryInterface $attributeRepository,
         ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $detacher,
-        BulkFileExporter $mediaExporter
+        BulkMediaFetcher $mediaFetcher
     ) {
         $this->normalizer = $normalizer;
         $this->detacher = $detacher;
         $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
         $this->productBuilder = $productBuilder;
-        $this->mediaExporter = $mediaExporter;
+        $this->mediaFetcher = $mediaFetcher;
     }
 
     /**
@@ -97,7 +97,7 @@ class ProductProcessor extends AbstractConfigurableStepElement implements
 
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
             $directory = $this->getWorkingDirectory($parameters->get('filePath'));
-            $this->fetchMedias($product, $directory);
+            $this->fetchMedia($product, $directory);
         }
 
         $this->detacher->detach($product);
@@ -119,12 +119,12 @@ class ProductProcessor extends AbstractConfigurableStepElement implements
      * @param ProductInterface $product
      * @param string           $directory
      */
-    protected function fetchMedias(ProductInterface $product, $directory)
+    protected function fetchMedia(ProductInterface $product, $directory)
     {
         $identifier = $product->getIdentifier()->getData();
-        $this->mediaExporter->exportAll($product->getValues(), $directory, $identifier);
+        $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
 
-        foreach ($this->mediaExporter->getErrors() as $error) {
+        foreach ($this->mediaFetcher->getErrors() as $error) {
             $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
         }
     }

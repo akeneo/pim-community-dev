@@ -1,0 +1,46 @@
+<% if (!_.isEmpty(data)) { %>
+    <thead>
+        <tr>
+            <th>
+                <%= __('pim_dashboard.widget.last_operations.date') %>
+            </th>
+            <th>
+                <%= __('pim_dashboard.widget.last_operations.type') %>
+            </th>
+            <th>
+                <%= __('pim_dashboard.widget.last_operations.profile name') %>
+            </th>
+            <th>
+                <%= __('pim_dashboard.widget.last_operations.status') %>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    <% _.each(data, function (operation) { %>
+        <tr>
+            <td> <%= operation.date %></td>
+            <td> <%= __('pim_dashboard.widget.last_operations.job_type.'+operation.type) %></td>
+            <td><%= operation.label %></td>
+            <td>
+                <span class="label <%= operation.labelClass %>">
+                    <%= operation.statusLabel %>
+                </span>
+            </td>
+            <td class="text-right">
+                <a class="btn btn-large btn-download" href="javascript:void(0);"
+                data-id="<%= operation.id %>"
+                data-operation-type="<%= operation.type %>">
+                    <%= __('pim_dashboard.widget.last_operations.details') %>
+                </a>
+            </td>
+        </tr>
+    <% }); %>
+    </tbody>
+<% } else if (options.contentLoaded) {%>
+    <tr>
+        <th class="text-center">
+            <%= __('pim_dashboard.widget.last_operations.empty') %>
+        </th>
+    </tr>
+<% } %>

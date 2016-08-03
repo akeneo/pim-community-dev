@@ -14,10 +14,8 @@ Feature: Display jobs execution in job tracker
     When I am on the "csv_footwear_category_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_category_export" job to finish
-    When I am on the dashboard page
-    When I click on the job tracker button on the job widget
-    Then I should be redirected on the job tracker page
-    And I should see the "Refresh" button
+    When I am on the job tracker page
+    Then I should see the "Refresh" button
     And I should see the "Reset" button
     And I should see the columns Type, Job, User, Status and Started at
     And the grid should contain 1 element
@@ -38,9 +36,8 @@ Feature: Display jobs execution in job tracker
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     When I am on the dashboard page
-    When I click on the job tracker button on the job widget
-    Then I should be redirected on the job tracker page
-    And I should see the "Refresh" button
+    When I am on the job tracker page
+    Then I should see the "Refresh" button
     And I should see the "Reset" button
     And I should see the columns Type, Job, User, Status and Started at
     And the grid should contain 1 element
@@ -61,9 +58,7 @@ Feature: Display jobs execution in job tracker
     When I am on the "csv_footwear_category_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_category_import" job to finish
-    When I am on the dashboard page
-    When I click on the job tracker button on the job widget
-    Then I should be redirected on the job tracker page
+    And I am on the job tracker page
     And I should see the "Refresh" button
     And I should see the "Reset" button
     And I should see the columns Type, Job, User, Status and Started at

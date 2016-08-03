@@ -1,4 +1,5 @@
 @import '../../../css/less/variables';
+@import '../../../css/less/bootstrap_mixins';
 
 /*!
  * Bootstrap v2.3.2
@@ -835,11 +836,9 @@ dd {
 .dl-horizontal dt {
   float: left;
   width: 160px;
-  overflow: hidden;
   clear: left;
   text-align: right;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  .text-overflow();
 }
 
 .dl-horizontal dd {
@@ -1122,8 +1121,6 @@ input[type="color"]:focus,
 input[type="radio"],
 input[type="checkbox"] {
   margin: 4px 0 0;
-  margin-top: 1px \9;
-  *margin-top: 0;
   line-height: normal;
 }
 
@@ -5617,42 +5614,42 @@ a.badge:focus {
 
 .label-important,
 .badge-important {
-  background-color: #b94a48;
+  background-color: @red;
 }
 
 .label-important[href],
 .badge-important[href] {
-  background-color: #953b39;
+  background-color: @redDarker;
 }
 
 .label-warning,
 .badge-warning {
-  background-color: #f89406;
+  background-color: @yellow;
 }
 
 .label-warning[href],
 .badge-warning[href] {
-  background-color: #c67605;
+  background-color: @yellowDarker;
 }
 
 .label-success,
 .badge-success {
-  background-color: #468847;
+  background-color: @green;
 }
 
 .label-success[href],
 .badge-success[href] {
-  background-color: #356635;
+  background-color: @greenDarker;
 }
 
 .label-info,
 .badge-info {
-  background-color: #3a87ad;
+  background-color: @blue;
 }
 
 .label-info[href],
 .badge-info[href] {
-  background-color: #2d6987;
+  background-color: @blueDarker;
 }
 
 .label-inverse,
