@@ -1,6 +1,7 @@
 'use strict';
 
 define([
+    'jquery',
     'underscore',
     'oro/translator',
     'pim/filter/filter',
@@ -10,6 +11,7 @@ define([
     'text!pim/template/filter/product/identifier',
     'jquery.select2'
 ], function (
+    $,
     _,
     __,
     BaseFilter,
@@ -49,6 +51,13 @@ define([
         /**
          * {@inheritdoc}
          */
+        setField: function () {
+            return BaseFilter.prototype.setField.apply(this, [this.identifier.code]);
+        },
+
+        /**
+         * {@inheritdoc}
+         */
         isEmpty: function () {
             return _.isEmpty(this.getValue());
         },
@@ -69,13 +78,11 @@ define([
          * {@inheritdoc}
          */
         getTemplateContext: function () {
-            this.field = this.identifier.code;
-
             return $.Deferred().resolve({
                 label: i18n.getLabel(
                     this.identifier.labels,
                     UserContext.get('catalogLocale'),
-                    this.identifier.code
+                    this.getField()
                 ),
                 removable: false
             }).promise();
