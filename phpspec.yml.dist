@@ -184,6 +184,3 @@ suites:
         psr4_prefix: Oro\Bundle\FilterBundle
         spec_path: src/Oro/Bundle/FilterBundle
         src_path: src/Oro/Bundle/FilterBundle
-
-extensions:
-    Akeneo\SkipExampleExtension: ~

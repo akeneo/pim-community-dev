@@ -1,7 +1,12 @@
+parameters:
+    # Encoder
+    pim_serializer.encoder.csv.class: Pim\Component\Connector\Encoder\CsvEncoder
+
 services:
     pim_versioning.serializer:
         class: '%pim_serializer.class%'
 
+    # Encoder
     pim_versioning.serializer.encoder.csv:
         public: false
         class: '%pim_serializer.encoder.csv.class%'

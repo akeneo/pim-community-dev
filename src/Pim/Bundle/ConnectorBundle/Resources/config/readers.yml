@@ -1,7 +1,7 @@
 parameters:
     pim_connector.reader.dummy_item.class: Pim\Component\Connector\Reader\DummyItemReader
 
-    pim_connector.reader.database.base.class:    Pim\Component\Connector\Reader\Database\BaseReader
+    pim_connector.reader.database.class: Pim\Component\Connector\Reader\Database\Reader
     pim_connector.reader.database.product.class: Pim\Component\Connector\Reader\Database\ProductReader
     pim_connector.reader.database.atribute_option.class: Pim\Component\Connector\Reader\Database\AttributeOptionReader
     pim_connector.reader.database.category.class: Pim\Component\Connector\Reader\Database\CategoryReader
@@ -35,17 +35,17 @@ services:
             - true
 
     pim_connector.reader.database.family:
-        class: '%pim_connector.reader.database.base.class%'
+        class: '%pim_connector.reader.database.class%'
         arguments:
             - '@pim_catalog.repository.family'
 
     pim_connector.reader.database.attribute:
-        class: '%pim_connector.reader.database.base.class%'
+        class: '%pim_connector.reader.database.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
 
     pim_connector.reader.database.association_type:
-        class: '%pim_connector.reader.database.base.class%'
+        class: '%pim_connector.reader.database.class%'
         arguments:
             - '@pim_catalog.repository.association_type'
 
@@ -91,12 +91,6 @@ services:
         class: '%pim_connector.reader.dummy_item.class%'
 
     # CSV File Readers
-    pim_connector.reader.file.csv:
-        class: '%pim_connector.reader.file.csv.class%'
-        arguments:
-            - '@pim_connector.reader.file.csv_iterator_factory'
-            - '@pim_connector.array_converter.dummy'
-
     pim_connector.reader.file.csv_association_type:
         class: '%pim_connector.reader.file.csv.class%'
         arguments:

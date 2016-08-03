@@ -2,7 +2,9 @@
 
 namespace Pim\Component\Connector\Writer\File\Yaml;
 
+use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Connector\Writer\File\AbstractFileWriter;
 use Symfony\Component\Yaml\Yaml;
 
@@ -13,7 +15,9 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer extends AbstractFileWriter
+class Writer extends AbstractFileWriter implements
+    ItemWriterInterface,
+    StepExecutionAwareInterface
 {
     const INLINE_ARRAY_LEVEL = 8;
 
