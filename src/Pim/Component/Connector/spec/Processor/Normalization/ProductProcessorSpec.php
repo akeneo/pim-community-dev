@@ -17,7 +17,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Connector\Writer\File\BulkFileExporter;
+use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -29,7 +29,7 @@ class ProductProcessorSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $detacher,
-        BulkFileExporter $mediaExporter,
+        BulkMediaFetcher $mediaFetcher,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
@@ -38,7 +38,7 @@ class ProductProcessorSpec extends ObjectBehavior
             $attributeRepository,
             $productBuilder,
             $detacher,
-            $mediaExporter
+            $mediaFetcher
         );
 
         $this->setStepExecution($stepExecution);
@@ -59,7 +59,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $normalizer,
         $channelRepository,
         $stepExecution,
-        $mediaExporter,
+        $mediaFetcher,
         $productBuilder,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -100,8 +100,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn($productStandard);
 
-        $mediaExporter->exportAll(Argument::cetera())->shouldNotBeCalled();
-        $mediaExporter->getErrors()->shouldNotBeCalled();
+        $mediaFetcher->fetchAll(Argument::cetera())->shouldNotBeCalled();
+        $mediaFetcher->getErrors()->shouldNotBeCalled();
 
         $this->process($product)->shouldReturn($productStandard);
 
@@ -113,7 +113,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $normalizer,
         $channelRepository,
         $stepExecution,
-        $mediaExporter,
+        $mediaFetcher,
         $productBuilder,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -168,8 +168,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn($productStandard);
 
-        $mediaExporter->exportAll($valuesCollection, $directory, 'AKIS_XS')->shouldBeCalled();
-        $mediaExporter->getErrors()->willReturn([]);
+        $mediaFetcher->fetchAll($valuesCollection, $directory, 'AKIS_XS')->shouldBeCalled();
+        $mediaFetcher->getErrors()->willReturn([]);
 
         $this->process($product)->shouldReturn($productStandard);
 
@@ -181,7 +181,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $normalizer,
         $channelRepository,
         $stepExecution,
-        $mediaExporter,
+        $mediaFetcher,
         $productBuilder,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -231,8 +231,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn($productStandard);
 
-        $mediaExporter->exportAll($valuesCollection, $directory, 'AKIS_XS')->shouldBeCalled();
-        $mediaExporter->getErrors()->willReturn(
+        $mediaFetcher->fetchAll($valuesCollection, $directory, 'AKIS_XS')->shouldBeCalled();
+        $mediaFetcher->getErrors()->willReturn(
             [
                 [
                     'message' => 'The media has not been found or is not currently available',

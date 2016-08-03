@@ -11,7 +11,7 @@ use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Connector\Writer\File\BulkFileExporter;
+use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -36,8 +36,8 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
 
-    /** @var BulkFileExporter */
-    protected $mediaExporter;
+    /** @var BulkMediaFetcher */
+    protected $mediaFetcher;
 
     /** @var ObjectUpdaterInterface */
     protected $variantGroupUpdater;
@@ -45,18 +45,18 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
     /**
      * @param NormalizerInterface     $normalizer
      * @param ObjectDetacherInterface $objectDetacher
-     * @param BulkFileExporter        $mediaExporter
+     * @param BulkMediaFetcher        $mediaFetcher
      * @param ObjectUpdaterInterface  $variantGroupUpdater
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ObjectDetacherInterface $objectDetacher,
-        BulkFileExporter $mediaExporter,
+        BulkMediaFetcher $mediaFetcher,
         ObjectUpdaterInterface $variantGroupUpdater
     ) {
         $this->normalizer = $normalizer;
         $this->objectDetacher = $objectDetacher;
-        $this->mediaExporter = $mediaExporter;
+        $this->mediaFetcher = $mediaFetcher;
         $this->variantGroupUpdater = $variantGroupUpdater;
     }
 
@@ -74,7 +74,7 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
 
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
             $directory = $this->getWorkingDirectory($parameters->get('filePath'));
-            $this->importMedia($variantGroup, $directory);
+            $this->fetchMedia($variantGroup, $directory);
         }
 
         $this->objectDetacher->detach($variantGroup);
@@ -91,12 +91,12 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * Import media in local filesystem
+     * Fetch medias in local filesystem
      *
      * @param GroupInterface $variantGroup
      * @param string         $directory
      */
-    protected function importMedia(GroupInterface $variantGroup, $directory)
+    protected function fetchMedia(GroupInterface $variantGroup, $directory)
     {
         if (null === $productTemplate = $variantGroup->getProductTemplate()) {
             return;
@@ -105,9 +105,9 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements
         $identifier = $variantGroup->getCode();
         $this->variantGroupUpdater->update($variantGroup, ['values' => $productTemplate->getValuesData()]);
 
-        $this->mediaExporter->exportAll($productTemplate->getValues(), $directory, $identifier);
+        $this->mediaFetcher->fetchAll($productTemplate->getValues(), $directory, $identifier);
 
-        foreach ($this->mediaExporter->getErrors() as $error) {
+        foreach ($this->mediaFetcher->getErrors() as $error) {
             $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
         }
     }
