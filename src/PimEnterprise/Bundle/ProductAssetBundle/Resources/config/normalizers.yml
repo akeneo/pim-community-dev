@@ -15,7 +15,6 @@ services:
         arguments:
             - '@pim_product_asset.normalizer.structured.asset'
         tags:
-            - { name: pim_serializer.normalizer, priority: 100 }
             - { name: pim_versioning.serializer.normalizer, priority: 100 }
 
     pim_product_asset.normalizer.structured.variation:

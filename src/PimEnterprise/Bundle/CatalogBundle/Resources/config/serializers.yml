@@ -1,12 +1,12 @@
 parameters:
-    pimee_serializer.normalizer.flat.attribute.class: PimEnterprise\Component\Connector\Normalizer\Flat\AttributeNormalizer
+    pimee_serializer.normalizer.structured.attribute.class: PimEnterprise\Component\Catalog\Normalizer\Structured\AttributeNormalizer
 
 services:
-    pimee_serializer.normalizer.flat.attribute:
-        class: '%pimee_serializer.normalizer.flat.attribute.class%'
-        decorates: pim_serializer.normalizer.flat.attribute
-        decoration_inner_name: pim_serializer.normalizer.flat.attribute.base
+    pimee_serializer.normalizer.structured.attribute:
+        class: '%pimee_serializer.normalizer.structured.attribute.class%'
+        decorates: pim_serializer.normalizer.attribute
+        decoration_inner_name: pim_serializer.normalizer.attribute.base
         arguments:
-            - '@pim_serializer.normalizer.flat.attribute.base'
+            - '@pim_serializer.normalizer.attribute.base'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
