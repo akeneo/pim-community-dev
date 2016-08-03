@@ -669,7 +669,7 @@ h3.tab-header {
 
   & > header {
     margin: 0 0 7px 0;
-    padding: 15px 10px 15px 20px;
+    padding: 15px 20px;
     background: @whiteDark;
 
     & > div {
@@ -677,7 +677,6 @@ h3.tab-header {
     }
 
     .title {
-      margin-bottom: 5px;
       .flex();
       .display-flex();
       .align-items(center);
@@ -689,6 +688,10 @@ h3.tab-header {
         margin: 0;
         line-height: 20px;
       }
+    }
+
+    .title, .actions {
+      margin-bottom: 5px;
     }
   }
 
@@ -721,6 +724,18 @@ h3.tab-header {
     .state {
       .flex-shrink(0);
       align-self: flex-end;
+    }
+  }
+
+  header {
+    .btn-group+h1, h1+.btn-group {
+      margin-left: 12px;
+    }
+  }
+
+  .actions {
+    & > div:empty {
+      display:none;
     }
   }
 }

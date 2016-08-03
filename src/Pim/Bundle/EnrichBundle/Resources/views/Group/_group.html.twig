@@ -15,8 +15,11 @@
 
         {% set title = title ~ ' - ' ~ form.vars.data.label %}
 
-        {% set buttons %}
+        {% set titleButtons %}
             {{ elements.backLink(path(indexRoute)) }}
+        {% endset %}
+
+        {% set buttons %}
             {{ elements.deleteLink(
                 path(removeRoute, { id: form.vars.value.id }),
                 'pim_enrich_group_remove',
@@ -50,7 +53,7 @@
            </ul>
         {% endset %}
 
-        {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
+        {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id), titleButtons) }}
 
         {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
