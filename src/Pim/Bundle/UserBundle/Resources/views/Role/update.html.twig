@@ -73,8 +73,11 @@
 
         {% set title = entityId ? 'role.edit'|trans ~ ' - ' ~ form.vars.value.label : 'role.create'|trans %}
 
-        {% set buttons %}
+        {% set titleButtons %}
             {{ elements.backLink(path('oro_user_role_index')) }}
+        {% endset %}
+
+        {% set buttons %}
             {% if entityId %}
                 {{ elements.deleteLink(
                     path('oro_user_role_delete', { id: entityId }),
@@ -87,7 +90,7 @@
             {{ elements.submitBtn('', 'ok') }}
         {% endset %}
 
-        {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
+        {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id), titleButtons) }}
 
         {% set tabs = ['General'] %}
         {% for item in privilegesConfig|keys %}

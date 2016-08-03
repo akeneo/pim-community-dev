@@ -7,8 +7,11 @@
     </ul>
 {% endset %}
 
-{% set buttons %}
+{% set titleButtons %}
     {{ elements.backLink(indexRoute) }}
+{% endset %}
+
+{% set buttons %}
     {% if jobInstance.status != constant('Akeneo\\Component\\Batch\\Model\\JobInstance::STATUS_IN_PROGRESS') %}
         {{ elements.link('Edit', editRoute, { icon: 'pencil' }) }}
     {% endif %}
@@ -20,7 +23,7 @@
     {% endif %}
 {% endset %}
 
-{{ elements.page_header(title, buttons, null, left) }}
+{{ elements.page_header(title, buttons, null, left, null, titleButtons) }}
 
 {{ elements.form_navbar(view_element_aliases(viewElementsAliases)) }}
 
