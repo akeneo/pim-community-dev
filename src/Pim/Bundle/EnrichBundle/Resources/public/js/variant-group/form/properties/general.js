@@ -35,7 +35,8 @@ define([
                     sectionTitle: __('pim_enrich.form.variant_group.tab.properties.general'),
                     codeLabel: __('pim_enrich.form.variant_group.tab.properties.code'),
                     typeLabel: __('pim_enrich.form.variant_group.tab.properties.type'),
-                    axisLabel: __('pim_enrich.form.variant_group.tab.properties.axis')
+                    axisLabel: __('pim_enrich.form.variant_group.tab.properties.axis'),
+                    __: __
                 }));
 
                 this.$el.find('select.select2').select2({});

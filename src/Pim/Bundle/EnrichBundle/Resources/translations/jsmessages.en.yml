@@ -246,6 +246,7 @@ pim_enrich:
         not_allowed: You are not allowed to access this page
         error_occured: An error occured during the loading of the page
     form:
+        required: (required)
         product:
             tab:
                 associations:

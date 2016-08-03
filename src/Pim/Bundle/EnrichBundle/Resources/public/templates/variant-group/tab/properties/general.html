@@ -8,8 +8,7 @@
     <div class="accordion-inner">
         <div class="control-group">
             <label class="control-label required" for="pim_enrich_variant_group_form_code">
-                <em>*</em>
-                <%- codeLabel %>
+                <%- codeLabel %> <em><%- __('pim_enrich.form.required') %></em>
             </label>
             <div class="controls">
                 <input type="text" id="pim_enrich_variant_group_form_code" readonly="readonly" disabled="disabled" required="required" class="input-large" value="<%- model.code %>">
@@ -18,8 +17,7 @@
 
         <div class="control-group">
             <label class="control-label required">
-                <em>*</em>
-                <%- typeLabel %>
+                <%- typeLabel %> <em><%- __('pim_enrich.form.required') %></em>
                 </label>
             <div class="controls">
                 <select id="pim_enrich_variant_group_form_type" readonly="readonly" disabled="disabled" class="select2 input-large">
@@ -30,8 +28,7 @@
 
         <div class="control-group">
             <label class="control-label required">
-                <em>*</em>
-                <%- axisLabel %>
+                <%- axisLabel %> <em><%- __('pim_enrich.form.required') %></em>
             </label>
             <div class="controls">
                 <select id="pim_enrich_variant_group_form_type" readonly="readonly" disabled="disabled" class="select2 input-large" multiple>
