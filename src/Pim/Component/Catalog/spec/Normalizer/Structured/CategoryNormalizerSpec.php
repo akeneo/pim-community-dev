@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Classification\Model\CategoryInterface;
-use Pim\Component\Connector\Normalizer\Flat\TranslationNormalizer;
+use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Prophecy\Argument;
 
 class CategoryNormalizerSpec extends ObjectBehavior

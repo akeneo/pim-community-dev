@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Connector\Normalizer\Flat\TranslationNormalizer;
+use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Prophecy\Argument;

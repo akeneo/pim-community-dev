@@ -3,29 +3,34 @@
 namespace Pim\Component\ReferenceData\Denormalizer\Flat\ProductValue;
 
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Connector\Denormalizer\Flat\ProductValue\AbstractValueDenormalizer;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceDataDenormalizer extends AbstractValueDenormalizer
+class ReferenceDataDenormalizer implements DenormalizerInterface
 {
+    /** @var string[] */
+    protected $supportedFormats = ['csv'];
+
+    /** @var string[] */
+    protected $supportedTypes;
+
     /** @var ReferenceDataRepositoryResolverInterface */
     protected $repositoryResolver;
 
     /**
-     * @param array                                    $supportedTypes
+     * @param string[]                                 $supportedTypes
      * @param ReferenceDataRepositoryResolverInterface $repositoryResolver
      */
     public function __construct(
         array $supportedTypes,
         ReferenceDataRepositoryResolverInterface $repositoryResolver = null
     ) {
-        parent::__construct($supportedTypes);
-
+        $this->supportedTypes = $supportedTypes;
         $this->repositoryResolver = $repositoryResolver;
     }
 
@@ -54,5 +59,12 @@ class ReferenceDataDenormalizer extends AbstractValueDenormalizer
         $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
 
         return $repository->findOneBy(['code' => $data]);
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsDenormalization($data, $type, $format = null)
+    {
+        return in_array($type, $this->supportedTypes) && in_array($format, $this->supportedFormats);
     }
 }

@@ -1,3 +1,40 @@
+parameters:
+    # Normalizers
+    pim_serializer.normalizer.flat.association_type.class:  Pim\Bundle\VersioningBundle\Normalizer\Flat\AssociationTypeNormalizer
+    pim_serializer.normalizer.flat.attribute.class:         Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeNormalizer
+    pim_serializer.normalizer.flat.attribute_group.class:   Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeGroupNormalizer
+    pim_serializer.normalizer.flat.category.class:          Pim\Bundle\VersioningBundle\Normalizer\Flat\CategoryNormalizer
+    pim_serializer.normalizer.flat.channel.class:           Pim\Bundle\VersioningBundle\Normalizer\Flat\ChannelNormalizer
+    pim_serializer.normalizer.flat.family.class:            Pim\Bundle\VersioningBundle\Normalizer\Flat\FamilyNormalizer
+    pim_serializer.normalizer.flat.group.class:             Pim\Bundle\VersioningBundle\Normalizer\Flat\GroupNormalizer
+    pim_serializer.normalizer.flat.job_instance.class:      Pim\Bundle\VersioningBundle\Normalizer\Flat\JobInstanceNormalizer
+    pim_serializer.normalizer.flat.label_translation.class: Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer
+    pim_serializer.normalizer.flat.product.class:           Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductNormalizer
+    pim_serializer.normalizer.flat.product_value.class:     Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductValueNormalizer
+    pim_serializer.normalizer.flat.locale.class:            Pim\Bundle\VersioningBundle\Normalizer\Flat\LocaleNormalizer
+    pim_serializer.normalizer.flat.collection.class:        Pim\Bundle\VersioningBundle\Normalizer\Flat\CollectionNormalizer
+    pim_serializer.normalizer.flat.datetime.class:          Pim\Bundle\VersioningBundle\Normalizer\Flat\DateTimeNormalizer
+    pim_serializer.normalizer.flat.metric.class:            Pim\Bundle\VersioningBundle\Normalizer\Flat\MetricNormalizer
+    pim_serializer.normalizer.flat.option.class:            Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeOptionNormalizer
+    pim_serializer.normalizer.flat.price.class:             Pim\Bundle\VersioningBundle\Normalizer\Flat\PriceNormalizer
+    pim_serializer.normalizer.flat.file.class:              Pim\Bundle\VersioningBundle\Normalizer\Flat\FileNormalizer
+
+    # Denormalizers
+    pim_serializer.denormalizer.flat.product.class:           Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductDenormalizer
+    pim_serializer.denormalizer.flat.family.class:            Pim\Bundle\VersioningBundle\Denormalizer\Flat\FamilyDenormalizer
+    pim_serializer.denormalizer.flat.category.class:          Pim\Bundle\VersioningBundle\Denormalizer\Flat\CategoryDenormalizer
+    pim_serializer.denormalizer.flat.group.class:             Pim\Bundle\VersioningBundle\Denormalizer\Flat\GroupDenormalizer
+    pim_serializer.denormalizer.flat.association.class:       Pim\Bundle\VersioningBundle\Denormalizer\Flat\AssociationDenormalizer
+    pim_serializer.denormalizer.flat.product_value.class:     Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValueDenormalizer
+    pim_serializer.denormalizer.flat.product_values.class:    Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValuesDenormalizer
+    pim_serializer.denormalizer.flat.base_value.class:        Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\BaseValueDenormalizer
+    pim_serializer.denormalizer.flat.attribute_option.class:  Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AttributeOptionDenormalizer
+    pim_serializer.denormalizer.flat.attribute_options.class: Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AttributeOptionsDenormalizer
+    pim_serializer.denormalizer.flat.prices.class:            Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\PricesDenormalizer
+    pim_serializer.denormalizer.flat.metric.class:            Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\MetricDenormalizer
+    pim_serializer.denormalizer.flat.datetime.class:          Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\DateTimeDenormalizer
+    pim_serializer.denormalizer.flat.file.class:              Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\FileDenormalizer
+
 services:
     pim_versioning.serializer.normalizer.flat.product:
         public: false
@@ -16,21 +53,21 @@ services:
     pim_versioning.serializer.normalizer.flat.category:
         class: '%pim_serializer.normalizer.flat.category.class%'
         arguments:
-            - '@pim_serializer.normalizer.flat.label_translation'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_versioning.serializer.normalizer.flat.attribute:
         class: '%pim_serializer.normalizer.flat.attribute.class%'
         arguments:
-            - '@pim_serializer.normalizer.flat.label_translation'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_versioning.serializer.normalizer.flat.family:
         class: '%pim_serializer.normalizer.flat.family.class%'
         arguments:
-            - '@pim_serializer.normalizer.flat.label_translation'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.attribute_requirement'
@@ -40,7 +77,7 @@ services:
     pim_versioning.serializer.normalizer.flat.attribute_group:
         class: '%pim_serializer.normalizer.flat.attribute_group.class%'
         arguments:
-            - '@pim_serializer.normalizer.flat.label_translation'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
             - '@pim_catalog.repository.attribute'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
@@ -48,14 +85,14 @@ services:
     pim_versioning.serializer.normalizer.flat.association_type:
         class: '%pim_serializer.normalizer.flat.association_type.class%'
         arguments:
-            - '@pim_serializer.normalizer.flat.label_translation'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_versioning.serializer.normalizer.flat.group:
         class: '%pim_serializer.normalizer.flat.group.class%'
         arguments:
-            - '@pim_serializer.normalizer.flat.label_translation'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
             - '@pim_serializer.denormalizer.product_values'
             - '@pim_serializer.normalizer.product_values'
         tags:

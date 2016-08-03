@@ -126,23 +126,23 @@ We've removed `TransformBundle` and `BaseConnectorBundle` because they are depre
 
 ### TransformBundle
 
-Flat (De)Normalizers have been to moved to `Connector` component and Structured ones have been to moved to `Catalog` component
+Flat (De)Normalizers have been to moved to `VersioningBundle` and Structured ones have been to moved to `Catalog` component
 
 Based on a PIM standard installation, execute the following command in your project folder:
 ```
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Normalizer\\Flat/Pim\\Component\\Connector\\Normalizer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Denormalizer\\Flat/Pim\\Component\\Connector\\Denormalizer/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Normalizer\\Structured/Pim\\Component\\Catalog\\Normalizer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Denormalizer\\Structured/Pim\\Component\\Catalog\\Denormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\Flat/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Denormalizer\\Flat/Pim\\Bundle\\VersioningBundle\\Denormalizer\\Flat/g
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\Structured/Pim\\Component\\Catalog\\Normalizer\\Structured/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Denormalizer\\Structured/Pim\\Component\\Catalog\\Denormalizer\\Structured/g'
 ```
 
 Extra classes have been moved but the rest of the `TransformBundle` have been removed
 
 Based on a PIM standard installation, execute the following command in your project folder:
 ```
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Encoder/Pim\\Component\\Connector\\Encoder/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\DependencyInjection\\Compiler\\SerializerPass/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterSerializerPass/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\TransformBundle\\Converter/Pim\\Component\\Catalog\\Converter/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Encoder/Pim\\Component\\Connector\\Encoder/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\DependencyInjection\\Compiler\\SerializerPass/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterSerializerPass/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Converter/Pim\\Component\\Catalog\\Converter/g'
 ```
 
 ### Reader and Processor services
@@ -171,10 +171,10 @@ If you use in your import standard Akeneo PIM processor and reader services, ple
 
 TODO : This bundle will be removed after the export refactoring
 ```
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\BaseConnectorBundle\\DependencyInjection\\Compiler\\RegisterArchiversPass/Pim\\Bundle\\ConnectorBundle\\DependencyInjection\\Compiler\\RegisterArchiversPass/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\BaseConnectorBundle\\EventListener\\/Pim\\Bundle\\ConnectorBundle\\EventListener\\/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\BaseConnectorBundle\\Archiver\\/Pim\\Component\\Connector\\Archiver\\/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/ Pim\\Bundle\\BaseConnectorBundle\\Validator\\Constraints\\/Pim\\Component\\Connector\\Validator\\Constraints\/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\DependencyInjection\\Compiler\\RegisterArchiversPass/Pim\\Bundle\\ConnectorBundle\\DependencyInjection\\Compiler\\RegisterArchiversPass/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\EventListener\\/Pim\\Bundle\\ConnectorBundle\\EventListener\\/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Archiver\\/Pim\\Component\\Connector\\Archiver\\/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Validator\\Constraints\\/Pim\\Component\\Connector\\Validator\\Constraints\/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.archiver\.file_writer_archiver/pim_connector\.archiver\.file_writer_archiver/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.event_listener\.archivist/pim_connector\.event_listener\.archivist/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.archiver/pim_connector\.archiver/g'
