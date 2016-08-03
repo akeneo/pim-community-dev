@@ -94,7 +94,7 @@
 {% endspaceless %}
 {% endmacro %}
 
-{% macro page_header(title, buttons, subtitle, left, right) %}
+{% macro page_header(title, buttons, subtitle, left, right, titleButtons) %}
     <div class="navigation clearfix navbar-extra">
         <div class="row-fluid">
             {% if buttons is not empty %}
@@ -104,6 +104,11 @@
             {% endif %}
             <div class="navbar-content pull-left">
                 <div class="navbar-title clearfix-oro">
+                    {% if titleButtons is not empty %}
+                        <div class="navbar-buttons">
+                            {{ titleButtons }}
+                        </div>
+                    {% endif %}
                     <div class="sub-title">{{ title|first|capitalize ~ title[1:] }}</div>
                     {% if subtitle is not empty %}
                         <span class="separator">/</span>

@@ -29,7 +29,7 @@ extensions:
     pim-product-edit-form-back-to-grid:
         module: pim/form/common/back-to-grid
         parent: pim-product-edit-form
-        targetZone: buttons
+        targetZone: title
         aclResourceId: pim_enrich_product_index
         position: 80
         config:
@@ -59,7 +59,7 @@ extensions:
     pim-product-edit-form-status-switcher:
         module: pim/product-edit-form/status-switcher
         parent: pim-product-edit-form
-        targetZone: buttons
+        targetZone: title
         aclResourceId: pim_enrich_product_change_state
         position: 110
 

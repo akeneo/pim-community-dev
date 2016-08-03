@@ -22,8 +22,11 @@
 
         {% set title = 'family.edit'|trans ~ ' - ' ~ form.vars.value.label %}
 
-        {% set buttons %}
+        {% set titleButtons %}
             {{ elements.backLink(path('pim_enrich_family_index')) }}
+        {% endset %}
+
+        {% set buttons %}
             {% if form.vars.value.id %}
                 {{ elements.deleteLink(
                     path('pim_enrich_family_remove', { 'id': form.vars.value.id }),
@@ -36,7 +39,7 @@
             {{ elements.submitBtn('', 'ok') }}
         {% endset %}
 
-        {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
+        {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id), titleButtons) }}
 
         {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 

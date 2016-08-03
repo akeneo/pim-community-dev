@@ -1,8 +1,8 @@
 @import 'less/variables';
 @import 'less/mixins';
 
-.navbar-extra .btn {
-  margin-left: 4px;
+.navbar-extra .btn+.btn {
+  margin-left: 8px;
 }
 
 .grid .action-cell a.action.btn-tiny,
@@ -389,6 +389,13 @@
     &:hover {
       background-color: @greenDark;
     }
+  }
+}
+
+.navbar-title {
+  .navbar-buttons {
+    float: left;
+    margin-right: 12px;
   }
 }
 
