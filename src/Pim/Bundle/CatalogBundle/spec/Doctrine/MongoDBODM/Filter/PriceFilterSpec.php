@@ -242,12 +242,6 @@ class PriceFilterSpec extends ObjectBehavior
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
-        $value = ['data' => '42', 'currency' => 'foo'];
-        $this->shouldThrow(
-            InvalidArgumentException::arrayNumericKeyExpected('price_code', 'data', 'filter', 'price', 'string')
-        )
-            ->during('addAttributeFilter', [$attribute, '=', $value]);
-
         $value = ['data' => 132, 'currency' => 42];
         $this->shouldThrow(
             InvalidArgumentException::arrayStringKeyExpected('price_code', 'currency', 'filter', 'price', 'integer')
