@@ -1,5 +1,3 @@
-{{ elements.backLink(path('pimee_product_asset_index', {dataLocale: app.request.get('dataLocale')})) }}
-
 {% if resource_granted('pimee_product_asset_remove') %}
     {{ elements.deleteLink(
     path('pimee_product_asset_remove', { id: asset.id }),

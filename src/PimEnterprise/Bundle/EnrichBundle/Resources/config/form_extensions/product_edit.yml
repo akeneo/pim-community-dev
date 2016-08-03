@@ -101,7 +101,7 @@ extensions:
     pim-product-edit-form-status-switcher:
         module: pimee/product-edit-form/status-switcher
         parent: pim-product-edit-form
-        targetZone: buttons
+        targetZone: title
         aclResourceId: pim_enrich_product_change_state
         position: 110
 

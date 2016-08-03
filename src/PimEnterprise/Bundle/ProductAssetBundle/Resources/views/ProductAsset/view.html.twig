@@ -8,7 +8,7 @@
        {{ asset.code }}
     {% endset %}
 
-    {% set buttons %}
+    {% set titleButtons %}
         {{ elements.backLink(path('pimee_product_asset_index')) }}
     {% endset %}
 
@@ -19,7 +19,7 @@
         </ul>
     {% endset %}
 
-    {{ elements.page_header(title, buttons, subtitle, left) }}
+    {{ elements.page_header(title, null, subtitle, left, null, titleButtons) }}
 
     <div class="form-horizontal product-edit product-view asset">
         <div class="layout-content">

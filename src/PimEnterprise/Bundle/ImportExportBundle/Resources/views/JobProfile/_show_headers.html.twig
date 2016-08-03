@@ -7,10 +7,11 @@
     </ul>
 {% endset %}
 
-{% set buttons %}
-
+{% set titleButtons %}
     {{ elements.backLink(indexRoute) }}
+{% endset %}
 
+{% set buttons %}
     {% if jobInstance.status != constant('Akeneo\\Component\\Batch\\Model\\JobInstance::STATUS_IN_PROGRESS') and
         is_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EDIT'), jobInstance)
             and resource_granted('pim_importexport_' ~ jobInstance.type ~ '_profile_edit') %}
@@ -29,7 +30,7 @@
     {% endif %}
 {% endset %}
 
-{{ elements.page_header(title, buttons, null, left) }}
+{{ elements.page_header(title, buttons, null, left, null, titleButtons) }}
 
 {{ elements.form_navbar(view_element_aliases(viewElementsAliases)) }}
 
