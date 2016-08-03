@@ -1,6 +1,6 @@
 services:
     pimee_security.processor.denormalization.locale_access:
-        class: '%pim_connector.processor.denormalization.simple.class%'
+        class: '%pim_connector.processor.denormalization.class%'
         arguments:
             - '@pimee_security.repository.locale_access'
             - '@pimee_security.factory.locale_access'
@@ -9,7 +9,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_security.processor.denormalization.asset_category_access:
-        class: '%pim_connector.processor.denormalization.simple.class%'
+        class: '%pim_connector.processor.denormalization.class%'
         arguments:
             - '@pimee_product_asset.repository.asset_category_access'
             - '@pimee_security.factory.asset_category_access'
@@ -18,7 +18,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_security.processor.denormalization.product_category_access:
-        class: '%pim_connector.processor.denormalization.simple.class%'
+        class: '%pim_connector.processor.denormalization.class%'
         arguments:
             - '@pimee_security.repository.category_access'
             - '@pimee_security.factory.product_category_access'
@@ -27,7 +27,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_security.processor.denormalization.attribute_group_access:
-        class: '%pim_connector.processor.denormalization.simple.class%'
+        class: '%pim_connector.processor.denormalization.class%'
         arguments:
             - '@pimee_security.repository.attribute_group_access'
             - '@pimee_security.factory.attribute_group_access'
@@ -36,7 +36,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_security.processor.denormalization.job_profile_access:
-        class: '%pim_connector.processor.denormalization.simple.class%'
+        class: '%pim_connector.processor.denormalization.class%'
         arguments:
             - '@pimee_security.repository.job_profile_access'
             - '@pimee_security.factory.job_profile_access'

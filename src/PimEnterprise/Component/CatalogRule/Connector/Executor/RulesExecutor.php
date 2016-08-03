@@ -13,7 +13,6 @@ namespace PimEnterprise\Component\CatalogRule\Connector\Executor;
 
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface;
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -22,7 +21,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class RulesExecutor extends AbstractConfigurableStepElement implements ItemWriterInterface
+class RulesExecutor implements ItemWriterInterface
 {
     /** @var RunnerInterface */
     protected $runner;

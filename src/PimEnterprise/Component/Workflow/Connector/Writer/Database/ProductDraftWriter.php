@@ -9,36 +9,45 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Workflow\Connector\Writer\Doctrine;
+namespace PimEnterprise\Component\Workflow\Connector\Writer\Database;
 
+use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Component\Connector\Writer\Database\BaseWriter;
 
 /**
  * Product draft writer
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ProductDraftWriter extends BaseWriter
+class ProductDraftWriter implements ItemWriterInterface, StepExecutionAwareInterface
 {
+    /** @var StepExecution */
+    protected $stepExecution;
+
+    /** @var SaverInterface */
+    protected $saver;
+
+    /** @var BulkObjectDetacherInterface */
+    protected $bulkDetacher;
+
     /** @var RemoverInterface */
     private $remover;
 
     /**
-     * @param SaverInterface              $bulkSaver
+     * @param SaverInterface              $saver
      * @param BulkObjectDetacherInterface $bulkDetacher
      * @param RemoverInterface            $remover
      */
     public function __construct(
-        SaverInterface $bulkSaver,
+        SaverInterface $saver,
         BulkObjectDetacherInterface $bulkDetacher,
         RemoverInterface $remover
     ) {
-        parent::__construct($bulkSaver, $bulkDetacher);
-
-        $this->bulkSaver    = $bulkSaver;
+        $this->saver        = $saver;
         $this->bulkDetacher = $bulkDetacher;
         $this->remover      = $remover;
     }
@@ -54,11 +63,19 @@ class ProductDraftWriter extends BaseWriter
             if ($productDraft->getId() && empty($changes)) {
                 $this->remover->remove($productDraft);
             } else {
-                $this->bulkSaver->save($productDraft);
+                $this->saver->save($productDraft);
             }
         }
 
         $this->bulkDetacher->detachAll($productDrafts);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 
     /**

@@ -8,17 +8,17 @@ services:
             - '@pimee_product_asset.repository.category'
 
     pimee_product_asset.reader.database.asset:
-        class: '%pim_connector.reader.database.base.class%'
+        class: '%pim_connector.reader.database.class%'
         arguments:
             - '@pimee_product_asset.repository.asset'
 
     pimee_product_asset.reader.database.variation:
-        class: '%pim_connector.reader.database.base.class%'
+        class: '%pim_connector.reader.database.class%'
         arguments:
             - '@pimee_product_asset.repository.variation'
 
     pimee_product_asset.reader.database.channel_configuration:
-        class: '%pim_connector.reader.database.base.class%'
+        class: '%pim_connector.reader.database.class%'
         arguments:
             - '@pimee_product_asset.repository.channel_configuration'
 

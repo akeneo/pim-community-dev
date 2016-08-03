@@ -8,7 +8,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.file.csv_attribute_group_access'
             - '@pimee_security.processor.denormalization.attribute_group_access'
-            - '@pimee_security.writer.doctrine.attribute_group_access'
+            - '@pimee_security.writer.database.attribute_group_access'
 
     pimee_installer.step.fixtures_product_category_access_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -18,7 +18,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.file.csv_product_category_access'
             - '@pimee_security.processor.denormalization.product_category_access'
-            - '@pimee_security.writer.doctrine.product_category_access'
+            - '@pimee_security.writer.database.product_category_access'
 
     pimee_installer.step.fixtures_job_profile_access_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -28,7 +28,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.file.csv_job_profile_access'
             - '@pimee_security.processor.denormalization.job_profile_access'
-            - '@pimee_security.writer.doctrine.job_profile_access'
+            - '@pimee_security.writer.database.job_profile_access'
 
     pimee_installer.step.fixtures_locale_access_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -38,7 +38,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.file.csv_locale_access'
             - '@pimee_security.processor.denormalization.locale_access'
-            - '@pimee_security.writer.doctrine.locale_access'
+            - '@pimee_security.writer.database.locale_access'
 
     pimee_installer.step.fixtures_rule_yml.import:
         class: '%pim_connector.step.item_step.class%'
@@ -48,7 +48,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_catalog_rule.reader.file.yaml_rule'
             - '@pimee_catalog_rule.processor.denormalization.rule_definition'
-            - '@pimee_catalog_rule.writer.doctrine.rule_definition'
+            - '@pimee_catalog_rule.writer.database.rule_definition'
 
     pimee_installer.step.fixtures_asset_category_access_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -58,4 +58,4 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.file.csv_asset_category_access'
             - '@pimee_security.processor.denormalization.asset_category_access'
-            - '@pimee_security.writer.doctrine.asset_category_access'
+            - '@pimee_security.writer.database.asset_category_access'

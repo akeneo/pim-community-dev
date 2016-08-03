@@ -17,7 +17,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.file.yaml_channel_configuration'
             - '@pimee_product_asset.processor.denormalization.channel_configuration'
-            - '@pimee_product_asset.writer.doctrine.channel_configuration'
+            - '@pimee_product_asset.writer.database.channel_configuration'
 
     # Export Asset steps ----------------------------------------------------------------------------------------------
     pimee_product_asset.step.yml_asset_channel_configuration.export:
@@ -39,7 +39,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.file.csv_tag'
             - '@pimee_product_asset.processor.denormalization.tag'
-            - '@pimee_product_asset.writer.doctrine.tag'
+            - '@pimee_product_asset.writer.database.tag'
             - 1
 
     pimee_product_asset.step.csv_asset.import_asset:
@@ -50,7 +50,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.file.csv_asset'
             - '@pimee_product_asset.processor.denormalization.asset'
-            - '@pimee_product_asset.writer.doctrine.asset'
+            - '@pimee_product_asset.writer.database.asset'
 
     pimee_product_asset.step.csv_asset_category.import:
         class: '%pim_connector.step.item_step.class%'
@@ -60,7 +60,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.file.csv_asset_category'
             - '@pimee_product_asset.processor.denormalization.category'
-            - '@pimee_product_asset.writer.doctrine.category'
+            - '@pimee_product_asset.writer.database.category'
             - 1
 
     # CSV Export steps ------------------------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.file.xlsx_tag'
             - '@pimee_product_asset.processor.denormalization.tag'
-            - '@pimee_product_asset.writer.doctrine.tag'
+            - '@pimee_product_asset.writer.database.tag'
             - 1
 
     pimee_product_asset.step.xlsx_asset.import_asset:
@@ -114,7 +114,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.file.xlsx_asset'
             - '@pimee_product_asset.processor.denormalization.asset'
-            - '@pimee_product_asset.writer.doctrine.asset'
+            - '@pimee_product_asset.writer.database.asset'
 
     pimee_product_asset.step.xlsx_asset_category.import:
         class: '%pim_connector.step.item_step.class%'
@@ -124,7 +124,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.file.xlsx_asset_category'
             - '@pimee_product_asset.processor.denormalization.category'
-            - '@pimee_product_asset.writer.doctrine.category'
+            - '@pimee_product_asset.writer.database.category'
             - 1
 
     # XLSX Export steps -----------------------------------------------------------------------------------------------
@@ -167,7 +167,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.mass_edit_asset'
             - '@pimee_product_asset.processor.classify_assets'
-            - '@pimee_product_asset.writer.doctrine.asset'
+            - '@pimee_product_asset.writer.database.asset'
 
     pimee_product_asset.step.add_tags_to_assets.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -177,4 +177,4 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.mass_edit_asset'
             - '@pimee_product_asset.processor.add_tags_to_assets'
-            - '@pimee_product_asset.writer.doctrine.asset'
+            - '@pimee_product_asset.writer.database.asset'

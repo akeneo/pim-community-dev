@@ -12,6 +12,8 @@
 namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\ProductAsset\Factory\ChannelConfigurationFactory;
@@ -24,7 +26,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ChannelConfigurationProcessor extends AbstractProcessor
+class ChannelConfigurationProcessor extends AbstractProcessor implements
+    ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $channelRepository;
