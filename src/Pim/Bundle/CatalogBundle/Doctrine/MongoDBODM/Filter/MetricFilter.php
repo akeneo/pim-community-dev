@@ -143,7 +143,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             );
         }
 
-        if (null !== $data['data'] && !is_int($data['data']) && !is_float($data['data'])) {
+        if (null !== $data['data'] && !is_numeric($data['data'])) {
             throw InvalidArgumentException::arrayNumericKeyExpected(
                 $attribute->getCode(),
                 'data',
