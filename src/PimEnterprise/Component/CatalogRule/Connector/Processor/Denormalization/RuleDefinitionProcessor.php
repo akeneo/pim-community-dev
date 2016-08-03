@@ -13,6 +13,8 @@ namespace PimEnterprise\Component\CatalogRule\Connector\Processor\Denormalizatio
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
@@ -24,7 +26,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class RuleDefinitionProcessor extends AbstractProcessor
+class RuleDefinitionProcessor extends AbstractProcessor implements
+    ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
     /** @var DenormalizerInterface */
     protected $denormalizer;

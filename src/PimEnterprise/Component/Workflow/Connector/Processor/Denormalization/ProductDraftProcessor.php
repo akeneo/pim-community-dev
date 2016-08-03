@@ -12,6 +12,8 @@
 namespace PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -33,7 +35,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ProductDraftProcessor extends AbstractProcessor
+class ProductDraftProcessor extends AbstractProcessor implements
+    ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
     /** @var ObjectUpdaterInterface */
     protected $updater;
