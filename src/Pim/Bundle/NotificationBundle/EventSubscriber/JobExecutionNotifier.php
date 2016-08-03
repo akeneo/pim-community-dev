@@ -104,7 +104,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
 
             default:
                 throw new \RuntimeException(
-                    sprintf('Unable to generate a notification: job "%s" unknown', $type)
+                    sprintf('Unable to generate a notification: job type "%s" unknown', $type)
                 );
                 break;
         }

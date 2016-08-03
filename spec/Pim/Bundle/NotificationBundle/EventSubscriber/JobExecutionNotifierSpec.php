@@ -2,7 +2,8 @@
 
 namespace spec\Pim\Bundle\NotificationBundle\EventSubscriber;
 
-use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecution
+    ;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
@@ -52,8 +53,11 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         );
     }
 
-    function it_does_not_notify_if_job_execution_has_no_user($event, $jobExecution, $manager)
-    {
+    function it_does_not_notify_if_job_execution_has_no_user(
+        $event,
+        $jobExecution,
+        $manager
+    ) {
         $jobExecution->getUser()->willReturn(null);
 
         $jobExecution->getStatus()->shouldNotBeCalled();
@@ -62,8 +66,11 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_completion_of_job_execution($event, $user, $manager)
-    {
+    function it_notifies_a_user_of_the_completion_of_job_execution(
+        $event,
+        $user,
+        $manager
+    ) {
         $manager
             ->notify(
                 [$user],
@@ -81,8 +88,13 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_completion_of_a_mass_edit_job_execution($event, $user, $manager, $jobInstance, $jobExecution)
-    {
+    function it_notifies_a_user_of_the_completion_of_a_mass_edit_job_execution(
+        $event,
+        $user,
+        $manager,
+        $jobInstance,
+        $jobExecution
+    ) {
         $manager
             ->notify(
                 [$user],
@@ -152,5 +164,20 @@ class JobExecutionNotifierSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->afterJobExecution($event);
+    }
+
+    function it_fails_to_notify_a_user_of_the_completion_of_job_execution_because_job_type_is_unknown(
+        $event,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance
+    ) {
+        $event->getJobExecution()->willReturn($jobExecution);
+
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getType()->willReturn('unknown');
+
+        $this->shouldThrow(
+            new \RuntimeException('Unable to generate a notification: job type "unknown" unknown')
+        )->during('afterJobExecution', [$event]);
     }
 }
