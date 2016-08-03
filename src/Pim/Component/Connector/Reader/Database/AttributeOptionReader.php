@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Connector\Reader\Database;
 
+use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 
 /**
@@ -14,7 +14,10 @@ use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionReader extends AbstractReader implements ItemReaderInterface, StepExecutionAwareInterface
+class AttributeOptionReader extends AbstractReader implements
+    ItemReaderInterface,
+    InitializableInterface,
+    StepExecutionAwareInterface
 {
     /** @var AttributeOptionRepositoryInterface */
     protected $repository;

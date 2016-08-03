@@ -3,6 +3,9 @@
 namespace Pim\Component\Connector\Writer\Database;
 
 use Akeneo\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
@@ -15,23 +18,32 @@ use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupWriter extends BaseWriter
+class VariantGroupWriter implements ItemWriterInterface, StepExecutionAwareInterface
 {
+    /** @var StepExecution */
+    protected $stepExecution;
+
+    /** @var BulkSaverInterface */
+    protected $bulkSaver;
+
+    /** @var BulkObjectDetacherInterface */
+    protected $bulkDetacher;
+
     /** @var ProductTemplateApplierInterface */
     protected $productTplApplier;
 
     /**
-     * @param BulkSaverInterface              $groupSaver
-     * @param BulkObjectDetacherInterface     $detacher
+     * @param BulkSaverInterface              $bulkSaver
+     * @param BulkObjectDetacherInterface     $bulkDetacher
      * @param ProductTemplateApplierInterface $productTplApplier
      */
     public function __construct(
-        BulkSaverInterface $groupSaver,
-        BulkObjectDetacherInterface $detacher,
+        BulkSaverInterface $bulkSaver,
+        BulkObjectDetacherInterface $bulkDetacher,
         ProductTemplateApplierInterface $productTplApplier
     ) {
-        parent::__construct($groupSaver, $detacher);
-
+        $this->bulkSaver    = $bulkSaver;
+        $this->bulkDetacher = $bulkDetacher;
         $this->productTplApplier = $productTplApplier;
     }
 
@@ -46,7 +58,9 @@ class VariantGroupWriter extends BaseWriter
             $this->copyValuesToProducts($variantGroups);
         }
 
-        parent::write($variantGroups);
+        $this->incrementCount($variantGroups);
+        $this->bulkSaver->saveAll($variantGroups);
+        $this->bulkDetacher->detachAll($variantGroups);
     }
 
     /**
@@ -72,6 +86,14 @@ class VariantGroupWriter extends BaseWriter
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
+    }
+
+    /**
      * @param int $nbProducts
      */
     protected function incrementUpdatedProductsCount($nbProducts)
@@ -93,6 +115,20 @@ class VariantGroupWriter extends BaseWriter
                 [],
                 new DataInvalidItem($messages)
             );
+        }
+    }
+
+    /**
+     * @param array $objects
+     */
+    protected function incrementCount(array $objects)
+    {
+        foreach ($objects as $object) {
+            if ($object->getId()) {
+                $this->stepExecution->incrementSummaryInfo('process');
+            } else {
+                $this->stepExecution->incrementSummaryInfo('create');
+            }
         }
     }
 }

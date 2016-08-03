@@ -27,11 +27,6 @@ class WriterSpec extends ObjectBehavior
         $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher);
     }
 
-    function it_is_a_configurable_step()
-    {
-        $this->shouldHaveType('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
-    }
-
     function it_is_a_writer()
     {
         $this->shouldImplement('Akeneo\Component\Batch\Item\ItemWriterInterface');

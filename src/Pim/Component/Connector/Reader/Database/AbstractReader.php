@@ -2,11 +2,10 @@
 
 namespace Pim\Component\Connector\Reader\Database;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
  * Abstract reader
@@ -15,9 +14,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractReader extends AbstractConfigurableStepElement implements
-    ItemReaderInterface,
-    StepExecutionAwareInterface
+abstract class AbstractReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
 {
     /** @var bool Checks if all objects are sent to the processor */
     protected $isExecuted = false;

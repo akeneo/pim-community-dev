@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
 
-class BaseWriterSpec extends ObjectBehavior
+class WriterSpec extends ObjectBehavior
 {
     function let(
         BulkSaverInterface $bulkSaver,
@@ -19,9 +19,8 @@ class BaseWriterSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
-    function it_is_a_configurable_step_execution_aware_writer()
+    function it_is_a_writer()
     {
-        $this->shouldBeAnInstanceOf('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
         $this->shouldImplement('Akeneo\Component\Batch\Item\ItemWriterInterface');
         $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }

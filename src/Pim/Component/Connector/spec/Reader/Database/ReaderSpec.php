@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 
-class BaseReaderSpec extends ObjectBehavior
+class ReaderSpec extends ObjectBehavior
 {
     function let(ObjectRepository $repository)
     {

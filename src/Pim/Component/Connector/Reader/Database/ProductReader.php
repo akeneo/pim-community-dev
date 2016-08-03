@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Reader\Database;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -22,7 +22,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductReader extends AbstractConfigurableStepElement implements ItemReaderInterface, StepExecutionAwareInterface
+class ProductReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbFactory;

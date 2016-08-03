@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
@@ -17,9 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractFileWriter extends AbstractConfigurableStepElement implements
-    ItemWriterInterface,
-    StepExecutionAwareInterface
+abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
 {
     /** @var OptionsResolver */
     protected $filePathResolver;

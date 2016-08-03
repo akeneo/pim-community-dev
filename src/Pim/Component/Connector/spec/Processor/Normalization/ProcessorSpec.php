@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class SimpleProcessorSpec extends ObjectBehavior
+class ProcessorSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $normalizer, ObjectDetacherInterface $objectDetacher)
     {
@@ -18,11 +18,6 @@ class SimpleProcessorSpec extends ObjectBehavior
     function it_is_a_processor()
     {
         $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('Pim\Component\Connector\Processor\Normalization\SimpleProcessor');
     }
 
     function it_processes_items($objectDetacher, NormalizerInterface $normalizer, GroupInterface $group)
