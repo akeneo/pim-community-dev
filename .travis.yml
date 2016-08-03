@@ -2,7 +2,6 @@ language: php
 php:
     - "5.6"
     - "7.0"
-    - "hhvm"
 
 # Allow to use container infrastructure
 sudo: false
@@ -12,9 +11,7 @@ cache:
     - $HOME/.composer/cache/files
 
 before_install:
-    - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then
-        phpenv config-rm xdebug.ini;
-      fi
+    - phpenv config-rm xdebug.ini
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - composer self-update --no-interaction
     - if [ "$TRAVIS_PHP_VERSION" = "5.6" ]; then
@@ -24,9 +21,6 @@ before_install:
         pecl install mongodb;
       fi;
 install:
-    - if [ "$TRAVIS_PHP_VERSION" = "hhvm" ]; then
-        composer remove --dev --no-update doctrine/mongodb-odm-bundle;
-      fi;
     - composer update --prefer-dist --no-interaction --ignore-platform-reqs
     - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then
         composer require alcaeus/mongo-php-adapter --ignore-platform-reqs;
