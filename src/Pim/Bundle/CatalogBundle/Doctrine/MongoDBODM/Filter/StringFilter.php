@@ -120,16 +120,16 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
     {
         switch ($operator) {
             case Operators::STARTS_WITH:
-                $value = new \MongoRegex(sprintf('/^%s/i', $value));
+                $value = new \MongoRegex(sprintf('/^%s/i', preg_quote($value)));
                 break;
             case Operators::ENDS_WITH:
-                $value = new \MongoRegex(sprintf('/%s$/i', $value));
+                $value = new \MongoRegex(sprintf('/%s$/i', preg_quote($value)));
                 break;
             case Operators::CONTAINS:
-                $value = new \MongoRegex(sprintf('/%s/i', $value));
+                $value = new \MongoRegex(sprintf('/%s/i', preg_quote($value)));
                 break;
             case Operators::DOES_NOT_CONTAIN:
-                $value = new \MongoRegex(sprintf('/^((?!%s).)*$/i', $value));
+                $value = new \MongoRegex(sprintf('/^((?!%s).)*$/i', preg_quote($value)));
                 break;
             default:
                 break;
