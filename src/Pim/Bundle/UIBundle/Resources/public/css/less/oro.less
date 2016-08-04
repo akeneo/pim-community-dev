@@ -110,14 +110,18 @@ a:focus {
 }
 
 .btn-group+.btn-group { margin-left:8px; }
-.btn-group > .dropdown-menu li a {
-  padding-top:1px;
-  padding-bottom:1px;
+
+.btn-group > .dropdown-menu li a, .btn-group > .dropdown-menu li button {
+  padding: 1px 20px;
   font-size: @font-size-12;
-  color:@bodyColor;
-  text-shadow:none !important;
+  color: @bodyColor;
+  text-shadow: none !important;
+  background: @white;
+  text-align: left;
+  width: 100%;
+  border: none;
   &:hover {
-    color: @white;
+    background: @akeneoGreySuperLight;
   }
 }
 
