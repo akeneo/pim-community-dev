@@ -83,15 +83,14 @@ define([
             return FetcherRegistry
                 .getFetcher('attribute')
                 .fetch(field)
+                .then(this.cleanInvalidValues.bind(this))
                 .then(function (attribute) {
-                    return this.getSelect2Options(attribute).then(function (select2Options) {
-                        return {
-                            label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
-                            select2Options: select2Options,
-                            removable: this.isRemovable(),
-                            editable: this.isEditable()
-                        };
-                    }.bind(this));
+                    return {
+                        label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
+                        select2Options: this.getSelect2Options(attribute),
+                        removable: this.isRemovable(),
+                        editable: this.isEditable()
+                    };
                 }.bind(this));
         },
 
@@ -117,65 +116,108 @@ define([
         },
 
         /**
-         * Return a promise which, once resolved, returns the choice options
-         * reference data to populate the select2.
+         * Return the choice options or reference data to populate the select2.
+         *
+         * @returns {Object}
+         */
+        getSelect2Options: function (attribute) {
+            var choiceUrl = this.getChoiceUrl(attribute);
+
+            return {
+                ajax: {
+                    url: choiceUrl,
+                    cache: true,
+                    data: function (term) {
+                        return {
+                            search: term,
+                            options: {
+                                locale: UserContext.get('uiLocale')
+                            }
+                        };
+                    },
+                    results: function (data) {
+                        return data;
+                    }
+                },
+                initSelection: function (element, callback) {
+                    this.getChoicePromise(attribute).then(function (response) {
+                        var results = response.results;
+                        var choices = _.map($(element).val().split(','), function (choice) {
+                            return _.findWhere(results, {id: choice});
+                        });
+                        callback(choices);
+                    }.bind(this));
+                }.bind(this),
+                multiple: true
+            };
+        },
+
+        /**
+         * Return the select choice promise which, once resolved, return all possible choices
+         * for the given select attribute.
+         *
+         * @param attribute
          *
          * @returns {Promise}
          */
-        getSelect2Options: function (attribute) {
-            return FetcherRegistry.getFetcher(this.config.fetcherCode).fetchAll()
-                .then(function (config) {
-                    var entityClass = null;
+        getChoicePromise: function (attribute) {
+            var choiceUrl = this.getChoiceUrl(attribute);
 
-                    if (!_.isUndefined(this.config.entityClass)) {
-                        entityClass = this.config.entityClass;
-                    } else {
-                        entityClass = config[attribute.reference_data_name].class;
-                    }
+            if (null === this.choicePromise) {
+                this.choicePromise = $.get(choiceUrl);
+            }
 
-                    return Routing.generate(
-                        this.config.url,
-                        {
-                            'class': entityClass,
-                            'dataLocale': UserContext.get('uiLocale'),
-                            'collectionId': attribute.id,
-                            'options': {'type': 'code'}
-                        }
-                    );
-                }.bind(this))
-                .then(function (choiceUrl) {
-                    return {
-                        ajax: {
-                            url: choiceUrl,
-                            cache: true,
-                            data: function (term) {
-                                return {
-                                    search: term,
-                                    options: {
-                                        locale: UserContext.get('uiLocale')
-                                    }
-                                };
-                            },
-                            results: function (data) {
-                                return data;
-                            }
-                        },
-                        initSelection: function (element, callback) {
-                            if (null === this.choicePromise) {
-                                this.choicePromise = $.get(choiceUrl);
-                            }
+            return this.choicePromise;
+        },
 
-                            this.choicePromise.then(function (response) {
-                                var results = response.results;
-                                var choices = _.map($(element).val().split(','), function (choice) {
-                                    return _.findWhere(results, {id: choice});
-                                });
-                                callback(choices);
-                            });
-                        }.bind(this),
-                        multiple: true
-                    };
-                }.bind(this));
+        /**
+         * Get the string Url to access all select choices related to the given attribute.
+         *
+         * @param attribute
+         *
+         * @returns {string}
+         */
+        getChoiceUrl: function (attribute) {
+            var entityClass = null;
+
+            if (!_.isUndefined(this.config.entityClass)) {
+                entityClass = this.config.entityClass;
+            } else {
+                entityClass = attribute.reference_data_name.class;
+            }
+
+            return Routing.generate(
+                this.config.url,
+                {
+                    class: entityClass,
+                    dataLocale: UserContext.get('uiLocale'),
+                    collectionId: attribute.id,
+                    options: {type: 'code'}
+                }
+            );
+        },
+
+        /**
+         * Clean invalid values by removing possibly non-existent options coming from database.
+         * This method returns a promise which, once resolved, should return the attribute.
+         *
+         * @param attribute
+         *
+         * @returns {Promise}
+         */
+        cleanInvalidValues: function (attribute) {
+            return this.getChoicePromise(attribute).then(function (response) {
+                var results = response.results;
+                var initialValue = this.getValue();
+                var idResults = _.pluck(results, 'id');
+
+                // Update field value if some options are not available anymore
+                if (!_.isEmpty(_.difference(initialValue, idResults))) {
+                    this.setValue(_.intersection(initialValue, idResults), {silent: false});
+                }
+
+                return attribute;
+            }.bind(this));
         },
 
         /**
