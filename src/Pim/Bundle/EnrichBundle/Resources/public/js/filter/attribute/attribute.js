@@ -82,8 +82,10 @@ define([
          * {@inheritdoc}
          */
         renderElements: function () {
+            var attributeCode = this.getField().replace(/\.code/, '');
+
             FetcherRegistry.getFetcher('attribute')
-                .fetch(this.getField())
+                .fetch(attributeCode)
                 .then(function (attribute) {
                     if (this.isEditable()) {
                         this.addContextDropdowns(attribute);
