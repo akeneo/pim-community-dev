@@ -52,11 +52,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         );
     }
 
-    function it_does_not_notify_if_job_execution_has_no_user(
-        $event,
-        $jobExecution,
-        $manager
-    ) {
+    function it_does_not_notify_if_job_execution_has_no_user($event, $jobExecution, $manager) {
         $jobExecution->getUser()->willReturn(null);
 
         $jobExecution->getStatus()->shouldNotBeCalled();
@@ -65,11 +61,8 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_completion_of_job_execution(
-        $event,
-        $user,
-        $manager
-    ) {
+    function it_notifies_a_user_of_the_completion_of_job_execution($event, $user, $manager)
+    {
         $manager
             ->notify(
                 [$user],
@@ -87,13 +80,8 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_completion_of_a_mass_edit_job_execution(
-        $event,
-        $user,
-        $manager,
-        $jobInstance,
-        $jobExecution
-    ) {
+    function it_notifies_a_user_of_the_completion_of_a_mass_edit_job_execution($event, $user, $manager, $jobInstance, $jobExecution)
+    {
         $manager
             ->notify(
                 [$user],
@@ -115,12 +103,8 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_completion_of_job_execution_which_has_encountered_a_warning(
-        $event,
-        $warnings,
-        $user,
-        $manager
-    ) {
+    function it_notifies_a_user_of_the_completion_of_job_execution_which_has_encountered_a_warning($event, $warnings, $user, $manager)
+    {
         $warnings->count()->willReturn(2);
 
         $manager
@@ -140,12 +124,8 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_completion_of_job_execution_which_has_encountered_an_error(
-        $event,
-        $user,
-        $status,
-        $manager
-    ) {
+    function it_notifies_a_user_of_the_completion_of_job_execution_which_has_encountered_an_error($event, $user, $status, $manager)
+    {
         $status->isUnsuccessful()->willReturn(true);
 
         $manager
