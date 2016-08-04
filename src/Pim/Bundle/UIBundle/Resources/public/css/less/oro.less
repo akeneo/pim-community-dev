@@ -122,37 +122,51 @@ a:focus {
 }
 
 // Bootstrap - Form
-label, input, button, select, textarea { font-size: @font-size-13;}
+label, input, button, select, textarea {
+  font-size: @font-size-12;
+}
+
 .form-horizontal .control-label {
-  font-size: @font-size-13;
+  font-size: @font-size-12;
   text-align:left;
   line-height:1.2em;
 }
 .control-group .controls p.control-label{
   width: auto;
 }
-.form-horizontal {
+
+.form-horizontal, .tab-pane {
   .control-group {
+    & + .control-group {
+      padding-top: 5px;
+    }
+
     label.control-label {
-      float:left;
-      width:160px;
-      padding-top:5px;
-      color: @color-777;
-      font-weight: normal;
-      font-size: @font-size-13;
-      text-align:right;
+      box-sizing: border-box;
+      display: block;
+      height: 20px;
+      line-height: 20px;
+      margin-bottom: 5px;
+      width: 100%;
+      -webkit-box-flex: 1;
+      padding-top: 0;
+
       &:after {
         content:":";
       }
     }
+
     .controls {
-      margin-left:170px;
-      .control-label {
-        width: auto;
+      margin-left: 0;
+
+      input[type="text"], textarea, .select2-container {
+        width: 500px;
+        font-size: @font-size-12;
       }
     }
   }
 }
+
 input[type='checkbox'] + label { margin-bottom:2px; }
 textarea,
 input[type="text"],
@@ -165,7 +179,7 @@ input[type="search"],
 select {
   border-color:@color-ddd;
   color:@grayDark;
-  font-size: @font-size-13;
+  font-size: @font-size-12;
 }
 .btn-group > .btn:last-child,
 .btn-group > .dropdown-toggle {
