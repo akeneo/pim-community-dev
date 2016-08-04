@@ -23,8 +23,7 @@
     "require": {
         "akeneo/pim-community-dev": "1.6.x-dev",
         "sensio/generator-bundle": "2.3.5",
-        "phpspec/php-diff": "1.0.2",
-        "symfony/intl": "3.1.2"
+        "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
         "behat/behat": "2.5.5",
