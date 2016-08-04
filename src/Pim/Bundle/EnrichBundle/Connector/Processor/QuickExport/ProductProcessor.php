@@ -172,15 +172,13 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function getNormalizerContext(JobParameters $parameters)
     {
-        $mainContext = $parameters->get('mainContext');
-
-        if (!isset($mainContext['scope'])) {
+        if (!$parameters->has('scope')) {
             throw new \InvalidArgumentException('No channel found');
         }
 
         $normalizerContext = [
-            'channels'     => [$mainContext['scope']],
-            'locales'      => $this->getLocaleCodes($mainContext['scope']),
+            'channels'     => [$parameters->get('scope')],
+            'locales'      => $this->getLocaleCodes($parameters->get('scope')),
             'filter_types' => [
                 'pim.transform.product_value.structured',
                 'pim.transform.product_value.structured.quick_export'

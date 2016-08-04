@@ -37,9 +37,11 @@ class ProductQuickExport implements DefaultValuesProviderInterface
     {
         $parameters = $this->simpleProvider->getDefaultValues();
         $parameters['filters'] = null;
-        $parameters['mainContext'] = null;
         $parameters['selected_properties'] = null;
         $parameters['with_media'] = true;
+        $parameters['locale'] = null;
+        $parameters['scope'] = null;
+        $parameters['ui_locale'] = null;
 
         return $parameters;
     }
