@@ -31,6 +31,10 @@ class Version_1_6_20160722155535_quick_export extends AbstractMigration
             $parameters = unserialize($job['raw_parameters']);
             $parameters['with_media'] = true;
 
+            if (array_key_exists('mainContext', $parameters)) {
+                unset($parameters['mainContext']);
+            }
+
             $this->connection->update(
                 'akeneo_batch_job_instance',
                 ['raw_parameters' => serialize($parameters)],
