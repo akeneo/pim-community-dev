@@ -2,8 +2,7 @@
 
 namespace spec\Pim\Bundle\NotificationBundle\EventSubscriber;
 
-use Akeneo\Component\Batch\Model\JobExecution
-    ;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
