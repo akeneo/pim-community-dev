@@ -52,7 +52,8 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         );
     }
 
-    function it_does_not_notify_if_job_execution_has_no_user($event, $jobExecution, $manager) {
+    function it_does_not_notify_if_job_execution_has_no_user($event, $jobExecution, $manager)
+    {
         $jobExecution->getUser()->willReturn(null);
 
         $jobExecution->getStatus()->shouldNotBeCalled();
