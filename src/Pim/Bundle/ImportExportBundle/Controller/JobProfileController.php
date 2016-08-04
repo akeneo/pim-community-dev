@@ -282,7 +282,7 @@ class JobProfileController
 
         $errors = [];
         foreach ($form->getErrors() as $error) {
-            preg_match('#\[(\w+)\]$#', $error->getCause()->getPropertyPath(), $match);
+            preg_match('#\[([\w.]+)\]$#', $error->getCause()->getPropertyPath(), $match);
 
             if (isset($match[1])) {
                 $errors[] = [
