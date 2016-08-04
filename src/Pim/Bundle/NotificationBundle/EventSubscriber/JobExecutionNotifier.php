@@ -8,7 +8,6 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Intl\Exception\NotImplementedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -104,8 +103,8 @@ class JobExecutionNotifier implements EventSubscriberInterface
                 break;
 
             default:
-                throw new NotImplementedException(
-                    sprintf('Impossible to generate a notification for this unknown type : "%s"', $type)
+                throw new \RuntimeException(
+                    sprintf('Unable to generate a notification: job type "%s" unknown', $type)
                 );
                 break;
         }
