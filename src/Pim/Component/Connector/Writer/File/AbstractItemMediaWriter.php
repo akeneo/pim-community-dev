@@ -13,7 +13,6 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -44,14 +43,8 @@ abstract class AbstractItemMediaWriter implements
     /** @var string[] */
     protected $mediaAttributeTypes;
 
-    /** @var OptionsResolver */
-    protected $filePathResolver;
-
     /** @var StepExecution */
     protected $stepExecution;
-
-    /** @var array */
-    protected $filePathResolverOptions;
 
     /** @var Filesystem */
     protected $localFs;
@@ -84,14 +77,6 @@ abstract class AbstractItemMediaWriter implements
         $this->attributeRepository = $attributeRepository;
         $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->fileExporterPath = $fileExporterPath;
-
-        $this->filePathResolver = new OptionsResolver();
-        $this->filePathResolver->setRequired('parameters');
-        $this->filePathResolver->setAllowedTypes('parameters', 'array');
-
-        $this->filePathResolverOptions = [
-            'parameters' => ['%datetime%' => date('Y-m-d_H:i:s')]
-        ];
 
         $this->localFs = new Filesystem();
     }
@@ -163,18 +148,8 @@ abstract class AbstractItemMediaWriter implements
     public function getPath()
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $filePath = $parameters->get('filePath');
 
-        if ($parameters->has('mainContext')) {
-            $mainContext = $parameters->get('mainContext');
-            foreach ($mainContext as $key => $value) {
-                $this->filePathResolverOptions['parameters']['%' . $key . '%'] = $value;
-            }
-        }
-
-        $options = $this->filePathResolver->resolve($this->filePathResolverOptions);
-
-        return strtr($filePath, $options['parameters']);
+        return $parameters->get('filePath');
     }
 
     /**
@@ -301,8 +276,8 @@ abstract class AbstractItemMediaWriter implements
             $options['date_format'] = $parameters->get('dateFormat');
         }
 
-        if ($parameters->has('mainContext') && isset($parameters->get('mainContext')['ui_locale'])) {
-            $options['locale'] = $parameters->get('mainContext')['ui_locale'];
+        if ($parameters->has('ui_locale')) {
+            $options['locale'] = $parameters->get('ui_locale');
         }
 
         return $options;

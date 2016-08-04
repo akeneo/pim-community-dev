@@ -65,7 +65,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn($this->directory . 'variant_group.xlsx');
-        $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
         $jobParameters->has('with_media')->willReturn(true);
@@ -181,7 +181,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn($this->directory . 'variant_group.xlsx');
-        $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
         $jobParameters->has('with_media')->willReturn(true);
@@ -250,7 +250,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('filePath')->willReturn('my/file/path/foo');
-        $jobParameters->has('mainContext')->willReturn(false);
+        $jobParameters->has('ui_locale')->willReturn(false);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
         $flusher->flush(
@@ -262,17 +262,5 @@ class VariantGroupWriterSpec extends ObjectBehavior
 
         $this->initialize();
         $this->flush();
-    }
-
-    function it_builds_the_path(StepExecution $stepExecution, JobParameters $jobParameters)
-    {
-        $options = ['date' => '2015-01-01'];
-        $this->setStepExecution($stepExecution);
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->has('mainContext')->willReturn(true);
-        $jobParameters->get('mainContext')->willReturn($options);
-        $jobParameters->get('filePath')->willReturn($this->directory . 'variant_group_%date%.xlsx');
-
-        $this->getPath()->shouldReturn($this->directory . 'variant_group_2015-01-01.xlsx');
     }
 }

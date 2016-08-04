@@ -41,9 +41,11 @@ class ProductQuickExport implements ConstraintCollectionProviderInterface
         $baseConstraint = $this->simpleConstraint->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
         $constraintFields['filters'] = new NotBlank(['groups' => 'Execution']);
-        $constraintFields['mainContext'] = new NotBlank(['groups' => 'Execution']);
         $constraintFields['selected_properties'] = null;
         $constraintFields['with_media'] = new Type('bool');
+        $constraintFields['locale'] = new NotBlank(['groups' => 'Execution']);
+        $constraintFields['scope'] = new NotBlank(['groups' => 'Execution']);
+        $constraintFields['ui_locale'] = new NotBlank(['groups' => 'Execution']);
 
         return new Collection(['fields' => $constraintFields]);
     }
