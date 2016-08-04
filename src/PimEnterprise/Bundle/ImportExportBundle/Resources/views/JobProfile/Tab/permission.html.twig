@@ -25,7 +25,12 @@
                 });
     </script>
 
-    <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane buffer-top">
-        {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }, false, 'permission') }}
+    <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane">
+        {{ elements.accordion(
+            { 'pane.accordion.permissions': form_widget(form.permissions) },
+            1,
+            false,
+            'permission'
+        ) }}
     </div>
 {% endif %}
