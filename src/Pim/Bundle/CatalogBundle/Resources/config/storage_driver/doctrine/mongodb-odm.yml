@@ -478,7 +478,7 @@ services:
         arguments:
             - '@pim_catalog.doctrine.query.filter.object_id_resolver'
             - ['groups.id', 'groups.code']
-            - ['IN', 'NOT IN']
+            - ['IN', 'NOT IN', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
