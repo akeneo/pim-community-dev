@@ -163,7 +163,14 @@ label, input, button, select, textarea {
     .controls {
       margin-left: 0;
 
-      input[type="text"], textarea {
+      input[type="text"],
+      input[type="password"],
+      input[type="date"],
+      input[type="number"],
+      input[type="email"],
+      input[type="url"],
+      input[type="search"],
+      textarea {
         width: @max-field-width;
         font-size: @font-size-12;
       }
@@ -768,9 +775,6 @@ textarea {
   line-height: 18px;
   padding: 10px 20px;
 }
-.scrollspy-nav-target {
-  height: 20px;
-}
 .oro-clearfix-width:after,
 .oro-clearfix:after {
   content: "";
@@ -910,9 +914,6 @@ select {
 
 .responsive-section .inner-grid {
   margin:-20px -20px 20px -20px;
-}
-.layout-content .responsive-section {
-  padding: 0 0 35px;
 }
 .container-fluid > .responsive-section .scrollspy-title {
   margin-left:0;
