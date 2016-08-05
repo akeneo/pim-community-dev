@@ -113,10 +113,25 @@
     .tabsection-title {
       background-color: @akeneoGreyLighter;
       line-height: 44px;
+      height: 44px;
       padding: 0 20px;
 
       .add-attribute .select2-container {
         margin: 0 5px 5px;
+      }
+
+      #locale-switcher .btn.dropdown-toggle {
+        background: white;
+        height: 30px;
+        line-height: 30px;
+        margin-top: -4px;
+
+        & > i {
+          background: @akeneoGreySuperLight;
+          height: 30px;
+          width: 30px;
+          line-height: 30px;
+        }
       }
     }
 
@@ -505,7 +520,7 @@ table i {
       font-weight: bold;
       color: @black;
       text-shadow: none;
-      background-color: @akeneoPurpleLighter;
+      background-color: @akeneoPurpleSuperLight;
     }
     > li {
       padding-right: 15px;
@@ -524,7 +539,6 @@ table i {
   .tab-pane h3 {
     padding-left: 20px;
     margin-top: 0;
-    background-color: @color-grey_tab;
     border-bottom: 1px solid @grayLighter;
   }
 }

@@ -104,7 +104,7 @@
 
             {{ elements.form_errors(form) }}
 
-            <div class="tab-pane active buffer-top" id="general">
+            <div class="tab-pane active" id="general">
                 {{ form_row(form.label) }}
                 {% if form.owner is defined %}
                     {{ form_row(form.owner, {attr : { class: 'hide' }}) }}

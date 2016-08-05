@@ -644,12 +644,13 @@ h3.tab-header {
       .flex();
 
       & > .tab-pane {
-        padding-top: 15px;
-        padding-right: 20px;
-        margin-left: 20px;
         box-sizing: border-box;
         display: block;
         overflow: auto;
+
+        &.object-values {
+          padding: 15px 20px;
+        }
       }
 
       & > .tab-pane.association-type {
@@ -1672,10 +1673,6 @@ h3.tab-header {
 
 [data-type="pim-filter-attribute-metric"] .filter-input,
 [data-type="pim-filter-attribute-price-collection"] .filter-input {
-  .operator {
-    width: 100px;
-  }
-
   .value {
     width: 80px;
   }
@@ -1700,9 +1697,24 @@ h3.tab-header {
 [data-type="pim-filter-attribute-string"] .filter-input,
 [data-type="pim-filter-attribute-media"] .filter-input,
 [data-type="pim-filter-attribute-number"] .filter-input,
-[data-type="pim-filter-attribute-date"] .filter-input {
+[data-type="pim-filter-attribute-date"] .filter-input,
+[data-type="pim-filter-attribute-metric"] .filter-input,
+[data-type="pim-filter-attribute-price-collection"] .filter-input {
+  @operator-width: 100px;
   .operator {
-    width: 100px;
+    width: @operator-width;
+  }
+
+  .operator ~ input[type="text"],
+  .operator ~ input[type="password"],
+  .operator ~ input[type="date"],
+  .operator ~ input[type="number"],
+  .operator ~ input[type="email"],
+  .operator ~ input[type="url"],
+  .operator ~ input[type="search"],
+  .operator ~ .start-date-wrapper input[type="text"],
+  .operator + select + .select2-container {
+    width: @max-field-width - @operator-width;
   }
 }
 
