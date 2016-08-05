@@ -111,16 +111,20 @@
     border: 1px solid @akeneoGreyLighter;
 
     .tabsection-title {
-      background-color: @akeneoGreyLighter;
-      line-height: 44px;
-      height: 44px;
-      padding: 0 20px;
+      &:not(:empty) {
+        height: 44px;
+        padding: 0 20px;
+        background-color: @akeneoGreyLighter;
+        line-height: 44px;
+      }
+
 
       .add-attribute .select2-container {
         margin: 0 5px 5px;
       }
 
-      #locale-switcher .btn.dropdown-toggle {
+      #locale-switcher .btn.dropdown-toggle,
+      #attribute-buttons button {
         background: white;
         height: 30px;
         line-height: 30px;
@@ -294,13 +298,6 @@ div.btn-group > .has-switch {
   display: block;
 }
 
-#attribute-buttons {
-  float: right;
-  margin: 10px;
-  position: relative;
-  top: 4px;
-  margin-top: 0;
-}
 #channel-switcher {
   .dropdown-toggle {
     border-right: 0;

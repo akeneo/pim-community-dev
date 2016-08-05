@@ -162,9 +162,7 @@
         {% for title, content in items %}
             {% if content|trim is not empty %}
                 <div class="tabsection">
-                    <div class="tabsection-title">
-                        {{ title|trans }}
-                    </div>
+                    <div class="tabsection-title">{{ title|trans }}</div>
                     <div class="tabsection-content {{ no_buffer ? 'unbuffered' : '' }}">
                         {{ content|raw }}
                     </div>

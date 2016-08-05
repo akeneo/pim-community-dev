@@ -469,20 +469,20 @@ class Form extends Base
      *
      * @throws \InvalidArgumentException
      */
-    public function findFieldInAccordion($groupField, $field)
+    public function findFieldInTabSection($groupField, $field)
     {
-        $accordion = $this->find(
+        $tabSection = $this->find(
             'css',
-            sprintf('.accordion-heading a:contains("%s")', $groupField)
+            sprintf('.tabsection-title:contains("%s")', $groupField)
         );
 
-        if (!$accordion) {
+        if (!$tabSection) {
             throw new \InvalidArgumentException(
-                sprintf('Could not find accordion %s', $groupField)
+                sprintf('Could not find tab section "%s"', $groupField)
             );
         }
 
-        $accordionContent = $this->find('css', $accordion->getAttribute('href'));
+        $accordionContent = $tabSection->getParent()->find('css', '.tabsection-content');
 
         if (!$accordionContent->findField($field)) {
             throw new \InvalidArgumentException(
