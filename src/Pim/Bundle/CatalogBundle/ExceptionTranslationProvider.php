@@ -6,6 +6,11 @@ use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
+ * Message translation provider for InvalidArgumentException.
+ *
+ * As Exception are technical, we have to map them with real translated
+ * message for the end users. Messages are based on exception codes.
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
