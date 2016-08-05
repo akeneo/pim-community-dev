@@ -7,6 +7,11 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
+ * Validator for the product export builder structure filter about attributes.
+ * Attributes filter structure restricts the attribute columns to export.
+ *
+ * This validator checks if given attributes exist.
+ *
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -25,6 +30,9 @@ class FilterStructureAttributeValidator extends ConstraintValidator
         $this->attributeRepository = $attributeRepository;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function validate($attributes, Constraint $constraint)
     {
         if (null === $attributes || !count($attributes)) {
