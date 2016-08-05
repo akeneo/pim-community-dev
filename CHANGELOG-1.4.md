@@ -1,3 +1,9 @@
+# 1.4.26 (2016-07-05)
+
+## Bug fixes
+- PIM-5863: Fix an issue that prevented the association of multiple products at once in the association tab
+- PIM-5389: Fix an issue that would render the history panel multiple times
+
 # 1.4.25 (2016-06-03)
 
 ## Bug fixes
