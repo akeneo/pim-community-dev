@@ -6,3 +6,4 @@ services:
         class: '%pim_ui.controller.ajax_option.class%'
         arguments:
             - '@doctrine'
+            - '@pim_reference_data.registry'
