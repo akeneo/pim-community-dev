@@ -70,13 +70,11 @@
                 {% set generalProperties %}
                     {{ form_row(form.code) }}
                 {% endset %}
-                {{ elements.accordion({
-                    'pane.accordion.general_properties': generalProperties
-                }) }}
+                {{ elements.tabSections({ 'pane.accordion.general_properties': generalProperties }) }}
             </div>
             {% if form.permissions is defined %}
             <div class="tab-pane" id="pimee_enrich-locale-tab-permission">
-                {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
+                {{ elements.tabSections({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
             </div>
             {% endif %}
         </div>
