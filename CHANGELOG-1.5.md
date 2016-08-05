@@ -1,3 +1,9 @@
+# 1.5.7 (2016-07-19)
+
+## Bug fixes
+
+- Fix published product value attribute class
+
 # 1.5.6 (2016-07-06)
 
 # 1.5.5 (2016-06-16)
