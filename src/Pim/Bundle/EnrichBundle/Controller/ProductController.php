@@ -466,7 +466,7 @@ class ProductController
     }
 
     /**
-     * Get the AvailbleAttributes form
+     * Get the AvailableAttributes form
      *
      * @param array               $attributes          The attributes
      * @param AvailableAttributes $availableAttributes The available attributes container
