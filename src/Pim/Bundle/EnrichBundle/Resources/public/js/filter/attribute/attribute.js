@@ -32,12 +32,13 @@ define([
          * Sets the scope code on which this filter operates.
          *
          * @param {string} scope
+         * @param {Object} options
          */
-        setScope: function (scope) {
+        setScope: function (scope, options) {
             var context = this.getFormData().context || {};
             context.scope = scope;
 
-            this.setData({context: context});
+            this.setData({context: context}, options);
         },
 
         /**
@@ -57,12 +58,13 @@ define([
          * Sets the locale code on which this filter operates.
          *
          * @param {string} locale
+         * @param {Object} options
          */
-        setLocale: function (locale) {
+        setLocale: function (locale, options) {
             var context = this.getFormData().context || {};
             context.locale = locale;
 
-            this.setData({context: context});
+            this.setData({context: context}, options);
         },
 
         /**
@@ -115,6 +117,8 @@ define([
                     function (scopeEvent) {
                         if (this.getScope()) {
                             scopeEvent.scopeCode = this.getScope();
+                        } else {
+                            this.setScope(scopeEvent.scopeCode, {silent: true});
                         }
                     }.bind(this)
                 );
@@ -139,6 +143,8 @@ define([
                     function (localeEvent) {
                         if (this.getLocale()) {
                             localeEvent.localeCode = this.getLocale();
+                        } else {
+                            this.setLocale(localeEvent.localeCode, {silent: true});
                         }
                     }.bind(this)
                 );
