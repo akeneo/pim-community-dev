@@ -3,11 +3,10 @@
 define([
     'jquery',
     'underscore',
-    'oro/translator',
     'pim/form',
     'text!pim/template/export/product/edit/content/data/validation'
 
-], function ($, _, __, BaseForm, template) {
+], function ($, _, BaseForm, template) {
     return BaseForm.extend({
         template: _.template(template),
 
