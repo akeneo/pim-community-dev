@@ -26,11 +26,6 @@
     </script>
 
     <div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane">
-        {{ elements.tabSections(
-            { 'pane.accordion.permissions': form_widget(form.permissions) },
-            1,
-            false,
-            'permission'
-        ) }}
+        {{ elements.tabSections( { '': form_widget(form.permissions) }, 1, false, 'permission' ) }}
     </div>
 {% endif %}

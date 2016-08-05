@@ -37,7 +37,7 @@
 </script>
 
 <div class="tab-pane tab-permission {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
-    {{ elements.tabSections({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
+    {{ elements.tabSections({ '': form_widget(form.permissions) }) }}
 </div>
 {% if form.permissions is defined %}
     <div class="tab-pane" id="permissions">
