@@ -190,25 +190,15 @@
 
 {% block pim_translatable_field_row %}
     {{ form_errors(form) }}
-    <table class="table table-condensed">
-        <thead>
-            <tr>
-                {% for translation in form %}
-                    <th>{{ form_label(translation) }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                {% for translation in form %}
-                    <td>
-                        {{ form_errors(translation) }}
-                        {{ form_widget(translation) }}
-                    </td>
-                {% endfor %}
-            </tr>
-        </tbody>
-    </table>
+    {% for translation in form %}
+    <div class="control-group">
+        {{ form_label(translation) }}
+        <div class="controls">
+            {{ form_errors(translation) }}
+            {{ form_widget(translation) }}
+        </div>
+    </div>
+    {% endfor %}
 {% endblock %}
 
 {% block pim_enrich_media_row %}

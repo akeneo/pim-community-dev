@@ -6,33 +6,23 @@
 </div>
 <div class="accordion-body in">
     <div class="accordion-inner">
-        <table class="table table-condensed">
-            <thead>
-                <tr>
-                    <% _.each(locales, function (locale) { %>
-                        <th>
-                            <label for="pim_enrich_variant_group_form_label_<%- locale.code %>">
-                                <%- locale.label %>
-                            </label>
-                        </th>
-                    <% }) %>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <% _.each(locales, function (locale) { %>
-                        <td>
-                            <input type="text" id="pim_enrich_variant_group_form_label_<%- locale.code %>" class="input-large label-field" data-locale="<%- locale.code %>" value="<%- model.labels[locale.code] %>">
-                            <% if (errors[locale.code]) { %>
-                                <span class="validation-error">
-                                    <i class="icon-warning-sign"></i>
-                                    <span class="error-message"><%- errors[locale.code].message %></span>
-                                </span>
-                            <% } %>
-                        </td>
-                    <% }) %>
-                </tr>
-            </tbody>
-        </table>
+        <% _.each(locales, function (locale) { %>
+        <div class="control-group">
+            <label for="pim_enrich_variant_group_form_label_<%- locale.code %>">
+                <%- locale.label %>
+            </label>
+            <div class="controls">
+                <input type="text" id="pim_enrich_variant_group_form_label_<%- locale.code %>" class="input-large label-field" data-locale="<%- locale.code %>" value="<%- model.labels[locale.code] %>">
+                <% if (errors[locale.code]) { %>
+                    <span class="validation-error">
+                        <i class="icon-warning-sign"></i>
+                        <span class="error-message"><%- errors[locale.code].message %></span>
+                    </span>
+                <% } %>
+                <div class="icons-container">
+                </div>
+            </div>
+        </div>
+        <% }) %>
     </div>
 </div>
