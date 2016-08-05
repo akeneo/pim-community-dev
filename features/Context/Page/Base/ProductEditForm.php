@@ -249,14 +249,18 @@ class ProductEditForm extends Form
             $field = $fieldContainer->find('css', 'div.field-input > textarea');
 
             if (!$field || !$field->isVisible()) {
-                // the textarea can be hidden (display=none) when using WYSIWYG
-                $field = $fieldContainer->find('css', 'div.note-editor > .note-editable');
+                $id = $fieldContainer->find('css', 'textarea')->getAttribute('id');
+                $this->getSession()->executeScript(
+                    sprintf('$(\'#%s\').parent().find(".note-editable").html(\'%s\').trigger(\'change\');', $id, $value)
+                );
+
+                return true;
             }
 
             $field->setValue($value);
 
             return ($field->getValue() === $value || $field->getHtml() === $value);
-        });
+        }, sprintf('Cannot fill the textarea with "%s"', $value));
 
         $this->getSession()->executeScript('$(\'.field-input textarea\').trigger(\'change\');');
     }

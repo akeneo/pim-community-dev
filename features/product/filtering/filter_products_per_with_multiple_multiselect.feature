@@ -30,6 +30,7 @@ Feature: Filter products with multiples multiselect filters
     And I am logged in as "Mary"
     And I am on the products page
 
+  @unstable
   Scenario: Successfully filter products with the sames attributes
     Given I show the filter "Company"
     And I filter by "Company" with value "Red"
