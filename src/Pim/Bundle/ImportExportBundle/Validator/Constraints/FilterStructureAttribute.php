@@ -5,7 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Constraint for product export filter structure.
+ * Constraint for product export filter attribute structure.
  * Filter structure are "filters" for exported columns: scope, locales & attributes.
  *
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>

@@ -18,7 +18,6 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class FilterStructureAttributeValidator extends ConstraintValidator
 {
-
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
