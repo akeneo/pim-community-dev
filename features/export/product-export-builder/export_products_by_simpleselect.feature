@@ -76,3 +76,25 @@ Feature: Export products according to multi select reference data values
      BOOT-2;;;;1;boots;;;Converse;"The boot 2";;;;;;;
      BOOT-3;;;;1;boots;;;;"The boot 3";;;;;;;
      """
+
+  Scenario: Don't raise error if an option isn't available anymore on the product export builder
+    Given I am logged in as "Julia"
+    And I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
+    And I add available attributes Manufacturer
+    And I filter by "manufacturer.code" with operator "In list" and value "Nike,Converse"
+    And I press the "Save" button
+    And I edit the "manufacturer" attribute
+    And I visit the "Values" tab
+    And I remove the "Nike" option
+    And I confirm the deletion
+    And I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
+    And I press the "Save" button
+    When I launch the export job
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
+      """
+      sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+      BOOT-2;;;;1;boots;;;Converse;"The boot 2";;;;;;;
+      """
