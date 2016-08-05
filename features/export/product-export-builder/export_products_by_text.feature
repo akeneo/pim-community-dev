@@ -94,8 +94,9 @@ Feature: Export products according to text attribute filter
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;comment
-    SNKRS-1B;summer_collection;1;rangers;;Awesome
+    sku;categories;enabled;family;groups;comment;name-en_US
+    SNKRS-1B;summer_collection;1;rangers;;Awesome;
+    SNKRS-1Z;summer_collection;1;rangers;;This is nice;Ranger 1Z
     """
 
   Scenario: Export products by text values using the UI
