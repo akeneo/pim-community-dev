@@ -3,7 +3,7 @@
         {{ form_row(form.code) }}
         {{ form_row(form.label) }}
     {% endset %}
-    {{ elements.accordion({ 'pane.accordion.properties': properties }, 1) }}
+    {{ elements.tabSections({ 'pane.accordion.properties': properties }, 1) }}
 
     {% set globalSettings %}
         {% for field in form.parameters %}
@@ -12,5 +12,5 @@
             {% endif %}
         {% endfor %}
     {% endset %}
-    {{ elements.accordion({ 'pane.accordion.global_settings': globalSettings }, 2) }}
+    {{ elements.tabSections({ 'pane.accordion.global_settings': globalSettings }, 2) }}
 </div>

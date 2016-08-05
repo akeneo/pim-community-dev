@@ -11,7 +11,7 @@
             {{ form_row(conversionUnitForm) }}
         {% endfor %}
     {% endset %}
-    {{ elements.accordion({
+    {{ elements.tabSections({
         'pane.accordion.general_properties': generalProperties,
         'pim_enrich.channel.pick_conversion_unit': conversionOptions
     }) }}

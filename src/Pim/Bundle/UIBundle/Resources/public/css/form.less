@@ -106,8 +106,24 @@
   background-color: @greenDark
 }
 
-.scrollspy-title {
-  background-color: @color-grey_tab;
+.tabsections {
+  .tabsection {
+    border: 1px solid @akeneoGreyLighter;
+
+    .tabsection-title {
+      background-color: @akeneoGreyLighter;
+      line-height: 44px;
+      padding: 0 20px;
+
+      .add-attribute .select2-container {
+        margin: 0 5px 5px;
+      }
+    }
+
+    .tabsection-content {
+      padding: 20px 20px 10px;
+    }
+  }
 }
 
 a.accordion-toggle {

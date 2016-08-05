@@ -6,7 +6,7 @@
             {{ form_row(form.attributes) }}
         {% endif %}
     {% endset %}
-    {{ elements.accordion({
+    {{ elements.tabSections({
         'pane.accordion.general_properties': generalProperties,
         'pane.accordion.label_translations': form_row(form.label)
     }) }}

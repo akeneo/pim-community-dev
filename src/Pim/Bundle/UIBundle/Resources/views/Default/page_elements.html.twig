@@ -156,6 +156,24 @@
     {% endif %}
 {% endmacro %}
 
+{% macro tabSections(items = {}, counter = 1, no_buffer = false, name = null) %}
+    {% set name = name ? name ~ '-' : '' %}
+    <div class="tabsections">
+        {% for title, content in items %}
+            {% if content|trim is not empty %}
+                <div class="tabsection">
+                    <div class="tabsection-title">
+                        {{ title|trans }}
+                    </div>
+                    <div class="tabsection-content {{ no_buffer ? 'unbuffered' : '' }}">
+                        {{ content|raw }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endmacro %}
+
 {% macro accordion(items = {}, counter = 1, no_buffer = false, name = null) %}
     {% set name = name ? name ~ '-' : '' %}
     <div class="accordion">
