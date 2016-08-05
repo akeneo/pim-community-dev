@@ -80,9 +80,7 @@ define([
         getTemplateContext: function () {
             var field = this.getField().replace(/\.code$/, '');
 
-            return FetcherRegistry
-                .getFetcher('attribute')
-                .fetch(field)
+            return FetcherRegistry.getFetcher('attribute').fetch(field)
                 .then(this.cleanInvalidValues.bind(this))
                 .then(function (attribute) {
                     return {
@@ -178,21 +176,14 @@ define([
          * @returns {string}
          */
         getChoiceUrl: function (attribute) {
-            var entityClass = null;
-
-            if (!_.isUndefined(this.config.entityClass)) {
-                entityClass = this.config.entityClass;
-            } else {
-                entityClass = attribute.reference_data_name.class;
-            }
-
             return Routing.generate(
                 this.config.url,
                 {
-                    class: entityClass,
+                    class: this.config.entityClass,
                     dataLocale: UserContext.get('uiLocale'),
                     collectionId: attribute.id,
-                    options: {type: 'code'}
+                    options: {type: 'code'},
+                    referenceDataName: attribute.reference_data_name
                 }
             );
         },

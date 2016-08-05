@@ -92,7 +92,6 @@ extensions:
         module: pim/filter/attribute/select
         config:
             url: pim_ui_ajaxentity_list
-            fetcherCode: attribute
             entityClass: PimCatalogBundle:AttributeOption
             operators:
                 - IN
@@ -103,7 +102,6 @@ extensions:
         module: pim/filter/attribute/select
         config:
             url: pim_ui_ajaxentity_list
-            fetcherCode: reference-data-configuration
             operators:
                 - IN
                 - EMPTY
