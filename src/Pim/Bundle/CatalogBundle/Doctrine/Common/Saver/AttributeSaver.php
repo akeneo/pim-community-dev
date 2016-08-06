@@ -59,16 +59,17 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
+        $options = $this->optionsResolver->resolveSaveOptions($options);
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($attribute));
 
-        $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($attribute);
 
         if (true === $options['flush']) {
             $this->objectManager->flush();
-        }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute));
+        }
     }
 
     /**
@@ -90,8 +91,10 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
             $this->save($attribute, $itemOptions);
         }
 
-        if (true === $allOptions['flush']) {
-            $this->objectManager->flush();
+        $this->objectManager->flush();
+
+        foreach ($attributes as $attribute) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute));
         }
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($attributes));
