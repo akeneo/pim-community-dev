@@ -52,36 +52,6 @@ pim_connector:
       help: As linguagens que deseja exportar
       validation:
         not_blank: Uma linguagem deve ser selecionada, por favor, escolha uma para exportar.
-    status:
-      label: Estado
-      help: O estado dos produtos que deseja exportar
-      choice:
-        enabled: Ativo
-        disabled: Inativo
-        all: Tudo
-    completeness:
-      label: '% de Dados Completos'
-      help: O nível de informação preenchida dos produtos que deseja exportar
-      choice:
-        at_least_one_complete: Completo em pelo menos uma das linguagens selecionadas
-        all_complete: Completo em todas as linguagens escolhidas
-        all_incomplete: Não completo em todas as linguagens escolhidas
-        all: Sem restrições em relação ao nível de preenchimento da informação
-    categories:
-      label: Categorias
-    updated:
-      updated_since_strategy:
-        label: Condição para a data de atualização
-        help: A condição para a data de atualização dos produtos que pretende exportar
-        choice:
-          since_date: Produtos atualizados desde a data definida
-          last_export: Produtos atualizados desde a última exportação
-          all: Sem restrição de data
-      updated_since_date:
-        placeholder: Escolha a data
-      last_execution:
-        none: Esta tarefa nunca foi exportada
-        last: 'Última exportação: %date%'
     decimalSeparator:
       label: Separador decimal
       help: Determinar o separador decimal

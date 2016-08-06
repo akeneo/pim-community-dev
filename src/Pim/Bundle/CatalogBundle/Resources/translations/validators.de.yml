@@ -16,7 +16,7 @@ This value should not be a decimal.: Dieser Wert darf keine Dezimalzahl sein.
 regex.comma_or_semicolon.message: Dieses Feld sollte keine Komma oder Semikolon enthalten.
 file.extensions.message: 'Die Dateierweiterung ist nicht zulässig (Erlaubte Dateierweiterungen: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": 'Dieser Wertetyp erwartet die Benutzung von {{ decimal_separator }} als Dezimaltrennzeichen.'
-"This type of value expects the use of dot (.) to separate decimals.": Dieser Wertetyp erwartet die Verwendung eines Punktes (.) als Dezimaltrennzeichen.
-"This type of value expects the use of comma (,) to separate decimals.": Dieser Wertetyp erwartet die Verwendung eines Kommas (,) als Dezimaltrennzeichen.
-"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Dieser Wertetyp erwartet die Benutzung von arabischen (٫) Dezimaltrennzeichen.
+This type of value expects the use of dot (.) to separate decimals.: Dieser Wertetyp erwartet die Verwendung eines Punktes (.) als Dezimaltrennzeichen.
+This type of value expects the use of comma (,) to separate decimals.: Dieser Wertetyp erwartet die Verwendung eines Kommas (,) als Dezimaltrennzeichen.
+This type of value expects the use of arabic decimal separator (٫) to separate decimals.: Dieser Wertetyp erwartet die Benutzung von arabischen (٫) Dezimaltrennzeichen.
 "This type of value expects the use of the format {{ date_format }} for dates.": 'Dieser Wertetyp erwartet die Benutzung von {{ date_format }} als Datumsformat.'

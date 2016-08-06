@@ -317,7 +317,10 @@ pim_enrich:
           title: Атрибуты
       filter:
         channel:
+          title: Канал
           help: Канал, который вы хотите экспортировать
+        locales:
+          title: Локали
         attributes:
           title: Атрибуты
           edit: Редактировать
@@ -332,8 +335,6 @@ pim_enrich:
           title: Семейство
           operators:
             IN: В списке
-        updated:
-          title: Обновлено
         enabled:
           title: Статус
           value:

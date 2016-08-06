@@ -337,8 +337,10 @@ pim_enrich:
           title: Atributos
       filter:
         channel:
+          title: Canal
           help: El canal que desea exportar
         locales:
+          title: Idiomas
           help: Los locales que desea exportar
         attributes:
           title: Atributos
@@ -361,12 +363,8 @@ pim_enrich:
             NOT EMPTY: Productos que tienen una familia
           empty_selection: Seleccionar una familia
         updated:
-          title: Actualizado
-          help: La condición de tiempo actualizada de los productos que desea exportar
           operators:
             ALL: Ninguna condición de fecha
-            SINCE LAST N DAYS: Productos actualizados desde los últimos N días
-            >: Productos actualizados desde la fecha definida
             SINCE LAST JOB: Productos actualizados desde la última exportación
         enabled:
           title: Estado
@@ -391,11 +389,6 @@ pim_enrich:
           help: Los identificadores de productos que desea exportar separados por comas, espacios o saltos de línea
         metric:
           operators:
-            =: '='
-            >=: '>='
-            >: '>'
-            <=: '<='
-            <: '<'
             EMPTY: Está vacía
         string:
           operators:
@@ -403,11 +396,6 @@ pim_enrich:
             EMPTY: Está vacía
         price-collection:
           operators:
-            =: '='
-            >=: '>='
-            <=: '<='
-            >: '>'
-            <: '<'
             EMPTY: Está vacía
         multi_select:
           operators:

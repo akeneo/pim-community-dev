@@ -46,16 +46,6 @@ pim_connector:
       help: Kanava, jonka haluat viedä
     locales:
       label: Alueet
-    status:
-      label: Status
-      choice:
-        enabled: Käytössä
-        disabled: Poistettu käytöstä
-        all: Kaikki
-    completeness:
-      label: Valmistumisaste
-    categories:
-      label: Kategoriat
     decimalSeparator:
       label: Desimaalierotin
       help: Määritä desimaalierotin
