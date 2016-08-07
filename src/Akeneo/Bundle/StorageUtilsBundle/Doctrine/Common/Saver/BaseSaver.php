@@ -97,13 +97,15 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
             $this->save($object, $itemOptions);
         }
 
-        $this->objectManager->flush();
+        if (true === $allOptions['flush']) {
+            $this->objectManager->flush();
 
-        foreach ($objects as $object) {
-            $itemOptions = $this->optionsResolver->resolveSaveOptions($allOptions);
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $itemOptions));
+            foreach ($objects as $object) {
+                $itemOptions = $this->optionsResolver->resolveSaveOptions($allOptions);
+                $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $itemOptions));
+            }
+
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $allOptions));
         }
-
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $allOptions));
     }
 }
