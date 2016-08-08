@@ -3,6 +3,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'backbone',
         'routing',
         'oro/navigation',
@@ -14,6 +15,7 @@ define(
     function (
         $,
         _,
+        __,
         Backbone,
         Routing,
         Navigation,
@@ -51,7 +53,7 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.html(this.pageTemplate());
+                this.$el.html(this.pageTemplate({__: __}));
                 this.initializeDropzone();
                 return this;
             },
