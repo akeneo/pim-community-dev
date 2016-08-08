@@ -46,16 +46,6 @@ pim_connector:
       help: Der Ausgabekanal, den Sie exportieren möchten
     locales:
       label: Gebietsschemata
-    status:
-      label: Status
-      choice:
-        enabled: Aktiviert
-        disabled: Deaktiviert
-        all: Alle
-    completeness:
-      label: Vollständigkeit
-    categories:
-      label: Kategorien
     decimalSeparator:
       label: Dezimaltrennzeichen
       help: Wählen Sie ein Dezimaltrennzeichen

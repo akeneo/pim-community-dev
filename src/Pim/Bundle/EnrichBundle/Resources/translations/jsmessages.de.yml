@@ -321,7 +321,10 @@ pim_enrich:
           title: Attribute
       filter:
         channel:
+          title: Ausgabekanal
           help: Der Ausgabekanal, den Sie exportieren möchten
+        locales:
+          title: Gebietsschemata
         attributes:
           title: Attribute
           edit: Bearbeiten
@@ -336,8 +339,6 @@ pim_enrich:
           title: Produktfamilie
           operators:
             IN: In Liste
-        updated:
-          title: Aktualisiert
         enabled:
           title: Status
           value:
@@ -348,11 +349,6 @@ pim_enrich:
           title: Vollständigkeit
         metric:
           operators:
-            =: '='
-            >=: '>='
-            >: '>'
-            <=: '<='
-            <: '<'
             EMPTY: Ist leer
         string:
           operators:
@@ -360,11 +356,6 @@ pim_enrich:
             EMPTY: Ist leer
         price-collection:
           operators:
-            =: '='
-            >=: '>='
-            <=: '<='
-            >: '>'
-            <: '<'
             EMPTY: Ist leer
         multi_select:
           operators:
