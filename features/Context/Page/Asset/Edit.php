@@ -37,7 +37,7 @@ class Edit extends Form
                     ]
                 ],
                 'Main context selector' => [
-                    'css'        => '.asset-variations-pane h3',
+                    'css'        => '.asset-variations-pane .tabsection-title',
                     'decorators' => [
                         'Pim\Behat\Decorator\ContextSwitcherDecorator'
                     ]

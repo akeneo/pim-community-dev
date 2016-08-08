@@ -1,16 +1,18 @@
-<div class="row-fluid variations">
-    <h3>
-        {% if currentLocale is not null %}
+{% if currentLocale is not null %}
+    <div class="tabsection-title">
+        <div class="pull-right">
             {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {
-                'locales':           asset.locales,
-                'currentLocaleCode': currentLocale.code,
-                'routeName':         'pimee_product_asset_edit',
-                'routeParams':       { 'id': asset.id },
-                'localeParamName':   'dataLocale'
+            'locales':           asset.locales,
+            'currentLocaleCode': currentLocale.code,
+            'routeName':         'pimee_product_asset_edit',
+            'routeParams':       { 'id': asset.id },
+            'localeParamName':   'dataLocale'
             } only %}
-        {% endif %}
-    </h3>
+        </div>
+    </div>
+{% endif %}
 
+<div class="tabsection-content row-fluid variations">
     <ul>
         <li>
             <div class="row-fluid reference">
