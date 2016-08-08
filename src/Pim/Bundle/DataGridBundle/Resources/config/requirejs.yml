@@ -93,6 +93,7 @@ config:
         oro/datafilter/filters-manager:             pimdatagrid/js/datafilter/filters-manager
         oro/datafilter/collection-filters-manager:  pimdatagrid/js/datafilter/collection-filters-manager
         oro/datafilter-builder:                     pimdatagrid/js/datafilter-builder
+        oro/datagrid/textarea-cell:                 pimdatagrid/js/datagrid/cell/textarea-cell
 
         pim/template/datagrid/action-launcher-button:           pimdatagrid/templates/datagrid/action-launcher-button.html
         pim/template/datagrid/action-launcher-list-item:        pimdatagrid/templates/datagrid/action-launcher-list-item.html
@@ -100,3 +101,4 @@ config:
         pim/template/datagrid/configure-columns-action:         pimdatagrid/templates/configure-columns-action.html
         pim/template/datagrid/filter/select2-choice-filter:     pimdatagrid/templates/filter/select2-choice-filter.html
         pim/template/datagrid/filter/date-filter:               pimdatagrid/templates/filter/date-filter.html
+        pim/template/datagrid/cell/textarea-cell:               pimdatagrid/templates/datagrid/cell/textarea-cell.html
