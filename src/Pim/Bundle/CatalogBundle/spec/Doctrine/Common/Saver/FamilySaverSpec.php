@@ -41,7 +41,7 @@ class FamilySaverSpec extends ObjectBehavior
         $this->save($family);
     }
 
-    function it_saves_a_family_and_does_not_flushe($objectManager, $optionsResolver, $eventDispatcher, FamilyInterface $family)
+    function it_saves_a_family_and_does_not_flushes($objectManager, $optionsResolver, $eventDispatcher, FamilyInterface $family)
     {
         $family->getCode()->willReturn('my_code');
         $optionsResolver->resolveSaveOptions(['flush' => false])
@@ -51,7 +51,7 @@ class FamilySaverSpec extends ObjectBehavior
         $objectManager->flush()->shouldNotBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldNotBeCalled();
         $this->save($family, ['flush' => false]);
     }
 

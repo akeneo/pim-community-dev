@@ -1,4 +1,4 @@
-<div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="job-profile-content-tab tab-pane buffer-top">
+<div id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" class="job-profile-content-tab tab-pane">
     <div id="pim-product-export-edit-content" class="form-horizontal"></div>
     <input id="{{ form.parameters.filters.vars.id }}" name="{{ form.parameters.filters.vars.full_name }}" value="{{ form.parameters.filters.vars.value|json_encode }}" type="hidden"/>
     <script>

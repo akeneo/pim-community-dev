@@ -491,9 +491,6 @@ body {
   min-height: 600px;
 }
 
-@max-field-width: 500px;
-@min-field-width: 300px;
-
 header.tab-header {
   min-height: 44px;
   border-left: none;
@@ -1648,8 +1645,9 @@ h3.tab-header {
 
 .input-like {
   padding: 0 3px 10px 3px;
-  width: 300px;
+  width: @max-field-width;
   box-sizing: content-box;
+  font-size: @font-size-12;
 
   &.disabled {
     background-color: @color-disabled;
@@ -1688,10 +1686,9 @@ h3.tab-header {
 }
 
 .attributes .input-like, [data-type="pim-filter-product-category"] .filter-input .input-like {
-    padding: 2px 2px 2px 0;
-    margin: 0 0 10px 5px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
+  padding: 2px 2px 2px 0;
+  border: 1px solid @color-ddd;
+  box-sizing: border-box;
 }
 
 .attributes .input-like {
@@ -1707,16 +1704,14 @@ h3.tab-header {
   .operator {
     width: 100px;
   }
-
-  .value {
-    width: 197px;
-  }
 }
 
 .structure-filters {
   .attributes {
     .controls {
-      display: flex;
+      .flex-space-between {
+        display: inline-flex;
+      }
     }
   }
 }

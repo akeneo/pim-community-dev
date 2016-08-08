@@ -66,20 +66,21 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
             );
         }
 
+        $options = $this->optionsResolver->resolveSaveOptions($options);
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($family));
 
-        $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($family);
-
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
 
         if (true === $options['schedule']) {
             $this->completenessManager->scheduleForFamily($family);
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family));
+        if (true === $options['flush']) {
+            $this->objectManager->flush();
+
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family));
+        }
     }
 
     /**
@@ -101,8 +102,10 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
             $this->save($family, $itemOptions);
         }
 
-        if (true === $allOptions['flush']) {
-            $this->objectManager->flush();
+        $this->objectManager->flush();
+
+        foreach ($families as $family) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family));
         }
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($families));

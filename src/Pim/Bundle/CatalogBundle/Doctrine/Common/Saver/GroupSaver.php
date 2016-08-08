@@ -132,7 +132,9 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         $this->versionContext->unsetContextInfo($context);
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
+        if (true === $options['flush']) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
+        }
     }
 
     /**
@@ -154,8 +156,10 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             $this->save($group, $itemOptions);
         }
 
-        if (true === $allOptions['flush']) {
-            $this->objectManager->flush();
+        $this->objectManager->flush();
+
+        foreach ($groups as $group) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
         }
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($groups));
