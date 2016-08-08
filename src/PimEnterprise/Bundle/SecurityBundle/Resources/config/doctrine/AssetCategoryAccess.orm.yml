@@ -2,7 +2,7 @@ PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess:
     type: entity
     table: pimee_security_asset_category_access
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetCategoryAccessRepository # TODO: Change namespace
+    repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository
     uniqueConstraints:
         category_user_group_idx:
             columns:
