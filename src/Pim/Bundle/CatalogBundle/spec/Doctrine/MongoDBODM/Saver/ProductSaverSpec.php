@@ -113,6 +113,8 @@ class ProductSaverSpec extends ObjectBehavior
     ) {
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $collection->batchInsert(Argument::any())->willReturn(null);
 
         $this->saveAll([$productA, $productB]);

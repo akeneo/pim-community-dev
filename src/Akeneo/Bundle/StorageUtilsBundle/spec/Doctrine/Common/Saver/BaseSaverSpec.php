@@ -48,6 +48,10 @@ class BaseSaverSpec extends ObjectBehavior
             ->shouldBeCalledTimes(2)
             ->willReturn(['flush' => false]);
 
+        $optionsResolver->resolveSaveOptions(['flush' => true])
+            ->shouldBeCalledTimes(2)
+            ->willReturn(['flush' => true]);
+
         $objectManager->persist($type1)->shouldBeCalled();
         $objectManager->persist($type2)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
@@ -67,10 +71,9 @@ class BaseSaverSpec extends ObjectBehavior
             ->willReturn(['flush' => false]);
 
         $objectManager->persist($type)->shouldBeCalled();
-        $objectManager->flush()->shouldNotBeCalled();
-
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $objectManager->flush()->shouldNotBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldNotBeCalled();
         $this->save($type, ['flush' => false]);
     }
 
@@ -89,9 +92,9 @@ class BaseSaverSpec extends ObjectBehavior
         $objectManager->flush()->shouldNotBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldNotBeCalled();
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldNotBeCalled();
 
         $this->saveAll([$type1, $type2], ['flush' => false]);
     }

@@ -67,6 +67,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         }
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
         $this->completenessManager->schedule($product);
@@ -75,9 +76,9 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         if (true === $options['flush']) {
             $this->objectManager->flush();
             $this->completenessManager->generateMissingForProduct($product);
-        }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+        }
     }
 
     /**
@@ -89,10 +90,10 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $options = $this->optionsResolver->resolveSaveAllOptions($options);
+        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
-        $itemOptions = $options;
+        $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
 
         foreach ($products as $product) {
@@ -103,8 +104,11 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         foreach ($products as $product) {
             $this->completenessManager->generateMissingForProduct($product);
+
+            $productOptions = $this->optionsResolver->resolveSaveOptions($allOptions);
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $productOptions));
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $allOptions));
     }
 }
