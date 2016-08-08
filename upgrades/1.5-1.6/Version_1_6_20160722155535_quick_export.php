@@ -21,8 +21,20 @@ class Version_1_6_20160722155535_quick_export extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $query = 'SELECT code, raw_parameters FROM akeneo_batch_job_instance
-                  WHERE code IN ("csv_product_quick_export", "csv_published_product_quick_export")';
+        $query = <<<SQL
+SELECT code, raw_parameters 
+FROM akeneo_batch_job_instance 
+WHERE code IN (
+  "csv_product_quick_export", 
+  "csv_product_grid_context_quick_export", 
+  "xlsx_product_quick_export", 
+  "xlsx_product_grid_context_quick_export", 
+  "xlsx_published_product_quick_export", 
+  "xlsx_published_product_grid_context_quick_export", 
+  "csv_published_product_quick_export",
+  "csv_published_product_grid_context_quick_export"
+)
+SQL;
         $stmt = $this->connection->prepare($query);
         $stmt->execute();
         $jobs = $stmt->fetchAll();
@@ -38,7 +50,7 @@ class Version_1_6_20160722155535_quick_export extends AbstractMigration
             $this->connection->update(
                 'akeneo_batch_job_instance',
                 ['raw_parameters' => serialize($parameters)],
-                ['code' => $job['code']]
+                ['code'           => $job['code']]
             );
         }
     }
