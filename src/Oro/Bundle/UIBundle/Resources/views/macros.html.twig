@@ -145,10 +145,12 @@
 #}
 {% macro scrollSubblock(title, data, isForm) %}
     <div>
-    {% if title|length %}<h5 class="user-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
-    {% for dataBlock in data %}
-        {{ dataBlock|raw }}
-    {% endfor %}
+    {% if title|length %}<div class="tabsection-title user-fiedset"><span>{{ title|trans }}</span></div>{% endif %}
+    <div class="tabsection-content">
+        {% for dataBlock in data %}
+            {{ dataBlock|raw }}
+        {% endfor %}
+    </div>
     </div>
     {#% if span %}
         </div>
@@ -171,9 +173,9 @@
 #}
 {% macro scrollBlock(blockId, title, subblocks, isForm, contentAttributes, useSubBlockDivider) %}
     {% set cols = subblocks|length %}
-    <div class="responsive-section">
-        <h4 class="scrollspy-title">{{ title|trans }}</h4>
+    <div class="tabsection responsive-section">
         <div id="{{ blockId }}" class="scrollspy-nav-target"></div>
+        <div class="tabsection-title scrollspy-title">{{ title|trans }}</div>
         <div class="row-fluid{% if (contentAttributes is defined and contentAttributes.class is defined and contentAttributes.class|length) %} {{ contentAttributes.class }}{% endif %}{% if cols > 1 and (useSubBlockDivider is not defined or useSubBlockDivider == true) %} row-fluid-divider{% endif %}" {{ _self.attributes(contentAttributes, ['class']) }}>
             {% if isForm is defined and isForm == true %}
                 <fieldset class="form-horizontal">
@@ -244,7 +246,7 @@
                 </div>
             </div>
         {% endif %}
-        <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="1" class="scrollspy container-fluid scrollable-container{% if isForm %} form-container{% endif %}">
+        <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="1" class="tabsections tab-content scrollspy container-fluid scrollable-container{% if isForm %} form-container{% endif %}">
             {% for scrollBlock in dataBlocks %}
                 {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks, isForm, scrollBlock.content_attr is defined ? scrollBlock.content_attr : null, scrollBlock.useSubBlockDivider is defined ? scrollBlock.useSubBlockDivider : true) }}
             {% endfor %}

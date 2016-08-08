@@ -1973,7 +1973,7 @@ class WebUser extends RawMinkContext
     public function iShouldSeeFields($groupField, TableNode $fields)
     {
         foreach ($fields->getRows() as $data) {
-            $this->getCurrentPage()->findFieldInAccordion($groupField, $data[0]);
+            $this->getCurrentPage()->findFieldInTabSection($groupField, $data[0]);
         }
     }
 

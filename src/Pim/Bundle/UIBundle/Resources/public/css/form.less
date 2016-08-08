@@ -106,8 +106,65 @@
   background-color: @greenDark
 }
 
-.scrollspy-title {
-  background-color: @color-grey_tab;
+.tabsections {
+  .tabsection {
+    border: 1px solid @akeneoGreyLighter;
+
+    .tabsection-title {
+      &:not(:empty) {
+        height: 44px;
+        padding: 0 20px;
+        background-color: @akeneoGreyLighter;
+        line-height: 44px;
+      }
+
+
+      .add-attribute .select2-container {
+        margin: 0 5px 5px;
+      }
+
+      #locale-switcher .btn.dropdown-toggle,
+      #attribute-buttons button {
+        background: white;
+        height: 30px;
+        line-height: 30px;
+        margin-top: -4px;
+
+        & > i {
+          background: @akeneoGreySuperLight;
+          height: 30px;
+          width: 30px;
+          line-height: 30px;
+        }
+      }
+    }
+
+    .tabsection-content {
+      padding: 20px 20px 10px;
+    }
+  }
+}
+
+.oro-tab-form {
+  & > .tab-pane {
+    border: 1px solid @akeneoGreyLighter;
+    padding-bottom: 10px;
+
+    .control-group {
+      margin-left: 20px;
+      margin-top: 15px;
+    }
+  }
+}
+
+.tabsections.scrollspy {
+  .control-group {
+    margin-bottom: 0;
+
+    label {
+      width: 200px;
+    }
+  }
 }
 
 a.accordion-toggle {
@@ -192,6 +249,10 @@ th label {
   }
 }
 
+.table-vertically-condensed > tbody > tr > td {
+  padding: 5px 10px;
+}
+
 .table-striped tbody>tr:nth-child(even)>td,
 .table-light tbody tr {
   background-color: @backgroundColor-white;
@@ -241,13 +302,6 @@ div.btn-group > .has-switch {
   display: block;
 }
 
-#attribute-buttons {
-  float: right;
-  margin: 10px;
-  position: relative;
-  top: 4px;
-  margin-top: 0;
-}
 #channel-switcher {
   .dropdown-toggle {
     border-right: 0;
@@ -467,7 +521,7 @@ table i {
       font-weight: bold;
       color: @black;
       text-shadow: none;
-      background-color: @akeneoPurpleLighter;
+      background-color: @akeneoPurpleSuperLight;
     }
     > li {
       padding-right: 15px;
@@ -486,7 +540,6 @@ table i {
   .tab-pane h3 {
     padding-left: 20px;
     margin-top: 0;
-    background-color: @color-grey_tab;
     border-bottom: 1px solid @grayLighter;
   }
 }

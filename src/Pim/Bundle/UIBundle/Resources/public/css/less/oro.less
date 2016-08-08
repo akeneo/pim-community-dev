@@ -163,7 +163,14 @@ label, input, button, select, textarea {
     .controls {
       margin-left: 0;
 
-      input[type="text"], textarea {
+      input[type="text"],
+      input[type="password"],
+      input[type="date"],
+      input[type="number"],
+      input[type="email"],
+      input[type="url"],
+      input[type="search"],
+      textarea {
         width: @max-field-width;
         font-size: @font-size-12;
       }
@@ -390,7 +397,7 @@ select {
   display: inline-block;
   vertical-align: top;
   padding: 0 5px;
-  line-height: 32px;
+  line-height: 26px;
 }
 .grid-toolbar {
   /* FE */
@@ -765,18 +772,8 @@ textarea {
   display: none;
 }
 .scrollspy-title {
-  border:1px solid @grayLighter;
-  border-width:1px 0;
-  margin: 0 0 0 -20px;
-  color:lighten(@bodyColor,20%);
-  font-size: @font-size-13;
-  font-weight:normal;
-  text-shadow:0 1px 0 @white;
-  line-height:18px;
-  padding: 10px;
-}
-.scrollspy-nav-target {
-  height: 20px;
+  line-height: 18px;
+  padding: 10px 20px;
 }
 .oro-clearfix-width:after,
 .oro-clearfix:after {
@@ -917,9 +914,6 @@ select {
 
 .responsive-section .inner-grid {
   margin:-20px -20px 20px -20px;
-}
-.layout-content .responsive-section {
-  padding: 0 0 35px;
 }
 .container-fluid > .responsive-section .scrollspy-title {
   margin-left:0;
