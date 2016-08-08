@@ -24,7 +24,7 @@
      cp composer.json $PIM_DIR
     ```
 
-3. Update your **config.yml**
+3. Update your **config.yml**:
 
     * The ProductValue model has been moved into the catalog component.
     
@@ -62,7 +62,7 @@
      rm upgrades/ -rf
     ```
 
-7. Now you're ready to update your dependencies
+7. Now you're ready to update your dependencies:
 
     * **Caution**, don't forget to re-add your own dependencies to your *composer.json* in case you have some:
         
@@ -88,18 +88,11 @@
          composer update
         ```
 
-8. Then you can migrate your database using
-    
-    * Add a the parameter `doctrine_migrations_dir` to `parameter.yml`:
-    
-        ```
-         doctrine_migrations_dir: %kernel.root_dir%/../upgrades/1.5-1.6
-        ```
+8. Then you can migrate your database using:
 
-    * Then run the command:
-        ```
-         php app/console doctrine:migration:migrate
-        ```
+    ```
+     php app/console doctrine:migration:migrate
+    ```
 
 ## Partially fix BC breaks
 
