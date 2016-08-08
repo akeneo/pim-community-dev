@@ -76,7 +76,10 @@ define(
 
                 myDropzone.on('removedfile', function () {
                     if (0 === myDropzone.getFilesWithStatus(Dropzone.SUCCESS).length) {
-                        this.$('.navbar-buttons .btn.import').addClass('hide');
+                        this.$('.navbar-buttons .btn.import').addClass('disabled');
+                    }
+                    if (0 === myDropzone.getFilesWithStatus(Dropzone.ADDED).length) {
+                        this.$('.navbar-buttons .btn.start').addClass('disabled');
                     }
                 }.bind(this));
 
@@ -92,7 +95,9 @@ define(
                         Routing.generate('pimee_product_asset_rest_verify_upload', {
                             filename: encodeURIComponent(file.name)
                         })
-                    ).fail(function (response) {
+                    ).success(function () {
+                            $('.navbar-buttons .btn.start').removeClass('disabled');
+                        }).fail(function (response) {
                             file.status = Dropzone.ERROR;
                             var message = 'pimee_product_asset.mass_upload.error.filename';
                             if (response.responseJSON) {
@@ -103,7 +108,7 @@ define(
                         }).complete(function () {
                             this.setStatus(file);
                             file.previewElement.querySelector('.dz-type').textContent = file.type;
-                        }.bind(this));
+                    }.bind(this));
 
                     if ((0 !== file.type.indexOf('image')) || (file.size > myDropzone.options.maxThumbnailFilesize)) {
                         // This is not an image, or image is too big to generate a thumbnail
@@ -129,12 +134,15 @@ define(
 
                 myDropzone.on('sending', function (file) {
                     this.setStatus(file);
+                    this.$('.navbar-buttons .btn.cancel').removeClass('hide');
                 }.bind(this));
 
                 myDropzone.on('queuecomplete', function () {
                     if (myDropzone.getFilesWithStatus(Dropzone.SUCCESS).length > 0) {
-                        this.$('.navbar-buttons .btn.import').removeClass('hide');
+                        this.$('.navbar-buttons .btn.import').removeClass('disabled');
                     }
+                    this.$('.navbar-buttons .btn.cancel').addClass('hide');
+                    this.$('.navbar-buttons .btn.start').addClass('disabled');
                 }.bind(this));
 
                 /**
@@ -198,14 +206,16 @@ define(
              * Starts uploads
              */
             startAll: function () {
-                this.myDropzone.enqueueFiles(this.myDropzone.getFilesWithStatus(Dropzone.ADDED));
+                if (!this.$('.navbar-buttons .btn.start').hasClass('disabled')) {
+                    this.myDropzone.enqueueFiles(this.myDropzone.getFilesWithStatus(Dropzone.ADDED));
+                }
             },
 
             /**
              * Cancel all uploads and delete already uploaded files
              */
             cancelAll: function () {
-                this.$('.navbar-buttons .btn.import').addClass('hide');
+                this.$('.navbar-buttons .btn.import').addClass('disabled');
                 this.myDropzone.removeAllFiles(true);
                 messenger.notificationFlashMessage(
                     'success',
@@ -217,10 +227,11 @@ define(
              * Import uploaded files for asset processing
              */
             importAll: function () {
-                this.$('.navbar-buttons .btn.import').addClass('hide');
-                $.get(
-                    Routing.generate('pimee_product_asset_mass_upload_rest_import')
-                ).done(function (response) {
+                if (!this.$('.navbar-buttons .btn.import').hasClass('disabled')) {
+                    this.$('.navbar-buttons .btn.import').addClass('disabled');
+                    $.get(
+                        Routing.generate('pimee_product_asset_mass_upload_rest_import')
+                    ).done(function (response) {
                         var jobReportUrl = Routing.generate('pim_enrich_job_tracker_show', {id: response.jobId});
                         messenger.notificationFlashMessage(
                             'success',
@@ -233,6 +244,7 @@ define(
                             _.__('pimee_product_asset.mass_upload.error.import')
                         );
                     });
+                }
             },
 
             /**

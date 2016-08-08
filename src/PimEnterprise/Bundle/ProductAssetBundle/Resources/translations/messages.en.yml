@@ -118,7 +118,7 @@ pimee_product_asset:
         menu: Upload assets
         new: A new asset will be created
         add_files: add files
-        start: Start upload
+        upload: Upload
         cancel: Cancel upload
         import: Import
         executed: Mass upload executed
