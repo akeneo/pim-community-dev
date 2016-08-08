@@ -35,8 +35,8 @@ Feature: Filter products by text field
       | name   | does not contain | Canon                | HP LA2206xc + WF722A                                                                        |
       | name   | is equal to      | Canon 5D + EF 24-105 |                                                                                             |
       | name   | contains         | f/4L                 | Canon 5D + EF 24-105mm f/4L IS                                                              |
-      | SKU    | is equal to      | 135-2541             | 135-2541                                                                                    |
-      | SKU    | in list          | 135-2541, 13572541   | 135-2541, 13572541                                                                          |
+      | sku    | is equal to      | 135-2541             | 135-2541                                                                                    |
+      | sku    | in list          | 135-2541, 13572541   | 135-2541, 13572541                                                                          |
 
   Scenario: Successfully filter products by empty value for text and textarea attributes
     Given the following attributes:
