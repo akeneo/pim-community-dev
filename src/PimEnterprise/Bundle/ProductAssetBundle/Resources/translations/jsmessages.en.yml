@@ -26,10 +26,10 @@ pimee_product_asset:
         menu: Upload assets
         btn:
             add_files: Add files
-            cancel: Cancel upload
+            remove_all_files: Remove all files
             delete: Delete
             import: Import
-            start: Start upload
+            upload: Upload
         success:
             new: A new asset will be created
             imported: Files imported for asset processing
@@ -55,7 +55,7 @@ pimee_product_asset:
             actions: actions
         action:
             cancel: Cancel
-            delete: Delete
+            remove: Remove
         status:
             added: Added
             queued: Queued

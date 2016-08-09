@@ -1,18 +1,18 @@
 <div class="navigation clearfix navbar-extra">
     <div class="navbar-buttons pull-right">
-        <button class="btn cancel icons-holder-text" type="reset">
+        <button class="btn cancel icons-holder-text hide" type="reset">
             <i class="icon-remove"></i>
-            <%- __('pimee_product_asset.mass_upload.btn.cancel') %>
+            <%- __('pimee_product_asset.mass_upload.btn.remove_all_files') %>
         </button>
         <button class="btn fileinput-button icons-holder-text">
             <i class="icon-plus"></i>
             <%- __('pimee_product_asset.mass_upload.btn.add_files') %>
         </button>
-        <button class="btn btn-publish start icons-holder-text" type="submit">
-            <i class="icon-ok"></i>
-            <%- __('pimee_product_asset.mass_upload.btn.start') %>
+        <button class="btn btn-publish start icons-holder-text disabled" type="submit">
+            <i class="icon-play"></i>
+            <%- __('pimee_product_asset.mass_upload.btn.upload') %>
         </button>
-        <button class="btn btn-primary import hide icons-holder-text">
+        <button class="btn btn-primary import disabled icons-holder-text">
             <i class="icon-cogs"></i>
             <%- __('pimee_product_asset.mass_upload.btn.import') %>
         </button>

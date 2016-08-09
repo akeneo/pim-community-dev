@@ -285,21 +285,12 @@ class EnterpriseAssetContext extends RawMinkContext
         $actionButton = null;
         $currentPage  = $this->getCurrentPage();
 
-        if ('start' === $action) {
-            $actionButton = $this->spin(function () use ($currentPage) {
-                return $currentPage->find('css', '.btn.start');
-            }, sprintf('Unable to find the %s button for mass upload', $action));
-        }
-        if ('import' === $action) {
-            $actionButton = $this->spin(function () use ($currentPage) {
-                return $currentPage->find('css', '.btn.import');
-            }, sprintf('Unable to find the %s button for mass upload', $action));
-        }
-        if ('cancel' === $action) {
-            $actionButton = $this->spin(function () use ($currentPage) {
-                return $currentPage->find('css', '.btn.cancel');
-            }, sprintf('Unable to find the %s button for mass upload', $action));
-        }
+        $actionButton = $this->spin(function () use ($currentPage, $action) {
+            $node = $currentPage->find('css', sprintf('.%s:not(.disabled)', $action));
+
+            return (null !== $node && $node->isVisible()) ? $node : null;
+        }, sprintf('Unable to find the %s button for mass upload', $action));
+
         $actionButton->click();
         $this->getMainContext()->wait();
     }
