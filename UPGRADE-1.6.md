@@ -1,44 +1,428 @@
 # UPGRADE FROM 1.5 to 1.6
 
-> Please perform a backup of your database before proceeding to the migration. You can use tools like  [mysqldump](http://dev.mysql.com/doc/refman/5.1/en/mysqldump.html) and [mongodump](http://docs.mongodb.org/manual/reference/program/mongodump/).
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents
 
-> Please perform a backup of your codebase if you don't use any VCS.
+- [Disclaimer](#disclaimer)
+- [Migrate your system requirements](#migrate-your-system-requirements)
+  - [PHP 5.6 as minimum version and PHP 7 in experimental mode](#php-56-as-minimum-version-and-php-7-in-experimental-mode)
+- [Migrate your standard project](#migrate-your-standard-project)
+- [Migrate your custom code](#migrate-your-custom-code)
+  - [Global updates for any projects](#global-updates-for-any-projects)
+    - [Update references to Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType](#update-references-to-pim%5Cbundle%5Ccatalogbundle%5Cattributetype%5Cabstractattributetype)
+    - [Update references to moved Pim\Component\Catalog business classes](#update-references-to-moved-pim%5Ccomponent%5Ccatalog-business-classes)
+  - [Updates for projects customizing Import / Export](#updates-for-projects-customizing-import--export)
+    - [Remove the reference to class `Akeneo\Bundle\BatchBundle\Connector\Connector`](#remove-the-reference-to-class-akeneo%5Cbundle%5Cbatchbundle%5Cconnector%5Cconnector)
+    - [Update references to the deprecated and removed `TransformBundle`](#update-references-to-the-deprecated-and-removed-transformbundle)
+    - [Update references to the deprecated and removed `BaseConnectorBundle`](#update-references-to-the-deprecated-and-removed-baseconnectorbundle)
+    - [Update references to standardized Readers, Processors and Writers of Connector component](#update-references-to-standardized-readers-processors-and-writers-of-connector-component)
+    - [Change the definition of Batch Jobs services](#change-the-definition-of-batch-jobs-services)
+    - [Remove the reference to `Akeneo\Component\Batch\Item\AbstractConfigurableStepElement`](#remove-the-reference-to-akeneo%5Ccomponent%5Cbatch%5Citem%5Cabstractconfigurablestepelement)
+    - [Add JobParameters providers to configure your Job execution](#add-jobparameters-providers-to-configure-your-job-execution)
+    - [Add JobParameters providers to configure your Job edition](#add-jobparameters-providers-to-configure-your-job-edition)
+    - [Update your custom translation keys for Job and Step labels](#update-your-custom-translation-keys-for-job-and-step-labels)
+    - [Product exports configuration format update](#product-exports-configuration-format-update)
+  - [Updates for projects adding custom Mass Edit Action](#updates-for-projects-adding-custom-mass-edit-action)
+    - [Update the mass edit actions services](#update-the-mass-edit-actions-services)
+    - [Update the mass edit actions classes](#update-the-mass-edit-actions-classes)
+  - [Updates for projects adding custom Attribute Types](#updates-for-projects-adding-custom-attribute-types)
+- [Known issues](#known-issues)
 
-## Catalog Bundle & Component
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<!-- To update doctoc UPGRADE-1.6.md --title '**Table of Contents' -->
 
-We've extracted following classes and interfaces from the Catalog bundle to the Catalog component:
- - validation
+## Disclaimer
 
-## Batch Bundle & Component
+> Please check you're using Akeneo PIM v1.5
 
-This component has been re-work to be more focus on a more robust batch processing and to extract UI concerns.
+> Please perform a backup of your database before proceeding to the migration. You can use tools like [mysqldump](http://dev.mysql.com/doc/refman/5.1/en/mysqldump.html) and [mongodump](http://docs.mongodb.org/manual/reference/program/mongodump/).
 
-We've extracted the template concern from JobInterface.
-In 1.5, you have to declare your custom twig template to use to view or edit a job in the batch_jobs.yml.
-In 1.6, you can register them in the JobTemplateProvider through the parameters %pim_import_export.job_template.config%.
-Migration, you need to remove your 'show_template' and 'edit_template' configuration from your custom batch_jobs.yml file.
+> Please perform a backup of your codebase if you don't use any VCS (Version Control System).
 
-We've extracted the translated labels concern from JobInterface and StepInterface.
-In 1.5, you have to declare your titles in batch_jobs.yml for jobs and steps.
-In 1.6, you only have to add a translation key following this convention,
- - for a Job, batch_jobs.job_name.label (ex: batch_jobs.csv_product_export.label: "Product export in CSV")
- - for a Step, batch_jobs.job_name.step_name.label (batch_jobs.csv_product_export.export.label: "Product export step")
-Migration, you need to remove your 'title' configuration from your custom batch_jobs.yml file.
+## Migrate your system requirements
 
-## Definition of Batch Jobs services
+### PHP 5.6 as minimum version and PHP 7 in experimental mode
 
-Since the v1.0, the definition of Jobs is done through a dedicated batch_jobs.yml configuration file.
-This file is automatically found and parsed by a dedicated compiler pass scanning all bundles.
-The v1.6 allows to use standard symfony services for batch jobs services configuration.
-This changes allows to,
-- Avoid to instanciate all jobs and steps on each http/cli call (use tagged services for job and JobRegistry and no systematic instanciation in the ConnectorRegistry causing circular dep issue)
-- Allow to easily create a new kind of Job (no need of JobFactory) http://docs.spring.io/spring-batch/apidocs/org/springframework/batch/core/Job.html
-- Allow to easily create a new kind of Step (no need of StepFactory) http://docs.spring.io/spring-batch/apidocs/org/springframework/batch/core/Step.html
+In the Akeneo PIM 1.6 version, we continued our effort regarding Akeneo PIM PHP7 support.
+
+We're happy to announce that PHP7 is now usable in experimental mode for both CLI and Web, for both ORM and MongoDB storages.
+
+Experimental means that we manage to install and use the PIM but due to missing tests in our functional matrix we can't commit to officially support it (for now).
+
+This support introduces a new constraint, the minimum version of PHP for Akeneo PIM is now PHP 5.6 (due to our dependencies, we had to choice between <= PHP 5.6 or >= PHP 5.6).
+
+## Migrate your standard project
+
+1. Download the latest [PIM community standard](http://www.akeneo.com/download/) and extract it:
+
+    ```
+     wget http://www.akeneo.com/pim-community-standard-v1.6-latest.tar.gz
+     tar -zxf pim-community-standard-v1.6-latest.tar.gz
+     cd pim-community-standard-v1.6.*/
+    ```
+
+2. Copy the following files to your PIM installation:
+
+    ```
+     export PIM_DIR=/path/to/your/pim/installation
+     cp app/SymfonyRequirements.php $PIM_DIR/app
+     cp app/PimRequirements.php $PIM_DIR/app
+     cp app/config/pim_parameters.yml $PIM_DIR/app/config
+     cp composer.json $PIM_DIR/
+    ```
+
+3. Update your **app/config/config.yml**
+
+    * Remove the configuration of `CatalogBundle` from this file (config tree :`pim_catalog`).
+    * Update the default locale from `en_US` to `en`
+
+4. Update your **app/AppKernel.php**:
+
+    * Remove the following bundles:
+        - `Pim\Bundle\BaseConnectorBundle\PimBaseConnectorBundle`
+        - `Pim\Bundle\TransformBundle\PimTransformBundle`
+        - `Nelmio\ApiDocBundle\NelmioApiDocBundle`
+
+5. Update your **app/config/routing.yml**:
+
+    * Remove the route: `nelmio_api_doc`
+
+6. Then remove your old upgrades folder:
+    ```
+     rm $PIM_DIR/upgrades/schema -rf
+    ```
+
+7. Now you're ready to update your dependencies:
+
+    * **Caution**, don't forget to add your own dependencies back to your *composer.json* in case you have some:
+
+        ```
+        "require": {
+            "your/dependencies": "version",
+            "your/other-dependencies": "version",
+        }
+        ```
+
+        If your project uses the https://github.com/akeneo-labs/EnhancedConnectorBundle, please use the following version,
+
+        ```
+        "require": {
+            "akeneo-labs/pim-enhanced-connector": "1.3.*"
+        }
+        ```
+
+        If your project uses the https://github.com/akeneo-labs/CustomEntityBundle, please use the following version,
+
+        ```
+        "require": {
+            "akeneo-labs/custom-entity-bundle": "1.8.*"
+        }
+        ```
+
+        If your project uses the https://github.com/akeneo-labs/ExcelConnectorBundle, please use the following version,
+
+        ```
+        "require": {
+            "akeneo-labs/excel-connector-bundle": "1.7.*"
+        }
+        ```
+
+        If your project uses the Akeneo/ElasticSearchBundle, please use the following version,
+
+        ```
+        "require": {
+            "akeneo/elasticsearch-bundle": "1.3.*"
+        }
+        ```
+
+        If your project uses the Akeneo/InnerVariationBundle, please use the following version,
+
+        ```
+        "require": {
+            "akeneo/elasticsearch-bundle": "1.3.*"
+        }
+        ```
+
+        Especially if you store your products in Mongo, don't forget to add `doctrine/mongodb-odm-bundle`:
+
+        ```
+        "require": {
+            "doctrine/mongodb-odm-bundle": "3.2.0"
+        }
+        ```
+
+    * Then run the command to update your dependencies:
+
+        ```
+         cd $PIM_DIR
+         composer update
+        ```
+
+        This step will also copy the upgrades folder from `vendor/akeneo/pim-community-dev/` to your Pim project root in order to migrate.
+
+        If you have custom code in your project, this step may raise errors in the "post-script" command.
+
+        In this case, go to chapter "Migrate your custom code" before running the database migration.
+
+8. Then you can migrate your database using:
+
+    ```
+     php app/console doctrine:migration:migrate --env=prod
+    ```
+
+9. Then ensure the generation of JS translations and re-generate the PIM assets:
+
+    ```
+     rm $PIM_DIR/web/js/translation/ -rf
+     php app/console pim:installer:assets
+    ```
+
+10. If you use MongoDB 2.6, you can use these new index types using:
+
+    ```
+     php app/console 'pim:product:ensure-mongodb-indexes'
+    ```
+
+    MongoDB 2.6 enforces several limitations, for instance, the Index Key Limit, https://docs.mongodb.com/v2.6/reference/limits/#Index-Key-Limit.
+
+    This limitation impacts indexes, in 1.6, we've introduced a change, your attributes using `text` backend type will now use `hashed` index type supporting more than 1024 chars.
+
+    In 1.5, we only created ascendant indexes, even for `text` backend type causing the non indexing of the too long value without any notice.
+
+    This command will remove existing indexes from product collection and will add new indexes with relevant types.
+
+## Migrate your custom code
+
+Assuming you've added custom code in your standard project, the following sections will help you to migrate your code.
+
+In the context of our Developer eXperience strategy, the v1.6 version brings a standardization of the whole Import/Export stack.
+
+Please note that we removed deprecated classes and services. The following sections will help you to migrate your custom code.
+
+You can find further details by visiting our technical documentation [here](http://docs.akeneo.com/latest/index.html).
+
+### Global updates for any projects
+
+#### Update references to Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType
+
+We've extracted business properties of attribute types by introducing a `Pim\Component\Catalog\AttributeTypes`.
+
+There is no impact for custom attribute types except that constants have been moved from `Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType` to `Pim\Component\Catalog\AttributeTypes`.
+
+To detect the files impacted by this change, you can execute the following command in your project folder:
+```
+    grep -rl 'AbstractAttributeType::' src/*
+```
+Then you can replace these uses of `Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType` by `Pim\Component\Catalog\AttributeTypes`.
+
+#### Update references to moved Pim\Component\Catalog business classes
+
+To clean the code API, we've continued our effort to extract PIM business classes from the Catalog Bundle to the Catalog component.
+
+Please execute the following command in your project folder to update the reference you may have on these classes:
+```
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\CatalogBundle\Factory\AttributeFactory/Pim\Component\Catalog\Factory\AttributeFactory/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry/Pim\Component\Catalog\AttributeTypeRegistry/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Factory\\AttributeRequirementFactory/Pim\\Component\\Catalog\\Factory\\AttributeRequirementFactory/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Factory\\GroupFactory/Pim\\Component\\Catalog\\Factory\\GroupFactory/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Factory\\FamilyFactory/Pim\\Component\\Catalog\\Factory\\FamilyFactory/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Factory\\MetricFactory/Pim\\Component\\Catalog\\Factory\\MetricFactory/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Manager\\CompletenessManager/Pim\\Component\\Catalog\\Manager\\CompletenessManager/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Manager\\AttributeGroupManager/Pim\\Component\\Catalog\\Manager\\AttributeGroupManager/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Manager\\VariantGroupAttributesResolver/Pim\\Component\\Catalog\\Manager\\VariantGroupAttributesResolver/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Manager\\ProductTemplateApplier/Pim\\Component\\Catalog\\Manager\\ProductTemplateApplier/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Builder\\ProductTemplateBuilder/Pim\\Component\\Catalog\\Builder\\ProductTemplateBuilder/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Builder\\ProductBuilder/Pim\\Component\\Catalog\\Builder\\ProductBuilder/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Manager\\AttributeValuesResolver/Pim\\Component\\Catalog\\Manager\\AttributeValuesResolver/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Query\\Filter\\DumperInterface/Pim\\Bundle\\CatalogBundle\\Command\\DumperInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Query\\Filter\\AttributeFilterDumper/Pim\\Bundle\\CatalogBundle\\Command\\ProductQueryHelp\\AttributeFilterDumper/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Query\\Filter\\FieldFilterDumper/Pim\\Bundle\\CatalogBundle\\Command\\ProductQueryHelp\\FieldFilterDumper/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Query/Pim\\Component\\Catalog\\Query/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Query/Pim\\Component\\Catalog\\Exception/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Exception/Pim\\Component\\Catalog\\Exception/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Event\\ProductEvents/Pim\\Component\\Catalog\\ProductEvents/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Repository/Pim\\Component\\Catalog\\Repository/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Validator/Pim\\Component\\Catalog\\Validator/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\AttributeType\\AttributeTypes/Pim\\Component\\Catalog\\AttributeTypes/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Normalizer\\Structured\\ReferenceDataNormalizer/Pim\\Component\\ReferenceData\\Normalizer\\Structured\\ReferenceDataNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Denormalizer\\Structured\\ProductValue\\ReferenceDataDenormalizer/Pim\\Component\\ReferenceData\\Denormalizer\\Structured\\ProductValue\\ReferenceDataDenormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Denormalizer\\Structured\\ProductValue\\ReferenceDataCollectionDenormalizer/Pim\\Component\\ReferenceData\\Denormalizer\\Structured\\ProductValue\\ReferenceDataCollectionDenormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Normalizer\\Structured\\JobInstanceNormalizer/Akeneo\\Component\\Batch\\Normalizer\\Structured\\JobInstanceNormalizer/g'
+```
+
+### Updates for projects customizing Import / Export
+
+#### Remove the reference to class `Akeneo\Bundle\BatchBundle\Connector\Connector`
+
+In v1.0, your bundle containing a custom Connector had to extends the class `Akeneo\Bundle\BatchBundle\Connector\Connector`.
+
+It's not required anymore and this deprecated class has been removed.
+
+To detect the files impacted by this change, you can execute the following command in your project folder:
+```
+    grep -rl 'Akeneo\\Bundle\\BatchBundle\\Connector\\Connector' src/*
+```
+
+Before:
+```
+namespace Acme\Bundle\MyBundle;
+
+use Akeneo\Bundle\BatchBundle\Connector\Connector;
+
+class AcmeMyBundle extends Connector
+```
+
+After:
+```
+namespace Acme\Bundle\MyBundle;
+
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+
+class AcmeMyBundle extends Bundle
+```
+
+#### Update references to the deprecated and removed `TransformBundle`
+
+We've removed the deprecated `TransformBundle`.
+
+Few classes and services have been kept but move in others bundles or components, the following command help to migrate references to these classes or services.
+
+Flat (De)Normalizers have been moved to `VersioningBundle` and Structured ones have been to moved to `Catalog` component
+
+Based on a PIM standard installation, execute the following command in your project folder:
+```
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\Flat/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Denormalizer\\Flat/Pim\\Bundle\\VersioningBundle\\Denormalizer\\Flat/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\Structured/Pim\\Component\\Catalog\\Normalizer\\Structured/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Denormalizer\\Structured/Pim\\Component\\Catalog\\Denormalizer\\Structured/g'
+```
+
+Extra classes have been moved but the rest of the `TransformBundle` has been removed
+
+Based on a PIM standard installation, execute the following command in your project folder:
+```
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Encoder/Pim\\Component\\Connector\\Encoder/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\DependencyInjection\\Compiler\\SerializerPass/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterSerializerPass/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Converter/Pim\\Component\\Catalog\\Converter/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_transform.converter.metric/pim_catalog.converter.metric/g'
+```
+
+Then you can try to detect if you are still using removed classes,
+```
+    grep -rl 'TransformBundle' src/*
+```
+
+And if you still use removed services,
+```
+    grep -rl 'pim_transform' src/*
+```
+
+If any line is raised by these commands, you'll need to replace the use by a more recent class or service.
+
+#### Update references to the deprecated and removed `BaseConnectorBundle`
+
+We've removed the deprecated `BaseConnectorBundle`.
+
+Few classes and services have been kept but move in others bundles or components, the following commands help to migrate references to these classes or services.
+
+```
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.file\.yaml/pim_connector\.reader\.file\.yaml/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Reader\\File\\YamlReader/Pim\\Component\\Connector\\Reader\\File\\Yaml\\Reader/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.orm\.family/pim_connector\.reader\.database\.family/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.orm\.attribute/pim_connector\.reader\.database\.attribute/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.orm\.association_type/pim_connector\.reader\.database\.association_type/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.orm\.attribute_option/pim_connector\.reader\.database\.attribute_option/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.orm\.category/pim_connector\.reader\.database\.category/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.repository\.group/pim_connector\.reader\.database\.group/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.repository\.variant_group/pim_connector\.reader\.database\.variant_group/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Processor\\Normalization\\VariantGroupProcessor/Pim\\Component\\Connector\\Processor\\Normalization\\VariantGroupProcessor/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\DependencyInjection\\Compiler\\RegisterArchiversPass/Pim\\Bundle\\ConnectorBundle\\DependencyInjection\\Compiler\\RegisterArchiversPass/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\EventListener\\/Pim\\Bundle\\ConnectorBundle\\EventListener\\/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Archiver\\/Pim\\Component\\Connector\\Archiver\\/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Validator\\Constraints\\/Pim\\Component\\Connector\\Validator\\Constraints\/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.archiver\.file_writer_archiver/pim_connector\.archiver\.file_writer_archiver/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.event_listener\.archivist/pim_connector\.event_listener\.archivist/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.archiver/pim_connector\.archiver/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.archiver\.invalid_item_csv_archiver/pim_connector\.archiver\.invalid_item_csv_archiver/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.archiver\.file_reader_archiver/pim_connector\.archiver\.file_reader_archiver/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.factory\.zip_filesystem/pim_connector\.factory\.zip_filesystem/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.archiver\.archivable_file_writer_archiver/pim_connector\.archiver\.archivable_file_writer_archiver/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.validator\.constraints\.channel_validator/pim_connector\.validator\.constraints\.channel_validator/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ImportExportBundle\\Form\\Type\\JobInstanceType/Pim\\Bundle\\ImportExportBundle\\Form\\Type\\JobInstanceFormType/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Processor\\ProductToFlatArrayProcessor/Pim\\Component\\Connector\\Processor\\Normalization\\ProductProcessor/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.processor\.product_to_flat_array/pim_connector\.processor\.normalization\.product/g'
+```
+
+Then you can try to detect if you are still using removed classes,
+```
+    grep -rl 'BaseConnectorBundle' src/*
+```
+
+And if you still use removed services,
+```
+    grep -rl 'pim_base_connector' src/*
+```
+
+If any line is raised by these commands, you need to replace the use statement by a more recent class or service.
+
+#### Update references to standardized Readers, Processors and Writers of Connector component
+
+In v1.6, we standardized the naming and behavior of our Readers, Processors and Writers.
+
+These classes were previously spread between TransformBundle, BaseConnectorBundle and Connector component, we grouped them in the Connector component.
+
+The converter services allow to convert from flat data (e.g. CSV) to standard format.
+
+This conversion has moved from processors to readers to allow you to implement only reader when customizing imports.
+
+Now the processors only accept standard format, and the naming has changed from `pim_connector.processor.normalization.<class>.flat` to `pim_connector.processor.normalization.<class>`.
+
+The YAML Reader also moved from BatchBundle to ConnectorBundle; The CSV Readers moved in specific folders, and the naming changed too.
+
+If you use standard Akeneo PIM processor and reader services in your custom import or export, please execute the following command in your project folder:
+```
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.processor\.normalization\.\(.*\)\.flat/pim_connector\.processor\.normalization\.\1/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Reader\\File\\CsvReader/Pim\\Component\\Connector\\Reader\\File\\Csv\\Reader/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Reader\\File\\CsvProductReader/Pim\\Component\\Connector\\Reader\\File\\Csv\\ProductReader/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\StandardArrayConverterInterface/Pim\\Component\\Connector\\ArrayConverter\\ArrayConverterInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/implements StandardArrayConverterInterface/implements ArrayConverterInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\Flat/Pim\\Component\\Connector\\ArrayConverter\\FlatToStandard/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.array_converter\.flat\./pim_connector\.array_converter\.flat_to_standard\./g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Reader\\Doctrine/Pim\\Component\\Connector\\Reader\\Database/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Reader\\ProductReader/Pim\\Component\\Connector\\Reader\\Database\\ProductReader/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.reader\.product/pim_connector\.reader\.database\.product/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.reader\.doctrine/pim_connector\.reader\.database/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\Doctrine/Pim\\Component\\Connector\\Writer\\Database/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.writer\.doctrine/pim_connector\.writer\.database/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\CsvWriter/Pim\\Component\\Connector\\Writer\\Csv\\Writer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\CsvProductWriter/Pim\\Component\\Connector\\Writer\\Csv\\ProductWriter/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\CsvVariantGroupWriter/Pim\\Component\\Connector\\Writer\\Csv\\VariantGroupWriter/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\YamlWriter/Pim\\Component\\Connector\\Writer\\Yaml\\Writer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Normalizer\\Flat\\ReferenceDataNormalizer/Pim\\Component\\ReferenceData\\Normalizer\\Flat\\ReferenceDataNormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Denormalizer\\Flat\\ProductValue\\ReferenceDataDenormalizer/Pim\\Component\\ReferenceData\\Denormalizer\\Flat\\ProductValue\\ReferenceDataDenormalizer/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Denormalizer\\Flat\\ProductValue\\ReferenceDataCollectionDenormalizer/Pim\\Component\\ReferenceData\\Denormalizer\\Flat\\ProductValue\\ReferenceDataCollectionDenormalizer/g'
+```
+
+#### Change the definition of Batch Jobs services
+
+Since the v1.0, the definition of Jobs was done through a dedicated batch_jobs.yml configuration file.
+
+This file was automatically found and parsed by a dedicated compiler pass scanning all bundles.
+
+The file content was very strict, was less standard and upgradeable than it is now.
+
+Indeed, the v1.6 allows to use standard Symfony services for batch jobs services configuration.
+
+This change,
+- Avoid to instanciate all jobs and steps on each http / cli call
+- Allow to easily create a new kind of Job (no need of JobFactory)
+- Allow to easily create a new kind of Step (no need of StepFactory)
 - Allow to make item step immutable (using constructor and no setters for reader, processor, writer, etc)
-- No more need of systematic Step + StepElement, for instance the ValidatorStep could contains the CharsetValidator logic
-- Less magic by using a standard Symfony way to declare services (taggued services for jobs, steps are standard services)
+- Remove the need of systematic Step + StepElement, a custom Step can now embed its own logic
+- Remove magic by using a standard Symfony way to declare services
 
-Before the v1.6 the batch_jobs.yml contains,
+Before the v1.6, the batch_jobs.yml contains,
 ```
 connector:
     name: Akeneo CSV Connector
@@ -57,7 +441,7 @@ connector:
                         writer:    pim_connector.writer.doctrine.attribute
 ```
 
-Since the v1.6, in a standard "jobs.yml" services file,
+With the v1.6, we declare a standard "jobs.yml" services file,
 ```
 parameters:
     pim_connector.connector_name.csv: 'Akeneo CSV Connector'
@@ -69,7 +453,7 @@ services:
     pim_connector.job.csv_attribute_import:
         class: %pim_connector.job.simple_job.class%
         arguments:
-            - '%pim_connector.job_name.csv_attribute_import%'
+            - '%pim_connector.job_name.csv_attribute_import%' # job name
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
@@ -79,7 +463,7 @@ services:
             - { name: akeneo_batch.job, connector: %pim_connector.connector_name.csv%, type: %akeneo_batch.job.import_type% }
 ```
 
-After, in a standard "steps.yml" services file,
+With the v1.6, we also declare a standard "steps.yml" services file,
 ```
 parameters:
     pim_connector.step.validator.class: Pim\Component\Connector\Step\ValidatorStep
@@ -89,7 +473,7 @@ services:
     pim_connector.step.charset_validator:
         class: %pim_connector.step.validator.class%
         arguments:
-            - 'validation'
+            - 'validation' # step name
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_connector.validator.item.charset_validator'
@@ -97,7 +481,7 @@ services:
     pim_connector.step.csv_attribute_import.import:
         class: %pim_connector.step.item_step.class%
         arguments:
-            - 'import'
+            - 'import' # step name
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.file.csv_attribute'
@@ -120,198 +504,143 @@ class PimConnectorExtension extends Extension
 }
 ```
 
-## Deprecated imports
-
-We've removed `TransformBundle` and `BaseConnectorBundle` because they are deprecated since the new import system has been created.
-
-### TransformBundle
-
-Flat (De)Normalizers have been to moved to `VersioningBundle` and Structured ones have been to moved to `Catalog` component
-
-Based on a PIM standard installation, execute the following command in your project folder:
+You can list the batch_jobs.yml files you need to migrate by using the following command,
 ```
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\Flat/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Denormalizer\\Flat/Pim\\Bundle\\VersioningBundle\\Denormalizer\\Flat/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Normalizer\\Structured/Pim\\Component\\Catalog\\Normalizer\\Structured/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Denormalizer\\Structured/Pim\\Component\\Catalog\\Denormalizer\\Structured/g'
+    find ./src/ -name batch_jobs.yml
 ```
 
-Extra classes have been moved but the rest of the `TransformBundle` have been removed
+Once your `batch_jobs.yml` files replaced by standard services files, you may encounter other issues that we'll describe in upcoming sections.
 
-Based on a PIM standard installation, execute the following command in your project folder:
+#### Remove the reference to `Akeneo\Component\Batch\Item\AbstractConfigurableStepElement`
+
+This legacy abstract class has been removed.
+
+Now our StepElement, for instance, Reader, Processor, Writer only implement the relevant `Akeneo\Component\Batch\Item\ItemReaderInterface`, `Akeneo\Component\Batch\Item\ItemProcessorInterface` or `Akeneo\Component\Batch\Item\ItemWriterInterface`.
+
+To detect your classes impacted by this change, you can execute the following command in your project folder:
 ```
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Encoder/Pim\\Component\\Connector\\Encoder/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\DependencyInjection\\Compiler\\SerializerPass/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterSerializerPass/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\TransformBundle\\Converter/Pim\\Component\\Catalog\\Converter/g'
-```
-
-### Reader and Processor services
-
-The converter services allowed to convert from flat data (e.g. CSV) to standard format. Conversion has moved from processors to readers.
-Now the processors only accept standard format, and the naming has changed from `pim_connector.processor.normalization.<class>.flat` to `pim_connector.processor.normalization.<class>`.
-The YAML Reader moved from BatchBundle to ConnectorBundle; The CSV Readers moved in specific folders, and the naming changed too.
-
-If you use in your import standard Akeneo PIM processor and reader services, please execute the following command in your project folder:
-```
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.processor\.normalization\.\(.*\)\.flat/pim_connector\.processor\.normalization\.\1/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.file\.yaml/pim_connector\.reader\.file\.yaml/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Reader\\File\\CsvReader/Pim\\Component\\Connector\\Reader\\File\\Csv\\Reader/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Reader\\File\\CsvProductReader/Pim\\Component\\Connector\\Reader\\File\\Csv\\ProductReader/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Reader\\File\\YamlReader/Pim\\Component\\Connector\\Reader\\File\\Yaml\\Reader/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.orm\.family/pim_connector\.reader\.database\.family/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.orm\.attribute/pim_connector\.reader\.database\.attribute/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.orm\.association_type/pim_connector\.reader\.database\.association_type/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.orm\.attribute_option/pim_connector\.reader\.database\.attribute_option/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.orm\.category/pim_connector\.reader\.database\.category/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.repository\.group/pim_connector\.reader\.database\.group/g
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.reader\.repository\.variant_group/pim_connector\.reader\.database\.variant_group/g
+    grep -rl 'AbstractConfigurableStepElement' src/*
 ```
 
-### BaseConnectorBundle
-
-TODO : This bundle will be removed after the export refactoring
+Before:
 ```
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\DependencyInjection\\Compiler\\RegisterArchiversPass/Pim\\Bundle\\ConnectorBundle\\DependencyInjection\\Compiler\\RegisterArchiversPass/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\EventListener\\/Pim\\Bundle\\ConnectorBundle\\EventListener\\/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Archiver\\/Pim\\Component\\Connector\\Archiver\\/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Validator\\Constraints\\/Pim\\Component\\Connector\\Validator\\Constraints\/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.archiver\.file_writer_archiver/pim_connector\.archiver\.file_writer_archiver/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.event_listener\.archivist/pim_connector\.event_listener\.archivist/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.archiver/pim_connector\.archiver/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.archiver\.invalid_item_csv_archiver/pim_connector\.archiver\.invalid_item_csv_archiver/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.archiver\.file_reader_archiver/pim_connector\.archiver\.file_reader_archiver/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.factory\.zip_filesystem/pim_connector\.factory\.zip_filesystem/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.archiver\.archivable_file_writer_archiver/pim_connector\.archiver\.archivable_file_writer_archiver/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_base_connector\.validator\.constraints\.channel_validator/pim_connector\.validator\.constraints\.channel_validator/g'
+namespace Acme\Bundle\MyBundle\Processor;
+
+use Akeneo\Component\Batch\Item\AbstractConfigurableStepElement;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+
+class MyFamilyProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
 ```
 
-See the documentation [here](http://docs.akeneo.com/latest/reference/import_export/index.html).
+After:
+```
+namespace Acme\Bundle\MyBundle\Processor;
 
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 
-## Update dependencies and configuration
+class MyFamilyProcessor implements ItemProcessorInterface
+```
 
-1. Download the latest [PIM community standard](http://www.akeneo.com/download/) and extract it:
+If you declare a `public function initialize()` method in your StepElement, you need to implement `Akeneo\Component\Batch\Item\InitializableInterface`.
 
-    ```
-     wget http://www.akeneo.com/pim-community-standard-v1.6-latest.tar.gz
-     tar -zxf pim-community-standard-v1.6-latest.tar.gz
-     cd pim-community-standard-v1.6.*/
-    ```
+If you declare a `public function flush()` method in your StepElement, you need to implement `Akeneo\Component\Batch\Item\FlushableInterface`
 
-2. Copy the following files to your PIM installation:
+Before the 1.6, the call of these `initialize()` and `flush()` methods was ensured by a `method_exists()` call in the `Akeneo\Component\Batch\Step\ItemStep`.
 
-    ```
-     export PIM_DIR=/path/to/your/pim/installation
-     cp app/SymfonyRequirements.php $PIM_DIR/app
-     cp app/SymfonyRequirements.php $PIM_DIR/app
-     cp app/config/config.yml $PIM_DIR/app/config/ should be cp app/config/pim_parameters.yml $PIM_DIR/app/config ?
-     cp composer.json $PIM_DIR/
-    ```
+#### Add JobParameters providers to configure your Job execution
 
-3. Update your **config.yml**
+The v1.6 introduces the notion of JobParameters to provide runtime parameters to your Job execution.
 
-    * Remove the configuration of `CatalogBundle` from this file (config tree :`pim_catalog`).
-    * Update the default locale from `en_US` to `en`
-
-4. Update your **app/AppKernel.php**:
-
-    * Remove the following bundles: 
-        - `Pim\Bundle\BaseConnectorBundle\PimBaseConnectorBundle`
-        - `Pim\Bundle\TransformBundle\PimTransformBundle`
-        - `Nelmio\ApiDocBundle\NelmioApiDocBundle`
-        
-5. Update your **app/config/routing.yml**: 
-
-    * Remove the route: `nelmio_api_doc`
-
-6. Then remove your old upgrades folder:
-    ```
-     rm upgrades/ -rf
-    ```
-
-7. Now you're ready to update your dependencies:
-
-    * **Caution**, don't forget to re-add your own dependencies to your *composer.json* in case you have some:
-        
-        ```
-        "require": {
-            "your/dependencies": "version",
-            "your/other-dependencies": "version",
-        }
-        ```
-        
-        Especially if you store your product in Mongo, don't forget to add `doctrine/mongodb-odm-bundle`:
-        
-        ```
-        "require": {
-            "doctrine/mongodb-odm-bundle": "3.2.0"
-        }
-        ```
-    
-    * Then run the command to update your dependencies:
-    
-        ```
-         cd $PIM_DIR
-         composer update
-        ```
-
-        This step will also copy the upgrades folder from `vendor/akeneo/pim-community-dev/` to your Pim project root to allow you to migrate.
-
-8. Then you can migrate your database using:
-
-    ```
-     php app/console doctrine:migration:migrate
-    ```
-
-## Domain layer extraction
-
-We extracted the business classes into Components.
+You need to define a DefaultValuesProviderInterface and a ConstraintCollectionProviderInterface to be able to run your Job.
  
-### Catalog
+You'll find an example in the doc  https://docs.akeneo.com/master/cookbook/import_export/create-connector.html#configure-our-jobparameters
 
-We extracted business related stuff about attribute types by introducing `Pim\Component\Catalog\AttributeTypeInterface`.*
-There is no impact for custom attribute types except that backend type constants `BACKEND_TYPE_*` have been moved from `Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType` to `Pim\Component\Catalog\AttributeTypes`. 
-To detect the files impacted by this change, you can execute the following command in your project folder:
-```
-    grep -rl 'AbstractAttributeType::BACKEND_TYPE' src/* 
-```
+If you wrote a custom import (or export) which use the same parameters than a default import (or export) you can re-use existing classes.
 
-## Mass edit actions declaration
+For instance, if you have a custom csv export using the same parameters than our simple csv export :
 
-In 1.5 and before mass edit actions could be declared like this:
 ```
-my_bundle.mass_edit_action.my_action:
-        public: false
-        class: '%my_bundle.mass_edit_action.my_action.class%'
-        tags:
+    # declare a default values provider :
+    my_connector.job.job_parameters.default_values_provider.my_custom_csv_export:
+        class: '%pim_connector.job.job_parameters.default_values_provider.simple_csv_export.class%'
+        arguments:
             -
-                name: pim_enrich.mass_edit_action
-                alias: my_action
-                acl: pim_enrich_product_edit_attributes
-```
-As of 1.6, the `datagrid` entry of the tag is mandatory because a mass edit action linked to no datagrid makes no sense.
-
-Also, a new `operation_group` entry is introduced and is mandatory too. Several mass edit actions with the same operation group will appear on the same "Choose operation" page (the first step in the mass edit process).
-There are two operation groups for now: "mass-edit" and "category-edit", "mass-edit" being the default one.
-
-Now your custom mass action declaration should look like this:
-```
-my_bundle.mass_edit_action.my_action:
-        public: false
-        class: '%my_bundle.mass_edit_action.my_action.class%'
+                - 'my_custom_csv_export' # your job name
         tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    # declare a constraint collection provider :
+    my_connector.job.job_parameters.constraint_collection_provider.my_custom_csv_export:
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export.class%'
+        arguments:
             -
-                name: pim_enrich.mass_edit_action
-                alias: my_action
-                datagrid: product-grid
-                operation_group: mass-edit
-                acl: pim_enrich_product_edit_attributes
+                - 'my_custom_csv_export' # your job name
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 ```
-In this example it is an action for the products grid and it must appear in the default group.
 
-## Product exports configuration format update
+If your job needs extra runtime parameters, you have to declare your own classes.
 
-As of 1.6, product export job configurations (raw parameters) have a different format.
+#### Add JobParameters providers to configure your Job edition
+
+If your Job needs to be configured through the UI, you also need to define a FormConfigurationProviderInterface.
+
+You'll find an example in the doc https://docs.akeneo.com/master/cookbook/import_export/create-connector.html#configure-the-ui-for-our-jobparameters
+
+If you wrote a custom import (or export) which use the same parameters than a default import (or export) you can re-use existing classes.
+
+For instance, if you have a custom csv export using the same parameters than our simple csv export : 
+
+```
+    my_connector.job_parameters.form_configuration_provider.my_custom_csv_export:
+        class: '%pim_import_export.job_parameters.form_configuration_provider.simple_csv_export.class%'
+        arguments:
+            -
+                - 'my_custom_csv_export' # your job name
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }
+```
+
+Please note, that we've also extracted the template concern from the JobInterface.
+
+TODO add example, add a param to ease this configuration for product export?
+
+#### Update your custom translation keys for Job and Step labels
+
+We've extracted the template concern from JobInterface.
+
+We've extracted the translated labels concern from JobInterface and StepInterface.
+
+In 1.5, you have to manually declare your titles in batch_jobs.yml for jobs and steps, for instance,
+
+```
+connector:
+    name: Akeneo CSV Connector
+    jobs:
+        csv_product_export:
+            title: pim_base_connector.jobs.csv_product_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_product_export.export.title
+                    [...]
+```
+
+Then you had to add `pim_base_connector.jobs.csv_product_export.title` and `pim_base_connector.jobs.csv_product_export.export.title` translations in your `Resources/translations/messages.yml`.
+
+In 1.6, you only have to add a translation key following this convention,
+ - for a Job, batch_jobs.job_name.label
+ - for a Step, batch_jobs.job_name.step_name.label
+
+Taking our previous example, you can directly add the following translations in your `Resources/translations/messages.yml`:
+```
+batch_jobs.csv_product_export.label: "Product export in CSV"
+batch_jobs.csv_product_export.export.label: "Product export step"
+```
+
+#### Product exports configuration format update
+
+With the introduction of the ExportBuilder feature in the 1.6, a product export job configuration (raw parameters) has a different format.
 
 **Before 1.6:**
 ```
@@ -358,79 +687,56 @@ You can now notice a `filters` key containing `data` and `structure`.
 
 We provide doctrine migration to handle this change in your existing data.
 
-TODO: Add links to the docs.akeneo.com regarding this format update.
+In case you have custom export products using the native processor, you may need to update this migration script to update your job instances.
 
-##  PHP7
+### Updates for projects adding custom Mass Edit Action
 
-We continued our effort regarding Akeneo PIM PHP7 support.
-We're happy to announce that PHP7 is now usable in experimental mode for both CLI and Web.
-Experimental means that we manage to install and use the PIM but due to missing tests in our functional matrix we can't commit to support it.
+The Mass Edit Action are based on Connector classes, the updates of the previous section must be applied before to start this section.
 
-MongoDB 2.6 enforce several limitations, for instance, the Index Key Limit, https://docs.mongodb.com/v2.6/reference/limits/#Index-Key-Limit.
+#### Update the mass edit actions services
 
-This limitation impacts indexes, when you use PHP7, please dump your database and run the command app/console 'pim:product:ensure-mongodb-indexes'.
-
-This command will remove existing indexes from product collection and will add new indexes with relevant types.
-
-Your attributes using `text` backend type will now use `hashed` index type supporting more than 1024 chars.
-
-Before the 1.6, the command creates only ascendant indexes, even for `text` backend type causing the non indexing of the too long value without any notice.
-
-## Partially fix BC breaks
-
-If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
-
-**It does not cover all possible BC breaks, as the changes of arguments of a service, consider using this script on versioned files to be able to check the changes with a `git diff` for instance.**
-
-Based on a PIM standard installation, execute the following command in your project folder:
-
+In 1.5 and before mass edit actions could be declared like this:
 ```
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\CatalogBundle\Factory\AttributeFactory/Pim\Component\Catalog\Factory\AttributeFactory/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry/Pim\Component\Catalog\AttributeTypeRegistry/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Factory\\AttributeRequirementFactory/Pim\\Component\\Catalog\\Factory\\AttributeRequirementFactory/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Factory\\GroupFactory/Pim\\Component\\Catalog\\Factory\\GroupFactory/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Factory\\FamilyFactory/Pim\\Component\\Catalog\\Factory\\FamilyFactory/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Factory\\MetricFactory/Pim\\Component\\Catalog\\Factory\\MetricFactory/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Manager\\CompletenessManager/Pim\\Component\\Catalog\\Manager\\CompletenessManager/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Manager\\AttributeGroupManager/Pim\\Component\\Catalog\\Manager\\AttributeGroupManager/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Manager\\VariantGroupAttributesResolver/Pim\\Component\\Catalog\\Manager\\VariantGroupAttributesResolver/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Manager\\ProductTemplateApplier/Pim\\Component\\Catalog\\Manager\\ProductTemplateApplier/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Builder\\ProductTemplateBuilder/Pim\\Component\\Catalog\\Builder\\ProductTemplateBuilder/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Builder\\ProductBuilder/Pim\\Component\\Catalog\\Builder\\ProductBuilder/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Manager\\AttributeValuesResolver/Pim\\Component\\Catalog\\Manager\\AttributeValuesResolver/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Query\\Filter\\DumperInterface/Pim\\Bundle\\CatalogBundle\\Command\\DumperInterface/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Query\\Filter\\AttributeFilterDumper/Pim\\Bundle\\CatalogBundle\\Command\\ProductQueryHelp\\AttributeFilterDumper/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Query\\Filter\\FieldFilterDumper/Pim\\Bundle\\CatalogBundle\\Command\\ProductQueryHelp\\FieldFilterDumper/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Query/Pim\\Component\\Catalog\\Query/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Query/Pim\\Component\\Catalog\\Exception/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Exception/Pim\\Component\\Catalog\\Exception/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Event\\ProductEvents/Pim\\Component\\Catalog\\ProductEvents/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Repository/Pim\\Component\\Catalog\\Repository/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Validator/Pim\\Component\\Catalog\\Validator/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\AttributeType\\AttributeTypes/Pim\\Component\\Catalog\\AttributeTypes/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BaseConnectorBundle\\Processor\\Normalization\\VariantGroupProcessor/Pim\\Component\\Connector\\Processor\\Normalization\\VariantGroupProcessor/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Job\\JobFactory/Akeneo\\Component\\Batch\\Job\\JobFactory/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BatchBundle\\Step\\StepFactory/Akeneo\\Component\\Batch\\Step\\StepFactory/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Normalizer\\Structured\\ReferenceDataNormalizer/Pim\\Component\\ReferenceData\\Normalizer\\Structured\\ReferenceDataNormalizer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Normalizer\\Flat\\ReferenceDataNormalizer/Pim\\Component\\ReferenceData\\Normalizer\\Flat\\ReferenceDataNormalizer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Denormalizer\\Structured\\ProductValue\\ReferenceDataDenormalizer/Pim\\Component\\ReferenceData\\Denormalizer\\Structured\\ProductValue\\ReferenceDataDenormalizer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Denormalizer\\Structured\\ProductValue\\ReferenceDataCollectionDenormalizer/Pim\\Component\\ReferenceData\\Denormalizer\\Structured\\ProductValue\\ReferenceDataCollectionDenormalizer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Denormalizer\\Flat\\ProductValue\\ReferenceDataDenormalizer/Pim\\Component\\ReferenceData\\Denormalizer\\Flat\\ProductValue\\ReferenceDataDenormalizer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Denormalizer\\Flat\\ProductValue\\ReferenceDataCollectionDenormalizer/Pim\\Component\\ReferenceData\\Denormalizer\\Flat\\ProductValue\\ReferenceDataCollectionDenormalizer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Normalizer\\Structured\\JobInstanceNormalizer/Akeneo\\Component\\Batch\\Normalizer\\Structured\\JobInstanceNormalizer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\StandardArrayConverterInterface/Pim\\Component\\Connector\\ArrayConverter\\ArrayConverterInterface/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/implements StandardArrayConverterInterface/implements ArrayConverterInterface/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\Flat/Pim\\Component\\Connector\\ArrayConverter\\FlatToStandard/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.array_converter\.flat\./pim_connector\.array_converter\.flat_to_standard\./g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Reader\\Doctrine/Pim\\Component\\Connector\\Reader\\Database/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Reader\\ProductReader/Pim\\Component\\Connector\\Reader\\Database\\ProductReader/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.reader\.product/pim_connector\.reader\.database\.product/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.reader\.doctrine/pim_connector\.reader\.database/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\Doctrine/Pim\\Component\\Connector\\Writer\\Database/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.writer\.doctrine/pim_connector\.writer\.database/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\CsvWriter/Pim\\Component\\Connector\\Writer\\Csv\\Writer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\CsvProductWriter/Pim\\Component\\Connector\\Writer\\Csv\\ProductWriter/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\CsvVariantGroupWriter/Pim\\Component\\Connector\\Writer\\Csv\\VariantGroupWriter/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\YamlWriter/Pim\\Component\\Connector\\Writer\\Yaml\\Writer/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ImportExportBundle\\Form\\Type\\JobInstanceType/Pim\\Bundle\\ImportExportBundle\\Form\\Type\\JobInstanceFormType/g'
+my_bundle.mass_edit_action.my_action:
+        public: false
+        class: '%my_bundle.mass_edit_action.my_action.class%'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: my_action
+                acl: pim_enrich_product_edit_attributes
 ```
+As of 1.6, the `datagrid` entry of the tag is mandatory because a mass edit action linked to no datagrid makes no sense.
+
+Also, a new `operation_group` entry is introduced and is mandatory too. Several mass edit actions with the same operation group will appear on the same "Choose operation" page (the first step in the mass edit process).
+There are two operation groups for now: "mass-edit" and "category-edit", "mass-edit" being the default one.
+
+Now your custom mass action declaration should look like this:
+```
+my_bundle.mass_edit_action.my_action:
+        public: false
+        class: '%my_bundle.mass_edit_action.my_action.class%'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: my_action
+                datagrid: product-grid
+                operation_group: mass-edit
+                acl: pim_enrich_product_edit_attributes
+```
+
+In this example, we show an action for the products grid that will appear in the default group.
+
+#### Update the mass edit actions classes
+
+TODO: add example with getConfiguration change, how to access to parameters, etc
+
+### Updates for projects adding custom Attribute Types
+
+```TODO, export builder field? array converters for import / export?```
+
+## Known issues
+
+We did our best to provide a detailed and exhaustive upgrade guide, however, we can't cover every possible customization.
+
+If you encounter any issue or missing part in this guide, please open a Pull Request to add your own use case in this section.
