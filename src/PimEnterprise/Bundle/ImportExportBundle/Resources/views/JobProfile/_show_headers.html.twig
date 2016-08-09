@@ -20,9 +20,6 @@
 
     {% if is_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EXECUTE'), jobInstance)
         and resource_granted('pim_importexport_' ~ jobInstance.type ~ '_profile_launch') %}
-        {% if uploadAllowed and uploadViolations|length == 0 %}
-            {{ elements.link('Upload and '~action, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
-        {% endif %}
 
         {% if violations|length == 0 %}
             {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: action ~ '-btn btn-primary'}) }}
@@ -39,7 +36,7 @@
         'id': 'pim_importexport_import_upload',
         'action': launchUploadRoute,
         'attr': {
-            'class': 'form-upload hide'
+            'class': 'form-upload'
         }
     }) }}
         {{ elements.form_errors(uploadForm) }}
