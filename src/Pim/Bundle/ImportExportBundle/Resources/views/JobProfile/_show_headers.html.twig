@@ -15,9 +15,6 @@
     {% if jobInstance.status != constant('Akeneo\\Component\\Batch\\Model\\JobInstance::STATUS_IN_PROGRESS') %}
         {{ elements.link('Edit', editRoute, { icon: 'pencil' }) }}
     {% endif %}
-    {% if uploadAllowed and uploadViolations|length == 0 %}
-        {{ elements.link('Upload and '~action, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
-    {% endif %}
     {% if violations|length == 0 %}
         {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: action ~ '-btn btn-primary'}) }}
     {% endif %}
@@ -32,7 +29,7 @@
         'id': 'pim_importexport_import_upload',
         'action': launchUploadRoute,
         'attr': {
-            'class': 'form-upload hide'
+            'class': 'form-upload'
         }
     }) }}
         {{ elements.form_errors(uploadForm) }}

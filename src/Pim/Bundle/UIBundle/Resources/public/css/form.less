@@ -369,23 +369,29 @@ div.btn-group > .has-switch {
   cursor: pointer;
   border: 1px solid @textColor + #888;
   border-radius: 10px;
+
   &.empty {
     margin: 0;
     border-style: dashed;
     border-width: 2px;
+
     &:not(.disabled):hover {
       border-color: @textColor + #555;
     }
+
     div.upload-info {
       min-width: 278px;
     }
   }
+
   &.disabled {
     background-color: @color-light_grey;
   }
+
   &:not(.disabled):hover {
-    background-color: @akeneoPurpleLighter;
+    background-color: @akeneoPurpleSuperLight;
   }
+
   div.upload-info {
     display: inline-block;
     height: @uploadZoneHeight - 20;
@@ -394,6 +400,7 @@ div.btn-group > .has-switch {
     font-size: @font-size-22;
     line-height: @uploadZoneHeight - 20;
     text-align: center;
+
     .upload-preview, img {
       display: inline-block;
       max-width: (@uploadZoneHeight - 20) * 1.5;
@@ -405,18 +412,22 @@ div.btn-group > .has-switch {
       text-decoration: none;
       vertical-align: middle;
       cursor: pointer;
+
       &.empty {
         display: none;
       }
     }
+
     img {
       display: block;
     }
+
     span.upload-filename {
       padding: 0 5px;
       line-height: @uploadZoneHeight - 20;
     }
   }
+
   .remove-upload {
     float: right;
     width: 45px;
@@ -429,6 +440,7 @@ div.btn-group > .has-switch {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
   }
+
   input[type="file"] {
     position: relative;
     top: -@uploadZoneHeight;
@@ -439,6 +451,7 @@ div.btn-group > .has-switch {
     cursor: pointer;
     border-radius: 20px;
     opacity: 0;
+
     &.hide {
       display: none;
     }
