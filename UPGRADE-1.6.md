@@ -48,14 +48,24 @@
         
         ```
 
-    * Remove the configuration of the `pim_catalog` from this file.
+    * Remove the configuration of `CatalogBundle` from this file (config tree :`pim_catalog`, line 110).
+    * Update the default locale from `en_US` to `en` line 9
 
 4. Update your **app/AppKernel.php**:
-    * Remove the following bundles: `PimEnterpriseBaseConnectorBundle`, `PimBaseConnectorBundle`, `PimTransformBundle`, `NelmioApiDocBundle`
-    * Add the following bundles: `PimEnterprise\Bundle\ConnectorBundle\PimEnterpriseConnectorBundle` 
+
+    * Remove the following bundles: 
+        - `PimEnterprise\Bundle\BaseConnectorBundle\PimEnterpriseBaseConnectorBundle`, line 82
+        - `PimEnterprise\Bundle\LocalizationBundle\PimEnterpriseLocalizationBundle`, line 92
+        - `Pim\Bundle\BaseConnectorBundle\PimBaseConnectorBundle`, line 126 
+        - `Pim\Bundle\TransformBundle\PimTransformBundle`, line 127
+        - `Nelmio\ApiDocBundle\NelmioApiDocBundle`, line 195
+        
+    * Remove the following bundles: 
+        - `PimEnterprise\Bundle\ConnectorBundle\PimEnterpriseConnectorBundle` to `getPimEnterpriseBundles`
 
 5. Update your **app/config/routing.yml**: 
-    * Route removed: `nelmio_api_doc`
+
+    * Route removed: `nelmio_api_doc` (line 87)
 
 6. Then remove your old upgrades folder: 
     ```
