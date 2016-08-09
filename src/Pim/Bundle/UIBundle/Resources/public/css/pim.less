@@ -1663,7 +1663,9 @@ h3.tab-header {
 
 .filter-input {
   .select2-container-multi {
-    height: 32px;
+    .select2-search-field input {
+      margin: -1px 0;
+    }
 
     .select2-search-choice {
       margin: 2px 0 2px 2px;
@@ -1689,7 +1691,6 @@ h3.tab-header {
 
 .attributes .input-like, [data-type="pim-filter-product-category"] .filter-input .input-like {
     padding: 2px 2px 2px 0;
-    margin: 0 0 10px 5px;
     border: 1px solid #ddd;
     box-sizing: border-box;
 }

@@ -50,12 +50,14 @@ class FilterStructureLocaleValidator extends ConstraintValidator
             $localesCodes = $scope->getLocaleCodes();
         }
 
+        $errorCount = 0;
         foreach ($filterStructureLocales as $localeCode) {
             if (!in_array($localeCode, $localesCodes)) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('%localeCode%', $localeCode)
-                    ->atPath('[locales]')
+                    ->atPath(sprintf('[locales][%d]', $errorCount))
                     ->addViolation();
+                $errorCount++;
             }
         }
     }

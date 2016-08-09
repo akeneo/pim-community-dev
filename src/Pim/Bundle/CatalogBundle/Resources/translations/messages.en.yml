@@ -13,12 +13,12 @@ pim_catalog:
         string_expected: This field expects a string value.
         array_expected: This field expects an array value.
         array_of_arrays_expected: This field expects an array of arrays as value.
-        array_key_expected: INTERNAL
-        array_invalid_key: INTERNAL
+        array_key_expected: An internal error occured
+        array_invalid_key: An internal error occured
         array_numeric_key_expected: This field expects a numeric value.
         array_string_key_expected: This field expects a string value.
         array_string_value_expected: This field expects a string value.
-        empty_array: INTERNAL
+        empty_array: An internal error occured
         valid_entity_code_expected: This field expects a valid entity code.
         locale_and_scope_expected: This field expects a valid scope and locale.
         scope_expected: This field expects a valid scope.

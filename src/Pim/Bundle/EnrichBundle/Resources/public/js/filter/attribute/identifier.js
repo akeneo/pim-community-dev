@@ -39,25 +39,6 @@ define([
         /**
          * {@inheritdoc}
          */
-        configure: function () {
-            return $.when(
-                FetcherRegistry.getFetcher('attribute').getIdentifierAttribute(),
-                BaseFilter.prototype.configure.apply(this, arguments)
-            ).then(function (identifier) {
-                this.identifier = identifier;
-            }.bind(this));
-        },
-
-        /**
-         * {@inheritdoc}
-         */
-        setField: function () {
-            return BaseFilter.prototype.setField.apply(this, [this.identifier.code]);
-        },
-
-        /**
-         * {@inheritdoc}
-         */
         isEmpty: function () {
             return _.isEmpty(this.getValue());
         },
@@ -78,14 +59,19 @@ define([
          * {@inheritdoc}
          */
         getTemplateContext: function () {
-            return $.Deferred().resolve({
-                label: i18n.getLabel(
-                    this.identifier.labels,
-                    UserContext.get('catalogLocale'),
-                    this.getField()
-                ),
-                removable: false
-            }).promise();
+            return FetcherRegistry
+                .getFetcher('attribute')
+                .fetch(this.getField())
+                .then(function (attribute) {
+                    return {
+                        label: i18n.getLabel(
+                            attribute.labels,
+                            UserContext.get('catalogLocale'),
+                            this.getField()
+                        ),
+                        removable: false
+                    }
+                }.bind(this));
         },
 
         /**

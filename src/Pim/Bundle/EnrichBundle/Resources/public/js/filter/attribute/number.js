@@ -92,11 +92,6 @@ define([
 
             if (!_.contains(['EMPTY', 'NOT EMPTY'], operator)) {
                 value = this.$('[name="filter-value"]').val().trim();
-
-                if ('' !== value) {
-                    var numberValue = Number(value);
-                    value = _.isNaN(numberValue) ? value : numberValue;
-                }
             }
 
             this.setData({

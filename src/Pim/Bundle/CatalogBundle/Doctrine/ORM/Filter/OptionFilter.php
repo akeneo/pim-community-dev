@@ -96,18 +96,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
             if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-                try {
-                    $value = $this->objectIdResolver->getIdsFromCodes('option', $value, $attribute);
-                } catch (ObjectNotFoundException $e) {
-                    throw InvalidArgumentException::validEntityCodeExpected(
-                        $field,
-                        'code',
-                        $e->getMessage(),
-                        'filter',
-                        'option',
-                        implode(', ', $value)
-                    );
-                }
+                $value = $this->objectIdResolver->getIdsFromCodes('option', $value, $attribute);
             }
 
             $condition .= ' AND ' . $this->prepareCriteriaCondition($optionAlias, $operator, $value);

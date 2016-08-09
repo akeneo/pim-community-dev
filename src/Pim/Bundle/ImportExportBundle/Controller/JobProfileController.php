@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -281,14 +282,15 @@ class JobProfileController
         $job = $this->jobRegistry->get($jobInstance->getJobName());
 
         $errors = [];
+        $accessor = PropertyAccess::createPropertyAccessorBuilder()->getPropertyAccessor();
         foreach ($form->getErrors() as $error) {
-            preg_match('#\[([\w.]+)\]$#', $error->getCause()->getPropertyPath(), $match);
+            if (0 === strpos($error->getCause()->getPropertyPath(), 'children[parameters].children[filters].data')) {
+                $propertyPath = substr(
+                    $error->getCause()->getPropertyPath(),
+                    strlen('children[parameters].children[filters].data')
+                );
 
-            if (isset($match[1])) {
-                $errors[] = [
-                    'field'   => $match[1],
-                    'message' => $error->getMessage()
-                ];
+                $accessor->setValue($errors, $propertyPath, $error->getMessage());
             }
         }
 

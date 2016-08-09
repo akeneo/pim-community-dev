@@ -9,36 +9,46 @@ define([
 ], function ($, _, BaseForm, template) {
     return BaseForm.extend({
         template: _.template(template),
+        errors: [],
 
         /**
          * {@inherit}
          */
         configure: function () {
             this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this));
+            this.listenTo(
+                this.getRoot(),
+                'pim_enrich:form:export:validation_error',
+                this.setValidationErrors.bind(this)
+            );
 
             return BaseForm.prototype.configure.apply(this, arguments);
         },
 
+        setValidationErrors: function (errors) {
+            this.errors = errors;
+        },
+
         /**
          * Adds the extension to filters.
-         * If the translation is not here the tooltip won't be displayed at all.
+         * If there is an error for the current filter, we add an element to it.
          *
          * @param {Object} event
          */
         addFilterExtension: function (event) {
             var filter = event.filter;
 
-            if (_.isEmpty(filter.validationErrors)) {
-                return false;
+            if (undefined !== this.errors.data &&
+                undefined !== this.errors.data[filter.getField()]
+            ) {
+                var content = $(this.template({error: this.errors.data[filter.getField()]}));
+
+                event.filter.addElement(
+                    'below-input',
+                    'validation',
+                    content
+                );
             }
-
-            var $content = $(this.template({errors: filter.validationErrors}));
-
-            event.filter.addElement(
-                'below-input',
-                'validation',
-                $content
-            );
         }
     });
 });

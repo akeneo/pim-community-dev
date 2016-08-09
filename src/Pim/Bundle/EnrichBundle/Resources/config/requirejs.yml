@@ -240,7 +240,7 @@ config:
         pim/filter/product/completeness:       pimenrich/js/filter/product/completeness
         pim/filter/product/category:           pimenrich/js/filter/product/category
         pim/filter/product/category/selector:  pimenrich/js/filter/product/category/selector
-        pim/filter/product/identifier:         pimenrich/js/filter/product/identifier
+        pim/filter/attribute/identifier:       pimenrich/js/filter/attribute/identifier
         pim/filter/attribute/attribute:        pimenrich/js/filter/attribute/attribute
         pim/filter/attribute/boolean:          pimenrich/js/filter/attribute/boolean
         pim/filter/attribute/string:           pimenrich/js/filter/attribute/string

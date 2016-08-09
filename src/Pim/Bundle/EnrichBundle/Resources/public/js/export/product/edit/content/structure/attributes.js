@@ -34,7 +34,6 @@ define(
         return BaseForm.extend({
             className: 'control-group attributes',
             template: _.template(template),
-            validationErrors: [],
             events: {
                 'click button': 'openSelector'
             },
@@ -58,10 +57,6 @@ define(
                     return this;
                 }
 
-                this.validationErrors = _.where(this.parent.errors, {
-                    field: 'attributes'
-                });
-
                 var attributes = this.getFormData().structure.attributes || [];
 
                 this.$el.html(
@@ -75,7 +70,7 @@ define(
                             {count: attributes.length},
                             attributes.length
                         ),
-                        errors: this.validationErrors
+                        errors: this.getParent().getValidationErrorsForField('attributes', [])
                     })
                 );
 

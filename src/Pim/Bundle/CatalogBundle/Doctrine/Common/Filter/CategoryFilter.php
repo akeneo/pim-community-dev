@@ -69,18 +69,7 @@ class CategoryFilter implements FieldFilterInterface
             $this->checkValue($field, $value);
 
             if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-                try {
-                    $categoryIds = $this->objectIdResolver->getIdsFromCodes('category', $value);
-                } catch (ObjectNotFoundException $e) {
-                    throw InvalidArgumentException::validEntityCodeExpected(
-                        $field,
-                        'code',
-                        $e->getMessage(),
-                        'filter',
-                        'category',
-                        implode(', ', $value)
-                    );
-                }
+                $categoryIds = $this->objectIdResolver->getIdsFromCodes('category', $value);
             }
         }
 

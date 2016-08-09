@@ -45,18 +45,7 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
             $this->checkValue($field, $value);
 
             if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-                try {
-                    $value = $this->objectIdResolver->getIdsFromCodes('family', $value);
-                } catch (ObjectNotFoundException $e) {
-                    throw InvalidArgumentException::validEntityCodeExpected(
-                        $field,
-                        'code',
-                        $e->getMessage(),
-                        'filter',
-                        'family',
-                        implode(', ', $value)
-                    );
-                }
+                $value = $this->objectIdResolver->getIdsFromCodes('family', $value);
             }
         }
 

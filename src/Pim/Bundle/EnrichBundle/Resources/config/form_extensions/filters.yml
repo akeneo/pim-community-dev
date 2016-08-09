@@ -11,8 +11,8 @@ extensions:
         module: pim/filter/product/completeness
         config:
             operators:
-                - ALL
                 - ">="
+                - ALL
                 - GREATER OR EQUALS THAN ON ALL LOCALES
                 - LOWER THAN ON ALL LOCALES
 
@@ -31,8 +31,8 @@ extensions:
                 - ">"
                 - SINCE LAST JOB
 
-    pim-filter-product-identifier:
-        module: pim/filter/product/identifier
+    pim-filter-attribute-identifier:
+        module: pim/filter/attribute/identifier
 
     pim-filter-attribute-boolean:
         module: pim/filter/attribute/boolean

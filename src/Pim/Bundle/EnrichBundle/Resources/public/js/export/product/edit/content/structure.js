@@ -42,6 +42,20 @@ define(
             },
 
             /**
+             * Get the validtion errors for the given field
+             *
+             * @param {string} field
+             * @param {mixed}  fallback
+             *
+             * @return {mixed}
+             */
+            getValidationErrorsForField: function (field, fallback) {
+                return (undefined !== this.errors.structure && undefined !== this.errors.structure[field]) ?
+                    this.errors.structure[field] :
+                    fallback;
+            },
+
+            /**
              * Renders this view.
              *
              * @return {Object}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle;
+namespace Pim\Bundle\CatalogBundle\Exception;
 
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Symfony\Component\Translation\TranslatorInterface;

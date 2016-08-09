@@ -38,14 +38,16 @@ class FilterStructureAttributeValidator extends ConstraintValidator
             return;
         }
 
+        $errorCount = 0;
         foreach ($attributes as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
             if (null === $attribute) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('%attributeCode%', $attributeCode)
-                    ->atPath('[attributes]')
+                    ->atPath(sprintf('[%d]', $errorCount))
                     ->addViolation();
+                    $errorCount++;
             }
         }
     }

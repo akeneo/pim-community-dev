@@ -30,7 +30,6 @@ define(
     ) {
         return BaseForm.extend({
             filterViews: {},
-            errors: [],
             template: _.template(template),
 
             /**
@@ -58,19 +57,9 @@ define(
                     this.render.bind(this)
                 );
 
-                this.listenTo(
-                    this.getRoot(),
-                    'pim_enrich:form:export:validation_error',
-                    this.setValidationErrors.bind(this)
-                );
-
                 this.filterViews = {};
 
                 return BaseForm.prototype.configure.apply(this, arguments);
-            },
-
-            setValidationErrors: function (errors) {
-                this.errors = errors;
             },
 
             /**

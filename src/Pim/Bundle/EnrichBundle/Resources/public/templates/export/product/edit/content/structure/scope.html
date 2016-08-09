@@ -10,11 +10,11 @@
     </div>
     <span class="below-input">
         <span class="validation-errors">
-            <% errors.forEach(function (error) { %>
-                <span>
-                    <i class="icon-warning-sign"></i> <span class="error-message"><%- error.message %></span>
-                </span>
-            <% }); %>
+            <% if (error) { %>
+            <span>
+                <i class="icon-warning-sign"></i> <span class="error-message"><%- error %></span>
+            </span>
+            <% } %>
         </span>
     </span>
 </div>

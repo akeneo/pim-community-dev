@@ -52,18 +52,17 @@ class CategoryController
         }
 
         $categories = $this->repository->getCategoriesByCodes($request->get('selected', []));
-        $selected   = $categories;
-
-        // In case the category selection is empty
-        if (0 === $categories->count()) {
-            $categories = new ArrayCollection([$parent]);
-            $selected = new ArrayCollection();
+        if (0 !== $categories->count()) {
+            $tree = $this->twigExtension->listCategoriesResponse(
+                $this->repository->getFilledTree($parent, $categories),
+                $categories
+            );
+        } else {
+            $tree = $this->twigExtension->listCategoriesResponse(
+                $this->repository->getFilledTree($parent, new ArrayCollection([$parent])),
+                new ArrayCollection()
+            );
         }
-
-        $tree = $this->twigExtension->listCategoriesResponse(
-            $this->repository->getFilledTree($parent, $categories),
-            $selected
-        );
 
         // Returns only children of the given category without the node itself
         if (!empty($tree)) {

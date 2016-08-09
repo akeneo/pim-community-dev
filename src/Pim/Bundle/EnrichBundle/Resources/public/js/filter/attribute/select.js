@@ -34,7 +34,8 @@ define([
          * {@inheritdoc}
          */
         initialize: function (config) {
-            this.config = config.config;
+            this.config        = config.config;
+            this.choicePromise = null;
 
             return BaseFilter.prototype.initialize.apply(this, arguments);
         },
@@ -198,13 +199,18 @@ define([
          */
         cleanInvalidValues: function (attribute) {
             return this.getChoicePromise(attribute).then(function (response) {
-                var results = response.results;
-                var initialValue = this.getValue();
-                var idResults = _.pluck(results, 'id');
+                var results      = response.results;
+                var initialValue = undefined !== this.getValue() ? this.getValue() : [];
+                var resultIds    = _.pluck(results, 'id');
 
                 // Update field value if some options are not available anymore
-                if (!_.isEmpty(_.difference(initialValue, idResults))) {
-                    this.setValue(_.intersection(initialValue, idResults), {silent: false});
+                if (!_.isEmpty(
+                    _.difference(
+                        _.union(resultIds, initialValue),
+                        resultIds
+                    )
+                )) {
+                    this.setValue(_.intersection(initialValue, resultIds), {silent: false});
                 }
 
                 return attribute;

@@ -6,66 +6,19 @@ use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
 use Pim\Behat\Decorator\Export\Filter\UpdatedTimeConditionDecorator;
+use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 
-class ExportBuilderContext extends PimContext
+class ExportBuilderContext extends PimContext implements PageObjectAwareInterface
 {
     use SpinCapableTrait;
 
     /**
-     * Set the operator and the value of a filter
-     *
-     * Example:
-     * When I filter exported products by operator "Updated products since the defined date" with value "05/25/2016"
-     *
-     * @param string $expectedOperator
-     * @param string $exceptedValue
-     *
-     * @When /^I filter exported products by operator "([^"]*)" and value "([^"]*)"$/
+     * @param PageFactory $pageFactory
      */
-    public function iFilterBy($expectedOperator, $exceptedValue)
+    public function setPageFactory(PageFactory $pageFactory)
     {
-        $filterElement = $this->getCurrentPage()->getElement('Updated time condition');
-
-        $filterElement->setValue($expectedOperator, $exceptedValue);
-    }
-
-    /**
-     * Check the value and the operator of the filter
-     *
-     * Example:
-     * Then the filter should contain operator "Updated products since the last n days" with value "10"
-     *
-     * @param string $expectedOperator
-     * @param string $exceptedValue
-     *
-     * @throws ExpectationException
-     *
-     * @Then /^the filter should contain operator "([^"]*)" and value "([^"]*)"$/
-     */
-    public function theFilterShouldContains($expectedOperator, $exceptedValue)
-    {
-        /** @var UpdatedTimeConditionDecorator $filter */
-        $filterElement = $this->getCurrentPage()->getElement('Updated time condition');
-        $value = $filterElement->getValue();
-        $operator = $filterElement->getOperator();
-
-        if ($expectedOperator !== $operator) {
-            throw new ExpectationException(
-                sprintf(
-                    'The value of operator does not contain "%s" but "%s"',
-                    $expectedOperator,
-                    $operator
-                ),
-                $this->getSession()->getDriver()
-            );
-        }
-
-        if ($exceptedValue !== $value) {
-            throw new ExpectationException(
-                sprintf('The value of filter does not contain "%s" but "%s"', $exceptedValue, $value),
-                $this->getSession()->getDriver()
-            );
-        }
+        $this->filters = $pageFactory->createPage('Base\Grid');
     }
 
     /**

@@ -101,11 +101,6 @@ define([
 
             var operator = this.$('[name="filter-operator"]').val();
 
-            if ('' !== value.data) {
-                var numberValue = Number(value);
-                value.data = _.isNaN(numberValue) ? value.data : numberValue;
-            }
-
             this.setData({
                 field: this.getField(),
                 operator: operator,

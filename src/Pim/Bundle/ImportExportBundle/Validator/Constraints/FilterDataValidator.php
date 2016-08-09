@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\ExceptionTranslationProvider;
+use Pim\Bundle\CatalogBundle\Exception\ExceptionTranslationProvider;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
 use Symfony\Component\Validator\Constraint;
@@ -52,7 +52,7 @@ class FilterDataValidator extends ConstraintValidator
                 $pqb->addFilter($data['field'], $data['operator'], $data['value'], $context);
             } catch (InvalidArgumentException $e) {
                 $this->context->buildViolation($this->translationProvider->getTranslation($e))
-                    ->atPath(sprintf('[%s]', $data['field']))
+                    ->atPath(sprintf('[data][%s]', $data['field']))
                     ->addViolation();
             }
         }

@@ -27,7 +27,6 @@ define(
         return BaseForm.extend({
             className: 'control-group',
             template: _.template(template),
-            validationErrors: [],
 
             /**
              * Initializes configuration.
@@ -61,10 +60,6 @@ define(
                     return this;
                 }
 
-                this.validationErrors = _.where(this.parent.errors, {
-                    field: 'locales'
-                });
-
                 var defaultLocalesPromise = $.Deferred().resolve().promise();
                 if (_.isEmpty(this.getLocales())) {
                     defaultLocalesPromise = this.setDefaultLocales();
@@ -73,14 +68,14 @@ define(
                 $.when(
                     fetcherRegistry.getFetcher('channel').fetch(this.getFormData().structure.scope),
                     defaultLocalesPromise
-                ).then(function (scope) {
+                ).always(function (scope) {
                     this.$el.html(
                         this.template({
                             isEditable: this.isEditable(),
                             __: __,
                             locales: this.getLocales(),
-                            availableLocales: scope.locales,
-                            errors: this.validationErrors
+                            availableLocales: !scope ? [] : scope.locales,
+                            errors: this.getParent().getValidationErrorsForField('locales', [])
                         })
                     );
 
