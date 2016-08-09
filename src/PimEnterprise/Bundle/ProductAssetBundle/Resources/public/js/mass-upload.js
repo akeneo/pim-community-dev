@@ -38,15 +38,17 @@ define(
         };
         Dropzone.autoDiscover = false;
 
+        var $navbarButtons, $importButton, $startButton, $cancelButton;
+
         return Backbone.View.extend({
             myDropzone: null,
             pageTemplate: _.template(pageTemplate),
             rowTemplate: _.template(rowTemplate),
 
             events: {
-                'click .navbar-buttons .start': 'startAll',
-                'click .navbar-buttons .cancel': 'cancelAll',
-                'click .navbar-buttons .import': 'importAll'
+                'click .navbar-buttons .start:not(.disabled)': 'startAll',
+                'click .navbar-buttons .cancel:not(.disabled)': 'cancelAll',
+                'click .navbar-buttons .import:not(.disabled)': 'importAll'
             },
 
             /**
@@ -54,7 +56,14 @@ define(
              */
             render: function () {
                 this.$el.html(this.pageTemplate({__: __}));
+
+                $navbarButtons = $('.navbar-buttons');
+                $importButton = $navbarButtons.find('.import');
+                $startButton = $navbarButtons.find('.start');
+                $cancelButton = $navbarButtons.find('.cancel');
+
                 this.initializeDropzone();
+
                 return this;
             },
 
@@ -76,10 +85,13 @@ define(
 
                 myDropzone.on('removedfile', function () {
                     if (0 === myDropzone.getFilesWithStatus(Dropzone.SUCCESS).length) {
-                        this.$('.navbar-buttons .btn.import').addClass('disabled');
+                        $importButton.addClass('disabled');
                     }
                     if (0 === myDropzone.getFilesWithStatus(Dropzone.ADDED).length) {
-                        this.$('.navbar-buttons .btn.start').addClass('disabled');
+                        $startButton.addClass('disabled');
+                    }
+                    if (0 === myDropzone.files.length) {
+                        $cancelButton.addClass('hide');
                     }
                 }.bind(this));
 
@@ -95,8 +107,9 @@ define(
                         Routing.generate('pimee_product_asset_rest_verify_upload', {
                             filename: encodeURIComponent(file.name)
                         })
-                    ).success(function () {
-                            $('.navbar-buttons .btn.start').removeClass('disabled');
+                        ).done(function () {
+                            $startButton.removeClass('disabled');
+                            $cancelButton.removeClass('hide');
                         }).fail(function (response) {
                             file.status = Dropzone.ERROR;
                             var message = 'pimee_product_asset.mass_upload.error.filename';
@@ -134,15 +147,13 @@ define(
 
                 myDropzone.on('sending', function (file) {
                     this.setStatus(file);
-                    this.$('.navbar-buttons .btn.cancel').removeClass('hide');
                 }.bind(this));
 
                 myDropzone.on('queuecomplete', function () {
                     if (myDropzone.getFilesWithStatus(Dropzone.SUCCESS).length > 0) {
-                        this.$('.navbar-buttons .btn.import').removeClass('disabled');
+                        $importButton.removeClass('disabled');
                     }
-                    this.$('.navbar-buttons .btn.cancel').addClass('hide');
-                    this.$('.navbar-buttons .btn.start').addClass('disabled');
+                    $startButton.addClass('disabled');
                 }.bind(this));
 
                 /**
@@ -206,16 +217,14 @@ define(
              * Starts uploads
              */
             startAll: function () {
-                if (!this.$('.navbar-buttons .btn.start').hasClass('disabled')) {
-                    this.myDropzone.enqueueFiles(this.myDropzone.getFilesWithStatus(Dropzone.ADDED));
-                }
+                this.myDropzone.enqueueFiles(this.myDropzone.getFilesWithStatus(Dropzone.ADDED));
             },
 
             /**
              * Cancel all uploads and delete already uploaded files
              */
             cancelAll: function () {
-                this.$('.navbar-buttons .btn.import').addClass('disabled');
+                $importButton.addClass('disabled');
                 this.myDropzone.removeAllFiles(true);
                 messenger.notificationFlashMessage(
                     'success',
@@ -227,24 +236,22 @@ define(
              * Import uploaded files for asset processing
              */
             importAll: function () {
-                if (!this.$('.navbar-buttons .btn.import').hasClass('disabled')) {
-                    this.$('.navbar-buttons .btn.import').addClass('disabled');
-                    $.get(
-                        Routing.generate('pimee_product_asset_mass_upload_rest_import')
-                    ).done(function (response) {
-                        var jobReportUrl = Routing.generate('pim_enrich_job_tracker_show', {id: response.jobId});
-                        messenger.notificationFlashMessage(
-                            'success',
-                            _.__('pimee_product_asset.mass_upload.success.imported')
-                        );
-                        Navigation.getInstance().setLocation(jobReportUrl);
-                    }.bind(this)).fail(function () {
-                        messenger.notificationFlashMessage(
-                            'error',
-                            _.__('pimee_product_asset.mass_upload.error.import')
-                        );
-                    });
-                }
+                $importButton.addClass('disabled');
+                $.get(
+                    Routing.generate('pimee_product_asset_mass_upload_rest_import')
+                ).done(function (response) {
+                    var jobReportUrl = Routing.generate('pim_enrich_job_tracker_show', {id: response.jobId});
+                    messenger.notificationFlashMessage(
+                        'success',
+                        _.__('pimee_product_asset.mass_upload.success.imported')
+                    );
+                    Navigation.getInstance().setLocation(jobReportUrl);
+                }.bind(this)).fail(function () {
+                    messenger.notificationFlashMessage(
+                        'error',
+                        _.__('pimee_product_asset.mass_upload.error.import')
+                    );
+                });
             },
 
             /**
