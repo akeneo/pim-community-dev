@@ -36,11 +36,13 @@
     clear: both;
     position: relative;
     z-index: 900;
+
     .divider-vertical {
       border: none;
       margin: 9px 6px;
       height: 22px;
     }
+
     .logo {
       position: relative;
       height: 50px;
@@ -48,6 +50,7 @@
       margin: 0 5px 0 0;
       line-height: 36px;
       float: left;
+
       a {
         &:hover,
         &:focus,
@@ -56,13 +59,21 @@
           outline: 0;
         }
       }
+
+      img {
+        height: 50px;
+      }
     } // Ends .logo
+
     .btn-group {
       margin: 0;
     }
+
     .nav {
       margin: 0;
+
       > li {
+
         > a {
           color: @white;
           font-weight: normal;
@@ -71,6 +82,7 @@
           padding: 0 15px;
         }
       }
+
       a.help {
         padding: 0 15px 0 0;
         line-height: 50px;
@@ -78,6 +90,7 @@
         font-size: @font-size-16;
       }
     }
+
     .dark {
       border: 1px solid @grayLighter;
       border-width: 1px 0;
@@ -85,6 +98,7 @@
       padding: 15px 15px 7px;
     }
   }
+
   > .navbar-inner {
     .border-radius(0);
     border: none;
