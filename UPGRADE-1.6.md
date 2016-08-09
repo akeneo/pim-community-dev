@@ -210,19 +210,19 @@ See the documentation [here](http://docs.akeneo.com/latest/reference/import_expo
 
 3. Update your **config.yml**
 
-    * Remove the configuration of `CatalogBundle` from this file (config tree :`pim_catalog`, line 99).
-    * Update the default locale from `en_US` to `en` line 9
+    * Remove the configuration of `CatalogBundle` from this file (config tree :`pim_catalog`).
+    * Update the default locale from `en_US` to `en`
 
 4. Update your **app/AppKernel.php**:
 
     * Remove the following bundles: 
-        - `Pim\Bundle\BaseConnectorBundle\PimBaseConnectorBundle`, line 86 
-        - `Pim\Bundle\TransformBundlePimTransformBundle`, line 87
-        - `Nelmio\ApiDocBundle\NelmioApiDocBundle`, line 152
-
+        - `Pim\Bundle\BaseConnectorBundle\PimBaseConnectorBundle`
+        - `Pim\Bundle\TransformBundle\PimTransformBundle`
+        - `Nelmio\ApiDocBundle\NelmioApiDocBundle`
+        
 5. Update your **app/config/routing.yml**: 
 
-    * Route removed: `nelmio_api_doc` (line 66)
+    * Remove the route: `nelmio_api_doc`
 
 6. Then remove your old upgrades folder:
     ```
