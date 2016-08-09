@@ -210,15 +210,19 @@ See the documentation [here](http://docs.akeneo.com/latest/reference/import_expo
 
 3. Update your **config.yml**
 
-    * Remove the configuration of the `pim_catalog` from this file.
+    * Remove the configuration of `CatalogBundle` from this file (config tree :`pim_catalog`).
+    * Update the default locale from `en_US` to `en`
 
 4. Update your **app/AppKernel.php**:
 
-    * Remove the following bundles: `PimBaseConnectorBundle`, `PimTransformBundle`, `NelmioApiDocBundle`
-
+    * Remove the following bundles: 
+        - `Pim\Bundle\BaseConnectorBundle\PimBaseConnectorBundle`
+        - `Pim\Bundle\TransformBundle\PimTransformBundle`
+        - `Nelmio\ApiDocBundle\NelmioApiDocBundle`
+        
 5. Update your **app/config/routing.yml**: 
 
-    * Route removed: `nelmio_api_doc`
+    * Remove the route: `nelmio_api_doc`
 
 6. Then remove your old upgrades folder:
     ```
@@ -236,7 +240,7 @@ See the documentation [here](http://docs.akeneo.com/latest/reference/import_expo
         }
         ```
         
-        Especially you store your product in Mongo, don't forget to add `doctrine/mongodb-odm-bundle`:
+        Especially if you store your product in Mongo, don't forget to add `doctrine/mongodb-odm-bundle`:
         
         ```
         "require": {
@@ -244,7 +248,7 @@ See the documentation [here](http://docs.akeneo.com/latest/reference/import_expo
         }
         ```
     
-    * Then run the command:
+    * Then run the command to update your dependencies:
     
         ```
          cd $PIM_DIR
