@@ -65,7 +65,7 @@
 
 5. Update your **app/config/routing.yml**: 
 
-    * Route removed: `nelmio_api_doc` (line 87)
+    * Remove the route: `nelmio_api_doc` (line 87)
 
 6. Then remove your old upgrades folder: 
     ```
