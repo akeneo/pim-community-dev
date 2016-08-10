@@ -11,8 +11,7 @@ define([
         module,
         Routing
     ) {
-        return _.extend(BaseRemover, {
-
+        return _.extend({}, BaseRemover, {
             /**
              * {@inheritdoc}
              */
