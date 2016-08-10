@@ -194,12 +194,6 @@ a.accordion-toggle {
   }
 }
 
-#pim_importexport_import_upload .control-group {
-  max-width: 50%;
-  margin-right: 25%;
-  margin-left: 25%;
-}
-
 .handle {
   cursor: move;
 }
@@ -361,23 +355,19 @@ div.btn-group > .has-switch {
   z-index: 900;
 }
 
+.control-group.upload-zone-container {
+  width: 900px;
+  max-width: 900px;
+  margin: auto auto 5px auto;
+}
+
 .upload-zone {
-  float: left;
   height: @uploadZoneHeight;
-  margin: 1px;
-  color: @textColor + #333;
   cursor: pointer;
-  border: 1px solid @textColor + #888;
-  border-radius: 10px;
+  background: @grayLighter;
 
   &.empty {
     margin: 0;
-    border-style: dashed;
-    border-width: 2px;
-
-    &:not(.disabled):hover {
-      border-color: @textColor + #555;
-    }
 
     div.upload-info {
       min-width: 278px;
@@ -386,36 +376,23 @@ div.btn-group > .has-switch {
 
   &.disabled {
     background-color: @color-light_grey;
-  }
-
-  &:not(.disabled):hover {
-    background-color: @akeneoPurpleSuperLight;
+    color: @akeneoGrey;
   }
 
   div.upload-info {
-    display: inline-block;
-    height: @uploadZoneHeight - 20;
     min-width: 229px;
-    margin: 10px;
-    font-size: @font-size-22;
-    line-height: @uploadZoneHeight - 20;
+    padding: 10px;
     text-align: center;
 
     .upload-preview, img {
       display: inline-block;
       max-width: (@uploadZoneHeight - 20) * 1.5;
-      max-height: @uploadZoneHeight - 20;
       min-width: (@uploadZoneHeight - 20) / 2;
       font-size: @font-size-40;
-      line-height: @uploadZoneHeight - 20;
-      color: @textColor + #333;
-      text-decoration: none;
-      vertical-align: middle;
+      line-height: @font-size-40;
+      color: @grayLight;
       cursor: pointer;
-
-      &.empty {
-        display: none;
-      }
+      padding: 20px 0 5px 0;
     }
 
     img {
@@ -423,8 +400,10 @@ div.btn-group > .has-switch {
     }
 
     span.upload-filename {
-      padding: 0 5px;
-      line-height: @uploadZoneHeight - 20;
+      line-height: @baseFontSize;
+      font-weight: normal;
+      display: block;
+      color: @gray;
     }
   }
 
@@ -433,12 +412,8 @@ div.btn-group > .has-switch {
     width: 45px;
     height: @uploadZoneHeight;
     padding: 0 9px;
-    margin-top: -1px;
-    margin-right: -1px;
     font-size: @font-size-26;
     line-height: @uploadZoneHeight;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
   }
 
   input[type="file"] {
@@ -449,7 +424,6 @@ div.btn-group > .has-switch {
     width: 100%!important;
     height: 100%;
     cursor: pointer;
-    border-radius: 20px;
     opacity: 0;
 
     &.hide {
