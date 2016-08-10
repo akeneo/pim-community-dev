@@ -25,7 +25,6 @@ pimee_product_asset:
     mass_upload:
         menu: Upload assets
         btn:
-            add_files: Add files
             remove_all_files: Remove all files
             delete: Delete
             import: Import

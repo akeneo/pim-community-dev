@@ -4,10 +4,6 @@
             <i class="icon-remove"></i>
             <%- __('pimee_product_asset.mass_upload.btn.remove_all_files') %>
         </button>
-        <button class="btn fileinput-button icons-holder-text">
-            <i class="icon-plus"></i>
-            <%- __('pimee_product_asset.mass_upload.btn.add_files') %>
-        </button>
         <button class="btn btn-publish start icons-holder-text disabled" type="submit">
             <i class="icon-play"></i>
             <%- __('pimee_product_asset.mass_upload.btn.upload') %>
@@ -20,6 +16,20 @@
     <div class="navbar-content pull-left">
         <div class="navbar-title clearfix-oro">
             <div class="sub-title"><%- __('pimee_product_asset.mass_upload.menu') %></div>
+        </div>
+    </div>
+</div>
+
+<div class="row-fluid buffer-top">
+    <div class="control-group upload-zone-container">
+        <div class="controls">
+            <label class="upload-zone file empty">
+                <div class="upload-info">
+                    <img src="/bundles/pimui/images/upload.png" alt="upload icon" class="upload-preview">
+                    <span class="upload-filename" data-empty-title="Drag and drop a file or click here">Drag and drop a file or click here</span>
+                </div>
+            </label>
+            <div class="icons-container"></div>
         </div>
     </div>
 </div>
