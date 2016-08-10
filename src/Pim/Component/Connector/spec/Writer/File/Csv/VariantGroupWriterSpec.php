@@ -251,11 +251,17 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $flusher,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
 
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('linesPerFile')->willReturn(false);
