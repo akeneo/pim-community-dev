@@ -71,7 +71,7 @@ define(
              * Initialize the dropzone element
              */
             initializeDropzone: function () {
-                var myDropzone = new Dropzone(document.body, {
+                var myDropzone = new Dropzone('.upload-zone', {
                     url: Routing.generate('pimee_product_asset_rest_upload'),
                     thumbnailWidth: 70,
                     thumbnailHeight: 70,
@@ -79,7 +79,7 @@ define(
                     previewTemplate: this.rowTemplate(),
                     autoQueue: false,
                     previewsContainer: 'tbody',
-                    clickable: '.fileinput-button',
+                    clickable: '.upload-zone-container',
                     maxFilesize: 1000
                 });
 
