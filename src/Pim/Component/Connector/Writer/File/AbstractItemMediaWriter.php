@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\Writer\File;
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
@@ -105,9 +106,11 @@ abstract class AbstractItemMediaWriter implements
         $converterOptions = $this->getConverterOptions($parameters);
 
         $flatItems = [];
+        $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
+            ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
+
         foreach ($items as $item) {
             if ($parameters->has('with_media') && $parameters->get('with_media')) {
-                $directory = $this->getWorkingDirectory($parameters->get('filePath'));
                 $item = $this->resolveMediaPaths($item, $directory);
             }
 
@@ -281,25 +284,5 @@ abstract class AbstractItemMediaWriter implements
         }
 
         return $options;
-    }
-
-    /**
-     * Build path of the working directory to import media in a specific directory.
-     * Will be extracted with TIP-539
-     *
-     * @param string $filePath
-     *
-     * @return string
-     */
-    protected function getWorkingDirectory($filePath)
-    {
-        $jobExecution = $this->stepExecution->getJobExecution();
-
-        return dirname($filePath)
-               . DIRECTORY_SEPARATOR
-               . $jobExecution->getJobInstance()->getCode()
-               . DIRECTORY_SEPARATOR
-               . $jobExecution->getId()
-               . DIRECTORY_SEPARATOR;
     }
 }

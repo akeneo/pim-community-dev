@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 
 use Akeneo\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -100,7 +101,9 @@ class ProductProcessor extends AbstractProcessor
         }
 
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
-            $directory = $this->getWorkingDirectory($parameters->get('filePath'));
+            $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
+                ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
+
             $this->fetchMedia($product, $directory);
         }
 
@@ -215,25 +218,5 @@ class ProductProcessor extends AbstractProcessor
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
-    }
-
-    /**
-     * Build path of the working directory to import media in a specific directory.
-     * Will be extracted with TIP-539
-     *
-     * @param string $filePath
-     *
-     * @return string
-     */
-    protected function getWorkingDirectory($filePath)
-    {
-        $jobExecution = $this->stepExecution->getJobExecution();
-
-        return dirname($filePath)
-               . DIRECTORY_SEPARATOR
-               . $jobExecution->getJobInstance()->getCode()
-               . DIRECTORY_SEPARATOR
-               . $jobExecution->getId()
-               . DIRECTORY_SEPARATOR;
     }
 }

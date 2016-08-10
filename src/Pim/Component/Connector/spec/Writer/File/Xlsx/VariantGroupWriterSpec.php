@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Connector\Writer\File\Xlsx;
 
+use Akeneo\Component\Batch\Item\ExecutionContext;
+use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -59,7 +61,8 @@ class VariantGroupWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
-        JobInstance $jobInstance
+        JobInstance $jobInstance,
+        ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -98,7 +101,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
             'type'        => 'variant',
             'label-en_US' => 'Jacket',
             'label-en_GB' => 'Jacket',
-            'media'       => 'files/jackets/media/it\'s the filaname.jpg'
+            'media'       => 'files/jackets/media/it\'s the filename.jpg'
         ];
 
         $variantStandard2 = [
@@ -135,7 +138,11 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(100);
         $jobInstance->getCode()->willReturn('csv_variant_group_export');
-        $variantPathMedia1 = $this->directory . 'csv_variant_group_export/100/files/jackets/media/';
+
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
+
+        $variantPathMedia1 = $this->directory . 'files/jackets/media/';
         $originalFilename = "it's the filename.jpg";
 
         $this->filesystem->mkdir($variantPathMedia1);
@@ -175,9 +182,12 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $bufferFactory,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        ExecutionContext $executionContext
     ) {
         $this->setStepExecution($stepExecution);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn($this->directory . 'variant_group.xlsx');
@@ -214,10 +224,13 @@ class VariantGroupWriterSpec extends ObjectBehavior
             'type'        => 'variant',
             'label-en_US' => 'Jacket',
             'label-en_GB' => 'Jacket',
-            'media'       => 'files/jackets/media/it\'s the filaname.jpg'
+            'media'       => 'files/jackets/media/it\'s the filename.jpg'
         ];
 
         $items = [$variantStandard1];
+
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn(null);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
 
