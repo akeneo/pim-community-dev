@@ -12,17 +12,10 @@
 {% endset %}
 
 {% set buttons %}
-    {% if jobInstance.status != constant('Akeneo\\Component\\Batch\\Model\\JobInstance::STATUS_IN_PROGRESS') %}
-        {{ elements.link('Edit', editRoute, { icon: 'pencil' }) }}
-    {% endif %}
-    {% if violations|length == 0 %}
-        {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: action ~ '-btn btn-primary'}) }}
-    {% endif %}
+    {% include 'PimImportExportBundle:JobProfile:_buttons.html.twig' %}
 {% endset %}
 
 {{ elements.page_header(title, buttons, null, left, null, titleButtons) }}
-
-{{ elements.form_navbar(view_element_aliases(viewElementsAliases)) }}
 
 {% if uploadForm is defined and uploadForm is not empty and uploadAllowed and uploadViolations|length == 0 %}
     {{ form_start(uploadForm, {
@@ -39,3 +32,5 @@
         </div>
     {{ form_end(uploadForm) }}
 {% endif %}
+
+{{ elements.form_navbar(view_element_aliases(viewElementsAliases)) }}
