@@ -142,6 +142,7 @@ Feature: Export products according to text attribute filter
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Name
+    And I switch the locale from "name" filter to "en_US"
     Then I filter by "name" with operator "Contains" and value "Ranger"
     And I press "Save"
     When I am on the "csv_footwear_product_export" export job page

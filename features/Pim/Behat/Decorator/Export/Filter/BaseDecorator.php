@@ -25,4 +25,34 @@ class BaseDecorator extends ElementDecorator
     public function remove()
     {
     }
+
+    /**
+     * Set the filter locale
+     *
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $localeSwitcher = $this->spin(function () {
+            return $this->find('css', '.locale-switcher');
+        }, 'Cannot find the locale switcher. Are you sure that this attribute is localizable?');
+
+        $localeSwitcher->find('css', '.dropdown-toggle')->click();
+        $localeSwitcher->find('css', sprintf('a[data-locale="%s"]', $locale))->click();
+    }
+
+    /**
+     * Set the filter scope
+     *
+     * @param string $scope
+     */
+    public function setScope($scope)
+    {
+        $scopeSwitcher = $this->spin(function () {
+            return $this->find('css', '.scope-switcher');
+        }, 'Cannot find the scope switcher. Are you sure that this attribute is scopable?');
+
+        $scopeSwitcher->find('css', '.dropdown-toggle')->click();
+        $scopeSwitcher->find('css', sprintf('a[data-scope="%s"]', $scope))->click();
+    }
 }

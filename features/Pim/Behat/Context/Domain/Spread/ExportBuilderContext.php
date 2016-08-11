@@ -60,4 +60,22 @@ class ExportBuilderContext extends PimContext implements PageObjectAwareInterfac
 
         $this->getCurrentPage()->getElement('Attribute selector')->selectAttributes($attributes);
     }
+
+    /**
+     * @Given /^I switch the locale from "([^"]*)" filter to "([^"]*)"$/
+     */
+    public function iSwitchTheLocaleFromFilterTo($filter, $locale)
+    {
+        $filter = $this->filters->getFilter($filter);
+        $filter->setLocale($locale);
+    }
+
+    /**
+     * @Given /^I switch the scope from "([^"]*)" filter to "([^"]*)"$/
+     */
+    public function iSwitchTheScopeFromFilterTo($filter, $scope)
+    {
+        $filter = $this->filters->getFilter($filter);
+        $filter->setScope($scope);
+    }
 }
