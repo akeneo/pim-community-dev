@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
+namespace Pim\Component\Connector\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Exception\ExceptionTranslationProvider;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -24,19 +24,19 @@ class FilterDataValidator extends ConstraintValidator
     /** @var ProductQueryBuilderFactory */
     protected $pqbFactory;
 
-    /** @var ExceptionTranslationProvider */
-    protected $translationProvider;
+    /** @var TranslatorInterface */
+    protected $translator;
 
     /**
-     * @param ProductQueryBuilderFactory   $pqbFactory
-     * @param ExceptionTranslationProvider $translationProvider
+     * @param ProductQueryBuilderFactory $pqbFactory
+     * @param TranslatorInterface        $translator
      */
     public function __construct(
         ProductQueryBuilderFactory $pqbFactory,
-        ExceptionTranslationProvider $translationProvider
+        TranslatorInterface $translator
     ) {
         $this->pqbFactory = $pqbFactory;
-        $this->translationProvider = $translationProvider;
+        $this->translator = $translator;
     }
 
     /**
@@ -50,9 +50,13 @@ class FilterDataValidator extends ConstraintValidator
             try {
                 $context = isset($data['context']) ? $data['context'] : [];
                 $pqb->addFilter($data['field'], $data['operator'], $data['value'], $context);
-            } catch (InvalidArgumentException $e) {
-                $this->context->buildViolation($this->translationProvider->getTranslation($e))
-                    ->atPath(sprintf('[data][%s]', $data['field']))
+            } catch (InvalidArgumentException $exception) {
+                $this->context->buildViolation(
+                        $this->translator->trans(
+                            sprintf('pim_catalog.constraint.%s', $exception->getCode())
+                        )
+                    )
+                    ->atPath(sprintf('[data][%s][%d]', $data['field'], 0))
                     ->addViolation();
             }
         }

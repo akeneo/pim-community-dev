@@ -1,14 +1,14 @@
 parameters:
-    pim_import_export.validator.constraints.filter_data_validator.class: Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterDataValidator
-    pim_import_export.validator.constraints.filter_strucutre_locale_validator.class: Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterStructureLocaleValidator
-    pim_import_export.validator.constraints.filter_strucutre_attribute_validator.class: Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterStructureAttributeValidator
+    pim_import_export.validator.constraints.filter_data_validator.class: Pim\Component\Connector\Validator\Constraints\FilterDataValidator
+    pim_import_export.validator.constraints.filter_strucutre_locale_validator.class: Pim\Component\Connector\Validator\Constraints\FilterStructureLocaleValidator
+    pim_import_export.validator.constraints.filter_strucutre_attribute_validator.class: Pim\Component\Connector\Validator\Constraints\FilterStructureAttributeValidator
 
 services:
     pim_import_export.validator.constraints.filter_data_validator:
         class: '%pim_import_export.validator.constraints.filter_data_validator.class%'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
-            - '@pim_catalog.helper.exception.exception_translation_provider'
+            - '@translator'
         tags:
             - { name: validator.constraint_validator, alias: filter_data_validator }
 

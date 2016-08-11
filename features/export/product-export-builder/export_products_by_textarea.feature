@@ -38,6 +38,7 @@ Feature: Export products according to textarea attribute filter
     And I visit the "Content" tab
     And I add available attributes Description
     And I filter by "description" with operator "Is equal to" and value "Awesome"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -49,7 +50,6 @@ Feature: Export products according to textarea attribute filter
     SNKRS-1B;summer_collection;1;rangers;;Awesome
     """
 
-  @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -57,6 +57,7 @@ Feature: Export products according to textarea attribute filter
     And I visit the "Content" tab
     And I add available attributes Description
     And I filter by "description" with operator "Ends with" and value "description"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -68,7 +69,6 @@ Feature: Export products according to textarea attribute filter
     SNKRS-1R;summer_collection;1;rangers;;Awesome description
     """
 
-  @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -76,6 +76,7 @@ Feature: Export products according to textarea attribute filter
     And I visit the "Content" tab
     And I add available attributes Description
     And I filter by "description" with operator "Starts with" and value "Awesome"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -88,7 +89,6 @@ Feature: Export products according to textarea attribute filter
     SNKRS-1R;summer_collection;1;rangers;;Awesome description
     """
 
-  @skip
   Scenario: Export products by textarea values using the UI
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -96,6 +96,7 @@ Feature: Export products according to textarea attribute filter
     And I visit the "Content" tab
     And I add available attributes Description
     And I filter by "description" with operator "Contains" and value "Awesome"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -116,6 +117,7 @@ Feature: Export products according to textarea attribute filter
     And I visit the "Content" tab
     And I add available attributes Description
     And I filter by "description" with operator "Does not contain" and value "description"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -135,6 +137,7 @@ Feature: Export products according to textarea attribute filter
     And I visit the "Content" tab
     And I add available attributes Description
     Then I filter by "description" with operator "Is empty" and value ""
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page

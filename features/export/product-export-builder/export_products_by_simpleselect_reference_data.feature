@@ -24,6 +24,7 @@ Feature: Export products according to simple select reference data values
     And I visit the "Content" tab
     And I add available attributes Heel color
     And I filter by "heel_color.code" with operator "In list" and value "Red"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
@@ -39,6 +40,7 @@ Feature: Export products according to simple select reference data values
     And I visit the "Content" tab
     And I add available attributes Heel color
     And I filter by "heel_color.code" with operator "In list" and value "Red,Green"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
@@ -55,6 +57,7 @@ Feature: Export products according to simple select reference data values
     And I visit the "Content" tab
     And I add available attributes Heel color
     And I filter by "heel_color.code" with operator "Is empty" and value ""
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
@@ -70,6 +73,7 @@ Feature: Export products according to simple select reference data values
     And I visit the "Content" tab
     And I add available attributes Heel color
     And I filter by "heel_color.code" with operator "In list" and value ""
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish

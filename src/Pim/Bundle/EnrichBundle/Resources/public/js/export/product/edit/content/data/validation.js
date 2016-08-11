@@ -38,10 +38,10 @@ define([
         addFilterExtension: function (event) {
             var filter = event.filter;
 
-            if (undefined !== this.errors.data &&
-                undefined !== this.errors.data[filter.getField()]
+            if (_.has(this.errors, 'data') &&
+                _.has(this.errors.data, filter.getField())
             ) {
-                var content = $(this.template({error: this.errors.data[filter.getField()]}));
+                var content = $(this.template({errors: this.errors.data[filter.getField()]}));
 
                 event.filter.addElement(
                     'below-input',

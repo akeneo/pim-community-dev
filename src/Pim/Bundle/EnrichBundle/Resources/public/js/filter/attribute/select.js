@@ -45,13 +45,17 @@ define([
          */
         isEmpty: function () {
             return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
-                (undefined === this.getValue() || '' === this.getValue());
+                (undefined === this.getValue() || _.isEmpty(this.getValue()));
         },
 
         /**
          * {@inheritdoc}
          */
         renderInput: function () {
+            if (undefined === this.getOperator()) {
+                this.setOperator(_.first(_.values(this.config.operators)));
+            }
+
             return this.template({
                 __: __,
                 value: this.getValue(),
@@ -82,14 +86,19 @@ define([
             var field = this.getField().replace(/\.code$/, '');
 
             return FetcherRegistry.getFetcher('attribute').fetch(field)
-                .then(this.cleanInvalidValues.bind(this))
                 .then(function (attribute) {
-                    return {
-                        label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
-                        select2Options: this.getSelect2Options(attribute),
-                        removable: this.isRemovable(),
-                        editable: this.isEditable()
-                    };
+                    return this.cleanInvalidValues(attribute, this.getValue()).then(function (cleanedValues) {
+                        if (!_.isEqual(this.getValue(), cleanedValues)) {
+                            this.setValue(cleanedValues, {silent: false});
+                        }
+
+                        return {
+                            label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
+                            select2Options: this.getSelect2Options(attribute),
+                            removable: this.isRemovable(),
+                            editable: this.isEditable()
+                        };
+                    }.bind(this));
                 }.bind(this));
         },
 
@@ -139,7 +148,7 @@ define([
                     }
                 },
                 initSelection: function (element, callback) {
-                    this.getChoicePromise(attribute).then(function (response) {
+                    this.getChoices(attribute).then(function (response) {
                         var results = response.results;
                         var choices = _.map($(element).val().split(','), function (choice) {
                             return _.findWhere(results, {id: choice});
@@ -155,11 +164,11 @@ define([
          * Return the select choice promise which, once resolved, return all possible choices
          * for the given select attribute.
          *
-         * @param attribute
+         * @param {string} attribute
          *
          * @returns {Promise}
          */
-        getChoicePromise: function (attribute) {
+        getChoices: function (attribute) {
             var choiceUrl = this.getChoiceUrl(attribute);
 
             if (null === this.choicePromise) {
@@ -172,7 +181,7 @@ define([
         /**
          * Get the string Url to access all select choices related to the given attribute.
          *
-         * @param attribute
+         * @param {string} attribute
          *
          * @returns {string}
          */
@@ -193,27 +202,16 @@ define([
          * Clean invalid values by removing possibly non-existent options coming from database.
          * This method returns a promise which, once resolved, should return the attribute.
          *
-         * @param attribute
+         * @param {string} attribute
          *
          * @returns {Promise}
          */
-        cleanInvalidValues: function (attribute) {
-            return this.getChoicePromise(attribute).then(function (response) {
-                var results      = response.results;
-                var initialValue = undefined !== this.getValue() ? this.getValue() : [];
-                var resultIds    = _.pluck(results, 'id');
+        cleanInvalidValues: function (attribute, currentValues) {
+            return this.getChoices(attribute).then(function (response) {
+                var possibleValues = _.pluck(response.results, 'id');
+                currentValues  = undefined !== currentValues ? currentValues : [];
 
-                // Update field value if some options are not available anymore
-                if (!_.isEmpty(
-                    _.difference(
-                        _.union(resultIds, initialValue),
-                        resultIds
-                    )
-                )) {
-                    this.setValue(_.intersection(initialValue, resultIds), {silent: false});
-                }
-
-                return attribute;
+                return _.intersection(currentValues, possibleValues);
             }.bind(this));
         },
 

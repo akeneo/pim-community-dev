@@ -4,10 +4,10 @@ namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterData;
-use Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterStructureAttribute;
-use Pim\Bundle\ImportExportBundle\Validator\Constraints\FilterStructureLocale;
 use Pim\Component\Connector\Validator\Constraints\Channel;
+use Pim\Component\Connector\Validator\Constraints\FilterData;
+use Pim\Component\Connector\Validator\Constraints\FilterStructureAttribute;
+use Pim\Component\Connector\Validator\Constraints\FilterStructureLocale;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;

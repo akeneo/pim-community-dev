@@ -70,7 +70,7 @@ define(
                             {count: attributes.length},
                             attributes.length
                         ),
-                        errors: this.getParent().getValidationErrorsForField('attributes', [])
+                        errors: this.getParent().getValidationErrorsForField('attributes')
                     })
                 );
 

@@ -64,7 +64,7 @@ define(
                             locale: UserContext.get('uiLocale'),
                             channels: channels,
                             scope: this.getScope(),
-                            error: this.getParent().getValidationErrorsForField('scope', null)
+                            errors: this.getParent().getValidationErrorsForField('scope')
                         })
                     );
 

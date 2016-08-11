@@ -34,6 +34,7 @@ Feature: Export products according to text attribute filter
     And I visit the "Content" tab
     And I add available attributes Comment
     And I filter by "comment" with operator "Is equal to" and value "Awesome"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -52,6 +53,7 @@ Feature: Export products according to text attribute filter
     And I visit the "Content" tab
     And I add available attributes Comment
     And I filter by "comment" with operator "Ends with" and value "product"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -70,6 +72,7 @@ Feature: Export products according to text attribute filter
     And I visit the "Content" tab
     And I add available attributes Comment
     And I filter by "comment" with operator "Contains" and value "Awesome"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -87,6 +90,7 @@ Feature: Export products according to text attribute filter
     And I visit the "Content" tab
     And I add available attributes Comment
     And I filter by "comment" with operator "Does not contain" and value "product"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -106,6 +110,7 @@ Feature: Export products according to text attribute filter
     And I visit the "Content" tab
     And I add available attributes Comment
     And I filter by "comment" with operator "Starts with" and value "Awesome"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -125,6 +130,7 @@ Feature: Export products according to text attribute filter
     And I visit the "Content" tab
     And I add available attributes Comment
     Then I filter by "comment" with operator "Is empty" and value ""
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
@@ -144,6 +150,7 @@ Feature: Export products according to text attribute filter
     And I add available attributes Name
     And I switch the locale from "name" filter to "en_US"
     Then I filter by "name" with operator "Contains" and value "Ranger"
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job

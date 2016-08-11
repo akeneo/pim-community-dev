@@ -62,7 +62,7 @@ define(
 
                 var defaultLocalesPromise = $.Deferred().resolve().promise();
                 if (_.isEmpty(this.getLocales())) {
-                    defaultLocalesPromise = this.setDefaultLocales();
+                    defaultLocalesPromise = this.initializeDefaultLocales();
                 }
 
                 $.when(
@@ -75,7 +75,7 @@ define(
                             __: __,
                             locales: this.getLocales(),
                             availableLocales: !scope ? [] : scope.locales,
-                            errors: this.getParent().getValidationErrorsForField('locales', [])
+                            errors: this.getParent().getValidationErrorsForField('locales')
                         })
                     );
 
@@ -144,7 +144,7 @@ define(
              * Resets locales after channel has been modified then re-renders the view.
              */
             channelUpdated: function () {
-                this.setDefaultLocales()
+                this.initializeDefaultLocales()
                     .then(function () {
                         this.render();
                     }.bind(this));
@@ -155,7 +155,7 @@ define(
              *
              * @return {Promise}
              */
-            setDefaultLocales: function () {
+            initializeDefaultLocales: function () {
                 return fetcherRegistry.getFetcher('channel')
                     .fetch(this.getCurrentScope())
                     .then(function (scope) {

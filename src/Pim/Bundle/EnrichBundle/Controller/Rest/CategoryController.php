@@ -51,11 +51,11 @@ class CategoryController
             return new JsonResponse(null, 404);
         }
 
-        $categories = $this->repository->getCategoriesByCodes($request->get('selected', []));
-        if (0 !== $categories->count()) {
+        $selectedCategories = $this->repository->getCategoriesByCodes($request->get('selected', []));
+        if (0 !== $selectedCategories->count()) {
             $tree = $this->twigExtension->listCategoriesResponse(
-                $this->repository->getFilledTree($parent, $categories),
-                $categories
+                $this->repository->getFilledTree($parent, $selectedCategories),
+                $selectedCategories
             );
         } else {
             $tree = $this->twigExtension->listCategoriesResponse(

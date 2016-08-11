@@ -300,7 +300,7 @@ class JobProfileController
                 'jobInstance' => $jobInstance,
                 'job'         => $job,
                 'form'        => $form->createView(),
-                'errors'      => json_encode($errors),
+                'errors'      => $errors,
             ]
         );
     }

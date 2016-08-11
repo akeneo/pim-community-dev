@@ -70,7 +70,7 @@ define([
                             this.getField()
                         ),
                         removable: false
-                    }
+                    };
                 }.bind(this));
         },
 

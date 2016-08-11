@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
-use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
