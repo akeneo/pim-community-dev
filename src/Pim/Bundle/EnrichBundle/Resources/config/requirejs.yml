@@ -12,10 +12,6 @@ config:
         translator:
             exports: Translator
 
-    map:
-        '*':
-            pim/saver/variant-group:   pim/saver/base
-
     config:
         # Forwarded events from mediator
         pim/form/common/edit-form:
