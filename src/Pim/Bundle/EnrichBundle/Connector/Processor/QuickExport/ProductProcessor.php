@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -159,7 +160,7 @@ class ProductProcessor extends AbstractProcessor
         $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
 
         foreach ($this->mediaFetcher->getErrors() as $error) {
-            $this->stepExecution->addWarning($error['message'], [], $error['media']);
+            $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
         }
     }
 
