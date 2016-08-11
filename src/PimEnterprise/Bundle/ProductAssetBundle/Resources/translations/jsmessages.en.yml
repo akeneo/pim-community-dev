@@ -61,6 +61,7 @@ pimee_product_asset:
             uploading: Uploading
             error: Error
             success: Success
+        drag_and_drop: Drag and drop your assets or click here
     datagrid:
         mass_action:
             delete:
