@@ -16,9 +16,11 @@
   height: 100%;
   min-height: 280px;
   color: @akeneoGrey;
+
   a {
     color: @akeneoGrey;
   }
+
   #page {
     position: relative;
     top: 25%;
@@ -31,6 +33,7 @@
     text-align: center;
     padding: 0;
     margin: 0;
+
     img {
       max-width: 240px;
     }
@@ -67,7 +70,7 @@
 
   input[type="text"],
   input[type="password"] {
-    padding: 0 18px;
+    padding: 0 16px;
     height: 38px;
     border-radius: 2px;
     background: @akeneoGrey;
@@ -94,9 +97,19 @@
 }
 
 .form-signin {
+  .form-row {
+    display: flex;
+
+    input[type="text"],
+    input[type="password"] {
+      width: auto;
+      margin-right: 5px;
+      flex-grow: 1;
+    }
+  }
+
   .remember-me, .signin-help {
-    float:left;
-    width: 50%;
+    flex-grow: 1;
     font-weight: normal;
     font-size: @font-size-13;
     
@@ -108,11 +121,6 @@
   .signin-help {
     text-align: right;
     font-size: @font-size-13;
-  }
-
-  input[type="text"],
-  input[type="password"] {
-    width: 211px;
   }
 }
 
