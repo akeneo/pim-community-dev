@@ -60,8 +60,10 @@ class  ProductReaderSpec extends ObjectBehavior
         ];
 
         $fileIteratorFactory->create($filePath, [
-            'fieldDelimiter' => ';',
-            'fieldEnclosure' => '"',
+            'reader_options' => [
+                'fieldDelimiter' => ';',
+                'fieldEnclosure' => '"',
+            ]
         ])->willReturn($fileIterator);
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name', 'view', 'manual-fr_FR']);

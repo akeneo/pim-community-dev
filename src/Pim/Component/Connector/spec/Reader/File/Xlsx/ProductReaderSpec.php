@@ -51,7 +51,7 @@ class ProductReaderSpec extends ObjectBehavior
         $jobParameters->get('decimalSeparator')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('YYYY-mm-dd');
 
-        $fileIteratorFactory->create($filePath)->willReturn($fileIterator);
+        $fileIteratorFactory->create($filePath, [])->willReturn($fileIterator);
 
         $item = [
             'sku'          => 'SKU-001',
